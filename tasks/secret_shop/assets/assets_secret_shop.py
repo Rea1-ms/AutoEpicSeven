@@ -8,10 +8,10 @@ BUY = ButtonWrapper(
     cn=None,
     global_cn=Button(
         file='./assets/global_cn/secret_shop/BUY.png',
-        area=(1172, 369, 1212, 389),
-        search=(1172, 151, 1212, 699),
+        area=(1172, 659, 1212, 679),
+        search=(1171, 151, 1212, 679),
         color=(136, 152, 139),
-        button=(1172, 369, 1212, 389),
+        button=(1172, 659, 1212, 679),
     ),
     global_en=None,
 )
