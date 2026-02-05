@@ -20,6 +20,7 @@ from module.logger import logger
 from tasks.secret_shop.assets.assets_secret_shop import (
     BUY,
     BUY_CONFIRM,
+    BUY_FOR_STABLE,
     COVENANT_BOOKMARK,
     MYSTIC_MEDAL,
     REFRESH,
@@ -31,10 +32,14 @@ class SecretShop(ModuleBase):
     """
     秘密商店刷书签
 
+    使用 ALAS 标准状态循环模式。
+    稳定检测：使用 BUY_FOR_STABLE 检测底部区域的购买按钮，连续帧确认画面稳定。
     """
 
     # 滚动参数
     SCROLL_AREA = (960, 550, 960, 360)
+    # 稳定检测：连续 N 帧检测到底部 BUY 按钮才认为稳定
+    STABLE_THRESHOLD = 2
 
     def __init__(self, config, device):
         super().__init__(config, device)
@@ -47,12 +52,33 @@ class SecretShop(ModuleBase):
         self.buy_covenant = getattr(config, 'SecretShop_BuyCovenantBookmark', True)
         self.buy_mystic = getattr(config, 'SecretShop_BuyMysticMedal', True)
         # 状态
-        self._pending_buy: list[ClickButton] = []
         self._scrolled = False
-        self._current_round_bought = 0
+        self._stable_count = 0
         # 当前刷新周期内是否已购买（每次刷新最多各出现一个）
         self._covenant_purchased_this_round = False
         self._mystic_purchased_this_round = False
+
+    def _is_shop_stable(self) -> bool:
+        """
+        检测商店画面是否稳定
+
+        使用 BUY_FOR_STABLE 检测底部区域的购买按钮。
+        连续 STABLE_THRESHOLD 帧检测到才认为稳定，避免动画中误判。
+
+        Returns:
+            bool: 画面是否稳定
+        """
+        if self.appear(BUY_FOR_STABLE):
+            self._stable_count += 1
+            if self._stable_count >= self.STABLE_THRESHOLD:
+                return True
+        else:
+            self._stable_count = 0
+        return False
+
+    def _reset_stable(self):
+        """重置稳定计数器，用于滚动/刷新后"""
+        self._stable_count = 0
 
     def _find_target_buy_buttons(self) -> list[tuple[str, ClickButton]]:
         """
@@ -95,23 +121,19 @@ class SecretShop(ModuleBase):
 
         return result
 
-    def _handle_buy_confirm(self, skip_first_screenshot=True) -> bool:
+    def handle_buy_confirm(self, skip_first_screenshot=True) -> bool:
         """
         处理购买确认弹窗
 
-        Args:
-            skip_first_screenshot: 是否跳过第一次截图
-
-        Returns:
-            bool: 是否购买成功
+        标准 handle 系方法：
+        - 返回 True = 购买成功
+        - 返回 False = 超时或失败
 
         Pages:
-            in: any
+            in: BUY_CONFIRM popup
             out: page_secret_shop
         """
         timeout = Timer(3, count=6).start()
-        confirm_timer = Timer(0.5, count=2)
-        seen_confirm = False
 
         while 1:
             if skip_first_screenshot:
@@ -124,81 +146,24 @@ class SecretShop(ModuleBase):
                 logger.warning('购买确认超时')
                 return False
 
+            # 正面条件退出：看到 REFRESH 按钮 = 弹窗已关闭，回到商店
+            if self.appear(REFRESH):
+                return True
+
             # 点击确认购买
-            if self.appear_then_click(BUY_CONFIRM, interval=0.3):
-                seen_confirm = True
-                confirm_timer.reset()
+            if self.appear_then_click(BUY_CONFIRM, interval=2):
                 continue
-
-            # 必须曾经看到过弹窗，且弹窗已消失
-            if seen_confirm and not self.appear(BUY_CONFIRM):
-                if confirm_timer.reached():
-                    return True
 
         return False
 
-    def _handle_refresh_confirm(self, skip_first_screenshot=True) -> bool:
-        """
-        处理刷新确认弹窗
-
-        Args:
-            skip_first_screenshot: 是否跳过第一次截图
-
-        Returns:
-            bool: 是否刷新成功
-
-        Pages:
-            in: any
-            out: page_secret_shop
-        """
-        timeout = Timer(3, count=6).start()
-        confirm_timer = Timer(0.5, count=2)
-
-        while 1:
-            if skip_first_screenshot:
-                skip_first_screenshot = False
-            else:
-                self.device.screenshot()
-
-            # 超时退出
-            if timeout.reached():
-                logger.warning('刷新确认超时')
-                return False
-
-            # 点击确认刷新
-            if self.appear_then_click(REFRESH_CONFIRM, interval=0.3):
-                confirm_timer.reset()
-                continue
-
-            # 确认弹窗消失 = 刷新完成
-            if not self.appear(REFRESH_CONFIRM):
-                if confirm_timer.reached():
-                    return True
-
-        return False
-
-    def _scroll_down(self) -> bool:
-        """
-        向下滚动一次
-
-        Returns:
-            bool: 是否执行了滚动
-        """
-        if self._scrolled:
-            return False
-
-        logger.info('向下滚动')
-        self.device.swipe(
-            (self.SCROLL_AREA[0], self.SCROLL_AREA[1]),
-            (self.SCROLL_AREA[2], self.SCROLL_AREA[3]),
-            duration=(0.4, 0.6)
-        )
-        self._scrolled = True
-        return True
-
-    def run(self):
+    def run(self, skip_first_screenshot=False):
         """
         主运行逻辑
+
+        使用 ALAS 标准状态循环模式：
+        - 截图 -> 退出条件 -> 弹窗处理 -> 稳定检测 -> 扫描购买 -> 滚动 -> 刷新
+        - 无 sleep 依赖
+        - 使用 BUY_FOR_STABLE 连续帧检测画面稳定
 
         Pages:
             in: page_secret_shop
@@ -209,86 +174,87 @@ class SecretShop(ModuleBase):
         logger.info(f'购买圣约书签: {self.buy_covenant}')
         logger.info(f'购买神秘奖牌: {self.buy_mystic}')
 
-        # 稳定性计时器
+        # 超时保护
         timeout = Timer(60, count=120).start()
-        action_timer = Timer(0.3, count=1)
-        scan_timer = Timer(0.8, count=2)
-        # TODO: computer performance needed
-        # scan_timer = Timer(0.5, count=2)
 
         while 1:
-            self.device.screenshot()
+            # 1. 截图
+            if skip_first_screenshot:
+                skip_first_screenshot = False
+            else:
+                self.device.screenshot()
 
-            # 超时保护
+            # 2. 退出条件（不带 interval，不带操作）
             if timeout.reached():
                 logger.warning('运行超时，停止')
                 break
-
-            # 达到最大刷新次数
             if self.refresh_count >= self.max_refresh:
                 logger.info('达到最大刷新次数')
                 break
 
-            # 优先处理购买确认弹窗
-            if self.appear_then_click(BUY_CONFIRM, interval=0.3):
+            # 3. 优先处理弹窗
+            if self.appear_then_click(BUY_CONFIRM, interval=2):
                 timeout.reset()
                 continue
 
-            # 处理刷新确认弹窗（不在这里计数，在点击 REFRESH 时计数）
-            if self.appear_then_click(REFRESH_CONFIRM, interval=0.3):
-                self._scrolled = False
-                self._current_round_bought = 0
-                # 重置购买标记，新一轮可以重新购买
-                self._covenant_purchased_this_round = False
-                self._mystic_purchased_this_round = False
+            if self.appear(REFRESH_CONFIRM):
+                if self.appear_then_click(REFRESH_CONFIRM, interval=2):
+                    # 刷新完成后重置状态
+                    self._scrolled = False
+                    self._covenant_purchased_this_round = False
+                    self._mystic_purchased_this_round = False
+                    self._reset_stable()
+                    timeout.reset()
+                continue
+
+            # 4. 稳定检测（必须通过才能继续扫描）
+            if not self._is_shop_stable():
+                continue
+
+            # 5. 扫描并购买目标物品
+            targets = self._find_target_buy_buttons()
+            if targets:
+                item_type, buy_btn = targets[0]
+                logger.info(f'找到 {item_type}: area={buy_btn.area}')
+                self.device.click(buy_btn)
+
+                # 清除子状态机共用 assets 的 interval
+                self.interval_clear(BUY_CONFIRM)
+
+                # 进入子状态机处理购买确认
+                if self.handle_buy_confirm():
+                    if item_type == 'covenant':
+                        self.covenant_bought += 1
+                        self._covenant_purchased_this_round = True
+                        logger.info(f'购买圣约书签成功 (累计: {self.covenant_bought})')
+                    else:
+                        self.mystic_bought += 1
+                        self._mystic_purchased_this_round = True
+                        logger.info(f'购买神秘奖牌成功 (累计: {self.mystic_bought})')
+
                 timeout.reset()
-                scan_timer.reset()
                 continue
 
-            # 等待页面稳定后再扫描
-            if not scan_timer.reached():
+            # 6. 当前页面没有目标，尝试滚动
+            if not self._scrolled:
+                logger.info('向下滚动')
+                self.device.swipe(
+                    (self.SCROLL_AREA[0], self.SCROLL_AREA[1]),
+                    (self.SCROLL_AREA[2], self.SCROLL_AREA[3]),
+                    duration=(0.4, 0.6)
+                )
+                self._scrolled = True
+                self._reset_stable()  # 滚动后重置稳定计数
+                timeout.reset()
                 continue
 
-            # 查找并购买目标物品
-            if action_timer.reached():
-                targets = self._find_target_buy_buttons()
-
-                if targets:
-                    # 购买第一个找到的目标
-                    item_type, buy_btn = targets[0]
-                    logger.info(f'找到 {item_type}: area={buy_btn.area}, button={buy_btn.button}')
-                    self.device.click(buy_btn)
-
-                    # 等待确认弹窗
-                    if self._handle_buy_confirm():
-                        self._current_round_bought += 1
-                        if item_type == 'covenant':
-                            self.covenant_bought += 1
-                            self._covenant_purchased_this_round = True
-                            logger.info(f'购买圣约书签成功 (累计: {self.covenant_bought})')
-                        else:
-                            self.mystic_bought += 1
-                            self._mystic_purchased_this_round = True
-                            logger.info(f'购买神秘奖牌成功 (累计: {self.mystic_bought})')
-
-                    timeout.reset()
-                    action_timer.reset()
-                    continue
-
-                # 当前页面没有目标，尝试滚动
-                if not self._scrolled:
-                    self._scroll_down()
-                    timeout.reset()
-                    scan_timer.reset()
-                    continue
-
-                # 已滚动且没有目标，刷新商店
-                if self.appear_then_click(REFRESH, interval=0.5):
-                    self.refresh_count += 1
-                    logger.info(f'刷新商店 (累计: {self.refresh_count})')
-                    timeout.reset()
-                    scan_timer.reset()  # 等待刷新弹窗出现，避免扫描旧画面
-                    continue
+            # 7. 已滚动且没有目标，刷新商店
+            if self.appear_then_click(REFRESH, interval=2):
+                self.refresh_count += 1
+                logger.info(f'刷新商店 (累计: {self.refresh_count})')
+                self._reset_stable()  # 刷新后重置稳定计数
+                timeout.reset()
+                continue
 
         # 输出统计
         logger.hr('刷书签完成', level=1)

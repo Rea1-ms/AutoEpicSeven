@@ -27,6 +27,18 @@ BUY_CONFIRM = ButtonWrapper(
     ),
     global_en=None,
 )
+BUY_FOR_STABLE = ButtonWrapper(
+    name='BUY_FOR_STABLE',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/secret_shop/BUY_FOR_STABLE.png',
+        area=(1172, 659, 1212, 679),
+        search=(1172, 586, 1212, 679),
+        color=(136, 152, 139),
+        button=(1172, 659, 1212, 679),
+    ),
+    global_en=None,
+)
 COVENANT_BOOKMARK = ButtonWrapper(
     name='COVENANT_BOOKMARK',
     cn=None,
