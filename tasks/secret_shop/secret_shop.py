@@ -19,9 +19,9 @@ Pages:
     out: page_secret_shop
 """
 from module.base.button import ClickButton
-from module.base.base import ModuleBase
 from module.base.timer import Timer
 from module.logger import logger
+from tasks.base.popup import PopupHandler
 
 from tasks.secret_shop.assets.assets_secret_shop import (
     BUY_TOP,
@@ -38,7 +38,7 @@ from tasks.secret_shop.assets.assets_secret_shop import (
 )
 
 
-class SecretShop(ModuleBase):
+class SecretShop(PopupHandler):
     """
     秘密商店刷书签
 
@@ -48,7 +48,7 @@ class SecretShop(ModuleBase):
     """
 
     # 滚动参数
-    SCROLL_AREA = (960, 550, 960, 360)
+    SCROLL_AREA = (960, 550, 960, 300)
     # 稳定检测：连续 N 帧检测到固定位置 BUY 按钮才认为稳定
     STABLE_THRESHOLD = 2
 
@@ -238,6 +238,10 @@ class SecretShop(ModuleBase):
                     self._mystic_purchased_this_round = False
                     self._reset_stable()
                     timeout.reset()
+                continue
+
+            # 3.1 刷新完概率触发网络不稳定提示，处理后继续
+            if self.handle_network_error():
                 continue
 
             # 4. 稳定检测（必须通过才能继续扫描）

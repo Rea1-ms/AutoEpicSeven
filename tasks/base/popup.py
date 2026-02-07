@@ -231,3 +231,34 @@ class PopupHandler(ModuleBase):
                 return True
 
         return False
+
+    # E7
+    def handle_network_error(self, interval=5) -> bool:
+        """
+        Handle network error popups in Epic Seven.
+
+        Case 1: "与服务器的连接已中断" (Server connection lost)
+            -> Click retry -> Will redirect to login
+        Case 2: "网络连接异常" (Network connection abnormal)
+            -> Wait 3s -> Click retry -> Stay in place
+
+        Args:
+            interval:
+
+        Returns:
+            If handled.
+        """
+        # Case 1: Server connection lost
+        if self.appear(NETWORK_ERROR_DISCONNECT, interval=interval):
+            logger.warning('Network disconnected, clicking retry')
+            self.device.click(NETWORK_ERROR_RETRY)
+            return True
+
+        # Case 2: Network abnormal (need to wait before retry)
+        if self.appear(NETWORK_ERROR_ABNORMAL, interval=interval):
+            logger.warning('Network abnormal, waiting 3s before retry')
+            self.device.sleep(3)
+            self.device.click(NETWORK_ERROR_RETRY)
+            return True
+
+        return False
