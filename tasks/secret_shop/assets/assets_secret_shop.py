@@ -3,13 +3,25 @@ from module.base.button import Button, ButtonWrapper
 # This file was auto-generated, do not modify it manually. To generate:
 # ``` python -m dev_tools.button_extract ```
 
-BUY = ButtonWrapper(
-    name='BUY',
+BUY_BOTTOM = ButtonWrapper(
+    name='BUY_BOTTOM',
     cn=None,
     global_cn=Button(
-        file='./assets/global_cn/secret_shop/BUY.png',
+        file='./assets/global_cn/secret_shop/BUY_BOTTOM.png',
         area=(1172, 659, 1212, 679),
-        search=(1171, 151, 1212, 679),
+        search=(1172, 514, 1212, 679),
+        color=(136, 152, 139),
+        button=(1172, 659, 1212, 679),
+    ),
+    global_en=None,
+)
+BUY_BOTTOM_STABLE = ButtonWrapper(
+    name='BUY_BOTTOM_STABLE',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/secret_shop/BUY_BOTTOM_STABLE.png',
+        area=(1172, 659, 1212, 679),
+        search=(1152, 639, 1232, 699),
         color=(136, 152, 139),
         button=(1172, 659, 1212, 679),
     ),
@@ -27,37 +39,73 @@ BUY_CONFIRM = ButtonWrapper(
     ),
     global_en=None,
 )
-BUY_FOR_STABLE = ButtonWrapper(
-    name='BUY_FOR_STABLE',
+BUY_TOP = ButtonWrapper(
+    name='BUY_TOP',
     cn=None,
     global_cn=Button(
-        file='./assets/global_cn/secret_shop/BUY_FOR_STABLE.png',
-        area=(1172, 659, 1212, 679),
-        search=(1172, 586, 1212, 679),
+        file='./assets/global_cn/secret_shop/BUY_TOP.png',
+        area=(1172, 586, 1212, 606),
+        search=(1172, 151, 1212, 606),
         color=(136, 152, 139),
-        button=(1172, 659, 1212, 679),
+        button=(1172, 586, 1212, 606),
     ),
     global_en=None,
 )
-COVENANT_BOOKMARK = ButtonWrapper(
-    name='COVENANT_BOOKMARK',
+BUY_TOP_STABLE = ButtonWrapper(
+    name='BUY_TOP_STABLE',
     cn=None,
     global_cn=Button(
-        file='./assets/global_cn/secret_shop/COVENANT_BOOKMARK.png',
+        file='./assets/global_cn/secret_shop/BUY_TOP_STABLE.png',
+        area=(1172, 586, 1212, 606),
+        search=(1152, 566, 1232, 626),
+        color=(136, 152, 139),
+        button=(1172, 586, 1212, 606),
+    ),
+    global_en=None,
+)
+COVENANT_BOOKMARK_BOTTOM = ButtonWrapper(
+    name='COVENANT_BOOKMARK_BOTTOM',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/secret_shop/COVENANT_BOOKMARK_BOTTOM.png',
         area=(568, 252, 635, 313),
-        search=(568, 106, 635, 696),
+        search=(568, 469, 636, 676),
         color=(90, 84, 77),
         button=(568, 252, 635, 313),
     ),
     global_en=None,
 )
-MYSTIC_MEDAL = ButtonWrapper(
-    name='MYSTIC_MEDAL',
+COVENANT_BOOKMARK_TOP = ButtonWrapper(
+    name='COVENANT_BOOKMARK_TOP',
     cn=None,
     global_cn=Button(
-        file='./assets/global_cn/secret_shop/MYSTIC_MEDAL.png',
+        file='./assets/global_cn/secret_shop/COVENANT_BOOKMARK_TOP.png',
+        area=(568, 252, 635, 313),
+        search=(568, 106, 635, 609),
+        color=(90, 84, 77),
+        button=(568, 252, 635, 313),
+    ),
+    global_en=None,
+)
+MYSTIC_MEDAL_BOTTOM = ButtonWrapper(
+    name='MYSTIC_MEDAL_BOTTOM',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/secret_shop/MYSTIC_MEDAL_BOTTOM.png',
         area=(571, 473, 630, 529),
-        search=(568, 106, 635, 696),
+        search=(568, 469, 636, 676),
+        color=(105, 54, 47),
+        button=(571, 473, 630, 529),
+    ),
+    global_en=None,
+)
+MYSTIC_MEDAL_TOP = ButtonWrapper(
+    name='MYSTIC_MEDAL_TOP',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/secret_shop/MYSTIC_MEDAL_TOP.png',
+        area=(571, 473, 630, 529),
+        search=(568, 106, 635, 609),
         color=(105, 54, 47),
         button=(571, 473, 630, 529),
     ),

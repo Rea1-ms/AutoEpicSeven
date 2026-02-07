@@ -8,6 +8,12 @@
     - 滚动列表查看所有商品
     - 统计购买数量
 
+设计:
+    - 未滑动状态: 使用 *_TOP assets 扫描 1-4 行
+    - 滑动后状态: 使用 *_BOTTOM assets 扫描 5-6 行
+    - 稳定检测: BUY_TOP_STABLE (第4个) / BUY_BOTTOM_STABLE (第6个) 固定位置连续帧确认
+    - 不存在重复匹配问题: TOP 和 BOTTOM 搜索区域完全分离
+
 Pages:
     in: page_secret_shop
     out: page_secret_shop
@@ -18,11 +24,15 @@ from module.base.timer import Timer
 from module.logger import logger
 
 from tasks.secret_shop.assets.assets_secret_shop import (
-    BUY,
+    BUY_TOP,
+    BUY_TOP_STABLE,
+    BUY_BOTTOM,
+    BUY_BOTTOM_STABLE,
     BUY_CONFIRM,
-    BUY_FOR_STABLE,
-    COVENANT_BOOKMARK,
-    MYSTIC_MEDAL,
+    COVENANT_BOOKMARK_TOP,
+    COVENANT_BOOKMARK_BOTTOM,
+    MYSTIC_MEDAL_TOP,
+    MYSTIC_MEDAL_BOTTOM,
     REFRESH,
     REFRESH_CONFIRM,
 )
@@ -33,12 +43,13 @@ class SecretShop(ModuleBase):
     秘密商店刷书签
 
     使用 ALAS 标准状态循环模式。
-    稳定检测：使用 BUY_FOR_STABLE 检测底部区域的购买按钮，连续帧确认画面稳定。
+    分离 TOP/BOTTOM 区域，避免重复匹配和动画干扰。
+    使用 *_STABLE assets 固定位置检测画面稳定。
     """
 
     # 滚动参数
     SCROLL_AREA = (960, 550, 960, 360)
-    # 稳定检测：连续 N 帧检测到底部 BUY 按钮才认为稳定
+    # 稳定检测：连续 N 帧检测到固定位置 BUY 按钮才认为稳定
     STABLE_THRESHOLD = 2
 
     def __init__(self, config, device):
@@ -62,13 +73,18 @@ class SecretShop(ModuleBase):
         """
         检测商店画面是否稳定
 
-        使用 BUY_FOR_STABLE 检测底部区域的购买按钮。
+        使用固定位置的 *_STABLE assets:
+        - 未滑动: BUY_TOP_STABLE (第4个位置，search 范围小)
+        - 已滑动: BUY_BOTTOM_STABLE (第6个位置，search 范围小)
+
         连续 STABLE_THRESHOLD 帧检测到才认为稳定，避免动画中误判。
 
         Returns:
             bool: 画面是否稳定
         """
-        if self.appear(BUY_FOR_STABLE):
+        stable_asset = BUY_BOTTOM_STABLE if self._scrolled else BUY_TOP_STABLE
+
+        if self.appear(stable_asset):
             self._stable_count += 1
             if self._stable_count >= self.STABLE_THRESHOLD:
                 return True
@@ -77,12 +93,16 @@ class SecretShop(ModuleBase):
         return False
 
     def _reset_stable(self):
-        """重置稳定计数器，用于滚动/刷新后"""
+        """重置稳定计数器，用于滚动/刷新/购买后"""
         self._stable_count = 0
 
     def _find_target_buy_buttons(self) -> list[tuple[str, ClickButton]]:
         """
         查找当前页面中目标物品对应的购买按钮
+
+        根据 _scrolled 状态使用不同的 assets:
+        - 未滑动: *_TOP (1-4 行)
+        - 已滑动: *_BOTTOM (5-6 行)
 
         Returns:
             list[tuple[str, ClickButton]]: [(item_type, buy_button), ...]
@@ -90,18 +110,28 @@ class SecretShop(ModuleBase):
         image = self.device.image
         result = []
 
-        # 获取所有购买按钮
-        buy_buttons = BUY.match_multi_template(image)
+        # 根据滑动状态选择 assets
+        if self._scrolled:
+            buy_asset = BUY_BOTTOM
+            covenant_asset = COVENANT_BOOKMARK_BOTTOM
+            mystic_asset = MYSTIC_MEDAL_BOTTOM
+        else:
+            buy_asset = BUY_TOP
+            covenant_asset = COVENANT_BOOKMARK_TOP
+            mystic_asset = MYSTIC_MEDAL_TOP
+
+        # 获取当前区域的所有购买按钮
+        buy_buttons = buy_asset.match_multi_template(image)
         if not buy_buttons:
             return []
 
         # 查找目标物品（跳过本轮已购买的类型）
         targets = []
         if self.buy_covenant and not self._covenant_purchased_this_round:
-            for item in COVENANT_BOOKMARK.match_multi_template(image):
+            for item in covenant_asset.match_multi_template(image):
                 targets.append(('covenant', item))
         if self.buy_mystic and not self._mystic_purchased_this_round:
-            for item in MYSTIC_MEDAL.match_multi_template(image):
+            for item in mystic_asset.match_multi_template(image):
                 targets.append(('mystic', item))
 
         if not targets:
@@ -134,6 +164,7 @@ class SecretShop(ModuleBase):
             out: page_secret_shop
         """
         timeout = Timer(3, count=6).start()
+        clicked = False
 
         while 1:
             if skip_first_screenshot:
@@ -146,13 +177,14 @@ class SecretShop(ModuleBase):
                 logger.warning('购买确认超时')
                 return False
 
-            # 正面条件退出：看到 REFRESH 按钮 = 弹窗已关闭，回到商店
-            if self.appear(REFRESH):
-                return True
-
             # 点击确认购买
             if self.appear_then_click(BUY_CONFIRM, interval=2):
+                clicked = True
                 continue
+
+            # 正面条件退出：曾点击过确认，且确认按钮消失
+            if clicked and not self.appear(BUY_CONFIRM):
+                return True
 
         return False
 
@@ -163,7 +195,8 @@ class SecretShop(ModuleBase):
         使用 ALAS 标准状态循环模式：
         - 截图 -> 退出条件 -> 弹窗处理 -> 稳定检测 -> 扫描购买 -> 滚动 -> 刷新
         - 无 sleep 依赖
-        - 使用 BUY_FOR_STABLE 连续帧检测画面稳定
+        - 分离 TOP/BOTTOM 区域，避免重复匹配
+        - 使用 *_STABLE assets 固定位置检测稳定
 
         Pages:
             in: page_secret_shop
@@ -232,6 +265,8 @@ class SecretShop(ModuleBase):
                         self._mystic_purchased_this_round = True
                         logger.info(f'购买神秘奖牌成功 (累计: {self.mystic_bought})')
 
+                # 购买完成后画面变化，重置稳定检测
+                self._reset_stable()
                 timeout.reset()
                 continue
 
