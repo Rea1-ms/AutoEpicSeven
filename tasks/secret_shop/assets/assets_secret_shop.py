@@ -9,7 +9,7 @@ BUY_BOTTOM = ButtonWrapper(
     global_cn=Button(
         file='./assets/global_cn/secret_shop/BUY_BOTTOM.png',
         area=(1172, 659, 1212, 679),
-        search=(1172, 514, 1212, 679),
+        search=(1170, 513, 1214, 682),
         color=(136, 152, 139),
         button=(1172, 659, 1212, 679),
     ),
@@ -21,7 +21,7 @@ BUY_BOTTOM_STABLE = ButtonWrapper(
     global_cn=Button(
         file='./assets/global_cn/secret_shop/BUY_BOTTOM_STABLE.png',
         area=(1172, 659, 1212, 679),
-        search=(1152, 639, 1232, 699),
+        search=(1172, 659, 1212, 679),
         color=(136, 152, 139),
         button=(1172, 659, 1212, 679),
     ),
@@ -69,7 +69,7 @@ COVENANT_BOOKMARK_BOTTOM = ButtonWrapper(
     global_cn=Button(
         file='./assets/global_cn/secret_shop/COVENANT_BOOKMARK_BOTTOM.png',
         area=(568, 252, 635, 313),
-        search=(568, 469, 636, 676),
+        search=(561, 463, 643, 689),
         color=(90, 84, 77),
         button=(568, 252, 635, 313),
     ),
@@ -93,7 +93,7 @@ MYSTIC_MEDAL_BOTTOM = ButtonWrapper(
     global_cn=Button(
         file='./assets/global_cn/secret_shop/MYSTIC_MEDAL_BOTTOM.png',
         area=(571, 473, 630, 529),
-        search=(568, 469, 636, 676),
+        search=(561, 463, 643, 689),
         color=(105, 54, 47),
         button=(571, 473, 630, 529),
     ),

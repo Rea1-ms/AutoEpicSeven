@@ -86,9 +86,12 @@ class SecretShop(PopupHandler):
 
         if self.appear(stable_asset):
             self._stable_count += 1
+            logger.info(f'[Stable] scrolled={self._scrolled}, count={self._stable_count}/{self.STABLE_THRESHOLD}')
             if self._stable_count >= self.STABLE_THRESHOLD:
                 return True
         else:
+            if self._stable_count > 0:
+                logger.info(f'[Stable] 重置计数 (之前={self._stable_count})')
             self._stable_count = 0
         return False
 
@@ -122,16 +125,33 @@ class SecretShop(PopupHandler):
 
         # 获取当前区域的所有购买按钮
         buy_buttons = buy_asset.match_multi_template(image)
+
+        # Debug 日志
+        logger.info(f'[Scan] scrolled={self._scrolled}, buy_buttons={len(buy_buttons) if buy_buttons else 0}')
+        if buy_buttons:
+            for i, btn in enumerate(buy_buttons):
+                logger.info(f'[Scan]   buy[{i}]: Y={int((btn.area[1] + btn.area[3]) / 2)}')
+
         if not buy_buttons:
             return []
 
         # 查找目标物品（跳过本轮已购买的类型）
         targets = []
         if self.buy_covenant and not self._covenant_purchased_this_round:
-            for item in covenant_asset.match_multi_template(image):
+            covenant_matches = covenant_asset.match_multi_template(image)
+            if covenant_matches:
+                logger.info(f'[Scan] covenant_matches={len(covenant_matches)}')
+                for i, m in enumerate(covenant_matches):
+                    logger.info(f'[Scan]   covenant[{i}]: Y={int((m.area[1] + m.area[3]) / 2)}')
+            for item in covenant_matches:
                 targets.append(('covenant', item))
         if self.buy_mystic and not self._mystic_purchased_this_round:
-            for item in mystic_asset.match_multi_template(image):
+            mystic_matches = mystic_asset.match_multi_template(image)
+            if mystic_matches:
+                logger.info(f'[Scan] mystic_matches={len(mystic_matches)}')
+                for i, m in enumerate(mystic_matches):
+                    logger.info(f'[Scan]   mystic[{i}]: Y={int((m.area[1] + m.area[3]) / 2)}')
+            for item in mystic_matches:
                 targets.append(('mystic', item))
 
         if not targets:
