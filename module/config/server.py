@@ -5,26 +5,24 @@ Use 'import module.config.server as server' to import, don't use 'from xxx impor
 lang = 'cn'  # Setting default to cn, will avoid errors when using dev_tools
 server = 'CN-Official'
 
-VALID_LANG = ['cn', 'en']
+# 支持的语言/assets目录
+# cn = 国服简中
+# global_cn = 国际服简中
+# global_en = 国际服英文
+# 未来可扩展: global_jp, global_kr, global_tw 等
+VALID_LANG = ['cn', 'global_cn', 'global_en']
 VALID_SERVER = {
-    'CN-Official': 'com.miHoYo.hkrpg',
-    'CN-Bilibili': 'com.miHoYo.hkrpg.bilibili',
-    'OVERSEA-America': 'com.HoYoverse.hkrpgoversea',
-    'OVERSEA-Asia': 'com.HoYoverse.hkrpgoversea',
-    'OVERSEA-Europe': 'com.HoYoverse.hkrpgoversea',
-    'OVERSEA-TWHKMO': 'com.HoYoverse.hkrpgoversea',
+    'CN-Official': 'com.zlongame.cn.epicseven',
+    'OVERSEA-Play': 'com.stove.epic7.google',
 }
 VALID_PACKAGE = set(list(VALID_SERVER.values()))
-VALID_CLOUD_SERVER = {
-    'CN-Official': 'com.miHoYo.cloudgames.hkrpg',
-}
-VALID_CLOUD_PACKAGE = set(list(VALID_CLOUD_SERVER.values()))
+# Epic Seven doesn't have cloud gaming version
+VALID_CLOUD_SERVER = {}
+VALID_CLOUD_PACKAGE = set()
 
 DICT_PACKAGE_TO_ACTIVITY = {
-    'com.miHoYo.hkrpg': 'com.mihoyo.combosdk.ComboSDKActivity',
-    'com.miHoYo.hkrpg.bilibili': 'com.mihoyo.combosdk.ComboSDKActivity',
-    'com.HoYoverse.hkrpgoversea': 'com.mihoyo.combosdk.ComboSDKActivity',
-    'com.miHoYo.cloudgames.hkrpg': 'com.mihoyo.cloudgame.ui.SplashActivity',
+    'com.zlongame.cn.epicseven': 'kr.supercreative.epic7.AppActivity',
+    'com.stove.epic7.google': 'kr.supercreative.epic7.AppActivity',
 }
 
 
@@ -46,22 +44,8 @@ def set_lang(lang_: str):
 def to_server(package_or_server: str, before: str = '') -> str:
     """
     Convert package/server to server.
-    To unknown packages, consider they are a CN channel servers.
     """
-    if package_or_server == 'com.HoYoverse.hkrpgoversea':
-        # Can't distinguish different regions of oversea servers, but we try to reuse old value
-        if before in ['OVERSEA-Asia', 'OVERSEA-America', 'OVERSEA-Europe', 'OVERSEA-TWHKMO']:
-            return before
-        else:
-            # otherwise assume it's 'OVERSEA-Asia'
-            return 'OVERSEA-Asia'
-
     for key, value in VALID_SERVER.items():
-        if value == package_or_server:
-            return key
-        if key == package_or_server:
-            return key
-    for key, value in VALID_CLOUD_SERVER.items():
         if value == package_or_server:
             return key
         if key == package_or_server:
@@ -74,17 +58,10 @@ def to_package(package_or_server: str, is_cloud=False) -> str:
     """
     Convert package/server to package.
     """
-    if is_cloud:
-        for key, value in VALID_CLOUD_SERVER.items():
-            if value == package_or_server:
-                return value
-            if key == package_or_server:
-                return value
-    else:
-        for key, value in VALID_SERVER.items():
-            if value == package_or_server:
-                return value
-            if key == package_or_server:
-                return value
+    for key, value in VALID_SERVER.items():
+        if value == package_or_server:
+            return value
+        if key == package_or_server:
+            return value
 
     raise ValueError(f'Server invalid: {package_or_server}')
