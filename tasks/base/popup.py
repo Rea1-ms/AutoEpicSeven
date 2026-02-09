@@ -233,6 +233,25 @@ class PopupHandler(ModuleBase):
         return False
 
     # E7
+    def handle_touch_to_close(self, interval=2) -> bool:
+        """
+        Handle "Touch to close" popup in Epic Seven.
+
+        Common popup that appears in various situations:
+        - Game update notification
+        - Network errors
+        - Friendship points arrival
+
+        Args:
+            interval:
+
+        Returns:
+            If handled.
+        """
+        if self.appear_then_click(TOUCH_TO_CLOSE, interval=interval):
+            return True
+        return False
+
     def handle_network_error(self, interval=5) -> bool:
         """
         Handle network error popups in Epic Seven.
@@ -251,14 +270,14 @@ class PopupHandler(ModuleBase):
         # Case 1: Server connection lost
         if self.appear(NETWORK_ERROR_DISCONNECT, interval=interval):
             logger.warning('Network disconnected, clicking retry')
-            self.device.click(NETWORK_ERROR_RETRY)
+            self.device.click(TOUCH_TO_CLOSE)
             return True
 
         # Case 2: Network abnormal (need to wait before retry)
         if self.appear(NETWORK_ERROR_ABNORMAL, interval=interval):
             logger.warning('Network abnormal, waiting 3s before retry')
             self.device.sleep(3)
-            self.device.click(NETWORK_ERROR_RETRY)
+            self.device.click(TOUCH_TO_CLOSE)
             return True
 
         return False

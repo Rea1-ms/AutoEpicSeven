@@ -1,41 +1,77 @@
+"""
+Epic Seven 登录模块
+
+功能:
+    - 启动游戏并等待加载完成
+    - 处理登录错误（重试一次）
+    - 处理维护公告（OCR剩余时间，调整调度器）
+    - 处理热更新（等待下载完成）
+    - 处理版本更新（跳转 Google Play）
+    - 点击进入游戏
+
+流程:
+    启动游戏 → 等待5秒 → 轮询检测:
+      - LOGIN_ERROR → 重启一次，再出现则报错
+      - UNDER_MAINTENANCE → 关闭广告 → OCR时间 → 调度 → 退出
+      - GAME_UPGRADE_AVAILABLE → 跳转 Google Play → 更新 → 重启
+      - PATCH_APPLY → 等待热更新完成
+      - TOUCH_TO_CLOSE → 关闭各种公告弹窗
+      - LOGIN_LOADING → 等待中
+      - LOGIN_CONFIRM → 点击上方区域进入
+"""
 from module.base.timer import Timer
-from module.exception import GameNotRunningError
+from module.exception import GameNotRunningError, GameServerUnderMaintenance
 from module.logger import logger
-from tasks.base.assets.assets_base_page import CHARACTER_CHECK, CLOSE
-from tasks.base.page import page_main
-from tasks.combat.assets.assets_combat_interact import MAP_LOADING
-from tasks.login.agreement import AgreementHandler
-from tasks.login.assets.assets_login import *
-from tasks.login.assets.assets_login_popup import *
-from tasks.login.cloud import LoginAndroidCloud
-from tasks.login.uid import UIDHandler
-from tasks.rogue.blessing.ui import RogueUI
+from tasks.login.update import UpdateHandler
+from tasks.base.assets.assets_base_popup import TOUCH_TO_CLOSE
+from tasks.login.assets.assets_login import (
+    GAME_UPGRADE_AVAILABLE,
+    LOGIN_ERROR,
+    LOGIN_LOADING,
+    PATCH_APPLY,
+    LOGIN_CONFIRM,
+    UNDER_MAINTENANCE,
+)
+from tasks.login.assets.assets_login_maintenance import ADVERTISE_CLOSE
 
 
-class Login(LoginAndroidCloud, RogueUI, AgreementHandler, UIDHandler):
+class Login(UpdateHandler):
+    """
+    Epic Seven 登录处理
+
+    使用 ALAS 标准状态循环模式
+    继承 UpdateHandler 以支持 Google Play 更新
+    """
+
     def _handle_app_login(self):
         """
+        处理游戏启动到进入主界面的过程
+
         Pages:
-            in: Any page
-            out: page_main
+            in: 游戏启动中
+            out: 游戏主界面
 
         Raises:
-            GameStuckError:
-            GameTooManyClickError:
-            GameNotRunningError:
+            GameNotRunningError: 游戏未运行或启动失败
+            GameServerUnderMaintenance: 服务器维护中
         """
         logger.hr('App login')
+
+        # 计时器
         orientation_timer = Timer(5)
-        startup_timer = Timer(5).start()
-        app_timer = Timer(5).start()
+        startup_timer = Timer(5).start()  # 启动后等待5秒再开始检测
+        app_timer = Timer(5).start()  # 检查游戏是否存活
+        timeout = Timer(120, count=120).start()  # 总超时
+
+        # 状态
         start_success = False
-        start_timeout = Timer(30).start()
         login_success = False
-        first_map_loading = True
+        error_retried = False  # 是否已重试过一次
+
         self.device.stuck_record_clear()
 
         while 1:
-            # Watch if game alive
+            # 检查游戏是否存活
             if app_timer.reached():
                 if self.device.app_is_running():
                     start_success = True
@@ -44,8 +80,8 @@ class Login(LoginAndroidCloud, RogueUI, AgreementHandler, UIDHandler):
                         logger.error('Game died during launch')
                         raise GameNotRunningError('Game not running')
                     else:
-                        if start_timeout.reached():
-                            logger.error('Game not started after 30s')
+                        if timeout.reached():
+                            logger.error('Game not started after timeout')
                             raise GameNotRunningError('Game not running')
                 app_timer.reset()
             # Watch device rotation
@@ -56,99 +92,130 @@ class Login(LoginAndroidCloud, RogueUI, AgreementHandler, UIDHandler):
 
             self.device.screenshot()
 
-            # End
-            # Game client requires at least 5s to start
-            # The first few frames might be captured before app_stop(), ignore them
-            if startup_timer.reached():
-                if self.ui_page_appear(page_main):
-                    logger.info('Login to main confirm')
-                    break
+            # 总超时检查
+            if timeout.reached():
+                logger.error('Login timeout')
+                raise GameNotRunningError('Login timeout')
 
-            # Watch resource downloading and loading
-            if self.appear(LOGIN_LOADING, interval=5):
-                logger.info('Game resources downloading or loading')
-                self.device.stuck_record_clear()
-                app_timer.reset()
-                orientation_timer.reset()
-            # Watch map loading
-            if first_map_loading and self.appear(MAP_LOADING, similarity=0.75):
-                logger.info('Map loading')
-                # Reset stuck record after map loading to extend wait time on slow devices
-                self.device.stuck_record_clear()
-                first_map_loading = False
+            # 等待5秒后再开始检测
+            if not startup_timer.reached():
                 continue
 
-            # Error
-            # Unable to initialize Unity Engine
-            if self.match_template_luma(UNITY_ENGINE_ERROR):
-                logger.error('Unable to initialize Unity Engine')
-                self.device.app_stop()
-                raise GameNotRunningError('Unable to initialize Unity Engine')
-            # Login
-            if self.is_in_login_confirm(interval=5):
-                self.device.click(LOGIN_CONFIRM)
-                # Reset stuck record to extend wait time on slow devices
+            # === 优先检测错误状态 ===
+
+            # 登录错误
+            if self.appear(LOGIN_ERROR, interval=5):
+                if error_retried:
+                    logger.error('Login error appeared twice, stopping')
+                    self.device.app_stop()
+                    raise GameNotRunningError('Login error')
+                else:
+                    logger.warning('Login error, restarting game')
+                    error_retried = True
+                    self.device.app_stop()
+                    self.device.app_start()
+                    startup_timer.reset()
+                    timeout.reset()
+                    self.device.stuck_record_clear()
+                    continue
+
+            # 维护中
+            if self.appear(UNDER_MAINTENANCE, interval=5):
+                logger.warning('Server under maintenance')
+                self._handle_maintenance()
+                # _handle_maintenance 会抛出异常，不会执行到这里
+
+            # 版本更新（需要跳转 Google Play）
+            if self.appear(GAME_UPGRADE_AVAILABLE, interval=5):
+                logger.warning('Game update available')
+                self.device.click(TOUCH_TO_CLOSE)  # 点击跳转 Google Play
+                self._handle_google_play_update()
+                # 更新完成后重启游戏
+                self.app_restart()
+                return True
+
+            # === 更新和加载流程 ===
+
+            # 热更新下载中
+            if self.appear(PATCH_APPLY, interval=5):
+                logger.info('Patch downloading...')
+                self.device.stuck_record_clear()
+                timeout.reset()  # 下载可能耗时，重置超时
+                continue
+
+            # 加载中
+            if self.appear(LOGIN_LOADING, interval=5):
+                logger.info('Game loading...')
+                self.device.stuck_record_clear()
+                continue
+
+            # === 弹窗处理 ===
+
+            # 各种公告弹窗（活动公告等，注意要在 GAME_UPGRADE_AVAILABLE 之后检测）
+            if self.handle_touch_to_close():
+                self.device.stuck_record_clear()
+                continue
+
+            # === 正常进入游戏 ===
+
+            # 加载完成，可以进入游戏
+            if self.appear_then_click(LOGIN_CONFIRM, interval=2):
+                logger.info('Clicking to enter game')
                 self.device.stuck_record_clear()
                 login_success = True
-                continue
-            if self.handle_user_agreement():
-                continue
-            # Additional
-            if self.handle_popup_single():
-                continue
-            if self.handle_popup_confirm():
-                continue
-            if self.ui_additional():
-                continue
-            if self.handle_login_popup():
-                continue
-            if self.handle_blessing():
-                continue
+                # 点击后等待进入主界面
+                break
 
+        logger.info('Login completed')
         return True
 
-    def handle_account_confirm(self):
+    def _handle_maintenance(self):
         """
-        ACCOUNT_CONFIRM is not a multi-server assets as text language is not detected before log in.
-        It just detects all languages.
+        处理维护公告
 
-        ACCOUNT_CONFIRM doesn't appear in most times, sometimes game client won't auto login but requiring you to
-        click login even if there is only one account.
+        流程:
+            1. 关闭广告弹窗
+            2. OCR 剩余维护时间
+            3. 调整调度器
+            4. 退出游戏并抛出异常
 
-        Returns:
-            bool: If clicked
+        Raises:
+            GameServerUnderMaintenance: 服务器维护中
         """
-        if self.appear_then_click(ACCOUNT_CONFIRM):
-            return True
-        return False
+        logger.hr('Handle maintenance')
 
-    def handle_login_popup(self):
-        """
-        Returns:
-            bool: If clicked
-        """
-        # 3.7 ADVERTISE_Cyrene popup
-        if self.match_template_luma(ADVERTISE_Cyrene, interval=2):
-            logger.info(f'{ADVERTISE_Cyrene} -> {CLOSE}')
-            self.device.click(CLOSE)
-            return True
-        if self.match_template_luma(MAIL_Cyrene, interval=2):
-            self.device.click(MAIL_Cyrene)
-            return True
-        # 3.2 Castorice popup that advertise you go gacha, but no, close it
-        if self.handle_ui_close(ADVERTISE_Castorice, interval=2):
-            return True
-        # homecoming popup
-        if self.handle_ui_close(HOMECOMING_TITLE, interval=2):
-            return True
-        # Might enter page_character while clicking CLOSE
-        if self.handle_ui_close(CHARACTER_CHECK, interval=2):
-            return True
-        return False
+        # 等待广告弹窗出现并关闭
+        close_timeout = Timer(10).start()
+        while 1:
+            self.device.screenshot()
+
+            if close_timeout.reached():
+                logger.warning('Advertise close timeout, proceeding')
+                break
+
+            if self.appear_then_click(ADVERTISE_CLOSE, interval=2):
+                logger.info('Closed advertise popup')
+                break
+
+        # TODO: OCR 维护剩余时间
+        # 目前先设置一个固定的等待时间
+        maintenance_minutes = 60  # 默认等待60分钟
+
+        # 调整调度器
+        logger.info(f'Setting delay for {maintenance_minutes} minutes')
+        # self.config.task_delay(minute=maintenance_minutes)
+
+        # 退出游戏
+        self.device.app_stop()
+
+        raise GameServerUnderMaintenance(f'Server under maintenance, waiting {maintenance_minutes} minutes')
 
     def handle_app_login(self):
+        """
+        登录入口（带截图间隔调整）
+        """
         logger.info('handle_app_login')
-        self.device.screenshot_interval_set(1.0)
+        self.device.screenshot_interval_set(0.5)
         self.device.stuck_timer = Timer(300, count=300).start()
         try:
             self._handle_app_login()
@@ -157,30 +224,20 @@ class Login(LoginAndroidCloud, RogueUI, AgreementHandler, UIDHandler):
             self.device.stuck_timer = Timer(60, count=60).start()
 
     def app_stop(self):
+        """停止游戏"""
         logger.hr('App stop')
-        if self.config.is_cloud_game:
-            self.cloud_exit()
         self.device.app_stop()
 
     def app_start(self):
+        """启动游戏"""
         logger.hr('App start')
         self.device.app_start()
-
-        if self.config.is_cloud_game:
-            self.device.dump_hierarchy()
-            self.cloud_enter_game()
-        else:
-            self.handle_app_login()
+        self.handle_app_login()
 
     def app_restart(self):
+        """重启游戏"""
         logger.hr('App restart')
         self.device.app_stop()
         self.device.app_start()
+        self.handle_app_login()
 
-        if self.config.is_cloud_game:
-            self.device.dump_hierarchy()
-            self.cloud_enter_game()
-        else:
-            self.handle_app_login()
-
-        self.config.task_delay(server_update=True)
