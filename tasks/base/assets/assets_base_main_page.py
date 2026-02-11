@@ -3,33 +3,33 @@ from module.base.button import Button, ButtonWrapper
 # This file was auto-generated, do not modify it manually. To generate:
 # ``` python -m dev_tools.button_extract ```
 
-OCR_MAP_NAME = ButtonWrapper(
-    name='OCR_MAP_NAME',
+MENU = ButtonWrapper(
+    name='MENU',
     share=Button(
-        file='./assets/share/base/main_page/OCR_MAP_NAME.png',
-        area=(48, 15, 373, 32),
-        search=(28, 0, 393, 52),
-        color=(69, 72, 78),
-        button=(48, 15, 373, 32),
+        file='./assets/share/base/main_page/MENU.png',
+        area=(1242, 15, 1259, 32),
+        search=(1242, 15, 1259, 32),
+        color=(54, 103, 176),
+        button=(1242, 15, 1259, 32),
     ),
 )
-ROGUE_LEAVE_FOR_NOW = ButtonWrapper(
-    name='ROGUE_LEAVE_FOR_NOW',
+POPUP_OVERLAY = ButtonWrapper(
+    name='POPUP_OVERLAY',
     share=Button(
-        file='./assets/share/base/main_page/ROGUE_LEAVE_FOR_NOW.png',
-        area=(729, 475, 765, 519),
-        search=(709, 455, 785, 539),
-        color=(82, 74, 59),
-        button=(729, 475, 765, 519),
+        file='./assets/share/base/main_page/POPUP_OVERLAY.png',
+        area=(1242, 18, 1247, 30),
+        search=(1222, 0, 1267, 50),
+        color=(67, 133, 232),
+        button=(1242, 18, 1247, 30),
     ),
 )
-ROGUE_LEAVE_FOR_NOW_OE = ButtonWrapper(
-    name='ROGUE_LEAVE_FOR_NOW_OE',
+WHITE_STAR = ButtonWrapper(
+    name='WHITE_STAR',
     share=Button(
-        file='./assets/share/base/main_page/ROGUE_LEAVE_FOR_NOW_OE.png',
-        area=(730, 551, 760, 587),
-        search=(710, 531, 780, 607),
-        color=(63, 52, 40),
-        button=(730, 551, 760, 587),
+        file='./assets/share/base/main_page/WHITE_STAR.png',
+        area=(1252, 212, 1262, 221),
+        search=(1232, 192, 1280, 241),
+        color=(76, 77, 82),
+        button=(1252, 212, 1262, 221),
     ),
 )

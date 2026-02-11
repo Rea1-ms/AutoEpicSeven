@@ -4,18 +4,20 @@ from module.base.timer import Timer
 from module.exception import GameNotRunningError, GamePageUnknownError, HandledError
 from module.logger import logger
 from module.ocr.ocr import Ocr
-from tasks.base.assets.assets_base_main_page import ROGUE_LEAVE_FOR_NOW, ROGUE_LEAVE_FOR_NOW_OE
-from tasks.base.assets.assets_base_page import CLOSE, MAIN_GOTO_CHARACTER, MAP_EXIT, MAP_EXIT_OE
-from tasks.base.assets.assets_base_popup import POPUP_STORY_LATER
+from tasks.base.assets.assets_base_main_page import POPUP_OVERLAY, WHITE_STAR
+from tasks.base.assets.assets_base_page import CLOSE
+from tasks.base.assets.assets_base_popup import (
+    NEW_CHARACTER_VIDEO_PASS,
+    TOUCH_TO_CLOSE,
+)
 from tasks.base.main_page import MainPage
-from tasks.base.page import Page, page_gacha, page_main
-from tasks.combat.assets.assets_combat_finish import COMBAT_EXIT
-from tasks.combat.assets.assets_combat_interact import MAP_LOADING
-from tasks.combat.assets.assets_combat_prepare import COMBAT_PREPARE
-from tasks.daily.assets.assets_daily_trial import INFO_CLOSE, START_TRIAL
+from tasks.base.page import Page, page_main
 from tasks.login.assets.assets_login import LOGIN_CONFIRM
-from tasks.login.assets.assets_login_popup import CLAIM_CHARACTER
-from tasks.ornament.assets.assets_ornament_ui import DU_OE_SELECT_CHECK
+from tasks.login.assets.assets_login_popup import (
+    AD_BUFF_CLOSE,
+    CHECK_IN_CONFIRM,
+    NEW_CHARACTER_CONFIRM,
+)
 
 
 class UI(MainPage):
@@ -102,10 +104,6 @@ class UI(MainPage):
                 timeout.reset()
                 continue
             if self.handle_login_confirm():
-                continue
-            if self.appear(MAP_LOADING, similarity=0.75, interval=2):
-                logger.info('Map loading')
-                timeout.reset()
                 continue
 
             app_check()
@@ -312,22 +310,33 @@ class UI(MainPage):
                     continue
 
     def is_in_main(self, interval=0):
-        self.device.stuck_record_add(MAIN_GOTO_CHARACTER)
+        """
+        判断是否在主界面且无弹窗遮盖
 
-        if interval and not self.interval_is_reached(MAIN_GOTO_CHARACTER, interval=interval):
+        双重判断：
+        1. WHITE_STAR 模板匹配 → 确认在主页（只有主页有此元素）
+        2. POPUP_OVERLAY 颜色匹配 → 确认无弹窗遮罩（MENU纯色区域，遮罩时变暗）
+
+        Args:
+            interval:
+
+        Returns:
+            bool:
+        """
+        self.device.stuck_record_add(WHITE_STAR)
+
+        if interval and not self.interval_is_reached(WHITE_STAR, interval=interval):
             return False
 
         appear = False
-        if MAIN_GOTO_CHARACTER.match_template_luma(self.device.image):
-            if self.image_color_count(MAIN_GOTO_CHARACTER, color=(235, 235, 235), threshold=234, count=400):
+        # 1. 模板匹配：主界面标志存在
+        if WHITE_STAR.match_template_luma(self.device.image):
+            # 2. 颜色检测：MENU 区域颜色正常（无遮罩）
+            if POPUP_OVERLAY.match_color(self.device.image, threshold=30):
                 appear = True
-        if not appear:
-            if MAP_EXIT.match_template_luma(self.device.image):
-                if self.image_color_count(MAP_EXIT, color=(235, 235, 235), threshold=221, count=50):
-                    appear = True
 
         if appear and interval:
-            self.interval_reset(MAIN_GOTO_CHARACTER, interval=interval)
+            self.interval_reset(WHITE_STAR, interval=interval)
 
         return appear
 
@@ -341,25 +350,6 @@ class UI(MainPage):
 
         if appear and interval:
             self.interval_reset(LOGIN_CONFIRM, interval=interval)
-
-        return appear
-
-    def is_in_map_exit(self, interval=0):
-        self.device.stuck_record_add(MAP_EXIT)
-
-        if interval and not self.interval_is_reached(MAP_EXIT, interval=interval):
-            return False
-
-        appear = False
-        if MAP_EXIT.match_template_luma(self.device.image):
-            if self.image_color_count(MAP_EXIT, color=(235, 235, 235), threshold=221, count=50):
-                appear = True
-        if MAP_EXIT_OE.match_template_luma(self.device.image):
-            if self.image_color_count(MAP_EXIT_OE, color=(235, 235, 235), threshold=221, count=50):
-                appear = True
-
-        if appear and interval:
-            self.interval_reset(MAP_EXIT, interval=interval)
 
         return appear
 
@@ -380,37 +370,47 @@ class UI(MainPage):
     def ui_additional(self) -> bool:
         """
         Handle all possible popups during UI switching.
+        处理 UI 切换过程中所有可能的弹窗
+
+        E7 入场顺序：
+        1. 签到奖励（确认）
+        2. 新英雄入池（可选择跳过 - 确认）
+        3. Buff 广告
+        4. 捆绑礼包（轻触关闭）
 
         Returns:
             If handled any popup.
         """
-        if self.handle_reward():
+        # === E7 登录弹窗处理 ===
+
+        # 1. 签到奖励 - 点击确认
+        if self.appear_then_click(CHECK_IN_CONFIRM, interval=2):
+            logger.info('Closed check-in reward popup')
             return True
-        if self.handle_battle_pass_notification():
+
+        # 2. 新英雄入池 - 先尝试跳过视频，再点击确认
+        if self.appear_then_click(NEW_CHARACTER_VIDEO_PASS, interval=2):
+            logger.info('Skipped new character video')
             return True
-        if self.handle_monthly_card_reward():
+        if self.appear_then_click(NEW_CHARACTER_CONFIRM, interval=2):
+            logger.info('Closed new character popup')
             return True
-        if self.handle_get_light_cone():
+
+        # 3. Buff 广告 - 点击关闭
+        if self.appear_then_click(AD_BUFF_CLOSE, interval=2):
+            logger.info('Closed buff ad popup')
             return True
-        if self.handle_ui_close(COMBAT_PREPARE, interval=5):
+
+        # 4. 各种捆绑礼包/公告 - 轻触关闭
+        if self.handle_touch_to_close():
+            logger.info('Closed popup via touch to close')
             return True
-        # additional page when leaving ornament combat preparation
-        if self.handle_ui_back(DU_OE_SELECT_CHECK, interval=2):
-            return True
-        if self.appear_then_click(COMBAT_EXIT, interval=5):
-            return True
-        if self.appear_then_click(INFO_CLOSE, interval=5):
-            return True
-        # Popup story that advice you watch it, but no, later
-        if self.appear_then_click(POPUP_STORY_LATER, interval=5):
-            return True
-        # Get free character at login
-        if self.appear_then_click(CLAIM_CHARACTER, interval=2):
-            return True
-        if self.handle_get_character():
-            return True
-        if self.handle_forgotten_hall_buff():
-            return True
+
+        # === 通用弹窗处理 ===
+        # if self.handle_popup_single():
+        #     return True
+        # if self.handle_popup_confirm():
+        #     return True
 
         return False
 
@@ -464,53 +464,6 @@ class UI(MainPage):
 
     def ui_leave_special(self):
         """
-        Leave from:
-        - Rogue domains
-        - Character trials
-
-        Returns:
-            bool: If left a special plane
-
-        Pages:
-            in: Any
-            out: page_main
+        E7: 暂无特殊界面需要离开，预留接口
         """
-        if not self.is_in_map_exit():
-            return False
-
-        logger.info('UI leave special')
-        skip_first_screenshot = True
-        clicked = False
-        while 1:
-            if skip_first_screenshot:
-                skip_first_screenshot = False
-            else:
-                self.device.screenshot()
-
-            # End
-            if clicked:
-                if self.is_in_main():
-                    logger.info(f'Leave to {page_main}')
-                    break
-
-            if self.is_in_map_exit(interval=2):
-                self.device.click(MAP_EXIT)
-                continue
-            if self.handle_popup_confirm():
-                clicked = True
-                continue
-            if self.match_template_color(START_TRIAL, interval=2):
-                logger.info(f'{START_TRIAL} -> {CLOSE}')
-                self.device.click(CLOSE)
-                clicked = True
-                continue
-            if self.handle_ui_close(page_gacha.check_button, interval=2):
-                continue
-            if self.appear_then_click(ROGUE_LEAVE_FOR_NOW, interval=2):
-                clicked = True
-                continue
-            if self.appear_then_click(ROGUE_LEAVE_FOR_NOW_OE, interval=2):
-                clicked = True
-                continue
-            if self.handle_forgotten_hall_buff():
-                continue
+        return False
