@@ -54,13 +54,22 @@ NETWORK_ERROR_ABNORMAL = ButtonWrapper(
 NETWORK_ERROR_DISCONNECT = ButtonWrapper(
     name='NETWORK_ERROR_DISCONNECT',
     cn=None,
-    global_cn=Button(
-        file='./assets/global_cn/base/popup/NETWORK_ERROR_DISCONNECT.png',
-        area=(696, 311, 736, 332),
-        search=(676, 291, 756, 352),
-        color=(69, 75, 81),
-        button=(696, 311, 736, 332),
-    ),
+    global_cn=[
+        Button(
+            file='./assets/global_cn/base/popup/NETWORK_ERROR_DISCONNECT.png',
+            area=(696, 311, 736, 332),
+            search=(676, 291, 756, 352),
+            color=(69, 75, 81),
+            button=(696, 311, 736, 332),
+        ),
+        Button(
+            file='./assets/global_cn/base/popup/NETWORK_ERROR_DISCONNECT.2.png',
+            area=(676, 336, 735, 357),
+            search=(656, 316, 755, 377),
+            color=(66, 73, 82),
+            button=(676, 336, 735, 357),
+        ),
+    ],
     global_en=None,
 )
 NEW_CHARACTER_VIDEO_PASS = ButtonWrapper(
@@ -72,6 +81,30 @@ NEW_CHARACTER_VIDEO_PASS = ButtonWrapper(
         color=(88, 85, 85),
         button=(1187, 27, 1230, 48),
     ),
+)
+POPUP_CANCEL = ButtonWrapper(
+    name='POPUP_CANCEL',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/base/popup/POPUP_CANCEL.png',
+        area=(513, 450, 553, 470),
+        search=(493, 430, 573, 490),
+        color=(149, 141, 135),
+        button=(513, 450, 553, 470),
+    ),
+    global_en=None,
+)
+POPUP_CONFIRM = ButtonWrapper(
+    name='POPUP_CONFIRM',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/base/popup/POPUP_CONFIRM.png',
+        area=(728, 450, 768, 470),
+        search=(708, 430, 788, 490),
+        color=(120, 132, 149),
+        button=(728, 450, 768, 470),
+    ),
+    global_en=None,
 )
 POPUP_TITLE_TIP = ButtonWrapper(
     name='POPUP_TITLE_TIP',
@@ -87,13 +120,11 @@ POPUP_TITLE_TIP = ButtonWrapper(
 )
 TOUCH_TO_CLOSE = ButtonWrapper(
     name='TOUCH_TO_CLOSE',
-    cn=None,
-    global_cn=Button(
-        file='./assets/global_cn/base/popup/TOUCH_TO_CLOSE.png',
+    share=Button(
+        file='./assets/share/base/popup/TOUCH_TO_CLOSE.png',
         area=(628, 614, 651, 629),
         search=(622, 457, 657, 640),
         color=(65, 90, 125),
         button=(628, 614, 651, 629),
     ),
-    global_en=None,
 )

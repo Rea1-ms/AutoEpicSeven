@@ -8,10 +8,10 @@ AD_BUFF_CLOSE = ButtonWrapper(
     cn=None,
     global_cn=Button(
         file='./assets/global_cn/login/popup/AD_BUFF_CLOSE.png',
-        area=(731, 688, 832, 705),
+        area=(731, 690, 745, 704),
         search=(587, 685, 832, 705),
-        color=(44, 43, 44),
-        button=(731, 688, 832, 705),
+        color=(55, 54, 54),
+        button=(731, 690, 745, 704),
     ),
     global_en=None,
 )
