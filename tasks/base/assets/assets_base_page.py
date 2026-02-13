@@ -87,22 +87,15 @@ FORGOTTEN_HALL_CHECK = ButtonWrapper(
 )
 GACHA_CHECK = ButtonWrapper(
     name='GACHA_CHECK',
-    share=[
-        Button(
-            file='./assets/share/base/page/GACHA_CHECK.png',
-            area=(40, 20, 74, 54),
-            search=(20, 0, 94, 74),
-            color=(157, 139, 112),
-            button=(40, 20, 74, 54),
-        ),
-        Button(
-            file='./assets/share/base/page/GACHA_CHECK.2.png',
-            area=(41, 21, 74, 54),
-            search=(21, 1, 94, 74),
-            color=(188, 167, 142),
-            button=(41, 21, 74, 54),
-        ),
-    ],
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/base/page/GACHA_CHECK.png',
+        area=(68, 21, 118, 45),
+        search=(48, 1, 138, 65),
+        color=(133, 134, 143),
+        button=(68, 21, 118, 45),
+    ),
+    global_en=None,
 )
 GUIDE_CHECK = ButtonWrapper(
     name='GUIDE_CHECK',
@@ -175,13 +168,15 @@ MAIN_GOTO_EVENT = ButtonWrapper(
 )
 MAIN_GOTO_GACHA = ButtonWrapper(
     name='MAIN_GOTO_GACHA',
-    share=Button(
-        file='./assets/share/base/page/MAIN_GOTO_GACHA.png',
-        area=(929, 38, 957, 59),
-        search=(909, 18, 977, 79),
-        color=(161, 162, 163),
-        button=(929, 38, 957, 59),
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/base/page/MAIN_GOTO_GACHA.png',
+        area=(1212, 445, 1234, 460),
+        search=(1192, 425, 1254, 480),
+        color=(155, 155, 158),
+        button=(1212, 445, 1234, 460),
     ),
+    global_en=None,
 )
 MAIN_GOTO_GUIDE = ButtonWrapper(
     name='MAIN_GOTO_GUIDE',
