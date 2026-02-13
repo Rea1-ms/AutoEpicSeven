@@ -167,8 +167,8 @@ class UI(MainPage):
             # Additional
             if self.ui_additional():
                 continue
-            if self.handle_popup_single():
-                continue
+            # if self.handle_popup_single():
+            #     continue
             if self.handle_popup_confirm():
                 continue
             if self.handle_login_confirm():

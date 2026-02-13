@@ -75,6 +75,7 @@ class Login(UI):
         startup_timer = Timer(5).start()  # 启动后等待5秒再开始检测
         app_timer = Timer(5).start()  # 检查游戏是否存活
         timeout = Timer(120, count=120).start()  # 总超时
+        main_confirm = Timer(1.5, count=4).start()  # 主界面稳定确认，防止突然闪现的正常一帧
 
         # 状态
         start_success = False
@@ -118,8 +119,11 @@ class Login(UI):
             # 终止条件：到达主界面且无弹窗遮罩
             # ==========================================
             if self.is_in_main():
-                logger.info('Login to main confirm')
-                break
+                if main_confirm.reached():
+                    logger.info('Login to main confirm')
+                    break
+            else:
+                main_confirm.reset()
 
             # ==========================================
             # 错误状态（优先级最高）
@@ -138,6 +142,7 @@ class Login(UI):
                     self.device.app_start()
                     startup_timer.reset()
                     timeout.reset()
+                    main_confirm.reset()
                     self.device.stuck_record_clear()
                     continue
 
@@ -182,6 +187,7 @@ class Login(UI):
                 login_success = True
                 self.device.stuck_record_clear()
                 timeout.reset()
+                main_confirm.reset()
                 continue
 
             # ==========================================
@@ -191,11 +197,13 @@ class Login(UI):
 
             if self.ui_additional():
                 timeout.reset()
+                main_confirm.reset()
                 continue
 
             # 网络错误弹窗
             if self.handle_network_error():
                 timeout.reset()
+                main_confirm.reset()
                 continue
 
         logger.info('Login completed')
