@@ -20,18 +20,22 @@ from module.base.utils import save_image
 from module.logger import logger
 from tasks.base.page import page_gacha
 from tasks.base.ui import UI
-from tasks.gacha.assets import assets_gacha as gacha_assets
-
-GACHA_STANDARD_TAB = gacha_assets.GACHA_STANDARD_TAB
-SUMMON_TEN_FREE = gacha_assets.SUMMON_TEN_FREE
-SUMMON_ONE_FREE = gacha_assets.SUMMON_ONE_FREE
-SUMMON_NEW = gacha_assets.SUMMON_NEW
-SUMMON_SKIP = gacha_assets.SUMMON_SKIP
-SUMMON_RESULT_BACK = gacha_assets.SUMMON_RESULT_BACK
-SUMMON_FREE_CONTINUE = gacha_assets.SUMMON_FREE_CONTINUE
+from tasks.gacha.assets.assets_gacha import (
+    EPIC_BOOKMARK,
+    GACHA_STANDARD_TAB,
+    SUMMON_TEN_FREE,
+    SUMMON_ONE_FREE,
+    SUMMON_NEW,
+    SUMMON_SKIP,
+    SUMMON_RESULT_BACK,
+    SUMMON_FREE_CONTINUE,
+)
 
 # Optional asset (not collected yet)
-SUMMON_NEXT_PAGE = getattr(gacha_assets, "SUMMON_NEXT_PAGE", None)
+try:
+    from tasks.gacha.assets.assets_gacha import SUMMON_NEXT_PAGE
+except ImportError:
+    SUMMON_NEXT_PAGE = None
 
 
 class Gacha(UI):
@@ -46,6 +50,7 @@ class Gacha(UI):
         super().__init__(config, device=device, task=task)
         self._draw_count = 0
         self._draw_free = False
+        self._in_standard_pool = False
 
     def _save_result(self, tag="result"):
         now = datetime.now()
@@ -93,8 +98,12 @@ class Gacha(UI):
                 timeout.reset()
                 continue
 
-            if self.appear_then_click(GACHA_STANDARD_TAB, interval=2):
+            if self.appear(EPIC_BOOKMARK, interval=1, similarity=0.8):
+                self._in_standard_pool = True
                 return True
+
+            if self.appear_then_click(GACHA_STANDARD_TAB, interval=2):
+                continue
 
             if swipe_timer.reached():
                 self.device.swipe(self.TAB_SWIPE_START, self.TAB_SWIPE_END, duration=(0.25, 0.35))
@@ -104,6 +113,7 @@ class Gacha(UI):
     def _start_summon(self) -> bool:
         logger.info("Start summon")
         timeout = Timer(10, count=20).start()
+        no_free_timer = Timer(2, count=4).start()
         while 1:
             self.device.screenshot()
 
@@ -112,13 +122,25 @@ class Gacha(UI):
                 return False
 
             if self.ui_additional():
+                no_free_timer.reset()
                 continue
             if self.handle_network_error():
+                no_free_timer.reset()
                 continue
 
             if not self.ui_page_appear(page_gacha):
                 self.ui_goto(page_gacha)
                 timeout.reset()
+                no_free_timer.reset()
+                continue
+
+            if self.appear(EPIC_BOOKMARK, interval=1, similarity=0.8):
+                self._in_standard_pool = True
+
+            if not self._in_standard_pool:
+                if not self._select_standard_tab():
+                    return False
+                no_free_timer.reset()
                 continue
 
             if self.appear_then_click(SUMMON_TEN_FREE, interval=2, similarity=0.9):
@@ -130,6 +152,10 @@ class Gacha(UI):
                 self._draw_count = 1
                 self._draw_free = True
                 return True
+
+            if self._in_standard_pool and no_free_timer.reached():
+                logger.info("Free summon already used today, skip")
+                return False
 
     def _handle_summon_flow(self):
         logger.info("Summon flow")

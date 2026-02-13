@@ -3,6 +3,18 @@ from module.base.button import Button, ButtonWrapper
 # This file was auto-generated, do not modify it manually. To generate:
 # ``` python -m dev_tools.button_extract ```
 
+EPIC_BOOKMARK = ButtonWrapper(
+    name='EPIC_BOOKMARK',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/gacha/EPIC_BOOKMARK.png',
+        area=(722, 23, 736, 39),
+        search=(464, 20, 900, 43),
+        color=(123, 150, 136),
+        button=(722, 23, 736, 39),
+    ),
+    global_en=None,
+)
 GACHA_STANDARD_TAB = ButtonWrapper(
     name='GACHA_STANDARD_TAB',
     cn=None,
