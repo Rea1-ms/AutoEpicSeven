@@ -12,13 +12,8 @@ ENHANCE_CHECK = ButtonWrapper(
         color=(179, 180, 180),
         button=(1134, 645, 1185, 670),
     ),
-    en=Button(
-        file='./assets/en/relics/ui/ENHANCE_CHECK.png',
-        area=(1115, 646, 1204, 671),
-        search=(1095, 626, 1224, 691),
-        color=(183, 184, 184),
-        button=(1115, 646, 1204, 671),
-    ),
+    global_cn=None,
+    global_en=None,
 )
 ENHANCE_FILTER = ButtonWrapper(
     name='ENHANCE_FILTER',
@@ -49,13 +44,8 @@ FILTER_CONFIRM = ButtonWrapper(
         color=(180, 180, 180),
         button=(1103, 651, 1151, 677),
     ),
-    en=Button(
-        file='./assets/en/relics/ui/FILTER_CONFIRM.png',
-        area=(1081, 652, 1172, 677),
-        search=(1061, 632, 1192, 697),
-        color=(189, 189, 189),
-        button=(1081, 652, 1172, 677),
-    ),
+    global_cn=None,
+    global_en=None,
 )
 FILTER_RESET = ButtonWrapper(
     name='FILTER_RESET',
@@ -66,13 +56,8 @@ FILTER_RESET = ButtonWrapper(
         color=(160, 160, 160),
         button=(887, 652, 936, 675),
     ),
-    en=Button(
-        file='./assets/en/relics/ui/FILTER_RESET.png',
-        area=(879, 652, 946, 677),
-        search=(859, 632, 966, 697),
-        color=(185, 185, 185),
-        button=(879, 652, 946, 677),
-    ),
+    global_cn=None,
+    global_en=None,
 )
 SALVAGE_CHECK_OFF = ButtonWrapper(
     name='SALVAGE_CHECK_OFF',

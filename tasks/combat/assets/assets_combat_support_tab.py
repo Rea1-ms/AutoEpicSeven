@@ -21,22 +21,8 @@ FRIENDS_CHECK = ButtonWrapper(
             button=(119, 113, 154, 130),
         ),
     ],
-    en=[
-        Button(
-            file='./assets/en/combat/support_tab/FRIENDS_CHECK.png',
-            area=(103, 85, 159, 99),
-            search=(83, 65, 179, 119),
-            color=(159, 157, 159),
-            button=(103, 85, 159, 99),
-        ),
-        Button(
-            file='./assets/en/combat/support_tab/FRIENDS_CHECK.2.png',
-            area=(102, 114, 158, 129),
-            search=(82, 94, 178, 149),
-            color=(161, 160, 164),
-            button=(102, 114, 158, 129),
-        ),
-    ],
+    global_cn=None,
+    global_en=None,
 )
 FRIENDS_CLICK = ButtonWrapper(
     name='FRIENDS_CLICK',
@@ -56,22 +42,8 @@ FRIENDS_CLICK = ButtonWrapper(
             button=(119, 113, 154, 130),
         ),
     ],
-    en=[
-        Button(
-            file='./assets/en/combat/support_tab/FRIENDS_CLICK.png',
-            area=(103, 85, 159, 100),
-            search=(83, 65, 179, 120),
-            color=(121, 115, 111),
-            button=(103, 85, 159, 100),
-        ),
-        Button(
-            file='./assets/en/combat/support_tab/FRIENDS_CLICK.2.png',
-            area=(102, 114, 158, 129),
-            search=(82, 94, 178, 149),
-            color=(126, 127, 158),
-            button=(102, 114, 158, 129),
-        ),
-    ],
+    global_cn=None,
+    global_en=None,
 )
 STRANGER_CHECK = ButtonWrapper(
     name='STRANGER_CHECK',
@@ -91,22 +63,8 @@ STRANGER_CHECK = ButtonWrapper(
             button=(327, 113, 379, 130),
         ),
     ],
-    en=[
-        Button(
-            file='./assets/en/combat/support_tab/STRANGER_CHECK.png',
-            area=(311, 85, 388, 100),
-            search=(291, 65, 408, 120),
-            color=(163, 161, 163),
-            button=(311, 85, 388, 100),
-        ),
-        Button(
-            file='./assets/en/combat/support_tab/STRANGER_CHECK.2.png',
-            area=(307, 114, 384, 129),
-            search=(287, 94, 404, 149),
-            color=(163, 162, 163),
-            button=(307, 114, 384, 129),
-        ),
-    ],
+    global_cn=None,
+    global_en=None,
 )
 STRANGER_CLICK = ButtonWrapper(
     name='STRANGER_CLICK',
@@ -126,22 +84,8 @@ STRANGER_CLICK = ButtonWrapper(
             button=(327, 114, 379, 130),
         ),
     ],
-    en=[
-        Button(
-            file='./assets/en/combat/support_tab/STRANGER_CLICK.png',
-            area=(311, 85, 388, 100),
-            search=(291, 65, 408, 120),
-            color=(120, 113, 110),
-            button=(311, 85, 388, 100),
-        ),
-        Button(
-            file='./assets/en/combat/support_tab/STRANGER_CLICK.2.png',
-            area=(307, 114, 384, 129),
-            search=(287, 94, 404, 149),
-            color=(116, 114, 122),
-            button=(307, 114, 384, 129),
-        ),
-    ],
+    global_cn=None,
+    global_en=None,
 )
 SUPPORT_EMPTY = ButtonWrapper(
     name='SUPPORT_EMPTY',

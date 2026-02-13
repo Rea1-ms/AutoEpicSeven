@@ -12,13 +12,8 @@ CODE_CHECK = ButtonWrapper(
         color=(123, 122, 127),
         button=(603, 213, 651, 237),
     ),
-    en=Button(
-        file='./assets/en/freebies/code/CODE_CHECK.png',
-        area=(525, 214, 588, 236),
-        search=(505, 194, 608, 256),
-        color=(130, 129, 134),
-        button=(525, 214, 588, 236),
-    ),
+    global_cn=None,
+    global_en=None,
 )
 CODE_ENTER = ButtonWrapper(
     name='CODE_ENTER',
@@ -29,13 +24,8 @@ CODE_ENTER = ButtonWrapper(
         color=(140, 139, 140),
         button=(972, 228, 1010, 246),
     ),
-    en=Button(
-        file='./assets/en/freebies/code/CODE_ENTER.png',
-        area=(915, 228, 962, 245),
-        search=(865, 93, 1140, 318),
-        color=(146, 145, 147),
-        button=(915, 228, 962, 245),
-    ),
+    global_cn=None,
+    global_en=None,
 )
 CODE_INVALID = ButtonWrapper(
     name='CODE_INVALID',

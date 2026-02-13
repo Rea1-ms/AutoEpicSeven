@@ -12,13 +12,8 @@ COMBAT_PREPARE = ButtonWrapper(
         color=(141, 140, 141),
         button=(956, 640, 1224, 676),
     ),
-    en=Button(
-        file='./assets/en/combat/prepare/COMBAT_PREPARE.png',
-        area=(1043, 650, 1137, 666),
-        search=(836, 640, 1225, 677),
-        color=(153, 154, 155),
-        button=(956, 640, 1225, 676),
-    ),
+    global_cn=None,
+    global_en=None,
 )
 ENEMY_INFO_CHECK = ButtonWrapper(
     name='ENEMY_INFO_CHECK',
@@ -59,13 +54,8 @@ WAVE_CHECK = ButtonWrapper(
         color=(85, 86, 87),
         button=(986, 550, 1056, 566),
     ),
-    en=Button(
-        file='./assets/en/combat/prepare/WAVE_CHECK.png',
-        area=(975, 551, 1054, 565),
-        search=(955, 531, 1074, 585),
-        color=(76, 78, 79),
-        button=(975, 551, 1054, 565),
-    ),
+    global_cn=None,
+    global_en=None,
 )
 WAVE_CHECK_SEARCH = ButtonWrapper(
     name='WAVE_CHECK_SEARCH',

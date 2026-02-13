@@ -72,13 +72,8 @@ RECIPE_UNLOCK = ButtonWrapper(
         color=(167, 167, 167),
         button=(836, 647, 913, 668),
     ),
-    en=Button(
-        file='./assets/en/daily/synthesize_consumable/RECIPE_UNLOCK.png',
-        area=(803, 646, 944, 671),
-        search=(783, 626, 964, 691),
-        color=(197, 198, 200),
-        button=(803, 646, 944, 671),
-    ),
+    global_cn=None,
+    global_en=None,
 )
 SIMPLE_PROTECTIVE_GEAR = ButtonWrapper(
     name='SIMPLE_PROTECTIVE_GEAR',
@@ -109,13 +104,8 @@ SYNTHESIZE_CONFIRM = ButtonWrapper(
         color=(189, 190, 190),
         button=(847, 645, 895, 672),
     ),
-    en=Button(
-        file='./assets/en/daily/synthesize_consumable/SYNTHESIZE_CONFIRM.png',
-        area=(812, 645, 927, 673),
-        search=(792, 625, 947, 693),
-        color=(195, 196, 197),
-        button=(812, 645, 927, 673),
-    ),
+    global_cn=None,
+    global_en=None,
 )
 SYNTHESIZE_CONSUMABLES_CHECK = ButtonWrapper(
     name='SYNTHESIZE_CONSUMABLES_CHECK',

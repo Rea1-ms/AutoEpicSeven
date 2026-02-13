@@ -42,13 +42,8 @@ PROFILE = ButtonWrapper(
         color=(205, 206, 206),
         button=(890, 99, 1111, 131),
     ),
-    en=Button(
-        file='./assets/en/freebies/support_reward/PROFILE.png',
-        area=(907, 102, 1092, 132),
-        search=(887, 82, 1112, 152),
-        color=(190, 189, 189),
-        button=(907, 102, 1092, 132),
-    ),
+    global_cn=None,
+    global_en=None,
 )
 REWARD_POPUP = ButtonWrapper(
     name='REWARD_POPUP',
