@@ -28,6 +28,11 @@ v8_context_snapshot.bin
 snapshot_blob.bin
 vk_swiftshader_icd.json
 
+# AutoEpicSeven
+raw_assets/
+docs/
+conversation-*
+
 # Created by .ignore support plugin (hsz.mobi)
 
 ### JetBrains template
