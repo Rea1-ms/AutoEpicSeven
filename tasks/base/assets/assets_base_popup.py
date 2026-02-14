@@ -15,6 +15,16 @@ AD_CLOSE = ButtonWrapper(
     ),
     global_en=None,
 )
+ANNOUNCEMENT_DONOT_REMIND = ButtonWrapper(
+    name='ANNOUNCEMENT_DONOT_REMIND',
+    share=Button(
+        file='./assets/share/base/popup/ANNOUNCEMENT_DONOT_REMIND.png',
+        area=(1140, 629, 1170, 659),
+        search=(1120, 609, 1190, 679),
+        color=(182, 182, 182),
+        button=(1140, 629, 1170, 659),
+    ),
+)
 GET_CHARACTER = ButtonWrapper(
     name='GET_CHARACTER',
     cn=Button(

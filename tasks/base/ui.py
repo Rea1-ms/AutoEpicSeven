@@ -12,6 +12,7 @@ from tasks.base.assets.assets_base_popup import (
 )
 from tasks.base.main_page import MainPage
 from tasks.base.page import Page, page_main
+from tasks.base.popup import ANNOUNCEMENT_DONOT_REMIND
 from tasks.login.assets.assets_login import LOGIN_CONFIRM
 from tasks.login.assets.assets_login_popup import (
     AD_BUFF_CLOSE,
@@ -382,6 +383,11 @@ class UI(MainPage):
             If handled any popup.
         """
         # === E7 登录弹窗处理 ===
+
+        # 0. 新通知/情报 - 一日内不再提示
+        if self.appear_then_click(ANNOUNCEMENT_DONOT_REMIND, interval=2):
+            logger.info('Closed announcement today')
+            return True
 
         # 1. 签到奖励 - 点击确认
         if self.appear_then_click(CHECK_IN_CONFIRM, interval=2):
