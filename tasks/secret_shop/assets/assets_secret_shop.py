@@ -135,3 +135,13 @@ REFRESH_CONFIRM = ButtonWrapper(
     ),
     global_en=None,
 )
+SECRET_SHOP_CHECK = ButtonWrapper(
+    name='SECRET_SHOP_CHECK',
+    share=Button(
+        file='./assets/share/secret_shop/SECRET_SHOP_CHECK.png',
+        area=(342, 487, 372, 519),
+        search=(322, 467, 392, 539),
+        color=(79, 75, 74),
+        button=(342, 487, 372, 519),
+    ),
+)

@@ -5,7 +5,6 @@ from module.exception import GameNotRunningError, GamePageUnknownError, HandledE
 from module.logger import logger
 from module.ocr.ocr import Ocr
 from tasks.base.assets.assets_base_main_page import POPUP_OVERLAY, WHITE_STAR
-from tasks.base.assets.assets_base_page import CLOSE
 from tasks.base.assets.assets_base_popup import (
     NEW_CHARACTER_VIDEO_PASS,
     TOUCH_TO_CLOSE,

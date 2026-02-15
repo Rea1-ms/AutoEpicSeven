@@ -13,6 +13,16 @@ MENU = ButtonWrapper(
         button=(1242, 15, 1259, 32),
     ),
 )
+MENU_CLOSE = ButtonWrapper(
+    name='MENU_CLOSE',
+    share=Button(
+        file='./assets/share/base/main_page/MENU_CLOSE.png',
+        area=(1226, 18, 1255, 47),
+        search=(1206, 0, 1275, 67),
+        color=(55, 74, 105),
+        button=(1226, 18, 1255, 47),
+    ),
+)
 POPUP_OVERLAY = ButtonWrapper(
     name='POPUP_OVERLAY',
     share=Button(
