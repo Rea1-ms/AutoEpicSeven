@@ -259,6 +259,7 @@ class PopupHandler(ModuleBase):
         Case 1: "与服务器的连接已中断" (Server connection lost)
             -> Click retry -> Will redirect to login
         Case 2: "网络连接异常" (Network connection abnormal)
+        这里我为了偷懒，把 “设备时间异常” 作为同样逻辑处理了，反正都是需要踢回来到登录界面的
             -> Wait 3s -> Click retry -> Stay in place
 
         Args:
