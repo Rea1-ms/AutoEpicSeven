@@ -97,7 +97,7 @@ class UI(MainPage):
             if self.ui_additional():
                 timeout.reset()
                 continue
-            if self.handle_popup_single():
+            if self.handle_popup_cancel():
                 timeout.reset()
                 continue
             if self.handle_popup_confirm():
