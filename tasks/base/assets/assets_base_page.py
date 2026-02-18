@@ -15,6 +15,16 @@ ASSIGNMENT_CHECK = ButtonWrapper(
     global_cn=None,
     global_en=None,
 )
+BACK = ButtonWrapper(
+    name='BACK',
+    share=Button(
+        file='./assets/share/base/page/BACK.png',
+        area=(23, 14, 52, 51),
+        search=(3, 0, 72, 71),
+        color=(109, 111, 114),
+        button=(23, 14, 52, 51),
+    ),
+)
 GACHA_CHECK = ButtonWrapper(
     name='GACHA_CHECK',
     cn=None,
