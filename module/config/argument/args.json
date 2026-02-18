@@ -2102,7 +2102,7 @@
     "SecretShop": {
       "MaxRefresh": {
         "type": "input",
-        "value": 100
+        "value": 10
       },
       "BuyCovenantBookmark": {
         "type": "checkbox",

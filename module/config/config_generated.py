@@ -169,7 +169,7 @@ class GeneratedConfig:
     Sanctuary_RewardTier = 'A'  # A, B
 
     # Group `SecretShop`
-    SecretShop_MaxRefresh = 100
+    SecretShop_MaxRefresh = 10
     SecretShop_BuyCovenantBookmark = True
     SecretShop_BuyMysticMedal = True
 
