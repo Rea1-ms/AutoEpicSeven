@@ -54,6 +54,18 @@
       "name": "Freebies",
       "help": ""
     },
+    "Gacha": {
+      "name": "Invocación",
+      "help": ""
+    },
+    "Sanctuary": {
+      "name": "Santuario",
+      "help": ""
+    },
+    "SecretShop": {
+      "name": "Tienda Secreta",
+      "help": ""
+    },
     "Weekly": {
       "name": "Ecos de la guerra",
       "help": ""
@@ -115,11 +127,7 @@
       "help": "No es posible detectar regiones que no sean de China, por tanto, ajústalo manualmente si se da la situación.",
       "auto": "Detectar automaticamente",
       "CN-Official": "[CN]-Oficial",
-      "CN-Bilibili": "[CN]-Bilibili",
-      "OVERSEA-America": "[OVERSEA]-America",
-      "OVERSEA-Asia": "[OVERSEA]-Asia",
-      "OVERSEA-Europe": "[OVERSEA]-Europa",
-      "OVERSEA-TWHKMO": "[OVERSEA]-TW,HK,MO"
+      "OVERSEA-Play": "OVERSEA-Play"
     },
     "GameLanguage": {
       "name": "Idioma dentro del juego",
@@ -1220,6 +1228,58 @@
       "3": "3",
       "2": "2",
       "1": "1"
+    }
+  },
+  "Gacha": {
+    "_info": {
+      "name": "Ajustes de invocación",
+      "help": ""
+    },
+    "OnlyFree": {
+      "name": "Solo gratis",
+      "help": "Omitir si no hay invocaciones gratis"
+    }
+  },
+  "Sanctuary": {
+    "_info": {
+      "name": "Ajustes de santuario",
+      "help": ""
+    },
+    "Daily": {
+      "name": "Diario",
+      "help": ""
+    },
+    "Weekly": {
+      "name": "Semanal",
+      "help": ""
+    },
+    "Monthly": {
+      "name": "Mensual",
+      "help": ""
+    },
+    "RewardTier": {
+      "name": "Rango de recompensa",
+      "help": "",
+      "A": "A o superior",
+      "B": "B o superior"
+    }
+  },
+  "SecretShop": {
+    "_info": {
+      "name": "Ajustes de tienda secreta",
+      "help": ""
+    },
+    "MaxRefresh": {
+      "name": "Máx. refrescos",
+      "help": ""
+    },
+    "BuyCovenantBookmark": {
+      "name": "Comprar Marcadores del Pacto",
+      "help": ""
+    },
+    "BuyMysticMedal": {
+      "name": "Comprar Medallas Místicas",
+      "help": ""
     }
   },
   "Weekly": {

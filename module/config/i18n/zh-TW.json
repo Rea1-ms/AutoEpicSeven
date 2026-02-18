@@ -54,6 +54,18 @@
       "name": "免費獎勵",
       "help": ""
     },
+    "Gacha": {
+      "name": "召喚",
+      "help": ""
+    },
+    "Sanctuary": {
+      "name": "聖域",
+      "help": ""
+    },
+    "SecretShop": {
+      "name": "秘密商店",
+      "help": ""
+    },
     "Weekly": {
       "name": "歷戰餘響",
       "help": ""
@@ -115,11 +127,7 @@
       "help": "無法區分國際服的不同地區，請手動選擇伺服器",
       "auto": "自動檢測",
       "CN-Official": "[國服]-官服",
-      "CN-Bilibili": "[國服]-B服 ",
-      "OVERSEA-America": "[國際服]-美洲",
-      "OVERSEA-Asia": "[國際服]-亞洲",
-      "OVERSEA-Europe": "[國際服]-歐洲",
-      "OVERSEA-TWHKMO": "[國際服]-台港澳"
+      "OVERSEA-Play": "OVERSEA-Play"
     },
     "GameLanguage": {
       "name": "遊戲內文本語言",
@@ -1220,6 +1228,58 @@
       "3": "3",
       "2": "2",
       "1": "1"
+    }
+  },
+  "Gacha": {
+    "_info": {
+      "name": "召喚設定",
+      "help": ""
+    },
+    "OnlyFree": {
+      "name": "僅免費召喚",
+      "help": "沒有免費次數時跳過"
+    }
+  },
+  "Sanctuary": {
+    "_info": {
+      "name": "聖域設定",
+      "help": ""
+    },
+    "Daily": {
+      "name": "日常",
+      "help": ""
+    },
+    "Weekly": {
+      "name": "週常",
+      "help": ""
+    },
+    "Monthly": {
+      "name": "月常",
+      "help": ""
+    },
+    "RewardTier": {
+      "name": "入庫品質",
+      "help": "",
+      "A": "A及以上",
+      "B": "B及以上"
+    }
+  },
+  "SecretShop": {
+    "_info": {
+      "name": "秘密商店設定",
+      "help": ""
+    },
+    "MaxRefresh": {
+      "name": "最大刷新次數",
+      "help": ""
+    },
+    "BuyCovenantBookmark": {
+      "name": "購買聖約書籤",
+      "help": ""
+    },
+    "BuyMysticMedal": {
+      "name": "購買神秘獎牌",
+      "help": ""
     }
   },
   "Weekly": {

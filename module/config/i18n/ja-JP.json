@@ -54,6 +54,18 @@
       "name": "他ギフト",
       "help": ""
     },
+    "Gacha": {
+      "name": "しょうかん",
+      "help": ""
+    },
+    "Sanctuary": {
+      "name": "聖域",
+      "help": ""
+    },
+    "SecretShop": {
+      "name": "シークレットショップ",
+      "help": ""
+    },
     "Weekly": {
       "name": "Task.Weekly.name",
       "help": "Task.Weekly.help"
@@ -115,11 +127,7 @@
       "help": "Emulator.PackageName.help",
       "auto": "auto",
       "CN-Official": "CN-Official",
-      "CN-Bilibili": "CN-Bilibili",
-      "OVERSEA-America": "OVERSEA-America",
-      "OVERSEA-Asia": "OVERSEA-Asia",
-      "OVERSEA-Europe": "OVERSEA-Europe",
-      "OVERSEA-TWHKMO": "OVERSEA-TWHKMO"
+      "OVERSEA-Play": "OVERSEA-Play"
     },
     "GameLanguage": {
       "name": "Emulator.GameLanguage.name",
@@ -1220,6 +1228,58 @@
       "3": "3",
       "2": "2",
       "1": "1"
+    }
+  },
+  "Gacha": {
+    "_info": {
+      "name": "召喚設定",
+      "help": ""
+    },
+    "OnlyFree": {
+      "name": "無料のみ",
+      "help": ""
+    }
+  },
+  "Sanctuary": {
+    "_info": {
+      "name": "聖域設定",
+      "help": ""
+    },
+    "Daily": {
+      "name": "デイリー",
+      "help": ""
+    },
+    "Weekly": {
+      "name": "ウィークリー",
+      "help": ""
+    },
+    "Monthly": {
+      "name": "マンスリー",
+      "help": ""
+    },
+    "RewardTier": {
+      "name": "報酬ランク",
+      "help": "",
+      "A": "A以上",
+      "B": "B以上"
+    }
+  },
+  "SecretShop": {
+    "_info": {
+      "name": "秘密商店設定",
+      "help": ""
+    },
+    "MaxRefresh": {
+      "name": "最大更新回数",
+      "help": ""
+    },
+    "BuyCovenantBookmark": {
+      "name": "聖約の栞を購入",
+      "help": ""
+    },
+    "BuyMysticMedal": {
+      "name": "神秘メダルを購入",
+      "help": ""
     }
   },
   "Weekly": {

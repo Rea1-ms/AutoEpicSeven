@@ -54,6 +54,18 @@
       "name": "白嫖奖励",
       "help": ""
     },
+    "Gacha": {
+      "name": "召唤",
+      "help": ""
+    },
+    "Sanctuary": {
+      "name": "圣域",
+      "help": ""
+    },
+    "SecretShop": {
+      "name": "秘密商店",
+      "help": ""
+    },
     "Weekly": {
       "name": "历战余响",
       "help": ""
@@ -115,11 +127,7 @@
       "help": "无法区分国际服的不同地区，请手动选择服务器",
       "auto": "自动检测",
       "CN-Official": "[国服]-官服",
-      "CN-Bilibili": "[国服]-B服 ",
-      "OVERSEA-America": "[国际服]-美洲",
-      "OVERSEA-Asia": "[国际服]-亚洲",
-      "OVERSEA-Europe": "[国际服]-欧洲",
-      "OVERSEA-TWHKMO": "[国际服]-港澳台"
+      "OVERSEA-Play": "[国际服]-Play"
     },
     "GameLanguage": {
       "name": "游戏内文本语言",
@@ -1220,6 +1228,58 @@
       "3": "3",
       "2": "2",
       "1": "1"
+    }
+  },
+  "Gacha": {
+    "_info": {
+      "name": "召唤设置",
+      "help": ""
+    },
+    "OnlyFree": {
+      "name": "仅免费召唤",
+      "help": "没有免费次数时跳过"
+    }
+  },
+  "Sanctuary": {
+    "_info": {
+      "name": "圣域设置",
+      "help": ""
+    },
+    "Daily": {
+      "name": "日常",
+      "help": ""
+    },
+    "Weekly": {
+      "name": "周常",
+      "help": ""
+    },
+    "Monthly": {
+      "name": "月常",
+      "help": ""
+    },
+    "RewardTier": {
+      "name": "入库品质",
+      "help": "",
+      "A": "A及以上",
+      "B": "B及以上"
+    }
+  },
+  "SecretShop": {
+    "_info": {
+      "name": "秘密商店设置",
+      "help": ""
+    },
+    "MaxRefresh": {
+      "name": "最大刷新次数",
+      "help": ""
+    },
+    "BuyCovenantBookmark": {
+      "name": "购买圣约书签",
+      "help": ""
+    },
+    "BuyMysticMedal": {
+      "name": "购买神秘奖牌",
+      "help": ""
     }
   },
   "Weekly": {

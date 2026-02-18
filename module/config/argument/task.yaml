@@ -51,6 +51,15 @@ Daily:
     Freebies:
       - Scheduler
       - Freebies
+    Gacha:
+      - Scheduler
+      - Gacha
+    Sanctuary:
+      - Scheduler
+      - Sanctuary
+    SecretShop:
+      - Scheduler
+      - SecretShop
 
 # ==================== Weekly ====================
 

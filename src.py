@@ -60,6 +60,18 @@ class StarRailCopilot(AzurLaneAutoScript):
         from tasks.freebies.freebies import Freebies
         Freebies(config=self.config, device=self.device).run()
 
+    def gacha(self):
+        from tasks.gacha.gacha import Gacha
+        Gacha(config=self.config, device=self.device, task="Gacha").run()
+
+    def sanctuary(self):
+        from tasks.sanctuary.sanctuary import Sanctuary
+        Sanctuary(config=self.config, device=self.device, task="Sanctuary").run()
+
+    def secret_shop(self):
+        from tasks.secret_shop.secret_shop import SecretShop
+        SecretShop(config=self.config, device=self.device).run()
+
     def rogue(self):
         from tasks.rogue.rogue import Rogue
         Rogue(config=self.config, device=self.device).run()

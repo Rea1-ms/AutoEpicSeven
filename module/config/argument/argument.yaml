@@ -12,7 +12,7 @@ Scheduler:
   NextRun: 2020-01-01 00:00:00
   Command: Alas
   ServerUpdate:
-    value: 04:00
+    value: 02:00
     display: hide
 Emulator:
   Serial:
@@ -236,6 +236,24 @@ PlannerTarget:
     display: hide
     value: 6
     option: [ 6, 5, 4, 3, 2, 1 ]
+
+# ==================== Activity ====================
+
+Gacha:
+  OnlyFree: true
+
+Sanctuary:
+  Daily: true
+  Weekly: true
+  Monthly: true
+  RewardTier:
+    value: A
+    option: [ A, B ]
+
+SecretShop:
+  MaxRefresh: 10
+  BuyCovenantBookmark: true
+  BuyMysticMedal: true
 
 
 Weekly:

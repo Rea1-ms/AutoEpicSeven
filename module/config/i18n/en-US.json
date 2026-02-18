@@ -54,6 +54,18 @@
       "name": "Freebies",
       "help": ""
     },
+    "Gacha": {
+      "name": "Gacha",
+      "help": ""
+    },
+    "Sanctuary": {
+      "name": "Sanctuary",
+      "help": ""
+    },
+    "SecretShop": {
+      "name": "Secret Shop",
+      "help": ""
+    },
     "Weekly": {
       "name": "Echo of War",
       "help": ""
@@ -115,11 +127,7 @@
       "help": "Can't distinguish different regions of oversea servers, please select the server manually.",
       "auto": "Auto-detect",
       "CN-Official": "[CN]-Official",
-      "CN-Bilibili": "[CN]-Bilibili",
-      "OVERSEA-America": "[OVERSEA]-America",
-      "OVERSEA-Asia": "[OVERSEA]-Asia",
-      "OVERSEA-Europe": "[OVERSEA]-Europe",
-      "OVERSEA-TWHKMO": "[OVERSEA]-TW,HK,MO"
+      "OVERSEA-Play": "OVERSEA-Play"
     },
     "GameLanguage": {
       "name": "In-game Text Language",
@@ -1220,6 +1228,58 @@
       "3": "3",
       "2": "2",
       "1": "1"
+    }
+  },
+  "Gacha": {
+    "_info": {
+      "name": "Gacha Settings",
+      "help": ""
+    },
+    "OnlyFree": {
+      "name": "Free Only",
+      "help": "Skip when no free summons"
+    }
+  },
+  "Sanctuary": {
+    "_info": {
+      "name": "Sanctuary Settings",
+      "help": ""
+    },
+    "Daily": {
+      "name": "Daily",
+      "help": ""
+    },
+    "Weekly": {
+      "name": "Weekly",
+      "help": ""
+    },
+    "Monthly": {
+      "name": "Monthly",
+      "help": ""
+    },
+    "RewardTier": {
+      "name": "Reward Tier",
+      "help": "",
+      "A": "A or higher",
+      "B": "B or higher"
+    }
+  },
+  "SecretShop": {
+    "_info": {
+      "name": "Secret Shop Settings",
+      "help": ""
+    },
+    "MaxRefresh": {
+      "name": "Max Refresh",
+      "help": ""
+    },
+    "BuyCovenantBookmark": {
+      "name": "Buy Covenant Bookmarks",
+      "help": ""
+    },
+    "BuyMysticMedal": {
+      "name": "Buy Mystic Medals",
+      "help": ""
     }
   },
   "Weekly": {

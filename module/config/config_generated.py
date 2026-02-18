@@ -13,12 +13,12 @@ class GeneratedConfig:
     Scheduler_Enable = False  # True, False
     Scheduler_NextRun = datetime.datetime(2020, 1, 1, 0, 0)
     Scheduler_Command = 'Alas'
-    Scheduler_ServerUpdate = '04:00'
+    Scheduler_ServerUpdate = '02:00'
 
     # Group `Emulator`
     Emulator_Serial = 'auto'
     Emulator_GameClient = 'android'  # android, cloud_android
-    Emulator_PackageName = 'auto'  # auto, CN-Official, CN-Bilibili, OVERSEA-America, OVERSEA-Asia, OVERSEA-Europe, OVERSEA-TWHKMO
+    Emulator_PackageName = 'auto'  # auto, CN-Official, OVERSEA-Play
     Emulator_GameLanguage = 'auto'  # auto, cn, en
     Emulator_ScreenshotMethod = 'auto'  # auto, ADB, ADB_nc, uiautomator2, aScreenCap, aScreenCap_nc, DroidCast, DroidCast_raw, scrcpy, nemu_ipc, ldopengl
     Emulator_ControlMethod = 'MaaTouch'  # minitouch, MaaTouch
@@ -158,6 +158,20 @@ class GeneratedConfig:
     PlannerTarget_TalentLevel = 10  # 10, 9, 8, 7, 6, 5, 4, 3, 2, 1
     PlannerTarget_MemoSkillLevel = 6  # 6, 5, 4, 3, 2, 1
     PlannerTarget_MemoTalentLevel = 6  # 6, 5, 4, 3, 2, 1
+
+    # Group `Gacha`
+    Gacha_OnlyFree = True
+
+    # Group `Sanctuary`
+    Sanctuary_Daily = True
+    Sanctuary_Weekly = True
+    Sanctuary_Monthly = True
+    Sanctuary_RewardTier = 'A'  # A, B
+
+    # Group `SecretShop`
+    SecretShop_MaxRefresh = 100
+    SecretShop_BuyCovenantBookmark = True
+    SecretShop_BuyMysticMedal = True
 
     # Group `Weekly`
     Weekly_Name = 'Echo_of_War_Rusted_Crypt_of_the_Iron_Carcass'  # Echo_of_War_Rusted_Crypt_of_the_Iron_Carcass, Echo_of_War_Glance_of_Twilight, Echo_of_War_Inner_Beast_Battlefield, Echo_of_War_Salutations_of_Ashen_Dreams, Echo_of_War_Borehole_Planet_Past_Nightmares, Echo_of_War_Divine_Seed, Echo_of_War_End_of_the_Eternal_Freeze, Echo_of_War_Destruction_Beginning
