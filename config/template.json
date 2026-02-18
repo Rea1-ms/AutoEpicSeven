@@ -40,7 +40,7 @@
       "Enable": true,
       "NextRun": "2020-01-01 00:00:00",
       "Command": "Dungeon",
-      "ServerUpdate": "04:00"
+      "ServerUpdate": "02:00"
     },
     "Planner": {
       "PlannerOverall": {},
@@ -160,7 +160,7 @@
       "Enable": false,
       "NextRun": "2020-01-01 00:00:00",
       "Command": "Ornament",
-      "ServerUpdate": "04:00"
+      "ServerUpdate": "02:00"
     },
     "Ornament": {
       "Dungeon": "Divergent_Universe_Eternal_Comedy",
@@ -185,7 +185,7 @@
       "Enable": true,
       "NextRun": "2020-01-01 00:00:00",
       "Command": "DailyQuest",
-      "ServerUpdate": "04:00"
+      "ServerUpdate": "02:00"
     },
     "DailyStorage": {
       "DailyActivity": {},
@@ -197,7 +197,7 @@
       "Enable": true,
       "NextRun": "2020-01-01 00:00:00",
       "Command": "BattlePass",
-      "ServerUpdate": "04:00"
+      "ServerUpdate": "02:00"
     },
     "BattlePassStorage": {
       "BattlePassLevel": {},
@@ -217,7 +217,7 @@
       "Enable": true,
       "NextRun": "2020-01-01 00:00:00",
       "Command": "Assignment",
-      "ServerUpdate": "04:00"
+      "ServerUpdate": "02:00"
     },
     "Assignment": {
       "ClaimAll": true,
@@ -235,7 +235,7 @@
       "Enable": true,
       "NextRun": "2020-01-01 00:00:00",
       "Command": "DataUpdate",
-      "ServerUpdate": "04:00"
+      "ServerUpdate": "02:00"
     },
     "ItemStorage": {
       "Credit": {},
@@ -252,7 +252,7 @@
       "Enable": true,
       "NextRun": "2020-01-01 00:00:00",
       "Command": "Freebies",
-      "ServerUpdate": "04:00"
+      "ServerUpdate": "02:00"
     },
     "Freebies": {
       "SupportReward": true,
@@ -261,12 +261,50 @@
       "UsedCode": {}
     }
   },
+  "Gacha": {
+    "Scheduler": {
+      "Enable": false,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "Gacha",
+      "ServerUpdate": "02:00"
+    },
+    "Gacha": {
+      "OnlyFree": true
+    }
+  },
+  "Sanctuary": {
+    "Scheduler": {
+      "Enable": false,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "Sanctuary",
+      "ServerUpdate": "02:00"
+    },
+    "Sanctuary": {
+      "Daily": true,
+      "Weekly": true,
+      "Monthly": true,
+      "RewardTier": "A"
+    }
+  },
+  "SecretShop": {
+    "Scheduler": {
+      "Enable": false,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "SecretShop",
+      "ServerUpdate": "02:00"
+    },
+    "SecretShop": {
+      "MaxRefresh": 100,
+      "BuyCovenantBookmark": true,
+      "BuyMysticMedal": true
+    }
+  },
   "Weekly": {
     "Scheduler": {
       "Enable": false,
       "NextRun": "2020-01-01 00:00:00",
       "Command": "Weekly",
-      "ServerUpdate": "04:00"
+      "ServerUpdate": "02:00"
     },
     "Weekly": {
       "Name": "Echo_of_War_Rusted_Crypt_of_the_Iron_Carcass",
@@ -282,7 +320,7 @@
       "Enable": false,
       "NextRun": "2020-01-01 00:00:00",
       "Command": "Rogue",
-      "ServerUpdate": "04:00"
+      "ServerUpdate": "02:00"
     },
     "RogueWorld": {
       "World": "Simulated_Universe_World_8",
