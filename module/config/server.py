@@ -41,6 +41,26 @@ def set_lang(lang_: str):
     release_resources()
 
 
+def map_assets_lang(server_name: str, game_lang: str) -> str:
+    """
+    Map game language + server to assets language.
+
+    Args:
+        server_name: Server key in VALID_SERVER, such as 'CN-Official', 'OVERSEA-Play'
+        game_lang: Emulator_GameLanguage value, such as 'cn', 'en', 'auto'
+
+    Returns:
+        str: Assets language in VALID_LANG
+    """
+    if game_lang == 'auto' or not game_lang:
+        game_lang = 'cn'
+
+    if server_name.startswith('OVERSEA'):
+        return 'global_en' if game_lang == 'en' else 'global_cn'
+
+    return 'cn'
+
+
 def to_server(package_or_server: str, before: str = '') -> str:
     """
     Convert package/server to server.

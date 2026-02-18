@@ -20,11 +20,7 @@
         "option": [
           "auto",
           "CN-Official",
-          "CN-Bilibili",
-          "OVERSEA-America",
-          "OVERSEA-Asia",
-          "OVERSEA-Europe",
-          "OVERSEA-TWHKMO"
+          "OVERSEA-Play"
         ]
       },
       "GameLanguage": {
@@ -200,7 +196,7 @@
       },
       "ServerUpdate": {
         "type": "input",
-        "value": "04:00",
+        "value": "02:00",
         "display": "hide"
       }
     },
@@ -1393,7 +1389,7 @@
       },
       "ServerUpdate": {
         "type": "input",
-        "value": "04:00",
+        "value": "02:00",
         "display": "hide"
       }
     },
@@ -1601,7 +1597,7 @@
       },
       "ServerUpdate": {
         "type": "input",
-        "value": "04:00",
+        "value": "02:00",
         "display": "hide"
       }
     },
@@ -1646,7 +1642,7 @@
       },
       "ServerUpdate": {
         "type": "input",
-        "value": "04:00",
+        "value": "02:00",
         "display": "hide"
       }
     },
@@ -1739,7 +1735,7 @@
       },
       "ServerUpdate": {
         "type": "input",
-        "value": "04:00",
+        "value": "02:00",
         "display": "hide"
       }
     },
@@ -1906,7 +1902,7 @@
       },
       "ServerUpdate": {
         "type": "input",
-        "value": "04:00",
+        "value": "02:00",
         "display": "hide"
       }
     },
@@ -1971,7 +1967,7 @@
       },
       "ServerUpdate": {
         "type": "input",
-        "value": "04:00",
+        "value": "02:00",
         "display": "hide"
       }
     },
@@ -1992,6 +1988,129 @@
         "type": "dict",
         "value": {},
         "display": "hide"
+      }
+    }
+  },
+  "Gacha": {
+    "Scheduler": {
+      "Enable": {
+        "type": "checkbox",
+        "value": false,
+        "option": [
+          true,
+          false
+        ]
+      },
+      "NextRun": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime"
+      },
+      "Command": {
+        "type": "input",
+        "value": "Gacha",
+        "display": "hide"
+      },
+      "ServerUpdate": {
+        "type": "input",
+        "value": "02:00",
+        "display": "hide"
+      }
+    },
+    "Gacha": {
+      "OnlyFree": {
+        "type": "checkbox",
+        "value": true
+      }
+    }
+  },
+  "Sanctuary": {
+    "Scheduler": {
+      "Enable": {
+        "type": "checkbox",
+        "value": false,
+        "option": [
+          true,
+          false
+        ]
+      },
+      "NextRun": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime"
+      },
+      "Command": {
+        "type": "input",
+        "value": "Sanctuary",
+        "display": "hide"
+      },
+      "ServerUpdate": {
+        "type": "input",
+        "value": "02:00",
+        "display": "hide"
+      }
+    },
+    "Sanctuary": {
+      "Daily": {
+        "type": "checkbox",
+        "value": true
+      },
+      "Weekly": {
+        "type": "checkbox",
+        "value": true
+      },
+      "Monthly": {
+        "type": "checkbox",
+        "value": true
+      },
+      "RewardTier": {
+        "type": "select",
+        "value": "A",
+        "option": [
+          "A",
+          "B"
+        ]
+      }
+    }
+  },
+  "SecretShop": {
+    "Scheduler": {
+      "Enable": {
+        "type": "checkbox",
+        "value": false,
+        "option": [
+          true,
+          false
+        ]
+      },
+      "NextRun": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime"
+      },
+      "Command": {
+        "type": "input",
+        "value": "SecretShop",
+        "display": "hide"
+      },
+      "ServerUpdate": {
+        "type": "input",
+        "value": "02:00",
+        "display": "hide"
+      }
+    },
+    "SecretShop": {
+      "MaxRefresh": {
+        "type": "input",
+        "value": 100
+      },
+      "BuyCovenantBookmark": {
+        "type": "checkbox",
+        "value": true
+      },
+      "BuyMysticMedal": {
+        "type": "checkbox",
+        "value": true
       }
     }
   },
@@ -2017,7 +2136,7 @@
       },
       "ServerUpdate": {
         "type": "input",
-        "value": "04:00",
+        "value": "02:00",
         "display": "hide"
       }
     },
@@ -2173,7 +2292,7 @@
       },
       "ServerUpdate": {
         "type": "input",
-        "value": "04:00",
+        "value": "02:00",
         "display": "hide"
       }
     },

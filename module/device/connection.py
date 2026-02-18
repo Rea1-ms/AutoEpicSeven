@@ -132,7 +132,10 @@ class Connection(ConnectionAttr):
         logger.attr('Server', self.config.Emulator_PackageName)
         server_.server = self.config.Emulator_PackageName
         logger.attr('PackageName', self.package)
-        server_.lang = self.config.Emulator_GameLanguage
+        server_.lang = server_.map_assets_lang(
+            self.config.Emulator_PackageName,
+            self.config.Emulator_GameLanguage,
+        )
         logger.attr('Lang', self.config.LANG)
 
         self.check_mumu_app_keep_alive()
