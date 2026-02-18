@@ -22,6 +22,8 @@ from module.base.button import ClickButton
 from module.base.timer import Timer
 from module.logger import logger
 from tasks.base.popup import PopupHandler
+from tasks.base.page import page_secret_shop
+from tasks.base.ui import UI
 
 from tasks.secret_shop.assets.assets_secret_shop import (
     BUY_TOP,
@@ -59,7 +61,7 @@ class SecretShop(PopupHandler):
         self.mystic_bought = 0
         self.refresh_count = 0
         # 配置
-        self.max_refresh = getattr(config, 'SecretShop_MaxRefresh', 100)
+        self.max_refresh = getattr(config, 'SecretShop_MaxRefresh', 10)
         self.buy_covenant = getattr(config, 'SecretShop_BuyCovenantBookmark', True)
         self.buy_mystic = getattr(config, 'SecretShop_BuyMysticMedal', True)
         # 状态
@@ -222,6 +224,11 @@ class SecretShop(PopupHandler):
             in: page_secret_shop
             out: page_secret_shop
         """
+        if not self.device.app_is_running():
+            from tasks.login.login import Login
+            Login(self.config, device=self.device).app_start()
+
+        UI(self.config, device=self.device).ui_goto(page_secret_shop)
         logger.hr('秘密商店刷书签', level=1)
         logger.info(f'最大刷新次数: {self.max_refresh}')
         logger.info(f'购买圣约书签: {self.buy_covenant}')
@@ -320,6 +327,8 @@ class SecretShop(PopupHandler):
         logger.info(f'刷新次数: {self.refresh_count}')
         logger.info(f'圣约书签: {self.covenant_bought}')
         logger.info(f'神秘奖牌: {self.mystic_bought}')
+        self.config.task_delay(server_update=True)
+        return True
 
 
 # 保持向后兼容

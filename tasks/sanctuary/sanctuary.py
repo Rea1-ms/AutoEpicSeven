@@ -6,6 +6,7 @@ Epic Seven 圣域模块
     日常 / 周常 / 月常 分开进入与处理
 """
 from module.base.timer import Timer
+from module.config.utils import get_os_next_reset, get_server_next_monday_update, get_server_next_update
 from module.logger import logger
 from tasks.base.assets.assets_base_page import MAIN_GOTO_SANCTUARY, SANCTUARY_CHECK
 from tasks.base.ui import UI
@@ -138,6 +139,7 @@ class Sanctuary(UI):
         if not self._enter_daily():
             return False
         self._daily_claim_rewards()
+        self._back_to_sanctuary()
         return True
 
     # =========================
@@ -173,6 +175,7 @@ class Sanctuary(UI):
             return False
         # TODO: weekly OCR/logic
         logger.info("Weekly: TODO (OCR)")
+        self._back_to_sanctuary()
         return True
 
     # =========================
@@ -230,12 +233,15 @@ class Sanctuary(UI):
                 continue
 
             # Reward tier check
-            if self.appear(REWARDS_TIER_A, interval=1):
-                if self.appear_then_click(CUSTODY, interval=2):
-                    continue
-            elif self.appear(REWARDS_TIER_B, interval=1):
-                # Below threshold, skip custody
-                continue
+            tier = getattr(self.config, "Sanctuary_RewardTier", "A")
+            if tier == "A":
+                if self.appear(REWARDS_TIER_A, interval=1):
+                    if self.appear_then_click(CUSTODY, interval=2):
+                        continue
+            else:
+                if self.appear(REWARDS_TIER_A, interval=1) or self.appear(REWARDS_TIER_B, interval=1):
+                    if self.appear_then_click(CUSTODY, interval=2):
+                        continue
 
             if self.ui_additional():
                 timeout.reset()
@@ -255,14 +261,39 @@ class Sanctuary(UI):
             return False
 
         completed = self._monthly_purify()
+        self._back_to_sanctuary()
         return completed
 
     # Default entry
     def run(self) -> bool:
-        ok = self.run_daily()
-        if not ok:
-            return False
-        ok = self.run_weekly()
-        if not ok:
-            return False
-        return self.run_monthly()
+        if not self.device.app_is_running():
+            from tasks.login.login import Login
+            Login(self.config, device=self.device).app_start()
+
+        run_daily = getattr(self.config, "Sanctuary_Daily", True)
+        run_weekly = getattr(self.config, "Sanctuary_Weekly", True)
+        run_monthly = getattr(self.config, "Sanctuary_Monthly", True)
+
+        if not any([run_daily, run_weekly, run_monthly]):
+            logger.warning("Sanctuary: all sub tasks disabled")
+            self.config.task_delay(server_update=True)
+            return True
+
+        success = True
+        if run_daily:
+            success = self.run_daily() and success
+        if run_weekly:
+            success = self.run_weekly() and success
+        if run_monthly:
+            success = self.run_monthly() and success
+
+        targets = []
+        if run_daily:
+            targets.append(get_server_next_update(self.config.Scheduler_ServerUpdate))
+        if run_weekly:
+            targets.append(get_server_next_monday_update(self.config.Scheduler_ServerUpdate))
+        if run_monthly:
+            targets.append(get_os_next_reset())
+        if targets:
+            self.config.task_delay(target=targets)
+        return success

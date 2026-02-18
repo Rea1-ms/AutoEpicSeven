@@ -51,6 +51,7 @@ class Gacha(UI):
         self._draw_count = 0
         self._draw_free = False
         self._in_standard_pool = False
+        self._no_free = False
 
     def _save_result(self, tag="result"):
         now = datetime.now()
@@ -155,6 +156,7 @@ class Gacha(UI):
 
             if self._in_standard_pool and no_free_timer.reached():
                 logger.info("Free summon already used today, skip")
+                self._no_free = True
                 return False
 
     def _handle_summon_flow(self):
@@ -230,10 +232,20 @@ class Gacha(UI):
 
     def run(self):
         logger.hr("Gacha", level=1)
+        if not self.device.app_is_running():
+            from tasks.login.login import Login
+            Login(self.config, device=self.device).app_start()
+        self._no_free = False
         self._enter_gacha()
         if not self._select_standard_tab():
             return False
         if not self._start_summon():
+            if self._no_free:
+                self.ui_goto_main()
+                self.config.task_delay(server_update=True)
+                return True
             return False
         self._handle_summon_flow()
+        self.ui_goto_main()
+        self.config.task_delay(server_update=True)
         return True
