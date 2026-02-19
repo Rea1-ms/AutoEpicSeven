@@ -66,6 +66,10 @@
       "name": "秘密商店",
       "help": ""
     },
+    "Pets": {
+      "name": "寵物商店",
+      "help": ""
+    },
     "Weekly": {
       "name": "歷戰餘響",
       "help": ""

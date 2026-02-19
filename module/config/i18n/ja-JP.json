@@ -66,6 +66,10 @@
       "name": "シークレットショップ",
       "help": ""
     },
+    "Pets": {
+      "name": "ペットショップ",
+      "help": ""
+    },
     "Weekly": {
       "name": "Task.Weekly.name",
       "help": "Task.Weekly.help"

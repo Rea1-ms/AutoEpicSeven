@@ -99,6 +99,26 @@ MENU_GOTO_MAIN = ButtonWrapper(
         button=(1113, 575, 1141, 604),
     ),
 )
+MENU_GOTO_PETS = ButtonWrapper(
+    name='MENU_GOTO_PETS',
+    share=Button(
+        file='./assets/share/base/page/MENU_GOTO_PETS.png',
+        area=(1069, 243, 1087, 260),
+        search=(1049, 223, 1107, 280),
+        color=(154, 159, 164),
+        button=(1069, 243, 1087, 260),
+    ),
+)
+PETS_CHECK = ButtonWrapper(
+    name='PETS_CHECK',
+    share=Button(
+        file='./assets/share/base/page/PETS_CHECK.png',
+        area=(593, 652, 624, 682),
+        search=(573, 632, 644, 702),
+        color=(55, 57, 60),
+        button=(593, 652, 624, 682),
+    ),
+)
 SANCTUARY_CHECK = ButtonWrapper(
     name='SANCTUARY_CHECK',
     cn=None,

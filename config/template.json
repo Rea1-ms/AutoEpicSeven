@@ -299,6 +299,14 @@
       "BuyMysticMedal": true
     }
   },
+  "Pets": {
+    "Scheduler": {
+      "Enable": false,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "Pets",
+      "ServerUpdate": "02:00"
+    }
+  },
   "Weekly": {
     "Scheduler": {
       "Enable": false,

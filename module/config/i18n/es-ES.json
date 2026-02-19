@@ -66,6 +66,10 @@
       "name": "Tienda Secreta",
       "help": ""
     },
+    "Pets": {
+      "name": "Tienda de mascotas",
+      "help": ""
+    },
     "Weekly": {
       "name": "Ecos de la guerra",
       "help": ""

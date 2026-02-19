@@ -66,6 +66,10 @@
       "name": "Secret Shop",
       "help": ""
     },
+    "Pets": {
+      "name": "Pet Shop",
+      "help": ""
+    },
     "Weekly": {
       "name": "Echo of War",
       "help": ""

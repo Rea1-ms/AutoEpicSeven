@@ -113,6 +113,11 @@ page_secret_shop = Page(SECRET_SHOP_CHECK)
 page_secret_shop.link(MENU, destination=page_menu)
 page_main.link(MAIN_GOTO_SECRET_SHOP, destination=page_secret_shop)
 
+# Pets
+page_pets = Page(PETS_CHECK)
+page_pets.link(MENU, destination=page_menu)
+page_menu.link(MENU_GOTO_PETS, destination=page_pets)
+
 # # Battle Pass
 # page_battle_pass = Page(BATTLE_PASS_CHECK)
 # page_battle_pass.link(CLOSE, destination=page_main)
