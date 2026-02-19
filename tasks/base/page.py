@@ -3,6 +3,16 @@ import traceback
 from tasks.base.assets.assets_base_page import *
 from tasks.base.assets.assets_base_main_page import MENU, MENU_CLOSE, WHITE_STAR
 from tasks.secret_shop.assets.assets_secret_shop import SECRET_SHOP_CHECK
+from tasks.sanctuary.assets.assets_sanctuary import (
+    ALCHEMISTS_TOWER,
+    ALCHEMISTS_TOWER_CHECK,
+    HEART_OF_EULERBIS,
+    HEART_OF_EULERBIS_CHECK,
+    FOREST_OF_ELVES,
+)
+from tasks.sanctuary.assets.assets_sanctuary_forest_of_elves import (
+    ALTAR_OF_GROWTH,
+)
 
 
 class Page:
@@ -107,6 +117,19 @@ page_main.link(MAIN_GOTO_GACHA, destination=page_gacha)
 page_sanctuary = Page(SANCTUARY_CHECK)
 page_sanctuary.link(MENU, destination=page_menu)
 page_main.link(MAIN_GOTO_SANCTUARY, destination=page_sanctuary)
+
+# Sanctuary sub pages
+page_sanctuary_forest = Page(ALTAR_OF_GROWTH)
+page_sanctuary_forest.link(BACK, destination=page_sanctuary)
+page_sanctuary.link(FOREST_OF_ELVES, destination=page_sanctuary_forest)
+
+page_sanctuary_tower = Page(ALCHEMISTS_TOWER_CHECK)
+page_sanctuary_tower.link(BACK, destination=page_sanctuary)
+page_sanctuary.link(ALCHEMISTS_TOWER, destination=page_sanctuary_tower)
+
+page_sanctuary_heart = Page(HEART_OF_EULERBIS_CHECK)
+page_sanctuary_heart.link(BACK, destination=page_sanctuary)
+page_sanctuary.link(HEART_OF_EULERBIS, destination=page_sanctuary_heart)
 
 # Secret shop
 page_secret_shop = Page(SECRET_SHOP_CHECK)

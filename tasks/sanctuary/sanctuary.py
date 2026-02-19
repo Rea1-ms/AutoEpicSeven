@@ -8,7 +8,7 @@ Epic Seven 圣域模块
 from module.base.timer import Timer
 from module.config.utils import get_os_next_reset, get_server_next_monday_update, get_server_next_update
 from module.logger import logger
-from tasks.base.assets.assets_base_page import MAIN_GOTO_SANCTUARY, SANCTUARY_CHECK
+from tasks.base.page import page_sanctuary
 from tasks.base.ui import UI
 from tasks.sanctuary.assets.assets_sanctuary import (
     FOREST_OF_ELVES,
@@ -38,48 +38,16 @@ class Sanctuary(UI):
 
     def _enter_sanctuary(self) -> bool:
         logger.hr("Enter Sanctuary", level=1)
-        timeout = Timer(15, count=30).start()
-        while 1:
+        if not hasattr(self.device, "image") or self.device.image is None:
             self.device.screenshot()
-
-            if timeout.reached():
-                logger.warning("Enter sanctuary timeout")
-                return False
-
-            if self.appear(SANCTUARY_CHECK):
-                return True
-
-            if self.appear_then_click(MAIN_GOTO_SANCTUARY, interval=2):
-                continue
-
-            if self.ui_additional():
-                continue
-            if self.handle_network_error():
-                continue
+        self.ui_goto(page_sanctuary)
+        return True
 
     def _back_to_sanctuary(self) -> bool:
-        timeout = Timer(10, count=20).start()
-        while 1:
+        if not hasattr(self.device, "image") or self.device.image is None:
             self.device.screenshot()
-
-            if self.appear(SANCTUARY_CHECK):
-                return True
-
-            if timeout.reached():
-                logger.warning("Back to sanctuary timeout")
-                return False
-
-            if self.handle_ui_back(ALTAR_OF_GROWTH, interval=2):
-                continue
-            if self.handle_ui_back(ALCHEMISTS_TOWER_CHECK, interval=2):
-                continue
-            if self.handle_ui_back(HEART_OF_EULERBIS_CHECK, interval=2):
-                continue
-
-            if self.ui_additional():
-                continue
-            if self.handle_network_error():
-                continue
+        self.ui_goto(page_sanctuary)
+        return True
 
     # =========================
     # Daily
@@ -129,6 +97,11 @@ class Sanctuary(UI):
             if matches:
                 for btn in matches:
                     self.device.click(btn)
+                # 领取后常有弹窗，立刻处理一次
+                self.device.screenshot()
+                if self.handle_touch_to_close():
+                    timeout.reset()
+                    continue
                 timeout.reset()
                 continue
             break
