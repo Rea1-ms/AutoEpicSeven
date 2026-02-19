@@ -282,3 +282,14 @@ class PopupHandler(ModuleBase):
             return True
 
         return False
+
+    def handle_ad_buff_x_close(self, interval=2) -> bool:
+        """
+        Handle common ad/buff popup that has an "X" close button.
+
+        Returns:
+            If handled.
+        """
+        if self.appear_then_click(AD_BUFF_X_CLOSE, interval=interval):
+            return True
+        return False

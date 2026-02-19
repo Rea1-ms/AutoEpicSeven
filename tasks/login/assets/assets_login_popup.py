@@ -3,18 +3,6 @@ from module.base.button import Button, ButtonWrapper
 # This file was auto-generated, do not modify it manually. To generate:
 # ``` python -m dev_tools.button_extract ```
 
-AD_BUFF_CLOSE = ButtonWrapper(
-    name='AD_BUFF_CLOSE',
-    cn=None,
-    global_cn=Button(
-        file='./assets/global_cn/login/popup/AD_BUFF_CLOSE.png',
-        area=(731, 690, 745, 704),
-        search=(587, 685, 832, 705),
-        color=(55, 54, 54),
-        button=(731, 690, 745, 704),
-    ),
-    global_en=None,
-)
 CHECK_IN_CONFIRM = ButtonWrapper(
     name='CHECK_IN_CONFIRM',
     cn=None,

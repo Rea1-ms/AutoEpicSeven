@@ -14,7 +14,6 @@ from tasks.base.page import Page, page_main
 from tasks.base.popup import ANNOUNCEMENT_DONOT_REMIND
 from tasks.login.assets.assets_login import LOGIN_CONFIRM
 from tasks.login.assets.assets_login_popup import (
-    AD_BUFF_CLOSE,
     CHECK_IN_CONFIRM,
     NEW_CHARACTER_CONFIRM,
 )
@@ -402,7 +401,7 @@ class UI(MainPage):
             return True
 
         # 3. Buff 广告 - 点击关闭
-        if self.appear_then_click(AD_BUFF_CLOSE, interval=2):
+        if self.handle_ad_buff_x_close(interval=2):
             logger.info('Closed buff ad popup')
             return True
 

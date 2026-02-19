@@ -68,10 +68,10 @@ UNDER_MAINTENANCE = ButtonWrapper(
     cn=None,
     global_cn=Button(
         file='./assets/global_cn/login/UNDER_MAINTENANCE.png',
-        area=(602, 536, 661, 557),
-        search=(582, 516, 681, 577),
-        color=(88, 91, 96),
-        button=(602, 536, 661, 557),
+        area=(613, 601, 649, 612),
+        search=(593, 581, 669, 632),
+        color=(47, 36, 33),
+        button=(613, 601, 649, 612),
     ),
     global_en=None,
 )

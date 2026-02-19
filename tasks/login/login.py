@@ -14,7 +14,7 @@ Epic Seven 登录模块
     启动游戏 → 等待5秒 → 单循环轮询:
       终止条件: is_in_main() = True（主界面 + 无遮罩）
       - LOGIN_ERROR → 重启一次，再出现则报错
-      - UNDER_MAINTENANCE → 关闭广告 → 调度 → 退出
+      - 维护公告(ANNOUNCEMENT_CLOSE) → UNDER_MAINTENANCE → 调度 → 退出
       - GAME_UPGRADE_AVAILABLE → 跳转 Google Play → 更新 → 重启
       - PATCH_APPLY → 等待热更新完成
       - LOGIN_LOADING → 等待加载中
@@ -22,12 +22,17 @@ Epic Seven 登录模块
       - ui_additional() → 签到/新角色/buff/礼包等弹窗
       - handle_network_error() → 网络错误弹窗
 """
+from datetime import datetime, timedelta
+
 from module.base.timer import Timer
+from module.config.deep import deep_get
+from module.config.config import TaskEnd
 from module.exception import (
     GameNotRunningError,
     GameServerUnderMaintenance,
 )
 from module.logger import logger
+from module.ocr.ocr import Duration, OcrWhiteLetterOnComplexBackground
 from tasks.base.ui import UI
 from tasks.base.assets.assets_base_popup import TOUCH_TO_CLOSE
 from tasks.login.assets.assets_login import (
@@ -38,7 +43,10 @@ from tasks.login.assets.assets_login import (
     LOGIN_CONFIRM,
     UNDER_MAINTENANCE,
 )
-from tasks.login.assets.assets_login_maintenance import ANNOUNCEMENT_CLOSE
+from tasks.login.assets.assets_login_maintenance import (
+    ANNOUNCEMENT_CLOSE,
+    OCR_MAINTENANCE_TIME,
+)
 from tasks.login.update import UpdateHandler
 
 
@@ -49,6 +57,7 @@ class Login(UI):
     继承 UI 以使用 is_in_main() 和 ui_additional()
     单循环模式：从游戏启动到进入主界面一气呵成
     """
+    _maintenance_backup = None
 
     def _handle_app_login(self):
         """
@@ -146,6 +155,13 @@ class Login(UI):
                     self.device.stuck_record_clear()
                     continue
 
+            # 维护公告弹窗（先关掉再判断是否维护）
+            if self.appear_then_click(ANNOUNCEMENT_CLOSE, interval=2):
+                logger.info('Closed announce popup')
+                timeout.reset()
+                main_confirm.reset()
+                continue
+
             # 维护中
             if self.appear(UNDER_MAINTENANCE, interval=5):
                 logger.warning('Server under maintenance')
@@ -207,6 +223,9 @@ class Login(UI):
                 continue
 
         logger.info('Login completed')
+        if self._maintenance_backup is not None:
+            self._maintenance_backup.recover()
+            self._maintenance_backup = None
         return True
 
     def _handle_maintenance(self):
@@ -220,32 +239,83 @@ class Login(UI):
             4. 退出游戏并抛出异常
 
         Raises:
-            GameServerUnderMaintenance: 服务器维护中
+            TaskEnd: 维护中，结束当前任务
         """
+        # 尝试关闭公告弹窗（不知道会不会出现1个以上弹窗的情况）
+        if self.appear_then_click(ANNOUNCEMENT_CLOSE, interval=2):
+            logger.info('Closed advertise popup')
+
         logger.hr('Handle maintenance')
 
-        # 等待广告弹窗出现并关闭
-        close_timeout = Timer(10).start()
-        while 1:
-            self.device.screenshot()
-
-            if close_timeout.reached():
-                logger.warning('Advertise close timeout, proceeding')
-                break
-
-            if self.appear_then_click(ANNOUNCEMENT_CLOSE, interval=2):
-                logger.info('Closed advertise popup')
-                break
-
-        # TODO: OCR 维护剩余时间
-        maintenance_minutes = 60
+        maintenance_minutes = self._ocr_maintenance_minutes()
 
         logger.info(f'Setting delay for {maintenance_minutes} minutes')
-        # self.config.task_delay(minute=maintenance_minutes)
+        self._delay_tasks_during_maintenance(maintenance_minutes)
 
         self.device.app_stop()
 
-        raise GameServerUnderMaintenance(f'Server under maintenance, waiting {maintenance_minutes} minutes')
+        raise TaskEnd(f'Server under maintenance, waiting {maintenance_minutes} minutes')
+
+    def _ocr_maintenance_minutes(self) -> int:
+        """
+        OCR 维护剩余时间，失败则回退到 60 分钟
+        """
+        lang = self.config.Emulator_GameLanguage
+        if lang == 'auto' or not lang:
+            lang = 'cn'
+
+        ocr = OcrWhiteLetterOnComplexBackground(
+            OCR_MAINTENANCE_TIME, lang=lang, name='MaintenanceOCR'
+        )
+        duration = Duration(OCR_MAINTENANCE_TIME, lang=lang, name='MaintenanceDuration')
+        timeout = Timer(8, count=16).start()
+
+        while 1:
+            self.device.screenshot()
+
+            # 维护页有时先出现公告弹窗，先尝试关闭
+            if self.appear_then_click(ANNOUNCEMENT_CLOSE, interval=2):
+                continue
+
+            text = ocr.ocr_single_line(self.device.image)
+            td = duration.format_result(text)
+            if td.total_seconds() > 0:
+                minutes = max(1, int(td.total_seconds() // 60) + 1)
+                logger.info(f'Maintenance OCR: {text} -> {minutes} minutes')
+                return minutes
+
+            if timeout.reached():
+                break
+
+        logger.warning('Maintenance OCR failed, fallback 60 minutes')
+        return 60
+
+    def _delay_tasks_during_maintenance(self, minutes: int):
+        """
+        Delay all enabled tasks whose next_run is within maintenance window.
+        Re-schedule them sequentially starting from maintenance end.
+        """
+        now = datetime.now().replace(microsecond=0)
+        delta = timedelta(minutes=minutes)
+        limit = now + delta
+
+        tasks = []
+        for task_name, task_data in self.config.data.items():
+            enable = deep_get(task_data, keys='Scheduler.Enable', default=False)
+            next_run = deep_get(task_data, keys='Scheduler.NextRun', default=None)
+            if not enable or not isinstance(next_run, datetime):
+                continue
+            if next_run <= limit:
+                tasks.append((next_run, task_name))
+
+        tasks.sort(key=lambda item: item[0])
+        if tasks:
+            scheduled = limit
+            for _, task_name in tasks:
+                self.config.modified[f'{task_name}.Scheduler.NextRun'] = scheduled
+                scheduled = scheduled + timedelta(seconds=1)
+            logger.info(f'Maintenance delay: rescheduled {len(tasks)} tasks starting at {limit}')
+            self.config.update()
 
     def handle_app_login(self):
         """

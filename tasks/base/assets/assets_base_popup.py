@@ -3,6 +3,16 @@ from module.base.button import Button, ButtonWrapper
 # This file was auto-generated, do not modify it manually. To generate:
 # ``` python -m dev_tools.button_extract ```
 
+AD_BUFF_X_CLOSE = ButtonWrapper(
+    name='AD_BUFF_X_CLOSE',
+    share=Button(
+        file='./assets/share/base/popup/AD_BUFF_X_CLOSE.png',
+        area=(731, 690, 745, 704),
+        search=(587, 685, 832, 705),
+        color=(55, 54, 54),
+        button=(731, 690, 745, 704),
+    ),
+)
 AD_CLOSE = ButtonWrapper(
     name='AD_CLOSE',
     cn=None,

@@ -13,3 +13,13 @@ ANNOUNCEMENT_CLOSE = ButtonWrapper(
         button=(1221, 61, 1242, 82),
     ),
 )
+OCR_MAINTENANCE_TIME = ButtonWrapper(
+    name='OCR_MAINTENANCE_TIME',
+    share=Button(
+        file='./assets/share/login/maintenance/OCR_MAINTENANCE_TIME.png',
+        area=(585, 562, 678, 586),
+        search=(565, 542, 698, 606),
+        color=(44, 68, 34),
+        button=(585, 562, 678, 586),
+    ),
+)
