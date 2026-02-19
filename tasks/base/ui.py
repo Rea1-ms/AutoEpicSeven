@@ -4,13 +4,14 @@ from module.base.timer import Timer
 from module.exception import GameNotRunningError, GamePageUnknownError, HandledError
 from module.logger import logger
 from module.ocr.ocr import Ocr
+from tasks.base.assets.assets_base_page import MENU_PETS_GIFT
 from tasks.base.assets.assets_base_main_page import POPUP_OVERLAY, WHITE_STAR
 from tasks.base.assets.assets_base_popup import (
     NEW_CHARACTER_VIDEO_PASS,
     TOUCH_TO_CLOSE,
 )
 from tasks.base.main_page import MainPage
-from tasks.base.page import Page, page_main
+from tasks.base.page import Page, page_main, page_menu
 from tasks.base.popup import ANNOUNCEMENT_DONOT_REMIND
 from tasks.login.assets.assets_login import LOGIN_CONFIRM
 from tasks.login.assets.assets_login_popup import (
@@ -152,6 +153,10 @@ class UI(MainPage):
                     continue
                 if self.ui_page_appear(page, interval=5):
                     logger.info(f'Page switch: {page} -> {page.parent}')
+                    if page == page_menu:
+                        if self.handle_menu_pets_gift():
+                            clicked = True
+                            break
                     self.handle_lang_check(page)
                     if self.ui_page_confirm(page):
                         logger.info(f'Page arrive confirm {page}')
@@ -416,6 +421,15 @@ class UI(MainPage):
         # if self.handle_popup_confirm():
         #     return True
 
+        return False
+
+    def handle_menu_pets_gift(self, interval=0.5) -> bool:
+        """
+        Collect pets gift from menu if available.
+        """
+        if self.appear_then_click(MENU_PETS_GIFT, interval=interval):
+            logger.info('Collected pets gift from menu')
+            return True
         return False
 
     def _ui_button_confirm(

@@ -109,6 +109,16 @@ MENU_GOTO_PETS = ButtonWrapper(
         button=(1069, 243, 1087, 260),
     ),
 )
+MENU_PETS_GIFT = ButtonWrapper(
+    name='MENU_PETS_GIFT',
+    share=Button(
+        file='./assets/share/base/page/MENU_PETS_GIFT.png',
+        area=(1100, 207, 1134, 233),
+        search=(1080, 187, 1154, 253),
+        color=(174, 129, 109),
+        button=(1100, 207, 1134, 233),
+    ),
+)
 PETS_CHECK = ButtonWrapper(
     name='PETS_CHECK',
     share=Button(
