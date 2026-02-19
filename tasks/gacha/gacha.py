@@ -6,7 +6,7 @@ Epic Seven 召唤模块
     优先点击免费10抽，其次免费1抽
     抽卡流程:
         SUMMON_NEW -> 截图 + 点击去遮罩
-        SUMMON_NEXT_PAGE (若存在)
+        SUMMON_NEXT_PAGE
         SUMMON_SKIP
         SUMMON_RESULT_BACK + SUMMON_FREE_CONTINUE -> 截图 -> 点击继续
         SUMMON_RESULT_BACK -> 截图 -> 返回召唤页
@@ -27,15 +27,11 @@ from tasks.gacha.assets.assets_gacha import (
     SUMMON_ONE_FREE,
     SUMMON_NEW,
     SUMMON_SKIP,
+    SUMMON_NEXT_PAGE,
     SUMMON_RESULT_BACK,
     SUMMON_FREE_CONTINUE,
 )
 
-# Optional asset (not collected yet)
-try:
-    from tasks.gacha.assets.assets_gacha import SUMMON_NEXT_PAGE
-except ImportError:
-    SUMMON_NEXT_PAGE = None
 
 
 class Gacha(UI):
@@ -43,8 +39,8 @@ class Gacha(UI):
     召唤任务（常驻池）
     """
 
-    TAB_SWIPE_START = (1150, 600)
-    TAB_SWIPE_END = (1150, 300)
+    TAB_SWIPE_START = (105, 600)
+    TAB_SWIPE_END = (105, 300)
 
     def __init__(self, config, device=None, task=None):
         super().__init__(config, device=device, task=task)

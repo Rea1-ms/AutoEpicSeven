@@ -20,10 +20,10 @@ GACHA_STANDARD_TAB = ButtonWrapper(
     cn=None,
     global_cn=Button(
         file='./assets/global_cn/gacha/GACHA_STANDARD_TAB.png',
-        area=(1085, 485, 1126, 505),
-        search=(1065, 465, 1146, 525),
-        color=(94, 94, 94),
-        button=(1085, 485, 1126, 505),
+        area=(58, 430, 161, 458),
+        search=(13, 85, 202, 678),
+        color=(35, 139, 170),
+        button=(58, 430, 161, 458),
     ),
     global_en=None,
 )
@@ -51,15 +51,25 @@ SUMMON_NEW = ButtonWrapper(
     ),
     global_en=None,
 )
+SUMMON_NEXT_PAGE = ButtonWrapper(
+    name='SUMMON_NEXT_PAGE',
+    share=Button(
+        file='./assets/share/gacha/SUMMON_NEXT_PAGE.png',
+        area=(1222, 652, 1234, 672),
+        search=(1202, 632, 1254, 692),
+        color=(60, 117, 30),
+        button=(1222, 652, 1234, 672),
+    ),
+)
 SUMMON_ONE_FREE = ButtonWrapper(
     name='SUMMON_ONE_FREE',
     cn=None,
     global_cn=Button(
         file='./assets/global_cn/gacha/SUMMON_ONE_FREE.png',
-        area=(333, 649, 480, 670),
-        search=(313, 629, 500, 690),
-        color=(91, 107, 79),
-        button=(333, 649, 480, 670),
+        area=(809, 650, 849, 671),
+        search=(789, 630, 869, 691),
+        color=(108, 95, 45),
+        button=(809, 650, 849, 671),
     ),
     global_en=None,
 )
