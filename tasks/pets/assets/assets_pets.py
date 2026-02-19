@@ -45,6 +45,16 @@ ADOPTION_RESULT = ButtonWrapper(
         button=(502, 90, 522, 110),
     ),
 )
+OCR_PACK_FULL = ButtonWrapper(
+    name='OCR_PACK_FULL',
+    share=Button(
+        file='./assets/share/pets/OCR_PACK_FULL.png',
+        area=(1187, 82, 1261, 102),
+        search=(1167, 62, 1280, 122),
+        color=(53, 58, 66),
+        button=(1187, 82, 1261, 102),
+    ),
+)
 PETS_PACK_FULL = ButtonWrapper(
     name='PETS_PACK_FULL',
     cn=None,
