@@ -1273,6 +1273,10 @@
       "name": "Secret Shop Settings",
       "help": ""
     },
+    "OnlyFree": {
+      "name": "Free Only",
+      "help": "No refresh, no skystones"
+    },
     "MaxRefresh": {
       "name": "Max Refresh",
       "help": ""

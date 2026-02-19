@@ -1273,6 +1273,10 @@
       "name": "Ajustes de tienda secreta",
       "help": ""
     },
+    "OnlyFree": {
+      "name": "Solo gratis",
+      "help": "Sin refrescar"
+    },
     "MaxRefresh": {
       "name": "Máx. refrescos",
       "help": ""

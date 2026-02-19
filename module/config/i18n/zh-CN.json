@@ -1273,6 +1273,10 @@
       "name": "秘密商店设置",
       "help": ""
     },
+    "OnlyFree": {
+      "name": "纯白嫖",
+      "help": "不消耗钻石，不刷新"
+    },
     "MaxRefresh": {
       "name": "最大刷新次数",
       "help": ""

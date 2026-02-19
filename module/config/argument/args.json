@@ -2100,6 +2100,10 @@
       }
     },
     "SecretShop": {
+      "OnlyFree": {
+        "type": "checkbox",
+        "value": true
+      },
       "MaxRefresh": {
         "type": "input",
         "value": 10

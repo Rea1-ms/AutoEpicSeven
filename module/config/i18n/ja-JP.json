@@ -1273,6 +1273,10 @@
       "name": "秘密商店設定",
       "help": ""
     },
+    "OnlyFree": {
+      "name": "無料のみ",
+      "help": "更新しない"
+    },
     "MaxRefresh": {
       "name": "最大更新回数",
       "help": ""

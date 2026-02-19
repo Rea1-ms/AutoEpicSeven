@@ -251,6 +251,7 @@ Sanctuary:
     option: [ A, B ]
 
 SecretShop:
+  OnlyFree: true
   MaxRefresh: 10
   BuyCovenantBookmark: true
   BuyMysticMedal: true

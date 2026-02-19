@@ -294,6 +294,7 @@
       "ServerUpdate": "02:00"
     },
     "SecretShop": {
+      "OnlyFree": true,
       "MaxRefresh": 10,
       "BuyCovenantBookmark": true,
       "BuyMysticMedal": true

@@ -964,6 +964,8 @@ class ConfigUpdater:
             yield 'Rogue.RogueBlessing.CustomCurioFilter'
         if deep_get(data, 'Rogue.RogueWorld.WeeklyFarming', default=False) is False:
             yield 'Rogue.RogueWorld.SimulatedUniverseFarm'
+        if deep_get(data, 'SecretShop.SecretShop.OnlyFree', default=True) is True:
+            yield 'SecretShop.SecretShop.MaxRefresh'
 
     def get_hidden_args(self, data) -> t.Set[str]:
         """
