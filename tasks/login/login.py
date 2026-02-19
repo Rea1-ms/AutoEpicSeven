@@ -40,14 +40,22 @@ from tasks.login.assets.assets_login import (
     LOGIN_ERROR,
     LOGIN_LOADING,
     PATCH_APPLY,
+    PATCH_PERCENT_SIGN,
     LOGIN_CONFIRM,
     UNDER_MAINTENANCE,
+    VERIFYING
 )
 from tasks.login.assets.assets_login_maintenance import (
     ANNOUNCEMENT_CLOSE,
     OCR_MAINTENANCE_TIME,
 )
 from tasks.login.update import UpdateHandler
+
+# Optional asset: "Connecting..." text during patch download
+try:
+    from tasks.login.assets.assets_login import PATCH_CONNECTING
+except ImportError:
+    PATCH_CONNECTING = None
 
 
 class Login(UI):
@@ -181,15 +189,22 @@ class Login(UI):
             # ==========================================
 
             # 热更新下载中
-            # TODO: 需要扩充 下载更新时候 "连接中" 的识别范围 且 是否与之前的一致
-            if self.appear(PATCH_APPLY, interval=5):
+            # 开始下载
+            if self.appear_then_click(PATCH_APPLY, interval=3):
+                logger.info('Patch start...')
+                timeout.reset()
+                continue
+
+            # 下载中
+            if self.appear(PATCH_PERCENT_SIGN, interval=3) \
+                    or (PATCH_CONNECTING and self.appear(PATCH_CONNECTING, interval=3)):
                 logger.info('Patch downloading...')
-                self.device.stuck_record_clear()
                 timeout.reset()
                 continue
 
             # 加载中
-            if self.appear(LOGIN_LOADING, interval=5):
+            if self.appear(LOGIN_LOADING, interval=5)\
+                    or self.appear(VERIFYING, interval=5):
                 logger.info('Game loading...')
                 self.device.stuck_record_clear()
                 continue

@@ -42,13 +42,22 @@ LOGIN_ERROR = ButtonWrapper(
 LOGIN_LOADING = ButtonWrapper(
     name='LOGIN_LOADING',
     cn=None,
-    global_cn=Button(
-        file='./assets/global_cn/login/LOGIN_LOADING.png',
-        area=(595, 637, 649, 656),
-        search=(575, 617, 669, 676),
-        color=(188, 155, 174),
-        button=(595, 637, 649, 656),
-    ),
+    global_cn=[
+        Button(
+            file='./assets/global_cn/login/LOGIN_LOADING.png',
+            area=(595, 637, 649, 656),
+            search=(575, 617, 669, 676),
+            color=(188, 155, 174),
+            button=(595, 637, 649, 656),
+        ),
+        Button(
+            file='./assets/global_cn/login/LOGIN_LOADING.2.png',
+            area=(1000, 638, 1050, 656),
+            search=(980, 618, 1070, 676),
+            color=(138, 143, 149),
+            button=(1000, 638, 1050, 656),
+        ),
+    ],
     global_en=None,
 )
 PATCH_APPLY = ButtonWrapper(
@@ -63,6 +72,16 @@ PATCH_APPLY = ButtonWrapper(
     ),
     global_en=None,
 )
+PATCH_PERCENT_SIGN = ButtonWrapper(
+    name='PATCH_PERCENT_SIGN',
+    share=Button(
+        file='./assets/share/login/PATCH_PERCENT_SIGN.png',
+        area=(1063, 640, 1079, 655),
+        search=(1043, 620, 1099, 675),
+        color=(82, 82, 82),
+        button=(1063, 640, 1079, 655),
+    ),
+)
 UNDER_MAINTENANCE = ButtonWrapper(
     name='UNDER_MAINTENANCE',
     cn=None,
@@ -72,6 +91,18 @@ UNDER_MAINTENANCE = ButtonWrapper(
         search=(593, 581, 669, 632),
         color=(47, 36, 33),
         button=(613, 601, 649, 612),
+    ),
+    global_en=None,
+)
+VERIFYING = ButtonWrapper(
+    name='VERIFYING',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/login/VERIFYING.png',
+        area=(596, 639, 669, 656),
+        search=(576, 619, 689, 676),
+        color=(101, 144, 177),
+        button=(596, 639, 669, 656),
     ),
     global_en=None,
 )
