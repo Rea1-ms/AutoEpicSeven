@@ -31,7 +31,7 @@ BUY_CONFIRM = ButtonWrapper(
     global_cn=Button(
         file='./assets/global_cn/store/BUY_CONFIRM.png',
         area=(816, 579, 854, 599),
-        search=(796, 559, 874, 619),
+        search=(790, 495, 862, 606),
         color=(134, 150, 136),
         button=(816, 579, 854, 599),
     ),
