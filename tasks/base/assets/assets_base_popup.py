@@ -145,7 +145,7 @@ POPUP_CANCEL = ButtonWrapper(
     global_cn=Button(
         file='./assets/global_cn/base/popup/POPUP_CANCEL.png',
         area=(513, 450, 553, 470),
-        search=(493, 430, 573, 490),
+        search=(443, 443, 559, 601),
         color=(149, 141, 135),
         button=(513, 450, 553, 470),
     ),
