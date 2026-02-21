@@ -3,6 +3,7 @@ from typing import Callable
 from module.base.base import ModuleBase
 from module.base.utils import color_similarity_2d
 from module.logger import logger
+from module.ocr.ocr import Duration, OcrWhiteLetterOnComplexBackground
 from tasks.base.assets.assets_base_page import BACK
 from tasks.base.assets.assets_base_popup import *
 
@@ -115,6 +116,78 @@ class PopupHandler(ModuleBase):
             return True
 
         return False
+
+    def handle_broadcast(self, interval=1) -> bool:
+        """
+        Handle chained broadcast popups.
+
+        Flow:
+            1) Click BROADCAST entry button to open detail.
+            2) Click POPUP_CONFIRM to close the current detail.
+            3) If there are more broadcast details, outer state loop will call this
+               again and continue until all are cleared.
+
+        Returns:
+            If handled.
+        """
+        if not hasattr(self, '_broadcast_confirm_pending'):
+            self._broadcast_confirm_pending = False
+        if not hasattr(self, '_broadcast_ocr_logged'):
+            self._broadcast_ocr_logged = False
+
+        if self.appear_then_click(BROADCAST, interval=interval):
+            self._broadcast_confirm_pending = True
+            self._broadcast_ocr_logged = False
+            logger.info('Broadcast opened')
+            return True
+
+        if self._broadcast_confirm_pending:
+            if not self._broadcast_ocr_logged:
+                self.log_broadcast_ocr()
+                self._broadcast_ocr_logged = True
+
+            if self.appear_then_click(POPUP_CONFIRM, interval=interval):
+                self._broadcast_ocr_logged = False
+                logger.info('Broadcast confirmed')
+                return True
+
+            if not self.appear(BROADCAST) and not self.appear(POPUP_CONFIRM):
+                self._broadcast_confirm_pending = False
+
+        return False
+
+    def _broadcast_ocr_lang(self) -> str:
+        lang = getattr(self.config, 'Emulator_GameLanguage', 'cn')
+        if lang in ('auto', '', None):
+            return 'cn'
+        if lang in ('global_cn', 'zh', 'zh_cn'):
+            return 'cn'
+        if lang in ('global_en', 'en_us', 'en'):
+            return 'en'
+        return 'cn'
+
+    def log_broadcast_ocr(self):
+        lang = self._broadcast_ocr_lang()
+
+        content_ocr = OcrWhiteLetterOnComplexBackground(
+            OCR_BROADCAST_CONTENT, lang=lang, name='BroadcastContentOCR'
+        )
+        content = content_ocr.ocr_single_line(self.device.image)
+
+        remain_ocr = OcrWhiteLetterOnComplexBackground(
+            OCR_BROADCAST_REMAIN_TIME, lang=lang, name='BroadcastRemainOCR'
+        )
+        remain_text = remain_ocr.ocr_single_line(self.device.image)
+        remain_duration = Duration(
+            OCR_BROADCAST_REMAIN_TIME, lang=lang, name='BroadcastRemainDuration'
+        ).format_result(remain_text)
+        remain_minutes = int(remain_duration.total_seconds() // 60)
+
+        logger.info(f'Broadcast OCR content: {content}')
+        if remain_duration.total_seconds() > 0:
+            logger.info(f'Broadcast OCR remain: {remain_text} ({remain_minutes} min)')
+        else:
+            logger.info(f'Broadcast OCR remain: {remain_text}')
     #
     # def handle_popup_single(self, interval=2) -> bool:
     #     """

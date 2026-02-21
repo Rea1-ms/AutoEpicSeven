@@ -93,6 +93,8 @@ class Login(UI):
         app_timer = Timer(5).start()  # 检查游戏是否存活
         timeout = Timer(120, count=120).start()  # 总超时
         main_confirm = Timer(1.5, count=4).start()  # 主界面稳定确认，防止突然闪现的正常一帧
+        network_error_window = Timer(120, count=0).start()
+        network_error_count = 0
 
         # 状态
         start_success = False
@@ -166,6 +168,7 @@ class Login(UI):
             # 维护公告弹窗（先关掉再判断是否维护）
             if self.appear_then_click(ANNOUNCEMENT_CLOSE, interval=2):
                 logger.info('Closed announce popup')
+                network_error_count = 0
                 timeout.reset()
                 main_confirm.reset()
                 continue
@@ -192,6 +195,7 @@ class Login(UI):
             # 开始下载
             if self.appear_then_click(PATCH_APPLY, interval=3):
                 logger.info('Patch start...')
+                network_error_count = 0
                 timeout.reset()
                 continue
 
@@ -199,6 +203,7 @@ class Login(UI):
             if self.appear(PATCH_PERCENT_SIGN, interval=3) \
                     or (PATCH_CONNECTING and self.appear(PATCH_CONNECTING, interval=3)):
                 logger.info('Patch downloading...')
+                network_error_count = 0
                 timeout.reset()
                 continue
 
@@ -206,6 +211,7 @@ class Login(UI):
             if self.appear(LOGIN_LOADING, interval=5)\
                     or self.appear(VERIFYING, interval=5):
                 logger.info('Game loading...')
+                network_error_count = 0
                 self.device.stuck_record_clear()
                 continue
 
@@ -216,6 +222,7 @@ class Login(UI):
             if self.appear_then_click(LOGIN_CONFIRM, interval=2):
                 logger.info('Clicking to enter game')
                 login_success = True
+                network_error_count = 0
                 self.device.stuck_record_clear()
                 timeout.reset()
                 main_confirm.reset()
@@ -227,12 +234,29 @@ class Login(UI):
             # ==========================================
 
             if self.ui_additional():
+                network_error_count = 0
                 timeout.reset()
                 main_confirm.reset()
                 continue
 
             # 网络错误弹窗
             if self.handle_network_error():
+                if network_error_window.reached():
+                    network_error_window.reset()
+                    network_error_count = 0
+                network_error_count += 1
+                logger.warning(f'Network popup count in current window: {network_error_count}')
+
+                if network_error_count >= 12:
+                    logger.warning('Too many network popups during login, fallback to maintenance delay')
+                    maintenance_minutes = self._ocr_maintenance_minutes()
+                    maintenance_minutes = max(maintenance_minutes, 30)
+                    self._delay_tasks_during_maintenance(maintenance_minutes)
+                    self.device.app_stop()
+                    raise TaskEnd(
+                        f'Too many network popups, waiting {maintenance_minutes} minutes'
+                    )
+
                 timeout.reset()
                 main_confirm.reset()
                 continue

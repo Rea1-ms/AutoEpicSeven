@@ -35,6 +35,16 @@ ANNOUNCEMENT_DONOT_REMIND = ButtonWrapper(
         button=(1140, 629, 1170, 659),
     ),
 )
+BROADCAST = ButtonWrapper(
+    name='BROADCAST',
+    share=Button(
+        file='./assets/share/base/popup/BROADCAST.png',
+        area=(445, 117, 498, 165),
+        search=(425, 97, 518, 185),
+        color=(223, 179, 167),
+        button=(445, 117, 498, 165),
+    ),
+)
 GET_CHARACTER = ButtonWrapper(
     name='GET_CHARACTER',
     cn=Button(
@@ -89,6 +99,13 @@ NETWORK_ERROR_DISCONNECT = ButtonWrapper(
             color=(66, 73, 82),
             button=(676, 336, 735, 357),
         ),
+        Button(
+            file='./assets/global_cn/base/popup/NETWORK_ERROR_DISCONNECT.3.png',
+            area=(647, 335, 686, 356),
+            search=(627, 315, 706, 376),
+            color=(50, 59, 70),
+            button=(647, 335, 686, 356),
+        ),
     ],
     global_en=None,
 )
@@ -100,6 +117,26 @@ NEW_CHARACTER_VIDEO_PASS = ButtonWrapper(
         search=(1078, 9, 1134, 71),
         color=(88, 85, 85),
         button=(1187, 27, 1230, 48),
+    ),
+)
+OCR_BROADCAST_CONTENT = ButtonWrapper(
+    name='OCR_BROADCAST_CONTENT',
+    share=Button(
+        file='./assets/share/base/popup/OCR_BROADCAST_CONTENT.png',
+        area=(513, 148, 836, 209),
+        search=(493, 128, 856, 229),
+        color=(229, 222, 210),
+        button=(513, 148, 836, 209),
+    ),
+)
+OCR_BROADCAST_REMAIN_TIME = ButtonWrapper(
+    name='OCR_BROADCAST_REMAIN_TIME',
+    share=Button(
+        file='./assets/share/base/popup/OCR_BROADCAST_REMAIN_TIME.png',
+        area=(662, 107, 757, 134),
+        search=(642, 87, 777, 154),
+        color=(182, 180, 174),
+        button=(662, 107, 757, 134),
     ),
 )
 POPUP_CANCEL = ButtonWrapper(

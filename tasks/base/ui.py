@@ -405,6 +405,10 @@ class UI(MainPage):
             logger.info('Closed new character popup')
             return True
 
+        if self.handle_broadcast(interval=1):
+            logger.info('Handled broadcast popup')
+            return True
+
         # 3. Buff 广告 - 点击关闭
         if self.handle_ad_buff_x_close(interval=2):
             logger.info('Closed buff ad popup')

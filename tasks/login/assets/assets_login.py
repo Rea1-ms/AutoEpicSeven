@@ -30,13 +30,22 @@ LOGIN_CONFIRM = ButtonWrapper(
 LOGIN_ERROR = ButtonWrapper(
     name='LOGIN_ERROR',
     cn=None,
-    global_cn=Button(
-        file='./assets/global_cn/login/LOGIN_ERROR.png',
-        area=(618, 584, 662, 606),
-        search=(598, 564, 682, 626),
-        color=(159, 132, 144),
-        button=(618, 584, 662, 606),
-    ),
+    global_cn=[
+        Button(
+            file='./assets/global_cn/login/LOGIN_ERROR.png',
+            area=(618, 584, 662, 606),
+            search=(598, 564, 682, 626),
+            color=(159, 132, 144),
+            button=(618, 584, 662, 606),
+        ),
+        Button(
+            file='./assets/global_cn/login/LOGIN_ERROR.2.png',
+            area=(262, 270, 286, 299),
+            search=(242, 250, 306, 319),
+            color=(254, 180, 166),
+            button=(262, 270, 286, 299),
+        ),
+    ],
     global_en=None,
 )
 LOGIN_LOADING = ButtonWrapper(
