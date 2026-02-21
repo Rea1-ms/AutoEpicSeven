@@ -27,9 +27,9 @@ CLAIM_REWARDS = ButtonWrapper(
     name='CLAIM_REWARDS',
     share=Button(
         file='./assets/share/sanctuary/forest_of_elves/CLAIM_REWARDS.png',
-        area=(924, 216, 934, 224),
-        search=(920, 211, 938, 461),
-        color=(223, 87, 11),
-        button=(924, 216, 934, 224),
+        area=(990, 488, 1000, 498),
+        search=(988, 247, 1002, 501),
+        color=(90, 147, 186),
+        button=(990, 488, 1000, 498),
     ),
 )

@@ -66,6 +66,10 @@
       "name": "Tienda Secreta",
       "help": ""
     },
+    "Store": {
+      "name": "Tienda",
+      "help": "Compra recursos diarios y semanales en la tienda."
+    },
     "Pets": {
       "name": "Tienda de mascotas",
       "help": ""
@@ -1288,6 +1292,46 @@
     "BuyMysticMedal": {
       "name": "Comprar Medallas Místicas",
       "help": ""
+    }
+  },
+  "StoreDaily": {
+    "_info": {
+      "name": "Compras diarias de tienda",
+      "help": "Objetos para comprar cada día."
+    },
+    "BuyDailyFreeItem": {
+      "name": "Comprar objeto gratis diario",
+      "help": "Compra el objeto gratis diario en la tienda recomendada."
+    },
+    "BuyFriendshipMobility40": {
+      "name": "Comprar 40 de energía (Amistad)",
+      "help": "Compra el objeto de 40 de energía en la tienda de Amistad."
+    },
+    "BuyFriendshipArenaFlag": {
+      "name": "Comprar bandera de arena (Amistad)",
+      "help": "Compra bandera de arena en la tienda de Amistad."
+    },
+    "BuyConquestMobility40": {
+      "name": "Comprar 40 de energía (Conquista)",
+      "help": "Compra el objeto de 40 de energía en la tienda de Conquista."
+    }
+  },
+  "StoreWeekly": {
+    "_info": {
+      "name": "Compras semanales de tienda",
+      "help": "Objetos semanales o con límite de compra."
+    },
+    "BuyConquestMorogora": {
+      "name": "Comprar Morogora (Conquista)",
+      "help": "Compra Morogora con límite semanal en la tienda de Conquista."
+    },
+    "BuyInheritanceMorogora": {
+      "name": "Comprar Morogora (Herencia)",
+      "help": "Compra Morogora semanal en la tienda de Piedras de Herencia."
+    },
+    "BuyInheritancePotentialFragments": {
+      "name": "Comprar fragmentos de potencial (máx.)",
+      "help": "Compra fragmentos de potencial con cantidad máxima en Herencia."
     }
   },
   "Weekly": {

@@ -300,6 +300,25 @@
       "BuyMysticMedal": true
     }
   },
+  "Store": {
+    "Scheduler": {
+      "Enable": false,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "Store",
+      "ServerUpdate": "02:00"
+    },
+    "StoreDaily": {
+      "BuyDailyFreeItem": true,
+      "BuyFriendshipMobility40": true,
+      "BuyFriendshipArenaFlag": true,
+      "BuyConquestMobility40": true
+    },
+    "StoreWeekly": {
+      "BuyConquestMorogora": true,
+      "BuyInheritanceMorogora": true,
+      "BuyInheritancePotentialFragments": true
+    }
+  },
   "Pets": {
     "Scheduler": {
       "Enable": false,

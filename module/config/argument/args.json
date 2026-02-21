@@ -2118,6 +2118,65 @@
       }
     }
   },
+  "Store": {
+    "Scheduler": {
+      "Enable": {
+        "type": "checkbox",
+        "value": false,
+        "option": [
+          true,
+          false
+        ]
+      },
+      "NextRun": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime"
+      },
+      "Command": {
+        "type": "input",
+        "value": "Store",
+        "display": "hide"
+      },
+      "ServerUpdate": {
+        "type": "input",
+        "value": "02:00",
+        "display": "hide"
+      }
+    },
+    "StoreDaily": {
+      "BuyDailyFreeItem": {
+        "type": "checkbox",
+        "value": true
+      },
+      "BuyFriendshipMobility40": {
+        "type": "checkbox",
+        "value": true
+      },
+      "BuyFriendshipArenaFlag": {
+        "type": "checkbox",
+        "value": true
+      },
+      "BuyConquestMobility40": {
+        "type": "checkbox",
+        "value": true
+      }
+    },
+    "StoreWeekly": {
+      "BuyConquestMorogora": {
+        "type": "checkbox",
+        "value": true
+      },
+      "BuyInheritanceMorogora": {
+        "type": "checkbox",
+        "value": true
+      },
+      "BuyInheritancePotentialFragments": {
+        "type": "checkbox",
+        "value": true
+      }
+    }
+  },
   "Pets": {
     "Scheduler": {
       "Enable": {

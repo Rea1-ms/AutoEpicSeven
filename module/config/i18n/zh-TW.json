@@ -66,6 +66,10 @@
       "name": "秘密商店",
       "help": ""
     },
+    "Store": {
+      "name": "商店",
+      "help": "購買商店中的每日與每週資源。"
+    },
     "Pets": {
       "name": "寵物商店",
       "help": ""
@@ -1288,6 +1292,46 @@
     "BuyMysticMedal": {
       "name": "購買神秘獎牌",
       "help": ""
+    }
+  },
+  "StoreDaily": {
+    "_info": {
+      "name": "商店每日購買",
+      "help": "每日可購買項目。"
+    },
+    "BuyDailyFreeItem": {
+      "name": "購買每日免費商品",
+      "help": "在推薦商店購買每日免費商品。"
+    },
+    "BuyFriendshipMobility40": {
+      "name": "購買友情商店40行動力",
+      "help": "在友情商店購買40行動力。"
+    },
+    "BuyFriendshipArenaFlag": {
+      "name": "購買友情商店旗幟",
+      "help": "在友情商店購買競技場旗幟。"
+    },
+    "BuyConquestMobility40": {
+      "name": "購買征服點數商店40行動力",
+      "help": "在征服點數商店購買40行動力。"
+    }
+  },
+  "StoreWeekly": {
+    "_info": {
+      "name": "商店每週購買",
+      "help": "每週或限次可購買項目。"
+    },
+    "BuyConquestMorogora": {
+      "name": "購買征服點數商店魔羅戈拉",
+      "help": "在征服點數商店購買每週限次的魔羅戈拉。"
+    },
+    "BuyInheritanceMorogora": {
+      "name": "購買傳承石商店魔羅戈拉",
+      "help": "在傳承石商店購買每週的魔羅戈拉。"
+    },
+    "BuyInheritancePotentialFragments": {
+      "name": "購買潛能激發碎片（最大）",
+      "help": "在傳承石商店購買潛能激發碎片並選擇最大數量。"
     }
   },
   "Weekly": {

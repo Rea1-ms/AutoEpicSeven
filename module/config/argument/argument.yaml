@@ -256,6 +256,17 @@ SecretShop:
   BuyCovenantBookmark: true
   BuyMysticMedal: true
 
+StoreDaily:
+  BuyDailyFreeItem: true
+  BuyFriendshipMobility40: true
+  BuyFriendshipArenaFlag: true
+  BuyConquestMobility40: true
+
+StoreWeekly:
+  BuyConquestMorogora: true
+  BuyInheritanceMorogora: true
+  BuyInheritancePotentialFragments: true
+
 
 Weekly:
   Name:

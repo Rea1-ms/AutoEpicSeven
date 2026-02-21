@@ -60,6 +60,10 @@ Daily:
     SecretShop:
       - Scheduler
       - SecretShop
+    Store:
+      - Scheduler
+      - StoreDaily
+      - StoreWeekly
     Pets:
       - Scheduler
 

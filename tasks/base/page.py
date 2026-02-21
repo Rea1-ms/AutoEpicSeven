@@ -3,6 +3,7 @@ import traceback
 from tasks.base.assets.assets_base_page import *
 from tasks.base.assets.assets_base_main_page import MENU, MENU_CLOSE, WHITE_STAR
 from tasks.secret_shop.assets.assets_secret_shop import SECRET_SHOP_CHECK
+from tasks.store.assets.assets_store import STORE_CHECK
 from tasks.sanctuary.assets.assets_sanctuary import (
     ALCHEMISTS_TOWER,
     ALCHEMISTS_TOWER_CHECK,
@@ -135,6 +136,11 @@ page_sanctuary.link(HEART_OF_EULERBIS, destination=page_sanctuary_heart)
 page_secret_shop = Page(SECRET_SHOP_CHECK)
 page_secret_shop.link(MENU, destination=page_menu)
 page_main.link(MAIN_GOTO_SECRET_SHOP, destination=page_secret_shop)
+
+# Store
+page_store = Page(STORE_CHECK)
+page_store.link(MENU, destination=page_menu)
+page_main.link(MAIN_GOTO_STORE, destination=page_store)
 
 # Pets
 page_pets = Page(PETS_CHECK)

@@ -66,6 +66,10 @@
       "name": "シークレットショップ",
       "help": ""
     },
+    "Store": {
+      "name": "ショップ",
+      "help": "ゲーム内ショップでデイリー・ウィークリー商品を購入します。"
+    },
     "Pets": {
       "name": "ペットショップ",
       "help": ""
@@ -1288,6 +1292,46 @@
     "BuyMysticMedal": {
       "name": "神秘メダルを購入",
       "help": ""
+    }
+  },
+  "StoreDaily": {
+    "_info": {
+      "name": "ショップ毎日購入",
+      "help": "毎日購入するアイテムです。"
+    },
+    "BuyDailyFreeItem": {
+      "name": "デイリー無料商品を購入",
+      "help": "おすすめショップのデイリー無料商品を購入します。"
+    },
+    "BuyFriendshipMobility40": {
+      "name": "友情ショップの行動力40を購入",
+      "help": "友情ポイントショップで行動力40を購入します。"
+    },
+    "BuyFriendshipArenaFlag": {
+      "name": "友情ショップの旗を購入",
+      "help": "友情ポイントショップで闘技場の旗を購入します。"
+    },
+    "BuyConquestMobility40": {
+      "name": "征服ポイントの行動力40を購入",
+      "help": "征服ポイントショップで行動力40を購入します。"
+    }
+  },
+  "StoreWeekly": {
+    "_info": {
+      "name": "ショップ毎週購入",
+      "help": "毎週または回数制限のある購入項目です。"
+    },
+    "BuyConquestMorogora": {
+      "name": "征服ポイントのモラゴラを購入",
+      "help": "征服ポイントショップで週制限のモラゴラを購入します。"
+    },
+    "BuyInheritanceMorogora": {
+      "name": "継承石ショップのモラゴラを購入",
+      "help": "継承石ショップで週次のモラゴラを購入します。"
+    },
+    "BuyInheritancePotentialFragments": {
+      "name": "潜在能力欠片を最大購入",
+      "help": "継承石ショップで潜在能力欠片を最大数量で購入します。"
     }
   },
   "Weekly": {
