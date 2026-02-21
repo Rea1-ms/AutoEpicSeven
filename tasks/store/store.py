@@ -182,7 +182,6 @@ class Store(UI):
     ) -> bool:
         logger.info(f'Purchase {item_name}')
         timeout = Timer(12, count=30).start()
-        not_found_confirm = Timer(4, count=8).start()
         buy_confirm_seen = False
         clicked_buy = False
 
@@ -194,41 +193,36 @@ class Store(UI):
                 self._log_purchase_debug(item_name, item_asset, 'timeout')
                 return False
 
-            # # Clear stale confirm popup from previous item purchase.
-            # if self.appear_then_click(
-            #         self.buy_confirm_asset, interval=1, similarity=self.CONFIRM_SIMILARITY):
-            #     buy_confirm_seen = True
-            #     timeout.reset()
-            #     not_found_confirm.reset()
-            #     continue
-            #
-            # if direct_click and not clicked_buy:
-            #     item_buttons = item_asset.match_multi_template(self.device.image, threshold=30)
-            #     if item_buttons:
-            #         target = sorted(item_buttons, key=lambda x: x.area[1])[0]
-            #         logger.info(f'{item_name} -> {target}')
-            #         self.device.click(target)
-            #         clicked_buy = True
-            #         self.interval_clear(self.buy_confirm_asset)
-            #         timeout.reset()
-            #         not_found_confirm.reset()
-            #         continue
+            # Clear stale confirm popup from previous item purchase.
+            if self.appear_then_click(
+                    self.buy_confirm_asset, interval=1, similarity=self.CONFIRM_SIMILARITY):
+                buy_confirm_seen = True
+                timeout.reset()
+                continue
+
+            if direct_click and not clicked_buy:
+                item_buttons = item_asset.match_multi_template(self.device.image, threshold=30)
+                if item_buttons:
+                    target = sorted(item_buttons, key=lambda x: x.area[1])[0]
+                    logger.info(f'{item_name} -> {target}')
+                    self.device.click(target)
+                    clicked_buy = True
+                    self.interval_clear(self.buy_confirm_asset)
+                    timeout.reset()
+                    continue
 
             if use_max and clicked_buy:
                 if self.appear_then_click(self.buy_max_asset, interval=1):
                     timeout.reset()
-                    not_found_confirm.reset()
                     continue
 
             if buy_confirm_seen:
                 # Do not finish purchase while confirm popup still exists.
                 if self.appear(self.buy_confirm_asset, similarity=self.CONFIRM_SIMILARITY):
                     timeout.reset()
-                    not_found_confirm.reset()
                     continue
                 if self.handle_touch_to_close(interval=1):
                     timeout.reset()
-                    not_found_confirm.reset()
                     continue
                 if clicked_buy and self.appear(page_store.check_button):
                     return True
@@ -245,13 +239,11 @@ class Store(UI):
                 clicked_buy = True
                 self.interval_clear(self.buy_confirm_asset)
                 timeout.reset()
-                not_found_confirm.reset()
                 continue
 
-            if not clicked_buy and not_found_confirm.reached():
+            if not clicked_buy:
                 if self.appear(self.buy_confirm_asset, similarity=self.CONFIRM_SIMILARITY):
                     timeout.reset()
-                    not_found_confirm.reset()
                     continue
                 logger.warning(f'{item_name} not found in current store page')
                 self._log_purchase_debug(item_name, item_asset, 'not_found')
@@ -259,11 +251,9 @@ class Store(UI):
 
             if self.ui_additional():
                 timeout.reset()
-                not_found_confirm.reset()
                 continue
             if self.handle_network_error():
                 timeout.reset()
-                not_found_confirm.reset()
                 continue
 
             if buy_confirm_seen and self.appear(page_store.check_button):
