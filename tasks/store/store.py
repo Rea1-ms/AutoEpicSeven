@@ -1,18 +1,19 @@
+from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
+from typing import Callable
+
 from module.base.button import ButtonWrapper, ClickButton
 from module.base.timer import Timer
 from module.base.utils import save_image
 from module.logger import logger
-from typing import Callable
 from tasks.base.page import page_store
 from tasks.base.ui import UI
 from tasks.store.assets.assets_store import (
+    ARENA_FLAG,
     BUY,
     BUY_CONFIRM,
     BUY_MAX,
-    ARENA_FLAG,
-    SUB_STORE_SEARCH,
     COMMON_INHERITANCE_STONE,
     CONQUEST_POINTS_STORE,
     CONQUEST_POINTS_STORE_CHECK,
@@ -25,13 +26,34 @@ from tasks.store.assets.assets_store import (
     MOROGORA,
     POTENTIAL_FRAGMENTS,
     STORE_ITEMS_SEARCH,
+    SUB_STORE_SEARCH,
 )
+
+
+@dataclass(frozen=True)
+class ItemPlan:
+    name: str
+    asset: ButtonWrapper
+    enabled: bool
+    use_max: bool = False
+    direct_click: bool = False
+    scroll_before: bool = False
+
+
+@dataclass(frozen=True)
+class SubStorePlan:
+    name: str
+    entry: ButtonWrapper
+    check: Callable[[], bool]
+    items: tuple[ItemPlan, ...]
+
 
 class Store(UI):
     ITEM_BUY_Y_TOLERANCE = 60
     CONFIRM_SIMILARITY = 0.85
     SCROLL_START = (640, 470)
     SCROLL_END = (640, 350)
+    SCROLL_SETTLE_Y_TOLERANCE = 8
 
     def __init__(self, config, device, task='Store'):
         super().__init__(config, device=device, task=task)
@@ -42,15 +64,6 @@ class Store(UI):
         self.friendship_store_check: ButtonWrapper = FRIENDSHIP_POINTS
         self.conquest_store_check: ButtonWrapper = CONQUEST_POINTS_STORE_CHECK
         self.sub_store_search_asset: ButtonWrapper = SUB_STORE_SEARCH
-        self.buy_daily_free_item = getattr(self.config, 'StoreDaily_BuyDailyFreeItem', True)
-        self.buy_inheritance_morogora = getattr(self.config, 'StoreWeekly_BuyInheritanceMorogora', True)
-        self.buy_inheritance_potential_fragments = getattr(
-            self.config, 'StoreWeekly_BuyInheritancePotentialFragments', True
-        )
-        self.buy_friendship_mobility40 = getattr(self.config, 'StoreDaily_BuyFriendshipMobility40', True)
-        self.buy_friendship_arena_flag = getattr(self.config, 'StoreDaily_BuyFriendshipArenaFlag', True)
-        self.buy_conquest_morogora = getattr(self.config, 'StoreWeekly_BuyConquestMorogora', True)
-        self.buy_conquest_mobility40 = getattr(self.config, 'StoreDaily_BuyConquestMobility40', True)
 
     def _load_shared_search(self):
         buttons = [
@@ -64,6 +77,69 @@ class Store(UI):
 
         for sub_store in [INHERITANCE_STONE_STORE, FRIENDSHIP_POINTS_STORE, CONQUEST_POINTS_STORE]:
             sub_store.load_search(self.sub_store_search_asset.area)
+
+    def _build_sub_store_plans(self) -> list[SubStorePlan]:
+        return [
+            SubStorePlan(
+                name='inheritance stone store',
+                entry=INHERITANCE_STONE_STORE,
+                check=self._is_inheritance_store,
+                items=(
+                    ItemPlan(
+                        name='morogora',
+                        asset=MOROGORA,
+                        enabled=self.config.StoreWeekly_BuyInheritanceMorogora,
+                        use_max=True,
+                    ),
+                    ItemPlan(
+                        name='potential_fragments',
+                        asset=POTENTIAL_FRAGMENTS,
+                        enabled=self.config.StoreWeekly_BuyInheritancePotentialFragments,
+                        use_max=True,
+                        scroll_before=True,
+                    ),
+                ),
+            ),
+            SubStorePlan(
+                name='friendship points store',
+                entry=FRIENDSHIP_POINTS_STORE,
+                check=self._is_friendship_store,
+                items=(
+                    ItemPlan(
+                        name='mobility_40',
+                        asset=MOBILITY_40,
+                        enabled=self.config.StoreDaily_BuyFriendshipMobility40,
+                    ),
+                    ItemPlan(
+                        name='arena_flag',
+                        asset=self.arena_flag_asset,
+                        enabled=self.config.StoreDaily_BuyFriendshipArenaFlag,
+                    ),
+                ),
+            ),
+            SubStorePlan(
+                name='conquest points store',
+                entry=CONQUEST_POINTS_STORE,
+                check=self._is_conquest_store,
+                items=(
+                    ItemPlan(
+                        name='morogora',
+                        asset=MOROGORA,
+                        enabled=self.config.StoreWeekly_BuyConquestMorogora,
+                    ),
+                    ItemPlan(
+                        name='mobility_40',
+                        asset=MOBILITY_40,
+                        enabled=self.config.StoreDaily_BuyConquestMobility40,
+                        use_max=True,
+                    ),
+                ),
+            ),
+        ]
+
+    @staticmethod
+    def _enabled_items(sub_store: SubStorePlan) -> list[ItemPlan]:
+        return [item for item in sub_store.items if item.enabled]
 
     def _save_debug_image(self, tag: str):
         now = datetime.now()
@@ -96,30 +172,81 @@ class Store(UI):
     def _has_item(item_asset: ButtonWrapper, image) -> bool:
         return len(item_asset.match_multi_template(image, threshold=30)) > 0
 
+    @staticmethod
+    def _first_item_button(item_asset: ButtonWrapper, image) -> ClickButton | None:
+        matches = item_asset.match_multi_template(image, threshold=30)
+        if not matches:
+            return None
+        return sorted(matches, key=lambda x: x.area[1])[0]
+
+    def _wait_item_settle_after_scroll(self, item: ItemPlan) -> bool:
+        """
+        Wait briefly for post-swipe inertia to settle before scanning item/buy pair.
+        """
+        timeout = Timer(2.5, count=6).start()
+        stable_count = 0
+        last_y = None
+
+        while 1:
+            self.device.screenshot()
+
+            if timeout.reached():
+                return False
+
+            if self.ui_additional():
+                timeout.reset()
+                stable_count = 0
+                last_y = None
+                continue
+            if self.handle_network_error():
+                timeout.reset()
+                stable_count = 0
+                last_y = None
+                continue
+
+            target = self._first_item_button(item.asset, self.device.image)
+            if target is None:
+                # Sold out or not in current viewport. Do not block follow-up flow.
+                return False
+
+            current_y = self._button_center_y(target)
+            if last_y is None:
+                stable_count = 1
+            elif abs(current_y - last_y) <= self.SCROLL_SETTLE_Y_TOLERANCE:
+                stable_count += 1
+            else:
+                stable_count = 1
+            last_y = current_y
+
+            if stable_count >= 2:
+                return True
+
     def _find_target_buy_buttons(self, targets: list[tuple[str, ButtonWrapper]]) -> list[tuple[str, ClickButton]]:
         buy_buttons = self.buy_asset.match_multi_template(self.device.image, threshold=40)
         if not buy_buttons:
             return []
+        buy_buttons = sorted(buy_buttons, key=self._button_center_y)
 
         pairs: list[tuple[str, ClickButton]] = []
         used_buy_index: set[int] = set()
+
         for item_name, item_asset in targets:
             item_buttons = item_asset.match_multi_template(self.device.image, threshold=30)
             if not item_buttons:
                 continue
-
-            item_button = item_buttons[0]
-            item_y = self._button_center_y(item_button)
+            item_buttons = sorted(item_buttons, key=self._button_center_y)
 
             best_index = -1
             best_distance = 9999.0
-            for idx, buy_button in enumerate(buy_buttons):
-                if idx in used_buy_index:
-                    continue
-                dist = abs(self._button_center_y(buy_button) - item_y)
-                if dist < best_distance:
-                    best_distance = dist
-                    best_index = idx
+            for item_button in item_buttons:
+                item_y = self._button_center_y(item_button)
+                for idx, buy_button in enumerate(buy_buttons):
+                    if idx in used_buy_index:
+                        continue
+                    dist = abs(self._button_center_y(buy_button) - item_y)
+                    if dist < best_distance:
+                        best_distance = dist
+                        best_index = idx
 
             if best_index >= 0 and best_distance <= self.ITEM_BUY_Y_TOLERANCE:
                 used_buy_index.add(best_index)
@@ -146,6 +273,7 @@ class Store(UI):
         timeout = Timer(8, count=20).start()
         reclick = Timer(2, count=0).start()
         clicked_entry = False
+
         while 1:
             self.device.screenshot()
 
@@ -166,6 +294,7 @@ class Store(UI):
                 reclick.reset()
                 timeout.reset()
                 continue
+
             if self.ui_additional():
                 timeout.reset()
                 continue
@@ -173,80 +302,44 @@ class Store(UI):
                 timeout.reset()
                 continue
 
-    def _purchase_item(
-            self,
-            item_name: str,
-            item_asset: ButtonWrapper,
-            use_max=False,
-            direct_click=False,
-    ) -> bool:
-        logger.info(f'Purchase {item_name}')
+    def _click_purchase_target(self, item: ItemPlan) -> bool:
+        if item.direct_click:
+            item_buttons = item.asset.match_multi_template(self.device.image, threshold=30)
+            if not item_buttons:
+                return False
+            target = sorted(item_buttons, key=lambda x: x.area[1])[0]
+            logger.info(f'{item.name} -> {target}')
+            self.device.click(target)
+            self.interval_clear(self.buy_confirm_asset)
+            self.interval_clear(self.buy_max_asset)
+            return True
+
+        pairs = self._find_target_buy_buttons([(item.name, item.asset)])
+        if not pairs:
+            return False
+
+        _, buy_button = pairs[0]
+        logger.info(f'{item.name} -> {buy_button}')
+        self.device.click(buy_button)
+        self.interval_clear(self.buy_confirm_asset)
+        self.interval_clear(self.buy_max_asset)
+        return True
+
+    def _purchase_item(self, item: ItemPlan) -> bool:
+        logger.info(f'Purchase {item.name}')
         timeout = Timer(12, count=30).start()
-        buy_confirm_seen = False
-        clicked_buy = False
+        clicked_target = False
+        clicked_confirm = False
+        touched_close = False
+        max_resolved = not item.use_max
+        max_fallback = Timer(1.2, count=3).start()
 
         while 1:
             self.device.screenshot()
 
             if timeout.reached():
-                logger.warning(f'Purchase {item_name} timeout')
-                self._log_purchase_debug(item_name, item_asset, 'timeout')
-                return False
-
-            # Clear stale confirm popup from previous item purchase.
-            if self.appear_then_click(
-                    self.buy_confirm_asset, interval=1, similarity=self.CONFIRM_SIMILARITY):
-                buy_confirm_seen = True
-                timeout.reset()
-                continue
-
-            if direct_click and not clicked_buy:
-                item_buttons = item_asset.match_multi_template(self.device.image, threshold=30)
-                if item_buttons:
-                    target = sorted(item_buttons, key=lambda x: x.area[1])[0]
-                    logger.info(f'{item_name} -> {target}')
-                    self.device.click(target)
-                    clicked_buy = True
-                    self.interval_clear(self.buy_confirm_asset)
-                    timeout.reset()
-                    continue
-
-            if use_max and clicked_buy:
-                if self.appear_then_click(self.buy_max_asset, interval=1):
-                    timeout.reset()
-                    continue
-
-            if buy_confirm_seen:
-                # Do not finish purchase while confirm popup still exists.
-                if self.appear(self.buy_confirm_asset, similarity=self.CONFIRM_SIMILARITY):
-                    timeout.reset()
-                    continue
-                if self.handle_touch_to_close(interval=1):
-                    timeout.reset()
-                    continue
-                if clicked_buy and self.appear(page_store.check_button):
-                    return True
-
-            if direct_click and clicked_buy:
-                if not self._has_item(item_asset, self.device.image):
-                    return True
-
-            pairs = self._find_target_buy_buttons([(item_name, item_asset)])
-            if pairs:
-                _, buy_button = pairs[0]
-                logger.info(f'{item_name} -> {buy_button}')
-                self.device.click(buy_button)
-                clicked_buy = True
-                self.interval_clear(self.buy_confirm_asset)
-                timeout.reset()
-                continue
-
-            if not clicked_buy:
-                if self.appear(self.buy_confirm_asset, similarity=self.CONFIRM_SIMILARITY):
-                    timeout.reset()
-                    continue
-                logger.warning(f'{item_name} not found in current store page')
-                self._log_purchase_debug(item_name, item_asset, 'not_found')
+                logger.warning(f'Purchase {item.name} timeout')
+                self._log_purchase_debug(item.name, item.asset, 'timeout')
                 return False
 
             if self.ui_additional():
@@ -256,72 +349,117 @@ class Store(UI):
                 timeout.reset()
                 continue
 
-            if buy_confirm_seen and self.appear(page_store.check_button):
+            if not clicked_target:
+                stale_cleared = False
+                if self.appear_then_click(
+                    self.buy_confirm_asset, interval=1, similarity=self.CONFIRM_SIMILARITY
+                ):
+                    stale_cleared = True
+                if self.handle_touch_to_close(interval=1):
+                    stale_cleared = True
+                if stale_cleared:
+                    timeout.reset()
+                    continue
+
+                if self._click_purchase_target(item):
+                    clicked_target = True
+                    max_resolved = not item.use_max
+                    max_fallback.reset()
+                    timeout.reset()
+                    continue
+
+                logger.warning(f'{item.name} not found in current store page')
+                self._log_purchase_debug(item.name, item.asset, 'not_found')
+                return False
+
+            progress = False
+            confirm_visible = self.appear(self.buy_confirm_asset, similarity=self.CONFIRM_SIMILARITY)
+
+            if item.use_max and not max_resolved:
+                # Gate confirm by a short MAX phase to avoid buying quantity=1 by mistake.
+                if self.appear_then_click(self.buy_max_asset, interval=1, similarity=0.8):
+                    max_resolved = True
+                    progress = True
+                elif confirm_visible:
+                    if max_fallback.reached():
+                        max_resolved = True
+                        logger.info(f'{item.name}: BUY_MAX unavailable, fallback to BUY_CONFIRM')
+                    else:
+                        timeout.reset()
+                        continue
+
+            if max_resolved and self.appear_then_click(
+                    self.buy_confirm_asset, interval=1, similarity=self.CONFIRM_SIMILARITY):
+                clicked_confirm = True
+                progress = True
+            if self.handle_touch_to_close(interval=1):
+                touched_close = True
+                progress = True
+
+            if progress:
+                timeout.reset()
+                continue
+
+            confirm_visible = self.appear(self.buy_confirm_asset, similarity=self.CONFIRM_SIMILARITY)
+            item_visible = self._has_item(item.asset, self.device.image)
+
+            if touched_close and self.appear(page_store.check_button):
                 return True
+            if clicked_confirm and not confirm_visible and not item_visible:
+                return True
+            if item.direct_click and not item_visible:
+                return True
+
+            # If nothing settled and no confirm is visible, retry the first step once more.
+            if (not clicked_confirm) and (not touched_close) and (not confirm_visible):
+                if self._click_purchase_target(item):
+                    timeout.reset()
+                    continue
 
     def _scroll_store_list_once(self):
         self.device.swipe(self.SCROLL_START, self.SCROLL_END, duration=(0.2, 0.3))
+
+    def _run_sub_store(self, sub_store: SubStorePlan):
+        items = self._enabled_items(sub_store)
+        if not items:
+            logger.info(f'Skip {sub_store.name} by config')
+            return
+
+        if not self._open_sub_store(sub_store.name, sub_store.entry, sub_store.check):
+            return
+
+        for item in items:
+            if item.scroll_before:
+                self._scroll_store_list_once()
+                if self._wait_item_settle_after_scroll(item):
+                    logger.info(f'{item.name} settled after scroll')
+                else:
+                    logger.info(f'{item.name} settle skipped (not visible or timeout)')
+            self._purchase_item(item)
 
     def run(self):
         logger.hr('Store', level=1)
         if not self.device.app_is_running():
             from tasks.login.login import Login
+
             Login(self.config, device=self.device).app_start()
 
         self.ui_goto(page_store)
         self._load_shared_search()
 
-        if self.buy_daily_free_item:
-            self.device.screenshot()
-            if self._has_item(DAILY_FREE_ITEM, self.device.image):
-                self._purchase_item('daily_free_item', DAILY_FREE_ITEM, direct_click=True)
-            else:
-                logger.info('Daily free item not found, skip')
+        daily_free_item = ItemPlan(
+            name='daily_free_item',
+            asset=DAILY_FREE_ITEM,
+            enabled=self.config.StoreDaily_BuyDailyFreeItem,
+            direct_click=True,
+        )
+        if daily_free_item.enabled:
+            self._purchase_item(daily_free_item)
         else:
             logger.info('Skip daily free item by config')
 
-        if self.buy_inheritance_morogora or self.buy_inheritance_potential_fragments:
-            if self._open_sub_store('inheritance stone store', INHERITANCE_STONE_STORE, self._is_inheritance_store):
-                if self.buy_inheritance_morogora:
-                    self._purchase_item('morogora', MOROGORA, use_max=True)
-                else:
-                    logger.info('Skip inheritance morogora by config')
-
-                if self.buy_inheritance_potential_fragments:
-                    self._scroll_store_list_once()
-                    self._purchase_item('potential_fragments', POTENTIAL_FRAGMENTS, use_max=True)
-                else:
-                    logger.info('Skip potential fragments by config')
-        else:
-            logger.info('Skip inheritance store by config')
-
-        if self.buy_friendship_mobility40 or self.buy_friendship_arena_flag:
-            if self._open_sub_store('friendship points store', FRIENDSHIP_POINTS_STORE, self._is_friendship_store):
-                if self.buy_friendship_mobility40:
-                    self._purchase_item('mobility_40', MOBILITY_40)
-                else:
-                    logger.info('Skip friendship mobility_40 by config')
-
-                if self.buy_friendship_arena_flag:
-                    self._purchase_item('arena_flag', self.arena_flag_asset)
-                else:
-                    logger.info('Skip friendship arena_flag by config')
-        else:
-            logger.info('Skip friendship store by config')
-
-        if self.buy_conquest_morogora or self.buy_conquest_mobility40:
-            if self._open_sub_store('conquest points store', CONQUEST_POINTS_STORE, self._is_conquest_store):
-                if self.buy_conquest_morogora:
-                    self._purchase_item('morogora', MOROGORA)
-                else:
-                    logger.info('Skip conquest morogora by config')
-
-                if self.buy_conquest_mobility40:
-                    self._purchase_item('mobility_40', MOBILITY_40, use_max=True)
-                else:
-                    logger.info('Skip conquest mobility_40 by config')
-        else:
-            logger.info('Skip conquest store by config')
+        for sub_store in self._build_sub_store_plans():
+            self._run_sub_store(sub_store)
 
         self.config.task_delay(server_update=True)
         return True
