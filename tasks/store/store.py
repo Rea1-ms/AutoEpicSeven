@@ -54,6 +54,7 @@ class Store(UI):
     SCROLL_START = (640, 470)
     SCROLL_END = (640, 350)
     SCROLL_SETTLE_Y_TOLERANCE = 8
+    PURCHASE_SWITCH_COOLDOWN_SECONDS = 1
 
     def __init__(self, config, device, task='Store'):
         super().__init__(config, device=device, task=task)
@@ -64,6 +65,7 @@ class Store(UI):
         self.friendship_store_check: ButtonWrapper = FRIENDSHIP_POINTS
         self.conquest_store_check: ButtonWrapper = CONQUEST_POINTS_STORE_CHECK
         self.sub_store_search_asset: ButtonWrapper = SUB_STORE_SEARCH
+        self._purchase_switch_cooldown = Timer(self.PURCHASE_SWITCH_COOLDOWN_SECONDS, count=0)
 
     def _load_shared_search(self):
         buttons = [
@@ -419,12 +421,34 @@ class Store(UI):
     def _scroll_store_list_once(self):
         self.device.swipe(self.SCROLL_START, self.SCROLL_END, duration=(0.2, 0.3))
 
+    def _record_purchase_time(self) -> None:
+        self._purchase_switch_cooldown.reset()
+
+    def _wait_purchase_cooldown_before_switch(self) -> None:
+        """
+        Ensure enough gap from last successful purchase before entering another sub store.
+        This avoids first-item detection being blocked by lingering purchase-success layers.
+        """
+        if self._purchase_switch_cooldown.reached():
+            return
+
+        logger.info(f'Wait purchase cooldown before sub-store switch: {self.PURCHASE_SWITCH_COOLDOWN_SECONDS}s')
+        while 1:
+            if self._purchase_switch_cooldown.reached():
+                return
+
+            self.device.screenshot()
+
+            if self.handle_network_error(interval=0.2):
+                continue
+
     def _run_sub_store(self, sub_store: SubStorePlan):
         items = self._enabled_items(sub_store)
         if not items:
             logger.info(f'Skip {sub_store.name} by config')
             return
 
+        self._wait_purchase_cooldown_before_switch()
         if not self._open_sub_store(sub_store.name, sub_store.entry, sub_store.check):
             return
 
@@ -435,7 +459,9 @@ class Store(UI):
                     logger.info(f'{item.name} settled after scroll')
                 else:
                     logger.info(f'{item.name} settle skipped (not visible or timeout)')
-            self._purchase_item(item)
+            purchased = self._purchase_item(item)
+            if purchased:
+                self._record_purchase_time()
 
     def run(self):
         logger.hr('Store', level=1)
