@@ -68,6 +68,10 @@ class StarRailCopilot(AzurLaneAutoScript):
         from tasks.sanctuary.sanctuary import Sanctuary
         Sanctuary(config=self.config, device=self.device, task="Sanctuary").run()
 
+    def knights(self):
+        from tasks.knights.knights import Knights
+        Knights(config=self.config, device=self.device, task="Knights").run()
+
     def secret_shop(self):
         from tasks.secret_shop.secret_shop import SecretShop
         SecretShop(config=self.config, device=self.device).run()

@@ -286,6 +286,20 @@
       "RewardTier": "A"
     }
   },
+  "Knights": {
+    "Scheduler": {
+      "Enable": true,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "Knights",
+      "ServerUpdate": "02:00"
+    },
+    "Knights": {
+      "ClaimSigninRateReward": true,
+      "Expedition": true,
+      "TeamBattle": true,
+      "WorldBoss": true
+    }
+  },
   "SecretShop": {
     "Scheduler": {
       "Enable": false,

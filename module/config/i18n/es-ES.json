@@ -62,6 +62,10 @@
       "name": "Santuario",
       "help": ""
     },
+    "Knights": {
+      "name": "Gremio",
+      "help": "Automatización del gremio: recompensa de inicio, expedición y Jefe Mundial."
+    },
     "SecretShop": {
       "name": "Tienda Secreta",
       "help": ""
@@ -1272,6 +1276,28 @@
       "B": "B o superior"
     }
   },
+  "Knights": {
+    "_info": {
+      "name": "Ajustes de gremio",
+      "help": "Activa o desactiva subfunciones del gremio."
+    },
+    "ClaimSigninRateReward": {
+      "name": "Reclamar recompensa de inicio",
+      "help": "Reclama automáticamente la recompensa de inicio en el gremio."
+    },
+    "Expedition": {
+      "name": "Expedición del gremio",
+      "help": "Entra en expedición y ejecuta los submódulos habilitados."
+    },
+    "TeamBattle": {
+      "name": "Guerra de gremio (pendiente)",
+      "help": "Por ahora solo entra en la página; OCR queda pendiente."
+    },
+    "WorldBoss": {
+      "name": "Jefe mundial",
+      "help": "Ejecuta el flujo base del Jefe Mundial y regresa al agotarse intentos."
+    }
+  },
   "SecretShop": {
     "_info": {
       "name": "Ajustes de tienda secreta",
@@ -1886,7 +1912,9 @@
     },
     "Text": {
       "InvalidFeedBack": "Formato inválido. Ejemplo: {0}",
-      "Clear": "Limpiar"
+      "Clear": "Limpiar",
+      "KnightsTeamBattleTodo": "OCR de Guerra de gremio pendiente",
+      "KnightsNoStaminaTodo": "Manejo sin energía en Jefe Mundial pendiente"
     }
   }
 }

@@ -1,0 +1,137 @@
+from module.base.timer import Timer
+from module.logger import logger
+from module.ocr.ocr import DigitCounter
+from tasks.base.page import page_knights
+from tasks.knights.assets.assets_knights_expedition import (
+    KNIGHTS_CREST,
+    OCR_KNIGHTS_CREST,
+    TEAM_BATTLE,
+    TEAM_BATTLE_RESULT_CONFIRM,
+)
+
+
+class OcrKnightsCrest(DigitCounter):
+    def after_process(self, result):
+        result = super().after_process(result)
+        # Normalize common OCR confusions on x/y counters.
+        result = result.replace("O", "0").replace("o", "0")
+        result = result.replace("I", "1").replace("l", "1")
+        result = result.replace("／", "/")
+        return result
+
+
+class KnightsTeamBattleMixin:
+    TEAM_BATTLE_LUMA_SIMILARITY = 0.8
+    TEAM_BATTLE_COLOR_THRESHOLD = 30
+
+    TEAM_BATTLE_STATE_ENTER = "enter_expedition"
+    TEAM_BATTLE_STATE_SETTLEMENT = "clear_settlement"
+
+    def _is_team_battle_home(self, interval=0) -> bool:
+        return self.appear(KNIGHTS_CREST, interval=interval)
+
+    def _is_team_battle_ready(self, interval=0) -> bool:
+        """
+        TEAM_BATTLE uses luma + color double check to avoid animation false positives.
+        """
+        self.device.stuck_record_add(TEAM_BATTLE)
+
+        if interval and not self.interval_is_reached(TEAM_BATTLE, interval=interval):
+            return False
+
+        appear = False
+        if TEAM_BATTLE.match_template_luma(self.device.image, similarity=self.TEAM_BATTLE_LUMA_SIMILARITY):
+            if TEAM_BATTLE.match_color(self.device.image, threshold=self.TEAM_BATTLE_COLOR_THRESHOLD):
+                appear = True
+
+        if appear and interval:
+            self.interval_reset(TEAM_BATTLE, interval=interval)
+
+        return appear
+
+    def _team_battle_time_ocr_todo(self):
+        """
+        TODO:
+            OCR 团战剩余开始/结束时间，后续补充。
+        """
+        pass
+
+    def _ocr_knights_crest(self) -> tuple[int, int, int]:
+        lang = self.config.Emulator_GameLanguage
+        if lang == "auto" or not lang:
+            lang = "cn"
+        ocr = OcrKnightsCrest(OCR_KNIGHTS_CREST, lang=lang, name="KnightsCrest")
+        current, remain, total = ocr.ocr_single_line(self.device.image)
+        if total and current <= total:
+            logger.attr("KnightsCrest", f"{current}/{total}")
+        else:
+            logger.warning(f"Knights crest OCR invalid: {current}/{total}")
+        return current, remain, total
+
+    def run_team_battle(self, skip_first_screenshot=True) -> bool:
+        logger.info("Knights expedition: team battle")
+        timeout = Timer(30, count=90).start()
+        no_progress_confirm = Timer(4, count=12).start()
+        state = self.TEAM_BATTLE_STATE_ENTER
+
+        while 1:
+            if skip_first_screenshot:
+                skip_first_screenshot = False
+            else:
+                self.device.screenshot()
+
+            if timeout.reached():
+                logger.warning("Team battle flow timeout")
+                return False
+
+            if self._is_team_battle_home(interval=1):
+                self._ocr_knights_crest()
+                self._team_battle_time_ocr_todo()
+                logger.info("Team battle home reached")
+                self._back_to_knights(skip_first_screenshot=True)
+                return True
+
+            if state == self.TEAM_BATTLE_STATE_ENTER and self._is_team_battle_ready(interval=1):
+                logger.info("Team battle: expedition -> team battle")
+                self.device.click(TEAM_BATTLE)
+                state = self.TEAM_BATTLE_STATE_SETTLEMENT
+                timeout.reset()
+                no_progress_confirm.reset()
+                continue
+
+            if self.appear(TEAM_BATTLE_RESULT_CONFIRM):
+                state = self.TEAM_BATTLE_STATE_SETTLEMENT
+
+            # Settlement can contain multiple confirms in a row.
+            if self.appear_then_click(TEAM_BATTLE_RESULT_CONFIRM, interval=1):
+                timeout.reset()
+                no_progress_confirm.reset()
+                continue
+
+            # If settlement sends us back to expedition page, re-enter team battle.
+            if state == self.TEAM_BATTLE_STATE_SETTLEMENT and self._is_team_battle_ready(interval=1):
+                self.device.click(TEAM_BATTLE)
+                timeout.reset()
+                no_progress_confirm.reset()
+                continue
+
+            if self.handle_touch_to_close(interval=1):
+                timeout.reset()
+                no_progress_confirm.reset()
+                continue
+            if self.ui_additional():
+                timeout.reset()
+                no_progress_confirm.reset()
+                continue
+            if self.handle_network_error():
+                timeout.reset()
+                no_progress_confirm.reset()
+                continue
+
+            if no_progress_confirm.reached():
+                logger.warning(f"Team battle no progress in state={state}")
+                return False
+
+    def _back_to_knights(self, skip_first_screenshot=True) -> bool:
+        self.ui_goto(page_knights, skip_first_screenshot=skip_first_screenshot)
+        return True

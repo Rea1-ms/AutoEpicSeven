@@ -250,6 +250,12 @@ Sanctuary:
     value: A
     option: [ A, B ]
 
+Knights:
+  ClaimSigninRateReward: true
+  Expedition: true
+  TeamBattle: true
+  WorldBoss: true
+
 SecretShop:
   OnlyFree: true
   MaxRefresh: 10

@@ -57,6 +57,9 @@ Daily:
     Sanctuary:
       - Scheduler
       - Sanctuary
+    Knights:
+      - Scheduler
+      - Knights
     SecretShop:
       - Scheduler
       - SecretShop

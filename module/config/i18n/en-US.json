@@ -62,6 +62,10 @@
       "name": "Sanctuary",
       "help": ""
     },
+    "Knights": {
+      "name": "Guild",
+      "help": "Guild automation: sign-in reward, expedition flow, and World Boss."
+    },
     "SecretShop": {
       "name": "Secret Shop",
       "help": ""
@@ -1272,6 +1276,28 @@
       "B": "B or higher"
     }
   },
+  "Knights": {
+    "_info": {
+      "name": "Guild Settings",
+      "help": "Toggle guild sub-features and configure behavior."
+    },
+    "ClaimSigninRateReward": {
+      "name": "Claim Sign-in Reward",
+      "help": "Automatically claim sign-in rate reward on guild home."
+    },
+    "Expedition": {
+      "name": "Guild Expedition",
+      "help": "Enter expedition panel and run enabled sub-modules."
+    },
+    "TeamBattle": {
+      "name": "Guild War (Placeholder)",
+      "help": "Only enters guild war page for now; OCR logic is reserved."
+    },
+    "WorldBoss": {
+      "name": "World Boss",
+      "help": "Run World Boss base flow and return when attempts are exhausted."
+    }
+  },
   "SecretShop": {
     "_info": {
       "name": "Secret Shop Settings",
@@ -1886,7 +1912,9 @@
     },
     "Text": {
       "InvalidFeedBack": "Invalid format. Example: {0}",
-      "Clear": "Clear"
+      "Clear": "Clear",
+      "KnightsTeamBattleTodo": "Guild War OCR TODO",
+      "KnightsNoStaminaTodo": "World Boss no-stamina handling TODO"
     }
   }
 }

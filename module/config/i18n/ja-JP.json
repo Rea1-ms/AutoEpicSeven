@@ -62,6 +62,10 @@
       "name": "聖域",
       "help": ""
     },
+    "Knights": {
+      "name": "ギルド",
+      "help": "ギルド自動化：出席報酬、遠征、ワールドボス。"
+    },
     "SecretShop": {
       "name": "シークレットショップ",
       "help": ""
@@ -1272,6 +1276,28 @@
       "B": "B以上"
     }
   },
+  "Knights": {
+    "_info": {
+      "name": "ギルド設定",
+      "help": "ギルド機能の有効化とサブ機能設定。"
+    },
+    "ClaimSigninRateReward": {
+      "name": "出席報酬を受取",
+      "help": "ギルドホームで出席報酬を自動受取します。"
+    },
+    "Expedition": {
+      "name": "ギルド遠征",
+      "help": "遠征画面に入り、有効化されたサブ機能を実行します。"
+    },
+    "TeamBattle": {
+      "name": "ギルド戦（仮実装）",
+      "help": "現状はページ遷移のみ。OCR は今後実装予定です。"
+    },
+    "WorldBoss": {
+      "name": "ワールドボス",
+      "help": "ワールドボス基本フローを実行し、回数切れで戻ります。"
+    }
+  },
   "SecretShop": {
     "_info": {
       "name": "秘密商店設定",
@@ -1886,7 +1912,9 @@
     },
     "Text": {
       "InvalidFeedBack": "フォーマットエラー。 例：{0}",
-      "Clear": "消除"
+      "Clear": "消除",
+      "KnightsTeamBattleTodo": "ギルド戦 OCR 実装予定",
+      "KnightsNoStaminaTodo": "ワールドボス体力不足処理は実装予定"
     }
   }
 }

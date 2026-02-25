@@ -101,6 +101,16 @@ MAIN_GOTO_STORE = ButtonWrapper(
     ),
     global_en=None,
 )
+MENU_GOTO_KNIGHTS = ButtonWrapper(
+    name='MENU_GOTO_KNIGHTS',
+    share=Button(
+        file='./assets/share/base/page/MENU_GOTO_KNIGHTS.png',
+        area=(1078, 373, 1095, 390),
+        search=(1058, 353, 1115, 410),
+        color=(161, 171, 178),
+        button=(1078, 373, 1095, 390),
+    ),
+)
 MENU_GOTO_MAIN = ButtonWrapper(
     name='MENU_GOTO_MAIN',
     share=Button(

@@ -168,6 +168,12 @@ class GeneratedConfig:
     Sanctuary_Monthly = True
     Sanctuary_RewardTier = 'A'  # A, B
 
+    # Group `Knights`
+    Knights_ClaimSigninRateReward = True
+    Knights_Expedition = True
+    Knights_TeamBattle = True
+    Knights_WorldBoss = True
+
     # Group `SecretShop`
     SecretShop_OnlyFree = True
     SecretShop_MaxRefresh = 10

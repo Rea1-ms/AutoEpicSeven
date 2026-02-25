@@ -62,6 +62,10 @@
       "name": "聖域",
       "help": ""
     },
+    "Knights": {
+      "name": "騎士團",
+      "help": "騎士團相關日常：簽到加成獎勵、團戰占位、世界 Boss。"
+    },
     "SecretShop": {
       "name": "秘密商店",
       "help": ""
@@ -1272,6 +1276,28 @@
       "B": "B及以上"
     }
   },
+  "Knights": {
+    "_info": {
+      "name": "騎士團設定",
+      "help": "騎士團任務總開關與子功能設定。"
+    },
+    "ClaimSigninRateReward": {
+      "name": "領取簽到加成獎勵",
+      "help": "在騎士團首頁偵測到可領取時自動點擊領取。"
+    },
+    "Expedition": {
+      "name": "騎士團遠征",
+      "help": "進入遠征面板並執行已啟用的子模組。"
+    },
+    "TeamBattle": {
+      "name": "團戰（占位）",
+      "help": "僅進入團戰頁面並預留後續 OCR 邏輯。"
+    },
+    "WorldBoss": {
+      "name": "世界 Boss",
+      "help": "自動執行世界 Boss 基礎流程，次數用盡後返回騎士團。"
+    }
+  },
   "SecretShop": {
     "_info": {
       "name": "秘密商店設定",
@@ -1886,7 +1912,9 @@
     },
     "Text": {
       "InvalidFeedBack": "格式錯誤。 示例：{0}",
-      "Clear": "清除"
+      "Clear": "清除",
+      "KnightsTeamBattleTodo": "團戰 OCR 功能待實作",
+      "KnightsNoStaminaTodo": "世界 Boss 體力不足處理待實作"
     }
   }
 }

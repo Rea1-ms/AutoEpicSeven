@@ -4,6 +4,14 @@ from tasks.base.assets.assets_base_page import *
 from tasks.base.assets.assets_base_main_page import MENU, MENU_CLOSE, WHITE_STAR
 from tasks.secret_shop.assets.assets_secret_shop import SECRET_SHOP_CHECK
 from tasks.store.assets.assets_store import STORE_CHECK
+from tasks.knights.assets.assets_knights import KNIGHTS_CHECK
+from tasks.knights.assets.assets_knights_expedition import (
+    EXPEDITION,
+    KNIGHTS_CREST,
+    READY_TO_FIGHT,
+    TEAM_BATTLE,
+    WORLD_BOSS,
+)
 from tasks.sanctuary.assets.assets_sanctuary import (
     ALCHEMISTS_TOWER,
     ALCHEMISTS_TOWER_CHECK,
@@ -146,6 +154,27 @@ page_main.link(MAIN_GOTO_STORE, destination=page_store)
 page_pets = Page(PETS_CHECK)
 page_pets.link(MENU, destination=page_menu)
 page_menu.link(MENU_GOTO_PETS, destination=page_pets)
+
+# Knights
+page_knights = Page(KNIGHTS_CHECK)
+page_knights.link(MENU, destination=page_menu)
+page_menu.link(MENU_GOTO_KNIGHTS, destination=page_knights)
+
+# Knights sub pages
+# Expedition panel check uses TEAM_BATTLE entrance button.
+page_knights_expedition = Page(TEAM_BATTLE)
+page_knights_expedition.link(BACK, destination=page_main)
+page_knights.link(EXPEDITION, destination=page_knights_expedition)
+
+# Team battle home page
+page_knights_team_battle = Page(KNIGHTS_CREST)
+page_knights_team_battle.link(BACK, destination=page_knights)
+page_knights_expedition.link(TEAM_BATTLE, destination=page_knights_team_battle)
+
+# World boss home page
+page_knights_world_boss = Page(READY_TO_FIGHT)
+page_knights_world_boss.link(BACK, destination=page_knights)
+page_knights_expedition.link(WORLD_BOSS, destination=page_knights_world_boss)
 
 # # Battle Pass
 # page_battle_pass = Page(BATTLE_PASS_CHECK)

@@ -25,6 +25,9 @@ Assignment:
 Freebies:
   Scheduler:
     Enable: true
+Knights:
+  Scheduler:
+    Enable: true
 
 # ==================== Weekly ====================
 
