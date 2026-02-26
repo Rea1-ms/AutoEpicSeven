@@ -40,7 +40,7 @@ BROADCAST = ButtonWrapper(
     share=Button(
         file='./assets/share/base/popup/BROADCAST.png',
         area=(445, 117, 498, 165),
-        search=(425, 97, 518, 185),
+        search=(356, 97, 502, 192),
         color=(223, 179, 167),
         button=(445, 117, 498, 165),
     ),
@@ -164,7 +164,7 @@ POPUP_CONFIRM = ButtonWrapper(
     global_cn=Button(
         file='./assets/global_cn/base/popup/POPUP_CONFIRM.png',
         area=(728, 450, 768, 470),
-        search=(708, 430, 788, 490),
+        search=(699, 428, 787, 578),
         color=(120, 132, 149),
         button=(728, 450, 768, 470),
     ),

@@ -19,10 +19,10 @@ BACK = ButtonWrapper(
     name='BACK',
     share=Button(
         file='./assets/share/base/page/BACK.png',
-        area=(23, 14, 52, 51),
-        search=(3, 0, 72, 71),
-        color=(109, 111, 114),
-        button=(23, 14, 52, 51),
+        area=(23, 19, 46, 44),
+        search=(3, 0, 66, 64),
+        color=(145, 151, 158),
+        button=(23, 19, 46, 44),
     ),
 )
 GACHA_CHECK = ButtonWrapper(

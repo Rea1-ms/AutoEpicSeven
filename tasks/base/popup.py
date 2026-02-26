@@ -132,22 +132,22 @@ class PopupHandler(ModuleBase):
         """
         if not hasattr(self, '_broadcast_confirm_pending'):
             self._broadcast_confirm_pending = False
-        if not hasattr(self, '_broadcast_ocr_logged'):
-            self._broadcast_ocr_logged = False
+        # if not hasattr(self, '_broadcast_ocr_logged'):
+        #     self._broadcast_ocr_logged = False
 
         if self.appear_then_click(BROADCAST, interval=interval):
             self._broadcast_confirm_pending = True
-            self._broadcast_ocr_logged = False
+            # self._broadcast_ocr_logged = False
             logger.info('Broadcast opened')
             return True
 
         if self._broadcast_confirm_pending:
-            if not self._broadcast_ocr_logged:
-                self.log_broadcast_ocr()
-                self._broadcast_ocr_logged = True
+            # if not self._broadcast_ocr_logged:
+            #     self.log_broadcast_ocr()
+            #     self._broadcast_ocr_logged = True
 
             if self.appear_then_click(POPUP_CONFIRM, interval=interval):
-                self._broadcast_ocr_logged = False
+                # self._broadcast_ocr_logged = False
                 logger.info('Broadcast confirmed')
                 return True
 
