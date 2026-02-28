@@ -35,6 +35,7 @@ class Sanctuary(UI):
     """
     圣域任务
     """
+    CLAIM_SETTLE_Y_TOLERANCE = 8
 
     def _enter_sanctuary(self) -> bool:
         logger.hr("Enter Sanctuary", level=1)
@@ -75,7 +76,9 @@ class Sanctuary(UI):
 
     def _daily_claim_rewards(self):
         logger.info("Daily: claim rewards")
-        timeout = Timer(10, count=20).start()
+        timeout = Timer(20, count=40).start()
+        no_action_confirm = Timer(2, count=6).start()
+        self.interval_clear(CARE)
         while 1:
             self.device.screenshot()
 
@@ -84,27 +87,107 @@ class Sanctuary(UI):
 
             if self.handle_touch_to_close():
                 timeout.reset()
+                no_action_confirm.reset()
                 continue
 
-            if self.appear(CARE, interval=1, similarity=0.8):
+            if self._care_ready(interval=1):
                 self.device.click(CARE)
-                # care 按完之后得重新截图，因为可能会多一个红点（魔罗戈拉熟了）
-                self.device.screenshot()
+                self._wait_daily_claim_settle()
                 timeout.reset()
+                no_action_confirm.reset()
                 continue
 
-            matches = CLAIM_REWARDS.match_multi_template(self.device.image)
+            matches = CLAIM_REWARDS.match_multi_template(self.device.image, threshold=20)
             if matches:
-                for btn in matches:
-                    self.device.click(btn)
-                # 领取后常有弹窗，立刻处理一次
-                self.device.screenshot()
-                if self.handle_touch_to_close():
-                    timeout.reset()
-                    continue
+                # One-by-one claim is more stable than batch clicking.
+                target = sorted(matches, key=lambda x: x.area[1])[0]
+                self.device.click(target)
+                self._wait_daily_claim_settle()
                 timeout.reset()
+                no_action_confirm.reset()
                 continue
-            break
+
+            if self.ui_additional():
+                timeout.reset()
+                no_action_confirm.reset()
+                continue
+            if self.handle_network_error():
+                timeout.reset()
+                no_action_confirm.reset()
+                continue
+
+            if no_action_confirm.reached():
+                break
+
+    def _care_ready(self, interval=1) -> bool:
+        """
+        CARE uses luma + color double check to avoid overlay/shadow false positives.
+        """
+        self.device.stuck_record_add(CARE)
+
+        if interval and not self.interval_is_reached(CARE, interval=interval):
+            return False
+
+        appear = False
+        if CARE.match_template_luma(self.device.image, similarity=0.8):
+            if CARE.match_color(self.device.image, threshold=30):
+                appear = True
+
+        if appear and interval:
+            self.interval_reset(CARE, interval=interval)
+
+        return appear
+
+    def _daily_claim_signature(self) -> tuple[int, int]:
+        matches = CLAIM_REWARDS.match_multi_template(self.device.image, threshold=20)
+        if not matches:
+            return 0, -1
+        target = sorted(matches, key=lambda x: x.area[1])[0]
+        y_center = int((target.area[1] + target.area[3]) / 2)
+        return len(matches), y_center
+
+    def _wait_daily_claim_settle(self) -> bool:
+        """
+        Wait for claim list to stop moving after click/touch-to-close transitions.
+        """
+        timeout = Timer(2, count=6).start()
+        stable_count = 0
+        last_signature = None
+
+        while 1:
+            self.device.screenshot()
+
+            if timeout.reached():
+                return False
+
+            if self.ui_additional():
+                timeout.reset()
+                stable_count = 0
+                last_signature = None
+                continue
+            if self.handle_network_error():
+                timeout.reset()
+                stable_count = 0
+                last_signature = None
+                continue
+            if self.handle_touch_to_close(interval=1):
+                timeout.reset()
+                stable_count = 0
+                last_signature = None
+                continue
+
+            signature = self._daily_claim_signature()
+            if last_signature is None:
+                stable_count = 1
+            elif signature[0] == last_signature[0] and (
+                    signature[1] < 0 or abs(signature[1] - last_signature[1]) <= self.CLAIM_SETTLE_Y_TOLERANCE):
+                stable_count += 1
+            else:
+                stable_count = 1
+            last_signature = signature
+
+            if stable_count >= 2:
+                return True
 
     def run_daily(self) -> bool:
         if not self._enter_sanctuary():
@@ -131,7 +214,7 @@ class Sanctuary(UI):
             if self.appear(ALCHEMISTS_TOWER_CHECK):
                 return True
 
-            if self.appear_then_click(ALCHEMISTS_TOWER, interval=2):
+            if self.appear_then_click(ALCHEMISTS_TOWER, interval=1):
                 continue
 
             if self.ui_additional():
@@ -206,7 +289,7 @@ class Sanctuary(UI):
                 continue
 
             # Reward tier check
-            tier = getattr(self.config, "Sanctuary_RewardTier", "A")
+            tier = self.config.Sanctuary_RewardTier
             if tier == "A":
                 if self.appear(REWARDS_TIER_A, interval=1):
                     if self.appear_then_click(CUSTODY, interval=2):
@@ -243,9 +326,9 @@ class Sanctuary(UI):
             from tasks.login.login import Login
             Login(self.config, device=self.device).app_start()
 
-        run_daily = getattr(self.config, "Sanctuary_Daily", True)
-        run_weekly = getattr(self.config, "Sanctuary_Weekly", True)
-        run_monthly = getattr(self.config, "Sanctuary_Monthly", True)
+        run_daily = self.config.Sanctuary_Daily
+        run_weekly = self.config.Sanctuary_Weekly
+        run_monthly = self.config.Sanctuary_Monthly
 
         if not any([run_daily, run_weekly, run_monthly]):
             logger.warning("Sanctuary: all sub tasks disabled")
