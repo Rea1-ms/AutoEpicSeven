@@ -1,6 +1,8 @@
 from module.base.timer import Timer
+from module.exception import RequestHumanTakeover
 from module.logger import logger
 from module.ocr.ocr import DigitCounter
+from tasks.base.assets.assets_base_popup import POPUP_CONFIRM
 from tasks.base.page import page_knights
 from tasks.knights.assets.assets_knights_expedition import (
     KNIGHTS_CREST,
@@ -70,8 +72,7 @@ class KnightsTeamBattleMixin:
 
     def run_team_battle(self, skip_first_screenshot=True) -> bool:
         logger.info("Knights expedition: team battle")
-        timeout = Timer(30, count=90).start()
-        no_progress_confirm = Timer(4, count=12).start()
+        timeout = Timer(120, count=360).start()
         state = self.TEAM_BATTLE_STATE_ENTER
 
         while 1:
@@ -79,6 +80,13 @@ class KnightsTeamBattleMixin:
                 skip_first_screenshot = False
             else:
                 self.device.screenshot()
+
+            if self.appear(POPUP_CONFIRM):
+                raise RequestHumanTakeover(
+                    "Detected an unfinished Guild War battle. "
+                    "Please complete it manually, restart AES, "
+                    "or disable GVG-related tasks."
+                )
 
             if timeout.reached():
                 logger.warning("Team battle flow timeout")
@@ -96,7 +104,6 @@ class KnightsTeamBattleMixin:
                 self.device.click(TEAM_BATTLE)
                 state = self.TEAM_BATTLE_STATE_SETTLEMENT
                 timeout.reset()
-                no_progress_confirm.reset()
                 continue
 
             if self.appear(TEAM_BATTLE_RESULT_CONFIRM):
@@ -105,32 +112,17 @@ class KnightsTeamBattleMixin:
             # Settlement can contain multiple confirms in a row.
             if self.appear_then_click(TEAM_BATTLE_RESULT_CONFIRM, interval=1):
                 timeout.reset()
-                no_progress_confirm.reset()
                 continue
 
             # If settlement sends us back to expedition page, re-enter team battle.
             if state == self.TEAM_BATTLE_STATE_SETTLEMENT and self._is_team_battle_ready(interval=1):
                 self.device.click(TEAM_BATTLE)
                 timeout.reset()
-                no_progress_confirm.reset()
                 continue
 
-            if self.handle_touch_to_close(interval=1):
-                timeout.reset()
-                no_progress_confirm.reset()
-                continue
-            if self.ui_additional():
-                timeout.reset()
-                no_progress_confirm.reset()
-                continue
             if self.handle_network_error():
                 timeout.reset()
-                no_progress_confirm.reset()
                 continue
-
-            if no_progress_confirm.reached():
-                logger.warning(f"Team battle no progress in state={state}")
-                return False
 
     def _back_to_knights(self, skip_first_screenshot=True) -> bool:
         self.ui_goto(page_knights, skip_first_screenshot=skip_first_screenshot)
