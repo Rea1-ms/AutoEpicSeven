@@ -242,6 +242,5 @@ class Gacha(UI):
                 return True
             return False
         self._handle_summon_flow()
-        self.ui_goto_main()
         self.config.task_delay(server_update=True)
         return True
