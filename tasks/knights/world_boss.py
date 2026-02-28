@@ -16,12 +16,15 @@ from tasks.knights.assets.assets_knights_expedition import (
     RANK,
     SKIP,
     WORLD_BOSS,
+    WORLD_BOSS_TOUCH_TO_CLOSE,
 )
 
 
 class KnightsWorldBossMixin:
     READY_TO_FIGHT_LUMA_SIMILARITY = 0.8
     READY_TO_FIGHT_COLOR_THRESHOLD = 30
+    CHOOSE_TEAM_LUMA_SIMILARITY = 0.8
+    CHOOSE_TEAM_COLOR_THRESHOLD = 30
     WORLD_BOSS_FORM_RETRY_SECONDS = 4
     WORLD_BOSS_AUTO_CONFIG_RETRY_SECONDS = 1.2
     WORLD_BOSS_READY_RETRY_SECONDS = 2
@@ -69,6 +72,47 @@ class KnightsWorldBossMixin:
         """
         return False
 
+    def _is_choose_team_ready(self, interval=0) -> bool:
+        """
+        CHOOSE_TEAM uses luma + color double check:
+            luma match + color match => clickable.
+        """
+        self.device.stuck_record_add(CHOOSE_TEAM)
+
+        if interval and not self.interval_is_reached(CHOOSE_TEAM, interval=interval):
+            return False
+
+        appear = False
+        if CHOOSE_TEAM.match_template_luma(self.device.image, similarity=self.CHOOSE_TEAM_LUMA_SIMILARITY):
+            if CHOOSE_TEAM.match_color(self.device.image, threshold=self.CHOOSE_TEAM_COLOR_THRESHOLD):
+                appear = True
+
+        if appear and interval:
+            self.interval_reset(CHOOSE_TEAM, interval=interval)
+
+        return appear
+
+    def _is_choose_team_exhausted(self) -> bool:
+        """
+        CHOOSE_TEAM template appears but color mismatch:
+            means this account has no attempts left today.
+        """
+        if CHOOSE_TEAM.match_template_luma(self.device.image, similarity=self.CHOOSE_TEAM_LUMA_SIMILARITY):
+            return not CHOOSE_TEAM.match_color(
+                self.device.image, threshold=self.CHOOSE_TEAM_COLOR_THRESHOLD
+            )
+        return False
+
+    def _handle_world_boss_touch_to_close(self, interval=0) -> bool:
+        """
+        Handle world-boss-only colored "touch to close" overlay.
+        Keep it local to world boss flow to avoid global popup side effects.
+        """
+        if self.appear_then_click(WORLD_BOSS_TOUCH_TO_CLOSE, interval=interval):
+            logger.info("World boss: closed entry touch-to-close overlay")
+            return True
+        return False
+
     def _enter_world_boss(self, skip_first_screenshot=True) -> bool:
         logger.info("Knights: enter world boss")
         self.ui_goto(page_knights_world_boss, skip_first_screenshot=skip_first_screenshot)
@@ -82,6 +126,7 @@ class KnightsWorldBossMixin:
         """
         timeout = Timer(120, count=300).start()
         exhausted_confirm = Timer(1, count=2).start()
+        choose_team_exhausted_confirm = Timer(1, count=2).start()
         settlement_progress = False
         stage = self.WORLD_BOSS_STAGE_ENTRY
         ready_retry = Timer(self.WORLD_BOSS_READY_RETRY_SECONDS, count=0).start()
@@ -130,9 +175,21 @@ class KnightsWorldBossMixin:
                 ready_pending = False
 
             if stage == self.WORLD_BOSS_STAGE_ENTRY:
+                if self._handle_world_boss_touch_to_close(interval=0.6):
+                    timeout.reset()
+                    continue
+
                 # Sometimes CHOOSE_TEAM appears before check marker is stable.
-                if self.appear_then_click(CHOOSE_TEAM, interval=1):
+                if self._is_choose_team_exhausted():
+                    if choose_team_exhausted_confirm.reached():
+                        logger.info("World boss chances exhausted (CHOOSE_TEAM gray)")
+                        return "exhausted"
+                else:
+                    choose_team_exhausted_confirm.reset()
+
+                if self._is_choose_team_ready(interval=1):
                     logger.info("World boss: CHOOSE_TEAM appeared before check marker")
+                    self.device.click(CHOOSE_TEAM)
                     stage = self.WORLD_BOSS_STAGE_SELECT
                     ready_pending = False
                     timeout.reset()
@@ -156,6 +213,13 @@ class KnightsWorldBossMixin:
                     continue
 
             if stage == self.WORLD_BOSS_STAGE_SELECT:
+                if self._is_choose_team_exhausted():
+                    if choose_team_exhausted_confirm.reached():
+                        logger.info("World boss chances exhausted (CHOOSE_TEAM gray)")
+                        return "exhausted"
+                else:
+                    choose_team_exhausted_confirm.reset()
+
                 if self.appear(FORM_A_TEAM):
                     logger.info("World boss: FORM_A_TEAM -> team setup")
                     self.device.click(FORM_A_TEAM)
@@ -167,7 +231,8 @@ class KnightsWorldBossMixin:
                     timeout.reset()
                     continue
 
-                if self.appear_then_click(CHOOSE_TEAM, interval=2):
+                if self._is_choose_team_ready(interval=2):
+                    self.device.click(CHOOSE_TEAM)
                     rank_selected = False
                     timeout.reset()
                     continue
@@ -273,10 +338,7 @@ class KnightsWorldBossMixin:
             if self.handle_ad_buff_x_close(interval=1):
                 timeout.reset()
                 continue
-            if self.handle_touch_to_close(interval=1):
-                timeout.reset()
-                continue
-            if self.ui_additional():
+            if self._handle_world_boss_touch_to_close(interval=0.6):
                 timeout.reset()
                 continue
             if self.handle_network_error():

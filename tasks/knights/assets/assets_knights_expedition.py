@@ -197,3 +197,13 @@ WORLD_BOSS = ButtonWrapper(
         button=(583, 469, 698, 576),
     ),
 )
+WORLD_BOSS_TOUCH_TO_CLOSE = ButtonWrapper(
+    name='WORLD_BOSS_TOUCH_TO_CLOSE',
+    share=Button(
+        file='./assets/share/knights/expedition/WORLD_BOSS_TOUCH_TO_CLOSE.png',
+        area=(628, 534, 650, 549),
+        search=(626, 534, 653, 571),
+        color=(40, 32, 21),
+        button=(628, 534, 650, 549),
+    ),
+)
