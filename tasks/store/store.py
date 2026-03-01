@@ -55,6 +55,7 @@ class Store(UI):
     SCROLL_END = (640, 350)
     SCROLL_SETTLE_Y_TOLERANCE = 8
     PURCHASE_SWITCH_COOLDOWN_SECONDS = 1
+    SUB_STORE_SCROLL_INTERVAL_SECONDS = 1
 
     def __init__(self, config, device, task='Store'):
         super().__init__(config, device=device, task=task)
@@ -270,10 +271,28 @@ class Store(UI):
     def _is_conquest_store(self) -> bool:
         return self.appear(self.conquest_store_check)
 
+    def _scroll_sub_store_list_once(self, downward=True):
+        """
+        Scroll right-side sub-store list to search entries that are out of viewport.
+        """
+        x1, y1, x2, y2 = self.sub_store_search_asset.area
+        x = (x1 + x2) // 2
+        top = y1 + 80
+        bottom = y2 - 80
+        if downward:
+            start = (x, bottom)
+            end = (x, top)
+        else:
+            start = (x, top)
+            end = (x, bottom)
+        self.device.swipe(start, end, duration=(0.2, 0.3))
+
     def _open_sub_store(self, name: str, entry: ButtonWrapper, check: Callable[[], bool]) -> bool:
         logger.info(f'Open {name}')
-        timeout = Timer(8, count=20).start()
+        timeout = Timer(12, count=30).start()
         reclick = Timer(2, count=0).start()
+        scroll_retry = Timer(self.SUB_STORE_SCROLL_INTERVAL_SECONDS, count=0).start()
+        scroll_downward = True
         clicked_entry = False
 
         while 1:
@@ -288,7 +307,7 @@ class Store(UI):
                 self._save_debug_image(f'open_{name.replace(" ", "_")}_timeout')
                 return False
 
-            if clicked_entry and check():
+            if check():
                 return True
 
             if (not clicked_entry or reclick.reached()) and self.appear_then_click(entry, interval=1):
@@ -301,6 +320,14 @@ class Store(UI):
                 timeout.reset()
                 continue
             if self.handle_network_error():
+                timeout.reset()
+                continue
+
+            if not clicked_entry and scroll_retry.reached():
+                logger.info(f'Open {name}: entry not visible, scroll sub-store list')
+                self._scroll_sub_store_list_once(downward=scroll_downward)
+                scroll_downward = not scroll_downward
+                scroll_retry.reset()
                 timeout.reset()
                 continue
 
