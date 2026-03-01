@@ -64,7 +64,7 @@
     },
     "Knights": {
       "name": "骑士团",
-      "help": "骑士团相关日常：签到加成奖励、团战占位、世界 Boss。"
+      "help": "骑士团相关日常：签到加成奖励、支援、团战占位、世界 Boss。"
     },
     "SecretShop": {
       "name": "秘密商店",
@@ -1285,6 +1285,26 @@
       "name": "领取签到加成奖励",
       "help": "在骑士团主页检测到可领取时自动点击领取。"
     },
+    "WeeklyTask": {
+      "name": "骑士团周常奖励",
+      "help": "进入骑士团周常页面，领取可领取的周常奖励与积分奖励。"
+    },
+    "Donate": {
+      "name": "骑士团捐赠",
+      "help": "在骑士团捐赠页点击所有可用捐赠按钮，直到当前页无可捐赠项目。"
+    },
+    "Support": {
+      "name": "骑士团支援",
+      "help": "进入支援页面并按配置执行捐赠与请求。"
+    },
+    "DonateLowerLevelFairyFlower": {
+      "name": "捐赠下级精灵之花",
+      "help": "在骑士团支援中向他人捐赠下级精灵之花。"
+    },
+    "DonateBeginnerPenguin": {
+      "name": "捐赠初级企鹅",
+      "help": "在骑士团支援中向他人捐赠初级企鹅。"
+    },
     "Expedition": {
       "name": "骑士团远征",
       "help": "进入远征面板并执行已启用的子模块。"
@@ -1296,6 +1316,12 @@
     "WorldBoss": {
       "name": "世界 Boss",
       "help": "自动执行世界 Boss 基础流程，次数用尽后返回骑士团。"
+    },
+    "RequestItem": {
+      "name": "支援请求物品",
+      "help": "在骑士团支援中选择要发起请求的物品（二选一）。",
+      "LowerLevelFairyFlower": "下级精灵之花",
+      "BeginnerPenguin": "初级企鹅"
     }
   },
   "SecretShop": {

@@ -252,9 +252,17 @@ Sanctuary:
 
 Knights:
   ClaimSigninRateReward: true
+  WeeklyTask: true
+  Donate: true
+  Support: true
+  DonateLowerLevelFairyFlower: true
+  DonateBeginnerPenguin: true
   Expedition: true
   TeamBattle: true
   WorldBoss: true
+  RequestItem:
+    value: LowerLevelFairyFlower
+    option: [ LowerLevelFairyFlower, BeginnerPenguin ]
 
 SecretShop:
   OnlyFree: true

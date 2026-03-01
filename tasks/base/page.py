@@ -10,8 +10,12 @@ from tasks.knights.assets.assets_knights_expedition import (
     KNIGHTS_CREST,
     READY_TO_FIGHT,
     TEAM_BATTLE,
+    WAITING_FOR_WAR,
     WORLD_BOSS,
 )
+from tasks.knights.assets.assets_knights_donate import DONATE, DONATE_CHECK
+from tasks.knights.assets.assets_knights_support import SUPPORT, SUPPORT_CHECK
+from tasks.knights.assets.assets_knights_weekly_task import WEEKLY_TASK, WEEKLY_TASK_CHECK
 from tasks.sanctuary.assets.assets_sanctuary import (
     ALCHEMISTS_TOWER,
     ALCHEMISTS_TOWER_CHECK,
@@ -161,15 +165,49 @@ page_knights.link(MENU, destination=page_menu)
 page_menu.link(MENU_GOTO_KNIGHTS, destination=page_knights)
 
 # Knights sub pages
+# Donate page
+page_knights_donate = Page(DONATE_CHECK)
+page_knights_donate.link(BACK, destination=page_knights)
+page_knights.link(DONATE, destination=page_knights_donate)
+
+# Support page
+page_knights_support = Page(SUPPORT_CHECK)
+page_knights_support.link(BACK, destination=page_knights)
+page_knights.link(SUPPORT, destination=page_knights_support)
+
 # Expedition panel check uses TEAM_BATTLE entrance button.
 page_knights_expedition = Page(TEAM_BATTLE)
 page_knights_expedition.link(BACK, destination=page_main)
 page_knights.link(EXPEDITION, destination=page_knights_expedition)
 
+# Weekly task page
+page_knights_weekly_task = Page(WEEKLY_TASK_CHECK)
+page_knights_weekly_task.link(BACK, destination=page_knights)
+page_knights.link(WEEKLY_TASK, destination=page_knights_weekly_task)
+
+# Knights first-level tabs are mutually reachable.
+page_knights_donate.link(SUPPORT, destination=page_knights_support)
+page_knights_donate.link(EXPEDITION, destination=page_knights_expedition)
+page_knights_donate.link(WEEKLY_TASK, destination=page_knights_weekly_task)
+page_knights_support.link(DONATE, destination=page_knights_donate)
+page_knights_support.link(EXPEDITION, destination=page_knights_expedition)
+page_knights_support.link(WEEKLY_TASK, destination=page_knights_weekly_task)
+page_knights_expedition.link(DONATE, destination=page_knights_donate)
+page_knights_expedition.link(SUPPORT, destination=page_knights_support)
+page_knights_expedition.link(WEEKLY_TASK, destination=page_knights_weekly_task)
+page_knights_weekly_task.link(DONATE, destination=page_knights_donate)
+page_knights_weekly_task.link(SUPPORT, destination=page_knights_support)
+page_knights_weekly_task.link(EXPEDITION, destination=page_knights_expedition)
+
 # Team battle home page
 page_knights_team_battle = Page(KNIGHTS_CREST)
 page_knights_team_battle.link(BACK, destination=page_knights)
 page_knights_expedition.link(TEAM_BATTLE, destination=page_knights_team_battle)
+
+# Team battle truce page (no crest during waiting period)
+page_knights_team_battle_waiting = Page(WAITING_FOR_WAR)
+page_knights_team_battle_waiting.link(BACK, destination=page_main)
+page_knights_expedition.link(TEAM_BATTLE, destination=page_knights_team_battle_waiting)
 
 # World boss home page
 page_knights_world_boss = Page(READY_TO_FIGHT)

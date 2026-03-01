@@ -170,9 +170,15 @@ class GeneratedConfig:
 
     # Group `Knights`
     Knights_ClaimSigninRateReward = True
+    Knights_WeeklyTask = True
+    Knights_Donate = True
+    Knights_Support = True
+    Knights_DonateLowerLevelFairyFlower = True
+    Knights_DonateBeginnerPenguin = True
     Knights_Expedition = True
     Knights_TeamBattle = True
     Knights_WorldBoss = True
+    Knights_RequestItem = 'LowerLevelFairyFlower'  # LowerLevelFairyFlower, BeginnerPenguin
 
     # Group `SecretShop`
     SecretShop_OnlyFree = True

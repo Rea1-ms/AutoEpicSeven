@@ -2104,6 +2104,26 @@
         "type": "checkbox",
         "value": true
       },
+      "WeeklyTask": {
+        "type": "checkbox",
+        "value": true
+      },
+      "Donate": {
+        "type": "checkbox",
+        "value": true
+      },
+      "Support": {
+        "type": "checkbox",
+        "value": true
+      },
+      "DonateLowerLevelFairyFlower": {
+        "type": "checkbox",
+        "value": true
+      },
+      "DonateBeginnerPenguin": {
+        "type": "checkbox",
+        "value": true
+      },
       "Expedition": {
         "type": "checkbox",
         "value": true
@@ -2115,6 +2135,14 @@
       "WorldBoss": {
         "type": "checkbox",
         "value": true
+      },
+      "RequestItem": {
+        "type": "select",
+        "value": "LowerLevelFairyFlower",
+        "option": [
+          "LowerLevelFairyFlower",
+          "BeginnerPenguin"
+        ]
       }
     }
   },

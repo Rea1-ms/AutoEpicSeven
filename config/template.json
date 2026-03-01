@@ -295,9 +295,15 @@
     },
     "Knights": {
       "ClaimSigninRateReward": true,
+      "WeeklyTask": true,
+      "Donate": true,
+      "Support": true,
+      "DonateLowerLevelFairyFlower": true,
+      "DonateBeginnerPenguin": true,
       "Expedition": true,
       "TeamBattle": true,
-      "WorldBoss": true
+      "WorldBoss": true,
+      "RequestItem": "LowerLevelFairyFlower"
     }
   },
   "SecretShop": {

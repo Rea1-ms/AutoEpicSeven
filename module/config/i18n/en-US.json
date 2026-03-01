@@ -64,7 +64,7 @@
     },
     "Knights": {
       "name": "Guild",
-      "help": "Guild automation: sign-in reward, expedition flow, and World Boss."
+      "help": "Guild automation: sign-in reward, support, expedition flow, and World Boss."
     },
     "SecretShop": {
       "name": "Secret Shop",
@@ -1285,6 +1285,26 @@
       "name": "Claim Sign-in Reward",
       "help": "Automatically claim sign-in rate reward on guild home."
     },
+    "WeeklyTask": {
+      "name": "Guild Weekly Rewards",
+      "help": "Enter guild weekly page and claim available weekly task rewards and points rewards."
+    },
+    "Donate": {
+      "name": "Guild Donation",
+      "help": "Open guild donation page and click all available donate actions until none remains."
+    },
+    "Support": {
+      "name": "Guild Support",
+      "help": "Enter guild support and run donation/request flows."
+    },
+    "DonateLowerLevelFairyFlower": {
+      "name": "Donate Lower-Level Fairy Flower",
+      "help": "Donate Lower-Level Fairy Flower to guild requests in support."
+    },
+    "DonateBeginnerPenguin": {
+      "name": "Donate Beginner Penguin",
+      "help": "Donate Beginner Penguin to guild requests in support."
+    },
     "Expedition": {
       "name": "Guild Expedition",
       "help": "Enter expedition panel and run enabled sub-modules."
@@ -1296,6 +1316,12 @@
     "WorldBoss": {
       "name": "World Boss",
       "help": "Run World Boss base flow and return when attempts are exhausted."
+    },
+    "RequestItem": {
+      "name": "Support Request Item",
+      "help": "Select one item to request in guild support.",
+      "LowerLevelFairyFlower": "Lower-Level Fairy Flower",
+      "BeginnerPenguin": "Beginner Penguin"
     }
   },
   "SecretShop": {
