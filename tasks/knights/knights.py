@@ -3,11 +3,21 @@ from module.logger import logger
 from tasks.base.page import page_knights
 from tasks.base.ui import UI
 from tasks.knights.assets.assets_knights import SIGNIN_RATE_REWARD
+from tasks.knights.donate import KnightsDonateMixin
 from tasks.knights.expedition import KnightsExpeditionMixin
+from tasks.knights.support import KnightsSupportMixin
+from tasks.knights.weekly_task import KnightsWeeklyTaskMixin
 from tasks.knights.world_boss import KnightsWorldBossMixin
 
 
-class Knights(KnightsWorldBossMixin, KnightsExpeditionMixin, UI):
+class Knights(
+    KnightsWorldBossMixin,
+    KnightsExpeditionMixin,
+    KnightsSupportMixin,
+    KnightsDonateMixin,
+    KnightsWeeklyTaskMixin,
+    UI,
+):
     """
     Epic Seven 骑士团任务
     """
@@ -87,10 +97,13 @@ class Knights(KnightsWorldBossMixin, KnightsExpeditionMixin, UI):
             Login(self.config, device=self.device).app_start()
 
         run_signin = self.config.Knights_ClaimSigninRateReward
+        run_weekly_task = self.config.Knights_WeeklyTask
+        run_donate = self.config.Knights_Donate
+        run_support = self.config.Knights_Support
         run_expedition = self.config.Knights_Expedition
         run_world_boss = self.config.Knights_WorldBoss
 
-        if not any([run_signin, run_expedition, run_world_boss]):
+        if not any([run_signin, run_weekly_task, run_donate, run_support, run_expedition, run_world_boss]):
             logger.warning("Knights: all sub tasks disabled")
             self.config.task_delay(server_update=True)
             return True
@@ -102,6 +115,12 @@ class Knights(KnightsWorldBossMixin, KnightsExpeditionMixin, UI):
             self._claim_signin_reward(skip_first_screenshot=True)
 
         success = True
+        if run_weekly_task:
+            success = self.run_weekly_task(skip_first_screenshot=True) and success
+        if run_donate:
+            success = self.run_donate(skip_first_screenshot=True) and success
+        if run_support:
+            success = self.run_support(skip_first_screenshot=True) and success
         if run_expedition:
             success = self.run_expedition(skip_first_screenshot=True) and success
         if run_world_boss:
