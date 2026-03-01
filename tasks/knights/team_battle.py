@@ -9,6 +9,7 @@ from tasks.knights.assets.assets_knights_expedition import (
     OCR_KNIGHTS_CREST,
     TEAM_BATTLE,
     TEAM_BATTLE_RESULT_CONFIRM,
+    WAITING_FOR_WAR,
 )
 
 
@@ -25,6 +26,8 @@ class OcrKnightsCrest(DigitCounter):
 class KnightsTeamBattleMixin:
     TEAM_BATTLE_LUMA_SIMILARITY = 0.8
     TEAM_BATTLE_COLOR_THRESHOLD = 30
+    WAITING_FOR_WAR_LUMA_SIMILARITY = 0.8
+    WAITING_FOR_WAR_COLOR_THRESHOLD = 30
 
     TEAM_BATTLE_STATE_ENTER = "enter_expedition"
     TEAM_BATTLE_STATE_SETTLEMENT = "clear_settlement"
@@ -48,6 +51,26 @@ class KnightsTeamBattleMixin:
 
         if appear and interval:
             self.interval_reset(TEAM_BATTLE, interval=interval)
+
+        return appear
+
+    def _is_team_battle_waiting_for_war(self, interval=0) -> bool:
+        """
+        Detect guild war truce period page.
+        In truce, crest marker/count is unavailable and team battle should be skipped.
+        """
+        self.device.stuck_record_add(WAITING_FOR_WAR)
+
+        if interval and not self.interval_is_reached(WAITING_FOR_WAR, interval=interval):
+            return False
+
+        appear = False
+        if WAITING_FOR_WAR.match_template_luma(self.device.image, similarity=self.WAITING_FOR_WAR_LUMA_SIMILARITY):
+            if WAITING_FOR_WAR.match_color(self.device.image, threshold=self.WAITING_FOR_WAR_COLOR_THRESHOLD):
+                appear = True
+
+        if appear and interval:
+            self.interval_reset(WAITING_FOR_WAR, interval=interval)
 
         return appear
 
@@ -91,6 +114,10 @@ class KnightsTeamBattleMixin:
             if timeout.reached():
                 logger.warning("Team battle flow timeout")
                 return False
+
+            if self._is_team_battle_waiting_for_war(interval=1):
+                logger.info("Team battle is in truce period, skip for now")
+                return True
 
             if self._is_team_battle_home(interval=1):
                 self._ocr_knights_crest()

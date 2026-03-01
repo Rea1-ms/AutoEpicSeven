@@ -187,6 +187,16 @@ TEAM_BATTLE_RESULT_CONFIRM = ButtonWrapper(
     ),
     global_en=None,
 )
+WAITING_FOR_WAR = ButtonWrapper(
+    name='WAITING_FOR_WAR',
+    share=Button(
+        file='./assets/share/knights/expedition/WAITING_FOR_WAR.png',
+        area=(508, 518, 541, 550),
+        search=(488, 498, 561, 570),
+        color=(45, 93, 30),
+        button=(508, 518, 541, 550),
+    ),
+)
 WORLD_BOSS = ButtonWrapper(
     name='WORLD_BOSS',
     share=Button(
