@@ -66,6 +66,10 @@
       "name": "Guild",
       "help": "Guild automation: sign-in reward, support, expedition flow, and World Boss."
     },
+    "Arena": {
+      "name": "Arena",
+      "help": "Enter arena and handle entry reward branch."
+    },
     "SecretShop": {
       "name": "Secret Shop",
       "help": ""
@@ -1322,6 +1326,16 @@
       "help": "Select one item to request in guild support.",
       "LowerLevelFairyFlower": "Lower-Level Fairy Flower",
       "BeginnerPenguin": "Beginner Penguin"
+    }
+  },
+  "Arena": {
+    "_info": {
+      "name": "Arena",
+      "help": "Arena task options."
+    },
+    "ClaimWeeklyRewards": {
+      "name": "Claim Weekly Rewards",
+      "help": "Automatically claim weekly rewards when the popup appears during arena entry."
     }
   },
   "SecretShop": {

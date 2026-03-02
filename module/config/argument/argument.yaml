@@ -264,6 +264,9 @@ Knights:
     value: LowerLevelFairyFlower
     option: [ LowerLevelFairyFlower, BeginnerPenguin ]
 
+Arena:
+  ClaimWeeklyRewards: true
+
 SecretShop:
   OnlyFree: true
   MaxRefresh: 10

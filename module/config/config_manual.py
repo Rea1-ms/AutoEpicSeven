@@ -10,7 +10,7 @@ class ManualConfig:
 
     SCHEDULER_PRIORITY = """
     Restart
-    > SecretShop > Store > Sanctuary > Knights > Pets > Gacha
+    > SecretShop > Store > Sanctuary > Knights > Arena > Pets > Gacha
     """
 
     """

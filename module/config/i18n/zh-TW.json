@@ -66,6 +66,10 @@
       "name": "騎士團",
       "help": "騎士團相關日常：簽到加成獎勵、支援、團戰占位、世界 Boss。"
     },
+    "Arena": {
+      "name": "競技場",
+      "help": "進入競技場並處理入口獎勵分支。"
+    },
     "SecretShop": {
       "name": "秘密商店",
       "help": ""
@@ -1322,6 +1326,16 @@
       "help": "在騎士團支援中選擇要發起請求的物品（二選一）。",
       "LowerLevelFairyFlower": "下級精靈之花",
       "BeginnerPenguin": "初級企鵝"
+    }
+  },
+  "Arena": {
+    "_info": {
+      "name": "競技場設定",
+      "help": "競技場任務相關設定。"
+    },
+    "ClaimWeeklyRewards": {
+      "name": "領取每週獎勵",
+      "help": "進入競技場時若出現每週獎勵彈窗，則自動領取。"
     }
   },
   "SecretShop": {

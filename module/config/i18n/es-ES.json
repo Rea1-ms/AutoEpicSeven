@@ -66,6 +66,10 @@
       "name": "Gremio",
       "help": "Automatización del gremio: recompensa de inicio, apoyo, expedición y Jefe Mundial."
     },
+    "Arena": {
+      "name": "Arena",
+      "help": "Entrar en arena y manejar la rama de recompensas de entrada."
+    },
     "SecretShop": {
       "name": "Tienda Secreta",
       "help": ""
@@ -1322,6 +1326,16 @@
       "help": "Selecciona un material para solicitar en apoyo del gremio.",
       "LowerLevelFairyFlower": "Flor Feérica Inferior",
       "BeginnerPenguin": "Pingüino Básico"
+    }
+  },
+  "Arena": {
+    "_info": {
+      "name": "Arena",
+      "help": "Opciones de la tarea de arena."
+    },
+    "ClaimWeeklyRewards": {
+      "name": "Reclamar recompensas semanales",
+      "help": "Reclama automáticamente las recompensas semanales cuando aparece el popup al entrar en arena."
     }
   },
   "SecretShop": {

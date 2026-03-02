@@ -1,5 +1,6 @@
 from module.base.timer import Timer
 from module.logger import logger
+from tasks.base.assets.assets_base_page import BACK
 from tasks.base.page import page_knights, page_knights_world_boss
 from tasks.knights.assets.assets_knights import KNIGHTS_CHECK
 from tasks.knights.assets.assets_knights_expedition import (
@@ -67,9 +68,40 @@ class KnightsWorldBossMixin:
 
     def _world_boss_no_stamina_todo(self) -> bool:
         """
-        TODO:
-            识别无体力弹窗，并与调度器联动延后任务。
+        Handle no-stamina exchange popup during world boss battle start.
+
+        Flow:
+            1) close popup via POPUP_CANCEL
+            2) click BACK once to leave team panel
+            3) return no_stamina status and let caller navigate out
         """
+        if self.handle_popup_cancel(interval=1):
+            logger.info("World boss no stamina popup closed")
+            self._world_boss_no_stamina_pending_back = True
+            return False
+
+        if not getattr(self, "_world_boss_no_stamina_pending_back", False):
+            return False
+
+        if self.appear(READY_TO_FIGHT):
+            logger.info("World boss no stamina handled at entry page")
+            self._world_boss_no_stamina_pending_back = False
+            return True
+
+        if any(
+            [
+                self.appear(CHOOSE_TEAM_CHECK),
+                self.appear(FORM_A_TEAM),
+                self.appear(AUTO_CONFIG),
+                self.appear(BATTLE_START),
+                self.appear(EMPTY_TEAM),
+            ]
+        ):
+            logger.info("World boss no stamina: leave team panel")
+            self.device.click(BACK)
+            self._world_boss_no_stamina_pending_back = False
+            return True
+
         return False
 
     def _is_choose_team_ready(self, interval=0) -> bool:
@@ -136,6 +168,7 @@ class KnightsWorldBossMixin:
         auto_config_retry = Timer(self.WORLD_BOSS_AUTO_CONFIG_RETRY_SECONDS, count=0).start()
         auto_config_clicked = False
         rank_selected = False
+        self._world_boss_no_stamina_pending_back = False
 
         while 1:
             if skip_first_screenshot:
@@ -370,7 +403,7 @@ class KnightsWorldBossMixin:
                 return True
 
             if status == "no_stamina":
-                logger.info("World boss no stamina TODO: scheduler integration pending")
+                logger.info("World boss done: no stamina")
                 self._back_to_knights_from_world_boss(skip_first_screenshot=True)
                 return True
 

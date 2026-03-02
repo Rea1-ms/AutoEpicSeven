@@ -60,6 +60,9 @@ Daily:
     Knights:
       - Scheduler
       - Knights
+    Arena:
+      - Scheduler
+      - Arena
     SecretShop:
       - Scheduler
       - SecretShop

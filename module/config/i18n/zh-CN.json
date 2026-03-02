@@ -66,6 +66,10 @@
       "name": "骑士团",
       "help": "骑士团相关日常：签到加成奖励、支援、团战占位、世界 Boss。"
     },
+    "Arena": {
+      "name": "竞技场",
+      "help": "进入竞技场并处理入口奖励分支。"
+    },
     "SecretShop": {
       "name": "秘密商店",
       "help": ""
@@ -1322,6 +1326,16 @@
       "help": "在骑士团支援中选择要发起请求的物品（二选一）。",
       "LowerLevelFairyFlower": "下级精灵之花",
       "BeginnerPenguin": "初级企鹅"
+    }
+  },
+  "Arena": {
+    "_info": {
+      "name": "竞技场设置",
+      "help": "竞技场任务相关配置。"
+    },
+    "ClaimWeeklyRewards": {
+      "name": "领取每周奖励",
+      "help": "在进入竞技场时遇到每周奖励弹窗时自动领取。"
     }
   },
   "SecretShop": {

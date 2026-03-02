@@ -306,6 +306,17 @@
       "RequestItem": "LowerLevelFairyFlower"
     }
   },
+  "Arena": {
+    "Scheduler": {
+      "Enable": false,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "Arena",
+      "ServerUpdate": "02:00"
+    },
+    "Arena": {
+      "ClaimWeeklyRewards": true
+    }
+  },
   "SecretShop": {
     "Scheduler": {
       "Enable": false,

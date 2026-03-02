@@ -180,6 +180,9 @@ class GeneratedConfig:
     Knights_WorldBoss = True
     Knights_RequestItem = 'LowerLevelFairyFlower'  # LowerLevelFairyFlower, BeginnerPenguin
 
+    # Group `Arena`
+    Arena_ClaimWeeklyRewards = True
+
     # Group `SecretShop`
     SecretShop_OnlyFree = True
     SecretShop_MaxRefresh = 10

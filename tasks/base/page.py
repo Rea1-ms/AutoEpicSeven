@@ -1,9 +1,11 @@
 import traceback
 
 from tasks.base.assets.assets_base_page import *
+from tasks.base.assets.assets_base_popup import AD_BUFF_X_CLOSE
 from tasks.base.assets.assets_base_main_page import MENU, MENU_CLOSE, WHITE_STAR
 from tasks.secret_shop.assets.assets_secret_shop import SECRET_SHOP_CHECK
 from tasks.store.assets.assets_store import STORE_CHECK
+from tasks.arena.assets.assets_arena import ARENA_CHECK, ARENA_COMMON_ENTRY, ARENA_ENTRY
 from tasks.knights.assets.assets_knights import KNIGHTS_CHECK
 from tasks.knights.assets.assets_knights_expedition import (
     EXPEDITION,
@@ -153,6 +155,16 @@ page_main.link(MAIN_GOTO_SECRET_SHOP, destination=page_secret_shop)
 page_store = Page(STORE_CHECK)
 page_store.link(MENU, destination=page_menu)
 page_main.link(MAIN_GOTO_STORE, destination=page_store)
+
+# Arena mode-selection popup
+page_arena_mode_popup = Page(ARENA_COMMON_ENTRY)
+page_arena_mode_popup.link(AD_BUFF_X_CLOSE, destination=page_main)
+page_main.link(ARENA_ENTRY, destination=page_arena_mode_popup)
+
+# Arena
+page_arena = Page(ARENA_CHECK)
+page_arena.link(BACK, destination=page_main)
+page_arena_mode_popup.link(ARENA_COMMON_ENTRY, destination=page_arena)
 
 # Pets
 page_pets = Page(PETS_CHECK)
