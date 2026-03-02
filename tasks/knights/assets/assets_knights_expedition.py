@@ -96,7 +96,7 @@ KNIGHTS_CREST = ButtonWrapper(
     share=Button(
         file='./assets/share/knights/expedition/KNIGHTS_CREST.png',
         area=(890, 23, 910, 43),
-        search=(870, 3, 930, 63),
+        search=(832, 17, 916, 49),
         color=(173, 117, 161),
         button=(890, 23, 910, 43),
     ),
@@ -105,10 +105,10 @@ OCR_KNIGHTS_CREST = ButtonWrapper(
     name='OCR_KNIGHTS_CREST',
     share=Button(
         file='./assets/share/knights/expedition/OCR_KNIGHTS_CREST.png',
-        area=(915, 20, 955, 44),
-        search=(895, 0, 975, 64),
-        color=(78, 95, 112),
-        button=(915, 20, 955, 44),
+        area=(863, 20, 955, 44),
+        search=(843, 0, 975, 64),
+        color=(79, 78, 96),
+        button=(863, 20, 955, 44),
     ),
 )
 OPEN_ALL_BOX = ButtonWrapper(
