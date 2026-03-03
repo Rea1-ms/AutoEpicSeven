@@ -162,9 +162,8 @@ class Arena(UI):
             return True
 
         if status == "entered":
-            # Arena flow is currently entry-oriented. Use success interval so it
-            # can run again today, instead of delaying to next server update.
-            self.config.task_delay(success=True)
+            # Arena currently runs as a daily slice; schedule to next server update.
+            self.config.task_delay(server_update=True)
             return True
 
         self.config.task_delay(success=False)
