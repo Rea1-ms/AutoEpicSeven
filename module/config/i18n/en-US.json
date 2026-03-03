@@ -1251,9 +1251,9 @@
       "name": "Gacha Settings",
       "help": ""
     },
-    "OnlyFree": {
-      "name": "Free Only",
-      "help": "Skip when no free summons"
+    "CollectGoldenInheritance": {
+      "name": "Collect Golden Inheritance",
+      "help": "After summoning, click to collect when Golden Inheritance is full."
     }
   },
   "Sanctuary": {
@@ -1300,6 +1300,14 @@
     "Support": {
       "name": "Guild Support",
       "help": "Enter guild support and run donation/request flows."
+    },
+    "Shop": {
+      "name": "Guild Shop",
+      "help": "Enter guild shop and run purchase flow."
+    },
+    "BuyMorogora": {
+      "name": "Buy Morogora",
+      "help": "Buy Morogora in guild shop (weekly)."
     },
     "DonateLowerLevelFairyFlower": {
       "name": "Donate Lower-Level Fairy Flower",

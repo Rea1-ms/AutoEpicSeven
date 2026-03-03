@@ -1251,9 +1251,9 @@
       "name": "Ajustes de invocación",
       "help": ""
     },
-    "OnlyFree": {
-      "name": "Solo gratis",
-      "help": "Omitir si no hay invocaciones gratis"
+    "CollectGoldenInheritance": {
+      "name": "Recoger Herencia Dorada",
+      "help": "Tras la invocación, recoger automáticamente cuando Herencia Dorada esté llena."
     }
   },
   "Sanctuary": {
@@ -1300,6 +1300,14 @@
     "Support": {
       "name": "Apoyo de gremio",
       "help": "Entra en apoyo de gremio y ejecuta donaciones/solicitudes según la configuración."
+    },
+    "Shop": {
+      "name": "Tienda de gremio",
+      "help": "Entrar en la tienda de gremio y ejecutar la compra."
+    },
+    "BuyMorogora": {
+      "name": "Comprar Morogora",
+      "help": "Comprar Morogora en la tienda de gremio (semanal)."
     },
     "DonateLowerLevelFairyFlower": {
       "name": "Donar Flor Feérica Inferior",

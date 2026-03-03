@@ -240,7 +240,7 @@ PlannerTarget:
 # ==================== Activity ====================
 
 Gacha:
-  OnlyFree: true
+  CollectGoldenInheritance: true
 
 Sanctuary:
   Daily: true
@@ -255,6 +255,8 @@ Knights:
   WeeklyTask: true
   Donate: true
   Support: true
+  Shop: true
+  BuyMorogora: true
   DonateLowerLevelFairyFlower: true
   DonateBeginnerPenguin: true
   Expedition: true

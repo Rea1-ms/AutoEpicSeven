@@ -27,6 +27,16 @@ GACHA_STANDARD_TAB = ButtonWrapper(
     ),
     global_en=None,
 )
+GOLDEN_INHERITANCE_FULL = ButtonWrapper(
+    name='GOLDEN_INHERITANCE_FULL',
+    share=Button(
+        file='./assets/share/gacha/GOLDEN_INHERITANCE_FULL.png',
+        area=(540, 628, 571, 644),
+        search=(520, 608, 591, 664),
+        color=(69, 83, 55),
+        button=(540, 628, 571, 644),
+    ),
+)
 SUMMON_FREE_CONTINUE = ButtonWrapper(
     name='SUMMON_FREE_CONTINUE',
     cn=None,

@@ -1251,9 +1251,9 @@
       "name": "召唤设置",
       "help": ""
     },
-    "OnlyFree": {
-      "name": "仅免费召唤",
-      "help": "没有免费次数时跳过"
+    "CollectGoldenInheritance": {
+      "name": "收取金光传承石",
+      "help": "召唤结束后若金光传承石满溢则自动收取。"
     }
   },
   "Sanctuary": {
@@ -1300,6 +1300,14 @@
     "Support": {
       "name": "骑士团支援",
       "help": "进入支援页面并按配置执行捐赠与请求。"
+    },
+    "Shop": {
+      "name": "骑士团商店",
+      "help": "进入骑士团商店并执行购买。"
+    },
+    "BuyMorogora": {
+      "name": "购买魔罗戈拉",
+      "help": "在骑士团商店购买魔罗戈拉（每周）。"
     },
     "DonateLowerLevelFairyFlower": {
       "name": "捐赠下级精灵之花",

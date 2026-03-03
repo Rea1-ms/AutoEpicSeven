@@ -2018,7 +2018,7 @@
       }
     },
     "Gacha": {
-      "OnlyFree": {
+      "CollectGoldenInheritance": {
         "type": "checkbox",
         "value": true
       }
@@ -2113,6 +2113,14 @@
         "value": true
       },
       "Support": {
+        "type": "checkbox",
+        "value": true
+      },
+      "Shop": {
+        "type": "checkbox",
+        "value": true
+      },
+      "BuyMorogora": {
         "type": "checkbox",
         "value": true
       },

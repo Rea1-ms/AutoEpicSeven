@@ -269,7 +269,7 @@
       "ServerUpdate": "02:00"
     },
     "Gacha": {
-      "OnlyFree": true
+      "CollectGoldenInheritance": true
     }
   },
   "Sanctuary": {
@@ -298,6 +298,8 @@
       "WeeklyTask": true,
       "Donate": true,
       "Support": true,
+      "Shop": true,
+      "BuyMorogora": true,
       "DonateLowerLevelFairyFlower": true,
       "DonateBeginnerPenguin": true,
       "Expedition": true,

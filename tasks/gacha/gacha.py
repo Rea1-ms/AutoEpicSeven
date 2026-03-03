@@ -23,6 +23,7 @@ from tasks.base.ui import UI
 from tasks.gacha.assets.assets_gacha import (
     EPIC_BOOKMARK,
     GACHA_STANDARD_TAB,
+    GOLDEN_INHERITANCE_FULL,
     SUMMON_TEN_FREE,
     SUMMON_ONE_FREE,
     SUMMON_NEW,
@@ -41,6 +42,7 @@ class Gacha(UI):
 
     TAB_SWIPE_START = (105, 600)
     TAB_SWIPE_END = (105, 300)
+    GOLDEN_INHERITANCE_TIMEOUT_SECONDS = 6
 
     def __init__(self, config, device=None, task=None):
         super().__init__(config, device=device, task=task)
@@ -226,6 +228,40 @@ class Gacha(UI):
             if self.handle_network_error():
                 continue
 
+    def _collect_golden_inheritance_full(self, skip_first_screenshot=True) -> bool:
+        if not getattr(self.config, "Gacha_CollectGoldenInheritance", True):
+            return False
+
+        logger.info("Collect golden inheritance if full")
+        timeout = Timer(self.GOLDEN_INHERITANCE_TIMEOUT_SECONDS, count=18).start()
+        no_action_confirm = Timer(1.5, count=4).start()
+
+        while 1:
+            if skip_first_screenshot:
+                skip_first_screenshot = False
+            else:
+                self.device.screenshot()
+
+            if timeout.reached():
+                return False
+
+            if self.appear_then_click(GOLDEN_INHERITANCE_FULL, interval=1):
+                logger.info("Golden inheritance full handled")
+                return True
+
+            if self.ui_additional():
+                timeout.reset()
+                no_action_confirm.reset()
+                continue
+            if self.handle_network_error():
+                timeout.reset()
+                no_action_confirm.reset()
+                continue
+
+            if no_action_confirm.reached():
+                logger.info("Golden inheritance not full, skip")
+                return False
+
     def run(self):
         logger.hr("Gacha", level=1)
         if not self.device.app_is_running():
@@ -237,10 +273,12 @@ class Gacha(UI):
             return False
         if not self._start_summon():
             if self._no_free:
+                self._collect_golden_inheritance_full(skip_first_screenshot=True)
                 self.ui_goto_main()
                 self.config.task_delay(server_update=True)
                 return True
             return False
         self._handle_summon_flow()
+        self._collect_golden_inheritance_full(skip_first_screenshot=True)
         self.config.task_delay(server_update=True)
         return True

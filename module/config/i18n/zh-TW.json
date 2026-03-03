@@ -1251,9 +1251,9 @@
       "name": "召喚設定",
       "help": ""
     },
-    "OnlyFree": {
-      "name": "僅免費召喚",
-      "help": "沒有免費次數時跳過"
+    "CollectGoldenInheritance": {
+      "name": "收取金光傳承石",
+      "help": "召喚結束後若金光傳承石滿溢則自動收取。"
     }
   },
   "Sanctuary": {
@@ -1300,6 +1300,14 @@
     "Support": {
       "name": "騎士團支援",
       "help": "進入支援頁面並依設定執行捐贈與請求。"
+    },
+    "Shop": {
+      "name": "騎士團商店",
+      "help": "進入騎士團商店並執行購買。"
+    },
+    "BuyMorogora": {
+      "name": "購買魔羅戈拉",
+      "help": "在騎士團商店購買魔羅戈拉（每週）。"
     },
     "DonateLowerLevelFairyFlower": {
       "name": "捐贈下級精靈之花",

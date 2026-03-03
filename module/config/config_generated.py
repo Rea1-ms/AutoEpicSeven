@@ -160,7 +160,7 @@ class GeneratedConfig:
     PlannerTarget_MemoTalentLevel = 6  # 6, 5, 4, 3, 2, 1
 
     # Group `Gacha`
-    Gacha_OnlyFree = True
+    Gacha_CollectGoldenInheritance = True
 
     # Group `Sanctuary`
     Sanctuary_Daily = True
@@ -173,6 +173,8 @@ class GeneratedConfig:
     Knights_WeeklyTask = True
     Knights_Donate = True
     Knights_Support = True
+    Knights_Shop = True
+    Knights_BuyMorogora = True
     Knights_DonateLowerLevelFairyFlower = True
     Knights_DonateBeginnerPenguin = True
     Knights_Expedition = True
