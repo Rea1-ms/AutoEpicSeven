@@ -1277,7 +1277,10 @@
       "name": "Reward Tier",
       "help": "",
       "A": "A or higher",
-      "B": "B or higher"
+      "B": "B or higher",
+      "S": "S or higher",
+      "MaxMinus1": "Current max tier -1",
+      "MaxMinus2": "Current max tier -2 (floor B)"
     }
   },
   "Knights": {

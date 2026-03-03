@@ -248,7 +248,7 @@ Sanctuary:
   Monthly: true
   RewardTier:
     value: A
-    option: [ A, B ]
+    option: [ A, B, S, MaxMinus1, MaxMinus2 ]
 
 Knights:
   ClaimSigninRateReward: true

@@ -2068,7 +2068,10 @@
         "value": "A",
         "option": [
           "A",
-          "B"
+          "B",
+          "S",
+          "MaxMinus1",
+          "MaxMinus2"
         ]
       }
     }

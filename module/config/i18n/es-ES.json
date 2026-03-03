@@ -1277,7 +1277,10 @@
       "name": "Rango de recompensa",
       "help": "",
       "A": "A o superior",
-      "B": "B o superior"
+      "B": "B o superior",
+      "S": "S o superior",
+      "MaxMinus1": "Máx. actual -1",
+      "MaxMinus2": "Máx. actual -2 (mínimo B)"
     }
   },
   "Knights": {
