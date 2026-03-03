@@ -1339,6 +1339,80 @@
       "BeginnerPenguin": "初級企鵝"
     }
   },
+  "KnightsBasic": {
+    "_info": {
+      "name": "騎士團-基礎",
+      "help": "騎士團基礎功能開關。"
+    },
+    "ClaimSigninRateReward": {
+      "name": "領取簽到加成獎勵",
+      "help": "在騎士團首頁偵測到可領取時自動點擊領取。"
+    },
+    "WeeklyTask": {
+      "name": "騎士團週常獎勵",
+      "help": "進入騎士團週常頁面，領取可領取的週常獎勵與積分獎勵。"
+    }
+  },
+  "KnightsDonate": {
+    "_info": {
+      "name": "騎士團-捐贈與支援",
+      "help": "捐贈與支援相關設定。"
+    },
+    "Donate": {
+      "name": "騎士團捐贈",
+      "help": "在騎士團捐贈頁點擊所有可用捐贈按鈕，直到當前頁沒有可捐贈項目。"
+    },
+    "Support": {
+      "name": "騎士團支援",
+      "help": "進入支援頁面並依設定執行捐贈與請求。"
+    },
+    "RequestItem": {
+      "name": "支援請求物品",
+      "help": "在騎士團支援中選擇要發起請求的物品（二選一）。",
+      "LowerLevelFairyFlower": "下級精靈之花",
+      "BeginnerPenguin": "初級企鵝"
+    },
+    "DonateLowerLevelFairyFlower": {
+      "name": "捐贈下級精靈之花",
+      "help": "在騎士團支援中向他人捐贈下級精靈之花。"
+    },
+    "DonateBeginnerPenguin": {
+      "name": "捐贈初級企鵝",
+      "help": "在騎士團支援中向他人捐贈初級企鵝。"
+    }
+  },
+  "KnightsShop": {
+    "_info": {
+      "name": "騎士團-商店",
+      "help": "騎士團商店相關設定。"
+    },
+    "Shop": {
+      "name": "騎士團商店",
+      "help": "進入騎士團商店並執行購買。"
+    },
+    "BuyMorogora": {
+      "name": "購買魔羅戈拉",
+      "help": "在騎士團商店購買魔羅戈拉（每週）。"
+    }
+  },
+  "KnightsExpedition": {
+    "_info": {
+      "name": "騎士團-遠征與世界Boss",
+      "help": "遠征、團戰與世界Boss相關設定。"
+    },
+    "Expedition": {
+      "name": "騎士團遠征",
+      "help": "進入遠征面板並執行已啟用的子模組。"
+    },
+    "TeamBattle": {
+      "name": "團戰（占位）",
+      "help": "僅進入團戰頁面並預留後續 OCR 邏輯。"
+    },
+    "WorldBoss": {
+      "name": "世界 Boss",
+      "help": "自動執行世界 Boss 基礎流程，次數用盡後返回騎士團。"
+    }
+  },
   "Arena": {
     "_info": {
       "name": "競技場設定",

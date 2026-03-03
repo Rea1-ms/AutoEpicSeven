@@ -59,7 +59,10 @@ Daily:
       - Sanctuary
     Knights:
       - Scheduler
-      - Knights
+      - KnightsBasic
+      - KnightsDonate
+      - KnightsShop
+      - KnightsExpedition
     Arena:
       - Scheduler
       - Arena

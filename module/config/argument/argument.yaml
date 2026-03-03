@@ -266,6 +266,28 @@ Knights:
     value: LowerLevelFairyFlower
     option: [ LowerLevelFairyFlower, BeginnerPenguin ]
 
+KnightsBasic:
+  ClaimSigninRateReward: true
+  WeeklyTask: true
+
+KnightsDonate:
+  Donate: true
+  Support: true
+  RequestItem:
+    value: LowerLevelFairyFlower
+    option: [ LowerLevelFairyFlower, BeginnerPenguin ]
+  DonateLowerLevelFairyFlower: true
+  DonateBeginnerPenguin: true
+
+KnightsShop:
+  Shop: true
+  BuyMorogora: true
+
+KnightsExpedition:
+  Expedition: true
+  TeamBattle: true
+  WorldBoss: true
+
 Arena:
   ClaimWeeklyRewards: true
 

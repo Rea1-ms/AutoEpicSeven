@@ -182,6 +182,26 @@ class GeneratedConfig:
     Knights_WorldBoss = True
     Knights_RequestItem = 'LowerLevelFairyFlower'  # LowerLevelFairyFlower, BeginnerPenguin
 
+    # Group `KnightsBasic`
+    KnightsBasic_ClaimSigninRateReward = True
+    KnightsBasic_WeeklyTask = True
+
+    # Group `KnightsDonate`
+    KnightsDonate_Donate = True
+    KnightsDonate_Support = True
+    KnightsDonate_RequestItem = 'LowerLevelFairyFlower'  # LowerLevelFairyFlower, BeginnerPenguin
+    KnightsDonate_DonateLowerLevelFairyFlower = True
+    KnightsDonate_DonateBeginnerPenguin = True
+
+    # Group `KnightsShop`
+    KnightsShop_Shop = True
+    KnightsShop_BuyMorogora = True
+
+    # Group `KnightsExpedition`
+    KnightsExpedition_Expedition = True
+    KnightsExpedition_TeamBattle = True
+    KnightsExpedition_WorldBoss = True
+
     # Group `Arena`
     Arena_ClaimWeeklyRewards = True
 

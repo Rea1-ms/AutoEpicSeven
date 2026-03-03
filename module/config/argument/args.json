@@ -2102,7 +2102,7 @@
         "display": "hide"
       }
     },
-    "Knights": {
+    "KnightsBasic": {
       "ClaimSigninRateReward": {
         "type": "checkbox",
         "value": true
@@ -2110,7 +2110,9 @@
       "WeeklyTask": {
         "type": "checkbox",
         "value": true
-      },
+      }
+    },
+    "KnightsDonate": {
       "Donate": {
         "type": "checkbox",
         "value": true
@@ -2119,13 +2121,13 @@
         "type": "checkbox",
         "value": true
       },
-      "Shop": {
-        "type": "checkbox",
-        "value": true
-      },
-      "BuyMorogora": {
-        "type": "checkbox",
-        "value": true
+      "RequestItem": {
+        "type": "select",
+        "value": "LowerLevelFairyFlower",
+        "option": [
+          "LowerLevelFairyFlower",
+          "BeginnerPenguin"
+        ]
       },
       "DonateLowerLevelFairyFlower": {
         "type": "checkbox",
@@ -2134,7 +2136,19 @@
       "DonateBeginnerPenguin": {
         "type": "checkbox",
         "value": true
+      }
+    },
+    "KnightsShop": {
+      "Shop": {
+        "type": "checkbox",
+        "value": true
       },
+      "BuyMorogora": {
+        "type": "checkbox",
+        "value": true
+      }
+    },
+    "KnightsExpedition": {
       "Expedition": {
         "type": "checkbox",
         "value": true
@@ -2146,14 +2160,6 @@
       "WorldBoss": {
         "type": "checkbox",
         "value": true
-      },
-      "RequestItem": {
-        "type": "select",
-        "value": "LowerLevelFairyFlower",
-        "option": [
-          "LowerLevelFairyFlower",
-          "BeginnerPenguin"
-        ]
       }
     }
   },

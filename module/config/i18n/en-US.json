@@ -1339,6 +1339,80 @@
       "BeginnerPenguin": "Beginner Penguin"
     }
   },
+  "KnightsBasic": {
+    "_info": {
+      "name": "Guild - Basic",
+      "help": "Basic guild task toggles."
+    },
+    "ClaimSigninRateReward": {
+      "name": "Claim Sign-in Reward",
+      "help": "Automatically claim sign-in rate reward on guild home."
+    },
+    "WeeklyTask": {
+      "name": "Guild Weekly Rewards",
+      "help": "Enter guild weekly page and claim available weekly task rewards and points rewards."
+    }
+  },
+  "KnightsDonate": {
+    "_info": {
+      "name": "Guild - Donate & Support",
+      "help": "Donation and support related options."
+    },
+    "Donate": {
+      "name": "Guild Donation",
+      "help": "Open guild donation page and click all available donate actions until none remains."
+    },
+    "Support": {
+      "name": "Guild Support",
+      "help": "Enter guild support and run donation/request flows."
+    },
+    "RequestItem": {
+      "name": "Support Request Item",
+      "help": "Select one item to request in guild support.",
+      "LowerLevelFairyFlower": "Lower-Level Fairy Flower",
+      "BeginnerPenguin": "Beginner Penguin"
+    },
+    "DonateLowerLevelFairyFlower": {
+      "name": "Donate Lower-Level Fairy Flower",
+      "help": "Donate Lower-Level Fairy Flower to guild requests in support."
+    },
+    "DonateBeginnerPenguin": {
+      "name": "Donate Beginner Penguin",
+      "help": "Donate Beginner Penguin to guild requests in support."
+    }
+  },
+  "KnightsShop": {
+    "_info": {
+      "name": "Guild - Shop",
+      "help": "Guild shop related options."
+    },
+    "Shop": {
+      "name": "Guild Shop",
+      "help": "Enter guild shop and run purchase flow."
+    },
+    "BuyMorogora": {
+      "name": "Buy Morogora",
+      "help": "Buy Morogora in guild shop (weekly)."
+    }
+  },
+  "KnightsExpedition": {
+    "_info": {
+      "name": "Guild - Expedition & World Boss",
+      "help": "Expedition, guild war and world boss options."
+    },
+    "Expedition": {
+      "name": "Guild Expedition",
+      "help": "Enter expedition panel and run enabled sub-modules."
+    },
+    "TeamBattle": {
+      "name": "Guild War (Placeholder)",
+      "help": "Only enters guild war page for now; OCR logic is reserved."
+    },
+    "WorldBoss": {
+      "name": "World Boss",
+      "help": "Run World Boss base flow and return when attempts are exhausted."
+    }
+  },
   "Arena": {
     "_info": {
       "name": "Arena",

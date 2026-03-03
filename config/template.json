@@ -293,19 +293,25 @@
       "Command": "Knights",
       "ServerUpdate": "02:00"
     },
-    "Knights": {
+    "KnightsBasic": {
       "ClaimSigninRateReward": true,
-      "WeeklyTask": true,
+      "WeeklyTask": true
+    },
+    "KnightsDonate": {
       "Donate": true,
       "Support": true,
-      "Shop": true,
-      "BuyMorogora": true,
+      "RequestItem": "LowerLevelFairyFlower",
       "DonateLowerLevelFairyFlower": true,
-      "DonateBeginnerPenguin": true,
+      "DonateBeginnerPenguin": true
+    },
+    "KnightsShop": {
+      "Shop": true,
+      "BuyMorogora": true
+    },
+    "KnightsExpedition": {
       "Expedition": true,
       "TeamBattle": true,
-      "WorldBoss": true,
-      "RequestItem": "LowerLevelFairyFlower"
+      "WorldBoss": true
     }
   },
   "Arena": {

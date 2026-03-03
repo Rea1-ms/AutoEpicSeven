@@ -1339,6 +1339,80 @@
       "BeginnerPenguin": "Pingüino Básico"
     }
   },
+  "KnightsBasic": {
+    "_info": {
+      "name": "Gremio - Básico",
+      "help": "Interruptores básicos del gremio."
+    },
+    "ClaimSigninRateReward": {
+      "name": "Reclamar recompensa de inicio",
+      "help": "Reclama automáticamente la recompensa de inicio en el gremio."
+    },
+    "WeeklyTask": {
+      "name": "Recompensas Semanales del Gremio",
+      "help": "Entra en la página semanal del gremio y reclama las recompensas disponibles de tareas y puntos."
+    }
+  },
+  "KnightsDonate": {
+    "_info": {
+      "name": "Gremio - Donación y apoyo",
+      "help": "Opciones de donación y apoyo del gremio."
+    },
+    "Donate": {
+      "name": "Donación de Gremio",
+      "help": "Abre la página de donación del gremio y pulsa todas las acciones de donación disponibles hasta que no quede ninguna."
+    },
+    "Support": {
+      "name": "Apoyo de gremio",
+      "help": "Entra en apoyo de gremio y ejecuta donaciones/solicitudes según la configuración."
+    },
+    "RequestItem": {
+      "name": "Material de Solicitud",
+      "help": "Selecciona un material para solicitar en apoyo del gremio.",
+      "LowerLevelFairyFlower": "Flor Feérica Inferior",
+      "BeginnerPenguin": "Pingüino Básico"
+    },
+    "DonateLowerLevelFairyFlower": {
+      "name": "Donar Flor Feérica Inferior",
+      "help": "Donar Flor Feérica Inferior a solicitudes del gremio en apoyo."
+    },
+    "DonateBeginnerPenguin": {
+      "name": "Donar Pingüino Básico",
+      "help": "Donar Pingüino Básico a solicitudes del gremio en apoyo."
+    }
+  },
+  "KnightsShop": {
+    "_info": {
+      "name": "Gremio - Tienda",
+      "help": "Opciones de la tienda del gremio."
+    },
+    "Shop": {
+      "name": "Tienda de gremio",
+      "help": "Entrar en la tienda de gremio y ejecutar la compra."
+    },
+    "BuyMorogora": {
+      "name": "Comprar Morogora",
+      "help": "Comprar Morogora en la tienda de gremio (semanal)."
+    }
+  },
+  "KnightsExpedition": {
+    "_info": {
+      "name": "Gremio - Expedición y Jefe Mundial",
+      "help": "Opciones de expedición, guerra de gremio y Jefe Mundial."
+    },
+    "Expedition": {
+      "name": "Expedición del gremio",
+      "help": "Entra en expedición y ejecuta los submódulos habilitados."
+    },
+    "TeamBattle": {
+      "name": "Guerra de gremio (pendiente)",
+      "help": "Por ahora solo entra en la página; OCR queda pendiente."
+    },
+    "WorldBoss": {
+      "name": "Jefe mundial",
+      "help": "Ejecuta el flujo base del Jefe Mundial y regresa al agotarse intentos."
+    }
+  },
   "Arena": {
     "_info": {
       "name": "Arena",
