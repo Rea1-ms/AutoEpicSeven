@@ -7,9 +7,11 @@ from tasks.base.page import page_knights, page_knights_support
 from tasks.knights.assets.assets_knights_support import (
     ACTION_SEARCH,
     BEGGINER_PENGUIN,
+    BEGGINER_PENGUIN_SELECTED,
     HIT_BOTTOM,
     ITEM_SEARCH,
     LOWER_LEVEL_FAIRY_FLOWER,
+    LOWER_LEVEL_FAIRY_FLOWER_SELECTED,
     REQUEST_ACTION,
     REQUEST_BEGGINER_PENGUIN,
     REQUEST_FOR_SUPPORT,
@@ -25,6 +27,7 @@ class SupportPlan:
     name: str
     asset: ButtonWrapper
     enabled: bool
+    selected_asset: ButtonWrapper | None = None
 
 
 class KnightsSupportMixin:
@@ -55,12 +58,20 @@ class KnightsSupportMixin:
             SupportPlan(
                 name="lower_level_fairy_flower",
                 asset=LOWER_LEVEL_FAIRY_FLOWER,
-                enabled=self.config.Knights_DonateLowerLevelFairyFlower,
+                enabled=getattr(
+                    self.config,
+                    "KnightsDonate_DonateLowerLevelFairyFlower",
+                    getattr(self.config, "Knights_DonateLowerLevelFairyFlower", True),
+                ),
             ),
             SupportPlan(
                 name="beginner_penguin",
                 asset=BEGGINER_PENGUIN,
-                enabled=self.config.Knights_DonateBeginnerPenguin,
+                enabled=getattr(
+                    self.config,
+                    "KnightsDonate_DonateBeginnerPenguin",
+                    getattr(self.config, "Knights_DonateBeginnerPenguin", True),
+                ),
             ),
         ]
 
@@ -71,32 +82,24 @@ class KnightsSupportMixin:
         Backward compatibility:
             If the new select option is not available, fallback to legacy booleans.
         """
-        request_item = getattr(self.config, "Knights_RequestItem", None)
+        request_item = getattr(
+            self.config,
+            "KnightsDonate_RequestItem",
+            getattr(self.config, "Knights_RequestItem", None),
+        )
         if request_item == "LowerLevelFairyFlower":
             return SupportPlan(
                 name="request_lower_level_fairy_flower",
                 asset=REQUEST_LOWER_LEVEL_FAIRY_FLOWER,
                 enabled=True,
+                selected_asset=LOWER_LEVEL_FAIRY_FLOWER_SELECTED,
             )
         if request_item == "BeginnerPenguin":
             return SupportPlan(
                 name="request_beginner_penguin",
                 asset=REQUEST_BEGGINER_PENGUIN,
                 enabled=True,
-            )
-
-        # Legacy compatibility for existing configs before RequestItem was introduced.
-        if getattr(self.config, "Knights_RequestLowerLevelFairyFlower", False):
-            return SupportPlan(
-                name="request_lower_level_fairy_flower",
-                asset=REQUEST_LOWER_LEVEL_FAIRY_FLOWER,
-                enabled=True,
-            )
-        if getattr(self.config, "Knights_RequestBeginnerPenguin", False):
-            return SupportPlan(
-                name="request_beginner_penguin",
-                asset=REQUEST_BEGGINER_PENGUIN,
-                enabled=True,
+                selected_asset=BEGGINER_PENGUIN_SELECTED,
             )
         return None
 
@@ -281,7 +284,7 @@ class KnightsSupportMixin:
         logger.info("Knights support: request")
         timeout = Timer(self.SUPPORT_REQUEST_TIMEOUT_SECONDS, count=45).start()
         open_retry = Timer(4, count=12).start()
-        choose_retry = Timer(4, count=12).start()
+        choose_retry = Timer(6, count=18).start()
         panel_opened = False
         selected = False
         submitted = False
@@ -310,13 +313,12 @@ class KnightsSupportMixin:
             if not panel_opened:
                 if self.appear(REQUEST_ACTION):
                     panel_opened = True
-                    selected = True
+                    selected = False
+                    choose_retry.reset()
                     timeout.reset()
                     continue
                 if self._is_request_for_support_enabled(interval=1):
                     self.device.click(REQUEST_FOR_SUPPORT)
-                    panel_opened = True
-                    choose_retry.reset()
                     timeout.reset()
                     continue
                 if self._is_request_for_support_present(interval=1):
@@ -331,8 +333,13 @@ class KnightsSupportMixin:
                 continue
 
             if not selected:
-                if self.appear_then_click(plan.asset, interval=1):
+                if plan.selected_asset and self.appear(plan.selected_asset):
                     selected = True
+                    logger.info(f"Support request selected: {plan.name}")
+                    timeout.reset()
+                    continue
+
+                if self.appear_then_click(plan.asset, interval=1):
                     timeout.reset()
                     continue
 
@@ -340,14 +347,10 @@ class KnightsSupportMixin:
                     # Request panel did not open; keep open_retry running so this
                     # branch can eventually skip instead of looping forever.
                     panel_opened = False
+                    selected = False
                     continue
                 if choose_retry.reached():
-                    # Fallback: if request item is not detectable, submit current selection.
-                    if self.appear(REQUEST_ACTION):
-                        logger.info("Support request item not detected, submit current selection")
-                        selected = True
-                        continue
-                    logger.info("Configured support request item not found, skip")
+                    logger.warning("Support request item selection not confirmed, skip")
                     return True
                 continue
 

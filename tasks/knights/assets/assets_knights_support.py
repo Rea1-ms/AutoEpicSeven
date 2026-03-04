@@ -23,6 +23,16 @@ BEGGINER_PENGUIN = ButtonWrapper(
         button=(288, 296, 336, 347),
     ),
 )
+BEGGINER_PENGUIN_SELECTED = ButtonWrapper(
+    name='BEGGINER_PENGUIN_SELECTED',
+    share=Button(
+        file='./assets/share/knights/support/BEGGINER_PENGUIN_SELECTED.png',
+        area=(950, 401, 981, 422),
+        search=(930, 381, 1001, 442),
+        color=(97, 120, 69),
+        button=(950, 401, 981, 422),
+    ),
+)
 HIT_BOTTOM = ButtonWrapper(
     name='HIT_BOTTOM',
     share=Button(
@@ -51,6 +61,16 @@ LOWER_LEVEL_FAIRY_FLOWER = ButtonWrapper(
         search=(261, 146, 366, 243),
         color=(111, 113, 112),
         button=(281, 166, 346, 223),
+    ),
+)
+LOWER_LEVEL_FAIRY_FLOWER_SELECTED = ButtonWrapper(
+    name='LOWER_LEVEL_FAIRY_FLOWER_SELECTED',
+    share=Button(
+        file='./assets/share/knights/support/LOWER_LEVEL_FAIRY_FLOWER_SELECTED.png',
+        area=(1060, 401, 1091, 422),
+        search=(1040, 381, 1111, 442),
+        color=(70, 98, 51),
+        button=(1060, 401, 1091, 422),
     ),
 )
 REQUEST_ACTION = ButtonWrapper(
