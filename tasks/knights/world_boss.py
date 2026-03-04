@@ -1,5 +1,9 @@
+import re
+
+from module.base.button import ClickButton
 from module.base.timer import Timer
 from module.logger import logger
+from module.ocr.ocr import Ocr
 from tasks.base.assets.assets_base_page import BACK
 from tasks.base.page import page_knights, page_knights_world_boss
 from tasks.knights.assets.assets_knights import KNIGHTS_CHECK
@@ -16,9 +20,20 @@ from tasks.knights.assets.assets_knights_expedition import (
     READY_TO_FIGHT,
     RANK,
     SKIP,
+    OCR_WEEKLY_CONTRIBUTION,
+    WEEKLY_CONTRIBUTION_TIER_1_RECEIVED,
+    WEEKLY_CONTRIBUTION_TIER_1_LOCKED,
     WORLD_BOSS,
     WORLD_BOSS_TOUCH_TO_CLOSE,
 )
+
+
+class OcrWeeklyContribution(Ocr):
+    def after_process(self, result):
+        result = super().after_process(result)
+        result = result.replace("，", ",").replace(" ", "")
+        result = result.replace("O", "0").replace("o", "0")
+        return result
 
 
 class KnightsWorldBossMixin:
@@ -30,6 +45,9 @@ class KnightsWorldBossMixin:
     WORLD_BOSS_AUTO_CONFIG_RETRY_SECONDS = 1.2
     WORLD_BOSS_READY_RETRY_SECONDS = 2
     WORLD_BOSS_READY_PENDING_SECONDS = 2.5
+    WORLD_BOSS_WEEKLY_CONTRIBUTION_POST_CLICK_SETTLE_SECONDS = 0.35
+    WORLD_BOSS_WEEKLY_CONTRIBUTION_TIER_LUMA_SIMILARITY = 0.8
+    WORLD_BOSS_WEEKLY_CONTRIBUTION_TIER_COLOR_THRESHOLD = 30
 
     WORLD_BOSS_STAGE_ENTRY = "entry"
     WORLD_BOSS_STAGE_SELECT = "select_team"
@@ -382,6 +400,104 @@ class KnightsWorldBossMixin:
         self.ui_goto(page_knights, skip_first_screenshot=skip_first_screenshot)
         return True
 
+    @staticmethod
+    def _extract_weekly_contribution_points(texts: list[str]) -> int | None:
+        comma_candidates: list[int] = []
+        plain_candidates: list[int] = []
+
+        for text in texts:
+            for matched in re.findall(r"\d{1,3}(?:,\d{3})+", text):
+                try:
+                    comma_candidates.append(int(matched.replace(",", "")))
+                except ValueError:
+                    continue
+
+            for matched in re.findall(r"\d+", text):
+                if len(matched) < 6:
+                    continue
+                try:
+                    plain_candidates.append(int(matched))
+                except ValueError:
+                    continue
+
+        if comma_candidates:
+            return max(comma_candidates)
+        if plain_candidates:
+            return max(plain_candidates)
+        return None
+
+    def _ocr_weekly_contribution_points(self, ocr: OcrWeeklyContribution) -> int | None:
+        # Preferred: OCR in configured contribution area.
+        results = ocr.detect_and_ocr(self.device.image)
+        points = self._extract_weekly_contribution_points([result.ocr_text for result in results])
+        if points is not None:
+            return points
+
+        # Fallback: full-screen OCR when area asset is unavailable/invalid.
+        results = ocr.detect_and_ocr(self.device.image, direct_ocr=True)
+        return self._extract_weekly_contribution_points([result.ocr_text for result in results])
+
+    def _weekly_contribution_tier_state(self) -> str:
+        """
+        Returns:
+            str: claimable / received / locked / not_found
+        """
+        if WEEKLY_CONTRIBUTION_TIER_1_RECEIVED.match_template_luma(
+            self.device.image, similarity=self.WORLD_BOSS_WEEKLY_CONTRIBUTION_TIER_LUMA_SIMILARITY
+        ):
+            if WEEKLY_CONTRIBUTION_TIER_1_RECEIVED.match_color(
+                self.device.image, threshold=self.WORLD_BOSS_WEEKLY_CONTRIBUTION_TIER_COLOR_THRESHOLD
+            ):
+                return "received"
+            return "claimable"
+
+        if WEEKLY_CONTRIBUTION_TIER_1_RECEIVED.match_template(
+            self.device.image, similarity=self.WORLD_BOSS_WEEKLY_CONTRIBUTION_TIER_LUMA_SIMILARITY
+        ):
+            return "claimable"
+
+        if WEEKLY_CONTRIBUTION_TIER_1_LOCKED.match_template_luma(
+            self.device.image, similarity=self.WORLD_BOSS_WEEKLY_CONTRIBUTION_TIER_LUMA_SIMILARITY
+        ) and WEEKLY_CONTRIBUTION_TIER_1_LOCKED.match_color(
+            self.device.image, threshold=self.WORLD_BOSS_WEEKLY_CONTRIBUTION_TIER_COLOR_THRESHOLD
+        ):
+            return "locked"
+
+        return "not_found"
+
+    def _claim_weekly_contribution_rewards(self, skip_first_screenshot=True) -> bool:
+        logger.info("World boss: claim weekly contribution rewards")
+        ocr_button = ClickButton(OCR_WEEKLY_CONTRIBUTION.area, name="OCR_WEEKLY_CONTRIBUTION")
+        ocr = OcrWeeklyContribution(ocr_button, lang="en", name="WeeklyContributionOCR")
+
+        if not skip_first_screenshot:
+            self.device.screenshot()
+
+        points = self._ocr_weekly_contribution_points(ocr)
+        if points is not None:
+            logger.attr("WeeklyContribution", f"{points:,}")
+
+        tier_state = self._weekly_contribution_tier_state()
+        logger.info(f"World boss: WEEKLY_CONTRIBUTION_TIER_1_RECEIVED state={tier_state}")
+        if tier_state in {"received", "locked"}:
+            return True
+
+        # One-shot claim attempt for claimable/uncertain state.
+        self.device.click(WEEKLY_CONTRIBUTION_TIER_1_RECEIVED)
+        logger.info("World boss: click WEEKLY_CONTRIBUTION_TIER_1_RECEIVED")
+
+        settle = Timer(self.WORLD_BOSS_WEEKLY_CONTRIBUTION_POST_CLICK_SETTLE_SECONDS, count=1).start()
+        while not settle.reached():
+            self.device.screenshot()
+
+        # One quick verification only, avoid long OCR loops.
+        points = self._ocr_weekly_contribution_points(ocr)
+        if points is not None:
+            logger.attr("WeeklyContribution", f"{points:,}")
+        tier_state_after = self._weekly_contribution_tier_state()
+        logger.info(f"World boss: WEEKLY_CONTRIBUTION_TIER_1_RECEIVED after_click={tier_state_after}")
+        return True
+
     def run_world_boss(self, skip_first_screenshot=True) -> bool:
         logger.hr("Knights WorldBoss", level=2)
 
@@ -398,14 +514,17 @@ class KnightsWorldBossMixin:
 
             if status == "exhausted":
                 self._close_world_boss_exhausted_popup(skip_first_screenshot=True)
+                self._claim_weekly_contribution_rewards(skip_first_screenshot=True)
                 self._back_to_knights_from_world_boss(skip_first_screenshot=True)
                 logger.info(f"World boss done: exhausted, rounds={rounds}")
                 return True
 
             if status == "no_stamina":
                 logger.info("World boss done: no stamina")
+                self._claim_weekly_contribution_rewards(skip_first_screenshot=True)
                 self._back_to_knights_from_world_boss(skip_first_screenshot=True)
                 return True
 
+            self._claim_weekly_contribution_rewards(skip_first_screenshot=True)
             self._back_to_knights_from_world_boss(skip_first_screenshot=True)
             return False

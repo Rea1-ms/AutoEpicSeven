@@ -111,6 +111,16 @@ OCR_KNIGHTS_CREST = ButtonWrapper(
         button=(863, 20, 955, 44),
     ),
 )
+OCR_WEEKLY_CONTRIBUTION = ButtonWrapper(
+    name='OCR_WEEKLY_CONTRIBUTION',
+    share=Button(
+        file='./assets/share/knights/expedition/OCR_WEEKLY_CONTRIBUTION.png',
+        area=(1076, 109, 1244, 143),
+        search=(1056, 89, 1264, 163),
+        color=(68, 63, 58),
+        button=(1076, 109, 1244, 143),
+    ),
+)
 OPEN_ALL_BOX = ButtonWrapper(
     name='OPEN_ALL_BOX',
     cn=None,
@@ -195,6 +205,36 @@ WAITING_FOR_WAR = ButtonWrapper(
         search=(488, 498, 561, 570),
         color=(45, 93, 30),
         button=(508, 518, 541, 550),
+    ),
+)
+WEEKLY_CONTRIBUTION_TIER_1_LOCKED = ButtonWrapper(
+    name='WEEKLY_CONTRIBUTION_TIER_1_LOCKED',
+    share=Button(
+        file='./assets/share/knights/expedition/WEEKLY_CONTRIBUTION_TIER_1_LOCKED.png',
+        area=(1086, 249, 1121, 281),
+        search=(1066, 229, 1141, 301),
+        color=(71, 86, 96),
+        button=(1086, 249, 1121, 281),
+    ),
+)
+WEEKLY_CONTRIBUTION_TIER_1_RECEIVED = ButtonWrapper(
+    name='WEEKLY_CONTRIBUTION_TIER_1_RECEIVED',
+    share=Button(
+        file='./assets/share/knights/expedition/WEEKLY_CONTRIBUTION_TIER_1_RECEIVED.png',
+        area=(1089, 253, 1117, 275),
+        search=(1069, 233, 1137, 295),
+        color=(68, 98, 46),
+        button=(1089, 253, 1117, 275),
+    ),
+)
+WEEKLY_CONTRIBUTION_TIER_2_LOCKED = ButtonWrapper(
+    name='WEEKLY_CONTRIBUTION_TIER_2_LOCKED',
+    share=Button(
+        file='./assets/share/knights/expedition/WEEKLY_CONTRIBUTION_TIER_2_LOCKED.png',
+        area=(1197, 354, 1232, 387),
+        search=(1177, 334, 1252, 407),
+        color=(80, 83, 91),
+        button=(1197, 354, 1232, 387),
     ),
 )
 WORLD_BOSS = ButtonWrapper(
