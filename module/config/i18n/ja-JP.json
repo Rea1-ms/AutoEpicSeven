@@ -12,6 +12,10 @@
       "name": "Menu.Weekly.name",
       "help": "Menu.Weekly.help"
     },
+    "Monthly": {
+      "name": "Menu.Monthly.name",
+      "help": "Menu.Monthly.help"
+    },
     "Tool": {
       "name": "Menu.Tool.name",
       "help": "Menu.Tool.help"
@@ -58,9 +62,9 @@
       "name": "しょうかん",
       "help": ""
     },
-    "Sanctuary": {
-      "name": "聖域",
-      "help": ""
+    "SanctuaryDaily": {
+      "name": "聖域-デイリー",
+      "help": "独立スケジューラで実行する聖域デイリーモジュール。"
     },
     "Knights": {
       "name": "ギルド",
@@ -82,6 +86,10 @@
       "name": "ペットショップ",
       "help": ""
     },
+    "SanctuaryWeekly": {
+      "name": "聖域-ウィークリー",
+      "help": "独立スケジューラで実行する聖域ウィークリーモジュール。"
+    },
     "Weekly": {
       "name": "Task.Weekly.name",
       "help": "Task.Weekly.help"
@@ -89,6 +97,10 @@
     "Rogue": {
       "name": "Task.Rogue.name",
       "help": "Task.Rogue.help"
+    },
+    "SanctuaryMonthly": {
+      "name": "聖域-マンスリー",
+      "help": "独立スケジューラで実行する聖域マンスリーモジュール。"
     },
     "Daemon": {
       "name": "Task.Daemon.name",
@@ -1256,25 +1268,13 @@
       "help": "召喚終了後、金色継承石が満杯なら自動で回収します。"
     }
   },
-  "Sanctuary": {
+  "SanctuaryMonthly": {
     "_info": {
-      "name": "聖域設定",
-      "help": ""
-    },
-    "Daily": {
-      "name": "デイリー",
-      "help": ""
-    },
-    "Weekly": {
-      "name": "ウィークリー",
-      "help": ""
-    },
-    "Monthly": {
-      "name": "マンスリー",
-      "help": ""
+      "name": "聖域-マンスリー設定",
+      "help": "聖域マンスリーモジュールの設定。"
     },
     "RewardTier": {
-      "name": "報酬ランク",
+      "name": "保管品質",
       "help": "",
       "A": "A以上",
       "B": "B以上",

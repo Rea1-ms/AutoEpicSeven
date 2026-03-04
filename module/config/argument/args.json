@@ -2024,7 +2024,7 @@
       }
     }
   },
-  "Sanctuary": {
+  "SanctuaryDaily": {
     "Scheduler": {
       "Enable": {
         "type": "checkbox",
@@ -2041,38 +2041,13 @@
       },
       "Command": {
         "type": "input",
-        "value": "Sanctuary",
+        "value": "SanctuaryDaily",
         "display": "hide"
       },
       "ServerUpdate": {
         "type": "input",
         "value": "02:00",
         "display": "hide"
-      }
-    },
-    "Sanctuary": {
-      "Daily": {
-        "type": "checkbox",
-        "value": true
-      },
-      "Weekly": {
-        "type": "checkbox",
-        "value": true
-      },
-      "Monthly": {
-        "type": "checkbox",
-        "value": true
-      },
-      "RewardTier": {
-        "type": "select",
-        "value": "A",
-        "option": [
-          "A",
-          "B",
-          "S",
-          "MaxMinus1",
-          "MaxMinus2"
-        ]
       }
     }
   },
@@ -2318,6 +2293,33 @@
       "Command": {
         "type": "input",
         "value": "Pets",
+        "display": "hide"
+      },
+      "ServerUpdate": {
+        "type": "input",
+        "value": "02:00",
+        "display": "hide"
+      }
+    }
+  },
+  "SanctuaryWeekly": {
+    "Scheduler": {
+      "Enable": {
+        "type": "checkbox",
+        "value": false,
+        "option": [
+          true,
+          false
+        ]
+      },
+      "NextRun": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime"
+      },
+      "Command": {
+        "type": "input",
+        "value": "SanctuaryWeekly",
         "display": "hide"
       },
       "ServerUpdate": {
@@ -2633,6 +2635,46 @@
       "DebugMode": {
         "type": "checkbox",
         "value": false
+      }
+    }
+  },
+  "SanctuaryMonthly": {
+    "Scheduler": {
+      "Enable": {
+        "type": "checkbox",
+        "value": false,
+        "option": [
+          true,
+          false
+        ]
+      },
+      "NextRun": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime"
+      },
+      "Command": {
+        "type": "input",
+        "value": "SanctuaryMonthly",
+        "display": "hide"
+      },
+      "ServerUpdate": {
+        "type": "input",
+        "value": "02:00",
+        "display": "hide"
+      }
+    },
+    "SanctuaryMonthly": {
+      "RewardTier": {
+        "type": "select",
+        "value": "A",
+        "option": [
+          "A",
+          "B",
+          "S",
+          "MaxMinus1",
+          "MaxMinus2"
+        ]
       }
     }
   },

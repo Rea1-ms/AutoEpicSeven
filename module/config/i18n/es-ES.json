@@ -12,6 +12,10 @@
       "name": "Semanario",
       "help": ""
     },
+    "Monthly": {
+      "name": "Mensual",
+      "help": ""
+    },
     "Tool": {
       "name": "útiles",
       "help": ""
@@ -58,9 +62,9 @@
       "name": "Invocación",
       "help": ""
     },
-    "Sanctuary": {
-      "name": "Santuario",
-      "help": ""
+    "SanctuaryDaily": {
+      "name": "Santuario - Diario",
+      "help": "Módulo diario de santuario con planificador independiente."
     },
     "Knights": {
       "name": "Gremio",
@@ -82,6 +86,10 @@
       "name": "Tienda de mascotas",
       "help": ""
     },
+    "SanctuaryWeekly": {
+      "name": "Santuario - Semanal",
+      "help": "Módulo semanal de santuario con planificador independiente."
+    },
     "Weekly": {
       "name": "Ecos de la guerra",
       "help": ""
@@ -89,6 +97,10 @@
     "Rogue": {
       "name": "Universo Simulado",
       "help": ""
+    },
+    "SanctuaryMonthly": {
+      "name": "Santuario - Mensual",
+      "help": "Módulo mensual de santuario con planificador independiente."
     },
     "Daemon": {
       "name": "Clic de diálogo",
@@ -1256,25 +1268,13 @@
       "help": "Tras la invocación, recoger automáticamente cuando Herencia Dorada esté llena."
     }
   },
-  "Sanctuary": {
+  "SanctuaryMonthly": {
     "_info": {
-      "name": "Ajustes de santuario",
-      "help": ""
-    },
-    "Daily": {
-      "name": "Diario",
-      "help": ""
-    },
-    "Weekly": {
-      "name": "Semanal",
-      "help": ""
-    },
-    "Monthly": {
-      "name": "Mensual",
-      "help": ""
+      "name": "Santuario - Mensual",
+      "help": "Opciones del módulo mensual de santuario."
     },
     "RewardTier": {
-      "name": "Rango de recompensa",
+      "name": "Calidad de recompensa",
       "help": "",
       "A": "A o superior",
       "B": "B o superior",

@@ -242,10 +242,7 @@ PlannerTarget:
 Gacha:
   CollectGoldenInheritance: true
 
-Sanctuary:
-  Daily: true
-  Weekly: true
-  Monthly: true
+SanctuaryMonthly:
   RewardTier:
     value: A
     option: [ A, B, S, MaxMinus1, MaxMinus2 ]

@@ -272,18 +272,12 @@
       "CollectGoldenInheritance": true
     }
   },
-  "Sanctuary": {
+  "SanctuaryDaily": {
     "Scheduler": {
       "Enable": false,
       "NextRun": "2020-01-01 00:00:00",
-      "Command": "Sanctuary",
+      "Command": "SanctuaryDaily",
       "ServerUpdate": "02:00"
-    },
-    "Sanctuary": {
-      "Daily": true,
-      "Weekly": true,
-      "Monthly": true,
-      "RewardTier": "A"
     }
   },
   "Knights": {
@@ -366,6 +360,14 @@
       "ServerUpdate": "02:00"
     }
   },
+  "SanctuaryWeekly": {
+    "Scheduler": {
+      "Enable": false,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "SanctuaryWeekly",
+      "ServerUpdate": "02:00"
+    }
+  },
   "Weekly": {
     "Scheduler": {
       "Enable": false,
@@ -412,6 +414,17 @@
     },
     "RogueDebug": {
       "DebugMode": false
+    }
+  },
+  "SanctuaryMonthly": {
+    "Scheduler": {
+      "Enable": false,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "SanctuaryMonthly",
+      "ServerUpdate": "02:00"
+    },
+    "SanctuaryMonthly": {
+      "RewardTier": "A"
     }
   },
   "Daemon": {

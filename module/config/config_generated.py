@@ -162,11 +162,8 @@ class GeneratedConfig:
     # Group `Gacha`
     Gacha_CollectGoldenInheritance = True
 
-    # Group `Sanctuary`
-    Sanctuary_Daily = True
-    Sanctuary_Weekly = True
-    Sanctuary_Monthly = True
-    Sanctuary_RewardTier = 'A'  # A, B, S, MaxMinus1, MaxMinus2
+    # Group `SanctuaryMonthly`
+    SanctuaryMonthly_RewardTier = 'A'  # A, B, S, MaxMinus1, MaxMinus2
 
     # Group `Knights`
     Knights_ClaimSigninRateReward = True

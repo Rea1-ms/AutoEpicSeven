@@ -54,9 +54,8 @@ Daily:
     Gacha:
       - Scheduler
       - Gacha
-    Sanctuary:
+    SanctuaryDaily:
       - Scheduler
-      - Sanctuary
     Knights:
       - Scheduler
       - KnightsBasic
@@ -82,6 +81,8 @@ Weekly:
   menu: 'list'
   page: 'setting'
   tasks:
+    SanctuaryWeekly:
+      - Scheduler
     Weekly:
       - Scheduler
       - Weekly
@@ -91,6 +92,16 @@ Weekly:
       - RogueWorld
       - RogueBlessing
       - RogueDebug
+
+# ==================== Monthly ====================
+
+Monthly:
+  menu: 'list'
+  page: 'setting'
+  tasks:
+    SanctuaryMonthly:
+      - Scheduler
+      - SanctuaryMonthly
 
 # ==================== Tool ====================
 

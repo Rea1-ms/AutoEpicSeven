@@ -332,7 +332,7 @@ class Sanctuary(UI):
         return "SSS"
 
     def _resolve_monthly_target_tier(self, heart_level: int | None) -> str:
-        tier = self.config.Sanctuary_RewardTier
+        tier = self.config.SanctuaryMonthly_RewardTier
         if tier in ("A", "B", "S"):
             return tier
 
@@ -589,44 +589,34 @@ class Sanctuary(UI):
             return False
         return True
 
-    # Default entry
-    def run(self) -> bool:
+    def _ensure_app_running(self):
         if not self.device.app_is_running():
             from tasks.login.login import Login
             Login(self.config, device=self.device).app_start()
 
-        run_daily = self.config.Sanctuary_Daily
-        run_weekly = self.config.Sanctuary_Weekly
-        run_monthly = self.config.Sanctuary_Monthly
+    def run_daily_task(self) -> bool:
+        self._ensure_app_running()
+        success = self.run_daily()
+        self.config.task_delay(target=get_server_next_update(self.config.Scheduler_ServerUpdate))
+        return success
 
-        if not any([run_daily, run_weekly, run_monthly]):
-            logger.warning("Sanctuary: all sub tasks disabled")
-            self.config.task_delay(server_update=True)
-            return True
+    def run_weekly_task(self) -> bool:
+        self._ensure_app_running()
+        success = self.run_weekly()
+        self.config.task_delay(target=get_server_next_monday_update(self.config.Scheduler_ServerUpdate))
+        return success
 
-        success = True
-        if run_daily:
-            success = self.run_daily() and success
-        if run_weekly:
-            success = self.run_weekly() and success
-        if run_monthly:
-            success = self.run_monthly() and success
+    def run_monthly_task(self) -> bool:
+        self._ensure_app_running()
+        success = self.run_monthly()
 
-        targets = []
-        if run_daily:
-            targets.append(get_server_next_update(self.config.Scheduler_ServerUpdate))
-        if run_weekly:
-            targets.append(get_server_next_monday_update(self.config.Scheduler_ServerUpdate))
-        if run_monthly:
-            monthly_status = getattr(self, "_monthly_status", "failed")
-            if monthly_status == "completed":
-                targets.append(get_os_next_reset())
-            elif monthly_status == "full":
-                # Deposit box full: retry with next daily sanctuary run.
-                targets.append(get_server_next_update(self.config.Scheduler_ServerUpdate))
-            else:
-                # Failed monthly flow should retry next day instead of waiting a month.
-                targets.append(get_server_next_update(self.config.Scheduler_ServerUpdate))
-        if targets:
-            self.config.task_delay(target=targets)
+        monthly_status = getattr(self, "_monthly_status", "failed")
+        if monthly_status == "completed":
+            self.config.task_delay(target=get_os_next_reset())
+        elif monthly_status == "full":
+            # Deposit box full: retry with next daily sanctuary cycle.
+            self.config.task_delay(target=get_server_next_update(self.config.Scheduler_ServerUpdate))
+        else:
+            # Failed monthly flow should retry next day.
+            self.config.task_delay(target=get_server_next_update(self.config.Scheduler_ServerUpdate))
         return success

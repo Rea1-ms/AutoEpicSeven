@@ -19,7 +19,7 @@
       "DataUpdate",
       "Freebies",
       "Gacha",
-      "Sanctuary",
+      "SanctuaryDaily",
       "Knights",
       "Arena",
       "SecretShop",
@@ -31,8 +31,16 @@
     "menu": "list",
     "page": "setting",
     "tasks": [
+      "SanctuaryWeekly",
       "Weekly",
       "Rogue"
+    ]
+  },
+  "Monthly": {
+    "menu": "list",
+    "page": "setting",
+    "tasks": [
+      "SanctuaryMonthly"
     ]
   },
   "Tool": {

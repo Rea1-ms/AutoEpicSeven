@@ -12,6 +12,10 @@
       "name": "每周",
       "help": ""
     },
+    "Monthly": {
+      "name": "每月",
+      "help": ""
+    },
     "Tool": {
       "name": "工具",
       "help": ""
@@ -58,9 +62,9 @@
       "name": "召唤",
       "help": ""
     },
-    "Sanctuary": {
-      "name": "圣域",
-      "help": ""
+    "SanctuaryDaily": {
+      "name": "圣域-日常",
+      "help": "独立调度的圣域日常模块。"
     },
     "Knights": {
       "name": "骑士团",
@@ -82,6 +86,10 @@
       "name": "宠物商店",
       "help": ""
     },
+    "SanctuaryWeekly": {
+      "name": "圣域-周常",
+      "help": "独立调度的圣域周常模块。"
+    },
     "Weekly": {
       "name": "历战余响",
       "help": ""
@@ -89,6 +97,10 @@
     "Rogue": {
       "name": "模拟宇宙",
       "help": ""
+    },
+    "SanctuaryMonthly": {
+      "name": "圣域-月常",
+      "help": "独立调度的圣域月常模块。"
     },
     "Daemon": {
       "name": "剧情连点器",
@@ -1256,22 +1268,10 @@
       "help": "召唤结束后若金光传承石满溢则自动收取。"
     }
   },
-  "Sanctuary": {
+  "SanctuaryMonthly": {
     "_info": {
-      "name": "圣域设置",
-      "help": ""
-    },
-    "Daily": {
-      "name": "日常",
-      "help": ""
-    },
-    "Weekly": {
-      "name": "周常",
-      "help": ""
-    },
-    "Monthly": {
-      "name": "月常",
-      "help": ""
+      "name": "圣域-月常设置",
+      "help": "圣域月常任务配置。"
     },
     "RewardTier": {
       "name": "入库品质",
