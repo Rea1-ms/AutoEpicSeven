@@ -13,12 +13,17 @@ from tasks.base.assets.assets_base_popup import (
 from tasks.base.main_page import MainPage
 from tasks.base.page import Page, page_main, page_menu
 from tasks.base.popup import ANNOUNCEMENT_DONOT_REMIND
-from tasks.login.assets.assets_login import LOGIN_CONFIRM
+from tasks.login.assets.assets_login import (
+    LOGIN_CONFIRM,
+    LOGIN_LOADING,
+    PATCH_APPLY,
+    PATCH_PERCENT_SIGN,
+    VERIFYING,
+)
 from tasks.login.assets.assets_login_popup import (
     CHECK_IN_CONFIRM,
     NEW_CHARACTER_CONFIRM,
 )
-
 
 class UI(MainPage):
     ui_current: Page
@@ -94,6 +99,8 @@ class UI(MainPage):
 
             # Unknown page but able to handle
             logger.info("Unknown ui page")
+            if self.handle_login_confirm():
+                continue
             if self.ui_additional():
                 timeout.reset()
                 continue
@@ -102,8 +109,6 @@ class UI(MainPage):
                 continue
             if self.handle_popup_confirm():
                 timeout.reset()
-                continue
-            if self.handle_login_confirm():
                 continue
 
             app_check()
@@ -153,11 +158,10 @@ class UI(MainPage):
                     continue
                 if self.ui_page_appear(page, interval=5):
                     logger.info(f'Page switch: {page} -> {page.parent}')
-                    if page == page_menu:
-                        if self.handle_menu_pets_gift():
-                            clicked = True
-                            break
-                    self.handle_lang_check(page)
+                    # Keep ui_goto deterministic: do not mix opportunistic side actions
+                    # (e.g. MENU_PETS_GIFT) into route switching, otherwise navigation
+                    # can be interrupted by transient popups/animations.
+                    # self.handle_lang_check(page)
                     if self.ui_page_confirm(page):
                         logger.info(f'Page arrive confirm {page}')
                     button = page.links[page.parent]
@@ -169,13 +173,13 @@ class UI(MainPage):
                 continue
 
             # Additional
+            if self.handle_login_confirm():
+                continue
             if self.ui_additional():
                 continue
             # if self.handle_popup_single():
             #     continue
             if self.handle_popup_confirm():
-                continue
-            if self.handle_login_confirm():
                 continue
 
         # Reset connection
@@ -359,10 +363,14 @@ class UI(MainPage):
 
     def handle_login_confirm(self):
         """
-        If LOGIN_CONFIRM appears, do as task `Restart` not just clicking it
+        If login startup/transient pages appear, hand over to Login state machine.
         """
-        if self.is_in_login_confirm(interval=0):
-            logger.warning('Login page appeared')
+        if self.is_in_login_confirm(interval=0) \
+                or self.appear(LOGIN_LOADING, interval=0) \
+                or self.appear(VERIFYING, interval=0) \
+                or self.appear(PATCH_APPLY, interval=0) \
+                or self.appear(PATCH_PERCENT_SIGN, interval=0):
+            logger.warning('Login startup state appeared')
             from tasks.login.login import Login
             Login(self.config, device=self.device).handle_app_login()
             raise HandledError
@@ -427,11 +435,13 @@ class UI(MainPage):
 
         return False
 
-    def handle_menu_pets_gift(self, interval=0.5) -> bool:
+    def handle_menu_pets_gift(self) -> bool:
         """
         Collect pets gift from menu if available.
+        NOTE:
+            Should be called explicitly by task logic, not inside ui_goto route switching.
         """
-        if self.appear_then_click(MENU_PETS_GIFT, interval=interval):
+        if self.appear_then_click(MENU_PETS_GIFT, interval=0.5):
             logger.info('Collected pets gift from menu')
             return True
         return False
