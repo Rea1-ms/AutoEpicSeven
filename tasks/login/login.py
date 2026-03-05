@@ -51,12 +51,6 @@ from tasks.login.assets.assets_login_maintenance import (
 )
 from tasks.login.update import UpdateHandler
 
-# Optional asset: "Connecting..." text during patch download
-try:
-    from tasks.login.assets.assets_login import PATCH_CONNECTING
-except ImportError:
-    PATCH_CONNECTING = None
-
 
 class Login(UI):
     """
@@ -200,8 +194,7 @@ class Login(UI):
                 continue
 
             # 下载中
-            if self.appear(PATCH_PERCENT_SIGN, interval=3) \
-                    or (PATCH_CONNECTING and self.appear(PATCH_CONNECTING, interval=3)):
+            if self.appear(PATCH_PERCENT_SIGN, interval=3):
                 logger.info('Patch downloading...')
                 network_error_count = 0
                 timeout.reset()
