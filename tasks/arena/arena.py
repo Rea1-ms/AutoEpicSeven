@@ -14,9 +14,11 @@ from tasks.arena.assets.assets_arena import (
     WEEKLY_REWARDS_CLAIM,
     WEEKLY_REWARDS_SELECTED,
     AUTO_BATTLE_RESULT_CONFIRM,
+    FAST_BATTLE_LOCKED,
     FAST_BATTLE_OFF,
     FAST_BATTLE_ON,
     FAST_BATTLE_RESULT_CONFIRM,
+    OPPONENT,
     NPC_COMBAT_ENTRY,
     OCR_FAST_BATTLE_TIMES,
 )
@@ -51,6 +53,10 @@ class Arena(UI):
     ARENA_NPC_CHALLENGE_LUMA_SIMILARITY = 0.8
     ARENA_NPC_CHALLENGE_COLOR_THRESHOLD = 30
     ARENA_NPC_AUTO_RESULT_INTERVAL_SECONDS = 3
+    ARENA_NPC_AUTO_FIGHT_ENTER_SECONDS = 2
+    ARENA_NPC_AUTO_FIGHT_CLICK_INTERVAL_SECONDS = 2
+    ARENA_NPC_AUTO_FIGHT_CLEAR_CONFIRM_SECONDS = 1.2
+    ARENA_NPC_AUTO_FIGHT_MAX_CLICKS = 4
     ARENA_NPC_FAST_TOGGLE_INTERVAL_SECONDS = 0.8
     ARENA_NPC_GRAY_RETRY_LIMIT = 8
     ARENA_NPC_CHALLENGE_PENDING_SECONDS = 4.5
@@ -146,6 +152,10 @@ class Arena(UI):
         Returns:
             bool: True when fast-battle state already matches `enabled`.
         """
+        if self.appear(FAST_BATTLE_LOCKED):
+            # Locked means fast battle is unavailable today and cannot be toggled on.
+            return not enabled
+
         if enabled:
             if self.appear(FAST_BATTLE_ON):
                 return True
@@ -163,7 +173,12 @@ class Arena(UI):
         """
         Battle-prepare page can be identified by either start button or fast-battle toggle.
         """
-        return self.appear(BATTLE_START) or self.appear(FAST_BATTLE_ON) or self.appear(FAST_BATTLE_OFF)
+        return (
+            self.appear(BATTLE_START)
+            or self.appear(FAST_BATTLE_ON)
+            or self.appear(FAST_BATTLE_OFF)
+            or self.appear(FAST_BATTLE_LOCKED)
+        )
 
     def _ocr_fast_battle_times(self) -> tuple[int, int, int]:
         ocr = OcrFastBattleTimes(OCR_FAST_BATTLE_TIMES, lang="en", name="FastBattleTimes")
@@ -186,8 +201,14 @@ class Arena(UI):
         challenge_pending_timer = Timer(self.ARENA_NPC_CHALLENGE_PENDING_SECONDS, count=0).start()
         battle_start_pending_timer = Timer(self.ARENA_NPC_BATTLE_START_PENDING_SECONDS, count=0).start()
         battle_start_grace_timer = Timer(2, count=0).start()
+        auto_fight_enter_timer = Timer(self.ARENA_NPC_AUTO_FIGHT_ENTER_SECONDS, count=3).start()
+        auto_fight_click_interval = Timer(self.ARENA_NPC_AUTO_FIGHT_CLICK_INTERVAL_SECONDS, count=4).clear()
+        auto_fight_clear_confirm_timer = Timer(self.ARENA_NPC_AUTO_FIGHT_CLEAR_CONFIRM_SECONDS, count=2).clear()
         fast_battle_effective = bool(use_fast_battle)
         fast_times_checked = False
+        auto_fight_clicks = 0
+        auto_fight_checked = False
+        battle_result_seen = False
         stage_log_timer = Timer(1.5, count=0).start()
         last_stage = None
 
@@ -272,18 +293,6 @@ class Arena(UI):
                         timeout.reset()
                         continue
 
-                if self.appear_then_click(NPC_OPPONENT, interval=1):
-                    logger.info("Arena NPC: select opponent")
-                    gray_retry = 0
-                    timeout.reset()
-                    continue
-
-                if self.appear_then_click(NPC_COMBAT_ENTRY, interval=1.5):
-                    logger.info("Arena NPC: re-enter NPC combat lane")
-                    stage = self.ARENA_NPC_STAGE_SEEK
-                    timeout.reset()
-                    continue
-
                 if self.ui_additional():
                     timeout.reset()
                     continue
@@ -298,6 +307,14 @@ class Arena(UI):
                     continue
 
                 if challenge_pending_timer.reached():
+                    # Some challenge taps are visually accepted but not transitioned.
+                    # Retry once in-place before falling back to lane recovery.
+                    if self._is_challenge_ready(interval=1):
+                        self.device.click(CHALLENGE)
+                        logger.info("Arena NPC: challenge retry")
+                        challenge_pending_timer.reset()
+                        timeout.reset()
+                        continue
                     if self.appear(NPC_OPPONENT):
                         stage = self.ARENA_NPC_STAGE_SELECT
                     else:
@@ -325,6 +342,11 @@ class Arena(UI):
                         continue
                     continue
 
+                if fast_battle_effective and self.appear(FAST_BATTLE_LOCKED):
+                    logger.info("Arena NPC: fast battle locked, fallback to normal battle")
+                    fast_battle_effective = False
+                    fast_times_checked = True
+
                 # User enabled fast battle, but daily quota may be exhausted.
                 if fast_battle_effective and (not fast_times_checked):
                     if self.appear(FAST_BATTLE_ON) or self.appear(FAST_BATTLE_OFF):
@@ -341,8 +363,14 @@ class Arena(UI):
                 if self.appear_then_click(BATTLE_START, interval=1):
                     stage = self.ARENA_NPC_STAGE_BATTLE
                     gray_retry = 0
+                    auto_fight_clicks = 0
+                    auto_fight_checked = False
+                    battle_result_seen = False
                     battle_start_pending_timer.reset()
                     battle_start_grace_timer.reset()
+                    auto_fight_enter_timer.reset()
+                    auto_fight_click_interval.clear()
+                    auto_fight_clear_confirm_timer.clear()
                     logger.info("Arena NPC: battle start")
                     timeout.reset()
                     continue
@@ -357,10 +385,7 @@ class Arena(UI):
                 if fast_battle_effective:
                     if self.appear_then_click(FAST_BATTLE_RESULT_CONFIRM, interval=0.8):
                         logger.info("Arena NPC: fast battle result confirm")
-                        timeout.reset()
-                        continue
-                else:
-                    if self.appear_then_click(AUTO_FIGHT, interval=1):
+                        battle_result_seen = True
                         timeout.reset()
                         continue
 
@@ -368,8 +393,42 @@ class Arena(UI):
                     AUTO_BATTLE_RESULT_CONFIRM, interval=self.ARENA_NPC_AUTO_RESULT_INTERVAL_SECONDS
                 ):
                     logger.info("Arena NPC: battle result confirm")
+                    battle_result_seen = True
                     timeout.reset()
                     continue
+
+                if (not fast_battle_effective) and (not battle_result_seen):
+                    # OPPONENT visible => auto fight is OFF.
+                    OPPONENT_visible = self.appear(OPPONENT)
+
+                    if OPPONENT_visible:
+                        auto_fight_checked = False
+                        auto_fight_clear_confirm_timer.clear()
+                        if (
+                            auto_fight_clicks < self.ARENA_NPC_AUTO_FIGHT_MAX_CLICKS
+                            and auto_fight_enter_timer.reached()
+                            and auto_fight_click_interval.reached()
+                        ):
+                            self.device.click(AUTO_FIGHT)
+                            auto_fight_clicks += 1
+                            auto_fight_click_interval.reset()
+                            logger.info(f"Arena NPC: auto fight toggle ({auto_fight_clicks})")
+                            timeout.reset()
+                            continue
+                        if (
+                            auto_fight_clicks >= self.ARENA_NPC_AUTO_FIGHT_MAX_CLICKS
+                            and auto_fight_click_interval.reached()
+                        ):
+                            logger.warning("Arena NPC: OPPONENT still visible after max auto-fight toggles")
+                            auto_fight_click_interval.reset()
+                    elif not auto_fight_checked:
+                        if not auto_fight_clear_confirm_timer.started():
+                            auto_fight_clear_confirm_timer.start()
+                        elif auto_fight_clear_confirm_timer.reached():
+                            auto_fight_checked = True
+                            logger.info("Arena NPC: auto fight checked by OPPONENT")
+                            timeout.reset()
+                            continue
 
                 # Keep battle stage stable for a short grace period after start click.
                 # This avoids immediate fallback causing repeated BATTLE_START clicks.
@@ -508,8 +567,26 @@ class Arena(UI):
         if not hasattr(self.device, "image") or self.device.image is None:
             self.device.screenshot()
 
-        self.ui_goto_main()
-        status = self._enter_arena(skip_first_screenshot=True)
+        # Fast-path: if task starts inside arena/NPC context, do not force return to main page.
+        # This keeps manual "already in arena" starts seamless.
+        if getattr(self.config, "Arena_NPCCombat", False):
+            if self.appear(NPC_OPPONENT) or self.appear(CHALLENGE) or self._is_battle_prepare_page():
+                logger.info("Arena: detected NPC combat context, skip goto main")
+                if not self._run_npc_combat(skip_first_screenshot=True):
+                    self.config.task_delay(success=False)
+                    return False
+                self.config.task_delay(server_update=True)
+                return True
+
+        if self._is_arena_page_ready(interval=0):
+            logger.info("Arena: already in arena page, skip goto main")
+            status = "entered"
+        elif self.appear(ARENA_COMMON_ENTRY):
+            logger.info("Arena: already in arena mode popup")
+            status = self._enter_arena(skip_first_screenshot=True)
+        else:
+            self.ui_goto_main()
+            status = self._enter_arena(skip_first_screenshot=True)
 
         if status == "settling":
             self.config.task_delay(server_update=True)

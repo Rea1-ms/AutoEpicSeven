@@ -89,6 +89,16 @@ CHALLENGE = ButtonWrapper(
     ),
     global_en=None,
 )
+FAST_BATTLE_LOCKED = ButtonWrapper(
+    name='FAST_BATTLE_LOCKED',
+    share=Button(
+        file='./assets/share/arena/FAST_BATTLE_LOCKED.png',
+        area=(933, 637, 978, 680),
+        search=(913, 617, 998, 700),
+        color=(111, 68, 27),
+        button=(933, 637, 978, 680),
+    ),
+)
 FAST_BATTLE_OFF = ButtonWrapper(
     name='FAST_BATTLE_OFF',
     share=Button(
@@ -150,6 +160,39 @@ OCR_FAST_BATTLE_TIMES = ButtonWrapper(
         color=(54, 53, 51),
         button=(513, 664, 591, 700),
     ),
+)
+OPPONENT = ButtonWrapper(
+    name='OPPONENT',
+    share=[
+        Button(
+            file='./assets/share/arena/OPPONENT.png',
+            area=(904, 195, 928, 218),
+            search=(767, 190, 1097, 404),
+            color=(188, 76, 61),
+            button=(904, 195, 928, 218),
+        ),
+        Button(
+            file='./assets/share/arena/OPPONENT.2.png',
+            area=(936, 345, 960, 367),
+            search=(767, 190, 1097, 404),
+            color=(192, 93, 81),
+            button=(936, 345, 960, 367),
+        ),
+        Button(
+            file='./assets/share/arena/OPPONENT.3.png',
+            area=(773, 290, 799, 311),
+            search=(767, 190, 1097, 404),
+            color=(194, 94, 81),
+            button=(773, 290, 799, 311),
+        ),
+        Button(
+            file='./assets/share/arena/OPPONENT.4.png',
+            area=(1065, 255, 1091, 276),
+            search=(767, 190, 1097, 404),
+            color=(190, 88, 74),
+            button=(1065, 255, 1091, 276),
+        ),
+    ],
 )
 WEEKLY_REWARDS_CHECK = ButtonWrapper(
     name='WEEKLY_REWARDS_CHECK',
