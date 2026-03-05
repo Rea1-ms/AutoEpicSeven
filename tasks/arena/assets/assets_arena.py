@@ -7,10 +7,10 @@ ARENA_CHECK = ButtonWrapper(
     name='ARENA_CHECK',
     share=Button(
         file='./assets/share/arena/ARENA_CHECK.png',
-        area=(296, 99, 333, 131),
-        search=(276, 79, 353, 151),
-        color=(113, 113, 113),
-        button=(296, 99, 333, 131),
+        area=(211, 260, 236, 287),
+        search=(191, 240, 256, 307),
+        color=(58, 64, 64),
+        button=(211, 260, 236, 287),
     ),
 )
 ARENA_COMMON_ENTRY = ButtonWrapper(
@@ -45,6 +45,18 @@ ARENA_SETTLING = ButtonWrapper(
         button=(426, 471, 439, 492),
     ),
 )
+AUTO_BATTLE_RESULT_CONFIRM = ButtonWrapper(
+    name='AUTO_BATTLE_RESULT_CONFIRM',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/arena/AUTO_BATTLE_RESULT_CONFIRM.png',
+        area=(1150, 649, 1190, 669),
+        search=(1130, 629, 1210, 689),
+        color=(126, 143, 128),
+        button=(1150, 649, 1190, 669),
+    ),
+    global_en=None,
+)
 AUTO_FIGHT = ButtonWrapper(
     name='AUTO_FIGHT',
     share=Button(
@@ -55,26 +67,14 @@ AUTO_FIGHT = ButtonWrapper(
         button=(1107, 15, 1147, 50),
     ),
 )
-BATTLE_RESULT = ButtonWrapper(
-    name='BATTLE_RESULT',
-    cn=None,
-    global_cn=Button(
-        file='./assets/global_cn/arena/BATTLE_RESULT.png',
-        area=(1150, 649, 1190, 669),
-        search=(1130, 629, 1210, 689),
-        color=(126, 143, 128),
-        button=(1150, 649, 1190, 669),
-    ),
-    global_en=None,
-)
 BATTLE_START = ButtonWrapper(
     name='BATTLE_START',
     share=Button(
         file='./assets/share/arena/BATTLE_START.png',
-        area=(683, 640, 713, 682),
-        search=(663, 620, 733, 702),
-        color=(81, 56, 26),
-        button=(683, 640, 713, 682),
+        area=(689, 651, 706, 671),
+        search=(669, 631, 726, 691),
+        color=(171, 76, 26),
+        button=(689, 651, 706, 671),
     ),
 )
 CHALLENGE = ButtonWrapper(
@@ -89,14 +89,46 @@ CHALLENGE = ButtonWrapper(
     ),
     global_en=None,
 )
-FAST_BATTLE = ButtonWrapper(
-    name='FAST_BATTLE',
+FAST_BATTLE_OFF = ButtonWrapper(
+    name='FAST_BATTLE_OFF',
     share=Button(
-        file='./assets/share/arena/FAST_BATTLE.png',
+        file='./assets/share/arena/FAST_BATTLE_OFF.png',
+        area=(936, 639, 973, 680),
+        search=(916, 619, 993, 700),
+        color=(39, 39, 39),
+        button=(936, 639, 973, 680),
+    ),
+)
+FAST_BATTLE_ON = ButtonWrapper(
+    name='FAST_BATTLE_ON',
+    share=Button(
+        file='./assets/share/arena/FAST_BATTLE_ON.png',
         area=(936, 640, 973, 681),
         search=(916, 620, 993, 701),
         color=(157, 157, 157),
         button=(936, 640, 973, 681),
+    ),
+)
+FAST_BATTLE_RESULT_CONFIRM = ButtonWrapper(
+    name='FAST_BATTLE_RESULT_CONFIRM',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/arena/FAST_BATTLE_RESULT_CONFIRM.png',
+        area=(726, 608, 766, 628),
+        search=(706, 588, 786, 648),
+        color=(125, 144, 127),
+        button=(726, 608, 766, 628),
+    ),
+    global_en=None,
+)
+NPC_COMBAT_ENTRY = ButtonWrapper(
+    name='NPC_COMBAT_ENTRY',
+    share=Button(
+        file='./assets/share/arena/NPC_COMBAT_ENTRY.png',
+        area=(1031, 202, 1060, 232),
+        search=(1011, 182, 1080, 252),
+        color=(113, 125, 142),
+        button=(1031, 202, 1060, 232),
     ),
 )
 NPC_OPPONENT = ButtonWrapper(
@@ -107,6 +139,16 @@ NPC_OPPONENT = ButtonWrapper(
         search=(290, 159, 358, 228),
         color=(149, 149, 149),
         button=(310, 179, 338, 208),
+    ),
+)
+OCR_FAST_BATTLE_TIMES = ButtonWrapper(
+    name='OCR_FAST_BATTLE_TIMES',
+    share=Button(
+        file='./assets/share/arena/OCR_FAST_BATTLE_TIMES.png',
+        area=(513, 664, 591, 700),
+        search=(493, 644, 611, 720),
+        color=(54, 53, 51),
+        button=(513, 664, 591, 700),
     ),
 )
 WEEKLY_REWARDS_CHECK = ButtonWrapper(

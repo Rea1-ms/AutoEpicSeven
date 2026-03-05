@@ -1421,6 +1421,18 @@
     "ClaimWeeklyRewards": {
       "name": "領取每週獎勵",
       "help": "進入競技場時若出現每週獎勵彈窗，則自動領取。"
+    },
+    "NPCCombat": {
+      "name": "刷 NPC",
+      "help": "啟用後在競技場自動挑戰 NPC。"
+    },
+    "NPCCombatFastBattle": {
+      "name": "啟用快速戰鬥",
+      "help": "NPC 刷新時優先使用快速戰鬥。"
+    },
+    "NPCCombatCount": {
+      "name": "NPC 挑戰次數",
+      "help": "本次任務最多挑戰 NPC 的次數。"
     }
   },
   "SecretShop": {

@@ -287,6 +287,9 @@ KnightsExpedition:
 
 Arena:
   ClaimWeeklyRewards: true
+  NPCCombat: false
+  NPCCombatFastBattle: true
+  NPCCombatCount: 5
 
 SecretShop:
   OnlyFree: true

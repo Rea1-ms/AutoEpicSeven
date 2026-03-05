@@ -1421,6 +1421,18 @@
     "ClaimWeeklyRewards": {
       "name": "週次報酬を受け取る",
       "help": "アリーナ入場時に週次報酬ポップアップが出た場合、自動で受け取ります。"
+    },
+    "NPCCombat": {
+      "name": "NPC周回",
+      "help": "有効にするとアリーナでNPC戦を自動実行します。"
+    },
+    "NPCCombatFastBattle": {
+      "name": "高速戦闘を使用",
+      "help": "NPC戦で高速戦闘を優先します。"
+    },
+    "NPCCombatCount": {
+      "name": "NPC戦回数",
+      "help": "この実行で行うNPC戦の最大回数。"
     }
   },
   "SecretShop": {

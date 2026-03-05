@@ -2168,6 +2168,18 @@
       "ClaimWeeklyRewards": {
         "type": "checkbox",
         "value": true
+      },
+      "NPCCombat": {
+        "type": "checkbox",
+        "value": false
+      },
+      "NPCCombatFastBattle": {
+        "type": "checkbox",
+        "value": true
+      },
+      "NPCCombatCount": {
+        "type": "input",
+        "value": 5
       }
     }
   },

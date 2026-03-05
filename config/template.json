@@ -316,7 +316,10 @@
       "ServerUpdate": "02:00"
     },
     "Arena": {
-      "ClaimWeeklyRewards": true
+      "ClaimWeeklyRewards": true,
+      "NPCCombat": false,
+      "NPCCombatFastBattle": true,
+      "NPCCombatCount": 5
     }
   },
   "SecretShop": {

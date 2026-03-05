@@ -1421,6 +1421,18 @@
     "ClaimWeeklyRewards": {
       "name": "Reclamar recompensas semanales",
       "help": "Reclama automáticamente las recompensas semanales cuando aparece el popup al entrar en arena."
+    },
+    "NPCCombat": {
+      "name": "Farmear NPC",
+      "help": "Activa combates automáticos contra NPC en la Arena."
+    },
+    "NPCCombatFastBattle": {
+      "name": "Usar combate rápido",
+      "help": "Prioriza el combate rápido para peleas contra NPC."
+    },
+    "NPCCombatCount": {
+      "name": "Cantidad de combates NPC",
+      "help": "Número máximo de combates NPC en esta ejecución."
     }
   },
   "SecretShop": {

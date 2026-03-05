@@ -979,6 +979,9 @@ class ConfigUpdater:
             yield 'Rogue.RogueWorld.SimulatedUniverseFarm'
         if deep_get(data, 'SecretShop.SecretShop.OnlyFree', default=True) is True:
             yield 'SecretShop.SecretShop.MaxRefresh'
+        if deep_get(data, 'Arena.Arena.NPCCombat', default=False) is False:
+            yield 'Arena.Arena.NPCCombatFastBattle'
+            yield 'Arena.Arena.NPCCombatCount'
         if deep_get(data, 'Knights.KnightsDonate.Support', default=True) is False:
             yield 'Knights.KnightsDonate.RequestItem'
         if deep_get(data, 'Knights.KnightsShop.Shop', default=True) is False:

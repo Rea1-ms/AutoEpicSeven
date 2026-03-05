@@ -1421,6 +1421,18 @@
     "ClaimWeeklyRewards": {
       "name": "Claim Weekly Rewards",
       "help": "Automatically claim weekly rewards when the popup appears during arena entry."
+    },
+    "NPCCombat": {
+      "name": "Farm NPC",
+      "help": "Enable automatic NPC battles in arena."
+    },
+    "NPCCombatFastBattle": {
+      "name": "Use Fast Battle",
+      "help": "Prefer fast battle mode for NPC fights."
+    },
+    "NPCCombatCount": {
+      "name": "NPC Battle Count",
+      "help": "Maximum number of NPC battles in this run."
     }
   },
   "SecretShop": {
