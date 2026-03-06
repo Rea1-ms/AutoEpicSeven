@@ -65,63 +65,53 @@ BUY_TOP_STABLE = ButtonWrapper(
 )
 COVENANT_BOOKMARK_BOTTOM = ButtonWrapper(
     name='COVENANT_BOOKMARK_BOTTOM',
-    cn=None,
-    global_cn=Button(
-        file='./assets/global_cn/secret_shop/COVENANT_BOOKMARK_BOTTOM.png',
+    share=Button(
+        file='./assets/share/secret_shop/COVENANT_BOOKMARK_BOTTOM.png',
         area=(568, 252, 635, 313),
         search=(561, 463, 643, 689),
         color=(90, 84, 77),
         button=(568, 252, 635, 313),
     ),
-    global_en=None,
 )
 COVENANT_BOOKMARK_TOP = ButtonWrapper(
     name='COVENANT_BOOKMARK_TOP',
-    cn=None,
-    global_cn=Button(
-        file='./assets/global_cn/secret_shop/COVENANT_BOOKMARK_TOP.png',
+    share=Button(
+        file='./assets/share/secret_shop/COVENANT_BOOKMARK_TOP.png',
         area=(568, 252, 635, 313),
         search=(568, 106, 635, 609),
         color=(90, 84, 77),
         button=(568, 252, 635, 313),
     ),
-    global_en=None,
 )
 MYSTIC_MEDAL_BOTTOM = ButtonWrapper(
     name='MYSTIC_MEDAL_BOTTOM',
-    cn=None,
-    global_cn=Button(
-        file='./assets/global_cn/secret_shop/MYSTIC_MEDAL_BOTTOM.png',
+    share=Button(
+        file='./assets/share/secret_shop/MYSTIC_MEDAL_BOTTOM.png',
         area=(571, 473, 630, 529),
         search=(561, 463, 643, 689),
         color=(105, 54, 47),
         button=(571, 473, 630, 529),
     ),
-    global_en=None,
 )
 MYSTIC_MEDAL_TOP = ButtonWrapper(
     name='MYSTIC_MEDAL_TOP',
-    cn=None,
-    global_cn=Button(
-        file='./assets/global_cn/secret_shop/MYSTIC_MEDAL_TOP.png',
+    share=Button(
+        file='./assets/share/secret_shop/MYSTIC_MEDAL_TOP.png',
         area=(571, 473, 630, 529),
         search=(568, 106, 635, 609),
         color=(105, 54, 47),
         button=(571, 473, 630, 529),
     ),
-    global_en=None,
 )
 REFRESH = ButtonWrapper(
     name='REFRESH',
-    cn=None,
-    global_cn=Button(
-        file='./assets/global_cn/secret_shop/REFRESH.png',
-        area=(227, 649, 267, 669),
-        search=(207, 629, 287, 689),
-        color=(128, 145, 130),
-        button=(227, 649, 267, 669),
+    share=Button(
+        file='./assets/share/secret_shop/REFRESH.png',
+        area=(81, 639, 106, 684),
+        search=(61, 619, 126, 704),
+        color=(79, 125, 150),
+        button=(81, 639, 106, 684),
     ),
-    global_en=None,
 )
 REFRESH_CONFIRM = ButtonWrapper(
     name='REFRESH_CONFIRM',
