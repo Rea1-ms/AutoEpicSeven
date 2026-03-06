@@ -25,7 +25,13 @@ ARENA_COMMON_ENTRY = ButtonWrapper(
 )
 ARENA_ENTRY = ButtonWrapper(
     name='ARENA_ENTRY',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/arena/ARENA_ENTRY.png',
+        area=(1167, 377, 1235, 401),
+        search=(1147, 357, 1255, 421),
+        color=(135, 129, 128),
+        button=(1167, 377, 1235, 401),
+    ),
     global_cn=Button(
         file='./assets/global_cn/arena/ARENA_ENTRY.png',
         area=(1166, 377, 1234, 400),
@@ -216,7 +222,13 @@ WEEKLY_REWARDS_CHECK = ButtonWrapper(
 )
 WEEKLY_REWARDS_CLAIM = ButtonWrapper(
     name='WEEKLY_REWARDS_CLAIM',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/arena/WEEKLY_REWARDS_CLAIM.png',
+        area=(572, 521, 707, 543),
+        search=(552, 501, 727, 563),
+        color=(132, 143, 159),
+        button=(572, 521, 707, 543),
+    ),
     global_cn=Button(
         file='./assets/global_cn/arena/WEEKLY_REWARDS_CLAIM.png',
         area=(571, 522, 709, 542),
