@@ -194,6 +194,16 @@ OPPONENT = ButtonWrapper(
         ),
     ],
 )
+WEEKLY_BATTLE_REWARDS = ButtonWrapper(
+    name='WEEKLY_BATTLE_REWARDS',
+    share=Button(
+        file='./assets/share/arena/WEEKLY_BATTLE_REWARDS.png',
+        area=(187, 405, 242, 450),
+        search=(167, 385, 262, 470),
+        color=(80, 87, 94),
+        button=(187, 405, 242, 450),
+    ),
+)
 WEEKLY_REWARDS_CHECK = ButtonWrapper(
     name='WEEKLY_REWARDS_CHECK',
     share=Button(

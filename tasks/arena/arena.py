@@ -21,6 +21,7 @@ from tasks.arena.assets.assets_arena import (
     OPPONENT,
     NPC_COMBAT_ENTRY,
     OCR_FAST_BATTLE_TIMES,
+    WEEKLY_BATTLE_REWARDS,
 )
 from tasks.base.page import page_main
 from tasks.base.ui import UI
@@ -58,9 +59,14 @@ class Arena(UI):
     ARENA_NPC_AUTO_FIGHT_CLEAR_CONFIRM_SECONDS = 1.2
     ARENA_NPC_AUTO_FIGHT_MAX_CLICKS = 4
     ARENA_NPC_FAST_TOGGLE_INTERVAL_SECONDS = 0.8
+    ARENA_NPC_ENTRY_CLICK_INTERVAL_SECONDS = 1.8
+    ARENA_NPC_OPPONENT_CLICK_INTERVAL_SECONDS = 1.0
+    ARENA_NPC_SEEK_NON_NPC_STABLE_SECONDS = 0.8
+    ARENA_NPC_SELECT_LOST_STABLE_SECONDS = 0.8
     ARENA_NPC_GRAY_RETRY_LIMIT = 8
     ARENA_NPC_CHALLENGE_PENDING_SECONDS = 4.5
     ARENA_NPC_BATTLE_START_PENDING_SECONDS = 6
+    ARENA_WEEKLY_BATTLE_REWARDS_COLOR_THRESHOLD = 30
 
     ARENA_NPC_STAGE_SEEK = "seek_npc_lane"
     ARENA_NPC_STAGE_SELECT = "select_opponent"
@@ -190,6 +196,39 @@ class Arena(UI):
             logger.warning(f"Fast battle times OCR invalid: {current}/{total}")
         return current, remain, total
 
+    def _claim_weekly_battle_rewards(self, skip_first_screenshot=True) -> bool:
+        """
+        Claim weekly battle rewards from arena page after NPC combat rounds.
+        Use color match only, then click once when detected.
+        """
+        if not getattr(self.config, "Arena_ClaimWeeklyBattleRewards", True):
+            return False
+
+        # Wait briefly until we are back on arena page, then do one-shot check.
+        timeout = Timer(4, count=12).start()
+        while 1:
+            if skip_first_screenshot:
+                skip_first_screenshot = False
+            else:
+                self.device.screenshot()
+
+            if timeout.reached():
+                return False
+
+            if not self._is_arena_page_ready(interval=0):
+                if self.ui_additional():
+                    continue
+                continue
+
+            if WEEKLY_BATTLE_REWARDS.match_color(
+                self.device.image, threshold=self.ARENA_WEEKLY_BATTLE_REWARDS_COLOR_THRESHOLD
+            ):
+                self.device.click(WEEKLY_BATTLE_REWARDS)
+                logger.info("Arena: claim weekly battle rewards")
+                return True
+
+            return False
+
     def _npc_combat_once(self, use_fast_battle: bool, skip_first_screenshot=True) -> str:
         """
         Returns:
@@ -201,6 +240,10 @@ class Arena(UI):
         challenge_pending_timer = Timer(self.ARENA_NPC_CHALLENGE_PENDING_SECONDS, count=0).start()
         battle_start_pending_timer = Timer(self.ARENA_NPC_BATTLE_START_PENDING_SECONDS, count=0).start()
         battle_start_grace_timer = Timer(2, count=0).start()
+        entry_click_timer = Timer(self.ARENA_NPC_ENTRY_CLICK_INTERVAL_SECONDS, count=0).clear()
+        opponent_click_timer = Timer(self.ARENA_NPC_OPPONENT_CLICK_INTERVAL_SECONDS, count=0).clear()
+        seek_non_npc_timer = Timer(self.ARENA_NPC_SEEK_NON_NPC_STABLE_SECONDS, count=2).clear()
+        select_lost_timer = Timer(self.ARENA_NPC_SELECT_LOST_STABLE_SECONDS, count=2).clear()
         auto_fight_enter_timer = Timer(self.ARENA_NPC_AUTO_FIGHT_ENTER_SECONDS, count=3).start()
         auto_fight_click_interval = Timer(self.ARENA_NPC_AUTO_FIGHT_CLICK_INTERVAL_SECONDS, count=4).clear()
         auto_fight_clear_confirm_timer = Timer(self.ARENA_NPC_AUTO_FIGHT_CLEAR_CONFIRM_SECONDS, count=2).clear()
@@ -242,20 +285,30 @@ class Arena(UI):
                     continue
 
                 if self.appear(NPC_OPPONENT):
+                    seek_non_npc_timer.clear()
                     stage = self.ARENA_NPC_STAGE_SELECT
                     timeout.reset()
                     continue
 
-                if self.appear_then_click(NPC_COMBAT_ENTRY, interval=1):
+                if entry_click_timer.reached() and self.appear_then_click(NPC_COMBAT_ENTRY, interval=0):
                     logger.info("Arena NPC: enter NPC combat")
+                    entry_click_timer.reset()
                     timeout.reset()
                     continue
 
                 # In real-opponent page, CHALLENGE exists but NPC_OPPONENT does not.
-                if self.appear(CHALLENGE) and self.appear_then_click(NPC_COMBAT_ENTRY, interval=0.8):
-                    logger.info("Arena NPC: non-NPC challenge page detected, switch to NPC combat")
-                    timeout.reset()
-                    continue
+                if self.appear(CHALLENGE):
+                    if not seek_non_npc_timer.started():
+                        seek_non_npc_timer.start()
+                    elif seek_non_npc_timer.reached() and entry_click_timer.reached() and self.appear_then_click(
+                        NPC_COMBAT_ENTRY, interval=0
+                    ):
+                        logger.info("Arena NPC: non-NPC challenge page detected, switch to NPC combat")
+                        entry_click_timer.reset()
+                        timeout.reset()
+                        continue
+                else:
+                    seek_non_npc_timer.clear()
 
                 if self.ui_additional():
                     timeout.reset()
@@ -265,14 +318,20 @@ class Arena(UI):
 
             if stage == self.ARENA_NPC_STAGE_SELECT:
                 if self._is_battle_prepare_page():
+                    select_lost_timer.clear()
                     stage = self.ARENA_NPC_STAGE_PREPARE
                     timeout.reset()
                     continue
 
                 # CHALLENGE is only valid on NPC list page.
                 if not self.appear(NPC_OPPONENT):
-                    stage = self.ARENA_NPC_STAGE_SEEK
+                    if not select_lost_timer.started():
+                        select_lost_timer.start()
+                    elif select_lost_timer.reached():
+                        select_lost_timer.clear()
+                        stage = self.ARENA_NPC_STAGE_SEEK
                     continue
+                select_lost_timer.clear()
 
                 if self._is_challenge_ready(interval=1):
                     self.device.click(CHALLENGE)
@@ -284,12 +343,13 @@ class Arena(UI):
                     continue
 
                 if self._is_challenge_exhausted():
-                    gray_retry += 1
-                    if gray_retry >= self.ARENA_NPC_GRAY_RETRY_LIMIT:
-                        logger.info("Arena NPC: challenge unavailable after retries")
-                        return "exhausted"
-                    logger.info(f"Arena NPC: challenge gray, rotate opponent ({gray_retry})")
-                    if self.appear_then_click(NPC_OPPONENT, interval=0.5):
+                    if opponent_click_timer.reached() and self.appear_then_click(NPC_OPPONENT, interval=0):
+                        gray_retry += 1
+                        logger.info(f"Arena NPC: challenge gray, rotate opponent ({gray_retry})")
+                        if gray_retry >= self.ARENA_NPC_GRAY_RETRY_LIMIT:
+                            logger.info("Arena NPC: challenge unavailable after retries")
+                            return "exhausted"
+                        opponent_click_timer.reset()
                         timeout.reset()
                         continue
 
@@ -480,6 +540,8 @@ class Arena(UI):
         logger.info(f"Arena NPC: target={target_count}, fast_battle={use_fast_battle}")
         completed = 0
         while completed < target_count:
+            # Avoid stale click history across rounds triggering false-positive too-many-click.
+            self.device.click_record_clear()
             status = self._npc_combat_once(use_fast_battle=use_fast_battle, skip_first_screenshot=skip_first_screenshot)
             skip_first_screenshot = True
 
@@ -575,6 +637,7 @@ class Arena(UI):
                 if not self._run_npc_combat(skip_first_screenshot=True):
                     self.config.task_delay(success=False)
                     return False
+                self._claim_weekly_battle_rewards(skip_first_screenshot=True)
                 self.config.task_delay(server_update=True)
                 return True
 
@@ -597,6 +660,7 @@ class Arena(UI):
                 if not self._run_npc_combat(skip_first_screenshot=True):
                     self.config.task_delay(success=False)
                     return False
+                self._claim_weekly_battle_rewards(skip_first_screenshot=True)
 
             self.config.task_delay(server_update=True)
             return True

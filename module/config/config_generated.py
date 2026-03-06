@@ -201,6 +201,7 @@ class GeneratedConfig:
 
     # Group `Arena`
     Arena_ClaimWeeklyRewards = True
+    Arena_ClaimWeeklyBattleRewards = True
     Arena_NPCCombat = False
     Arena_NPCCombatFastBattle = True
     Arena_NPCCombatCount = 5
