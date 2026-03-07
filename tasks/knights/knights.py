@@ -115,10 +115,14 @@ class Knights(
             self._claim_signin_reward(skip_first_screenshot=True)
 
         success = True
-        if run_weekly_task:
-            success = self.run_weekly_task(skip_first_screenshot=True) and success
+        if run_expedition:
+            success = self.run_expedition(skip_first_screenshot=True) and success
+        if run_world_boss:
+            success = self.run_world_boss(skip_first_screenshot=True) and success
         if run_donate:
             success = self.run_donate(skip_first_screenshot=True) and success
+        if run_weekly_task:
+            success = self.run_weekly_task(skip_first_screenshot=True) and success
         if run_support:
             success = self.run_support(skip_first_screenshot=True) and success
         if run_expedition:
