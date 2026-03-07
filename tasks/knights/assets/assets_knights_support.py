@@ -75,7 +75,13 @@ LOWER_LEVEL_FAIRY_FLOWER_SELECTED = ButtonWrapper(
 )
 REQUEST_ACTION = ButtonWrapper(
     name='REQUEST_ACTION',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/knights/support/REQUEST_ACTION.png',
+        area=(1015, 590, 1056, 610),
+        search=(995, 570, 1076, 630),
+        color=(144, 161, 148),
+        button=(1015, 590, 1056, 610),
+    ),
     global_cn=Button(
         file='./assets/global_cn/knights/support/REQUEST_ACTION.png',
         area=(1015, 590, 1056, 610),
@@ -127,7 +133,13 @@ SUPPORT = ButtonWrapper(
 )
 SUPPORT_ACTION = ButtonWrapper(
     name='SUPPORT_ACTION',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/knights/support/SUPPORT_ACTION.png',
+        area=(852, 328, 893, 348),
+        search=(832, 308, 913, 368),
+        color=(143, 158, 146),
+        button=(852, 328, 893, 348),
+    ),
     global_cn=Button(
         file='./assets/global_cn/knights/support/SUPPORT_ACTION.png',
         area=(852, 328, 893, 348),
