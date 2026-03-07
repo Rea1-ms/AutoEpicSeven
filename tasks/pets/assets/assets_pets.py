@@ -25,7 +25,13 @@ ADOPTION_ENTRY = ButtonWrapper(
 )
 ADOPTION_ONE_FREE = ButtonWrapper(
     name='ADOPTION_ONE_FREE',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/pets/ADOPTION_ONE_FREE.png',
+        area=(424, 597, 577, 622),
+        search=(404, 577, 597, 642),
+        color=(68, 85, 55),
+        button=(424, 597, 577, 622),
+    ),
     global_cn=Button(
         file='./assets/global_cn/pets/ADOPTION_ONE_FREE.png',
         area=(426, 599, 577, 622),
@@ -57,7 +63,13 @@ OCR_PACK_FULL = ButtonWrapper(
 )
 PETS_PACK_FULL = ButtonWrapper(
     name='PETS_PACK_FULL',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/pets/PETS_PACK_FULL.png',
+        area=(564, 651, 601, 671),
+        search=(544, 631, 621, 691),
+        color=(47, 75, 106),
+        button=(564, 651, 601, 671),
+    ),
     global_cn=Button(
         file='./assets/global_cn/pets/PETS_PACK_FULL.png',
         area=(562, 651, 599, 671),

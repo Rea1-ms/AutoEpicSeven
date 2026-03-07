@@ -15,7 +15,13 @@ ARENA_FLAG = ButtonWrapper(
 )
 BUY = ButtonWrapper(
     name='BUY',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/store/BUY.png',
+        area=(961, 432, 999, 453),
+        search=(895, 140, 1003, 684),
+        color=(133, 149, 134),
+        button=(961, 432, 999, 453),
+    ),
     global_cn=Button(
         file='./assets/global_cn/store/BUY.png',
         area=(960, 432, 1000, 452),
@@ -27,7 +33,13 @@ BUY = ButtonWrapper(
 )
 BUY_CONFIRM = ButtonWrapper(
     name='BUY_CONFIRM',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/store/BUY_CONFIRM.png',
+        area=(816, 579, 854, 599),
+        search=(790, 495, 862, 606),
+        color=(141, 157, 143),
+        button=(816, 579, 854, 599),
+    ),
     global_cn=Button(
         file='./assets/global_cn/store/BUY_CONFIRM.png',
         area=(816, 579, 854, 599),
@@ -39,7 +51,13 @@ BUY_CONFIRM = ButtonWrapper(
 )
 BUY_MAX = ButtonWrapper(
     name='BUY_MAX',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/store/BUY_MAX.png',
+        area=(887, 461, 930, 484),
+        search=(867, 441, 950, 504),
+        color=(112, 117, 123),
+        button=(887, 461, 930, 484),
+    ),
     global_cn=Button(
         file='./assets/global_cn/store/BUY_MAX.png',
         area=(887, 459, 931, 482),
@@ -161,7 +179,13 @@ POTENTIAL_FRAGMENTS = ButtonWrapper(
 )
 STORE_CHECK = ButtonWrapper(
     name='STORE_CHECK',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/store/STORE_CHECK.png',
+        area=(92, 21, 116, 45),
+        search=(72, 1, 136, 65),
+        color=(158, 155, 155),
+        button=(92, 21, 116, 45),
+    ),
     global_cn=Button(
         file='./assets/global_cn/store/STORE_CHECK.png',
         area=(93, 21, 118, 45),
