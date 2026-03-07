@@ -5,7 +5,13 @@ from module.base.button import Button, ButtonWrapper
 
 BUY_BOTTOM = ButtonWrapper(
     name='BUY_BOTTOM',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/secret_shop/BUY_BOTTOM.png',
+        area=(1173, 659, 1212, 679),
+        search=(1170, 513, 1214, 682),
+        color=(147, 161, 149),
+        button=(1173, 659, 1212, 679),
+    ),
     global_cn=Button(
         file='./assets/global_cn/secret_shop/BUY_BOTTOM.png',
         area=(1172, 659, 1212, 679),
@@ -17,7 +23,13 @@ BUY_BOTTOM = ButtonWrapper(
 )
 BUY_BOTTOM_STABLE = ButtonWrapper(
     name='BUY_BOTTOM_STABLE',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/secret_shop/BUY_BOTTOM_STABLE.png',
+        area=(1172, 659, 1212, 679),
+        search=(1172, 659, 1212, 679),
+        color=(136, 152, 139),
+        button=(1172, 659, 1212, 679),
+    ),
     global_cn=Button(
         file='./assets/global_cn/secret_shop/BUY_BOTTOM_STABLE.png',
         area=(1172, 659, 1212, 679),
@@ -29,7 +41,13 @@ BUY_BOTTOM_STABLE = ButtonWrapper(
 )
 BUY_CONFIRM = ButtonWrapper(
     name='BUY_CONFIRM',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/secret_shop/BUY_CONFIRM.png',
+        area=(798, 499, 837, 519),
+        search=(778, 479, 857, 539),
+        color=(132, 148, 135),
+        button=(798, 499, 837, 519),
+    ),
     global_cn=Button(
         file='./assets/global_cn/secret_shop/BUY_CONFIRM.png',
         area=(798, 499, 837, 519),
@@ -41,7 +59,13 @@ BUY_CONFIRM = ButtonWrapper(
 )
 BUY_TOP = ButtonWrapper(
     name='BUY_TOP',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/secret_shop/BUY_TOP.png',
+        area=(1172, 586, 1212, 606),
+        search=(1172, 151, 1212, 606),
+        color=(136, 152, 139),
+        button=(1172, 586, 1212, 606),
+    ),
     global_cn=Button(
         file='./assets/global_cn/secret_shop/BUY_TOP.png',
         area=(1172, 586, 1212, 606),
@@ -53,7 +77,13 @@ BUY_TOP = ButtonWrapper(
 )
 BUY_TOP_STABLE = ButtonWrapper(
     name='BUY_TOP_STABLE',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/secret_shop/BUY_TOP_STABLE.png',
+        area=(1172, 586, 1212, 606),
+        search=(1152, 566, 1232, 626),
+        color=(136, 152, 139),
+        button=(1172, 586, 1212, 606),
+    ),
     global_cn=Button(
         file='./assets/global_cn/secret_shop/BUY_TOP_STABLE.png',
         area=(1172, 586, 1212, 606),
@@ -65,6 +95,13 @@ BUY_TOP_STABLE = ButtonWrapper(
 )
 COVENANT_BOOKMARK_BOTTOM = ButtonWrapper(
     name='COVENANT_BOOKMARK_BOTTOM',
+    cn=Button(
+        file='./assets/cn/secret_shop/COVENANT_BOOKMARK_BOTTOM.png',
+        area=(510, 321, 577, 380),
+        search=(561, 463, 643, 689),
+        color=(91, 86, 78),
+        button=(510, 321, 577, 380),
+    ),
     share=Button(
         file='./assets/share/secret_shop/COVENANT_BOOKMARK_BOTTOM.png',
         area=(568, 252, 635, 313),
@@ -75,6 +112,13 @@ COVENANT_BOOKMARK_BOTTOM = ButtonWrapper(
 )
 COVENANT_BOOKMARK_TOP = ButtonWrapper(
     name='COVENANT_BOOKMARK_TOP',
+    cn=Button(
+        file='./assets/cn/secret_shop/COVENANT_BOOKMARK_TOP.png',
+        area=(510, 321, 577, 380),
+        search=(568, 106, 635, 609),
+        color=(91, 86, 78),
+        button=(510, 321, 577, 380),
+    ),
     share=Button(
         file='./assets/share/secret_shop/COVENANT_BOOKMARK_TOP.png',
         area=(568, 252, 635, 313),
@@ -85,6 +129,13 @@ COVENANT_BOOKMARK_TOP = ButtonWrapper(
 )
 MYSTIC_MEDAL_BOTTOM = ButtonWrapper(
     name='MYSTIC_MEDAL_BOTTOM',
+    cn=Button(
+        file='./assets/cn/secret_shop/MYSTIC_MEDAL_BOTTOM.png',
+        area=(571, 473, 630, 529),
+        search=(561, 463, 643, 689),
+        color=(105, 54, 47),
+        button=(571, 473, 630, 529),
+    ),
     share=Button(
         file='./assets/share/secret_shop/MYSTIC_MEDAL_BOTTOM.png',
         area=(571, 473, 630, 529),
@@ -95,6 +146,13 @@ MYSTIC_MEDAL_BOTTOM = ButtonWrapper(
 )
 MYSTIC_MEDAL_TOP = ButtonWrapper(
     name='MYSTIC_MEDAL_TOP',
+    cn=Button(
+        file='./assets/cn/secret_shop/MYSTIC_MEDAL_TOP.png',
+        area=(571, 473, 630, 529),
+        search=(568, 106, 635, 609),
+        color=(105, 54, 47),
+        button=(571, 473, 630, 529),
+    ),
     share=Button(
         file='./assets/share/secret_shop/MYSTIC_MEDAL_TOP.png',
         area=(571, 473, 630, 529),
@@ -105,6 +163,13 @@ MYSTIC_MEDAL_TOP = ButtonWrapper(
 )
 REFRESH = ButtonWrapper(
     name='REFRESH',
+    cn=Button(
+        file='./assets/cn/secret_shop/REFRESH.png',
+        area=(228, 648, 267, 669),
+        search=(208, 628, 287, 689),
+        color=(128, 146, 131),
+        button=(228, 648, 267, 669),
+    ),
     share=Button(
         file='./assets/share/secret_shop/REFRESH.png',
         area=(81, 639, 106, 684),
@@ -115,7 +180,13 @@ REFRESH = ButtonWrapper(
 )
 REFRESH_CONFIRM = ButtonWrapper(
     name='REFRESH_CONFIRM',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/secret_shop/REFRESH_CONFIRM.png',
+        area=(799, 499, 836, 518),
+        search=(779, 479, 856, 538),
+        color=(153, 167, 155),
+        button=(799, 499, 836, 518),
+    ),
     global_cn=Button(
         file='./assets/global_cn/secret_shop/REFRESH_CONFIRM.png',
         area=(728, 450, 768, 470),

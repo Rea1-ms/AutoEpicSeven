@@ -5,7 +5,13 @@ from module.base.button import Button, ButtonWrapper
 
 AUTO_CONFIG = ButtonWrapper(
     name='AUTO_CONFIG',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/knights/expedition/AUTO_CONFIG.png',
+        area=(124, 644, 205, 664),
+        search=(104, 624, 225, 684),
+        color=(149, 158, 172),
+        button=(124, 644, 205, 664),
+    ),
     global_cn=Button(
         file='./assets/global_cn/knights/expedition/AUTO_CONFIG.png',
         area=(124, 644, 205, 664),
@@ -17,7 +23,13 @@ AUTO_CONFIG = ButtonWrapper(
 )
 BATTLE_RESULT_CONFIRM = ButtonWrapper(
     name='BATTLE_RESULT_CONFIRM',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/knights/expedition/BATTLE_RESULT_CONFIRM.png',
+        area=(1133, 649, 1174, 669),
+        search=(1113, 629, 1194, 689),
+        color=(122, 140, 125),
+        button=(1133, 649, 1174, 669),
+    ),
     global_cn=Button(
         file='./assets/global_cn/knights/expedition/BATTLE_RESULT_CONFIRM.png',
         area=(1133, 649, 1174, 669),
@@ -39,7 +51,13 @@ BATTLE_START = ButtonWrapper(
 )
 CHOOSE_TEAM = ButtonWrapper(
     name='CHOOSE_TEAM',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/knights/expedition/CHOOSE_TEAM.png',
+        area=(1065, 598, 1086, 618),
+        search=(1045, 578, 1106, 638),
+        color=(122, 140, 124),
+        button=(1065, 598, 1086, 618),
+    ),
     global_cn=Button(
         file='./assets/global_cn/knights/expedition/CHOOSE_TEAM.png',
         area=(1065, 598, 1086, 618),
@@ -81,7 +99,13 @@ EXPEDITION = ButtonWrapper(
 )
 FORM_A_TEAM = ButtonWrapper(
     name='FORM_A_TEAM',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/knights/expedition/FORM_A_TEAM.png',
+        area=(1025, 646, 1066, 667),
+        search=(1005, 626, 1086, 687),
+        color=(136, 151, 138),
+        button=(1025, 646, 1066, 667),
+    ),
     global_cn=Button(
         file='./assets/global_cn/knights/expedition/FORM_A_TEAM.png',
         area=(1025, 646, 1066, 667),
@@ -123,7 +147,13 @@ OCR_WEEKLY_CONTRIBUTION = ButtonWrapper(
 )
 OPEN_ALL_BOX = ButtonWrapper(
     name='OPEN_ALL_BOX',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/knights/expedition/OPEN_ALL_BOX.png',
+        area=(598, 617, 680, 637),
+        search=(578, 597, 700, 657),
+        color=(152, 144, 137),
+        button=(598, 617, 680, 637),
+    ),
     global_cn=Button(
         file='./assets/global_cn/knights/expedition/OPEN_ALL_BOX.png',
         area=(598, 617, 680, 637),
@@ -135,7 +165,13 @@ OPEN_ALL_BOX = ButtonWrapper(
 )
 OPEN_ALL_BOX_CONFIRM = ButtonWrapper(
     name='OPEN_ALL_BOX_CONFIRM',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/knights/expedition/OPEN_ALL_BOX_CONFIRM.png',
+        area=(618, 617, 660, 637),
+        search=(598, 597, 680, 657),
+        color=(145, 136, 129),
+        button=(618, 617, 660, 637),
+    ),
     global_cn=Button(
         file='./assets/global_cn/knights/expedition/OPEN_ALL_BOX_CONFIRM.png',
         area=(618, 617, 660, 637),
@@ -187,7 +223,13 @@ TEAM_BATTLE = ButtonWrapper(
 )
 TEAM_BATTLE_RESULT_CONFIRM = ButtonWrapper(
     name='TEAM_BATTLE_RESULT_CONFIRM',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/knights/expedition/TEAM_BATTLE_RESULT_CONFIRM.png',
+        area=(966, 642, 1004, 660),
+        search=(946, 622, 1024, 680),
+        color=(122, 142, 125),
+        button=(966, 642, 1004, 660),
+    ),
     global_cn=Button(
         file='./assets/global_cn/knights/expedition/TEAM_BATTLE_RESULT_CONFIRM.png',
         area=(966, 642, 1004, 660),
