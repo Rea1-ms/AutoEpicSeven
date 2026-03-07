@@ -33,7 +33,8 @@ class KnightsTeamBattleMixin:
     TEAM_BATTLE_STATE_SETTLEMENT = "clear_settlement"
 
     def _is_team_battle_home(self, interval=0) -> bool:
-        return self.appear(KNIGHTS_CREST, interval=interval)
+        # I've tried to extend the search area, but similarity is still stuck at 0.75, and I don't know why
+        return self.appear(KNIGHTS_CREST, interval=interval, similarity=0.7)
 
     def _is_team_battle_ready(self, interval=0) -> bool:
         """
