@@ -13,18 +13,6 @@ COMBAT_TEAM_DISMISSSUPPORT = ButtonWrapper(
         button=(1127, 477, 1154, 501),
     ),
 )
-COMBAT_TEAM_PREPARE = ButtonWrapper(
-    name='COMBAT_TEAM_PREPARE',
-    cn=Button(
-        file='./assets/cn/combat/team/COMBAT_TEAM_PREPARE.png',
-        area=(1037, 648, 1116, 667),
-        search=(1017, 628, 1136, 687),
-        color=(159, 159, 159),
-        button=(958, 641, 1193, 676),
-    ),
-    global_cn=None,
-    global_en=None,
-)
 COMBAT_TEAM_SUPPORT = ButtonWrapper(
     name='COMBAT_TEAM_SUPPORT',
     share=Button(

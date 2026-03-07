@@ -7,10 +7,10 @@ RECEIVE = ButtonWrapper(
     name='RECEIVE',
     cn=Button(
         file='./assets/cn/knights/weekly_task/RECEIVE.png',
-        area=(902, 305, 944, 325),
+        area=(904, 304, 943, 325),
         search=(901, 281, 945, 718),
-        color=(143, 159, 145),
-        button=(902, 305, 944, 325),
+        color=(148, 163, 150),
+        button=(904, 304, 943, 325),
     ),
     global_cn=Button(
         file='./assets/global_cn/knights/weekly_task/RECEIVE.png',

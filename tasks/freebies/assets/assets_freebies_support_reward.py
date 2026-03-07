@@ -33,18 +33,6 @@ MENU_TO_PROFILE = ButtonWrapper(
         button=(1123, 82, 1149, 97),
     ),
 )
-PROFILE = ButtonWrapper(
-    name='PROFILE',
-    cn=Button(
-        file='./assets/cn/freebies/support_reward/PROFILE.png',
-        area=(890, 99, 1111, 131),
-        search=(870, 79, 1131, 151),
-        color=(205, 206, 206),
-        button=(890, 99, 1111, 131),
-    ),
-    global_cn=None,
-    global_en=None,
-)
 REWARD_POPUP = ButtonWrapper(
     name='REWARD_POPUP',
     share=Button(

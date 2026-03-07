@@ -5,6 +5,7 @@ from pponnxcr.predict_system import BoxedResult
 
 from module.base.decorator import cached_property
 from module.base.utils import area_center, area_in_area, random_rectangle_vector_opted
+import module.config.server as server_
 from module.exception import GamePageUnknownError
 from module.logger import logger
 from module.ocr.ocr import Ocr, OcrWhiteLetterOnComplexBackground
@@ -135,10 +136,9 @@ class PlannerScan(SynthesizeUI, PlannerMixin):
             return lang
 
         logger.warning('Failed to predict planner result lang, fallback to package name')
-        if self.config.Emulator_PackageName in ['CN-Official', 'CN-Bilibili']:
+        if server_.is_cn_server(self.config.Emulator_PackageName):
             lang = 'cn'
-        elif self.config.Emulator_PackageName in [
-            'OVERSEA-America', 'OVERSEA-Asia', 'OVERSEA-Europe', 'OVERSEA-TWHKMO']:
+        elif server_.is_oversea_server(self.config.Emulator_PackageName):
             lang = 'en'
         else:
             lang = self.config.LANG

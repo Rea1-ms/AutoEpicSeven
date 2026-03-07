@@ -15,9 +15,27 @@ GAME_UPGRADE_AVAILABLE = ButtonWrapper(
     ),
     global_en=None,
 )
+LOGIN_ANNOUNCEMENT_CLOSE = ButtonWrapper(
+    name='LOGIN_ANNOUNCEMENT_CLOSE',
+    cn=Button(
+        file='./assets/cn/login/LOGIN_ANNOUNCEMENT_CLOSE.png',
+        area=(1129, 66, 1151, 88),
+        search=(1109, 46, 1171, 108),
+        color=(76, 79, 69),
+        button=(1129, 66, 1151, 88),
+    ),
+    global_cn=None,
+    global_en=None,
+)
 LOGIN_CONFIRM = ButtonWrapper(
     name='LOGIN_CONFIRM',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/login/LOGIN_CONFIRM.png',
+        area=(1206, 650, 1233, 677),
+        search=(1186, 630, 1253, 697),
+        color=(113, 121, 131),
+        button=(465, 94, 815, 294),
+    ),
     global_cn=Button(
         file='./assets/global_cn/login/LOGIN_CONFIRM.png',
         area=(1116, 650, 1143, 677),
@@ -29,7 +47,22 @@ LOGIN_CONFIRM = ButtonWrapper(
 )
 LOGIN_ERROR = ButtonWrapper(
     name='LOGIN_ERROR',
-    cn=None,
+    cn=[
+        Button(
+            file='./assets/cn/login/LOGIN_ERROR.png',
+            area=(619, 585, 662, 606),
+            search=(599, 565, 682, 626),
+            color=(160, 140, 149),
+            button=(619, 585, 662, 606),
+        ),
+        Button(
+            file='./assets/cn/login/LOGIN_ERROR.2.png',
+            area=(535, 174, 589, 230),
+            search=(515, 154, 609, 250),
+            color=(204, 182, 202),
+            button=(535, 174, 589, 230),
+        ),
+    ],
     global_cn=[
         Button(
             file='./assets/global_cn/login/LOGIN_ERROR.png',
@@ -50,7 +83,22 @@ LOGIN_ERROR = ButtonWrapper(
 )
 LOGIN_LOADING = ButtonWrapper(
     name='LOGIN_LOADING',
-    cn=None,
+    cn=[
+        Button(
+            file='./assets/cn/login/LOGIN_LOADING.png',
+            area=(597, 639, 649, 656),
+            search=(577, 619, 669, 676),
+            color=(184, 159, 175),
+            button=(597, 639, 649, 656),
+        ),
+        Button(
+            file='./assets/cn/login/LOGIN_LOADING.2.png',
+            area=(1000, 638, 1050, 655),
+            search=(980, 618, 1070, 675),
+            color=(181, 158, 173),
+            button=(1000, 638, 1050, 655),
+        ),
+    ],
     global_cn=[
         Button(
             file='./assets/global_cn/login/LOGIN_LOADING.png',
@@ -71,7 +119,13 @@ LOGIN_LOADING = ButtonWrapper(
 )
 PATCH_APPLY = ButtonWrapper(
     name='PATCH_APPLY',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/login/PATCH_APPLY.png',
+        area=(620, 535, 660, 555),
+        search=(600, 515, 680, 575),
+        color=(128, 146, 129),
+        button=(620, 535, 660, 555),
+    ),
     global_cn=Button(
         file='./assets/global_cn/login/PATCH_APPLY.png',
         area=(620, 535, 661, 555),
@@ -93,7 +147,13 @@ PATCH_PERCENT_SIGN = ButtonWrapper(
 )
 UNDER_MAINTENANCE = ButtonWrapper(
     name='UNDER_MAINTENANCE',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/login/UNDER_MAINTENANCE.png',
+        area=(613, 601, 649, 612),
+        search=(593, 581, 669, 632),
+        color=(47, 36, 33),
+        button=(613, 601, 649, 612),
+    ),
     global_cn=Button(
         file='./assets/global_cn/login/UNDER_MAINTENANCE.png',
         area=(613, 601, 649, 612),
@@ -105,7 +165,13 @@ UNDER_MAINTENANCE = ButtonWrapper(
 )
 VERIFYING = ButtonWrapper(
     name='VERIFYING',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/login/VERIFYING.png',
+        area=(596, 639, 668, 656),
+        search=(576, 619, 688, 676),
+        color=(188, 201, 204),
+        button=(596, 639, 668, 656),
+    ),
     global_cn=Button(
         file='./assets/global_cn/login/VERIFYING.png',
         area=(596, 639, 669, 656),

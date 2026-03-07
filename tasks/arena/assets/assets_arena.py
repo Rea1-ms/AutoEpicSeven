@@ -53,7 +53,13 @@ ARENA_SETTLING = ButtonWrapper(
 )
 AUTO_BATTLE_RESULT_CONFIRM = ButtonWrapper(
     name='AUTO_BATTLE_RESULT_CONFIRM',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/arena/AUTO_BATTLE_RESULT_CONFIRM.png',
+        area=(1150, 649, 1190, 669),
+        search=(1130, 629, 1210, 689),
+        color=(131, 148, 134),
+        button=(1150, 649, 1190, 669),
+    ),
     global_cn=Button(
         file='./assets/global_cn/arena/AUTO_BATTLE_RESULT_CONFIRM.png',
         area=(1150, 649, 1190, 669),
@@ -115,7 +121,22 @@ BATTLE_START = ButtonWrapper(
 )
 CHALLENGE = ButtonWrapper(
     name='CHALLENGE',
-    cn=None,
+    cn=[
+        Button(
+            file='./assets/cn/arena/CHALLENGE.png',
+            area=(620, 651, 660, 671),
+            search=(600, 631, 680, 691),
+            color=(143, 159, 145),
+            button=(620, 651, 660, 671),
+        ),
+        Button(
+            file='./assets/cn/arena/CHALLENGE.2.png',
+            area=(600, 651, 680, 671),
+            search=(580, 631, 700, 691),
+            color=(158, 151, 144),
+            button=(600, 651, 680, 671),
+        ),
+    ],
     global_cn=[
         Button(
             file='./assets/global_cn/arena/CHALLENGE.png',
@@ -166,7 +187,13 @@ FAST_BATTLE_ON = ButtonWrapper(
 )
 FAST_BATTLE_RESULT_CONFIRM = ButtonWrapper(
     name='FAST_BATTLE_RESULT_CONFIRM',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/arena/FAST_BATTLE_RESULT_CONFIRM.png',
+        area=(727, 609, 766, 628),
+        search=(707, 589, 786, 648),
+        color=(137, 154, 138),
+        button=(727, 609, 766, 628),
+    ),
     global_cn=Button(
         file='./assets/global_cn/arena/FAST_BATTLE_RESULT_CONFIRM.png',
         area=(726, 608, 766, 628),

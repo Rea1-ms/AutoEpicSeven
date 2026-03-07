@@ -153,18 +153,6 @@ ACTIVE_POINTS_5_UNLOCK = ButtonWrapper(
         button=(1113, 170, 1158, 213),
     ),
 )
-DAILY_QUEST_FULL = ButtonWrapper(
-    name='DAILY_QUEST_FULL',
-    cn=Button(
-        file='./assets/cn/daily/reward/DAILY_QUEST_FULL.png',
-        area=(164, 574, 301, 592),
-        search=(144, 554, 321, 612),
-        color=(131, 113, 82),
-        button=(164, 574, 301, 592),
-    ),
-    global_cn=None,
-    global_en=None,
-)
 DAILY_QUEST_GOTO = ButtonWrapper(
     name='DAILY_QUEST_GOTO',
     share=Button(
@@ -174,18 +162,6 @@ DAILY_QUEST_GOTO = ButtonWrapper(
         color=(152, 152, 151),
         button=(175, 572, 192, 591),
     ),
-)
-DAILY_QUEST_IN_PROGRESS = ButtonWrapper(
-    name='DAILY_QUEST_IN_PROGRESS',
-    cn=Button(
-        file='./assets/cn/daily/reward/DAILY_QUEST_IN_PROGRESS.png',
-        area=(203, 570, 261, 587),
-        search=(183, 550, 281, 607),
-        color=(126, 109, 80),
-        button=(203, 570, 261, 587),
-    ),
-    global_cn=None,
-    global_en=None,
 )
 DAILY_QUEST_LEFT_START = ButtonWrapper(
     name='DAILY_QUEST_LEFT_START',

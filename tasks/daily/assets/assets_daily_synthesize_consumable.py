@@ -63,18 +63,6 @@ CONSUMABLES_TRICK_SNACK_CHECK = ButtonWrapper(
         button=(593, 188, 678, 267),
     ),
 )
-RECIPE_UNLOCK = ButtonWrapper(
-    name='RECIPE_UNLOCK',
-    cn=Button(
-        file='./assets/cn/daily/synthesize_consumable/RECIPE_UNLOCK.png',
-        area=(836, 647, 913, 668),
-        search=(816, 627, 933, 688),
-        color=(167, 167, 167),
-        button=(836, 647, 913, 668),
-    ),
-    global_cn=None,
-    global_en=None,
-)
 SIMPLE_PROTECTIVE_GEAR = ButtonWrapper(
     name='SIMPLE_PROTECTIVE_GEAR',
     share=Button(
@@ -94,18 +82,6 @@ SIMPLE_PROTECTIVE_GEAR_CHECK = ButtonWrapper(
         color=(107, 106, 108),
         button=(578, 196, 692, 256),
     ),
-)
-SYNTHESIZE_CONFIRM = ButtonWrapper(
-    name='SYNTHESIZE_CONFIRM',
-    cn=Button(
-        file='./assets/cn/daily/synthesize_consumable/SYNTHESIZE_CONFIRM.png',
-        area=(847, 645, 895, 672),
-        search=(827, 625, 915, 692),
-        color=(189, 190, 190),
-        button=(847, 645, 895, 672),
-    ),
-    global_cn=None,
-    global_en=None,
 )
 SYNTHESIZE_CONSUMABLES_CHECK = ButtonWrapper(
     name='SYNTHESIZE_CONSUMABLES_CHECK',

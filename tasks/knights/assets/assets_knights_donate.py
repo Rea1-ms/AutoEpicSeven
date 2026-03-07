@@ -17,10 +17,10 @@ DONATE_ACTION = ButtonWrapper(
     name='DONATE_ACTION',
     cn=Button(
         file='./assets/cn/knights/donate/DONATE_ACTION.png',
-        area=(858, 424, 899, 444),
-        search=(857, 423, 900, 670),
-        color=(169, 181, 170),
-        button=(858, 424, 899, 444),
+        area=(859, 424, 898, 444),
+        search=(858, 424, 898, 669),
+        color=(177, 188, 179),
+        button=(859, 424, 898, 444),
     ),
     global_cn=Button(
         file='./assets/global_cn/knights/donate/DONATE_ACTION.png',

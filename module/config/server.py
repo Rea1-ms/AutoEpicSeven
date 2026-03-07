@@ -5,6 +5,13 @@ Use 'import module.config.server as server' to import, don't use 'from xxx impor
 lang = 'cn'  # Setting default to cn, will avoid errors when using dev_tools
 server = 'CN-Official'
 
+SERVER_FAMILY_CN = 'CN'
+SERVER_FAMILY_OVERSEA = 'OVERSEA'
+CANONICAL_SERVER = {
+    SERVER_FAMILY_CN: 'CN-Official',
+    SERVER_FAMILY_OVERSEA: 'OVERSEA-Play',
+}
+
 # 支持的语言/assets目录
 # cn = 国服简中
 # global_cn = 国际服简中
@@ -55,10 +62,73 @@ def map_assets_lang(server_name: str, game_lang: str) -> str:
     if game_lang == 'auto' or not game_lang:
         game_lang = 'cn'
 
-    if server_name.startswith('OVERSEA'):
+    if is_oversea_server(server_name):
         return 'global_en' if game_lang == 'en' else 'global_cn'
 
     return 'cn'
+
+
+def normalize_server(package_or_server: str = '') -> str:
+    """
+    Normalize package/server input to a server-like string.
+
+    Args:
+        package_or_server: Package name or server key. Empty means current global server.
+
+    Returns:
+        str: Normalized server string if known, otherwise an empty string.
+    """
+    value = package_or_server or server
+    if not value:
+        return ''
+
+    try:
+        return to_server(value)
+    except ValueError:
+        return ''
+
+
+def server_family(package_or_server: str = '') -> str:
+    """
+    Get server family, such as 'CN' or 'OVERSEA'.
+
+    Args:
+        package_or_server: Package name or server key. Empty means current global server.
+    """
+    value = normalize_server(package_or_server)
+    family, _, _ = value.partition('-')
+    return family
+
+
+def canonical_server(package_or_server: str = '') -> str:
+    """
+    Collapse server aliases to one canonical server key per family.
+
+    Args:
+        package_or_server: Package name or server key. Empty means current global server.
+    """
+    value = normalize_server(package_or_server)
+    if not value:
+        return ''
+
+    family, _, _ = value.partition('-')
+    return CANONICAL_SERVER.get(family, value)
+
+
+def is_cn_server(package_or_server: str = '') -> bool:
+    """
+    Args:
+        package_or_server: Package name or server key. Empty means current global server.
+    """
+    return server_family(package_or_server) == SERVER_FAMILY_CN
+
+
+def is_oversea_server(package_or_server: str = '') -> bool:
+    """
+    Args:
+        package_or_server: Package name or server key. Empty means current global server.
+    """
+    return server_family(package_or_server) == SERVER_FAMILY_OVERSEA
 
 
 def to_server(package_or_server: str, before: str = '') -> str:

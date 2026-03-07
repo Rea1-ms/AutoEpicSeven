@@ -23,30 +23,6 @@ BLESSING_ENHANCED = ButtonWrapper(
         button=(630, 351, 651, 370),
     ),
 )
-BLESSING_LOST = ButtonWrapper(
-    name='BLESSING_LOST',
-    cn=Button(
-        file='./assets/cn/rogue/ui/BLESSING_LOST.png',
-        area=(579, 44, 637, 72),
-        search=(565, 31, 652, 124),
-        color=(125, 38, 32),
-        button=(579, 44, 637, 72),
-    ),
-    global_cn=None,
-    global_en=None,
-)
-BLESSING_OBTAINED = ButtonWrapper(
-    name='BLESSING_OBTAINED',
-    cn=Button(
-        file='./assets/cn/rogue/ui/BLESSING_OBTAINED.png',
-        area=(578, 44, 638, 72),
-        search=(565, 31, 652, 124),
-        color=(139, 124, 92),
-        button=(578, 44, 638, 72),
-    ),
-    global_cn=None,
-    global_en=None,
-)
 CHECK_BLESSING = ButtonWrapper(
     name='CHECK_BLESSING',
     share=Button(
@@ -66,39 +42,6 @@ COSMIC_FRAGMENT = ButtonWrapper(
         color=(86, 68, 62),
         button=(1146, 19, 1181, 55),
     ),
-)
-CURIO_FIXED = ButtonWrapper(
-    name='CURIO_FIXED',
-    cn=Button(
-        file='./assets/cn/rogue/ui/CURIO_FIXED.png',
-        area=(558, 54, 626, 75),
-        search=(538, 34, 646, 95),
-        color=(126, 123, 122),
-        button=(558, 54, 626, 75),
-    ),
-    global_cn=None,
-    global_en=None,
-)
-CURIO_OBTAINED = ButtonWrapper(
-    name='CURIO_OBTAINED',
-    cn=[
-        Button(
-            file='./assets/cn/rogue/ui/CURIO_OBTAINED.png',
-            area=(643, 86, 708, 117),
-            search=(623, 66, 728, 137),
-            color=(125, 126, 134),
-            button=(643, 86, 708, 117),
-        ),
-        Button(
-            file='./assets/cn/rogue/ui/CURIO_OBTAINED.2.png',
-            area=(680, 86, 744, 117),
-            search=(660, 66, 764, 137),
-            color=(123, 124, 129),
-            button=(680, 86, 744, 117),
-        ),
-    ],
-    global_cn=None,
-    global_en=None,
 )
 FLAG_UNRECORD = ButtonWrapper(
     name='FLAG_UNRECORD',
@@ -129,18 +72,6 @@ PAGE_CHOOSE_BONUS = ButtonWrapper(
         color=(33, 29, 54),
         button=(503, 180, 555, 230),
     ),
-)
-PAGE_CHOOSE_BONUS_TRAILBLAZE = ButtonWrapper(
-    name='PAGE_CHOOSE_BONUS_TRAILBLAZE',
-    cn=Button(
-        file='./assets/cn/rogue/ui/PAGE_CHOOSE_BONUS_TRAILBLAZE.png',
-        area=(623, 570, 656, 587),
-        search=(603, 550, 676, 607),
-        color=(182, 181, 183),
-        button=(623, 570, 656, 587),
-    ),
-    global_cn=None,
-    global_en=None,
 )
 PAGE_CHOOSE_BUFF = ButtonWrapper(
     name='PAGE_CHOOSE_BUFF',

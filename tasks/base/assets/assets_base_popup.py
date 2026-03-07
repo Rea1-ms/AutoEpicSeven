@@ -13,18 +13,6 @@ AD_BUFF_X_CLOSE = ButtonWrapper(
         button=(731, 690, 745, 704),
     ),
 )
-AD_CLOSE = ButtonWrapper(
-    name='AD_CLOSE',
-    cn=None,
-    global_cn=Button(
-        file='./assets/global_cn/base/popup/AD_CLOSE.png',
-        area=(731, 688, 832, 705),
-        search=(711, 668, 852, 720),
-        color=(44, 43, 44),
-        button=(731, 688, 832, 705),
-    ),
-    global_en=None,
-)
 ANNOUNCEMENT_DONOT_REMIND = ButtonWrapper(
     name='ANNOUNCEMENT_DONOT_REMIND',
     share=Button(
@@ -45,33 +33,15 @@ BROADCAST = ButtonWrapper(
         button=(445, 117, 498, 165),
     ),
 )
-GET_CHARACTER = ButtonWrapper(
-    name='GET_CHARACTER',
-    cn=Button(
-        file='./assets/cn/base/popup/GET_CHARACTER.png',
-        area=(204, 322, 249, 338),
-        search=(184, 302, 269, 358),
-        color=(156, 155, 154),
-        button=(204, 322, 249, 338),
-    ),
-    global_cn=None,
-    global_en=None,
-)
-GET_LIGHT_CONE = ButtonWrapper(
-    name='GET_LIGHT_CONE',
-    cn=Button(
-        file='./assets/cn/base/popup/GET_LIGHT_CONE.png',
-        area=(205, 321, 242, 339),
-        search=(185, 301, 262, 359),
-        color=(130, 130, 131),
-        button=(205, 321, 242, 339),
-    ),
-    global_cn=None,
-    global_en=None,
-)
 NETWORK_ERROR_ABNORMAL = ButtonWrapper(
     name='NETWORK_ERROR_ABNORMAL',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/base/popup/NETWORK_ERROR_ABNORMAL.png',
+        area=(674, 313, 711, 333),
+        search=(654, 293, 731, 353),
+        color=(98, 101, 104),
+        button=(674, 313, 711, 333),
+    ),
     global_cn=Button(
         file='./assets/global_cn/base/popup/NETWORK_ERROR_ABNORMAL.png',
         area=(676, 312, 715, 332),
@@ -83,7 +53,13 @@ NETWORK_ERROR_ABNORMAL = ButtonWrapper(
 )
 NETWORK_ERROR_DISCONNECT = ButtonWrapper(
     name='NETWORK_ERROR_DISCONNECT',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/base/popup/NETWORK_ERROR_DISCONNECT.png',
+        area=(692, 312, 731, 333),
+        search=(672, 292, 751, 353),
+        color=(75, 80, 85),
+        button=(692, 312, 731, 333),
+    ),
     global_cn=[
         Button(
             file='./assets/global_cn/base/popup/NETWORK_ERROR_DISCONNECT.png',
@@ -148,7 +124,13 @@ OCR_BROADCAST_REMAIN_TIME = ButtonWrapper(
 )
 POPUP_CANCEL = ButtonWrapper(
     name='POPUP_CANCEL',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/base/popup/POPUP_CANCEL.png',
+        area=(514, 485, 552, 504),
+        search=(443, 443, 559, 566),
+        color=(163, 156, 151),
+        button=(514, 485, 552, 504),
+    ),
     global_cn=Button(
         file='./assets/global_cn/base/popup/POPUP_CANCEL.png',
         area=(513, 450, 553, 470),
@@ -160,7 +142,13 @@ POPUP_CANCEL = ButtonWrapper(
 )
 POPUP_CONFIRM = ButtonWrapper(
     name='POPUP_CONFIRM',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/base/popup/POPUP_CONFIRM.png',
+        area=(729, 485, 767, 505),
+        search=(699, 428, 787, 578),
+        color=(130, 141, 157),
+        button=(729, 485, 767, 505),
+    ),
     global_cn=Button(
         file='./assets/global_cn/base/popup/POPUP_CONFIRM.png',
         area=(728, 450, 768, 470),
@@ -168,18 +156,6 @@ POPUP_CONFIRM = ButtonWrapper(
         color=(120, 132, 149),
         button=(728, 450, 768, 470),
     ),
-    global_en=None,
-)
-POPUP_TITLE_TIP = ButtonWrapper(
-    name='POPUP_TITLE_TIP',
-    cn=Button(
-        file='./assets/cn/base/popup/POPUP_TITLE_TIP.png',
-        area=(614, 243, 666, 267),
-        search=(594, 223, 686, 287),
-        color=(138, 137, 138),
-        button=(614, 243, 666, 267),
-    ),
-    global_cn=None,
     global_en=None,
 )
 TOUCH_TO_CLOSE = ButtonWrapper(

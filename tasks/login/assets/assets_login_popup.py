@@ -5,7 +5,13 @@ from module.base.button import Button, ButtonWrapper
 
 CHECK_IN_CONFIRM = ButtonWrapper(
     name='CHECK_IN_CONFIRM',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/login/popup/CHECK_IN_CONFIRM.png',
+        area=(1051, 653, 1093, 673),
+        search=(1031, 633, 1113, 693),
+        color=(129, 139, 156),
+        button=(1051, 653, 1093, 673),
+    ),
     global_cn=Button(
         file='./assets/global_cn/login/popup/CHECK_IN_CONFIRM.png',
         area=(1051, 653, 1093, 673),
@@ -17,7 +23,13 @@ CHECK_IN_CONFIRM = ButtonWrapper(
 )
 NEW_CHARACTER_CONFIRM = ButtonWrapper(
     name='NEW_CHARACTER_CONFIRM',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/login/popup/NEW_CHARACTER_CONFIRM.png',
+        area=(1123, 651, 1164, 671),
+        search=(1103, 631, 1184, 691),
+        color=(151, 144, 137),
+        button=(1123, 651, 1164, 671),
+    ),
     global_cn=Button(
         file='./assets/global_cn/login/popup/NEW_CHARACTER_CONFIRM.png',
         area=(1122, 651, 1164, 671),

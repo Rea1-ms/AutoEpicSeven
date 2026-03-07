@@ -3,27 +3,6 @@ from module.base.button import Button, ButtonWrapper
 # This file was auto-generated, do not modify it manually. To generate:
 # ``` python -m dev_tools.button_extract ```
 
-ASSIGNMENT_START = ButtonWrapper(
-    name='ASSIGNMENT_START',
-    cn=[
-        Button(
-            file='./assets/cn/assignment/dispatch/ASSIGNMENT_START.png',
-            area=(563, 341, 716, 376),
-            search=(552, 299, 725, 412),
-            color=(103, 92, 72),
-            button=(563, 341, 716, 376),
-        ),
-        Button(
-            file='./assets/cn/assignment/dispatch/ASSIGNMENT_START.2.png',
-            area=(579, 373, 702, 405),
-            search=(552, 299, 725, 412),
-            color=(84, 75, 59),
-            button=(579, 373, 702, 405),
-        ),
-    ],
-    global_cn=None,
-    global_en=None,
-)
 ASSIGNMENT_STARTED_CHECK = ButtonWrapper(
     name='ASSIGNMENT_STARTED_CHECK',
     share=[
@@ -83,18 +62,6 @@ CHARACTER_2_SELECTED = ButtonWrapper(
         button=(205, 197, 224, 215),
     ),
 )
-CHARACTER_LIST = ButtonWrapper(
-    name='CHARACTER_LIST',
-    cn=Button(
-        file='./assets/cn/assignment/dispatch/CHARACTER_LIST.png',
-        area=(90, 165, 170, 186),
-        search=(70, 145, 190, 206),
-        color=(156, 154, 152),
-        button=(90, 165, 170, 186),
-    ),
-    global_cn=None,
-    global_en=None,
-)
 CHARACTER_SUPPORT = ButtonWrapper(
     name='CHARACTER_SUPPORT',
     share=Button(
@@ -105,18 +72,6 @@ CHARACTER_SUPPORT = ButtonWrapper(
         button=(103, 212, 435, 302),
     ),
 )
-CHARACTER_SUPPORT_LIST = ButtonWrapper(
-    name='CHARACTER_SUPPORT_LIST',
-    cn=Button(
-        file='./assets/cn/assignment/dispatch/CHARACTER_SUPPORT_LIST.png',
-        area=(91, 166, 171, 186),
-        search=(71, 146, 191, 206),
-        color=(147, 146, 143),
-        button=(91, 166, 171, 186),
-    ),
-    global_cn=None,
-    global_en=None,
-)
 CHARACTER_SUPPORT_SELECTED = ButtonWrapper(
     name='CHARACTER_SUPPORT_SELECTED',
     share=Button(
@@ -126,18 +81,6 @@ CHARACTER_SUPPORT_SELECTED = ButtonWrapper(
         color=(39, 39, 39),
         button=(190, 270, 266, 295),
     ),
-)
-CONFIRM_ASSIGNMENT = ButtonWrapper(
-    name='CONFIRM_ASSIGNMENT',
-    cn=Button(
-        file='./assets/cn/assignment/dispatch/CONFIRM_ASSIGNMENT.png',
-        area=(1007, 660, 1085, 678),
-        search=(987, 640, 1105, 698),
-        color=(148, 148, 147),
-        button=(909, 651, 1184, 686),
-    ),
-    global_cn=None,
-    global_en=None,
 )
 DURATION_12 = ButtonWrapper(
     name='DURATION_12',

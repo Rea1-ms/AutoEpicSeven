@@ -3,18 +3,6 @@ from module.base.button import Button, ButtonWrapper
 # This file was auto-generated, do not modify it manually. To generate:
 # ``` python -m dev_tools.button_extract ```
 
-PICTURE_TAKEN = ButtonWrapper(
-    name='PICTURE_TAKEN',
-    cn=Button(
-        file='./assets/cn/daily/camera/PICTURE_TAKEN.png',
-        area=(1030, 620, 1069, 639),
-        search=(1010, 600, 1089, 659),
-        color=(153, 153, 155),
-        button=(1030, 620, 1069, 639),
-    ),
-    global_cn=None,
-    global_en=None,
-)
 TAKE_PICTURE = ButtonWrapper(
     name='TAKE_PICTURE',
     share=Button(
