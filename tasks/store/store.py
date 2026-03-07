@@ -261,8 +261,8 @@ class Store(UI):
     def _is_inheritance_store(self) -> bool:
         image = self.device.image
         return (
-            GOLDEN_INHERITANCE_STONE.match_template_luma(image, similarity=0.8)
-            and COMMON_INHERITANCE_STONE.match_template_luma(image, similarity=0.8)
+            GOLDEN_INHERITANCE_STONE.match_template_luma(image)
+            and COMMON_INHERITANCE_STONE.match_template_luma(image)
         )
 
     def _is_friendship_store(self) -> bool:

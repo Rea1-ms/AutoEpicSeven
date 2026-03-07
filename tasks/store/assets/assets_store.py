@@ -71,10 +71,10 @@ COMMON_INHERITANCE_STONE = ButtonWrapper(
     name='COMMON_INHERITANCE_STONE',
     share=Button(
         file='./assets/share/store/COMMON_INHERITANCE_STONE.png',
-        area=(616, 17, 639, 50),
-        search=(596, 0, 659, 70),
-        color=(46, 106, 94),
-        button=(616, 17, 639, 50),
+        area=(624, 22, 634, 46),
+        search=(323, 16, 925, 49),
+        color=(84, 183, 160),
+        button=(624, 22, 634, 46),
     ),
 )
 CONQUEST_POINTS_STORE = ButtonWrapper(
