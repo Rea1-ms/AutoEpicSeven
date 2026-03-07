@@ -1,12 +1,15 @@
 from module.base.timer import Timer
 from module.logger import logger
-from module.ocr.ocr import DigitCounter
+from module.ocr.ocr import Digit, DigitCounter
 from tasks.arena.assets.assets_arena import (
     ARENA_CHECK,
     ARENA_COMMON_ENTRY,
     ARENA_ENTRY,
     ARENA_SETTLING,
     AUTO_FIGHT,
+    BATTLE_PASS_CHECK,
+    BATTLE_PASS_ENTRY,
+    BATTLE_PASS_REWARDS,
     BATTLE_START,
     CHALLENGE,
     NPC_OPPONENT,
@@ -20,6 +23,7 @@ from tasks.arena.assets.assets_arena import (
     FAST_BATTLE_RESULT_CONFIRM,
     OPPONENT,
     NPC_COMBAT_ENTRY,
+    OCR_BATTLE_PASS_LEVEL,
     OCR_FAST_BATTLE_TIMES,
     WEEKLY_BATTLE_REWARDS,
 )
@@ -58,6 +62,7 @@ class Arena(UI):
     ARENA_NPC_AUTO_FIGHT_CLICK_INTERVAL_SECONDS = 2
     ARENA_NPC_AUTO_FIGHT_CLEAR_CONFIRM_SECONDS = 1.2
     ARENA_NPC_AUTO_FIGHT_MAX_CLICKS = 4
+    ARENA_NPC_AUTO_FIGHT_WARN_INTERVAL_SECONDS = 8
     ARENA_NPC_FAST_TOGGLE_INTERVAL_SECONDS = 0.8
     ARENA_NPC_ENTRY_CLICK_INTERVAL_SECONDS = 1.8
     ARENA_NPC_OPPONENT_CLICK_INTERVAL_SECONDS = 1.0
@@ -67,6 +72,12 @@ class Arena(UI):
     ARENA_NPC_CHALLENGE_PENDING_SECONDS = 4.5
     ARENA_NPC_BATTLE_START_PENDING_SECONDS = 6
     ARENA_WEEKLY_BATTLE_REWARDS_COLOR_THRESHOLD = 30
+    ARENA_BATTLE_PASS_TIMEOUT_SECONDS = 18
+    ARENA_BATTLE_PASS_BACK_INTERVAL_SECONDS = 1
+    ARENA_BATTLE_PASS_SETTLE_SECONDS = 1.2
+    ARENA_BATTLE_PASS_SCAN_SECONDS = 1.5
+    ARENA_BATTLE_PASS_CLEAR_CONFIRM_SECONDS = 1.8
+    ARENA_BATTLE_PASS_SAMPLE_COUNT = 3
 
     ARENA_NPC_STAGE_SEEK = "seek_npc_lane"
     ARENA_NPC_STAGE_SELECT = "select_opponent"
@@ -196,6 +207,45 @@ class Arena(UI):
             logger.warning(f"Fast battle times OCR invalid: {current}/{total}")
         return current, remain, total
 
+    def _ocr_battle_pass_level(self) -> int:
+        # Current observed range is around 1-38.
+        ocr = Digit(OCR_BATTLE_PASS_LEVEL, lang="en", name="BattlePassLevel")
+        level = ocr.ocr_single_line(self.device.image)
+        logger.attr("BattlePassLevel", level)
+        return level
+
+    def _sample_battle_pass_rewards(
+        self,
+        duration: float,
+        sample_count: int,
+        expect_visible: bool,
+        require_all: bool,
+        skip_first_screenshot=True,
+    ) -> bool:
+        timer = Timer(duration, count=sample_count).start()
+        matched = 0
+        sampled = 0
+
+        while 1:
+            if skip_first_screenshot:
+                skip_first_screenshot = False
+            else:
+                self.device.screenshot()
+
+            visible = self.appear(BATTLE_PASS_REWARDS)
+            if visible == expect_visible:
+                matched += 1
+                if not require_all:
+                    return True
+            elif require_all:
+                return False
+
+            sampled += 1
+            if timer.reached():
+                if require_all:
+                    return sampled >= sample_count and matched >= sample_count
+                return False
+
     def _claim_weekly_battle_rewards(self, skip_first_screenshot=True) -> bool:
         """
         Claim weekly battle rewards from arena page after NPC combat rounds.
@@ -229,6 +279,166 @@ class Arena(UI):
 
             return False
 
+    def _claim_battle_pass_rewards(self, skip_first_screenshot=True) -> bool:
+        """
+        Arena battle-pass flow:
+            arena page -> BATTLE_PASS_ENTRY -> BATTLE_PASS_CHECK
+            wait settle -> OCR level -> multi-frame scan BATTLE_PASS_REWARDS
+            click once -> handle touch to close -> multi-frame clear confirm
+            click BACK -> return arena page
+        """
+        if not getattr(self.config, "Arena_ClaimBattlePassRewards", True):
+            return False
+
+        timeout = Timer(self.ARENA_BATTLE_PASS_TIMEOUT_SECONDS, count=60).start()
+        stage = "enter"
+        reward_clicked = False
+        level_ocr_done = False
+        settle_timer = Timer(self.ARENA_BATTLE_PASS_SETTLE_SECONDS, count=2).clear()
+
+        while 1:
+            if skip_first_screenshot:
+                skip_first_screenshot = False
+            else:
+                self.device.screenshot()
+
+            if timeout.reached():
+                logger.warning("Arena: battle pass flow timeout")
+                return reward_clicked
+
+            if stage == "enter":
+                if self.appear(BATTLE_PASS_CHECK):
+                    logger.info("Arena: battle pass page reached")
+                    stage = "settle"
+                    settle_timer.reset()
+                    timeout.reset()
+                    continue
+
+                if self._is_arena_page_ready(interval=0):
+                    if self.appear_then_click(BATTLE_PASS_ENTRY, interval=1):
+                        logger.info("Arena: enter battle pass")
+                        timeout.reset()
+                        continue
+
+                if self.handle_touch_to_close(interval=0.5):
+                    timeout.reset()
+                    continue
+                if self.ui_additional():
+                    timeout.reset()
+                    continue
+                continue
+
+            if stage == "settle":
+                if not self.appear(BATTLE_PASS_CHECK):
+                    if self.handle_touch_to_close(interval=0.5):
+                        timeout.reset()
+                        continue
+                    if self.ui_additional():
+                        timeout.reset()
+                        continue
+                    continue
+
+                if settle_timer.reached():
+                    stage = "scan"
+                    timeout.reset()
+                    continue
+
+                if self.handle_touch_to_close(interval=0.5):
+                    timeout.reset()
+                    continue
+                if self.ui_additional():
+                    timeout.reset()
+                    continue
+                continue
+
+            if stage == "scan":
+                if not self.appear(BATTLE_PASS_CHECK):
+                    if self.handle_touch_to_close(interval=0.5):
+                        timeout.reset()
+                        continue
+                    if self.ui_additional():
+                        timeout.reset()
+                        continue
+                    continue
+
+                if not level_ocr_done:
+                    self._ocr_battle_pass_level()
+                    level_ocr_done = True
+
+                if self._sample_battle_pass_rewards(
+                    duration=self.ARENA_BATTLE_PASS_SCAN_SECONDS,
+                    sample_count=self.ARENA_BATTLE_PASS_SAMPLE_COUNT,
+                    expect_visible=True,
+                    require_all=False,
+                    skip_first_screenshot=True,
+                ):
+                    self.device.click(BATTLE_PASS_REWARDS)
+                    reward_clicked = True
+                    logger.info("Arena: claim battle pass rewards")
+                    stage = "close_popup"
+                    timeout.reset()
+                    continue
+
+                logger.info("Arena: battle pass rewards not found in current window")
+                stage = "exit"
+                timeout.reset()
+                continue
+
+            if stage == "close_popup":
+                if self.handle_touch_to_close(interval=0.5):
+                    timeout.reset()
+                    continue
+
+                if self.appear(BATTLE_PASS_CHECK):
+                    stage = "verify_clear"
+                    timeout.reset()
+                    continue
+
+                if self.ui_additional():
+                    timeout.reset()
+                    continue
+                continue
+
+            if stage == "verify_clear":
+                if not self.appear(BATTLE_PASS_CHECK):
+                    if self.handle_touch_to_close(interval=0.5):
+                        timeout.reset()
+                        continue
+                    if self.ui_additional():
+                        timeout.reset()
+                        continue
+                    continue
+
+                if self._sample_battle_pass_rewards(
+                    duration=self.ARENA_BATTLE_PASS_CLEAR_CONFIRM_SECONDS,
+                    sample_count=self.ARENA_BATTLE_PASS_SAMPLE_COUNT,
+                    expect_visible=False,
+                    require_all=True,
+                    skip_first_screenshot=True,
+                ):
+                    logger.info("Arena: battle pass rewards cleared")
+                    stage = "exit"
+                    timeout.reset()
+                    continue
+
+                logger.info("Arena: battle pass rewards still claimable, retry")
+                stage = "scan"
+                timeout.reset()
+                continue
+
+            if stage == "exit":
+                if self._is_arena_page_ready(interval=0):
+                    return reward_clicked
+
+                if self.handle_ui_back(BATTLE_PASS_CHECK, interval=self.ARENA_BATTLE_PASS_BACK_INTERVAL_SECONDS):
+                    timeout.reset()
+                    continue
+
+                if self.ui_additional():
+                    timeout.reset()
+                    continue
+                continue
+
     def _npc_combat_once(self, use_fast_battle: bool, skip_first_screenshot=True) -> str:
         """
         Returns:
@@ -247,6 +457,7 @@ class Arena(UI):
         auto_fight_enter_timer = Timer(self.ARENA_NPC_AUTO_FIGHT_ENTER_SECONDS, count=3).start()
         auto_fight_click_interval = Timer(self.ARENA_NPC_AUTO_FIGHT_CLICK_INTERVAL_SECONDS, count=4).clear()
         auto_fight_clear_confirm_timer = Timer(self.ARENA_NPC_AUTO_FIGHT_CLEAR_CONFIRM_SECONDS, count=2).clear()
+        auto_fight_warn_timer = Timer(self.ARENA_NPC_AUTO_FIGHT_WARN_INTERVAL_SECONDS, count=0).clear()
         fast_battle_effective = bool(use_fast_battle)
         fast_times_checked = False
         auto_fight_clicks = 0
@@ -464,24 +675,22 @@ class Arena(UI):
                     if OPPONENT_visible:
                         auto_fight_checked = False
                         auto_fight_clear_confirm_timer.clear()
-                        if (
-                            auto_fight_clicks < self.ARENA_NPC_AUTO_FIGHT_MAX_CLICKS
-                            and auto_fight_enter_timer.reached()
-                            and auto_fight_click_interval.reached()
-                        ):
+                        if auto_fight_enter_timer.reached() and auto_fight_click_interval.reached():
+                            self.device.click_record_remove(AUTO_FIGHT)
                             self.device.click(AUTO_FIGHT)
                             auto_fight_clicks += 1
                             auto_fight_click_interval.reset()
                             logger.info(f"Arena NPC: auto fight toggle ({auto_fight_clicks})")
+                            if auto_fight_clicks >= self.ARENA_NPC_AUTO_FIGHT_MAX_CLICKS:
+                                if not auto_fight_warn_timer.started() or auto_fight_warn_timer.reached():
+                                    logger.warning(
+                                        f"Arena NPC: OPPONENT still visible after {auto_fight_clicks} auto-fight toggles"
+                                    )
+                                    auto_fight_warn_timer.reset()
                             timeout.reset()
                             continue
-                        if (
-                            auto_fight_clicks >= self.ARENA_NPC_AUTO_FIGHT_MAX_CLICKS
-                            and auto_fight_click_interval.reached()
-                        ):
-                            logger.warning("Arena NPC: OPPONENT still visible after max auto-fight toggles")
-                            auto_fight_click_interval.reset()
                     elif not auto_fight_checked:
+                        auto_fight_warn_timer.clear()
                         if not auto_fight_clear_confirm_timer.started():
                             auto_fight_clear_confirm_timer.start()
                         elif auto_fight_clear_confirm_timer.reached():
@@ -638,6 +847,7 @@ class Arena(UI):
                     self.config.task_delay(success=False)
                     return False
                 self._claim_weekly_battle_rewards(skip_first_screenshot=True)
+                self._claim_battle_pass_rewards(skip_first_screenshot=True)
                 self.config.task_delay(server_update=True)
                 return True
 
@@ -661,6 +871,7 @@ class Arena(UI):
                     self.config.task_delay(success=False)
                     return False
                 self._claim_weekly_battle_rewards(skip_first_screenshot=True)
+                self._claim_battle_pass_rewards(skip_first_screenshot=True)
 
             self.config.task_delay(server_update=True)
             return True

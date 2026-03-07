@@ -73,6 +73,36 @@ AUTO_FIGHT = ButtonWrapper(
         button=(1107, 15, 1147, 50),
     ),
 )
+BATTLE_PASS_CHECK = ButtonWrapper(
+    name='BATTLE_PASS_CHECK',
+    share=Button(
+        file='./assets/share/arena/BATTLE_PASS_CHECK.png',
+        area=(99, 179, 165, 202),
+        search=(79, 159, 185, 222),
+        color=(145, 75, 17),
+        button=(99, 179, 165, 202),
+    ),
+)
+BATTLE_PASS_ENTRY = ButtonWrapper(
+    name='BATTLE_PASS_ENTRY',
+    share=Button(
+        file='./assets/share/arena/BATTLE_PASS_ENTRY.png',
+        area=(40, 656, 66, 682),
+        search=(20, 636, 86, 702),
+        color=(169, 163, 159),
+        button=(40, 656, 66, 682),
+    ),
+)
+BATTLE_PASS_REWARDS = ButtonWrapper(
+    name='BATTLE_PASS_REWARDS',
+    share=Button(
+        file='./assets/share/arena/BATTLE_PASS_REWARDS.png',
+        area=(450, 305, 485, 306),
+        search=(425, 305, 1137, 306),
+        color=(97, 176, 198),
+        button=(450, 305, 485, 306),
+    ),
+)
 BATTLE_START = ButtonWrapper(
     name='BATTLE_START',
     share=Button(
@@ -86,13 +116,22 @@ BATTLE_START = ButtonWrapper(
 CHALLENGE = ButtonWrapper(
     name='CHALLENGE',
     cn=None,
-    global_cn=Button(
-        file='./assets/global_cn/arena/CHALLENGE.png',
-        area=(619, 651, 661, 671),
-        search=(599, 631, 681, 691),
-        color=(145, 161, 147),
-        button=(619, 651, 661, 671),
-    ),
+    global_cn=[
+        Button(
+            file='./assets/global_cn/arena/CHALLENGE.png',
+            area=(619, 651, 661, 671),
+            search=(599, 631, 681, 691),
+            color=(145, 161, 147),
+            button=(619, 651, 661, 671),
+        ),
+        Button(
+            file='./assets/global_cn/arena/CHALLENGE.2.png',
+            area=(598, 651, 682, 671),
+            search=(578, 631, 702, 691),
+            color=(154, 146, 139),
+            button=(598, 651, 682, 671),
+        ),
+    ],
     global_en=None,
 )
 FAST_BATTLE_LOCKED = ButtonWrapper(
@@ -155,6 +194,16 @@ NPC_OPPONENT = ButtonWrapper(
         search=(290, 159, 358, 228),
         color=(149, 149, 149),
         button=(310, 179, 338, 208),
+    ),
+)
+OCR_BATTLE_PASS_LEVEL = ButtonWrapper(
+    name='OCR_BATTLE_PASS_LEVEL',
+    share=Button(
+        file='./assets/share/arena/OCR_BATTLE_PASS_LEVEL.png',
+        area=(166, 177, 206, 204),
+        search=(146, 157, 226, 224),
+        color=(99, 64, 34),
+        button=(166, 177, 206, 204),
     ),
 )
 OCR_FAST_BATTLE_TIMES = ButtonWrapper(
