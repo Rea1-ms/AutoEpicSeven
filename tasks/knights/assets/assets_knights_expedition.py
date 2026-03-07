@@ -237,6 +237,16 @@ WEEKLY_CONTRIBUTION_TIER_2_LOCKED = ButtonWrapper(
         button=(1197, 354, 1232, 387),
     ),
 )
+WEEKLY_CONTRIBUTION_TIER_2_RECEIVED = ButtonWrapper(
+    name='WEEKLY_CONTRIBUTION_TIER_2_RECEIVED',
+    share=Button(
+        file='./assets/share/knights/expedition/WEEKLY_CONTRIBUTION_TIER_2_RECEIVED.png',
+        area=(1201, 359, 1229, 379),
+        search=(1181, 339, 1249, 399),
+        color=(73, 98, 39),
+        button=(1201, 359, 1229, 379),
+    ),
+)
 WORLD_BOSS = ButtonWrapper(
     name='WORLD_BOSS',
     share=Button(

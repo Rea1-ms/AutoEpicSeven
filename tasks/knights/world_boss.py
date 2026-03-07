@@ -23,6 +23,8 @@ from tasks.knights.assets.assets_knights_expedition import (
     OCR_WEEKLY_CONTRIBUTION,
     WEEKLY_CONTRIBUTION_TIER_1_RECEIVED,
     WEEKLY_CONTRIBUTION_TIER_1_LOCKED,
+    WEEKLY_CONTRIBUTION_TIER_2_RECEIVED,
+    WEEKLY_CONTRIBUTION_TIER_2_LOCKED,
     WORLD_BOSS,
     WORLD_BOSS_TOUCH_TO_CLOSE,
 )
@@ -437,33 +439,54 @@ class KnightsWorldBossMixin:
         results = ocr.detect_and_ocr(self.device.image, direct_ocr=True)
         return self._extract_weekly_contribution_points([result.ocr_text for result in results])
 
-    def _weekly_contribution_tier_state(self) -> str:
+    def _weekly_contribution_tier_state(self, received_button, locked_button) -> str:
         """
         Returns:
             str: claimable / received / locked / not_found
         """
-        if WEEKLY_CONTRIBUTION_TIER_1_RECEIVED.match_template_luma(
+        if received_button.match_template_luma(
             self.device.image, similarity=self.WORLD_BOSS_WEEKLY_CONTRIBUTION_TIER_LUMA_SIMILARITY
         ):
-            if WEEKLY_CONTRIBUTION_TIER_1_RECEIVED.match_color(
+            if received_button.match_color(
                 self.device.image, threshold=self.WORLD_BOSS_WEEKLY_CONTRIBUTION_TIER_COLOR_THRESHOLD
             ):
                 return "received"
             return "claimable"
 
-        if WEEKLY_CONTRIBUTION_TIER_1_RECEIVED.match_template(
+        if received_button.match_template(
             self.device.image, similarity=self.WORLD_BOSS_WEEKLY_CONTRIBUTION_TIER_LUMA_SIMILARITY
         ):
             return "claimable"
 
-        if WEEKLY_CONTRIBUTION_TIER_1_LOCKED.match_template_luma(
+        if locked_button.match_template_luma(
             self.device.image, similarity=self.WORLD_BOSS_WEEKLY_CONTRIBUTION_TIER_LUMA_SIMILARITY
-        ) and WEEKLY_CONTRIBUTION_TIER_1_LOCKED.match_color(
+        ) and locked_button.match_color(
             self.device.image, threshold=self.WORLD_BOSS_WEEKLY_CONTRIBUTION_TIER_COLOR_THRESHOLD
         ):
             return "locked"
 
         return "not_found"
+
+    def _claim_weekly_contribution_tier(self, ocr, name: str, received_button, locked_button) -> bool:
+        tier_state = self._weekly_contribution_tier_state(received_button, locked_button)
+        logger.info(f"World boss: {name} state={tier_state}")
+        if tier_state in {"received", "locked"}:
+            return False
+
+        self.device.click(received_button)
+        logger.info(f"World boss: click {name}")
+
+        settle = Timer(self.WORLD_BOSS_WEEKLY_CONTRIBUTION_POST_CLICK_SETTLE_SECONDS, count=1).start()
+        while not settle.reached():
+            self.device.screenshot()
+
+        points = self._ocr_weekly_contribution_points(ocr)
+        if points is not None:
+            logger.attr("WeeklyContribution", f"{points:,}")
+
+        tier_state_after = self._weekly_contribution_tier_state(received_button, locked_button)
+        logger.info(f"World boss: {name} after_click={tier_state_after}")
+        return True
 
     def _claim_weekly_contribution_rewards(self, skip_first_screenshot=True) -> bool:
         logger.info("World boss: claim weekly contribution rewards")
@@ -477,25 +500,16 @@ class KnightsWorldBossMixin:
         if points is not None:
             logger.attr("WeeklyContribution", f"{points:,}")
 
-        tier_state = self._weekly_contribution_tier_state()
-        logger.info(f"World boss: WEEKLY_CONTRIBUTION_TIER_1_RECEIVED state={tier_state}")
-        if tier_state in {"received", "locked"}:
-            return True
-
-        # One-shot claim attempt for claimable/uncertain state.
-        self.device.click(WEEKLY_CONTRIBUTION_TIER_1_RECEIVED)
-        logger.info("World boss: click WEEKLY_CONTRIBUTION_TIER_1_RECEIVED")
-
-        settle = Timer(self.WORLD_BOSS_WEEKLY_CONTRIBUTION_POST_CLICK_SETTLE_SECONDS, count=1).start()
-        while not settle.reached():
-            self.device.screenshot()
-
-        # One quick verification only, avoid long OCR loops.
-        points = self._ocr_weekly_contribution_points(ocr)
-        if points is not None:
-            logger.attr("WeeklyContribution", f"{points:,}")
-        tier_state_after = self._weekly_contribution_tier_state()
-        logger.info(f"World boss: WEEKLY_CONTRIBUTION_TIER_1_RECEIVED after_click={tier_state_after}")
+        for name, received_button, locked_button in [
+            ("WEEKLY_CONTRIBUTION_TIER_1_RECEIVED", WEEKLY_CONTRIBUTION_TIER_1_RECEIVED, WEEKLY_CONTRIBUTION_TIER_1_LOCKED),
+            ("WEEKLY_CONTRIBUTION_TIER_2_RECEIVED", WEEKLY_CONTRIBUTION_TIER_2_RECEIVED, WEEKLY_CONTRIBUTION_TIER_2_LOCKED),
+        ]:
+            self._claim_weekly_contribution_tier(
+                ocr=ocr,
+                name=name,
+                received_button=received_button,
+                locked_button=locked_button,
+            )
         return True
 
     def run_world_boss(self, skip_first_screenshot=True) -> bool:
