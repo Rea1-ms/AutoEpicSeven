@@ -196,7 +196,7 @@ READY_TO_FIGHT = ButtonWrapper(
     share=Button(
         file='./assets/share/knights/expedition/READY_TO_FIGHT.png',
         area=(985, 652, 1009, 676),
-        search=(965, 632, 1029, 696),
+        search=(985, 652, 1242, 676),
         color=(55, 107, 26),
         button=(985, 652, 1009, 676),
     ),
