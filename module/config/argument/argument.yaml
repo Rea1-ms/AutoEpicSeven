@@ -12,7 +12,7 @@ Scheduler:
   NextRun: 2020-01-01 00:00:00
   Command: Alas
   ServerUpdate:
-    value: 04:00
+    value: 02:00
     display: hide
 Emulator:
   Serial:
@@ -236,6 +236,82 @@ PlannerTarget:
     display: hide
     value: 6
     option: [ 6, 5, 4, 3, 2, 1 ]
+
+# ==================== Activity ====================
+
+Gacha:
+  Version:
+    value: auto
+    option: [ auto, v1, v2 ]
+  CollectGoldenInheritance: true
+
+SanctuaryMonthly:
+  RewardTier:
+    value: A
+    option: [ A, B, S, MaxMinus1, MaxMinus2 ]
+
+Knights:
+  ClaimSigninRateReward: true
+  WeeklyTask: true
+  Donate: true
+  Support: true
+  Shop: true
+  BuyMorogora: true
+  DonateLowerLevelFairyFlower: true
+  DonateBeginnerPenguin: true
+  Expedition: true
+  TeamBattle: true
+  WorldBoss: true
+  RequestItem:
+    value: LowerLevelFairyFlower
+    option: [ LowerLevelFairyFlower, BeginnerPenguin ]
+
+KnightsBasic:
+  ClaimSigninRateReward: true
+  WeeklyTask: true
+
+KnightsDonate:
+  Donate: true
+  Support: true
+  RequestItem:
+    value: LowerLevelFairyFlower
+    option: [ LowerLevelFairyFlower, BeginnerPenguin ]
+  DonateLowerLevelFairyFlower: true
+  DonateBeginnerPenguin: true
+
+KnightsShop:
+  Shop: true
+  BuyMorogora: true
+
+KnightsExpedition:
+  Expedition: true
+  TeamBattle: true
+  WorldBoss: true
+
+Arena:
+  ClaimWeeklyRewards: true
+  ClaimWeeklyBattleRewards: true
+  ClaimBattlePassRewards: true
+  NPCCombat: false
+  NPCCombatFastBattle: true
+  NPCCombatCount: 5
+
+SecretShop:
+  OnlyFree: true
+  MaxRefresh: 10
+  BuyCovenantBookmark: true
+  BuyMysticMedal: true
+
+StoreDaily:
+  BuyDailyFreeItem: true
+  BuyFriendshipMobility40: true
+  BuyFriendshipArenaFlag: true
+  BuyConquestMobility40: true
+
+StoreWeekly:
+  BuyConquestMorogora: true
+  BuyInheritanceMorogora: true
+  BuyInheritancePotentialFragments: true
 
 
 Weekly:

@@ -5,6 +5,7 @@ from pponnxcr.predict_system import BoxedResult
 from module.base.button import ClickButton
 from module.base.decorator import cached_property
 from module.base.utils import random_rectangle_vector_opted
+import module.config.server as server_
 from module.exception import ScriptError
 from module.logger import logger
 from module.ocr.ocr import Ocr, OcrResultButton, Digit
@@ -79,10 +80,9 @@ class PlannerSelect(PlannerUI):
             str: 'cn' for CN package that has extra letters to the right of trace icons
                 'en' for OVERSEA package and lang='cn' on oversea package that has just bare trace icons
         """
-        if self.config.Emulator_PackageName in ['CN-Official', 'CN-Bilibili']:
+        if server_.is_cn_server(self.config.Emulator_PackageName):
             lang = 'cn'
-        elif self.config.Emulator_PackageName in [
-            'OVERSEA-America', 'OVERSEA-Asia', 'OVERSEA-Europe', 'OVERSEA-TWHKMO']:
+        elif server_.is_oversea_server(self.config.Emulator_PackageName):
             lang = 'en'
         else:
             lang = self.config.LANG

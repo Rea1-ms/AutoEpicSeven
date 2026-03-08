@@ -3,40 +3,6 @@ from module.base.button import Button, ButtonWrapper
 # This file was auto-generated, do not modify it manually. To generate:
 # ``` python -m dev_tools.button_extract ```
 
-CODE_CHECK = ButtonWrapper(
-    name='CODE_CHECK',
-    cn=Button(
-        file='./assets/cn/freebies/code/CODE_CHECK.png',
-        area=(603, 213, 651, 237),
-        search=(583, 193, 671, 257),
-        color=(123, 122, 127),
-        button=(603, 213, 651, 237),
-    ),
-    en=Button(
-        file='./assets/en/freebies/code/CODE_CHECK.png',
-        area=(525, 214, 588, 236),
-        search=(505, 194, 608, 256),
-        color=(130, 129, 134),
-        button=(525, 214, 588, 236),
-    ),
-)
-CODE_ENTER = ButtonWrapper(
-    name='CODE_ENTER',
-    cn=Button(
-        file='./assets/cn/freebies/code/CODE_ENTER.png',
-        area=(972, 228, 1010, 246),
-        search=(865, 93, 1140, 318),
-        color=(140, 139, 140),
-        button=(972, 228, 1010, 246),
-    ),
-    en=Button(
-        file='./assets/en/freebies/code/CODE_ENTER.png',
-        area=(915, 228, 962, 245),
-        search=(865, 93, 1140, 318),
-        color=(146, 145, 147),
-        button=(915, 228, 962, 245),
-    ),
-)
 CODE_INVALID = ButtonWrapper(
     name='CODE_INVALID',
     share=Button(

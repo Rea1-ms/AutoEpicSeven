@@ -6,6 +6,8 @@ class StarRailCopilot(AzurLaneAutoScript):
     def restart(self):
         from tasks.login.login import Login
         Login(self.config, device=self.device).app_restart()
+        # Cool down Restart task itself after recovery to avoid infinite restart loops.
+        self.config.task_delay(server_update=True, task='Restart')
 
     def start(self):
         from tasks.login.login import Login
@@ -59,6 +61,42 @@ class StarRailCopilot(AzurLaneAutoScript):
     def freebies(self):
         from tasks.freebies.freebies import Freebies
         Freebies(config=self.config, device=self.device).run()
+
+    def gacha(self):
+        from tasks.gacha.gacha import Gacha
+        Gacha(config=self.config, device=self.device, task="Gacha").run()
+
+    def sanctuary_daily(self):
+        from tasks.sanctuary.sanctuary import Sanctuary
+        Sanctuary(config=self.config, device=self.device, task="SanctuaryDaily").run_daily_task()
+
+    def sanctuary_weekly(self):
+        from tasks.sanctuary.sanctuary import Sanctuary
+        Sanctuary(config=self.config, device=self.device, task="SanctuaryWeekly").run_weekly_task()
+
+    def sanctuary_monthly(self):
+        from tasks.sanctuary.sanctuary import Sanctuary
+        Sanctuary(config=self.config, device=self.device, task="SanctuaryMonthly").run_monthly_task()
+
+    def knights(self):
+        from tasks.knights.knights import Knights
+        Knights(config=self.config, device=self.device, task="Knights").run()
+
+    def secret_shop(self):
+        from tasks.secret_shop.secret_shop import SecretShop
+        SecretShop(config=self.config, device=self.device).run()
+
+    def pets(self):
+        from tasks.pets.pets import Pets
+        Pets(config=self.config, device=self.device, task="Pets").run()
+
+    def store(self):
+        from tasks.store.store import Store
+        Store(config=self.config, device=self.device, task="Store").run()
+
+    def arena(self):
+        from tasks.arena.arena import Arena
+        Arena(config=self.config, device=self.device, task="Arena").run()
 
     def rogue(self):
         from tasks.rogue.rogue import Rogue

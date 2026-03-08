@@ -31,6 +31,21 @@ class GameNotRunningError(Exception):
     pass
 
 
+class GameServerUnderMaintenance(Exception):
+    # Server is under maintenance, task should be rescheduled
+    pass
+
+
+class GameUpdateRequired(Exception):
+    # Game needs update from Google Play
+    pass
+
+
+class GameUpdateFailed(Exception):
+    # Google Play update failed or timeout
+    pass
+
+
 class GamePageUnknownError(Exception):
     pass
 

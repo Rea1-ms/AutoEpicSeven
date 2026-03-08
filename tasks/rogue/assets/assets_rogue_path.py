@@ -221,23 +221,6 @@ CONFIRM_PATH = ButtonWrapper(
         button=(959, 638, 1238, 675),
     ),
 )
-PAGE_ROGUE_PATH = ButtonWrapper(
-    name='PAGE_ROGUE_PATH',
-    cn=Button(
-        file='./assets/cn/rogue/path/PAGE_ROGUE_PATH.png',
-        area=(713, 87, 759, 109),
-        search=(693, 67, 779, 129),
-        color=(122, 120, 119),
-        button=(713, 87, 759, 109),
-    ),
-    en=Button(
-        file='./assets/en/rogue/path/PAGE_ROGUE_PATH.png',
-        area=(606, 89, 656, 108),
-        search=(586, 69, 676, 128),
-        color=(114, 112, 112),
-        button=(606, 89, 656, 108),
-    ),
-)
 PATH_LOADED_CHECK = ButtonWrapper(
     name='PATH_LOADED_CHECK',
     share=Button(

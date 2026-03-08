@@ -13,12 +13,12 @@ class GeneratedConfig:
     Scheduler_Enable = False  # True, False
     Scheduler_NextRun = datetime.datetime(2020, 1, 1, 0, 0)
     Scheduler_Command = 'Alas'
-    Scheduler_ServerUpdate = '04:00'
+    Scheduler_ServerUpdate = '02:00'
 
     # Group `Emulator`
     Emulator_Serial = 'auto'
     Emulator_GameClient = 'android'  # android, cloud_android
-    Emulator_PackageName = 'auto'  # auto, CN-Official, CN-Bilibili, OVERSEA-America, OVERSEA-Asia, OVERSEA-Europe, OVERSEA-TWHKMO
+    Emulator_PackageName = 'auto'  # auto, CN-Official, OVERSEA-Play
     Emulator_GameLanguage = 'auto'  # auto, cn, en
     Emulator_ScreenshotMethod = 'auto'  # auto, ADB, ADB_nc, uiautomator2, aScreenCap, aScreenCap_nc, DroidCast, DroidCast_raw, scrcpy, nemu_ipc, ldopengl
     Emulator_ControlMethod = 'MaaTouch'  # minitouch, MaaTouch
@@ -158,6 +158,72 @@ class GeneratedConfig:
     PlannerTarget_TalentLevel = 10  # 10, 9, 8, 7, 6, 5, 4, 3, 2, 1
     PlannerTarget_MemoSkillLevel = 6  # 6, 5, 4, 3, 2, 1
     PlannerTarget_MemoTalentLevel = 6  # 6, 5, 4, 3, 2, 1
+
+    # Group `Gacha`
+    Gacha_Version = 'auto'  # auto, v1, v2
+    Gacha_CollectGoldenInheritance = True
+
+    # Group `SanctuaryMonthly`
+    SanctuaryMonthly_RewardTier = 'A'  # A, B, S, MaxMinus1, MaxMinus2
+
+    # Group `Knights`
+    Knights_ClaimSigninRateReward = True
+    Knights_WeeklyTask = True
+    Knights_Donate = True
+    Knights_Support = True
+    Knights_Shop = True
+    Knights_BuyMorogora = True
+    Knights_DonateLowerLevelFairyFlower = True
+    Knights_DonateBeginnerPenguin = True
+    Knights_Expedition = True
+    Knights_TeamBattle = True
+    Knights_WorldBoss = True
+    Knights_RequestItem = 'LowerLevelFairyFlower'  # LowerLevelFairyFlower, BeginnerPenguin
+
+    # Group `KnightsBasic`
+    KnightsBasic_ClaimSigninRateReward = True
+    KnightsBasic_WeeklyTask = True
+
+    # Group `KnightsDonate`
+    KnightsDonate_Donate = True
+    KnightsDonate_Support = True
+    KnightsDonate_RequestItem = 'LowerLevelFairyFlower'  # LowerLevelFairyFlower, BeginnerPenguin
+    KnightsDonate_DonateLowerLevelFairyFlower = True
+    KnightsDonate_DonateBeginnerPenguin = True
+
+    # Group `KnightsShop`
+    KnightsShop_Shop = True
+    KnightsShop_BuyMorogora = True
+
+    # Group `KnightsExpedition`
+    KnightsExpedition_Expedition = True
+    KnightsExpedition_TeamBattle = True
+    KnightsExpedition_WorldBoss = True
+
+    # Group `Arena`
+    Arena_ClaimWeeklyRewards = True
+    Arena_ClaimWeeklyBattleRewards = True
+    Arena_ClaimBattlePassRewards = True
+    Arena_NPCCombat = False
+    Arena_NPCCombatFastBattle = True
+    Arena_NPCCombatCount = 5
+
+    # Group `SecretShop`
+    SecretShop_OnlyFree = True
+    SecretShop_MaxRefresh = 10
+    SecretShop_BuyCovenantBookmark = True
+    SecretShop_BuyMysticMedal = True
+
+    # Group `StoreDaily`
+    StoreDaily_BuyDailyFreeItem = True
+    StoreDaily_BuyFriendshipMobility40 = True
+    StoreDaily_BuyFriendshipArenaFlag = True
+    StoreDaily_BuyConquestMobility40 = True
+
+    # Group `StoreWeekly`
+    StoreWeekly_BuyConquestMorogora = True
+    StoreWeekly_BuyInheritanceMorogora = True
+    StoreWeekly_BuyInheritancePotentialFragments = True
 
     # Group `Weekly`
     Weekly_Name = 'Echo_of_War_Rusted_Crypt_of_the_Iron_Carcass'  # Echo_of_War_Rusted_Crypt_of_the_Iron_Carcass, Echo_of_War_Glance_of_Twilight, Echo_of_War_Inner_Beast_Battlefield, Echo_of_War_Salutations_of_Ashen_Dreams, Echo_of_War_Borehole_Planet_Past_Nightmares, Echo_of_War_Divine_Seed, Echo_of_War_End_of_the_Eternal_Freeze, Echo_of_War_Destruction_Beginning

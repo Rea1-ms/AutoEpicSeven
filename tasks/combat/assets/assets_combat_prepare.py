@@ -3,23 +3,6 @@ from module.base.button import Button, ButtonWrapper
 # This file was auto-generated, do not modify it manually. To generate:
 # ``` python -m dev_tools.button_extract ```
 
-COMBAT_PREPARE = ButtonWrapper(
-    name='COMBAT_PREPARE',
-    cn=Button(
-        file='./assets/cn/combat/prepare/COMBAT_PREPARE.png',
-        area=(1071, 649, 1110, 667),
-        search=(836, 640, 1225, 677),
-        color=(141, 140, 141),
-        button=(956, 640, 1224, 676),
-    ),
-    en=Button(
-        file='./assets/en/combat/prepare/COMBAT_PREPARE.png',
-        area=(1043, 650, 1137, 666),
-        search=(836, 640, 1225, 677),
-        color=(153, 154, 155),
-        button=(956, 640, 1225, 676),
-    ),
-)
 ENEMY_INFO_CHECK = ButtonWrapper(
     name='ENEMY_INFO_CHECK',
     share=Button(
@@ -48,23 +31,6 @@ OCR_WAVE_COUNT = ButtonWrapper(
         search=(900, 529, 1140, 593),
         color=(32, 35, 39),
         button=(920, 549, 1120, 573),
-    ),
-)
-WAVE_CHECK = ButtonWrapper(
-    name='WAVE_CHECK',
-    cn=Button(
-        file='./assets/cn/combat/prepare/WAVE_CHECK.png',
-        area=(986, 550, 1056, 566),
-        search=(966, 530, 1076, 586),
-        color=(85, 86, 87),
-        button=(986, 550, 1056, 566),
-    ),
-    en=Button(
-        file='./assets/en/combat/prepare/WAVE_CHECK.png',
-        area=(975, 551, 1054, 565),
-        search=(955, 531, 1074, 585),
-        color=(76, 78, 79),
-        button=(975, 551, 1054, 565),
     ),
 )
 WAVE_CHECK_SEARCH = ButtonWrapper(

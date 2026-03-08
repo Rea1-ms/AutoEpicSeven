@@ -17,15 +17,30 @@
       "BattlePass",
       "Assignment",
       "DataUpdate",
-      "Freebies"
+      "Freebies",
+      "Gacha",
+      "SanctuaryDaily",
+      "Knights",
+      "Arena",
+      "SecretShop",
+      "Store",
+      "Pets"
     ]
   },
   "Weekly": {
     "menu": "list",
     "page": "setting",
     "tasks": [
+      "SanctuaryWeekly",
       "Weekly",
       "Rogue"
+    ]
+  },
+  "Monthly": {
+    "menu": "list",
+    "page": "setting",
+    "tasks": [
+      "SanctuaryMonthly"
     ]
   },
   "Tool": {

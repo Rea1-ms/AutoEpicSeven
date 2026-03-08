@@ -12,6 +12,10 @@
       "name": "每週",
       "help": ""
     },
+    "Monthly": {
+      "name": "每月",
+      "help": ""
+    },
     "Tool": {
       "name": "工具",
       "help": ""
@@ -54,6 +58,38 @@
       "name": "免費獎勵",
       "help": ""
     },
+    "Gacha": {
+      "name": "召喚",
+      "help": ""
+    },
+    "SanctuaryDaily": {
+      "name": "聖域-日常",
+      "help": "獨立排程的聖域日常模組。"
+    },
+    "Knights": {
+      "name": "騎士團",
+      "help": "騎士團相關日常：簽到加成獎勵、支援、團戰占位、世界 Boss。"
+    },
+    "Arena": {
+      "name": "競技場",
+      "help": "進入競技場並處理入口獎勵分支。"
+    },
+    "SecretShop": {
+      "name": "秘密商店",
+      "help": ""
+    },
+    "Store": {
+      "name": "商店",
+      "help": "購買商店中的每日與每週資源。"
+    },
+    "Pets": {
+      "name": "寵物商店",
+      "help": ""
+    },
+    "SanctuaryWeekly": {
+      "name": "聖域-週常",
+      "help": "獨立排程的聖域週常模組。"
+    },
     "Weekly": {
       "name": "歷戰餘響",
       "help": ""
@@ -61,6 +97,10 @@
     "Rogue": {
       "name": "模擬宇宙",
       "help": ""
+    },
+    "SanctuaryMonthly": {
+      "name": "聖域-月常",
+      "help": "獨立排程的聖域月常模組。"
     },
     "Daemon": {
       "name": "劇情連點器",
@@ -115,11 +155,7 @@
       "help": "無法區分國際服的不同地區，請手動選擇伺服器",
       "auto": "自動檢測",
       "CN-Official": "[國服]-官服",
-      "CN-Bilibili": "[國服]-B服 ",
-      "OVERSEA-America": "[國際服]-美洲",
-      "OVERSEA-Asia": "[國際服]-亞洲",
-      "OVERSEA-Europe": "[國際服]-歐洲",
-      "OVERSEA-TWHKMO": "[國際服]-台港澳"
+      "OVERSEA-Play": "OVERSEA-Play"
     },
     "GameLanguage": {
       "name": "遊戲內文本語言",
@@ -1222,6 +1258,260 @@
       "1": "1"
     }
   },
+  "Gacha": {
+    "_info": {
+      "name": "召喚設定",
+      "help": ""
+    },
+    "Version": {
+      "name": "版本分支",
+      "help": "auto：按伺服器自動選擇（CN=V1，OVERSEA=V2）；也可手動強制。",
+      "auto": "自動",
+      "v1": "V1（舊版）",
+      "v2": "V2（新版）"
+    },
+    "CollectGoldenInheritance": {
+      "name": "收取金光傳承石",
+      "help": "召喚結束後若金光傳承石滿溢則自動收取。"
+    }
+  },
+  "SanctuaryMonthly": {
+    "_info": {
+      "name": "聖域-月常設定",
+      "help": "聖域月常模組設定。"
+    },
+    "RewardTier": {
+      "name": "入庫品質",
+      "help": "",
+      "A": "A及以上",
+      "B": "B及以上",
+      "S": "S及以上",
+      "MaxMinus1": "當前最高品質-1",
+      "MaxMinus2": "當前最高品質-2（保底B）"
+    }
+  },
+  "Knights": {
+    "_info": {
+      "name": "騎士團設定",
+      "help": "騎士團任務總開關與子功能設定。"
+    },
+    "ClaimSigninRateReward": {
+      "name": "領取簽到加成獎勵",
+      "help": "在騎士團首頁偵測到可領取時自動點擊領取。"
+    },
+    "WeeklyTask": {
+      "name": "騎士團週常獎勵",
+      "help": "進入騎士團週常頁面，領取可領取的週常獎勵與積分獎勵。"
+    },
+    "Donate": {
+      "name": "騎士團捐贈",
+      "help": "在騎士團捐贈頁點擊所有可用捐贈按鈕，直到當前頁沒有可捐贈項目。"
+    },
+    "Support": {
+      "name": "騎士團支援",
+      "help": "進入支援頁面並依設定執行捐贈與請求。"
+    },
+    "Shop": {
+      "name": "騎士團商店",
+      "help": "進入騎士團商店並執行購買。"
+    },
+    "BuyMorogora": {
+      "name": "購買魔羅戈拉",
+      "help": "在騎士團商店購買魔羅戈拉（每週）。"
+    },
+    "DonateLowerLevelFairyFlower": {
+      "name": "捐贈下級精靈之花",
+      "help": "在騎士團支援中向他人捐贈下級精靈之花。"
+    },
+    "DonateBeginnerPenguin": {
+      "name": "捐贈初級企鵝",
+      "help": "在騎士團支援中向他人捐贈初級企鵝。"
+    },
+    "Expedition": {
+      "name": "騎士團遠征",
+      "help": "進入遠征面板並執行已啟用的子模組。"
+    },
+    "TeamBattle": {
+      "name": "團戰（占位）",
+      "help": "僅進入團戰頁面並預留後續 OCR 邏輯。"
+    },
+    "WorldBoss": {
+      "name": "世界 Boss",
+      "help": "自動執行世界 Boss 基礎流程，次數用盡後返回騎士團。"
+    },
+    "RequestItem": {
+      "name": "支援請求物品",
+      "help": "在騎士團支援中選擇要發起請求的物品（二選一）。",
+      "LowerLevelFairyFlower": "下級精靈之花",
+      "BeginnerPenguin": "初級企鵝"
+    }
+  },
+  "KnightsBasic": {
+    "_info": {
+      "name": "騎士團-基礎",
+      "help": "騎士團基礎功能開關。"
+    },
+    "ClaimSigninRateReward": {
+      "name": "領取簽到加成獎勵",
+      "help": "在騎士團首頁偵測到可領取時自動點擊領取。"
+    },
+    "WeeklyTask": {
+      "name": "騎士團週常獎勵",
+      "help": "進入騎士團週常頁面，領取可領取的週常獎勵與積分獎勵。"
+    }
+  },
+  "KnightsDonate": {
+    "_info": {
+      "name": "騎士團-捐贈與支援",
+      "help": "捐贈與支援相關設定。"
+    },
+    "Donate": {
+      "name": "騎士團捐贈",
+      "help": "在騎士團捐贈頁點擊所有可用捐贈按鈕，直到當前頁沒有可捐贈項目。"
+    },
+    "Support": {
+      "name": "騎士團支援",
+      "help": "進入支援頁面並依設定執行捐贈與請求。"
+    },
+    "RequestItem": {
+      "name": "支援請求物品",
+      "help": "在騎士團支援中選擇要發起請求的物品（二選一）。",
+      "LowerLevelFairyFlower": "下級精靈之花",
+      "BeginnerPenguin": "初級企鵝"
+    },
+    "DonateLowerLevelFairyFlower": {
+      "name": "捐贈下級精靈之花",
+      "help": "在騎士團支援中向他人捐贈下級精靈之花。"
+    },
+    "DonateBeginnerPenguin": {
+      "name": "捐贈初級企鵝",
+      "help": "在騎士團支援中向他人捐贈初級企鵝。"
+    }
+  },
+  "KnightsShop": {
+    "_info": {
+      "name": "騎士團-商店",
+      "help": "騎士團商店相關設定。"
+    },
+    "Shop": {
+      "name": "騎士團商店",
+      "help": "進入騎士團商店並執行購買。"
+    },
+    "BuyMorogora": {
+      "name": "購買魔羅戈拉",
+      "help": "在騎士團商店購買魔羅戈拉（每週）。"
+    }
+  },
+  "KnightsExpedition": {
+    "_info": {
+      "name": "騎士團-遠征與世界Boss",
+      "help": "遠征、團戰與世界Boss相關設定。"
+    },
+    "Expedition": {
+      "name": "騎士團遠征",
+      "help": "進入遠征面板並執行已啟用的子模組。"
+    },
+    "TeamBattle": {
+      "name": "團戰（占位）",
+      "help": "僅進入團戰頁面並預留後續 OCR 邏輯。"
+    },
+    "WorldBoss": {
+      "name": "世界 Boss",
+      "help": "自動執行世界 Boss 基礎流程，次數用盡後返回騎士團。"
+    }
+  },
+  "Arena": {
+    "_info": {
+      "name": "競技場設定",
+      "help": "競技場任務相關設定。"
+    },
+    "ClaimWeeklyRewards": {
+      "name": "領取每週獎勵",
+      "help": "進入競技場時若出現每週獎勵彈窗，則自動領取。"
+    },
+    "ClaimWeeklyBattleRewards": {
+      "name": "自動領取每週對戰獎勵",
+      "help": "刷完競技場 NPC 後，在離開競技場前自動領取每週對戰獎勵。"
+    },
+    "ClaimBattlePassRewards": {
+      "name": "自動取得通行證等級並領取獎勵",
+      "help": "自動取得通行證等級並領取獎勵。"
+    },
+    "NPCCombat": {
+      "name": "刷 NPC",
+      "help": "啟用後在競技場自動挑戰 NPC。"
+    },
+    "NPCCombatFastBattle": {
+      "name": "啟用快速戰鬥",
+      "help": "NPC 刷新時優先使用快速戰鬥。"
+    },
+    "NPCCombatCount": {
+      "name": "NPC 挑戰次數",
+      "help": "本次任務最多挑戰 NPC 的次數。"
+    }
+  },
+  "SecretShop": {
+    "_info": {
+      "name": "秘密商店設定",
+      "help": ""
+    },
+    "OnlyFree": {
+      "name": "僅免費",
+      "help": "不刷新、不耗鑽"
+    },
+    "MaxRefresh": {
+      "name": "最大刷新次數",
+      "help": ""
+    },
+    "BuyCovenantBookmark": {
+      "name": "購買聖約書籤",
+      "help": ""
+    },
+    "BuyMysticMedal": {
+      "name": "購買神秘獎牌",
+      "help": ""
+    }
+  },
+  "StoreDaily": {
+    "_info": {
+      "name": "商店每日購買",
+      "help": "每日可購買項目。"
+    },
+    "BuyDailyFreeItem": {
+      "name": "購買每日免費商品",
+      "help": "在推薦商店購買每日免費商品。"
+    },
+    "BuyFriendshipMobility40": {
+      "name": "購買友情商店40行動力",
+      "help": "在友情商店購買40行動力。"
+    },
+    "BuyFriendshipArenaFlag": {
+      "name": "購買友情商店旗幟",
+      "help": "在友情商店購買競技場旗幟。"
+    },
+    "BuyConquestMobility40": {
+      "name": "購買征服點數商店40行動力",
+      "help": "在征服點數商店購買40行動力。"
+    }
+  },
+  "StoreWeekly": {
+    "_info": {
+      "name": "商店每週購買",
+      "help": "每週或限次可購買項目。"
+    },
+    "BuyConquestMorogora": {
+      "name": "購買征服點數商店魔羅戈拉",
+      "help": "在征服點數商店購買每週限次的魔羅戈拉。"
+    },
+    "BuyInheritanceMorogora": {
+      "name": "購買傳承石商店魔羅戈拉",
+      "help": "在傳承石商店購買每週的魔羅戈拉。"
+    },
+    "BuyInheritancePotentialFragments": {
+      "name": "購買潛能激發碎片（最大）",
+      "help": "在傳承石商店購買潛能激發碎片並選擇最大數量。"
+    }
+  },
   "Weekly": {
     "_info": {
       "name": "歷戰餘響設定",
@@ -1774,7 +2064,9 @@
     },
     "Text": {
       "InvalidFeedBack": "格式錯誤。 示例：{0}",
-      "Clear": "清除"
+      "Clear": "清除",
+      "KnightsTeamBattleTodo": "團戰 OCR 功能待實作",
+      "KnightsNoStaminaTodo": "世界 Boss 體力不足處理待實作"
     }
   }
 }

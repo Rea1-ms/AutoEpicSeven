@@ -12,6 +12,10 @@
       "name": "Weekly",
       "help": ""
     },
+    "Monthly": {
+      "name": "Monthly",
+      "help": ""
+    },
     "Tool": {
       "name": "Tools",
       "help": ""
@@ -54,6 +58,38 @@
       "name": "Freebies",
       "help": ""
     },
+    "Gacha": {
+      "name": "Gacha",
+      "help": ""
+    },
+    "SanctuaryDaily": {
+      "name": "Sanctuary Daily",
+      "help": "Sanctuary daily module with independent scheduler."
+    },
+    "Knights": {
+      "name": "Guild",
+      "help": "Guild automation: sign-in reward, support, expedition flow, and World Boss."
+    },
+    "Arena": {
+      "name": "Arena",
+      "help": "Enter arena and handle entry reward branch."
+    },
+    "SecretShop": {
+      "name": "Secret Shop",
+      "help": ""
+    },
+    "Store": {
+      "name": "Store",
+      "help": "Buy daily and weekly items from the in-game store."
+    },
+    "Pets": {
+      "name": "Pet Shop",
+      "help": ""
+    },
+    "SanctuaryWeekly": {
+      "name": "Sanctuary Weekly",
+      "help": "Sanctuary weekly module with independent scheduler."
+    },
     "Weekly": {
       "name": "Echo of War",
       "help": ""
@@ -61,6 +97,10 @@
     "Rogue": {
       "name": "Simulated Universe",
       "help": ""
+    },
+    "SanctuaryMonthly": {
+      "name": "Sanctuary Monthly",
+      "help": "Sanctuary monthly module with independent scheduler."
     },
     "Daemon": {
       "name": "Dialogue Clicker",
@@ -115,11 +155,7 @@
       "help": "Can't distinguish different regions of oversea servers, please select the server manually.",
       "auto": "Auto-detect",
       "CN-Official": "[CN]-Official",
-      "CN-Bilibili": "[CN]-Bilibili",
-      "OVERSEA-America": "[OVERSEA]-America",
-      "OVERSEA-Asia": "[OVERSEA]-Asia",
-      "OVERSEA-Europe": "[OVERSEA]-Europe",
-      "OVERSEA-TWHKMO": "[OVERSEA]-TW,HK,MO"
+      "OVERSEA-Play": "OVERSEA-Play"
     },
     "GameLanguage": {
       "name": "In-game Text Language",
@@ -1222,6 +1258,260 @@
       "1": "1"
     }
   },
+  "Gacha": {
+    "_info": {
+      "name": "Gacha Settings",
+      "help": ""
+    },
+    "Version": {
+      "name": "Version Branch",
+      "help": "auto: choose by server (CN=V1, OVERSEA=V2); you can also force it manually.",
+      "auto": "Auto",
+      "v1": "V1 (Legacy)",
+      "v2": "V2 (Latest)"
+    },
+    "CollectGoldenInheritance": {
+      "name": "Collect Golden Inheritance",
+      "help": "After summoning, click to collect when Golden Inheritance is full."
+    }
+  },
+  "SanctuaryMonthly": {
+    "_info": {
+      "name": "Sanctuary Monthly",
+      "help": "Monthly sanctuary module options."
+    },
+    "RewardTier": {
+      "name": "Reward Tier",
+      "help": "",
+      "A": "A or higher",
+      "B": "B or higher",
+      "S": "S or higher",
+      "MaxMinus1": "Current max tier -1",
+      "MaxMinus2": "Current max tier -2 (floor B)"
+    }
+  },
+  "Knights": {
+    "_info": {
+      "name": "Guild Settings",
+      "help": "Toggle guild sub-features and configure behavior."
+    },
+    "ClaimSigninRateReward": {
+      "name": "Claim Sign-in Reward",
+      "help": "Automatically claim sign-in rate reward on guild home."
+    },
+    "WeeklyTask": {
+      "name": "Guild Weekly Rewards",
+      "help": "Enter guild weekly page and claim available weekly task rewards and points rewards."
+    },
+    "Donate": {
+      "name": "Guild Donation",
+      "help": "Open guild donation page and click all available donate actions until none remains."
+    },
+    "Support": {
+      "name": "Guild Support",
+      "help": "Enter guild support and run donation/request flows."
+    },
+    "Shop": {
+      "name": "Guild Shop",
+      "help": "Enter guild shop and run purchase flow."
+    },
+    "BuyMorogora": {
+      "name": "Buy Morogora",
+      "help": "Buy Morogora in guild shop (weekly)."
+    },
+    "DonateLowerLevelFairyFlower": {
+      "name": "Donate Lower-Level Fairy Flower",
+      "help": "Donate Lower-Level Fairy Flower to guild requests in support."
+    },
+    "DonateBeginnerPenguin": {
+      "name": "Donate Beginner Penguin",
+      "help": "Donate Beginner Penguin to guild requests in support."
+    },
+    "Expedition": {
+      "name": "Guild Expedition",
+      "help": "Enter expedition panel and run enabled sub-modules."
+    },
+    "TeamBattle": {
+      "name": "Guild War (Placeholder)",
+      "help": "Only enters guild war page for now; OCR logic is reserved."
+    },
+    "WorldBoss": {
+      "name": "World Boss",
+      "help": "Run World Boss base flow and return when attempts are exhausted."
+    },
+    "RequestItem": {
+      "name": "Support Request Item",
+      "help": "Select one item to request in guild support.",
+      "LowerLevelFairyFlower": "Lower-Level Fairy Flower",
+      "BeginnerPenguin": "Beginner Penguin"
+    }
+  },
+  "KnightsBasic": {
+    "_info": {
+      "name": "Guild - Basic",
+      "help": "Basic guild task toggles."
+    },
+    "ClaimSigninRateReward": {
+      "name": "Claim Sign-in Reward",
+      "help": "Automatically claim sign-in rate reward on guild home."
+    },
+    "WeeklyTask": {
+      "name": "Guild Weekly Rewards",
+      "help": "Enter guild weekly page and claim available weekly task rewards and points rewards."
+    }
+  },
+  "KnightsDonate": {
+    "_info": {
+      "name": "Guild - Donate & Support",
+      "help": "Donation and support related options."
+    },
+    "Donate": {
+      "name": "Guild Donation",
+      "help": "Open guild donation page and click all available donate actions until none remains."
+    },
+    "Support": {
+      "name": "Guild Support",
+      "help": "Enter guild support and run donation/request flows."
+    },
+    "RequestItem": {
+      "name": "Support Request Item",
+      "help": "Select one item to request in guild support.",
+      "LowerLevelFairyFlower": "Lower-Level Fairy Flower",
+      "BeginnerPenguin": "Beginner Penguin"
+    },
+    "DonateLowerLevelFairyFlower": {
+      "name": "Donate Lower-Level Fairy Flower",
+      "help": "Donate Lower-Level Fairy Flower to guild requests in support."
+    },
+    "DonateBeginnerPenguin": {
+      "name": "Donate Beginner Penguin",
+      "help": "Donate Beginner Penguin to guild requests in support."
+    }
+  },
+  "KnightsShop": {
+    "_info": {
+      "name": "Guild - Shop",
+      "help": "Guild shop related options."
+    },
+    "Shop": {
+      "name": "Guild Shop",
+      "help": "Enter guild shop and run purchase flow."
+    },
+    "BuyMorogora": {
+      "name": "Buy Morogora",
+      "help": "Buy Morogora in guild shop (weekly)."
+    }
+  },
+  "KnightsExpedition": {
+    "_info": {
+      "name": "Guild - Expedition & World Boss",
+      "help": "Expedition, guild war and world boss options."
+    },
+    "Expedition": {
+      "name": "Guild Expedition",
+      "help": "Enter expedition panel and run enabled sub-modules."
+    },
+    "TeamBattle": {
+      "name": "Guild War (Placeholder)",
+      "help": "Only enters guild war page for now; OCR logic is reserved."
+    },
+    "WorldBoss": {
+      "name": "World Boss",
+      "help": "Run World Boss base flow and return when attempts are exhausted."
+    }
+  },
+  "Arena": {
+    "_info": {
+      "name": "Arena",
+      "help": "Arena task options."
+    },
+    "ClaimWeeklyRewards": {
+      "name": "Claim Weekly Rewards",
+      "help": "Automatically claim weekly rewards when the popup appears during arena entry."
+    },
+    "ClaimWeeklyBattleRewards": {
+      "name": "Claim Weekly Battle Rewards",
+      "help": "After NPC arena farming, claim weekly battle rewards before leaving arena."
+    },
+    "ClaimBattlePassRewards": {
+      "name": "Read Battle Pass Level and Claim Rewards",
+      "help": "Automatically read the battle pass level and claim rewards."
+    },
+    "NPCCombat": {
+      "name": "Farm NPC",
+      "help": "Enable automatic NPC battles in arena."
+    },
+    "NPCCombatFastBattle": {
+      "name": "Use Fast Battle",
+      "help": "Prefer fast battle mode for NPC fights."
+    },
+    "NPCCombatCount": {
+      "name": "NPC Battle Count",
+      "help": "Maximum number of NPC battles in this run."
+    }
+  },
+  "SecretShop": {
+    "_info": {
+      "name": "Secret Shop Settings",
+      "help": ""
+    },
+    "OnlyFree": {
+      "name": "Free Only",
+      "help": "No refresh, no skystones"
+    },
+    "MaxRefresh": {
+      "name": "Max Refresh",
+      "help": ""
+    },
+    "BuyCovenantBookmark": {
+      "name": "Buy Covenant Bookmarks",
+      "help": ""
+    },
+    "BuyMysticMedal": {
+      "name": "Buy Mystic Medals",
+      "help": ""
+    }
+  },
+  "StoreDaily": {
+    "_info": {
+      "name": "Store Daily Purchases",
+      "help": "Items to buy every day."
+    },
+    "BuyDailyFreeItem": {
+      "name": "Buy Daily Free Item",
+      "help": "Buy the daily free item in the Recommended store."
+    },
+    "BuyFriendshipMobility40": {
+      "name": "Buy 40 Energy (Friendship)",
+      "help": "Buy the 40 Energy item in the Friendship Points store."
+    },
+    "BuyFriendshipArenaFlag": {
+      "name": "Buy Arena Flag (Friendship)",
+      "help": "Buy Arena Flag in the Friendship Points store."
+    },
+    "BuyConquestMobility40": {
+      "name": "Buy 40 Energy (Conquest)",
+      "help": "Buy the 40 Energy item in the Conquest Points store."
+    }
+  },
+  "StoreWeekly": {
+    "_info": {
+      "name": "Store Weekly Purchases",
+      "help": "Items to buy weekly or with limited counts."
+    },
+    "BuyConquestMorogora": {
+      "name": "Buy Morogora (Conquest)",
+      "help": "Buy weekly-limited Morogora in the Conquest Points store."
+    },
+    "BuyInheritanceMorogora": {
+      "name": "Buy Morogora (Inheritance)",
+      "help": "Buy weekly Morogora in the Inheritance Stone store."
+    },
+    "BuyInheritancePotentialFragments": {
+      "name": "Buy Potential Fragments (Max)",
+      "help": "Buy Potential Fragments in the Inheritance store with max quantity."
+    }
+  },
   "Weekly": {
     "_info": {
       "name": "Echo of War Settings",
@@ -1774,7 +2064,9 @@
     },
     "Text": {
       "InvalidFeedBack": "Invalid format. Example: {0}",
-      "Clear": "Clear"
+      "Clear": "Clear",
+      "KnightsTeamBattleTodo": "Guild War OCR TODO",
+      "KnightsNoStaminaTodo": "World Boss no-stamina handling TODO"
     }
   }
 }

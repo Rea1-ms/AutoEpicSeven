@@ -51,6 +51,29 @@ Daily:
     Freebies:
       - Scheduler
       - Freebies
+    Gacha:
+      - Scheduler
+      - Gacha
+    SanctuaryDaily:
+      - Scheduler
+    Knights:
+      - Scheduler
+      - KnightsBasic
+      - KnightsDonate
+      - KnightsShop
+      - KnightsExpedition
+    Arena:
+      - Scheduler
+      - Arena
+    SecretShop:
+      - Scheduler
+      - SecretShop
+    Store:
+      - Scheduler
+      - StoreDaily
+      - StoreWeekly
+    Pets:
+      - Scheduler
 
 # ==================== Weekly ====================
 
@@ -58,6 +81,8 @@ Weekly:
   menu: 'list'
   page: 'setting'
   tasks:
+    SanctuaryWeekly:
+      - Scheduler
     Weekly:
       - Scheduler
       - Weekly
@@ -67,6 +92,16 @@ Weekly:
       - RogueWorld
       - RogueBlessing
       - RogueDebug
+
+# ==================== Monthly ====================
+
+Monthly:
+  menu: 'list'
+  page: 'setting'
+  tasks:
+    SanctuaryMonthly:
+      - Scheduler
+      - SanctuaryMonthly
 
 # ==================== Tool ====================
 

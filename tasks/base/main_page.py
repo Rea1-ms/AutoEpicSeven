@@ -5,7 +5,6 @@ from module.config.server import VALID_LANG
 from module.exception import RequestHumanTakeover, ScriptError
 from module.logger import logger
 from module.ocr.ocr import OcrWhiteLetterOnComplexBackground
-from tasks.base.assets.assets_base_main_page import OCR_MAP_NAME
 from tasks.base.page import Page, page_main
 from tasks.base.popup import PopupHandler
 from tasks.map.keywords import KEYWORDS_MAP_PLANE, MapPlane
@@ -109,6 +108,11 @@ class MainPage(PopupHandler):
 
     def check_lang_from_map_plane(self) -> str | None:
         logger.info('check_lang_from_map_plane')
+        # E7: language is configured explicitly, no OCR-based detection
+        if getattr(self.config, 'Emulator_GameLanguage', 'auto') != 'auto':
+            MainPage._lang_checked = True
+            MainPage._lang_check_success = True
+            return server.lang
         lang_unknown = self.config.Emulator_GameLanguage == 'auto'
 
         if lang_unknown:

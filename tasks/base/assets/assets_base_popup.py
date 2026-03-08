@@ -3,211 +3,168 @@ from module.base.button import Button, ButtonWrapper
 # This file was auto-generated, do not modify it manually. To generate:
 # ``` python -m dev_tools.button_extract ```
 
-BATTLE_PASS_NOTIFICATION = ButtonWrapper(
-    name='BATTLE_PASS_NOTIFICATION',
+AD_BUFF_X_CLOSE = ButtonWrapper(
+    name='AD_BUFF_X_CLOSE',
     share=Button(
-        file='./assets/share/base/popup/BATTLE_PASS_NOTIFICATION.png',
-        area=(922, 592, 944, 614),
-        search=(850, 546, 952, 575),
-        color=(122, 112, 93),
-        button=(918, 587, 1079, 619),
+        file='./assets/share/base/popup/AD_BUFF_X_CLOSE.png',
+        area=(731, 690, 745, 704),
+        search=(587, 685, 832, 705),
+        color=(55, 54, 54),
+        button=(731, 690, 745, 704),
     ),
 )
-BUFF_Apocalyptic_Shadow = ButtonWrapper(
-    name='BUFF_Apocalyptic_Shadow',
-    share=[
-        Button(
-            file='./assets/share/base/popup/BUFF_Apocalyptic_Shadow.png',
-            area=(619, 278, 694, 298),
-            search=(599, 258, 714, 318),
-            color=(91, 82, 67),
-            button=(619, 278, 694, 298),
-        ),
-        Button(
-            file='./assets/share/base/popup/BUFF_Apocalyptic_Shadow.2.png',
-            area=(618, 277, 713, 298),
-            search=(598, 257, 733, 318),
-            color=(63, 56, 48),
-            button=(618, 277, 713, 298),
-        ),
-    ],
-)
-BUFF_CLICK = ButtonWrapper(
-    name='BUFF_CLICK',
+ANNOUNCEMENT_DONOT_REMIND = ButtonWrapper(
+    name='ANNOUNCEMENT_DONOT_REMIND',
     share=Button(
-        file='./assets/share/base/popup/BUFF_CLICK.png',
-        area=(529, 621, 748, 689),
-        search=(509, 601, 768, 709),
-        color=(47, 36, 77),
-        button=(529, 621, 748, 689),
+        file='./assets/share/base/popup/ANNOUNCEMENT_DONOT_REMIND.png',
+        area=(1140, 629, 1170, 659),
+        search=(1120, 609, 1190, 679),
+        color=(182, 182, 182),
+        button=(1140, 629, 1170, 659),
     ),
 )
-BUFF_Forgotten_Hall = ButtonWrapper(
-    name='BUFF_Forgotten_Hall',
+BROADCAST = ButtonWrapper(
+    name='BROADCAST',
     share=Button(
-        file='./assets/share/base/popup/BUFF_Forgotten_Hall.png',
-        area=(265, 342, 301, 378),
-        search=(245, 322, 321, 398),
-        color=(160, 141, 103),
-        button=(265, 342, 301, 378),
+        file='./assets/share/base/popup/BROADCAST.png',
+        area=(445, 117, 498, 165),
+        search=(356, 97, 502, 192),
+        color=(223, 179, 167),
+        button=(445, 117, 498, 165),
     ),
 )
-BUFF_Pure_Fiction = ButtonWrapper(
-    name='BUFF_Pure_Fiction',
-    share=[
-        Button(
-            file='./assets/share/base/popup/BUFF_Pure_Fiction.png',
-            area=(720, 205, 794, 226),
-            search=(700, 185, 814, 246),
-            color=(87, 82, 69),
-            button=(720, 205, 794, 226),
-        ),
-        Button(
-            file='./assets/share/base/popup/BUFF_Pure_Fiction.2.png',
-            area=(757, 204, 853, 225),
-            search=(737, 184, 873, 245),
-            color=(69, 67, 58),
-            button=(757, 204, 853, 225),
-        ),
-    ],
-)
-GET_CHARACTER = ButtonWrapper(
-    name='GET_CHARACTER',
+NETWORK_ERROR_ABNORMAL = ButtonWrapper(
+    name='NETWORK_ERROR_ABNORMAL',
     cn=Button(
-        file='./assets/cn/base/popup/GET_CHARACTER.png',
-        area=(204, 322, 249, 338),
-        search=(184, 302, 269, 358),
-        color=(156, 155, 154),
-        button=(204, 322, 249, 338),
+        file='./assets/cn/base/popup/NETWORK_ERROR_ABNORMAL.png',
+        area=(674, 313, 711, 333),
+        search=(654, 293, 731, 353),
+        color=(98, 101, 104),
+        button=(674, 313, 711, 333),
     ),
-    en=Button(
-        file='./assets/en/base/popup/GET_CHARACTER.png',
-        area=(205, 321, 242, 339),
-        search=(185, 301, 262, 359),
-        color=(126, 127, 127),
-        button=(205, 321, 242, 339),
+    global_cn=Button(
+        file='./assets/global_cn/base/popup/NETWORK_ERROR_ABNORMAL.png',
+        area=(676, 312, 715, 332),
+        search=(656, 292, 735, 352),
+        color=(90, 94, 97),
+        button=(676, 312, 715, 332),
     ),
+    global_en=None,
 )
-GET_LIGHT_CONE = ButtonWrapper(
-    name='GET_LIGHT_CONE',
+NETWORK_ERROR_DISCONNECT = ButtonWrapper(
+    name='NETWORK_ERROR_DISCONNECT',
     cn=Button(
-        file='./assets/cn/base/popup/GET_LIGHT_CONE.png',
-        area=(205, 321, 242, 339),
-        search=(185, 301, 262, 359),
-        color=(130, 130, 131),
-        button=(205, 321, 242, 339),
+        file='./assets/cn/base/popup/NETWORK_ERROR_DISCONNECT.png',
+        area=(692, 312, 731, 333),
+        search=(672, 292, 751, 353),
+        color=(75, 80, 85),
+        button=(692, 312, 731, 333),
     ),
-    en=Button(
-        file='./assets/en/base/popup/GET_LIGHT_CONE.png',
-        area=(260, 322, 306, 338),
-        search=(240, 302, 326, 358),
-        color=(147, 147, 148),
-        button=(260, 322, 306, 338),
-    ),
-)
-GET_REWARD = ButtonWrapper(
-    name='GET_REWARD',
-    share=[
+    global_cn=[
         Button(
-            file='./assets/share/base/popup/GET_REWARD.png',
-            area=(625, 95, 655, 119),
-            search=(605, 75, 675, 139),
-            color=(213, 0, 0),
-            button=(741, 495, 1071, 644),
+            file='./assets/global_cn/base/popup/NETWORK_ERROR_DISCONNECT.png',
+            area=(696, 311, 736, 332),
+            search=(676, 291, 756, 352),
+            color=(69, 75, 81),
+            button=(696, 311, 736, 332),
         ),
         Button(
-            file='./assets/share/base/popup/GET_REWARD.2.png',
-            area=(625, 144, 655, 168),
-            search=(605, 124, 675, 188),
-            color=(226, 0, 0),
-            button=(741, 495, 1071, 644),
+            file='./assets/global_cn/base/popup/NETWORK_ERROR_DISCONNECT.2.png',
+            area=(676, 336, 735, 357),
+            search=(656, 316, 755, 377),
+            color=(66, 73, 82),
+            button=(676, 336, 735, 357),
+        ),
+        Button(
+            file='./assets/global_cn/base/popup/NETWORK_ERROR_DISCONNECT.3.png',
+            area=(647, 335, 686, 356),
+            search=(627, 315, 706, 376),
+            color=(50, 59, 70),
+            button=(647, 335, 686, 356),
+        ),
+        Button(
+            file='./assets/global_cn/base/popup/NETWORK_ERROR_DISCONNECT.4.png',
+            area=(880, 386, 921, 407),
+            search=(860, 366, 941, 427),
+            color=(88, 114, 111),
+            button=(880, 386, 921, 407),
         ),
     ],
+    global_en=None,
 )
-MONTHLY_CARD_GET_ITEM = ButtonWrapper(
-    name='MONTHLY_CARD_GET_ITEM',
+NEW_CHARACTER_VIDEO_PASS = ButtonWrapper(
+    name='NEW_CHARACTER_VIDEO_PASS',
     share=Button(
-        file='./assets/share/base/popup/MONTHLY_CARD_GET_ITEM.png',
-        area=(612, 328, 652, 368),
-        search=(592, 308, 672, 388),
-        color=(209, 187, 179),
-        button=(741, 495, 1071, 644),
+        file='./assets/share/base/popup/NEW_CHARACTER_VIDEO_PASS.png',
+        area=(1098, 29, 1114, 51),
+        search=(1078, 9, 1134, 71),
+        color=(88, 85, 85),
+        button=(1187, 27, 1230, 48),
     ),
 )
-MONTHLY_CARD_REWARD = ButtonWrapper(
-    name='MONTHLY_CARD_REWARD',
+OCR_BROADCAST_CONTENT = ButtonWrapper(
+    name='OCR_BROADCAST_CONTENT',
     share=Button(
-        file='./assets/share/base/popup/MONTHLY_CARD_REWARD.png',
-        area=(696, 407, 736, 447),
-        search=(676, 387, 756, 467),
-        color=(137, 107, 91),
-        button=(741, 495, 1071, 644),
+        file='./assets/share/base/popup/OCR_BROADCAST_CONTENT.png',
+        area=(513, 148, 836, 209),
+        search=(493, 128, 856, 229),
+        color=(229, 222, 210),
+        button=(513, 148, 836, 209),
     ),
 )
-POPUP_BATTLE_PASS_UPDATE = ButtonWrapper(
-    name='POPUP_BATTLE_PASS_UPDATE',
+OCR_BROADCAST_REMAIN_TIME = ButtonWrapper(
+    name='OCR_BROADCAST_REMAIN_TIME',
     share=Button(
-        file='./assets/share/base/popup/POPUP_BATTLE_PASS_UPDATE.png',
-        area=(537, 217, 562, 244),
-        search=(517, 197, 582, 264),
-        color=(63, 52, 41),
-        button=(537, 217, 562, 244),
+        file='./assets/share/base/popup/OCR_BROADCAST_REMAIN_TIME.png',
+        area=(662, 107, 757, 134),
+        search=(642, 87, 777, 154),
+        color=(182, 180, 174),
+        button=(662, 107, 757, 134),
     ),
 )
 POPUP_CANCEL = ButtonWrapper(
     name='POPUP_CANCEL',
-    share=Button(
-        file='./assets/share/base/popup/POPUP_CANCEL.png',
-        area=(428, 537, 452, 561),
-        search=(339, 446, 482, 653),
-        color=(98, 92, 80),
-        button=(419, 531, 512, 567),
+    cn=Button(
+        file='./assets/cn/base/popup/POPUP_CANCEL.png',
+        area=(514, 485, 552, 504),
+        search=(443, 443, 559, 566),
+        color=(163, 156, 151),
+        button=(514, 485, 552, 504),
     ),
+    global_cn=Button(
+        file='./assets/global_cn/base/popup/POPUP_CANCEL.png',
+        area=(513, 450, 553, 470),
+        search=(443, 443, 559, 566),
+        color=(149, 141, 135),
+        button=(513, 450, 553, 470),
+    ),
+    global_en=None,
 )
 POPUP_CONFIRM = ButtonWrapper(
     name='POPUP_CONFIRM',
-    share=Button(
-        file='./assets/share/base/popup/POPUP_CONFIRM.png',
-        area=(776, 537, 800, 561),
-        search=(686, 446, 829, 644),
-        color=(95, 90, 78),
-        button=(767, 531, 862, 567),
-    ),
-)
-POPUP_SINGLE = ButtonWrapper(
-    name='POPUP_SINGLE',
-    share=Button(
-        file='./assets/share/base/popup/POPUP_SINGLE.png',
-        area=(602, 458, 626, 482),
-        search=(512, 446, 655, 644),
-        color=(95, 90, 77),
-        button=(578, 451, 705, 489),
-    ),
-)
-POPUP_STORY_LATER = ButtonWrapper(
-    name='POPUP_STORY_LATER',
-    share=Button(
-        file='./assets/share/base/popup/POPUP_STORY_LATER.png',
-        area=(392, 534, 416, 558),
-        search=(359, 527, 424, 565),
-        color=(111, 103, 91),
-        button=(392, 534, 416, 558),
-    ),
-)
-POPUP_TITLE_TIP = ButtonWrapper(
-    name='POPUP_TITLE_TIP',
     cn=Button(
-        file='./assets/cn/base/popup/POPUP_TITLE_TIP.png',
-        area=(614, 243, 666, 267),
-        search=(594, 223, 686, 287),
-        color=(138, 137, 138),
-        button=(614, 243, 666, 267),
+        file='./assets/cn/base/popup/POPUP_CONFIRM.png',
+        area=(729, 485, 767, 505),
+        search=(699, 428, 787, 578),
+        color=(130, 141, 157),
+        button=(729, 485, 767, 505),
     ),
-    en=Button(
-        file='./assets/en/base/popup/POPUP_TITLE_TIP.png',
-        area=(620, 245, 659, 272),
-        search=(600, 225, 679, 292),
-        color=(163, 162, 163),
-        button=(620, 245, 659, 272),
+    global_cn=Button(
+        file='./assets/global_cn/base/popup/POPUP_CONFIRM.png',
+        area=(728, 450, 768, 470),
+        search=(699, 428, 787, 578),
+        color=(120, 132, 149),
+        button=(728, 450, 768, 470),
+    ),
+    global_en=None,
+)
+TOUCH_TO_CLOSE = ButtonWrapper(
+    name='TOUCH_TO_CLOSE',
+    share=Button(
+        file='./assets/share/base/popup/TOUCH_TO_CLOSE.png',
+        area=(628, 614, 651, 629),
+        search=(622, 457, 770, 640),
+        color=(65, 90, 125),
+        button=(628, 614, 651, 629),
     ),
 )

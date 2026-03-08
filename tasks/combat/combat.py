@@ -2,7 +2,7 @@ from module.base.decorator import run_once
 from module.base.timer import Timer
 from module.exception import RequestHumanTakeover
 from module.logger import logger
-from tasks.base.page import page_guide
+# from tasks.base.page import page_guide
 from tasks.combat.assets.assets_combat_finish import COMBAT_AGAIN, COMBAT_EXIT
 from tasks.combat.assets.assets_combat_interact import DUNGEON_COMBAT_INTERACT
 from tasks.combat.assets.assets_combat_prepare import COMBAT_PREPARE
@@ -424,8 +424,8 @@ class Combat(CombatInteract, CombatPrepare, CombatSupport, CombatTeam, CombatSki
                 continue
             if self.handle_get_light_cone():
                 continue
-            if self.handle_ui_close(page_guide.check_button, interval=5):
-                continue
+            # if self.handle_ui_close(page_guide.check_button, interval=5):
+            #     continue
 
     def combat(self, team: int = 1, wave_limit: int = 0, support_character: str = None, skip_first_screenshot=True):
         """

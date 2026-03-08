@@ -1,6 +1,33 @@
 import traceback
 
 from tasks.base.assets.assets_base_page import *
+from tasks.base.assets.assets_base_popup import AD_BUFF_X_CLOSE
+from tasks.base.assets.assets_base_main_page import MENU, MENU_CLOSE, WHITE_STAR
+from tasks.secret_shop.assets.assets_secret_shop import SECRET_SHOP_CHECK
+from tasks.store.assets.assets_store import STORE_CHECK
+from tasks.arena.assets.assets_arena import ARENA_CHECK, ARENA_COMMON_ENTRY, ARENA_ENTRY
+from tasks.knights.assets.assets_knights import KNIGHTS_CHECK
+from tasks.knights.assets.assets_knights_expedition import (
+    EXPEDITION,
+    KNIGHTS_CREST,
+    READY_TO_FIGHT,
+    TEAM_BATTLE,
+    WAITING_FOR_WAR,
+    WORLD_BOSS,
+)
+from tasks.knights.assets.assets_knights_donate import DONATE, DONATE_CHECK
+from tasks.knights.assets.assets_knights_support import SUPPORT, SUPPORT_CHECK
+from tasks.knights.assets.assets_knights_weekly_task import WEEKLY_TASK, WEEKLY_TASK_CHECK
+from tasks.sanctuary.assets.assets_sanctuary import (
+    ALCHEMISTS_TOWER,
+    ALCHEMISTS_TOWER_CHECK,
+    HEART_OF_EULERBIS,
+    HEART_OF_EULERBIS_CHECK,
+    FOREST_OF_ELVES,
+)
+from tasks.sanctuary.assets.assets_sanctuary_forest_of_elves import (
+    ALTAR_OF_GROWTH,
+)
 
 
 class Page:
@@ -68,97 +95,195 @@ class Page:
         self.links[destination] = button
 
 
-# Main page
-page_main = Page(MAIN_GOTO_CHARACTER)
+# Main page (use a stable main-page marker)
+page_main = Page(WHITE_STAR)
 
-# Menu, entered from phone
-page_menu = Page(MENU_CHECK)
-page_menu.link(CLOSE, destination=page_main)
-page_main.link(MAIN_GOTO_MENU, destination=page_menu)
+# Menu (overlay/phone menu)
+page_menu = Page(MENU_CLOSE)
+page_menu.link(MENU_GOTO_MAIN, destination=page_main)
+page_main.link(MENU, destination=page_menu)
 
-# Character
-page_character = Page(CHARACTER_CHECK)
-page_character.link(CLOSE, destination=page_main)
-page_main.link(MAIN_GOTO_CHARACTER, destination=page_character)
-
-# Team
-page_team = Page(TEAM_CHECK)
-page_team.link(CLOSE, destination=page_main)
-page_main.link(MAIN_GOTO_TEAM, destination=page_team)
-
-# Item, storage
-page_item = Page(ITEM_CHECK)
-page_item.link(CLOSE, destination=page_main)
-page_main.link(MAIN_GOTO_ITEM, destination=page_item)
-
-# Guide, which includes beginners' guide, daily missions and dungeons
-page_guide = Page(GUIDE_CHECK)
-page_guide.link(GUIDE_CLOSE, destination=page_main)
-page_main.link(MAIN_GOTO_GUIDE, destination=page_guide)
+# # Character
+# page_character = Page(CHARACTER_CHECK)
+# page_character.link(CLOSE, destination=page_main)
+# page_main.link(MAIN_GOTO_CHARACTER, destination=page_character)
+#
+# # Team
+# page_team = Page(TEAM_CHECK)
+# page_team.link(CLOSE, destination=page_main)
+# page_main.link(MAIN_GOTO_TEAM, destination=page_team)
+#
+# # Item, storage
+# page_item = Page(ITEM_CHECK)
+# page_item.link(CLOSE, destination=page_main)
+# page_main.link(MAIN_GOTO_ITEM, destination=page_item)
+#
+# # Guide, which includes beginners' guide, daily missions and dungeons
+# page_guide = Page(GUIDE_CHECK)
+# page_guide.link(GUIDE_CLOSE, destination=page_main)
+# page_main.link(MAIN_GOTO_GUIDE, destination=page_guide)
 
 # Gacha
 page_gacha = Page(GACHA_CHECK)
-page_gacha.link(CLOSE, destination=page_main)
+page_gacha.link(MENU, destination=page_menu)
 page_main.link(MAIN_GOTO_GACHA, destination=page_gacha)
 
-# Battle Pass
-page_battle_pass = Page(BATTLE_PASS_CHECK)
-page_battle_pass.link(CLOSE, destination=page_main)
-page_main.link(MAIN_GOTO_BATTLE_PASS, destination=page_battle_pass)
+# Sanctuary
+page_sanctuary = Page(SANCTUARY_CHECK)
+page_sanctuary.link(MENU, destination=page_menu)
+page_main.link(MAIN_GOTO_SANCTUARY, destination=page_sanctuary)
 
-# Event
-page_event = Page(EVENT_CHECK)
-page_event.link(CLOSE, destination=page_main)
-page_main.link(MAIN_GOTO_EVENT, destination=page_event)
+# Sanctuary sub pages
+page_sanctuary_forest = Page(ALTAR_OF_GROWTH)
+page_sanctuary_forest.link(BACK, destination=page_sanctuary)
+page_sanctuary.link(FOREST_OF_ELVES, destination=page_sanctuary_forest)
 
-# Map
-page_map = Page(MAP_CHECK)
-page_map.link(CLOSE, destination=page_main)
-page_main.link(MAIN_GOTO_MAP, destination=page_map)
+page_sanctuary_tower = Page(ALCHEMISTS_TOWER_CHECK)
+page_sanctuary_tower.link(BACK, destination=page_sanctuary)
+page_sanctuary.link(ALCHEMISTS_TOWER, destination=page_sanctuary_tower)
 
-# page_world, subpage of map, used to choose a world/planet e.g. Herta Space Station
-page_world = Page(WORLD_CHECK)
-page_world.link(BACK, destination=page_map)
-page_map.link(MAP_GOTO_WORLD, destination=page_world)
+page_sanctuary_heart = Page(HEART_OF_EULERBIS_CHECK)
+page_sanctuary_heart.link(BACK, destination=page_sanctuary)
+page_sanctuary.link(HEART_OF_EULERBIS, destination=page_sanctuary_heart)
 
-# Tutorial
-page_tutorial = Page(TUTORIAL_CHECK)
-page_tutorial.link(CLOSE, destination=page_main)
-page_main.link(MAIN_GOTO_TUTORIAL, destination=page_tutorial)
+# Secret shop
+page_secret_shop = Page(SECRET_SHOP_CHECK)
+page_secret_shop.link(MENU, destination=page_menu)
+page_main.link(MAIN_GOTO_SECRET_SHOP, destination=page_secret_shop)
 
-# Mission
-page_mission = Page(MISSION_CHECK)
-page_mission.link(CLOSE, destination=page_main)
-page_main.link(MAIN_GOTO_MISSION, destination=page_mission)
+# Store
+page_store = Page(STORE_CHECK)
+page_store.link(MENU, destination=page_menu)
+page_main.link(MAIN_GOTO_STORE, destination=page_store)
 
-# Message
-page_message = Page(MESSAGE_CLOSE)
-page_message.link(MESSAGE_CLOSE, destination=page_main)
-page_main.link(MAIN_GOTO_MESSAGE, destination=page_message)
+# Arena mode-selection popup
+page_arena_mode_popup = Page(ARENA_COMMON_ENTRY)
+page_arena_mode_popup.link(AD_BUFF_X_CLOSE, destination=page_main)
+page_main.link(ARENA_ENTRY, destination=page_arena_mode_popup)
 
-# Camera
-page_camera = Page(CAMERA_CHECK)
-page_camera.link(CLOSE, destination=page_menu)
-page_menu.link(MENU_GOTO_CAMERA, destination=page_camera)
+# Arena
+page_arena = Page(ARENA_CHECK)
+page_arena.link(BACK, destination=page_main)
+page_arena_mode_popup.link(ARENA_COMMON_ENTRY, destination=page_arena)
 
-# Synthesize
-page_synthesize = Page(SYNTHESIZE_CHECK)
-page_synthesize.link(CLOSE, destination=page_menu)
-page_menu.link(MENU_GOTO_SYNTHESIZE, destination=page_synthesize)
+# Pets
+page_pets = Page(PETS_CHECK)
+page_pets.link(MENU, destination=page_menu)
+page_menu.link(MENU_GOTO_PETS, destination=page_pets)
 
-# Assignment
-page_assignment = Page(ASSIGNMENT_CHECK)
-page_assignment.link(CLOSE, destination=page_main)
-page_menu.link(MENU_GOTO_ASSIGNMENT, destination=page_assignment)
+# Knights
+page_knights = Page(KNIGHTS_CHECK)
+page_knights.link(MENU, destination=page_menu)
+page_menu.link(MENU_GOTO_KNIGHTS, destination=page_knights)
 
-# Forgotten Hall
-page_forgotten_hall = Page(FORGOTTEN_HALL_CHECK)
-page_forgotten_hall.link(CLOSE, destination=page_main)
+# Knights sub pages
+# Donate page
+page_knights_donate = Page(DONATE_CHECK)
+page_knights_donate.link(BACK, destination=page_knights)
+page_knights.link(DONATE, destination=page_knights_donate)
 
-# Rogue, Simulated Universe
-page_rogue = Page(ROGUE_CHECK)
-page_rogue.link(CLOSE, destination=page_main)
+# Support page
+page_knights_support = Page(SUPPORT_CHECK)
+page_knights_support.link(BACK, destination=page_knights)
+page_knights.link(SUPPORT, destination=page_knights_support)
 
-# Planner result
-page_planner = Page(PLANNER_CHECK)
-page_planner.link(CLOSE, destination=page_menu)
+# Expedition panel check uses TEAM_BATTLE entrance button.
+page_knights_expedition = Page(TEAM_BATTLE)
+page_knights_expedition.link(BACK, destination=page_main)
+page_knights.link(EXPEDITION, destination=page_knights_expedition)
+
+# Weekly task page
+page_knights_weekly_task = Page(WEEKLY_TASK_CHECK)
+page_knights_weekly_task.link(BACK, destination=page_knights)
+page_knights.link(WEEKLY_TASK, destination=page_knights_weekly_task)
+
+# Knights first-level tabs are mutually reachable.
+page_knights_donate.link(SUPPORT, destination=page_knights_support)
+page_knights_donate.link(EXPEDITION, destination=page_knights_expedition)
+page_knights_donate.link(WEEKLY_TASK, destination=page_knights_weekly_task)
+page_knights_support.link(DONATE, destination=page_knights_donate)
+page_knights_support.link(EXPEDITION, destination=page_knights_expedition)
+page_knights_support.link(WEEKLY_TASK, destination=page_knights_weekly_task)
+page_knights_expedition.link(DONATE, destination=page_knights_donate)
+page_knights_expedition.link(SUPPORT, destination=page_knights_support)
+page_knights_expedition.link(WEEKLY_TASK, destination=page_knights_weekly_task)
+page_knights_weekly_task.link(DONATE, destination=page_knights_donate)
+page_knights_weekly_task.link(SUPPORT, destination=page_knights_support)
+page_knights_weekly_task.link(EXPEDITION, destination=page_knights_expedition)
+
+# Team battle home page
+page_knights_team_battle = Page(KNIGHTS_CREST)
+page_knights_team_battle.link(BACK, destination=page_knights)
+page_knights_expedition.link(TEAM_BATTLE, destination=page_knights_team_battle)
+
+# Team battle truce page (no crest during waiting period)
+page_knights_team_battle_waiting = Page(WAITING_FOR_WAR)
+page_knights_team_battle_waiting.link(BACK, destination=page_main)
+page_knights_expedition.link(TEAM_BATTLE, destination=page_knights_team_battle_waiting)
+
+# World boss home page
+page_knights_world_boss = Page(READY_TO_FIGHT)
+page_knights_world_boss.link(BACK, destination=page_knights)
+page_knights_expedition.link(WORLD_BOSS, destination=page_knights_world_boss)
+
+# # Battle Pass
+# page_battle_pass = Page(BATTLE_PASS_CHECK)
+# page_battle_pass.link(CLOSE, destination=page_main)
+# page_main.link(MAIN_GOTO_BATTLE_PASS, destination=page_battle_pass)
+#
+# # Event
+# page_event = Page(EVENT_CHECK)
+# page_event.link(CLOSE, destination=page_main)
+# page_main.link(MAIN_GOTO_EVENT, destination=page_event)
+#
+# # Map
+# page_map = Page(MAP_CHECK)
+# page_map.link(CLOSE, destination=page_main)
+# page_main.link(MAIN_GOTO_MAP, destination=page_map)
+#
+# # page_world, subpage of map, used to choose a world/planet e.g. Herta Space Station
+# page_world = Page(WORLD_CHECK)
+# page_world.link(BACK, destination=page_map)
+# page_map.link(MAP_GOTO_WORLD, destination=page_world)
+#
+# # Tutorial
+# page_tutorial = Page(TUTORIAL_CHECK)
+# page_tutorial.link(CLOSE, destination=page_main)
+# page_main.link(MAIN_GOTO_TUTORIAL, destination=page_tutorial)
+#
+# # Mission
+# page_mission = Page(MISSION_CHECK)
+# page_mission.link(CLOSE, destination=page_main)
+# page_main.link(MAIN_GOTO_MISSION, destination=page_mission)
+#
+# # Message
+# page_message = Page(MESSAGE_CLOSE)
+# page_message.link(MESSAGE_CLOSE, destination=page_main)
+# page_main.link(MAIN_GOTO_MESSAGE, destination=page_message)
+#
+# # Camera
+# page_camera = Page(CAMERA_CHECK)
+# page_camera.link(CLOSE, destination=page_menu)
+# page_menu.link(MENU_GOTO_CAMERA, destination=page_camera)
+#
+# # Synthesize
+# page_synthesize = Page(SYNTHESIZE_CHECK)
+# page_synthesize.link(CLOSE, destination=page_menu)
+# page_menu.link(MENU_GOTO_SYNTHESIZE, destination=page_synthesize)
+#
+# # Assignment
+# page_assignment = Page(ASSIGNMENT_CHECK)
+# page_assignment.link(CLOSE, destination=page_main)
+# page_menu.link(MENU_GOTO_ASSIGNMENT, destination=page_assignment)
+#
+# # Forgotten Hall
+# page_forgotten_hall = Page(FORGOTTEN_HALL_CHECK)
+# page_forgotten_hall.link(CLOSE, destination=page_main)
+#
+# # Rogue, Simulated Universe
+# page_rogue = Page(ROGUE_CHECK)
+# page_rogue.link(CLOSE, destination=page_main)
+#
+# # Planner result
+# page_planner = Page(PLANNER_CHECK)
+# page_planner.link(CLOSE, destination=page_menu)

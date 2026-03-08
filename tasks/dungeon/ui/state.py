@@ -106,7 +106,7 @@ class DungeonState(UI):
             future = update
 
         # Save stamina for the next week
-        next_monday = get_server_next_monday_update('04:00')
+        next_monday = get_server_next_monday_update('02:00')
         if next_monday - future < timedelta(hours=4):
             logger.info(f'Approaching next monday, delay to {next_monday} instead')
             future = next_monday

@@ -12,6 +12,10 @@
       "name": "Semanario",
       "help": ""
     },
+    "Monthly": {
+      "name": "Mensual",
+      "help": ""
+    },
     "Tool": {
       "name": "útiles",
       "help": ""
@@ -54,6 +58,38 @@
       "name": "Freebies",
       "help": ""
     },
+    "Gacha": {
+      "name": "Invocación",
+      "help": ""
+    },
+    "SanctuaryDaily": {
+      "name": "Santuario - Diario",
+      "help": "Módulo diario de santuario con planificador independiente."
+    },
+    "Knights": {
+      "name": "Gremio",
+      "help": "Automatización del gremio: recompensa de inicio, apoyo, expedición y Jefe Mundial."
+    },
+    "Arena": {
+      "name": "Arena",
+      "help": "Entrar en arena y manejar la rama de recompensas de entrada."
+    },
+    "SecretShop": {
+      "name": "Tienda Secreta",
+      "help": ""
+    },
+    "Store": {
+      "name": "Tienda",
+      "help": "Compra recursos diarios y semanales en la tienda."
+    },
+    "Pets": {
+      "name": "Tienda de mascotas",
+      "help": ""
+    },
+    "SanctuaryWeekly": {
+      "name": "Santuario - Semanal",
+      "help": "Módulo semanal de santuario con planificador independiente."
+    },
     "Weekly": {
       "name": "Ecos de la guerra",
       "help": ""
@@ -61,6 +97,10 @@
     "Rogue": {
       "name": "Universo Simulado",
       "help": ""
+    },
+    "SanctuaryMonthly": {
+      "name": "Santuario - Mensual",
+      "help": "Módulo mensual de santuario con planificador independiente."
     },
     "Daemon": {
       "name": "Clic de diálogo",
@@ -115,11 +155,7 @@
       "help": "No es posible detectar regiones que no sean de China, por tanto, ajústalo manualmente si se da la situación.",
       "auto": "Detectar automaticamente",
       "CN-Official": "[CN]-Oficial",
-      "CN-Bilibili": "[CN]-Bilibili",
-      "OVERSEA-America": "[OVERSEA]-America",
-      "OVERSEA-Asia": "[OVERSEA]-Asia",
-      "OVERSEA-Europe": "[OVERSEA]-Europa",
-      "OVERSEA-TWHKMO": "[OVERSEA]-TW,HK,MO"
+      "OVERSEA-Play": "OVERSEA-Play"
     },
     "GameLanguage": {
       "name": "Idioma dentro del juego",
@@ -1222,6 +1258,260 @@
       "1": "1"
     }
   },
+  "Gacha": {
+    "_info": {
+      "name": "Ajustes de invocación",
+      "help": ""
+    },
+    "Version": {
+      "name": "Rama de versión",
+      "help": "auto: selecciona por servidor (CN=V1, OVERSEA=V2); también se puede forzar manualmente.",
+      "auto": "Auto",
+      "v1": "V1 (Antigua)",
+      "v2": "V2 (Nueva)"
+    },
+    "CollectGoldenInheritance": {
+      "name": "Recoger Herencia Dorada",
+      "help": "Tras la invocación, recoger automáticamente cuando Herencia Dorada esté llena."
+    }
+  },
+  "SanctuaryMonthly": {
+    "_info": {
+      "name": "Santuario - Mensual",
+      "help": "Opciones del módulo mensual de santuario."
+    },
+    "RewardTier": {
+      "name": "Calidad de recompensa",
+      "help": "",
+      "A": "A o superior",
+      "B": "B o superior",
+      "S": "S o superior",
+      "MaxMinus1": "Máx. actual -1",
+      "MaxMinus2": "Máx. actual -2 (mínimo B)"
+    }
+  },
+  "Knights": {
+    "_info": {
+      "name": "Ajustes de gremio",
+      "help": "Activa o desactiva subfunciones del gremio."
+    },
+    "ClaimSigninRateReward": {
+      "name": "Reclamar recompensa de inicio",
+      "help": "Reclama automáticamente la recompensa de inicio en el gremio."
+    },
+    "WeeklyTask": {
+      "name": "Recompensas Semanales del Gremio",
+      "help": "Entra en la página semanal del gremio y reclama las recompensas disponibles de tareas y puntos."
+    },
+    "Donate": {
+      "name": "Donación de Gremio",
+      "help": "Abre la página de donación del gremio y pulsa todas las acciones de donación disponibles hasta que no quede ninguna."
+    },
+    "Support": {
+      "name": "Apoyo de gremio",
+      "help": "Entra en apoyo de gremio y ejecuta donaciones/solicitudes según la configuración."
+    },
+    "Shop": {
+      "name": "Tienda de gremio",
+      "help": "Entrar en la tienda de gremio y ejecutar la compra."
+    },
+    "BuyMorogora": {
+      "name": "Comprar Morogora",
+      "help": "Comprar Morogora en la tienda de gremio (semanal)."
+    },
+    "DonateLowerLevelFairyFlower": {
+      "name": "Donar Flor Feérica Inferior",
+      "help": "Donar Flor Feérica Inferior a solicitudes del gremio en apoyo."
+    },
+    "DonateBeginnerPenguin": {
+      "name": "Donar Pingüino Básico",
+      "help": "Donar Pingüino Básico a solicitudes del gremio en apoyo."
+    },
+    "Expedition": {
+      "name": "Expedición del gremio",
+      "help": "Entra en expedición y ejecuta los submódulos habilitados."
+    },
+    "TeamBattle": {
+      "name": "Guerra de gremio (pendiente)",
+      "help": "Por ahora solo entra en la página; OCR queda pendiente."
+    },
+    "WorldBoss": {
+      "name": "Jefe mundial",
+      "help": "Ejecuta el flujo base del Jefe Mundial y regresa al agotarse intentos."
+    },
+    "RequestItem": {
+      "name": "Material de Solicitud",
+      "help": "Selecciona un material para solicitar en apoyo del gremio.",
+      "LowerLevelFairyFlower": "Flor Feérica Inferior",
+      "BeginnerPenguin": "Pingüino Básico"
+    }
+  },
+  "KnightsBasic": {
+    "_info": {
+      "name": "Gremio - Básico",
+      "help": "Interruptores básicos del gremio."
+    },
+    "ClaimSigninRateReward": {
+      "name": "Reclamar recompensa de inicio",
+      "help": "Reclama automáticamente la recompensa de inicio en el gremio."
+    },
+    "WeeklyTask": {
+      "name": "Recompensas Semanales del Gremio",
+      "help": "Entra en la página semanal del gremio y reclama las recompensas disponibles de tareas y puntos."
+    }
+  },
+  "KnightsDonate": {
+    "_info": {
+      "name": "Gremio - Donación y apoyo",
+      "help": "Opciones de donación y apoyo del gremio."
+    },
+    "Donate": {
+      "name": "Donación de Gremio",
+      "help": "Abre la página de donación del gremio y pulsa todas las acciones de donación disponibles hasta que no quede ninguna."
+    },
+    "Support": {
+      "name": "Apoyo de gremio",
+      "help": "Entra en apoyo de gremio y ejecuta donaciones/solicitudes según la configuración."
+    },
+    "RequestItem": {
+      "name": "Material de Solicitud",
+      "help": "Selecciona un material para solicitar en apoyo del gremio.",
+      "LowerLevelFairyFlower": "Flor Feérica Inferior",
+      "BeginnerPenguin": "Pingüino Básico"
+    },
+    "DonateLowerLevelFairyFlower": {
+      "name": "Donar Flor Feérica Inferior",
+      "help": "Donar Flor Feérica Inferior a solicitudes del gremio en apoyo."
+    },
+    "DonateBeginnerPenguin": {
+      "name": "Donar Pingüino Básico",
+      "help": "Donar Pingüino Básico a solicitudes del gremio en apoyo."
+    }
+  },
+  "KnightsShop": {
+    "_info": {
+      "name": "Gremio - Tienda",
+      "help": "Opciones de la tienda del gremio."
+    },
+    "Shop": {
+      "name": "Tienda de gremio",
+      "help": "Entrar en la tienda de gremio y ejecutar la compra."
+    },
+    "BuyMorogora": {
+      "name": "Comprar Morogora",
+      "help": "Comprar Morogora en la tienda de gremio (semanal)."
+    }
+  },
+  "KnightsExpedition": {
+    "_info": {
+      "name": "Gremio - Expedición y Jefe Mundial",
+      "help": "Opciones de expedición, guerra de gremio y Jefe Mundial."
+    },
+    "Expedition": {
+      "name": "Expedición del gremio",
+      "help": "Entra en expedición y ejecuta los submódulos habilitados."
+    },
+    "TeamBattle": {
+      "name": "Guerra de gremio (pendiente)",
+      "help": "Por ahora solo entra en la página; OCR queda pendiente."
+    },
+    "WorldBoss": {
+      "name": "Jefe mundial",
+      "help": "Ejecuta el flujo base del Jefe Mundial y regresa al agotarse intentos."
+    }
+  },
+  "Arena": {
+    "_info": {
+      "name": "Arena",
+      "help": "Opciones de la tarea de arena."
+    },
+    "ClaimWeeklyRewards": {
+      "name": "Reclamar recompensas semanales",
+      "help": "Reclama automáticamente las recompensas semanales cuando aparece el popup al entrar en arena."
+    },
+    "ClaimWeeklyBattleRewards": {
+      "name": "Reclamar recompensas semanales de combate",
+      "help": "Tras farmear NPC en arena, reclama recompensas semanales de combate antes de salir."
+    },
+    "ClaimBattlePassRewards": {
+      "name": "Leer nivel del pase y reclamar recompensas",
+      "help": "Obtiene automáticamente el nivel del pase y reclama recompensas."
+    },
+    "NPCCombat": {
+      "name": "Farmear NPC",
+      "help": "Activa combates automáticos contra NPC en la Arena."
+    },
+    "NPCCombatFastBattle": {
+      "name": "Usar combate rápido",
+      "help": "Prioriza el combate rápido para peleas contra NPC."
+    },
+    "NPCCombatCount": {
+      "name": "Cantidad de combates NPC",
+      "help": "Número máximo de combates NPC en esta ejecución."
+    }
+  },
+  "SecretShop": {
+    "_info": {
+      "name": "Ajustes de tienda secreta",
+      "help": ""
+    },
+    "OnlyFree": {
+      "name": "Solo gratis",
+      "help": "Sin refrescar"
+    },
+    "MaxRefresh": {
+      "name": "Máx. refrescos",
+      "help": ""
+    },
+    "BuyCovenantBookmark": {
+      "name": "Comprar Marcadores del Pacto",
+      "help": ""
+    },
+    "BuyMysticMedal": {
+      "name": "Comprar Medallas Místicas",
+      "help": ""
+    }
+  },
+  "StoreDaily": {
+    "_info": {
+      "name": "Compras diarias de tienda",
+      "help": "Objetos para comprar cada día."
+    },
+    "BuyDailyFreeItem": {
+      "name": "Comprar objeto gratis diario",
+      "help": "Compra el objeto gratis diario en la tienda recomendada."
+    },
+    "BuyFriendshipMobility40": {
+      "name": "Comprar 40 de energía (Amistad)",
+      "help": "Compra el objeto de 40 de energía en la tienda de Amistad."
+    },
+    "BuyFriendshipArenaFlag": {
+      "name": "Comprar bandera de arena (Amistad)",
+      "help": "Compra bandera de arena en la tienda de Amistad."
+    },
+    "BuyConquestMobility40": {
+      "name": "Comprar 40 de energía (Conquista)",
+      "help": "Compra el objeto de 40 de energía en la tienda de Conquista."
+    }
+  },
+  "StoreWeekly": {
+    "_info": {
+      "name": "Compras semanales de tienda",
+      "help": "Objetos semanales o con límite de compra."
+    },
+    "BuyConquestMorogora": {
+      "name": "Comprar Morogora (Conquista)",
+      "help": "Compra Morogora con límite semanal en la tienda de Conquista."
+    },
+    "BuyInheritanceMorogora": {
+      "name": "Comprar Morogora (Herencia)",
+      "help": "Compra Morogora semanal en la tienda de Piedras de Herencia."
+    },
+    "BuyInheritancePotentialFragments": {
+      "name": "Comprar fragmentos de potencial (máx.)",
+      "help": "Compra fragmentos de potencial con cantidad máxima en Herencia."
+    }
+  },
   "Weekly": {
     "_info": {
       "name": "Ajustes de Ecos de la guerra",
@@ -1774,7 +2064,9 @@
     },
     "Text": {
       "InvalidFeedBack": "Formato inválido. Ejemplo: {0}",
-      "Clear": "Limpiar"
+      "Clear": "Limpiar",
+      "KnightsTeamBattleTodo": "OCR de Guerra de gremio pendiente",
+      "KnightsNoStaminaTodo": "Manejo sin energía en Jefe Mundial pendiente"
     }
   }
 }

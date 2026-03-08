@@ -20,11 +20,7 @@
         "option": [
           "auto",
           "CN-Official",
-          "CN-Bilibili",
-          "OVERSEA-America",
-          "OVERSEA-Asia",
-          "OVERSEA-Europe",
-          "OVERSEA-TWHKMO"
+          "OVERSEA-Play"
         ]
       },
       "GameLanguage": {
@@ -171,7 +167,7 @@
       },
       "ServerUpdate": {
         "type": "input",
-        "value": "04:00",
+        "value": "02:00",
         "display": "hide"
       }
     }
@@ -200,7 +196,7 @@
       },
       "ServerUpdate": {
         "type": "input",
-        "value": "04:00",
+        "value": "02:00",
         "display": "hide"
       }
     },
@@ -1393,7 +1389,7 @@
       },
       "ServerUpdate": {
         "type": "input",
-        "value": "04:00",
+        "value": "02:00",
         "display": "hide"
       }
     },
@@ -1601,7 +1597,7 @@
       },
       "ServerUpdate": {
         "type": "input",
-        "value": "04:00",
+        "value": "02:00",
         "display": "hide"
       }
     },
@@ -1646,7 +1642,7 @@
       },
       "ServerUpdate": {
         "type": "input",
-        "value": "04:00",
+        "value": "02:00",
         "display": "hide"
       }
     },
@@ -1739,7 +1735,7 @@
       },
       "ServerUpdate": {
         "type": "input",
-        "value": "04:00",
+        "value": "02:00",
         "display": "hide"
       }
     },
@@ -1906,7 +1902,7 @@
       },
       "ServerUpdate": {
         "type": "input",
-        "value": "04:00",
+        "value": "02:00",
         "display": "hide"
       }
     },
@@ -1971,7 +1967,7 @@
       },
       "ServerUpdate": {
         "type": "input",
-        "value": "04:00",
+        "value": "02:00",
         "display": "hide"
       }
     },
@@ -1991,6 +1987,373 @@
       "UsedCode": {
         "type": "dict",
         "value": {},
+        "display": "hide"
+      }
+    }
+  },
+  "Gacha": {
+    "Scheduler": {
+      "Enable": {
+        "type": "checkbox",
+        "value": false,
+        "option": [
+          true,
+          false
+        ]
+      },
+      "NextRun": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime"
+      },
+      "Command": {
+        "type": "input",
+        "value": "Gacha",
+        "display": "hide"
+      },
+      "ServerUpdate": {
+        "type": "input",
+        "value": "02:00",
+        "display": "hide"
+      }
+    },
+    "Gacha": {
+      "Version": {
+        "type": "select",
+        "value": "auto",
+        "option": [
+          "auto",
+          "v1",
+          "v2"
+        ]
+      },
+      "CollectGoldenInheritance": {
+        "type": "checkbox",
+        "value": true
+      }
+    }
+  },
+  "SanctuaryDaily": {
+    "Scheduler": {
+      "Enable": {
+        "type": "checkbox",
+        "value": false,
+        "option": [
+          true,
+          false
+        ]
+      },
+      "NextRun": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime"
+      },
+      "Command": {
+        "type": "input",
+        "value": "SanctuaryDaily",
+        "display": "hide"
+      },
+      "ServerUpdate": {
+        "type": "input",
+        "value": "02:00",
+        "display": "hide"
+      }
+    }
+  },
+  "Knights": {
+    "Scheduler": {
+      "Enable": {
+        "type": "checkbox",
+        "value": true,
+        "option": [
+          true,
+          false
+        ]
+      },
+      "NextRun": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime"
+      },
+      "Command": {
+        "type": "input",
+        "value": "Knights",
+        "display": "hide"
+      },
+      "ServerUpdate": {
+        "type": "input",
+        "value": "02:00",
+        "display": "hide"
+      }
+    },
+    "KnightsBasic": {
+      "ClaimSigninRateReward": {
+        "type": "checkbox",
+        "value": true
+      },
+      "WeeklyTask": {
+        "type": "checkbox",
+        "value": true
+      }
+    },
+    "KnightsDonate": {
+      "Donate": {
+        "type": "checkbox",
+        "value": true
+      },
+      "Support": {
+        "type": "checkbox",
+        "value": true
+      },
+      "RequestItem": {
+        "type": "select",
+        "value": "LowerLevelFairyFlower",
+        "option": [
+          "LowerLevelFairyFlower",
+          "BeginnerPenguin"
+        ]
+      },
+      "DonateLowerLevelFairyFlower": {
+        "type": "checkbox",
+        "value": true
+      },
+      "DonateBeginnerPenguin": {
+        "type": "checkbox",
+        "value": true
+      }
+    },
+    "KnightsShop": {
+      "Shop": {
+        "type": "checkbox",
+        "value": true
+      },
+      "BuyMorogora": {
+        "type": "checkbox",
+        "value": true
+      }
+    },
+    "KnightsExpedition": {
+      "Expedition": {
+        "type": "checkbox",
+        "value": true
+      },
+      "TeamBattle": {
+        "type": "checkbox",
+        "value": true
+      },
+      "WorldBoss": {
+        "type": "checkbox",
+        "value": true
+      }
+    }
+  },
+  "Arena": {
+    "Scheduler": {
+      "Enable": {
+        "type": "checkbox",
+        "value": false,
+        "option": [
+          true,
+          false
+        ]
+      },
+      "NextRun": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime"
+      },
+      "Command": {
+        "type": "input",
+        "value": "Arena",
+        "display": "hide"
+      },
+      "ServerUpdate": {
+        "type": "input",
+        "value": "02:00",
+        "display": "hide"
+      }
+    },
+    "Arena": {
+      "ClaimWeeklyRewards": {
+        "type": "checkbox",
+        "value": true
+      },
+      "ClaimWeeklyBattleRewards": {
+        "type": "checkbox",
+        "value": true
+      },
+      "ClaimBattlePassRewards": {
+        "type": "checkbox",
+        "value": true
+      },
+      "NPCCombat": {
+        "type": "checkbox",
+        "value": false
+      },
+      "NPCCombatFastBattle": {
+        "type": "checkbox",
+        "value": true
+      },
+      "NPCCombatCount": {
+        "type": "input",
+        "value": 5
+      }
+    }
+  },
+  "SecretShop": {
+    "Scheduler": {
+      "Enable": {
+        "type": "checkbox",
+        "value": false,
+        "option": [
+          true,
+          false
+        ]
+      },
+      "NextRun": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime"
+      },
+      "Command": {
+        "type": "input",
+        "value": "SecretShop",
+        "display": "hide"
+      },
+      "ServerUpdate": {
+        "type": "input",
+        "value": "02:00",
+        "display": "hide"
+      }
+    },
+    "SecretShop": {
+      "OnlyFree": {
+        "type": "checkbox",
+        "value": true
+      },
+      "MaxRefresh": {
+        "type": "input",
+        "value": 10
+      },
+      "BuyCovenantBookmark": {
+        "type": "checkbox",
+        "value": true
+      },
+      "BuyMysticMedal": {
+        "type": "checkbox",
+        "value": true
+      }
+    }
+  },
+  "Store": {
+    "Scheduler": {
+      "Enable": {
+        "type": "checkbox",
+        "value": false,
+        "option": [
+          true,
+          false
+        ]
+      },
+      "NextRun": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime"
+      },
+      "Command": {
+        "type": "input",
+        "value": "Store",
+        "display": "hide"
+      },
+      "ServerUpdate": {
+        "type": "input",
+        "value": "02:00",
+        "display": "hide"
+      }
+    },
+    "StoreDaily": {
+      "BuyDailyFreeItem": {
+        "type": "checkbox",
+        "value": true
+      },
+      "BuyFriendshipMobility40": {
+        "type": "checkbox",
+        "value": true
+      },
+      "BuyFriendshipArenaFlag": {
+        "type": "checkbox",
+        "value": true
+      },
+      "BuyConquestMobility40": {
+        "type": "checkbox",
+        "value": true
+      }
+    },
+    "StoreWeekly": {
+      "BuyConquestMorogora": {
+        "type": "checkbox",
+        "value": true
+      },
+      "BuyInheritanceMorogora": {
+        "type": "checkbox",
+        "value": true
+      },
+      "BuyInheritancePotentialFragments": {
+        "type": "checkbox",
+        "value": true
+      }
+    }
+  },
+  "Pets": {
+    "Scheduler": {
+      "Enable": {
+        "type": "checkbox",
+        "value": false,
+        "option": [
+          true,
+          false
+        ]
+      },
+      "NextRun": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime"
+      },
+      "Command": {
+        "type": "input",
+        "value": "Pets",
+        "display": "hide"
+      },
+      "ServerUpdate": {
+        "type": "input",
+        "value": "02:00",
+        "display": "hide"
+      }
+    }
+  },
+  "SanctuaryWeekly": {
+    "Scheduler": {
+      "Enable": {
+        "type": "checkbox",
+        "value": false,
+        "option": [
+          true,
+          false
+        ]
+      },
+      "NextRun": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime"
+      },
+      "Command": {
+        "type": "input",
+        "value": "SanctuaryWeekly",
+        "display": "hide"
+      },
+      "ServerUpdate": {
+        "type": "input",
+        "value": "02:00",
         "display": "hide"
       }
     }
@@ -2017,7 +2380,7 @@
       },
       "ServerUpdate": {
         "type": "input",
-        "value": "04:00",
+        "value": "02:00",
         "display": "hide"
       }
     },
@@ -2173,7 +2536,7 @@
       },
       "ServerUpdate": {
         "type": "input",
-        "value": "04:00",
+        "value": "02:00",
         "display": "hide"
       }
     },
@@ -2301,6 +2664,46 @@
       "DebugMode": {
         "type": "checkbox",
         "value": false
+      }
+    }
+  },
+  "SanctuaryMonthly": {
+    "Scheduler": {
+      "Enable": {
+        "type": "checkbox",
+        "value": false,
+        "option": [
+          true,
+          false
+        ]
+      },
+      "NextRun": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime"
+      },
+      "Command": {
+        "type": "input",
+        "value": "SanctuaryMonthly",
+        "display": "hide"
+      },
+      "ServerUpdate": {
+        "type": "input",
+        "value": "02:00",
+        "display": "hide"
+      }
+    },
+    "SanctuaryMonthly": {
+      "RewardTier": {
+        "type": "select",
+        "value": "A",
+        "option": [
+          "A",
+          "B",
+          "S",
+          "MaxMinus1",
+          "MaxMinus2"
+        ]
       }
     }
   },

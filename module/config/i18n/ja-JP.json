@@ -12,6 +12,10 @@
       "name": "Menu.Weekly.name",
       "help": "Menu.Weekly.help"
     },
+    "Monthly": {
+      "name": "Menu.Monthly.name",
+      "help": "Menu.Monthly.help"
+    },
     "Tool": {
       "name": "Menu.Tool.name",
       "help": "Menu.Tool.help"
@@ -54,6 +58,38 @@
       "name": "他ギフト",
       "help": ""
     },
+    "Gacha": {
+      "name": "しょうかん",
+      "help": ""
+    },
+    "SanctuaryDaily": {
+      "name": "聖域-デイリー",
+      "help": "独立スケジューラで実行する聖域デイリーモジュール。"
+    },
+    "Knights": {
+      "name": "ギルド",
+      "help": "ギルド自動化：出席報酬、支援、遠征、ワールドボス。"
+    },
+    "Arena": {
+      "name": "アリーナ",
+      "help": "アリーナに入り、入口報酬分岐を処理します。"
+    },
+    "SecretShop": {
+      "name": "シークレットショップ",
+      "help": ""
+    },
+    "Store": {
+      "name": "ショップ",
+      "help": "ゲーム内ショップでデイリー・ウィークリー商品を購入します。"
+    },
+    "Pets": {
+      "name": "ペットショップ",
+      "help": ""
+    },
+    "SanctuaryWeekly": {
+      "name": "聖域-ウィークリー",
+      "help": "独立スケジューラで実行する聖域ウィークリーモジュール。"
+    },
     "Weekly": {
       "name": "Task.Weekly.name",
       "help": "Task.Weekly.help"
@@ -61,6 +97,10 @@
     "Rogue": {
       "name": "Task.Rogue.name",
       "help": "Task.Rogue.help"
+    },
+    "SanctuaryMonthly": {
+      "name": "聖域-マンスリー",
+      "help": "独立スケジューラで実行する聖域マンスリーモジュール。"
     },
     "Daemon": {
       "name": "Task.Daemon.name",
@@ -115,11 +155,7 @@
       "help": "Emulator.PackageName.help",
       "auto": "auto",
       "CN-Official": "CN-Official",
-      "CN-Bilibili": "CN-Bilibili",
-      "OVERSEA-America": "OVERSEA-America",
-      "OVERSEA-Asia": "OVERSEA-Asia",
-      "OVERSEA-Europe": "OVERSEA-Europe",
-      "OVERSEA-TWHKMO": "OVERSEA-TWHKMO"
+      "OVERSEA-Play": "OVERSEA-Play"
     },
     "GameLanguage": {
       "name": "Emulator.GameLanguage.name",
@@ -1222,6 +1258,260 @@
       "1": "1"
     }
   },
+  "Gacha": {
+    "_info": {
+      "name": "召喚設定",
+      "help": ""
+    },
+    "Version": {
+      "name": "バージョン分岐",
+      "help": "auto: サーバーで自動選択（CN=V1、OVERSEA=V2）。手動指定も可能です。",
+      "auto": "自動",
+      "v1": "V1（旧版）",
+      "v2": "V2（新版）"
+    },
+    "CollectGoldenInheritance": {
+      "name": "金色継承石を回収",
+      "help": "召喚終了後、金色継承石が満杯なら自動で回収します。"
+    }
+  },
+  "SanctuaryMonthly": {
+    "_info": {
+      "name": "聖域-マンスリー設定",
+      "help": "聖域マンスリーモジュールの設定。"
+    },
+    "RewardTier": {
+      "name": "保管品質",
+      "help": "",
+      "A": "A以上",
+      "B": "B以上",
+      "S": "S以上",
+      "MaxMinus1": "現在の最高ランク-1",
+      "MaxMinus2": "現在の最高ランク-2（下限B）"
+    }
+  },
+  "Knights": {
+    "_info": {
+      "name": "ギルド設定",
+      "help": "ギルド機能の有効化とサブ機能設定。"
+    },
+    "ClaimSigninRateReward": {
+      "name": "出席報酬を受取",
+      "help": "ギルドホームで出席報酬を自動受取します。"
+    },
+    "WeeklyTask": {
+      "name": "ギルド週次報酬",
+      "help": "ギルド週次ページで受け取り可能な週次報酬とポイント報酬を受け取ります。"
+    },
+    "Donate": {
+      "name": "ギルド寄付",
+      "help": "ギルド寄付ページで寄付可能なボタンを、なくなるまで順に押します。"
+    },
+    "Support": {
+      "name": "ギルド支援",
+      "help": "支援ページで寄付と要請を設定に従って実行します。"
+    },
+    "Shop": {
+      "name": "ギルドショップ",
+      "help": "ギルドショップに入り、購入処理を実行します。"
+    },
+    "BuyMorogora": {
+      "name": "モラゴラを購入",
+      "help": "ギルドショップでモラゴラを購入します（週次）。"
+    },
+    "DonateLowerLevelFairyFlower": {
+      "name": "下級精霊の花を寄付",
+      "help": "ギルド支援で下級精霊の花を他メンバーに寄付します。"
+    },
+    "DonateBeginnerPenguin": {
+      "name": "初級ペンギンを寄付",
+      "help": "ギルド支援で初級ペンギンを他メンバーに寄付します。"
+    },
+    "Expedition": {
+      "name": "ギルド遠征",
+      "help": "遠征画面に入り、有効化されたサブ機能を実行します。"
+    },
+    "TeamBattle": {
+      "name": "ギルド戦（仮実装）",
+      "help": "現状はページ遷移のみ。OCR は今後実装予定です。"
+    },
+    "WorldBoss": {
+      "name": "ワールドボス",
+      "help": "ワールドボス基本フローを実行し、回数切れで戻ります。"
+    },
+    "RequestItem": {
+      "name": "支援リクエスト素材",
+      "help": "ギルド支援でリクエストする素材を1つ選択します。",
+      "LowerLevelFairyFlower": "下級精霊の花",
+      "BeginnerPenguin": "初級ペンギン"
+    }
+  },
+  "KnightsBasic": {
+    "_info": {
+      "name": "ギルド-基本",
+      "help": "ギルド基本機能の設定。"
+    },
+    "ClaimSigninRateReward": {
+      "name": "出席報酬を受取",
+      "help": "ギルドホームで出席報酬を自動受取します。"
+    },
+    "WeeklyTask": {
+      "name": "ギルド週次報酬",
+      "help": "ギルド週次ページで受け取り可能な週次報酬とポイント報酬を受け取ります。"
+    }
+  },
+  "KnightsDonate": {
+    "_info": {
+      "name": "ギルド-寄付と支援",
+      "help": "寄付と支援関連の設定。"
+    },
+    "Donate": {
+      "name": "ギルド寄付",
+      "help": "ギルド寄付ページで寄付可能なボタンを、なくなるまで順に押します。"
+    },
+    "Support": {
+      "name": "ギルド支援",
+      "help": "支援ページで寄付と要請を設定に従って実行します。"
+    },
+    "RequestItem": {
+      "name": "支援リクエスト素材",
+      "help": "ギルド支援でリクエストする素材を1つ選択します。",
+      "LowerLevelFairyFlower": "下級精霊の花",
+      "BeginnerPenguin": "初級ペンギン"
+    },
+    "DonateLowerLevelFairyFlower": {
+      "name": "下級精霊の花を寄付",
+      "help": "ギルド支援で下級精霊の花を他メンバーに寄付します。"
+    },
+    "DonateBeginnerPenguin": {
+      "name": "初級ペンギンを寄付",
+      "help": "ギルド支援で初級ペンギンを他メンバーに寄付します。"
+    }
+  },
+  "KnightsShop": {
+    "_info": {
+      "name": "ギルド-ショップ",
+      "help": "ギルドショップ関連の設定。"
+    },
+    "Shop": {
+      "name": "ギルドショップ",
+      "help": "ギルドショップに入り、購入処理を実行します。"
+    },
+    "BuyMorogora": {
+      "name": "モラゴラを購入",
+      "help": "ギルドショップでモラゴラを購入します（週次）。"
+    }
+  },
+  "KnightsExpedition": {
+    "_info": {
+      "name": "ギルド-遠征とワールドボス",
+      "help": "遠征、ギルド戦、ワールドボス関連設定。"
+    },
+    "Expedition": {
+      "name": "ギルド遠征",
+      "help": "遠征画面に入り、有効化されたサブ機能を実行します。"
+    },
+    "TeamBattle": {
+      "name": "ギルド戦（仮実装）",
+      "help": "現状はページ遷移のみ。OCR は今後実装予定です。"
+    },
+    "WorldBoss": {
+      "name": "ワールドボス",
+      "help": "ワールドボス基本フローを実行し、回数切れで戻ります。"
+    }
+  },
+  "Arena": {
+    "_info": {
+      "name": "アリーナ設定",
+      "help": "アリーナタスクの設定。"
+    },
+    "ClaimWeeklyRewards": {
+      "name": "週次報酬を受け取る",
+      "help": "アリーナ入場時に週次報酬ポップアップが出た場合、自動で受け取ります。"
+    },
+    "ClaimWeeklyBattleRewards": {
+      "name": "週次対戦報酬を自動受取",
+      "help": "アリーナNPC周回後、アリーナ離脱前に週次対戦報酬を自動で受け取ります。"
+    },
+    "ClaimBattlePassRewards": {
+      "name": "通行証レベルを取得して報酬受取",
+      "help": "通行証レベルを自動取得し、報酬を受け取ります。"
+    },
+    "NPCCombat": {
+      "name": "NPC周回",
+      "help": "有効にするとアリーナでNPC戦を自動実行します。"
+    },
+    "NPCCombatFastBattle": {
+      "name": "高速戦闘を使用",
+      "help": "NPC戦で高速戦闘を優先します。"
+    },
+    "NPCCombatCount": {
+      "name": "NPC戦回数",
+      "help": "この実行で行うNPC戦の最大回数。"
+    }
+  },
+  "SecretShop": {
+    "_info": {
+      "name": "秘密商店設定",
+      "help": ""
+    },
+    "OnlyFree": {
+      "name": "無料のみ",
+      "help": "更新しない"
+    },
+    "MaxRefresh": {
+      "name": "最大更新回数",
+      "help": ""
+    },
+    "BuyCovenantBookmark": {
+      "name": "聖約の栞を購入",
+      "help": ""
+    },
+    "BuyMysticMedal": {
+      "name": "神秘メダルを購入",
+      "help": ""
+    }
+  },
+  "StoreDaily": {
+    "_info": {
+      "name": "ショップ毎日購入",
+      "help": "毎日購入するアイテムです。"
+    },
+    "BuyDailyFreeItem": {
+      "name": "デイリー無料商品を購入",
+      "help": "おすすめショップのデイリー無料商品を購入します。"
+    },
+    "BuyFriendshipMobility40": {
+      "name": "友情ショップの行動力40を購入",
+      "help": "友情ポイントショップで行動力40を購入します。"
+    },
+    "BuyFriendshipArenaFlag": {
+      "name": "友情ショップの旗を購入",
+      "help": "友情ポイントショップで闘技場の旗を購入します。"
+    },
+    "BuyConquestMobility40": {
+      "name": "征服ポイントの行動力40を購入",
+      "help": "征服ポイントショップで行動力40を購入します。"
+    }
+  },
+  "StoreWeekly": {
+    "_info": {
+      "name": "ショップ毎週購入",
+      "help": "毎週または回数制限のある購入項目です。"
+    },
+    "BuyConquestMorogora": {
+      "name": "征服ポイントのモラゴラを購入",
+      "help": "征服ポイントショップで週制限のモラゴラを購入します。"
+    },
+    "BuyInheritanceMorogora": {
+      "name": "継承石ショップのモラゴラを購入",
+      "help": "継承石ショップで週次のモラゴラを購入します。"
+    },
+    "BuyInheritancePotentialFragments": {
+      "name": "潜在能力欠片を最大購入",
+      "help": "継承石ショップで潜在能力欠片を最大数量で購入します。"
+    }
+  },
   "Weekly": {
     "_info": {
       "name": "Weekly._info.name",
@@ -1774,7 +2064,9 @@
     },
     "Text": {
       "InvalidFeedBack": "フォーマットエラー。 例：{0}",
-      "Clear": "消除"
+      "Clear": "消除",
+      "KnightsTeamBattleTodo": "ギルド戦 OCR 実装予定",
+      "KnightsNoStaminaTodo": "ワールドボス体力不足処理は実装予定"
     }
   }
 }

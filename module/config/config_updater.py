@@ -783,6 +783,19 @@ class ConfigUpdater:
         ('Dungeon.DungeonDaily.CalyxCrimson', 'Dungeon.DungeonDaily.CalyxCrimson', convert_31_dungeon),
         # 3.2
         ('Weekly.Weekly.Name', 'Weekly.Weekly.Name', convert_32_weekly),
+        # Knights GUI group split migration
+        ('Knights.Knights.ClaimSigninRateReward', 'Knights.KnightsBasic.ClaimSigninRateReward'),
+        ('Knights.Knights.WeeklyTask', 'Knights.KnightsBasic.WeeklyTask'),
+        ('Knights.Knights.Donate', 'Knights.KnightsDonate.Donate'),
+        ('Knights.Knights.Support', 'Knights.KnightsDonate.Support'),
+        ('Knights.Knights.DonateLowerLevelFairyFlower', 'Knights.KnightsDonate.DonateLowerLevelFairyFlower'),
+        ('Knights.Knights.DonateBeginnerPenguin', 'Knights.KnightsDonate.DonateBeginnerPenguin'),
+        ('Knights.Knights.RequestItem', 'Knights.KnightsDonate.RequestItem'),
+        ('Knights.Knights.Shop', 'Knights.KnightsShop.Shop'),
+        ('Knights.Knights.BuyMorogora', 'Knights.KnightsShop.BuyMorogora'),
+        ('Knights.Knights.Expedition', 'Knights.KnightsExpedition.Expedition'),
+        ('Knights.Knights.TeamBattle', 'Knights.KnightsExpedition.TeamBattle'),
+        ('Knights.Knights.WorldBoss', 'Knights.KnightsExpedition.WorldBoss'),
     ]
 
     @cached_property
@@ -964,6 +977,20 @@ class ConfigUpdater:
             yield 'Rogue.RogueBlessing.CustomCurioFilter'
         if deep_get(data, 'Rogue.RogueWorld.WeeklyFarming', default=False) is False:
             yield 'Rogue.RogueWorld.SimulatedUniverseFarm'
+        if deep_get(data, 'SecretShop.SecretShop.OnlyFree', default=True) is True:
+            yield 'SecretShop.SecretShop.MaxRefresh'
+        if deep_get(data, 'Arena.Arena.NPCCombat', default=False) is False:
+            yield 'Arena.Arena.NPCCombatFastBattle'
+            yield 'Arena.Arena.NPCCombatCount'
+        if deep_get(data, 'Knights.KnightsDonate.Support', default=True) is False:
+            yield 'Knights.KnightsDonate.RequestItem'
+        if deep_get(data, 'Knights.KnightsShop.Shop', default=True) is False:
+            yield 'Knights.KnightsShop.BuyMorogora'
+        # Backward compatibility for legacy group path.
+        if deep_get(data, 'Knights.Knights.Support', default=True) is False:
+            yield 'Knights.Knights.RequestItem'
+        if deep_get(data, 'Knights.Knights.Shop', default=True) is False:
+            yield 'Knights.Knights.BuyMorogora'
 
     def get_hidden_args(self, data) -> t.Set[str]:
         """

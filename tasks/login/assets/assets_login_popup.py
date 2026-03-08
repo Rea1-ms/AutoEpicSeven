@@ -3,72 +3,39 @@ from module.base.button import Button, ButtonWrapper
 # This file was auto-generated, do not modify it manually. To generate:
 # ``` python -m dev_tools.button_extract ```
 
-ADVERTISE_Castorice = ButtonWrapper(
-    name='ADVERTISE_Castorice',
-    share=Button(
-        file='./assets/share/login/popup/ADVERTISE_Castorice.png',
-        area=(478, 615, 500, 637),
-        search=(458, 595, 520, 657),
-        color=(138, 118, 173),
-        button=(478, 615, 500, 637),
+CHECK_IN_CONFIRM = ButtonWrapper(
+    name='CHECK_IN_CONFIRM',
+    cn=Button(
+        file='./assets/cn/login/popup/CHECK_IN_CONFIRM.png',
+        area=(1052, 653, 1092, 673),
+        search=(1032, 633, 1112, 693),
+        color=(138, 148, 164),
+        button=(1052, 653, 1092, 673),
     ),
-)
-ADVERTISE_Cyrene = ButtonWrapper(
-    name='ADVERTISE_Cyrene',
-    share=[
-        Button(
-            file='./assets/share/login/popup/ADVERTISE_Cyrene.png',
-            area=(582, 646, 612, 667),
-            search=(562, 626, 632, 687),
-            color=(143, 128, 160),
-            button=(582, 646, 612, 667),
-        ),
-        Button(
-            file='./assets/share/login/popup/ADVERTISE_Cyrene.2.png',
-            area=(579, 646, 620, 667),
-            search=(559, 626, 640, 687),
-            color=(150, 132, 165),
-            button=(579, 646, 620, 667),
-        ),
-    ],
-)
-CLAIM_CHARACTER = ButtonWrapper(
-    name='CLAIM_CHARACTER',
-    share=Button(
-        file='./assets/share/login/popup/CLAIM_CHARACTER.png',
-        area=(946, 579, 966, 599),
-        search=(891, 574, 982, 641),
-        color=(107, 90, 56),
-        button=(946, 579, 966, 599),
+    global_cn=Button(
+        file='./assets/global_cn/login/popup/CHECK_IN_CONFIRM.png',
+        area=(1051, 653, 1093, 673),
+        search=(1031, 633, 1113, 693),
+        color=(129, 139, 156),
+        button=(1051, 653, 1093, 673),
     ),
+    global_en=None,
 )
-HOMECOMING_TITLE = ButtonWrapper(
-    name='HOMECOMING_TITLE',
-    share=Button(
-        file='./assets/share/login/popup/HOMECOMING_TITLE.png',
-        area=(618, 151, 663, 178),
-        search=(598, 131, 683, 198),
-        color=(203, 200, 197),
-        button=(618, 151, 663, 178),
+NEW_CHARACTER_CONFIRM = ButtonWrapper(
+    name='NEW_CHARACTER_CONFIRM',
+    cn=Button(
+        file='./assets/cn/login/popup/NEW_CHARACTER_CONFIRM.png',
+        area=(1123, 651, 1164, 671),
+        search=(1103, 631, 1184, 691),
+        color=(151, 144, 137),
+        button=(1123, 651, 1164, 671),
     ),
-)
-MAIL_Cyrene = ButtonWrapper(
-    name='MAIL_Cyrene',
-    share=Button(
-        file='./assets/share/login/popup/MAIL_Cyrene.png',
-        area=(348, 549, 373, 580),
-        search=(328, 529, 393, 600),
-        color=(240, 197, 217),
-        button=(448, 550, 559, 578),
+    global_cn=Button(
+        file='./assets/global_cn/login/popup/NEW_CHARACTER_CONFIRM.png',
+        area=(1122, 651, 1164, 671),
+        search=(1102, 631, 1184, 691),
+        color=(145, 137, 131),
+        button=(1122, 651, 1164, 671),
     ),
-)
-UNITY_ENGINE_ERROR = ButtonWrapper(
-    name='UNITY_ENGINE_ERROR',
-    share=Button(
-        file='./assets/share/login/popup/UNITY_ENGINE_ERROR.png',
-        area=(592, 373, 645, 395),
-        search=(572, 353, 665, 415),
-        color=(204, 204, 204),
-        button=(592, 373, 645, 395),
-    ),
+    global_en=None,
 )

@@ -405,6 +405,7 @@ class Duration(Ocr):
     def after_process(self, result):
         result = super().after_process(result)
         result = result.strip('.,。，')
+        result = result.replace('：', ':')
         result = result.replace('Oh', '0h').replace('oh', '0h')
         return result
 
@@ -415,6 +416,18 @@ class Duration(Ocr):
         Returns:
             timedelta:
         """
+        # Fallback for colon format like 05:13:53 or 13:53
+        if ':' in result:
+            match = re.match(r'^\s*(\d{1,2})\s*:\s*(\d{1,2})(?:\s*:\s*(\d{1,2}))?\s*$', result)
+            if match:
+                h = int(match.group(1))
+                m = int(match.group(2))
+                s = int(match.group(3) or 0)
+                if match.group(3) is None:
+                    # Treat "mm:ss" as 0h:mm:ss
+                    return timedelta(hours=0, minutes=h, seconds=m)
+                return timedelta(hours=h, minutes=m, seconds=s)
+
         matched = self.timedelta_regex(self.lang).search(result)
         if not matched:
             return timedelta()

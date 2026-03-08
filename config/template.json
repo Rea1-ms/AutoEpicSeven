@@ -32,7 +32,7 @@
       "Enable": true,
       "NextRun": "2020-01-01 00:00:00",
       "Command": "Restart",
-      "ServerUpdate": "04:00"
+      "ServerUpdate": "02:00"
     }
   },
   "Dungeon": {
@@ -40,7 +40,7 @@
       "Enable": true,
       "NextRun": "2020-01-01 00:00:00",
       "Command": "Dungeon",
-      "ServerUpdate": "04:00"
+      "ServerUpdate": "02:00"
     },
     "Planner": {
       "PlannerOverall": {},
@@ -160,7 +160,7 @@
       "Enable": false,
       "NextRun": "2020-01-01 00:00:00",
       "Command": "Ornament",
-      "ServerUpdate": "04:00"
+      "ServerUpdate": "02:00"
     },
     "Ornament": {
       "Dungeon": "Divergent_Universe_Eternal_Comedy",
@@ -185,7 +185,7 @@
       "Enable": true,
       "NextRun": "2020-01-01 00:00:00",
       "Command": "DailyQuest",
-      "ServerUpdate": "04:00"
+      "ServerUpdate": "02:00"
     },
     "DailyStorage": {
       "DailyActivity": {},
@@ -197,7 +197,7 @@
       "Enable": true,
       "NextRun": "2020-01-01 00:00:00",
       "Command": "BattlePass",
-      "ServerUpdate": "04:00"
+      "ServerUpdate": "02:00"
     },
     "BattlePassStorage": {
       "BattlePassLevel": {},
@@ -217,7 +217,7 @@
       "Enable": true,
       "NextRun": "2020-01-01 00:00:00",
       "Command": "Assignment",
-      "ServerUpdate": "04:00"
+      "ServerUpdate": "02:00"
     },
     "Assignment": {
       "ClaimAll": true,
@@ -235,7 +235,7 @@
       "Enable": true,
       "NextRun": "2020-01-01 00:00:00",
       "Command": "DataUpdate",
-      "ServerUpdate": "04:00"
+      "ServerUpdate": "02:00"
     },
     "ItemStorage": {
       "Credit": {},
@@ -252,7 +252,7 @@
       "Enable": true,
       "NextRun": "2020-01-01 00:00:00",
       "Command": "Freebies",
-      "ServerUpdate": "04:00"
+      "ServerUpdate": "02:00"
     },
     "Freebies": {
       "SupportReward": true,
@@ -261,12 +261,125 @@
       "UsedCode": {}
     }
   },
+  "Gacha": {
+    "Scheduler": {
+      "Enable": false,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "Gacha",
+      "ServerUpdate": "02:00"
+    },
+    "Gacha": {
+      "Version": "auto",
+      "CollectGoldenInheritance": true
+    }
+  },
+  "SanctuaryDaily": {
+    "Scheduler": {
+      "Enable": false,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "SanctuaryDaily",
+      "ServerUpdate": "02:00"
+    }
+  },
+  "Knights": {
+    "Scheduler": {
+      "Enable": true,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "Knights",
+      "ServerUpdate": "02:00"
+    },
+    "KnightsBasic": {
+      "ClaimSigninRateReward": true,
+      "WeeklyTask": true
+    },
+    "KnightsDonate": {
+      "Donate": true,
+      "Support": true,
+      "RequestItem": "LowerLevelFairyFlower",
+      "DonateLowerLevelFairyFlower": true,
+      "DonateBeginnerPenguin": true
+    },
+    "KnightsShop": {
+      "Shop": true,
+      "BuyMorogora": true
+    },
+    "KnightsExpedition": {
+      "Expedition": true,
+      "TeamBattle": true,
+      "WorldBoss": true
+    }
+  },
+  "Arena": {
+    "Scheduler": {
+      "Enable": false,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "Arena",
+      "ServerUpdate": "02:00"
+    },
+    "Arena": {
+      "ClaimWeeklyRewards": true,
+      "ClaimWeeklyBattleRewards": true,
+      "ClaimBattlePassRewards": true,
+      "NPCCombat": false,
+      "NPCCombatFastBattle": true,
+      "NPCCombatCount": 5
+    }
+  },
+  "SecretShop": {
+    "Scheduler": {
+      "Enable": false,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "SecretShop",
+      "ServerUpdate": "02:00"
+    },
+    "SecretShop": {
+      "OnlyFree": true,
+      "MaxRefresh": 10,
+      "BuyCovenantBookmark": true,
+      "BuyMysticMedal": true
+    }
+  },
+  "Store": {
+    "Scheduler": {
+      "Enable": false,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "Store",
+      "ServerUpdate": "02:00"
+    },
+    "StoreDaily": {
+      "BuyDailyFreeItem": true,
+      "BuyFriendshipMobility40": true,
+      "BuyFriendshipArenaFlag": true,
+      "BuyConquestMobility40": true
+    },
+    "StoreWeekly": {
+      "BuyConquestMorogora": true,
+      "BuyInheritanceMorogora": true,
+      "BuyInheritancePotentialFragments": true
+    }
+  },
+  "Pets": {
+    "Scheduler": {
+      "Enable": false,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "Pets",
+      "ServerUpdate": "02:00"
+    }
+  },
+  "SanctuaryWeekly": {
+    "Scheduler": {
+      "Enable": false,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "SanctuaryWeekly",
+      "ServerUpdate": "02:00"
+    }
+  },
   "Weekly": {
     "Scheduler": {
       "Enable": false,
       "NextRun": "2020-01-01 00:00:00",
       "Command": "Weekly",
-      "ServerUpdate": "04:00"
+      "ServerUpdate": "02:00"
     },
     "Weekly": {
       "Name": "Echo_of_War_Rusted_Crypt_of_the_Iron_Carcass",
@@ -282,7 +395,7 @@
       "Enable": false,
       "NextRun": "2020-01-01 00:00:00",
       "Command": "Rogue",
-      "ServerUpdate": "04:00"
+      "ServerUpdate": "02:00"
     },
     "RogueWorld": {
       "World": "Simulated_Universe_World_8",
@@ -307,6 +420,17 @@
     },
     "RogueDebug": {
       "DebugMode": false
+    }
+  },
+  "SanctuaryMonthly": {
+    "Scheduler": {
+      "Enable": false,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "SanctuaryMonthly",
+      "ServerUpdate": "02:00"
+    },
+    "SanctuaryMonthly": {
+      "RewardTier": "A"
     }
   },
   "Daemon": {

@@ -4,7 +4,7 @@ from datetime import datetime
 
 from module.base.decorator import cached_property, del_cached_property
 from module.config.deep import deep_get, deep_iter, deep_set
-from module.config.server import to_server
+import module.config.server as server_
 from module.config.utils import read_file
 from module.logger import logger
 from tasks.base.ui import UI
@@ -32,10 +32,9 @@ class CodeManager:
                 }
         """
         package = self.main.config.Emulator_PackageName
-        server = to_server(package)
-        if server.startswith('CN'):
+        if server_.is_cn_server(package):
             path = 'CN'
-        elif server.startswith('OVERSEA'):
+        elif server_.is_oversea_server(package):
             path = 'OVERSEA'
         else:
             logger.warning(f'Unknown server from package name: {package}')
