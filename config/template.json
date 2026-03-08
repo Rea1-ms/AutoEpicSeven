@@ -269,6 +269,7 @@
       "ServerUpdate": "02:00"
     },
     "Gacha": {
+      "Version": "auto",
       "CollectGoldenInheritance": true
     }
   },
@@ -317,6 +318,8 @@
     },
     "Arena": {
       "ClaimWeeklyRewards": true,
+      "ClaimWeeklyBattleRewards": true,
+      "ClaimBattlePassRewards": true,
       "NPCCombat": false,
       "NPCCombatFastBattle": true,
       "NPCCombatCount": 5

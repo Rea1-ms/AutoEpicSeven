@@ -1263,6 +1263,13 @@
       "name": "召唤设置",
       "help": ""
     },
+    "Version": {
+      "name": "版本分支",
+      "help": "auto：按服务器自动选择（CN=V1，OVERSEA=V2）；也可手动强制。",
+      "auto": "自动",
+      "v1": "V1（旧版）",
+      "v2": "V2（新版）"
+    },
     "CollectGoldenInheritance": {
       "name": "收取金光传承石",
       "help": "召唤结束后若金光传承石满溢则自动收取。"
@@ -1421,6 +1428,14 @@
     "ClaimWeeklyRewards": {
       "name": "领取每周奖励",
       "help": "在进入竞技场时遇到每周奖励弹窗时自动领取。"
+    },
+    "ClaimWeeklyBattleRewards": {
+      "name": "自动领取每周对战奖励",
+      "help": "刷完竞技场 NPC 后，在离开竞技场前自动领取每周对战奖励。"
+    },
+    "ClaimBattlePassRewards": {
+      "name": "自动获取通行证等级并领取奖励",
+      "help": "自动获取通行证等级并领取奖励。"
     },
     "NPCCombat": {
       "name": "刷 NPC",

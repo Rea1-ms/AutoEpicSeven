@@ -1263,6 +1263,13 @@
       "name": "Ajustes de invocación",
       "help": ""
     },
+    "Version": {
+      "name": "Rama de versión",
+      "help": "auto: selecciona por servidor (CN=V1, OVERSEA=V2); también se puede forzar manualmente.",
+      "auto": "Auto",
+      "v1": "V1 (Antigua)",
+      "v2": "V2 (Nueva)"
+    },
     "CollectGoldenInheritance": {
       "name": "Recoger Herencia Dorada",
       "help": "Tras la invocación, recoger automáticamente cuando Herencia Dorada esté llena."
@@ -1421,6 +1428,14 @@
     "ClaimWeeklyRewards": {
       "name": "Reclamar recompensas semanales",
       "help": "Reclama automáticamente las recompensas semanales cuando aparece el popup al entrar en arena."
+    },
+    "ClaimWeeklyBattleRewards": {
+      "name": "Reclamar recompensas semanales de combate",
+      "help": "Tras farmear NPC en arena, reclama recompensas semanales de combate antes de salir."
+    },
+    "ClaimBattlePassRewards": {
+      "name": "Leer nivel del pase y reclamar recompensas",
+      "help": "Obtiene automáticamente el nivel del pase y reclama recompensas."
     },
     "NPCCombat": {
       "name": "Farmear NPC",

@@ -240,6 +240,9 @@ PlannerTarget:
 # ==================== Activity ====================
 
 Gacha:
+  Version:
+    value: auto
+    option: [ auto, v1, v2 ]
   CollectGoldenInheritance: true
 
 SanctuaryMonthly:
@@ -287,6 +290,8 @@ KnightsExpedition:
 
 Arena:
   ClaimWeeklyRewards: true
+  ClaimWeeklyBattleRewards: true
+  ClaimBattlePassRewards: true
   NPCCombat: false
   NPCCombatFastBattle: true
   NPCCombatCount: 5

@@ -2018,6 +2018,15 @@
       }
     },
     "Gacha": {
+      "Version": {
+        "type": "select",
+        "value": "auto",
+        "option": [
+          "auto",
+          "v1",
+          "v2"
+        ]
+      },
       "CollectGoldenInheritance": {
         "type": "checkbox",
         "value": true
@@ -2166,6 +2175,14 @@
     },
     "Arena": {
       "ClaimWeeklyRewards": {
+        "type": "checkbox",
+        "value": true
+      },
+      "ClaimWeeklyBattleRewards": {
+        "type": "checkbox",
+        "value": true
+      },
+      "ClaimBattlePassRewards": {
         "type": "checkbox",
         "value": true
       },

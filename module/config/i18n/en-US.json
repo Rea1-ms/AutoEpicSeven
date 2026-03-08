@@ -1263,6 +1263,13 @@
       "name": "Gacha Settings",
       "help": ""
     },
+    "Version": {
+      "name": "Version Branch",
+      "help": "auto: choose by server (CN=V1, OVERSEA=V2); you can also force it manually.",
+      "auto": "Auto",
+      "v1": "V1 (Legacy)",
+      "v2": "V2 (Latest)"
+    },
     "CollectGoldenInheritance": {
       "name": "Collect Golden Inheritance",
       "help": "After summoning, click to collect when Golden Inheritance is full."
@@ -1421,6 +1428,14 @@
     "ClaimWeeklyRewards": {
       "name": "Claim Weekly Rewards",
       "help": "Automatically claim weekly rewards when the popup appears during arena entry."
+    },
+    "ClaimWeeklyBattleRewards": {
+      "name": "Claim Weekly Battle Rewards",
+      "help": "After NPC arena farming, claim weekly battle rewards before leaving arena."
+    },
+    "ClaimBattlePassRewards": {
+      "name": "Read Battle Pass Level and Claim Rewards",
+      "help": "Automatically read the battle pass level and claim rewards."
     },
     "NPCCombat": {
       "name": "Farm NPC",

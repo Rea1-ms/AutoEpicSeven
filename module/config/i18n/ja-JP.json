@@ -1263,6 +1263,13 @@
       "name": "召喚設定",
       "help": ""
     },
+    "Version": {
+      "name": "バージョン分岐",
+      "help": "auto: サーバーで自動選択（CN=V1、OVERSEA=V2）。手動指定も可能です。",
+      "auto": "自動",
+      "v1": "V1（旧版）",
+      "v2": "V2（新版）"
+    },
     "CollectGoldenInheritance": {
       "name": "金色継承石を回収",
       "help": "召喚終了後、金色継承石が満杯なら自動で回収します。"
@@ -1421,6 +1428,14 @@
     "ClaimWeeklyRewards": {
       "name": "週次報酬を受け取る",
       "help": "アリーナ入場時に週次報酬ポップアップが出た場合、自動で受け取ります。"
+    },
+    "ClaimWeeklyBattleRewards": {
+      "name": "週次対戦報酬を自動受取",
+      "help": "アリーナNPC周回後、アリーナ離脱前に週次対戦報酬を自動で受け取ります。"
+    },
+    "ClaimBattlePassRewards": {
+      "name": "通行証レベルを取得して報酬受取",
+      "help": "通行証レベルを自動取得し、報酬を受け取ります。"
     },
     "NPCCombat": {
       "name": "NPC周回",
