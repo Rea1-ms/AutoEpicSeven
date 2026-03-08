@@ -18,9 +18,14 @@ Pages:
     in: page_secret_shop
     out: page_secret_shop
 """
+import datetime
+import re
+import statistics
+
 from module.base.button import ClickButton
 from module.base.timer import Timer
 from module.logger import logger
+from module.ocr.ocr import Duration, OcrWhiteLetterOnComplexBackground
 from tasks.base.popup import PopupHandler
 from tasks.base.page import page_secret_shop
 from tasks.base.ui import UI
@@ -35,9 +40,25 @@ from tasks.secret_shop.assets.assets_secret_shop import (
     COVENANT_BOOKMARK_BOTTOM,
     MYSTIC_MEDAL_TOP,
     MYSTIC_MEDAL_BOTTOM,
+    OCR_AUTO_REFRESH,
     REFRESH,
     REFRESH_CONFIRM,
 )
+
+
+class SecretShopRefreshDuration(OcrWhiteLetterOnComplexBackground, Duration):
+    def after_process(self, result):
+        result = Duration.after_process(self, result)
+        result = result.replace('自动刷新', '')
+        result = result.replace('后', '')
+        result = result.replace(' ', '')
+        result = result.replace('：', ':')
+        result = re.sub(r'(\d{1,2})时(?![间辰])', r'\1小时', result)
+        result = re.sub(r'(\d{1,2})分(?![钟贝])', r'\1分钟', result)
+        result = re.sub(r'(\d{1,2})\s*hours?', r'\1h', result, flags=re.IGNORECASE)
+        result = re.sub(r'(\d{1,2})\s*minutes?', r'\1m', result, flags=re.IGNORECASE)
+        result = re.sub(r'(\d{1,2})\s*seconds?', r'\1s', result, flags=re.IGNORECASE)
+        return result
 
 
 class SecretShop(PopupHandler):
@@ -53,6 +74,13 @@ class SecretShop(PopupHandler):
     SCROLL_AREA = (960, 550, 960, 300)
     # 稳定检测：连续 N 帧检测到固定位置 BUY 按钮才认为稳定
     STABLE_THRESHOLD = 2
+    AUTO_REFRESH_SAMPLE_COUNT = 3
+    AUTO_REFRESH_MIN_VALID_SAMPLES = 2
+    AUTO_REFRESH_SAMPLE_SPREAD_SECONDS = 90
+    AUTO_REFRESH_MAX_SECONDS = 3660
+    AUTO_REFRESH_BUFFER_SECONDS = 65
+    AUTO_REFRESH_SHORT_BUFFER_SECONDS = 10
+    AUTO_REFRESH_FALLBACK_MINUTES = 10
 
     def __init__(self, config, device):
         super().__init__(config, device)
@@ -72,6 +100,97 @@ class SecretShop(PopupHandler):
         # 当前刷新周期内是否已购买（每次刷新最多各出现一个）
         self._covenant_purchased_this_round = False
         self._mystic_purchased_this_round = False
+
+    def _refresh_ocr_lang(self) -> str:
+        lang = getattr(self.config, 'Emulator_GameLanguage', 'cn')
+        if lang in ('auto', '', None, 'cn', 'global_cn', 'zh', 'zh_cn'):
+            return 'cn'
+        if lang in ('en', 'global_en', 'en_us'):
+            return 'en'
+        return 'cn'
+
+    @staticmethod
+    def _is_valid_auto_refresh_duration(remain: datetime.timedelta) -> bool:
+        seconds = int(remain.total_seconds())
+        return 0 < seconds <= SecretShop.AUTO_REFRESH_MAX_SECONDS
+
+    @staticmethod
+    def _is_second_precision_duration(text: str) -> bool:
+        lower = text.lower()
+        return '秒' in text or ':' in text or re.search(r'\d\s*s\b', lower) is not None
+
+    def _ocr_auto_refresh_remaining_once(self) -> tuple[str, datetime.timedelta]:
+        lang = self._refresh_ocr_lang()
+        text = OcrWhiteLetterOnComplexBackground(
+            OCR_AUTO_REFRESH, lang=lang, name='SecretShopAutoRefreshText'
+        ).ocr_single_line(self.device.image)
+        parser = SecretShopRefreshDuration(
+            OCR_AUTO_REFRESH, lang=lang, name='SecretShopAutoRefreshDuration'
+        )
+        normalized = parser.after_process(text)
+        remain = parser.format_result(normalized)
+        logger.info(f'Secret shop auto refresh OCR: {text} -> {normalized} -> {remain}')
+        return normalized, remain
+
+    def _ocr_auto_refresh_remaining(self, skip_first_screenshot=True) -> tuple[datetime.timedelta | None, bool]:
+        samples: list[tuple[int, str]] = []
+
+        for index in range(self.AUTO_REFRESH_SAMPLE_COUNT):
+            if skip_first_screenshot:
+                skip_first_screenshot = False
+            else:
+                self.device.screenshot()
+
+            text, remain = self._ocr_auto_refresh_remaining_once()
+            if not self._is_valid_auto_refresh_duration(remain):
+                logger.warning(f'Secret shop auto refresh OCR invalid: {text} -> {remain}')
+                continue
+
+            samples.append((int(remain.total_seconds()), text))
+
+        if len(samples) < self.AUTO_REFRESH_MIN_VALID_SAMPLES:
+            logger.warning(f'Secret shop auto refresh OCR has insufficient samples: {samples}')
+            return None, False
+
+        median_seconds = int(statistics.median(seconds for seconds, _ in samples))
+        cluster = [
+            (seconds, text)
+            for seconds, text in samples
+            if abs(seconds - median_seconds) <= self.AUTO_REFRESH_SAMPLE_SPREAD_SECONDS
+        ]
+        if len(cluster) < self.AUTO_REFRESH_MIN_VALID_SAMPLES:
+            logger.warning(f'Secret shop auto refresh OCR samples diverged: {samples}')
+            return None, False
+
+        remain_seconds = int(statistics.median(seconds for seconds, _ in cluster))
+        second_precision = any(self._is_second_precision_duration(text) for _, text in cluster)
+        remain = datetime.timedelta(seconds=remain_seconds)
+        logger.info(
+            f'Secret shop next auto refresh confirmed: {remain} '
+            f'(samples={samples}, cluster={cluster}, second_precision={second_precision})'
+        )
+        return remain, second_precision
+
+    def _delay_to_auto_refresh(self):
+        remain, second_precision = self._ocr_auto_refresh_remaining(skip_first_screenshot=True)
+        if remain is None:
+            logger.warning(
+                f'Secret shop auto refresh OCR failed, fallback to {self.AUTO_REFRESH_FALLBACK_MINUTES} minutes'
+            )
+            self.config.task_delay(minute=self.AUTO_REFRESH_FALLBACK_MINUTES)
+            return
+
+        buffer_seconds = (
+            self.AUTO_REFRESH_SHORT_BUFFER_SECONDS
+            if second_precision
+            else self.AUTO_REFRESH_BUFFER_SECONDS
+        )
+        target = datetime.datetime.now() + remain + datetime.timedelta(seconds=buffer_seconds)
+        logger.info(
+            f'Secret shop delay to auto refresh: remain={remain}, '
+            f'buffer={buffer_seconds}s, target={target.replace(microsecond=0)}'
+        )
+        self.config.task_delay(target=target)
 
     def _is_shop_stable(self) -> bool:
         """
@@ -346,7 +465,7 @@ class SecretShop(PopupHandler):
         logger.info(f'圣约书签: {self.covenant_bought}')
         logger.info(f'神秘奖牌: {self.mystic_bought}')
         # UI(self.config, device=self.device).ui_goto_main()
-        self.config.task_delay(server_update=True)
+        self._delay_to_auto_refresh()
         return True
 
 

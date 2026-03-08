@@ -133,6 +133,16 @@ MYSTIC_MEDAL_TOP = ButtonWrapper(
         button=(571, 473, 630, 529),
     ),
 )
+OCR_AUTO_REFRESH = ButtonWrapper(
+    name='OCR_AUTO_REFRESH',
+    share=Button(
+        file='./assets/share/secret_shop/OCR_AUTO_REFRESH.png',
+        area=(260, 580, 302, 598),
+        search=(240, 560, 322, 618),
+        color=(40, 47, 48),
+        button=(260, 580, 302, 598),
+    ),
+)
 REFRESH = ButtonWrapper(
     name='REFRESH',
     share=Button(
