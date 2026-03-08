@@ -7,10 +7,10 @@ CHECK_IN_CONFIRM = ButtonWrapper(
     name='CHECK_IN_CONFIRM',
     cn=Button(
         file='./assets/cn/login/popup/CHECK_IN_CONFIRM.png',
-        area=(1051, 653, 1093, 673),
-        search=(1031, 633, 1113, 693),
-        color=(129, 139, 156),
-        button=(1051, 653, 1093, 673),
+        area=(1052, 653, 1092, 673),
+        search=(1032, 633, 1112, 693),
+        color=(138, 148, 164),
+        button=(1052, 653, 1092, 673),
     ),
     global_cn=Button(
         file='./assets/global_cn/login/popup/CHECK_IN_CONFIRM.png',
