@@ -27,6 +27,7 @@ from datetime import datetime, timedelta
 from module.base.timer import Timer
 from module.config.deep import deep_get
 from module.config.config import TaskEnd
+import module.config.server as server_
 from module.exception import (
     GameNotRunningError,
     GameServerUnderMaintenance,
@@ -37,6 +38,7 @@ from tasks.base.ui import UI
 from tasks.base.assets.assets_base_popup import TOUCH_TO_CLOSE
 from tasks.login.assets.assets_login import (
     GAME_UPGRADE_AVAILABLE,
+    LOGIN_ANNOUNCEMENT_CLOSE,
     LOGIN_ERROR,
     LOGIN_LOADING,
     PATCH_APPLY,
@@ -167,6 +169,15 @@ class Login(UI):
                 main_confirm.reset()
                 continue
 
+            if server_.is_cn_server(self.config.Emulator_PackageName) and self.appear_then_click(
+                LOGIN_ANNOUNCEMENT_CLOSE, interval=2
+            ):
+                logger.info('Closed CN startup announcement')
+                network_error_count = 0
+                timeout.reset()
+                main_confirm.reset()
+                continue
+
             # 维护中
             if self.appear(UNDER_MAINTENANCE, interval=5):
                 logger.warning('Server under maintenance')
@@ -174,7 +185,9 @@ class Login(UI):
                 # _handle_maintenance 会抛出异常，不会执行到这里
 
             # 版本更新（跳转 Google Play）
-            if self.appear(GAME_UPGRADE_AVAILABLE, interval=5):
+            if server_.is_oversea_server(self.config.Emulator_PackageName) and self.appear(
+                GAME_UPGRADE_AVAILABLE, interval=5
+            ):
                 logger.warning('Game update available')
                 self.device.click(TOUCH_TO_CLOSE)
                 UpdateHandler._handle_google_play_update(self)

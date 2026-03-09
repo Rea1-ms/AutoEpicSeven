@@ -20,6 +20,7 @@ Epic Seven Google Play 更新模块
         ↓
     出现后 → 返回，由调用方执行 app_restart()
 """
+import module.config.server as server_
 from module.base.timer import Timer
 from module.exception import GameNotRunningError
 from module.logger import logger
@@ -61,6 +62,9 @@ class UpdateHandler(PopupHandler):
         Raises:
             GameUpdateFailed: 更新超时或失败
         """
+        if not server_.is_oversea_server(self.config.Emulator_PackageName):
+            return False
+
         if not self.appear(GAME_UPGRADE_AVAILABLE):
             return False
 
