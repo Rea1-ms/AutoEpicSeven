@@ -7,10 +7,6 @@ server = 'CN-Official'
 
 SERVER_FAMILY_CN = 'CN'
 SERVER_FAMILY_OVERSEA = 'OVERSEA'
-CANONICAL_SERVER = {
-    SERVER_FAMILY_CN: 'CN-Official',
-    SERVER_FAMILY_OVERSEA: 'OVERSEA-Play',
-}
 
 # 支持的语言/assets目录
 # cn = 国服简中
@@ -98,21 +94,6 @@ def server_family(package_or_server: str = '') -> str:
     value = normalize_server(package_or_server)
     family, _, _ = value.partition('-')
     return family
-
-
-def canonical_server(package_or_server: str = '') -> str:
-    """
-    Collapse server aliases to one canonical server key per family.
-
-    Args:
-        package_or_server: Package name or server key. Empty means current global server.
-    """
-    value = normalize_server(package_or_server)
-    if not value:
-        return ''
-
-    family, _, _ = value.partition('-')
-    return CANONICAL_SERVER.get(family, value)
 
 
 def is_cn_server(package_or_server: str = '') -> bool:
