@@ -171,10 +171,10 @@ SANCTUARY_CHECK = ButtonWrapper(
     name='SANCTUARY_CHECK',
     cn=Button(
         file='./assets/cn/base/page/SANCTUARY_CHECK.png',
-        area=(61, 214, 74, 231),
-        search=(41, 194, 94, 251),
-        color=(116, 114, 114),
-        button=(61, 214, 74, 231),
+        area=(92, 22, 116, 45),
+        search=(72, 2, 136, 65),
+        color=(160, 167, 180),
+        button=(92, 22, 116, 45),
     ),
     global_cn=Button(
         file='./assets/global_cn/base/page/SANCTUARY_CHECK.png',
