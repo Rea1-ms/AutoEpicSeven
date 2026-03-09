@@ -33,6 +33,16 @@ DEPOSIT_BOX_NOT_FULL = ButtonWrapper(
         button=(1179, 327, 1225, 370),
     ),
 )
+LEVEL_UP = ButtonWrapper(
+    name='LEVEL_UP',
+    share=Button(
+        file='./assets/share/sanctuary/heart_of_eulerbis/LEVEL_UP.png',
+        area=(805, 118, 819, 132),
+        search=(785, 98, 839, 152),
+        color=(159, 102, 75),
+        button=(821, 123, 908, 210),
+    ),
+)
 OCR_HEART_LEVEL = ButtonWrapper(
     name='OCR_HEART_LEVEL',
     share=Button(

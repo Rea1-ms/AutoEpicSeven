@@ -31,6 +31,7 @@ from tasks.sanctuary.assets.assets_sanctuary_heart_of_eulerbis import (
     ALREADY_STORED,
     PURIFY,
     DEPOSIT_BOX_NOT_FULL,
+    LEVEL_UP,
     OCR_HEART_LEVEL,
     OCR_PURIFY_TIMES_FULL,
     OCR_PURIFY_TIMES_NOT_FULL,
@@ -88,6 +89,7 @@ class Sanctuary(UI):
     """
     CLAIM_SETTLE_Y_TOLERANCE = 8
     REWARD_TIER_ORDER = ["B", "A", "S", "SS", "SSS"]
+    HEART_MAX_LEVEL = 11
     MONTHLY_OCR_INTERVAL_SECONDS = 0.8
     MONTHLY_PURIFY_CLICK_INTERVAL_SECONDS = 1
 
@@ -331,6 +333,9 @@ class Sanctuary(UI):
             return "SS"
         return "SSS"
 
+    def _heart_level_is_max(self, level: int | None) -> bool:
+        return level is not None and level >= self.HEART_MAX_LEVEL
+
     def _resolve_monthly_target_tier(self, heart_level: int | None) -> str:
         tier = self.config.SanctuaryMonthly_RewardTier
         if tier in ("A", "B", "S"):
@@ -353,6 +358,36 @@ class Sanctuary(UI):
         if current not in self.REWARD_TIER_ORDER:
             return False
         return self.REWARD_TIER_ORDER.index(current) >= self.REWARD_TIER_ORDER.index(target)
+
+    def _sync_monthly_target_tier_after_level_up(
+            self,
+            heart_level: int | None,
+            target_tier: str | None,
+    ) -> tuple[int | None, str | None]:
+        """
+        Update cached heart level after a successful LEVEL_UP click.
+
+        When reward tier uses relative modes (MaxMinus1/2), the effective
+        custody target must move together with the new heart level.
+        """
+        if heart_level is None:
+            logger.info("Monthly heart level-up detected, re-read heart level on next loop")
+            return None, None
+
+        next_level = min(heart_level + 1, self.HEART_MAX_LEVEL)
+        if next_level != heart_level:
+            logger.info(f"Heart level up: {heart_level} -> {next_level}")
+        heart_level = next_level
+
+        if self.config.SanctuaryMonthly_RewardTier in ("MaxMinus1", "MaxMinus2"):
+            next_target_tier = self._resolve_monthly_target_tier(heart_level)
+            if next_target_tier != target_tier:
+                logger.info(
+                    f"Monthly reward target tier synced after level up: {target_tier} -> {next_target_tier}"
+                )
+            target_tier = next_target_tier
+
+        return heart_level, target_tier
 
     def _ocr_heart_level(self, level_ocr: Digit) -> int | None:
         level = level_ocr.ocr_single_line(self.device.image)
@@ -409,6 +444,27 @@ class Sanctuary(UI):
             if self._detect_current_reward_tier(tier_ocr) is None:
                 return True
 
+    def _wait_monthly_level_up_settle(self) -> bool:
+        """
+        Wait until monthly level-up popup is dismissed.
+        """
+        timeout = Timer(5, count=15).start()
+        while 1:
+            self.device.screenshot()
+
+            if timeout.reached():
+                logger.warning("Monthly level up settle timeout")
+                return False
+
+            if self.handle_touch_to_close(interval=0.5):
+                return True
+            if self.ui_additional():
+                timeout.reset()
+                continue
+            if self.handle_network_error():
+                timeout.reset()
+                continue
+
     def _ocr_purify_times(
             self,
             ocr_full: OcrPurifyTimes,
@@ -462,6 +518,7 @@ class Sanctuary(UI):
                                  name="RewardTierOCR")
         heart_level = None
         target_tier = None
+        level_up_check_enabled = True
         already_stored_clear_confirm = 0
         times_layout = None
         times_current = 0
@@ -523,7 +580,7 @@ class Sanctuary(UI):
                 continue
             purify_missing_confirm.reset()
 
-            purify_ready = PURIFY.match_color(self.device.image, threshold=40)
+            purify_ready = PURIFY.match_template_color(self.device.image)
             if not purify_ready:
                 logger.info("Monthly purify unavailable: PURIFY is gray, treat as exhausted")
                 return "completed"
@@ -537,6 +594,27 @@ class Sanctuary(UI):
                 heart_level = self._ocr_heart_level(level_ocr)
                 target_tier = self._resolve_monthly_target_tier(heart_level)
                 logger.info(f"Monthly reward target tier: {target_tier} (heart_level={heart_level})")
+                if self._heart_level_is_max(heart_level):
+                    level_up_check_enabled = False
+                    logger.info("Monthly heart already max level, skip future LEVEL_UP scans")
+
+            if level_up_check_enabled and self.appear_then_click(LEVEL_UP, interval=2):
+                if self._wait_monthly_level_up_settle():
+                    heart_level, target_tier = self._sync_monthly_target_tier_after_level_up(
+                        heart_level=heart_level,
+                        target_tier=target_tier,
+                    )
+                    if self._heart_level_is_max(heart_level):
+                        level_up_check_enabled = False
+                        logger.info("Monthly heart reached max level, disable further LEVEL_UP scans")
+                else:
+                    heart_level = None
+                    target_tier = None
+                    level_up_check_enabled = True
+                times_ocr_timer.clear()
+                timeout.reset()
+                already_stored_clear_confirm = 0
+                continue
 
             current_tier = self._detect_current_reward_tier(tier_ocr)
             if self._tier_reached(current_tier, target_tier):
