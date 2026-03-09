@@ -67,15 +67,13 @@ SUMMON_FREE_CONTINUE = ButtonWrapper(
 )
 SUMMON_NEW = ButtonWrapper(
     name='SUMMON_NEW',
-    cn=None,
-    global_cn=Button(
-        file='./assets/global_cn/gacha/SUMMON_NEW.png',
+    share=Button(
+        file='./assets/share/gacha/SUMMON_NEW.png',
         area=(281, 143, 332, 162),
         search=(261, 123, 352, 182),
         color=(201, 116, 74),
         button=(281, 143, 332, 162),
     ),
-    global_en=None,
 )
 SUMMON_NEXT_PAGE = ButtonWrapper(
     name='SUMMON_NEXT_PAGE',

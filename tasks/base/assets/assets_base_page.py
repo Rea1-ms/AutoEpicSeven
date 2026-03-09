@@ -3,18 +3,6 @@ from module.base.button import Button, ButtonWrapper
 # This file was auto-generated, do not modify it manually. To generate:
 # ``` python -m dev_tools.button_extract ```
 
-ASSIGNMENT_CHECK = ButtonWrapper(
-    name='ASSIGNMENT_CHECK',
-    cn=Button(
-        file='./assets/cn/base/page/ASSIGNMENT_CHECK.png',
-        area=(535, 165, 587, 181),
-        search=(515, 145, 607, 201),
-        color=(207, 199, 181),
-        button=(535, 165, 587, 181),
-    ),
-    global_cn=None,
-    global_en=None,
-)
 BACK = ButtonWrapper(
     name='BACK',
     share=Button(
@@ -27,7 +15,13 @@ BACK = ButtonWrapper(
 )
 GACHA_CHECK = ButtonWrapper(
     name='GACHA_CHECK',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/base/page/GACHA_CHECK.png',
+        area=(68, 21, 116, 45),
+        search=(48, 1, 136, 65),
+        color=(193, 171, 176),
+        button=(68, 21, 116, 45),
+    ),
     global_cn=Button(
         file='./assets/global_cn/base/page/GACHA_CHECK.png',
         area=(68, 21, 118, 45),
@@ -47,9 +41,25 @@ MAIN_GOTO_ACTIVITY = ButtonWrapper(
         button=(49, 417, 64, 433),
     ),
 )
+MAIN_GOTO_COMBAT = ButtonWrapper(
+    name='MAIN_GOTO_COMBAT',
+    share=Button(
+        file='./assets/share/base/page/MAIN_GOTO_COMBAT.png',
+        area=(1189, 313, 1234, 335),
+        search=(1169, 293, 1254, 355),
+        color=(114, 118, 123),
+        button=(1189, 313, 1234, 335),
+    ),
+)
 MAIN_GOTO_GACHA = ButtonWrapper(
     name='MAIN_GOTO_GACHA',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/base/page/MAIN_GOTO_GACHA.png',
+        area=(1212, 443, 1235, 463),
+        search=(1192, 423, 1255, 483),
+        color=(144, 144, 145),
+        button=(1212, 443, 1235, 463),
+    ),
     global_cn=Button(
         file='./assets/global_cn/base/page/MAIN_GOTO_GACHA.png',
         area=(1212, 445, 1234, 460),
@@ -91,7 +101,13 @@ MAIN_GOTO_SECRET_SHOP = ButtonWrapper(
 )
 MAIN_GOTO_STORE = ButtonWrapper(
     name='MAIN_GOTO_STORE',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/base/page/MAIN_GOTO_STORE.png',
+        area=(1215, 508, 1235, 530),
+        search=(1195, 488, 1255, 550),
+        color=(146, 145, 146),
+        button=(1215, 508, 1235, 530),
+    ),
     global_cn=Button(
         file='./assets/global_cn/base/page/MAIN_GOTO_STORE.png',
         area=(1215, 508, 1235, 530),
@@ -153,7 +169,13 @@ PETS_CHECK = ButtonWrapper(
 )
 SANCTUARY_CHECK = ButtonWrapper(
     name='SANCTUARY_CHECK',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/base/page/SANCTUARY_CHECK.png',
+        area=(61, 214, 74, 231),
+        search=(41, 194, 94, 251),
+        color=(116, 114, 114),
+        button=(61, 214, 74, 231),
+    ),
     global_cn=Button(
         file='./assets/global_cn/base/page/SANCTUARY_CHECK.png',
         area=(101, 28, 117, 42),
