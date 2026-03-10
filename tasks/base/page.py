@@ -179,22 +179,22 @@ page_menu.link(MENU_GOTO_KNIGHTS, destination=page_knights)
 # Knights sub pages
 # Donate page
 page_knights_donate = Page(DONATE_CHECK)
-page_knights_donate.link(BACK, destination=page_knights)
+page_knights_donate.link(BACK, destination=page_main)
 page_knights.link(DONATE, destination=page_knights_donate)
 
 # Support page
 page_knights_support = Page(SUPPORT_CHECK)
-page_knights_support.link(BACK, destination=page_knights)
+page_knights_support.link(BACK, destination=page_main)
 page_knights.link(SUPPORT, destination=page_knights_support)
 
-# Expedition panel check uses TEAM_BATTLE entrance button.
+# Expedition panel
 page_knights_expedition = Page(TEAM_BATTLE)
 page_knights_expedition.link(BACK, destination=page_main)
 page_knights.link(EXPEDITION, destination=page_knights_expedition)
 
 # Weekly task page
 page_knights_weekly_task = Page(WEEKLY_TASK_CHECK)
-page_knights_weekly_task.link(BACK, destination=page_knights)
+page_knights_weekly_task.link(BACK, destination=page_main)
 page_knights.link(WEEKLY_TASK, destination=page_knights_weekly_task)
 
 # Knights first-level tabs are mutually reachable.
