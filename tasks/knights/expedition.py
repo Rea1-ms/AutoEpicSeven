@@ -17,7 +17,7 @@ class KnightsExpeditionMixin(KnightsTeamBattleMixin):
         if not self._enter_expedition(skip_first_screenshot=skip_first_screenshot):
             return False
 
-        if not self.config.Knights_TeamBattle:
+        if not self.config.KnightsExpedition_TeamBattle:
             logger.info("Knights team battle disabled by config")
             return True
 

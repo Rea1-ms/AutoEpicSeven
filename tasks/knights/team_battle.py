@@ -67,8 +67,7 @@ class KnightsTeamBattleMixin:
 
         appear = False
         if WAITING_FOR_WAR.match_template_luma(self.device.image, similarity=self.WAITING_FOR_WAR_LUMA_SIMILARITY):
-            if WAITING_FOR_WAR.match_color(self.device.image, threshold=self.WAITING_FOR_WAR_COLOR_THRESHOLD):
-                appear = True
+            appear = True
 
         if appear and interval:
             self.interval_reset(WAITING_FOR_WAR, interval=interval)

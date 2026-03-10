@@ -225,10 +225,10 @@ TEAM_BATTLE_RESULT_CONFIRM = ButtonWrapper(
     name='TEAM_BATTLE_RESULT_CONFIRM',
     cn=Button(
         file='./assets/cn/knights/expedition/TEAM_BATTLE_RESULT_CONFIRM.png',
-        area=(1134, 649, 1174, 671),
-        search=(1114, 629, 1194, 691),
-        color=(121, 140, 124),
-        button=(1134, 649, 1174, 671),
+        area=(967, 642, 1003, 660),
+        search=(947, 622, 1023, 680),
+        color=(132, 150, 135),
+        button=(967, 642, 1003, 660),
     ),
     global_cn=Button(
         file='./assets/global_cn/knights/expedition/TEAM_BATTLE_RESULT_CONFIRM.png',
@@ -244,7 +244,7 @@ WAITING_FOR_WAR = ButtonWrapper(
     share=Button(
         file='./assets/share/knights/expedition/WAITING_FOR_WAR.png',
         area=(508, 518, 541, 550),
-        search=(488, 498, 561, 570),
+        search=(508, 518, 541, 639),
         color=(45, 93, 30),
         button=(508, 518, 541, 550),
     ),

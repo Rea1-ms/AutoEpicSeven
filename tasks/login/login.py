@@ -63,6 +63,25 @@ class Login(UI):
     """
     _maintenance_backup = None
 
+    def _handle_login_domain_popup(self, interval=2) -> bool:
+        """
+        Handle popups that only belong to the login domain.
+
+        This keeps login-specific startup/re-login popups out of global
+        `ui_additional()` handlers.
+        """
+        if self.appear_then_click(ANNOUNCEMENT_CLOSE, interval=interval):
+            logger.info('Closed announce popup')
+            return True
+
+        if server_.is_cn_server(self.config.Emulator_PackageName) and self.appear_then_click(
+            LOGIN_ANNOUNCEMENT_CLOSE, interval=interval
+        ):
+            logger.info('Closed CN startup announcement')
+            return True
+
+        return False
+
     def _handle_app_login(self):
         """
         处理游戏启动到进入主界面的完整过程
@@ -161,18 +180,8 @@ class Login(UI):
                     self.device.stuck_record_clear()
                     continue
 
-            # 维护公告弹窗（先关掉再判断是否维护）
-            if self.appear_then_click(ANNOUNCEMENT_CLOSE, interval=2):
-                logger.info('Closed announce popup')
-                network_error_count = 0
-                timeout.reset()
-                main_confirm.reset()
-                continue
-
-            if server_.is_cn_server(self.config.Emulator_PackageName) and self.appear_then_click(
-                LOGIN_ANNOUNCEMENT_CLOSE, interval=2
-            ):
-                logger.info('Closed CN startup announcement')
+            # Login-only popup layer, including CN re-login announcement close.
+            if self._handle_login_domain_popup(interval=2):
                 network_error_count = 0
                 timeout.reset()
                 main_confirm.reset()

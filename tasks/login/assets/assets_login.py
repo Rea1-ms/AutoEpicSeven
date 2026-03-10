@@ -98,6 +98,13 @@ LOGIN_LOADING = ButtonWrapper(
             color=(181, 158, 173),
             button=(1000, 638, 1050, 655),
         ),
+        Button(
+            file='./assets/cn/login/LOGIN_LOADING.3.png',
+            area=(587, 440, 690, 465),
+            search=(567, 420, 710, 485),
+            color=(102, 102, 102),
+            button=(587, 440, 690, 465),
+        ),
     ],
     global_cn=[
         Button(
