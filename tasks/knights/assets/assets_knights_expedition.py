@@ -244,7 +244,7 @@ WAITING_FOR_WAR = ButtonWrapper(
     share=Button(
         file='./assets/share/knights/expedition/WAITING_FOR_WAR.png',
         area=(508, 518, 541, 550),
-        search=(488, 498, 561, 570),
+        search=(508, 518, 541, 639),
         color=(45, 93, 30),
         button=(508, 518, 541, 550),
     ),
