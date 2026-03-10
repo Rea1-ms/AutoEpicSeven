@@ -5,6 +5,7 @@ from tasks.base.ui import UI
 from tasks.knights.assets.assets_knights import SIGNIN_RATE_REWARD
 from tasks.knights.donate import KnightsDonateMixin
 from tasks.knights.expedition import KnightsExpeditionMixin
+from tasks.knights.shop import KnightsShopMixin
 from tasks.knights.support import KnightsSupportMixin
 from tasks.knights.weekly_task import KnightsWeeklyTaskMixin
 from tasks.knights.world_boss import KnightsWorldBossMixin
@@ -13,6 +14,7 @@ from tasks.knights.world_boss import KnightsWorldBossMixin
 class Knights(
     KnightsWorldBossMixin,
     KnightsExpeditionMixin,
+    KnightsShopMixin,
     KnightsSupportMixin,
     KnightsDonateMixin,
     KnightsWeeklyTaskMixin,
@@ -96,14 +98,15 @@ class Knights(
 
             Login(self.config, device=self.device).app_start()
 
-        run_signin = self.config.Knights_ClaimSigninRateReward
-        run_weekly_task = self.config.Knights_WeeklyTask
-        run_donate = self.config.Knights_Donate
-        run_support = self.config.Knights_Support
-        run_expedition = self.config.Knights_Expedition
-        run_world_boss = self.config.Knights_WorldBoss
+        run_signin = self.config.KnightsBasic_ClaimSigninRateReward
+        run_weekly_task = self.config.KnightsBasic_WeeklyTask
+        run_donate = self.config.KnightsDonate_Donate
+        run_support = self.config.KnightsDonate_Support
+        run_shop = self.config.KnightsShop_Shop
+        run_expedition = self.config.KnightsExpedition_Expedition
+        run_world_boss = self.config.KnightsExpedition_WorldBoss
 
-        if not any([run_signin, run_weekly_task, run_donate, run_support, run_expedition, run_world_boss]):
+        if not any([run_signin, run_weekly_task, run_donate, run_support, run_shop, run_expedition, run_world_boss]):
             logger.warning("Knights: all sub tasks disabled")
             self.config.task_delay(server_update=True)
             return True
@@ -121,15 +124,12 @@ class Knights(
             success = self.run_world_boss(skip_first_screenshot=True) and success
         if run_donate:
             success = self.run_donate(skip_first_screenshot=True) and success
-        if run_weekly_task:
-            success = self.run_weekly_task(skip_first_screenshot=True) and success
         if run_support:
             success = self.run_support(skip_first_screenshot=True) and success
-        if run_expedition:
-            success = self.run_expedition(skip_first_screenshot=True) and success
-        if run_world_boss:
-            success = self.run_world_boss(skip_first_screenshot=True) and success
+        if run_weekly_task:
+            success = self.run_weekly_task(skip_first_screenshot=True) and success
+        if run_shop:
+            success = self.run_shop(skip_first_screenshot=True) and success
 
-        self.ui_goto(page_knights)
         self.config.task_delay(server_update=True)
         return success
