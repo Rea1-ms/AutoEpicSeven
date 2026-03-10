@@ -163,7 +163,7 @@ TOUCH_TO_CLOSE = ButtonWrapper(
     share=Button(
         file='./assets/share/base/popup/TOUCH_TO_CLOSE.png',
         area=(628, 614, 651, 629),
-        search=(622, 457, 770, 640),
+        search=(622, 457, 770, 715),
         color=(65, 90, 125),
         button=(628, 614, 651, 629),
     ),
