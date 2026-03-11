@@ -30,10 +30,6 @@
       "name": "Error Handling",
       "help": ""
     },
-    "Dungeon": {
-      "name": "Dungeon",
-      "help": ""
-    },
     "Ornament": {
       "name": "Ornament",
       "help": "The followings must be satisfied:\n1. Manually clear Divergent Universe once this week and have a save file.\n2. Enter the dungeon once on current device to have dungeon team saved."
@@ -69,6 +65,10 @@
     "Knights": {
       "name": "Guild",
       "help": "Guild automation: sign-in reward, support, expedition flow, and World Boss."
+    },
+    "Combat": {
+      "name": "Daily Combat",
+      "help": "Farm Spirit Altar or Hunt with the selected element and grade, then start fast combat or background repeat combat."
     },
     "Arena": {
       "name": "Arena",
@@ -1448,6 +1448,47 @@
     "NPCCombatCount": {
       "name": "NPC Battle Count",
       "help": "Maximum number of NPC battles in this run."
+    }
+  },
+  "Combat": {
+    "_info": {
+      "name": "Daily Combat Settings",
+      "help": "Configure the domain, element, grade, and whether fast combat should be used."
+    },
+    "Domain": {
+      "name": "Domain",
+      "help": "Choose whether this task farms Hunt or Spirit Altar.",
+      "Hunt": "Hunt",
+      "SpiritAltar": "Spirit Altar"
+    },
+    "Element": {
+      "name": "Element",
+      "help": "Choose the element branch to enter.",
+      "Dark": "Dark",
+      "Light": "Light",
+      "Water": "Water",
+      "Fire": "Fire",
+      "Nature": "Nature"
+    },
+    "AltarGrade": {
+      "name": "Altar Grade",
+      "help": "Difficulty used for Spirit Altar runs.",
+      "Pri": "Pri",
+      "Mid": "Mid",
+      "High": "High",
+      "Hell": "Hell"
+    },
+    "HuntGrade": {
+      "name": "Hunt Grade",
+      "help": "Difficulty used for Hunt runs.",
+      "Mid": "Mid",
+      "High": "High",
+      "Hell": "Hell",
+      "Dimensional": "Dimensional"
+    },
+    "FastCombat": {
+      "name": "Use Fast Combat",
+      "help": "Enable fast combat when available. If disabled, the task uses repeat combat and minimizes it to the main page."
     }
   },
   "SecretShop": {

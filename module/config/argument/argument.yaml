@@ -296,6 +296,21 @@ Arena:
   NPCCombatFastBattle: true
   NPCCombatCount: 5
 
+Combat:
+  Domain:
+    value: Hunt
+    option: [ Hunt, SpiritAltar ]
+  Element:
+    value: Water
+    option: [ Dark, Light, Water, Fire, Nature ]
+  AltarGrade:
+    value: Hell
+    option: [ Pri, Mid, High, Hell ]
+  HuntGrade:
+    value: Hell
+    option: [ Mid, High, Hell, Dimensional ]
+  FastCombat: true
+
 SecretShop:
   OnlyFree: true
   MaxRefresh: 10

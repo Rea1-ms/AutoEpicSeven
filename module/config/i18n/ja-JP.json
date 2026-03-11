@@ -30,10 +30,6 @@
       "name": "再起動設定",
       "help": ""
     },
-    "Dungeon": {
-      "name": "Task.Dungeon.name",
-      "help": "Task.Dungeon.help"
-    },
     "Ornament": {
       "name": "Task.Ornament.name",
       "help": "Task.Ornament.help"
@@ -69,6 +65,10 @@
     "Knights": {
       "name": "ギルド",
       "help": "ギルド自動化：出席報酬、支援、遠征、ワールドボス。"
+    },
+    "Combat": {
+      "name": "デイリー副本",
+      "help": "精霊祭壇または討伐を周回し、属性と難易度に応じて高速戦闘またはバックグラウンド連続戦闘を開始します。"
     },
     "Arena": {
       "name": "アリーナ",
@@ -1448,6 +1448,47 @@
     "NPCCombatCount": {
       "name": "NPC戦回数",
       "help": "この実行で行うNPC戦の最大回数。"
+    }
+  },
+  "Combat": {
+    "_info": {
+      "name": "デイリー副本設定",
+      "help": "副本の種類、属性、難易度、および高速戦闘の使用有無を設定します。"
+    },
+    "Domain": {
+      "name": "副本種類",
+      "help": "今回周回するのが討伐か精霊祭壇かを選択します。",
+      "Hunt": "討伐",
+      "SpiritAltar": "精霊祭壇"
+    },
+    "Element": {
+      "name": "属性",
+      "help": "進入する副本の属性を選択します。",
+      "Dark": "闇",
+      "Light": "光",
+      "Water": "水",
+      "Fire": "火",
+      "Nature": "木"
+    },
+    "AltarGrade": {
+      "name": "祭壇難易度",
+      "help": "精霊祭壇で使用する難易度です。",
+      "Pri": "初級",
+      "Mid": "中級",
+      "High": "上級",
+      "Hell": "地獄"
+    },
+    "HuntGrade": {
+      "name": "討伐難易度",
+      "help": "討伐で使用する難易度です。",
+      "Mid": "中級",
+      "High": "上級",
+      "Hell": "地獄",
+      "Dimensional": "異界"
+    },
+    "FastCombat": {
+      "name": "高速戦闘を使用",
+      "help": "有効時は高速戦闘を優先します。無効時はペット委任の連続戦闘を開始し、主画面へ最小化します。"
     }
   },
   "SecretShop": {

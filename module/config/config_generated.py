@@ -208,6 +208,13 @@ class GeneratedConfig:
     Arena_NPCCombatFastBattle = True
     Arena_NPCCombatCount = 5
 
+    # Group `Combat`
+    Combat_Domain = 'Hunt'  # Hunt, SpiritAltar
+    Combat_Element = 'Water'  # Dark, Light, Water, Fire, Nature
+    Combat_AltarGrade = 'Hell'  # Pri, Mid, High, Hell
+    Combat_HuntGrade = 'Hell'  # Mid, High, Hell, Dimensional
+    Combat_FastCombat = True
+
     # Group `SecretShop`
     SecretShop_OnlyFree = True
     SecretShop_MaxRefresh = 10

@@ -30,10 +30,6 @@
       "name": "Gestión de errores",
       "help": ""
     },
-    "Dungeon": {
-      "name": "Mazmorra",
-      "help": ""
-    },
     "Ornament": {
       "name": "Ornamentos",
       "help": "Se deben cumplir los siguientes requisitos:\n1. Borre manualmente Universo Diferenciado una vez esta semana y tenga un archivo guardado.\n2. Ingrese a la mazmorra una vez en el dispositivo actual para guardar el equipo de la mazmorra."
@@ -69,6 +65,10 @@
     "Knights": {
       "name": "Gremio",
       "help": "Automatización del gremio: recompensa de inicio, apoyo, expedición y Jefe Mundial."
+    },
+    "Combat": {
+      "name": "Combate diario",
+      "help": "Farmea Altar Espiritual o Cacería con el elemento y la dificultad elegidos, y luego inicia combate rápido o combate repetido en segundo plano."
     },
     "Arena": {
       "name": "Arena",
@@ -1448,6 +1448,47 @@
     "NPCCombatCount": {
       "name": "Cantidad de combates NPC",
       "help": "Número máximo de combates NPC en esta ejecución."
+    }
+  },
+  "Combat": {
+    "_info": {
+      "name": "Ajustes de combate diario",
+      "help": "Configura el tipo de dominio, elemento, dificultad y si debe usarse combate rápido."
+    },
+    "Domain": {
+      "name": "Dominio",
+      "help": "Elige si esta tarea farmea Cacería o Altar Espiritual.",
+      "Hunt": "Cacería",
+      "SpiritAltar": "Altar Espiritual"
+    },
+    "Element": {
+      "name": "Elemento",
+      "help": "Elige la rama elemental que se abrirá.",
+      "Dark": "Oscuridad",
+      "Light": "Luz",
+      "Water": "Agua",
+      "Fire": "Fuego",
+      "Nature": "Naturaleza"
+    },
+    "AltarGrade": {
+      "name": "Dificultad del altar",
+      "help": "Dificultad usada en Altar Espiritual.",
+      "Pri": "Baja",
+      "Mid": "Media",
+      "High": "Alta",
+      "Hell": "Infierno"
+    },
+    "HuntGrade": {
+      "name": "Dificultad de cacería",
+      "help": "Dificultad usada en Cacería.",
+      "Mid": "Media",
+      "High": "Alta",
+      "Hell": "Infierno",
+      "Dimensional": "Dimensional"
+    },
+    "FastCombat": {
+      "name": "Usar combate rápido",
+      "help": "Activa combate rápido cuando esté disponible. Si se desactiva, la tarea inicia combate repetido y lo minimiza a la pantalla principal."
     }
   },
   "SecretShop": {

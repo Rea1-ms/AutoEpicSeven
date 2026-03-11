@@ -982,6 +982,10 @@ class ConfigUpdater:
         if deep_get(data, 'Arena.Arena.NPCCombat', default=False) is False:
             yield 'Arena.Arena.NPCCombatFastBattle'
             yield 'Arena.Arena.NPCCombatCount'
+        if deep_get(data, 'Combat.Combat.Domain', default='Hunt') != 'SpiritAltar':
+            yield 'Combat.Combat.AltarGrade'
+        if deep_get(data, 'Combat.Combat.Domain', default='Hunt') != 'Hunt':
+            yield 'Combat.Combat.HuntGrade'
         if deep_get(data, 'Knights.KnightsDonate.Support', default=True) is False:
             yield 'Knights.KnightsDonate.RequestItem'
         if deep_get(data, 'Knights.KnightsShop.Shop', default=True) is False:

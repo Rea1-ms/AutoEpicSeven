@@ -22,14 +22,6 @@ Daily:
   menu: 'list'
   page: 'setting'
   tasks:
-    Dungeon:
-      - Scheduler
-      - Planner
-      - PlannerTarget
-      - Dungeon
-      - DungeonSupport
-      - DungeonStorage
-      - TrailblazePower
     Ornament:
       - Scheduler
       - Ornament
@@ -62,6 +54,9 @@ Daily:
       - KnightsDonate
       - KnightsShop
       - KnightsExpedition
+    Combat:
+      - Scheduler
+      - Combat
     Arena:
       - Scheduler
       - Arena

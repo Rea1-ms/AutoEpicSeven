@@ -29,6 +29,18 @@ class UI(MainPage):
     ui_current: Page
     ui_main_confirm_timer = Timer(0.2, count=0)
 
+    def _ui_process_appear(self, button, interval=0):
+        if isinstance(button, ButtonWrapper):
+            return self.appear(button, interval=interval)
+        if callable(button):
+            return button()
+        if isinstance(button, (list, tuple)):
+            for b in button:
+                if self._ui_process_appear(b, interval=interval):
+                    return True
+            return False
+        return self.appear(button, interval=interval)
+
     def ui_page_appear(self, page, interval=0):
         """
         Args:
@@ -37,7 +49,7 @@ class UI(MainPage):
         """
         if page == page_main:
             return self.is_in_main(interval=interval)
-        return self.appear(page.check_button, interval=interval)
+        return self._ui_process_appear(page.check_button, interval=interval)
 
     def ui_get_current_page(self, skip_first_screenshot=True):
         """
@@ -283,19 +295,6 @@ class UI(MainPage):
             appear_button = click_button
         logger.info(f'UI click: {appear_button} -> {check_button}')
 
-        def process_appear(button):
-            if isinstance(button, ButtonWrapper):
-                return self.appear(button)
-            elif callable(button):
-                return button()
-            elif isinstance(button, (list, tuple)):
-                for b in button:
-                    if self.appear(b):
-                        return True
-                return False
-            else:
-                return self.appear(button)
-
         click_timer = Timer(retry_wait, count=retry_wait // 0.5)
         while 1:
             if skip_first_screenshot:
@@ -304,12 +303,12 @@ class UI(MainPage):
                 self.device.screenshot()
 
             # End
-            if process_appear(check_button):
+            if self._ui_process_appear(check_button):
                 break
 
             # Click
             if click_timer.reached():
-                if process_appear(appear_button):
+                if self._ui_process_appear(appear_button):
                     self.device.click(click_button)
                     click_timer.reset()
                     continue
