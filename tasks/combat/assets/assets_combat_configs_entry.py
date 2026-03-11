@@ -5,7 +5,13 @@ from module.base.button import Button, ButtonWrapper
 
 ALTER_CHECK = ButtonWrapper(
     name='ALTER_CHECK',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/combat/configs/entry/ALTER_CHECK.png',
+        area=(105, 152, 172, 186),
+        search=(85, 132, 192, 206),
+        color=(160, 163, 163),
+        button=(105, 152, 172, 186),
+    ),
     global_cn=Button(
         file='./assets/global_cn/combat/configs/entry/ALTER_CHECK.png',
         area=(107, 152, 177, 186),
@@ -17,7 +23,13 @@ ALTER_CHECK = ButtonWrapper(
 )
 COMMON_ENTRY = ButtonWrapper(
     name='COMMON_ENTRY',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/combat/configs/entry/COMMON_ENTRY.png',
+        area=(102, 110, 142, 130),
+        search=(82, 90, 162, 150),
+        color=(69, 85, 92),
+        button=(102, 110, 142, 130),
+    ),
     global_cn=Button(
         file='./assets/global_cn/combat/configs/entry/COMMON_ENTRY.png',
         area=(102, 109, 142, 129),
@@ -39,7 +51,13 @@ HUNT = ButtonWrapper(
 )
 HUNT_CHECK = ButtonWrapper(
     name='HUNT_CHECK',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/combat/configs/entry/HUNT_CHECK.png',
+        area=(36, 152, 105, 186),
+        search=(16, 132, 125, 206),
+        color=(143, 150, 153),
+        button=(36, 152, 105, 186),
+    ),
     global_cn=Button(
         file='./assets/global_cn/combat/configs/entry/HUNT_CHECK.png',
         area=(38, 152, 107, 186),
@@ -61,7 +79,13 @@ SEASON_CHECK = ButtonWrapper(
 )
 SEASON_ENTRY = ButtonWrapper(
     name='SEASON_ENTRY',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/combat/configs/entry/SEASON_ENTRY.png',
+        area=(289, 109, 328, 130),
+        search=(269, 89, 348, 150),
+        color=(97, 110, 114),
+        button=(289, 109, 328, 130),
+    ),
     global_cn=Button(
         file='./assets/global_cn/combat/configs/entry/SEASON_ENTRY.png',
         area=(288, 108, 328, 129),
