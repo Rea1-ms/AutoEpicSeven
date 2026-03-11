@@ -156,7 +156,7 @@ page_sanctuary.link(HEART_OF_EULERBIS, destination=page_sanctuary_heart)
 
 # Secret shop
 page_secret_shop = Page(SECRET_SHOP_CHECK)
-page_secret_shop.link(MENU, destination=page_menu)
+page_secret_shop.link(BACK, destination=page_main)
 page_main.link(MAIN_GOTO_SECRET_SHOP, destination=page_secret_shop)
 
 # Store
