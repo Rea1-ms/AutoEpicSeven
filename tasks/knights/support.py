@@ -36,6 +36,7 @@ class KnightsSupportMixin:
     SUPPORT_DONATE_SCROLL_INTERVAL_SECONDS = 0.8
     SUPPORT_DONATE_ACTION_INTERVAL_SECONDS = 0.8
     SUPPORT_DONATE_WAIT_TOUCH_TIMEOUT_SECONDS = 2
+    SUPPORT_DONATE_EMPTY_CONFIRM_SECONDS = 1
     SUPPORT_DONATE_COMPLETE_COUNT = 4
     SUPPORT_REQUEST_TIMEOUT_SECONDS = 15
     SUPPORT_SCROLL_START = (640, 620)
@@ -135,8 +136,13 @@ class KnightsSupportMixin:
             similarity=self.REQUEST_FOR_SUPPORT_LUMA_SIMILARITY,
         )
 
-    def _find_donate_action_pairs(self, plans: list[SupportPlan]) -> list[tuple[str, ClickButton]]:
-        action_buttons = SUPPORT_ACTION.match_multi_template(self.device.image, threshold=40)
+    def _find_donate_action_pairs(
+        self,
+        plans: list[SupportPlan],
+        action_buttons: list[ClickButton] | None = None,
+    ) -> list[tuple[str, ClickButton]]:
+        if action_buttons is None:
+            action_buttons = SUPPORT_ACTION.match_multi_template(self.device.image, threshold=40)
         if not action_buttons:
             return []
         action_buttons = sorted(action_buttons, key=self._button_center_y)
@@ -184,6 +190,7 @@ class KnightsSupportMixin:
         timeout = Timer(self.SUPPORT_DONATE_TIMEOUT_SECONDS, count=90).start()
         scroll_timer = Timer(self.SUPPORT_DONATE_SCROLL_INTERVAL_SECONDS, count=0).start()
         wait_touch_timeout = Timer(self.SUPPORT_DONATE_WAIT_TOUCH_TIMEOUT_SECONDS, count=6)
+        empty_list_confirm = Timer(self.SUPPORT_DONATE_EMPTY_CONFIRM_SECONDS, count=4).clear()
         hit_bottom_confirm = 0
         skip_hit_bottom_once = False
         wait_touch_close = False
@@ -220,9 +227,11 @@ class KnightsSupportMixin:
                 if self.handle_touch_to_close(interval=0.5):
                     wait_touch_close = False
                     self.device.click_record_clear()
+                    empty_list_confirm.clear()
                     timeout.reset()
                     continue
                 if self.handle_network_error():
+                    empty_list_confirm.clear()
                     timeout.reset()
                     continue
                 if wait_touch_timeout.reached():
@@ -231,13 +240,29 @@ class KnightsSupportMixin:
                     continue
 
             if self.handle_touch_to_close(interval=0.5):
+                empty_list_confirm.clear()
                 timeout.reset()
                 continue
             if self.handle_network_error():
+                empty_list_confirm.clear()
                 timeout.reset()
                 continue
 
-            pairs = self._find_donate_action_pairs(plans)
+            action_buttons = SUPPORT_ACTION.match_multi_template(self.device.image, threshold=40)
+            complete_buttons = SUPPORT_COMPLETE.match_multi_template(self.device.image, threshold=40)
+
+            if action_buttons or complete_buttons:
+                empty_list_confirm.clear()
+            else:
+                if not empty_list_confirm.started():
+                    logger.info("Support donate: no visible support entries, confirm empty list")
+                    empty_list_confirm.start()
+                elif empty_list_confirm.reached():
+                    logger.info("Support donate list is empty, skip donate scan")
+                    return True
+                continue
+
+            pairs = self._find_donate_action_pairs(plans, action_buttons=action_buttons)
             if pairs:
                 if not self.interval_is_reached(SUPPORT_ACTION, interval=self.SUPPORT_DONATE_ACTION_INTERVAL_SECONDS):
                     continue
@@ -247,11 +272,12 @@ class KnightsSupportMixin:
                 self.interval_reset(SUPPORT_ACTION, interval=self.SUPPORT_DONATE_ACTION_INTERVAL_SECONDS)
                 wait_touch_close = True
                 wait_touch_timeout.reset()
+                empty_list_confirm.clear()
                 hit_bottom_confirm = 0
                 timeout.reset()
                 continue
 
-            complete_count = len(SUPPORT_COMPLETE.match_multi_template(self.device.image, threshold=40))
+            complete_count = len(complete_buttons)
             if complete_count >= self.SUPPORT_DONATE_COMPLETE_COUNT:
                 logger.info(f"Support donate completed on current page: {complete_count}")
                 return True
@@ -271,6 +297,7 @@ class KnightsSupportMixin:
             if scroll_timer.reached():
                 self.device.swipe(self.SUPPORT_SCROLL_START, self.SUPPORT_SCROLL_END, duration=(0.2, 0.3))
                 scroll_timer.reset()
+                empty_list_confirm.clear()
                 skip_hit_bottom_once = True
                 timeout.reset()
                 continue
