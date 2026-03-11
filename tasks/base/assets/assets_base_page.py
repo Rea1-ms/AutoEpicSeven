@@ -43,13 +43,21 @@ MAIN_GOTO_ACTIVITY = ButtonWrapper(
 )
 MAIN_GOTO_COMBAT = ButtonWrapper(
     name='MAIN_GOTO_COMBAT',
-    share=Button(
-        file='./assets/share/base/page/MAIN_GOTO_COMBAT.png',
+    cn=Button(
+        file='./assets/cn/base/page/MAIN_GOTO_COMBAT.png',
         area=(1189, 313, 1234, 335),
         search=(1169, 293, 1254, 355),
         color=(114, 118, 123),
         button=(1189, 313, 1234, 335),
     ),
+    global_cn=Button(
+        file='./assets/global_cn/base/page/MAIN_GOTO_COMBAT.png',
+        area=(1189, 313, 1234, 335),
+        search=(1169, 293, 1254, 355),
+        color=(114, 118, 123),
+        button=(1189, 313, 1234, 335),
+    ),
+    global_en=None,
 )
 MAIN_GOTO_GACHA = ButtonWrapper(
     name='MAIN_GOTO_GACHA',
