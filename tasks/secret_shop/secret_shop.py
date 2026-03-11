@@ -81,6 +81,8 @@ class SecretShop(PopupHandler):
     AUTO_REFRESH_BUFFER_SECONDS = 65
     AUTO_REFRESH_SHORT_BUFFER_SECONDS = 10
     AUTO_REFRESH_FALLBACK_MINUTES = 10
+    ITEM_TEMPLATE_SIMILARITY = 0.85
+    ITEM_COLOR_THRESHOLD = 30
 
     def __init__(self, config, device):
         super().__init__(config, device)
@@ -222,6 +224,24 @@ class SecretShop(PopupHandler):
         """重置稳定计数器，用于滚动/刷新/购买后"""
         self._stable_count = 0
 
+    def _match_target_item(self, asset, item_type: str, image) -> ClickButton | None:
+        """
+        Secret shop同一种目标货同屏只会出现一份。
+        这里用 match_template_color() 先定位，再用颜色过滤灰色已点击状态。
+        """
+        if not asset.match_template_color(
+            image,
+            similarity=self.ITEM_TEMPLATE_SIMILARITY,
+            threshold=self.ITEM_COLOR_THRESHOLD,
+        ):
+            return None
+
+        return ClickButton(
+            area=asset.button,
+            button=asset.button,
+            name=f'{item_type}_item',
+        )
+
     def _find_target_buy_buttons(self) -> list[tuple[str, ClickButton]]:
         """
         查找当前页面中目标物品对应的购买按钮
@@ -261,21 +281,21 @@ class SecretShop(PopupHandler):
         # 查找目标物品（跳过本轮已购买的类型）
         targets = []
         if self.buy_covenant and not self._covenant_purchased_this_round:
-            covenant_matches = covenant_asset.match_multi_template(image)
-            if covenant_matches:
-                logger.info(f'[Scan] covenant_matches={len(covenant_matches)}')
-                for i, m in enumerate(covenant_matches):
-                    logger.info(f'[Scan]   covenant[{i}]: Y={int((m.area[1] + m.area[3]) / 2)}')
-            for item in covenant_matches:
-                targets.append(('covenant', item))
+            covenant_item = self._match_target_item(covenant_asset, 'covenant', image)
+            if covenant_item:
+                logger.info(
+                    f'[Scan] covenant_match: area={covenant_item.area}, '
+                    f'button={covenant_item.button}'
+                )
+                targets.append(('covenant', covenant_item))
         if self.buy_mystic and not self._mystic_purchased_this_round:
-            mystic_matches = mystic_asset.match_multi_template(image)
-            if mystic_matches:
-                logger.info(f'[Scan] mystic_matches={len(mystic_matches)}')
-                for i, m in enumerate(mystic_matches):
-                    logger.info(f'[Scan]   mystic[{i}]: Y={int((m.area[1] + m.area[3]) / 2)}')
-            for item in mystic_matches:
-                targets.append(('mystic', item))
+            mystic_item = self._match_target_item(mystic_asset, 'mystic', image)
+            if mystic_item:
+                logger.info(
+                    f'[Scan] mystic_match: area={mystic_item.area}, '
+                    f'button={mystic_item.button}'
+                )
+                targets.append(('mystic', mystic_item))
 
         if not targets:
             return []
