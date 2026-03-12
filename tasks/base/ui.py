@@ -1,19 +1,25 @@
+import module.config.server as server_
 from module.base.button import ButtonWrapper
 from module.base.decorator import run_once
 from module.base.timer import Timer
-from module.exception import GameNotRunningError, GamePageUnknownError, HandledError
+from module.exception import GameNotRunningError, GamePageUnknownError
 from module.logger import logger
 from module.ocr.ocr import Ocr
 from tasks.base.assets.assets_base_page import MENU_PETS_GIFT
 from tasks.base.assets.assets_base_main_page import POPUP_OVERLAY, WHITE_STAR
 from tasks.base.assets.assets_base_popup import (
     NEW_CHARACTER_VIDEO_PASS,
-    TOUCH_TO_CLOSE,
 )
 from tasks.base.main_page import MainPage
 from tasks.base.page import Page, page_main, page_menu
 from tasks.base.popup import ANNOUNCEMENT_DONOT_REMIND
+from tasks.combat.assets.assets_combat_repeat_result import (
+    REPEAT_COMBAT_CHECK,
+    REPEAT_COMBAT_OVER,
+)
+from tasks.combat.assets.assets_combat_repeat_status_bar import WINDOW
 from tasks.login.assets.assets_login import (
+    LOGIN_ANNOUNCEMENT_CLOSE,
     LOGIN_CONFIRM,
     LOGIN_LOADING,
     PATCH_APPLY,
@@ -28,6 +34,54 @@ from tasks.login.assets.assets_login_popup import (
 class UI(MainPage):
     ui_current: Page
     ui_main_confirm_timer = Timer(0.2, count=0)
+    COMBAT_RUNTIME_PATH = "Combat.CombatRuntime.Session"
+    COMBAT_CHECK_SIMILARITY = 0.8
+
+    def _ui_handoff_to_login(self, reason) -> bool:
+        if self.__class__.__name__ == 'Login':
+            return False
+
+        logger.warning(f'UI recovery handoff to login: {reason}')
+        self.device.click_record_clear()
+        self.device.stuck_record_clear()
+
+        from tasks.login.login import Login
+        Login(self.config, device=self.device).handle_app_login()
+        return True
+
+    def _is_login_startup_state(self) -> bool:
+        return self.is_in_login_confirm(interval=0) \
+            or self.appear(LOGIN_LOADING, interval=0) \
+            or self.appear(VERIFYING, interval=0) \
+            or self.appear(PATCH_APPLY, interval=0) \
+            or self.appear(PATCH_PERCENT_SIGN, interval=0)
+
+    def _handle_login_handoff(self) -> bool:
+        if self.__class__.__name__ == 'Login':
+            return False
+
+        if not self._is_login_startup_state():
+            return False
+
+        logger.warning('Login startup state appeared')
+        return self._ui_handoff_to_login('login startup state')
+
+    def handle_ui_recovery(self) -> bool:
+        """
+        Global recovery entry used by ui_additional().
+
+        Keep the login task on its own dedicated loop, while other tasks may
+        hand off into Login when reconnect / startup states appear.
+        """
+        # Let Login keep its own network-error loop so popup counting and
+        # maintenance fallback remain effective there.
+        if self.__class__.__name__ != 'Login' and self.handle_network_error():
+            return True
+
+        if self._handle_login_handoff():
+            return True
+
+        return False
 
     def _ui_process_appear(self, button, interval=0):
         if isinstance(button, ButtonWrapper):
@@ -111,8 +165,6 @@ class UI(MainPage):
 
             # Unknown page but able to handle
             logger.info("Unknown ui page")
-            if self.handle_login_confirm():
-                continue
             if self.ui_additional():
                 timeout.reset()
                 continue
@@ -185,8 +237,6 @@ class UI(MainPage):
                 continue
 
             # Additional
-            if self.handle_login_confirm():
-                continue
             if self.ui_additional():
                 continue
             # if self.handle_popup_single():
@@ -360,23 +410,42 @@ class UI(MainPage):
 
         return appear
 
-    def handle_login_confirm(self):
-        """
-        If login startup/transient pages appear, hand over to Login state machine.
-        """
-        if self.is_in_login_confirm(interval=0) \
-                or self.appear(LOGIN_LOADING, interval=0) \
-                or self.appear(VERIFYING, interval=0) \
-                or self.appear(PATCH_APPLY, interval=0) \
-                or self.appear(PATCH_PERCENT_SIGN, interval=0):
-            logger.warning('Login startup state appeared')
-            from tasks.login.login import Login
-            Login(self.config, device=self.device).handle_app_login()
-            raise HandledError
-        return False
-
     def ui_goto_main(self):
         return self.ui_ensure(destination=page_main)
+
+    def _has_background_repeat_combat_check(self) -> bool:
+        return self.match_template_luma(REPEAT_COMBAT_CHECK, similarity=self.COMBAT_CHECK_SIMILARITY)
+
+    def _is_background_repeat_combat_running(self) -> bool:
+        if self.match_template_luma(REPEAT_COMBAT_OVER, similarity=self.COMBAT_CHECK_SIMILARITY):
+            return False
+        if self.match_template_luma(WINDOW, similarity=self.COMBAT_CHECK_SIMILARITY):
+            return False
+        return self._has_background_repeat_combat_check()
+
+    def _handle_background_combat_result(self) -> bool:
+        session = self.config.cross_get(self.COMBAT_RUNTIME_PATH, default={})
+        if not isinstance(session, dict) or not session.get("active"):
+            return False
+
+        if self.appear_then_click(REPEAT_COMBAT_OVER, interval=0.5):
+            logger.info("Closed background combat finish prompt")
+            return True
+
+        if self.match_template_luma(WINDOW, similarity=0.8):
+            if self.handle_ad_buff_x_close(interval=0.5):
+                logger.info("Closed background combat result window")
+                self.config.cross_set(self.COMBAT_RUNTIME_PATH, {})
+                self.config.task_delay(server_update=True, task="Combat")
+                return True
+
+        if self.is_in_main(interval=0) and not self._is_background_repeat_combat_running():
+            if self.config.task.command != "Combat" and self.interval_is_reached(REPEAT_COMBAT_CHECK, interval=10):
+                logger.warning("Background combat session active but check is missing, wake Combat")
+                self.config.task_call("Combat")
+                self.interval_reset(REPEAT_COMBAT_CHECK, interval=10)
+
+        return False
 
     def ui_additional(self) -> bool:
         """
@@ -392,6 +461,9 @@ class UI(MainPage):
         Returns:
             If handled any popup.
         """
+        if self.handle_ui_recovery():
+            return True
+
         # === E7 登录弹窗处理 ===
 
         # 0. 新通知/情报 - 一日内不再提示
@@ -416,6 +488,9 @@ class UI(MainPage):
             logger.info('Handled broadcast popup')
             return True
 
+        if self._handle_background_combat_result():
+            return True
+
         # 3. Buff 广告 - 点击关闭
         if self.handle_ad_buff_x_close(interval=2):
             logger.info('Closed buff ad popup')
@@ -424,6 +499,13 @@ class UI(MainPage):
         # 4. 各种捆绑礼包/公告 - 轻触关闭
         if self.handle_touch_to_close():
             logger.info('Closed popup via touch to close')
+            return True
+
+        # 5. 国服启动公告：高频出现，允许作为全局兜底弹窗处理
+        if server_.is_cn_server(self.config.Emulator_PackageName) and self.appear_then_click(
+            LOGIN_ANNOUNCEMENT_CLOSE, interval=2
+        ):
+            logger.info('Closed CN startup announcement from ui_additional')
             return True
 
         # === 通用弹窗处理 ===
