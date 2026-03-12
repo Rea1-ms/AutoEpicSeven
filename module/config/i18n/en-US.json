@@ -1263,13 +1263,6 @@
       "name": "Gacha Settings",
       "help": ""
     },
-    "Version": {
-      "name": "Version Branch",
-      "help": "auto: choose by server (CN=V1, OVERSEA=V2); you can also force it manually.",
-      "auto": "Auto",
-      "v1": "V1 (Legacy)",
-      "v2": "V2 (Latest)"
-    },
     "CollectGoldenInheritance": {
       "name": "Collect Golden Inheritance",
       "help": "After summoning, click to collect when Golden Inheritance is full."

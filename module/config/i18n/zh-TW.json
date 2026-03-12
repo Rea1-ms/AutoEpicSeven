@@ -1263,13 +1263,6 @@
       "name": "召喚設定",
       "help": ""
     },
-    "Version": {
-      "name": "版本分支",
-      "help": "auto：按伺服器自動選擇（CN=V1，OVERSEA=V2）；也可手動強制。",
-      "auto": "自動",
-      "v1": "V1（舊版）",
-      "v2": "V2（新版）"
-    },
     "CollectGoldenInheritance": {
       "name": "收取金光傳承石",
       "help": "召喚結束後若金光傳承石滿溢則自動收取。"

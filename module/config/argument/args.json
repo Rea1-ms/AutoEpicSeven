@@ -823,15 +823,6 @@
       }
     },
     "Gacha": {
-      "Version": {
-        "type": "select",
-        "value": "auto",
-        "option": [
-          "auto",
-          "v1",
-          "v2"
-        ]
-      },
       "CollectGoldenInheritance": {
         "type": "checkbox",
         "value": true

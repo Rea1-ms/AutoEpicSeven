@@ -160,7 +160,6 @@ class GeneratedConfig:
     PlannerTarget_MemoTalentLevel = 6  # 6, 5, 4, 3, 2, 1
 
     # Group `Gacha`
-    Gacha_Version = 'auto'  # auto, v1, v2
     Gacha_CollectGoldenInheritance = True
 
     # Group `SanctuaryMonthly`

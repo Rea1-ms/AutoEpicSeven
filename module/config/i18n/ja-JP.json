@@ -1263,13 +1263,6 @@
       "name": "召喚設定",
       "help": ""
     },
-    "Version": {
-      "name": "バージョン分岐",
-      "help": "auto: サーバーで自動選択（CN=V1、OVERSEA=V2）。手動指定も可能です。",
-      "auto": "自動",
-      "v1": "V1（旧版）",
-      "v2": "V2（新版）"
-    },
     "CollectGoldenInheritance": {
       "name": "金色継承石を回収",
       "help": "召喚終了後、金色継承石が満杯なら自動で回収します。"

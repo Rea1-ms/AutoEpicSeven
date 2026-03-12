@@ -17,11 +17,9 @@ import json
 
 from module.base.timer import Timer
 from module.base.utils import save_image
-import module.config.server as server_
 from module.logger import logger
 from tasks.base.page import page_gacha
 from tasks.base.ui import UI
-from tasks.gacha.assets import assets_gacha as gacha_assets
 from tasks.gacha.assets.assets_gacha import (
     EPIC_BOOKMARK,
     GACHA_STANDARD_TAB,
@@ -42,16 +40,8 @@ class Gacha(UI):
     召唤任务（常驻池）
     """
 
-    GACHA_VERSION_AUTO = "auto"
-    GACHA_VERSION_V1 = "v1"
-    GACHA_VERSION_V2 = "v2"
-
-    # v1: pre-f8cc3717 layout, tabs on right side
-    TAB_SWIPE_V1_START = (1150, 600)
-    TAB_SWIPE_V1_END = (1150, 300)
-    # v2: post-f8cc3717 layout, tabs on left side
-    TAB_SWIPE_V2_START = (105, 600)
-    TAB_SWIPE_V2_END = (105, 300)
+    TAB_SWIPE_START = (105, 600)
+    TAB_SWIPE_END = (105, 300)
     GOLDEN_INHERITANCE_TIMEOUT_SECONDS = 6
 
     def __init__(self, config, device=None, task=None):
@@ -60,46 +50,6 @@ class Gacha(UI):
         self._draw_free = False
         self._in_standard_pool = False
         self._no_free = False
-        self._version = self.GACHA_VERSION_V2
-        self._tab_swipe_start = self.TAB_SWIPE_V2_START
-        self._tab_swipe_end = self.TAB_SWIPE_V2_END
-        self._epic_bookmark = EPIC_BOOKMARK
-        self._gacha_standard_tab = GACHA_STANDARD_TAB
-        self._summon_ten_free = SUMMON_TEN_FREE
-        self._summon_one_free = SUMMON_ONE_FREE
-
-    def _resolve_version(self) -> str:
-        version = str(getattr(self.config, "Gacha_Version", self.GACHA_VERSION_AUTO)).lower()
-        if version in (self.GACHA_VERSION_V1, self.GACHA_VERSION_V2):
-            return version
-        if server_.is_cn_server(self.config.Emulator_PackageName):
-            return self.GACHA_VERSION_V1
-        return self.GACHA_VERSION_V2
-
-    def _pick_variant_asset(self, name: str):
-        """
-        Version-specific asset naming convention:
-            <NAME>_V1 / <NAME>_V2
-        Fallback to <NAME> when variant-specific asset is absent.
-        """
-        suffix = "_V1" if self._version == self.GACHA_VERSION_V1 else "_V2"
-        return getattr(gacha_assets, f"{name}{suffix}", getattr(gacha_assets, name))
-
-    def _apply_version_profile(self):
-        self._version = self._resolve_version()
-        if self._version == self.GACHA_VERSION_V1:
-            self._tab_swipe_start = self.TAB_SWIPE_V1_START
-            self._tab_swipe_end = self.TAB_SWIPE_V1_END
-        else:
-            self._tab_swipe_start = self.TAB_SWIPE_V2_START
-            self._tab_swipe_end = self.TAB_SWIPE_V2_END
-
-        # Keep module skeleton unified; only swap steps/assets that diverge by version.
-        self._epic_bookmark = self._pick_variant_asset("EPIC_BOOKMARK")
-        self._gacha_standard_tab = self._pick_variant_asset("GACHA_STANDARD_TAB")
-        self._summon_ten_free = self._pick_variant_asset("SUMMON_TEN_FREE")
-        self._summon_one_free = self._pick_variant_asset("SUMMON_ONE_FREE")
-        logger.attr("GachaVersion", self._version)
 
     def _save_result(self, tag="result"):
         now = datetime.now()
@@ -147,15 +97,15 @@ class Gacha(UI):
                 timeout.reset()
                 continue
 
-            if self.appear(self._epic_bookmark, interval=1, similarity=0.8):
+            if self.appear(EPIC_BOOKMARK, interval=1, similarity=0.8):
                 self._in_standard_pool = True
                 return True
 
-            if self.appear_then_click(self._gacha_standard_tab, interval=2):
+            if self.appear_then_click(GACHA_STANDARD_TAB, interval=2):
                 continue
 
             if swipe_timer.reached():
-                self.device.swipe(self._tab_swipe_start, self._tab_swipe_end, duration=(0.25, 0.35))
+                self.device.swipe(self.TAB_SWIPE_START, self.TAB_SWIPE_END, duration=(0.25, 0.35))
                 swipe_timer.reset()
                 continue
 
@@ -183,7 +133,7 @@ class Gacha(UI):
                 no_free_timer.reset()
                 continue
 
-            if self.appear(self._epic_bookmark, interval=1, similarity=0.8):
+            if self.appear(EPIC_BOOKMARK, interval=1, similarity=0.8):
                 self._in_standard_pool = True
 
             if not self._in_standard_pool:
@@ -192,12 +142,12 @@ class Gacha(UI):
                 no_free_timer.reset()
                 continue
 
-            if self.appear_then_click(self._summon_ten_free, interval=2, similarity=0.9):
+            if self.appear_then_click(SUMMON_TEN_FREE, interval=2, similarity=0.9):
                 self._draw_count = 10
                 self._draw_free = True
                 return True
 
-            if self.appear_then_click(self._summon_one_free, interval=2, similarity=0.9):
+            if self.appear_then_click(SUMMON_ONE_FREE, interval=2, similarity=0.9):
                 self._draw_count = 1
                 self._draw_free = True
                 return True
@@ -317,7 +267,6 @@ class Gacha(UI):
         if not self.device.app_is_running():
             from tasks.login.login import Login
             Login(self.config, device=self.device).app_start()
-        self._apply_version_profile()
         self._no_free = False
         self._enter_gacha()
         if not self._select_standard_tab():

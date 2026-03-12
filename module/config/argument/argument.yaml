@@ -240,9 +240,6 @@ PlannerTarget:
 # ==================== Activity ====================
 
 Gacha:
-  Version:
-    value: auto
-    option: [ auto, v1, v2 ]
   CollectGoldenInheritance: true
 
 SanctuaryMonthly:
