@@ -144,13 +144,21 @@ PATCH_APPLY = ButtonWrapper(
 )
 PATCH_PERCENT_SIGN = ButtonWrapper(
     name='PATCH_PERCENT_SIGN',
-    share=Button(
-        file='./assets/share/login/PATCH_PERCENT_SIGN.png',
+    cn=Button(
+        file='./assets/cn/login/PATCH_PERCENT_SIGN.png',
+        area=(1062, 640, 1078, 655),
+        search=(1042, 620, 1098, 675),
+        color=(142, 154, 171),
+        button=(1062, 640, 1078, 655),
+    ),
+    global_cn=Button(
+        file='./assets/global_cn/login/PATCH_PERCENT_SIGN.png',
         area=(1063, 640, 1079, 655),
         search=(1043, 620, 1099, 675),
         color=(82, 82, 82),
         button=(1063, 640, 1079, 655),
     ),
+    global_en=None,
 )
 UNDER_MAINTENANCE = ButtonWrapper(
     name='UNDER_MAINTENANCE',
