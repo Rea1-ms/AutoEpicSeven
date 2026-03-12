@@ -1,9 +1,13 @@
 from module.base.button import ClickButton
 from module.base.timer import Timer
-from module.base.utils import color_similar, get_color
 from module.logger import logger
 from tasks.base.page import page_knights_weekly_task
-from tasks.knights.assets.assets_knights_weekly_task import RECEIVE, WEEKLY_POINTS_1
+from tasks.knights.assets.assets_knights_weekly_task import (
+    RECEIVE,
+    WEEKLY_POINTS_1,
+    WEEKLY_POINTS_2,
+    WEEKLY_POINTS_3,
+)
 
 
 class KnightsWeeklyTaskMixin:
@@ -11,8 +15,15 @@ class KnightsWeeklyTaskMixin:
     RECEIVE_CLICK_INTERVAL_SECONDS = 0.8
     WEEKLY_TASK_TIMEOUT_SECONDS = 30
     WEEKLY_TASK_DONE_CONFIRM_SECONDS = 1.5
-    WEEKLY_POINTS_1_LUMA_SIMILARITY = 0.8
-    WEEKLY_POINTS_1_COLOR_THRESHOLD = 30
+    WEEKLY_POINTS_ACTION = "KNIGHTS_WEEKLY_POINTS_ACTION"
+    WEEKLY_POINTS_CLICK_INTERVAL_SECONDS = 1
+    WEEKLY_POINTS_LUMA_SIMILARITY = 0.8
+    WEEKLY_POINTS_COLOR_THRESHOLD = 30
+    WEEKLY_POINTS_BUTTONS = (
+        WEEKLY_POINTS_1,
+        WEEKLY_POINTS_2,
+        WEEKLY_POINTS_3,
+    )
 
     def _enter_weekly_task(self, skip_first_screenshot=True) -> bool:
         logger.info("Knights: enter weekly task")
@@ -30,26 +41,27 @@ class KnightsWeeklyTaskMixin:
         buttons.sort(key=self._button_top)
         return buttons
 
-    def _is_weekly_points_1_ready(self, interval=0) -> bool:
+    def _get_ready_weekly_points_button(self, interval=0):
         """
-        WEEKLY_POINTS_1 uses luma + color double check.
+        Weekly point tiers use template + color double check.
+        Clicking any ready tier claims all pending weekly point rewards.
         """
-        self.device.stuck_record_add(WEEKLY_POINTS_1)
+        if interval and not self.interval_is_reached(self.WEEKLY_POINTS_ACTION, interval=interval):
+            return None
 
-        if interval and not self.interval_is_reached(WEEKLY_POINTS_1, interval=interval):
-            return False
+        for button in self.WEEKLY_POINTS_BUTTONS:
+            self.device.stuck_record_add(button)
 
-        appear = False
-        if WEEKLY_POINTS_1.match_template_luma(self.device.image, similarity=self.WEEKLY_POINTS_1_LUMA_SIMILARITY):
-            expected_color = WEEKLY_POINTS_1.buttons[0].color
-            current_color = get_color(self.device.image, WEEKLY_POINTS_1.buttons[0].area)
-            if color_similar(current_color, expected_color, threshold=self.WEEKLY_POINTS_1_COLOR_THRESHOLD):
-                appear = True
+            if button.match_template_color(
+                self.device.image,
+                similarity=self.WEEKLY_POINTS_LUMA_SIMILARITY,
+                threshold=self.WEEKLY_POINTS_COLOR_THRESHOLD,
+            ):
+                if interval:
+                    self.interval_reset(self.WEEKLY_POINTS_ACTION, interval=interval)
+                return button
 
-        if appear and interval:
-            self.interval_reset(WEEKLY_POINTS_1, interval=interval)
-
-        return appear
+        return None
 
     def run_weekly_task(self, skip_first_screenshot=True) -> bool:
         logger.hr("Knights Weekly Task", level=2)
@@ -108,10 +120,10 @@ class KnightsWeeklyTaskMixin:
                 logger.info("Knights weekly task: receive phase done")
                 break
 
-        # Phase 2: claim weekly points tier 1 when enabled.
+        # Phase 2: claim weekly points rewards when enabled.
         timeout.reset()
         no_points_confirm = Timer(self.WEEKLY_TASK_DONE_CONFIRM_SECONDS, count=4).start()
-        self.interval_clear(WEEKLY_POINTS_1, interval=1)
+        self.interval_clear(self.WEEKLY_POINTS_ACTION, interval=self.WEEKLY_POINTS_CLICK_INTERVAL_SECONDS)
 
         while 1:
             self.device.screenshot()
@@ -127,9 +139,10 @@ class KnightsWeeklyTaskMixin:
                 timeout.reset()
                 continue
 
-            if self._is_weekly_points_1_ready(interval=1):
-                logger.info("Knights weekly task: claim weekly points tier 1")
-                self.device.click(WEEKLY_POINTS_1)
+            ready_button = self._get_ready_weekly_points_button(interval=self.WEEKLY_POINTS_CLICK_INTERVAL_SECONDS)
+            if ready_button is not None:
+                logger.info(f"Knights weekly task: claim weekly points via {ready_button.name}")
+                self.device.click(ready_button)
                 timeout.reset()
                 no_points_confirm.reset()
                 continue
