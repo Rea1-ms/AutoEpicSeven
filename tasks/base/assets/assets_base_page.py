@@ -45,10 +45,10 @@ MAIN_GOTO_COMBAT = ButtonWrapper(
     name='MAIN_GOTO_COMBAT',
     cn=Button(
         file='./assets/cn/base/page/MAIN_GOTO_COMBAT.png',
-        area=(1189, 313, 1234, 335),
-        search=(1169, 293, 1254, 355),
-        color=(114, 118, 123),
-        button=(1189, 313, 1234, 335),
+        area=(1190, 313, 1235, 335),
+        search=(1170, 293, 1255, 355),
+        color=(111, 119, 124),
+        button=(1190, 313, 1235, 335),
     ),
     global_cn=Button(
         file='./assets/global_cn/base/page/MAIN_GOTO_COMBAT.png',
