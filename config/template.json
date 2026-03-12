@@ -201,6 +201,9 @@
       "AltarGrade": "Hell",
       "HuntGrade": "Hell",
       "FastCombat": true
+    },
+    "CombatRuntime": {
+      "Session": {}
     }
   },
   "Arena": {

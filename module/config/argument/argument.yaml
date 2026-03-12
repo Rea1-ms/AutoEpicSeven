@@ -307,6 +307,12 @@ Combat:
     value: Hell
     option: [ Mid, High, Hell, Dimensional ]
   FastCombat: true
+CombatRuntime:
+  Session:
+    keepvalue: true
+    display: hide
+    type: dict
+    value: {}
 
 SecretShop:
   OnlyFree: true

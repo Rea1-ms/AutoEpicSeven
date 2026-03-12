@@ -214,6 +214,9 @@ class GeneratedConfig:
     Combat_HuntGrade = 'Hell'  # Mid, High, Hell, Dimensional
     Combat_FastCombat = True
 
+    # Group `CombatRuntime`
+    CombatRuntime_Session = {}
+
     # Group `SecretShop`
     SecretShop_OnlyFree = True
     SecretShop_MaxRefresh = 10

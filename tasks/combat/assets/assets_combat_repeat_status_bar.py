@@ -13,3 +13,13 @@ MINIMIZE = ButtonWrapper(
         button=(782, 184, 813, 214),
     ),
 )
+WINDOW = ButtonWrapper(
+    name='WINDOW',
+    share=Button(
+        file='./assets/share/combat/repeat/status_bar/WINDOW.png',
+        area=(630, 166, 650, 183),
+        search=(610, 146, 670, 203),
+        color=(90, 79, 62),
+        button=(630, 166, 650, 183),
+    ),
+)

@@ -1484,6 +1484,16 @@
       "help": "Enable fast combat when available. If disabled, the task uses repeat combat and minimizes it to the main page."
     }
   },
+  "CombatRuntime": {
+    "_info": {
+      "name": "CombatRuntime._info.name",
+      "help": "CombatRuntime._info.help"
+    },
+    "Session": {
+      "name": "CombatRuntime.Session.name",
+      "help": "CombatRuntime.Session.help"
+    }
+  },
   "SecretShop": {
     "_info": {
       "name": "Secret Shop Settings",

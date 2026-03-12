@@ -1013,6 +1013,14 @@
         "type": "checkbox",
         "value": true
       }
+    },
+    "CombatRuntime": {
+      "Session": {
+        "type": "dict",
+        "value": {},
+        "keepvalue": true,
+        "display": "hide"
+      }
     }
   },
   "Arena": {

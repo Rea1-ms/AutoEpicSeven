@@ -57,6 +57,7 @@ Daily:
     Combat:
       - Scheduler
       - Combat
+      - CombatRuntime
     Arena:
       - Scheduler
       - Arena

@@ -1484,6 +1484,16 @@
       "help": "Activa combate rápido cuando esté disponible. Si se desactiva, la tarea inicia combate repetido y lo minimiza a la pantalla principal."
     }
   },
+  "CombatRuntime": {
+    "_info": {
+      "name": "CombatRuntime._info.name",
+      "help": "CombatRuntime._info.help"
+    },
+    "Session": {
+      "name": "CombatRuntime.Session.name",
+      "help": "CombatRuntime.Session.help"
+    }
+  },
   "SecretShop": {
     "_info": {
       "name": "Ajustes de tienda secreta",

@@ -30,12 +30,16 @@ from tasks.combat.assets.assets_combat_fast_combat import (
     FAST_COMBAT_RESULT_CLOSE,
     FAST_COMBAT_WINDOW,
 )
+from tasks.combat.assets.assets_combat_repeat_result import (
+    REPEAT_COMBAT_CHECK,
+    REPEAT_COMBAT_OVER,
+)
 from tasks.combat.assets.assets_combat_repeat_entry import (
     REPEAT_COMBAT_MENU,
     REPEAT_COMBAT_OFF,
     REPEAT_COMBAT_ON,
 )
-from tasks.combat.assets.assets_combat_repeat_status_bar import MINIMIZE
+from tasks.combat.assets.assets_combat_repeat_status_bar import MINIMIZE, WINDOW
 
 
 @dataclass(frozen=True)
@@ -92,16 +96,19 @@ COMBAT_PLANS = {
 
 
 class Combat(UI):
+    COMBAT_RUNTIME_PATH = "Combat.CombatRuntime.Session"
     COMBAT_CHECK_SIMILARITY = 0.8
     COMBAT_STATE_COLOR_THRESHOLD = 30
     COMBAT_ENTRY_TIMEOUT_SECONDS = 25
     COMBAT_SELECT_TIMEOUT_SECONDS = 20
     COMBAT_PREPARE_TIMEOUT_SECONDS = 25
     COMBAT_RUN_TIMEOUT_SECONDS = 90
+    COMBAT_WATCH_TIMEOUT_SECONDS = 20
     COMBAT_EXIT_TIMEOUT_SECONDS = 25
     COMBAT_SCROLL_INTERVAL_SECONDS = 1
     COMBAT_SCROLL_SETTLE_SECONDS = 1.5
     COMBAT_ELEMENT_CLICK_PENDING_SECONDS = 1.2
+    COMBAT_BACKGROUND_CHECK_MINUTES = 1
     COMBAT_GRADE_PENDING_SECONDS = 2.5
     COMBAT_START_PENDING_SECONDS = 4.5
     COMBAT_TOGGLE_INTERVAL_SECONDS = 1
@@ -127,6 +134,28 @@ class Combat(UI):
 
     def _combat_fast_enabled(self) -> bool:
         return bool(getattr(self.config, "Combat_FastCombat", True))
+
+    def _combat_runtime_session(self) -> dict:
+        session = self.config.cross_get(self.COMBAT_RUNTIME_PATH, default={})
+        return session if isinstance(session, dict) else {}
+
+    def _combat_runtime_active(self) -> bool:
+        return bool(self._combat_runtime_session().get("active"))
+
+    def _combat_runtime_set(self, session: dict) -> None:
+        self.config.cross_set(self.COMBAT_RUNTIME_PATH, session)
+
+    def _combat_runtime_clear(self) -> None:
+        self._combat_runtime_set({})
+
+    def _combat_runtime_build(self, plan: CombatPlan) -> dict:
+        return {
+            "active": True,
+            "mode": "repeat_background",
+            "domain": plan.name,
+            "element": self._combat_element(),
+            "grade": self._combat_grade(),
+        }
 
     def _is_combat_season_board(self) -> bool:
         return self.match_template_luma(SEASON_CHECK, similarity=self.COMBAT_CHECK_SIMILARITY)
@@ -162,6 +191,20 @@ class Combat(UI):
 
     def _is_repeat_combat_on(self) -> bool:
         return self.match_color(REPEAT_COMBAT_ON, threshold=self.COMBAT_STATE_COLOR_THRESHOLD)
+
+    def _is_repeat_result_window(self) -> bool:
+        return self.match_template_luma(WINDOW, similarity=self.COMBAT_CHECK_SIMILARITY)
+
+    def _is_repeat_combat_over(self) -> bool:
+        return self.match_template_luma(REPEAT_COMBAT_OVER, similarity=self.COMBAT_CHECK_SIMILARITY)
+
+    def _has_repeat_combat_check(self) -> bool:
+        return self.match_template_luma(REPEAT_COMBAT_CHECK, similarity=self.COMBAT_CHECK_SIMILARITY)
+
+    def _is_repeat_combat_running(self) -> bool:
+        if self._is_repeat_combat_over() or self._is_repeat_result_window():
+            return False
+        return self._has_repeat_combat_check()
 
     def _is_selected_element(self, selected_button: ButtonWrapper) -> bool:
         return self.match_template_color(
@@ -462,7 +505,6 @@ class Combat(UI):
         timeout = Timer(self.COMBAT_RUN_TIMEOUT_SECONDS, count=240).start()
         stage = "prepare"
         start_pending = Timer(self.COMBAT_START_PENDING_SECONDS, count=0).clear()
-        background_started = False
         main_confirm = Timer(0.4, count=2).clear()
 
         while 1:
@@ -474,19 +516,6 @@ class Combat(UI):
             if timeout.reached():
                 logger.warning("Combat: repeat combat timeout")
                 return False
-
-            if background_started and self.is_in_main(interval=0):
-                if not main_confirm.started():
-                    main_confirm.start()
-                elif main_confirm.reached():
-                    # TODO:
-                    # Background repeat combat is only "started" here.
-                    # Completion/collection assets and reconnect-driven restart flow
-                    # still need a dedicated watcher before short-interval polling is safe.
-                    logger.info("Combat: repeat combat running in background")
-                    return True
-            else:
-                main_confirm.clear()
 
             if self._handle_combat_additional():
                 timeout.reset()
@@ -511,7 +540,6 @@ class Combat(UI):
 
             if stage == "pending":
                 if self.appear_then_click(MINIMIZE, interval=1):
-                    background_started = True
                     stage = "background"
                     logger.info("Combat: minimize repeat combat")
                     timeout.reset()
@@ -526,7 +554,108 @@ class Combat(UI):
 
             if stage == "background":
                 if self.appear_then_click(MINIMIZE, interval=1):
-                    background_started = True
+                    timeout.reset()
+                    continue
+                if self.is_in_main(interval=0) and self._is_repeat_combat_running():
+                    if not main_confirm.started():
+                        main_confirm.start()
+                    elif main_confirm.reached():
+                        logger.info("Combat: repeat combat running in background")
+                        return True
+                else:
+                    main_confirm.clear()
+                continue
+
+    def _watch_repeat_combat(self, skip_first_screenshot=True) -> str:
+        logger.info("Combat: watch repeat combat")
+        timeout = Timer(self.COMBAT_WATCH_TIMEOUT_SECONDS, count=60).start()
+        stage = "watch"
+        result_main_confirm = Timer(0.4, count=2).clear()
+
+        while 1:
+            if skip_first_screenshot:
+                skip_first_screenshot = False
+            else:
+                self.device.screenshot()
+
+            if timeout.reached():
+                logger.warning("Combat: repeat combat watch timeout, keep session active")
+                return "running"
+
+            if self._handle_combat_network_error(interval=1):
+                logger.warning("Combat: background repeat combat has network error, keep session active")
+                return "running"
+
+            if stage == "watch":
+                if self.appear_then_click(REPEAT_COMBAT_OVER, interval=1):
+                    logger.info("Combat: repeat combat over, open result")
+                    stage = "result"
+                    timeout.reset()
+                    continue
+
+                if self._is_repeat_result_window():
+                    stage = "result"
+                    timeout.reset()
+                    continue
+
+                if self._is_repeat_combat_running():
+                    logger.info("Combat: repeat combat still running in background")
+                    return "running"
+
+                if self.is_in_main(interval=0):
+                    logger.warning("Combat: repeat combat session active but check is missing")
+                    return "lost"
+
+                if self._handle_combat_additional():
+                    timeout.reset()
+                    continue
+                continue
+
+            if stage == "result":
+                if self.appear_then_click(REPEAT_COMBAT_OVER, interval=1):
+                    timeout.reset()
+                    continue
+
+                if self._is_repeat_result_window():
+                    if self.handle_ad_buff_x_close(interval=0.5):
+                        logger.info("Combat: close repeat combat result")
+                        stage = "finish"
+                        timeout.reset()
+                        result_main_confirm.clear()
+                        continue
+                    timeout.reset()
+                    continue
+
+                if self.handle_ad_buff_x_close(interval=0.5):
+                    logger.info("Combat: close repeat combat result")
+                    stage = "finish"
+                    timeout.reset()
+                    result_main_confirm.clear()
+                    continue
+
+                if self._handle_combat_additional():
+                    timeout.reset()
+                    continue
+                continue
+
+            if stage == "finish":
+                if self._is_repeat_result_window():
+                    if self.handle_ad_buff_x_close(interval=0.5):
+                        timeout.reset()
+                        continue
+                    timeout.reset()
+                    continue
+
+                if self.is_in_main(interval=0):
+                    if not result_main_confirm.started():
+                        result_main_confirm.start()
+                    elif result_main_confirm.reached():
+                        logger.info("Combat: repeat combat finished")
+                        return "finished"
+                else:
+                    result_main_confirm.clear()
+
+                if self._handle_combat_additional():
                     timeout.reset()
                     continue
                 continue
@@ -583,6 +712,29 @@ class Combat(UI):
         elif not self.is_in_main(interval=0):
             self.ui_goto_main()
 
+        if self._combat_runtime_active():
+            session = self._combat_runtime_session()
+            logger.info("Combat: background session active, watch current session")
+            logger.attr("CombatSessionDomain", session.get("domain"))
+            logger.attr("CombatSessionElement", session.get("element"))
+            logger.attr("CombatSessionGrade", session.get("grade"))
+
+            if not self.is_in_main(interval=0):
+                self.ui_goto_main()
+
+            status = self._watch_repeat_combat(skip_first_screenshot=True)
+            if status == "finished":
+                self._combat_runtime_clear()
+                self.config.task_delay(server_update=True)
+                return True
+
+            if status == "lost":
+                logger.warning("Combat: background session lost, relaunch combat")
+                self._combat_runtime_clear()
+            else:
+                self.config.task_delay(minute=self.COMBAT_BACKGROUND_CHECK_MINUTES)
+                return True
+
         plan = self._combat_plan()
         use_fast_combat = self._combat_fast_enabled()
 
@@ -607,13 +759,19 @@ class Combat(UI):
             else:
                 success = self._run_repeat_combat(skip_first_screenshot=True)
 
-        if success:
+        if success and use_fast_combat:
             success = self._leave_to_main(skip_first_screenshot=True)
 
         if success:
-            self.config.task_delay(server_update=True)
+            if use_fast_combat:
+                self._combat_runtime_clear()
+                self.config.task_delay(server_update=True)
+            else:
+                self._combat_runtime_set(self._combat_runtime_build(plan))
+                self.config.task_delay(minute=self.COMBAT_BACKGROUND_CHECK_MINUTES)
             return True
 
+        self._combat_runtime_clear()
         self._leave_to_main(skip_first_screenshot=True)
         self.config.task_delay(success=False)
         return False

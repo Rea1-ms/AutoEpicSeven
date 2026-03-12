@@ -1484,6 +1484,16 @@
       "help": "开启后优先使用快速战斗；关闭后启用宠物托管重复战斗并最小化到主界面。"
     }
   },
+  "CombatRuntime": {
+    "_info": {
+      "name": "CombatRuntime._info.name",
+      "help": "CombatRuntime._info.help"
+    },
+    "Session": {
+      "name": "CombatRuntime.Session.name",
+      "help": "CombatRuntime.Session.help"
+    }
+  },
   "SecretShop": {
     "_info": {
       "name": "秘密商店设置",

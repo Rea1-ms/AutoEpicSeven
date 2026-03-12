@@ -1484,6 +1484,16 @@
       "help": "開啟後優先使用快速戰鬥；關閉後啟用寵物托管重複戰鬥並最小化到主畫面。"
     }
   },
+  "CombatRuntime": {
+    "_info": {
+      "name": "CombatRuntime._info.name",
+      "help": "CombatRuntime._info.help"
+    },
+    "Session": {
+      "name": "CombatRuntime.Session.name",
+      "help": "CombatRuntime.Session.help"
+    }
+  },
   "SecretShop": {
     "_info": {
       "name": "秘密商店設定",
