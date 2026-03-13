@@ -30,10 +30,6 @@
       "name": "Error Handling",
       "help": ""
     },
-    "Dungeon": {
-      "name": "Dungeon",
-      "help": ""
-    },
     "Ornament": {
       "name": "Ornament",
       "help": "The followings must be satisfied:\n1. Manually clear Divergent Universe once this week and have a save file.\n2. Enter the dungeon once on current device to have dungeon team saved."
@@ -69,6 +65,10 @@
     "Knights": {
       "name": "Guild",
       "help": "Guild automation: sign-in reward, support, expedition flow, and World Boss."
+    },
+    "Combat": {
+      "name": "Daily Combat",
+      "help": "Farm Spirit Altar or Hunt with the selected element and grade, then start fast combat or background repeat combat."
     },
     "Arena": {
       "name": "Arena",
@@ -1263,13 +1263,6 @@
       "name": "Gacha Settings",
       "help": ""
     },
-    "Version": {
-      "name": "Version Branch",
-      "help": "auto: choose by server (CN=V1, OVERSEA=V2); you can also force it manually.",
-      "auto": "Auto",
-      "v1": "V1 (Legacy)",
-      "v2": "V2 (Latest)"
-    },
     "CollectGoldenInheritance": {
       "name": "Collect Golden Inheritance",
       "help": "After summoning, click to collect when Golden Inheritance is full."
@@ -1310,14 +1303,6 @@
     "Support": {
       "name": "Guild Support",
       "help": "Enter guild support and run donation/request flows."
-    },
-    "Shop": {
-      "name": "Guild Shop",
-      "help": "Enter guild shop and run purchase flow."
-    },
-    "BuyMorogora": {
-      "name": "Buy Morogora",
-      "help": "Buy Morogora in guild shop (weekly)."
     },
     "DonateLowerLevelFairyFlower": {
       "name": "Donate Lower-Level Fairy Flower",
@@ -1388,20 +1373,6 @@
       "help": "Donate Beginner Penguin to guild requests in support."
     }
   },
-  "KnightsShop": {
-    "_info": {
-      "name": "Guild - Shop",
-      "help": "Guild shop related options."
-    },
-    "Shop": {
-      "name": "Guild Shop",
-      "help": "Enter guild shop and run purchase flow."
-    },
-    "BuyMorogora": {
-      "name": "Buy Morogora",
-      "help": "Buy Morogora in guild shop (weekly)."
-    }
-  },
   "KnightsExpedition": {
     "_info": {
       "name": "Guild - Expedition & World Boss",
@@ -1448,6 +1419,57 @@
     "NPCCombatCount": {
       "name": "NPC Battle Count",
       "help": "Maximum number of NPC battles in this run."
+    }
+  },
+  "Combat": {
+    "_info": {
+      "name": "Daily Combat Settings",
+      "help": "Configure the domain, element, grade, and whether fast combat should be used."
+    },
+    "Domain": {
+      "name": "Domain",
+      "help": "Choose whether this task farms Hunt or Spirit Altar.",
+      "Hunt": "Hunt",
+      "SpiritAltar": "Spirit Altar"
+    },
+    "Element": {
+      "name": "Element",
+      "help": "Choose the element branch to enter.",
+      "Dark": "Dark",
+      "Light": "Light",
+      "Water": "Water",
+      "Fire": "Fire",
+      "Nature": "Nature"
+    },
+    "AltarGrade": {
+      "name": "Altar Grade",
+      "help": "Difficulty used for Spirit Altar runs.",
+      "Pri": "Pri",
+      "Mid": "Mid",
+      "High": "High",
+      "Hell": "Hell"
+    },
+    "HuntGrade": {
+      "name": "Hunt Grade",
+      "help": "Difficulty used for Hunt runs.",
+      "Mid": "Mid",
+      "High": "High",
+      "Hell": "Hell",
+      "Dimensional": "Dimensional"
+    },
+    "FastCombat": {
+      "name": "Use Fast Combat",
+      "help": "Enable fast combat when available. If disabled, the task uses repeat combat and minimizes it to the main page."
+    }
+  },
+  "CombatRuntime": {
+    "_info": {
+      "name": "CombatRuntime._info.name",
+      "help": "CombatRuntime._info.help"
+    },
+    "Session": {
+      "name": "CombatRuntime.Session.name",
+      "help": "CombatRuntime.Session.help"
     }
   },
   "SecretShop": {

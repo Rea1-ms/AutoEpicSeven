@@ -3,23 +3,23 @@ from module.base.button import Button, ButtonWrapper
 # This file was auto-generated, do not modify it manually. To generate:
 # ``` python -m dev_tools.button_extract ```
 
-Rusted_Crypt_1 = ButtonWrapper(
-    name='Rusted_Crypt_1',
+LEIF_NOT_SELECTED = ButtonWrapper(
+    name='LEIF_NOT_SELECTED',
     share=Button(
-        file='./assets/share/combat/popup/Rusted_Crypt_1.png',
-        area=(982, 100, 1016, 124),
-        search=(962, 80, 1036, 144),
-        color=(43, 74, 70),
-        button=(982, 100, 1016, 124),
+        file='./assets/share/combat/popup/LEIF_NOT_SELECTED.png',
+        area=(373, 301, 481, 370),
+        search=(353, 281, 501, 390),
+        color=(49, 64, 62),
+        button=(373, 301, 481, 370),
     ),
 )
-Rusted_Crypt_2 = ButtonWrapper(
-    name='Rusted_Crypt_2',
+LEIF_SELECTED = ButtonWrapper(
+    name='LEIF_SELECTED',
     share=Button(
-        file='./assets/share/combat/popup/Rusted_Crypt_2.png',
-        area=(1092, 355, 1124, 379),
-        search=(1072, 335, 1144, 399),
-        color=(46, 79, 74),
-        button=(1092, 355, 1124, 379),
+        file='./assets/share/combat/popup/LEIF_SELECTED.png',
+        area=(373, 296, 482, 360),
+        search=(353, 276, 502, 380),
+        color=(57, 66, 59),
+        button=(373, 296, 482, 360),
     ),
 )

@@ -42,13 +42,22 @@ NETWORK_ERROR_ABNORMAL = ButtonWrapper(
         color=(98, 101, 104),
         button=(674, 313, 711, 333),
     ),
-    global_cn=Button(
-        file='./assets/global_cn/base/popup/NETWORK_ERROR_ABNORMAL.png',
-        area=(676, 312, 715, 332),
-        search=(656, 292, 735, 352),
-        color=(90, 94, 97),
-        button=(676, 312, 715, 332),
-    ),
+    global_cn=[
+        Button(
+            file='./assets/global_cn/base/popup/NETWORK_ERROR_ABNORMAL.png',
+            area=(676, 312, 715, 332),
+            search=(656, 292, 735, 352),
+            color=(90, 94, 97),
+            button=(676, 312, 715, 332),
+        ),
+        Button(
+            file='./assets/global_cn/base/popup/NETWORK_ERROR_ABNORMAL.2.png',
+            area=(675, 340, 713, 358),
+            search=(655, 320, 733, 378),
+            color=(100, 104, 110),
+            button=(675, 340, 713, 358),
+        ),
+    ],
     global_en=None,
 )
 NETWORK_ERROR_DISCONNECT = ButtonWrapper(
@@ -163,7 +172,7 @@ TOUCH_TO_CLOSE = ButtonWrapper(
     share=Button(
         file='./assets/share/base/popup/TOUCH_TO_CLOSE.png',
         area=(628, 614, 651, 629),
-        search=(622, 457, 770, 640),
+        search=(622, 457, 770, 715),
         color=(65, 90, 125),
         button=(628, 614, 651, 629),
     ),

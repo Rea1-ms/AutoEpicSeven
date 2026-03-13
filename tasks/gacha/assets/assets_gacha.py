@@ -15,7 +15,13 @@ EPIC_BOOKMARK = ButtonWrapper(
 )
 GACHA_STANDARD_TAB = ButtonWrapper(
     name='GACHA_STANDARD_TAB',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/gacha/GACHA_STANDARD_TAB.png',
+        area=(58, 430, 161, 457),
+        search=(13, 85, 202, 678),
+        color=(36, 135, 168),
+        button=(58, 430, 161, 457),
+    ),
     global_cn=Button(
         file='./assets/global_cn/gacha/GACHA_STANDARD_TAB.png',
         area=(58, 430, 161, 458),
@@ -23,18 +29,6 @@ GACHA_STANDARD_TAB = ButtonWrapper(
         color=(35, 139, 170),
         button=(58, 430, 161, 458),
     ),
-    global_en=None,
-)
-GACHA_STANDARD_TAB_V1 = ButtonWrapper(
-    name='GACHA_STANDARD_TAB_V1',
-    cn=Button(
-        file='./assets/cn/gacha/GACHA_STANDARD_TAB_V1.png',
-        area=(1085, 612, 1164, 633),
-        search=(1085, 90, 1164, 696),
-        color=(108, 108, 108),
-        button=(1085, 612, 1164, 633),
-    ),
-    global_cn=None,
     global_en=None,
 )
 GOLDEN_INHERITANCE_FULL = ButtonWrapper(
@@ -87,7 +81,13 @@ SUMMON_NEXT_PAGE = ButtonWrapper(
 )
 SUMMON_ONE_FREE = ButtonWrapper(
     name='SUMMON_ONE_FREE',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/gacha/SUMMON_ONE_FREE.png',
+        area=(809, 651, 848, 671),
+        search=(789, 631, 868, 691),
+        color=(119, 105, 47),
+        button=(809, 651, 848, 671),
+    ),
     global_cn=Button(
         file='./assets/global_cn/gacha/SUMMON_ONE_FREE.png',
         area=(809, 650, 849, 671),
@@ -95,18 +95,6 @@ SUMMON_ONE_FREE = ButtonWrapper(
         color=(108, 95, 45),
         button=(809, 650, 849, 671),
     ),
-    global_en=None,
-)
-SUMMON_ONE_FREE_V1 = ButtonWrapper(
-    name='SUMMON_ONE_FREE_V1',
-    cn=Button(
-        file='./assets/cn/gacha/SUMMON_ONE_FREE_V1.png',
-        area=(333, 650, 371, 670),
-        search=(313, 630, 391, 690),
-        color=(117, 109, 45),
-        button=(333, 650, 371, 670),
-    ),
-    global_cn=None,
     global_en=None,
 )
 SUMMON_RESULT_BACK = ButtonWrapper(
@@ -139,25 +127,19 @@ SUMMON_SKIP = ButtonWrapper(
 )
 SUMMON_TEN_FREE = ButtonWrapper(
     name='SUMMON_TEN_FREE',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/gacha/SUMMON_TEN_FREE.png',
+        area=(1063, 651, 1102, 671),
+        search=(1043, 631, 1122, 691),
+        color=(100, 88, 40),
+        button=(1063, 651, 1102, 671),
+    ),
     global_cn=Button(
         file='./assets/global_cn/gacha/SUMMON_TEN_FREE.png',
-        area=(567, 650, 722, 671),
-        search=(547, 630, 742, 691),
-        color=(96, 112, 85),
-        button=(567, 650, 722, 671),
+        area=(1062, 650, 1102, 671),
+        search=(1042, 630, 1122, 691),
+        color=(101, 88, 41),
+        button=(1062, 650, 1102, 671),
     ),
-    global_en=None,
-)
-SUMMON_TEN_FREE_V1 = ButtonWrapper(
-    name='SUMMON_TEN_FREE_V1',
-    cn=Button(
-        file='./assets/cn/gacha/SUMMON_TEN_FREE_V1.png',
-        area=(568, 650, 607, 670),
-        search=(548, 630, 627, 690),
-        color=(114, 106, 44),
-        button=(568, 650, 607, 670),
-    ),
-    global_cn=None,
     global_en=None,
 )

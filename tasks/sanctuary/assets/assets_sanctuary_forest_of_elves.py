@@ -33,3 +33,43 @@ CLAIM_REWARDS = ButtonWrapper(
         button=(990, 488, 1000, 498),
     ),
 )
+OCR_CARE_TIME = ButtonWrapper(
+    name='OCR_CARE_TIME',
+    share=Button(
+        file='./assets/share/sanctuary/forest_of_elves/OCR_CARE_TIME.png',
+        area=(958, 545, 1049, 570),
+        search=(938, 525, 1069, 590),
+        color=(98, 108, 127),
+        button=(958, 545, 1049, 570),
+    ),
+)
+OCR_FLOWER_TIME = ButtonWrapper(
+    name='OCR_FLOWER_TIME',
+    share=Button(
+        file='./assets/share/sanctuary/forest_of_elves/OCR_FLOWER_TIME.png',
+        area=(979, 367, 1099, 388),
+        search=(959, 347, 1119, 408),
+        color=(110, 124, 135),
+        button=(979, 367, 1099, 388),
+    ),
+)
+OCR_MOROGORA_TIME = ButtonWrapper(
+    name='OCR_MOROGORA_TIME',
+    share=Button(
+        file='./assets/share/sanctuary/forest_of_elves/OCR_MOROGORA_TIME.png',
+        area=(961, 482, 1114, 503),
+        search=(941, 462, 1134, 523),
+        color=(114, 124, 137),
+        button=(961, 482, 1114, 503),
+    ),
+)
+OCR_PENGUIN_TIME = ButtonWrapper(
+    name='OCR_PENGUIN_TIME',
+    share=Button(
+        file='./assets/share/sanctuary/forest_of_elves/OCR_PENGUIN_TIME.png',
+        area=(979, 251, 1099, 273),
+        search=(959, 231, 1119, 293),
+        color=(100, 113, 126),
+        button=(979, 251, 1099, 273),
+    ),
+)

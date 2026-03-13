@@ -240,9 +240,6 @@ PlannerTarget:
 # ==================== Activity ====================
 
 Gacha:
-  Version:
-    value: auto
-    option: [ auto, v1, v2 ]
   CollectGoldenInheritance: true
 
 SanctuaryMonthly:
@@ -255,8 +252,6 @@ Knights:
   WeeklyTask: true
   Donate: true
   Support: true
-  Shop: true
-  BuyMorogora: true
   DonateLowerLevelFairyFlower: true
   DonateBeginnerPenguin: true
   Expedition: true
@@ -279,10 +274,6 @@ KnightsDonate:
   DonateLowerLevelFairyFlower: true
   DonateBeginnerPenguin: true
 
-KnightsShop:
-  Shop: true
-  BuyMorogora: true
-
 KnightsExpedition:
   Expedition: true
   TeamBattle: true
@@ -295,6 +286,27 @@ Arena:
   NPCCombat: false
   NPCCombatFastBattle: true
   NPCCombatCount: 5
+
+Combat:
+  Domain:
+    value: Hunt
+    option: [ Hunt, SpiritAltar ]
+  Element:
+    value: Water
+    option: [ Dark, Light, Water, Fire, Nature ]
+  AltarGrade:
+    value: Hell
+    option: [ Pri, Mid, High, Hell ]
+  HuntGrade:
+    value: Hell
+    option: [ Mid, High, Hell, Dimensional ]
+  FastCombat: true
+CombatRuntime:
+  Session:
+    keepvalue: true
+    display: hide
+    type: dict
+    value: {}
 
 SecretShop:
   OnlyFree: true

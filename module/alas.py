@@ -206,6 +206,12 @@ class AzurLaneAutoScript:
                 logger.info(f'Wait until {task.next_run} for task `{task.command}`')
                 self.is_first_task = False
                 method = self.config.Optimization_WhenTaskQueueEmpty
+                combat_session_active = bool(
+                    self.config.cross_get('Combat.CombatRuntime.Session.active', default=False)
+                )
+                if combat_session_active and method in {'close_game', 'close_emulator'}:
+                    logger.info('Combat background session active, override wait behavior to goto_main')
+                    method = 'goto_main'
                 if method == 'close_game':
                     logger.info('Close game during wait')
                     self.run('stop')

@@ -174,5 +174,5 @@ class MainPage(PopupHandler):
             logger.critical('Method ui_goto() not found, class MainPage must be inherited by class UI')
             raise ScriptError
 
-        self.handle_lang_check(page=page_main)
+        # self.handle_lang_check(page=page_main)
         return True

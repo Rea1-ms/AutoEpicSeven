@@ -72,6 +72,9 @@ class Arena(UI):
     ARENA_NPC_CHALLENGE_PENDING_SECONDS = 4.5
     ARENA_NPC_BATTLE_START_PENDING_SECONDS = 6
     ARENA_WEEKLY_BATTLE_REWARDS_COLOR_THRESHOLD = 30
+    ARENA_WEEKLY_BATTLE_REWARDS_TIMEOUT_SECONDS = 6
+    ARENA_WEEKLY_BATTLE_REWARDS_CONFIRM_SECONDS = 1
+    ARENA_WEEKLY_BATTLE_REWARDS_MAX_CLICKS = 2
     ARENA_BATTLE_PASS_TIMEOUT_SECONDS = 18
     ARENA_BATTLE_PASS_BACK_INTERVAL_SECONDS = 1
     ARENA_BATTLE_PASS_SETTLE_SECONDS = 1.2
@@ -164,6 +167,11 @@ class Arena(UI):
             return not CHALLENGE.match_color(self.device.image, threshold=self.ARENA_NPC_CHALLENGE_COLOR_THRESHOLD)
         return False
 
+    def _is_weekly_battle_rewards_ready(self) -> bool:
+        return WEEKLY_BATTLE_REWARDS.match_color(
+            self.device.image, threshold=self.ARENA_WEEKLY_BATTLE_REWARDS_COLOR_THRESHOLD
+        )
+
     def _ensure_fast_battle_state(self, enabled: bool) -> bool:
         """
         Returns:
@@ -249,13 +257,17 @@ class Arena(UI):
     def _claim_weekly_battle_rewards(self, skip_first_screenshot=True) -> bool:
         """
         Claim weekly battle rewards from arena page after NPC combat rounds.
-        Use color match only, then click once when detected.
+        Do not treat one click as success immediately.
+        Only return success after reward state is consumed on arena page.
         """
         if not getattr(self.config, "Arena_ClaimWeeklyBattleRewards", True):
             return False
 
-        # Wait briefly until we are back on arena page, then do one-shot check.
-        timeout = Timer(4, count=12).start()
+        timeout = Timer(self.ARENA_WEEKLY_BATTLE_REWARDS_TIMEOUT_SECONDS, count=18).start()
+        confirm_timer = Timer(self.ARENA_WEEKLY_BATTLE_REWARDS_CONFIRM_SECONDS, count=2).clear()
+        stage = "detect"
+        click_count = 0
+
         while 1:
             if skip_first_screenshot:
                 skip_first_screenshot = False
@@ -263,21 +275,58 @@ class Arena(UI):
                 self.device.screenshot()
 
             if timeout.reached():
+                logger.warning("Arena: weekly battle rewards claim timeout")
                 return False
 
-            if not self._is_arena_page_ready(interval=0):
-                if self.ui_additional():
+            if stage == "detect":
+                if not self._is_arena_page_ready(interval=0):
+                    if self.ui_additional():
+                        timeout.reset()
+                        continue
                     continue
+
+                if self._is_weekly_battle_rewards_ready():
+                    self.device.click(WEEKLY_BATTLE_REWARDS)
+                    click_count += 1
+                    confirm_timer.reset()
+                    stage = "confirm"
+                    logger.info(f"Arena: claim weekly battle rewards (click {click_count})")
+                    timeout.reset()
+                    continue
+
+                logger.warning(
+                    "Arena: weekly battle rewards not detected on arena page "
+                    f"(template={WEEKLY_BATTLE_REWARDS.match_template_luma(self.device.image)}, "
+                    f"threshold={self.ARENA_WEEKLY_BATTLE_REWARDS_COLOR_THRESHOLD})"
+                )
+                return False
+
+            if stage == "confirm":
+                if self.ui_additional():
+                    timeout.reset()
+                    continue
+
+                if not self._is_arena_page_ready(interval=0):
+                    continue
+
+                if not self._is_weekly_battle_rewards_ready():
+                    logger.info("Arena: weekly battle rewards claimed")
+                    return True
+
+                if confirm_timer.reached():
+                    if click_count < self.ARENA_WEEKLY_BATTLE_REWARDS_MAX_CLICKS:
+                        logger.warning("Arena: weekly battle rewards click not consumed, retry")
+                        stage = "detect"
+                        timeout.reset()
+                        continue
+
+                    logger.warning(
+                        "Arena: weekly battle rewards click not consumed "
+                        f"after {click_count} clicks (template={WEEKLY_BATTLE_REWARDS.match_template_luma(self.device.image)})"
+                    )
+                    return False
+
                 continue
-
-            if WEEKLY_BATTLE_REWARDS.match_color(
-                self.device.image, threshold=self.ARENA_WEEKLY_BATTLE_REWARDS_COLOR_THRESHOLD
-            ):
-                self.device.click(WEEKLY_BATTLE_REWARDS)
-                logger.info("Arena: claim weekly battle rewards")
-                return True
-
-            return False
 
     def _claim_battle_pass_rewards(self, skip_first_screenshot=True) -> bool:
         """

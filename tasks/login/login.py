@@ -61,14 +61,16 @@ class Login(UI):
     继承 UI 以使用 is_in_main() 和 ui_additional()
     单循环模式：从游戏启动到进入主界面一气呵成
     """
+    LOGIN_DOMAIN_POPUP_TIMEOUT_SECONDS = 12
     _maintenance_backup = None
 
     def _handle_login_domain_popup(self, interval=2) -> bool:
         """
         Handle popups that only belong to the login domain.
 
-        This keeps login-specific startup/re-login popups out of global
-        `ui_additional()` handlers.
+        Most login-domain popups stay here. CN startup announcement is also
+        tolerated by global `ui_additional()` as a late fallback because it
+        appears very frequently outside dedicated login loops.
         """
         if self.appear_then_click(ANNOUNCEMENT_CLOSE, interval=interval):
             logger.info('Closed announce popup')
@@ -81,6 +83,80 @@ class Login(UI):
             return True
 
         return False
+
+    def _is_login_domain_popup_present(self) -> bool:
+        if self.appear(ANNOUNCEMENT_CLOSE, interval=0):
+            return True
+
+        if server_.is_cn_server(self.config.Emulator_PackageName) and self.appear(
+            LOGIN_ANNOUNCEMENT_CLOSE, interval=0
+        ):
+            return True
+
+        return False
+
+    def _is_login_progress_state(self) -> bool:
+        return (
+            self.is_in_main(interval=0)
+            or self.appear(LOGIN_ERROR, interval=0)
+            or self.appear(LOGIN_CONFIRM, interval=0)
+            or self.appear(LOGIN_LOADING, interval=0, similarity=0.75)
+            or self.appear(VERIFYING, interval=0)
+            or self.appear(PATCH_APPLY, interval=0)
+            or self.appear(PATCH_PERCENT_SIGN, interval=0)
+            or self.appear(UNDER_MAINTENANCE, interval=0)
+            or (
+                server_.is_oversea_server(self.config.Emulator_PackageName)
+                and self.appear(GAME_UPGRADE_AVAILABLE, interval=0)
+            )
+            or (
+                    server_.is_cn_server(self.config.Emulator_PackageName)
+                    and self.appear(LOGIN_ANNOUNCEMENT_CLOSE, interval=0)
+            )
+        )
+
+    def _handle_login_domain_popup_flow(self, skip_first_screenshot=True) -> str | None:
+        """
+        Once login-domain popup appears, keep handling that popup layer until we
+        positively reach another login progress state.
+
+        Returns:
+            None: login-domain popup not present.
+            "handled": popup layer was resolved and flow advanced.
+            "restart": popup flow stalled and login should be restarted.
+        """
+        if not self._is_login_domain_popup_present():
+            return None
+
+        logger.info('Login domain popup appeared, enter popup flow')
+        timeout = Timer(self.LOGIN_DOMAIN_POPUP_TIMEOUT_SECONDS, count=36).start()
+
+        while 1:
+            if skip_first_screenshot:
+                skip_first_screenshot = False
+            else:
+                self.device.screenshot()
+
+            if self._handle_login_domain_popup(interval=1):
+                timeout.reset()
+                continue
+
+            if self.handle_network_error(interval=1):
+                timeout.reset()
+                continue
+
+            if self.handle_touch_to_close(interval=1):
+                logger.info('Login popup flow closed touch-to-close')
+                timeout.reset()
+                continue
+
+            if self._is_login_progress_state():
+                logger.info('Login popup flow reached next login state')
+                return 'handled'
+
+            if timeout.reached():
+                logger.warning('Login popup flow timeout, restart login app flow')
+                return 'restart'
 
     def _handle_app_login(self):
         """
@@ -181,7 +257,20 @@ class Login(UI):
                     continue
 
             # Login-only popup layer, including CN re-login announcement close.
-            if self._handle_login_domain_popup(interval=2):
+            popup_result = self._handle_login_domain_popup_flow(skip_first_screenshot=True)
+            if popup_result == 'restart':
+                self.device.app_stop()
+                self.device.app_start()
+                start_success = False
+                login_success = False
+                network_error_count = 0
+                startup_timer.reset()
+                app_timer.reset()
+                timeout.reset()
+                main_confirm.reset()
+                self.device.stuck_record_clear()
+                continue
+            if popup_result == 'handled':
                 network_error_count = 0
                 timeout.reset()
                 main_confirm.reset()
@@ -223,7 +312,7 @@ class Login(UI):
                 continue
 
             # 加载中
-            if self.appear(LOGIN_LOADING, interval=5)\
+            if self.appear(LOGIN_LOADING, interval=5, similarity=0.75)\
                     or self.appear(VERIFYING, interval=5):
                 logger.info('Game loading...')
                 network_error_count = 0
@@ -255,6 +344,8 @@ class Login(UI):
                 continue
 
             # 网络错误弹窗
+            # Login itself handles disconnect in-place here. Global handoff is
+            # only used by non-login tasks to re-enter this state machine.
             if self.handle_network_error():
                 if network_error_window.reached():
                     network_error_window.reset()

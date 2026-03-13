@@ -6,6 +6,16 @@ from tasks.base.assets.assets_base_main_page import MENU, MENU_CLOSE, WHITE_STAR
 from tasks.secret_shop.assets.assets_secret_shop import SECRET_SHOP_CHECK
 from tasks.store.assets.assets_store import STORE_CHECK
 from tasks.arena.assets.assets_arena import ARENA_CHECK, ARENA_COMMON_ENTRY, ARENA_ENTRY
+from tasks.combat.assets.assets_combat_configs_entry import (
+    ALTER_CHECK,
+    COMMON_ENTRY,
+    HUNT_CHECK,
+    SEASON_ENTRY,
+    SEASON_CHECK,
+    SPIRIT_ALTAR,
+    URGENT_TASKS,
+)
+from tasks.combat.assets.assets_combat_repeat_entry import REPEAT_COMBAT_MENU
 from tasks.knights.assets.assets_knights import KNIGHTS_CHECK
 from tasks.knights.assets.assets_knights_expedition import (
     EXPEDITION,
@@ -148,7 +158,7 @@ page_sanctuary.link(HEART_OF_EULERBIS, destination=page_sanctuary_heart)
 
 # Secret shop
 page_secret_shop = Page(SECRET_SHOP_CHECK)
-page_secret_shop.link(MENU, destination=page_menu)
+page_secret_shop.link(BACK, destination=page_main)
 page_main.link(MAIN_GOTO_SECRET_SHOP, destination=page_secret_shop)
 
 # Store
@@ -165,6 +175,38 @@ page_main.link(ARENA_ENTRY, destination=page_arena_mode_popup)
 page_arena = Page(ARENA_CHECK)
 page_arena.link(BACK, destination=page_main)
 page_arena_mode_popup.link(ARENA_COMMON_ENTRY, destination=page_arena)
+
+# Combat season tab
+page_combat_season = Page(SEASON_CHECK)
+page_combat_season.link(BACK, destination=page_main)
+
+# Combat common tab
+page_combat_common = Page(SPIRIT_ALTAR)
+page_combat_common.link(BACK, destination=page_main)
+
+# Combat urgent tab
+page_combat_urgent = Page(URGENT_TASKS)
+page_combat_urgent.link(BACK, destination=page_main)
+
+# Combat container page: entering combat may restore either season or common tab.
+page_combat = Page((SEASON_CHECK, SPIRIT_ALTAR, URGENT_TASKS))
+page_combat.link(BACK, destination=page_main)
+page_main.link(MAIN_GOTO_COMBAT, destination=page_combat)
+page_main.link(MAIN_GOTO_COMBAT, destination=page_combat_season)
+page_main.link(MAIN_GOTO_COMBAT, destination=page_combat_common)
+page_main.link(MAIN_GOTO_COMBAT, destination=page_combat_urgent)
+page_combat_season.link(COMMON_ENTRY, destination=page_combat_common)
+page_combat_common.link(SEASON_ENTRY, destination=page_combat_season)
+page_combat_urgent.link(COMMON_ENTRY, destination=page_combat_common)
+page_combat_urgent.link(SEASON_ENTRY, destination=page_combat_season)
+
+# Combat stage selection page (element / grade)
+page_combat_stage = Page((ALTER_CHECK, HUNT_CHECK))
+page_combat_stage.link(BACK, destination=page_combat_common)
+
+# Combat prepare page
+page_combat_prepare = Page(REPEAT_COMBAT_MENU)
+page_combat_prepare.link(BACK, destination=page_combat_stage)
 
 # Pets
 page_pets = Page(PETS_CHECK)

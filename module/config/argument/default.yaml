@@ -10,9 +10,6 @@ Alas:
 
 # ==================== Daily ====================
 
-Dungeon:
-  Scheduler:
-    Enable: true
 DailyQuest:
   Scheduler:
     Enable: true

@@ -160,7 +160,6 @@ class GeneratedConfig:
     PlannerTarget_MemoTalentLevel = 6  # 6, 5, 4, 3, 2, 1
 
     # Group `Gacha`
-    Gacha_Version = 'auto'  # auto, v1, v2
     Gacha_CollectGoldenInheritance = True
 
     # Group `SanctuaryMonthly`
@@ -171,8 +170,6 @@ class GeneratedConfig:
     Knights_WeeklyTask = True
     Knights_Donate = True
     Knights_Support = True
-    Knights_Shop = True
-    Knights_BuyMorogora = True
     Knights_DonateLowerLevelFairyFlower = True
     Knights_DonateBeginnerPenguin = True
     Knights_Expedition = True
@@ -191,10 +188,6 @@ class GeneratedConfig:
     KnightsDonate_DonateLowerLevelFairyFlower = True
     KnightsDonate_DonateBeginnerPenguin = True
 
-    # Group `KnightsShop`
-    KnightsShop_Shop = True
-    KnightsShop_BuyMorogora = True
-
     # Group `KnightsExpedition`
     KnightsExpedition_Expedition = True
     KnightsExpedition_TeamBattle = True
@@ -207,6 +200,16 @@ class GeneratedConfig:
     Arena_NPCCombat = False
     Arena_NPCCombatFastBattle = True
     Arena_NPCCombatCount = 5
+
+    # Group `Combat`
+    Combat_Domain = 'Hunt'  # Hunt, SpiritAltar
+    Combat_Element = 'Water'  # Dark, Light, Water, Fire, Nature
+    Combat_AltarGrade = 'Hell'  # Pri, Mid, High, Hell
+    Combat_HuntGrade = 'Hell'  # Mid, High, Hell, Dimensional
+    Combat_FastCombat = True
+
+    # Group `CombatRuntime`
+    CombatRuntime_Session = {}
 
     # Group `SecretShop`
     SecretShop_OnlyFree = True

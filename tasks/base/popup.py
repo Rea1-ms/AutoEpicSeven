@@ -330,7 +330,7 @@ class PopupHandler(ModuleBase):
         Handle network error popups in Epic Seven.
 
         Case 1: "与服务器的连接已中断" (Server connection lost)
-            -> Click retry -> Will redirect to login
+            -> Click retry -> Handoff to login state machine
         Case 2: "网络连接异常" (Network connection abnormal)
         这里我为了偷懒，把 “设备时间异常” 作为同样逻辑处理了，反正都是需要踢回来到登录界面的
             -> Wait 3s -> Click retry -> Stay in place
@@ -345,6 +345,15 @@ class PopupHandler(ModuleBase):
         if self.appear(NETWORK_ERROR_DISCONNECT, interval=interval):
             logger.warning('Network disconnected, clicking retry')
             self.device.click(TOUCH_TO_CLOSE)
+            # Disconnect often drops the client back into login-domain startup.
+            # Global tasks should hand off to Login so CN-only login popups and
+            # re-enter flow are handled there instead of getting stuck.
+            if self.__class__.__name__ != 'Login':
+                logger.warning('Network disconnected, handoff to login flow')
+                self.device.click_record_clear()
+                self.device.stuck_record_clear()
+                from tasks.login.login import Login
+                Login(self.config, device=self.device).handle_app_login()
             return True
 
         # Case 2: Network abnormal (need to wait before retry)

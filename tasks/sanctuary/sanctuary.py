@@ -5,6 +5,7 @@ Epic Seven 圣域模块
     MAIN_GOTO_SANCTUARY -> SANCTUARY_CHECK
     日常 / 周常 / 月常 分开进入与处理
 """
+import datetime
 import re
 
 from module.base.button import ClickButton
@@ -12,7 +13,7 @@ from module.base.timer import Timer
 from module.config.utils import get_os_next_reset, get_server_next_monday_update, get_server_next_update
 from module.exception import ScriptError
 from module.logger import logger
-from module.ocr.ocr import Digit, DigitCounter, Ocr
+from module.ocr.ocr import Digit, DigitCounter, Duration, Ocr, OcrWhiteLetterOnComplexBackground
 from tasks.base.page import page_sanctuary
 from tasks.base.ui import UI
 from tasks.sanctuary.assets.assets_sanctuary import (
@@ -26,6 +27,10 @@ from tasks.sanctuary.assets.assets_sanctuary_forest_of_elves import (
     ALTAR_OF_GROWTH,
     CARE,
     CLAIM_REWARDS,
+    OCR_CARE_TIME,
+    OCR_FLOWER_TIME,
+    OCR_MOROGORA_TIME,
+    OCR_PENGUIN_TIME,
 )
 from tasks.sanctuary.assets.assets_sanctuary_heart_of_eulerbis import (
     ALREADY_STORED,
@@ -83,6 +88,30 @@ class OcrRewardTier(Ocr):
         return ""
 
 
+class OcrForestDuration(OcrWhiteLetterOnComplexBackground, Duration):
+    def after_process(self, result):
+        result = Duration.after_process(self, result)
+        result = result.replace(" ", "")
+        result = result.replace("O", "0").replace("o", "0")
+        result = result.replace("I", "1").replace("l", "1")
+
+        match = re.search(r"(\d{1,3}:\d{2}:\d{2})", result)
+        if match:
+            return match.group(1)
+
+        return result
+
+    def format_result(self, result: str) -> datetime.timedelta:
+        match = re.match(r"^\s*(\d{1,3})\s*:\s*(\d{2})\s*:\s*(\d{2})\s*$", result)
+        if match:
+            hours = int(match.group(1))
+            minutes = int(match.group(2))
+            seconds = int(match.group(3))
+            return datetime.timedelta(hours=hours, minutes=minutes, seconds=seconds)
+
+        return Duration.format_result(self, result)
+
+
 class Sanctuary(UI):
     """
     圣域任务
@@ -92,6 +121,9 @@ class Sanctuary(UI):
     HEART_MAX_LEVEL = 11
     MONTHLY_OCR_INTERVAL_SECONDS = 0.8
     MONTHLY_PURIFY_CLICK_INTERVAL_SECONDS = 1
+    DAILY_FOREST_DELAY_BUFFER_SECONDS = 10
+    DAILY_FOREST_MAX_SECONDS = 168 * 60 * 60 + 59 * 60 + 59
+    DAILY_FOREST_ZERO_SKIP_TIMERS = {"Care"}
 
     def _enter_sanctuary(self) -> bool:
         logger.hr("Enter Sanctuary", level=1)
@@ -245,12 +277,64 @@ class Sanctuary(UI):
             if stable_count >= 2:
                 return True
 
+    @staticmethod
+    def _is_valid_daily_forest_duration(remain: datetime.timedelta) -> bool:
+        seconds = int(remain.total_seconds())
+        return 0 < seconds <= Sanctuary.DAILY_FOREST_MAX_SECONDS
+
+    def _ocr_daily_forest_remaining(self) -> dict[str, datetime.timedelta]:
+        lang = self._ocr_lang()
+        buttons = (
+            ("Penguin", OCR_PENGUIN_TIME),
+            ("Flower", OCR_FLOWER_TIME),
+            ("Morogora", OCR_MOROGORA_TIME),
+            ("Care", OCR_CARE_TIME),
+        )
+        results: dict[str, datetime.timedelta] = {}
+
+        for name, button in buttons:
+            remain = OcrForestDuration(button, lang=lang, name=f"Forest{name}Duration").ocr_single_line(
+                self.device.image
+            )
+            if name in self.DAILY_FOREST_ZERO_SKIP_TIMERS and int(remain.total_seconds()) == 0:
+                logger.info(f"Daily forest duration skipped: {name}=0:00:00 (weekly care exhausted)")
+                continue
+            if self._is_valid_daily_forest_duration(remain):
+                logger.attr(f"Forest{name}Remain", str(remain))
+                results[name] = remain
+            else:
+                logger.warning(f"Daily forest duration OCR invalid: {name}={remain}")
+
+        return results
+
+    def _daily_next_run_target(self) -> datetime.datetime | None:
+        remains = self._ocr_daily_forest_remaining()
+        return self._daily_next_run_target_from_remains(remains)
+
+    def _daily_next_run_target_from_remains(
+            self,
+            remains: dict[str, datetime.timedelta],
+    ) -> datetime.datetime | None:
+        if not remains:
+            logger.warning("Daily forest duration OCR failed for all four areas")
+            return None
+
+        name, remain = min(remains.items(), key=lambda item: item[1])
+        target = datetime.datetime.now() + remain + datetime.timedelta(seconds=self.DAILY_FOREST_DELAY_BUFFER_SECONDS)
+        logger.info(
+            f"Daily forest delay to next ready slot: {name}={remain}, "
+            f"buffer={self.DAILY_FOREST_DELAY_BUFFER_SECONDS}s, target={target.replace(microsecond=0)}"
+        )
+        return target.replace(microsecond=0)
+
     def run_daily(self) -> bool:
+        self._daily_delay_target = None
         if not self._enter_sanctuary():
             return False
         if not self._enter_daily():
             return False
         self._daily_claim_rewards()
+        self._daily_delay_target = self._daily_next_run_target()
         self._back_to_sanctuary()
         return True
 
@@ -675,7 +759,11 @@ class Sanctuary(UI):
     def run_daily_task(self) -> bool:
         self._ensure_app_running()
         success = self.run_daily()
-        self.config.task_delay(target=get_server_next_update(self.config.Scheduler_ServerUpdate))
+        target = getattr(self, "_daily_delay_target", None)
+        if success and target is not None:
+            self.config.task_delay(target=target)
+        else:
+            self.config.task_delay(target=get_server_next_update(self.config.Scheduler_ServerUpdate))
         return success
 
     def run_weekly_task(self) -> bool:

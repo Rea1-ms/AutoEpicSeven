@@ -7,94 +7,89 @@ ICON_SEARCH = ButtonWrapper(
     name='ICON_SEARCH',
     share=Button(
         file='./assets/share/combat/stamina/status/ICON_SEARCH.png',
-        area=(568, 8, 1265, 66),
-        search=(548, 0, 1280, 86),
-        color=(71, 70, 100),
-        button=(568, 8, 1265, 66),
+        area=(450, 88, 878, 130),
+        search=(430, 68, 898, 150),
+        color=(27, 31, 35),
+        button=(450, 88, 878, 130),
     ),
 )
-IMMERSIFIER_ICON = ButtonWrapper(
-    name='IMMERSIFIER_ICON',
+LEIF_ICON = ButtonWrapper(
+    name='LEIF_ICON',
     share=Button(
-        file='./assets/share/combat/stamina/status/IMMERSIFIER_ICON.png',
-        area=(1047, 26, 1066, 49),
-        search=(1027, 6, 1086, 69),
-        color=(138, 127, 117),
-        button=(1047, 26, 1066, 49),
+        file='./assets/share/combat/stamina/status/LEIF_ICON.png',
+        area=(654, 96, 682, 124),
+        search=(634, 76, 702, 144),
+        color=(53, 79, 62),
+        button=(654, 96, 682, 124),
     ),
 )
-IMMERSIFIER_OCR = ButtonWrapper(
-    name='IMMERSIFIER_OCR',
+OCR_LEIF = ButtonWrapper(
+    name='OCR_LEIF',
     share=Button(
-        file='./assets/share/combat/stamina/status/IMMERSIFIER_OCR.png',
-        area=(1049, 26, 1151, 48),
-        search=(1029, 6, 1171, 68),
-        color=(64, 61, 61),
-        button=(1049, 26, 1151, 48),
+        file='./assets/share/combat/stamina/status/OCR_LEIF.png',
+        area=(654, 96, 749, 124),
+        search=(634, 76, 769, 144),
+        color=(31, 42, 41),
+        button=(654, 96, 749, 124),
     ),
 )
-RESERVED_ICON = ButtonWrapper(
-    name='RESERVED_ICON',
-    share=[
-        Button(
-            file='./assets/share/combat/stamina/status/RESERVED_ICON.png',
-            area=(895, 26, 916, 48),
-            search=(875, 6, 936, 68),
-            color=(155, 212, 215),
-            button=(895, 26, 916, 48),
-        ),
-        Button(
-            file='./assets/share/combat/stamina/status/RESERVED_ICON.2.png',
-            area=(895, 26, 916, 48),
-            search=(875, 6, 936, 68),
-            color=(155, 209, 213),
-            button=(895, 26, 916, 48),
-        ),
-    ],
-)
-RESERVED_OCR = ButtonWrapper(
-    name='RESERVED_OCR',
+OCR_SKYSTONE = ButtonWrapper(
+    name='OCR_SKYSTONE',
     share=Button(
-        file='./assets/share/combat/stamina/status/RESERVED_OCR.png',
-        area=(895, 26, 999, 48),
-        search=(875, 6, 1019, 68),
-        color=(50, 69, 83),
-        button=(895, 26, 999, 48),
+        file='./assets/share/combat/stamina/status/OCR_SKYSTONE.png',
+        area=(752, 94, 863, 126),
+        search=(732, 74, 883, 146),
+        color=(33, 43, 52),
+        button=(752, 94, 863, 126),
+    ),
+)
+OCR_SPECTRAL_CORE = ButtonWrapper(
+    name='OCR_SPECTRAL_CORE',
+    share=Button(
+        file='./assets/share/combat/stamina/status/OCR_SPECTRAL_CORE.png',
+        area=(469, 94, 562, 124),
+        search=(449, 74, 582, 144),
+        color=(38, 23, 23),
+        button=(469, 94, 562, 124),
+    ),
+)
+OCR_STAMINA = ButtonWrapper(
+    name='OCR_STAMINA',
+    share=Button(
+        file='./assets/share/combat/stamina/status/OCR_STAMINA.png',
+        area=(563, 91, 653, 126),
+        search=(543, 71, 673, 146),
+        color=(46, 47, 48),
+        button=(563, 91, 653, 126),
+    ),
+)
+SKYSTONE_ICON = ButtonWrapper(
+    name='SKYSTONE_ICON',
+    share=Button(
+        file='./assets/share/combat/stamina/status/SKYSTONE_ICON.png',
+        area=(752, 94, 769, 126),
+        search=(732, 74, 789, 146),
+        color=(76, 118, 151),
+        button=(752, 94, 769, 126),
+    ),
+)
+SPECTRAL_CORE_ICON = ButtonWrapper(
+    name='SPECTRAL_CORE_ICON',
+    share=Button(
+        file='./assets/share/combat/stamina/status/SPECTRAL_CORE_ICON.png',
+        area=(473, 94, 503, 123),
+        search=(453, 74, 523, 143),
+        color=(90, 30, 17),
+        button=(473, 94, 503, 123),
     ),
 )
 STAMINA_ICON = ButtonWrapper(
     name='STAMINA_ICON',
-    share=[
-        Button(
-            file='./assets/share/combat/stamina/status/STAMINA_ICON.png',
-            area=(873, 26, 894, 48),
-            search=(853, 6, 914, 68),
-            color=(188, 180, 226),
-            button=(873, 26, 894, 48),
-        ),
-        Button(
-            file='./assets/share/combat/stamina/status/STAMINA_ICON.2.png',
-            area=(873, 26, 894, 48),
-            search=(853, 6, 914, 68),
-            color=(186, 180, 223),
-            button=(873, 26, 894, 48),
-        ),
-        Button(
-            file='./assets/share/combat/stamina/status/STAMINA_ICON.3.png',
-            area=(873, 26, 894, 48),
-            search=(853, 6, 914, 68),
-            color=(184, 176, 214),
-            button=(873, 26, 894, 48),
-        ),
-    ],
-)
-STAMINA_OCR = ButtonWrapper(
-    name='STAMINA_OCR',
     share=Button(
-        file='./assets/share/combat/stamina/status/STAMINA_OCR.png',
-        area=(873, 26, 1013, 48),
-        search=(853, 6, 1033, 68),
-        color=(66, 64, 88),
-        button=(873, 26, 1013, 48),
+        file='./assets/share/combat/stamina/status/STAMINA_ICON.png',
+        area=(563, 91, 586, 126),
+        search=(543, 71, 606, 146),
+        color=(121, 106, 95),
+        button=(563, 91, 586, 126),
     ),
 )

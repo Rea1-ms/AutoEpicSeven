@@ -30,10 +30,6 @@
       "name": "异常处理",
       "help": ""
     },
-    "Dungeon": {
-      "name": "每日副本",
-      "help": ""
-    },
     "Ornament": {
       "name": "饰品提取",
       "help": "运行 \"饰品提取\" 任务需要：\n1. 每周事先手动通关差分宇宙一次并保存存档\n2. 在当前设备进入过副本一次，有保存的编队"
@@ -69,6 +65,10 @@
     "Knights": {
       "name": "骑士团",
       "help": "骑士团相关日常：签到加成奖励、支援、团战占位、世界 Boss。"
+    },
+    "Combat": {
+      "name": "每日副本",
+      "help": "刷取精灵祭坛或讨伐，按配置选择属性、难度，并进入快速战斗或后台重复战斗。"
     },
     "Arena": {
       "name": "竞技场",
@@ -1263,13 +1263,6 @@
       "name": "召唤设置",
       "help": ""
     },
-    "Version": {
-      "name": "版本分支",
-      "help": "auto：按服务器自动选择（CN=V1，OVERSEA=V2）；也可手动强制。",
-      "auto": "自动",
-      "v1": "V1（旧版）",
-      "v2": "V2（新版）"
-    },
     "CollectGoldenInheritance": {
       "name": "收取金光传承石",
       "help": "召唤结束后若金光传承石满溢则自动收取。"
@@ -1310,14 +1303,6 @@
     "Support": {
       "name": "骑士团支援",
       "help": "进入支援页面并按配置执行捐赠与请求。"
-    },
-    "Shop": {
-      "name": "骑士团商店",
-      "help": "进入骑士团商店并执行购买。"
-    },
-    "BuyMorogora": {
-      "name": "购买魔罗戈拉",
-      "help": "在骑士团商店购买魔罗戈拉（每周）。"
     },
     "DonateLowerLevelFairyFlower": {
       "name": "捐赠下级精灵之花",
@@ -1388,20 +1373,6 @@
       "help": "在骑士团支援中向他人捐赠初级企鹅。"
     }
   },
-  "KnightsShop": {
-    "_info": {
-      "name": "骑士团-商店",
-      "help": "骑士团商店相关配置。"
-    },
-    "Shop": {
-      "name": "骑士团商店",
-      "help": "进入骑士团商店并执行购买。"
-    },
-    "BuyMorogora": {
-      "name": "购买魔罗戈拉",
-      "help": "在骑士团商店购买魔罗戈拉（每周）。"
-    }
-  },
   "KnightsExpedition": {
     "_info": {
       "name": "骑士团-远征与世界Boss",
@@ -1448,6 +1419,57 @@
     "NPCCombatCount": {
       "name": "NPC 挑战次数",
       "help": "本次任务最多挑战 NPC 的次数。"
+    }
+  },
+  "Combat": {
+    "_info": {
+      "name": "每日副本设置",
+      "help": "配置每日副本的类型、属性、难度，以及是否启用快速战斗。"
+    },
+    "Domain": {
+      "name": "副本类型",
+      "help": "选择本次刷取的是讨伐还是精灵祭坛。",
+      "Hunt": "讨伐",
+      "SpiritAltar": "精灵祭坛"
+    },
+    "Element": {
+      "name": "属性",
+      "help": "选择要进入的副本属性分支。",
+      "Dark": "暗",
+      "Light": "光",
+      "Water": "水",
+      "Fire": "火",
+      "Nature": "木"
+    },
+    "AltarGrade": {
+      "name": "祭坛难度",
+      "help": "精灵祭坛使用的难度等级。",
+      "Pri": "初级",
+      "Mid": "中级",
+      "High": "高级",
+      "Hell": "地狱"
+    },
+    "HuntGrade": {
+      "name": "讨伐难度",
+      "help": "讨伐使用的难度等级。",
+      "Mid": "中级",
+      "High": "高级",
+      "Hell": "地狱",
+      "Dimensional": "异界"
+    },
+    "FastCombat": {
+      "name": "启用快速战斗",
+      "help": "开启后优先使用快速战斗；关闭后启用宠物托管重复战斗并最小化到主界面。"
+    }
+  },
+  "CombatRuntime": {
+    "_info": {
+      "name": "CombatRuntime._info.name",
+      "help": "CombatRuntime._info.help"
+    },
+    "Session": {
+      "name": "CombatRuntime.Session.name",
+      "help": "CombatRuntime.Session.help"
     }
   },
   "SecretShop": {

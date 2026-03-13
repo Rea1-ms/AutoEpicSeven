@@ -98,6 +98,10 @@ class StarRailCopilot(AzurLaneAutoScript):
         from tasks.arena.arena import Arena
         Arena(config=self.config, device=self.device, task="Arena").run()
 
+    def combat(self):
+        from tasks.combat.combat import Combat
+        Combat(config=self.config, device=self.device, task="Combat").run()
+
     def rogue(self):
         from tasks.rogue.rogue import Rogue
         Rogue(config=self.config, device=self.device).run()
