@@ -51,7 +51,7 @@ class UI(MainPage):
 
     def _is_login_startup_state(self) -> bool:
         return self.is_in_login_confirm(interval=0) \
-            or self.appear(LOGIN_LOADING, interval=0) \
+            or self.appear(LOGIN_LOADING, interval=0, similarity=0.75) \
             or self.appear(VERIFYING, interval=0) \
             or self.appear(PATCH_APPLY, interval=0) \
             or self.appear(PATCH_PERCENT_SIGN, interval=0)

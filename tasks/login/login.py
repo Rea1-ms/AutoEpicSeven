@@ -100,7 +100,7 @@ class Login(UI):
             self.is_in_main(interval=0)
             or self.appear(LOGIN_ERROR, interval=0)
             or self.appear(LOGIN_CONFIRM, interval=0)
-            or self.appear(LOGIN_LOADING, interval=0)
+            or self.appear(LOGIN_LOADING, interval=0, similarity=0.75)
             or self.appear(VERIFYING, interval=0)
             or self.appear(PATCH_APPLY, interval=0)
             or self.appear(PATCH_PERCENT_SIGN, interval=0)
@@ -312,7 +312,7 @@ class Login(UI):
                 continue
 
             # 加载中
-            if self.appear(LOGIN_LOADING, interval=5)\
+            if self.appear(LOGIN_LOADING, interval=5, similarity=0.75)\
                     or self.appear(VERIFYING, interval=5):
                 logger.info('Game loading...')
                 network_error_count = 0
