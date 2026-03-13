@@ -1304,14 +1304,6 @@
       "name": "骑士团支援",
       "help": "进入支援页面并按配置执行捐赠与请求。"
     },
-    "Shop": {
-      "name": "骑士团商店",
-      "help": "进入骑士团商店并执行购买。"
-    },
-    "BuyMorogora": {
-      "name": "购买魔罗戈拉",
-      "help": "在骑士团商店购买魔罗戈拉（每周）。"
-    },
     "DonateLowerLevelFairyFlower": {
       "name": "捐赠下级精灵之花",
       "help": "在骑士团支援中向他人捐赠下级精灵之花。"
@@ -1379,20 +1371,6 @@
     "DonateBeginnerPenguin": {
       "name": "捐赠初级企鹅",
       "help": "在骑士团支援中向他人捐赠初级企鹅。"
-    }
-  },
-  "KnightsShop": {
-    "_info": {
-      "name": "骑士团-商店",
-      "help": "骑士团商店相关配置。"
-    },
-    "Shop": {
-      "name": "骑士团商店",
-      "help": "进入骑士团商店并执行购买。"
-    },
-    "BuyMorogora": {
-      "name": "购买魔罗戈拉",
-      "help": "在骑士团商店购买魔罗戈拉（每周）。"
     }
   },
   "KnightsExpedition": {

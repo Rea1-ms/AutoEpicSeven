@@ -170,8 +170,6 @@ class GeneratedConfig:
     Knights_WeeklyTask = True
     Knights_Donate = True
     Knights_Support = True
-    Knights_Shop = True
-    Knights_BuyMorogora = True
     Knights_DonateLowerLevelFairyFlower = True
     Knights_DonateBeginnerPenguin = True
     Knights_Expedition = True
@@ -189,10 +187,6 @@ class GeneratedConfig:
     KnightsDonate_RequestItem = 'LowerLevelFairyFlower'  # LowerLevelFairyFlower, BeginnerPenguin
     KnightsDonate_DonateLowerLevelFairyFlower = True
     KnightsDonate_DonateBeginnerPenguin = True
-
-    # Group `KnightsShop`
-    KnightsShop_Shop = True
-    KnightsShop_BuyMorogora = True
 
     # Group `KnightsExpedition`
     KnightsExpedition_Expedition = True

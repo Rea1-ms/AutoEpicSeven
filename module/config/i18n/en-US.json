@@ -1304,14 +1304,6 @@
       "name": "Guild Support",
       "help": "Enter guild support and run donation/request flows."
     },
-    "Shop": {
-      "name": "Guild Shop",
-      "help": "Enter guild shop and run purchase flow."
-    },
-    "BuyMorogora": {
-      "name": "Buy Morogora",
-      "help": "Buy Morogora in guild shop (weekly)."
-    },
     "DonateLowerLevelFairyFlower": {
       "name": "Donate Lower-Level Fairy Flower",
       "help": "Donate Lower-Level Fairy Flower to guild requests in support."
@@ -1379,20 +1371,6 @@
     "DonateBeginnerPenguin": {
       "name": "Donate Beginner Penguin",
       "help": "Donate Beginner Penguin to guild requests in support."
-    }
-  },
-  "KnightsShop": {
-    "_info": {
-      "name": "Guild - Shop",
-      "help": "Guild shop related options."
-    },
-    "Shop": {
-      "name": "Guild Shop",
-      "help": "Enter guild shop and run purchase flow."
-    },
-    "BuyMorogora": {
-      "name": "Buy Morogora",
-      "help": "Buy Morogora in guild shop (weekly)."
     }
   },
   "KnightsExpedition": {

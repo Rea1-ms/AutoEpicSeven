@@ -52,7 +52,6 @@ Daily:
       - Scheduler
       - KnightsBasic
       - KnightsDonate
-      - KnightsShop
       - KnightsExpedition
     Combat:
       - Scheduler

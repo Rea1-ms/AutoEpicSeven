@@ -178,10 +178,6 @@
       "DonateLowerLevelFairyFlower": true,
       "DonateBeginnerPenguin": true
     },
-    "KnightsShop": {
-      "Shop": true,
-      "BuyMorogora": true
-    },
     "KnightsExpedition": {
       "Expedition": true,
       "TeamBattle": true,

@@ -1304,14 +1304,6 @@
       "name": "騎士團支援",
       "help": "進入支援頁面並依設定執行捐贈與請求。"
     },
-    "Shop": {
-      "name": "騎士團商店",
-      "help": "進入騎士團商店並執行購買。"
-    },
-    "BuyMorogora": {
-      "name": "購買魔羅戈拉",
-      "help": "在騎士團商店購買魔羅戈拉（每週）。"
-    },
     "DonateLowerLevelFairyFlower": {
       "name": "捐贈下級精靈之花",
       "help": "在騎士團支援中向他人捐贈下級精靈之花。"
@@ -1379,20 +1371,6 @@
     "DonateBeginnerPenguin": {
       "name": "捐贈初級企鵝",
       "help": "在騎士團支援中向他人捐贈初級企鵝。"
-    }
-  },
-  "KnightsShop": {
-    "_info": {
-      "name": "騎士團-商店",
-      "help": "騎士團商店相關設定。"
-    },
-    "Shop": {
-      "name": "騎士團商店",
-      "help": "進入騎士團商店並執行購買。"
-    },
-    "BuyMorogora": {
-      "name": "購買魔羅戈拉",
-      "help": "在騎士團商店購買魔羅戈拉（每週）。"
     }
   },
   "KnightsExpedition": {

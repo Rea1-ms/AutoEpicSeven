@@ -918,16 +918,6 @@
         "value": true
       }
     },
-    "KnightsShop": {
-      "Shop": {
-        "type": "checkbox",
-        "value": true
-      },
-      "BuyMorogora": {
-        "type": "checkbox",
-        "value": true
-      }
-    },
     "KnightsExpedition": {
       "Expedition": {
         "type": "checkbox",

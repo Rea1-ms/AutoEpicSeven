@@ -791,8 +791,6 @@ class ConfigUpdater:
         ('Knights.Knights.DonateLowerLevelFairyFlower', 'Knights.KnightsDonate.DonateLowerLevelFairyFlower'),
         ('Knights.Knights.DonateBeginnerPenguin', 'Knights.KnightsDonate.DonateBeginnerPenguin'),
         ('Knights.Knights.RequestItem', 'Knights.KnightsDonate.RequestItem'),
-        ('Knights.Knights.Shop', 'Knights.KnightsShop.Shop'),
-        ('Knights.Knights.BuyMorogora', 'Knights.KnightsShop.BuyMorogora'),
         ('Knights.Knights.Expedition', 'Knights.KnightsExpedition.Expedition'),
         ('Knights.Knights.TeamBattle', 'Knights.KnightsExpedition.TeamBattle'),
         ('Knights.Knights.WorldBoss', 'Knights.KnightsExpedition.WorldBoss'),
@@ -988,13 +986,9 @@ class ConfigUpdater:
             yield 'Combat.Combat.HuntGrade'
         if deep_get(data, 'Knights.KnightsDonate.Support', default=True) is False:
             yield 'Knights.KnightsDonate.RequestItem'
-        if deep_get(data, 'Knights.KnightsShop.Shop', default=True) is False:
-            yield 'Knights.KnightsShop.BuyMorogora'
         # Backward compatibility for legacy group path.
         if deep_get(data, 'Knights.Knights.Support', default=True) is False:
             yield 'Knights.Knights.RequestItem'
-        if deep_get(data, 'Knights.Knights.Shop', default=True) is False:
-            yield 'Knights.Knights.BuyMorogora'
 
     def get_hidden_args(self, data) -> t.Set[str]:
         """

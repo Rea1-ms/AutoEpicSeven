@@ -1304,14 +1304,6 @@
       "name": "Apoyo de gremio",
       "help": "Entra en apoyo de gremio y ejecuta donaciones/solicitudes según la configuración."
     },
-    "Shop": {
-      "name": "Tienda de gremio",
-      "help": "Entrar en la tienda de gremio y ejecutar la compra."
-    },
-    "BuyMorogora": {
-      "name": "Comprar Morogora",
-      "help": "Comprar Morogora en la tienda de gremio (semanal)."
-    },
     "DonateLowerLevelFairyFlower": {
       "name": "Donar Flor Feérica Inferior",
       "help": "Donar Flor Feérica Inferior a solicitudes del gremio en apoyo."
@@ -1379,20 +1371,6 @@
     "DonateBeginnerPenguin": {
       "name": "Donar Pingüino Básico",
       "help": "Donar Pingüino Básico a solicitudes del gremio en apoyo."
-    }
-  },
-  "KnightsShop": {
-    "_info": {
-      "name": "Gremio - Tienda",
-      "help": "Opciones de la tienda del gremio."
-    },
-    "Shop": {
-      "name": "Tienda de gremio",
-      "help": "Entrar en la tienda de gremio y ejecutar la compra."
-    },
-    "BuyMorogora": {
-      "name": "Comprar Morogora",
-      "help": "Comprar Morogora en la tienda de gremio (semanal)."
     }
   },
   "KnightsExpedition": {
