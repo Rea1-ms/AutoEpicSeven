@@ -113,7 +113,7 @@ BATTLE_PASS_REWARDS = ButtonWrapper(
     share=Button(
         file='./assets/share/arena/BATTLE_PASS_REWARDS.png',
         area=(450, 305, 485, 306),
-        search=(425, 305, 1137, 306),
+        search=(228, 305, 1137, 306),
         color=(97, 176, 198),
         button=(450, 305, 485, 306),
     ),
