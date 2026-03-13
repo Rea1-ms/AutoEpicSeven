@@ -19,8 +19,10 @@ from tasks.combat.assets.assets_combat_configs_entry import (
     COMMON_ENTRY,
     HUNT,
     HUNT_CHECK,
+    SEASON_ENTRY,
     SEASON_CHECK,
     SPIRIT_ALTAR,
+    URGENT_TASKS,
 )
 from tasks.combat.assets import assets_combat_configs_grade_altar as altar_grades
 from tasks.combat.assets import assets_combat_configs_grade_hunt as hunt_grades
@@ -176,6 +178,9 @@ class Combat(UI):
             or self.match_template_luma(HUNT, similarity=self.COMBAT_CHECK_SIMILARITY)
         )
 
+    def _is_combat_urgent_board(self) -> bool:
+        return self.match_template_luma(URGENT_TASKS, similarity=self.COMBAT_CHECK_SIMILARITY)
+
     def _is_stage_page(self, plan: CombatPlan | None = None) -> bool:
         if plan is not None:
             return self.match_template_luma(plan.stage_check, similarity=self.COMBAT_CHECK_SIMILARITY)
@@ -304,6 +309,13 @@ class Combat(UI):
                     continue
 
             if self._is_combat_season_board():
+                if self.appear_then_click(COMMON_ENTRY, interval=1):
+                    timeout.reset()
+                    continue
+
+            if self._is_combat_urgent_board():
+                # Combat plans currently live under the common branch.
+                # Do not bounce into season here when COMMON_ENTRY is briefly unstable.
                 if self.appear_then_click(COMMON_ENTRY, interval=1):
                     timeout.reset()
                     continue
@@ -731,6 +743,7 @@ class Combat(UI):
                 or self._is_stage_page()
                 or self._is_combat_general_board()
                 or self._is_combat_season_board()
+                or self._is_combat_urgent_board()
             ):
                 if self.appear_then_click(BACK, interval=1):
                     timeout.reset()
@@ -752,6 +765,7 @@ class Combat(UI):
             or self._is_stage_page()
             or self._is_combat_general_board()
             or self._is_combat_season_board()
+            or self._is_combat_urgent_board()
         ):
             logger.info("Combat: detected combat context, skip goto main")
         elif not self.is_in_main(interval=0):

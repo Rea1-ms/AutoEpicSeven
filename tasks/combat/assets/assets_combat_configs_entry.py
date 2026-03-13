@@ -105,3 +105,13 @@ SPIRIT_ALTAR = ButtonWrapper(
         button=(53, 185, 77, 213),
     ),
 )
+URGENT_TASKS = ButtonWrapper(
+    name='URGENT_TASKS',
+    share=Button(
+        file='./assets/share/combat/configs/entry/URGENT_TASKS.png',
+        area=(47, 185, 78, 215),
+        search=(27, 165, 98, 235),
+        color=(117, 122, 126),
+        button=(47, 185, 78, 215),
+    ),
+)

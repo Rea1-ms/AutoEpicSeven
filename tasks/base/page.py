@@ -10,8 +10,10 @@ from tasks.combat.assets.assets_combat_configs_entry import (
     ALTER_CHECK,
     COMMON_ENTRY,
     HUNT_CHECK,
+    SEASON_ENTRY,
     SEASON_CHECK,
     SPIRIT_ALTAR,
+    URGENT_TASKS,
 )
 from tasks.combat.assets.assets_combat_repeat_entry import REPEAT_COMBAT_MENU
 from tasks.knights.assets.assets_knights import KNIGHTS_CHECK
@@ -182,13 +184,21 @@ page_combat_season.link(BACK, destination=page_main)
 page_combat_common = Page(SPIRIT_ALTAR)
 page_combat_common.link(BACK, destination=page_main)
 
+# Combat urgent tab
+page_combat_urgent = Page(URGENT_TASKS)
+page_combat_urgent.link(BACK, destination=page_main)
+
 # Combat container page: entering combat may restore either season or common tab.
-page_combat = Page((SEASON_CHECK, SPIRIT_ALTAR))
+page_combat = Page((SEASON_CHECK, SPIRIT_ALTAR, URGENT_TASKS))
 page_combat.link(BACK, destination=page_main)
 page_main.link(MAIN_GOTO_COMBAT, destination=page_combat)
 page_main.link(MAIN_GOTO_COMBAT, destination=page_combat_season)
 page_main.link(MAIN_GOTO_COMBAT, destination=page_combat_common)
+page_main.link(MAIN_GOTO_COMBAT, destination=page_combat_urgent)
 page_combat_season.link(COMMON_ENTRY, destination=page_combat_common)
+page_combat_common.link(SEASON_ENTRY, destination=page_combat_season)
+page_combat_urgent.link(COMMON_ENTRY, destination=page_combat_common)
+page_combat_urgent.link(SEASON_ENTRY, destination=page_combat_season)
 
 # Combat stage selection page (element / grade)
 page_combat_stage = Page((ALTER_CHECK, HUNT_CHECK))
