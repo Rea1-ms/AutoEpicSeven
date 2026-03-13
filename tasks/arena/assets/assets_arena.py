@@ -110,13 +110,21 @@ BATTLE_PASS_ENTRY = ButtonWrapper(
 )
 BATTLE_PASS_REWARDS = ButtonWrapper(
     name='BATTLE_PASS_REWARDS',
-    share=Button(
-        file='./assets/share/arena/BATTLE_PASS_REWARDS.png',
+    cn=Button(
+        file='./assets/cn/arena/BATTLE_PASS_REWARDS.png',
         area=(450, 305, 485, 306),
         search=(228, 305, 1137, 306),
         color=(97, 176, 198),
         button=(450, 305, 485, 306),
     ),
+    global_cn=Button(
+        file='./assets/global_cn/arena/BATTLE_PASS_REWARDS.png',
+        area=(450, 305, 485, 306),
+        search=(218, 313, 1153, 314),
+        color=(97, 176, 198),
+        button=(450, 305, 485, 306),
+    ),
+    global_en=None,
 )
 BATTLE_START = ButtonWrapper(
     name='BATTLE_START',
