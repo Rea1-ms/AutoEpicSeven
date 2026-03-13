@@ -106,6 +106,7 @@ class Combat(UI):
     COMBAT_PREPARE_TIMEOUT_SECONDS = 25
     COMBAT_RUN_TIMEOUT_SECONDS = 90
     COMBAT_WATCH_TIMEOUT_SECONDS = 20
+    COMBAT_MISSING_CHECK_CONFIRM_SECONDS = 1
     COMBAT_EXIT_TIMEOUT_SECONDS = 25
     COMBAT_SCROLL_INTERVAL_SECONDS = 1
     COMBAT_SCROLL_SETTLE_SECONDS = 1.5
@@ -604,6 +605,7 @@ class Combat(UI):
         timeout = Timer(self.COMBAT_WATCH_TIMEOUT_SECONDS, count=60).start()
         stage = "watch"
         result_main_confirm = Timer(0.4, count=2).clear()
+        missing_check_confirm = Timer(self.COMBAT_MISSING_CHECK_CONFIRM_SECONDS, count=2).clear()
 
         while 1:
             if skip_first_screenshot:
@@ -623,23 +625,33 @@ class Combat(UI):
                 if self.appear_then_click(REPEAT_COMBAT_OVER, interval=1):
                     logger.info("Combat: repeat combat over, open result")
                     stage = "result"
+                    missing_check_confirm.clear()
                     timeout.reset()
                     continue
 
                 if self._is_repeat_result_window():
                     stage = "result"
+                    missing_check_confirm.clear()
                     timeout.reset()
                     continue
 
                 if self._is_repeat_combat_running():
+                    missing_check_confirm.clear()
                     logger.info("Combat: repeat combat still running in background")
                     return "running"
 
                 if self.is_in_main(interval=0):
-                    logger.warning("Combat: repeat combat session active but check is missing")
-                    return "lost"
+                    if not missing_check_confirm.started():
+                        logger.info("Combat: repeat combat check missing once, confirm again")
+                        missing_check_confirm.start()
+                    elif missing_check_confirm.reached():
+                        logger.warning("Combat: repeat combat session active but check is missing")
+                        return "lost"
+                else:
+                    missing_check_confirm.clear()
 
                 if self._handle_combat_additional():
+                    missing_check_confirm.clear()
                     timeout.reset()
                     continue
                 continue
