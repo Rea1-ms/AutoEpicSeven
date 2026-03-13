@@ -35,13 +35,21 @@ FAST_COMBAT_ON = ButtonWrapper(
 )
 FAST_COMBAT_RESULT_CLOSE = ButtonWrapper(
     name='FAST_COMBAT_RESULT_CLOSE',
-    share=Button(
-        file='./assets/share/combat/fast_combat/FAST_COMBAT_RESULT_CLOSE.png',
+    cn=Button(
+        file='./assets/cn/combat/fast_combat/FAST_COMBAT_RESULT_CLOSE.png',
+        area=(835, 548, 869, 566),
+        search=(815, 528, 889, 586),
+        color=(152, 144, 137),
+        button=(835, 548, 869, 566),
+    ),
+    global_cn=Button(
+        file='./assets/global_cn/combat/fast_combat/FAST_COMBAT_RESULT_CLOSE.png',
         area=(834, 548, 870, 566),
         search=(814, 528, 890, 586),
         color=(146, 138, 130),
         button=(834, 548, 870, 566),
     ),
+    global_en=None,
 )
 FAST_COMBAT_WINDOW = ButtonWrapper(
     name='FAST_COMBAT_WINDOW',
