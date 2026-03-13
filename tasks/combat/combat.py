@@ -2,6 +2,7 @@ from dataclasses import dataclass
 
 from module.base.button import ButtonWrapper
 from module.base.timer import Timer
+from module.exception import RequestHumanTakeover
 from module.logger import logger
 from tasks.base.assets.assets_base_page import BACK, MAIN_GOTO_COMBAT
 from tasks.base.assets.assets_base_popup import (
@@ -23,6 +24,7 @@ from tasks.combat.assets.assets_combat_configs_entry import (
 )
 from tasks.combat.assets import assets_combat_configs_grade_altar as altar_grades
 from tasks.combat.assets import assets_combat_configs_grade_hunt as hunt_grades
+from tasks.combat.assets.assets_combat_configs_popup import PACKAGE_FULL
 from tasks.combat.assets.assets_combat_fast_combat import (
     FAST_COMBAT_LOCKED,
     FAST_COMBAT_OFF,
@@ -242,6 +244,14 @@ class Combat(UI):
             return True
         return False
 
+    def _raise_if_package_full(self) -> None:
+        if self.appear(PACKAGE_FULL, interval=0):
+            logger.critical(
+                "Combat: package full detected after COMBAT_START. "
+                "Please clear inventory before starting combat again."
+            )
+            raise RequestHumanTakeover
+
     def _enter_stage_page(self, plan: CombatPlan, skip_first_screenshot=True) -> bool:
         logger.info(f"Combat: enter {plan.name}")
         timeout = Timer(self.COMBAT_ENTRY_TIMEOUT_SECONDS, count=80).start()
@@ -446,6 +456,8 @@ class Combat(UI):
                 logger.warning("Combat: fast combat timeout")
                 return False
 
+            self._raise_if_package_full()
+
             if self._handle_combat_additional():
                 timeout.reset()
                 continue
@@ -516,6 +528,8 @@ class Combat(UI):
             if timeout.reached():
                 logger.warning("Combat: repeat combat timeout")
                 return False
+
+            self._raise_if_package_full()
 
             if self._handle_combat_additional():
                 timeout.reset()
