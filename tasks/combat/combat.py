@@ -159,6 +159,13 @@ class Combat(UI):
             "grade": self._combat_grade(),
         }
 
+    def _combat_runtime_build_detected_existing(self) -> dict:
+        return {
+            "active": True,
+            "mode": "repeat_background",
+            "source": "detected_existing",
+        }
+
     def _is_combat_season_board(self) -> bool:
         return self.match_template_luma(SEASON_CHECK, similarity=self.COMBAT_CHECK_SIMILARITY)
 
@@ -251,6 +258,18 @@ class Combat(UI):
                 "Please clear inventory before starting combat again."
             )
             raise RequestHumanTakeover
+
+    def _adopt_existing_background_repeat_combat(self) -> bool:
+        if self._combat_runtime_active():
+            return False
+        if not self.is_in_main(interval=0):
+            return False
+        if not self._is_background_repeat_combat_running():
+            return False
+
+        logger.info("Combat: detected existing background repeat combat before task start")
+        self._combat_runtime_set(self._combat_runtime_build_detected_existing())
+        return True
 
     def _enter_stage_page(self, plan: CombatPlan, skip_first_screenshot=True) -> bool:
         logger.info(f"Combat: enter {plan.name}")
@@ -726,9 +745,13 @@ class Combat(UI):
         elif not self.is_in_main(interval=0):
             self.ui_goto_main()
 
+        self._adopt_existing_background_repeat_combat()
+
         if self._combat_runtime_active():
             session = self._combat_runtime_session()
             logger.info("Combat: background session active, watch current session")
+            if session.get("source"):
+                logger.attr("CombatSessionSource", session.get("source"))
             logger.attr("CombatSessionDomain", session.get("domain"))
             logger.attr("CombatSessionElement", session.get("element"))
             logger.attr("CombatSessionGrade", session.get("grade"))
