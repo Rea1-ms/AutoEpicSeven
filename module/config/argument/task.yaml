@@ -67,6 +67,9 @@ Daily:
       - Scheduler
       - StoreDaily
       - StoreWeekly
+    PetsGift:
+      - Scheduler
+      - PetsGift
     Pets:
       - Scheduler
 

@@ -1170,6 +1170,42 @@
       }
     }
   },
+  "PetsGift": {
+    "Scheduler": {
+      "Enable": {
+        "type": "checkbox",
+        "value": true,
+        "option": [
+          true,
+          false
+        ]
+      },
+      "NextRun": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime"
+      },
+      "Command": {
+        "type": "input",
+        "value": "PetsGift",
+        "display": "hide"
+      },
+      "ServerUpdate": {
+        "type": "input",
+        "value": "02:00",
+        "display": "hide"
+      }
+    },
+    "PetsGift": {
+      "LastClaimAt": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime",
+        "keepvalue": true,
+        "display": "hide"
+      }
+    }
+  },
   "Pets": {
     "Scheduler": {
       "Enable": {

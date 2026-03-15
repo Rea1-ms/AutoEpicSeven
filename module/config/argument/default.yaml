@@ -25,6 +25,9 @@ Freebies:
 Knights:
   Scheduler:
     Enable: true
+PetsGift:
+  Scheduler:
+    Enable: true
 
 # ==================== Weekly ====================
 

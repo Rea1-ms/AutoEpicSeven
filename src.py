@@ -90,6 +90,10 @@ class StarRailCopilot(AzurLaneAutoScript):
         from tasks.pets.pets import Pets
         Pets(config=self.config, device=self.device, task="Pets").run()
 
+    def pets_gift(self):
+        from tasks.pets.pets_gift import PetsGift
+        PetsGift(config=self.config, device=self.device, task="PetsGift").run()
+
     def store(self):
         from tasks.store.store import Store
         Store(config=self.config, device=self.device, task="Store").run()

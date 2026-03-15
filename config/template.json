@@ -251,6 +251,17 @@
       "BuyInheritancePotentialFragments": true
     }
   },
+  "PetsGift": {
+    "Scheduler": {
+      "Enable": true,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "PetsGift",
+      "ServerUpdate": "02:00"
+    },
+    "PetsGift": {
+      "LastClaimAt": "2020-01-01 00:00:00"
+    }
+  },
   "Pets": {
     "Scheduler": {
       "Enable": false,

@@ -82,6 +82,10 @@
       "name": "Tienda",
       "help": "Compra recursos diarios y semanales en la tienda."
     },
+    "PetsGift": {
+      "name": "Regalo Mascota",
+      "help": "Reclama el regalo de mascotas desde el menú. Tras cobrarlo, se volverá a programar en torno a 22 horas; si no está listo, usará la hora registrada o la actualización del servidor como respaldo."
+    },
     "Pets": {
       "name": "Tienda de mascotas",
       "help": ""
@@ -1532,6 +1536,16 @@
     "BuyInheritancePotentialFragments": {
       "name": "Comprar fragmentos de potencial (máx.)",
       "help": "Compra fragmentos de potencial con cantidad máxima en Herencia."
+    }
+  },
+  "PetsGift": {
+    "_info": {
+      "name": "Ajustes Regalo Mascota",
+      "help": "Estado interno de planificación. Normalmente no hace falta modificarlo manualmente."
+    },
+    "LastClaimAt": {
+      "name": "Último Cobro",
+      "help": "Se usa para estimar cuándo debería volver a estar disponible el próximo regalo."
     }
   },
   "Weekly": {

@@ -82,6 +82,10 @@
       "name": "Store",
       "help": "Buy daily and weekly items from the in-game store."
     },
+    "PetsGift": {
+      "name": "Pet Gift",
+      "help": "Collect the pet gift from the menu. After a successful claim, schedule around every 22 hours; when not ready, fall back to the recorded claim time or server update."
+    },
     "Pets": {
       "name": "Pet Shop",
       "help": ""
@@ -1532,6 +1536,16 @@
     "BuyInheritancePotentialFragments": {
       "name": "Buy Potential Fragments (Max)",
       "help": "Buy Potential Fragments in the Inheritance store with max quantity."
+    }
+  },
+  "PetsGift": {
+    "_info": {
+      "name": "Pet Gift Settings",
+      "help": "Internal scheduling state. Normally this does not need manual changes."
+    },
+    "LastClaimAt": {
+      "name": "Last Claim Time",
+      "help": "Used to estimate when the next pet gift should become available."
     }
   },
   "Weekly": {

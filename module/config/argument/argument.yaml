@@ -325,6 +325,12 @@ StoreWeekly:
   BuyInheritanceMorogora: true
   BuyInheritancePotentialFragments: true
 
+PetsGift:
+  LastClaimAt:
+    keepvalue: true
+    display: hide
+    value: 2020-01-01T00:00:00
+
 
 Weekly:
   Name:
