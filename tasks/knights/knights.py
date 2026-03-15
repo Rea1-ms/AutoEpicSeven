@@ -1,3 +1,4 @@
+import module.config.server as server
 from module.base.timer import Timer
 from module.logger import logger
 from tasks.base.page import page_knights
@@ -10,7 +11,7 @@ from tasks.knights.weekly_task import KnightsWeeklyTaskMixin
 from tasks.knights.world_boss import KnightsWorldBossMixin
 
 
-class Knights(
+class KnightsLegacy(
     KnightsWorldBossMixin,
     KnightsExpeditionMixin,
     KnightsSupportMixin,
@@ -128,3 +129,13 @@ class Knights(
 
         self.config.task_delay(server_update=True)
         return success
+
+
+class Knights:
+    def __new__(cls, *args, **kwargs):
+        if server.lang == "cn":
+            return KnightsLegacy(*args, **kwargs)
+
+        from tasks.knights_v2.knights import KnightsV2
+
+        return KnightsV2(*args, **kwargs)

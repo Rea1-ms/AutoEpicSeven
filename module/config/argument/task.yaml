@@ -46,6 +46,12 @@ Daily:
     Gacha:
       - Scheduler
       - Gacha
+    MissionReward:
+      - Scheduler
+      - MissionReward
+    Mail:
+      - Scheduler
+      - Mail
     SanctuaryDaily:
       - Scheduler
     Knights:
@@ -67,6 +73,9 @@ Daily:
       - Scheduler
       - StoreDaily
       - StoreWeekly
+    PetsGift:
+      - Scheduler
+      - PetsGift
     Pets:
       - Scheduler
 

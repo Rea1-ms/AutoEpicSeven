@@ -18,12 +18,15 @@
       "DataUpdate",
       "Freebies",
       "Gacha",
+      "MissionReward",
+      "Mail",
       "SanctuaryDaily",
       "Knights",
       "Combat",
       "Arena",
       "SecretShop",
       "Store",
+      "PetsGift",
       "Pets"
     ]
   },

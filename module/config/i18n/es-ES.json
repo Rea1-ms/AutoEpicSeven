@@ -58,6 +58,14 @@
       "name": "Invocación",
       "help": ""
     },
+    "MissionReward": {
+      "name": "Recompensas de misión",
+      "help": "Reclama las recompensas diarias y semanales desde la ventana de misiones."
+    },
+    "Mail": {
+      "name": "Correo por vencer",
+      "help": "Ordena el buzón por tiempo restante ascendente y recoge los correos que vencen dentro de 1 hora o 1 día."
+    },
     "SanctuaryDaily": {
       "name": "Santuario - Diario",
       "help": "Módulo diario de santuario con planificador independiente."
@@ -81,6 +89,10 @@
     "Store": {
       "name": "Tienda",
       "help": "Compra recursos diarios y semanales en la tienda."
+    },
+    "PetsGift": {
+      "name": "Regalo Mascota",
+      "help": "Reclama el regalo de mascotas desde el menú. Tras cobrarlo, se volverá a programar en torno a 22 horas; si no está listo, usará la hora registrada o la actualización del servidor como respaldo."
     },
     "Pets": {
       "name": "Tienda de mascotas",
@@ -1268,6 +1280,20 @@
       "help": "Tras la invocación, recoger automáticamente cuando Herencia Dorada esté llena."
     }
   },
+  "MissionReward": {
+    "_info": {
+      "name": "Ajustes de recompensas de misión",
+      "help": "Elige qué pestañas de recompensas de misión se deben reclamar."
+    },
+    "ClaimDailyRewards": {
+      "name": "Reclamar recompensas diarias",
+      "help": "Reclama el cofre de recompensas diarias cuando esté disponible."
+    },
+    "ClaimWeeklyRewards": {
+      "name": "Reclamar recompensas semanales",
+      "help": "Reclama el cofre de recompensas semanales cuando esté disponible."
+    }
+  },
   "SanctuaryMonthly": {
     "_info": {
       "name": "Santuario - Mensual",
@@ -1532,6 +1558,16 @@
     "BuyInheritancePotentialFragments": {
       "name": "Comprar fragmentos de potencial (máx.)",
       "help": "Compra fragmentos de potencial con cantidad máxima en Herencia."
+    }
+  },
+  "PetsGift": {
+    "_info": {
+      "name": "Ajustes Regalo Mascota",
+      "help": "Estado interno de planificación. Normalmente no hace falta modificarlo manualmente."
+    },
+    "LastClaimAt": {
+      "name": "Último Cobro",
+      "help": "Se usa para estimar cuándo debería volver a estar disponible el próximo regalo."
     }
   },
   "Weekly": {

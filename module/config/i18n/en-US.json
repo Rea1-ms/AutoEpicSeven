@@ -58,6 +58,14 @@
       "name": "Gacha",
       "help": ""
     },
+    "MissionReward": {
+      "name": "Mission Reward",
+      "help": "Claim daily and weekly mission rewards from the mission popup."
+    },
+    "Mail": {
+      "name": "Expiring Mail",
+      "help": "Sort the mailbox by remaining time ascending and collect mails expiring within 1 hour or 1 day."
+    },
     "SanctuaryDaily": {
       "name": "Sanctuary Daily",
       "help": "Sanctuary daily module with independent scheduler."
@@ -81,6 +89,10 @@
     "Store": {
       "name": "Store",
       "help": "Buy daily and weekly items from the in-game store."
+    },
+    "PetsGift": {
+      "name": "Pet Gift",
+      "help": "Collect the pet gift from the menu. After a successful claim, schedule around every 22 hours; when not ready, fall back to the recorded claim time or server update."
     },
     "Pets": {
       "name": "Pet Shop",
@@ -1268,6 +1280,20 @@
       "help": "After summoning, click to collect when Golden Inheritance is full."
     }
   },
+  "MissionReward": {
+    "_info": {
+      "name": "Mission Reward Settings",
+      "help": "Choose which mission reward tabs should be claimed."
+    },
+    "ClaimDailyRewards": {
+      "name": "Claim Daily Rewards",
+      "help": "Claim the daily mission reward chest when available."
+    },
+    "ClaimWeeklyRewards": {
+      "name": "Claim Weekly Rewards",
+      "help": "Claim the weekly mission reward chest when available."
+    }
+  },
   "SanctuaryMonthly": {
     "_info": {
       "name": "Sanctuary Monthly",
@@ -1532,6 +1558,16 @@
     "BuyInheritancePotentialFragments": {
       "name": "Buy Potential Fragments (Max)",
       "help": "Buy Potential Fragments in the Inheritance store with max quantity."
+    }
+  },
+  "PetsGift": {
+    "_info": {
+      "name": "Pet Gift Settings",
+      "help": "Internal scheduling state. Normally this does not need manual changes."
+    },
+    "LastClaimAt": {
+      "name": "Last Claim Time",
+      "help": "Used to estimate when the next pet gift should become available."
     }
   },
   "Weekly": {

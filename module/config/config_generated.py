@@ -162,6 +162,10 @@ class GeneratedConfig:
     # Group `Gacha`
     Gacha_CollectGoldenInheritance = True
 
+    # Group `MissionReward`
+    MissionReward_ClaimDailyRewards = True
+    MissionReward_ClaimWeeklyRewards = True
+
     # Group `SanctuaryMonthly`
     SanctuaryMonthly_RewardTier = 'A'  # A, B, S, MaxMinus1, MaxMinus2
 
@@ -227,6 +231,9 @@ class GeneratedConfig:
     StoreWeekly_BuyConquestMorogora = True
     StoreWeekly_BuyInheritanceMorogora = True
     StoreWeekly_BuyInheritancePotentialFragments = True
+
+    # Group `PetsGift`
+    PetsGift_LastClaimAt = datetime.datetime(2020, 1, 1, 0, 0)
 
     # Group `Weekly`
     Weekly_Name = 'Echo_of_War_Rusted_Crypt_of_the_Iron_Carcass'  # Echo_of_War_Rusted_Crypt_of_the_Iron_Carcass, Echo_of_War_Glance_of_Twilight, Echo_of_War_Inner_Beast_Battlefield, Echo_of_War_Salutations_of_Ashen_Dreams, Echo_of_War_Borehole_Planet_Past_Nightmares, Echo_of_War_Divine_Seed, Echo_of_War_End_of_the_Eternal_Freeze, Echo_of_War_Destruction_Beginning

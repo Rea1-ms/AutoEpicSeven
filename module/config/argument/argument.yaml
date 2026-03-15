@@ -242,6 +242,10 @@ PlannerTarget:
 Gacha:
   CollectGoldenInheritance: true
 
+MissionReward:
+  ClaimDailyRewards: true
+  ClaimWeeklyRewards: true
+
 SanctuaryMonthly:
   RewardTier:
     value: A
@@ -324,6 +328,12 @@ StoreWeekly:
   BuyConquestMorogora: true
   BuyInheritanceMorogora: true
   BuyInheritancePotentialFragments: true
+
+PetsGift:
+  LastClaimAt:
+    keepvalue: true
+    display: hide
+    value: 2020-01-01T00:00:00
 
 
 Weekly:

@@ -22,7 +22,16 @@ Assignment:
 Freebies:
   Scheduler:
     Enable: true
+MissionReward:
+  Scheduler:
+    Enable: true
+Mail:
+  Scheduler:
+    Enable: true
 Knights:
+  Scheduler:
+    Enable: true
+PetsGift:
   Scheduler:
     Enable: true
 

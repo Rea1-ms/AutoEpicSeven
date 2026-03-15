@@ -152,6 +152,26 @@
       "CollectGoldenInheritance": true
     }
   },
+  "MissionReward": {
+    "Scheduler": {
+      "Enable": true,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "MissionReward",
+      "ServerUpdate": "02:00"
+    },
+    "MissionReward": {
+      "ClaimDailyRewards": true,
+      "ClaimWeeklyRewards": true
+    }
+  },
+  "Mail": {
+    "Scheduler": {
+      "Enable": true,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "Mail",
+      "ServerUpdate": "02:00"
+    }
+  },
   "SanctuaryDaily": {
     "Scheduler": {
       "Enable": false,
@@ -249,6 +269,17 @@
       "BuyConquestMorogora": true,
       "BuyInheritanceMorogora": true,
       "BuyInheritancePotentialFragments": true
+    }
+  },
+  "PetsGift": {
+    "Scheduler": {
+      "Enable": true,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "PetsGift",
+      "ServerUpdate": "02:00"
+    },
+    "PetsGift": {
+      "LastClaimAt": "2020-01-01 00:00:00"
     }
   },
   "Pets": {
