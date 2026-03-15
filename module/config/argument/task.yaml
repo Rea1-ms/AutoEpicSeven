@@ -49,6 +49,9 @@ Daily:
     MissionReward:
       - Scheduler
       - MissionReward
+    Mail:
+      - Scheduler
+      - Mail
     SanctuaryDaily:
       - Scheduler
     Knights:

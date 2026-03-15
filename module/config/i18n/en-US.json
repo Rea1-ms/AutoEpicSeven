@@ -62,6 +62,10 @@
       "name": "Mission Reward",
       "help": "Claim daily and weekly mission rewards from the mission popup."
     },
+    "Mail": {
+      "name": "Expiring Mail",
+      "help": "Sort the mailbox by remaining time ascending and collect mails expiring within 1 hour or 1 day."
+    },
     "SanctuaryDaily": {
       "name": "Sanctuary Daily",
       "help": "Sanctuary daily module with independent scheduler."

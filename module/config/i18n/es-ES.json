@@ -62,6 +62,10 @@
       "name": "Recompensas de misión",
       "help": "Reclama las recompensas diarias y semanales desde la ventana de misiones."
     },
+    "Mail": {
+      "name": "Correo por vencer",
+      "help": "Ordena el buzón por tiempo restante ascendente y recoge los correos que vencen dentro de 1 hora o 1 día."
+    },
     "SanctuaryDaily": {
       "name": "Santuario - Diario",
       "help": "Módulo diario de santuario con planificador independiente."

@@ -77,6 +77,16 @@ MAIN_GOTO_GACHA = ButtonWrapper(
     ),
     global_en=None,
 )
+MAIN_GOTO_MAIL = ButtonWrapper(
+    name='MAIN_GOTO_MAIL',
+    share=Button(
+        file='./assets/share/base/page/MAIN_GOTO_MAIL.png',
+        area=(1109, 31, 1142, 46),
+        search=(1089, 11, 1162, 66),
+        color=(205, 206, 207),
+        button=(1109, 31, 1142, 46),
+    ),
+)
 MAIN_GOTO_PASS = ButtonWrapper(
     name='MAIN_GOTO_PASS',
     share=Button(

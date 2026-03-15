@@ -25,6 +25,9 @@ Freebies:
 MissionReward:
   Scheduler:
     Enable: true
+Mail:
+  Scheduler:
+    Enable: true
 Knights:
   Scheduler:
     Enable: true

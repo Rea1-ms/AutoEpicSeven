@@ -102,6 +102,10 @@ class StarRailCopilot(AzurLaneAutoScript):
         from tasks.mission_reward.mission_reward import MissionReward
         MissionReward(config=self.config, device=self.device, task="MissionReward").run()
 
+    def mail(self):
+        from tasks.mail.mail import Mail
+        Mail(config=self.config, device=self.device, task="Mail").run()
+
     def arena(self):
         from tasks.arena.arena import Arena
         Arena(config=self.config, device=self.device, task="Arena").run()
