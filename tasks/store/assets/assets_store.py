@@ -89,13 +89,22 @@ CONQUEST_POINTS_STORE = ButtonWrapper(
 )
 CONQUEST_POINTS_STORE_CHECK = ButtonWrapper(
     name='CONQUEST_POINTS_STORE_CHECK',
-    share=Button(
-        file='./assets/share/store/CONQUEST_POINTS_STORE_CHECK.png',
-        area=(168, 506, 198, 540),
-        search=(148, 486, 218, 560),
-        color=(86, 68, 48),
-        button=(168, 506, 198, 540),
-    ),
+    share=[
+        Button(
+            file='./assets/share/store/CONQUEST_POINTS_STORE_CHECK.png',
+            area=(168, 506, 198, 540),
+            search=(148, 486, 218, 560),
+            color=(86, 68, 48),
+            button=(168, 506, 198, 540),
+        ),
+        Button(
+            file='./assets/share/store/CONQUEST_POINTS_STORE_CHECK.2.png',
+            area=(176, 488, 190, 511),
+            search=(156, 468, 210, 531),
+            color=(94, 74, 54),
+            button=(176, 488, 190, 511),
+        ),
+    ],
 )
 DAILY_FREE_ITEM = ButtonWrapper(
     name='DAILY_FREE_ITEM',
