@@ -28,6 +28,20 @@ from tasks.knights.assets.assets_knights_expedition import (
 from tasks.knights.assets.assets_knights_donate import DONATE, DONATE_CHECK
 from tasks.knights.assets.assets_knights_support import SUPPORT, SUPPORT_CHECK
 from tasks.knights.assets.assets_knights_weekly_task import WEEKLY_TASK, WEEKLY_TASK_CHECK
+from tasks.knights_v2.assets.assets_knights_v2_main_page import (
+    KNIGHTS_ACTIVITY_ENTRY,
+    KNIGHTS_CHECK as KNIGHTS_V2_CHECK,
+    WORLD_BOSS_CHECK as WORLD_BOSS_V2_CHECK,
+    WORLD_BOSS_ENTRY,
+)
+from tasks.knights_v2.assets.assets_knights_v2_gvg import KNIGHTS_CREST as KNIGHTS_V2_CREST
+from tasks.knights_v2.assets.assets_knights_v2_activity_support_entry import (
+    SUPPORT_CHECK as KNIGHTS_V2_SUPPORT_CHECK,
+)
+from tasks.knights_v2.assets.assets_knights_v2_activity_weekly_task_entry import (
+    WEEKLY_TASK_CHECK as KNIGHTS_V2_WEEKLY_TASK_CHECK,
+    WEEKLY_TASK_ENTRY as KNIGHTS_V2_WEEKLY_TASK_ENTRY,
+)
 from tasks.sanctuary.assets.assets_sanctuary import (
     ALCHEMISTS_TOWER,
     ALCHEMISTS_TOWER_CHECK,
@@ -267,6 +281,26 @@ page_knights_expedition.link(TEAM_BATTLE, destination=page_knights_team_battle_w
 page_knights_world_boss = Page(READY_TO_FIGHT)
 page_knights_world_boss.link(BACK, destination=page_knights)
 page_knights_expedition.link(WORLD_BOSS, destination=page_knights_world_boss)
+
+# Knights v2
+page_knights_v2 = Page(KNIGHTS_V2_CHECK)
+page_knights_v2.link(MENU, destination=page_menu)
+page_menu.link(MENU_GOTO_KNIGHTS, destination=page_knights_v2)
+
+page_knights_v2_support = Page(KNIGHTS_V2_SUPPORT_CHECK)
+page_knights_v2_support.link(AD_BUFF_X_CLOSE, destination=page_knights_v2)
+page_knights_v2.link(KNIGHTS_ACTIVITY_ENTRY, destination=page_knights_v2_support)
+
+page_knights_v2_weekly_task = Page(KNIGHTS_V2_WEEKLY_TASK_CHECK)
+page_knights_v2_weekly_task.link(AD_BUFF_X_CLOSE, destination=page_knights_v2)
+page_knights_v2_support.link(KNIGHTS_V2_WEEKLY_TASK_ENTRY, destination=page_knights_v2_weekly_task)
+
+page_knights_v2_world_boss = Page(WORLD_BOSS_V2_CHECK)
+page_knights_v2_world_boss.link(BACK, destination=page_knights_v2)
+page_knights_v2.link(WORLD_BOSS_ENTRY, destination=page_knights_v2_world_boss)
+
+page_knights_v2_team_battle = Page(KNIGHTS_V2_CREST)
+page_knights_v2_team_battle.link(BACK, destination=page_knights_v2)
 
 # # Battle Pass
 # page_battle_pass = Page(BATTLE_PASS_CHECK)
