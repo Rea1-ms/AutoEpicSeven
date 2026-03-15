@@ -53,10 +53,20 @@ WORLD_BOSS_CHECK = ButtonWrapper(
         button=(255, 513, 279, 544),
     ),
 )
-WORLD_BOSS_ENTRY = ButtonWrapper(
-    name='WORLD_BOSS_ENTRY',
+WORLD_BOSS_LOCKED = ButtonWrapper(
+    name='WORLD_BOSS_LOCKED',
     share=Button(
-        file='./assets/share/knights_v2/main_page/WORLD_BOSS_ENTRY.png',
+        file='./assets/share/knights_v2/main_page/WORLD_BOSS_LOCKED.png',
+        area=(278, 412, 315, 446),
+        search=(258, 392, 335, 466),
+        color=(139, 129, 118),
+        button=(278, 412, 315, 446),
+    ),
+)
+WORLD_BOSS_OPENING = ButtonWrapper(
+    name='WORLD_BOSS_OPENING',
+    share=Button(
+        file='./assets/share/knights_v2/main_page/WORLD_BOSS_OPENING.png',
         area=(278, 412, 311, 443),
         search=(258, 392, 331, 463),
         color=(136, 123, 109),

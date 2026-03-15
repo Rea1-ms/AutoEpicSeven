@@ -39,7 +39,7 @@ from tasks.knights_v2.assets.assets_knights_v2_main_page import (
     KNIGHTS_ACTIVITY_ENTRY,
     KNIGHTS_CHECK as KNIGHTS_V2_CHECK,
     WORLD_BOSS_CHECK as WORLD_BOSS_V2_CHECK,
-    WORLD_BOSS_ENTRY,
+    WORLD_BOSS_OPENING,
 )
 from tasks.knights_v2.assets.assets_knights_v2_gvg import KNIGHTS_CREST as KNIGHTS_V2_CREST
 from tasks.knights_v2.assets.assets_knights_v2_activity_support_entry import (
@@ -306,7 +306,7 @@ page_knights_v2_support.link(KNIGHTS_V2_WEEKLY_TASK_ENTRY, destination=page_knig
 
 page_knights_v2_world_boss = Page(WORLD_BOSS_V2_CHECK)
 page_knights_v2_world_boss.link(BACK, destination=page_knights_v2)
-page_knights_v2.link(WORLD_BOSS_ENTRY, destination=page_knights_v2_world_boss)
+page_knights_v2.link(WORLD_BOSS_OPENING, destination=page_knights_v2_world_boss)
 
 page_knights_v2_team_battle = Page(KNIGHTS_V2_CREST)
 page_knights_v2_team_battle.link(BACK, destination=page_knights_v2)

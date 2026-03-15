@@ -5,8 +5,13 @@ from module.base.timer import Timer
 from module.logger import logger
 from module.ocr.ocr import Ocr
 from tasks.base.assets.assets_base_page import BACK
-from tasks.base.page import page_knights_v2, page_knights_v2_world_boss
-from tasks.knights_v2.assets.assets_knights_v2_main_page import KNIGHTS_CHECK, WORLD_BOSS_CHECK
+from tasks.base.page import page_knights_v2
+from tasks.knights_v2.assets.assets_knights_v2_main_page import (
+    KNIGHTS_CHECK,
+    WORLD_BOSS_CHECK,
+    WORLD_BOSS_LOCKED,
+    WORLD_BOSS_OPENING,
+)
 from tasks.knights_v2.assets.assets_knights_v2_world_boss_flow import (
     AUTO_CONFIG,
     BATTLE_RESULT_CONFIRM,
@@ -41,8 +46,11 @@ class KnightsV2WorldBossMixin:
     CHOOSE_TEAM_LUMA_SIMILARITY = 0.8
     CHOOSE_TEAM_COLOR_THRESHOLD = 30
     WORLD_BOSS_HOME_LUMA_SIMILARITY = 0.8
+    WORLD_BOSS_LOCKED_SIMILARITY = 0.8
     WORLD_BOSS_FORM_RETRY_SECONDS = 4
     WORLD_BOSS_AUTO_CONFIG_RETRY_SECONDS = 1.2
+    WORLD_BOSS_ENTRY_PENDING_SECONDS = 5
+    WORLD_BOSS_ENTRY_TIMEOUT_SECONDS = 20
     WORLD_BOSS_CHOOSE_TEAM_RETRY_SECONDS = 2
     WORLD_BOSS_CHOOSE_TEAM_PENDING_SECONDS = 2.5
     WORLD_BOSS_WEEKLY_CONTRIBUTION_POST_CLICK_SETTLE_SECONDS = 0.35
@@ -77,6 +85,24 @@ class KnightsV2WorldBossMixin:
 
         if appear and interval:
             self.interval_reset(WORLD_BOSS_CHECK, interval=interval)
+
+        return appear
+
+    def _is_knights_home(self, interval=0) -> bool:
+        return self.appear(KNIGHTS_CHECK, interval=interval)
+
+    def _is_world_boss_locked(self, interval=0) -> bool:
+        self.device.stuck_record_add(WORLD_BOSS_LOCKED)
+
+        if interval and not self.interval_is_reached(WORLD_BOSS_LOCKED, interval=interval):
+            return False
+
+        appear = WORLD_BOSS_LOCKED.match_template_luma(
+            self.device.image, similarity=self.WORLD_BOSS_LOCKED_SIMILARITY
+        )
+
+        if appear and interval:
+            self.interval_reset(WORLD_BOSS_LOCKED, interval=interval)
 
         return appear
 
@@ -157,10 +183,49 @@ class KnightsV2WorldBossMixin:
 
         return False
 
-    def _enter_world_boss(self, skip_first_screenshot=True) -> bool:
+    def _enter_world_boss(self, skip_first_screenshot=True) -> str:
         logger.info("Knights v2: enter world boss")
-        self.ui_goto(page_knights_v2_world_boss, skip_first_screenshot=skip_first_screenshot)
-        return True
+        timeout = Timer(self.WORLD_BOSS_ENTRY_TIMEOUT_SECONDS, count=60).start()
+        entry_pending = Timer(self.WORLD_BOSS_ENTRY_PENDING_SECONDS, count=0)
+        entry_clicked = False
+
+        while 1:
+            if skip_first_screenshot:
+                skip_first_screenshot = False
+            else:
+                self.device.screenshot()
+
+            if timeout.reached():
+                logger.warning("World boss entry timeout")
+                return "failed"
+
+            if self._is_world_boss_home(interval=1) or self.appear(RANK, interval=1) or self.appear(FORM_A_TEAM, interval=1):
+                return "entered"
+
+            if self._handle_world_boss_touch_to_close(interval=0.6):
+                timeout.reset()
+                continue
+
+            if self.handle_network_error():
+                timeout.reset()
+                continue
+
+            if self._is_knights_home(interval=1):
+                if self._is_world_boss_locked(interval=1):
+                    logger.info("World boss is locked, skip for now")
+                    return "locked"
+
+                if self.appear_then_click(WORLD_BOSS_OPENING, interval=1):
+                    entry_clicked = True
+                    entry_pending.start()
+                    timeout.reset()
+                    continue
+
+                if entry_clicked:
+                    if entry_pending.reached():
+                        logger.warning("World boss entry did not leave knights page in time")
+                        return "failed"
+                    continue
 
     def _world_boss_once(self, skip_first_screenshot=True) -> str:
         """
@@ -481,7 +546,10 @@ class KnightsV2WorldBossMixin:
     def run_world_boss(self, skip_first_screenshot=True) -> bool:
         logger.hr("Knights V2 WorldBoss", level=2)
 
-        if not self._enter_world_boss(skip_first_screenshot=skip_first_screenshot):
+        enter_status = self._enter_world_boss(skip_first_screenshot=skip_first_screenshot)
+        if enter_status == "locked":
+            return True
+        if enter_status != "entered":
             return False
 
         rounds = 0
