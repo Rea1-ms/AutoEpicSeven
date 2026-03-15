@@ -242,6 +242,10 @@ PlannerTarget:
 Gacha:
   CollectGoldenInheritance: true
 
+MissionReward:
+  ClaimDailyRewards: true
+  ClaimWeeklyRewards: true
+
 SanctuaryMonthly:
   RewardTier:
     value: A

@@ -58,6 +58,10 @@
       "name": "Gacha",
       "help": ""
     },
+    "MissionReward": {
+      "name": "Mission Reward",
+      "help": "Claim daily and weekly mission rewards from the mission popup."
+    },
     "SanctuaryDaily": {
       "name": "Sanctuary Daily",
       "help": "Sanctuary daily module with independent scheduler."
@@ -1270,6 +1274,20 @@
     "CollectGoldenInheritance": {
       "name": "Collect Golden Inheritance",
       "help": "After summoning, click to collect when Golden Inheritance is full."
+    }
+  },
+  "MissionReward": {
+    "_info": {
+      "name": "Mission Reward Settings",
+      "help": "Choose which mission reward tabs should be claimed."
+    },
+    "ClaimDailyRewards": {
+      "name": "Claim Daily Rewards",
+      "help": "Claim the daily mission reward chest when available."
+    },
+    "ClaimWeeklyRewards": {
+      "name": "Claim Weekly Rewards",
+      "help": "Claim the weekly mission reward chest when available."
     }
   },
   "SanctuaryMonthly": {

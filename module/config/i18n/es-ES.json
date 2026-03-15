@@ -58,6 +58,10 @@
       "name": "Invocación",
       "help": ""
     },
+    "MissionReward": {
+      "name": "Recompensas de misión",
+      "help": "Reclama las recompensas diarias y semanales desde la ventana de misiones."
+    },
     "SanctuaryDaily": {
       "name": "Santuario - Diario",
       "help": "Módulo diario de santuario con planificador independiente."
@@ -1270,6 +1274,20 @@
     "CollectGoldenInheritance": {
       "name": "Recoger Herencia Dorada",
       "help": "Tras la invocación, recoger automáticamente cuando Herencia Dorada esté llena."
+    }
+  },
+  "MissionReward": {
+    "_info": {
+      "name": "Ajustes de recompensas de misión",
+      "help": "Elige qué pestañas de recompensas de misión se deben reclamar."
+    },
+    "ClaimDailyRewards": {
+      "name": "Reclamar recompensas diarias",
+      "help": "Reclama el cofre de recompensas diarias cuando esté disponible."
+    },
+    "ClaimWeeklyRewards": {
+      "name": "Reclamar recompensas semanales",
+      "help": "Reclama el cofre de recompensas semanales cuando esté disponible."
     }
   },
   "SanctuaryMonthly": {

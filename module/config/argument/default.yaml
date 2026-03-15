@@ -22,6 +22,9 @@ Assignment:
 Freebies:
   Scheduler:
     Enable: true
+MissionReward:
+  Scheduler:
+    Enable: true
 Knights:
   Scheduler:
     Enable: true

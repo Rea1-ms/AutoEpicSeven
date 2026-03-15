@@ -58,6 +58,10 @@
       "name": "しょうかん",
       "help": ""
     },
+    "MissionReward": {
+      "name": "ミッション報酬",
+      "help": "ミッションポップアップからデイリーとウィークリーの報酬を受け取ります。"
+    },
     "SanctuaryDaily": {
       "name": "聖域-デイリー",
       "help": "独立スケジューラで実行する聖域デイリーモジュール。"
@@ -1270,6 +1274,20 @@
     "CollectGoldenInheritance": {
       "name": "金色継承石を回収",
       "help": "召喚終了後、金色継承石が満杯なら自動で回収します。"
+    }
+  },
+  "MissionReward": {
+    "_info": {
+      "name": "ミッション報酬設定",
+      "help": "受け取るミッション報酬タブを選択します。"
+    },
+    "ClaimDailyRewards": {
+      "name": "デイリー報酬を受け取る",
+      "help": "受け取り可能な場合、デイリーミッション報酬を受け取ります。"
+    },
+    "ClaimWeeklyRewards": {
+      "name": "ウィークリー報酬を受け取る",
+      "help": "受け取り可能な場合、ウィークリーミッション報酬を受け取ります。"
     }
   },
   "SanctuaryMonthly": {

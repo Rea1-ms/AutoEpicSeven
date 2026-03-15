@@ -46,6 +46,9 @@ Daily:
     Gacha:
       - Scheduler
       - Gacha
+    MissionReward:
+      - Scheduler
+      - MissionReward
     SanctuaryDaily:
       - Scheduler
     Knights:

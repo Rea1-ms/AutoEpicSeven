@@ -3,6 +3,13 @@ import traceback
 from tasks.base.assets.assets_base_page import *
 from tasks.base.assets.assets_base_popup import AD_BUFF_X_CLOSE
 from tasks.base.assets.assets_base_main_page import MENU, MENU_CLOSE, WHITE_STAR
+from tasks.mission_reward.assets.assets_mission_reward_entry import (
+    DAILY_TAB_CHECK,
+    DAILY_TAB_ENTRY,
+    MISSION_REWARD_CHECK,
+    WEEKLY_TAB_CHECK,
+    WEEKLY_TAB_ENTRY,
+)
 from tasks.secret_shop.assets.assets_secret_shop import SECRET_SHOP_CHECK
 from tasks.store.assets.assets_store import STORE_CHECK
 from tasks.arena.assets.assets_arena import ARENA_CHECK, ARENA_COMMON_ENTRY, ARENA_ENTRY
@@ -179,6 +186,22 @@ page_main.link(MAIN_GOTO_SECRET_SHOP, destination=page_secret_shop)
 page_store = Page(STORE_CHECK)
 page_store.link(MENU, destination=page_menu)
 page_main.link(MAIN_GOTO_STORE, destination=page_store)
+
+# Mission reward popup with daily / weekly tabs
+page_mission_reward_daily = Page(DAILY_TAB_CHECK)
+page_mission_reward_daily.link(AD_BUFF_X_CLOSE, destination=page_main)
+
+page_mission_reward_weekly = Page(WEEKLY_TAB_CHECK)
+page_mission_reward_weekly.link(AD_BUFF_X_CLOSE, destination=page_main)
+
+page_mission_reward = Page(MISSION_REWARD_CHECK)
+page_mission_reward.link(AD_BUFF_X_CLOSE, destination=page_main)
+page_mission_reward.link(DAILY_TAB_ENTRY, destination=page_mission_reward_daily)
+page_mission_reward.link(WEEKLY_TAB_ENTRY, destination=page_mission_reward_weekly)
+page_mission_reward_daily.link(WEEKLY_TAB_ENTRY, destination=page_mission_reward_weekly)
+page_mission_reward_weekly.link(DAILY_TAB_ENTRY, destination=page_mission_reward_daily)
+page_menu.link(MENU_GOTO_MISSION_REWARD, destination=page_mission_reward)
+page_menu.link(MENU_GOTO_MISSION_REWARD, destination=page_mission_reward_daily)
 
 # Arena mode-selection popup
 page_arena_mode_popup = Page(ARENA_COMMON_ENTRY)

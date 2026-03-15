@@ -152,6 +152,18 @@
       "CollectGoldenInheritance": true
     }
   },
+  "MissionReward": {
+    "Scheduler": {
+      "Enable": true,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "MissionReward",
+      "ServerUpdate": "02:00"
+    },
+    "MissionReward": {
+      "ClaimDailyRewards": true,
+      "ClaimWeeklyRewards": true
+    }
+  },
   "SanctuaryDaily": {
     "Scheduler": {
       "Enable": false,

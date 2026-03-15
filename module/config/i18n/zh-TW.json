@@ -58,6 +58,10 @@
       "name": "召喚",
       "help": ""
     },
+    "MissionReward": {
+      "name": "任務獎勵",
+      "help": "從任務彈窗中領取每日與每週任務獎勵。"
+    },
     "SanctuaryDaily": {
       "name": "聖域-日常",
       "help": "獨立排程的聖域日常模組。"
@@ -1270,6 +1274,20 @@
     "CollectGoldenInheritance": {
       "name": "收取金光傳承石",
       "help": "召喚結束後若金光傳承石滿溢則自動收取。"
+    }
+  },
+  "MissionReward": {
+    "_info": {
+      "name": "任務獎勵設定",
+      "help": "選擇需要領取的任務獎勵分頁。"
+    },
+    "ClaimDailyRewards": {
+      "name": "領取每日獎勵",
+      "help": "有可領取獎勵時，領取每日任務獎勵寶箱。"
+    },
+    "ClaimWeeklyRewards": {
+      "name": "領取每週獎勵",
+      "help": "有可領取獎勵時，領取每週任務獎勵寶箱。"
     }
   },
   "SanctuaryMonthly": {

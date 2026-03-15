@@ -162,6 +162,10 @@ class GeneratedConfig:
     # Group `Gacha`
     Gacha_CollectGoldenInheritance = True
 
+    # Group `MissionReward`
+    MissionReward_ClaimDailyRewards = True
+    MissionReward_ClaimWeeklyRewards = True
+
     # Group `SanctuaryMonthly`
     SanctuaryMonthly_RewardTier = 'A'  # A, B, S, MaxMinus1, MaxMinus2
 

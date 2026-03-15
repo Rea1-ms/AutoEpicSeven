@@ -145,6 +145,16 @@ MENU_GOTO_MAIN = ButtonWrapper(
         button=(1113, 575, 1141, 604),
     ),
 )
+MENU_GOTO_MISSION_REWARD = ButtonWrapper(
+    name='MENU_GOTO_MISSION_REWARD',
+    share=Button(
+        file='./assets/share/base/page/MENU_GOTO_MISSION_REWARD.png',
+        area=(940, 119, 967, 159),
+        search=(920, 99, 987, 179),
+        color=(180, 185, 189),
+        button=(940, 119, 967, 159),
+    ),
+)
 MENU_GOTO_PETS = ButtonWrapper(
     name='MENU_GOTO_PETS',
     share=Button(
