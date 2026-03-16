@@ -16,7 +16,9 @@ from module.config.stored.classes import (
     StoredDailyActivity,
     StoredDungeonDouble,
     StoredE7ArenaRank,
+    StoredE7DailyActivity,
     StoredE7ShadowCommission,
+    StoredE7WeeklyActivity,
     StoredEchoOfWar,
     StoredExpiredAt0400,
     StoredExpiredAtMonday0400,
@@ -42,8 +44,8 @@ class StoredGenerated:
     E7Skystone = StoredInt("DataUpdate.E7Dashboard.E7Skystone")
     E7Stamina = StoredCounter("DataUpdate.E7Dashboard.E7Stamina")
     E7EquipmentInventory = StoredCounter("DataUpdate.E7Dashboard.E7EquipmentInventory")
-    E7DailyActivity = StoredInt("DataUpdate.E7Dashboard.E7DailyActivity")
-    E7WeeklyActivity = StoredInt("DataUpdate.E7Dashboard.E7WeeklyActivity")
+    E7DailyActivity = StoredE7DailyActivity("DataUpdate.E7Dashboard.E7DailyActivity")
+    E7WeeklyActivity = StoredE7WeeklyActivity("DataUpdate.E7Dashboard.E7WeeklyActivity")
     E7ArenaRank = StoredE7ArenaRank("DataUpdate.E7Dashboard.E7ArenaRank")
     E7ShadowCommission = StoredE7ShadowCommission("DataUpdate.E7Dashboard.E7ShadowCommission")
     E7ArenaFlag = StoredCounter("DataUpdate.E7Dashboard.E7ArenaFlag")

@@ -53,9 +53,10 @@
     "name": "E7DailyActivity",
     "path": "DataUpdate.E7Dashboard.E7DailyActivity",
     "i18n": "E7Dashboard.E7DailyActivity.name",
-    "stored": "StoredInt",
+    "stored": "StoredE7DailyActivity",
     "attrs": {
       "time": "2020-01-01 00:00:00",
+      "total": 100,
       "value": 0
     },
     "order": 5,
@@ -65,9 +66,10 @@
     "name": "E7WeeklyActivity",
     "path": "DataUpdate.E7Dashboard.E7WeeklyActivity",
     "i18n": "E7Dashboard.E7WeeklyActivity.name",
-    "stored": "StoredInt",
+    "stored": "StoredE7WeeklyActivity",
     "attrs": {
       "time": "2020-01-01 00:00:00",
+      "total": 120,
       "value": 0
     },
     "order": 6,

@@ -345,7 +345,7 @@
         "type": "stored",
         "value": {},
         "display": "display",
-        "stored": "StoredInt",
+        "stored": "StoredE7DailyActivity",
         "order": 5,
         "color": "#ffb45e"
       },
@@ -353,7 +353,7 @@
         "type": "stored",
         "value": {},
         "display": "display",
-        "stored": "StoredInt",
+        "stored": "StoredE7WeeklyActivity",
         "order": 6,
         "color": "#ff7f8a"
       },

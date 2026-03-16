@@ -252,9 +252,9 @@ class MissionReward(UI):
 
         with self.config.multi_set():
             if daily_points is not None:
-                self.config.stored.E7DailyActivity.value = daily_points
+                self.config.stored.E7DailyActivity.set(daily_points)
             if weekly_points is not None:
-                self.config.stored.E7WeeklyActivity.value = weekly_points
+                self.config.stored.E7WeeklyActivity.set(weekly_points)
 
         self.ui_goto(page_main, skip_first_screenshot=True)
         if claimed_daily or claimed_weekly:

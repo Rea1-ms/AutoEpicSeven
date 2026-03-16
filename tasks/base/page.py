@@ -56,6 +56,11 @@ from tasks.knights_v2.assets.assets_knights_v2_activity_weekly_task_entry import
     WEEKLY_TASK_ENTRY as KNIGHTS_V2_WEEKLY_TASK_ENTRY,
 )
 from tasks.mail.assets.assets_mail import SORTING_CRITERIA
+from tasks.item.assets.assets_item_inventory import (
+    EQUIPMENT_CHECK,
+    EQUIPMENT_ENTRY,
+    INVENTORY_CHECK,
+)
 from tasks.sanctuary.assets.assets_sanctuary import (
     ALCHEMISTS_TOWER,
     ALCHEMISTS_TOWER_CHECK,
@@ -173,6 +178,17 @@ page_main.link(MAIN_GOTO_SECRET_SHOP, destination=page_secret_shop)
 page_mail = Page(SORTING_CRITERIA)
 page_mail.link(BACK, destination=page_main)
 page_main.link(MAIN_GOTO_MAIL, destination=page_mail)
+
+# Inventory container page: entering inventory may restore either the default tab
+# or the equipment tab depending on the last opened state.
+page_inventory = Page((INVENTORY_CHECK, EQUIPMENT_CHECK))
+page_inventory.link(BACK, destination=page_main)
+page_main.link(MAIN_GOTO_INVENTORY, destination=page_inventory)
+
+page_inventory_equipment = Page(EQUIPMENT_CHECK)
+page_inventory_equipment.link(BACK, destination=page_main)
+page_main.link(MAIN_GOTO_INVENTORY, destination=page_inventory_equipment)
+page_inventory.link(EQUIPMENT_ENTRY, destination=page_inventory_equipment)
 
 # Store
 page_store = Page(STORE_CHECK)

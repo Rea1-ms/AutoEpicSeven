@@ -1,8 +1,16 @@
+import re
+
 from module.base.timer import Timer
 from module.logger import logger
-from module.ocr.ocr import Digit
+from module.ocr.ocr import Digit, DigitCounter
 from tasks.arena.assets.assets_arena import BATTLE_PASS_CHECK, BATTLE_PASS_ENTRY
-from tasks.base.page import page_arena, page_combat_season, page_main, page_secret_shop
+from tasks.base.page import (
+    page_arena,
+    page_combat_season,
+    page_inventory_equipment,
+    page_main,
+    page_secret_shop,
+)
 from tasks.base.resource_bar import (
     RESOURCE_BAR_LAYOUT_ARENA_BATTLE_PASS,
     RESOURCE_BAR_LAYOUT_COMBAT,
@@ -12,6 +20,7 @@ from tasks.base.resource_bar import (
 )
 from tasks.base.ui import UI
 from tasks.combat.assets.assets_combat_configs_entry import OCR_SEASON_CHECK
+from tasks.item.assets.assets_item_inventory import OCR_EQUIPMENT_COUNT
 
 
 class E7Digit(Digit):
@@ -20,6 +29,28 @@ class E7Digit(Digit):
         result = result.replace("I", "1").replace("l", "1").replace("|", "1")
         result = result.replace(" ", "")
         return super().after_process(result)
+
+
+def normalize_e7_counter_text(result: str) -> str:
+    result = result.replace("O", "0").replace("o", "0")
+    result = result.replace("I", "1").replace("l", "1").replace("|", "1")
+    result = result.replace(" ", "")
+    result = result.replace(",", "").replace("，", "")
+    result = result.replace("／", "/")
+    return result
+
+
+def parse_e7_counter_text(result: str) -> tuple[int, int] | None:
+    result = normalize_e7_counter_text(result)
+    matched = re.search(r"(\d+)\s*/\s*(\d+)", result)
+    if matched is None:
+        return None
+    return int(matched.group(1)), int(matched.group(2))
+
+
+class E7DigitCounter(DigitCounter):
+    def after_process(self, result):
+        return normalize_e7_counter_text(result)
 
 
 class DataUpdate(ResourceBarMixin, UI):
@@ -41,6 +72,31 @@ class DataUpdate(ResourceBarMixin, UI):
             skip_first_screenshot=True,
         )
         return self.write_resource_bar_status(parsed)
+
+    def _ocr_equipment_inventory_count(self) -> tuple[int, int, int]:
+        current, remain, total = E7DigitCounter(
+            OCR_EQUIPMENT_COUNT,
+            lang=self._ocr_lang(),
+            name="EquipmentInventoryCount",
+        ).ocr_single_line(self.device.image)
+        if total > 0:
+            logger.attr("EquipmentInventoryCount", f"{current}/{total}")
+        else:
+            logger.warning(f"Equipment inventory OCR invalid: {current}/{total}")
+        return current, remain, total
+
+    def _update_equipment_inventory(self, skip_first_screenshot=True) -> bool:
+        logger.hr("DataUpdate EquipmentInventory", level=2)
+        self.ui_goto(page_inventory_equipment, skip_first_screenshot=skip_first_screenshot)
+        current, _, total = self._ocr_equipment_inventory_count()
+
+        updated = False
+        if total > 0:
+            self.config.stored.E7EquipmentInventory.set(current, total)
+            updated = True
+
+        self.ui_goto(page_main, skip_first_screenshot=True)
+        return updated
 
     def _update_secret_shop_resources(self, skip_first_screenshot=True) -> bool:
         logger.hr("DataUpdate SecretShop", level=2)
@@ -186,6 +242,7 @@ class DataUpdate(ResourceBarMixin, UI):
         updated_any = False
 
         updated_any |= self._update_main_resources(skip_first_screenshot=False)
+        updated_any |= self._update_equipment_inventory(skip_first_screenshot=True)
         updated_any |= self._update_secret_shop_resources(skip_first_screenshot=True)
         updated_any |= self._update_combat_status(skip_first_screenshot=True)
         updated_any |= self._update_arena_status(skip_first_screenshot=True)

@@ -446,12 +446,12 @@ E7Dashboard:
     color: "#8d80de"
     display: display
   E7DailyActivity:
-    stored: StoredInt
+    stored: StoredE7DailyActivity
     order: 5
     color: "#ffb45e"
     display: display
   E7WeeklyActivity:
-    stored: StoredInt
+    stored: StoredE7WeeklyActivity
     order: 6
     color: "#ff7f8a"
     display: display

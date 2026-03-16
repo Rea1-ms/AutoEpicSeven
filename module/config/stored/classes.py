@@ -450,6 +450,14 @@ class StoredE7ArenaRank(StoredCounter):
     FIXED_TOTAL = 38
 
 
+class StoredE7DailyActivity(StoredCounter):
+    FIXED_TOTAL = 100
+
+
+class StoredE7WeeklyActivity(StoredCounter):
+    FIXED_TOTAL = 120
+
+
 class StoredE7ShadowCommission(StoredCounter):
     FIXED_TOTAL = 30
 
