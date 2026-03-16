@@ -223,10 +223,13 @@ class MissionReward(UI):
             self.config.task_delay(server_update=True)
             return True
 
+        daily_points = None
+        weekly_points = None
+
         self._enter_mission_reward(skip_first_screenshot=False)
 
         if run_daily:
-            self._ocr_mission_points("Daily")
+            daily_points = self._ocr_mission_points("Daily")
             self._claim_rewards(
                 label="Daily",
                 buttons=self.DAILY_REWARD_BUTTONS,
@@ -236,13 +239,19 @@ class MissionReward(UI):
 
         if run_weekly:
             self._goto_weekly_tab(skip_first_screenshot=True)
-            self._ocr_mission_points("Weekly")
+            weekly_points = self._ocr_mission_points("Weekly")
             self._claim_rewards(
                 label="Weekly",
                 buttons=self.WEEKLY_REWARD_BUTTONS,
                 action_name=self.WEEKLY_REWARD_ACTION,
                 skip_first_screenshot=True,
             )
+
+        with self.config.multi_set():
+            if daily_points is not None:
+                self.config.stored.E7DailyActivity.value = daily_points
+            if weekly_points is not None:
+                self.config.stored.E7WeeklyActivity.value = weekly_points
 
         self.ui_goto(page_main, skip_first_screenshot=True)
         self.config.task_delay(server_update=True)

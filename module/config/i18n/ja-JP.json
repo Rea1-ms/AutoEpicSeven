@@ -1294,6 +1294,30 @@
       "help": "受け取り可能な場合、ウィークリーミッション報酬を受け取ります。"
     }
   },
+  "Mail": {
+    "_info": {
+      "name": "期限間近メール設定",
+      "help": "残り時間の昇順でメールを並べ、期限切れが近いメールを受け取ります。"
+    },
+    "CollectWithin": {
+      "name": "残り何以内のメールを受け取る",
+      "help": "",
+      "1h": "1時間以内",
+      "1d": "1日以内"
+    },
+    "LastCheckAt": {
+      "name": "前回確認時刻",
+      "help": ""
+    },
+    "LastRemainingText": {
+      "name": "前回の先頭残り時間テキスト",
+      "help": ""
+    },
+    "LastRemainingSince": {
+      "name": "同一残り時間ラベル開始時刻",
+      "help": ""
+    }
+  },
   "SanctuaryMonthly": {
     "_info": {
       "name": "聖域-マンスリー設定",
@@ -1803,6 +1827,44 @@
     "StallerJade": {
       "name": "ItemStorage.StallerJade.name",
       "help": "ItemStorage.StallerJade.help"
+    }
+  },
+  "E7Dashboard": {
+    "_info": {
+      "name": "E7 Dashboard",
+      "help": "Epic Seven overview fields shown on the home dashboard."
+    },
+    "E7Gold": {
+      "name": "Gold",
+      "help": ""
+    },
+    "E7Skystone": {
+      "name": "Skystone",
+      "help": ""
+    },
+    "E7Stamina": {
+      "name": "Stamina",
+      "help": ""
+    },
+    "E7EquipmentInventory": {
+      "name": "装備数",
+      "help": ""
+    },
+    "E7DailyActivity": {
+      "name": "Daily Activity",
+      "help": ""
+    },
+    "E7WeeklyActivity": {
+      "name": "Weekly Activity",
+      "help": ""
+    },
+    "E7ArenaRank": {
+      "name": "アリーナ通行証レベル",
+      "help": ""
+    },
+    "E7ShadowCommission": {
+      "name": "暗影情報依頼レベル",
+      "help": ""
     }
   },
   "CloudStorage": {

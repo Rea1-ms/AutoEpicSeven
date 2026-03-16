@@ -1294,6 +1294,30 @@
       "help": "Claim the weekly mission reward chest when available."
     }
   },
+  "Mail": {
+    "_info": {
+      "name": "Expiring Mail Settings",
+      "help": "Sort the mailbox by remaining time ascending and collect mails close to expiration."
+    },
+    "CollectWithin": {
+      "name": "Collect Mails Expiring Within",
+      "help": "",
+      "1h": "1 Hour",
+      "1d": "1 Day"
+    },
+    "LastCheckAt": {
+      "name": "Last Check At",
+      "help": ""
+    },
+    "LastRemainingText": {
+      "name": "Last Top Remaining Text",
+      "help": ""
+    },
+    "LastRemainingSince": {
+      "name": "Same Remaining Label Since",
+      "help": ""
+    }
+  },
   "SanctuaryMonthly": {
     "_info": {
       "name": "Sanctuary Monthly",
@@ -1802,6 +1826,44 @@
     },
     "StallerJade": {
       "name": "Jade",
+      "help": ""
+    }
+  },
+  "E7Dashboard": {
+    "_info": {
+      "name": "E7 Dashboard",
+      "help": "Epic Seven overview fields shown on the home dashboard."
+    },
+    "E7Gold": {
+      "name": "Gold",
+      "help": ""
+    },
+    "E7Skystone": {
+      "name": "Skystone",
+      "help": ""
+    },
+    "E7Stamina": {
+      "name": "Stamina",
+      "help": ""
+    },
+    "E7EquipmentInventory": {
+      "name": "Equipment Count",
+      "help": ""
+    },
+    "E7DailyActivity": {
+      "name": "Daily Activity",
+      "help": ""
+    },
+    "E7WeeklyActivity": {
+      "name": "Weekly Activity",
+      "help": ""
+    },
+    "E7ArenaRank": {
+      "name": "Arena Pass Level",
+      "help": ""
+    },
+    "E7ShadowCommission": {
+      "name": "Shadow Commission Level",
       "help": ""
     }
   },

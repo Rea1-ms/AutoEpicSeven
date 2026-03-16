@@ -1294,6 +1294,30 @@
       "help": "有可领取奖励时，领取每周任务奖励宝箱。"
     }
   },
+  "Mail": {
+    "_info": {
+      "name": "临期邮件设置",
+      "help": "按剩余时间升序检查邮箱，领取临近过期的邮件。"
+    },
+    "CollectWithin": {
+      "name": "收取剩余多久的邮件",
+      "help": "",
+      "1h": "1 小时内",
+      "1d": "1 天内"
+    },
+    "LastCheckAt": {
+      "name": "上次检查时间",
+      "help": ""
+    },
+    "LastRemainingText": {
+      "name": "上次顶部剩余时间文本",
+      "help": ""
+    },
+    "LastRemainingSince": {
+      "name": "相同剩余时间起始时间",
+      "help": ""
+    }
+  },
   "SanctuaryMonthly": {
     "_info": {
       "name": "圣域-月常设置",
@@ -1802,6 +1826,44 @@
     },
     "StallerJade": {
       "name": "星琼",
+      "help": ""
+    }
+  },
+  "E7Dashboard": {
+    "_info": {
+      "name": "E7 仪表盘",
+      "help": "Epic Seven 概览数据，仅展示已记录的看板字段。"
+    },
+    "E7Gold": {
+      "name": "金币",
+      "help": ""
+    },
+    "E7Skystone": {
+      "name": "钻石",
+      "help": ""
+    },
+    "E7Stamina": {
+      "name": "体力",
+      "help": ""
+    },
+    "E7EquipmentInventory": {
+      "name": "装备数量",
+      "help": ""
+    },
+    "E7DailyActivity": {
+      "name": "每日活跃",
+      "help": ""
+    },
+    "E7WeeklyActivity": {
+      "name": "每周活跃",
+      "help": ""
+    },
+    "E7ArenaRank": {
+      "name": "竞技场通行证等级",
+      "help": ""
+    },
+    "E7ShadowCommission": {
+      "name": "暗影情报委托等级",
       "help": ""
     }
   },

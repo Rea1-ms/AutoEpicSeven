@@ -446,6 +446,14 @@ class StoredBattlePassQuestTrailblazePower(StoredCounter):
     LIST_TOTAL = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400]
 
 
+class StoredE7ArenaRank(StoredCounter):
+    FIXED_TOTAL = 38
+
+
+class StoredE7ShadowCommission(StoredCounter):
+    FIXED_TOTAL = 30
+
+
 class StoredPlanner(StoredBase):
     value: int
     total: int

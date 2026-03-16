@@ -220,6 +220,8 @@ class Arena(UI):
         ocr = Digit(OCR_BATTLE_PASS_LEVEL, lang="en", name="BattlePassLevel")
         level = ocr.ocr_single_line(self.device.image)
         logger.attr("BattlePassLevel", level)
+        if level > 0:
+            self.config.stored.E7ArenaRank.set(level)
         return level
 
     def _sample_battle_pass_rewards(

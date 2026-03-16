@@ -121,8 +121,6 @@ DungeonSupport:
 DungeonStorage:
   TrailblazePower:
     stored: StoredTrailblazePower
-    order: 1
-    color: "#eb8efe"
   Reserved:
     stored: StoredResersed
   Fuel:
@@ -135,12 +133,8 @@ DungeonStorage:
     stored: StoredEchoOfWar
   SimulatedUniverse:
     stored: StoredSimulatedUniverse
-    order: 6
-    color: "#8fb5fe"
   Relic:
     stored: StoredRelic
-    order: 3
-    color: "#79dbc4"
 Freebies:
   SupportReward: true
   MailReward: true
@@ -153,8 +147,6 @@ Planner:
   PlannerOverall:
     stored: StoredPlannerOverall
     display: true
-    order: 4
-    color: "#85e7f2"
   # Items will be injected in config updater
 PlannerTarget:
   Enable:
@@ -245,6 +237,23 @@ Gacha:
 MissionReward:
   ClaimDailyRewards: true
   ClaimWeeklyRewards: true
+
+Mail:
+  CollectWithin:
+    value: 1h
+    option: [ 1h, 1d ]
+  LastCheckAt:
+    keepvalue: true
+    display: hide
+    value: 2020-01-01 00:00:00
+  LastRemainingText:
+    keepvalue: true
+    display: hide
+    value: ""
+  LastRemainingSince:
+    keepvalue: true
+    display: hide
+    value: 2020-01-01 00:00:00
 
 SanctuaryMonthly:
   RewardTier:
@@ -348,8 +357,6 @@ Weekly:
 DailyStorage:
   DailyActivity:
     stored: StoredDailyActivity
-    order: 2
-    color: "#ffcf70"
     display: display
   DailyQuest:
     stored: StoredDaily
@@ -358,8 +365,6 @@ DailyStorage:
 BattlePassStorage:
   BattlePassLevel:
     stored: StoredBattlePassLevel
-    order: 5
-    color: "#cbe45b"
     display: display
   BattlePassWeeklyQuest:
     stored: StoredBattlePassWeeklyQuest
@@ -414,13 +419,51 @@ Assignment:
 ItemStorage:
   Credit:
     stored: StoredInt
-    order: 7
-    color: "#ab7cf2"
-    display: display
+    display: hide
   StallerJade:
     stored: StoredInt
+    display: hide
+
+E7Dashboard:
+  E7Gold:
+    stored: StoredInt
+    order: 1
+    color: "#c89a54"
+    display: display
+  E7Skystone:
+    stored: StoredInt
+    order: 2
+    color: "#49aee9"
+    display: display
+  E7Stamina:
+    stored: StoredCounter
+    order: 3
+    color: "#74c26e"
+    display: display
+  E7EquipmentInventory:
+    stored: StoredCounter
+    order: 4
+    color: "#8d80de"
+    display: display
+  E7DailyActivity:
+    stored: StoredInt
+    order: 5
+    color: "#ffb45e"
+    display: display
+  E7WeeklyActivity:
+    stored: StoredInt
+    order: 6
+    color: "#ff7f8a"
+    display: display
+  E7ArenaRank:
+    stored: StoredE7ArenaRank
+    order: 7
+    color: "#ffd36e"
+    display: display
+  E7ShadowCommission:
+    stored: StoredE7ShadowCommission
     order: 8
-    color: "#fc8f8b"
+    color: "#7796ff"
     display: display
 
 CloudStorage:

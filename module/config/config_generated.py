@@ -166,6 +166,12 @@ class GeneratedConfig:
     MissionReward_ClaimDailyRewards = True
     MissionReward_ClaimWeeklyRewards = True
 
+    # Group `Mail`
+    Mail_CollectWithin = '1h'  # 1h, 1d
+    Mail_LastCheckAt = datetime.datetime(2020, 1, 1, 0, 0)
+    Mail_LastRemainingText = None
+    Mail_LastRemainingSince = datetime.datetime(2020, 1, 1, 0, 0)
+
     # Group `SanctuaryMonthly`
     SanctuaryMonthly_RewardTier = 'A'  # A, B, S, MaxMinus1, MaxMinus2
 
@@ -268,6 +274,16 @@ class GeneratedConfig:
     # Group `ItemStorage`
     ItemStorage_Credit = {}
     ItemStorage_StallerJade = {}
+
+    # Group `E7Dashboard`
+    E7Dashboard_E7Gold = {}
+    E7Dashboard_E7Skystone = {}
+    E7Dashboard_E7Stamina = {}
+    E7Dashboard_E7EquipmentInventory = {}
+    E7Dashboard_E7DailyActivity = {}
+    E7Dashboard_E7WeeklyActivity = {}
+    E7Dashboard_E7ArenaRank = {}
+    E7Dashboard_E7ShadowCommission = {}
 
     # Group `CloudStorage`
     CloudStorage_CloudRemainSeasonPass = {}

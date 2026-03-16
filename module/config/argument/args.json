@@ -411,9 +411,7 @@
         "type": "stored",
         "value": {},
         "display": "display",
-        "stored": "StoredDailyActivity",
-        "order": 2,
-        "color": "#ffcf70"
+        "stored": "StoredDailyActivity"
       },
       "DailyQuest": {
         "type": "stored",
@@ -456,9 +454,7 @@
         "type": "stored",
         "value": {},
         "display": "display",
-        "stored": "StoredBattlePassLevel",
-        "order": 5,
-        "color": "#cbe45b"
+        "stored": "StoredBattlePassLevel"
       },
       "BattlePassWeeklyQuest": {
         "type": "stored",
@@ -715,18 +711,80 @@
       "Credit": {
         "type": "stored",
         "value": {},
-        "display": "display",
-        "stored": "StoredInt",
-        "order": 7,
-        "color": "#ab7cf2"
+        "display": "hide",
+        "stored": "StoredInt"
       },
       "StallerJade": {
         "type": "stored",
         "value": {},
+        "display": "hide",
+        "stored": "StoredInt"
+      }
+    },
+    "E7Dashboard": {
+      "E7Gold": {
+        "type": "stored",
+        "value": {},
         "display": "display",
         "stored": "StoredInt",
+        "order": 1,
+        "color": "#c89a54"
+      },
+      "E7Skystone": {
+        "type": "stored",
+        "value": {},
+        "display": "display",
+        "stored": "StoredInt",
+        "order": 2,
+        "color": "#49aee9"
+      },
+      "E7Stamina": {
+        "type": "stored",
+        "value": {},
+        "display": "display",
+        "stored": "StoredCounter",
+        "order": 3,
+        "color": "#74c26e"
+      },
+      "E7EquipmentInventory": {
+        "type": "stored",
+        "value": {},
+        "display": "display",
+        "stored": "StoredCounter",
+        "order": 4,
+        "color": "#8d80de"
+      },
+      "E7DailyActivity": {
+        "type": "stored",
+        "value": {},
+        "display": "display",
+        "stored": "StoredInt",
+        "order": 5,
+        "color": "#ffb45e"
+      },
+      "E7WeeklyActivity": {
+        "type": "stored",
+        "value": {},
+        "display": "display",
+        "stored": "StoredInt",
+        "order": 6,
+        "color": "#ff7f8a"
+      },
+      "E7ArenaRank": {
+        "type": "stored",
+        "value": {},
+        "display": "display",
+        "stored": "StoredE7ArenaRank",
+        "order": 7,
+        "color": "#ffd36e"
+      },
+      "E7ShadowCommission": {
+        "type": "stored",
+        "value": {},
+        "display": "display",
+        "stored": "StoredE7ShadowCommission",
         "order": 8,
-        "color": "#fc8f8b"
+        "color": "#7796ff"
       }
     },
     "CloudStorage": {
@@ -889,6 +947,36 @@
       "ServerUpdate": {
         "type": "input",
         "value": "02:00",
+        "display": "hide"
+      }
+    },
+    "Mail": {
+      "CollectWithin": {
+        "type": "select",
+        "value": "1h",
+        "option": [
+          "1h",
+          "1d"
+        ]
+      },
+      "LastCheckAt": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime",
+        "keepvalue": true,
+        "display": "hide"
+      },
+      "LastRemainingText": {
+        "type": "input",
+        "value": "",
+        "keepvalue": true,
+        "display": "hide"
+      },
+      "LastRemainingSince": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime",
+        "keepvalue": true,
         "display": "hide"
       }
     }

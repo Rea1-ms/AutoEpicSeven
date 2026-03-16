@@ -46,47 +46,53 @@ class DataUpdate(ItemUI, PlannerMixin):
                 logger.warning('Get data timeout')
                 break
 
-        logger.attr('Credit', credit)
-        logger.attr('StellarJade', jade)
+        logger.attr('Gold', credit)
+        logger.attr('Skystone', jade)
         return credit, jade
 
-    def _get_relic(self):
+    def _get_equipment_inventory(self):
         """
         Page:
             in: page_item, KEYWORDS_ITEM_TAB.Relics
         """
         ocr = RelicOcr(OCR_RELIC)
         timeout = Timer(2, count=6).start()
-        relic = 0
+        current = 0
+        total = 0
         for _ in self.loop():
-            relic, _, total = ocr.ocr_single_line(self.device.image)
-            if total == 3000 or relic < 0:
+            current, _, total = ocr.ocr_single_line(self.device.image)
+            if total > 0 and 0 <= current <= total:
                 break
-            logger.warning(f'Invalid relic amount: {relic}/{total}')
+            logger.warning(f'Invalid equipment inventory: {current}/{total}')
             if timeout.reached():
-                logger.warning('Get relic timeout')
+                logger.warning('Get equipment inventory timeout')
                 break
 
-        logger.attr('Relic', relic)
-        return relic
+        logger.attr('EquipmentInventory', f'{current}/{total}')
+        return current, total
 
     def run(self):
         self.ui_ensure(page_item, acquire_lang_checked=False)
         # item tab stays at the last used tab, switch to UpgradeMaterials
         self.item_goto(KEYWORDS_ITEM_TAB.UpgradeMaterials, wait_until_stable=False)
-        credit, jade = self._get_data()
+        gold, skystone = self._get_data()
 
         self.item_goto(KEYWORDS_ITEM_TAB.Relics, wait_until_stable=False)
-        relic = self._get_relic()
+        equipment, equipment_total = self._get_equipment_inventory()
 
         with self.config.multi_set():
-            self.config.stored.Credit.value = credit
-            self.config.stored.StallerJade.value = jade
-            self.config.stored.Relic.value = relic
+            self.config.stored.Credit.value = gold
+            self.config.stored.StallerJade.value = skystone
+            self.config.stored.E7Gold.value = gold
+            self.config.stored.E7Skystone.value = skystone
+            if equipment_total > 0:
+                self.config.stored.E7EquipmentInventory.set(equipment, equipment_total)
+            if equipment_total == self.config.stored.Relic.FIXED_TOTAL:
+                self.config.stored.Relic.value = equipment
             self.config.task_delay(server_update=True)
             # Sync to planner
             require = self.config.cross_get('Dungeon.Planner.Item_Credit.total', default=0)
             if require:
-                self.config.cross_set('Dungeon.Planner.Item_Credit.value', credit)
+                self.config.cross_set('Dungeon.Planner.Item_Credit.value', gold)
                 self.config.cross_set('Dungeon.Planner.Item_Credit.time', self.config.stored.Credit.time)
                 self.planner_write()

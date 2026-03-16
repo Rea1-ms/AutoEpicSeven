@@ -1294,6 +1294,30 @@
       "help": "Reclama el cofre de recompensas semanales cuando esté disponible."
     }
   },
+  "Mail": {
+    "_info": {
+      "name": "Ajustes de correo por vencer",
+      "help": "Ordena el buzón por tiempo restante ascendente y recoge correos próximos a vencer."
+    },
+    "CollectWithin": {
+      "name": "Recoger correos que vencen en",
+      "help": "",
+      "1h": "1 hora",
+      "1d": "1 día"
+    },
+    "LastCheckAt": {
+      "name": "Última revisión",
+      "help": ""
+    },
+    "LastRemainingText": {
+      "name": "Último texto superior restante",
+      "help": ""
+    },
+    "LastRemainingSince": {
+      "name": "Misma etiqueta restante desde",
+      "help": ""
+    }
+  },
   "SanctuaryMonthly": {
     "_info": {
       "name": "Santuario - Mensual",
@@ -1802,6 +1826,44 @@
     },
     "StallerJade": {
       "name": "Jade",
+      "help": ""
+    }
+  },
+  "E7Dashboard": {
+    "_info": {
+      "name": "Panel de E7",
+      "help": "Campos de resumen de Epic Seven mostrados en el panel principal."
+    },
+    "E7Gold": {
+      "name": "Oro",
+      "help": ""
+    },
+    "E7Skystone": {
+      "name": "Skystone",
+      "help": ""
+    },
+    "E7Stamina": {
+      "name": "Energía",
+      "help": ""
+    },
+    "E7EquipmentInventory": {
+      "name": "Cantidad de Equipo",
+      "help": ""
+    },
+    "E7DailyActivity": {
+      "name": "Actividad Diaria",
+      "help": ""
+    },
+    "E7WeeklyActivity": {
+      "name": "Actividad Semanal",
+      "help": ""
+    },
+    "E7ArenaRank": {
+      "name": "Nivel del Pase de Arena",
+      "help": ""
+    },
+    "E7ShadowCommission": {
+      "name": "Nivel de Comisión Sombría",
       "help": ""
     }
   },

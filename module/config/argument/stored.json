@@ -1,4 +1,104 @@
 {
+  "E7Gold": {
+    "name": "E7Gold",
+    "path": "DataUpdate.E7Dashboard.E7Gold",
+    "i18n": "E7Dashboard.E7Gold.name",
+    "stored": "StoredInt",
+    "attrs": {
+      "time": "2020-01-01 00:00:00",
+      "value": 0
+    },
+    "order": 1,
+    "color": "#c89a54"
+  },
+  "E7Skystone": {
+    "name": "E7Skystone",
+    "path": "DataUpdate.E7Dashboard.E7Skystone",
+    "i18n": "E7Dashboard.E7Skystone.name",
+    "stored": "StoredInt",
+    "attrs": {
+      "time": "2020-01-01 00:00:00",
+      "value": 0
+    },
+    "order": 2,
+    "color": "#49aee9"
+  },
+  "E7Stamina": {
+    "name": "E7Stamina",
+    "path": "DataUpdate.E7Dashboard.E7Stamina",
+    "i18n": "E7Dashboard.E7Stamina.name",
+    "stored": "StoredCounter",
+    "attrs": {
+      "time": "2020-01-01 00:00:00",
+      "total": 0,
+      "value": 0
+    },
+    "order": 3,
+    "color": "#74c26e"
+  },
+  "E7EquipmentInventory": {
+    "name": "E7EquipmentInventory",
+    "path": "DataUpdate.E7Dashboard.E7EquipmentInventory",
+    "i18n": "E7Dashboard.E7EquipmentInventory.name",
+    "stored": "StoredCounter",
+    "attrs": {
+      "time": "2020-01-01 00:00:00",
+      "total": 0,
+      "value": 0
+    },
+    "order": 4,
+    "color": "#8d80de"
+  },
+  "E7DailyActivity": {
+    "name": "E7DailyActivity",
+    "path": "DataUpdate.E7Dashboard.E7DailyActivity",
+    "i18n": "E7Dashboard.E7DailyActivity.name",
+    "stored": "StoredInt",
+    "attrs": {
+      "time": "2020-01-01 00:00:00",
+      "value": 0
+    },
+    "order": 5,
+    "color": "#ffb45e"
+  },
+  "E7WeeklyActivity": {
+    "name": "E7WeeklyActivity",
+    "path": "DataUpdate.E7Dashboard.E7WeeklyActivity",
+    "i18n": "E7Dashboard.E7WeeklyActivity.name",
+    "stored": "StoredInt",
+    "attrs": {
+      "time": "2020-01-01 00:00:00",
+      "value": 0
+    },
+    "order": 6,
+    "color": "#ff7f8a"
+  },
+  "E7ArenaRank": {
+    "name": "E7ArenaRank",
+    "path": "DataUpdate.E7Dashboard.E7ArenaRank",
+    "i18n": "E7Dashboard.E7ArenaRank.name",
+    "stored": "StoredE7ArenaRank",
+    "attrs": {
+      "time": "2020-01-01 00:00:00",
+      "total": 38,
+      "value": 0
+    },
+    "order": 7,
+    "color": "#ffd36e"
+  },
+  "E7ShadowCommission": {
+    "name": "E7ShadowCommission",
+    "path": "DataUpdate.E7Dashboard.E7ShadowCommission",
+    "i18n": "E7Dashboard.E7ShadowCommission.name",
+    "stored": "StoredE7ShadowCommission",
+    "attrs": {
+      "time": "2020-01-01 00:00:00",
+      "total": 30,
+      "value": 0
+    },
+    "order": 8,
+    "color": "#7796ff"
+  },
   "DailyActivity": {
     "name": "DailyActivity",
     "path": "DailyQuest.DailyStorage.DailyActivity",
@@ -9,45 +109,8 @@
       "total": 500,
       "value": 0
     },
-    "order": 2,
-    "color": "#ffcf70"
-  },
-  "BattlePassLevel": {
-    "name": "BattlePassLevel",
-    "path": "BattlePass.BattlePassStorage.BattlePassLevel",
-    "i18n": "BattlePassStorage.BattlePassLevel.name",
-    "stored": "StoredBattlePassLevel",
-    "attrs": {
-      "time": "2020-01-01 00:00:00",
-      "total": 70,
-      "value": 0
-    },
-    "order": 5,
-    "color": "#cbe45b"
-  },
-  "Credit": {
-    "name": "Credit",
-    "path": "DataUpdate.ItemStorage.Credit",
-    "i18n": "ItemStorage.Credit.name",
-    "stored": "StoredInt",
-    "attrs": {
-      "time": "2020-01-01 00:00:00",
-      "value": 0
-    },
-    "order": 7,
-    "color": "#ab7cf2"
-  },
-  "StallerJade": {
-    "name": "StallerJade",
-    "path": "DataUpdate.ItemStorage.StallerJade",
-    "i18n": "ItemStorage.StallerJade.name",
-    "stored": "StoredInt",
-    "attrs": {
-      "time": "2020-01-01 00:00:00",
-      "value": 0
-    },
-    "order": 8,
-    "color": "#fc8f8b"
+    "order": 0,
+    "color": "#777777"
   },
   "DailyQuest": {
     "name": "DailyQuest",
@@ -65,6 +128,19 @@
       "quest7": "",
       "quest8": "",
       "total": 8,
+      "value": 0
+    },
+    "order": 0,
+    "color": "#777777"
+  },
+  "BattlePassLevel": {
+    "name": "BattlePassLevel",
+    "path": "BattlePass.BattlePassStorage.BattlePassLevel",
+    "i18n": "BattlePassStorage.BattlePassLevel.name",
+    "stored": "StoredBattlePassLevel",
+    "attrs": {
+      "time": "2020-01-01 00:00:00",
+      "total": 70,
       "value": 0
     },
     "order": 0,
@@ -202,6 +278,30 @@
     "attrs": {
       "time": "2020-01-01 00:00:00",
       "total": 0,
+      "value": 0
+    },
+    "order": 0,
+    "color": "#777777"
+  },
+  "Credit": {
+    "name": "Credit",
+    "path": "DataUpdate.ItemStorage.Credit",
+    "i18n": "ItemStorage.Credit.name",
+    "stored": "StoredInt",
+    "attrs": {
+      "time": "2020-01-01 00:00:00",
+      "value": 0
+    },
+    "order": 0,
+    "color": "#777777"
+  },
+  "StallerJade": {
+    "name": "StallerJade",
+    "path": "DataUpdate.ItemStorage.StallerJade",
+    "i18n": "ItemStorage.StallerJade.name",
+    "stored": "StoredInt",
+    "attrs": {
+      "time": "2020-01-01 00:00:00",
       "value": 0
     },
     "order": 0,

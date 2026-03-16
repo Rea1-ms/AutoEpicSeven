@@ -15,6 +15,8 @@ from module.config.stored.classes import (
     StoredDaily,
     StoredDailyActivity,
     StoredDungeonDouble,
+    StoredE7ArenaRank,
+    StoredE7ShadowCommission,
     StoredEchoOfWar,
     StoredExpiredAt0400,
     StoredExpiredAtMonday0400,
@@ -49,6 +51,14 @@ class StoredGenerated:
     Assignment = StoredAssignment("Assignment.Assignment.Assignment")
     Credit = StoredInt("DataUpdate.ItemStorage.Credit")
     StallerJade = StoredInt("DataUpdate.ItemStorage.StallerJade")
+    E7Gold = StoredInt("DataUpdate.E7Dashboard.E7Gold")
+    E7Skystone = StoredInt("DataUpdate.E7Dashboard.E7Skystone")
+    E7Stamina = StoredCounter("DataUpdate.E7Dashboard.E7Stamina")
+    E7EquipmentInventory = StoredCounter("DataUpdate.E7Dashboard.E7EquipmentInventory")
+    E7DailyActivity = StoredInt("DataUpdate.E7Dashboard.E7DailyActivity")
+    E7WeeklyActivity = StoredInt("DataUpdate.E7Dashboard.E7WeeklyActivity")
+    E7ArenaRank = StoredE7ArenaRank("DataUpdate.E7Dashboard.E7ArenaRank")
+    E7ShadowCommission = StoredE7ShadowCommission("DataUpdate.E7Dashboard.E7ShadowCommission")
     CloudRemainSeasonPass = StoredInt("DataUpdate.CloudStorage.CloudRemainSeasonPass")
     CloudRemainPaid = StoredInt("DataUpdate.CloudStorage.CloudRemainPaid")
     CloudRemainFree = StoredInt("DataUpdate.CloudStorage.CloudRemainFree")

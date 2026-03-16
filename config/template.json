@@ -121,6 +121,16 @@
       "Credit": {},
       "StallerJade": {}
     },
+    "E7Dashboard": {
+      "E7Gold": {},
+      "E7Skystone": {},
+      "E7Stamina": {},
+      "E7EquipmentInventory": {},
+      "E7DailyActivity": {},
+      "E7WeeklyActivity": {},
+      "E7ArenaRank": {},
+      "E7ShadowCommission": {}
+    },
     "CloudStorage": {
       "CloudRemainSeasonPass": {},
       "CloudRemainPaid": {},
@@ -170,6 +180,12 @@
       "NextRun": "2020-01-01 00:00:00",
       "Command": "Mail",
       "ServerUpdate": "02:00"
+    },
+    "Mail": {
+      "CollectWithin": "1h",
+      "LastCheckAt": "2020-01-01 00:00:00",
+      "LastRemainingText": null,
+      "LastRemainingSince": "2020-01-01 00:00:00"
     }
   },
   "SanctuaryDaily": {

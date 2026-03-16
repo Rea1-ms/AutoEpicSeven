@@ -1294,6 +1294,30 @@
       "help": "有可領取獎勵時，領取每週任務獎勵寶箱。"
     }
   },
+  "Mail": {
+    "_info": {
+      "name": "臨期郵件設定",
+      "help": "依剩餘時間升序檢查信箱，領取即將過期的郵件。"
+    },
+    "CollectWithin": {
+      "name": "收取剩餘多久的郵件",
+      "help": "",
+      "1h": "1 小時內",
+      "1d": "1 天內"
+    },
+    "LastCheckAt": {
+      "name": "上次檢查時間",
+      "help": ""
+    },
+    "LastRemainingText": {
+      "name": "上次頂部剩餘時間文字",
+      "help": ""
+    },
+    "LastRemainingSince": {
+      "name": "相同剩餘時間起始時間",
+      "help": ""
+    }
+  },
   "SanctuaryMonthly": {
     "_info": {
       "name": "聖域-月常設定",
@@ -1802,6 +1826,44 @@
     },
     "StallerJade": {
       "name": "星瓊",
+      "help": ""
+    }
+  },
+  "E7Dashboard": {
+    "_info": {
+      "name": "E7 儀表板",
+      "help": "Epic Seven 概覽資料，僅顯示已記錄的看板欄位。"
+    },
+    "E7Gold": {
+      "name": "金幣",
+      "help": ""
+    },
+    "E7Skystone": {
+      "name": "鑽石",
+      "help": ""
+    },
+    "E7Stamina": {
+      "name": "體力",
+      "help": ""
+    },
+    "E7EquipmentInventory": {
+      "name": "裝備數量",
+      "help": ""
+    },
+    "E7DailyActivity": {
+      "name": "每日活躍",
+      "help": ""
+    },
+    "E7WeeklyActivity": {
+      "name": "每週活躍",
+      "help": ""
+    },
+    "E7ArenaRank": {
+      "name": "競技場通行證等級",
+      "help": ""
+    },
+    "E7ShadowCommission": {
+      "name": "暗影情報委託等級",
       "help": ""
     }
   },

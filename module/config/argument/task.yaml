@@ -39,6 +39,7 @@ Daily:
     DataUpdate:
       - Scheduler
       - ItemStorage
+      - E7Dashboard
       - CloudStorage
     Freebies:
       - Scheduler
