@@ -44,6 +44,7 @@ from tasks.knights.assets.assets_knights_weekly_task import WEEKLY_TASK, WEEKLY_
 from tasks.knights_v2.assets.assets_knights_v2_main_page import (
     KNIGHTS_ACTIVITY_ENTRY,
     KNIGHTS_CHECK as KNIGHTS_V2_CHECK,
+    TEAM_BATTLE_OPENING,
     WORLD_BOSS_CHECK as WORLD_BOSS_V2_CHECK,
     WORLD_BOSS_OPENING,
 )
@@ -336,3 +337,4 @@ page_knights_v2.link(WORLD_BOSS_OPENING, destination=page_knights_v2_world_boss)
 
 page_knights_v2_team_battle = Page(KNIGHTS_V2_CREST)
 page_knights_v2_team_battle.link(BACK, destination=page_knights_v2)
+page_knights_v2.link(TEAM_BATTLE_OPENING, destination=page_knights_v2_team_battle)

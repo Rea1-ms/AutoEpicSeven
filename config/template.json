@@ -81,6 +81,7 @@
       "E7WeeklyActivity": {},
       "E7ArenaRank": {},
       "E7ShadowCommission": {},
+      "E7TeamBattle": {},
       "E7ArenaFlag": {},
       "E7ConquestPoint": {}
     },
@@ -119,6 +120,9 @@
     "KnightsExpedition": {
       "Expedition": true,
       "TeamBattle": true,
+      "TeamBattleReminder": false,
+      "TeamBattleReminderLeadMinutes": 60,
+      "TeamBattleReminderLastEnd": null,
       "WorldBoss": true
     }
   },

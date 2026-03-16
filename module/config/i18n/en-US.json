@@ -1339,8 +1339,8 @@
       "help": "Enter expedition panel and run enabled sub-modules."
     },
     "TeamBattle": {
-      "name": "Guild War (Placeholder)",
-      "help": "Only enters guild war page for now; OCR logic is reserved."
+      "name": "Guild War",
+      "help": "Enter guild war, clear settlement popups, and read the current attack count."
     },
     "WorldBoss": {
       "name": "World Boss",
@@ -1405,8 +1405,24 @@
       "help": "Enter expedition panel and run enabled sub-modules."
     },
     "TeamBattle": {
-      "name": "Guild War (Placeholder)",
-      "help": "Only enters guild war page for now; OCR logic is reserved."
+      "name": "Guild War",
+      "help": "Enter guild war, clear settlement popups, and read the current attack count."
+    },
+    "TeamBattleReminder": {
+      "name": "Enable Guild War Reminder",
+      "help": "During active guild war, notify the owner if unused attacks remain near the configured end time."
+    },
+    "TeamBattleReminderLeadMinutes": {
+      "name": "Reminder Lead Time",
+      "help": "How many minutes before guild war ends to start checking for unused attacks.",
+      "30": "30 minutes",
+      "60": "60 minutes",
+      "120": "120 minutes",
+      "180": "180 minutes"
+    },
+    "TeamBattleReminderLastEnd": {
+      "name": "Last Guild War Reminder End",
+      "help": "Internal deduplication state for guild war reminders."
     },
     "WorldBoss": {
       "name": "World Boss",
@@ -1836,6 +1852,10 @@
     },
     "E7ShadowCommission": {
       "name": "Shadow Commission Level",
+      "help": ""
+    },
+    "E7TeamBattle": {
+      "name": "Guild War Attacks",
       "help": ""
     },
     "E7ArenaFlag": {

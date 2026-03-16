@@ -18,6 +18,7 @@ from module.config.stored.classes import (
     StoredE7ArenaRank,
     StoredE7DailyActivity,
     StoredE7ShadowCommission,
+    StoredE7TeamBattleStatus,
     StoredE7WeeklyActivity,
     StoredEchoOfWar,
     StoredExpiredAt0400,
@@ -48,6 +49,7 @@ class StoredGenerated:
     E7WeeklyActivity = StoredE7WeeklyActivity("DataUpdate.E7Dashboard.E7WeeklyActivity")
     E7ArenaRank = StoredE7ArenaRank("DataUpdate.E7Dashboard.E7ArenaRank")
     E7ShadowCommission = StoredE7ShadowCommission("DataUpdate.E7Dashboard.E7ShadowCommission")
+    E7TeamBattle = StoredE7TeamBattleStatus("DataUpdate.E7Dashboard.E7TeamBattle")
     E7ArenaFlag = StoredCounter("DataUpdate.E7Dashboard.E7ArenaFlag")
     E7ConquestPoint = StoredInt("DataUpdate.E7Dashboard.E7ConquestPoint")
     CloudRemainSeasonPass = StoredInt("DataUpdate.CloudStorage.CloudRemainSeasonPass")

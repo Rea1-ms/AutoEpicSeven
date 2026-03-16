@@ -373,6 +373,14 @@
         "order": 8,
         "color": "#7796ff"
       },
+      "E7TeamBattle": {
+        "type": "stored",
+        "value": {},
+        "display": "display",
+        "stored": "StoredE7TeamBattleStatus",
+        "order": 9,
+        "color": "#d85f7c"
+      },
       "E7ArenaFlag": {
         "type": "stored",
         "value": {},
@@ -504,6 +512,26 @@
       "TeamBattle": {
         "type": "checkbox",
         "value": true
+      },
+      "TeamBattleReminder": {
+        "type": "checkbox",
+        "value": false
+      },
+      "TeamBattleReminderLeadMinutes": {
+        "type": "select",
+        "value": 60,
+        "option": [
+          30,
+          60,
+          120,
+          180
+        ]
+      },
+      "TeamBattleReminderLastEnd": {
+        "type": "input",
+        "value": "",
+        "keepvalue": true,
+        "display": "hide"
       },
       "WorldBoss": {
         "type": "checkbox",

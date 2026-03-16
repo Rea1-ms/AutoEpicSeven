@@ -462,6 +462,10 @@ class StoredE7ShadowCommission(StoredCounter):
     FIXED_TOTAL = 30
 
 
+class StoredE7TeamBattleStatus(StoredBase):
+    value = ''
+
+
 class StoredPlanner(StoredBase):
     value: int
     total: int

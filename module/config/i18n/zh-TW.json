@@ -48,7 +48,7 @@
     },
     "Knights": {
       "name": "騎士團",
-      "help": "騎士團相關日常：簽到加成獎勵、支援、團戰占位、世界 Boss。"
+      "help": "騎士團相關日常：簽到加成獎勵、支援、團戰、世界 Boss。"
     },
     "Arena": {
       "name": "競技場",
@@ -1339,8 +1339,8 @@
       "help": "進入遠征面板並執行已啟用的子模組。"
     },
     "TeamBattle": {
-      "name": "團戰（占位）",
-      "help": "僅進入團戰頁面並預留後續 OCR 邏輯。"
+      "name": "騎士團團戰",
+      "help": "進入團戰頁面，處理結算並讀取目前刀數。"
     },
     "WorldBoss": {
       "name": "世界 Boss",
@@ -1405,8 +1405,24 @@
       "help": "進入遠征面板並執行已啟用的子模組。"
     },
     "TeamBattle": {
-      "name": "團戰（占位）",
-      "help": "僅進入團戰頁面並預留後續 OCR 邏輯。"
+      "name": "騎士團團戰",
+      "help": "進入團戰頁面，處理結算並讀取目前刀數。"
+    },
+    "TeamBattleReminder": {
+      "name": "啟用團戰提醒",
+      "help": "團戰開放期間，若到結束前仍有未出的刀，則透過通知渠道提醒號主。"
+    },
+    "TeamBattleReminderLeadMinutes": {
+      "name": "結束前提醒時間",
+      "help": "距離團戰結束多少分鐘前，開始檢查是否仍有未出的刀。",
+      "30": "30 分鐘",
+      "60": "60 分鐘",
+      "120": "120 分鐘",
+      "180": "180 分鐘"
+    },
+    "TeamBattleReminderLastEnd": {
+      "name": "上次提醒團戰結束時間",
+      "help": "內部去重狀態，不在 GUI 中顯示。"
     },
     "WorldBoss": {
       "name": "世界 Boss",
@@ -1836,6 +1852,10 @@
     },
     "E7ShadowCommission": {
       "name": "暗影情報委託等級",
+      "help": ""
+    },
+    "E7TeamBattle": {
+      "name": "團戰刀數",
       "help": ""
     },
     "E7ArenaFlag": {

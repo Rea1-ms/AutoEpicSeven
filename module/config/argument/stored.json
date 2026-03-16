@@ -101,6 +101,18 @@
     "order": 8,
     "color": "#7796ff"
   },
+  "E7TeamBattle": {
+    "name": "E7TeamBattle",
+    "path": "DataUpdate.E7Dashboard.E7TeamBattle",
+    "i18n": "E7Dashboard.E7TeamBattle.name",
+    "stored": "StoredE7TeamBattleStatus",
+    "attrs": {
+      "time": "2020-01-01 00:00:00",
+      "value": ""
+    },
+    "order": 9,
+    "color": "#d85f7c"
+  },
   "Credit": {
     "name": "Credit",
     "path": "DataUpdate.ItemStorage.Credit",

@@ -290,6 +290,14 @@ KnightsDonate:
 KnightsExpedition:
   Expedition: true
   TeamBattle: true
+  TeamBattleReminder: false
+  TeamBattleReminderLeadMinutes:
+    value: 60
+    option: [ 30, 60, 120, 180 ]
+  TeamBattleReminderLastEnd:
+    keepvalue: true
+    display: hide
+    value: ""
   WorldBoss: true
 
 Arena:
@@ -464,6 +472,11 @@ E7Dashboard:
     stored: StoredE7ShadowCommission
     order: 8
     color: "#7796ff"
+    display: display
+  E7TeamBattle:
+    stored: StoredE7TeamBattleStatus
+    order: 9
+    color: "#d85f7c"
     display: display
   E7ArenaFlag:
     stored: StoredCounter

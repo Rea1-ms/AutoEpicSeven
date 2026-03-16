@@ -1339,8 +1339,8 @@
       "help": "Entra en expedición y ejecuta los submódulos habilitados."
     },
     "TeamBattle": {
-      "name": "Guerra de gremio (pendiente)",
-      "help": "Por ahora solo entra en la página; OCR queda pendiente."
+      "name": "Guerra de gremio",
+      "help": "Entra en la guerra de gremio, limpia la pantalla de resultados y lee el conteo actual de ataques."
     },
     "WorldBoss": {
       "name": "Jefe mundial",
@@ -1405,8 +1405,24 @@
       "help": "Entra en expedición y ejecuta los submódulos habilitados."
     },
     "TeamBattle": {
-      "name": "Guerra de gremio (pendiente)",
-      "help": "Por ahora solo entra en la página; OCR queda pendiente."
+      "name": "Guerra de gremio",
+      "help": "Entra en la guerra de gremio, limpia la pantalla de resultados y lee el conteo actual de ataques."
+    },
+    "TeamBattleReminder": {
+      "name": "Activar recordatorio de guerra",
+      "help": "Durante una guerra activa, avisa al propietario si todavía quedan ataques sin usar cerca de la hora final configurada."
+    },
+    "TeamBattleReminderLeadMinutes": {
+      "name": "Anticipación del recordatorio",
+      "help": "Cuántos minutos antes del final de la guerra se empieza a revisar si quedan ataques sin usar.",
+      "30": "30 minutos",
+      "60": "60 minutos",
+      "120": "120 minutos",
+      "180": "180 minutos"
+    },
+    "TeamBattleReminderLastEnd": {
+      "name": "Último fin recordado de guerra",
+      "help": "Estado interno para evitar recordatorios duplicados."
     },
     "WorldBoss": {
       "name": "Jefe mundial",
@@ -1836,6 +1852,10 @@
     },
     "E7ShadowCommission": {
       "name": "Nivel de Comisión Sombría",
+      "help": ""
+    },
+    "E7TeamBattle": {
+      "name": "Ataques de guerra",
       "help": ""
     },
     "E7ArenaFlag": {

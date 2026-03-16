@@ -12,6 +12,11 @@ from tasks.knights_v2.assets.assets_knights_v2_gvg import (
 from tasks.knights_v2.assets.assets_knights_v2_main_page import (
     KNIGHTS_CHECK,
     TEAM_BATTLE_LOCKED,
+    TEAM_BATTLE_OPENING,
+)
+from tasks.knights_v2.team_battle_status import (
+    KnightsTeamBattleStatusMixin,
+    TeamBattleCrestStatus,
 )
 
 
@@ -24,11 +29,11 @@ class OcrKnightsCrest(DigitCounter):
         return result
 
 
-class KnightsTeamBattleMixin:
+class KnightsTeamBattleMixin(KnightsTeamBattleStatusMixin):
     TEAM_BATTLE_HOME_SIMILARITY = 0.7
     TEAM_BATTLE_LOCKED_SIMILARITY = 0.8
     TEAM_BATTLE_FLOW_TIMEOUT_SECONDS = 120
-    TEAM_BATTLE_ENTRY_PENDING_SECONDS = 5
+    TEAM_BATTLE_ENTRY_PENDING_SECONDS = 8
     TEAM_BATTLE_BACK_TIMEOUT_SECONDS = 12
 
     def _is_knights_home(self, interval=0) -> bool:
@@ -59,7 +64,7 @@ class KnightsTeamBattleMixin:
         """
         pass
 
-    def _ocr_knights_crest(self) -> tuple[int, int, int]:
+    def _ocr_knights_crest(self) -> TeamBattleCrestStatus | None:
         lang = self.config.Emulator_GameLanguage
         if lang == "auto" or not lang:
             lang = "cn"
@@ -67,9 +72,11 @@ class KnightsTeamBattleMixin:
         current, remain, total = ocr.ocr_single_line(self.device.image)
         if total and current <= total:
             logger.attr("KnightsCrest", f"{current}/{total}")
-        else:
-            logger.warning(f"Knights crest OCR invalid: {current}/{total}")
-        return current, remain, total
+            # Guild war counter is remaining_attacks / total_attacks.
+            return TeamBattleCrestStatus(current=current, remain=current, total=total)
+
+        logger.warning(f"Knights crest OCR invalid: {current}/{total}")
+        return None
 
     def _back_to_knights(self, skip_first_screenshot=True) -> bool:
         timeout = Timer(self.TEAM_BATTLE_BACK_TIMEOUT_SECONDS, count=36).start()
@@ -100,23 +107,12 @@ class KnightsTeamBattleMixin:
                 timeout.reset()
                 continue
 
-    def run_team_battle(self, skip_first_screenshot=True, entry_clicked=False) -> bool:
-        """
-        Run the v2 guild-war flow.
-
-        Args:
-            skip_first_screenshot:
-            entry_clicked:
-                True when the caller has already clicked a future team-battle
-                entry button and wants this loop to wait for the transition.
-        """
+    def run_team_battle(self, skip_first_screenshot=True) -> bool:
         logger.info("Knights v2: team battle")
         timeout = Timer(self.TEAM_BATTLE_FLOW_TIMEOUT_SECONDS, count=360).start()
         entry_pending = Timer(self.TEAM_BATTLE_ENTRY_PENDING_SECONDS, count=0)
-        if entry_clicked:
-            entry_pending.start()
-        else:
-            entry_pending.clear()
+        entry_clicked = False
+        self._reset_team_battle_status_runtime()
 
         while 1:
             if skip_first_screenshot:
@@ -136,7 +132,12 @@ class KnightsTeamBattleMixin:
                 return False
 
             if self._is_team_battle_home(interval=1):
-                self._ocr_knights_crest()
+                status = self._ocr_knights_crest()
+                if status is None:
+                    self._update_team_battle_dashboard_invalid()
+                else:
+                    self._update_team_battle_dashboard_counter(status)
+                    self._send_or_schedule_team_battle_reminder(status)
                 self._team_battle_time_ocr_todo()
                 logger.info("Team battle home reached")
                 return self._back_to_knights(skip_first_screenshot=True)
@@ -152,13 +153,18 @@ class KnightsTeamBattleMixin:
             if self._is_knights_home(interval=1):
                 if self._is_team_battle_locked(interval=1):
                     logger.info("Team battle is locked, skip for now")
+                    self._update_team_battle_dashboard_locked()
                     return True
+
+                if self.appear_then_click(TEAM_BATTLE_OPENING, interval=1):
+                    logger.info("Team battle: knights home -> team battle")
+                    entry_clicked = True
+                    entry_pending.reset()
+                    timeout.reset()
+                    continue
 
                 if entry_clicked:
                     if entry_pending.reached():
                         logger.warning("Team battle entry did not leave knights page in time")
                         return False
                     continue
-
-                logger.info("Team battle entry asset is not available yet, skip direct enter")
-                return True

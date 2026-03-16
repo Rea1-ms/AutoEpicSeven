@@ -19,4 +19,4 @@ class KnightsExpeditionMixin(KnightsTeamBattleMixin):
             logger.info("Knights team battle disabled by config")
             return True
 
-        return self.run_team_battle(skip_first_screenshot=True, entry_clicked=False)
+        return self.run_team_battle(skip_first_screenshot=True)

@@ -201,6 +201,9 @@ class GeneratedConfig:
     # Group `KnightsExpedition`
     KnightsExpedition_Expedition = True
     KnightsExpedition_TeamBattle = True
+    KnightsExpedition_TeamBattleReminder = False
+    KnightsExpedition_TeamBattleReminderLeadMinutes = 60  # 30, 60, 120, 180
+    KnightsExpedition_TeamBattleReminderLastEnd = None
     KnightsExpedition_WorldBoss = True
 
     # Group `Arena`
@@ -284,6 +287,7 @@ class GeneratedConfig:
     E7Dashboard_E7WeeklyActivity = {}
     E7Dashboard_E7ArenaRank = {}
     E7Dashboard_E7ShadowCommission = {}
+    E7Dashboard_E7TeamBattle = {}
     E7Dashboard_E7ArenaFlag = {}
     E7Dashboard_E7ConquestPoint = {}
 

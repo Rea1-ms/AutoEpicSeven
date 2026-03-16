@@ -48,7 +48,7 @@
     },
     "Knights": {
       "name": "骑士团",
-      "help": "骑士团相关日常：签到加成奖励、支援、团战占位、世界 Boss。"
+      "help": "骑士团相关日常：签到加成奖励、支援、团战、世界 Boss。"
     },
     "Arena": {
       "name": "竞技场",
@@ -1339,8 +1339,8 @@
       "help": "进入远征面板并执行已启用的子模块。"
     },
     "TeamBattle": {
-      "name": "团战（占位）",
-      "help": "仅进入团战页面并预留后续 OCR 逻辑。"
+      "name": "骑士团团战",
+      "help": "进入团战页面，处理结算并读取当前刀数。"
     },
     "WorldBoss": {
       "name": "世界 Boss",
@@ -1405,8 +1405,24 @@
       "help": "进入远征面板并执行已启用的子模块。"
     },
     "TeamBattle": {
-      "name": "团战（占位）",
-      "help": "仅进入团战页面并预留后续 OCR 逻辑。"
+      "name": "骑士团团战",
+      "help": "进入团战页面，处理结算并读取当前刀数。"
+    },
+    "TeamBattleReminder": {
+      "name": "启用团战提醒",
+      "help": "团战开放期间，若到结束前仍有未出的刀，则通过通知渠道提醒号主。"
+    },
+    "TeamBattleReminderLeadMinutes": {
+      "name": "结束前提醒时间",
+      "help": "距离团战结束多少分钟前，开始检查是否仍有未出的刀。",
+      "30": "30 分钟",
+      "60": "60 分钟",
+      "120": "120 分钟",
+      "180": "180 分钟"
+    },
+    "TeamBattleReminderLastEnd": {
+      "name": "上次提醒团战结束时间",
+      "help": "内部去重状态，不在 GUI 中显示。"
     },
     "WorldBoss": {
       "name": "世界 Boss",
@@ -1836,6 +1852,10 @@
     },
     "E7ShadowCommission": {
       "name": "暗影情报委托等级",
+      "help": ""
+    },
+    "E7TeamBattle": {
+      "name": "团战刀数",
       "help": ""
     },
     "E7ArenaFlag": {
