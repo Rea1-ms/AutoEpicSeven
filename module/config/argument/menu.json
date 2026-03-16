@@ -11,22 +11,17 @@
     "menu": "list",
     "page": "setting",
     "tasks": [
-      "Ornament",
-      "DailyQuest",
-      "BattlePass",
-      "Assignment",
-      "DataUpdate",
-      "Freebies",
-      "Gacha",
       "MissionReward",
       "Mail",
+      "DataUpdate",
       "SanctuaryDaily",
       "Knights",
-      "Combat",
       "Arena",
-      "SecretShop",
       "Store",
       "PetsGift",
+      "SecretShop",
+      "Combat",
+      "Gacha",
       "Pets"
     ]
   },
@@ -34,9 +29,7 @@
     "menu": "list",
     "page": "setting",
     "tasks": [
-      "SanctuaryWeekly",
-      "Weekly",
-      "Rogue"
+      "SanctuaryWeekly"
     ]
   },
   "Monthly": {

@@ -465,6 +465,12 @@ E7Dashboard:
     order: 8
     color: "#7796ff"
     display: display
+  E7ArenaFlag:
+    stored: StoredCounter
+    display: hide
+  E7ConquestPoint:
+    stored: StoredInt
+    display: hide
 
 CloudStorage:
   CloudRemainSeasonPass:

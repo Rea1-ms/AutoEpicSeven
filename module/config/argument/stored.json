@@ -99,190 +99,6 @@
     "order": 8,
     "color": "#7796ff"
   },
-  "DailyActivity": {
-    "name": "DailyActivity",
-    "path": "DailyQuest.DailyStorage.DailyActivity",
-    "i18n": "DailyStorage.DailyActivity.name",
-    "stored": "StoredDailyActivity",
-    "attrs": {
-      "time": "2020-01-01 00:00:00",
-      "total": 500,
-      "value": 0
-    },
-    "order": 0,
-    "color": "#777777"
-  },
-  "DailyQuest": {
-    "name": "DailyQuest",
-    "path": "DailyQuest.DailyStorage.DailyQuest",
-    "i18n": "DailyStorage.DailyQuest.name",
-    "stored": "StoredDaily",
-    "attrs": {
-      "time": "2020-01-01 00:00:00",
-      "quest1": "",
-      "quest2": "",
-      "quest3": "",
-      "quest4": "",
-      "quest5": "",
-      "quest6": "",
-      "quest7": "",
-      "quest8": "",
-      "total": 8,
-      "value": 0
-    },
-    "order": 0,
-    "color": "#777777"
-  },
-  "BattlePassLevel": {
-    "name": "BattlePassLevel",
-    "path": "BattlePass.BattlePassStorage.BattlePassLevel",
-    "i18n": "BattlePassStorage.BattlePassLevel.name",
-    "stored": "StoredBattlePassLevel",
-    "attrs": {
-      "time": "2020-01-01 00:00:00",
-      "total": 70,
-      "value": 0
-    },
-    "order": 0,
-    "color": "#777777"
-  },
-  "BattlePassWeeklyQuest": {
-    "name": "BattlePassWeeklyQuest",
-    "path": "BattlePass.BattlePassStorage.BattlePassWeeklyQuest",
-    "i18n": "BattlePassStorage.BattlePassWeeklyQuest.name",
-    "stored": "StoredBattlePassWeeklyQuest",
-    "attrs": {
-      "time": "2020-01-01 00:00:00",
-      "quest1": "",
-      "quest2": "",
-      "quest3": "",
-      "quest4": "",
-      "quest5": "",
-      "quest6": "",
-      "quest7": "",
-      "total": 7,
-      "value": 0
-    },
-    "order": 0,
-    "color": "#777777"
-  },
-  "BattlePassSimulatedUniverse": {
-    "name": "BattlePassSimulatedUniverse",
-    "path": "BattlePass.BattlePassStorage.BattlePassSimulatedUniverse",
-    "i18n": "BattlePassStorage.BattlePassSimulatedUniverse.name",
-    "stored": "StoredBattlePassSimulatedUniverse",
-    "attrs": {
-      "time": "2020-01-01 00:00:00",
-      "total": 1,
-      "value": 0
-    },
-    "order": 0,
-    "color": "#777777"
-  },
-  "BattlePassQuestCalyx": {
-    "name": "BattlePassQuestCalyx",
-    "path": "BattlePass.BattlePassStorage.BattlePassQuestCalyx",
-    "i18n": "BattlePassStorage.BattlePassQuestCalyx.name",
-    "stored": "StoredBattlePassQuestCalyx",
-    "attrs": {
-      "time": "2020-01-01 00:00:00",
-      "total": 20,
-      "value": 0
-    },
-    "order": 0,
-    "color": "#777777"
-  },
-  "BattlePassQuestEchoOfWar": {
-    "name": "BattlePassQuestEchoOfWar",
-    "path": "BattlePass.BattlePassStorage.BattlePassQuestEchoOfWar",
-    "i18n": "BattlePassStorage.BattlePassQuestEchoOfWar.name",
-    "stored": "StoredBattlePassQuestEchoOfWar",
-    "attrs": {
-      "time": "2020-01-01 00:00:00",
-      "total": 2,
-      "value": 0
-    },
-    "order": 0,
-    "color": "#777777"
-  },
-  "BattlePassQuestCredits": {
-    "name": "BattlePassQuestCredits",
-    "path": "BattlePass.BattlePassStorage.BattlePassQuestCredits",
-    "i18n": "BattlePassStorage.BattlePassQuestCredits.name",
-    "stored": "StoredBattlePassQuestCredits",
-    "attrs": {
-      "time": "2020-01-01 00:00:00",
-      "total": 300000,
-      "value": 0
-    },
-    "order": 0,
-    "color": "#777777"
-  },
-  "BattlePassQuestSynthesizeConsumables": {
-    "name": "BattlePassQuestSynthesizeConsumables",
-    "path": "BattlePass.BattlePassStorage.BattlePassQuestSynthesizeConsumables",
-    "i18n": "BattlePassStorage.BattlePassQuestSynthesizeConsumables.name",
-    "stored": "StoredBattlePassQuestSynthesizeConsumables",
-    "attrs": {
-      "time": "2020-01-01 00:00:00",
-      "total": 10,
-      "value": 0
-    },
-    "order": 0,
-    "color": "#777777"
-  },
-  "BattlePassQuestStagnantShadow": {
-    "name": "BattlePassQuestStagnantShadow",
-    "path": "BattlePass.BattlePassStorage.BattlePassQuestStagnantShadow",
-    "i18n": "BattlePassStorage.BattlePassQuestStagnantShadow.name",
-    "stored": "StoredBattlePassQuestStagnantShadow",
-    "attrs": {
-      "time": "2020-01-01 00:00:00",
-      "total": 3,
-      "value": 0
-    },
-    "order": 0,
-    "color": "#777777"
-  },
-  "BattlePassQuestCavernOfCorrosion": {
-    "name": "BattlePassQuestCavernOfCorrosion",
-    "path": "BattlePass.BattlePassStorage.BattlePassQuestCavernOfCorrosion",
-    "i18n": "BattlePassStorage.BattlePassQuestCavernOfCorrosion.name",
-    "stored": "StoredBattlePassQuestCavernOfCorrosion",
-    "attrs": {
-      "time": "2020-01-01 00:00:00",
-      "total": 8,
-      "value": 0
-    },
-    "order": 0,
-    "color": "#777777"
-  },
-  "BattlePassQuestTrailblazePower": {
-    "name": "BattlePassQuestTrailblazePower",
-    "path": "BattlePass.BattlePassStorage.BattlePassQuestTrailblazePower",
-    "i18n": "BattlePassStorage.BattlePassQuestTrailblazePower.name",
-    "stored": "StoredBattlePassQuestTrailblazePower",
-    "attrs": {
-      "time": "2020-01-01 00:00:00",
-      "total": 0,
-      "value": 0
-    },
-    "order": 0,
-    "color": "#777777"
-  },
-  "Assignment": {
-    "name": "Assignment",
-    "path": "Assignment.Assignment.Assignment",
-    "i18n": "Assignment.Assignment.name",
-    "stored": "StoredAssignment",
-    "attrs": {
-      "time": "2020-01-01 00:00:00",
-      "total": 0,
-      "value": 0
-    },
-    "order": 0,
-    "color": "#777777"
-  },
   "Credit": {
     "name": "Credit",
     "path": "DataUpdate.ItemStorage.Credit",
@@ -299,6 +115,31 @@
     "name": "StallerJade",
     "path": "DataUpdate.ItemStorage.StallerJade",
     "i18n": "ItemStorage.StallerJade.name",
+    "stored": "StoredInt",
+    "attrs": {
+      "time": "2020-01-01 00:00:00",
+      "value": 0
+    },
+    "order": 0,
+    "color": "#777777"
+  },
+  "E7ArenaFlag": {
+    "name": "E7ArenaFlag",
+    "path": "DataUpdate.E7Dashboard.E7ArenaFlag",
+    "i18n": "E7Dashboard.E7ArenaFlag.name",
+    "stored": "StoredCounter",
+    "attrs": {
+      "time": "2020-01-01 00:00:00",
+      "total": 0,
+      "value": 0
+    },
+    "order": 0,
+    "color": "#777777"
+  },
+  "E7ConquestPoint": {
+    "name": "E7ConquestPoint",
+    "path": "DataUpdate.E7Dashboard.E7ConquestPoint",
+    "i18n": "E7Dashboard.E7ConquestPoint.name",
     "stored": "StoredInt",
     "attrs": {
       "time": "2020-01-01 00:00:00",
@@ -338,19 +179,6 @@
     "stored": "StoredInt",
     "attrs": {
       "time": "2020-01-01 00:00:00",
-      "value": 0
-    },
-    "order": 0,
-    "color": "#777777"
-  },
-  "SimulatedUniverseFarm": {
-    "name": "SimulatedUniverseFarm",
-    "path": "Rogue.RogueWorld.SimulatedUniverseFarm",
-    "i18n": "RogueWorld.SimulatedUniverseFarm.name",
-    "stored": "StoredSimulatedUniverseElite",
-    "attrs": {
-      "time": "2020-01-01 00:00:00",
-      "total": 100,
       "value": 0
     },
     "order": 0,

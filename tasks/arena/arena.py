@@ -28,6 +28,7 @@ from tasks.arena.assets.assets_arena import (
     WEEKLY_BATTLE_REWARDS,
 )
 from tasks.base.page import page_main
+from tasks.base.resource_bar import RESOURCE_BAR_LAYOUT_ARENA_BATTLE_PASS, ResourceBarMixin
 from tasks.base.ui import UI
 
 
@@ -41,7 +42,15 @@ class OcrFastBattleTimes(DigitCounter):
         return result
 
 
-class Arena(UI):
+class ArenaDigit(Digit):
+    def after_process(self, result):
+        result = result.replace("O", "0").replace("o", "0")
+        result = result.replace("I", "1").replace("l", "1").replace("|", "1")
+        result = result.replace(" ", "")
+        return super().after_process(result)
+
+
+class Arena(ResourceBarMixin, UI):
     """
     Arena task.
 
@@ -217,7 +226,11 @@ class Arena(UI):
 
     def _ocr_battle_pass_level(self) -> int:
         # Current observed range is around 1-38.
-        ocr = Digit(OCR_BATTLE_PASS_LEVEL, lang="en", name="BattlePassLevel")
+        ocr = ArenaDigit(
+            OCR_BATTLE_PASS_LEVEL,
+            lang=self._ocr_lang(),
+            name="BattlePassLevel",
+        )
         level = ocr.ocr_single_line(self.device.image)
         logger.attr("BattlePassLevel", level)
         if level > 0:
@@ -414,6 +427,13 @@ class Arena(UI):
 
                 if not level_ocr_done:
                     self._ocr_battle_pass_level()
+                    self.write_resource_bar_status(
+                        self.ocr_resource_bar_status(
+                            layout=RESOURCE_BAR_LAYOUT_ARENA_BATTLE_PASS,
+                            layout_name="ArenaBattlePass",
+                            skip_first_screenshot=True,
+                        )
+                    )
                     level_ocr_done = True
 
                 if self._sample_battle_pass_rewards(
@@ -899,6 +919,7 @@ class Arena(UI):
                     return False
                 self._claim_weekly_battle_rewards(skip_first_screenshot=True)
                 self._claim_battle_pass_rewards(skip_first_screenshot=True)
+                self.config.task_call("DataUpdate", force_call=False)
                 self.config.task_delay(server_update=True)
                 return True
 
@@ -924,6 +945,7 @@ class Arena(UI):
                 self._claim_weekly_battle_rewards(skip_first_screenshot=True)
                 self._claim_battle_pass_rewards(skip_first_screenshot=True)
 
+            self.config.task_call("DataUpdate", force_call=False)
             self.config.task_delay(server_update=True)
             return True
 

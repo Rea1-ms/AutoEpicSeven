@@ -489,22 +489,29 @@ class Mail(UI):
             self.config.task_delay(success=False)
             return False
 
+        claimed_any = False
         while 1:
             self.device.screenshot()
 
             if not self._receive_available(interval=0):
                 self.ui_goto(page_main, skip_first_screenshot=True)
+                if claimed_any:
+                    self.config.task_call("DataUpdate", force_call=False)
                 self._schedule_after_no_receive()
                 return True
 
             state = self._ocr_top_remaining_state()
             if not state.valid or state.unlimited:
                 self.ui_goto(page_main, skip_first_screenshot=True)
+                if claimed_any:
+                    self.config.task_call("DataUpdate", force_call=False)
                 self._schedule_after_ineligible(state)
                 return True
 
             if not self._is_within_threshold(state):
                 self.ui_goto(page_main, skip_first_screenshot=True)
+                if claimed_any:
+                    self.config.task_call("DataUpdate", force_call=False)
                 self._schedule_after_ineligible(state)
                 return True
 
@@ -513,3 +520,4 @@ class Mail(UI):
                 self.ui_goto(page_main, skip_first_screenshot=True)
                 self.config.task_delay(success=False)
                 return False
+            claimed_any = True

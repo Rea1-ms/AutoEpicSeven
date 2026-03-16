@@ -30,34 +30,6 @@
       "name": "Error Handling",
       "help": ""
     },
-    "Ornament": {
-      "name": "Ornament",
-      "help": "The followings must be satisfied:\n1. Manually clear Divergent Universe once this week and have a save file.\n2. Enter the dungeon once on current device to have dungeon team saved."
-    },
-    "DailyQuest": {
-      "name": "Daily Quest",
-      "help": ""
-    },
-    "BattlePass": {
-      "name": "Nameless Honor",
-      "help": ""
-    },
-    "Assignment": {
-      "name": "Assignment",
-      "help": ""
-    },
-    "DataUpdate": {
-      "name": "Dashboard Upd",
-      "help": ""
-    },
-    "Freebies": {
-      "name": "Freebies",
-      "help": ""
-    },
-    "Gacha": {
-      "name": "Gacha",
-      "help": ""
-    },
     "MissionReward": {
       "name": "Mission Reward",
       "help": "Claim daily and weekly mission rewards from the mission popup."
@@ -65,6 +37,10 @@
     "Mail": {
       "name": "Expiring Mail",
       "help": "Sort the mailbox by remaining time ascending and collect mails expiring within 1 hour or 1 day."
+    },
+    "DataUpdate": {
+      "name": "Dashboard Upd",
+      "help": ""
     },
     "SanctuaryDaily": {
       "name": "Sanctuary Daily",
@@ -74,17 +50,9 @@
       "name": "Guild",
       "help": "Guild automation: sign-in reward, support, expedition flow, and World Boss."
     },
-    "Combat": {
-      "name": "Daily Combat",
-      "help": "Farm Spirit Altar or Hunt with the selected element and grade, then start fast combat or background repeat combat."
-    },
     "Arena": {
       "name": "Arena",
       "help": "Enter arena and handle entry reward branch."
-    },
-    "SecretShop": {
-      "name": "Secret Shop",
-      "help": ""
     },
     "Store": {
       "name": "Store",
@@ -94,6 +62,18 @@
       "name": "Pet Gift",
       "help": "Collect the pet gift from the menu. After a successful claim, schedule around every 22 hours; when not ready, fall back to the recorded claim time or server update."
     },
+    "SecretShop": {
+      "name": "Secret Shop",
+      "help": ""
+    },
+    "Combat": {
+      "name": "Daily Combat",
+      "help": "Farm Spirit Altar or Hunt with the selected element and grade, then start fast combat or background repeat combat."
+    },
+    "Gacha": {
+      "name": "Gacha",
+      "help": ""
+    },
     "Pets": {
       "name": "Pet Shop",
       "help": ""
@@ -101,14 +81,6 @@
     "SanctuaryWeekly": {
       "name": "Sanctuary Weekly",
       "help": "Sanctuary weekly module with independent scheduler."
-    },
-    "Weekly": {
-      "name": "Echo of War",
-      "help": ""
-    },
-    "Rogue": {
-      "name": "Simulated Universe",
-      "help": ""
     },
     "SanctuaryMonthly": {
       "name": "Sanctuary Monthly",
@@ -1864,6 +1836,14 @@
     },
     "E7ShadowCommission": {
       "name": "Shadow Commission Level",
+      "help": ""
+    },
+    "E7ArenaFlag": {
+      "name": "Arena Flags",
+      "help": ""
+    },
+    "E7ConquestPoint": {
+      "name": "Conquest Points",
       "help": ""
     }
   },

@@ -228,9 +228,12 @@ class MissionReward(UI):
 
         self._enter_mission_reward(skip_first_screenshot=False)
 
+        claimed_daily = False
+        claimed_weekly = False
+
         if run_daily:
             daily_points = self._ocr_mission_points("Daily")
-            self._claim_rewards(
+            claimed_daily = self._claim_rewards(
                 label="Daily",
                 buttons=self.DAILY_REWARD_BUTTONS,
                 action_name=self.DAILY_REWARD_ACTION,
@@ -240,7 +243,7 @@ class MissionReward(UI):
         if run_weekly:
             self._goto_weekly_tab(skip_first_screenshot=True)
             weekly_points = self._ocr_mission_points("Weekly")
-            self._claim_rewards(
+            claimed_weekly = self._claim_rewards(
                 label="Weekly",
                 buttons=self.WEEKLY_REWARD_BUTTONS,
                 action_name=self.WEEKLY_REWARD_ACTION,
@@ -254,5 +257,7 @@ class MissionReward(UI):
                 self.config.stored.E7WeeklyActivity.value = weekly_points
 
         self.ui_goto(page_main, skip_first_screenshot=True)
+        if claimed_daily or claimed_weekly:
+            self.config.task_call("DataUpdate", force_call=False)
         self.config.task_delay(server_update=True)
         return True

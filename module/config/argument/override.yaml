@@ -20,27 +20,6 @@ Restart:
       option_bold: [ true, ]
     ServerUpdate: 02:00
 
-DailyQuest:
-  Scheduler:
-    Enable:
-      type: state
-      value: true
-      option: [ true, ]
-      option_bold: [ true, ]
-BattlePass:
-  Scheduler:
-    Enable:
-      type: state
-      value: true
-      option: [ true, ]
-      option_bold: [ true, ]
-Assignment:
-  Scheduler:
-    Enable:
-      type: state
-      value: true
-      option: [ true, ]
-      option_bold: [ true, ]
 DataUpdate:
   Scheduler:
     Enable:
@@ -48,14 +27,3 @@ DataUpdate:
       value: true
       option: [ true, ]
       option_bold: [ true, ]
-
-# ==================== Weekly ====================
-
-Weekly:
-  DungeonSupport:
-    Use:
-      option: [ always_use, do_not_use ]
-Ornament:
-  DungeonSupport:
-    Use:
-      option: [ when_daily, always_use ]

@@ -30,34 +30,6 @@
       "name": "再起動設定",
       "help": ""
     },
-    "Ornament": {
-      "name": "Task.Ornament.name",
-      "help": "Task.Ornament.help"
-    },
-    "DailyQuest": {
-      "name": "Task.DailyQuest.name",
-      "help": "Task.DailyQuest.help"
-    },
-    "BattlePass": {
-      "name": "ナナシの勲功",
-      "help": ""
-    },
-    "Assignment": {
-      "name": "依頼設定",
-      "help": ""
-    },
-    "DataUpdate": {
-      "name": "Task.DataUpdate.name",
-      "help": "Task.DataUpdate.help"
-    },
-    "Freebies": {
-      "name": "他ギフト",
-      "help": ""
-    },
-    "Gacha": {
-      "name": "しょうかん",
-      "help": ""
-    },
     "MissionReward": {
       "name": "ミッション報酬",
       "help": "ミッションポップアップからデイリーとウィークリーの報酬を受け取ります。"
@@ -65,6 +37,10 @@
     "Mail": {
       "name": "期限切れ間近メール",
       "help": "残り時間の昇順でメールを確認し、残り 1 時間または 1 日以内のメールを受け取ります。"
+    },
+    "DataUpdate": {
+      "name": "Task.DataUpdate.name",
+      "help": "Task.DataUpdate.help"
     },
     "SanctuaryDaily": {
       "name": "聖域-デイリー",
@@ -74,17 +50,9 @@
       "name": "ギルド",
       "help": "ギルド自動化：出席報酬、支援、遠征、ワールドボス。"
     },
-    "Combat": {
-      "name": "デイリー副本",
-      "help": "精霊祭壇または討伐を周回し、属性と難易度に応じて高速戦闘またはバックグラウンド連続戦闘を開始します。"
-    },
     "Arena": {
       "name": "アリーナ",
       "help": "アリーナに入り、入口報酬分岐を処理します。"
-    },
-    "SecretShop": {
-      "name": "シークレットショップ",
-      "help": ""
     },
     "Store": {
       "name": "ショップ",
@@ -94,6 +62,18 @@
       "name": "ペットギフト",
       "help": "メニューから約22時間ごとに更新されるペットギフトを受け取ります。受け取り成功後は22時間基準で再実行し、未準備時は履歴時刻またはサーバー更新で補正します。"
     },
+    "SecretShop": {
+      "name": "シークレットショップ",
+      "help": ""
+    },
+    "Combat": {
+      "name": "デイリー副本",
+      "help": "精霊祭壇または討伐を周回し、属性と難易度に応じて高速戦闘またはバックグラウンド連続戦闘を開始します。"
+    },
+    "Gacha": {
+      "name": "しょうかん",
+      "help": ""
+    },
     "Pets": {
       "name": "ペットショップ",
       "help": ""
@@ -101,14 +81,6 @@
     "SanctuaryWeekly": {
       "name": "聖域-ウィークリー",
       "help": "独立スケジューラで実行する聖域ウィークリーモジュール。"
-    },
-    "Weekly": {
-      "name": "Task.Weekly.name",
-      "help": "Task.Weekly.help"
-    },
-    "Rogue": {
-      "name": "Task.Rogue.name",
-      "help": "Task.Rogue.help"
     },
     "SanctuaryMonthly": {
       "name": "聖域-マンスリー",
@@ -1864,6 +1836,14 @@
     },
     "E7ShadowCommission": {
       "name": "暗影情報依頼レベル",
+      "help": ""
+    },
+    "E7ArenaFlag": {
+      "name": "アリーナ旗",
+      "help": ""
+    },
+    "E7ConquestPoint": {
+      "name": "征服ポイント",
       "help": ""
     }
   },

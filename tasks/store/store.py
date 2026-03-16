@@ -514,5 +514,6 @@ class Store(UI):
         for sub_store in self._build_sub_store_plans():
             self._run_sub_store(sub_store)
 
+        self.config.task_call('DataUpdate', force_call=False)
         self.config.task_delay(server_update=True)
         return True

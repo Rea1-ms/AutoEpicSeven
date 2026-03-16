@@ -30,34 +30,6 @@
       "name": "Gestión de errores",
       "help": ""
     },
-    "Ornament": {
-      "name": "Ornamentos",
-      "help": "Se deben cumplir los siguientes requisitos:\n1. Borre manualmente Universo Diferenciado una vez esta semana y tenga un archivo guardado.\n2. Ingrese a la mazmorra una vez en el dispositivo actual para guardar el equipo de la mazmorra."
-    },
-    "DailyQuest": {
-      "name": "Misión diaria",
-      "help": ""
-    },
-    "BattlePass": {
-      "name": "Honor anónimo",
-      "help": ""
-    },
-    "Assignment": {
-      "name": "Encargos",
-      "help": ""
-    },
-    "DataUpdate": {
-      "name": "Actualizar panel",
-      "help": ""
-    },
-    "Freebies": {
-      "name": "Freebies",
-      "help": ""
-    },
-    "Gacha": {
-      "name": "Invocación",
-      "help": ""
-    },
     "MissionReward": {
       "name": "Recompensas de misión",
       "help": "Reclama las recompensas diarias y semanales desde la ventana de misiones."
@@ -65,6 +37,10 @@
     "Mail": {
       "name": "Correo por vencer",
       "help": "Ordena el buzón por tiempo restante ascendente y recoge los correos que vencen dentro de 1 hora o 1 día."
+    },
+    "DataUpdate": {
+      "name": "Actualizar panel",
+      "help": ""
     },
     "SanctuaryDaily": {
       "name": "Santuario - Diario",
@@ -74,17 +50,9 @@
       "name": "Gremio",
       "help": "Automatización del gremio: recompensa de inicio, apoyo, expedición y Jefe Mundial."
     },
-    "Combat": {
-      "name": "Combate diario",
-      "help": "Farmea Altar Espiritual o Cacería con el elemento y la dificultad elegidos, y luego inicia combate rápido o combate repetido en segundo plano."
-    },
     "Arena": {
       "name": "Arena",
       "help": "Entrar en arena y manejar la rama de recompensas de entrada."
-    },
-    "SecretShop": {
-      "name": "Tienda Secreta",
-      "help": ""
     },
     "Store": {
       "name": "Tienda",
@@ -94,6 +62,18 @@
       "name": "Regalo Mascota",
       "help": "Reclama el regalo de mascotas desde el menú. Tras cobrarlo, se volverá a programar en torno a 22 horas; si no está listo, usará la hora registrada o la actualización del servidor como respaldo."
     },
+    "SecretShop": {
+      "name": "Tienda Secreta",
+      "help": ""
+    },
+    "Combat": {
+      "name": "Combate diario",
+      "help": "Farmea Altar Espiritual o Cacería con el elemento y la dificultad elegidos, y luego inicia combate rápido o combate repetido en segundo plano."
+    },
+    "Gacha": {
+      "name": "Invocación",
+      "help": ""
+    },
     "Pets": {
       "name": "Tienda de mascotas",
       "help": ""
@@ -101,14 +81,6 @@
     "SanctuaryWeekly": {
       "name": "Santuario - Semanal",
       "help": "Módulo semanal de santuario con planificador independiente."
-    },
-    "Weekly": {
-      "name": "Ecos de la guerra",
-      "help": ""
-    },
-    "Rogue": {
-      "name": "Universo Simulado",
-      "help": ""
     },
     "SanctuaryMonthly": {
       "name": "Santuario - Mensual",
@@ -1864,6 +1836,14 @@
     },
     "E7ShadowCommission": {
       "name": "Nivel de Comisión Sombría",
+      "help": ""
+    },
+    "E7ArenaFlag": {
+      "name": "Banderas de arena",
+      "help": ""
+    },
+    "E7ConquestPoint": {
+      "name": "Puntos de conquista",
       "help": ""
     }
   },

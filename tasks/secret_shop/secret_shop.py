@@ -28,6 +28,7 @@ from module.logger import logger
 from module.ocr.ocr import Duration, OcrWhiteLetterOnComplexBackground
 from tasks.base.popup import PopupHandler
 from tasks.base.page import page_secret_shop
+from tasks.base.resource_bar import RESOURCE_BAR_LAYOUT_SECRET_SHOP, ResourceBarMixin
 from tasks.base.ui import UI
 
 from tasks.secret_shop.assets.assets_secret_shop import (
@@ -61,7 +62,7 @@ class SecretShopRefreshDuration(OcrWhiteLetterOnComplexBackground, Duration):
         return result
 
 
-class SecretShop(PopupHandler):
+class SecretShop(ResourceBarMixin, PopupHandler):
     """
     秘密商店刷书签
 
@@ -370,6 +371,13 @@ class SecretShop(PopupHandler):
             Login(self.config, device=self.device).app_start()
 
         UI(self.config, device=self.device).ui_goto(page_secret_shop)
+        self.write_resource_bar_status(
+            self.ocr_resource_bar_status(
+                layout=RESOURCE_BAR_LAYOUT_SECRET_SHOP,
+                layout_name="SecretShop",
+                skip_first_screenshot=True,
+            )
+        )
         logger.hr('秘密商店刷书签', level=1)
         logger.info(f'最大刷新次数: {self.max_refresh}')
         logger.info(f'纯白嫖: {self.only_free}')

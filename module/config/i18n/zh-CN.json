@@ -30,34 +30,6 @@
       "name": "异常处理",
       "help": ""
     },
-    "Ornament": {
-      "name": "饰品提取",
-      "help": "运行 \"饰品提取\" 任务需要：\n1. 每周事先手动通关差分宇宙一次并保存存档\n2. 在当前设备进入过副本一次，有保存的编队"
-    },
-    "DailyQuest": {
-      "name": "每日任务",
-      "help": ""
-    },
-    "BattlePass": {
-      "name": "无名勋礼",
-      "help": ""
-    },
-    "Assignment": {
-      "name": "委托",
-      "help": ""
-    },
-    "DataUpdate": {
-      "name": "仪表盘更新",
-      "help": ""
-    },
-    "Freebies": {
-      "name": "白嫖奖励",
-      "help": ""
-    },
-    "Gacha": {
-      "name": "召唤",
-      "help": ""
-    },
     "MissionReward": {
       "name": "任务奖励",
       "help": "从任务弹窗中领取每日与每周任务奖励。"
@@ -65,6 +37,10 @@
     "Mail": {
       "name": "临期邮件",
       "help": "按剩余时间升序检查邮箱，领取剩余 1 小时或 1 天内过期的邮件。"
+    },
+    "DataUpdate": {
+      "name": "仪表盘更新",
+      "help": ""
     },
     "SanctuaryDaily": {
       "name": "圣域-日常",
@@ -74,17 +50,9 @@
       "name": "骑士团",
       "help": "骑士团相关日常：签到加成奖励、支援、团战占位、世界 Boss。"
     },
-    "Combat": {
-      "name": "每日副本",
-      "help": "刷取精灵祭坛或讨伐，按配置选择属性、难度，并进入快速战斗或后台重复战斗。"
-    },
     "Arena": {
       "name": "竞技场",
       "help": "进入竞技场并处理入口奖励分支。"
-    },
-    "SecretShop": {
-      "name": "秘密商店",
-      "help": ""
     },
     "Store": {
       "name": "商店",
@@ -94,6 +62,18 @@
       "name": "宠物礼物",
       "help": "从菜单中领取约每22小时刷新的宠物礼物。领取成功后按22小时节奏调度；若当前未就绪，则按历史领取时间或服务器刷新时间兜底调度。"
     },
+    "SecretShop": {
+      "name": "秘密商店",
+      "help": ""
+    },
+    "Combat": {
+      "name": "每日副本",
+      "help": "刷取精灵祭坛或讨伐，按配置选择属性、难度，并进入快速战斗或后台重复战斗。"
+    },
+    "Gacha": {
+      "name": "召唤",
+      "help": ""
+    },
     "Pets": {
       "name": "宠物商店",
       "help": ""
@@ -101,14 +81,6 @@
     "SanctuaryWeekly": {
       "name": "圣域-周常",
       "help": "独立调度的圣域周常模块。"
-    },
-    "Weekly": {
-      "name": "历战余响",
-      "help": ""
-    },
-    "Rogue": {
-      "name": "模拟宇宙",
-      "help": ""
     },
     "SanctuaryMonthly": {
       "name": "圣域-月常",
@@ -1864,6 +1836,14 @@
     },
     "E7ShadowCommission": {
       "name": "暗影情报委托等级",
+      "help": ""
+    },
+    "E7ArenaFlag": {
+      "name": "竞技场旗帜",
+      "help": ""
+    },
+    "E7ConquestPoint": {
+      "name": "征服点数",
       "help": ""
     }
   },

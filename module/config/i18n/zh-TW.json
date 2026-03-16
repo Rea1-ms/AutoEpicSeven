@@ -30,34 +30,6 @@
       "name": "除錯",
       "help": ""
     },
-    "Ornament": {
-      "name": "飾品提取",
-      "help": "運行 \"飾品提取\" 任務需要：\n1. 每週事先手動通關差分宇宙一次並保存檔案\n2. 在當前設備進入過副本一次，有保存的編隊"
-    },
-    "DailyQuest": {
-      "name": "每日任務",
-      "help": ""
-    },
-    "BattlePass": {
-      "name": "無名勳禮",
-      "help": ""
-    },
-    "Assignment": {
-      "name": "委託",
-      "help": ""
-    },
-    "DataUpdate": {
-      "name": "儀表板更新",
-      "help": ""
-    },
-    "Freebies": {
-      "name": "免費獎勵",
-      "help": ""
-    },
-    "Gacha": {
-      "name": "召喚",
-      "help": ""
-    },
     "MissionReward": {
       "name": "任務獎勵",
       "help": "從任務彈窗中領取每日與每週任務獎勵。"
@@ -65,6 +37,10 @@
     "Mail": {
       "name": "臨期郵件",
       "help": "按剩餘時間升序檢查信箱，領取剩餘 1 小時或 1 天內過期的郵件。"
+    },
+    "DataUpdate": {
+      "name": "儀表板更新",
+      "help": ""
     },
     "SanctuaryDaily": {
       "name": "聖域-日常",
@@ -74,17 +50,9 @@
       "name": "騎士團",
       "help": "騎士團相關日常：簽到加成獎勵、支援、團戰占位、世界 Boss。"
     },
-    "Combat": {
-      "name": "每日副本",
-      "help": "刷取精靈祭壇或討伐，依設定選擇屬性、難度，並進入快速戰鬥或背景重複戰鬥。"
-    },
     "Arena": {
       "name": "競技場",
       "help": "進入競技場並處理入口獎勵分支。"
-    },
-    "SecretShop": {
-      "name": "秘密商店",
-      "help": ""
     },
     "Store": {
       "name": "商店",
@@ -94,6 +62,18 @@
       "name": "寵物禮物",
       "help": "從選單中領取約每22小時刷新的寵物禮物。成功領取後以22小時節奏調度；若尚未就緒，則依歷史領取時間或伺服器刷新時間兜底。"
     },
+    "SecretShop": {
+      "name": "秘密商店",
+      "help": ""
+    },
+    "Combat": {
+      "name": "每日副本",
+      "help": "刷取精靈祭壇或討伐，依設定選擇屬性、難度，並進入快速戰鬥或背景重複戰鬥。"
+    },
+    "Gacha": {
+      "name": "召喚",
+      "help": ""
+    },
     "Pets": {
       "name": "寵物商店",
       "help": ""
@@ -101,14 +81,6 @@
     "SanctuaryWeekly": {
       "name": "聖域-週常",
       "help": "獨立排程的聖域週常模組。"
-    },
-    "Weekly": {
-      "name": "歷戰餘響",
-      "help": ""
-    },
-    "Rogue": {
-      "name": "模擬宇宙",
-      "help": ""
     },
     "SanctuaryMonthly": {
       "name": "聖域-月常",
@@ -1864,6 +1836,14 @@
     },
     "E7ShadowCommission": {
       "name": "暗影情報委託等級",
+      "help": ""
+    },
+    "E7ArenaFlag": {
+      "name": "競技場旗幟",
+      "help": ""
+    },
+    "E7ConquestPoint": {
+      "name": "征服點數",
       "help": ""
     }
   },

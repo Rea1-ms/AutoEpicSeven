@@ -172,11 +172,11 @@
       }
     }
   },
-  "Ornament": {
+  "MissionReward": {
     "Scheduler": {
       "Enable": {
         "type": "checkbox",
-        "value": false,
+        "value": true,
         "option": [
           true,
           false
@@ -189,7 +189,7 @@
       },
       "Command": {
         "type": "input",
-        "value": "Ornament",
+        "value": "MissionReward",
         "display": "hide"
       },
       "ServerUpdate": {
@@ -198,484 +198,71 @@
         "display": "hide"
       }
     },
-    "Ornament": {
-      "Dungeon": {
-        "type": "select",
-        "value": "Divergent_Universe_Eternal_Comedy",
+    "MissionReward": {
+      "ClaimDailyRewards": {
+        "type": "checkbox",
+        "value": true
+      },
+      "ClaimWeeklyRewards": {
+        "type": "checkbox",
+        "value": true
+      }
+    }
+  },
+  "Mail": {
+    "Scheduler": {
+      "Enable": {
+        "type": "checkbox",
+        "value": true,
         "option": [
-          "Divergent_Universe_Within_the_West_Wind",
-          "Divergent_Universe_Moonlit_Blood",
-          "Divergent_Universe_Unceasing_Strife",
-          "Divergent_Universe_Famished_Worker",
-          "Divergent_Universe_Eternal_Comedy",
-          "Divergent_Universe_To_Sweet_Dreams",
-          "Divergent_Universe_Pouring_Blades",
-          "Divergent_Universe_Fruit_of_Evil",
-          "Divergent_Universe_Permafrost",
-          "Divergent_Universe_Gentle_Words",
-          "Divergent_Universe_Smelted_Heart",
-          "Divergent_Universe_Untoppled_Walls"
+          true,
+          false
         ]
       },
-      "Team": {
+      "NextRun": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime"
+      },
+      "Command": {
+        "type": "input",
+        "value": "Mail",
+        "display": "hide"
+      },
+      "ServerUpdate": {
+        "type": "input",
+        "value": "02:00",
+        "display": "hide"
+      }
+    },
+    "Mail": {
+      "CollectWithin": {
         "type": "select",
-        "value": 1,
+        "value": "1h",
+        "option": [
+          "1h",
+          "1d"
+        ]
+      },
+      "LastCheckAt": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime",
         "keepvalue": true,
-        "display": "hide",
-        "option": [
-          1,
-          2,
-          3,
-          4,
-          5,
-          6,
-          7,
-          8,
-          9,
-          10,
-          11,
-          12
-        ]
+        "display": "hide"
       },
-      "UseImmersifier": {
-        "type": "state",
-        "value": true,
-        "option": [
-          true
-        ],
-        "option_bold": [
-          true
-        ]
-      },
-      "DoubleEvent": {
-        "type": "state",
-        "value": true,
-        "option": [
-          true
-        ],
-        "option_bold": [
-          true
-        ]
-      },
-      "UseStamina": {
-        "type": "checkbox",
-        "value": false
-      }
-    },
-    "DungeonSupport": {
-      "Use": {
-        "type": "select",
-        "value": "when_daily",
-        "option": [
-          "when_daily",
-          "always_use"
-        ]
-      },
-      "Character": {
-        "type": "select",
-        "value": "FirstCharacter",
-        "option": [
-          "FirstCharacter",
-          "TheDahlia",
-          "Cyrene",
-          "Evernight",
-          "DanHengPermansorTerrae",
-          "Hysilens",
-          "Cerydra",
-          "Phainon",
-          "Saber",
-          "Archer",
-          "Hyacine",
-          "Cipher",
-          "Castorice",
-          "Anaxa",
-          "Tribbie",
-          "Mydei",
-          "TheHerta",
-          "Aglaea",
-          "Sunday",
-          "Fugue",
-          "Rappa",
-          "Feixiao",
-          "Lingsha",
-          "Moze",
-          "Yunli",
-          "March7thTheHunt",
-          "Jiaoqiu",
-          "Firefly",
-          "Jade",
-          "Robin",
-          "Boothill",
-          "Acheron",
-          "Aventurine",
-          "Gallagher",
-          "BlackSwan",
-          "Sparkle",
-          "Misha",
-          "RuanMei",
-          "DrRatio",
-          "Xueyi",
-          "Huohuo",
-          "Argenti",
-          "Hanya",
-          "Jingliu",
-          "TopazNumby",
-          "Guinaifen",
-          "DanHengImbibitorLunae",
-          "FuXuan",
-          "Lynx",
-          "Blade",
-          "Kafka",
-          "Luka",
-          "SilverWolf",
-          "Luocha",
-          "Yukong",
-          "Seele",
-          "JingYuan",
-          "TrailblazerDestruction",
-          "TrailblazerPreservation",
-          "TrailblazerHarmony",
-          "TrailblazerRemembrance",
-          "Himeko",
-          "Welt",
-          "Gepard",
-          "Bronya",
-          "Clara",
-          "Yanqing",
-          "Bailu",
-          "March7thPreservation",
-          "DanHeng",
-          "Asta",
-          "Serval",
-          "Herta",
-          "Qingque",
-          "Sushang",
-          "Hook",
-          "Arlan",
-          "Sampo",
-          "Tingyun",
-          "Pela",
-          "Natasha"
-        ]
-      }
-    },
-    "TrailblazePower": {
-      "ExtractReservedTrailblazePower": {
-        "type": "checkbox",
-        "value": false
-      },
-      "UseFuel": {
-        "type": "checkbox",
-        "value": false
-      },
-      "FuelOnlyPlanner": {
-        "type": "checkbox",
-        "value": false
-      },
-      "FuelReserve": {
+      "LastRemainingText": {
         "type": "input",
-        "value": 5
-      }
-    }
-  },
-  "DailyQuest": {
-    "Scheduler": {
-      "Enable": {
-        "type": "state",
-        "value": true,
-        "option": [
-          true
-        ],
-        "option_bold": [
-          true
-        ]
+        "value": "",
+        "keepvalue": true,
+        "display": "hide"
       },
-      "NextRun": {
+      "LastRemainingSince": {
         "type": "datetime",
         "value": "2020-01-01 00:00:00",
-        "validate": "datetime"
-      },
-      "Command": {
-        "type": "input",
-        "value": "DailyQuest",
+        "validate": "datetime",
+        "keepvalue": true,
         "display": "hide"
-      },
-      "ServerUpdate": {
-        "type": "input",
-        "value": "02:00",
-        "display": "hide"
-      }
-    },
-    "DailyStorage": {
-      "DailyActivity": {
-        "type": "stored",
-        "value": {},
-        "display": "display",
-        "stored": "StoredDailyActivity"
-      },
-      "DailyQuest": {
-        "type": "stored",
-        "value": {},
-        "display": "display",
-        "stored": "StoredDaily"
-      }
-    }
-  },
-  "BattlePass": {
-    "Scheduler": {
-      "Enable": {
-        "type": "state",
-        "value": true,
-        "option": [
-          true
-        ],
-        "option_bold": [
-          true
-        ]
-      },
-      "NextRun": {
-        "type": "datetime",
-        "value": "2020-01-01 00:00:00",
-        "validate": "datetime"
-      },
-      "Command": {
-        "type": "input",
-        "value": "BattlePass",
-        "display": "hide"
-      },
-      "ServerUpdate": {
-        "type": "input",
-        "value": "02:00",
-        "display": "hide"
-      }
-    },
-    "BattlePassStorage": {
-      "BattlePassLevel": {
-        "type": "stored",
-        "value": {},
-        "display": "display",
-        "stored": "StoredBattlePassLevel"
-      },
-      "BattlePassWeeklyQuest": {
-        "type": "stored",
-        "value": {},
-        "display": "hide",
-        "stored": "StoredBattlePassWeeklyQuest"
-      },
-      "BattlePassSimulatedUniverse": {
-        "type": "stored",
-        "value": {},
-        "display": "display",
-        "stored": "StoredBattlePassSimulatedUniverse"
-      },
-      "BattlePassQuestCalyx": {
-        "type": "stored",
-        "value": {},
-        "display": "display",
-        "stored": "StoredBattlePassQuestCalyx"
-      },
-      "BattlePassQuestEchoOfWar": {
-        "type": "stored",
-        "value": {},
-        "display": "display",
-        "stored": "StoredBattlePassQuestEchoOfWar"
-      },
-      "BattlePassQuestCredits": {
-        "type": "stored",
-        "value": {},
-        "display": "display",
-        "stored": "StoredBattlePassQuestCredits"
-      },
-      "BattlePassQuestSynthesizeConsumables": {
-        "type": "stored",
-        "value": {},
-        "display": "display",
-        "stored": "StoredBattlePassQuestSynthesizeConsumables"
-      },
-      "BattlePassQuestStagnantShadow": {
-        "type": "stored",
-        "value": {},
-        "display": "display",
-        "stored": "StoredBattlePassQuestStagnantShadow"
-      },
-      "BattlePassQuestCavernOfCorrosion": {
-        "type": "stored",
-        "value": {},
-        "display": "display",
-        "stored": "StoredBattlePassQuestCavernOfCorrosion"
-      },
-      "BattlePassQuestTrailblazePower": {
-        "type": "stored",
-        "value": {},
-        "display": "display",
-        "stored": "StoredBattlePassQuestTrailblazePower"
-      }
-    }
-  },
-  "Assignment": {
-    "Scheduler": {
-      "Enable": {
-        "type": "state",
-        "value": true,
-        "option": [
-          true
-        ],
-        "option_bold": [
-          true
-        ]
-      },
-      "NextRun": {
-        "type": "datetime",
-        "value": "2020-01-01 00:00:00",
-        "validate": "datetime"
-      },
-      "Command": {
-        "type": "input",
-        "value": "Assignment",
-        "display": "hide"
-      },
-      "ServerUpdate": {
-        "type": "input",
-        "value": "02:00",
-        "display": "hide"
-      }
-    },
-    "Assignment": {
-      "ClaimAll": {
-        "type": "checkbox",
-        "value": true
-      },
-      "Name_1": {
-        "type": "select",
-        "value": "Nameless_Land_Nameless_People",
-        "option": [
-          "Tranquility_of_Vimala_bhumi",
-          "A_Startling_Night_Terror",
-          "Fire_Lord_Inflames_Blades_of_War",
-          "Root_Out_the_Turpitude",
-          "Born_to_Obey",
-          "Winter_Soldiers",
-          "Destruction_of_the_Destroyer",
-          "Nine_Billion_Names",
-          "Akashic_Records",
-          "Nameless_Land_Nameless_People",
-          "The_Invisible_Hand",
-          "Scalpel_and_Screwdriver",
-          "The_Wages_of_Humanity",
-          "Legend_of_the_Puppet_Master",
-          "The_Land_of_Gold",
-          "Spring_of_Life",
-          "Fragments_of_Illusory_Dreams",
-          "The_Blossom_in_the_Storm",
-          "Abandoned_and_Insulted",
-          "Record_of_Expeditions",
-          "Creationism_and_Beyond",
-          "Work_and_Days"
-        ]
-      },
-      "Name_2": {
-        "type": "select",
-        "value": "Akashic_Records",
-        "option": [
-          "Tranquility_of_Vimala_bhumi",
-          "A_Startling_Night_Terror",
-          "Fire_Lord_Inflames_Blades_of_War",
-          "Root_Out_the_Turpitude",
-          "Born_to_Obey",
-          "Winter_Soldiers",
-          "Destruction_of_the_Destroyer",
-          "Nine_Billion_Names",
-          "Akashic_Records",
-          "Nameless_Land_Nameless_People",
-          "The_Invisible_Hand",
-          "Scalpel_and_Screwdriver",
-          "The_Wages_of_Humanity",
-          "Legend_of_the_Puppet_Master",
-          "The_Land_of_Gold",
-          "Spring_of_Life",
-          "Fragments_of_Illusory_Dreams",
-          "The_Blossom_in_the_Storm",
-          "Abandoned_and_Insulted",
-          "Record_of_Expeditions",
-          "Creationism_and_Beyond",
-          "Work_and_Days"
-        ]
-      },
-      "Name_3": {
-        "type": "select",
-        "value": "The_Invisible_Hand",
-        "option": [
-          "Tranquility_of_Vimala_bhumi",
-          "A_Startling_Night_Terror",
-          "Fire_Lord_Inflames_Blades_of_War",
-          "Root_Out_the_Turpitude",
-          "Born_to_Obey",
-          "Winter_Soldiers",
-          "Destruction_of_the_Destroyer",
-          "Nine_Billion_Names",
-          "Akashic_Records",
-          "Nameless_Land_Nameless_People",
-          "The_Invisible_Hand",
-          "Scalpel_and_Screwdriver",
-          "The_Wages_of_Humanity",
-          "Legend_of_the_Puppet_Master",
-          "The_Land_of_Gold",
-          "Spring_of_Life",
-          "Fragments_of_Illusory_Dreams",
-          "The_Blossom_in_the_Storm",
-          "Abandoned_and_Insulted",
-          "Record_of_Expeditions",
-          "Creationism_and_Beyond",
-          "Work_and_Days"
-        ]
-      },
-      "Name_4": {
-        "type": "select",
-        "value": "Nine_Billion_Names",
-        "option": [
-          "Tranquility_of_Vimala_bhumi",
-          "A_Startling_Night_Terror",
-          "Fire_Lord_Inflames_Blades_of_War",
-          "Root_Out_the_Turpitude",
-          "Born_to_Obey",
-          "Winter_Soldiers",
-          "Destruction_of_the_Destroyer",
-          "Nine_Billion_Names",
-          "Akashic_Records",
-          "Nameless_Land_Nameless_People",
-          "The_Invisible_Hand",
-          "Scalpel_and_Screwdriver",
-          "The_Wages_of_Humanity",
-          "Legend_of_the_Puppet_Master",
-          "The_Land_of_Gold",
-          "Spring_of_Life",
-          "Fragments_of_Illusory_Dreams",
-          "The_Blossom_in_the_Storm",
-          "Abandoned_and_Insulted",
-          "Record_of_Expeditions",
-          "Creationism_and_Beyond",
-          "Work_and_Days"
-        ]
-      },
-      "Duration": {
-        "type": "select",
-        "value": 20,
-        "option": [
-          4,
-          8,
-          12,
-          20
-        ]
-      },
-      "Event": {
-        "type": "checkbox",
-        "value": true
-      },
-      "Assignment": {
-        "type": "stored",
-        "value": {},
-        "display": "hide",
-        "stored": "StoredAssignment"
       }
     }
   },
@@ -785,6 +372,18 @@
         "stored": "StoredE7ShadowCommission",
         "order": 8,
         "color": "#7796ff"
+      },
+      "E7ArenaFlag": {
+        "type": "stored",
+        "value": {},
+        "display": "hide",
+        "stored": "StoredCounter"
+      },
+      "E7ConquestPoint": {
+        "type": "stored",
+        "value": {},
+        "display": "hide",
+        "stored": "StoredInt"
       }
     },
     "CloudStorage": {
@@ -805,179 +404,6 @@
         "value": {},
         "display": "display",
         "stored": "StoredInt"
-      }
-    }
-  },
-  "Freebies": {
-    "Scheduler": {
-      "Enable": {
-        "type": "checkbox",
-        "value": true,
-        "option": [
-          true,
-          false
-        ]
-      },
-      "NextRun": {
-        "type": "datetime",
-        "value": "2020-01-01 00:00:00",
-        "validate": "datetime"
-      },
-      "Command": {
-        "type": "input",
-        "value": "Freebies",
-        "display": "hide"
-      },
-      "ServerUpdate": {
-        "type": "input",
-        "value": "02:00",
-        "display": "hide"
-      }
-    },
-    "Freebies": {
-      "SupportReward": {
-        "type": "checkbox",
-        "value": true
-      },
-      "MailReward": {
-        "type": "checkbox",
-        "value": true
-      },
-      "RedemptionCode": {
-        "type": "checkbox",
-        "value": true
-      },
-      "UsedCode": {
-        "type": "dict",
-        "value": {},
-        "display": "hide"
-      }
-    }
-  },
-  "Gacha": {
-    "Scheduler": {
-      "Enable": {
-        "type": "checkbox",
-        "value": false,
-        "option": [
-          true,
-          false
-        ]
-      },
-      "NextRun": {
-        "type": "datetime",
-        "value": "2020-01-01 00:00:00",
-        "validate": "datetime"
-      },
-      "Command": {
-        "type": "input",
-        "value": "Gacha",
-        "display": "hide"
-      },
-      "ServerUpdate": {
-        "type": "input",
-        "value": "02:00",
-        "display": "hide"
-      }
-    },
-    "Gacha": {
-      "CollectGoldenInheritance": {
-        "type": "checkbox",
-        "value": true
-      }
-    }
-  },
-  "MissionReward": {
-    "Scheduler": {
-      "Enable": {
-        "type": "checkbox",
-        "value": true,
-        "option": [
-          true,
-          false
-        ]
-      },
-      "NextRun": {
-        "type": "datetime",
-        "value": "2020-01-01 00:00:00",
-        "validate": "datetime"
-      },
-      "Command": {
-        "type": "input",
-        "value": "MissionReward",
-        "display": "hide"
-      },
-      "ServerUpdate": {
-        "type": "input",
-        "value": "02:00",
-        "display": "hide"
-      }
-    },
-    "MissionReward": {
-      "ClaimDailyRewards": {
-        "type": "checkbox",
-        "value": true
-      },
-      "ClaimWeeklyRewards": {
-        "type": "checkbox",
-        "value": true
-      }
-    }
-  },
-  "Mail": {
-    "Scheduler": {
-      "Enable": {
-        "type": "checkbox",
-        "value": true,
-        "option": [
-          true,
-          false
-        ]
-      },
-      "NextRun": {
-        "type": "datetime",
-        "value": "2020-01-01 00:00:00",
-        "validate": "datetime"
-      },
-      "Command": {
-        "type": "input",
-        "value": "Mail",
-        "display": "hide"
-      },
-      "ServerUpdate": {
-        "type": "input",
-        "value": "02:00",
-        "display": "hide"
-      }
-    },
-    "Mail": {
-      "CollectWithin": {
-        "type": "select",
-        "value": "1h",
-        "option": [
-          "1h",
-          "1d"
-        ]
-      },
-      "LastCheckAt": {
-        "type": "datetime",
-        "value": "2020-01-01 00:00:00",
-        "validate": "datetime",
-        "keepvalue": true,
-        "display": "hide"
-      },
-      "LastRemainingText": {
-        "type": "input",
-        "value": "",
-        "keepvalue": true,
-        "display": "hide"
-      },
-      "LastRemainingSince": {
-        "type": "datetime",
-        "value": "2020-01-01 00:00:00",
-        "validate": "datetime",
-        "keepvalue": true,
-        "display": "hide"
       }
     }
   },
@@ -1085,86 +511,6 @@
       }
     }
   },
-  "Combat": {
-    "Scheduler": {
-      "Enable": {
-        "type": "checkbox",
-        "value": false,
-        "option": [
-          true,
-          false
-        ]
-      },
-      "NextRun": {
-        "type": "datetime",
-        "value": "2020-01-01 00:00:00",
-        "validate": "datetime"
-      },
-      "Command": {
-        "type": "input",
-        "value": "Combat",
-        "display": "hide"
-      },
-      "ServerUpdate": {
-        "type": "input",
-        "value": "02:00",
-        "display": "hide"
-      }
-    },
-    "Combat": {
-      "Domain": {
-        "type": "select",
-        "value": "Hunt",
-        "option": [
-          "Hunt",
-          "SpiritAltar"
-        ]
-      },
-      "Element": {
-        "type": "select",
-        "value": "Water",
-        "option": [
-          "Dark",
-          "Light",
-          "Water",
-          "Fire",
-          "Nature"
-        ]
-      },
-      "AltarGrade": {
-        "type": "select",
-        "value": "Hell",
-        "option": [
-          "Pri",
-          "Mid",
-          "High",
-          "Hell"
-        ]
-      },
-      "HuntGrade": {
-        "type": "select",
-        "value": "Hell",
-        "option": [
-          "Mid",
-          "High",
-          "Hell",
-          "Dimensional"
-        ]
-      },
-      "FastCombat": {
-        "type": "checkbox",
-        "value": true
-      }
-    },
-    "CombatRuntime": {
-      "Session": {
-        "type": "dict",
-        "value": {},
-        "keepvalue": true,
-        "display": "hide"
-      }
-    }
-  },
   "Arena": {
     "Scheduler": {
       "Enable": {
@@ -1215,51 +561,6 @@
       "NPCCombatCount": {
         "type": "input",
         "value": 5
-      }
-    }
-  },
-  "SecretShop": {
-    "Scheduler": {
-      "Enable": {
-        "type": "checkbox",
-        "value": false,
-        "option": [
-          true,
-          false
-        ]
-      },
-      "NextRun": {
-        "type": "datetime",
-        "value": "2020-01-01 00:00:00",
-        "validate": "datetime"
-      },
-      "Command": {
-        "type": "input",
-        "value": "SecretShop",
-        "display": "hide"
-      },
-      "ServerUpdate": {
-        "type": "input",
-        "value": "02:00",
-        "display": "hide"
-      }
-    },
-    "SecretShop": {
-      "OnlyFree": {
-        "type": "checkbox",
-        "value": true
-      },
-      "MaxRefresh": {
-        "type": "input",
-        "value": 10
-      },
-      "BuyCovenantBookmark": {
-        "type": "checkbox",
-        "value": true
-      },
-      "BuyMysticMedal": {
-        "type": "checkbox",
-        "value": true
       }
     }
   },
@@ -1358,6 +659,164 @@
       }
     }
   },
+  "SecretShop": {
+    "Scheduler": {
+      "Enable": {
+        "type": "checkbox",
+        "value": false,
+        "option": [
+          true,
+          false
+        ]
+      },
+      "NextRun": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime"
+      },
+      "Command": {
+        "type": "input",
+        "value": "SecretShop",
+        "display": "hide"
+      },
+      "ServerUpdate": {
+        "type": "input",
+        "value": "02:00",
+        "display": "hide"
+      }
+    },
+    "SecretShop": {
+      "OnlyFree": {
+        "type": "checkbox",
+        "value": true
+      },
+      "MaxRefresh": {
+        "type": "input",
+        "value": 10
+      },
+      "BuyCovenantBookmark": {
+        "type": "checkbox",
+        "value": true
+      },
+      "BuyMysticMedal": {
+        "type": "checkbox",
+        "value": true
+      }
+    }
+  },
+  "Combat": {
+    "Scheduler": {
+      "Enable": {
+        "type": "checkbox",
+        "value": false,
+        "option": [
+          true,
+          false
+        ]
+      },
+      "NextRun": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime"
+      },
+      "Command": {
+        "type": "input",
+        "value": "Combat",
+        "display": "hide"
+      },
+      "ServerUpdate": {
+        "type": "input",
+        "value": "02:00",
+        "display": "hide"
+      }
+    },
+    "Combat": {
+      "Domain": {
+        "type": "select",
+        "value": "Hunt",
+        "option": [
+          "Hunt",
+          "SpiritAltar"
+        ]
+      },
+      "Element": {
+        "type": "select",
+        "value": "Water",
+        "option": [
+          "Dark",
+          "Light",
+          "Water",
+          "Fire",
+          "Nature"
+        ]
+      },
+      "AltarGrade": {
+        "type": "select",
+        "value": "Hell",
+        "option": [
+          "Pri",
+          "Mid",
+          "High",
+          "Hell"
+        ]
+      },
+      "HuntGrade": {
+        "type": "select",
+        "value": "Hell",
+        "option": [
+          "Mid",
+          "High",
+          "Hell",
+          "Dimensional"
+        ]
+      },
+      "FastCombat": {
+        "type": "checkbox",
+        "value": true
+      }
+    },
+    "CombatRuntime": {
+      "Session": {
+        "type": "dict",
+        "value": {},
+        "keepvalue": true,
+        "display": "hide"
+      }
+    }
+  },
+  "Gacha": {
+    "Scheduler": {
+      "Enable": {
+        "type": "checkbox",
+        "value": false,
+        "option": [
+          true,
+          false
+        ]
+      },
+      "NextRun": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime"
+      },
+      "Command": {
+        "type": "input",
+        "value": "Gacha",
+        "display": "hide"
+      },
+      "ServerUpdate": {
+        "type": "input",
+        "value": "02:00",
+        "display": "hide"
+      }
+    },
+    "Gacha": {
+      "CollectGoldenInheritance": {
+        "type": "checkbox",
+        "value": true
+      }
+    }
+  },
   "Pets": {
     "Scheduler": {
       "Enable": {
@@ -1409,315 +868,6 @@
         "type": "input",
         "value": "02:00",
         "display": "hide"
-      }
-    }
-  },
-  "Weekly": {
-    "Scheduler": {
-      "Enable": {
-        "type": "checkbox",
-        "value": false,
-        "option": [
-          true,
-          false
-        ]
-      },
-      "NextRun": {
-        "type": "datetime",
-        "value": "2020-01-01 00:00:00",
-        "validate": "datetime"
-      },
-      "Command": {
-        "type": "input",
-        "value": "Weekly",
-        "display": "hide"
-      },
-      "ServerUpdate": {
-        "type": "input",
-        "value": "02:00",
-        "display": "hide"
-      }
-    },
-    "Weekly": {
-      "Name": {
-        "type": "select",
-        "value": "Echo_of_War_Rusted_Crypt_of_the_Iron_Carcass",
-        "options": [],
-        "option": [
-          "Echo_of_War_Rusted_Crypt_of_the_Iron_Carcass",
-          "Echo_of_War_Glance_of_Twilight",
-          "Echo_of_War_Inner_Beast_Battlefield",
-          "Echo_of_War_Salutations_of_Ashen_Dreams",
-          "Echo_of_War_Borehole_Planet_Past_Nightmares",
-          "Echo_of_War_Divine_Seed",
-          "Echo_of_War_End_of_the_Eternal_Freeze",
-          "Echo_of_War_Destruction_Beginning"
-        ]
-      },
-      "Team": {
-        "type": "select",
-        "value": 1,
-        "option": [
-          1,
-          2,
-          3,
-          4,
-          5,
-          6,
-          7,
-          8,
-          9
-        ]
-      }
-    },
-    "DungeonSupport": {
-      "Use": {
-        "type": "select",
-        "value": "do_not_use",
-        "option": [
-          "always_use",
-          "do_not_use"
-        ]
-      },
-      "Character": {
-        "type": "select",
-        "value": "FirstCharacter",
-        "option": [
-          "FirstCharacter",
-          "TheDahlia",
-          "Cyrene",
-          "Evernight",
-          "DanHengPermansorTerrae",
-          "Hysilens",
-          "Cerydra",
-          "Phainon",
-          "Saber",
-          "Archer",
-          "Hyacine",
-          "Cipher",
-          "Castorice",
-          "Anaxa",
-          "Tribbie",
-          "Mydei",
-          "TheHerta",
-          "Aglaea",
-          "Sunday",
-          "Fugue",
-          "Rappa",
-          "Feixiao",
-          "Lingsha",
-          "Moze",
-          "Yunli",
-          "March7thTheHunt",
-          "Jiaoqiu",
-          "Firefly",
-          "Jade",
-          "Robin",
-          "Boothill",
-          "Acheron",
-          "Aventurine",
-          "Gallagher",
-          "BlackSwan",
-          "Sparkle",
-          "Misha",
-          "RuanMei",
-          "DrRatio",
-          "Xueyi",
-          "Huohuo",
-          "Argenti",
-          "Hanya",
-          "Jingliu",
-          "TopazNumby",
-          "Guinaifen",
-          "DanHengImbibitorLunae",
-          "FuXuan",
-          "Lynx",
-          "Blade",
-          "Kafka",
-          "Luka",
-          "SilverWolf",
-          "Luocha",
-          "Yukong",
-          "Seele",
-          "JingYuan",
-          "TrailblazerDestruction",
-          "TrailblazerPreservation",
-          "TrailblazerHarmony",
-          "TrailblazerRemembrance",
-          "Himeko",
-          "Welt",
-          "Gepard",
-          "Bronya",
-          "Clara",
-          "Yanqing",
-          "Bailu",
-          "March7thPreservation",
-          "DanHeng",
-          "Asta",
-          "Serval",
-          "Herta",
-          "Qingque",
-          "Sushang",
-          "Hook",
-          "Arlan",
-          "Sampo",
-          "Tingyun",
-          "Pela",
-          "Natasha"
-        ]
-      }
-    }
-  },
-  "Rogue": {
-    "Scheduler": {
-      "Enable": {
-        "type": "checkbox",
-        "value": false,
-        "option": [
-          true,
-          false
-        ]
-      },
-      "NextRun": {
-        "type": "datetime",
-        "value": "2020-01-01 00:00:00",
-        "validate": "datetime"
-      },
-      "Command": {
-        "type": "input",
-        "value": "Rogue",
-        "display": "hide"
-      },
-      "ServerUpdate": {
-        "type": "input",
-        "value": "02:00",
-        "display": "hide"
-      }
-    },
-    "RogueWorld": {
-      "World": {
-        "type": "select",
-        "value": "Simulated_Universe_World_8",
-        "option": [
-          "Simulated_Universe_World_3",
-          "Simulated_Universe_World_4",
-          "Simulated_Universe_World_5",
-          "Simulated_Universe_World_6",
-          "Simulated_Universe_World_8"
-        ]
-      },
-      "Path": {
-        "type": "select",
-        "value": "The_Hunt",
-        "option": [
-          "Preservation",
-          "Remembrance",
-          "Nihility",
-          "Abundance",
-          "The_Hunt",
-          "Destruction",
-          "Elation",
-          "Propagation",
-          "Erudition"
-        ]
-      },
-      "Bonus": {
-        "type": "select",
-        "value": "Blessing Universe",
-        "option": [
-          "Blessing Universe",
-          "Miracle Universe",
-          "Fragmented Universe"
-        ]
-      },
-      "DomainStrategy": {
-        "type": "select",
-        "value": "combat",
-        "option": [
-          "combat",
-          "occurrence"
-        ]
-      },
-      "UseImmersifier": {
-        "type": "checkbox",
-        "value": true
-      },
-      "DoubleEvent": {
-        "type": "checkbox",
-        "value": true
-      },
-      "WeeklyFarming": {
-        "type": "checkbox",
-        "value": false
-      },
-      "UseStamina": {
-        "type": "checkbox",
-        "value": false
-      },
-      "SimulatedUniverseFarm": {
-        "type": "stored",
-        "value": {},
-        "display": "disabled",
-        "stored": "StoredSimulatedUniverseElite"
-      },
-      "Team": {
-        "type": "input",
-        "value": "",
-        "keepvalue": true,
-        "display": "hide"
-      }
-    },
-    "RogueBlessing": {
-      "PresetBlessingFilter": {
-        "type": "select",
-        "value": "preset",
-        "option": [
-          "preset",
-          "custom"
-        ]
-      },
-      "CustomBlessingFilter": {
-        "type": "textarea",
-        "value": "巡猎-3 > 《冠军晚餐·猫的摇篮》 > 丰饶众生，一法界心 > 毁灭-3 \n> 火堆外的夜 > 巡猎-2 > 毁灭-2 > 巡猎 > reset > random"
-      },
-      "PresetCurioFilter": {
-        "type": "select",
-        "value": "preset",
-        "option": [
-          "preset",
-          "custom"
-        ]
-      },
-      "CustomCurioFilter": {
-        "type": "textarea",
-        "value": "博士之袍 > 福灵胶 > 分裂金币 > 信仰债券 > 换境桂冠 > 俱乐部券 > 碎星芳饵 > random"
-      },
-      "PresetResonanceFilter": {
-        "type": "select",
-        "value": "preset",
-        "option": [
-          "preset",
-          "custom"
-        ]
-      },
-      "CustomResonanceFilter": {
-        "type": "textarea",
-        "value": "回响构音：均晶转变 > 回响构音：零维强化\n> 回响构音：第二次初恋 > 回响构音：体验的富翁\n> 回响构音：局外人 > 回响构音：怀疑的四重根\n> 回响构音：诸法无我 > 回响构音：诸行无常\n> 回响构音：射不主皮 > 回响构音：柘弓危矢\n> 回响构音：激变变星 > 回响构音：极端氦闪\n> 回响构音：末日狂欢 > 回响构音：树苗长高舞\n> random"
-      },
-      "SelectionStrategy": {
-        "type": "select",
-        "value": "before-random",
-        "option": [
-          "follow-presets",
-          "unrecorded-first",
-          "before-random"
-        ]
-      }
-    },
-    "RogueDebug": {
-      "DebugMode": {
-        "type": "checkbox",
-        "value": false
       }
     }
   },

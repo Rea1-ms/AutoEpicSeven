@@ -12,7 +12,13 @@ from tasks.mission_reward.assets.assets_mission_reward_entry import (
 )
 from tasks.secret_shop.assets.assets_secret_shop import SECRET_SHOP_CHECK
 from tasks.store.assets.assets_store import STORE_CHECK
-from tasks.arena.assets.assets_arena import ARENA_CHECK, ARENA_COMMON_ENTRY, ARENA_ENTRY
+from tasks.arena.assets.assets_arena import (
+    ARENA_CHECK,
+    ARENA_COMMON_ENTRY,
+    ARENA_ENTRY,
+    BATTLE_PASS_CHECK,
+    BATTLE_PASS_ENTRY,
+)
 from tasks.combat.assets.assets_combat_configs_entry import (
     ALTER_CHECK,
     COMMON_ENTRY,
@@ -198,6 +204,10 @@ page_main.link(ARENA_ENTRY, destination=page_arena_mode_popup)
 page_arena = Page(ARENA_CHECK)
 page_arena.link(BACK, destination=page_main)
 page_arena_mode_popup.link(ARENA_COMMON_ENTRY, destination=page_arena)
+
+page_arena_battle_pass = Page(BATTLE_PASS_CHECK)
+page_arena_battle_pass.link(BACK, destination=page_arena)
+page_arena.link(BATTLE_PASS_ENTRY, destination=page_arena_battle_pass)
 
 # Combat season tab
 page_combat_season = Page(SEASON_CHECK)

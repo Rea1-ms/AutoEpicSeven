@@ -127,6 +127,7 @@ class KnightsLegacy(
         if run_weekly_task:
             success = self.run_weekly_task(skip_first_screenshot=True) and success
 
+        self.config.task_call("DataUpdate", force_call=False)
         self.config.task_delay(server_update=True)
         return success
 
