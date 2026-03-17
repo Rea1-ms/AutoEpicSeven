@@ -1850,20 +1850,20 @@
       "name": "アリーナ通行証レベル",
       "help": ""
     },
-    "E7ShadowCommission": {
-      "name": "暗影情報依頼レベル",
-      "help": ""
-    },
-    "E7TeamBattle": {
-      "name": "ギルド戦攻撃回数",
-      "help": ""
-    },
     "E7ArenaFlag": {
       "name": "アリーナ旗",
       "help": ""
     },
     "E7ConquestPoint": {
       "name": "征服ポイント",
+      "help": ""
+    },
+    "E7ShadowCommission": {
+      "name": "暗影情報依頼レベル",
+      "help": ""
+    },
+    "E7TeamBattle": {
+      "name": "ギルド戦攻撃回数",
       "help": ""
     }
   },

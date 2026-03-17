@@ -365,12 +365,28 @@
         "order": 7,
         "color": "#ffd36e"
       },
+      "E7ArenaFlag": {
+        "type": "stored",
+        "value": {},
+        "display": "display",
+        "stored": "StoredCounter",
+        "order": 8,
+        "color": "#f2a93b"
+      },
+      "E7ConquestPoint": {
+        "type": "stored",
+        "value": {},
+        "display": "display",
+        "stored": "StoredInt",
+        "order": 9,
+        "color": "#5ea3ff"
+      },
       "E7ShadowCommission": {
         "type": "stored",
         "value": {},
         "display": "display",
         "stored": "StoredE7ShadowCommission",
-        "order": 8,
+        "order": 10,
         "color": "#7796ff"
       },
       "E7TeamBattle": {
@@ -378,20 +394,8 @@
         "value": {},
         "display": "display",
         "stored": "StoredE7TeamBattleStatus",
-        "order": 9,
+        "order": 11,
         "color": "#d85f7c"
-      },
-      "E7ArenaFlag": {
-        "type": "stored",
-        "value": {},
-        "display": "hide",
-        "stored": "StoredCounter"
-      },
-      "E7ConquestPoint": {
-        "type": "stored",
-        "value": {},
-        "display": "hide",
-        "stored": "StoredInt"
       }
     },
     "CloudStorage": {

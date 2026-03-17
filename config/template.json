@@ -80,10 +80,10 @@
       "E7DailyActivity": {},
       "E7WeeklyActivity": {},
       "E7ArenaRank": {},
-      "E7ShadowCommission": {},
-      "E7TeamBattle": {},
       "E7ArenaFlag": {},
-      "E7ConquestPoint": {}
+      "E7ConquestPoint": {},
+      "E7ShadowCommission": {},
+      "E7TeamBattle": {}
     },
     "CloudStorage": {
       "CloudRemainSeasonPass": {},

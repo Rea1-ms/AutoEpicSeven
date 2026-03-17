@@ -286,10 +286,10 @@ class GeneratedConfig:
     E7Dashboard_E7DailyActivity = {}
     E7Dashboard_E7WeeklyActivity = {}
     E7Dashboard_E7ArenaRank = {}
-    E7Dashboard_E7ShadowCommission = {}
-    E7Dashboard_E7TeamBattle = {}
     E7Dashboard_E7ArenaFlag = {}
     E7Dashboard_E7ConquestPoint = {}
+    E7Dashboard_E7ShadowCommission = {}
+    E7Dashboard_E7TeamBattle = {}
 
     # Group `CloudStorage`
     CloudStorage_CloudRemainSeasonPass = {}

@@ -468,22 +468,26 @@ E7Dashboard:
     order: 7
     color: "#ffd36e"
     display: display
+  E7ArenaFlag:
+    stored: StoredCounter
+    order: 8
+    color: "#f2a93b"
+    display: display
+  E7ConquestPoint:
+    stored: StoredInt
+    order: 9
+    color: "#5ea3ff"
+    display: display
   E7ShadowCommission:
     stored: StoredE7ShadowCommission
-    order: 8
+    order: 10
     color: "#7796ff"
     display: display
   E7TeamBattle:
     stored: StoredE7TeamBattleStatus
-    order: 9
+    order: 11
     color: "#d85f7c"
     display: display
-  E7ArenaFlag:
-    stored: StoredCounter
-    display: hide
-  E7ConquestPoint:
-    stored: StoredInt
-    display: hide
 
 CloudStorage:
   CloudRemainSeasonPass:

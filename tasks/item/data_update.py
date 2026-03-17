@@ -14,7 +14,6 @@ from tasks.base.page import (
 from tasks.base.resource_bar import (
     RESOURCE_BAR_LAYOUT_ARENA_BATTLE_PASS,
     RESOURCE_BAR_LAYOUT_COMBAT,
-    RESOURCE_BAR_LAYOUT_MAIN,
     RESOURCE_BAR_LAYOUT_SECRET_SHOP,
     ResourceBarMixin,
 )
@@ -62,16 +61,6 @@ class DataUpdate(ResourceBarMixin, UI):
         with self.config.multi_set():
             self.config.stored.Credit.value = self.config.stored.E7Gold.value
             self.config.stored.StallerJade.value = self.config.stored.E7Skystone.value
-
-    def _update_main_resources(self, skip_first_screenshot=True) -> bool:
-        logger.hr("DataUpdate Main", level=2)
-        self.ui_goto(page_main, skip_first_screenshot=skip_first_screenshot)
-        parsed = self.ocr_resource_bar_status(
-            layout=RESOURCE_BAR_LAYOUT_MAIN,
-            layout_name="Main",
-            skip_first_screenshot=True,
-        )
-        return self.write_resource_bar_status(parsed)
 
     def _ocr_equipment_inventory_count(self) -> tuple[int, int, int]:
         current, remain, total = E7DigitCounter(
@@ -241,8 +230,7 @@ class DataUpdate(ResourceBarMixin, UI):
 
         updated_any = False
 
-        updated_any |= self._update_main_resources(skip_first_screenshot=False)
-        updated_any |= self._update_equipment_inventory(skip_first_screenshot=True)
+        updated_any |= self._update_equipment_inventory(skip_first_screenshot=False)
         updated_any |= self._update_secret_shop_resources(skip_first_screenshot=True)
         updated_any |= self._update_combat_status(skip_first_screenshot=True)
         updated_any |= self._update_arena_status(skip_first_screenshot=True)

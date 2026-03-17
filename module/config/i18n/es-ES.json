@@ -1850,20 +1850,20 @@
       "name": "Nivel del Pase de Arena",
       "help": ""
     },
-    "E7ShadowCommission": {
-      "name": "Nivel de Comisión Sombría",
-      "help": ""
-    },
-    "E7TeamBattle": {
-      "name": "Ataques de guerra",
-      "help": ""
-    },
     "E7ArenaFlag": {
       "name": "Banderas de arena",
       "help": ""
     },
     "E7ConquestPoint": {
       "name": "Puntos de conquista",
+      "help": ""
+    },
+    "E7ShadowCommission": {
+      "name": "Nivel de Comisión Sombría",
+      "help": ""
+    },
+    "E7TeamBattle": {
+      "name": "Ataques de guerra",
       "help": ""
     }
   },

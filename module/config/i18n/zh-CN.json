@@ -1850,20 +1850,20 @@
       "name": "竞技场通行证等级",
       "help": ""
     },
-    "E7ShadowCommission": {
-      "name": "暗影情报委托等级",
-      "help": ""
-    },
-    "E7TeamBattle": {
-      "name": "团战刀数",
-      "help": ""
-    },
     "E7ArenaFlag": {
       "name": "竞技场旗帜",
       "help": ""
     },
     "E7ConquestPoint": {
       "name": "征服点数",
+      "help": ""
+    },
+    "E7ShadowCommission": {
+      "name": "暗影情报委托等级",
+      "help": ""
+    },
+    "E7TeamBattle": {
+      "name": "团战刀数",
       "help": ""
     }
   },

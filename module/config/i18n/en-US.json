@@ -1850,20 +1850,20 @@
       "name": "Arena Pass Level",
       "help": ""
     },
-    "E7ShadowCommission": {
-      "name": "Shadow Commission Level",
-      "help": ""
-    },
-    "E7TeamBattle": {
-      "name": "Guild War Attacks",
-      "help": ""
-    },
     "E7ArenaFlag": {
       "name": "Arena Flags",
       "help": ""
     },
     "E7ConquestPoint": {
       "name": "Conquest Points",
+      "help": ""
+    },
+    "E7ShadowCommission": {
+      "name": "Shadow Commission Level",
+      "help": ""
+    },
+    "E7TeamBattle": {
+      "name": "Guild War Attacks",
       "help": ""
     }
   },

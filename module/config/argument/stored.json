@@ -88,6 +88,31 @@
     "order": 7,
     "color": "#ffd36e"
   },
+  "E7ArenaFlag": {
+    "name": "E7ArenaFlag",
+    "path": "DataUpdate.E7Dashboard.E7ArenaFlag",
+    "i18n": "E7Dashboard.E7ArenaFlag.name",
+    "stored": "StoredCounter",
+    "attrs": {
+      "time": "2020-01-01 00:00:00",
+      "total": 0,
+      "value": 0
+    },
+    "order": 8,
+    "color": "#f2a93b"
+  },
+  "E7ConquestPoint": {
+    "name": "E7ConquestPoint",
+    "path": "DataUpdate.E7Dashboard.E7ConquestPoint",
+    "i18n": "E7Dashboard.E7ConquestPoint.name",
+    "stored": "StoredInt",
+    "attrs": {
+      "time": "2020-01-01 00:00:00",
+      "value": 0
+    },
+    "order": 9,
+    "color": "#5ea3ff"
+  },
   "E7ShadowCommission": {
     "name": "E7ShadowCommission",
     "path": "DataUpdate.E7Dashboard.E7ShadowCommission",
@@ -98,7 +123,7 @@
       "total": 30,
       "value": 0
     },
-    "order": 8,
+    "order": 10,
     "color": "#7796ff"
   },
   "E7TeamBattle": {
@@ -110,7 +135,7 @@
       "time": "2020-01-01 00:00:00",
       "value": ""
     },
-    "order": 9,
+    "order": 11,
     "color": "#d85f7c"
   },
   "Credit": {
@@ -129,31 +154,6 @@
     "name": "StallerJade",
     "path": "DataUpdate.ItemStorage.StallerJade",
     "i18n": "ItemStorage.StallerJade.name",
-    "stored": "StoredInt",
-    "attrs": {
-      "time": "2020-01-01 00:00:00",
-      "value": 0
-    },
-    "order": 0,
-    "color": "#777777"
-  },
-  "E7ArenaFlag": {
-    "name": "E7ArenaFlag",
-    "path": "DataUpdate.E7Dashboard.E7ArenaFlag",
-    "i18n": "E7Dashboard.E7ArenaFlag.name",
-    "stored": "StoredCounter",
-    "attrs": {
-      "time": "2020-01-01 00:00:00",
-      "total": 0,
-      "value": 0
-    },
-    "order": 0,
-    "color": "#777777"
-  },
-  "E7ConquestPoint": {
-    "name": "E7ConquestPoint",
-    "path": "DataUpdate.E7Dashboard.E7ConquestPoint",
-    "i18n": "E7Dashboard.E7ConquestPoint.name",
     "stored": "StoredInt",
     "attrs": {
       "time": "2020-01-01 00:00:00",
