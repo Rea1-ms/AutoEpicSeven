@@ -88,6 +88,16 @@ AUTO_FIGHT = ButtonWrapper(
         button=(1107, 15, 1147, 50),
     ),
 )
+AUTO_FIGHT_EXIST = ButtonWrapper(
+    name='AUTO_FIGHT_EXIST',
+    share=Button(
+        file='./assets/share/arena/AUTO_FIGHT_EXIST.png',
+        area=(1121, 27, 1133, 40),
+        search=(1101, 7, 1153, 60),
+        color=(107, 104, 102),
+        button=(1121, 27, 1133, 40),
+    ),
+)
 BATTLE_PASS_CHECK = ButtonWrapper(
     name='BATTLE_PASS_CHECK',
     share=Button(

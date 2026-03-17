@@ -7,6 +7,7 @@ from tasks.arena.assets.assets_arena import (
     ARENA_ENTRY,
     ARENA_SETTLING,
     AUTO_FIGHT,
+    AUTO_FIGHT_EXIST,
     BATTLE_PASS_CHECK,
     BATTLE_PASS_ENTRY,
     BATTLE_PASS_REWARDS,
@@ -790,6 +791,11 @@ class Arena(ResourceBarMixin, UI):
 
                 if self.ui_additional():
                     timeout.reset()
+                    continue
+
+                if self.appear(AUTO_FIGHT_EXIST):
+                    timeout.reset()
+                    self.device.stuck_record_clear()
                     continue
 
                 continue
