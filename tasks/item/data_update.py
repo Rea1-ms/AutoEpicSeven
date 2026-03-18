@@ -2,9 +2,10 @@ import re
 
 from module.logger import logger
 from module.ocr.ocr import Digit, DigitCounter
+from tasks.arena.assets.assets_arena import ARENA_COMMON_ENTRY
 from tasks.arena.dashboard import ArenaDashboardMixin
+from tasks.arena.entry import ArenaEntryMixin
 from tasks.base.page import (
-    page_arena,
     page_combat_season,
     page_inventory_equipment,
     page_main,
@@ -49,7 +50,7 @@ class E7DigitCounter(DigitCounter):
         return normalize_e7_counter_text(result)
 
 
-class DataUpdate(ArenaDashboardMixin, UI):
+class DataUpdate(ArenaEntryMixin, ArenaDashboardMixin, UI):
     def _sync_legacy_item_storage(self):
         with self.config.multi_set():
             self.config.stored.Credit.value = self.config.stored.E7Gold.value
@@ -116,14 +117,30 @@ class DataUpdate(ArenaDashboardMixin, UI):
             updated = True
         return updated
 
-    def _enter_arena(self, skip_first_screenshot=True) -> bool:
+    def _enter_arena(self, skip_first_screenshot=True) -> str:
         logger.info("DataUpdate: goto arena page")
-        self.ui_goto(page_arena, skip_first_screenshot=skip_first_screenshot)
-        return True
+        if self._is_arena_page_ready(interval=0):
+            logger.info("DataUpdate: already in arena page")
+            return "entered"
+
+        if self.appear(ARENA_COMMON_ENTRY):
+            logger.info("DataUpdate: already in arena mode popup")
+            return super()._enter_arena(skip_first_screenshot=skip_first_screenshot)
+
+        if not self.is_in_main(interval=0):
+            logger.info("DataUpdate: return to main before arena entry")
+            self.ui_goto_main()
+            skip_first_screenshot = True
+
+        return super()._enter_arena(skip_first_screenshot=skip_first_screenshot)
 
     def _update_arena_status(self, skip_first_screenshot=True) -> bool:
         logger.hr("DataUpdate Arena", level=2)
-        if not self._enter_arena(skip_first_screenshot=skip_first_screenshot):
+        status = self._enter_arena(skip_first_screenshot=skip_first_screenshot)
+        if status == "settling":
+            logger.info("DataUpdate: arena is settling, skip arena snapshot")
+            return False
+        if status != "entered":
             return False
         return self._update_arena_dashboard_snapshot(skip_first_screenshot=True)
 
