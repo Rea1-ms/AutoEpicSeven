@@ -1,6 +1,7 @@
 from module.base.timer import Timer
 from module.logger import logger
-from module.ocr.ocr import Digit, DigitCounter
+from module.ocr.ocr import DigitCounter
+from tasks.arena.dashboard import ArenaDashboardMixin
 from tasks.arena.assets.assets_arena import (
     ARENA_CHECK,
     ARENA_COMMON_ENTRY,
@@ -24,12 +25,10 @@ from tasks.arena.assets.assets_arena import (
     FAST_BATTLE_RESULT_CONFIRM,
     OPPONENT,
     NPC_COMBAT_ENTRY,
-    OCR_BATTLE_PASS_LEVEL,
     OCR_FAST_BATTLE_TIMES,
     WEEKLY_BATTLE_REWARDS,
 )
 from tasks.base.page import page_main
-from tasks.base.resource_bar import RESOURCE_BAR_LAYOUT_ARENA_BATTLE_PASS, ResourceBarMixin
 from tasks.base.ui import UI
 
 
@@ -43,15 +42,7 @@ class OcrFastBattleTimes(DigitCounter):
         return result
 
 
-class ArenaDigit(Digit):
-    def after_process(self, result):
-        result = result.replace("O", "0").replace("o", "0")
-        result = result.replace("I", "1").replace("l", "1").replace("|", "1")
-        result = result.replace(" ", "")
-        return super().after_process(result)
-
-
-class Arena(ResourceBarMixin, UI):
+class Arena(ArenaDashboardMixin, UI):
     """
     Arena task.
 
@@ -224,19 +215,6 @@ class Arena(ResourceBarMixin, UI):
         else:
             logger.warning(f"Fast battle times OCR invalid: {current}/{total}")
         return current, remain, total
-
-    def _ocr_battle_pass_level(self) -> int:
-        # Current observed range is around 1-38.
-        ocr = ArenaDigit(
-            OCR_BATTLE_PASS_LEVEL,
-            lang=self._ocr_lang(),
-            name="BattlePassLevel",
-        )
-        level = ocr.ocr_single_line(self.device.image)
-        logger.attr("BattlePassLevel", level)
-        if level > 0:
-            self.config.stored.E7ArenaRank.set(level)
-        return level
 
     def _sample_battle_pass_rewards(
         self,
@@ -427,14 +405,8 @@ class Arena(ResourceBarMixin, UI):
                     continue
 
                 if not level_ocr_done:
-                    self._ocr_battle_pass_level()
-                    self.write_resource_bar_status(
-                        self.ocr_resource_bar_status(
-                            layout=RESOURCE_BAR_LAYOUT_ARENA_BATTLE_PASS,
-                            layout_name="ArenaBattlePass",
-                            skip_first_screenshot=True,
-                        )
-                    )
+                    self._ocr_arena_rank()
+                    self.write_resource_bar_status(self._ocr_arena_resource_bar(skip_first_screenshot=True))
                     level_ocr_done = True
 
                 if self._sample_battle_pass_rewards(
@@ -725,6 +697,20 @@ class Arena(ResourceBarMixin, UI):
                 continue
 
             if stage == self.ARENA_NPC_STAGE_BATTLE:
+                if self.handle_popup_cancel(interval=1):
+                    logger.info("Arena NPC: popup cancel after battle start, recheck arena flags")
+                    flag_status = self._ocr_arena_flag_status(skip_first_screenshot=False)
+                    if flag_status is None:
+                        flag_status = self._stored_arena_flag_status()
+                    if flag_status is not None and flag_status[0] <= 0:
+                        logger.info("Arena NPC: arena flags exhausted after start popup cancel")
+                        return "exhausted"
+
+                    logger.warning("Arena NPC: popup cancel after battle start but arena flag is still unknown/non-zero")
+                    stage = self.ARENA_NPC_STAGE_PREPARE
+                    timeout.reset()
+                    continue
+
                 if fast_battle_effective:
                     if self.appear_then_click(FAST_BATTLE_RESULT_CONFIRM, interval=0.8):
                         logger.info("Arena NPC: fast battle result confirm")
@@ -823,6 +809,11 @@ class Arena(ResourceBarMixin, UI):
             logger.info("Arena NPC: target count <= 0, skip")
             return True
 
+        flag_status = self._stored_arena_flag_status()
+        if flag_status is not None and flag_status[0] <= 0:
+            logger.info("Arena NPC: arena flag is already 0, skip combat")
+            return True
+
         logger.info(f"Arena NPC: target={target_count}, fast_battle={use_fast_battle}")
         completed = 0
         while completed < target_count:
@@ -833,7 +824,12 @@ class Arena(ResourceBarMixin, UI):
 
             if status == "completed":
                 completed += 1
+                self._consume_stored_arena_flags(1)
                 logger.info(f"Arena NPC round finished: {completed}/{target_count}")
+                flag_status = self._stored_arena_flag_status()
+                if flag_status is not None and flag_status[0] <= 0 and completed < target_count:
+                    logger.info(f"Arena NPC stop early: local arena flag depleted ({completed}/{target_count})")
+                    return True
                 continue
 
             if status == "exhausted":
@@ -920,6 +916,7 @@ class Arena(ResourceBarMixin, UI):
         if getattr(self.config, "Arena_NPCCombat", False):
             if self.appear(NPC_OPPONENT) or self.appear(CHALLENGE) or self._is_battle_prepare_page():
                 logger.info("Arena: detected NPC combat context, skip goto main")
+                self._update_arena_dashboard_snapshot(skip_first_screenshot=True)
                 if not self._run_npc_combat(skip_first_screenshot=True):
                     self.config.task_delay(success=False)
                     return False
@@ -944,6 +941,7 @@ class Arena(ResourceBarMixin, UI):
             return True
 
         if status == "entered":
+            self._update_arena_dashboard_snapshot(skip_first_screenshot=True)
             if getattr(self.config, "Arena_NPCCombat", False):
                 if not self._run_npc_combat(skip_first_screenshot=True):
                     self.config.task_delay(success=False)

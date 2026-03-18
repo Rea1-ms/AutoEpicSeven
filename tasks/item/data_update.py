@@ -1,9 +1,8 @@
 import re
 
-from module.base.timer import Timer
 from module.logger import logger
 from module.ocr.ocr import Digit, DigitCounter
-from tasks.arena.assets.assets_arena import BATTLE_PASS_CHECK, BATTLE_PASS_ENTRY
+from tasks.arena.dashboard import ArenaDashboardMixin
 from tasks.base.page import (
     page_arena,
     page_combat_season,
@@ -12,10 +11,8 @@ from tasks.base.page import (
     page_secret_shop,
 )
 from tasks.base.resource_bar import (
-    RESOURCE_BAR_LAYOUT_ARENA_BATTLE_PASS,
     RESOURCE_BAR_LAYOUT_COMBAT,
     RESOURCE_BAR_LAYOUT_SECRET_SHOP,
-    ResourceBarMixin,
 )
 from tasks.base.ui import UI
 from tasks.combat.assets.assets_combat_configs_entry import OCR_SEASON_CHECK
@@ -52,11 +49,7 @@ class E7DigitCounter(DigitCounter):
         return normalize_e7_counter_text(result)
 
 
-class DataUpdate(ResourceBarMixin, UI):
-    ARENA_BATTLE_PASS_TIMEOUT_SECONDS = 18
-    ARENA_BATTLE_PASS_BACK_INTERVAL_SECONDS = 1
-    ARENA_BATTLE_PASS_SETTLE_SECONDS = 1.2
-
+class DataUpdate(ArenaDashboardMixin, UI):
     def _sync_legacy_item_storage(self):
         with self.config.multi_set():
             self.config.stored.Credit.value = self.config.stored.E7Gold.value
@@ -128,94 +121,11 @@ class DataUpdate(ResourceBarMixin, UI):
         self.ui_goto(page_arena, skip_first_screenshot=skip_first_screenshot)
         return True
 
-    def _enter_arena_battle_pass(self, skip_first_screenshot=True) -> bool:
-        from tasks.arena.arena import Arena
-
-        arena = Arena(config=self.config, device=self.device)
-        timeout = Timer(self.ARENA_BATTLE_PASS_TIMEOUT_SECONDS, count=60).start()
-
-        while 1:
-            if skip_first_screenshot:
-                skip_first_screenshot = False
-            else:
-                self.device.screenshot()
-
-            if timeout.reached():
-                logger.warning("DataUpdate: enter arena battle pass timeout")
-                return False
-
-            if self.appear(BATTLE_PASS_CHECK):
-                logger.info("DataUpdate: arena battle pass page reached")
-                return True
-
-            if arena._is_arena_page_ready(interval=0):
-                if self.appear_then_click(BATTLE_PASS_ENTRY, interval=1):
-                    timeout.reset()
-                    continue
-
-            if self.handle_touch_to_close(interval=0.5):
-                timeout.reset()
-                continue
-            if self.ui_additional():
-                timeout.reset()
-                continue
-
-    def _exit_arena_battle_pass(self, skip_first_screenshot=True) -> bool:
-        from tasks.arena.arena import Arena
-
-        arena = Arena(config=self.config, device=self.device)
-        timeout = Timer(self.ARENA_BATTLE_PASS_TIMEOUT_SECONDS, count=60).start()
-
-        while 1:
-            if skip_first_screenshot:
-                skip_first_screenshot = False
-            else:
-                self.device.screenshot()
-
-            if timeout.reached():
-                logger.warning("DataUpdate: exit arena battle pass timeout")
-                return False
-
-            if arena._is_arena_page_ready(interval=0):
-                logger.info("DataUpdate: back to arena page")
-                return True
-
-            if self.handle_ui_back(BATTLE_PASS_CHECK, interval=self.ARENA_BATTLE_PASS_BACK_INTERVAL_SECONDS):
-                timeout.reset()
-                continue
-
-            if self.ui_additional():
-                timeout.reset()
-                continue
-
     def _update_arena_status(self, skip_first_screenshot=True) -> bool:
-        from tasks.arena.arena import Arena
-
         logger.hr("DataUpdate Arena", level=2)
         if not self._enter_arena(skip_first_screenshot=skip_first_screenshot):
             return False
-        if not self._enter_arena_battle_pass(skip_first_screenshot=True):
-            return False
-
-        settle = Timer(self.ARENA_BATTLE_PASS_SETTLE_SECONDS, count=2).start()
-        for _ in self.loop(skip_first=True, timeout=settle):
-            pass
-
-        updated = False
-        parsed = self.ocr_resource_bar_status(
-            layout=RESOURCE_BAR_LAYOUT_ARENA_BATTLE_PASS,
-            layout_name="ArenaBattlePass",
-            skip_first_screenshot=True,
-        )
-        if self.write_resource_bar_status(parsed):
-            updated = True
-
-        arena = Arena(config=self.config, device=self.device)
-        if arena._ocr_battle_pass_level() > 0:
-            updated = True
-
-        self._exit_arena_battle_pass(skip_first_screenshot=True)
-        return updated
+        return self._update_arena_dashboard_snapshot(skip_first_screenshot=True)
 
     def run(self):
         logger.hr("Data Update", level=1)

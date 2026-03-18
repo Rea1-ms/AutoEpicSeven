@@ -2,9 +2,17 @@ import re
 from dataclasses import dataclass
 
 from module.base.timer import Timer
+from module.base.utils import area_offset
 from module.logger import logger
 from module.ocr.ocr import OcrWhiteLetterOnComplexBackground
-from tasks.base.assets.assets_base_resource_bar import OCR_RESOURCE_BAR, STAMINA_ICON
+from tasks.base.assets.assets_base_resource_bar import (
+    ARENA_FLAG_ICON,
+    CONQUEST_POINT_ICON,
+    GOLD_ICON,
+    OCR_RESOURCE_BAR,
+    SKYSTONE_ICON,
+    STAMINA_ICON,
+)
 
 
 RESOURCE_KIND_INT = "int"
@@ -14,6 +22,8 @@ RESOURCE_BAR_LAYOUT_MAIN = ("arena_flag", "stamina", "skystone")
 RESOURCE_BAR_LAYOUT_SECRET_SHOP = ("gold", "skystone")
 RESOURCE_BAR_LAYOUT_COMBAT = ("stamina", "gold", "skystone")
 RESOURCE_BAR_LAYOUT_ARENA_BATTLE_PASS = ("arena_flag", "conquest_point", "gold", "skystone")
+RESOURCE_BAR_SEGMENT_LEFT_PADDING = 2
+RESOURCE_BAR_SEGMENT_RIGHT_PADDING = 6
 
 
 @dataclass(frozen=True)
@@ -65,6 +75,14 @@ RESOURCE_BAR_SPECS = {
         kind=RESOURCE_KIND_INT,
         stored_attr="E7ConquestPoint",
     ),
+}
+
+RESOURCE_BAR_ICONS = {
+    "arena_flag": ARENA_FLAG_ICON,
+    "conquest_point": CONQUEST_POINT_ICON,
+    "gold": GOLD_ICON,
+    "skystone": SKYSTONE_ICON,
+    "stamina": STAMINA_ICON,
 }
 
 
@@ -233,6 +251,84 @@ def parse_resource_bar_candidates(
     return parsed
 
 
+def parse_resource_bar_text(
+    text: str,
+    spec: ResourceBarSpec,
+) -> ResourceBarValue | None:
+    text = normalize_resource_bar_text(text)
+    if spec.kind == RESOURCE_KIND_COUNTER:
+        matched = re.search(r"(\d+)\s*/\s*(\d+)", text)
+        if matched is None:
+            return None
+        value = int(matched.group(1))
+        total = int(matched.group(2))
+        if total <= 0:
+            return None
+        if spec.fixed_total and total != spec.fixed_total:
+            return None
+        return ResourceBarValue(
+            spec=spec,
+            text=text,
+            value=value,
+            total=total,
+        )
+
+    matched = re.search(r"(\d+)", text)
+    if matched is None:
+        return None
+    return ResourceBarValue(
+        spec=spec,
+        text=text,
+        value=int(matched.group(1)),
+    )
+
+
+def split_resource_bar_text_for_specs(
+    text: str,
+    specs: list[ResourceBarSpec],
+) -> list[ResourceBarValue] | None:
+    text = normalize_resource_bar_text(text)
+    if not specs:
+        return [] if not text else None
+
+    if len(specs) == 1:
+        value = parse_resource_bar_text(text, spec=specs[0])
+        return [value] if value is not None else None
+
+    for split_index in range(1, len(text)):
+        left = parse_resource_bar_text(text[:split_index], spec=specs[0])
+        if left is None:
+            continue
+
+        right = split_resource_bar_text_for_specs(text[split_index:], specs=specs[1:])
+        if right is not None:
+            return [left] + right
+
+    return None
+
+
+def get_resource_bar_segment_area(
+    layout: tuple[str, ...],
+    key: str,
+) -> tuple[int, int, int, int] | None:
+    try:
+        index = layout.index(key)
+    except ValueError:
+        return None
+
+    icon = RESOURCE_BAR_ICONS[key]
+    x1 = max(OCR_RESOURCE_BAR.area[0], icon.area[2] - RESOURCE_BAR_SEGMENT_LEFT_PADDING)
+    if index + 1 < len(layout):
+        next_icon = RESOURCE_BAR_ICONS[layout[index + 1]]
+        x2 = min(OCR_RESOURCE_BAR.area[2], next_icon.area[0] - RESOURCE_BAR_SEGMENT_RIGHT_PADDING)
+    else:
+        x2 = OCR_RESOURCE_BAR.area[2]
+
+    if x2 <= x1:
+        return None
+    return (x1, OCR_RESOURCE_BAR.area[1], x2, OCR_RESOURCE_BAR.area[3])
+
+
 class OcrResourceBar(OcrWhiteLetterOnComplexBackground):
     def after_process(self, result):
         result = super().after_process(result)
@@ -271,13 +367,122 @@ class ResourceBarMixin:
         ]
         return candidates
 
+    def _resource_bar_by_icon(
+        self,
+        layout: tuple[str, ...],
+        layout_name: str,
+    ) -> dict[str, ResourceBarValue] | None:
+        parsed: dict[str, ResourceBarValue] = {}
+        raw_texts: list[str] = []
+        matched_icons: list[str] = []
+
+        for key in layout:
+            icon = RESOURCE_BAR_ICONS[key]
+            icon.load_search(OCR_RESOURCE_BAR.area)
+            if not icon.match_template(self.device.image, similarity=0.75):
+                matched_icons.append(f"{key}=miss")
+                logger.attr(f"{layout_name}ResourceBarIconMatches", matched_icons)
+                logger.attr(f"{layout_name}ResourceBarIconSegments", raw_texts)
+                return None
+
+            matched_icons.append(f"{key}={icon.button_offset}")
+            area = get_resource_bar_segment_area(layout, key)
+            if area is None:
+                logger.attr(f"{layout_name}ResourceBarIconMatches", matched_icons)
+                logger.attr(f"{layout_name}ResourceBarIconSegments", raw_texts)
+                return None
+            area = area_offset(area, offset=icon.button_offset)
+
+            image = self.image_crop(area, copy=False)
+            text = OcrResourceBar(
+                OCR_RESOURCE_BAR,
+                lang=self._ocr_lang(),
+                name=f"{layout_name}ResourceBar.{key}",
+            ).ocr_single_line(image, direct_ocr=True)
+            raw_texts.append(f"{key}={text}")
+
+            value = parse_resource_bar_text(text, spec=RESOURCE_BAR_SPECS[key])
+            if value is None:
+                logger.attr(f"{layout_name}ResourceBarIconMatches", matched_icons)
+                logger.attr(f"{layout_name}ResourceBarIconSegments", raw_texts)
+                return None
+            parsed[key] = value
+
+        logger.attr(f"{layout_name}ResourceBarIconMatches", matched_icons)
+        logger.attr(f"{layout_name}ResourceBarIconSegments", raw_texts)
+        return parsed
+
+    def _resource_bar_from_candidates_by_icon(
+        self,
+        candidates: list[ResourceBarCandidate],
+        layout: tuple[str, ...],
+        layout_name: str,
+    ) -> dict[str, ResourceBarValue] | None:
+        parsed: dict[str, ResourceBarValue] = {}
+        split_logs: list[str] = []
+        layout_index = 0
+
+        segment_areas: list[tuple[int, int, int, int] | None] = [
+            get_resource_bar_segment_area(layout, key) for key in layout
+        ]
+        if any(area is None for area in segment_areas):
+            return None
+
+        for candidate in sorted(candidates, key=lambda item: item.box[0]):
+            if layout_index >= len(layout):
+                break
+
+            overlapped: list[int] = []
+            for index in range(layout_index, len(layout)):
+                area = segment_areas[index]
+                overlap = min(candidate.box[2], area[2]) - max(candidate.box[0], area[0])
+                if overlap > 0:
+                    overlapped.append(index)
+
+            if not overlapped:
+                continue
+
+            start = overlapped[0]
+            end = overlapped[-1]
+            if start != layout_index:
+                return None
+
+            specs = [RESOURCE_BAR_SPECS[layout[index]] for index in range(start, end + 1)]
+            values = split_resource_bar_text_for_specs(candidate.text, specs=specs)
+            if values is None:
+                logger.attr(
+                    f"{layout_name}ResourceBarSplitFailed",
+                    f"{candidate.text} -> {[spec.key for spec in specs]}",
+                )
+                return None
+
+            for offset, value in enumerate(values):
+                key = layout[start + offset]
+                parsed[key] = value
+                split_logs.append(f"{key}={value.text}")
+
+            layout_index = end + 1
+
+        if len(parsed) != len(layout):
+            return None
+
+        logger.attr(f"{layout_name}ResourceBarCandidateSplit", split_logs)
+        return parsed
+
     def ocr_resource_bar_status(
         self,
         layout: tuple[str, ...],
         layout_name: str,
         skip_first_screenshot=True,
+        timeout_seconds: float | None = None,
+        timeout_count: int | None = None,
     ) -> dict[str, ResourceBarValue] | None:
-        timeout = Timer(self.RESOURCE_BAR_TIMEOUT_SECONDS, count=self.RESOURCE_BAR_TIMEOUT_COUNT).start()
+        if timeout_seconds is None:
+            timeout_seconds = self.RESOURCE_BAR_TIMEOUT_SECONDS
+        if timeout_count is None:
+            timeout_count = self.RESOURCE_BAR_TIMEOUT_COUNT
+
+        timeout = Timer(timeout_seconds, count=timeout_count).start()
 
         while 1:
             if skip_first_screenshot:
@@ -285,12 +490,20 @@ class ResourceBarMixin:
             else:
                 self.device.screenshot()
 
-            candidates = self._resource_bar_candidates()
-            logger.attr(
-                f"{layout_name}ResourceBarCandidates",
-                [candidate.text for candidate in candidates],
-            )
-            parsed = parse_resource_bar_candidates(candidates, layout)
+            parsed = self._resource_bar_by_icon(layout=layout, layout_name=layout_name)
+            if parsed is None:
+                candidates = self._resource_bar_candidates()
+                logger.attr(
+                    f"{layout_name}ResourceBarCandidates",
+                    [candidate.text for candidate in candidates],
+                )
+                parsed = parse_resource_bar_candidates(candidates, layout)
+                if parsed is None:
+                    parsed = self._resource_bar_from_candidates_by_icon(
+                        candidates=candidates,
+                        layout=layout,
+                        layout_name=layout_name,
+                    )
             if parsed is not None:
                 for key in layout:
                     value = parsed[key]
@@ -303,7 +516,7 @@ class ResourceBarMixin:
             if timeout.reached():
                 logger.warning(
                     f"Resource bar OCR timeout on {layout_name}: "
-                    f"{[candidate.text for candidate in candidates]}"
+                    f"{[candidate.text for candidate in candidates] if 'candidates' in locals() else 'icon-primary-failed'}"
                 )
                 return None
 
