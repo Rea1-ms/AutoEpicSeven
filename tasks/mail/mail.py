@@ -12,6 +12,7 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta
 import re
 
+import module.config.server as server
 from module.base.timer import Timer
 from module.exception import ScriptError
 from module.logger import logger
@@ -27,9 +28,12 @@ from tasks.gacha.assets.assets_gacha import (
 )
 from tasks.mail.assets.assets_mail import (
     GOTO_LINK,
+    OCR_REMAINING_MAIL,
     OCR_REMAINING_TIME,
+    POPUP_WINDOW,
     RECEIVE,
     RECEIVE_CONFIRM,
+    RECEIVE_CONFIRM_LINK,
     REMAINING_TIME_ASCENDING,
     REMAINING_TIME_DESCENDING,
     REMAINING_TIME_UNSELECTED,
@@ -54,6 +58,19 @@ class MailRemainingState:
         return f"{self.raw_text} ({self.value}{self.unit})"
 
 
+@dataclass
+class MailRemainingCountState:
+    raw_text: str
+    normalized_text: str
+    value: int | None = None
+    valid: bool = False
+
+    def __str__(self) -> str:
+        if not self.valid:
+            return f"{self.raw_text} (invalid)"
+        return f"{self.raw_text} ({self.value})"
+
+
 class OcrMailRemainingTime(OcrWhiteLetterOnComplexBackground):
     def after_process(self, result):
         result = super().after_process(result)
@@ -73,10 +90,25 @@ class OcrMailRemainingTime(OcrWhiteLetterOnComplexBackground):
         return result
 
 
+class OcrMailRemainingCount(OcrWhiteLetterOnComplexBackground):
+    def after_process(self, result):
+        result = super().after_process(result)
+        result = result.replace(" ", "")
+        result = result.replace("剩余", "")
+        result = result.replace("剩", "")
+        result = result.replace("封", "")
+        result = result.replace("件", "")
+        result = result.replace("／", "/")
+        result = result.replace("O", "0").replace("o", "0")
+        result = result.replace("I", "1").replace("l", "1").replace("|", "1")
+        return result
+
+
 class Mail(UI):
     SORT_TIMEOUT_SECONDS = 20
     RECEIVE_FLOW_TIMEOUT_SECONDS = 45
     RECEIVE_DONE_CONFIRM_SECONDS = 1.5
+    RECEIVE_POPUP_IDLE_SECONDS = 6
     CLICK_INTERVAL_SECONDS = 1
     NEXT_DAY_CHECK_DELAY = timedelta(hours=23, minutes=55)
     SAME_DAY_COARSE_CHECK = timedelta(hours=12)
@@ -105,8 +137,27 @@ class Mail(UI):
         return getattr(self.config, "Mail_CollectWithin", "1h")
 
     @staticmethod
+    def _button_available(button) -> bool:
+        for trial in (server.lang, "share", "cn"):
+            if trial not in button.data_buttons:
+                continue
+            assets = button.data_buttons[trial]
+            if assets is None:
+                continue
+            if isinstance(assets, list):
+                if assets:
+                    return True
+                continue
+            return True
+        return False
+
+    @staticmethod
     def _mail_has_link_asset() -> bool:
         return any(True for _ in GOTO_LINK.iter_buttons())
+
+    @staticmethod
+    def _skip_goto_link_recognition() -> bool:
+        return not Mail._button_available(GOTO_LINK)
 
     def _record_remaining_observation(self, normalized_text: str, now: datetime | None = None) -> None:
         now = (now or datetime.now()).replace(microsecond=0)
@@ -258,6 +309,97 @@ class Mail(UI):
             logger.warning(f"Mail: failed to parse remaining time: {state.raw_text}")
         return state
 
+    @staticmethod
+    def _parse_remaining_mail_count_text(text: str) -> MailRemainingCountState:
+        normalized = text.replace(" ", "")
+        normalized = normalized.replace("剩余", "")
+        normalized = normalized.replace("剩", "")
+        normalized = normalized.replace("封", "")
+        normalized = normalized.replace("件", "")
+        normalized = normalized.replace("／", "/")
+
+        if not normalized:
+            return MailRemainingCountState(raw_text=text, normalized_text=normalized)
+
+        matched = re.search(r"(?P<value>\d+)", normalized)
+        if matched is None:
+            return MailRemainingCountState(raw_text=text, normalized_text=normalized)
+
+        return MailRemainingCountState(
+            raw_text=text,
+            normalized_text=normalized,
+            value=int(matched.group("value")),
+            valid=True,
+        )
+
+    def _ocr_remaining_mail_count_state(self) -> MailRemainingCountState:
+        text = OcrMailRemainingCount(
+            OCR_REMAINING_MAIL,
+            lang=self._ocr_lang(),
+            name="MailRemainingCountOCR",
+        ).ocr_single_line(self.device.image)
+        state = self._parse_remaining_mail_count_text(text)
+        logger.attr("MailRemainingCountText", state.raw_text)
+        if state.valid:
+            logger.attr("MailRemainingCount", state.value)
+        else:
+            logger.warning(f"Mail: failed to parse remaining mail count: {state.raw_text}")
+        return state
+
+    @staticmethod
+    def _resolve_mail_claim_result(
+        before_count: MailRemainingCountState,
+        after_count: MailRemainingCountState,
+        before_state: MailRemainingState,
+        after_state: MailRemainingState,
+        receive_available: bool,
+    ) -> bool | None:
+        if before_count.valid and after_count.valid:
+            if after_count.value < before_count.value:
+                return True
+            if after_count.value > before_count.value:
+                return None
+
+        if not receive_available:
+            return True
+
+        if (
+            before_state.normalized_text
+            and after_state.normalized_text
+            and after_state.normalized_text != before_state.normalized_text
+        ):
+            return True
+
+        if (
+            before_count.valid
+            and after_count.valid
+            and after_count.value == before_count.value
+            and before_state.normalized_text == after_state.normalized_text
+            and receive_available
+        ):
+            return False
+
+        return None
+
+    def _mail_popup_open(self) -> bool:
+        return self.match_template_luma(POPUP_WINDOW)
+
+    def _mail_claim_result(
+        self,
+        before_state: MailRemainingState,
+        before_count: MailRemainingCountState,
+    ) -> bool | None:
+        after_count = self._ocr_remaining_mail_count_state()
+        after_state = self._ocr_top_remaining_state()
+        receive_available = self._receive_available(interval=0)
+        return self._resolve_mail_claim_result(
+            before_count=before_count,
+            after_count=after_count,
+            before_state=before_state,
+            after_state=after_state,
+            receive_available=receive_available,
+        )
+
     def _is_within_threshold(self, state: MailRemainingState) -> bool:
         if not state.valid or state.unlimited:
             return False
@@ -338,12 +480,19 @@ class Mail(UI):
         logger.info("Mail: send Android back keyevent")
         self.device.adb_shell(["input", "keyevent", "4"])
 
-    def _handle_mail_reward_flow(self, skip_first_screenshot=True) -> bool:
+    def _handle_mail_reward_flow(
+        self,
+        before_state: MailRemainingState,
+        before_count: MailRemainingCountState,
+        skip_first_screenshot=True,
+    ) -> bool:
         logger.info("Mail: handle receive reward flow")
         timeout = Timer(self.RECEIVE_FLOW_TIMEOUT_SECONDS, count=120).start()
         done_confirm = Timer(self.RECEIVE_DONE_CONFIRM_SECONDS, count=4).start()
+        popup_idle = Timer(self.RECEIVE_POPUP_IDLE_SECONDS, count=18).start()
         pending_android_back = False
         android_back_timer = Timer(1.2, count=3)
+        goto_link_done = False
 
         while 1:
             if skip_first_screenshot:
@@ -358,22 +507,53 @@ class Mail(UI):
             if pending_android_back and android_back_timer.reached():
                 self._android_back()
                 pending_android_back = False
+                goto_link_done = True
                 timeout.reset()
                 done_confirm.reset()
+                popup_idle.reset()
                 continue
 
-            if self._mail_has_link_asset() and self.appear_then_click(GOTO_LINK, interval=self.CLICK_INTERVAL_SECONDS):
-                logger.info("Mail: open preview link before receive confirm")
-                pending_android_back = True
-                android_back_timer.reset()
+            normal_confirm_open = self.appear(RECEIVE_CONFIRM, interval=0)
+            link_confirm_open = False
+            if self._button_available(RECEIVE_CONFIRM_LINK):
+                link_confirm_open = self.appear(RECEIVE_CONFIRM_LINK, interval=0)
+
+            popup_open = normal_confirm_open or link_confirm_open or self._mail_popup_open()
+            if not popup_open:
+                popup_idle.reset()
+
+            if link_confirm_open and not goto_link_done:
+                if self._skip_goto_link_recognition() or not self._mail_has_link_asset():
+                    logger.warning(
+                        f"Mail: preview popup requires GOTO_LINK, but asset is unavailable for {server.lang}"
+                    )
+                    return False
+
+                if self.appear_then_click(GOTO_LINK, interval=self.CLICK_INTERVAL_SECONDS):
+                    logger.info("Mail: open preview link before receive confirm")
+                    pending_android_back = True
+                    android_back_timer.reset()
+                    timeout.reset()
+                    done_confirm.reset()
+                    popup_idle.reset()
+                    continue
+
+            if link_confirm_open and goto_link_done:
+                logger.info("Mail: confirm link receive popup")
+                self.device.click(RECEIVE_CONFIRM_LINK)
+                self.interval_reset(RECEIVE_CONFIRM_LINK, interval=self.CLICK_INTERVAL_SECONDS)
                 timeout.reset()
                 done_confirm.reset()
+                popup_idle.reset()
                 continue
 
-            if self.appear_then_click(RECEIVE_CONFIRM, interval=self.CLICK_INTERVAL_SECONDS):
+            if normal_confirm_open:
                 logger.info("Mail: confirm receive popup")
+                self.device.click(RECEIVE_CONFIRM)
+                self.interval_reset(RECEIVE_CONFIRM, interval=self.CLICK_INTERVAL_SECONDS)
                 timeout.reset()
                 done_confirm.reset()
+                popup_idle.reset()
                 continue
 
             if self.appear(SUMMON_NEW, interval=self.CLICK_INTERVAL_SECONDS):
@@ -412,6 +592,12 @@ class Mail(UI):
                 done_confirm.reset()
                 continue
 
+            if popup_open:
+                if popup_idle.reached():
+                    logger.warning("Mail: popup window is open but no actionable mail button was handled")
+                    return False
+                continue
+
             if self.handle_touch_to_close(interval=0.5):
                 timeout.reset()
                 done_confirm.reset()
@@ -428,13 +614,18 @@ class Mail(UI):
                 continue
 
             if self.ui_page_appear(page_mail) and done_confirm.reached():
-                logger.info("Mail: receive reward flow settled")
-                return True
+                result = self._mail_claim_result(before_state=before_state, before_count=before_count)
+                if result is True:
+                    logger.info("Mail: receive reward flow settled")
+                    return True
+                if result is False:
+                    logger.warning("Mail: returned to mailbox but no mail state change was detected")
+                    return False
 
-    def _claim_top_mail(self, skip_first_screenshot=True) -> bool:
+    def _claim_top_mail(self, state: MailRemainingState, skip_first_screenshot=True) -> bool:
         logger.info("Mail: claim top mail")
+        before_count = self._ocr_remaining_mail_count_state()
         claimed = False
-        timeout = Timer(8, count=24).start()
 
         while 1:
             if skip_first_screenshot:
@@ -442,25 +633,25 @@ class Mail(UI):
             else:
                 self.device.screenshot()
 
-            if timeout.reached():
-                logger.warning("Mail: claim top mail click timeout")
-                return claimed
-
-            if not self._receive_available(interval=self.CLICK_INTERVAL_SECONDS):
+            receive_available = self._receive_available(interval=0)
+            if not receive_available:
                 if claimed:
                     return True
 
-            if self._receive_available(interval=self.CLICK_INTERVAL_SECONDS):
+            if receive_available and self.interval_is_reached(RECEIVE, interval=self.CLICK_INTERVAL_SECONDS):
+                logger.info("Mail: click RECEIVE on top mail")
                 self.device.click(RECEIVE)
                 claimed = True
                 self.interval_reset(RECEIVE, interval=self.CLICK_INTERVAL_SECONDS)
-                return self._handle_mail_reward_flow(skip_first_screenshot=True)
+                return self._handle_mail_reward_flow(
+                    before_state=state,
+                    before_count=before_count,
+                    skip_first_screenshot=True,
+                )
 
             if self.ui_additional():
-                timeout.reset()
                 continue
             if self.handle_network_error():
-                timeout.reset()
                 continue
 
     def run(self) -> bool:
@@ -471,10 +662,10 @@ class Mail(UI):
 
             Login(self.config, device=self.device).app_start()
 
-        if not self._mail_has_link_asset():
-            logger.warning(
-                "Mail: GOTO_LINK asset is unavailable for current asset language. "
-                "Preview-mail branch may require adding this asset."
+        if self._skip_goto_link_recognition():
+            logger.info(
+                f"Mail: GOTO_LINK asset is unavailable for current server language {server.lang}. "
+                "Normal mails still work, but preview mails will fail fast until the asset is added."
             )
 
         self._enter_mail(skip_first_screenshot=False)
@@ -516,7 +707,7 @@ class Mail(UI):
                 return True
 
             self._clear_remaining_observation()
-            if not self._claim_top_mail(skip_first_screenshot=True):
+            if not self._claim_top_mail(state=state, skip_first_screenshot=True):
                 self.ui_goto(page_main, skip_first_screenshot=True)
                 self.config.task_delay(success=False)
                 return False

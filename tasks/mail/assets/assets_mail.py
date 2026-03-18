@@ -15,6 +15,16 @@ GOTO_LINK = ButtonWrapper(
     ),
     global_en=None,
 )
+OCR_REMAINING_MAIL = ButtonWrapper(
+    name='OCR_REMAINING_MAIL',
+    share=Button(
+        file='./assets/share/mail/OCR_REMAINING_MAIL.png',
+        area=(938, 656, 1022, 683),
+        search=(918, 636, 1042, 703),
+        color=(67, 74, 81),
+        button=(938, 656, 1022, 683),
+    ),
+)
 OCR_REMAINING_TIME = ButtonWrapper(
     name='OCR_REMAINING_TIME',
     share=Button(
@@ -23,6 +33,16 @@ OCR_REMAINING_TIME = ButtonWrapper(
         search=(777, 129, 917, 192),
         color=(72, 81, 100),
         button=(797, 149, 897, 172),
+    ),
+)
+POPUP_WINDOW = ButtonWrapper(
+    name='POPUP_WINDOW',
+    share=Button(
+        file='./assets/share/mail/POPUP_WINDOW.png',
+        area=(614, 266, 670, 290),
+        search=(594, 246, 690, 310),
+        color=(32, 55, 89),
+        button=(614, 266, 670, 290),
     ),
 )
 RECEIVE = ButtonWrapper(
@@ -52,22 +72,25 @@ RECEIVE_CONFIRM = ButtonWrapper(
         color=(121, 140, 122),
         button=(622, 540, 661, 560),
     ),
-    global_cn=[
-        Button(
-            file='./assets/global_cn/mail/RECEIVE_CONFIRM.png',
-            area=(622, 540, 662, 560),
-            search=(602, 520, 682, 580),
-            color=(115, 136, 117),
-            button=(622, 540, 662, 560),
-        ),
-        Button(
-            file='./assets/global_cn/mail/RECEIVE_CONFIRM.2.png',
-            area=(746, 540, 788, 560),
-            search=(726, 520, 808, 580),
-            color=(111, 132, 113),
-            button=(746, 540, 788, 560),
-        ),
-    ],
+    global_cn=Button(
+        file='./assets/global_cn/mail/RECEIVE_CONFIRM.png',
+        area=(622, 540, 662, 560),
+        search=(602, 520, 682, 580),
+        color=(115, 136, 117),
+        button=(622, 540, 662, 560),
+    ),
+    global_en=None,
+)
+RECEIVE_CONFIRM_LINK = ButtonWrapper(
+    name='RECEIVE_CONFIRM_LINK',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/mail/RECEIVE_CONFIRM_LINK.png',
+        area=(746, 540, 788, 560),
+        search=(726, 520, 808, 580),
+        color=(111, 132, 113),
+        button=(746, 540, 788, 560),
+    ),
     global_en=None,
 )
 REMAINING_TIME_ASCENDING = ButtonWrapper(
