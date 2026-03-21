@@ -1,9 +1,13 @@
 from module.base.button import ClickButton
 from module.base.timer import Timer
 from module.logger import logger
-from tasks.base.page import page_knights_v2_weekly_task
+from tasks.base.page import page_knights_v2
 from tasks.knights_v2.assets.assets_knights_v2_activity_weekly_task import RECEIVE
-from tasks.knights_v2.assets.assets_knights_v2_activity_weekly_task_entry import WEEKLY_TASK_CHECK
+from tasks.knights_v2.assets.assets_knights_v2_activity_support_entry import SUPPORT_CHECK
+from tasks.knights_v2.assets.assets_knights_v2_activity_weekly_task_entry import (
+    WEEKLY_TASK_CHECK,
+    WEEKLY_TASK_ENTRY,
+)
 from tasks.knights_v2.assets.assets_knights_v2_activity_weekly_task_weekly_points import (
     WEEKLY_POINTS_1,
     WEEKLY_POINTS_2,
@@ -13,6 +17,8 @@ from tasks.knights_v2.assets.assets_knights_v2_activity_weekly_task_weekly_point
 
 
 class KnightsV2WeeklyTaskMixin:
+    WEEKLY_TASK_ENTRY_TIMEOUT_SECONDS = 20
+    WEEKLY_TASK_ENTRY_CLICK_INTERVAL_SECONDS = 1.2
     RECEIVE_MATCH_THRESHOLD = 40
     RECEIVE_CLICK_INTERVAL_SECONDS = 0.8
     WEEKLY_TASK_TIMEOUT_SECONDS = 30
@@ -30,8 +36,48 @@ class KnightsV2WeeklyTaskMixin:
 
     def _enter_weekly_task(self, skip_first_screenshot=True) -> bool:
         logger.info("Knights v2: enter weekly task")
-        self.ui_goto(page_knights_v2_weekly_task, skip_first_screenshot=skip_first_screenshot)
-        return True
+        if self.appear(WEEKLY_TASK_CHECK):
+            logger.info("Knights v2 weekly task page already reached")
+            return True
+
+        if not self._enter_support(skip_first_screenshot=skip_first_screenshot):
+            return False
+
+        timeout = Timer(self.WEEKLY_TASK_ENTRY_TIMEOUT_SECONDS, count=60).start()
+        skip_first_screenshot = True
+        while 1:
+            if skip_first_screenshot:
+                skip_first_screenshot = False
+            else:
+                self.device.screenshot()
+
+            if timeout.reached():
+                logger.warning("Knights v2 weekly task entry timeout")
+                return False
+
+            if self.appear(WEEKLY_TASK_CHECK, interval=1):
+                logger.info("Knights v2 weekly task page reached")
+                return True
+
+            if self.appear(SUPPORT_CHECK):
+                if self.appear_then_click(WEEKLY_TASK_ENTRY, interval=self.WEEKLY_TASK_ENTRY_CLICK_INTERVAL_SECONDS):
+                    logger.info("Knights v2: open weekly task")
+                    timeout.reset()
+                    continue
+
+            if self.appear(page_knights_v2.check_button):
+                if not self._enter_support(skip_first_screenshot=True):
+                    return False
+                timeout.reset()
+                continue
+
+            if self.is_in_main(interval=0):
+                logger.warning("Knights v2 weekly task entry exited to main page unexpectedly")
+                return False
+
+            if self.handle_network_error():
+                timeout.reset()
+                continue
 
     @staticmethod
     def _button_top(button: ClickButton) -> int:

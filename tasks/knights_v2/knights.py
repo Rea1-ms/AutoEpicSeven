@@ -144,7 +144,8 @@ class KnightsV2(
                 run_donate=run_support_donate,
                 run_request=run_support_request,
             ) and success
-            self.ui_goto(page_knights_v2, skip_first_screenshot=True)
+            if not run_weekly_task:
+                self.ui_goto(page_knights_v2, skip_first_screenshot=True)
         if run_weekly_task:
             success = self.run_weekly_task(skip_first_screenshot=True) and success
             self.ui_goto(page_knights_v2, skip_first_screenshot=True)

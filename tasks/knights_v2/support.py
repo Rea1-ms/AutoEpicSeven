@@ -3,7 +3,8 @@ from dataclasses import dataclass
 from module.base.button import ButtonWrapper, ClickButton
 from module.base.timer import Timer
 from module.logger import logger
-from tasks.base.page import page_knights_v2, page_knights_v2_support
+from tasks.base.page import page_knights_v2
+from tasks.knights_v2.assets.assets_knights_v2_main_page import KNIGHTS_ACTIVITY_ENTRY
 from tasks.knights_v2.assets.assets_knights_v2_activity_support import SUPPORT_ACTION
 from tasks.knights_v2.assets.assets_knights_v2_activity_support_active import (
     ACTION_SEARCH,
@@ -33,6 +34,8 @@ class SupportPlan:
 
 
 class KnightsV2SupportMixin:
+    SUPPORT_ENTRY_TIMEOUT_SECONDS = 20
+    SUPPORT_ENTRY_CLICK_INTERVAL_SECONDS = 1.2
     SUPPORT_ACTION_Y_TOLERANCE = 80
     SUPPORT_DONATE_TIMEOUT_SECONDS = 30
     SUPPORT_DONATE_SCROLL_INTERVAL_SECONDS = 0.8
@@ -43,6 +46,8 @@ class KnightsV2SupportMixin:
     SUPPORT_REQUEST_TIMEOUT_SECONDS = 15
     SUPPORT_SCROLL_START = (640, 620)
     SUPPORT_SCROLL_END = (640, 320)
+    REQUEST_FOR_SUPPORT_ENTRY_LUMA_SIMILARITY = 0.8
+    REQUEST_FOR_SUPPORT_ENTRY_COLOR_THRESHOLD = 10
 
     @staticmethod
     def _button_center_y(button: ClickButton) -> float:
@@ -102,6 +107,39 @@ class KnightsV2SupportMixin:
     def _enabled_plans(plans: list[SupportPlan]) -> list[SupportPlan]:
         return [plan for plan in plans if plan.enabled]
 
+    def _is_request_for_support_entry_enabled(self, interval=0) -> bool:
+        """
+        REQUEST_FOR_SUPPORT_ENTRY is dimmed after the daily request is consumed.
+        Use luma to locate the button first, then color to confirm it is still enabled.
+        """
+        self.device.stuck_record_add(REQUEST_FOR_SUPPORT_ENTRY)
+
+        if interval and not self.interval_is_reached(REQUEST_FOR_SUPPORT_ENTRY, interval=interval):
+            return False
+
+        appear = False
+        if REQUEST_FOR_SUPPORT_ENTRY.match_template_luma(
+            self.device.image,
+            similarity=self.REQUEST_FOR_SUPPORT_ENTRY_LUMA_SIMILARITY,
+        ):
+            if REQUEST_FOR_SUPPORT_ENTRY.match_color(
+                self.device.image,
+                threshold=self.REQUEST_FOR_SUPPORT_ENTRY_COLOR_THRESHOLD,
+            ):
+                appear = True
+
+        if appear and interval:
+            self.interval_reset(REQUEST_FOR_SUPPORT_ENTRY, interval=interval)
+
+        return appear
+
+    def _is_request_for_support_entry_present(self, interval=0) -> bool:
+        return self.match_template_luma(
+            REQUEST_FOR_SUPPORT_ENTRY,
+            interval=interval,
+            similarity=self.REQUEST_FOR_SUPPORT_ENTRY_LUMA_SIMILARITY,
+        )
+
     def _find_donate_action_pairs(
         self,
         plans: list[SupportPlan],
@@ -143,8 +181,35 @@ class KnightsV2SupportMixin:
 
     def _enter_support(self, skip_first_screenshot=True) -> bool:
         logger.info("Knights v2: enter support")
-        self.ui_goto(page_knights_v2_support, skip_first_screenshot=skip_first_screenshot)
-        return True
+        timeout = Timer(self.SUPPORT_ENTRY_TIMEOUT_SECONDS, count=60).start()
+
+        while 1:
+            if skip_first_screenshot:
+                skip_first_screenshot = False
+            else:
+                self.device.screenshot()
+
+            if timeout.reached():
+                logger.warning("Knights v2 support entry timeout")
+                return False
+
+            if self.appear(SUPPORT_CHECK, interval=1):
+                logger.info("Knights v2 support page reached")
+                return True
+
+            if self.appear(page_knights_v2.check_button):
+                if self.appear_then_click(KNIGHTS_ACTIVITY_ENTRY, interval=self.SUPPORT_ENTRY_CLICK_INTERVAL_SECONDS):
+                    logger.info("Knights v2: open activity support")
+                    timeout.reset()
+                    continue
+
+            if self.is_in_main(interval=0):
+                logger.warning("Knights v2 support entry exited to main page unexpectedly")
+                return False
+
+            if self.handle_network_error():
+                timeout.reset()
+                continue
 
     def _run_support_donate(self, skip_first_screenshot=True) -> bool:
         plans = self._enabled_plans(self._build_donate_plans())
@@ -311,9 +376,13 @@ class KnightsV2SupportMixin:
                     timeout.reset()
                     continue
 
-                if self.appear_then_click(REQUEST_FOR_SUPPORT_ENTRY, interval=1):
+                if self._is_request_for_support_entry_enabled(interval=1):
+                    self.device.click(REQUEST_FOR_SUPPORT_ENTRY)
                     timeout.reset()
                     continue
+                if self._is_request_for_support_entry_present(interval=1):
+                    logger.info("Knights v2 support request already used today, skip")
+                    return True
 
                 if self.is_in_main(interval=0):
                     logger.warning("Knights v2 support request exited to main page unexpectedly")
