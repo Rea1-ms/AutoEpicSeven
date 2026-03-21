@@ -111,6 +111,8 @@ class CombatDigit(Digit):
 
 
 class Combat(ResourceBarMixin, UI):
+    COMBAT_RESOURCE_BAR_TIMEOUT_SECONDS = 1
+    COMBAT_RESOURCE_BAR_TIMEOUT_COUNT = 2
     COMBAT_RUNTIME_PATH = "Combat.CombatRuntime.Session"
     COMBAT_CHECK_SIMILARITY = 0.8
     COMBAT_STATE_COLOR_THRESHOLD = 30
@@ -294,6 +296,8 @@ class Combat(ResourceBarMixin, UI):
                 layout=RESOURCE_BAR_LAYOUT_COMBAT,
                 layout_name="Combat",
                 skip_first_screenshot=skip_first_screenshot,
+                timeout_seconds=self.COMBAT_RESOURCE_BAR_TIMEOUT_SECONDS,
+                timeout_count=self.COMBAT_RESOURCE_BAR_TIMEOUT_COUNT,
             )
         ):
             updated = True

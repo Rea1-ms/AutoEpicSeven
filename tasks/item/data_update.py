@@ -51,6 +51,9 @@ class E7DigitCounter(DigitCounter):
 
 
 class DataUpdate(ArenaEntryMixin, ArenaDashboardMixin, UI):
+    DATAUPDATE_COMBAT_RESOURCE_BAR_TIMEOUT_SECONDS = 1
+    DATAUPDATE_COMBAT_RESOURCE_BAR_TIMEOUT_COUNT = 2
+
     def _sync_legacy_item_storage(self):
         with self.config.multi_set():
             self.config.stored.Credit.value = self.config.stored.E7Gold.value
@@ -110,6 +113,8 @@ class DataUpdate(ArenaEntryMixin, ArenaDashboardMixin, UI):
             layout=RESOURCE_BAR_LAYOUT_COMBAT,
             layout_name="Combat",
             skip_first_screenshot=True,
+            timeout_seconds=self.DATAUPDATE_COMBAT_RESOURCE_BAR_TIMEOUT_SECONDS,
+            timeout_count=self.DATAUPDATE_COMBAT_RESOURCE_BAR_TIMEOUT_COUNT,
         )
         if self.write_resource_bar_status(parsed):
             updated = True

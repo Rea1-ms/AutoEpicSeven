@@ -89,6 +89,7 @@ RESOURCE_BAR_ICONS = {
 def normalize_resource_bar_text(text: str) -> str:
     text = text.strip()
     text = text.replace(" ", "")
+    text = text.replace("$", "")
     text = text.replace(",", "")
     text = text.replace("，", "")
     text = text.replace("。", "")
@@ -98,6 +99,41 @@ def normalize_resource_bar_text(text: str) -> str:
     text = text.replace("O", "0").replace("o", "0")
     text = text.replace("S", "5").replace("s", "5")
     return text
+
+
+def normalize_resource_bar_counter_text(
+    text: str,
+    spec: ResourceBarSpec,
+) -> str:
+    text = normalize_resource_bar_text(text)
+    matched = re.search(r"(\d+)\s*/\s*(\d+)", text)
+    if matched is None:
+        return text
+
+    current_text = matched.group(1)
+    total_text = matched.group(2)
+    total = int(total_text)
+
+    candidate_currents: list[str] = [current_text]
+    if current_text.startswith("5") and len(current_text) > 1:
+        candidate_currents.append(current_text[1:])
+    if current_text.endswith("10") and len(current_text) > 2:
+        candidate_currents.append(current_text[:-2])
+    if current_text.endswith("0") and len(current_text) > 1:
+        candidate_currents.append(current_text[:-1])
+    if current_text.endswith("1") and len(current_text) > 1:
+        candidate_currents.append(current_text[:-1])
+
+    valid_currents = [
+        current
+        for current in candidate_currents
+        if current.isdigit() and current and int(current) <= total
+    ]
+    if not valid_currents:
+        return text
+
+    corrected_current = max(valid_currents, key=lambda item: int(item))
+    return f"{corrected_current}/{total_text}"
 
 
 def expand_resource_bar_candidates(
@@ -220,33 +256,10 @@ def parse_resource_bar_candidates(
     parsed: dict[str, ResourceBarValue] = {}
     for key, candidate in zip(layout, merged):
         candidate = maybe_correct_combat_stamina_candidate(candidate, layout=layout, key=key)
-        spec = RESOURCE_BAR_SPECS[key]
-        if spec.kind == RESOURCE_KIND_COUNTER:
-            matched = re.search(r"(\d+)\s*/\s*(\d+)", candidate.text)
-            if matched is None:
-                return None
-            value = int(matched.group(1))
-            total = int(matched.group(2))
-            if total <= 0:
-                return None
-            if spec.fixed_total and total != spec.fixed_total:
-                return None
-            parsed[key] = ResourceBarValue(
-                spec=spec,
-                text=candidate.text,
-                value=value,
-                total=total,
-            )
-            continue
-
-        matched = re.search(r"(\d+)", candidate.text)
-        if matched is None:
+        value = parse_resource_bar_text(candidate.text, spec=RESOURCE_BAR_SPECS[key])
+        if value is None:
             return None
-        parsed[key] = ResourceBarValue(
-            spec=spec,
-            text=candidate.text,
-            value=int(matched.group(1)),
-        )
+        parsed[key] = value
 
     return parsed
 
@@ -255,7 +268,10 @@ def parse_resource_bar_text(
     text: str,
     spec: ResourceBarSpec,
 ) -> ResourceBarValue | None:
-    text = normalize_resource_bar_text(text)
+    if spec.kind == RESOURCE_KIND_COUNTER:
+        text = normalize_resource_bar_counter_text(text, spec=spec)
+    else:
+        text = normalize_resource_bar_text(text)
     if spec.kind == RESOURCE_KIND_COUNTER:
         matched = re.search(r"(\d+)\s*/\s*(\d+)", text)
         if matched is None:
@@ -263,6 +279,8 @@ def parse_resource_bar_text(
         value = int(matched.group(1))
         total = int(matched.group(2))
         if total <= 0:
+            return None
+        if value > total:
             return None
         if spec.fixed_total and total != spec.fixed_total:
             return None
@@ -286,6 +304,7 @@ def parse_resource_bar_text(
 def split_resource_bar_text_for_specs(
     text: str,
     specs: list[ResourceBarSpec],
+    boundary_hints: list[int] | None = None,
 ) -> list[ResourceBarValue] | None:
     text = normalize_resource_bar_text(text)
     if not specs:
@@ -295,12 +314,34 @@ def split_resource_bar_text_for_specs(
         value = parse_resource_bar_text(text, spec=specs[0])
         return [value] if value is not None else None
 
-    for split_index in range(1, len(text)):
+    if boundary_hints:
+        target = boundary_hints[0]
+        split_indexes: list[int] = []
+        seen: set[int] = set()
+        for delta in range(0, len(text)):
+            for index in (target - delta, target + delta):
+                if 1 <= index < len(text) and index not in seen:
+                    split_indexes.append(index)
+                    seen.add(index)
+        for index in range(1, len(text)):
+            if index not in seen:
+                split_indexes.append(index)
+    else:
+        split_indexes = list(range(1, len(text)))
+
+    for split_index in split_indexes:
         left = parse_resource_bar_text(text[:split_index], spec=specs[0])
         if left is None:
             continue
 
-        right = split_resource_bar_text_for_specs(text[split_index:], specs=specs[1:])
+        next_hints = None
+        if boundary_hints:
+            next_hints = [index - split_index for index in boundary_hints[1:]]
+        right = split_resource_bar_text_for_specs(
+            text[split_index:],
+            specs=specs[1:],
+            boundary_hints=next_hints,
+        )
         if right is not None:
             return [left] + right
 
@@ -310,23 +351,55 @@ def split_resource_bar_text_for_specs(
 def get_resource_bar_segment_area(
     layout: tuple[str, ...],
     key: str,
+    icon_offsets: dict[str, tuple[int, int]] | None = None,
 ) -> tuple[int, int, int, int] | None:
     try:
         index = layout.index(key)
     except ValueError:
         return None
 
+    if icon_offsets is None:
+        icon_offsets = {}
+
     icon = RESOURCE_BAR_ICONS[key]
-    x1 = max(OCR_RESOURCE_BAR.area[0], icon.area[2] - RESOURCE_BAR_SEGMENT_LEFT_PADDING)
+    current_offset = icon_offsets.get(key, (0, 0))
+    current_icon_area = area_offset(icon.area, current_offset)
+    x1 = max(OCR_RESOURCE_BAR.area[0], current_icon_area[2] - RESOURCE_BAR_SEGMENT_LEFT_PADDING)
     if index + 1 < len(layout):
         next_icon = RESOURCE_BAR_ICONS[layout[index + 1]]
-        x2 = min(OCR_RESOURCE_BAR.area[2], next_icon.area[0] - RESOURCE_BAR_SEGMENT_RIGHT_PADDING)
+        next_icon_area = area_offset(next_icon.area, icon_offsets.get(layout[index + 1], (0, 0)))
+        x2 = min(OCR_RESOURCE_BAR.area[2], next_icon_area[0] - RESOURCE_BAR_SEGMENT_RIGHT_PADDING)
     else:
         x2 = OCR_RESOURCE_BAR.area[2]
 
     if x2 <= x1:
         return None
-    return (x1, OCR_RESOURCE_BAR.area[1], x2, OCR_RESOURCE_BAR.area[3])
+    return (
+        x1,
+        OCR_RESOURCE_BAR.area[1] + current_offset[1],
+        x2,
+        OCR_RESOURCE_BAR.area[3] + current_offset[1],
+    )
+
+
+def get_resource_bar_boundary_hints(
+    candidate: ResourceBarCandidate,
+    segment_areas: list[tuple[int, int, int, int]],
+    text: str,
+) -> list[int]:
+    text = normalize_resource_bar_text(text)
+    if len(segment_areas) <= 1 or not text:
+        return []
+
+    x1, _, x2, _ = candidate.box
+    width = max(1, x2 - x1)
+    hints: list[int] = []
+    for index in range(len(segment_areas) - 1):
+        boundary_x = int((segment_areas[index][2] + segment_areas[index + 1][0]) / 2)
+        split_index = round(len(text) * (boundary_x - x1) / width)
+        split_index = max(1, min(len(text) - 1, split_index))
+        hints.append(split_index)
+    return hints
 
 
 class OcrResourceBar(OcrWhiteLetterOnComplexBackground):
@@ -367,13 +440,11 @@ class ResourceBarMixin:
         ]
         return candidates
 
-    def _resource_bar_by_icon(
+    def _match_resource_bar_icons(
         self,
         layout: tuple[str, ...],
-        layout_name: str,
-    ) -> dict[str, ResourceBarValue] | None:
-        parsed: dict[str, ResourceBarValue] = {}
-        raw_texts: list[str] = []
+    ) -> tuple[dict[str, tuple[int, int]], list[str]]:
+        icon_offsets: dict[str, tuple[int, int]] = {}
         matched_icons: list[str] = []
 
         for key in layout:
@@ -381,17 +452,34 @@ class ResourceBarMixin:
             icon.load_search(OCR_RESOURCE_BAR.area)
             if not icon.match_template(self.device.image, similarity=0.75):
                 matched_icons.append(f"{key}=miss")
-                logger.attr(f"{layout_name}ResourceBarIconMatches", matched_icons)
-                logger.attr(f"{layout_name}ResourceBarIconSegments", raw_texts)
-                return None
+                return icon_offsets, matched_icons
 
-            matched_icons.append(f"{key}={icon.button_offset}")
-            area = get_resource_bar_segment_area(layout, key)
+            offset = tuple(int(value) for value in icon.button_offset)
+            icon_offsets[key] = offset
+            matched_icons.append(f"{key}={offset}")
+
+        return icon_offsets, matched_icons
+
+    def _resource_bar_by_icon(
+        self,
+        layout: tuple[str, ...],
+        layout_name: str,
+        icon_offsets: dict[str, tuple[int, int]],
+        matched_icons: list[str],
+    ) -> dict[str, ResourceBarValue] | None:
+        parsed: dict[str, ResourceBarValue] = {}
+        raw_texts: list[str] = []
+        if len(icon_offsets) != len(layout):
+            logger.attr(f"{layout_name}ResourceBarIconMatches", matched_icons)
+            logger.attr(f"{layout_name}ResourceBarIconSegments", raw_texts)
+            return None
+
+        for key in layout:
+            area = get_resource_bar_segment_area(layout, key, icon_offsets=icon_offsets)
             if area is None:
                 logger.attr(f"{layout_name}ResourceBarIconMatches", matched_icons)
                 logger.attr(f"{layout_name}ResourceBarIconSegments", raw_texts)
                 return None
-            area = area_offset(area, offset=icon.button_offset)
 
             image = self.image_crop(area, copy=False)
             text = OcrResourceBar(
@@ -417,13 +505,14 @@ class ResourceBarMixin:
         candidates: list[ResourceBarCandidate],
         layout: tuple[str, ...],
         layout_name: str,
+        icon_offsets: dict[str, tuple[int, int]],
     ) -> dict[str, ResourceBarValue] | None:
         parsed: dict[str, ResourceBarValue] = {}
         split_logs: list[str] = []
         layout_index = 0
 
         segment_areas: list[tuple[int, int, int, int] | None] = [
-            get_resource_bar_segment_area(layout, key) for key in layout
+            get_resource_bar_segment_area(layout, key, icon_offsets=icon_offsets) for key in layout
         ]
         if any(area is None for area in segment_areas):
             return None
@@ -448,7 +537,16 @@ class ResourceBarMixin:
                 return None
 
             specs = [RESOURCE_BAR_SPECS[layout[index]] for index in range(start, end + 1)]
-            values = split_resource_bar_text_for_specs(candidate.text, specs=specs)
+            boundaries = get_resource_bar_boundary_hints(
+                candidate,
+                segment_areas=segment_areas[start : end + 1],
+                text=candidate.text,
+            )
+            values = split_resource_bar_text_for_specs(
+                candidate.text,
+                specs=specs,
+                boundary_hints=boundaries,
+            )
             if values is None:
                 logger.attr(
                     f"{layout_name}ResourceBarSplitFailed",
@@ -490,7 +588,13 @@ class ResourceBarMixin:
             else:
                 self.device.screenshot()
 
-            parsed = self._resource_bar_by_icon(layout=layout, layout_name=layout_name)
+            icon_offsets, matched_icons = self._match_resource_bar_icons(layout)
+            parsed = self._resource_bar_by_icon(
+                layout=layout,
+                layout_name=layout_name,
+                icon_offsets=icon_offsets,
+                matched_icons=matched_icons,
+            )
             if parsed is None:
                 candidates = self._resource_bar_candidates()
                 logger.attr(
@@ -503,6 +607,7 @@ class ResourceBarMixin:
                         candidates=candidates,
                         layout=layout,
                         layout_name=layout_name,
+                        icon_offsets=icon_offsets,
                     )
             if parsed is not None:
                 for key in layout:
