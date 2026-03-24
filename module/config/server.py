@@ -18,6 +18,10 @@ VALID_SERVER = {
     'CN-Official': 'com.zlongame.cn.epicseven',
     'OVERSEA-Play': 'com.stove.epic7.google',
 }
+SERVER_UPDATE = {
+    'CN-Official': '03:00',
+    'OVERSEA-Play': '02:00',
+}
 VALID_PACKAGE = set(list(VALID_SERVER.values()))
 # Epic Seven doesn't have cloud gaming version
 VALID_CLOUD_SERVER = {}
@@ -136,3 +140,19 @@ def to_package(package_or_server: str, is_cloud=False) -> str:
             return value
 
     raise ValueError(f'Server invalid: {package_or_server}')
+
+
+def get_server_update(package_or_server: str = '') -> str:
+    """
+    Get server refresh time for the given package/server.
+
+    Args:
+        package_or_server: Package name or server key. Empty means current global server.
+
+    Returns:
+        str: Refresh time in HH:MM format.
+    """
+    normalized = normalize_server(package_or_server)
+    if not normalized:
+        return SERVER_UPDATE['OVERSEA-Play']
+    return SERVER_UPDATE.get(normalized, SERVER_UPDATE['OVERSEA-Play'])

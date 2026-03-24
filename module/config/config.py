@@ -7,6 +7,7 @@ import pywebio
 
 from module.base.decorator import cached_property, del_cached_property
 from module.base.filter import Filter
+import module.config.server as server_
 from module.config.config_generated import GeneratedConfig
 from module.config.config_manual import ManualConfig, OutputConfig
 from module.config.config_updater import ConfigUpdater, ensure_time, get_server_next_update, nearest_future
@@ -286,6 +287,16 @@ class AzurLaneConfig(ConfigUpdater, ManualConfig, GeneratedConfig, ConfigWatcher
     def config_override(self):
         now = datetime.now().replace(microsecond=0)
         limited = set()
+        package = deep_get(
+            self.data,
+            keys='Alas.Emulator.PackageName',
+            default=getattr(self, 'Emulator_PackageName', 'auto'),
+        )
+        server_update = server_.get_server_update(package)
+
+        for task in self.data.keys():
+            if deep_get(self.data, keys=f'{task}.Scheduler.ServerUpdate', default=None) is not None:
+                deep_set(self.data, keys=f'{task}.Scheduler.ServerUpdate', value=server_update)
 
         def limit_next_run(tasks, limit):
             for task in tasks:
