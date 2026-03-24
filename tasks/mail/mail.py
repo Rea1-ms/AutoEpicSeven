@@ -121,6 +121,18 @@ class Mail(UI):
     SAME_LABEL_SHORT_BOUNDARY = timedelta(hours=12)
     SAME_LABEL_MEDIUM_BOUNDARY = timedelta(hours=6)
 
+    def _clear_click_history_after_claim_progress(self) -> None:
+        """
+        Clear anti-loop click history after one mail is confirmed collected.
+
+        Mail can legitimately click RECEIVE many times in succession when a
+        large batch of expiring mails stacks at the top. Once one claim is
+        confirmed and the mailbox advances, these repeated RECEIVE clicks are
+        expected progress rather than a dead loop. Reset click history here so
+        the next mail starts from a clean baseline.
+        """
+        self.device.click_record_clear()
+
     def _ocr_lang(self) -> str:
         lang = getattr(self.config, "Emulator_GameLanguage", "cn")
         if lang in ("auto", "", None, "cn", "global_cn", "zh", "zh_cn"):
@@ -711,4 +723,5 @@ class Mail(UI):
                 self.ui_goto(page_main, skip_first_screenshot=True)
                 self.config.task_delay(success=False)
                 return False
+            self._clear_click_history_after_claim_progress()
             claimed_any = True
