@@ -339,12 +339,18 @@ StoreDaily:
   BuyDailyFreeItem: true
   BuyFriendshipMobility40: true
   BuyFriendshipArenaFlag: true
-  BuyConquestMobility40: true
+  BuyConquestMobility40:
+    value: 0
+    option: [ 0, 1, 2, 3 ]
 
 StoreWeekly:
-  BuyConquestMorogora: true
-  BuyInheritanceMorogora: true
-  BuyInheritancePotentialFragments: true
+  BuyConquestMorogora: false
+  BuyInheritanceMorogora:
+    value: 2
+    option: [ 0, 1, 2 ]
+  BuyInheritancePotentialFragments:
+    value: 0
+    option: [ 0, 1, 2 ]
 
 PetsGift:
   LastClaimAt:

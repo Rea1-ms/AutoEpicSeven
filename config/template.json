@@ -153,12 +153,12 @@
       "BuyDailyFreeItem": true,
       "BuyFriendshipMobility40": true,
       "BuyFriendshipArenaFlag": true,
-      "BuyConquestMobility40": true
+      "BuyConquestMobility40": 0
     },
     "StoreWeekly": {
-      "BuyConquestMorogora": true,
-      "BuyInheritanceMorogora": true,
-      "BuyInheritancePotentialFragments": true
+      "BuyConquestMorogora": false,
+      "BuyInheritanceMorogora": 2,
+      "BuyInheritancePotentialFragments": 0
     }
   },
   "PetsGift": {

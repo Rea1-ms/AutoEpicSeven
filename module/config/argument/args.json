@@ -636,22 +636,38 @@
         "value": true
       },
       "BuyConquestMobility40": {
-        "type": "checkbox",
-        "value": true
+        "type": "select",
+        "value": 0,
+        "option": [
+          0,
+          1,
+          2,
+          3
+        ]
       }
     },
     "StoreWeekly": {
       "BuyConquestMorogora": {
         "type": "checkbox",
-        "value": true
+        "value": false
       },
       "BuyInheritanceMorogora": {
-        "type": "checkbox",
-        "value": true
+        "type": "select",
+        "value": 2,
+        "option": [
+          0,
+          1,
+          2
+        ]
       },
       "BuyInheritancePotentialFragments": {
-        "type": "checkbox",
-        "value": true
+        "type": "select",
+        "value": 0,
+        "option": [
+          0,
+          1,
+          2
+        ]
       }
     }
   },

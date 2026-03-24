@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Callable
+from typing import Callable, Literal
 
 from module.base.button import ButtonWrapper, ClickButton
 from module.base.timer import Timer
@@ -9,11 +9,27 @@ from module.base.utils import save_image
 from module.logger import logger
 from tasks.base.page import page_store
 from tasks.base.ui import UI
+from tasks.store.purchase import (
+    ItemPurchasePlan,
+    PurchaseCounterPreset,
+    PurchaseResult,
+    counter_to_text,
+    is_valid_purchase_counter,
+    ocr_purchase_counter,
+    ocr_remaining_buy_times,
+    normalize_config_purchase_quantity,
+    plan_purchase_selection,
+    resolve_period_purchase_quantity,
+)
 from tasks.store.assets.assets_store import (
     ARENA_FLAG,
     BUY,
-    BUY_CONFIRM,
+    BUY_CONFIRM_MULTI,
+    BUY_CONFIRM_SINGLE,
     BUY_MAX,
+    BUY_MIN,
+    BUY_TIMES_MINUS,
+    BUY_TIMES_PLUS,
     COMMON_INHERITANCE_STONE,
     CONQUEST_POINTS_STORE,
     CONQUEST_POINTS_STORE_CHECK,
@@ -24,20 +40,14 @@ from tasks.store.assets.assets_store import (
     INHERITANCE_STONE_STORE,
     MOBILITY_40,
     MOROGORA,
+    OCR_BUY_TIMES,
+    OCR_REMAINING_BUY_TIMES,
     POTENTIAL_FRAGMENTS,
     STORE_ITEMS_SEARCH,
     SUB_STORE_SEARCH,
 )
 
-
-@dataclass(frozen=True)
-class ItemPlan:
-    name: str
-    asset: ButtonWrapper
-    enabled: bool
-    use_max: bool = False
-    direct_click: bool = False
-    scroll_before: bool = False
+PurchasePopupLayout = Literal['unknown', 'single', 'multi']
 
 
 @dataclass(frozen=True)
@@ -45,7 +55,7 @@ class SubStorePlan:
     name: str
     entry: ButtonWrapper
     check: Callable[[], bool]
-    items: tuple[ItemPlan, ...]
+    items: tuple[ItemPurchasePlan, ...]
 
 
 class Store(UI):
@@ -56,17 +66,26 @@ class Store(UI):
     SCROLL_SETTLE_Y_TOLERANCE = 8
     PURCHASE_SWITCH_COOLDOWN_SECONDS = 1
     SUB_STORE_SCROLL_INTERVAL_SECONDS = 1
+    # Purchase popup counter area is shared across store items.
+    # If only one purchase remains, the `x/y` counter may disappear.
+    BUY_COUNTER_AREA = OCR_BUY_TIMES.area
+    REMAINING_BUY_TIMES_AREA = OCR_REMAINING_BUY_TIMES.area
 
     def __init__(self, config, device, task='Store'):
         super().__init__(config, device=device, task=task)
         self.buy_asset: ButtonWrapper = BUY
-        self.buy_confirm_asset: ButtonWrapper = BUY_CONFIRM
+        self.buy_confirm_multi_asset: ButtonWrapper = BUY_CONFIRM_MULTI
+        self.buy_confirm_single_asset: ButtonWrapper = BUY_CONFIRM_SINGLE
         self.buy_max_asset: ButtonWrapper = BUY_MAX
+        self.buy_min_asset: ButtonWrapper = BUY_MIN
+        self.buy_times_minus_asset: ButtonWrapper = BUY_TIMES_MINUS
+        self.buy_times_plus_asset: ButtonWrapper = BUY_TIMES_PLUS
         self.arena_flag_asset: ButtonWrapper = ARENA_FLAG
         self.friendship_store_check: ButtonWrapper = FRIENDSHIP_POINTS
         self.conquest_store_check: ButtonWrapper = CONQUEST_POINTS_STORE_CHECK
         self.sub_store_search_asset: ButtonWrapper = SUB_STORE_SEARCH
         self._purchase_switch_cooldown = Timer(self.PURCHASE_SWITCH_COOLDOWN_SECONDS, count=0)
+        self.purchase_stats: dict[str, int] = {}
 
     def _load_shared_search(self):
         buttons = [
@@ -88,18 +107,42 @@ class Store(UI):
                 entry=INHERITANCE_STONE_STORE,
                 check=self._is_inheritance_store,
                 items=(
-                    ItemPlan(
-                        name='morogora',
+                    ItemPurchasePlan(
+                        name='inheritance_morogora',
                         asset=MOROGORA,
-                        enabled=self.config.StoreWeekly_BuyInheritanceMorogora,
-                        use_max=True,
+                        desired_quantity=normalize_config_purchase_quantity(
+                            self.config.StoreWeekly_BuyInheritanceMorogora,
+                            maximum=2,
+                        ),
+                        quantity_strategy='target',
+                        counter_preset=PurchaseCounterPreset(
+                            name='StoreInheritanceMorogoraCounter',
+                            area=self.BUY_COUNTER_AREA,
+                        ),
+                        purchase_limit=2,
+                        remaining_counter_preset=PurchaseCounterPreset(
+                            name='StoreInheritanceMorogoraRemainingTimes',
+                            area=self.REMAINING_BUY_TIMES_AREA,
+                        ),
                     ),
-                    ItemPlan(
+                    ItemPurchasePlan(
                         name='potential_fragments',
                         asset=POTENTIAL_FRAGMENTS,
-                        enabled=self.config.StoreWeekly_BuyInheritancePotentialFragments,
-                        use_max=True,
+                        desired_quantity=normalize_config_purchase_quantity(
+                            self.config.StoreWeekly_BuyInheritancePotentialFragments,
+                            maximum=2,
+                        ),
+                        quantity_strategy='target',
                         scroll_before=True,
+                        counter_preset=PurchaseCounterPreset(
+                            name='StoreInheritancePotentialFragmentsCounter',
+                            area=self.BUY_COUNTER_AREA,
+                        ),
+                        purchase_limit=2,
+                        remaining_counter_preset=PurchaseCounterPreset(
+                            name='StoreInheritancePotentialFragmentsRemainingTimes',
+                            area=self.REMAINING_BUY_TIMES_AREA,
+                        ),
                     ),
                 ),
             ),
@@ -108,15 +151,25 @@ class Store(UI):
                 entry=FRIENDSHIP_POINTS_STORE,
                 check=self._is_friendship_store,
                 items=(
-                    ItemPlan(
-                        name='mobility_40',
+                    ItemPurchasePlan(
+                        name='friendship_mobility_40',
                         asset=MOBILITY_40,
-                        enabled=self.config.StoreDaily_BuyFriendshipMobility40,
+                        desired_quantity=1 if self.config.StoreDaily_BuyFriendshipMobility40 else 0,
+                        quantity_strategy='once',
+                        counter_preset=PurchaseCounterPreset(
+                            name='StoreFriendshipMobility40Counter',
+                            area=self.BUY_COUNTER_AREA,
+                        ),
                     ),
-                    ItemPlan(
-                        name='arena_flag',
+                    ItemPurchasePlan(
+                        name='friendship_arena_flag',
                         asset=self.arena_flag_asset,
-                        enabled=self.config.StoreDaily_BuyFriendshipArenaFlag,
+                        desired_quantity=1 if self.config.StoreDaily_BuyFriendshipArenaFlag else 0,
+                        quantity_strategy='once',
+                        counter_preset=PurchaseCounterPreset(
+                            name='StoreFriendshipArenaFlagCounter',
+                            area=self.BUY_COUNTER_AREA,
+                        ),
                     ),
                 ),
             ),
@@ -125,24 +178,41 @@ class Store(UI):
                 entry=CONQUEST_POINTS_STORE,
                 check=self._is_conquest_store,
                 items=(
-                    ItemPlan(
-                        name='morogora',
+                    ItemPurchasePlan(
+                        name='conquest_morogora',
                         asset=MOROGORA,
-                        enabled=self.config.StoreWeekly_BuyConquestMorogora,
+                        desired_quantity=1 if self.config.StoreWeekly_BuyConquestMorogora else 0,
+                        quantity_strategy='once',
+                        counter_preset=PurchaseCounterPreset(
+                            name='StoreConquestMorogoraCounter',
+                            area=self.BUY_COUNTER_AREA,
+                        ),
                     ),
-                    ItemPlan(
-                        name='mobility_40',
+                    ItemPurchasePlan(
+                        name='conquest_mobility_40',
                         asset=MOBILITY_40,
-                        enabled=self.config.StoreDaily_BuyConquestMobility40,
-                        use_max=True,
+                        desired_quantity=normalize_config_purchase_quantity(
+                            self.config.StoreDaily_BuyConquestMobility40,
+                            maximum=3,
+                        ),
+                        quantity_strategy='target',
+                        counter_preset=PurchaseCounterPreset(
+                            name='StoreConquestMobility40Counter',
+                            area=self.BUY_COUNTER_AREA,
+                        ),
+                        purchase_limit=3,
+                        remaining_counter_preset=PurchaseCounterPreset(
+                            name='StoreConquestMobility40RemainingTimes',
+                            area=self.REMAINING_BUY_TIMES_AREA,
+                        ),
                     ),
                 ),
             ),
         ]
 
     @staticmethod
-    def _enabled_items(sub_store: SubStorePlan) -> list[ItemPlan]:
-        return [item for item in sub_store.items if item.enabled]
+    def _enabled_items(sub_store: SubStorePlan) -> list[ItemPurchasePlan]:
+        return [item for item in sub_store.items if item.desired_quantity > 0]
 
     def _save_debug_image(self, tag: str):
         now = datetime.now()
@@ -155,11 +225,22 @@ class Store(UI):
     def _log_purchase_debug(self, item_name: str, item_asset: ButtonWrapper, reason: str):
         item_matches = item_asset.match_multi_template(self.device.image, threshold=30)
         buy_matches = self.buy_asset.match_multi_template(self.device.image, threshold=40)
-        confirm_appear = self.appear(self.buy_confirm_asset)
+        single_confirm = self.appear(
+            self.buy_confirm_single_asset,
+            interval=0,
+            similarity=self.CONFIRM_SIMILARITY,
+        )
+        multi_confirm = self.appear(
+            self.buy_confirm_multi_asset,
+            interval=0,
+            similarity=self.CONFIRM_SIMILARITY,
+        )
         in_store = self.appear(page_store.check_button)
+        layout = self._detect_purchase_popup_layout()
         logger.warning(
             f'[StoreDebug] {item_name} {reason}: item_matches={len(item_matches)}, '
-            f'buy_matches={len(buy_matches)}, confirm={confirm_appear}, in_store={in_store}'
+            f'buy_matches={len(buy_matches)}, single_confirm={single_confirm}, '
+            f'multi_confirm={multi_confirm}, layout={layout}, in_store={in_store}'
         )
         if item_matches:
             logger.info(f'[StoreDebug] {item_name} item_areas={ [m.area for m in item_matches[:3]] }')
@@ -182,7 +263,7 @@ class Store(UI):
             return None
         return sorted(matches, key=lambda x: x.area[1])[0]
 
-    def _wait_item_settle_after_scroll(self, item: ItemPlan) -> bool:
+    def _wait_item_settle_after_scroll(self, item: ItemPurchasePlan) -> bool:
         """
         Wait briefly for post-swipe inertia to settle before scanning item/buy pair.
         """
@@ -310,16 +391,17 @@ class Store(UI):
             if check():
                 return True
 
-            if (not clicked_entry or reclick.reached()) and self.appear_then_click(entry, interval=1):
-                clicked_entry = True
-                reclick.reset()
-                timeout.reset()
-                continue
-
+            # Clear late popups before clicking the next sub-store entry.
             if self.ui_additional():
                 timeout.reset()
                 continue
             if self.handle_network_error():
+                timeout.reset()
+                continue
+
+            if (not clicked_entry or reclick.reached()) and self.appear_then_click(entry, interval=1):
+                clicked_entry = True
+                reclick.reset()
                 timeout.reset()
                 continue
 
@@ -331,7 +413,7 @@ class Store(UI):
                 timeout.reset()
                 continue
 
-    def _click_purchase_target(self, item: ItemPlan) -> bool:
+    def _click_purchase_target(self, item: ItemPurchasePlan) -> bool:
         if item.direct_click:
             item_buttons = item.asset.match_multi_template(self.device.image, threshold=30)
             if not item_buttons:
@@ -339,8 +421,7 @@ class Store(UI):
             target = sorted(item_buttons, key=lambda x: x.area[1])[0]
             logger.info(f'{item.name} -> {target}')
             self.device.click(target)
-            self.interval_clear(self.buy_confirm_asset)
-            self.interval_clear(self.buy_max_asset)
+            self._clear_purchase_popup_intervals()
             return True
 
         pairs = self._find_target_buy_buttons([(item.name, item.asset)])
@@ -350,18 +431,185 @@ class Store(UI):
         _, buy_button = pairs[0]
         logger.info(f'{item.name} -> {buy_button}')
         self.device.click(buy_button)
-        self.interval_clear(self.buy_confirm_asset)
-        self.interval_clear(self.buy_max_asset)
+        self._clear_purchase_popup_intervals()
         return True
 
-    def _purchase_item(self, item: ItemPlan) -> bool:
+    def _clear_purchase_popup_intervals(self) -> None:
+        self.interval_clear(self.buy_confirm_single_asset)
+        self.interval_clear(self.buy_confirm_multi_asset)
+        self.interval_clear(self.buy_min_asset)
+        self.interval_clear(self.buy_max_asset)
+        self.interval_clear(self.buy_times_minus_asset)
+        self.interval_clear(self.buy_times_plus_asset)
+
+    def _click_purchase_quantity_action(self, action: str) -> bool:
+        if action == 'min':
+            return self.appear_then_click(self.buy_min_asset, interval=1, similarity=0.8)
+        if action == 'max':
+            return self.appear_then_click(self.buy_max_asset, interval=1, similarity=0.8)
+        if action == 'plus':
+            return self.appear_then_click(self.buy_times_plus_asset, interval=1, similarity=0.8)
+        if action == 'minus':
+            return self.appear_then_click(self.buy_times_minus_asset, interval=1, similarity=0.8)
+        return False
+
+    @staticmethod
+    def _needs_remaining_target_resolution(item: ItemPurchasePlan) -> bool:
+        return (
+            item.quantity_strategy == 'target'
+            and item.purchase_limit > 1
+            and item.remaining_counter_preset is not None
+        )
+
+    @staticmethod
+    def _requires_quantity_adjustment(strategy: str, desired_quantity: int) -> bool:
+        return strategy == 'max' or (strategy == 'target' and desired_quantity > 1)
+
+    def _has_purchase_quantity_controls(self) -> bool:
+        return (
+            self.appear(self.buy_max_asset, interval=0, similarity=0.8)
+            or self.appear(self.buy_min_asset, interval=0, similarity=0.8)
+            or self.appear(self.buy_times_plus_asset, interval=0, similarity=0.8)
+            or self.appear(self.buy_times_minus_asset, interval=0, similarity=0.8)
+        )
+
+    def _detect_purchase_popup_layout(self) -> PurchasePopupLayout:
+        if self._has_purchase_quantity_controls():
+            return 'multi'
+        if self.appear(
+            self.buy_confirm_multi_asset,
+            interval=0,
+            similarity=self.CONFIRM_SIMILARITY,
+        ):
+            return 'multi'
+        if self.appear(
+            self.buy_confirm_single_asset,
+            interval=0,
+            similarity=self.CONFIRM_SIMILARITY,
+        ):
+            return 'single'
+        return 'unknown'
+
+    def _click_purchase_confirm(self, layout: PurchasePopupLayout, interval=1) -> bool:
+        if layout == 'multi':
+            return self.appear_then_click(
+                self.buy_confirm_multi_asset,
+                interval=interval,
+                similarity=self.CONFIRM_SIMILARITY,
+            )
+        if layout == 'single':
+            return self.appear_then_click(
+                self.buy_confirm_single_asset,
+                interval=interval,
+                similarity=self.CONFIRM_SIMILARITY,
+            )
+        if self.appear_then_click(
+            self.buy_confirm_multi_asset,
+            interval=interval,
+            similarity=self.CONFIRM_SIMILARITY,
+        ):
+            return True
+        return self.appear_then_click(
+            self.buy_confirm_single_asset,
+            interval=interval,
+            similarity=self.CONFIRM_SIMILARITY,
+        )
+
+    def _ocr_purchase_counter(self, item: ItemPurchasePlan) -> tuple[int, int, int]:
+        if item.counter_preset is None:
+            return 0, 0, 0
+
+        counter = ocr_purchase_counter(self.device.image, self.config, item.counter_preset)
+        if is_valid_purchase_counter(counter):
+            if item.purchase_limit > 1 and counter[2] > item.purchase_limit:
+                logger.warning(
+                    f'{item.name}: purchase counter total={counter[2]} exceeds '
+                    f'purchase_limit={item.purchase_limit}'
+                )
+                return 0, 0, 0
+            logger.attr(f'{item.name}.BuyCounter', counter_to_text(counter))
+        else:
+            logger.warning(f'{item.name}: invalid purchase counter OCR')
+        return counter
+
+    def _ocr_remaining_purchase_times(self, item: ItemPurchasePlan) -> int:
+        if item.remaining_counter_preset is None:
+            return 0
+
+        remaining_times = ocr_remaining_buy_times(
+            self.device.image,
+            self.config,
+            item.remaining_counter_preset,
+        )
+        if remaining_times <= 0:
+            return 0
+        if remaining_times > item.purchase_limit:
+            logger.warning(
+                f'{item.name}: remaining buy times OCR={remaining_times} exceeds '
+                f'purchase_limit={item.purchase_limit}'
+            )
+            return 0
+        logger.attr(f'{item.name}.RemainingBuyTimes', remaining_times)
+        return remaining_times
+
+    def _resolve_remaining_purchase_times(
+        self,
+        item: ItemPurchasePlan,
+        layout: PurchasePopupLayout,
+    ) -> tuple[int, tuple[int, int, int], str]:
+        if layout == 'single':
+            logger.info(f'{item.name}: single popup layout, remaining buy times=1')
+            return 1, (0, 0, 0), 'single_layout'
+        if layout != 'multi':
+            return 0, (0, 0, 0), 'pending'
+
+        remaining_times = self._ocr_remaining_purchase_times(item)
+        if remaining_times > 0:
+            return remaining_times, (0, 0, 0), 'remaining_counter'
+
+        purchase_counter = self._ocr_purchase_counter(item)
+        if is_valid_purchase_counter(purchase_counter):
+            _, _, total = purchase_counter
+            logger.info(
+                f'{item.name}: fallback remaining buy times from purchase counter total={total}'
+            )
+            return total, purchase_counter, 'purchase_counter_total'
+
+        return 0, (0, 0, 0), 'pending'
+
+    def _record_purchase_result(self, item: ItemPurchasePlan, result: PurchaseResult) -> None:
+        if not result.success:
+            return
+
+        self.purchase_stats[item.name] = self.purchase_stats.get(item.name, 0) + result.quantity
+        logger.info(
+            f'{item.name} purchased quantity={result.quantity} '
+            f'(source={result.quantity_source})'
+        )
+        if is_valid_purchase_counter(result.counter):
+            logger.info(f'{item.name} counter={counter_to_text(result.counter)}')
+
+    def _purchase_item(self, item: ItemPurchasePlan) -> PurchaseResult:
         logger.info(f'Purchase {item.name}')
         timeout = Timer(12, count=30).start()
         clicked_target = False
         clicked_confirm = False
+        clicked_cancel = False
         touched_close = False
-        max_resolved = not item.use_max
-        max_fallback = Timer(1.2, count=3).start()
+        layout: PurchasePopupLayout = 'unknown'
+        needs_target_resolution = self._needs_remaining_target_resolution(item)
+        effective_desired_quantity = item.desired_quantity
+        pending_target_resolution = needs_target_resolution
+        pending_quantity_adjustment = (
+            False
+            if pending_target_resolution
+            else self._requires_quantity_adjustment(item.quantity_strategy, effective_desired_quantity)
+        )
+        quantity_resolved = (not pending_target_resolution) and (not pending_quantity_adjustment)
+        purchase_counter = (0, 0, 0)
+        purchase_quantity = 1
+        quantity_source = 'default'
+        target_retry = Timer(0.8, count=2).start()
 
         while 1:
             self.device.screenshot()
@@ -369,7 +617,7 @@ class Store(UI):
             if timeout.reached():
                 logger.warning(f'Purchase {item.name} timeout')
                 self._log_purchase_debug(item.name, item.asset, 'timeout')
-                return False
+                return PurchaseResult(success=False)
 
             if self.ui_additional():
                 timeout.reset()
@@ -378,11 +626,39 @@ class Store(UI):
                 timeout.reset()
                 continue
 
+            current_layout = self._detect_purchase_popup_layout() if clicked_target else 'unknown'
+            if current_layout != 'unknown' and current_layout != layout:
+                layout = current_layout
+                logger.info(f'{item.name}: purchase popup layout={layout}')
+                timeout.reset()
+            popup_active = current_layout != 'unknown'
+            if clicked_confirm or clicked_cancel or touched_close:
+                store_visible = self.appear(page_store.check_button)
+                item_visible = self._has_item(item.asset, self.device.image)
+
+                if clicked_cancel and store_visible and not popup_active:
+                    logger.info(f'{item.name}: target total already reached, skip purchase')
+                    return PurchaseResult(success=False, quantity=0, quantity_source='target_reached')
+                if touched_close and store_visible and not popup_active:
+                    return PurchaseResult(
+                        success=True,
+                        quantity=purchase_quantity,
+                        counter=purchase_counter,
+                        quantity_source=quantity_source,
+                    )
+                if clicked_confirm and store_visible and not popup_active and (
+                    item.direct_click or not item_visible
+                ):
+                    return PurchaseResult(
+                        success=True,
+                        quantity=purchase_quantity,
+                        counter=purchase_counter,
+                        quantity_source=quantity_source,
+                    )
+
             if not clicked_target:
                 stale_cleared = False
-                if self.appear_then_click(
-                    self.buy_confirm_asset, interval=1, similarity=self.CONFIRM_SIMILARITY
-                ):
+                if self._click_purchase_confirm('unknown', interval=1):
                     stale_cleared = True
                 if self.handle_touch_to_close(interval=1):
                     stale_cleared = True
@@ -392,33 +668,120 @@ class Store(UI):
 
                 if self._click_purchase_target(item):
                     clicked_target = True
-                    max_resolved = not item.use_max
-                    max_fallback.reset()
+                    layout = 'unknown'
+                    pending_target_resolution = needs_target_resolution
+                    effective_desired_quantity = item.desired_quantity
+                    pending_quantity_adjustment = (
+                        False
+                        if pending_target_resolution
+                        else self._requires_quantity_adjustment(
+                            item.quantity_strategy,
+                            effective_desired_quantity,
+                        )
+                    )
+                    quantity_resolved = (not pending_target_resolution) and (not pending_quantity_adjustment)
+                    purchase_counter = (0, 0, 0)
+                    purchase_quantity = 1
+                    quantity_source = 'default'
+                    target_retry.reset()
                     timeout.reset()
                     continue
 
                 logger.warning(f'{item.name} not found in current store page')
                 self._log_purchase_debug(item.name, item.asset, 'not_found')
-                return False
+                return PurchaseResult(success=False)
 
             progress = False
-            confirm_visible = self.appear(self.buy_confirm_asset, similarity=self.CONFIRM_SIMILARITY)
 
-            if item.use_max and not max_resolved:
-                # Gate confirm by a short MAX phase to avoid buying quantity=1 by mistake.
-                if self.appear_then_click(self.buy_max_asset, interval=1, similarity=0.8):
-                    max_resolved = True
-                    progress = True
-                elif confirm_visible:
-                    if max_fallback.reached():
-                        max_resolved = True
-                        logger.info(f'{item.name}: BUY_MAX unavailable, fallback to BUY_CONFIRM')
-                    else:
+            if layout == 'unknown':
+                if target_retry.reached() and not popup_active:
+                    if self._click_purchase_target(item):
+                        layout = 'unknown'
+                        target_retry.reset()
                         timeout.reset()
                         continue
+                timeout.reset()
+                continue
 
-            if max_resolved and self.appear_then_click(
-                    self.buy_confirm_asset, interval=1, similarity=self.CONFIRM_SIMILARITY):
+            if pending_target_resolution:
+                remaining_times, resolved_counter, remaining_source = self._resolve_remaining_purchase_times(
+                    item,
+                    layout,
+                )
+                if remaining_times <= 0:
+                    timeout.reset()
+                    continue
+
+                already_bought, effective_desired_quantity = resolve_period_purchase_quantity(
+                    desired_total=item.desired_quantity,
+                    purchase_limit=item.purchase_limit,
+                    remaining_times=remaining_times,
+                )
+                logger.info(
+                    f'{item.name}: desired_total={item.desired_quantity}, '
+                    f'purchase_limit={item.purchase_limit}, remaining_times={remaining_times}, '
+                    f'already_bought={already_bought}, need_to_buy={effective_desired_quantity}'
+                )
+                purchase_counter = resolved_counter
+                pending_target_resolution = False
+                purchase_quantity = effective_desired_quantity
+                quantity_source = remaining_source
+                pending_quantity_adjustment = (
+                    layout == 'multi'
+                    and self._requires_quantity_adjustment(
+                        item.quantity_strategy,
+                        effective_desired_quantity,
+                    )
+                )
+                quantity_resolved = not pending_quantity_adjustment
+
+                if effective_desired_quantity <= 0:
+                    if self.handle_popup_cancel(interval=1):
+                        clicked_cancel = True
+                        progress = True
+                    timeout.reset()
+                    if progress:
+                        continue
+                    continue
+
+                timeout.reset()
+                if progress or quantity_resolved:
+                    continue
+
+            if pending_quantity_adjustment:
+                if layout != 'multi':
+                    timeout.reset()
+                    continue
+                if not is_valid_purchase_counter(purchase_counter):
+                    purchase_counter = self._ocr_purchase_counter(item)
+                if is_valid_purchase_counter(purchase_counter):
+                    selection = plan_purchase_selection(
+                        strategy=item.quantity_strategy,
+                        counter=purchase_counter,
+                        desired_quantity=effective_desired_quantity,
+                        fallback=1,
+                    )
+                    if selection.action != 'none':
+                        logger.info(
+                            f'{item.name}: adjust quantity action={selection.action} '
+                            f'target={selection.quantity}'
+                        )
+                        if self._click_purchase_quantity_action(selection.action):
+                            progress = True
+                        timeout.reset()
+                        purchase_counter = (0, 0, 0)
+                        continue
+
+                    purchase_quantity = selection.quantity
+                    if quantity_source == 'default':
+                        quantity_source = selection.source
+                    pending_quantity_adjustment = False
+                    quantity_resolved = True
+                else:
+                    timeout.reset()
+                    continue
+
+            if quantity_resolved and self._click_purchase_confirm(layout, interval=1):
                 clicked_confirm = True
                 progress = True
             if self.handle_touch_to_close(interval=1):
@@ -429,19 +792,49 @@ class Store(UI):
                 timeout.reset()
                 continue
 
-            confirm_visible = self.appear(self.buy_confirm_asset, similarity=self.CONFIRM_SIMILARITY)
+            current_layout = self._detect_purchase_popup_layout()
+            popup_active = current_layout != 'unknown'
             item_visible = self._has_item(item.asset, self.device.image)
 
-            if touched_close and self.appear(page_store.check_button):
-                return True
-            if clicked_confirm and not confirm_visible and not item_visible:
-                return True
+            if touched_close and self.appear(page_store.check_button) and not popup_active:
+                return PurchaseResult(
+                    success=True,
+                    quantity=purchase_quantity,
+                    counter=purchase_counter,
+                    quantity_source=quantity_source,
+                )
+            if clicked_confirm and not popup_active and not item_visible:
+                return PurchaseResult(
+                    success=True,
+                    quantity=purchase_quantity,
+                    counter=purchase_counter,
+                    quantity_source=quantity_source,
+                )
+            if clicked_confirm and self.appear(page_store.check_button) and not popup_active:
+                return PurchaseResult(
+                    success=True,
+                    quantity=purchase_quantity,
+                    counter=purchase_counter,
+                    quantity_source=quantity_source,
+                )
             if item.direct_click and not item_visible:
-                return True
+                return PurchaseResult(
+                    success=True,
+                    quantity=purchase_quantity,
+                    counter=purchase_counter,
+                    quantity_source=quantity_source,
+                )
 
             # If nothing settled and no confirm is visible, retry the first step once more.
-            if (not clicked_confirm) and (not touched_close) and (not confirm_visible):
+            if (
+                (not clicked_confirm)
+                and (not touched_close)
+                and (not popup_active)
+                and target_retry.reached()
+            ):
                 if self._click_purchase_target(item):
+                    layout = 'unknown'
+                    target_retry.reset()
                     timeout.reset()
                     continue
 
@@ -456,18 +849,23 @@ class Store(UI):
         Ensure enough gap from last successful purchase before entering another sub store.
         This avoids first-item detection being blocked by lingering purchase-success layers.
         """
-        if self._purchase_switch_cooldown.reached():
+        if not self._purchase_switch_cooldown.started():
             return
 
         logger.info(f'Wait purchase cooldown before sub-store switch: {self.PURCHASE_SWITCH_COOLDOWN_SECONDS}s')
         while 1:
-            if self._purchase_switch_cooldown.reached():
-                return
-
             self.device.screenshot()
 
+            if self.ui_additional():
+                continue
             if self.handle_network_error(interval=0.2):
                 continue
+            if self._detect_purchase_popup_layout() != 'unknown':
+                continue
+            if not self.appear(page_store.check_button):
+                continue
+            if self._purchase_switch_cooldown.reached():
+                return
 
     def _run_sub_store(self, sub_store: SubStorePlan):
         items = self._enabled_items(sub_store)
@@ -486,8 +884,9 @@ class Store(UI):
                     logger.info(f'{item.name} settled after scroll')
                 else:
                     logger.info(f'{item.name} settle skipped (not visible or timeout)')
-            purchased = self._purchase_item(item)
-            if purchased:
+            result = self._purchase_item(item)
+            if result.success:
+                self._record_purchase_result(item, result)
                 self._record_purchase_time()
 
     def run(self):
@@ -500,19 +899,27 @@ class Store(UI):
         self.ui_goto(page_store)
         self._load_shared_search()
 
-        daily_free_item = ItemPlan(
+        daily_free_item = ItemPurchasePlan(
             name='daily_free_item',
             asset=DAILY_FREE_ITEM,
-            enabled=self.config.StoreDaily_BuyDailyFreeItem,
+            desired_quantity=1 if self.config.StoreDaily_BuyDailyFreeItem else 0,
             direct_click=True,
         )
-        if daily_free_item.enabled:
-            self._purchase_item(daily_free_item)
+        if daily_free_item.desired_quantity > 0:
+            result = self._purchase_item(daily_free_item)
+            if result.success:
+                self._record_purchase_result(daily_free_item, result)
+                self._record_purchase_time()
         else:
             logger.info('Skip daily free item by config')
 
         for sub_store in self._build_sub_store_plans():
             self._run_sub_store(sub_store)
+
+        if self.purchase_stats:
+            logger.hr('Store purchase summary', level=2)
+            for name, quantity in sorted(self.purchase_stats.items()):
+                logger.attr(name, quantity)
 
         self.config.task_call('DataUpdate', force_call=False)
         self.config.task_delay(server_update=True)

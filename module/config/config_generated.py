@@ -234,12 +234,12 @@ class GeneratedConfig:
     StoreDaily_BuyDailyFreeItem = True
     StoreDaily_BuyFriendshipMobility40 = True
     StoreDaily_BuyFriendshipArenaFlag = True
-    StoreDaily_BuyConquestMobility40 = True
+    StoreDaily_BuyConquestMobility40 = 0  # 0, 1, 2, 3
 
     # Group `StoreWeekly`
-    StoreWeekly_BuyConquestMorogora = True
-    StoreWeekly_BuyInheritanceMorogora = True
-    StoreWeekly_BuyInheritancePotentialFragments = True
+    StoreWeekly_BuyConquestMorogora = False
+    StoreWeekly_BuyInheritanceMorogora = 2  # 0, 1, 2
+    StoreWeekly_BuyInheritancePotentialFragments = 0  # 0, 1, 2
 
     # Group `PetsGift`
     PetsGift_LastClaimAt = datetime.datetime(2020, 1, 1, 0, 0)

@@ -1535,7 +1535,7 @@
   "StoreDaily": {
     "_info": {
       "name": "Compras diarias de tienda",
-      "help": "Objetos para comprar cada día."
+      "help": "Usa casillas para compras únicas y listas desplegables para compras con límite."
     },
     "BuyDailyFreeItem": {
       "name": "Comprar objeto gratis diario",
@@ -1550,26 +1550,36 @@
       "help": "Compra bandera de arena en la tienda de Amistad."
     },
     "BuyConquestMobility40": {
-      "name": "Comprar 40 de energía (Conquista)",
-      "help": "Compra el objeto de 40 de energía en la tienda de Conquista."
+      "name": "Cantidad de 40 de energía (Conquista)",
+      "help": "Cuántas veces comprar 40 de energía en la tienda de Conquista. Máximo 3.",
+      "0": "0",
+      "1": "1",
+      "2": "2",
+      "3": "3"
     }
   },
   "StoreWeekly": {
     "_info": {
       "name": "Compras semanales de tienda",
-      "help": "Objetos semanales o con límite de compra."
+      "help": "Usa casillas para compras únicas y listas desplegables para compras con límite."
     },
     "BuyConquestMorogora": {
       "name": "Comprar Morogora (Conquista)",
       "help": "Compra Morogora con límite semanal en la tienda de Conquista."
     },
     "BuyInheritanceMorogora": {
-      "name": "Comprar Morogora (Herencia)",
-      "help": "Compra Morogora semanal en la tienda de Piedras de Herencia."
+      "name": "Cantidad de Morogora (Herencia)",
+      "help": "Cuántas veces comprar Morogora en la tienda de Herencia. Máximo 2.",
+      "0": "0",
+      "1": "1",
+      "2": "2"
     },
     "BuyInheritancePotentialFragments": {
-      "name": "Comprar fragmentos de potencial (máx.)",
-      "help": "Compra fragmentos de potencial con cantidad máxima en Herencia."
+      "name": "Cantidad de fragmentos de potencial",
+      "help": "Cuántas veces comprar fragmentos de potencial en la tienda de Herencia. Máximo 2.",
+      "0": "0",
+      "1": "1",
+      "2": "2"
     }
   },
   "PetsGift": {

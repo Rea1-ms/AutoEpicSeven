@@ -1535,7 +1535,7 @@
   "StoreDaily": {
     "_info": {
       "name": "Store Daily Purchases",
-      "help": "Items to buy every day."
+      "help": "Use checkboxes for one-time buys and dropdowns for limited-count items."
     },
     "BuyDailyFreeItem": {
       "name": "Buy Daily Free Item",
@@ -1550,26 +1550,36 @@
       "help": "Buy Arena Flag in the Friendship Points store."
     },
     "BuyConquestMobility40": {
-      "name": "Buy 40 Energy (Conquest)",
-      "help": "Buy the 40 Energy item in the Conquest Points store."
+      "name": "40 Energy Count (Conquest)",
+      "help": "How many 40 Energy items to buy in the Conquest store. Max 3.",
+      "0": "0",
+      "1": "1",
+      "2": "2",
+      "3": "3"
     }
   },
   "StoreWeekly": {
     "_info": {
       "name": "Store Weekly Purchases",
-      "help": "Items to buy weekly or with limited counts."
+      "help": "Use checkboxes for one-time buys and dropdowns for limited-count items."
     },
     "BuyConquestMorogora": {
       "name": "Buy Morogora (Conquest)",
       "help": "Buy weekly-limited Morogora in the Conquest Points store."
     },
     "BuyInheritanceMorogora": {
-      "name": "Buy Morogora (Inheritance)",
-      "help": "Buy weekly Morogora in the Inheritance Stone store."
+      "name": "Morogora Count (Inheritance)",
+      "help": "How many Morogora to buy in the Inheritance store. Max 2.",
+      "0": "0",
+      "1": "1",
+      "2": "2"
     },
     "BuyInheritancePotentialFragments": {
-      "name": "Buy Potential Fragments (Max)",
-      "help": "Buy Potential Fragments in the Inheritance store with max quantity."
+      "name": "Potential Fragments Count",
+      "help": "How many Potential Fragments to buy in the Inheritance store. Max 2.",
+      "0": "0",
+      "1": "1",
+      "2": "2"
     }
   },
   "PetsGift": {
