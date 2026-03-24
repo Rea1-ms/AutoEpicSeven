@@ -1567,6 +1567,14 @@
       "name": "Buy Morogora (Conquest)",
       "help": "Buy weekly-limited Morogora in the Conquest Points store."
     },
+    "BuyFriendshipArtifactEnhancementStone": {
+      "name": "Artifact Enhancement Stone Count (Friendship)",
+      "help": "How many Artifact Enhancement Stones to buy in the Friendship Points store. Max 3.",
+      "0": "0",
+      "1": "1",
+      "2": "2",
+      "3": "3"
+    },
     "BuyInheritanceMorogora": {
       "name": "Morogora Count (Inheritance)",
       "help": "How many Morogora to buy in the Inheritance store. Max 2.",

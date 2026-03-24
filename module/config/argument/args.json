@@ -651,6 +651,16 @@
         "type": "checkbox",
         "value": false
       },
+      "BuyFriendshipArtifactEnhancementStone": {
+        "type": "select",
+        "value": 3,
+        "option": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
       "BuyInheritanceMorogora": {
         "type": "select",
         "value": 2,

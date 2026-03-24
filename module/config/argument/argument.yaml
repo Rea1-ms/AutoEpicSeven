@@ -345,6 +345,9 @@ StoreDaily:
 
 StoreWeekly:
   BuyConquestMorogora: false
+  BuyFriendshipArtifactEnhancementStone:
+    value: 3
+    option: [ 0, 1, 2, 3 ]
   BuyInheritanceMorogora:
     value: 2
     option: [ 0, 1, 2 ]

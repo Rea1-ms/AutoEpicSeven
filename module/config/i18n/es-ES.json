@@ -1567,6 +1567,14 @@
       "name": "Comprar Morogora (Conquista)",
       "help": "Compra Morogora con límite semanal en la tienda de Conquista."
     },
+    "BuyFriendshipArtifactEnhancementStone": {
+      "name": "Cantidad de piedras de mejora de artefacto (Amistad)",
+      "help": "Cuántas piedras de mejora de artefacto comprar en la tienda de puntos de amistad. Máximo 3.",
+      "0": "0",
+      "1": "1",
+      "2": "2",
+      "3": "3"
+    },
     "BuyInheritanceMorogora": {
       "name": "Cantidad de Morogora (Herencia)",
       "help": "Cuántas veces comprar Morogora en la tienda de Herencia. Máximo 2.",

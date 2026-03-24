@@ -9,6 +9,7 @@ from module.base.utils import save_image
 from module.logger import logger
 from tasks.base.page import page_store
 from tasks.base.ui import UI
+from tasks.store.friendship_store import build_friendship_store_items
 from tasks.store.purchase import (
     ItemPurchasePlan,
     PurchaseCounterPreset,
@@ -21,8 +22,7 @@ from tasks.store.purchase import (
     plan_purchase_selection,
     resolve_period_purchase_quantity,
 )
-from tasks.store.assets.assets_store import (
-    ARENA_FLAG,
+from tasks.store.assets.assets_store_actions import (
     BUY,
     BUY_CONFIRM_MULTI,
     BUY_CONFIRM_SINGLE,
@@ -30,21 +30,27 @@ from tasks.store.assets.assets_store import (
     BUY_MIN,
     BUY_TIMES_MINUS,
     BUY_TIMES_PLUS,
+    OCR_BUY_TIMES,
+    OCR_REMAINING_BUY_TIMES,
+)
+from tasks.store.assets.assets_store_entries import (
     COMMON_INHERITANCE_STONE,
     CONQUEST_POINTS_STORE,
     CONQUEST_POINTS_STORE_CHECK,
-    DAILY_FREE_ITEM,
     FRIENDSHIP_POINTS,
     FRIENDSHIP_POINTS_STORE,
     GOLDEN_INHERITANCE_STONE,
     INHERITANCE_STONE_STORE,
+    SUB_STORE_SEARCH,
+)
+from tasks.store.assets.assets_store_items import (
+    ARENA_FLAG,
+    ARTIFACT_ENHANCEMENT_STONE,
+    DAILY_FREE_ITEM,
     MOBILITY_40,
     MOROGORA,
-    OCR_BUY_TIMES,
-    OCR_REMAINING_BUY_TIMES,
     POTENTIAL_FRAGMENTS,
     STORE_ITEMS_SEARCH,
-    SUB_STORE_SEARCH,
 )
 
 PurchasePopupLayout = Literal['unknown', 'single', 'multi']
@@ -92,6 +98,7 @@ class Store(UI):
             MOROGORA,
             POTENTIAL_FRAGMENTS,
             MOBILITY_40,
+            ARTIFACT_ENHANCEMENT_STONE,
             self.arena_flag_asset,
         ]
         for button in buttons:
@@ -150,27 +157,11 @@ class Store(UI):
                 name='friendship points store',
                 entry=FRIENDSHIP_POINTS_STORE,
                 check=self._is_friendship_store,
-                items=(
-                    ItemPurchasePlan(
-                        name='friendship_mobility_40',
-                        asset=MOBILITY_40,
-                        desired_quantity=1 if self.config.StoreDaily_BuyFriendshipMobility40 else 0,
-                        quantity_strategy='once',
-                        counter_preset=PurchaseCounterPreset(
-                            name='StoreFriendshipMobility40Counter',
-                            area=self.BUY_COUNTER_AREA,
-                        ),
-                    ),
-                    ItemPurchasePlan(
-                        name='friendship_arena_flag',
-                        asset=self.arena_flag_asset,
-                        desired_quantity=1 if self.config.StoreDaily_BuyFriendshipArenaFlag else 0,
-                        quantity_strategy='once',
-                        counter_preset=PurchaseCounterPreset(
-                            name='StoreFriendshipArenaFlagCounter',
-                            area=self.BUY_COUNTER_AREA,
-                        ),
-                    ),
+                items=build_friendship_store_items(
+                    self.config,
+                    buy_counter_area=self.BUY_COUNTER_AREA,
+                    remaining_buy_times_area=self.REMAINING_BUY_TIMES_AREA,
+                    arena_flag_asset=self.arena_flag_asset,
                 ),
             ),
             SubStorePlan(
@@ -515,6 +506,18 @@ class Store(UI):
             similarity=self.CONFIRM_SIMILARITY,
         )
 
+    def _close_purchase_popup_without_confirm(self, interval=1) -> bool:
+        """
+        Explicitly cancel the current store purchase popup.
+
+        In store purchase popups, `POPUP_CANCEL` is the only valid "do not buy"
+        action. After the click is sent, the popup should naturally transition
+        back to the current sub-store unless a network error interrupts it.
+        Generic `TOUCH_TO_CLOSE` belongs to free-item reward popups handled by
+        global UI logic, not to ordinary store purchase cancellation.
+        """
+        return self.handle_popup_cancel(interval=interval)
+
     def _ocr_purchase_counter(self, item: ItemPurchasePlan) -> tuple[int, int, int]:
         if item.counter_preset is None:
             return 0, 0, 0
@@ -595,7 +598,6 @@ class Store(UI):
         clicked_target = False
         clicked_confirm = False
         clicked_cancel = False
-        touched_close = False
         layout: PurchasePopupLayout = 'unknown'
         needs_target_resolution = self._needs_remaining_target_resolution(item)
         effective_desired_quantity = item.desired_quantity
@@ -609,6 +611,7 @@ class Store(UI):
         purchase_counter = (0, 0, 0)
         purchase_quantity = 1
         quantity_source = 'default'
+        skipping_purchase = False
         target_retry = Timer(0.8, count=2).start()
 
         while 1:
@@ -632,20 +635,17 @@ class Store(UI):
                 logger.info(f'{item.name}: purchase popup layout={layout}')
                 timeout.reset()
             popup_active = current_layout != 'unknown'
-            if clicked_confirm or clicked_cancel or touched_close:
+            if skipping_purchase and self.appear(page_store.check_button) and not popup_active:
+                logger.info(f'{item.name}: target total already reached, skip purchase')
+                return PurchaseResult(success=False, quantity=0, quantity_source='target_reached')
+
+            if clicked_confirm or clicked_cancel:
                 store_visible = self.appear(page_store.check_button)
                 item_visible = self._has_item(item.asset, self.device.image)
 
                 if clicked_cancel and store_visible and not popup_active:
                     logger.info(f'{item.name}: target total already reached, skip purchase')
                     return PurchaseResult(success=False, quantity=0, quantity_source='target_reached')
-                if touched_close and store_visible and not popup_active:
-                    return PurchaseResult(
-                        success=True,
-                        quantity=purchase_quantity,
-                        counter=purchase_counter,
-                        quantity_source=quantity_source,
-                    )
                 if clicked_confirm and store_visible and not popup_active and (
                     item.direct_click or not item_visible
                 ):
@@ -659,8 +659,6 @@ class Store(UI):
             if not clicked_target:
                 stale_cleared = False
                 if self._click_purchase_confirm('unknown', interval=1):
-                    stale_cleared = True
-                if self.handle_touch_to_close(interval=1):
                     stale_cleared = True
                 if stale_cleared:
                     timeout.reset()
@@ -736,17 +734,33 @@ class Store(UI):
                 quantity_resolved = not pending_quantity_adjustment
 
                 if effective_desired_quantity <= 0:
-                    if self.handle_popup_cancel(interval=1):
+                    # Once the configured period target is already satisfied, do
+                    # not touch confirm again. Store purchase popups have an
+                    # explicit "do not buy" button, so after entering this state
+                    # we only send POPUP_CANCEL once and then wait for the
+                    # sub-store page to settle again.
+                    skipping_purchase = True
+                    purchase_quantity = 0
+                    quantity_source = 'target_reached'
+                    quantity_resolved = False
+                    pending_quantity_adjustment = False
+                    if not clicked_cancel and self._close_purchase_popup_without_confirm(interval=1):
                         clicked_cancel = True
                         progress = True
-                    timeout.reset()
                     if progress:
-                        continue
+                        timeout.reset()
                     continue
 
                 timeout.reset()
                 if progress or quantity_resolved:
                     continue
+
+            if skipping_purchase:
+                if not clicked_cancel and self._close_purchase_popup_without_confirm(interval=1):
+                    clicked_cancel = True
+                    timeout.reset()
+                    continue
+                continue
 
             if pending_quantity_adjustment:
                 if layout != 'multi':
@@ -784,9 +798,6 @@ class Store(UI):
             if quantity_resolved and self._click_purchase_confirm(layout, interval=1):
                 clicked_confirm = True
                 progress = True
-            if self.handle_touch_to_close(interval=1):
-                touched_close = True
-                progress = True
 
             if progress:
                 timeout.reset()
@@ -796,13 +807,6 @@ class Store(UI):
             popup_active = current_layout != 'unknown'
             item_visible = self._has_item(item.asset, self.device.image)
 
-            if touched_close and self.appear(page_store.check_button) and not popup_active:
-                return PurchaseResult(
-                    success=True,
-                    quantity=purchase_quantity,
-                    counter=purchase_counter,
-                    quantity_source=quantity_source,
-                )
             if clicked_confirm and not popup_active and not item_visible:
                 return PurchaseResult(
                     success=True,
@@ -828,7 +832,6 @@ class Store(UI):
             # If nothing settled and no confirm is visible, retry the first step once more.
             if (
                 (not clicked_confirm)
-                and (not touched_close)
                 and (not popup_active)
                 and target_retry.reached()
             ):

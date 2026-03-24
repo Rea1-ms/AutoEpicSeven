@@ -11,7 +11,7 @@ from tasks.mission_reward.assets.assets_mission_reward_entry import (
     WEEKLY_TAB_ENTRY,
 )
 from tasks.secret_shop.assets.assets_secret_shop import SECRET_SHOP_CHECK
-from tasks.store.assets.assets_store import STORE_CHECK
+from tasks.store.assets.assets_store_entries import STORE_CHECK
 from tasks.arena.assets.assets_arena import (
     ARENA_CHECK,
     ARENA_COMMON_ENTRY,

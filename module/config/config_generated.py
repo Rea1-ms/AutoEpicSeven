@@ -238,6 +238,7 @@ class GeneratedConfig:
 
     # Group `StoreWeekly`
     StoreWeekly_BuyConquestMorogora = False
+    StoreWeekly_BuyFriendshipArtifactEnhancementStone = 3  # 0, 1, 2, 3
     StoreWeekly_BuyInheritanceMorogora = 2  # 0, 1, 2
     StoreWeekly_BuyInheritancePotentialFragments = 0  # 0, 1, 2
 
