@@ -166,6 +166,12 @@ class GeneratedConfig:
     MissionReward_ClaimDailyRewards = True
     MissionReward_ClaimWeeklyRewards = True
 
+    # Group `Mail`
+    Mail_CollectWithin = '1h'  # 1h, 1d
+    Mail_LastCheckAt = datetime.datetime(2020, 1, 1, 0, 0)
+    Mail_LastRemainingText = None
+    Mail_LastRemainingSince = datetime.datetime(2020, 1, 1, 0, 0)
+
     # Group `SanctuaryMonthly`
     SanctuaryMonthly_RewardTier = 'A'  # A, B, S, MaxMinus1, MaxMinus2
 
@@ -195,6 +201,9 @@ class GeneratedConfig:
     # Group `KnightsExpedition`
     KnightsExpedition_Expedition = True
     KnightsExpedition_TeamBattle = True
+    KnightsExpedition_TeamBattleReminder = False
+    KnightsExpedition_TeamBattleReminderLeadMinutes = 60  # 30, 60, 120, 180
+    KnightsExpedition_TeamBattleReminderLastEnd = None
     KnightsExpedition_WorldBoss = True
 
     # Group `Arena`
@@ -225,12 +234,13 @@ class GeneratedConfig:
     StoreDaily_BuyDailyFreeItem = True
     StoreDaily_BuyFriendshipMobility40 = True
     StoreDaily_BuyFriendshipArenaFlag = True
-    StoreDaily_BuyConquestMobility40 = True
+    StoreDaily_BuyConquestMobility40 = 0  # 0, 1, 2, 3
 
     # Group `StoreWeekly`
-    StoreWeekly_BuyConquestMorogora = True
-    StoreWeekly_BuyInheritanceMorogora = True
-    StoreWeekly_BuyInheritancePotentialFragments = True
+    StoreWeekly_BuyConquestMorogora = False
+    StoreWeekly_BuyFriendshipArtifactEnhancementStone = 3  # 0, 1, 2, 3
+    StoreWeekly_BuyInheritanceMorogora = 2  # 0, 1, 2
+    StoreWeekly_BuyInheritancePotentialFragments = 0  # 0, 1, 2
 
     # Group `PetsGift`
     PetsGift_LastClaimAt = datetime.datetime(2020, 1, 1, 0, 0)
@@ -268,6 +278,19 @@ class GeneratedConfig:
     # Group `ItemStorage`
     ItemStorage_Credit = {}
     ItemStorage_StallerJade = {}
+
+    # Group `E7Dashboard`
+    E7Dashboard_E7Gold = {}
+    E7Dashboard_E7Skystone = {}
+    E7Dashboard_E7Stamina = {}
+    E7Dashboard_E7EquipmentInventory = {}
+    E7Dashboard_E7DailyActivity = {}
+    E7Dashboard_E7WeeklyActivity = {}
+    E7Dashboard_E7ArenaRank = {}
+    E7Dashboard_E7ArenaFlag = {}
+    E7Dashboard_E7ConquestPoint = {}
+    E7Dashboard_E7ShadowCommission = {}
+    E7Dashboard_E7TeamBattle = {}
 
     # Group `CloudStorage`
     CloudStorage_CloudRemainSeasonPass = {}

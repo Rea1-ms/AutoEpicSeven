@@ -35,123 +35,6 @@
       "ServerUpdate": "02:00"
     }
   },
-  "Ornament": {
-    "Scheduler": {
-      "Enable": false,
-      "NextRun": "2020-01-01 00:00:00",
-      "Command": "Ornament",
-      "ServerUpdate": "02:00"
-    },
-    "Ornament": {
-      "Dungeon": "Divergent_Universe_Eternal_Comedy",
-      "Team": 1,
-      "UseImmersifier": true,
-      "DoubleEvent": true,
-      "UseStamina": false
-    },
-    "DungeonSupport": {
-      "Use": "when_daily",
-      "Character": "FirstCharacter"
-    },
-    "TrailblazePower": {
-      "ExtractReservedTrailblazePower": false,
-      "UseFuel": false,
-      "FuelOnlyPlanner": false,
-      "FuelReserve": 5
-    }
-  },
-  "DailyQuest": {
-    "Scheduler": {
-      "Enable": true,
-      "NextRun": "2020-01-01 00:00:00",
-      "Command": "DailyQuest",
-      "ServerUpdate": "02:00"
-    },
-    "DailyStorage": {
-      "DailyActivity": {},
-      "DailyQuest": {}
-    }
-  },
-  "BattlePass": {
-    "Scheduler": {
-      "Enable": true,
-      "NextRun": "2020-01-01 00:00:00",
-      "Command": "BattlePass",
-      "ServerUpdate": "02:00"
-    },
-    "BattlePassStorage": {
-      "BattlePassLevel": {},
-      "BattlePassWeeklyQuest": {},
-      "BattlePassSimulatedUniverse": {},
-      "BattlePassQuestCalyx": {},
-      "BattlePassQuestEchoOfWar": {},
-      "BattlePassQuestCredits": {},
-      "BattlePassQuestSynthesizeConsumables": {},
-      "BattlePassQuestStagnantShadow": {},
-      "BattlePassQuestCavernOfCorrosion": {},
-      "BattlePassQuestTrailblazePower": {}
-    }
-  },
-  "Assignment": {
-    "Scheduler": {
-      "Enable": true,
-      "NextRun": "2020-01-01 00:00:00",
-      "Command": "Assignment",
-      "ServerUpdate": "02:00"
-    },
-    "Assignment": {
-      "ClaimAll": true,
-      "Name_1": "Nameless_Land_Nameless_People",
-      "Name_2": "Akashic_Records",
-      "Name_3": "The_Invisible_Hand",
-      "Name_4": "Nine_Billion_Names",
-      "Duration": 20,
-      "Event": true,
-      "Assignment": {}
-    }
-  },
-  "DataUpdate": {
-    "Scheduler": {
-      "Enable": true,
-      "NextRun": "2020-01-01 00:00:00",
-      "Command": "DataUpdate",
-      "ServerUpdate": "02:00"
-    },
-    "ItemStorage": {
-      "Credit": {},
-      "StallerJade": {}
-    },
-    "CloudStorage": {
-      "CloudRemainSeasonPass": {},
-      "CloudRemainPaid": {},
-      "CloudRemainFree": {}
-    }
-  },
-  "Freebies": {
-    "Scheduler": {
-      "Enable": true,
-      "NextRun": "2020-01-01 00:00:00",
-      "Command": "Freebies",
-      "ServerUpdate": "02:00"
-    },
-    "Freebies": {
-      "SupportReward": true,
-      "MailReward": true,
-      "RedemptionCode": true,
-      "UsedCode": {}
-    }
-  },
-  "Gacha": {
-    "Scheduler": {
-      "Enable": false,
-      "NextRun": "2020-01-01 00:00:00",
-      "Command": "Gacha",
-      "ServerUpdate": "02:00"
-    },
-    "Gacha": {
-      "CollectGoldenInheritance": true
-    }
-  },
   "MissionReward": {
     "Scheduler": {
       "Enable": true,
@@ -170,6 +53,42 @@
       "NextRun": "2020-01-01 00:00:00",
       "Command": "Mail",
       "ServerUpdate": "02:00"
+    },
+    "Mail": {
+      "CollectWithin": "1h",
+      "LastCheckAt": "2020-01-01 00:00:00",
+      "LastRemainingText": null,
+      "LastRemainingSince": "2020-01-01 00:00:00"
+    }
+  },
+  "DataUpdate": {
+    "Scheduler": {
+      "Enable": true,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "DataUpdate",
+      "ServerUpdate": "02:00"
+    },
+    "ItemStorage": {
+      "Credit": {},
+      "StallerJade": {}
+    },
+    "E7Dashboard": {
+      "E7Gold": {},
+      "E7Skystone": {},
+      "E7Stamina": {},
+      "E7EquipmentInventory": {},
+      "E7DailyActivity": {},
+      "E7WeeklyActivity": {},
+      "E7ArenaRank": {},
+      "E7ArenaFlag": {},
+      "E7ConquestPoint": {},
+      "E7ShadowCommission": {},
+      "E7TeamBattle": {}
+    },
+    "CloudStorage": {
+      "CloudRemainSeasonPass": {},
+      "CloudRemainPaid": {},
+      "CloudRemainFree": {}
     }
   },
   "SanctuaryDaily": {
@@ -201,7 +120,71 @@
     "KnightsExpedition": {
       "Expedition": true,
       "TeamBattle": true,
+      "TeamBattleReminder": false,
+      "TeamBattleReminderLeadMinutes": 60,
+      "TeamBattleReminderLastEnd": null,
       "WorldBoss": true
+    }
+  },
+  "Arena": {
+    "Scheduler": {
+      "Enable": false,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "Arena",
+      "ServerUpdate": "02:00"
+    },
+    "Arena": {
+      "ClaimWeeklyRewards": true,
+      "ClaimWeeklyBattleRewards": true,
+      "ClaimBattlePassRewards": true,
+      "NPCCombat": false,
+      "NPCCombatFastBattle": true,
+      "NPCCombatCount": 5
+    }
+  },
+  "Store": {
+    "Scheduler": {
+      "Enable": false,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "Store",
+      "ServerUpdate": "02:00"
+    },
+    "StoreDaily": {
+      "BuyDailyFreeItem": true,
+      "BuyFriendshipMobility40": true,
+      "BuyFriendshipArenaFlag": true,
+      "BuyConquestMobility40": 0
+    },
+    "StoreWeekly": {
+      "BuyConquestMorogora": false,
+      "BuyFriendshipArtifactEnhancementStone": 3,
+      "BuyInheritanceMorogora": 2,
+      "BuyInheritancePotentialFragments": 0
+    }
+  },
+  "PetsGift": {
+    "Scheduler": {
+      "Enable": true,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "PetsGift",
+      "ServerUpdate": "02:00"
+    },
+    "PetsGift": {
+      "LastClaimAt": "2020-01-01 00:00:00"
+    }
+  },
+  "SecretShop": {
+    "Scheduler": {
+      "Enable": false,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "SecretShop",
+      "ServerUpdate": "02:00"
+    },
+    "SecretShop": {
+      "OnlyFree": true,
+      "MaxRefresh": 10,
+      "BuyCovenantBookmark": true,
+      "BuyMysticMedal": true
     }
   },
   "Combat": {
@@ -222,64 +205,15 @@
       "Session": {}
     }
   },
-  "Arena": {
+  "Gacha": {
     "Scheduler": {
       "Enable": false,
       "NextRun": "2020-01-01 00:00:00",
-      "Command": "Arena",
+      "Command": "Gacha",
       "ServerUpdate": "02:00"
     },
-    "Arena": {
-      "ClaimWeeklyRewards": true,
-      "ClaimWeeklyBattleRewards": true,
-      "ClaimBattlePassRewards": true,
-      "NPCCombat": false,
-      "NPCCombatFastBattle": true,
-      "NPCCombatCount": 5
-    }
-  },
-  "SecretShop": {
-    "Scheduler": {
-      "Enable": false,
-      "NextRun": "2020-01-01 00:00:00",
-      "Command": "SecretShop",
-      "ServerUpdate": "02:00"
-    },
-    "SecretShop": {
-      "OnlyFree": true,
-      "MaxRefresh": 10,
-      "BuyCovenantBookmark": true,
-      "BuyMysticMedal": true
-    }
-  },
-  "Store": {
-    "Scheduler": {
-      "Enable": false,
-      "NextRun": "2020-01-01 00:00:00",
-      "Command": "Store",
-      "ServerUpdate": "02:00"
-    },
-    "StoreDaily": {
-      "BuyDailyFreeItem": true,
-      "BuyFriendshipMobility40": true,
-      "BuyFriendshipArenaFlag": true,
-      "BuyConquestMobility40": true
-    },
-    "StoreWeekly": {
-      "BuyConquestMorogora": true,
-      "BuyInheritanceMorogora": true,
-      "BuyInheritancePotentialFragments": true
-    }
-  },
-  "PetsGift": {
-    "Scheduler": {
-      "Enable": true,
-      "NextRun": "2020-01-01 00:00:00",
-      "Command": "PetsGift",
-      "ServerUpdate": "02:00"
-    },
-    "PetsGift": {
-      "LastClaimAt": "2020-01-01 00:00:00"
+    "Gacha": {
+      "CollectGoldenInheritance": true
     }
   },
   "Pets": {
@@ -296,54 +230,6 @@
       "NextRun": "2020-01-01 00:00:00",
       "Command": "SanctuaryWeekly",
       "ServerUpdate": "02:00"
-    }
-  },
-  "Weekly": {
-    "Scheduler": {
-      "Enable": false,
-      "NextRun": "2020-01-01 00:00:00",
-      "Command": "Weekly",
-      "ServerUpdate": "02:00"
-    },
-    "Weekly": {
-      "Name": "Echo_of_War_Rusted_Crypt_of_the_Iron_Carcass",
-      "Team": 1
-    },
-    "DungeonSupport": {
-      "Use": "do_not_use",
-      "Character": "FirstCharacter"
-    }
-  },
-  "Rogue": {
-    "Scheduler": {
-      "Enable": false,
-      "NextRun": "2020-01-01 00:00:00",
-      "Command": "Rogue",
-      "ServerUpdate": "02:00"
-    },
-    "RogueWorld": {
-      "World": "Simulated_Universe_World_8",
-      "Path": "The_Hunt",
-      "Bonus": "Blessing Universe",
-      "DomainStrategy": "combat",
-      "UseImmersifier": true,
-      "DoubleEvent": true,
-      "WeeklyFarming": false,
-      "UseStamina": false,
-      "SimulatedUniverseFarm": {},
-      "Team": null
-    },
-    "RogueBlessing": {
-      "PresetBlessingFilter": "preset",
-      "CustomBlessingFilter": "巡猎-3 > 《冠军晚餐·猫的摇篮》 > 丰饶众生，一法界心 > 毁灭-3 \n> 火堆外的夜 > 巡猎-2 > 毁灭-2 > 巡猎 > reset > random",
-      "PresetCurioFilter": "preset",
-      "CustomCurioFilter": "博士之袍 > 福灵胶 > 分裂金币 > 信仰债券 > 换境桂冠 > 俱乐部券 > 碎星芳饵 > random",
-      "PresetResonanceFilter": "preset",
-      "CustomResonanceFilter": "回响构音：均晶转变 > 回响构音：零维强化\n> 回响构音：第二次初恋 > 回响构音：体验的富翁\n> 回响构音：局外人 > 回响构音：怀疑的四重根\n> 回响构音：诸法无我 > 回响构音：诸行无常\n> 回响构音：射不主皮 > 回响构音：柘弓危矢\n> 回响构音：激变变星 > 回响构音：极端氦闪\n> 回响构音：末日狂欢 > 回响构音：树苗长高舞\n> random",
-      "SelectionStrategy": "before-random"
-    },
-    "RogueDebug": {
-      "DebugMode": false
     }
   },
   "SanctuaryMonthly": {
@@ -366,11 +252,6 @@
   "PlannerScan": {
     "PlannerScan": {
       "ResultAdd": false
-    }
-  },
-  "Dungeon": {
-    "Scheduler": {
-      "Enable": true
     }
   }
 }

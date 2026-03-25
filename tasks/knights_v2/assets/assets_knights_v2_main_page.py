@@ -33,6 +33,16 @@ TEAM_BATTLE_LOCKED = ButtonWrapper(
         button=(622, 494, 662, 529),
     ),
 )
+TEAM_BATTLE_OPENING = ButtonWrapper(
+    name='TEAM_BATTLE_OPENING',
+    share=Button(
+        file='./assets/share/knights_v2/main_page/TEAM_BATTLE_OPENING.png',
+        area=(622, 493, 658, 526),
+        search=(602, 473, 678, 546),
+        color=(176, 161, 137),
+        button=(622, 493, 658, 526),
+    ),
+)
 WEEKLY_REWARDS = ButtonWrapper(
     name='WEEKLY_REWARDS',
     share=Button(

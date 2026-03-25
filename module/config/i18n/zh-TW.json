@@ -30,34 +30,6 @@
       "name": "除錯",
       "help": ""
     },
-    "Ornament": {
-      "name": "飾品提取",
-      "help": "運行 \"飾品提取\" 任務需要：\n1. 每週事先手動通關差分宇宙一次並保存檔案\n2. 在當前設備進入過副本一次，有保存的編隊"
-    },
-    "DailyQuest": {
-      "name": "每日任務",
-      "help": ""
-    },
-    "BattlePass": {
-      "name": "無名勳禮",
-      "help": ""
-    },
-    "Assignment": {
-      "name": "委託",
-      "help": ""
-    },
-    "DataUpdate": {
-      "name": "儀表板更新",
-      "help": ""
-    },
-    "Freebies": {
-      "name": "免費獎勵",
-      "help": ""
-    },
-    "Gacha": {
-      "name": "召喚",
-      "help": ""
-    },
     "MissionReward": {
       "name": "任務獎勵",
       "help": "從任務彈窗中領取每日與每週任務獎勵。"
@@ -66,25 +38,21 @@
       "name": "臨期郵件",
       "help": "按剩餘時間升序檢查信箱，領取剩餘 1 小時或 1 天內過期的郵件。"
     },
+    "DataUpdate": {
+      "name": "儀表板更新",
+      "help": ""
+    },
     "SanctuaryDaily": {
       "name": "聖域-日常",
       "help": "獨立排程的聖域日常模組。"
     },
     "Knights": {
       "name": "騎士團",
-      "help": "騎士團相關日常：簽到加成獎勵、支援、團戰占位、世界 Boss。"
-    },
-    "Combat": {
-      "name": "每日副本",
-      "help": "刷取精靈祭壇或討伐，依設定選擇屬性、難度，並進入快速戰鬥或背景重複戰鬥。"
+      "help": "騎士團相關日常：簽到加成獎勵、支援、團戰、世界 Boss。"
     },
     "Arena": {
       "name": "競技場",
       "help": "進入競技場並處理入口獎勵分支。"
-    },
-    "SecretShop": {
-      "name": "秘密商店",
-      "help": ""
     },
     "Store": {
       "name": "商店",
@@ -94,6 +62,18 @@
       "name": "寵物禮物",
       "help": "從選單中領取約每22小時刷新的寵物禮物。成功領取後以22小時節奏調度；若尚未就緒，則依歷史領取時間或伺服器刷新時間兜底。"
     },
+    "SecretShop": {
+      "name": "秘密商店",
+      "help": ""
+    },
+    "Combat": {
+      "name": "每日副本",
+      "help": "刷取精靈祭壇或討伐，依設定選擇屬性、難度，並進入快速戰鬥或背景重複戰鬥。"
+    },
+    "Gacha": {
+      "name": "召喚",
+      "help": ""
+    },
     "Pets": {
       "name": "寵物商店",
       "help": ""
@@ -101,14 +81,6 @@
     "SanctuaryWeekly": {
       "name": "聖域-週常",
       "help": "獨立排程的聖域週常模組。"
-    },
-    "Weekly": {
-      "name": "歷戰餘響",
-      "help": ""
-    },
-    "Rogue": {
-      "name": "模擬宇宙",
-      "help": ""
     },
     "SanctuaryMonthly": {
       "name": "聖域-月常",
@@ -1294,6 +1266,30 @@
       "help": "有可領取獎勵時，領取每週任務獎勵寶箱。"
     }
   },
+  "Mail": {
+    "_info": {
+      "name": "臨期郵件設定",
+      "help": "依剩餘時間升序檢查信箱，領取即將過期的郵件。"
+    },
+    "CollectWithin": {
+      "name": "收取剩餘多久的郵件",
+      "help": "",
+      "1h": "1 小時內",
+      "1d": "1 天內"
+    },
+    "LastCheckAt": {
+      "name": "上次檢查時間",
+      "help": ""
+    },
+    "LastRemainingText": {
+      "name": "上次頂部剩餘時間文字",
+      "help": ""
+    },
+    "LastRemainingSince": {
+      "name": "相同剩餘時間起始時間",
+      "help": ""
+    }
+  },
   "SanctuaryMonthly": {
     "_info": {
       "name": "聖域-月常設定",
@@ -1343,8 +1339,8 @@
       "help": "進入遠征面板並執行已啟用的子模組。"
     },
     "TeamBattle": {
-      "name": "團戰（占位）",
-      "help": "僅進入團戰頁面並預留後續 OCR 邏輯。"
+      "name": "騎士團團戰",
+      "help": "進入團戰頁面，處理結算並讀取目前刀數。"
     },
     "WorldBoss": {
       "name": "世界 Boss",
@@ -1409,8 +1405,24 @@
       "help": "進入遠征面板並執行已啟用的子模組。"
     },
     "TeamBattle": {
-      "name": "團戰（占位）",
-      "help": "僅進入團戰頁面並預留後續 OCR 邏輯。"
+      "name": "騎士團團戰",
+      "help": "進入團戰頁面，處理結算並讀取目前刀數。"
+    },
+    "TeamBattleReminder": {
+      "name": "啟用團戰提醒",
+      "help": "團戰開放期間，若到結束前仍有未出的刀，則透過通知渠道提醒號主。"
+    },
+    "TeamBattleReminderLeadMinutes": {
+      "name": "結束前提醒時間",
+      "help": "距離團戰結束多少分鐘前，開始檢查是否仍有未出的刀。",
+      "30": "30 分鐘",
+      "60": "60 分鐘",
+      "120": "120 分鐘",
+      "180": "180 分鐘"
+    },
+    "TeamBattleReminderLastEnd": {
+      "name": "上次提醒團戰結束時間",
+      "help": "內部去重狀態，不在 GUI 中顯示。"
     },
     "WorldBoss": {
       "name": "世界 Boss",
@@ -1523,7 +1535,7 @@
   "StoreDaily": {
     "_info": {
       "name": "商店每日購買",
-      "help": "每日可購買項目。"
+      "help": "單次購買項目使用勾選，限購項目使用下拉選擇次數。"
     },
     "BuyDailyFreeItem": {
       "name": "購買每日免費商品",
@@ -1531,33 +1543,51 @@
     },
     "BuyFriendshipMobility40": {
       "name": "購買友情商店40行動力",
-      "help": "在友情商店購買40行動力。"
+      "help": "在友情商店購買 40 行動力。"
     },
     "BuyFriendshipArenaFlag": {
       "name": "購買友情商店旗幟",
       "help": "在友情商店購買競技場旗幟。"
     },
     "BuyConquestMobility40": {
-      "name": "購買征服點數商店40行動力",
-      "help": "在征服點數商店購買40行動力。"
+      "name": "征服點數商店40行動力購買次數",
+      "help": "在征服點數商店購買 40 行動力的次數，最多 3 次。",
+      "0": "0",
+      "1": "1",
+      "2": "2",
+      "3": "3"
     }
   },
   "StoreWeekly": {
     "_info": {
       "name": "商店每週購買",
-      "help": "每週或限次可購買項目。"
+      "help": "單次購買項目使用勾選，限購項目使用下拉選擇次數。"
     },
     "BuyConquestMorogora": {
       "name": "購買征服點數商店魔羅戈拉",
       "help": "在征服點數商店購買每週限次的魔羅戈拉。"
     },
+    "BuyFriendshipArtifactEnhancementStone": {
+      "name": "友情商店強化石購買次數",
+      "help": "在友情商店購買強化石的次數，最多 3 次。",
+      "0": "0",
+      "1": "1",
+      "2": "2",
+      "3": "3"
+    },
     "BuyInheritanceMorogora": {
-      "name": "購買傳承石商店魔羅戈拉",
-      "help": "在傳承石商店購買每週的魔羅戈拉。"
+      "name": "傳承石商店魔羅戈拉購買次數",
+      "help": "在傳承石商店購買魔羅戈拉的次數，最多 2 次。",
+      "0": "0",
+      "1": "1",
+      "2": "2"
     },
     "BuyInheritancePotentialFragments": {
-      "name": "購買潛能激發碎片（最大）",
-      "help": "在傳承石商店購買潛能激發碎片並選擇最大數量。"
+      "name": "潛能激發碎片購買次數",
+      "help": "在傳承石商店購買潛能激發碎片的次數，最多 2 次。",
+      "0": "0",
+      "1": "1",
+      "2": "2"
     }
   },
   "PetsGift": {
@@ -1802,6 +1832,56 @@
     },
     "StallerJade": {
       "name": "星瓊",
+      "help": ""
+    }
+  },
+  "E7Dashboard": {
+    "_info": {
+      "name": "E7 儀表板",
+      "help": "Epic Seven 概覽資料，僅顯示已記錄的看板欄位。"
+    },
+    "E7Gold": {
+      "name": "金幣",
+      "help": ""
+    },
+    "E7Skystone": {
+      "name": "天空石",
+      "help": ""
+    },
+    "E7Stamina": {
+      "name": "行動力",
+      "help": ""
+    },
+    "E7EquipmentInventory": {
+      "name": "裝備數量",
+      "help": ""
+    },
+    "E7DailyActivity": {
+      "name": "每日活躍",
+      "help": ""
+    },
+    "E7WeeklyActivity": {
+      "name": "每週活躍",
+      "help": ""
+    },
+    "E7ArenaRank": {
+      "name": "競技場通行證等級",
+      "help": ""
+    },
+    "E7ArenaFlag": {
+      "name": "競技場旗幟",
+      "help": ""
+    },
+    "E7ConquestPoint": {
+      "name": "征服點數",
+      "help": ""
+    },
+    "E7ShadowCommission": {
+      "name": "暗影情報委託等級",
+      "help": ""
+    },
+    "E7TeamBattle": {
+      "name": "團戰刀數",
       "help": ""
     }
   },

@@ -984,6 +984,8 @@ class ConfigUpdater:
             yield 'Combat.Combat.AltarGrade'
         if deep_get(data, 'Combat.Combat.Domain', default='Hunt') != 'Hunt':
             yield 'Combat.Combat.HuntGrade'
+        if deep_get(data, 'Knights.KnightsExpedition.TeamBattleReminder', default=False) is False:
+            yield 'Knights.KnightsExpedition.TeamBattleReminderLeadMinutes'
         if deep_get(data, 'Knights.KnightsDonate.Support', default=True) is False:
             yield 'Knights.KnightsDonate.RequestItem'
         # Backward compatibility for legacy group path.

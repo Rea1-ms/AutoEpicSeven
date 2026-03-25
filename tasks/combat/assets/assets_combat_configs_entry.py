@@ -67,6 +67,16 @@ HUNT_CHECK = ButtonWrapper(
     ),
     global_en=None,
 )
+OCR_SEASON_CHECK = ButtonWrapper(
+    name='OCR_SEASON_CHECK',
+    share=Button(
+        file='./assets/share/combat/configs/entry/OCR_SEASON_CHECK.png',
+        area=(83, 253, 118, 271),
+        search=(63, 233, 138, 291),
+        color=(60, 47, 80),
+        button=(83, 253, 118, 271),
+    ),
+)
 SEASON_CHECK = ButtonWrapper(
     name='SEASON_CHECK',
     share=Button(

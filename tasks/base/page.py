@@ -11,8 +11,14 @@ from tasks.mission_reward.assets.assets_mission_reward_entry import (
     WEEKLY_TAB_ENTRY,
 )
 from tasks.secret_shop.assets.assets_secret_shop import SECRET_SHOP_CHECK
-from tasks.store.assets.assets_store import STORE_CHECK
-from tasks.arena.assets.assets_arena import ARENA_CHECK, ARENA_COMMON_ENTRY, ARENA_ENTRY
+from tasks.store.assets.assets_store_entries import STORE_CHECK
+from tasks.arena.assets.assets_arena import (
+    ARENA_CHECK,
+    ARENA_COMMON_ENTRY,
+    ARENA_ENTRY,
+    BATTLE_PASS_CHECK,
+    BATTLE_PASS_ENTRY,
+)
 from tasks.combat.assets.assets_combat_configs_entry import (
     ALTER_CHECK,
     COMMON_ENTRY,
@@ -38,6 +44,7 @@ from tasks.knights.assets.assets_knights_weekly_task import WEEKLY_TASK, WEEKLY_
 from tasks.knights_v2.assets.assets_knights_v2_main_page import (
     KNIGHTS_ACTIVITY_ENTRY,
     KNIGHTS_CHECK as KNIGHTS_V2_CHECK,
+    TEAM_BATTLE_OPENING,
     WORLD_BOSS_CHECK as WORLD_BOSS_V2_CHECK,
     WORLD_BOSS_OPENING,
 )
@@ -50,6 +57,11 @@ from tasks.knights_v2.assets.assets_knights_v2_activity_weekly_task_entry import
     WEEKLY_TASK_ENTRY as KNIGHTS_V2_WEEKLY_TASK_ENTRY,
 )
 from tasks.mail.assets.assets_mail import SORTING_CRITERIA
+from tasks.item.assets.assets_item_inventory import (
+    EQUIPMENT_CHECK,
+    EQUIPMENT_ENTRY,
+    INVENTORY_CHECK,
+)
 from tasks.sanctuary.assets.assets_sanctuary import (
     ALCHEMISTS_TOWER,
     ALCHEMISTS_TOWER_CHECK,
@@ -168,6 +180,17 @@ page_mail = Page(SORTING_CRITERIA)
 page_mail.link(BACK, destination=page_main)
 page_main.link(MAIN_GOTO_MAIL, destination=page_mail)
 
+# Inventory container page: entering inventory may restore either the default tab
+# or the equipment tab depending on the last opened state.
+page_inventory = Page((INVENTORY_CHECK, EQUIPMENT_CHECK))
+page_inventory.link(BACK, destination=page_main)
+page_main.link(MAIN_GOTO_INVENTORY, destination=page_inventory)
+
+page_inventory_equipment = Page(EQUIPMENT_CHECK)
+page_inventory_equipment.link(BACK, destination=page_main)
+page_main.link(MAIN_GOTO_INVENTORY, destination=page_inventory_equipment)
+page_inventory.link(EQUIPMENT_ENTRY, destination=page_inventory_equipment)
+
 # Store
 page_store = Page(STORE_CHECK)
 page_store.link(MENU, destination=page_menu)
@@ -198,6 +221,10 @@ page_main.link(ARENA_ENTRY, destination=page_arena_mode_popup)
 page_arena = Page(ARENA_CHECK)
 page_arena.link(BACK, destination=page_main)
 page_arena_mode_popup.link(ARENA_COMMON_ENTRY, destination=page_arena)
+
+page_arena_battle_pass = Page(BATTLE_PASS_CHECK)
+page_arena_battle_pass.link(BACK, destination=page_arena)
+page_arena.link(BATTLE_PASS_ENTRY, destination=page_arena_battle_pass)
 
 # Combat season tab
 page_combat_season = Page(SEASON_CHECK)
@@ -310,3 +337,4 @@ page_knights_v2.link(WORLD_BOSS_OPENING, destination=page_knights_v2_world_boss)
 
 page_knights_v2_team_battle = Page(KNIGHTS_V2_CREST)
 page_knights_v2_team_battle.link(BACK, destination=page_knights_v2)
+page_knights_v2.link(TEAM_BATTLE_OPENING, destination=page_knights_v2_team_battle)

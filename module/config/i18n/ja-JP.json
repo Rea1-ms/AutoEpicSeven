@@ -30,34 +30,6 @@
       "name": "再起動設定",
       "help": ""
     },
-    "Ornament": {
-      "name": "Task.Ornament.name",
-      "help": "Task.Ornament.help"
-    },
-    "DailyQuest": {
-      "name": "Task.DailyQuest.name",
-      "help": "Task.DailyQuest.help"
-    },
-    "BattlePass": {
-      "name": "ナナシの勲功",
-      "help": ""
-    },
-    "Assignment": {
-      "name": "依頼設定",
-      "help": ""
-    },
-    "DataUpdate": {
-      "name": "Task.DataUpdate.name",
-      "help": "Task.DataUpdate.help"
-    },
-    "Freebies": {
-      "name": "他ギフト",
-      "help": ""
-    },
-    "Gacha": {
-      "name": "しょうかん",
-      "help": ""
-    },
     "MissionReward": {
       "name": "ミッション報酬",
       "help": "ミッションポップアップからデイリーとウィークリーの報酬を受け取ります。"
@@ -65,6 +37,10 @@
     "Mail": {
       "name": "期限切れ間近メール",
       "help": "残り時間の昇順でメールを確認し、残り 1 時間または 1 日以内のメールを受け取ります。"
+    },
+    "DataUpdate": {
+      "name": "Task.DataUpdate.name",
+      "help": "Task.DataUpdate.help"
     },
     "SanctuaryDaily": {
       "name": "聖域-デイリー",
@@ -74,17 +50,9 @@
       "name": "ギルド",
       "help": "ギルド自動化：出席報酬、支援、遠征、ワールドボス。"
     },
-    "Combat": {
-      "name": "デイリー副本",
-      "help": "精霊祭壇または討伐を周回し、属性と難易度に応じて高速戦闘またはバックグラウンド連続戦闘を開始します。"
-    },
     "Arena": {
       "name": "アリーナ",
       "help": "アリーナに入り、入口報酬分岐を処理します。"
-    },
-    "SecretShop": {
-      "name": "シークレットショップ",
-      "help": ""
     },
     "Store": {
       "name": "ショップ",
@@ -94,6 +62,18 @@
       "name": "ペットギフト",
       "help": "メニューから約22時間ごとに更新されるペットギフトを受け取ります。受け取り成功後は22時間基準で再実行し、未準備時は履歴時刻またはサーバー更新で補正します。"
     },
+    "SecretShop": {
+      "name": "シークレットショップ",
+      "help": ""
+    },
+    "Combat": {
+      "name": "デイリー副本",
+      "help": "精霊祭壇または討伐を周回し、属性と難易度に応じて高速戦闘またはバックグラウンド連続戦闘を開始します。"
+    },
+    "Gacha": {
+      "name": "しょうかん",
+      "help": ""
+    },
     "Pets": {
       "name": "ペットショップ",
       "help": ""
@@ -101,14 +81,6 @@
     "SanctuaryWeekly": {
       "name": "聖域-ウィークリー",
       "help": "独立スケジューラで実行する聖域ウィークリーモジュール。"
-    },
-    "Weekly": {
-      "name": "Task.Weekly.name",
-      "help": "Task.Weekly.help"
-    },
-    "Rogue": {
-      "name": "Task.Rogue.name",
-      "help": "Task.Rogue.help"
     },
     "SanctuaryMonthly": {
       "name": "聖域-マンスリー",
@@ -1294,6 +1266,30 @@
       "help": "受け取り可能な場合、ウィークリーミッション報酬を受け取ります。"
     }
   },
+  "Mail": {
+    "_info": {
+      "name": "期限間近メール設定",
+      "help": "残り時間の昇順でメールを並べ、期限切れが近いメールを受け取ります。"
+    },
+    "CollectWithin": {
+      "name": "残り何以内のメールを受け取る",
+      "help": "",
+      "1h": "1時間以内",
+      "1d": "1日以内"
+    },
+    "LastCheckAt": {
+      "name": "前回確認時刻",
+      "help": ""
+    },
+    "LastRemainingText": {
+      "name": "前回の先頭残り時間テキスト",
+      "help": ""
+    },
+    "LastRemainingSince": {
+      "name": "同一残り時間ラベル開始時刻",
+      "help": ""
+    }
+  },
   "SanctuaryMonthly": {
     "_info": {
       "name": "聖域-マンスリー設定",
@@ -1343,8 +1339,8 @@
       "help": "遠征画面に入り、有効化されたサブ機能を実行します。"
     },
     "TeamBattle": {
-      "name": "ギルド戦（仮実装）",
-      "help": "現状はページ遷移のみ。OCR は今後実装予定です。"
+      "name": "ギルド戦",
+      "help": "ギルド戦ページに入り、精算ポップアップを処理して現在の攻撃回数を読み取ります。"
     },
     "WorldBoss": {
       "name": "ワールドボス",
@@ -1409,8 +1405,24 @@
       "help": "遠征画面に入り、有効化されたサブ機能を実行します。"
     },
     "TeamBattle": {
-      "name": "ギルド戦（仮実装）",
-      "help": "現状はページ遷移のみ。OCR は今後実装予定です。"
+      "name": "ギルド戦",
+      "help": "ギルド戦ページに入り、精算ポップアップを処理して現在の攻撃回数を読み取ります。"
+    },
+    "TeamBattleReminder": {
+      "name": "ギルド戦リマインダーを有効化",
+      "help": "ギルド戦開催中、終了前になっても未使用の攻撃回数が残っていれば通知します。"
+    },
+    "TeamBattleReminderLeadMinutes": {
+      "name": "終了前リマインダー時間",
+      "help": "ギルド戦終了の何分前から未使用攻撃回数を確認するかを設定します。",
+      "30": "30 分前",
+      "60": "60 分前",
+      "120": "120 分前",
+      "180": "180 分前"
+    },
+    "TeamBattleReminderLastEnd": {
+      "name": "前回通知したギルド戦終了時刻",
+      "help": "ギルド戦リマインダーの内部重複防止状態です。"
     },
     "WorldBoss": {
       "name": "ワールドボス",
@@ -1523,7 +1535,7 @@
   "StoreDaily": {
     "_info": {
       "name": "ショップ毎日購入",
-      "help": "毎日購入するアイテムです。"
+      "help": "単発購入項目はチェック、回数指定項目はプルダウンで選択します。"
     },
     "BuyDailyFreeItem": {
       "name": "デイリー無料商品を購入",
@@ -1538,26 +1550,44 @@
       "help": "友情ポイントショップで闘技場の旗を購入します。"
     },
     "BuyConquestMobility40": {
-      "name": "征服ポイントの行動力40を購入",
-      "help": "征服ポイントショップで行動力40を購入します。"
+      "name": "征服ポイントの行動力40購入回数",
+      "help": "征服ポイントショップで行動力40を購入する回数です。最大3回。",
+      "0": "0",
+      "1": "1",
+      "2": "2",
+      "3": "3"
     }
   },
   "StoreWeekly": {
     "_info": {
       "name": "ショップ毎週購入",
-      "help": "毎週または回数制限のある購入項目です。"
+      "help": "単発購入項目はチェック、回数指定項目はプルダウンで選択します。"
     },
     "BuyConquestMorogora": {
       "name": "征服ポイントのモラゴラを購入",
       "help": "征服ポイントショップで週制限のモラゴラを購入します。"
     },
+    "BuyFriendshipArtifactEnhancementStone": {
+      "name": "友情ショップ強化石購入回数",
+      "help": "友情ポイントショップでアーティファクト強化石を購入する回数です。最大3回。",
+      "0": "0",
+      "1": "1",
+      "2": "2",
+      "3": "3"
+    },
     "BuyInheritanceMorogora": {
-      "name": "継承石ショップのモラゴラを購入",
-      "help": "継承石ショップで週次のモラゴラを購入します。"
+      "name": "継承石ショップのモラゴラ購入回数",
+      "help": "継承石ショップでモラゴラを購入する回数です。最大2回。",
+      "0": "0",
+      "1": "1",
+      "2": "2"
     },
     "BuyInheritancePotentialFragments": {
-      "name": "潜在能力欠片を最大購入",
-      "help": "継承石ショップで潜在能力欠片を最大数量で購入します。"
+      "name": "潜在能力欠片の購入回数",
+      "help": "継承石ショップで潜在能力欠片を購入する回数です。最大2回。",
+      "0": "0",
+      "1": "1",
+      "2": "2"
     }
   },
   "PetsGift": {
@@ -1803,6 +1833,56 @@
     "StallerJade": {
       "name": "ItemStorage.StallerJade.name",
       "help": "ItemStorage.StallerJade.help"
+    }
+  },
+  "E7Dashboard": {
+    "_info": {
+      "name": "E7 Dashboard",
+      "help": "Epic Seven overview fields shown on the home dashboard."
+    },
+    "E7Gold": {
+      "name": "Gold",
+      "help": ""
+    },
+    "E7Skystone": {
+      "name": "Skystone",
+      "help": ""
+    },
+    "E7Stamina": {
+      "name": "Stamina",
+      "help": ""
+    },
+    "E7EquipmentInventory": {
+      "name": "装備数",
+      "help": ""
+    },
+    "E7DailyActivity": {
+      "name": "Daily Activity",
+      "help": ""
+    },
+    "E7WeeklyActivity": {
+      "name": "Weekly Activity",
+      "help": ""
+    },
+    "E7ArenaRank": {
+      "name": "アリーナ通行証レベル",
+      "help": ""
+    },
+    "E7ArenaFlag": {
+      "name": "アリーナ旗",
+      "help": ""
+    },
+    "E7ConquestPoint": {
+      "name": "征服ポイント",
+      "help": ""
+    },
+    "E7ShadowCommission": {
+      "name": "暗影情報依頼レベル",
+      "help": ""
+    },
+    "E7TeamBattle": {
+      "name": "ギルド戦攻撃回数",
+      "help": ""
     }
   },
   "CloudStorage": {

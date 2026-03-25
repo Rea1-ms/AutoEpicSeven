@@ -15,6 +15,11 @@ from module.config.stored.classes import (
     StoredDaily,
     StoredDailyActivity,
     StoredDungeonDouble,
+    StoredE7ArenaRank,
+    StoredE7DailyActivity,
+    StoredE7ShadowCommission,
+    StoredE7TeamBattleStatus,
+    StoredE7WeeklyActivity,
     StoredEchoOfWar,
     StoredExpiredAt0400,
     StoredExpiredAtMonday0400,
@@ -34,22 +39,19 @@ from module.config.stored.classes import (
 # ``` python -m module/config/config_updater.py ```
 
 class StoredGenerated:
-    DailyActivity = StoredDailyActivity("DailyQuest.DailyStorage.DailyActivity")
-    DailyQuest = StoredDaily("DailyQuest.DailyStorage.DailyQuest")
-    BattlePassLevel = StoredBattlePassLevel("BattlePass.BattlePassStorage.BattlePassLevel")
-    BattlePassWeeklyQuest = StoredBattlePassWeeklyQuest("BattlePass.BattlePassStorage.BattlePassWeeklyQuest")
-    BattlePassSimulatedUniverse = StoredBattlePassSimulatedUniverse("BattlePass.BattlePassStorage.BattlePassSimulatedUniverse")
-    BattlePassQuestCalyx = StoredBattlePassQuestCalyx("BattlePass.BattlePassStorage.BattlePassQuestCalyx")
-    BattlePassQuestEchoOfWar = StoredBattlePassQuestEchoOfWar("BattlePass.BattlePassStorage.BattlePassQuestEchoOfWar")
-    BattlePassQuestCredits = StoredBattlePassQuestCredits("BattlePass.BattlePassStorage.BattlePassQuestCredits")
-    BattlePassQuestSynthesizeConsumables = StoredBattlePassQuestSynthesizeConsumables("BattlePass.BattlePassStorage.BattlePassQuestSynthesizeConsumables")
-    BattlePassQuestStagnantShadow = StoredBattlePassQuestStagnantShadow("BattlePass.BattlePassStorage.BattlePassQuestStagnantShadow")
-    BattlePassQuestCavernOfCorrosion = StoredBattlePassQuestCavernOfCorrosion("BattlePass.BattlePassStorage.BattlePassQuestCavernOfCorrosion")
-    BattlePassQuestTrailblazePower = StoredBattlePassQuestTrailblazePower("BattlePass.BattlePassStorage.BattlePassQuestTrailblazePower")
-    Assignment = StoredAssignment("Assignment.Assignment.Assignment")
     Credit = StoredInt("DataUpdate.ItemStorage.Credit")
     StallerJade = StoredInt("DataUpdate.ItemStorage.StallerJade")
+    E7Gold = StoredInt("DataUpdate.E7Dashboard.E7Gold")
+    E7Skystone = StoredInt("DataUpdate.E7Dashboard.E7Skystone")
+    E7Stamina = StoredCounter("DataUpdate.E7Dashboard.E7Stamina")
+    E7EquipmentInventory = StoredCounter("DataUpdate.E7Dashboard.E7EquipmentInventory")
+    E7DailyActivity = StoredE7DailyActivity("DataUpdate.E7Dashboard.E7DailyActivity")
+    E7WeeklyActivity = StoredE7WeeklyActivity("DataUpdate.E7Dashboard.E7WeeklyActivity")
+    E7ArenaRank = StoredE7ArenaRank("DataUpdate.E7Dashboard.E7ArenaRank")
+    E7ArenaFlag = StoredCounter("DataUpdate.E7Dashboard.E7ArenaFlag")
+    E7ConquestPoint = StoredInt("DataUpdate.E7Dashboard.E7ConquestPoint")
+    E7ShadowCommission = StoredE7ShadowCommission("DataUpdate.E7Dashboard.E7ShadowCommission")
+    E7TeamBattle = StoredE7TeamBattleStatus("DataUpdate.E7Dashboard.E7TeamBattle")
     CloudRemainSeasonPass = StoredInt("DataUpdate.CloudStorage.CloudRemainSeasonPass")
     CloudRemainPaid = StoredInt("DataUpdate.CloudStorage.CloudRemainPaid")
     CloudRemainFree = StoredInt("DataUpdate.CloudStorage.CloudRemainFree")
-    SimulatedUniverseFarm = StoredSimulatedUniverseElite("Rogue.RogueWorld.SimulatedUniverseFarm")

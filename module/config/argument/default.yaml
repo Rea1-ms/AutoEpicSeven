@@ -10,16 +10,7 @@ Alas:
 
 # ==================== Daily ====================
 
-DailyQuest:
-  Scheduler:
-    Enable: true
-BattlePass:
-  Scheduler:
-    Enable: true
-Assignment:
-  Scheduler:
-    Enable: true
-Freebies:
+DataUpdate:
   Scheduler:
     Enable: true
 MissionReward:
@@ -34,9 +25,3 @@ Knights:
 PetsGift:
   Scheduler:
     Enable: true
-
-# ==================== Weekly ====================
-
-Weekly:
-  DungeonSupport:
-    Use: do_not_use

@@ -1,21 +1,18 @@
 from module.base.timer import Timer
 from module.logger import logger
-from module.ocr.ocr import Digit, DigitCounter
+from module.ocr.ocr import DigitCounter
+from tasks.arena.dashboard import ArenaDashboardMixin
+from tasks.arena.entry import ArenaEntryMixin
 from tasks.arena.assets.assets_arena import (
-    ARENA_CHECK,
     ARENA_COMMON_ENTRY,
-    ARENA_ENTRY,
-    ARENA_SETTLING,
     AUTO_FIGHT,
+    AUTO_FIGHT_EXIST,
     BATTLE_PASS_CHECK,
     BATTLE_PASS_ENTRY,
     BATTLE_PASS_REWARDS,
     BATTLE_START,
     CHALLENGE,
     NPC_OPPONENT,
-    WEEKLY_REWARDS_CHECK,
-    WEEKLY_REWARDS_CLAIM,
-    WEEKLY_REWARDS_SELECTED,
     AUTO_BATTLE_RESULT_CONFIRM,
     FAST_BATTLE_LOCKED,
     FAST_BATTLE_OFF,
@@ -23,11 +20,9 @@ from tasks.arena.assets.assets_arena import (
     FAST_BATTLE_RESULT_CONFIRM,
     OPPONENT,
     NPC_COMBAT_ENTRY,
-    OCR_BATTLE_PASS_LEVEL,
     OCR_FAST_BATTLE_TIMES,
     WEEKLY_BATTLE_REWARDS,
 )
-from tasks.base.page import page_main
 from tasks.base.ui import UI
 
 
@@ -41,7 +36,7 @@ class OcrFastBattleTimes(DigitCounter):
         return result
 
 
-class Arena(UI):
+class Arena(ArenaEntryMixin, ArenaDashboardMixin, UI):
     """
     Arena task.
 
@@ -50,10 +45,6 @@ class Arena(UI):
         handle weekly rewards popup branch before arena main page
     """
 
-    ARENA_ENTRY_TIMEOUT_SECONDS = 45
-    ARENA_ENTRY_RETRY_SECONDS = 1.2
-    ARENA_CHECK_LUMA_SIMILARITY = 0.8
-    ARENA_CHECK_COLOR_THRESHOLD = 5
     ARENA_NPC_ROUND_TIMEOUT_SECONDS = 90
     ARENA_NPC_CHALLENGE_LUMA_SIMILARITY = 0.8
     ARENA_NPC_CHALLENGE_COLOR_THRESHOLD = 30
@@ -87,64 +78,6 @@ class Arena(UI):
     ARENA_NPC_STAGE_PENDING = "challenge_pending"
     ARENA_NPC_STAGE_PREPARE = "battle_prepare"
     ARENA_NPC_STAGE_BATTLE = "battle_running"
-
-    def _is_arena_page_ready(self, interval=0) -> bool:
-        """
-        ARENA_CHECK uses luma + color double check:
-            avoid false-positive when weekly rewards popup overlays arena page.
-        """
-        self.device.stuck_record_add(ARENA_CHECK)
-
-        if interval and not self.interval_is_reached(ARENA_CHECK, interval=interval):
-            return False
-
-        appear = False
-        if ARENA_CHECK.match_template_luma(self.device.image, similarity=self.ARENA_CHECK_LUMA_SIMILARITY):
-            if ARENA_CHECK.match_color(self.device.image, threshold=self.ARENA_CHECK_COLOR_THRESHOLD):
-                appear = True
-
-        if appear and interval:
-            self.interval_reset(ARENA_CHECK, interval=interval)
-
-        return appear
-
-    def _handle_weekly_rewards_popup(self) -> bool:
-        """
-        Handle weekly rewards popup branch during arena entry.
-
-        Returns:
-            bool: True if an action is taken.
-        """
-        # Step 1: detect weekly rewards layer by selected marker.
-        # Do not use interval here, otherwise the following click on the same
-        # asset can be blocked by interval timer.
-        if not self.appear(WEEKLY_REWARDS_SELECTED):
-            self._arena_weekly_selected_clicked = False
-            return False
-
-        logger.info("Arena: weekly rewards popup detected")
-
-        # Step 2: click selected entry once, then wait check marker.
-        if not getattr(self, "_arena_weekly_selected_clicked", False):
-            if self.appear_then_click(WEEKLY_REWARDS_SELECTED, interval=1):
-                self._arena_weekly_selected_clicked = True
-                logger.info("Arena: weekly rewards selected")
-                return True
-            return False
-
-        # Step 3: verify selected state by WEEKLY_REWARDS_CHECK, then claim.
-        if not self.appear(WEEKLY_REWARDS_CHECK):
-            return False
-
-        if not self.config.Arena_ClaimWeeklyRewards:
-            logger.info("Arena: weekly rewards claim disabled by config")
-            return True
-
-        if self.appear_then_click(WEEKLY_REWARDS_CLAIM, interval=1):
-            logger.info("Arena: weekly rewards claimed")
-            return True
-
-        return False
 
     def _is_challenge_ready(self, interval=0) -> bool:
         self.device.stuck_record_add(CHALLENGE)
@@ -214,13 +147,6 @@ class Arena(UI):
         else:
             logger.warning(f"Fast battle times OCR invalid: {current}/{total}")
         return current, remain, total
-
-    def _ocr_battle_pass_level(self) -> int:
-        # Current observed range is around 1-38.
-        ocr = Digit(OCR_BATTLE_PASS_LEVEL, lang="en", name="BattlePassLevel")
-        level = ocr.ocr_single_line(self.device.image)
-        logger.attr("BattlePassLevel", level)
-        return level
 
     def _sample_battle_pass_rewards(
         self,
@@ -411,7 +337,8 @@ class Arena(UI):
                     continue
 
                 if not level_ocr_done:
-                    self._ocr_battle_pass_level()
+                    self._ocr_arena_rank()
+                    self.write_resource_bar_status(self._ocr_arena_resource_bar(skip_first_screenshot=True))
                     level_ocr_done = True
 
                 if self._sample_battle_pass_rewards(
@@ -702,6 +629,20 @@ class Arena(UI):
                 continue
 
             if stage == self.ARENA_NPC_STAGE_BATTLE:
+                if self.handle_popup_cancel(interval=1):
+                    logger.info("Arena NPC: popup cancel after battle start, recheck arena flags")
+                    flag_status = self._ocr_arena_flag_status(skip_first_screenshot=False)
+                    if flag_status is None:
+                        flag_status = self._stored_arena_flag_status()
+                    if flag_status is not None and flag_status[0] <= 0:
+                        logger.info("Arena NPC: arena flags exhausted after start popup cancel")
+                        return "exhausted"
+
+                    logger.warning("Arena NPC: popup cancel after battle start but arena flag is still unknown/non-zero")
+                    stage = self.ARENA_NPC_STAGE_PREPARE
+                    timeout.reset()
+                    continue
+
                 if fast_battle_effective:
                     if self.appear_then_click(FAST_BATTLE_RESULT_CONFIRM, interval=0.8):
                         logger.info("Arena NPC: fast battle result confirm")
@@ -770,6 +711,11 @@ class Arena(UI):
                     timeout.reset()
                     continue
 
+                if self.appear(AUTO_FIGHT_EXIST):
+                    timeout.reset()
+                    self.device.stuck_record_clear()
+                    continue
+
                 continue
 
             if self.ui_additional():
@@ -795,6 +741,11 @@ class Arena(UI):
             logger.info("Arena NPC: target count <= 0, skip")
             return True
 
+        flag_status = self._stored_arena_flag_status()
+        if flag_status is not None and flag_status[0] <= 0:
+            logger.info("Arena NPC: arena flag is already 0, skip combat")
+            return True
+
         logger.info(f"Arena NPC: target={target_count}, fast_battle={use_fast_battle}")
         completed = 0
         while completed < target_count:
@@ -805,7 +756,12 @@ class Arena(UI):
 
             if status == "completed":
                 completed += 1
+                self._consume_stored_arena_flags(1)
                 logger.info(f"Arena NPC round finished: {completed}/{target_count}")
+                flag_status = self._stored_arena_flag_status()
+                if flag_status is not None and flag_status[0] <= 0 and completed < target_count:
+                    logger.info(f"Arena NPC stop early: local arena flag depleted ({completed}/{target_count})")
+                    return True
                 continue
 
             if status == "exhausted":
@@ -817,64 +773,6 @@ class Arena(UI):
 
         logger.info(f"Arena NPC completed: {completed}/{target_count}")
         return True
-
-    def _enter_arena(self, skip_first_screenshot=True) -> str:
-        logger.info("Arena: enter")
-        timeout = Timer(self.ARENA_ENTRY_TIMEOUT_SECONDS, count=180).start()
-        entry_retry = Timer(self.ARENA_ENTRY_RETRY_SECONDS, count=0).start()
-        self._arena_weekly_selected_clicked = False
-
-        while 1:
-            if skip_first_screenshot:
-                skip_first_screenshot = False
-            else:
-                self.device.screenshot()
-
-            if timeout.reached():
-                logger.warning("Arena entry timeout")
-                return "failed"
-
-            # End condition: arena page reached.
-            if self._is_arena_page_ready(interval=1):
-                logger.info("Arena page reached")
-                return "entered"
-
-            # Arena maintenance/settling period.
-            # Close by AD_BUFF_X_CLOSE and finish this task early.
-            if self.appear(ARENA_SETTLING, interval=1):
-                if self.handle_ad_buff_x_close(interval=0.5):
-                    logger.info("Arena is in settling period, skip until next server update")
-                    return "settling"
-                continue
-
-            # Weekly rewards branch: selected -> check -> claim.
-            if self._handle_weekly_rewards_popup():
-                timeout.reset()
-                continue
-
-            # Popup branch: choose common arena entry.
-            if self.appear_then_click(ARENA_COMMON_ENTRY, interval=1):
-                logger.info("Arena popup: choose common arena")
-                timeout.reset()
-                continue
-
-            # IMPORTANT:
-            # Do not call ui_additional() here, otherwise AD_BUFF_X_CLOSE may
-            # close the arena mode popup before selecting common arena.
-            if self.handle_touch_to_close(interval=0.5):
-                timeout.reset()
-                continue
-            if self.handle_network_error():
-                timeout.reset()
-                continue
-
-            # Step 1: click ARENA_ENTRY on main page.
-            if self.appear(page_main.check_button) and entry_retry.reached():
-                self.device.click(ARENA_ENTRY)
-                entry_retry.reset()
-                timeout.reset()
-                logger.info("Arena: main page -> arena entry")
-                continue
 
     def run(self) -> bool:
         logger.hr("Arena", level=1)
@@ -892,11 +790,13 @@ class Arena(UI):
         if getattr(self.config, "Arena_NPCCombat", False):
             if self.appear(NPC_OPPONENT) or self.appear(CHALLENGE) or self._is_battle_prepare_page():
                 logger.info("Arena: detected NPC combat context, skip goto main")
+                self._update_arena_dashboard_snapshot(skip_first_screenshot=True)
                 if not self._run_npc_combat(skip_first_screenshot=True):
                     self.config.task_delay(success=False)
                     return False
                 self._claim_weekly_battle_rewards(skip_first_screenshot=True)
                 self._claim_battle_pass_rewards(skip_first_screenshot=True)
+                self.config.task_call("DataUpdate", force_call=False)
                 self.config.task_delay(server_update=True)
                 return True
 
@@ -915,6 +815,7 @@ class Arena(UI):
             return True
 
         if status == "entered":
+            self._update_arena_dashboard_snapshot(skip_first_screenshot=True)
             if getattr(self.config, "Arena_NPCCombat", False):
                 if not self._run_npc_combat(skip_first_screenshot=True):
                     self.config.task_delay(success=False)
@@ -922,6 +823,7 @@ class Arena(UI):
                 self._claim_weekly_battle_rewards(skip_first_screenshot=True)
                 self._claim_battle_pass_rewards(skip_first_screenshot=True)
 
+            self.config.task_call("DataUpdate", force_call=False)
             self.config.task_delay(server_update=True)
             return True
 

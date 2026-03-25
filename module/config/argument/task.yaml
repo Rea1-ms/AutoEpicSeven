@@ -22,36 +22,17 @@ Daily:
   menu: 'list'
   page: 'setting'
   tasks:
-    Ornament:
-      - Scheduler
-      - Ornament
-      - DungeonSupport
-      - TrailblazePower
-    DailyQuest:
-      - Scheduler
-      - DailyStorage
-    BattlePass:
-      - Scheduler
-      - BattlePassStorage
-    Assignment:
-      - Scheduler
-      - Assignment
-    DataUpdate:
-      - Scheduler
-      - ItemStorage
-      - CloudStorage
-    Freebies:
-      - Scheduler
-      - Freebies
-    Gacha:
-      - Scheduler
-      - Gacha
     MissionReward:
       - Scheduler
       - MissionReward
     Mail:
       - Scheduler
       - Mail
+    DataUpdate:
+      - Scheduler
+      - ItemStorage
+      - E7Dashboard
+      - CloudStorage
     SanctuaryDaily:
       - Scheduler
     Knights:
@@ -59,16 +40,9 @@ Daily:
       - KnightsBasic
       - KnightsDonate
       - KnightsExpedition
-    Combat:
-      - Scheduler
-      - Combat
-      - CombatRuntime
     Arena:
       - Scheduler
       - Arena
-    SecretShop:
-      - Scheduler
-      - SecretShop
     Store:
       - Scheduler
       - StoreDaily
@@ -76,6 +50,16 @@ Daily:
     PetsGift:
       - Scheduler
       - PetsGift
+    SecretShop:
+      - Scheduler
+      - SecretShop
+    Combat:
+      - Scheduler
+      - Combat
+      - CombatRuntime
+    Gacha:
+      - Scheduler
+      - Gacha
     Pets:
       - Scheduler
 
@@ -87,15 +71,6 @@ Weekly:
   tasks:
     SanctuaryWeekly:
       - Scheduler
-    Weekly:
-      - Scheduler
-      - Weekly
-      - DungeonSupport
-    Rogue:
-      - Scheduler
-      - RogueWorld
-      - RogueBlessing
-      - RogueDebug
 
 # ==================== Monthly ====================
 

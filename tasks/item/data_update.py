@@ -1,92 +1,178 @@
 import re
 
-from module.base.timer import Timer
 from module.logger import logger
 from module.ocr.ocr import Digit, DigitCounter
-from tasks.base.page import page_item
-from tasks.item.assets.assets_item_data import OCR_DATA, OCR_RELIC
-from tasks.item.keywords import KEYWORDS_ITEM_TAB
-from tasks.item.ui import ItemUI
-from tasks.planner.model import PlannerMixin
+from tasks.arena.assets.assets_arena import ARENA_COMMON_ENTRY
+from tasks.arena.dashboard import ArenaDashboardMixin
+from tasks.arena.entry import ArenaEntryMixin
+from tasks.base.page import (
+    page_combat_season,
+    page_inventory_equipment,
+    page_main,
+    page_secret_shop,
+)
+from tasks.base.resource_bar import (
+    RESOURCE_BAR_LAYOUT_COMBAT,
+    RESOURCE_BAR_LAYOUT_SECRET_SHOP,
+)
+from tasks.base.ui import UI
+from tasks.combat.assets.assets_combat_configs_entry import OCR_SEASON_CHECK
+from tasks.item.assets.assets_item_inventory import OCR_EQUIPMENT_COUNT
 
 
-class DataDigit(Digit):
+class E7Digit(Digit):
     def after_process(self, result):
-        result = re.sub(r'[l|]', '1', result)
-        result = re.sub(r'[oO]', '0', result)
+        result = result.replace("O", "0").replace("o", "0")
+        result = result.replace("I", "1").replace("l", "1").replace("|", "1")
+        result = result.replace(" ", "")
         return super().after_process(result)
 
 
-class RelicOcr(DigitCounter):
+def normalize_e7_counter_text(result: str) -> str:
+    result = result.replace("O", "0").replace("o", "0")
+    result = result.replace("I", "1").replace("l", "1").replace("|", "1")
+    result = result.replace(" ", "")
+    result = result.replace(",", "").replace("，", "")
+    result = result.replace("／", "/")
+    return result
+
+
+def parse_e7_counter_text(result: str) -> tuple[int, int] | None:
+    result = normalize_e7_counter_text(result)
+    matched = re.search(r"(\d+)\s*/\s*(\d+)", result)
+    if matched is None:
+        return None
+    return int(matched.group(1)), int(matched.group(2))
+
+
+class E7DigitCounter(DigitCounter):
     def after_process(self, result):
-        result = re.sub(r'[l1|]3000', '/3000', result)
-        result = re.sub(r'[oO]', '0', result)
-        return super().after_process(result)
+        return normalize_e7_counter_text(result)
 
 
-class DataUpdate(ItemUI, PlannerMixin):
-    def _get_data(self):
-        """
-        Page:
-            in: page_item, KEYWORDS_ITEM_TAB.UpgradeMaterials
-        """
-        ocr = DataDigit(OCR_DATA)
+class DataUpdate(ArenaEntryMixin, ArenaDashboardMixin, UI):
+    DATAUPDATE_COMBAT_RESOURCE_BAR_TIMEOUT_SECONDS = 1
+    DATAUPDATE_COMBAT_RESOURCE_BAR_TIMEOUT_COUNT = 2
 
-        timeout = Timer(2, count=6).start()
-        credit, jade = 0, 0
-        for _ in self.loop():
-            data = ocr.detect_and_ocr(self.device.image)
-            if len(data) == 2:
-                credit, jade = [int(re.sub(r'\s', '', d.ocr_text)) for d in data]
-                if credit > 0 or jade > 0:
-                    break
+    def _sync_legacy_item_storage(self):
+        with self.config.multi_set():
+            self.config.stored.Credit.value = self.config.stored.E7Gold.value
+            self.config.stored.StallerJade.value = self.config.stored.E7Skystone.value
 
-            logger.warning(f'Invalid credit and stellar jade: {data}')
-            if timeout.reached():
-                logger.warning('Get data timeout')
-                break
+    def _ocr_equipment_inventory_count(self) -> tuple[int, int, int]:
+        current, remain, total = E7DigitCounter(
+            OCR_EQUIPMENT_COUNT,
+            lang=self._ocr_lang(),
+            name="EquipmentInventoryCount",
+        ).ocr_single_line(self.device.image)
+        if total > 0:
+            logger.attr("EquipmentInventoryCount", f"{current}/{total}")
+        else:
+            logger.warning(f"Equipment inventory OCR invalid: {current}/{total}")
+        return current, remain, total
 
-        logger.attr('Credit', credit)
-        logger.attr('StellarJade', jade)
-        return credit, jade
+    def _update_equipment_inventory(self, skip_first_screenshot=True) -> bool:
+        logger.hr("DataUpdate EquipmentInventory", level=2)
+        self.ui_goto(page_inventory_equipment, skip_first_screenshot=skip_first_screenshot)
+        current, _, total = self._ocr_equipment_inventory_count()
 
-    def _get_relic(self):
-        """
-        Page:
-            in: page_item, KEYWORDS_ITEM_TAB.Relics
-        """
-        ocr = RelicOcr(OCR_RELIC)
-        timeout = Timer(2, count=6).start()
-        relic = 0
-        for _ in self.loop():
-            relic, _, total = ocr.ocr_single_line(self.device.image)
-            if total == 3000 or relic < 0:
-                break
-            logger.warning(f'Invalid relic amount: {relic}/{total}')
-            if timeout.reached():
-                logger.warning('Get relic timeout')
-                break
+        updated = False
+        if total > 0:
+            self.config.stored.E7EquipmentInventory.set(current, total)
+            updated = True
 
-        logger.attr('Relic', relic)
-        return relic
+        self.ui_goto(page_main, skip_first_screenshot=True)
+        return updated
+
+    def _update_secret_shop_resources(self, skip_first_screenshot=True) -> bool:
+        logger.hr("DataUpdate SecretShop", level=2)
+        self.ui_goto(page_secret_shop, skip_first_screenshot=skip_first_screenshot)
+        parsed = self.ocr_resource_bar_status(
+            layout=RESOURCE_BAR_LAYOUT_SECRET_SHOP,
+            layout_name="SecretShop",
+            skip_first_screenshot=True,
+        )
+        return self.write_resource_bar_status(parsed)
+
+    def _ocr_shadow_commission_level(self) -> int:
+        level = E7Digit(
+            OCR_SEASON_CHECK,
+            lang=self._ocr_lang(),
+            name="ShadowCommissionLevel",
+        ).ocr_single_line(self.device.image)
+        logger.attr("ShadowCommissionLevel", level)
+        if 0 < level <= self.config.stored.E7ShadowCommission.FIXED_TOTAL:
+            self.config.stored.E7ShadowCommission.set(level)
+        return level
+
+    def _update_combat_status(self, skip_first_screenshot=True) -> bool:
+        logger.hr("DataUpdate Combat", level=2)
+        self.ui_goto(page_combat_season, skip_first_screenshot=skip_first_screenshot)
+        updated = False
+        parsed = self.ocr_resource_bar_status(
+            layout=RESOURCE_BAR_LAYOUT_COMBAT,
+            layout_name="Combat",
+            skip_first_screenshot=True,
+            timeout_seconds=self.DATAUPDATE_COMBAT_RESOURCE_BAR_TIMEOUT_SECONDS,
+            timeout_count=self.DATAUPDATE_COMBAT_RESOURCE_BAR_TIMEOUT_COUNT,
+        )
+        if self.write_resource_bar_status(parsed):
+            updated = True
+        if self._ocr_shadow_commission_level() > 0:
+            updated = True
+        return updated
+
+    def _enter_arena(self, skip_first_screenshot=True) -> str:
+        logger.info("DataUpdate: goto arena page")
+        if self._is_arena_page_ready(interval=0):
+            logger.info("DataUpdate: already in arena page")
+            return "entered"
+
+        if self.appear(ARENA_COMMON_ENTRY):
+            logger.info("DataUpdate: already in arena mode popup")
+            return super()._enter_arena(skip_first_screenshot=skip_first_screenshot)
+
+        if not self.is_in_main(interval=0):
+            logger.info("DataUpdate: return to main before arena entry")
+            self.ui_goto_main()
+            skip_first_screenshot = True
+
+        return super()._enter_arena(skip_first_screenshot=skip_first_screenshot)
+
+    def _update_arena_status(self, skip_first_screenshot=True) -> bool:
+        logger.hr("DataUpdate Arena", level=2)
+        status = self._enter_arena(skip_first_screenshot=skip_first_screenshot)
+        if status == "settling":
+            logger.info("DataUpdate: arena is settling, skip arena snapshot")
+            return False
+        if status != "entered":
+            return False
+        return self._update_arena_dashboard_snapshot(skip_first_screenshot=True)
 
     def run(self):
-        self.ui_ensure(page_item, acquire_lang_checked=False)
-        # item tab stays at the last used tab, switch to UpgradeMaterials
-        self.item_goto(KEYWORDS_ITEM_TAB.UpgradeMaterials, wait_until_stable=False)
-        credit, jade = self._get_data()
+        logger.hr("Data Update", level=1)
 
-        self.item_goto(KEYWORDS_ITEM_TAB.Relics, wait_until_stable=False)
-        relic = self._get_relic()
+        if not self.device.app_is_running():
+            from tasks.login.login import Login
 
-        with self.config.multi_set():
-            self.config.stored.Credit.value = credit
-            self.config.stored.StallerJade.value = jade
-            self.config.stored.Relic.value = relic
+            Login(self.config, device=self.device).app_start()
+
+        if not hasattr(self.device, "image") or self.device.image is None:
+            self.device.screenshot()
+
+        updated_any = False
+
+        updated_any |= self._update_equipment_inventory(skip_first_screenshot=False)
+        updated_any |= self._update_secret_shop_resources(skip_first_screenshot=True)
+        updated_any |= self._update_combat_status(skip_first_screenshot=True)
+        updated_any |= self._update_arena_status(skip_first_screenshot=True)
+
+        self.ui_goto(page_main, skip_first_screenshot=True)
+        self._sync_legacy_item_storage()
+
+        if updated_any:
             self.config.task_delay(server_update=True)
-            # Sync to planner
-            require = self.config.cross_get('Dungeon.Planner.Item_Credit.total', default=0)
-            if require:
-                self.config.cross_set('Dungeon.Planner.Item_Credit.value', credit)
-                self.config.cross_set('Dungeon.Planner.Item_Credit.time', self.config.stored.Credit.time)
-                self.planner_write()
+            return True
+
+        self.config.task_delay(success=False)
+        return False

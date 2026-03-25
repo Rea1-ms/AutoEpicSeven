@@ -30,34 +30,6 @@
       "name": "Gestión de errores",
       "help": ""
     },
-    "Ornament": {
-      "name": "Ornamentos",
-      "help": "Se deben cumplir los siguientes requisitos:\n1. Borre manualmente Universo Diferenciado una vez esta semana y tenga un archivo guardado.\n2. Ingrese a la mazmorra una vez en el dispositivo actual para guardar el equipo de la mazmorra."
-    },
-    "DailyQuest": {
-      "name": "Misión diaria",
-      "help": ""
-    },
-    "BattlePass": {
-      "name": "Honor anónimo",
-      "help": ""
-    },
-    "Assignment": {
-      "name": "Encargos",
-      "help": ""
-    },
-    "DataUpdate": {
-      "name": "Actualizar panel",
-      "help": ""
-    },
-    "Freebies": {
-      "name": "Freebies",
-      "help": ""
-    },
-    "Gacha": {
-      "name": "Invocación",
-      "help": ""
-    },
     "MissionReward": {
       "name": "Recompensas de misión",
       "help": "Reclama las recompensas diarias y semanales desde la ventana de misiones."
@@ -65,6 +37,10 @@
     "Mail": {
       "name": "Correo por vencer",
       "help": "Ordena el buzón por tiempo restante ascendente y recoge los correos que vencen dentro de 1 hora o 1 día."
+    },
+    "DataUpdate": {
+      "name": "Actualizar panel",
+      "help": ""
     },
     "SanctuaryDaily": {
       "name": "Santuario - Diario",
@@ -74,17 +50,9 @@
       "name": "Gremio",
       "help": "Automatización del gremio: recompensa de inicio, apoyo, expedición y Jefe Mundial."
     },
-    "Combat": {
-      "name": "Combate diario",
-      "help": "Farmea Altar Espiritual o Cacería con el elemento y la dificultad elegidos, y luego inicia combate rápido o combate repetido en segundo plano."
-    },
     "Arena": {
       "name": "Arena",
       "help": "Entrar en arena y manejar la rama de recompensas de entrada."
-    },
-    "SecretShop": {
-      "name": "Tienda Secreta",
-      "help": ""
     },
     "Store": {
       "name": "Tienda",
@@ -94,6 +62,18 @@
       "name": "Regalo Mascota",
       "help": "Reclama el regalo de mascotas desde el menú. Tras cobrarlo, se volverá a programar en torno a 22 horas; si no está listo, usará la hora registrada o la actualización del servidor como respaldo."
     },
+    "SecretShop": {
+      "name": "Tienda Secreta",
+      "help": ""
+    },
+    "Combat": {
+      "name": "Combate diario",
+      "help": "Farmea Altar Espiritual o Cacería con el elemento y la dificultad elegidos, y luego inicia combate rápido o combate repetido en segundo plano."
+    },
+    "Gacha": {
+      "name": "Invocación",
+      "help": ""
+    },
     "Pets": {
       "name": "Tienda de mascotas",
       "help": ""
@@ -101,14 +81,6 @@
     "SanctuaryWeekly": {
       "name": "Santuario - Semanal",
       "help": "Módulo semanal de santuario con planificador independiente."
-    },
-    "Weekly": {
-      "name": "Ecos de la guerra",
-      "help": ""
-    },
-    "Rogue": {
-      "name": "Universo Simulado",
-      "help": ""
     },
     "SanctuaryMonthly": {
       "name": "Santuario - Mensual",
@@ -1294,6 +1266,30 @@
       "help": "Reclama el cofre de recompensas semanales cuando esté disponible."
     }
   },
+  "Mail": {
+    "_info": {
+      "name": "Ajustes de correo por vencer",
+      "help": "Ordena el buzón por tiempo restante ascendente y recoge correos próximos a vencer."
+    },
+    "CollectWithin": {
+      "name": "Recoger correos que vencen en",
+      "help": "",
+      "1h": "1 hora",
+      "1d": "1 día"
+    },
+    "LastCheckAt": {
+      "name": "Última revisión",
+      "help": ""
+    },
+    "LastRemainingText": {
+      "name": "Último texto superior restante",
+      "help": ""
+    },
+    "LastRemainingSince": {
+      "name": "Misma etiqueta restante desde",
+      "help": ""
+    }
+  },
   "SanctuaryMonthly": {
     "_info": {
       "name": "Santuario - Mensual",
@@ -1343,8 +1339,8 @@
       "help": "Entra en expedición y ejecuta los submódulos habilitados."
     },
     "TeamBattle": {
-      "name": "Guerra de gremio (pendiente)",
-      "help": "Por ahora solo entra en la página; OCR queda pendiente."
+      "name": "Guerra de gremio",
+      "help": "Entra en la guerra de gremio, limpia la pantalla de resultados y lee el conteo actual de ataques."
     },
     "WorldBoss": {
       "name": "Jefe mundial",
@@ -1409,8 +1405,24 @@
       "help": "Entra en expedición y ejecuta los submódulos habilitados."
     },
     "TeamBattle": {
-      "name": "Guerra de gremio (pendiente)",
-      "help": "Por ahora solo entra en la página; OCR queda pendiente."
+      "name": "Guerra de gremio",
+      "help": "Entra en la guerra de gremio, limpia la pantalla de resultados y lee el conteo actual de ataques."
+    },
+    "TeamBattleReminder": {
+      "name": "Activar recordatorio de guerra",
+      "help": "Durante una guerra activa, avisa al propietario si todavía quedan ataques sin usar cerca de la hora final configurada."
+    },
+    "TeamBattleReminderLeadMinutes": {
+      "name": "Anticipación del recordatorio",
+      "help": "Cuántos minutos antes del final de la guerra se empieza a revisar si quedan ataques sin usar.",
+      "30": "30 minutos",
+      "60": "60 minutos",
+      "120": "120 minutos",
+      "180": "180 minutos"
+    },
+    "TeamBattleReminderLastEnd": {
+      "name": "Último fin recordado de guerra",
+      "help": "Estado interno para evitar recordatorios duplicados."
     },
     "WorldBoss": {
       "name": "Jefe mundial",
@@ -1523,7 +1535,7 @@
   "StoreDaily": {
     "_info": {
       "name": "Compras diarias de tienda",
-      "help": "Objetos para comprar cada día."
+      "help": "Usa casillas para compras únicas y listas desplegables para compras con límite."
     },
     "BuyDailyFreeItem": {
       "name": "Comprar objeto gratis diario",
@@ -1538,26 +1550,44 @@
       "help": "Compra bandera de arena en la tienda de Amistad."
     },
     "BuyConquestMobility40": {
-      "name": "Comprar 40 de energía (Conquista)",
-      "help": "Compra el objeto de 40 de energía en la tienda de Conquista."
+      "name": "Cantidad de 40 de energía (Conquista)",
+      "help": "Cuántas veces comprar 40 de energía en la tienda de Conquista. Máximo 3.",
+      "0": "0",
+      "1": "1",
+      "2": "2",
+      "3": "3"
     }
   },
   "StoreWeekly": {
     "_info": {
       "name": "Compras semanales de tienda",
-      "help": "Objetos semanales o con límite de compra."
+      "help": "Usa casillas para compras únicas y listas desplegables para compras con límite."
     },
     "BuyConquestMorogora": {
       "name": "Comprar Morogora (Conquista)",
       "help": "Compra Morogora con límite semanal en la tienda de Conquista."
     },
+    "BuyFriendshipArtifactEnhancementStone": {
+      "name": "Cantidad de piedras de mejora de artefacto (Amistad)",
+      "help": "Cuántas piedras de mejora de artefacto comprar en la tienda de puntos de amistad. Máximo 3.",
+      "0": "0",
+      "1": "1",
+      "2": "2",
+      "3": "3"
+    },
     "BuyInheritanceMorogora": {
-      "name": "Comprar Morogora (Herencia)",
-      "help": "Compra Morogora semanal en la tienda de Piedras de Herencia."
+      "name": "Cantidad de Morogora (Herencia)",
+      "help": "Cuántas veces comprar Morogora en la tienda de Herencia. Máximo 2.",
+      "0": "0",
+      "1": "1",
+      "2": "2"
     },
     "BuyInheritancePotentialFragments": {
-      "name": "Comprar fragmentos de potencial (máx.)",
-      "help": "Compra fragmentos de potencial con cantidad máxima en Herencia."
+      "name": "Cantidad de fragmentos de potencial",
+      "help": "Cuántas veces comprar fragmentos de potencial en la tienda de Herencia. Máximo 2.",
+      "0": "0",
+      "1": "1",
+      "2": "2"
     }
   },
   "PetsGift": {
@@ -1802,6 +1832,56 @@
     },
     "StallerJade": {
       "name": "Jade",
+      "help": ""
+    }
+  },
+  "E7Dashboard": {
+    "_info": {
+      "name": "Panel de E7",
+      "help": "Campos de resumen de Epic Seven mostrados en el panel principal."
+    },
+    "E7Gold": {
+      "name": "Oro",
+      "help": ""
+    },
+    "E7Skystone": {
+      "name": "Skystone",
+      "help": ""
+    },
+    "E7Stamina": {
+      "name": "Energía",
+      "help": ""
+    },
+    "E7EquipmentInventory": {
+      "name": "Cantidad de Equipo",
+      "help": ""
+    },
+    "E7DailyActivity": {
+      "name": "Actividad Diaria",
+      "help": ""
+    },
+    "E7WeeklyActivity": {
+      "name": "Actividad Semanal",
+      "help": ""
+    },
+    "E7ArenaRank": {
+      "name": "Nivel del Pase de Arena",
+      "help": ""
+    },
+    "E7ArenaFlag": {
+      "name": "Banderas de arena",
+      "help": ""
+    },
+    "E7ConquestPoint": {
+      "name": "Puntos de conquista",
+      "help": ""
+    },
+    "E7ShadowCommission": {
+      "name": "Nivel de Comisión Sombría",
+      "help": ""
+    },
+    "E7TeamBattle": {
+      "name": "Ataques de guerra",
       "help": ""
     }
   },

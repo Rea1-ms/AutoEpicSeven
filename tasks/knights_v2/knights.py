@@ -96,6 +96,7 @@ class KnightsV2(
 
     def run(self) -> bool:
         logger.hr("Knights V2", level=1)
+        self._reset_team_battle_status_runtime()
 
         if not self.device.app_is_running():
             from tasks.login.login import Login
@@ -106,7 +107,8 @@ class KnightsV2(
         run_weekly_task = self.config.KnightsBasic_WeeklyTask
         run_support_donate = self.config.KnightsDonate_Donate
         run_support_request = self.config.KnightsDonate_Support
-        run_expedition = self.config.KnightsExpedition_Expedition
+        run_team_battle = self.config.KnightsExpedition_TeamBattle
+        run_expedition = self.config.KnightsExpedition_Expedition or run_team_battle
         run_world_boss = self.config.KnightsExpedition_WorldBoss
 
         if not any(
@@ -142,10 +144,15 @@ class KnightsV2(
                 run_donate=run_support_donate,
                 run_request=run_support_request,
             ) and success
-            self.ui_goto(page_knights_v2, skip_first_screenshot=True)
+            if not run_weekly_task:
+                self.ui_goto(page_knights_v2, skip_first_screenshot=True)
         if run_weekly_task:
             success = self.run_weekly_task(skip_first_screenshot=True) and success
             self.ui_goto(page_knights_v2, skip_first_screenshot=True)
 
-        self.config.task_delay(server_update=True)
+        reminder_target = self._get_team_battle_next_delay_target()
+        if reminder_target is not None:
+            self.config.task_delay(server_update=True, target=reminder_target)
+        else:
+            self.config.task_delay(server_update=True)
         return success

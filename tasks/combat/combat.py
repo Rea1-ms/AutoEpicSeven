@@ -4,12 +4,14 @@ from module.base.button import ButtonWrapper
 from module.base.timer import Timer
 from module.exception import RequestHumanTakeover
 from module.logger import logger
+from module.ocr.ocr import Digit
 from tasks.base.assets.assets_base_page import BACK, MAIN_GOTO_COMBAT
 from tasks.base.assets.assets_base_popup import (
     NETWORK_ERROR_ABNORMAL,
     NETWORK_ERROR_DISCONNECT,
     TOUCH_TO_CLOSE,
 )
+from tasks.base.resource_bar import RESOURCE_BAR_LAYOUT_COMBAT, ResourceBarMixin
 from tasks.base.ui import UI
 from tasks.combat.assets.assets_combat_action import COMBAT_START
 from tasks.combat.assets import assets_combat_configs_element_altar as altar_elements
@@ -19,6 +21,7 @@ from tasks.combat.assets.assets_combat_configs_entry import (
     COMMON_ENTRY,
     HUNT,
     HUNT_CHECK,
+    OCR_SEASON_CHECK,
     SEASON_ENTRY,
     SEASON_CHECK,
     SPIRIT_ALTAR,
@@ -99,7 +102,17 @@ COMBAT_PLANS = {
 }
 
 
-class Combat(UI):
+class CombatDigit(Digit):
+    def after_process(self, result):
+        result = result.replace("O", "0").replace("o", "0")
+        result = result.replace("I", "1").replace("l", "1").replace("|", "1")
+        result = result.replace(" ", "")
+        return super().after_process(result)
+
+
+class Combat(ResourceBarMixin, UI):
+    COMBAT_RESOURCE_BAR_TIMEOUT_SECONDS = 1
+    COMBAT_RESOURCE_BAR_TIMEOUT_COUNT = 2
     COMBAT_RUNTIME_PATH = "Combat.CombatRuntime.Session"
     COMBAT_CHECK_SIMILARITY = 0.8
     COMBAT_STATE_COLOR_THRESHOLD = 30
@@ -265,6 +278,33 @@ class Combat(UI):
             )
             raise RequestHumanTakeover
 
+    def _ocr_shadow_commission_level(self) -> int:
+        level = CombatDigit(
+            OCR_SEASON_CHECK,
+            lang=self._ocr_lang(),
+            name="ShadowCommissionLevel",
+        ).ocr_single_line(self.device.image)
+        logger.attr("ShadowCommissionLevel", level)
+        if 0 < level <= self.config.stored.E7ShadowCommission.FIXED_TOTAL:
+            self.config.stored.E7ShadowCommission.set(level)
+        return level
+
+    def _update_combat_dashboard_snapshot(self, skip_first_screenshot=True) -> bool:
+        updated = False
+        if self.write_resource_bar_status(
+            self.ocr_resource_bar_status(
+                layout=RESOURCE_BAR_LAYOUT_COMBAT,
+                layout_name="Combat",
+                skip_first_screenshot=skip_first_screenshot,
+                timeout_seconds=self.COMBAT_RESOURCE_BAR_TIMEOUT_SECONDS,
+                timeout_count=self.COMBAT_RESOURCE_BAR_TIMEOUT_COUNT,
+            )
+        ):
+            updated = True
+        if self._ocr_shadow_commission_level() > 0:
+            updated = True
+        return updated
+
     def _adopt_existing_background_repeat_combat(self) -> bool:
         if self._combat_runtime_active():
             return False
@@ -281,6 +321,7 @@ class Combat(UI):
         logger.info(f"Combat: enter {plan.name}")
         timeout = Timer(self.COMBAT_ENTRY_TIMEOUT_SECONDS, count=80).start()
         left_prepare = False
+        season_snapshot_done = False
 
         while 1:
             if skip_first_screenshot:
@@ -309,6 +350,9 @@ class Combat(UI):
                     continue
 
             if self._is_combat_season_board():
+                if not season_snapshot_done:
+                    self._update_combat_dashboard_snapshot(skip_first_screenshot=True)
+                    season_snapshot_done = True
                 if self.appear_then_click(COMMON_ENTRY, interval=1):
                     timeout.reset()
                     continue
