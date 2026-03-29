@@ -1462,7 +1462,13 @@
   "Combat": {
     "_info": {
       "name": "Ajustes de combate diario",
-      "help": "Configura el tipo de dominio, elemento, dificultad y si debe usarse combate rápido."
+      "help": "Configura el modo, tipo, elemento y dificultad del combate."
+    },
+    "Mode": {
+      "name": "Modo",
+      "help": "Elige entre el modo de tarea por cantidad fija y el modo de evento para farmeo prolongado.",
+      "Task": "Tarea",
+      "Event": "Evento"
     },
     "Domain": {
       "name": "Dominio",

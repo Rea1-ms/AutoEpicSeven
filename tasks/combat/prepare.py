@@ -1,6 +1,6 @@
 from module.base.timer import Timer
 from module.logger import logger
-from module.ocr.ocr import Digit
+from module.ocr.ocr import Digit, DigitCounter
 from tasks.combat.assets.assets_combat_fast_combat import (
     FAST_COMBAT_LOCKED,
     FAST_COMBAT_TIMES_MINUS,
@@ -17,6 +17,14 @@ from tasks.combat.assets.assets_combat_repeat_menu import (
 
 
 class CombatPrepareDigit(Digit):
+    def after_process(self, result):
+        result = result.replace("O", "0").replace("o", "0")
+        result = result.replace("I", "1").replace("l", "1").replace("|", "1")
+        result = result.replace(" ", "")
+        return super().after_process(result)
+
+
+class CombatPrepareCounter(DigitCounter):
     def after_process(self, result):
         result = result.replace("O", "0").replace("o", "0")
         result = result.replace("I", "1").replace("l", "1").replace("|", "1")
@@ -96,6 +104,16 @@ class CombatPrepare:
         ).ocr_single_line(self.device.image)
         logger.attr("RepeatCombatTimes", value)
         return value
+
+    def _ocr_repeat_combat_counter(self) -> tuple[int, int, int]:
+        current, remain, total = CombatPrepareCounter(
+            OCR_REPEAT_COMBAT_TIMES,
+            lang=self._ocr_lang(),
+            name="RepeatCombatTimesCounter",
+        ).ocr_single_line(self.device.image)
+        logger.attr("RepeatCombatTimesCurrent", current)
+        logger.attr("RepeatCombatTimesTotal", total)
+        return current, remain, total
 
     def _is_repeat_count_controls_open(self) -> bool:
         return self.appear(REPEAT_COMBAT_TIMES_PLUS) and self.appear(REPEAT_COMBAT_TIMES_MINUS)
@@ -196,7 +214,7 @@ class CombatPrepare:
             click_interval.reset()
             timeout.reset()
 
-    def _prepare_fast_combat(self, skip_first_screenshot=True) -> str:
+    def _prepare_fast_combat(self, use_max=False, skip_first_screenshot=True) -> str:
         logger.hr("Combat Prepare Fast", level=2)
         timeout = Timer(self.COMBAT_COUNT_TIMEOUT_SECONDS, count=80).start()
         zero_confirm = Timer(self.COMBAT_ZERO_CONFIRM_SECONDS, count=2).clear()
@@ -239,7 +257,7 @@ class CombatPrepare:
 
             zero_confirm.clear()
 
-            target = min(self._combat_fast_count(), remaining)
+            target = remaining if use_max else min(self._combat_fast_count(), remaining)
             logger.attr("CombatFastCombatTargetCount", target)
             if self._set_prepare_count(
                 target,
@@ -252,7 +270,7 @@ class CombatPrepare:
                 return "ready"
             return "failed"
 
-    def _prepare_repeat_combat(self, skip_first_screenshot=True) -> bool:
+    def _prepare_repeat_combat(self, skip_first_screenshot=True, use_max=False) -> bool:
         logger.hr("Combat Prepare Repeat", level=2)
         timeout = Timer(self.COMBAT_COUNT_TIMEOUT_SECONDS, count=80).start()
         control_pending = Timer(0.8, count=2).clear()
@@ -286,11 +304,19 @@ class CombatPrepare:
                     continue
 
             if controls_open:
-                target = self._combat_repeat_count()
+                if use_max:
+                    _, _, total = self._ocr_repeat_combat_counter()
+                    if total <= 0:
+                        continue
+                    target = total
+                    ocr_getter = lambda: self._ocr_repeat_combat_counter()[0]
+                else:
+                    target = self._combat_repeat_count()
+                    ocr_getter = self._ocr_repeat_combat_times
                 logger.attr("CombatRepeatCombatTargetCount", target)
                 return self._set_prepare_count(
                     target,
-                    self._ocr_repeat_combat_times,
+                    ocr_getter,
                     REPEAT_COMBAT_TIMES_PLUS,
                     REPEAT_COMBAT_TIMES_MINUS,
                     "RepeatCombatTimes",

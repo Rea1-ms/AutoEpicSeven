@@ -980,7 +980,11 @@ class ConfigUpdater:
         if deep_get(data, 'Arena.Arena.NPCCombat', default=False) is False:
             yield 'Arena.Arena.NPCCombatFastBattle'
             yield 'Arena.Arena.NPCCombatCount'
-        if deep_get(data, 'Combat.Combat.FastCombat', default=True) is False:
+        if deep_get(data, 'Combat.Combat.Mode', default='Task') != 'Task':
+            yield 'Combat.Combat.FastCombat'
+            yield 'Combat.Combat.FastCombatCount'
+            yield 'Combat.Combat.RepeatCombatCount'
+        elif deep_get(data, 'Combat.Combat.FastCombat', default=True) is False:
             yield 'Combat.Combat.FastCombatCount'
         if deep_get(data, 'Combat.Combat.Domain', default='Hunt') != 'SpiritAltar':
             yield 'Combat.Combat.AltarGrade'

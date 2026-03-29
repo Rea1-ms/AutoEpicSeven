@@ -789,6 +789,14 @@
       }
     },
     "Combat": {
+      "Mode": {
+        "type": "select",
+        "value": "Task",
+        "option": [
+          "Task",
+          "Event"
+        ]
+      },
       "Domain": {
         "type": "select",
         "value": "Hunt",
@@ -838,7 +846,7 @@
       },
       "RepeatCombatCount": {
         "type": "input",
-        "value": 10
+        "value": 5
       }
     },
     "CombatRuntime": {

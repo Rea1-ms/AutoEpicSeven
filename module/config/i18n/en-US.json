@@ -1462,7 +1462,13 @@
   "Combat": {
     "_info": {
       "name": "Daily Combat Settings",
-      "help": "Configure the domain, element, grade, and whether fast combat should be used."
+      "help": "Configure combat mode, domain, element, and grade."
+    },
+    "Mode": {
+      "name": "Mode",
+      "help": "Choose between fixed-count task mode and long-running event mode.",
+      "Task": "Task",
+      "Event": "Event"
     },
     "Domain": {
       "name": "Domain",
