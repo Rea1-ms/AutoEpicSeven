@@ -27,16 +27,20 @@ class CombatPrepareDigit(Digit):
 class CombatPrepare:
     COMBAT_COUNT_TIMEOUT_SECONDS = 18
     COMBAT_COUNT_CLICK_INTERVAL_SECONDS = 0.8
-    COMBAT_COUNT_BATCH_CLICK_INTERVAL = (0.1, 0.2)
+    COMBAT_COUNT_BATCH_CLICK_INTERVAL = (0.2, 0.3)
+    COMBAT_COUNT_POST_CLICK_SETTLE_SECONDS = 0.6
     COMBAT_ZERO_CONFIRM_SECONDS = 0.4
     COMBAT_COUNT_STABLE_SECONDS = 2.5
     COMBAT_DEFAULT_FAST_COUNT = 10
+    COMBAT_MAX_FAST_COUNT = 10
     COMBAT_DEFAULT_REPEAT_COUNT = 10
+    COMBAT_MAX_REPEAT_COUNT = 30
 
     def _combat_fast_count(self) -> int:
         return self._sanitize_combat_count(
             getattr(self.config, "Combat_FastCombatCount", self.COMBAT_DEFAULT_FAST_COUNT),
             default=self.COMBAT_DEFAULT_FAST_COUNT,
+            max_value=self.COMBAT_MAX_FAST_COUNT,
             name="FastCombatCount",
         )
 
@@ -44,11 +48,12 @@ class CombatPrepare:
         return self._sanitize_combat_count(
             getattr(self.config, "Combat_RepeatCombatCount", self.COMBAT_DEFAULT_REPEAT_COUNT),
             default=self.COMBAT_DEFAULT_REPEAT_COUNT,
+            max_value=self.COMBAT_MAX_REPEAT_COUNT,
             name="RepeatCombatCount",
         )
 
     @staticmethod
-    def _sanitize_combat_count(value, default: int, name: str) -> int:
+    def _sanitize_combat_count(value, default: int, max_value: int, name: str) -> int:
         try:
             value = int(value)
         except (TypeError, ValueError):
@@ -58,6 +63,10 @@ class CombatPrepare:
         if value <= 0:
             logger.warning(f"Combat: {name} <= 0, clamp to 1")
             return 1
+
+        if value > max_value:
+            logger.warning(f"Combat: {name}={value} exceeds max {max_value}, clamp to {max_value}")
+            return max_value
 
         return value
 
@@ -120,6 +129,7 @@ class CombatPrepare:
 
         timeout = Timer(self.COMBAT_COUNT_TIMEOUT_SECONDS, count=80).start()
         click_interval = Timer(self.COMBAT_COUNT_CLICK_INTERVAL_SECONDS, count=0).start()
+        post_click_settle = Timer(self.COMBAT_COUNT_POST_CLICK_SETTLE_SECONDS, count=2).clear()
         stable_timer = Timer(self.COMBAT_COUNT_STABLE_SECONDS, count=4).clear()
         last_value = None
 
@@ -135,8 +145,15 @@ class CombatPrepare:
 
             if additional_handler():
                 timeout.reset()
+                post_click_settle.clear()
                 stable_timer.clear()
                 last_value = None
+                continue
+
+            if post_click_settle.started() and not post_click_settle.reached():
+                continue
+
+            if last_value is not None and not click_interval.reached():
                 continue
 
             current = ocr_getter()
@@ -173,6 +190,9 @@ class CombatPrepare:
                     interval=self.COMBAT_COUNT_BATCH_CLICK_INTERVAL,
                 )
 
+            post_click_settle.reset()
+            stable_timer.clear()
+            last_value = None
             click_interval.reset()
             timeout.reset()
 

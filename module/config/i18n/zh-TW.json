@@ -1500,12 +1500,12 @@
       "help": "開啟後優先使用快速戰鬥；關閉後啟用寵物托管重複戰鬥並最小化到主畫面。"
     },
     "FastCombatCount": {
-      "name": "Combat.FastCombatCount.name",
-      "help": "Combat.FastCombatCount.help"
+      "name": "快速戰鬥次數",
+      "help": "快速戰鬥的目標次數。"
     },
     "RepeatCombatCount": {
-      "name": "Combat.RepeatCombatCount.name",
-      "help": "Combat.RepeatCombatCount.help"
+      "name": "重複戰鬥次數",
+      "help": "寵物託管重複戰鬥的目標次數。"
     }
   },
   "CombatRuntime": {

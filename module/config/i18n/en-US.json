@@ -1500,12 +1500,12 @@
       "help": "Enable fast combat when available. If disabled, the task uses repeat combat and minimizes it to the main page."
     },
     "FastCombatCount": {
-      "name": "Combat.FastCombatCount.name",
-      "help": "Combat.FastCombatCount.help"
+      "name": "Fast Combat Count",
+      "help": "Target fast combat count."
     },
     "RepeatCombatCount": {
-      "name": "Combat.RepeatCombatCount.name",
-      "help": "Combat.RepeatCombatCount.help"
+      "name": "Repeat Combat Count",
+      "help": "Target repeat combat count for pet repeat battle."
     }
   },
   "CombatRuntime": {

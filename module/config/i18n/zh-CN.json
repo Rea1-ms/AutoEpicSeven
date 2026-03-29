@@ -1500,12 +1500,12 @@
       "help": "开启后优先使用快速战斗；关闭后启用宠物托管重复战斗并最小化到主界面。"
     },
     "FastCombatCount": {
-      "name": "Combat.FastCombatCount.name",
-      "help": "Combat.FastCombatCount.help"
+      "name": "快速战斗次数",
+      "help": "快速战斗的目标次数。"
     },
     "RepeatCombatCount": {
-      "name": "Combat.RepeatCombatCount.name",
-      "help": "Combat.RepeatCombatCount.help"
+      "name": "重复战斗次数",
+      "help": "宠物托管重复战斗的目标次数。"
     }
   },
   "CombatRuntime": {

@@ -1500,12 +1500,12 @@
       "help": "Activa combate rápido cuando esté disponible. Si se desactiva, la tarea inicia combate repetido y lo minimiza a la pantalla principal."
     },
     "FastCombatCount": {
-      "name": "Combat.FastCombatCount.name",
-      "help": "Combat.FastCombatCount.help"
+      "name": "Cantidad de combate rapido",
+      "help": "Cantidad objetivo de combate rapido."
     },
     "RepeatCombatCount": {
-      "name": "Combat.RepeatCombatCount.name",
-      "help": "Combat.RepeatCombatCount.help"
+      "name": "Cantidad de combate repetido",
+      "help": "Cantidad objetivo de combate repetido para la repeticion con mascota."
     }
   },
   "CombatRuntime": {
