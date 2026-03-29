@@ -51,6 +51,26 @@ FAST_COMBAT_RESULT_CLOSE = ButtonWrapper(
     ),
     global_en=None,
 )
+FAST_COMBAT_TIMES_MINUS = ButtonWrapper(
+    name='FAST_COMBAT_TIMES_MINUS',
+    share=Button(
+        file='./assets/share/combat/fast_combat/FAST_COMBAT_TIMES_MINUS.png',
+        area=(1222, 556, 1245, 577),
+        search=(1202, 536, 1265, 597),
+        color=(64, 63, 65),
+        button=(1222, 556, 1245, 577),
+    ),
+)
+FAST_COMBAT_TIMES_PLUS = ButtonWrapper(
+    name='FAST_COMBAT_TIMES_PLUS',
+    share=Button(
+        file='./assets/share/combat/fast_combat/FAST_COMBAT_TIMES_PLUS.png',
+        area=(946, 562, 967, 583),
+        search=(926, 542, 987, 603),
+        color=(53, 51, 55),
+        button=(946, 562, 967, 583),
+    ),
+)
 FAST_COMBAT_WINDOW = ButtonWrapper(
     name='FAST_COMBAT_WINDOW',
     share=Button(
@@ -59,5 +79,25 @@ FAST_COMBAT_WINDOW = ButtonWrapper(
         search=(130, 115, 199, 188),
         color=(95, 95, 95),
         button=(150, 135, 179, 168),
+    ),
+)
+OCR_FAST_COMBAT_CURRENT_TIMES = ButtonWrapper(
+    name='OCR_FAST_COMBAT_CURRENT_TIMES',
+    share=Button(
+        file='./assets/share/combat/fast_combat/OCR_FAST_COMBAT_CURRENT_TIMES.png',
+        area=(1061, 551, 1128, 582),
+        search=(1041, 531, 1148, 602),
+        color=(71, 70, 74),
+        button=(1061, 551, 1128, 582),
+    ),
+)
+OCR_FAST_COMBAT_REMAINING_TIMES = ButtonWrapper(
+    name='OCR_FAST_COMBAT_REMAINING_TIMES',
+    share=Button(
+        file='./assets/share/combat/fast_combat/OCR_FAST_COMBAT_REMAINING_TIMES.png',
+        area=(1222, 497, 1251, 519),
+        search=(1202, 477, 1271, 539),
+        color=(80, 80, 83),
+        button=(1222, 497, 1251, 519),
     ),
 )

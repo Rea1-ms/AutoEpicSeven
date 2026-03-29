@@ -322,6 +322,8 @@ Combat:
     value: Hell
     option: [ Mid, High, Hell, Dimensional ]
   FastCombat: true
+  FastCombatCount: 10
+  RepeatCombatCount: 10
 CombatRuntime:
   Session:
     keepvalue: true

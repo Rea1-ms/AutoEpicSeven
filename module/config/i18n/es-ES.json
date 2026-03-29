@@ -1498,6 +1498,14 @@
     "FastCombat": {
       "name": "Usar combate rápido",
       "help": "Activa combate rápido cuando esté disponible. Si se desactiva, la tarea inicia combate repetido y lo minimiza a la pantalla principal."
+    },
+    "FastCombatCount": {
+      "name": "Combat.FastCombatCount.name",
+      "help": "Combat.FastCombatCount.help"
+    },
+    "RepeatCombatCount": {
+      "name": "Combat.RepeatCombatCount.name",
+      "help": "Combat.RepeatCombatCount.help"
     }
   },
   "CombatRuntime": {

@@ -1498,6 +1498,14 @@
     "FastCombat": {
       "name": "高速戦闘を使用",
       "help": "有効時は高速戦闘を優先します。無効時はペット委任の連続戦闘を開始し、主画面へ最小化します。"
+    },
+    "FastCombatCount": {
+      "name": "Combat.FastCombatCount.name",
+      "help": "Combat.FastCombatCount.help"
+    },
+    "RepeatCombatCount": {
+      "name": "Combat.RepeatCombatCount.name",
+      "help": "Combat.RepeatCombatCount.help"
     }
   },
   "CombatRuntime": {

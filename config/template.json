@@ -199,7 +199,9 @@
       "Element": "Water",
       "AltarGrade": "Hell",
       "HuntGrade": "Hell",
-      "FastCombat": true
+      "FastCombat": true,
+      "FastCombatCount": 10,
+      "RepeatCombatCount": 10
     },
     "CombatRuntime": {
       "Session": {}

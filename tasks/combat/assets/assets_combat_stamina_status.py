@@ -27,40 +27,40 @@ OCR_LEIF = ButtonWrapper(
     name='OCR_LEIF',
     share=Button(
         file='./assets/share/combat/stamina/status/OCR_LEIF.png',
-        area=(654, 96, 749, 124),
-        search=(634, 76, 769, 144),
-        color=(31, 42, 41),
-        button=(654, 96, 749, 124),
+        area=(682, 96, 750, 122),
+        search=(662, 76, 770, 142),
+        color=(26, 31, 36),
+        button=(682, 96, 750, 122),
     ),
 )
 OCR_SKYSTONE = ButtonWrapper(
     name='OCR_SKYSTONE',
     share=Button(
         file='./assets/share/combat/stamina/status/OCR_SKYSTONE.png',
-        area=(752, 94, 863, 126),
-        search=(732, 74, 883, 146),
-        color=(33, 43, 52),
-        button=(752, 94, 863, 126),
+        area=(769, 94, 840, 126),
+        search=(749, 74, 860, 146),
+        color=(28, 32, 38),
+        button=(769, 94, 840, 126),
     ),
 )
 OCR_SPECTRAL_CORE = ButtonWrapper(
     name='OCR_SPECTRAL_CORE',
     share=Button(
         file='./assets/share/combat/stamina/status/OCR_SPECTRAL_CORE.png',
-        area=(469, 94, 562, 124),
-        search=(449, 74, 582, 144),
-        color=(38, 23, 23),
-        button=(469, 94, 562, 124),
+        area=(503, 96, 560, 124),
+        search=(483, 76, 580, 144),
+        color=(15, 20, 26),
+        button=(503, 96, 560, 124),
     ),
 )
 OCR_STAMINA = ButtonWrapper(
     name='OCR_STAMINA',
     share=Button(
         file='./assets/share/combat/stamina/status/OCR_STAMINA.png',
-        area=(563, 91, 653, 126),
-        search=(543, 71, 673, 146),
-        color=(46, 47, 48),
-        button=(563, 91, 653, 126),
+        area=(586, 96, 653, 124),
+        search=(566, 76, 673, 144),
+        color=(26, 31, 36),
+        button=(586, 96, 653, 124),
     ),
 )
 SKYSTONE_ICON = ButtonWrapper(

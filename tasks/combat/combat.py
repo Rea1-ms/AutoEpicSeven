@@ -13,6 +13,7 @@ from tasks.base.assets.assets_base_popup import (
 )
 from tasks.base.resource_bar import RESOURCE_BAR_LAYOUT_COMBAT, ResourceBarMixin
 from tasks.base.ui import UI
+from tasks.combat.prepare import CombatPrepare
 from tasks.combat.assets.assets_combat_action import COMBAT_START
 from tasks.combat.assets import assets_combat_configs_element_altar as altar_elements
 from tasks.combat.assets import assets_combat_configs_element_hunt as hunt_elements
@@ -110,7 +111,7 @@ class CombatDigit(Digit):
         return super().after_process(result)
 
 
-class Combat(ResourceBarMixin, UI):
+class Combat(CombatPrepare, ResourceBarMixin, UI):
     COMBAT_RESOURCE_BAR_TIMEOUT_SECONDS = 1
     COMBAT_RESOURCE_BAR_TIMEOUT_COUNT = 2
     COMBAT_RUNTIME_PATH = "Combat.CombatRuntime.Session"
@@ -849,6 +850,8 @@ class Combat(ResourceBarMixin, UI):
         logger.attr("CombatElement", self._combat_element())
         logger.attr("CombatGrade", self._combat_grade())
         logger.attr("CombatFastCombat", use_fast_combat)
+        logger.attr("CombatFastCombatCount", self._combat_fast_count())
+        logger.attr("CombatRepeatCombatCount", self._combat_repeat_count())
 
         success = self._enter_stage_page(plan, skip_first_screenshot=True)
         if success:
@@ -859,6 +862,17 @@ class Combat(ResourceBarMixin, UI):
         if success and use_fast_combat and self._is_fast_combat_locked():
             logger.warning("Combat: fast combat locked, fallback to repeat combat")
             use_fast_combat = False
+
+        if success:
+            if use_fast_combat:
+                fast_prepare = self._prepare_fast_combat(skip_first_screenshot=True)
+                if fast_prepare == "fallback":
+                    use_fast_combat = False
+                else:
+                    success = fast_prepare == "ready"
+
+        if success and not use_fast_combat:
+            success = self._prepare_repeat_combat(skip_first_screenshot=True)
 
         if success:
             if use_fast_combat:

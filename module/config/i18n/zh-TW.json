@@ -1498,6 +1498,14 @@
     "FastCombat": {
       "name": "啟用快速戰鬥",
       "help": "開啟後優先使用快速戰鬥；關閉後啟用寵物托管重複戰鬥並最小化到主畫面。"
+    },
+    "FastCombatCount": {
+      "name": "Combat.FastCombatCount.name",
+      "help": "Combat.FastCombatCount.help"
+    },
+    "RepeatCombatCount": {
+      "name": "Combat.RepeatCombatCount.name",
+      "help": "Combat.RepeatCombatCount.help"
     }
   },
   "CombatRuntime": {

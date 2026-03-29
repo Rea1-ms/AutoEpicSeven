@@ -831,6 +831,14 @@
       "FastCombat": {
         "type": "checkbox",
         "value": true
+      },
+      "FastCombatCount": {
+        "type": "input",
+        "value": 10
+      },
+      "RepeatCombatCount": {
+        "type": "input",
+        "value": 10
       }
     },
     "CombatRuntime": {

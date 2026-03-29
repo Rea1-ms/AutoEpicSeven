@@ -220,6 +220,8 @@ class GeneratedConfig:
     Combat_AltarGrade = 'Hell'  # Pri, Mid, High, Hell
     Combat_HuntGrade = 'Hell'  # Mid, High, Hell, Dimensional
     Combat_FastCombat = True
+    Combat_FastCombatCount = 10
+    Combat_RepeatCombatCount = 10
 
     # Group `CombatRuntime`
     CombatRuntime_Session = {}

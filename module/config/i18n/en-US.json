@@ -1498,6 +1498,14 @@
     "FastCombat": {
       "name": "Use Fast Combat",
       "help": "Enable fast combat when available. If disabled, the task uses repeat combat and minimizes it to the main page."
+    },
+    "FastCombatCount": {
+      "name": "Combat.FastCombatCount.name",
+      "help": "Combat.FastCombatCount.help"
+    },
+    "RepeatCombatCount": {
+      "name": "Combat.RepeatCombatCount.name",
+      "help": "Combat.RepeatCombatCount.help"
     }
   },
   "CombatRuntime": {
