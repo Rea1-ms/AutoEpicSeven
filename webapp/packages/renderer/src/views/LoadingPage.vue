@@ -3,7 +3,7 @@
     <ASpin
       dot
       :size="30"
-      tip="SRC Loading..."
+      tip="AES Loading..."
     />
   </div>
 </template>
