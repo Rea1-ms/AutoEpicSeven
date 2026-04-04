@@ -1,7 +1,7 @@
 {
   "Menu": {
     "Alas": {
-      "name": "SRC",
+      "name": "AES",
       "help": ""
     },
     "Daily": {
@@ -23,7 +23,7 @@
   },
   "Task": {
     "Alas": {
-      "name": "SRC Settings",
+      "name": "AES Settings",
       "help": ""
     },
     "Restart": {
@@ -231,7 +231,7 @@
     },
     "OnePushConfig": {
       "name": "Error notify config",
-      "help": "When Alas cannot handle exception, send a message through Onepush. Configuration document: \nhttps://github.com/LmeSzinc/AzurLaneAutoScript/wiki/Onepush-configuration-%5BEN%5D"
+      "help": "When AES cannot handle exception, send a message through Onepush. Configuration document: \nhttps://github.com/LmeSzinc/AzurLaneAutoScript/wiki/Onepush-configuration-%5BEN%5D"
     }
   },
   "Optimization": {
@@ -2191,19 +2191,19 @@
       "UpToDate": "Latest version",
       "HaveUpdate": "A new version is available",
       "UpdateStart": "Start update",
-      "UpdateWait": "Waiting for all alas complete current task",
+      "UpdateWait": "Waiting for all AES complete current task",
       "UpdateRun": "Updating",
       "UpdateSuccess": "Update succeeded, restarting",
       "UpdateFailed": "Update failed. Logs can be found in ./log/*_gui.txt",
       "UpdateChecking": "Checking for updates",
-      "UpdateCancel": "Update canceled, restarting Alas",
+      "UpdateCancel": "Update canceled, restarting AES",
       "UpdateFinish": "Update succeeded, please restart manually",
       "Local": "Local",
       "Upstream": "Upstream",
       "Author": "Author",
       "Time": "Commit time",
       "Message": "Commit message",
-      "DisabledWarn": "Updater module is disabled. You need to manually restart Alas to update",
+      "DisabledWarn": "Updater module is disabled. You need to manually restart AES to update",
       "DetailedHistory": "Detailed Commit History"
     },
     "Remote": {

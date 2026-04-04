@@ -2188,7 +2188,7 @@
       "InvalidPrefixTemplate": "設定ファイル名は temlpate で始めることはできません"
     },
     "Update": {
-      "UpToDate": "今Alasは最新バージョンです",
+      "UpToDate": "今AESは最新バージョンです",
       "HaveUpdate": "新しいアップデータがあります",
       "UpdateStart": "アップデータ開始",
       "UpdateWait": "全てのプロセスの完了を待っています",
@@ -2203,7 +2203,7 @@
       "Author": "提出者",
       "Time": "提出時間",
       "Message": "提出内容",
-      "DisabledWarn": "アップデータモジュールは稼働されませんのでAlasを再起動してください",
+      "DisabledWarn": "アップデータモジュールは稼働されませんのでAESを再起動してください",
       "DetailedHistory": "詳しい提出履歴"
     },
     "Remote": {
