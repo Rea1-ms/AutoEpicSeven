@@ -1,7 +1,7 @@
 {
   "Menu": {
     "Alas": {
-      "name": "SRC",
+      "name": "AES",
       "help": ""
     },
     "Daily": {
@@ -23,7 +23,7 @@
   },
   "Task": {
     "Alas": {
-      "name": "SRC设置",
+      "name": "AES设置",
       "help": ""
     },
     "Restart": {
@@ -2191,19 +2191,19 @@
       "UpToDate": "已是最新版本",
       "HaveUpdate": "有新版本可用",
       "UpdateStart": "开始更新",
-      "UpdateWait": "等待所有 Alas 完成当前任务",
+      "UpdateWait": "等待所有 AES 完成当前任务",
       "UpdateRun": "更新中",
       "UpdateSuccess": "更新成功，正在重启",
       "UpdateFailed": "更新失败，可在./log/*_gui.txt中找到错误日志",
       "UpdateChecking": "检查更新中",
-      "UpdateCancel": "取消更新，重启 Alas 中",
+      "UpdateCancel": "取消更新，重启 AES 中",
       "UpdateFinish": "更新成功，请手动重启",
       "Local": "本地",
       "Upstream": "上游仓库",
       "Author": "作者",
       "Time": "提交时间",
       "Message": "提交信息",
-      "DisabledWarn": "更新模块未启用，你需要手动重启 Alas 进行更新",
+      "DisabledWarn": "更新模块未启用，你需要手动重启 AES 进行更新",
       "DetailedHistory": "详细提交历史"
     },
     "Remote": {

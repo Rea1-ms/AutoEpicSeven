@@ -1,7 +1,7 @@
 {
   "Menu": {
     "Alas": {
-      "name": "SRC",
+      "name": "AES",
       "help": ""
     },
     "Daily": {
@@ -23,7 +23,7 @@
   },
   "Task": {
     "Alas": {
-      "name": "Ajustes de SRC",
+      "name": "Ajustes de AES",
       "help": ""
     },
     "Restart": {
@@ -231,7 +231,7 @@
     },
     "OnePushConfig": {
       "name": "Configuración para notificar errores",
-      "help": "Cuando SRC no puede manejar un error, envía un mensaje automáticamente. Puedes leer más información sobre este ajuste aquí:\nhttps://github.com/LmeSzinc/AzurLaneAutoScript/wiki/Onepush-configuration-%5BEN%5D"
+      "help": "Cuando AES no puede manejar un error, envía un mensaje automáticamente. Puedes leer más información sobre este ajuste aquí:\nhttps://github.com/LmeSzinc/AzurLaneAutoScript/wiki/Onepush-configuration-%5BEN%5D"
     }
   },
   "Optimization": {
@@ -2191,12 +2191,12 @@
       "UpToDate": "Última versión",
       "HaveUpdate": "Nueva versión disponible",
       "UpdateStart": "Empezar actualización",
-      "UpdateWait": "Esperando a que SRC complete todas las tareas",
+      "UpdateWait": "Esperando a que AES complete todas las tareas",
       "UpdateRun": "Actualizando",
       "UpdateSuccess": "Actualización exitosa, reiniciando...",
       "UpdateFailed": "La actualización ha fallado. Puedes ver más detalles en ./log/*_gui.txt",
       "UpdateChecking": "Comprobando actualizaciones",
-      "UpdateCancel": "Actualización cancelada, reiniciando SRC",
+      "UpdateCancel": "Actualización cancelada, reiniciando AES",
       "UpdateFinish": "Actualización exitosa, reinicia manualmente por favor",
       "Local": "Local",
       "Upstream": "Remoto",
