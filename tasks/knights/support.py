@@ -3,22 +3,25 @@ from dataclasses import dataclass
 from module.base.button import ButtonWrapper, ClickButton
 from module.base.timer import Timer
 from module.logger import logger
-from tasks.base.page import page_knights, page_knights_support
-from tasks.knights.assets.assets_knights_support import (
+from tasks.base.page import page_knights
+from tasks.knights.assets.assets_knights_main_page import KNIGHTS_ACTIVITY_ENTRY
+from tasks.knights.assets.assets_knights_activity_support_active import (
     ACTION_SEARCH,
     BEGGINER_PENGUIN,
-    BEGGINER_PENGUIN_SELECTED,
     HIT_BOTTOM,
     ITEM_SEARCH,
+    SUPPORT_ACTION,
     LOWER_LEVEL_FAIRY_FLOWER,
-    LOWER_LEVEL_FAIRY_FLOWER_SELECTED,
+    SUPPORT_COMPLETE,
+)
+from tasks.knights.assets.assets_knights_activity_support_entry import SUPPORT_CHECK
+from tasks.knights.assets.assets_knights_activity_support_passive import (
     REQUEST_ACTION,
     REQUEST_BEGGINER_PENGUIN,
-    REQUEST_FOR_SUPPORT,
+    REQUEST_BEGGINER_PENGUIN_SELECTED,
+    REQUEST_FOR_SUPPORT_ENTRY,
     REQUEST_LOWER_LEVEL_FAIRY_FLOWER,
-    SUPPORT_ACTION,
-    SUPPORT_CHECK,
-    SUPPORT_COMPLETE,
+    REQUEST_LOWER_LEVEL_FAIRY_FLOWER_SELECTED,
 )
 
 
@@ -31,6 +34,8 @@ class SupportPlan:
 
 
 class KnightsSupportMixin:
+    SUPPORT_ENTRY_TIMEOUT_SECONDS = 20
+    SUPPORT_ENTRY_CLICK_INTERVAL_SECONDS = 1.2
     SUPPORT_ACTION_Y_TOLERANCE = 80
     SUPPORT_DONATE_TIMEOUT_SECONDS = 30
     SUPPORT_DONATE_SCROLL_INTERVAL_SECONDS = 0.8
@@ -41,8 +46,8 @@ class KnightsSupportMixin:
     SUPPORT_REQUEST_TIMEOUT_SECONDS = 15
     SUPPORT_SCROLL_START = (640, 620)
     SUPPORT_SCROLL_END = (640, 320)
-    REQUEST_FOR_SUPPORT_LUMA_SIMILARITY = 0.8
-    REQUEST_FOR_SUPPORT_COLOR_THRESHOLD = 10
+    REQUEST_FOR_SUPPORT_ENTRY_LUMA_SIMILARITY = 0.8
+    REQUEST_FOR_SUPPORT_ENTRY_COLOR_THRESHOLD = 10
 
     @staticmethod
     def _button_center_y(button: ClickButton) -> float:
@@ -77,12 +82,6 @@ class KnightsSupportMixin:
         ]
 
     def _resolve_request_plan(self) -> SupportPlan | None:
-        """
-        Resolve one request target from single-select config.
-
-        Backward compatibility:
-            If the new select option is not available, fallback to legacy booleans.
-        """
         request_item = getattr(
             self.config,
             "KnightsDonate_RequestItem",
@@ -93,14 +92,14 @@ class KnightsSupportMixin:
                 name="request_lower_level_fairy_flower",
                 asset=REQUEST_LOWER_LEVEL_FAIRY_FLOWER,
                 enabled=True,
-                selected_asset=LOWER_LEVEL_FAIRY_FLOWER_SELECTED,
+                selected_asset=REQUEST_LOWER_LEVEL_FAIRY_FLOWER_SELECTED,
             )
         if request_item == "BeginnerPenguin":
             return SupportPlan(
                 name="request_beginner_penguin",
                 asset=REQUEST_BEGGINER_PENGUIN,
                 enabled=True,
-                selected_asset=BEGGINER_PENGUIN_SELECTED,
+                selected_asset=REQUEST_BEGGINER_PENGUIN_SELECTED,
             )
         return None
 
@@ -108,32 +107,37 @@ class KnightsSupportMixin:
     def _enabled_plans(plans: list[SupportPlan]) -> list[SupportPlan]:
         return [plan for plan in plans if plan.enabled]
 
-    def _is_request_for_support_enabled(self, interval=0) -> bool:
+    def _is_request_for_support_entry_enabled(self, interval=0) -> bool:
         """
-        REQUEST_FOR_SUPPORT requires luma + color:
-        - luma: button exists
-        - color: button is enabled (not greyed out after daily request is used)
+        REQUEST_FOR_SUPPORT_ENTRY is dimmed after the daily request is consumed.
+        Use luma to locate the button first, then color to confirm it is still enabled.
         """
-        self.device.stuck_record_add(REQUEST_FOR_SUPPORT)
+        self.device.stuck_record_add(REQUEST_FOR_SUPPORT_ENTRY)
 
-        if interval and not self.interval_is_reached(REQUEST_FOR_SUPPORT, interval=interval):
+        if interval and not self.interval_is_reached(REQUEST_FOR_SUPPORT_ENTRY, interval=interval):
             return False
 
         appear = False
-        if REQUEST_FOR_SUPPORT.match_template_luma(self.device.image, similarity=self.REQUEST_FOR_SUPPORT_LUMA_SIMILARITY):
-            if REQUEST_FOR_SUPPORT.match_color(self.device.image, threshold=self.REQUEST_FOR_SUPPORT_COLOR_THRESHOLD):
+        if REQUEST_FOR_SUPPORT_ENTRY.match_template_luma(
+            self.device.image,
+            similarity=self.REQUEST_FOR_SUPPORT_ENTRY_LUMA_SIMILARITY,
+        ):
+            if REQUEST_FOR_SUPPORT_ENTRY.match_color(
+                self.device.image,
+                threshold=self.REQUEST_FOR_SUPPORT_ENTRY_COLOR_THRESHOLD,
+            ):
                 appear = True
 
         if appear and interval:
-            self.interval_reset(REQUEST_FOR_SUPPORT, interval=interval)
+            self.interval_reset(REQUEST_FOR_SUPPORT_ENTRY, interval=interval)
 
         return appear
 
-    def _is_request_for_support_present(self, interval=0) -> bool:
+    def _is_request_for_support_entry_present(self, interval=0) -> bool:
         return self.match_template_luma(
-            REQUEST_FOR_SUPPORT,
+            REQUEST_FOR_SUPPORT_ENTRY,
             interval=interval,
-            similarity=self.REQUEST_FOR_SUPPORT_LUMA_SIMILARITY,
+            similarity=self.REQUEST_FOR_SUPPORT_ENTRY_LUMA_SIMILARITY,
         )
 
     def _find_donate_action_pairs(
@@ -177,13 +181,40 @@ class KnightsSupportMixin:
 
     def _enter_support(self, skip_first_screenshot=True) -> bool:
         logger.info("Knights: enter support")
-        self.ui_goto(page_knights_support, skip_first_screenshot=skip_first_screenshot)
-        return True
+        timeout = Timer(self.SUPPORT_ENTRY_TIMEOUT_SECONDS, count=60).start()
+
+        while 1:
+            if skip_first_screenshot:
+                skip_first_screenshot = False
+            else:
+                self.device.screenshot()
+
+            if timeout.reached():
+                logger.warning("Knights support entry timeout")
+                return False
+
+            if self.appear(SUPPORT_CHECK, interval=1):
+                logger.info("Knights support page reached")
+                return True
+
+            if self.appear(page_knights.check_button):
+                if self.appear_then_click(KNIGHTS_ACTIVITY_ENTRY, interval=self.SUPPORT_ENTRY_CLICK_INTERVAL_SECONDS):
+                    logger.info("Knights: open activity support")
+                    timeout.reset()
+                    continue
+
+            if self.is_in_main(interval=0):
+                logger.warning("Knights support entry exited to main page unexpectedly")
+                return False
+
+            if self.handle_network_error():
+                timeout.reset()
+                continue
 
     def _run_support_donate(self, skip_first_screenshot=True) -> bool:
         plans = self._enabled_plans(self._build_donate_plans())
         if not plans:
-            logger.info("Support donate disabled by config")
+            logger.info("Knights support donate disabled by config")
             return True
 
         logger.info("Knights support: donate")
@@ -205,15 +236,15 @@ class KnightsSupportMixin:
                 self.device.screenshot()
 
             if timeout.reached():
-                logger.warning("Support donate timeout, stop scanning")
+                logger.warning("Knights support donate timeout, stop scanning")
                 return True
 
             if not self.appear(SUPPORT_CHECK):
                 if self.appear(page_knights.check_button):
-                    logger.warning("Support donate exited support page unexpectedly")
+                    logger.warning("Knights support donate exited to knights page unexpectedly")
                     return False
                 if self.is_in_main(interval=0):
-                    logger.warning("Support donate exited to main page unexpectedly")
+                    logger.warning("Knights support donate exited to main page unexpectedly")
                     return False
                 if self.handle_touch_to_close(interval=0.5):
                     timeout.reset()
@@ -255,10 +286,10 @@ class KnightsSupportMixin:
                 empty_list_confirm.clear()
             else:
                 if not empty_list_confirm.started():
-                    logger.info("Support donate: no visible support entries, confirm empty list")
+                    logger.info("Knights support donate: no visible entries, confirm empty list")
                     empty_list_confirm.start()
                 elif empty_list_confirm.reached():
-                    logger.info("Support donate list is empty, skip donate scan")
+                    logger.info("Knights support donate list is empty, skip scan")
                     return True
                 continue
 
@@ -267,7 +298,7 @@ class KnightsSupportMixin:
                 if not self.interval_is_reached(SUPPORT_ACTION, interval=self.SUPPORT_DONATE_ACTION_INTERVAL_SECONDS):
                     continue
                 plan_name, action_button = pairs[0]
-                logger.info(f"Support donate: {plan_name} -> {action_button}")
+                logger.info(f"Knights support donate: {plan_name} -> {action_button}")
                 self.device.click(action_button)
                 self.interval_reset(SUPPORT_ACTION, interval=self.SUPPORT_DONATE_ACTION_INTERVAL_SECONDS)
                 wait_touch_close = True
@@ -279,7 +310,7 @@ class KnightsSupportMixin:
 
             complete_count = len(complete_buttons)
             if complete_count >= self.SUPPORT_DONATE_COMPLETE_COUNT:
-                logger.info(f"Support donate completed on current page: {complete_count}")
+                logger.info(f"Knights support donate completed on current page: {complete_count}")
                 return True
 
             if skip_hit_bottom_once:
@@ -289,7 +320,7 @@ class KnightsSupportMixin:
                 if self.appear(HIT_BOTTOM):
                     hit_bottom_confirm += 1
                     if hit_bottom_confirm >= 2:
-                        logger.info("Support donate reached bottom")
+                        logger.info("Knights support donate reached bottom")
                         return True
                 else:
                     hit_bottom_confirm = 0
@@ -305,7 +336,7 @@ class KnightsSupportMixin:
     def _run_support_request(self, skip_first_screenshot=True) -> bool:
         plan = self._resolve_request_plan()
         if not plan or not plan.enabled:
-            logger.info("Support request disabled by config")
+            logger.info("Knights support request disabled by config")
             return True
 
         logger.info("Knights support: request")
@@ -323,11 +354,11 @@ class KnightsSupportMixin:
                 self.device.screenshot()
 
             if timeout.reached():
-                logger.warning("Support request timeout")
+                logger.warning("Knights support request timeout")
                 return True
 
             if submitted and self.appear(SUPPORT_CHECK):
-                logger.info("Support request finished")
+                logger.info("Knights support request finished")
                 return True
 
             if self.handle_touch_to_close(interval=0.5):
@@ -344,25 +375,27 @@ class KnightsSupportMixin:
                     choose_retry.reset()
                     timeout.reset()
                     continue
-                if self._is_request_for_support_enabled(interval=1):
-                    self.device.click(REQUEST_FOR_SUPPORT)
+
+                if self._is_request_for_support_entry_enabled(interval=1):
+                    self.device.click(REQUEST_FOR_SUPPORT_ENTRY)
                     timeout.reset()
                     continue
-                if self._is_request_for_support_present(interval=1):
-                    logger.info("Support request already used today, skip")
+                if self._is_request_for_support_entry_present(interval=1):
+                    logger.info("Knights support request already used today, skip")
                     return True
+
                 if self.is_in_main(interval=0):
-                    logger.warning("Support request exited to main page unexpectedly")
+                    logger.warning("Knights support request exited to main page unexpectedly")
                     return False
                 if self.appear(SUPPORT_CHECK) and open_retry.reached():
-                    logger.info("Support request unavailable, skip")
+                    logger.info("Knights support request unavailable, skip")
                     return True
                 continue
 
             if not selected:
                 if plan.selected_asset and self.appear(plan.selected_asset):
                     selected = True
-                    logger.info(f"Support request selected: {plan.name}")
+                    logger.info(f"Knights support request selected: {plan.name}")
                     timeout.reset()
                     continue
 
@@ -371,13 +404,11 @@ class KnightsSupportMixin:
                     continue
 
                 if self.appear(SUPPORT_CHECK):
-                    # Request panel did not open; keep open_retry running so this
-                    # branch can eventually skip instead of looping forever.
                     panel_opened = False
                     selected = False
                     continue
                 if choose_retry.reached():
-                    logger.warning("Support request item selection not confirmed, skip")
+                    logger.warning("Knights support request item selection not confirmed, skip")
                     return True
                 continue
 
@@ -387,23 +418,29 @@ class KnightsSupportMixin:
                 continue
 
             if self.appear(SUPPORT_CHECK):
-                logger.info("Support request returned to support page")
+                logger.info("Knights support request returned to support page")
                 return True
 
     def _back_to_knights_from_support(self, skip_first_screenshot=True) -> bool:
         self.ui_goto(page_knights, skip_first_screenshot=skip_first_screenshot)
         return True
 
-    def run_support(self, skip_first_screenshot=True) -> bool:
+    def run_support(self, skip_first_screenshot=True, run_donate=True, run_request=True) -> bool:
         logger.hr("Knights Support", level=2)
 
         if not self._enter_support(skip_first_screenshot=skip_first_screenshot):
             return False
 
         self._prepare_support_search_area()
-        success = self._run_support_donate(skip_first_screenshot=True)
-        if success:
-            success = self._run_support_request(skip_first_screenshot=True) and success
-        else:
-            logger.warning("Support request skipped due to donate flow failure")
+        success = True
+
+        if run_donate:
+            success = self._run_support_donate(skip_first_screenshot=True) and success
+
+        if run_request:
+            if success:
+                success = self._run_support_request(skip_first_screenshot=True) and success
+            else:
+                logger.warning("Knights support request skipped due to donate flow failure")
+
         return success

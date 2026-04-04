@@ -29,32 +29,20 @@ from tasks.combat.assets.assets_combat_configs_entry import (
     URGENT_TASKS,
 )
 from tasks.combat.assets.assets_combat_repeat_entry import REPEAT_COMBAT_MENU
-from tasks.knights.assets.assets_knights import KNIGHTS_CHECK
-from tasks.knights.assets.assets_knights_expedition import (
-    EXPEDITION,
-    KNIGHTS_CREST,
-    READY_TO_FIGHT,
-    TEAM_BATTLE,
-    WAITING_FOR_WAR,
-    WORLD_BOSS,
-)
-from tasks.knights.assets.assets_knights_donate import DONATE, DONATE_CHECK
-from tasks.knights.assets.assets_knights_support import SUPPORT, SUPPORT_CHECK
-from tasks.knights.assets.assets_knights_weekly_task import WEEKLY_TASK, WEEKLY_TASK_CHECK
-from tasks.knights_v2.assets.assets_knights_v2_main_page import (
+from tasks.knights.assets.assets_knights_main_page import (
     KNIGHTS_ACTIVITY_ENTRY,
-    KNIGHTS_CHECK as KNIGHTS_V2_CHECK,
+    KNIGHTS_CHECK,
     TEAM_BATTLE_OPENING,
-    WORLD_BOSS_CHECK as WORLD_BOSS_V2_CHECK,
+    WORLD_BOSS_CHECK,
     WORLD_BOSS_OPENING,
 )
-from tasks.knights_v2.assets.assets_knights_v2_gvg import KNIGHTS_CREST as KNIGHTS_V2_CREST
-from tasks.knights_v2.assets.assets_knights_v2_activity_support_entry import (
-    SUPPORT_CHECK as KNIGHTS_V2_SUPPORT_CHECK,
+from tasks.knights.assets.assets_knights_gvg import KNIGHTS_CREST
+from tasks.knights.assets.assets_knights_activity_support_entry import (
+    SUPPORT_CHECK,
 )
-from tasks.knights_v2.assets.assets_knights_v2_activity_weekly_task_entry import (
-    WEEKLY_TASK_CHECK as KNIGHTS_V2_WEEKLY_TASK_CHECK,
-    WEEKLY_TASK_ENTRY as KNIGHTS_V2_WEEKLY_TASK_ENTRY,
+from tasks.knights.assets.assets_knights_activity_weekly_task_entry import (
+    WEEKLY_TASK_CHECK,
+    WEEKLY_TASK_ENTRY,
 )
 from tasks.mail.assets.assets_mail import SORTING_CRITERIA
 from tasks.item.assets.assets_item_inventory import (
@@ -263,78 +251,24 @@ page_pets = Page(PETS_CHECK)
 page_pets.link(MENU, destination=page_menu)
 page_menu.link(MENU_GOTO_PETS, destination=page_pets)
 
+
 # Knights
 page_knights = Page(KNIGHTS_CHECK)
 page_knights.link(MENU, destination=page_menu)
 page_menu.link(MENU_GOTO_KNIGHTS, destination=page_knights)
 
-# Knights sub pages
-# Donate page
-page_knights_donate = Page(DONATE_CHECK)
-page_knights_donate.link(BACK, destination=page_main)
-page_knights.link(DONATE, destination=page_knights_donate)
-
-# Support page
 page_knights_support = Page(SUPPORT_CHECK)
-page_knights_support.link(BACK, destination=page_main)
-page_knights.link(SUPPORT, destination=page_knights_support)
+page_knights_support.link(AD_BUFF_X_CLOSE, destination=page_knights)
+page_knights.link(KNIGHTS_ACTIVITY_ENTRY, destination=page_knights_support)
 
-# Expedition panel
-page_knights_expedition = Page(TEAM_BATTLE)
-page_knights_expedition.link(BACK, destination=page_main)
-page_knights.link(EXPEDITION, destination=page_knights_expedition)
-
-# Weekly task page
 page_knights_weekly_task = Page(WEEKLY_TASK_CHECK)
-page_knights_weekly_task.link(BACK, destination=page_main)
-page_knights.link(WEEKLY_TASK, destination=page_knights_weekly_task)
+page_knights_weekly_task.link(AD_BUFF_X_CLOSE, destination=page_knights)
+page_knights_support.link(WEEKLY_TASK_ENTRY, destination=page_knights_weekly_task)
 
-# Knights first-level tabs are mutually reachable.
-page_knights_donate.link(SUPPORT, destination=page_knights_support)
-page_knights_donate.link(EXPEDITION, destination=page_knights_expedition)
-page_knights_donate.link(WEEKLY_TASK, destination=page_knights_weekly_task)
-page_knights_support.link(DONATE, destination=page_knights_donate)
-page_knights_support.link(EXPEDITION, destination=page_knights_expedition)
-page_knights_support.link(WEEKLY_TASK, destination=page_knights_weekly_task)
-page_knights_expedition.link(DONATE, destination=page_knights_donate)
-page_knights_expedition.link(SUPPORT, destination=page_knights_support)
-page_knights_expedition.link(WEEKLY_TASK, destination=page_knights_weekly_task)
-page_knights_weekly_task.link(DONATE, destination=page_knights_donate)
-page_knights_weekly_task.link(SUPPORT, destination=page_knights_support)
-page_knights_weekly_task.link(EXPEDITION, destination=page_knights_expedition)
+page_knights_world_boss = Page(WORLD_BOSS_CHECK)
+page_knights_world_boss.link(BACK, destination=page_knights)
+page_knights.link(WORLD_BOSS_OPENING, destination=page_knights_world_boss)
 
-# Team battle home page
 page_knights_team_battle = Page(KNIGHTS_CREST)
 page_knights_team_battle.link(BACK, destination=page_knights)
-page_knights_expedition.link(TEAM_BATTLE, destination=page_knights_team_battle)
-
-# Team battle truce page (no crest during waiting period)
-page_knights_team_battle_waiting = Page(WAITING_FOR_WAR)
-page_knights_team_battle_waiting.link(BACK, destination=page_main)
-page_knights_expedition.link(TEAM_BATTLE, destination=page_knights_team_battle_waiting)
-
-# World boss home page
-page_knights_world_boss = Page(READY_TO_FIGHT)
-page_knights_world_boss.link(BACK, destination=page_knights)
-page_knights_expedition.link(WORLD_BOSS, destination=page_knights_world_boss)
-
-# Knights v2
-page_knights_v2 = Page(KNIGHTS_V2_CHECK)
-page_knights_v2.link(MENU, destination=page_menu)
-page_menu.link(MENU_GOTO_KNIGHTS, destination=page_knights_v2)
-
-page_knights_v2_support = Page(KNIGHTS_V2_SUPPORT_CHECK)
-page_knights_v2_support.link(AD_BUFF_X_CLOSE, destination=page_knights_v2)
-page_knights_v2.link(KNIGHTS_ACTIVITY_ENTRY, destination=page_knights_v2_support)
-
-page_knights_v2_weekly_task = Page(KNIGHTS_V2_WEEKLY_TASK_CHECK)
-page_knights_v2_weekly_task.link(AD_BUFF_X_CLOSE, destination=page_knights_v2)
-page_knights_v2_support.link(KNIGHTS_V2_WEEKLY_TASK_ENTRY, destination=page_knights_v2_weekly_task)
-
-page_knights_v2_world_boss = Page(WORLD_BOSS_V2_CHECK)
-page_knights_v2_world_boss.link(BACK, destination=page_knights_v2)
-page_knights_v2.link(WORLD_BOSS_OPENING, destination=page_knights_v2_world_boss)
-
-page_knights_v2_team_battle = Page(KNIGHTS_V2_CREST)
-page_knights_v2_team_battle.link(BACK, destination=page_knights_v2)
-page_knights_v2.link(TEAM_BATTLE_OPENING, destination=page_knights_v2_team_battle)
+page_knights.link(TEAM_BATTLE_OPENING, destination=page_knights_team_battle)

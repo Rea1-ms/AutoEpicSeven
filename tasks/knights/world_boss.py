@@ -5,28 +5,32 @@ from module.base.timer import Timer
 from module.logger import logger
 from module.ocr.ocr import Ocr
 from tasks.base.assets.assets_base_page import BACK
-from tasks.base.page import page_knights, page_knights_world_boss
-from tasks.knights.assets.assets_knights import KNIGHTS_CHECK
-from tasks.knights.assets.assets_knights_expedition import (
+from tasks.base.page import page_knights
+from tasks.knights.assets.assets_knights_main_page import (
+    KNIGHTS_CHECK,
+    WORLD_BOSS_CHECK,
+    WORLD_BOSS_LOCKED,
+    WORLD_BOSS_OPENING,
+)
+from tasks.knights.assets.assets_knights_world_boss_flow import (
     AUTO_CONFIG,
     BATTLE_RESULT_CONFIRM,
     BATTLE_START,
     CHOOSE_TEAM,
-    CHOOSE_TEAM_CHECK,
     EMPTY_TEAM,
     FORM_A_TEAM,
     OPEN_ALL_BOX,
     OPEN_ALL_BOX_CONFIRM,
-    READY_TO_FIGHT,
     RANK,
     SKIP,
-    OCR_WEEKLY_CONTRIBUTION,
-    WEEKLY_CONTRIBUTION_TIER_1_RECEIVED,
-    WEEKLY_CONTRIBUTION_TIER_1_LOCKED,
-    WEEKLY_CONTRIBUTION_TIER_2_RECEIVED,
-    WEEKLY_CONTRIBUTION_TIER_2_LOCKED,
-    WORLD_BOSS,
     WORLD_BOSS_TOUCH_TO_CLOSE,
+)
+from tasks.knights.assets.assets_knights_world_boss_weekly_rewards import (
+    OCR_WEEKLY_CONTRIBUTION,
+    WEEKLY_CONTRIBUTION_TIER_1_LOCKED,
+    WEEKLY_CONTRIBUTION_TIER_1_RECEIVED,
+    WEEKLY_CONTRIBUTION_TIER_2_LOCKED,
+    WEEKLY_CONTRIBUTION_TIER_2_RECEIVED,
 )
 
 
@@ -39,14 +43,16 @@ class OcrWeeklyContribution(Ocr):
 
 
 class KnightsWorldBossMixin:
-    READY_TO_FIGHT_LUMA_SIMILARITY = 0.8
-    READY_TO_FIGHT_COLOR_THRESHOLD = 30
     CHOOSE_TEAM_LUMA_SIMILARITY = 0.8
     CHOOSE_TEAM_COLOR_THRESHOLD = 30
+    WORLD_BOSS_HOME_LUMA_SIMILARITY = 0.8
+    WORLD_BOSS_LOCKED_SIMILARITY = 0.9
     WORLD_BOSS_FORM_RETRY_SECONDS = 4
     WORLD_BOSS_AUTO_CONFIG_RETRY_SECONDS = 1.2
-    WORLD_BOSS_READY_RETRY_SECONDS = 2
-    WORLD_BOSS_READY_PENDING_SECONDS = 2.5
+    WORLD_BOSS_ENTRY_PENDING_SECONDS = 5
+    WORLD_BOSS_ENTRY_TIMEOUT_SECONDS = 20
+    WORLD_BOSS_CHOOSE_TEAM_RETRY_SECONDS = 2
+    WORLD_BOSS_CHOOSE_TEAM_PENDING_SECONDS = 2.5
     WORLD_BOSS_WEEKLY_CONTRIBUTION_POST_CLICK_SETTLE_SECONDS = 0.35
     WORLD_BOSS_WEEKLY_CONTRIBUTION_TIER_LUMA_SIMILARITY = 0.8
     WORLD_BOSS_WEEKLY_CONTRIBUTION_TIER_COLOR_THRESHOLD = 30
@@ -55,74 +61,50 @@ class KnightsWorldBossMixin:
     WORLD_BOSS_STAGE_SELECT = "select_team"
     WORLD_BOSS_STAGE_SETUP = "setup_team"
 
-    def _is_ready_to_fight(self, interval=0) -> bool:
-        """
-        READY_TO_FIGHT uses luma + color double check:
-            luma match + color match => still has chances today.
-        """
-        self.device.stuck_record_add(READY_TO_FIGHT)
+    def _get_world_boss_ocr_lang(self) -> str:
+        lang = getattr(self.config, "Emulator_GameLanguage", None)
+        if lang in ("auto", "", None, "cn", "global_cn", "zh", "zh_cn"):
+            return "cn"
+        if lang in ("en", "global_en", "en_us"):
+            return "en"
+        if lang in ("jp", "ja", "ja_jp"):
+            return "jp"
+        if lang in ("tw", "zht", "zh_tw"):
+            return "tw"
+        return "cn"
 
-        if interval and not self.interval_is_reached(READY_TO_FIGHT, interval=interval):
+    def _is_world_boss_home(self, interval=0) -> bool:
+        self.device.stuck_record_add(WORLD_BOSS_CHECK)
+
+        if interval and not self.interval_is_reached(WORLD_BOSS_CHECK, interval=interval):
             return False
 
-        appear = False
-        if READY_TO_FIGHT.match_template_luma(self.device.image, similarity=self.READY_TO_FIGHT_LUMA_SIMILARITY):
-            if READY_TO_FIGHT.match_color(self.device.image, threshold=self.READY_TO_FIGHT_COLOR_THRESHOLD):
-                appear = True
+        appear = WORLD_BOSS_CHECK.match_template_luma(
+            self.device.image, similarity=self.WORLD_BOSS_HOME_LUMA_SIMILARITY
+        )
 
         if appear and interval:
-            self.interval_reset(READY_TO_FIGHT, interval=interval)
+            self.interval_reset(WORLD_BOSS_CHECK, interval=interval)
 
         return appear
 
-    def _is_ready_to_fight_exhausted(self) -> bool:
-        """
-        READY_TO_FIGHT template appears but color mismatch:
-            means today chances are exhausted.
-        """
-        if READY_TO_FIGHT.match_template_luma(self.device.image, similarity=self.READY_TO_FIGHT_LUMA_SIMILARITY):
-            return not READY_TO_FIGHT.match_color(
-                self.device.image, threshold=self.READY_TO_FIGHT_COLOR_THRESHOLD
-            )
-        return False
+    def _is_knights_home(self, interval=0) -> bool:
+        return self.appear(KNIGHTS_CHECK, interval=interval)
 
-    def _world_boss_no_stamina_todo(self) -> bool:
-        """
-        Handle no-stamina exchange popup during world boss battle start.
+    def _is_world_boss_locked(self, interval=0) -> bool:
+        self.device.stuck_record_add(WORLD_BOSS_LOCKED)
 
-        Flow:
-            1) close popup via POPUP_CANCEL
-            2) click BACK once to leave team panel
-            3) return no_stamina status and let caller navigate out
-        """
-        if self.handle_popup_cancel(interval=1):
-            logger.info("World boss no stamina popup closed")
-            self._world_boss_no_stamina_pending_back = True
+        if interval and not self.interval_is_reached(WORLD_BOSS_LOCKED, interval=interval):
             return False
 
-        if not getattr(self, "_world_boss_no_stamina_pending_back", False):
-            return False
+        appear = WORLD_BOSS_LOCKED.match_template_luma(
+            self.device.image, similarity=self.WORLD_BOSS_LOCKED_SIMILARITY
+        )
 
-        if self.appear(READY_TO_FIGHT):
-            logger.info("World boss no stamina handled at entry page")
-            self._world_boss_no_stamina_pending_back = False
-            return True
+        if appear and interval:
+            self.interval_reset(WORLD_BOSS_LOCKED, interval=interval)
 
-        if any(
-            [
-                self.appear(CHOOSE_TEAM_CHECK),
-                self.appear(FORM_A_TEAM),
-                self.appear(AUTO_CONFIG),
-                self.appear(BATTLE_START),
-                self.appear(EMPTY_TEAM),
-            ]
-        ):
-            logger.info("World boss no stamina: leave team panel")
-            self.device.click(BACK)
-            self._world_boss_no_stamina_pending_back = False
-            return True
-
-        return False
+        return appear
 
     def _is_choose_team_ready(self, interval=0) -> bool:
         """
@@ -150,9 +132,7 @@ class KnightsWorldBossMixin:
             means this account has no attempts left today.
         """
         if CHOOSE_TEAM.match_template_luma(self.device.image, similarity=self.CHOOSE_TEAM_LUMA_SIMILARITY):
-            return not CHOOSE_TEAM.match_color(
-                self.device.image, threshold=self.CHOOSE_TEAM_COLOR_THRESHOLD
-            )
+            return not CHOOSE_TEAM.match_color(self.device.image, threshold=self.CHOOSE_TEAM_COLOR_THRESHOLD)
         return False
 
     def _handle_world_boss_touch_to_close(self, interval=0) -> bool:
@@ -165,10 +145,87 @@ class KnightsWorldBossMixin:
             return True
         return False
 
-    def _enter_world_boss(self, skip_first_screenshot=True) -> bool:
+    def _world_boss_no_stamina_todo(self) -> bool:
+        """
+        Handle no-stamina popup during world boss battle start.
+
+        Flow:
+            1) close popup via POPUP_CANCEL
+            2) click BACK once to leave team panel
+            3) return no_stamina status and let caller navigate out
+        """
+        if self.handle_popup_cancel(interval=1):
+            logger.info("World boss no stamina popup closed")
+            self._world_boss_no_stamina_pending_back = True
+            return False
+
+        if not getattr(self, "_world_boss_no_stamina_pending_back", False):
+            return False
+
+        if self._is_world_boss_home(interval=0):
+            logger.info("World boss no stamina handled at home page")
+            self._world_boss_no_stamina_pending_back = False
+            return True
+
+        if any(
+            [
+                self.appear(RANK),
+                self.appear(FORM_A_TEAM),
+                self.appear(AUTO_CONFIG),
+                self.appear(BATTLE_START),
+                self.appear(EMPTY_TEAM),
+            ]
+        ):
+            logger.info("World boss no stamina: leave team panel")
+            self.device.click(BACK)
+            self._world_boss_no_stamina_pending_back = False
+            return True
+
+        return False
+
+    def _enter_world_boss(self, skip_first_screenshot=True) -> str:
         logger.info("Knights: enter world boss")
-        self.ui_goto(page_knights_world_boss, skip_first_screenshot=skip_first_screenshot)
-        return True
+        timeout = Timer(self.WORLD_BOSS_ENTRY_TIMEOUT_SECONDS, count=60).start()
+        entry_pending = Timer(self.WORLD_BOSS_ENTRY_PENDING_SECONDS, count=0)
+        entry_clicked = False
+
+        while 1:
+            if skip_first_screenshot:
+                skip_first_screenshot = False
+            else:
+                self.device.screenshot()
+
+            if timeout.reached():
+                logger.warning("World boss entry timeout")
+                return "failed"
+
+            if self._is_world_boss_home(interval=1) or self.appear(RANK, interval=1) or self.appear(FORM_A_TEAM, interval=1):
+                return "entered"
+
+            if self._handle_world_boss_touch_to_close(interval=0.6):
+                timeout.reset()
+                continue
+
+            if self.handle_network_error():
+                timeout.reset()
+                continue
+
+            if self._is_knights_home(interval=1):
+                if self._is_world_boss_locked(interval=1):
+                    logger.info("World boss is locked, skip for now")
+                    return "locked"
+
+                if self.appear_then_click(WORLD_BOSS_OPENING, interval=1):
+                    entry_clicked = True
+                    entry_pending.start()
+                    timeout.reset()
+                    continue
+
+                if entry_clicked:
+                    if entry_pending.reached():
+                        logger.warning("World boss entry did not leave knights page in time")
+                        return "failed"
+                    continue
 
     def _world_boss_once(self, skip_first_screenshot=True) -> str:
         """
@@ -181,9 +238,9 @@ class KnightsWorldBossMixin:
         choose_team_exhausted_confirm = Timer(1, count=2).start()
         settlement_progress = False
         stage = self.WORLD_BOSS_STAGE_ENTRY
-        ready_retry = Timer(self.WORLD_BOSS_READY_RETRY_SECONDS, count=0).start()
-        ready_pending_timer = Timer(self.WORLD_BOSS_READY_PENDING_SECONDS, count=0).start()
-        ready_pending = False
+        choose_team_retry = Timer(self.WORLD_BOSS_CHOOSE_TEAM_RETRY_SECONDS, count=0).start()
+        choose_team_pending_timer = Timer(self.WORLD_BOSS_CHOOSE_TEAM_PENDING_SECONDS, count=0).start()
+        choose_team_pending = False
         form_retry = Timer(self.WORLD_BOSS_FORM_RETRY_SECONDS, count=0).start()
         auto_config_retry = Timer(self.WORLD_BOSS_AUTO_CONFIG_RETRY_SECONDS, count=0).start()
         auto_config_clicked = False
@@ -200,9 +257,8 @@ class KnightsWorldBossMixin:
                 logger.warning("World boss round timeout")
                 return "failed"
 
-            # Exhausted check should only be trusted at entry state and without pending transition.
-            if stage == self.WORLD_BOSS_STAGE_ENTRY and not ready_pending:
-                if self._is_ready_to_fight_exhausted():
+            if stage == self.WORLD_BOSS_STAGE_ENTRY and not choose_team_pending:
+                if self._is_choose_team_exhausted():
                     if exhausted_confirm.reached():
                         logger.info("World boss chances exhausted")
                         return "exhausted"
@@ -214,25 +270,19 @@ class KnightsWorldBossMixin:
             if self._world_boss_no_stamina_todo():
                 return "no_stamina"
 
-            # Do NOT call ui_additional() here:
-            # it includes AD_BUFF_X_CLOSE / TOUCH_TO_CLOSE, which can close
-            # world-boss entry/select panels and cause READY_TO_FIGHT loops.
             if self.handle_network_error():
                 timeout.reset()
                 continue
 
-            if self.appear(CHOOSE_TEAM_CHECK, interval=1):
-                if stage == self.WORLD_BOSS_STAGE_ENTRY:
-                    logger.info("World boss: entered choose team page")
+            if self.appear(RANK, interval=1) or self.appear(FORM_A_TEAM, interval=1):
                 stage = self.WORLD_BOSS_STAGE_SELECT
-                ready_pending = False
+                choose_team_pending = False
 
             if stage == self.WORLD_BOSS_STAGE_ENTRY:
                 if self._handle_world_boss_touch_to_close(interval=0.6):
                     timeout.reset()
                     continue
 
-                # Sometimes CHOOSE_TEAM appears before check marker is stable.
                 if self._is_choose_team_exhausted():
                     if choose_team_exhausted_confirm.reached():
                         logger.info("World boss chances exhausted (CHOOSE_TEAM gray)")
@@ -240,30 +290,25 @@ class KnightsWorldBossMixin:
                 else:
                     choose_team_exhausted_confirm.reset()
 
-                if self._is_choose_team_ready(interval=1):
-                    logger.info("World boss: CHOOSE_TEAM appeared before check marker")
-                    self.device.click(CHOOSE_TEAM)
-                    stage = self.WORLD_BOSS_STAGE_SELECT
-                    ready_pending = False
-                    timeout.reset()
-                    continue
-
-                if ready_pending:
-                    if ready_pending_timer.reached():
-                        ready_pending = False
+                if choose_team_pending:
+                    if choose_team_pending_timer.reached():
+                        choose_team_pending = False
                     else:
                         continue
 
-                if self._is_ready_to_fight(interval=1):
-                    if ready_retry.reached():
-                        logger.info("World boss: READY_TO_FIGHT -> CHOOSE_TEAM")
-                        self.device.click(READY_TO_FIGHT)
-                        ready_retry.reset()
-                        ready_pending = True
+                if self._is_choose_team_ready(interval=1):
+                    if choose_team_retry.reached():
+                        logger.info("World boss: CHOOSE_TEAM -> rank panel")
+                        self.device.click(CHOOSE_TEAM)
+                        choose_team_retry.reset()
+                        choose_team_pending = True
                         rank_selected = False
-                        ready_pending_timer.reset()
+                        choose_team_pending_timer.reset()
                         timeout.reset()
                     continue
+
+                if settlement_progress and (self._is_world_boss_home(interval=0) or self.appear(KNIGHTS_CHECK)):
+                    return "completed"
 
             if stage == self.WORLD_BOSS_STAGE_SELECT:
                 if self._is_choose_team_exhausted():
@@ -273,11 +318,16 @@ class KnightsWorldBossMixin:
                 else:
                     choose_team_exhausted_confirm.reset()
 
+                if (not rank_selected) and self.appear_then_click(RANK, interval=1):
+                    rank_selected = True
+                    timeout.reset()
+                    continue
+
                 if self.appear(FORM_A_TEAM):
                     logger.info("World boss: FORM_A_TEAM -> team setup")
                     self.device.click(FORM_A_TEAM)
                     stage = self.WORLD_BOSS_STAGE_SETUP
-                    ready_pending = False
+                    choose_team_pending = False
                     form_retry.reset()
                     auto_config_retry.clear()
                     auto_config_clicked = False
@@ -290,22 +340,15 @@ class KnightsWorldBossMixin:
                     timeout.reset()
                     continue
 
-                if (not rank_selected) and self.appear_then_click(RANK, interval=1):
-                    rank_selected = True
-                    timeout.reset()
-                    continue
-
             if stage == self.WORLD_BOSS_STAGE_SETUP:
-                # Returned to select panel unexpectedly.
-                if self.appear(CHOOSE_TEAM) and not any(
+                if self._is_choose_team_ready(interval=0) and not any(
                     [self.appear(FORM_A_TEAM), self.appear(AUTO_CONFIG), self.appear(BATTLE_START), self.appear(EMPTY_TEAM)]
                 ):
-                    stage = self.WORLD_BOSS_STAGE_SELECT
-                    ready_pending = False
+                    stage = self.WORLD_BOSS_STAGE_ENTRY
+                    choose_team_pending = False
+                    rank_selected = False
                     continue
 
-                # Retry AUTO_CONFIG at a fixed cadence to avoid click spam.
-                # Keep AUTO_CONFIG before BATTLE_START to ensure team is generated.
                 if self.appear(EMPTY_TEAM) or self.appear(AUTO_CONFIG) or not auto_config_clicked:
                     if auto_config_retry.reached():
                         if self.appear_then_click(AUTO_CONFIG, interval=0):
@@ -317,28 +360,21 @@ class KnightsWorldBossMixin:
 
                 if self.appear_then_click(BATTLE_START, interval=1):
                     stage = self.WORLD_BOSS_STAGE_ENTRY
-                    ready_pending = False
+                    choose_team_pending = False
                     rank_selected = False
                     auto_config_clicked = False
+                    settlement_progress = False
                     timeout.reset()
                     continue
 
-                # If setup failed and FORM_A_TEAM is still visible, retry entering setup slowly.
                 if self.appear(FORM_A_TEAM) and form_retry.reached():
                     logger.info("World boss: FORM_A_TEAM still visible, retry")
                     self.device.click(FORM_A_TEAM)
                     form_retry.reset()
                     auto_config_retry.clear()
                     auto_config_clicked = False
-                    ready_pending = False
+                    choose_team_pending = False
                     timeout.reset()
-                    continue
-
-            if stage == self.WORLD_BOSS_STAGE_SELECT:
-                if self._is_ready_to_fight(interval=0) and not self.appear(CHOOSE_TEAM_CHECK, interval=0):
-                    stage = self.WORLD_BOSS_STAGE_ENTRY
-                    ready_pending = False
-                    rank_selected = False
                     continue
 
             if self.appear_then_click(SKIP, interval=1):
@@ -361,15 +397,8 @@ class KnightsWorldBossMixin:
                 timeout.reset()
                 continue
 
-            # End of one world boss round:
-            # back to READY_TO_FIGHT or entry layer.
-            if settlement_progress:
-                if self._is_ready_to_fight(interval=0):
-                    return "completed"
-                if self.appear(WORLD_BOSS):
-                    return "completed"
-                if self.appear(KNIGHTS_CHECK):
-                    return "completed"
+            if settlement_progress and (self._is_world_boss_home(interval=0) or self.appear(KNIGHTS_CHECK)):
+                return "completed"
 
     def _close_world_boss_exhausted_popup(self, skip_first_screenshot=True) -> bool:
         timeout = Timer(8, count=24).start()
@@ -383,9 +412,9 @@ class KnightsWorldBossMixin:
                 logger.warning("Close world boss exhausted popup timeout")
                 return False
 
-            if self.appear(READY_TO_FIGHT):
+            if self._is_world_boss_home(interval=0):
                 return True
-            if self.appear(WORLD_BOSS) or self.appear(KNIGHTS_CHECK):
+            if self.appear(KNIGHTS_CHECK):
                 return True
 
             if self.handle_ad_buff_x_close(interval=1):
@@ -429,13 +458,11 @@ class KnightsWorldBossMixin:
         return None
 
     def _ocr_weekly_contribution_points(self, ocr: OcrWeeklyContribution) -> int | None:
-        # Preferred: OCR in configured contribution area.
         results = ocr.detect_and_ocr(self.device.image)
         points = self._extract_weekly_contribution_points([result.ocr_text for result in results])
         if points is not None:
             return points
 
-        # Fallback: full-screen OCR when area asset is unavailable/invalid.
         results = ocr.detect_and_ocr(self.device.image, direct_ocr=True)
         return self._extract_weekly_contribution_points([result.ocr_text for result in results])
 
@@ -491,7 +518,11 @@ class KnightsWorldBossMixin:
     def _claim_weekly_contribution_rewards(self, skip_first_screenshot=True) -> bool:
         logger.info("World boss: claim weekly contribution rewards")
         ocr_button = ClickButton(OCR_WEEKLY_CONTRIBUTION.area, name="OCR_WEEKLY_CONTRIBUTION")
-        ocr = OcrWeeklyContribution(ocr_button, lang="en", name="WeeklyContributionOCR")
+        ocr = OcrWeeklyContribution(
+            ocr_button,
+            lang=self._get_world_boss_ocr_lang(),
+            name="WeeklyContributionOCR",
+        )
 
         if not skip_first_screenshot:
             self.device.screenshot()
@@ -515,7 +546,10 @@ class KnightsWorldBossMixin:
     def run_world_boss(self, skip_first_screenshot=True) -> bool:
         logger.hr("Knights WorldBoss", level=2)
 
-        if not self._enter_world_boss(skip_first_screenshot=skip_first_screenshot):
+        enter_status = self._enter_world_boss(skip_first_screenshot=skip_first_screenshot)
+        if enter_status == "locked":
+            return True
+        if enter_status != "entered":
             return False
 
         rounds = 0

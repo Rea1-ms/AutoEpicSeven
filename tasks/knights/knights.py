@@ -1,30 +1,25 @@
-import module.config.server as server
 from module.base.timer import Timer
 from module.logger import logger
 from tasks.base.page import page_knights
 from tasks.base.ui import UI
-from tasks.knights.assets.assets_knights import SIGNIN_RATE_REWARD
-from tasks.knights.donate import KnightsDonateMixin
+from tasks.knights.assets.assets_knights_main_page import (
+    WEEKLY_REWARDS,
+)
 from tasks.knights.expedition import KnightsExpeditionMixin
 from tasks.knights.support import KnightsSupportMixin
 from tasks.knights.weekly_task import KnightsWeeklyTaskMixin
 from tasks.knights.world_boss import KnightsWorldBossMixin
 
 
-class KnightsLegacy(
+class Knights(
     KnightsWorldBossMixin,
     KnightsExpeditionMixin,
     KnightsSupportMixin,
-    KnightsDonateMixin,
     KnightsWeeklyTaskMixin,
     UI,
 ):
-    """
-    Epic Seven 骑士团任务
-    """
-
-    SIGNIN_RATE_REWARD_LUMA_SIMILARITY = 0.8
-    SIGNIN_RATE_REWARD_COLOR_THRESHOLD = 30
+    WEEKLY_REWARDS_COLOR_THRESHOLD = 30
+    WEEKLY_REWARDS_CLICK_INTERVAL_SECONDS = 1
 
     def _enter_knights(self) -> bool:
         if not hasattr(self.device, "image") or self.device.image is None:
@@ -32,27 +27,43 @@ class KnightsLegacy(
         self.ui_goto(page_knights)
         return True
 
-    def _is_signin_reward_ready(self, interval=0) -> bool:
-        """
-        SIGNIN_RATE_REWARD uses luma + color double check.
-        """
-        self.device.stuck_record_add(SIGNIN_RATE_REWARD)
+    def _settle_knights_home(self, skip_first_screenshot=True) -> bool:
+        timeout = Timer(8, count=24).start()
+        settle = Timer(1, count=2).start()
 
-        if interval and not self.interval_is_reached(SIGNIN_RATE_REWARD, interval=interval):
+        while 1:
+            if skip_first_screenshot:
+                skip_first_screenshot = False
+            else:
+                self.device.screenshot()
+
+            if timeout.reached() or settle.reached():
+                return True
+
+            if self.handle_touch_to_close(interval=0.5):
+                timeout.reset()
+                settle.reset()
+                continue
+            if self.handle_network_error():
+                timeout.reset()
+                settle.reset()
+                continue
+
+    def _is_weekly_rewards_ready(self, interval=0) -> bool:
+        self.device.stuck_record_add(WEEKLY_REWARDS)
+
+        if interval and not self.interval_is_reached(WEEKLY_REWARDS, interval=interval):
             return False
 
-        appear = False
-        if SIGNIN_RATE_REWARD.match_template_luma(self.device.image, similarity=self.SIGNIN_RATE_REWARD_LUMA_SIMILARITY):
-            if SIGNIN_RATE_REWARD.match_color(self.device.image, threshold=self.SIGNIN_RATE_REWARD_COLOR_THRESHOLD):
-                appear = True
+        appear = WEEKLY_REWARDS.match_color(self.device.image, threshold=self.WEEKLY_REWARDS_COLOR_THRESHOLD)
 
         if appear and interval:
-            self.interval_reset(SIGNIN_RATE_REWARD, interval=interval)
+            self.interval_reset(WEEKLY_REWARDS, interval=interval)
 
         return appear
 
-    def _claim_signin_reward(self, skip_first_screenshot=True) -> bool:
-        logger.info("Knights: claim signin rate reward")
+    def _claim_weekly_rewards(self, skip_first_screenshot=True) -> bool:
+        logger.info("Knights: claim weekly rewards")
         timeout = Timer(12, count=36).start()
         no_action_confirm = Timer(2, count=6).start()
         claimed = False
@@ -63,21 +74,17 @@ class KnightsLegacy(
             else:
                 self.device.screenshot()
 
-            if timeout.reached():
+            if timeout.reached() or no_action_confirm.reached():
                 return claimed
 
-            if self._is_signin_reward_ready(interval=1):
-                self.device.click(SIGNIN_RATE_REWARD)
+            if self._is_weekly_rewards_ready(interval=self.WEEKLY_REWARDS_CLICK_INTERVAL_SECONDS):
+                self.device.click(WEEKLY_REWARDS)
                 claimed = True
                 timeout.reset()
                 no_action_confirm.reset()
                 continue
 
-            if self.handle_touch_to_close(interval=1):
-                timeout.reset()
-                no_action_confirm.reset()
-                continue
-            if self.ui_additional():
+            if self.handle_touch_to_close(interval=0.5):
                 timeout.reset()
                 no_action_confirm.reset()
                 continue
@@ -86,25 +93,33 @@ class KnightsLegacy(
                 no_action_confirm.reset()
                 continue
 
-            if no_action_confirm.reached():
-                return claimed
-
     def run(self) -> bool:
         logger.hr("Knights", level=1)
+        self._reset_team_battle_status_runtime()
 
         if not self.device.app_is_running():
             from tasks.login.login import Login
 
             Login(self.config, device=self.device).app_start()
 
-        run_signin = self.config.KnightsBasic_ClaimSigninRateReward
+        run_weekly_rewards = self.config.KnightsBasic_ClaimSigninRateReward
         run_weekly_task = self.config.KnightsBasic_WeeklyTask
-        run_donate = self.config.KnightsDonate_Donate
-        run_support = self.config.KnightsDonate_Support
-        run_expedition = self.config.KnightsExpedition_Expedition
+        run_support_donate = self.config.KnightsDonate_Donate
+        run_support_request = self.config.KnightsDonate_Support
+        run_team_battle = self.config.KnightsExpedition_TeamBattle
+        run_expedition = self.config.KnightsExpedition_Expedition or run_team_battle
         run_world_boss = self.config.KnightsExpedition_WorldBoss
 
-        if not any([run_signin, run_weekly_task, run_donate, run_support, run_expedition, run_world_boss]):
+        if not any(
+            [
+                run_weekly_rewards,
+                run_weekly_task,
+                run_support_donate,
+                run_support_request,
+                run_expedition,
+                run_world_boss,
+            ]
+        ):
             logger.warning("Knights: all sub tasks disabled")
             self.config.task_delay(server_update=True)
             return True
@@ -112,31 +127,31 @@ class KnightsLegacy(
         if not self._enter_knights():
             return False
 
-        if run_signin:
-            self._claim_signin_reward(skip_first_screenshot=True)
+        self._settle_knights_home(skip_first_screenshot=True)
+
+        if run_weekly_rewards:
+            self._claim_weekly_rewards(skip_first_screenshot=True)
 
         success = True
         if run_expedition:
             success = self.run_expedition(skip_first_screenshot=True) and success
         if run_world_boss:
             success = self.run_world_boss(skip_first_screenshot=True) and success
-        if run_donate:
-            success = self.run_donate(skip_first_screenshot=True) and success
-        if run_support:
-            success = self.run_support(skip_first_screenshot=True) and success
+        if run_support_donate or run_support_request:
+            success = self.run_support(
+                skip_first_screenshot=True,
+                run_donate=run_support_donate,
+                run_request=run_support_request,
+            ) and success
+            if not run_weekly_task:
+                self.ui_goto(page_knights, skip_first_screenshot=True)
         if run_weekly_task:
             success = self.run_weekly_task(skip_first_screenshot=True) and success
+            self.ui_goto(page_knights, skip_first_screenshot=True)
 
-        self.config.task_call("DataUpdate", force_call=False)
-        self.config.task_delay(server_update=True)
+        reminder_target = self._get_team_battle_next_delay_target()
+        if reminder_target is not None:
+            self.config.task_delay(server_update=True, target=reminder_target)
+        else:
+            self.config.task_delay(server_update=True)
         return success
-
-
-class Knights:
-    def __new__(cls, *args, **kwargs):
-        if server.lang == "cn":
-            return KnightsLegacy(*args, **kwargs)
-
-        from tasks.knights_v2.knights import KnightsV2
-
-        return KnightsV2(*args, **kwargs)
