@@ -33,6 +33,7 @@ raw_assets/
 docs/
 conversation-*
 .claude/
+dev_tools/goc
 
 # Created by .ignore support plugin (hsz.mobi)
 

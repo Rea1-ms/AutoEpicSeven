@@ -1462,7 +1462,13 @@
   "Combat": {
     "_info": {
       "name": "Daily Combat Settings",
-      "help": "Configure the domain, element, grade, and whether fast combat should be used."
+      "help": "Configure combat mode, domain, element, and grade."
+    },
+    "Mode": {
+      "name": "Mode",
+      "help": "Choose between fixed-count task mode and long-running event mode.",
+      "Task": "Task",
+      "Event": "Event"
     },
     "Domain": {
       "name": "Domain",
@@ -1498,6 +1504,14 @@
     "FastCombat": {
       "name": "Use Fast Combat",
       "help": "Enable fast combat when available. If disabled, the task uses repeat combat and minimizes it to the main page."
+    },
+    "FastCombatCount": {
+      "name": "Fast Combat Count",
+      "help": "Target fast combat count."
+    },
+    "RepeatCombatCount": {
+      "name": "Repeat Combat Count",
+      "help": "Target repeat combat count for pet repeat battle."
     }
   },
   "CombatRuntime": {

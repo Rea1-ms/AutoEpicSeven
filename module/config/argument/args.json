@@ -789,6 +789,14 @@
       }
     },
     "Combat": {
+      "Mode": {
+        "type": "select",
+        "value": "Task",
+        "option": [
+          "Task",
+          "Event"
+        ]
+      },
       "Domain": {
         "type": "select",
         "value": "Hunt",
@@ -831,6 +839,14 @@
       "FastCombat": {
         "type": "checkbox",
         "value": true
+      },
+      "FastCombatCount": {
+        "type": "input",
+        "value": 10
+      },
+      "RepeatCombatCount": {
+        "type": "input",
+        "value": 5
       }
     },
     "CombatRuntime": {

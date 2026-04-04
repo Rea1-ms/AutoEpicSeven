@@ -13,6 +13,7 @@ from tasks.base.assets.assets_base_popup import (
 )
 from tasks.base.resource_bar import RESOURCE_BAR_LAYOUT_COMBAT, ResourceBarMixin
 from tasks.base.ui import UI
+from tasks.combat.prepare import CombatPrepare
 from tasks.combat.assets.assets_combat_action import COMBAT_START
 from tasks.combat.assets import assets_combat_configs_element_altar as altar_elements
 from tasks.combat.assets import assets_combat_configs_element_hunt as hunt_elements
@@ -110,7 +111,7 @@ class CombatDigit(Digit):
         return super().after_process(result)
 
 
-class Combat(ResourceBarMixin, UI):
+class Combat(CombatPrepare, ResourceBarMixin, UI):
     COMBAT_RESOURCE_BAR_TIMEOUT_SECONDS = 1
     COMBAT_RESOURCE_BAR_TIMEOUT_COUNT = 2
     COMBAT_RUNTIME_PATH = "Combat.CombatRuntime.Session"
@@ -141,6 +142,12 @@ class Combat(ResourceBarMixin, UI):
         domain = getattr(self.config, "Combat_Domain", "Hunt")
         return COMBAT_PLANS.get(domain, HUNT_PLAN)
 
+    def _combat_mode(self) -> str:
+        return getattr(self.config, "Combat_Mode", "Task")
+
+    def _combat_is_event_mode(self) -> bool:
+        return self._combat_mode() == "Event"
+
     def _combat_element(self) -> str:
         return getattr(self.config, "Combat_Element", "Water")
 
@@ -152,6 +159,11 @@ class Combat(ResourceBarMixin, UI):
 
     def _combat_fast_enabled(self) -> bool:
         return bool(getattr(self.config, "Combat_FastCombat", True))
+
+    def _combat_should_use_fast(self) -> bool:
+        if self._combat_is_event_mode():
+            return True
+        return self._combat_fast_enabled()
 
     def _combat_runtime_session(self) -> dict:
         session = self.config.cross_get(self.COMBAT_RUNTIME_PATH, default={})
@@ -170,6 +182,7 @@ class Combat(ResourceBarMixin, UI):
         return {
             "active": True,
             "mode": "repeat_background",
+            "combat_mode": self._combat_mode(),
             "domain": plan.name,
             "element": self._combat_element(),
             "grade": self._combat_grade(),
@@ -179,6 +192,7 @@ class Combat(ResourceBarMixin, UI):
         return {
             "active": True,
             "mode": "repeat_background",
+            "combat_mode": self._combat_mode(),
             "source": "detected_existing",
         }
 
@@ -819,7 +833,9 @@ class Combat(ResourceBarMixin, UI):
 
         if self._combat_runtime_active():
             session = self._combat_runtime_session()
+            session_combat_mode = session.get("combat_mode", "Task")
             logger.info("Combat: background session active, watch current session")
+            logger.attr("CombatSessionMode", session_combat_mode)
             if session.get("source"):
                 logger.attr("CombatSessionSource", session.get("source"))
             logger.attr("CombatSessionDomain", session.get("domain"))
@@ -832,8 +848,10 @@ class Combat(ResourceBarMixin, UI):
             status = self._watch_repeat_combat(skip_first_screenshot=True)
             if status == "finished":
                 self._combat_runtime_clear()
-                self.config.task_delay(server_update=True)
-                return True
+                if session_combat_mode != "Event":
+                    self.config.task_delay(server_update=True)
+                    return True
+                logger.info("Combat: event background session finished, restart combat")
 
             if status == "lost":
                 logger.warning("Combat: background session lost, relaunch combat")
@@ -843,12 +861,17 @@ class Combat(ResourceBarMixin, UI):
                 return True
 
         plan = self._combat_plan()
-        use_fast_combat = self._combat_fast_enabled()
+        combat_mode = self._combat_mode()
+        event_mode = self._combat_is_event_mode()
+        use_fast_combat = self._combat_should_use_fast()
 
+        logger.attr("CombatMode", combat_mode)
         logger.attr("CombatDomain", plan.name)
         logger.attr("CombatElement", self._combat_element())
         logger.attr("CombatGrade", self._combat_grade())
         logger.attr("CombatFastCombat", use_fast_combat)
+        logger.attr("CombatFastCombatCount", self._combat_fast_count())
+        logger.attr("CombatRepeatCombatCount", self._combat_repeat_count())
 
         success = self._enter_stage_page(plan, skip_first_screenshot=True)
         if success:
@@ -862,15 +885,41 @@ class Combat(ResourceBarMixin, UI):
 
         if success:
             if use_fast_combat:
-                success = self._run_fast_combat(skip_first_screenshot=True)
-            else:
-                success = self._run_repeat_combat(skip_first_screenshot=True)
+                fast_prepare = self._prepare_fast_combat(use_max=event_mode, skip_first_screenshot=True)
+                if fast_prepare == "fallback":
+                    use_fast_combat = False
+                else:
+                    success = fast_prepare == "ready"
 
-        if success and use_fast_combat:
+        if success:
+            if event_mode:
+                if use_fast_combat:
+                    success = self._run_fast_combat(skip_first_screenshot=True)
+                    if success:
+                        success = self._prepare_repeat_combat(use_max=True, skip_first_screenshot=True)
+                    if success:
+                        success = self._run_repeat_combat(skip_first_screenshot=True)
+                else:
+                    success = self._prepare_repeat_combat(use_max=True, skip_first_screenshot=True)
+                    if success:
+                        success = self._run_repeat_combat(skip_first_screenshot=True)
+            else:
+                if not use_fast_combat:
+                    success = self._prepare_repeat_combat(skip_first_screenshot=True)
+                if success:
+                    if use_fast_combat:
+                        success = self._run_fast_combat(skip_first_screenshot=True)
+                    else:
+                        success = self._run_repeat_combat(skip_first_screenshot=True)
+
+        if success and use_fast_combat and not event_mode:
             success = self._leave_to_main(skip_first_screenshot=True)
 
         if success:
-            if use_fast_combat:
+            if event_mode:
+                self._combat_runtime_set(self._combat_runtime_build(plan))
+                self.config.task_delay(minute=self.COMBAT_BACKGROUND_CHECK_MINUTES)
+            elif use_fast_combat:
                 self._combat_runtime_clear()
                 self.config.task_delay(server_update=True)
             else:

@@ -1462,7 +1462,13 @@
   "Combat": {
     "_info": {
       "name": "Ajustes de combate diario",
-      "help": "Configura el tipo de dominio, elemento, dificultad y si debe usarse combate rápido."
+      "help": "Configura el modo, tipo, elemento y dificultad del combate."
+    },
+    "Mode": {
+      "name": "Modo",
+      "help": "Elige entre el modo de tarea por cantidad fija y el modo de evento para farmeo prolongado.",
+      "Task": "Tarea",
+      "Event": "Evento"
     },
     "Domain": {
       "name": "Dominio",
@@ -1498,6 +1504,14 @@
     "FastCombat": {
       "name": "Usar combate rápido",
       "help": "Activa combate rápido cuando esté disponible. Si se desactiva, la tarea inicia combate repetido y lo minimiza a la pantalla principal."
+    },
+    "FastCombatCount": {
+      "name": "Cantidad de combate rapido",
+      "help": "Cantidad objetivo de combate rapido."
+    },
+    "RepeatCombatCount": {
+      "name": "Cantidad de combate repetido",
+      "help": "Cantidad objetivo de combate repetido para la repeticion con mascota."
     }
   },
   "CombatRuntime": {

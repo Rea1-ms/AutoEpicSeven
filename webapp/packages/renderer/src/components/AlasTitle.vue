@@ -1,6 +1,6 @@
 <template>
   <section class="text-6xl font-extralight tracking-wide">
-    <span class="text-7xl text-primary">S</span>tar<span class="text-7xl text-primary">R</span>ail<span class="text-7xl text-primary">C</span>opilot
+    <span class="text-7xl text-primary">A</span>uto<span class="text-7xl text-primary">E</span>pic<span class="text-7xl text-primary">S</span>even
   </section>
 </template>
 

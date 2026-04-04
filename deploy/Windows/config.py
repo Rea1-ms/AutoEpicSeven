@@ -14,7 +14,7 @@ class ExecutionError(Exception):
 
 class ConfigModel:
     # Git
-    Repository: str = "https://github.com/LmeSzinc/AzurLaneAutoScript"
+    Repository: str = "https://github.com/Rea1-ms/AutoEpicSeven"
     Branch: str = "master"
     GitExecutable: str = "./toolkit/Git/mingw64/bin/git.exe"
     GitProxy: Optional[str] = None
@@ -43,7 +43,7 @@ class ConfigModel:
     # Update
     EnableReload: bool = True
     CheckUpdateInterval: int = 5
-    AutoRestartTime: str = "03:50"
+    AutoRestartTime: str = "01:50"
 
     # Misc
     DiscordRichPresence: bool = False
@@ -56,7 +56,7 @@ class ConfigModel:
 
     # Webui
     WebuiHost: str = "0.0.0.0"
-    WebuiPort: int = 22367
+    WebuiPort: int = 22669
     WebuiSSLKey: Optional[str] = None
     WebuiSSLCert: Optional[str] = None
     Language: str = "en-US"
@@ -125,7 +125,7 @@ class DeployConfig(ConfigModel):
         # Don't write these into deploy.yaml
         super().__setattr__('GitOverCdn', self.Repository in ['cn'])
         if self.Repository in ['global', 'cn']:
-            super().__setattr__('Repository', 'https://github.com/LmeSzinc/StarRailCopilot')
+            super().__setattr__('Repository', 'https://github.com/Rea1-ms/AutoEpicSeven')
 
     def filepath(self, path):
         """
@@ -151,6 +151,12 @@ class DeployConfig(ConfigModel):
             .replace(r"\\", "/")
             .replace("\\", "/")
         )
+
+    @cached_property
+    def git_home(self) -> str:
+        path = self.filepath('./config/git-home')
+        os.makedirs(path, exist_ok=True)
+        return path
 
     @cached_property
     def adb(self) -> str:
@@ -190,6 +196,24 @@ class DeployConfig(ConfigModel):
         else:
             return self.filepath(self.RequirementsFile)
 
+    def is_git_command(self, command: str) -> bool:
+        command = command.lstrip().lower()
+        git = self.git.replace("\\", "/").lower()
+        return (
+            command.startswith(f'"{git}"')
+            or command.startswith('git ')
+            or command.startswith('"git" ')
+        )
+
+    def prepare_shell_command(self, command: str) -> str:
+        if not self.is_git_command(command):
+            return command
+
+        home = self.git_home
+        if os.name == 'nt':
+            return f'set "HOME={home}" && set "USERPROFILE={home}" && {command}'
+        return f'HOME="{home}" USERPROFILE="{home}" {command}'
+
     def execute(self, command, allow_failure=False, output=True):
         """
         Args:
@@ -202,10 +226,12 @@ class DeployConfig(ConfigModel):
                 Terminate installation if failed to execute and not allow_failure.
         """
         command = command.replace(r"\\", "/").replace("\\", "/").replace('"', '"')
+        run_command = command
         if not output:
-            command = command + ' >nul 2>nul'
+            run_command = run_command + ' >nul 2>nul'
+        run_command = self.prepare_shell_command(run_command)
         logger.info(command)
-        error_code = os.system(command)
+        error_code = os.system(run_command)
         if error_code:
             if allow_failure:
                 logger.info(f"[ allowed failure ], error_code: {error_code}")

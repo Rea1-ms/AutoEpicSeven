@@ -215,11 +215,14 @@ class GeneratedConfig:
     Arena_NPCCombatCount = 5
 
     # Group `Combat`
+    Combat_Mode = 'Task'  # Task, Event
     Combat_Domain = 'Hunt'  # Hunt, SpiritAltar
     Combat_Element = 'Water'  # Dark, Light, Water, Fire, Nature
     Combat_AltarGrade = 'Hell'  # Pri, Mid, High, Hell
     Combat_HuntGrade = 'Hell'  # Mid, High, Hell, Dimensional
     Combat_FastCombat = True
+    Combat_FastCombatCount = 10
+    Combat_RepeatCombatCount = 5
 
     # Group `CombatRuntime`
     CombatRuntime_Session = {}

@@ -427,6 +427,7 @@ class UI(MainPage):
         session = self.config.cross_get(self.COMBAT_RUNTIME_PATH, default={})
         if not isinstance(session, dict) or not session.get("active"):
             return False
+        combat_mode = session.get("combat_mode", "Task")
 
         if self.appear_then_click(REPEAT_COMBAT_OVER, interval=0.5):
             logger.info("Closed background combat finish prompt")
@@ -435,8 +436,11 @@ class UI(MainPage):
         if self.match_template_luma(WINDOW, similarity=0.8):
             if self.handle_ad_buff_x_close(interval=0.5):
                 logger.info("Closed background combat result window")
-                self.config.cross_set(self.COMBAT_RUNTIME_PATH, {})
-                self.config.task_delay(server_update=True, task="Combat")
+                if combat_mode == "Event":
+                    self.config.task_call("Combat")
+                else:
+                    self.config.cross_set(self.COMBAT_RUNTIME_PATH, {})
+                    self.config.task_delay(server_update=True, task="Combat")
                 return True
 
         if self.is_in_main(interval=0) and not self._is_background_repeat_combat_running():

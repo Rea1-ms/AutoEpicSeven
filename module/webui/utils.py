@@ -383,7 +383,7 @@ class Icon:
     Storage html of icon.
     """
 
-    ALAS = _read(filepath_icon("alas"))
+    ALAS = _read(filepath_icon("aes"))
     SETTING = _read(filepath_icon("setting"))
     RUN = _read(filepath_icon("run"))
     DEVELOP = _read(filepath_icon("develop"))

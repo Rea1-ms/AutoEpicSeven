@@ -309,6 +309,9 @@ Arena:
   NPCCombatCount: 5
 
 Combat:
+  Mode:
+    value: Task
+    option: [ Task, Event ]
   Domain:
     value: Hunt
     option: [ Hunt, SpiritAltar ]
@@ -322,6 +325,8 @@ Combat:
     value: Hell
     option: [ Mid, High, Hell, Dimensional ]
   FastCombat: true
+  FastCombatCount: 10
+  RepeatCombatCount: 5
 CombatRuntime:
   Session:
     keepvalue: true

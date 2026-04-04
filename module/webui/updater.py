@@ -1,4 +1,5 @@
 import datetime
+import os
 import subprocess
 import threading
 import time
@@ -39,8 +40,12 @@ class Updater(DeployConfig, GitManager, PipManager):
 
     def execute_output(self, command) -> str:
         command = command.replace(r"\\", "/").replace("\\", "/").replace('"', '"')
+        env = os.environ.copy()
+        if self.is_git_command(command):
+            env["HOME"] = self.git_home
+            env["USERPROFILE"] = self.git_home
         log = subprocess.run(
-            command, capture_output=True, text=True, encoding="utf8", shell=True
+            command, capture_output=True, text=True, encoding="utf8", shell=True, env=env
         ).stdout
         return log
 
