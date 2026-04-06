@@ -10,7 +10,7 @@ DIMENSIONAL = ButtonWrapper(
         area=(782, 523, 806, 539),
         search=(762, 503, 826, 559),
         color=(82, 87, 42),
-        button=(782, 523, 806, 539),
+        button=(771, 556, 990, 660),
     ),
 )
 HELL = ButtonWrapper(
