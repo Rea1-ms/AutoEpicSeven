@@ -1,8 +1,8 @@
 Deploy:
   Git:
-    # URL of AzurLaneAutoScript repository
+    # URL of AutoEpicSeven repository
     # [CN user] Use 'cn' to get update from git-over-cdn service
-    # [Other] Use 'global' to get update from https://github.com/LmeSzinc/StarRailCopilot
+    # [Other] Use 'global' to get update from https://github.com/Rea1-ms/AutoEpicSeven
     Repository: 'global'
     # Branch of Alas
     # [Developer] Use 'dev', 'app', etc, to try new features
@@ -32,7 +32,7 @@ Deploy:
   Python:
     # Filepath of python executable `python.exe`
     # [Easy installer] Use './toolkit/python.exe'
-    # [Other] Use you own python, and its version should be 3.7.6 64bit
+    # [Other] Use you own python, and its version should be 3.10.19 64bit
     PythonExecutable: './toolkit/python.exe'
     # URL of pypi mirror
     # [CN user] Use 'https://pypi.tuna.tsinghua.edu.cn/simple' for faster and more stable download
