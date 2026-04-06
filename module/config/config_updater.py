@@ -980,10 +980,17 @@ class ConfigUpdater:
         if deep_get(data, 'Arena.Arena.NPCCombat', default=False) is False:
             yield 'Arena.Arena.NPCCombatFastBattle'
             yield 'Arena.Arena.NPCCombatCount'
-        if deep_get(data, 'Combat.Combat.Mode', default='Task') != 'Task':
+        # Fast combat & repeat combat
+        combat_mode = deep_get(data, 'Combat.Combat.Mode', default='Task')
+        combat_domain = deep_get(data, 'Combat.Combat.Domain', default='Hunt')
+        combat_hunt_grade = deep_get(data, 'Combat.Combat.HuntGrade', default='Hell')
+        if combat_mode != 'Task':
             yield 'Combat.Combat.FastCombat'
             yield 'Combat.Combat.FastCombatCount'
             yield 'Combat.Combat.RepeatCombatCount'
+        elif combat_domain == 'Hunt' and combat_hunt_grade == 'Dimensional':
+            yield 'Combat.Combat.FastCombat'
+            yield 'Combat.Combat.FastCombatCount'
         elif deep_get(data, 'Combat.Combat.FastCombat', default=True) is False:
             yield 'Combat.Combat.FastCombatCount'
         if deep_get(data, 'Combat.Combat.Domain', default='Hunt') != 'SpiritAltar':

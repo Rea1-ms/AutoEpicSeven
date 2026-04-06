@@ -160,7 +160,24 @@ class Combat(CombatPrepare, ResourceBarMixin, UI):
     def _combat_fast_enabled(self) -> bool:
         return bool(getattr(self.config, "Combat_FastCombat", True))
 
+    def _combat_supports_fast_combat(self, plan: CombatPlan | None = None) -> bool:
+        """
+        Return whether the current combat target provides a fast-combat toggle.
+
+        Dimensional Hunt uses Spectral Cores and does not expose the fast-combat
+        button on the prepare page. GUI-side hiding alone is not enough because
+        an old persisted config may still keep FastCombat=True. Keep this rule
+        on the backend so state loops do not try to click a missing toggle and
+        get stuck on the prepare page.
+        """
+        if plan is None:
+            plan = self._combat_plan()
+
+        return not (plan.name == "Hunt" and self._combat_grade() == "Dimensional")
+
     def _combat_should_use_fast(self) -> bool:
+        if not self._combat_supports_fast_combat():
+            return False
         if self._combat_is_event_mode():
             return True
         return self._combat_fast_enabled()
@@ -501,13 +518,18 @@ class Combat(CombatPrepare, ResourceBarMixin, UI):
                 continue
 
     def _ensure_fast_combat_state(self, enabled: bool) -> bool:
+        if not self._combat_supports_fast_combat():
+            return not enabled
+
         if self._is_fast_combat_locked():
             return not enabled
 
         if enabled:
             if self._is_fast_combat_on():
                 return True
-            if self.interval_is_reached(FAST_COMBAT_OFF, interval=self.COMBAT_TOGGLE_INTERVAL_SECONDS):
+            if self._is_fast_combat_off() and self.interval_is_reached(
+                FAST_COMBAT_OFF, interval=self.COMBAT_TOGGLE_INTERVAL_SECONDS
+            ):
                 logger.info("Combat: enable fast combat")
                 self.device.click(FAST_COMBAT_OFF)
                 self.interval_reset(FAST_COMBAT_OFF, interval=self.COMBAT_TOGGLE_INTERVAL_SECONDS)
@@ -515,7 +537,9 @@ class Combat(CombatPrepare, ResourceBarMixin, UI):
 
         if self._is_fast_combat_off():
             return True
-        if self.interval_is_reached(FAST_COMBAT_OFF, interval=self.COMBAT_TOGGLE_INTERVAL_SECONDS):
+        if self._is_fast_combat_on() and self.interval_is_reached(
+            FAST_COMBAT_OFF, interval=self.COMBAT_TOGGLE_INTERVAL_SECONDS
+        ):
             logger.info("Combat: disable fast combat")
             self.device.click(FAST_COMBAT_OFF)
             self.interval_reset(FAST_COMBAT_OFF, interval=self.COMBAT_TOGGLE_INTERVAL_SECONDS)
@@ -869,6 +893,7 @@ class Combat(CombatPrepare, ResourceBarMixin, UI):
         logger.attr("CombatDomain", plan.name)
         logger.attr("CombatElement", self._combat_element())
         logger.attr("CombatGrade", self._combat_grade())
+        logger.attr("CombatFastCombatSupported", self._combat_supports_fast_combat(plan))
         logger.attr("CombatFastCombat", use_fast_combat)
         logger.attr("CombatFastCombatCount", self._combat_fast_count())
         logger.attr("CombatRepeatCombatCount", self._combat_repeat_count())
