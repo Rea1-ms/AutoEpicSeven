@@ -5,6 +5,13 @@ from module.base.button import Button, ButtonWrapper
 
 AD_BUFF_X_CLOSE = ButtonWrapper(
     name='AD_BUFF_X_CLOSE',
+    global_cn=Button(
+        file='./assets/global_cn/base/popup/AD_BUFF_X_CLOSE.png',
+        area=(731, 690, 745, 704),
+        search=(587, 685, 832, 705),
+        color=(55, 54, 54),
+        button=(731, 690, 745, 704),
+    ),
     share=Button(
         file='./assets/share/base/popup/AD_BUFF_X_CLOSE.png',
         area=(731, 690, 745, 704),

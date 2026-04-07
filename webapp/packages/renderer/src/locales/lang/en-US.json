@@ -8,11 +8,11 @@
     "global": "Global",
     "china": "China",
     "install": "Install",
-    "installTips": "Used SRC before? Import your configs here"
+    "installTips": "Used AES before? Import your configs here"
   },
   "import": {
-    "title": "Import user configs from old SRC",
-    "tips": "Import configs from old SRC",
+    "title": "Import user configs from old AES",
+    "tips": "Import configs from old AES",
     "error": "Import failed, please check your configs",
     "step1": "Select old config files",
     "step2": "Confirm import",
@@ -29,7 +29,7 @@
     }
   },
   "modal": {
-    "closeTipTitle": "Sure to close SRC ?",
+    "closeTipTitle": "Sure to close AES ?",
     "closeTipContent": "All running instances will be terminated",
     "cancelText": "Cancel",
     "okText": "Confirm"

@@ -119,6 +119,13 @@ MAIN_GOTO_SANCTUARY = ButtonWrapper(
 )
 MAIN_GOTO_SECRET_SHOP = ButtonWrapper(
     name='MAIN_GOTO_SECRET_SHOP',
+    global_cn=Button(
+        file='./assets/global_cn/base/page/MAIN_GOTO_SECRET_SHOP.png',
+        area=(65, 316, 77, 336),
+        search=(45, 296, 97, 356),
+        color=(166, 171, 175),
+        button=(65, 316, 77, 336),
+    ),
     share=Button(
         file='./assets/share/base/page/MAIN_GOTO_SECRET_SHOP.png',
         area=(69, 255, 77, 272),

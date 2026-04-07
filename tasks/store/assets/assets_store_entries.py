@@ -91,13 +91,7 @@ STORE_CHECK = ButtonWrapper(
         color=(158, 155, 155),
         button=(92, 21, 116, 45),
     ),
-    global_cn=Button(
-        file='./assets/global_cn/store/entries/STORE_CHECK.png',
-        area=(93, 21, 118, 45),
-        search=(73, 1, 138, 65),
-        color=(155, 152, 152),
-        button=(93, 21, 118, 45),
-    ),
+    global_cn=None,
     global_en=None,
 )
 SUB_STORE_SEARCH = ButtonWrapper(

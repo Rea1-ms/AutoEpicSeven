@@ -45,22 +45,21 @@ TEAM_BATTLE_OPENING = ButtonWrapper(
 )
 WEEKLY_REWARDS = ButtonWrapper(
     name='WEEKLY_REWARDS',
-    share=[
-        Button(
-            file='./assets/share/knights/main_page/WEEKLY_REWARDS.png',
-            area=(40, 394, 68, 422),
-            search=(20, 374, 88, 442),
-            color=(230, 200, 144),
-            button=(40, 394, 68, 422),
-        ),
-        Button(
-            file='./assets/share/knights/main_page/WEEKLY_REWARDS.2.png',
-            area=(41, 490, 66, 515),
-            search=(21, 470, 86, 535),
-            color=(225, 187, 123),
-            button=(41, 490, 66, 515),
-        ),
-    ],
+    cn=Button(
+        file='./assets/cn/knights/main_page/WEEKLY_REWARDS.png',
+        area=(41, 490, 66, 515),
+        search=(21, 470, 86, 535),
+        color=(225, 187, 123),
+        button=(41, 490, 66, 515),
+    ),
+    global_cn=Button(
+        file='./assets/global_cn/knights/main_page/WEEKLY_REWARDS.png',
+        area=(40, 394, 68, 422),
+        search=(20, 374, 88, 442),
+        color=(230, 200, 144),
+        button=(40, 394, 68, 422),
+    ),
+    global_en=None,
 )
 WORLD_BOSS_CHECK = ButtonWrapper(
     name='WORLD_BOSS_CHECK',

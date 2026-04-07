@@ -12,13 +12,7 @@ BUY = ButtonWrapper(
         color=(133, 149, 134),
         button=(961, 432, 999, 453),
     ),
-    global_cn=Button(
-        file='./assets/global_cn/store/actions/BUY.png',
-        area=(960, 432, 1000, 452),
-        search=(895, 140, 1003, 684),
-        color=(124, 140, 125),
-        button=(960, 432, 1000, 452),
-    ),
+    global_cn=None,
     global_en=None,
 )
 BUY_CONFIRM_MULTI = ButtonWrapper(

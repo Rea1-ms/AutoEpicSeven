@@ -5,11 +5,20 @@ from module.base.button import Button, ButtonWrapper
 
 COMBAT_START = ButtonWrapper(
     name='COMBAT_START',
-    share=Button(
-        file='./assets/share/combat/action/COMBAT_START.png',
-        area=(954, 645, 959, 684),
-        search=(934, 625, 979, 704),
-        color=(165, 141, 119),
-        button=(954, 645, 959, 684),
-    ),
+    share=[
+        Button(
+            file='./assets/share/combat/action/COMBAT_START.png',
+            area=(954, 645, 959, 684),
+            search=(934, 625, 979, 704),
+            color=(165, 141, 119),
+            button=(954, 645, 959, 684),
+        ),
+        Button(
+            file='./assets/share/combat/action/COMBAT_START.2.png',
+            area=(929, 638, 973, 679),
+            search=(909, 618, 993, 699),
+            color=(64, 38, 19),
+            button=(929, 638, 973, 679),
+        ),
+    ],
 )
