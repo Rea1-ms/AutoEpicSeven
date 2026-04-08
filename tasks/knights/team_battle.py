@@ -7,6 +7,7 @@ from tasks.base.assets.assets_base_popup import POPUP_CONFIRM
 from tasks.knights.assets.assets_knights_gvg import (
     KNIGHTS_CREST,
     OCR_KNIGHTS_CREST,
+    KNIGHTS_NOT_ENOUGH_PEOPLE,
     TEAM_BATTLE_RESULT_CONFIRM,
 )
 from tasks.knights.assets.assets_knights_main_page import (
@@ -57,12 +58,23 @@ class KnightsTeamBattleMixin(KnightsTeamBattleStatusMixin):
 
         return appear
 
-    def _team_battle_time_ocr_todo(self):
+    def _is_team_battle_member_insufficient(self, interval=0) -> bool:
         """
-        TODO:
-            OCR guild-war start/end time after assets and format are ready.
+        Detect if there are not enough people for team battle.
         """
-        pass
+        self.device.stuck_record_add(KNIGHTS_NOT_ENOUGH_PEOPLE)
+
+        if interval and not self.interval_is_reached(KNIGHTS_NOT_ENOUGH_PEOPLE, interval=interval):
+            return False
+
+        appear = False
+        if KNIGHTS_NOT_ENOUGH_PEOPLE.match_template_luma(self.device.image):
+            appear = True
+
+        if appear and interval:
+            self.interval_reset(KNIGHTS_NOT_ENOUGH_PEOPLE, interval=interval)
+
+        return appear
 
     def _ocr_knights_crest(self) -> TeamBattleCrestStatus | None:
         lang = self.config.Emulator_GameLanguage
@@ -127,6 +139,11 @@ class KnightsTeamBattleMixin(KnightsTeamBattleStatusMixin):
                     "or disable GVG-related tasks."
                 )
 
+            if self._is_team_battle_member_insufficient():
+                logger.info("Team battle: not enough people, skip for now")
+                self._update_team_battle_dashboard_not_enough_people()
+                return self._back_to_knights(skip_first_screenshot=True)
+
             if timeout.reached():
                 logger.warning("Team battle flow timeout")
                 return False
@@ -138,7 +155,6 @@ class KnightsTeamBattleMixin(KnightsTeamBattleStatusMixin):
                 else:
                     self._update_team_battle_dashboard_counter(status)
                     self._send_or_schedule_team_battle_reminder(status)
-                self._team_battle_time_ocr_todo()
                 logger.info("Team battle home reached")
                 return self._back_to_knights(skip_first_screenshot=True)
 

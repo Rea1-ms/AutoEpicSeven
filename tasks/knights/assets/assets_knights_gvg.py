@@ -13,6 +13,16 @@ KNIGHTS_CREST = ButtonWrapper(
         button=(890, 23, 910, 43),
     ),
 )
+KNIGHTS_NOT_ENOUGH_PEOPLE = ButtonWrapper(
+    name='KNIGHTS_NOT_ENOUGH_PEOPLE',
+    share=Button(
+        file='./assets/share/knights/gvg/KNIGHTS_NOT_ENOUGH_PEOPLE.png',
+        area=(508, 518, 541, 551),
+        search=(488, 498, 561, 571),
+        color=(45, 93, 31),
+        button=(508, 518, 541, 551),
+    ),
+)
 OCR_KNIGHTS_CREST = ButtonWrapper(
     name='OCR_KNIGHTS_CREST',
     share=Button(

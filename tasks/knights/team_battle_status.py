@@ -26,6 +26,7 @@ class TeamBattleCrestStatus:
 class KnightsTeamBattleStatusMixin:
     TEAM_BATTLE_DASHBOARD_LOCKED_TEXT = "未开放"
     TEAM_BATTLE_DASHBOARD_INVALID_TEXT = "识别失败"
+    TEAM_BATTLE_DASHBOARD_NOT_ENOUGH_PEOPLE_TEXT = "人数不足"
     TEAM_BATTLE_SCHEDULE_HOUR = 11
     TEAM_BATTLE_START_WEEKDAY_END_WEEKDAY = (
         (0, 1),  # Mon 11:00 -> Tue 11:00
@@ -64,6 +65,11 @@ class KnightsTeamBattleStatusMixin:
     def _update_team_battle_dashboard_invalid(self) -> None:
         logger.attr("TeamBattleStatus", self.TEAM_BATTLE_DASHBOARD_INVALID_TEXT)
         self._set_team_battle_dashboard_value(self.TEAM_BATTLE_DASHBOARD_INVALID_TEXT)
+        self._team_battle_next_delay_target = None
+
+    def _update_team_battle_dashboard_not_enough_people(self) -> None:
+        logger.attr("TeamBattleStatus", self.TEAM_BATTLE_DASHBOARD_NOT_ENOUGH_PEOPLE_TEXT)
+        self._set_team_battle_dashboard_value(self.TEAM_BATTLE_DASHBOARD_NOT_ENOUGH_PEOPLE_TEXT)
         self._team_battle_next_delay_target = None
 
     def _update_team_battle_dashboard_counter(self, status: TeamBattleCrestStatus) -> None:
