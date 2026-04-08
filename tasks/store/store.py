@@ -6,8 +6,6 @@ Route to legacy/current implementation according to server family.
 
 import module.config.server as server
 from module.logger import logger
-from tasks.store.current import CurrentStore
-from tasks.store.legacy import LegacyStore
 
 
 class Store:
@@ -22,7 +20,9 @@ class Store:
     def resolve_impl(cls, config):
         variant = cls.resolve_variant(config)
         if variant == "current":
+            from tasks.store.current import CurrentStore
             return CurrentStore
+        from tasks.store.legacy import LegacyStore
         return LegacyStore
 
     def __new__(cls, config, device=None, task=None):

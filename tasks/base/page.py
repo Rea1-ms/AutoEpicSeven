@@ -1,5 +1,6 @@
 import traceback
 
+import module.config.server as server
 from tasks.base.assets.assets_base_page import *
 from tasks.base.assets.assets_base_popup import AD_BUFF_X_CLOSE
 from tasks.base.assets.assets_base_main_page import MENU, MENU_CLOSE, WHITE_STAR
@@ -11,19 +12,20 @@ from tasks.mission_reward.assets.assets_mission_reward_entry import (
     WEEKLY_TAB_ENTRY,
 )
 from tasks.secret_shop.assets.assets_secret_shop import SECRET_SHOP_CHECK
-# Contains both legacy & current checks
-from tasks.store.assets.assets_store_entries import STORE_CHECK as LEGACY_STORE_CHECK
-from tasks.store.assets.assets_store_current_entries import (
-    COMMON_STORE_ENTRY,
-    COMMON_STORE_CHECK,
-    CONQUEST_POINTS_STORE_ENTRY,
-    CONQUEST_POINTS_STORE_CHECK,
-    FREE_STORE_ENTRY,
-    FREE_STORE_CHECK,
-    INHERITANCE_STONE_STORE_ENTRY,
-    INHERITANCE_STONE_STORE_CHECK,
-    STORE_CHECK as CURRENT_STORE_CHECK,
-)
+if server.lang == 'cn':
+    from tasks.store.assets.assets_store_entries import STORE_CHECK
+else:
+    from tasks.store.assets.assets_store_current_entries import (
+        COMMON_STORE_ENTRY,
+        COMMON_STORE_CHECK,
+        CONQUEST_POINTS_STORE_ENTRY,
+        CONQUEST_POINTS_STORE_CHECK,
+        FREE_STORE_ENTRY,
+        FREE_STORE_CHECK,
+        INHERITANCE_STONE_STORE_ENTRY,
+        INHERITANCE_STONE_STORE_CHECK,
+        STORE_CHECK,
+    )
 from tasks.arena.assets.assets_arena import (
     ARENA_CHECK,
     ARENA_COMMON_ENTRY,
@@ -192,47 +194,47 @@ page_main.link(MAIN_GOTO_INVENTORY, destination=page_inventory_equipment)
 page_inventory.link(EQUIPMENT_ENTRY, destination=page_inventory_equipment)
 
 # Store
-# Contains both legacy & current checks
-
-# Current top-bar checks overlap:
-# - COMMON_STORE_CHECK stays valid inside both free / inheritance pages
-# - store top-bar markers may coexist with sub-store markers
-# Define the more specific current sub-pages first so ui_get_current_page()
-# does not stop at a broader container page too early.
-
-# Free store
-page_free_store = Page(FREE_STORE_CHECK)
-page_free_store.link(BACK, destination=page_main)
-
-# Inheritance stone store
-page_inheritance_stone_store = Page(INHERITANCE_STONE_STORE_CHECK)
-page_inheritance_stone_store.link(BACK, destination=page_main)
-
-# Conquest points store
-page_conquest_points_store = Page(CONQUEST_POINTS_STORE_CHECK)
-page_conquest_points_store.link(BACK, destination=page_main)
-
-# Common hub
-page_common_store = Page(COMMON_STORE_CHECK)
-page_common_store.link(BACK, destination=page_main)
-
-# Store
-page_store = Page((LEGACY_STORE_CHECK, CURRENT_STORE_CHECK))
+#
+# Store page registration must stay server-specific.
+# ui_get_current_page()/ui_goto() iterate over every registered Page, so if CN
+# registers current-store-only checks such as FREE_STORE_CHECK, any unrelated
+# task can explode during route probing before it ever reaches its true target.
+# Keep the global page graph aligned with the active assets family instead of
+# trying to rely on runtime fallback behavior here.
+page_store = Page(STORE_CHECK)
 page_store.link(MENU, destination=page_menu)
 page_main.link(MAIN_GOTO_STORE, destination=page_store)
 
-# Enter common branch from store home
-page_store.link(COMMON_STORE_ENTRY, destination=page_common_store)
-page_store.link(COMMON_STORE_ENTRY, destination=page_free_store)
+if server.lang != 'cn':
+    # Current top-bar checks overlap:
+    # - COMMON_STORE_CHECK stays valid inside both free / inheritance pages
+    # - store top-bar markers coexist with sub-store markers
+    # Define the more specific current sub-pages first so ui_get_current_page()
+    # does not stop at a broader container page too early.
+    page_free_store = Page(FREE_STORE_CHECK)
+    page_free_store.link(BACK, destination=page_main)
 
-# Enter conquest directly from store home
-page_store.link(CONQUEST_POINTS_STORE_ENTRY, destination=page_conquest_points_store)
+    page_inheritance_stone_store = Page(INHERITANCE_STONE_STORE_CHECK)
+    page_inheritance_stone_store.link(BACK, destination=page_main)
 
-# Common branch internal switching
-page_common_store.link(FREE_STORE_ENTRY, destination=page_free_store)
-page_common_store.link(INHERITANCE_STONE_STORE_ENTRY, destination=page_inheritance_stone_store)
-page_free_store.link(INHERITANCE_STONE_STORE_ENTRY, destination=page_inheritance_stone_store)
-page_inheritance_stone_store.link(FREE_STORE_ENTRY, destination=page_free_store)
+    page_conquest_points_store = Page(CONQUEST_POINTS_STORE_CHECK)
+    page_conquest_points_store.link(BACK, destination=page_main)
+
+    page_common_store = Page(COMMON_STORE_CHECK)
+    page_common_store.link(BACK, destination=page_main)
+
+    # Enter common branch from store home
+    page_store.link(COMMON_STORE_ENTRY, destination=page_common_store)
+    page_store.link(COMMON_STORE_ENTRY, destination=page_free_store)
+
+    # Enter conquest directly from store home
+    page_store.link(CONQUEST_POINTS_STORE_ENTRY, destination=page_conquest_points_store)
+
+    # Common branch internal switching
+    page_common_store.link(FREE_STORE_ENTRY, destination=page_free_store)
+    page_common_store.link(INHERITANCE_STONE_STORE_ENTRY, destination=page_inheritance_stone_store)
+    page_free_store.link(INHERITANCE_STONE_STORE_ENTRY, destination=page_inheritance_stone_store)
+    page_inheritance_stone_store.link(FREE_STORE_ENTRY, destination=page_free_store)
 
 # Mission reward popup with daily / weekly tabs
 page_mission_reward_daily = Page(DAILY_TAB_CHECK)
