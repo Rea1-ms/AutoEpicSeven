@@ -488,24 +488,31 @@ class UI(MainPage):
             logger.info('Closed new character popup')
             return True
 
+        # 3. 关闭广播的通知，防止影响识别
         if self.handle_broadcast(interval=1):
             logger.info('Handled broadcast popup')
             return True
 
+        # 4. 跳过教学
+        if self.handle_skip_tutorial(interval=1):
+            logger.info('Skipped tutorial popup')
+            return True
+
+        # 5. 后台托管战斗相关
         if self._handle_background_combat_result():
             return True
 
-        # 3. Buff 广告 - 点击关闭
+        # 6. Buff 广告 - 点击关闭
         if self.handle_ad_buff_x_close(interval=2):
             logger.info('Closed buff ad popup')
             return True
 
-        # 4. 各种捆绑礼包/公告 - 轻触关闭
+        # 7. 各种捆绑礼包/公告 - 轻触关闭
         if self.handle_touch_to_close():
             logger.info('Closed popup via touch to close')
             return True
 
-        # 5. 国服启动公告：高频出现，允许作为全局兜底弹窗处理
+        # 8. 国服启动公告：高频出现，允许作为全局兜底弹窗处理
         if server_.is_cn_server(self.config.Emulator_PackageName) and self.appear_then_click(
             LOGIN_ANNOUNCEMENT_CLOSE, interval=2
         ):
