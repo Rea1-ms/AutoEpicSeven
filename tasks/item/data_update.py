@@ -10,6 +10,7 @@ from tasks.base.page import (
     page_inventory_equipment,
     page_main,
     page_secret_shop,
+    page_arena_mode_popup,
 )
 from tasks.base.resource_bar import (
     RESOURCE_BAR_LAYOUT_COMBAT,
@@ -131,11 +132,8 @@ class DataUpdate(ArenaEntryMixin, ArenaDashboardMixin, UI):
         if self.appear(ARENA_COMMON_ENTRY):
             logger.info("DataUpdate: already in arena mode popup")
             return super()._enter_arena(skip_first_screenshot=skip_first_screenshot)
-
-        if not self.is_in_main(interval=0):
-            logger.info("DataUpdate: return to main before arena entry")
-            self.ui_goto_main()
-            skip_first_screenshot = True
+        else:
+            self.ui_goto(page_arena_mode_popup, skip_first_screenshot=skip_first_screenshot)
 
         return super()._enter_arena(skip_first_screenshot=skip_first_screenshot)
 

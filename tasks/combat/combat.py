@@ -11,6 +11,7 @@ from tasks.base.assets.assets_base_popup import (
     NETWORK_ERROR_DISCONNECT,
     TOUCH_TO_CLOSE,
 )
+from tasks.base.page import page_combat
 from tasks.base.resource_bar import RESOURCE_BAR_LAYOUT_COMBAT, ResourceBarMixin
 from tasks.base.ui import UI
 from tasks.combat.prepare import CombatPrepare
@@ -851,7 +852,11 @@ class Combat(CombatPrepare, ResourceBarMixin, UI):
         ):
             logger.info("Combat: detected combat context, skip goto main")
         elif not self.is_in_main(interval=0):
-            self.ui_goto_main()
+            # Route into the combat hub directly instead of always backing out
+            # to main first. _enter_stage_page() will normalize season/common
+            # boards afterwards, while menu-aware page routing can now choose
+            # the shorter shared-toolbar path from other supported pages.
+            self.ui_goto(page_combat, skip_first_screenshot=True)
 
         self._adopt_existing_background_repeat_combat()
 
@@ -867,6 +872,7 @@ class Combat(CombatPrepare, ResourceBarMixin, UI):
             logger.attr("CombatSessionGrade", session.get("grade"))
 
             if not self.is_in_main(interval=0):
+                # 回首页方便挂机
                 self.ui_goto_main()
 
             status = self._watch_repeat_combat(skip_first_screenshot=True)

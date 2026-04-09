@@ -95,11 +95,25 @@ class Page:
         # Example: menu opened from a sanctuary sub-page should prefer
         # MENU_CLOSE -> that sub-page instead of MENU_GOTO_MAIN when both
         # routes are otherwise equally short.
+        yielded = set()
         if extra_links is not None:
             for destination in extra_links.get(page, {}):
+                yielded.add(destination)
                 yield destination
 
+        # Some E7 destinations are reachable from both page_main and page_menu
+        # with the same hop count.
+        # In those ties, keep the route local and use
+        # the shared toolbar/menu hub instead of backing out to main first.
+        for destination in page.link_priority:
+            if destination not in page.links or destination in yielded:
+                continue
+            yielded.add(destination)
+            yield destination
+
         for destination in page.links:
+            if destination in yielded:
+                continue
             yield destination
 
     @classmethod
@@ -157,6 +171,7 @@ class Page:
     def __init__(self, check_button, dynamic_return_button=None, dynamic_return_group=None):
         self.check_button = check_button
         self.links = {}
+        self.link_priority = []
         self.dynamic_return_button = dynamic_return_button
         (filename, line_number, function_name, text) = traceback.extract_stack()[-2]
         self.name = text[:text.find('=')].strip()
@@ -178,6 +193,12 @@ class Page:
     def link(self, button, destination):
         self.links[destination] = button
 
+    def prefer_link(self, *destinations):
+        for destination in destinations:
+            if destination in self.link_priority:
+                self.link_priority.remove(destination)
+            self.link_priority.append(destination)
+
 
 def link_shared_toolbar(*pages):
     """
@@ -191,6 +212,14 @@ def link_shared_toolbar(*pages):
 
     The helper only wires pages where these controls are expected to be stable.
     Deep combat / popup states are excluded on purpose.
+
+    Shared-toolbar pages usually have two equally short ways to reach another
+    hub destination:
+    - BACK -> page_main -> main entry
+    - MENU -> page_menu -> menu entry
+
+    When both paths have the same hop count, prefer menu. It keeps navigation
+    local and avoids pointless backtracking through the main page.
     """
     for page in pages:
         if page not in (page_inventory, page_inventory_equipment):
@@ -202,6 +231,7 @@ def link_shared_toolbar(*pages):
 
         if page != page_menu:
             page.link(MENU, destination=page_menu)
+            page.prefer_link(page_menu, page_main)
 
 
 # Main page (use a stable main-page marker)
