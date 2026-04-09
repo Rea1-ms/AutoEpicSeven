@@ -32,24 +32,6 @@ ARENA_COMMON_ENTRY = ButtonWrapper(
         ),
     ],
 )
-ARENA_ENTRY = ButtonWrapper(
-    name='ARENA_ENTRY',
-    cn=Button(
-        file='./assets/cn/arena/ARENA_ENTRY.png',
-        area=(1167, 377, 1235, 401),
-        search=(1147, 357, 1255, 421),
-        color=(135, 129, 128),
-        button=(1167, 377, 1235, 401),
-    ),
-    global_cn=Button(
-        file='./assets/global_cn/arena/ARENA_ENTRY.png',
-        area=(1166, 377, 1234, 400),
-        search=(1146, 357, 1254, 420),
-        color=(142, 147, 153),
-        button=(1166, 377, 1234, 400),
-    ),
-    global_en=None,
-)
 ARENA_SETTLING = ButtonWrapper(
     name='ARENA_SETTLING',
     share=Button(

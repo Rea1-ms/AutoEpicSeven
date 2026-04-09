@@ -31,6 +31,24 @@ GACHA_CHECK = ButtonWrapper(
     ),
     global_en=None,
 )
+MAIN_ARENA_ENTRY = ButtonWrapper(
+    name='MAIN_ARENA_ENTRY',
+    cn=Button(
+        file='./assets/cn/base/page/MAIN_ARENA_ENTRY.png',
+        area=(1167, 377, 1235, 401),
+        search=(1147, 357, 1255, 421),
+        color=(135, 129, 128),
+        button=(1167, 377, 1235, 401),
+    ),
+    global_cn=Button(
+        file='./assets/global_cn/base/page/MAIN_ARENA_ENTRY.png',
+        area=(1166, 377, 1234, 400),
+        search=(1146, 357, 1254, 420),
+        color=(142, 147, 153),
+        button=(1166, 377, 1234, 400),
+    ),
+    global_en=None,
+)
 MAIN_GOTO_ACTIVITY = ButtonWrapper(
     name='MAIN_GOTO_ACTIVITY',
     share=Button(
@@ -152,6 +170,60 @@ MAIN_GOTO_STORE = ButtonWrapper(
     ),
     global_en=None,
 )
+MENU_ARENA_ENTRY = ButtonWrapper(
+    name='MENU_ARENA_ENTRY',
+    cn=Button(
+        file='./assets/cn/base/page/MENU_ARENA_ENTRY.png',
+        area=(791, 378, 858, 400),
+        search=(771, 358, 878, 420),
+        color=(153, 155, 157),
+        button=(791, 378, 858, 400),
+    ),
+    global_cn=Button(
+        file='./assets/global_cn/base/page/MENU_ARENA_ENTRY.png',
+        area=(790, 378, 858, 400),
+        search=(770, 358, 878, 420),
+        color=(149, 150, 153),
+        button=(790, 378, 858, 400),
+    ),
+    global_en=None,
+)
+MENU_GOTO_COMBAT = ButtonWrapper(
+    name='MENU_GOTO_COMBAT',
+    cn=Button(
+        file='./assets/cn/base/page/MENU_GOTO_COMBAT.png',
+        area=(814, 313, 858, 335),
+        search=(794, 293, 878, 355),
+        color=(130, 133, 131),
+        button=(814, 313, 858, 335),
+    ),
+    global_cn=Button(
+        file='./assets/global_cn/base/page/MENU_GOTO_COMBAT.png',
+        area=(814, 313, 858, 335),
+        search=(794, 293, 878, 355),
+        color=(129, 132, 130),
+        button=(814, 313, 858, 335),
+    ),
+    global_en=None,
+)
+MENU_GOTO_GACHA = ButtonWrapper(
+    name='MENU_GOTO_GACHA',
+    cn=Button(
+        file='./assets/cn/base/page/MENU_GOTO_GACHA.png',
+        area=(836, 443, 859, 465),
+        search=(816, 423, 879, 485),
+        color=(152, 154, 157),
+        button=(836, 443, 859, 465),
+    ),
+    global_cn=Button(
+        file='./assets/global_cn/base/page/MENU_GOTO_GACHA.png',
+        area=(836, 443, 858, 465),
+        search=(816, 423, 878, 485),
+        color=(150, 152, 155),
+        button=(836, 443, 858, 465),
+    ),
+    global_en=None,
+)
 MENU_GOTO_KNIGHTS = ButtonWrapper(
     name='MENU_GOTO_KNIGHTS',
     share=Button(
@@ -191,6 +263,24 @@ MENU_GOTO_PETS = ButtonWrapper(
         color=(154, 159, 164),
         button=(1069, 243, 1087, 260),
     ),
+)
+MENU_GOTO_STORE = ButtonWrapper(
+    name='MENU_GOTO_STORE',
+    cn=Button(
+        file='./assets/cn/base/page/MENU_GOTO_STORE.png',
+        area=(838, 508, 859, 530),
+        search=(818, 488, 879, 550),
+        color=(152, 155, 158),
+        button=(838, 508, 859, 530),
+    ),
+    global_cn=Button(
+        file='./assets/global_cn/base/page/MENU_GOTO_STORE.png',
+        area=(837, 508, 859, 530),
+        search=(817, 488, 879, 550),
+        color=(144, 147, 151),
+        button=(837, 508, 859, 530),
+    ),
+    global_en=None,
 )
 MENU_PETS_GIFT = ButtonWrapper(
     name='MENU_PETS_GIFT',

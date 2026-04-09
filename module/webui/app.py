@@ -1180,6 +1180,9 @@ class AlasGUI(Frame):
             # show something
             put_markdown(
                 """
+            SRC is a free open source software, if you paid for SRC from any channel, please refund.
+            SRC 是一款免费开源软件，如果你在任何渠道付费购买了SRC，请退款。
+            Project repository 项目地址：`https://github.com/LmeSzinc/StarRailCopilot`
             AES is a free open source software, based on SRC, if you paid for AES from any channel, please refund.
             AES 是一款免费开源软件，由 SRC 为基座修改而来，如果你在任何渠道付费购买了AES，请退款。
             Project repository 项目地址：`https://github.com/Rea1-ms/AutoEpicSeven`

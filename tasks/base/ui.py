@@ -37,6 +37,98 @@ class UI(MainPage):
     COMBAT_RUNTIME_PATH = "Combat.CombatRuntime.Session"
     COMBAT_CHECK_SIMILARITY = 0.8
 
+    def _ui_dynamic_origin_store(self) -> dict[str, Page]:
+        if not hasattr(self, "_ui_dynamic_origins"):
+            self._ui_dynamic_origins = {}
+        return self._ui_dynamic_origins
+
+    def _ui_get_dynamic_origin(self, page: Page) -> Page | None:
+        if page.dynamic_return_button is None:
+            return None
+        return self._ui_dynamic_origin_store().get(page.dynamic_return_group)
+
+    def _ui_set_dynamic_origin(self, page: Page, origin: Page) -> None:
+        """
+        Remember which page opened an overlay-like page.
+
+        This state is intentionally narrow:
+        - menu
+        - popup families that share one close button
+
+        We do not try to infer arbitrary "previous pages" for all routes.
+        Only real overlay states that visually sit on top of another page get a
+        runtime origin, so ui_goto() stays explainable and debuggable.
+        """
+        if page.dynamic_return_button is None:
+            return
+        if page.dynamic_return_group == origin.dynamic_return_group:
+            return
+
+        origins = self._ui_dynamic_origin_store()
+        previous = origins.get(page.dynamic_return_group)
+        if previous != origin:
+            logger.info(f'UI dynamic origin: {page.dynamic_return_group} <- {origin}')
+        origins[page.dynamic_return_group] = origin
+
+    def _ui_clear_dynamic_origin(self, page: Page) -> None:
+        if page.dynamic_return_button is None:
+            return
+
+        origins = self._ui_dynamic_origin_store()
+        if page.dynamic_return_group in origins:
+            logger.info(f'UI dynamic origin cleared: {page.dynamic_return_group}')
+            origins.pop(page.dynamic_return_group, None)
+
+    def _ui_build_dynamic_links(self) -> dict[Page, dict[Page, ButtonWrapper]]:
+        """
+        Build runtime-only edges used by Page.init_connection().
+
+        These links are not part of the global static graph because their
+        destination depends on what the route actually clicked earlier in the
+        same session.
+        """
+        dynamic_links: dict[Page, dict[Page, ButtonWrapper]] = {}
+
+        for page in Page.iter_pages():
+            origin = self._ui_get_dynamic_origin(page)
+            if origin is None or page.dynamic_return_button is None:
+                continue
+            dynamic_links.setdefault(page, {})[origin] = page.dynamic_return_button
+
+        return dynamic_links
+
+    def _ui_get_link_button(self, page: Page, destination: Page):
+        button = page.links.get(destination)
+        if button is not None:
+            return button
+
+        origin = self._ui_get_dynamic_origin(page)
+        if origin == destination and page.dynamic_return_button is not None:
+            return page.dynamic_return_button
+
+        raise KeyError(f'No route button defined from {page} to {destination}')
+
+    def _ui_record_transition(self, source: Page, button, target: Page) -> None:
+        """
+        Record overlay origins only for true "enter overlay" transitions.
+
+        If the current page is leaving via its own dynamic_return_button, that
+        click is a close action instead of a new overlay entry and must not
+        overwrite the target's origin.
+        """
+        if source.dynamic_return_button is not None and button == source.dynamic_return_button:
+            self._ui_clear_dynamic_origin(source)
+            return
+
+        if (
+            source.dynamic_return_button is not None
+            and target.dynamic_return_button is None
+            and source.dynamic_return_group != target.dynamic_return_group
+        ):
+            self._ui_clear_dynamic_origin(source)
+
+        self._ui_set_dynamic_origin(target, source)
+
     def _ui_handoff_to_login(self, reason) -> bool:
         if self.__class__.__name__ == 'Login':
             return False
@@ -198,7 +290,7 @@ class UI(MainPage):
             skip_first_screenshot:
         """
         # Create connection
-        Page.init_connection(destination)
+        Page.init_connection(destination, extra_links=self._ui_build_dynamic_links())
         self.interval_clear(list(Page.iter_check_buttons()))
 
         logger.hr(f"UI goto {destination}")
@@ -228,7 +320,8 @@ class UI(MainPage):
                     # self.handle_lang_check(page)
                     if self.ui_page_confirm(page):
                         logger.info(f'Page arrive confirm {page}')
-                    button = page.links[page.parent]
+                    button = self._ui_get_link_button(page, page.parent)
+                    self._ui_record_transition(page, button, page.parent)
                     self.device.click(button)
                     self.ui_button_interval_reset(button)
                     clicked = True

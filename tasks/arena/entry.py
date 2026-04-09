@@ -1,9 +1,9 @@
 from module.base.timer import Timer
 from module.logger import logger
+from tasks.base.assets.assets_base_page import MAIN_ARENA_ENTRY
 from tasks.arena.assets.assets_arena import (
     ARENA_CHECK,
     ARENA_COMMON_ENTRY,
-    ARENA_ENTRY,
     ARENA_SETTLING,
     WEEKLY_REWARDS_CHECK,
     WEEKLY_REWARDS_CLAIM,
@@ -116,7 +116,7 @@ class ArenaEntryMixin:
                 continue
 
             if self.appear(page_main.check_button) and entry_retry.reached():
-                self.device.click(ARENA_ENTRY)
+                self.device.click(MAIN_ARENA_ENTRY)
                 entry_retry.reset()
                 timeout.reset()
                 logger.info("Arena: main page -> arena entry")
