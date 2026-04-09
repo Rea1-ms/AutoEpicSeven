@@ -28,8 +28,7 @@ DEFAULT_HEADERS = {
 SUCCESS_CODE = 0
 ALREADY_SIGNED_CODE = 1022
 BUY_STOP_CODES = {2100, 2104}
-DEFAULT_PD_DID = "f8e1569d-9431-4ae1-9521-9c257e751a23"
-DEFAULT_PD_DVID = "c61f03bc1426f8cd"
+COMMUNITY_COOKIE_NAMESPACE = "1611630374326"
 
 
 @dataclass
@@ -58,6 +57,23 @@ def build_pd_bf(user_id: str, auth_token: str) -> str:
     return f"{account_id}#0#0##"
 
 
+def get_token_user_id(auth_token: str) -> str | None:
+    claims = decode_jwt_claims(auth_token)
+    user_id = claims.get("id") or claims.get("name")
+    if user_id is None:
+        return None
+    return str(user_id)
+
+
+def get_token_expiry(auth_token: str) -> int | None:
+    claims = decode_jwt_claims(auth_token)
+    exp = claims.get("exp")
+    try:
+        return int(exp) if exp is not None else None
+    except (TypeError, ValueError):
+        return None
+
+
 class EpicSevenCommunityAIO:
     def __init__(
         self,
@@ -70,6 +86,8 @@ class EpicSevenCommunityAIO:
         delay_max: float = 1.2,
         timeout: float = 10.0,
     ):
+        if not pd_did or not pd_dvid:
+            raise ValueError("pd-did 和 pd-dvid 必须显式提供")
         self.user_id = str(user_id)
         self.auth_token = auth_token
         self.delay_min = max(delay_min, 0.0)
@@ -80,15 +98,15 @@ class EpicSevenCommunityAIO:
         self.session.headers.update(
             {
                 "authorization": auth_token,
-                "pd-did": pd_did or DEFAULT_PD_DID,
+                "pd-did": pd_did,
             }
         )
         self.session.cookies.update(
             {
-                "_pd_key": self.user_id,
-                "_pd_ckey": self.user_id,
-                f"_pd_dvid_{self.user_id}": pd_dvid or DEFAULT_PD_DVID,
-                f"_pd_auth_{self.user_id}": auth_token,
+                "_pd_key": COMMUNITY_COOKIE_NAMESPACE,
+                "_pd_ckey": COMMUNITY_COOKIE_NAMESPACE,
+                f"_pd_dvid_{COMMUNITY_COOKIE_NAMESPACE}": pd_dvid,
+                f"_pd_auth_{COMMUNITY_COOKIE_NAMESPACE}": auth_token,
                 "_pd_bf": build_pd_bf(self.user_id, auth_token),
             }
         )
@@ -149,7 +167,7 @@ class EpicSevenCommunityAIO:
             raw=payload if isinstance(payload, dict) else None,
         )
 
-    def sign_in(self) -> bool:
+    def sign_in(self) -> ApiResult:
         result = self._request_json("GET", "/task/sign")
         if result.ok:
             data = result.data or {}
@@ -157,12 +175,18 @@ class EpicSevenCommunityAIO:
                 f"✅ [签到成功] {data.get('desc', '签到成功')} "
                 f"(经验+{self._as_int(data.get('exp'))})"
             )
-            return True
+            return result
         if result.code == ALREADY_SIGNED_CODE:
             print(f"☑️ [签到提示] {result.message or '今日已签到'}")
-            return True
+            return ApiResult(
+                ok=True,
+                code=result.code,
+                message=result.message or "今日已签到",
+                data=result.data,
+                raw=result.raw,
+            )
         print(f"❌ [签到失败] {result.message or result.raw}")
-        return False
+        return result
 
     def get_recommend_topics(self, page: int = 1, limit: int = 20) -> list[dict[str, Any]]:
         param_candidates = (
@@ -228,7 +252,7 @@ class EpicSevenCommunityAIO:
         self,
         browse_target: int = 3,
         like_target: int = 3,
-        share_target: int = 3,
+        share_target: int = 1,
         max_pages: int = 5,
         page_size: int = 20,
     ) -> dict[str, int]:
@@ -460,7 +484,11 @@ class EpicSevenCommunityAIO:
         skip_exchange: bool,
     ) -> None:
         print(f"🚀 开始执行第七史诗社区 AIO 流程，UID={self.user_id}")
-        sign_ok = self.sign_in()
+        sign_result = self.sign_in()
+        sign_ok = sign_result.ok
+        if sign_result.message == "当前登陆账号不满足发奖条件":
+            print("⛔ [流程终止] 当前社区账号未绑定对应角色，后续任务和兑换已跳过。")
+            return
         self.delay()
 
         action_summary: dict[str, int] | None = None
@@ -502,18 +530,20 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="第七史诗社区 AIO 协议脚本：签到 + 做任务 + 自动兑换所有可兑商品",
     )
-    parser.add_argument("--uid", help="社区用户 UID，也可通过环境变量 E7_UID 提供")
+    parser.add_argument("--uid", help="可选。手动指定 JWT 内的真实用户 UID；默认自动从 token 解出")
     parser.add_argument("--token", help="社区 Authorization Token，也可通过环境变量 E7_TOKEN 提供")
     parser.add_argument("--jsessionid", help="可选。若你抓包里有 JSESSIONID，可一并传入提升稳定性")
-    parser.add_argument("--pd-did", default=DEFAULT_PD_DID, help="可选。设备指纹 pd-did，默认沿用现有单脚本可用值")
+    parser.add_argument("--pd-did", help="必填。设备指纹 pd-did，也可通过环境变量 E7_PD_DID 提供")
     parser.add_argument(
         "--pd-dvid",
-        default=DEFAULT_PD_DVID,
-        help="可选。Cookie 里的 _pd_dvid_{uid}，默认沿用现有单脚本可用值",
+        help=(
+            "必填。Cookie _pd_dvid_1611630374326 的值，"
+            "也可通过环境变量 E7_PD_DVID 提供"
+        ),
     )
     parser.add_argument("--browse-target", type=int, default=3, help="浏览帖子目标数，默认 3")
     parser.add_argument("--like-target", type=int, default=3, help="点赞帖子目标数，默认 3")
-    parser.add_argument("--share-target", type=int, default=3, help="分享帖子目标数，默认 3")
+    parser.add_argument("--share-target", type=int, default=1, help="分享帖子目标数，默认 1")
     parser.add_argument("--topic-pages", type=int, default=5, help="最多扫描多少页推荐帖子，默认 5")
     parser.add_argument("--topic-page-size", type=int, default=20, help="每页拉取多少帖子，默认 20")
     parser.add_argument("--goods-pages", type=int, default=3, help="最多扫描多少页商品，默认 3")
@@ -526,25 +556,41 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def resolve_credentials(args: argparse.Namespace, parser: argparse.ArgumentParser) -> tuple[str, str]:
-    user_id = args.uid or os.getenv("E7_UID")
+def resolve_credentials(
+    args: argparse.Namespace,
+    parser: argparse.ArgumentParser,
+) -> tuple[str, str, str, str]:
     auth_token = args.token or os.getenv("E7_TOKEN")
-    if not user_id or not auth_token:
-        parser.error("必须提供 --uid 和 --token，或设置环境变量 E7_UID / E7_TOKEN")
-    return str(user_id), str(auth_token)
+    pd_did = args.pd_did or os.getenv("E7_PD_DID")
+    pd_dvid = args.pd_dvid or os.getenv("E7_PD_DVID")
+    if not auth_token:
+        parser.error("必须提供 --token，或设置环境变量 E7_TOKEN")
+    if not pd_did or not pd_dvid:
+        parser.error("必须提供 --pd-did 和 --pd-dvid，或设置环境变量 E7_PD_DID / E7_PD_DVID")
+
+    token_user_id = get_token_user_id(auth_token)
+    user_id = args.uid or os.getenv("E7_UID") or token_user_id
+    if not user_id:
+        parser.error("无法从 token 解出真实用户 UID，请显式提供 --uid")
+    if token_user_id and str(user_id) != token_user_id:
+        parser.error(f"--uid 与 token 中的 UID 不一致，token UID 为 {token_user_id}")
+    return str(user_id), str(auth_token), str(pd_did), str(pd_dvid)
 
 
 def main() -> None:
     parser = build_parser()
     args = parser.parse_args()
-    user_id, auth_token = resolve_credentials(args, parser)
+    user_id, auth_token, pd_did, pd_dvid = resolve_credentials(args, parser)
+    token_expiry = get_token_expiry(auth_token)
+    if token_expiry is not None and token_expiry <= int(time.time()):
+        parser.error("提供的 token 已过期，请先刷新后再运行")
 
     bot = EpicSevenCommunityAIO(
         user_id=user_id,
         auth_token=auth_token,
         jsessionid=args.jsessionid,
-        pd_did=args.pd_did,
-        pd_dvid=args.pd_dvid,
+        pd_did=pd_did,
+        pd_dvid=pd_dvid,
         delay_min=args.delay_min,
         delay_max=args.delay_max,
         timeout=args.timeout,
