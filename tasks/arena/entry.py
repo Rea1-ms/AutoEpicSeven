@@ -1,6 +1,6 @@
 from module.base.timer import Timer
 from module.logger import logger
-from tasks.base.assets.assets_base_page import MAIN_ARENA_ENTRY
+from tasks.base.assets.assets_base_page import MAIN_ARENA_ENTRY, MENU_ARENA_ENTRY
 from tasks.arena.assets.assets_arena import (
     ARENA_CHECK,
     ARENA_COMMON_ENTRY,
@@ -9,7 +9,7 @@ from tasks.arena.assets.assets_arena import (
     WEEKLY_REWARDS_CLAIM,
     WEEKLY_REWARDS_SELECTED,
 )
-from tasks.base.page import page_main
+from tasks.base.page import page_main, page_menu
 
 
 class ArenaEntryMixin:
@@ -113,6 +113,13 @@ class ArenaEntryMixin:
                 continue
             if self.handle_network_error():
                 timeout.reset()
+                continue
+
+            if self.appear(page_menu.check_button) and entry_retry.reached():
+                self.device.click(MENU_ARENA_ENTRY)
+                entry_retry.reset()
+                timeout.reset()
+                logger.info("Arena: menu page -> arena entry")
                 continue
 
             if self.appear(page_main.check_button) and entry_retry.reached():
