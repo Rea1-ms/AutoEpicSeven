@@ -1,6 +1,5 @@
 from module.base.timer import Timer
 from module.logger import logger
-from tasks.base.assets.assets_base_page import MAIN_ARENA_ENTRY, MENU_ARENA_ENTRY
 from tasks.arena.assets.assets_arena import (
     ARENA_CHECK,
     ARENA_COMMON_ENTRY,
@@ -9,12 +8,11 @@ from tasks.arena.assets.assets_arena import (
     WEEKLY_REWARDS_CLAIM,
     WEEKLY_REWARDS_SELECTED,
 )
-from tasks.base.page import page_main, page_menu
+from tasks.base.page import page_arena_mode_popup
 
 
 class ArenaEntryMixin:
     ARENA_ENTRY_TIMEOUT_SECONDS = 45
-    ARENA_ENTRY_RETRY_SECONDS = 1.2
     ARENA_CHECK_LUMA_SIMILARITY = 0.8
     ARENA_CHECK_COLOR_THRESHOLD = 5
 
@@ -71,10 +69,32 @@ class ArenaEntryMixin:
 
         return False
 
-    def _enter_arena(self, skip_first_screenshot=True) -> str:
-        logger.info("Arena: enter")
+    def _ensure_arena_entry_surface(self, skip_first_screenshot=True) -> str:
+        """
+        Route to the arena entry boundary before running arena-specific logic.
+
+        Arena uses a mode-selection popup as the real entry surface:
+        - route switching should only care about reaching this popup
+        - the popup -> common arena transition stays inside arena state logic
+
+        Returns:
+            str: "arena" if already inside arena, "popup" otherwise.
+        """
+        if self._is_arena_page_ready(interval=0):
+            logger.info("Arena: already in arena page")
+            return "arena"
+
+        if self.ui_page_appear(page_arena_mode_popup, interval=0):
+            logger.info("Arena: already in arena mode popup")
+            return "popup"
+
+        logger.info("Arena: goto arena entry surface")
+        self.ui_goto(page_arena_mode_popup, skip_first_screenshot=skip_first_screenshot)
+        return "popup"
+
+    def _enter_arena_from_popup(self, skip_first_screenshot=True) -> str:
+        logger.info("Arena: enter from arena entry surface")
         timeout = Timer(self.ARENA_ENTRY_TIMEOUT_SECONDS, count=180).start()
-        entry_retry = Timer(self.ARENA_ENTRY_RETRY_SECONDS, count=0).start()
         self._arena_weekly_selected_clicked = False
 
         while 1:
@@ -115,16 +135,8 @@ class ArenaEntryMixin:
                 timeout.reset()
                 continue
 
-            if self.appear(page_menu.check_button) and entry_retry.reached():
-                self.device.click(MENU_ARENA_ENTRY)
-                entry_retry.reset()
-                timeout.reset()
-                logger.info("Arena: menu page -> arena entry")
-                continue
-
-            if self.appear(page_main.check_button) and entry_retry.reached():
-                self.device.click(MAIN_ARENA_ENTRY)
-                entry_retry.reset()
-                timeout.reset()
-                logger.info("Arena: main page -> arena entry")
-                continue
+    def _enter_arena(self, skip_first_screenshot=True) -> str:
+        surface = self._ensure_arena_entry_surface(skip_first_screenshot=skip_first_screenshot)
+        if surface == "arena":
+            return "entered"
+        return self._enter_arena_from_popup(skip_first_screenshot=True)

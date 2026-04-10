@@ -128,7 +128,6 @@ class PetsGift(UI):
             return False
 
         claimed = self._claim_menu_pets_gift(skip_first_screenshot=True)
-        self.ui_goto_main()
 
         if claimed:
             self._schedule_after_claim(datetime.now().replace(microsecond=0))

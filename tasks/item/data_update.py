@@ -2,7 +2,6 @@ import re
 
 from module.logger import logger
 from module.ocr.ocr import Digit, DigitCounter
-from tasks.arena.assets.assets_arena import ARENA_COMMON_ENTRY
 from tasks.arena.dashboard import ArenaDashboardMixin
 from tasks.arena.entry import ArenaEntryMixin
 from tasks.base.page import (
@@ -10,7 +9,6 @@ from tasks.base.page import (
     page_inventory_equipment,
     page_main,
     page_secret_shop,
-    page_arena_mode_popup,
 )
 from tasks.base.resource_bar import (
     RESOURCE_BAR_LAYOUT_COMBAT,
@@ -122,20 +120,6 @@ class DataUpdate(ArenaEntryMixin, ArenaDashboardMixin, UI):
         if self._ocr_shadow_commission_level() > 0:
             updated = True
         return updated
-
-    def _enter_arena(self, skip_first_screenshot=True) -> str:
-        logger.info("DataUpdate: goto arena page")
-        if self._is_arena_page_ready(interval=0):
-            logger.info("DataUpdate: already in arena page")
-            return "entered"
-
-        if self.appear(ARENA_COMMON_ENTRY):
-            logger.info("DataUpdate: already in arena mode popup")
-            return super()._enter_arena(skip_first_screenshot=skip_first_screenshot)
-        else:
-            self.ui_goto(page_arena_mode_popup, skip_first_screenshot=skip_first_screenshot)
-
-        return super()._enter_arena(skip_first_screenshot=skip_first_screenshot)
 
     def _update_arena_status(self, skip_first_screenshot=True) -> bool:
         logger.hr("DataUpdate Arena", level=2)

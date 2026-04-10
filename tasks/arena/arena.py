@@ -4,7 +4,6 @@ from module.ocr.ocr import DigitCounter
 from tasks.arena.dashboard import ArenaDashboardMixin
 from tasks.arena.entry import ArenaEntryMixin
 from tasks.arena.assets.assets_arena import (
-    ARENA_COMMON_ENTRY,
     AUTO_FIGHT,
     AUTO_FIGHT_EXIST,
     BATTLE_PASS_CHECK,
@@ -800,15 +799,7 @@ class Arena(ArenaEntryMixin, ArenaDashboardMixin, UI):
                 self.config.task_delay(server_update=True)
                 return True
 
-        if self._is_arena_page_ready(interval=0):
-            logger.info("Arena: already in arena page, skip goto main")
-            status = "entered"
-        elif self.appear(ARENA_COMMON_ENTRY):
-            logger.info("Arena: already in arena mode popup")
-            status = self._enter_arena(skip_first_screenshot=True)
-        else:
-            self.ui_goto_main()
-            status = self._enter_arena(skip_first_screenshot=True)
+        status = self._enter_arena(skip_first_screenshot=True)
 
         if status == "settling":
             self.config.task_delay(server_update=True)
