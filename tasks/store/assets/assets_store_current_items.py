@@ -104,10 +104,10 @@ MOBILITY_40 = ButtonWrapper(
     cn=None,
     global_cn=Button(
         file='./assets/global_cn/store/current/items/MOBILITY_40.png',
-        area=(372, 433, 445, 544),
-        search=(352, 413, 465, 564),
-        color=(89, 91, 105),
-        button=(372, 433, 445, 544),
+        area=(371, 190, 485, 299),
+        search=(351, 170, 505, 319),
+        color=(80, 86, 107),
+        button=(371, 190, 485, 299),
     ),
     global_en=None,
 )

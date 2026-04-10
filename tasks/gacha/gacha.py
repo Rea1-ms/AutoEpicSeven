@@ -274,7 +274,6 @@ class Gacha(UI):
         if not self._start_summon():
             if self._no_free:
                 self._collect_golden_inheritance_full(skip_first_screenshot=True)
-                self.ui_goto_main()
                 self.config.task_delay(server_update=True)
                 return True
             return False

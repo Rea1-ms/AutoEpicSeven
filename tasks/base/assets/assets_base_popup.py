@@ -174,6 +174,16 @@ POPUP_CONFIRM = ButtonWrapper(
     ),
     global_en=None,
 )
+SKIP_TUTORIAL = ButtonWrapper(
+    name='SKIP_TUTORIAL',
+    share=Button(
+        file='./assets/share/base/popup/SKIP_TUTORIAL.png',
+        area=(1242, 25, 1258, 40),
+        search=(1222, 5, 1278, 60),
+        color=(68, 56, 40),
+        button=(1242, 25, 1258, 40),
+    ),
+)
 TOUCH_TO_CLOSE = ButtonWrapper(
     name='TOUCH_TO_CLOSE',
     share=Button(

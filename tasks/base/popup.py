@@ -375,3 +375,14 @@ class PopupHandler(ModuleBase):
         if self.appear_then_click(AD_BUFF_X_CLOSE, interval=interval):
             return True
         return False
+
+    def handle_skip_tutorial(self, interval=2) -> bool:
+        """
+        Handle "Skip tutorial" popup new accounts and new functions.
+
+        Returns:
+            If handled.
+        """
+        if self.appear_then_click(SKIP_TUTORIAL, interval=interval):
+            return True
+        return False

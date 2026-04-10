@@ -492,7 +492,6 @@ class SecretShop(ResourceBarMixin, PopupHandler):
         logger.info(f'刷新次数: {self.refresh_count}')
         logger.info(f'圣约书签: {self.covenant_bought}')
         logger.info(f'神秘奖牌: {self.mystic_bought}')
-        # UI(self.config, device=self.device).ui_goto_main()
         self._delay_to_auto_refresh()
         return True
 
