@@ -28,7 +28,7 @@
     },
     "Mail": {
       "name": "Expiring Mail",
-      "help": "Sort the mailbox by remaining time ascending and collect mails expiring within 1 hour or 1 day."
+      "help": "Sort the mailbox by displayed remaining time and collect mails showing 1 hour or 1 day left. Because the game rounds the display down to whole hours or days, this is effectively about 2 real hours or 2 real days before expiration."
     },
     "DataUpdate": {
       "name": "Dashboard Upd",
@@ -249,13 +249,13 @@
   "Mail": {
     "_info": {
       "name": "Expiring Mail Settings",
-      "help": "Sort the mailbox by remaining time ascending and collect mails close to expiration."
+      "help": "Sort the mailbox by displayed remaining time and collect mails close to expiration. The game rounds the display down to whole hours or days, so the 1-hour and 1-day thresholds are effectively about 2 real hours and 2 real days."
     },
     "CollectWithin": {
-      "name": "Collect Mails Expiring Within",
-      "help": "",
-      "1h": "1 Hour",
-      "1d": "1 Day"
+      "name": "Collect Mails Showing Within",
+      "help": "This threshold uses the remaining time shown in game. '1 Hour' is effectively about 2 real hours, and '1 Day' about 2 real days before expiration.",
+      "1h": "Shown as 1 Hour Left (~2h real)",
+      "1d": "Shown as 1 Day Left (~2d real)"
     },
     "LastCheckAt": {
       "name": "Last Check At",

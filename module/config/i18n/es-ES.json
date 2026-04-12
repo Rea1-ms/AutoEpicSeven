@@ -28,7 +28,7 @@
     },
     "Mail": {
       "name": "Correo por vencer",
-      "help": "Ordena el buzón por tiempo restante ascendente y recoge los correos que vencen dentro de 1 hora o 1 día."
+      "help": "Ordena el buzón por el tiempo restante mostrado y recoge los correos que muestran 1 hora o 1 día restantes. Como el juego redondea la visualización a horas o días enteros, esto equivale aproximadamente a 2 horas o 2 días reales antes del vencimiento."
     },
     "DataUpdate": {
       "name": "Actualizar panel",
@@ -249,13 +249,13 @@
   "Mail": {
     "_info": {
       "name": "Ajustes de correo por vencer",
-      "help": "Ordena el buzón por tiempo restante ascendente y recoge correos próximos a vencer."
+      "help": "Ordena el buzón por el tiempo restante mostrado y recoge correos próximos a vencer. El juego redondea la visualización a horas o días enteros, por lo que los umbrales de 1 hora y 1 día equivalen aproximadamente a 2 horas y 2 días reales."
     },
     "CollectWithin": {
-      "name": "Recoger correos que vencen en",
-      "help": "",
-      "1h": "1 hora",
-      "1d": "1 día"
+      "name": "Recoger correos que muestren",
+      "help": "Este umbral se basa en el tiempo restante que muestra el juego. '1 hora' equivale aproximadamente a 2 horas reales y '1 día' a unos 2 días reales antes del vencimiento.",
+      "1h": "Muestra 1 hora restante (~2 h reales)",
+      "1d": "Muestra 1 día restante (~2 d reales)"
     },
     "LastCheckAt": {
       "name": "Última revisión",
