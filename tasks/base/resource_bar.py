@@ -52,28 +52,28 @@ RESOURCE_BAR_SPECS = {
     "gold": ResourceBarSpec(
         key="gold",
         kind=RESOURCE_KIND_INT,
-        stored_attr="E7Gold",
+        stored_attr="Gold",
     ),
     "skystone": ResourceBarSpec(
         key="skystone",
         kind=RESOURCE_KIND_INT,
-        stored_attr="E7Skystone",
+        stored_attr="Skystone",
     ),
     "stamina": ResourceBarSpec(
         key="stamina",
         kind=RESOURCE_KIND_COUNTER,
-        stored_attr="E7Stamina",
+        stored_attr="Stamina",
     ),
     "arena_flag": ResourceBarSpec(
         key="arena_flag",
         kind=RESOURCE_KIND_COUNTER,
-        stored_attr="E7ArenaFlag",
+        stored_attr="ArenaFlag",
         fixed_total=5,
     ),
     "conquest_point": ResourceBarSpec(
         key="conquest_point",
         kind=RESOURCE_KIND_INT,
-        stored_attr="E7ConquestPoint",
+        stored_attr="ConquestPoint",
     ),
 }
 

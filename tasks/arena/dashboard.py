@@ -32,8 +32,8 @@ class ArenaDashboardMixin(ResourceBarMixin):
         )
         level = ocr.ocr_single_line(self.device.image)
         logger.attr("ArenaRank", level)
-        if 0 < level <= self.config.stored.E7ArenaRank.FIXED_TOTAL:
-            self.config.stored.E7ArenaRank.set(level)
+        if 0 < level <= self.config.stored.ArenaRank.FIXED_TOTAL:
+            self.config.stored.ArenaRank.set(level)
         return level
 
     def _ocr_arena_resource_bar(self, skip_first_screenshot=True):
@@ -63,13 +63,13 @@ class ArenaDashboardMixin(ResourceBarMixin):
         return self.write_resource_bar_status(parsed)
 
     def _stored_arena_flag_status(self) -> tuple[int, int] | None:
-        stored = self.config.stored.E7ArenaFlag
+        stored = self.config.stored.ArenaFlag
         if stored.total <= 0:
             return None
         return stored.value, stored.total
 
     def _consume_stored_arena_flags(self, consumed: int) -> bool:
-        stored = self.config.stored.E7ArenaFlag
+        stored = self.config.stored.ArenaFlag
         estimated = estimate_remaining_arena_flags(
             current=stored.value,
             total=stored.total,

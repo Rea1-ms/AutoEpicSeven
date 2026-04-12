@@ -669,14 +669,14 @@ class PlannerMixin(UI):
         if add:
             planner.add_planner_result(self.planner)
 
-        # Load from dashboard
-        try:
-            row = planner.rows['Credit']
-            value = self.config.stored.Credit.value
+        # Credit is still the planner-side currency key, but dashboard storage
+        # has already been migrated to Gold. Read the current stored field
+        # directly instead of keeping a legacy sync layer in DataUpdate.
+        row = planner.rows.get('Credit')
+        if row is not None:
+            value = self.config.stored.Gold.value
             if value:
                 row.value = value
-        except KeyError:
-            pass
 
         self.planner_write(planner)
 

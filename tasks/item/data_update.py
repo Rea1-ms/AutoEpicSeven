@@ -53,11 +53,6 @@ class DataUpdate(ArenaEntryMixin, ArenaDashboardMixin, UI):
     DATAUPDATE_COMBAT_RESOURCE_BAR_TIMEOUT_SECONDS = 1
     DATAUPDATE_COMBAT_RESOURCE_BAR_TIMEOUT_COUNT = 2
 
-    def _sync_legacy_item_storage(self):
-        with self.config.multi_set():
-            self.config.stored.Credit.value = self.config.stored.E7Gold.value
-            self.config.stored.StallerJade.value = self.config.stored.E7Skystone.value
-
     def _ocr_equipment_inventory_count(self) -> tuple[int, int, int]:
         current, remain, total = E7DigitCounter(
             OCR_EQUIPMENT_COUNT,
@@ -77,7 +72,7 @@ class DataUpdate(ArenaEntryMixin, ArenaDashboardMixin, UI):
 
         updated = False
         if total > 0:
-            self.config.stored.E7EquipmentInventory.set(current, total)
+            self.config.stored.EquipmentInventory.set(current, total)
             updated = True
 
         self.ui_goto(page_main, skip_first_screenshot=True)
@@ -100,8 +95,8 @@ class DataUpdate(ArenaEntryMixin, ArenaDashboardMixin, UI):
             name="ShadowCommissionLevel",
         ).ocr_single_line(self.device.image)
         logger.attr("ShadowCommissionLevel", level)
-        if 0 < level <= self.config.stored.E7ShadowCommission.FIXED_TOTAL:
-            self.config.stored.E7ShadowCommission.set(level)
+        if 0 < level <= self.config.stored.ShadowCommission.FIXED_TOTAL:
+            self.config.stored.ShadowCommission.set(level)
         return level
 
     def _update_combat_status(self, skip_first_screenshot=True) -> bool:
@@ -150,7 +145,6 @@ class DataUpdate(ArenaEntryMixin, ArenaDashboardMixin, UI):
         updated_any |= self._update_arena_status(skip_first_screenshot=True)
 
         self.ui_goto(page_main, skip_first_screenshot=True)
-        self._sync_legacy_item_storage()
 
         if updated_any:
             self.config.task_delay(server_update=True)
