@@ -4,10 +4,9 @@
       "Serial": "auto",
       "GameClient": "android",
       "PackageName": "auto",
-      "GameLanguage": "auto",
+      "GameLanguage": "cn",
       "ScreenshotMethod": "scrcpy",
       "ControlMethod": "MaaTouch",
-      "CloudPriorQueue": false,
       "AdbRestart": false
     },
     "EmulatorInfo": {
@@ -55,7 +54,7 @@
       "ServerUpdate": "02:00"
     },
     "Mail": {
-      "CollectWithin": "1h",
+      "CollectWithin": "1d",
       "LastCheckAt": "2020-01-01 00:00:00",
       "LastRemainingText": null,
       "LastRemainingSince": "2020-01-01 00:00:00"
@@ -68,32 +67,23 @@
       "Command": "DataUpdate",
       "ServerUpdate": "02:00"
     },
-    "ItemStorage": {
-      "Credit": {},
-      "StallerJade": {}
-    },
-    "E7Dashboard": {
-      "E7Gold": {},
-      "E7Skystone": {},
-      "E7Stamina": {},
-      "E7EquipmentInventory": {},
-      "E7DailyActivity": {},
-      "E7WeeklyActivity": {},
-      "E7ArenaRank": {},
-      "E7ArenaFlag": {},
-      "E7ConquestPoint": {},
-      "E7ShadowCommission": {},
-      "E7TeamBattle": {}
-    },
-    "CloudStorage": {
-      "CloudRemainSeasonPass": {},
-      "CloudRemainPaid": {},
-      "CloudRemainFree": {}
+    "Dashboard": {
+      "Gold": {},
+      "Skystone": {},
+      "Stamina": {},
+      "EquipmentInventory": {},
+      "DailyActivity": {},
+      "WeeklyActivity": {},
+      "ArenaRank": {},
+      "ArenaFlag": {},
+      "ConquestPoint": {},
+      "ShadowCommission": {},
+      "TeamBattle": {}
     }
   },
   "SanctuaryDaily": {
     "Scheduler": {
-      "Enable": false,
+      "Enable": true,
       "NextRun": "2020-01-01 00:00:00",
       "Command": "SanctuaryDaily",
       "ServerUpdate": "02:00"
@@ -106,29 +96,25 @@
       "Command": "Knights",
       "ServerUpdate": "02:00"
     },
-    "KnightsBasic": {
+    "Knights": {
       "ClaimSigninRateReward": true,
-      "WeeklyTask": true
-    },
-    "KnightsDonate": {
-      "Donate": true,
       "Support": true,
+      "SupportLowerLevelFairyFlower": true,
+      "SupportBeginnerPenguin": true,
       "RequestItem": "LowerLevelFairyFlower",
-      "DonateLowerLevelFairyFlower": true,
-      "DonateBeginnerPenguin": true
-    },
-    "KnightsExpedition": {
-      "Expedition": true,
-      "TeamBattle": true,
-      "TeamBattleReminder": false,
-      "TeamBattleReminderLeadMinutes": 60,
-      "TeamBattleReminderLastEnd": null,
+      "WeeklyTask": true,
       "WorldBoss": true
+    },
+    "KnightsTeamBattle": {
+      "TeamBattle": true,
+      "Reminder": false,
+      "ReminderLeadMinutes": 60,
+      "ReminderLastEnd": null
     }
   },
   "Arena": {
     "Scheduler": {
-      "Enable": false,
+      "Enable": true,
       "NextRun": "2020-01-01 00:00:00",
       "Command": "Arena",
       "ServerUpdate": "02:00"
@@ -137,7 +123,7 @@
       "ClaimWeeklyRewards": true,
       "ClaimWeeklyBattleRewards": true,
       "ClaimBattlePassRewards": true,
-      "NPCCombat": false,
+      "NPCCombat": true,
       "NPCCombatFastBattle": true,
       "NPCCombatCount": 5
     }
@@ -157,8 +143,8 @@
     },
     "StoreWeekly": {
       "BuyConquestMorogora": false,
-      "BuyFriendshipArtifactEnhancementStone": 3,
-      "BuyInheritanceMorogora": 2,
+      "BuyFriendshipArtifactEnhancementStone": 0,
+      "BuyInheritanceMorogora": 0,
       "BuyInheritancePotentialFragments": 0
     }
   },
@@ -175,7 +161,7 @@
   },
   "SecretShop": {
     "Scheduler": {
-      "Enable": false,
+      "Enable": true,
       "NextRun": "2020-01-01 00:00:00",
       "Command": "SecretShop",
       "ServerUpdate": "02:00"
@@ -210,7 +196,7 @@
   },
   "Gacha": {
     "Scheduler": {
-      "Enable": false,
+      "Enable": true,
       "NextRun": "2020-01-01 00:00:00",
       "Command": "Gacha",
       "ServerUpdate": "02:00"
@@ -227,14 +213,6 @@
       "ServerUpdate": "02:00"
     }
   },
-  "SanctuaryWeekly": {
-    "Scheduler": {
-      "Enable": false,
-      "NextRun": "2020-01-01 00:00:00",
-      "Command": "SanctuaryWeekly",
-      "ServerUpdate": "02:00"
-    }
-  },
   "SanctuaryMonthly": {
     "Scheduler": {
       "Enable": false,
@@ -244,17 +222,6 @@
     },
     "SanctuaryMonthly": {
       "RewardTier": "A"
-    }
-  },
-  "Daemon": {
-    "Daemon": {
-      "Enable": true,
-      "AimClicker": "do_not_click"
-    }
-  },
-  "PlannerScan": {
-    "PlannerScan": {
-      "ResultAdd": false
     }
   }
 }

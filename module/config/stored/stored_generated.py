@@ -1,4 +1,5 @@
 from module.config.stored.classes import (
+    StoredArenaRank,
     StoredAssignment,
     StoredBase,
     StoredBattlePassLevel,
@@ -15,11 +16,6 @@ from module.config.stored.classes import (
     StoredDaily,
     StoredDailyActivity,
     StoredDungeonDouble,
-    StoredE7ArenaRank,
-    StoredE7DailyActivity,
-    StoredE7ShadowCommission,
-    StoredE7TeamBattleStatus,
-    StoredE7WeeklyActivity,
     StoredEchoOfWar,
     StoredExpiredAt0400,
     StoredExpiredAtMonday0400,
@@ -29,9 +25,12 @@ from module.config.stored.classes import (
     StoredPlannerOverall,
     StoredRelic,
     StoredResersed,
+    StoredShadowCommission,
     StoredSimulatedUniverse,
     StoredSimulatedUniverseElite,
+    StoredTeamBattleStatus,
     StoredTrailblazePower,
+    StoredWeeklyActivity,
 )
 
 
@@ -39,19 +38,14 @@ from module.config.stored.classes import (
 # ``` python -m module/config/config_updater.py ```
 
 class StoredGenerated:
-    Credit = StoredInt("DataUpdate.ItemStorage.Credit")
-    StallerJade = StoredInt("DataUpdate.ItemStorage.StallerJade")
-    E7Gold = StoredInt("DataUpdate.E7Dashboard.E7Gold")
-    E7Skystone = StoredInt("DataUpdate.E7Dashboard.E7Skystone")
-    E7Stamina = StoredCounter("DataUpdate.E7Dashboard.E7Stamina")
-    E7EquipmentInventory = StoredCounter("DataUpdate.E7Dashboard.E7EquipmentInventory")
-    E7DailyActivity = StoredE7DailyActivity("DataUpdate.E7Dashboard.E7DailyActivity")
-    E7WeeklyActivity = StoredE7WeeklyActivity("DataUpdate.E7Dashboard.E7WeeklyActivity")
-    E7ArenaRank = StoredE7ArenaRank("DataUpdate.E7Dashboard.E7ArenaRank")
-    E7ArenaFlag = StoredCounter("DataUpdate.E7Dashboard.E7ArenaFlag")
-    E7ConquestPoint = StoredInt("DataUpdate.E7Dashboard.E7ConquestPoint")
-    E7ShadowCommission = StoredE7ShadowCommission("DataUpdate.E7Dashboard.E7ShadowCommission")
-    E7TeamBattle = StoredE7TeamBattleStatus("DataUpdate.E7Dashboard.E7TeamBattle")
-    CloudRemainSeasonPass = StoredInt("DataUpdate.CloudStorage.CloudRemainSeasonPass")
-    CloudRemainPaid = StoredInt("DataUpdate.CloudStorage.CloudRemainPaid")
-    CloudRemainFree = StoredInt("DataUpdate.CloudStorage.CloudRemainFree")
+    Gold = StoredInt("DataUpdate.Dashboard.Gold")
+    Skystone = StoredInt("DataUpdate.Dashboard.Skystone")
+    Stamina = StoredCounter("DataUpdate.Dashboard.Stamina")
+    EquipmentInventory = StoredCounter("DataUpdate.Dashboard.EquipmentInventory")
+    DailyActivity = StoredDailyActivity("DataUpdate.Dashboard.DailyActivity")
+    WeeklyActivity = StoredWeeklyActivity("DataUpdate.Dashboard.WeeklyActivity")
+    ArenaRank = StoredArenaRank("DataUpdate.Dashboard.ArenaRank")
+    ArenaFlag = StoredCounter("DataUpdate.Dashboard.ArenaFlag")
+    ConquestPoint = StoredInt("DataUpdate.Dashboard.ConquestPoint")
+    ShadowCommission = StoredShadowCommission("DataUpdate.Dashboard.ShadowCommission")
+    TeamBattle = StoredTeamBattleStatus("DataUpdate.Dashboard.TeamBattle")

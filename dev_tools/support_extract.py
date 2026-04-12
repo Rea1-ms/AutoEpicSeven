@@ -136,7 +136,7 @@ if __name__ == '__main__':
     4. Stop manually if you think missing templates are all gathered.
     
     """
-    self = SupportExtract('src2')
+    self = SupportExtract('aes2')
     self.device.screenshot()
     self.goto_support_page()
     self.gen_templates()

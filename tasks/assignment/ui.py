@@ -187,7 +187,7 @@ class AssignmentUI(UI):
             bool: If group switched
 
         Examples:
-            self = AssignmentUI('src')
+            self = AssignmentUI('aes')
             self.device.screenshot()
             self.goto_group(KEYWORDS_ASSIGNMENT_GROUP.Character_Materials)
         """
@@ -208,7 +208,7 @@ class AssignmentUI(UI):
             insight (bool): skip ocr to save time if insight is False
 
         Examples:
-            self = AssignmentUI('src')
+            self = AssignmentUI('aes')
             self.device.screenshot()
             self.goto_entry(KEYWORDS_ASSIGNMENT_ENTRY.Nameless_Land_Nameless_People)
         """
@@ -364,7 +364,7 @@ class AssignmentUI(UI):
 
 
 if __name__ == '__main__':
-    self = AssignmentUI('src2')
+    self = AssignmentUI('aes2')
     self.device.screenshot()
     for v in self._iter_groups():
         print(v)

@@ -679,6 +679,6 @@ class Synthesize(CombatObtain, ItemUI, SynthesizeUI):
 
 
 if __name__ == '__main__':
-    self = Synthesize('src')
+    self = Synthesize('aes')
     self.device.screenshot()
     self.synthesize_planner()

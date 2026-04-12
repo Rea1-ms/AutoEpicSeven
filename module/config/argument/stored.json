@@ -1,8 +1,8 @@
 {
-  "E7Gold": {
-    "name": "E7Gold",
-    "path": "DataUpdate.E7Dashboard.E7Gold",
-    "i18n": "E7Dashboard.E7Gold.name",
+  "Gold": {
+    "name": "Gold",
+    "path": "DataUpdate.Dashboard.Gold",
+    "i18n": "Dashboard.Gold.name",
     "stored": "StoredInt",
     "attrs": {
       "time": "2020-01-01 00:00:00",
@@ -11,10 +11,10 @@
     "order": 1,
     "color": "#c89a54"
   },
-  "E7Skystone": {
-    "name": "E7Skystone",
-    "path": "DataUpdate.E7Dashboard.E7Skystone",
-    "i18n": "E7Dashboard.E7Skystone.name",
+  "Skystone": {
+    "name": "Skystone",
+    "path": "DataUpdate.Dashboard.Skystone",
+    "i18n": "Dashboard.Skystone.name",
     "stored": "StoredInt",
     "attrs": {
       "time": "2020-01-01 00:00:00",
@@ -23,10 +23,10 @@
     "order": 2,
     "color": "#49aee9"
   },
-  "E7Stamina": {
-    "name": "E7Stamina",
-    "path": "DataUpdate.E7Dashboard.E7Stamina",
-    "i18n": "E7Dashboard.E7Stamina.name",
+  "Stamina": {
+    "name": "Stamina",
+    "path": "DataUpdate.Dashboard.Stamina",
+    "i18n": "Dashboard.Stamina.name",
     "stored": "StoredCounter",
     "attrs": {
       "time": "2020-01-01 00:00:00",
@@ -36,10 +36,10 @@
     "order": 3,
     "color": "#74c26e"
   },
-  "E7EquipmentInventory": {
-    "name": "E7EquipmentInventory",
-    "path": "DataUpdate.E7Dashboard.E7EquipmentInventory",
-    "i18n": "E7Dashboard.E7EquipmentInventory.name",
+  "EquipmentInventory": {
+    "name": "EquipmentInventory",
+    "path": "DataUpdate.Dashboard.EquipmentInventory",
+    "i18n": "Dashboard.EquipmentInventory.name",
     "stored": "StoredCounter",
     "attrs": {
       "time": "2020-01-01 00:00:00",
@@ -49,11 +49,11 @@
     "order": 4,
     "color": "#8d80de"
   },
-  "E7DailyActivity": {
-    "name": "E7DailyActivity",
-    "path": "DataUpdate.E7Dashboard.E7DailyActivity",
-    "i18n": "E7Dashboard.E7DailyActivity.name",
-    "stored": "StoredE7DailyActivity",
+  "DailyActivity": {
+    "name": "DailyActivity",
+    "path": "DataUpdate.Dashboard.DailyActivity",
+    "i18n": "Dashboard.DailyActivity.name",
+    "stored": "StoredDailyActivity",
     "attrs": {
       "time": "2020-01-01 00:00:00",
       "total": 100,
@@ -62,11 +62,11 @@
     "order": 5,
     "color": "#ffb45e"
   },
-  "E7WeeklyActivity": {
-    "name": "E7WeeklyActivity",
-    "path": "DataUpdate.E7Dashboard.E7WeeklyActivity",
-    "i18n": "E7Dashboard.E7WeeklyActivity.name",
-    "stored": "StoredE7WeeklyActivity",
+  "WeeklyActivity": {
+    "name": "WeeklyActivity",
+    "path": "DataUpdate.Dashboard.WeeklyActivity",
+    "i18n": "Dashboard.WeeklyActivity.name",
+    "stored": "StoredWeeklyActivity",
     "attrs": {
       "time": "2020-01-01 00:00:00",
       "total": 120,
@@ -75,11 +75,11 @@
     "order": 6,
     "color": "#ff7f8a"
   },
-  "E7ArenaRank": {
-    "name": "E7ArenaRank",
-    "path": "DataUpdate.E7Dashboard.E7ArenaRank",
-    "i18n": "E7Dashboard.E7ArenaRank.name",
-    "stored": "StoredE7ArenaRank",
+  "ArenaRank": {
+    "name": "ArenaRank",
+    "path": "DataUpdate.Dashboard.ArenaRank",
+    "i18n": "Dashboard.ArenaRank.name",
+    "stored": "StoredArenaRank",
     "attrs": {
       "time": "2020-01-01 00:00:00",
       "total": 38,
@@ -88,10 +88,10 @@
     "order": 7,
     "color": "#ffd36e"
   },
-  "E7ArenaFlag": {
-    "name": "E7ArenaFlag",
-    "path": "DataUpdate.E7Dashboard.E7ArenaFlag",
-    "i18n": "E7Dashboard.E7ArenaFlag.name",
+  "ArenaFlag": {
+    "name": "ArenaFlag",
+    "path": "DataUpdate.Dashboard.ArenaFlag",
+    "i18n": "Dashboard.ArenaFlag.name",
     "stored": "StoredCounter",
     "attrs": {
       "time": "2020-01-01 00:00:00",
@@ -101,10 +101,10 @@
     "order": 8,
     "color": "#f2a93b"
   },
-  "E7ConquestPoint": {
-    "name": "E7ConquestPoint",
-    "path": "DataUpdate.E7Dashboard.E7ConquestPoint",
-    "i18n": "E7Dashboard.E7ConquestPoint.name",
+  "ConquestPoint": {
+    "name": "ConquestPoint",
+    "path": "DataUpdate.Dashboard.ConquestPoint",
+    "i18n": "Dashboard.ConquestPoint.name",
     "stored": "StoredInt",
     "attrs": {
       "time": "2020-01-01 00:00:00",
@@ -113,11 +113,11 @@
     "order": 9,
     "color": "#5ea3ff"
   },
-  "E7ShadowCommission": {
-    "name": "E7ShadowCommission",
-    "path": "DataUpdate.E7Dashboard.E7ShadowCommission",
-    "i18n": "E7Dashboard.E7ShadowCommission.name",
-    "stored": "StoredE7ShadowCommission",
+  "ShadowCommission": {
+    "name": "ShadowCommission",
+    "path": "DataUpdate.Dashboard.ShadowCommission",
+    "i18n": "Dashboard.ShadowCommission.name",
+    "stored": "StoredShadowCommission",
     "attrs": {
       "time": "2020-01-01 00:00:00",
       "total": 30,
@@ -126,76 +126,16 @@
     "order": 10,
     "color": "#7796ff"
   },
-  "E7TeamBattle": {
-    "name": "E7TeamBattle",
-    "path": "DataUpdate.E7Dashboard.E7TeamBattle",
-    "i18n": "E7Dashboard.E7TeamBattle.name",
-    "stored": "StoredE7TeamBattleStatus",
+  "TeamBattle": {
+    "name": "TeamBattle",
+    "path": "DataUpdate.Dashboard.TeamBattle",
+    "i18n": "Dashboard.TeamBattle.name",
+    "stored": "StoredTeamBattleStatus",
     "attrs": {
       "time": "2020-01-01 00:00:00",
       "value": ""
     },
     "order": 11,
     "color": "#d85f7c"
-  },
-  "Credit": {
-    "name": "Credit",
-    "path": "DataUpdate.ItemStorage.Credit",
-    "i18n": "ItemStorage.Credit.name",
-    "stored": "StoredInt",
-    "attrs": {
-      "time": "2020-01-01 00:00:00",
-      "value": 0
-    },
-    "order": 0,
-    "color": "#777777"
-  },
-  "StallerJade": {
-    "name": "StallerJade",
-    "path": "DataUpdate.ItemStorage.StallerJade",
-    "i18n": "ItemStorage.StallerJade.name",
-    "stored": "StoredInt",
-    "attrs": {
-      "time": "2020-01-01 00:00:00",
-      "value": 0
-    },
-    "order": 0,
-    "color": "#777777"
-  },
-  "CloudRemainSeasonPass": {
-    "name": "CloudRemainSeasonPass",
-    "path": "DataUpdate.CloudStorage.CloudRemainSeasonPass",
-    "i18n": "CloudStorage.CloudRemainSeasonPass.name",
-    "stored": "StoredInt",
-    "attrs": {
-      "time": "2020-01-01 00:00:00",
-      "value": 0
-    },
-    "order": 0,
-    "color": "#777777"
-  },
-  "CloudRemainPaid": {
-    "name": "CloudRemainPaid",
-    "path": "DataUpdate.CloudStorage.CloudRemainPaid",
-    "i18n": "CloudStorage.CloudRemainPaid.name",
-    "stored": "StoredInt",
-    "attrs": {
-      "time": "2020-01-01 00:00:00",
-      "value": 0
-    },
-    "order": 0,
-    "color": "#777777"
-  },
-  "CloudRemainFree": {
-    "name": "CloudRemainFree",
-    "path": "DataUpdate.CloudStorage.CloudRemainFree",
-    "i18n": "CloudStorage.CloudRemainFree.name",
-    "stored": "StoredInt",
-    "attrs": {
-      "time": "2020-01-01 00:00:00",
-      "value": 0
-    },
-    "order": 0,
-    "color": "#777777"
   }
 }

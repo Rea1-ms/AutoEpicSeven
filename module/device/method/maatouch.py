@@ -311,5 +311,5 @@ class MaaTouch(Connection):
 
 
 if __name__ == '__main__':
-    self = MaaTouch('src')
+    self = MaaTouch('aes')
     self.maatouch_uninstall()

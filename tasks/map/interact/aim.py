@@ -339,7 +339,7 @@ if __name__ == '__main__':
     """
     Test
     """
-    self = AimDetectorMixin('src')
+    self = AimDetectorMixin('aes')
     self.device.disable_stuck_detection()
 
     while 1:

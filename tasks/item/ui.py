@@ -131,7 +131,7 @@ class ItemUI(UI):
             bool: If switched
 
         Examples:
-            self = ItemUI('src2')
+            self = ItemUI('aes2')
             self.device.screenshot()
             self.item_goto(KEYWORDS_ITEM_TAB.Relics)
             self.item_goto(KEYWORDS_ITEM_TAB.Consumables)

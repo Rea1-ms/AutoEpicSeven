@@ -1,4 +1,3 @@
-import re
 import typing as t
 from copy import deepcopy
 
@@ -64,74 +63,6 @@ class ConfigGenerator:
 
         # Insert packages
         option_add(keys='Emulator.PackageName.option', options=list(VALID_SERVER.keys()))
-        # Insert dungeons
-        from tasks.dungeon.keywords import DungeonList
-        calyx_golden = [dungeon.name for dungeon in DungeonList.instances.values() if dungeon.is_Calyx_Golden_Memories]
-        calyx_golden += [dungeon.name for dungeon in DungeonList.instances.values() if dungeon.is_Calyx_Golden_Aether]
-        calyx_golden += [dungeon.name for dungeon in DungeonList.instances.values() if
-                         dungeon.is_Calyx_Golden_Treasures]
-        # calyx_crimson
-        from tasks.rogue.keywords import KEYWORDS_ROGUE_PATH as Path
-        order = [Path.Destruction, Path.Preservation, Path.The_Hunt, Path.Abundance,
-                 Path.Erudition, Path.Harmony, Path.Nihility, Path.Remembrance]
-        calyx_crimson = []
-        for path in order:
-            calyx_crimson += [dungeon.name for dungeon in DungeonList.instances.values()
-                              if dungeon.Calyx_Crimson_Path == path]
-        # stagnant_shadow
-        from tasks.character.keywords import CombatType
-        stagnant_shadow = []
-        for type_ in CombatType.instances.values():
-            stagnant_shadow += [dungeon.name for dungeon in DungeonList.instances.values()
-                                if dungeon.Stagnant_Shadow_Combat_Type == type_]
-        cavern_of_corrosion = [dungeon.name for dungeon in DungeonList.instances.values() if
-                               dungeon.is_Cavern_of_Corrosion]
-        ornament = [dungeon.name for dungeon in DungeonList.instances.values() if dungeon.is_Ornament_Extraction]
-        option_add(
-            keys='Dungeon.Name.option',
-            options=cavern_of_corrosion + calyx_golden + calyx_crimson + stagnant_shadow
-        )
-        # Double events
-        option_add(keys='Dungeon.NameAtDoubleCalyx.option', options=calyx_golden + calyx_crimson)
-        option_add(keys='Dungeon.NameAtDoubleRelic.option', options=cavern_of_corrosion)
-        # Echo_of_War
-        echo_of_war = [dungeon.name for dungeon in DungeonList.instances.values() if dungeon.is_Echo_of_War]
-        option_add(keys='Weekly.Name.option', options=echo_of_war)
-        if echo_of_war:
-            # default to latest
-            deep_set(raw, keys='Weekly.Name.value', value=echo_of_war[0])
-        # PlannerTarget
-        option_add(keys='PlannerTarget.Relic.option', options=cavern_of_corrosion)
-        option_add(keys='PlannerTarget.Ornament.option', options=ornament)
-        # OrnamentExtraction
-        option_add(keys='Ornament.Dungeon.option', options=ornament)
-        # Insert characters
-        from tasks.character.aired_version import list_support_characters
-        unsupported_characters = []
-        characters = [character.name for character in list_support_characters()
-                      if character.name not in unsupported_characters]
-        option_add(keys='DungeonSupport.Character.option', options=characters)
-        option_add(keys='PlannerTarget.Character.option', options=characters)
-        # Insert cones
-        from tasks.cone.aired_version import list_cones
-        cones = [cone.name for cone in list_cones()]
-        option_add(keys='PlannerTarget.Cone.option', options=cones)
-        # Insert assignments
-        from tasks.assignment.keywords import AssignmentEntry
-        assignments = [entry.name for entry in AssignmentEntry.instances.values()]
-        for i in range(4):
-            option_add(keys=f'Assignment.Name_{i + 1}.option', options=assignments)
-        # Insert planner items
-        from tasks.planner.keywords.classes import ItemBase
-        for item in ItemBase.instances.values():
-            if item.is_ItemValuable:
-                continue
-            base = item.group_base
-            deep_set(raw, keys=['Planner', f'Item_{base.name}'], value={
-                'stored': 'StoredPlanner',
-                'display': 'display',
-                'type': 'planner',
-            })
 
         # Load
         for path, value in deep_iter(raw, depth=2):
@@ -323,10 +254,6 @@ class ConfigGenerator:
 
         gen.write('module/config/stored/stored_generated.py')
 
-    @cached_property
-    def relics_nickname(self):
-        return read_file('tasks/relics/keywords/relicset_nickname.json')
-
     @timer
     def generate_i18n(self, lang):
         """
@@ -384,241 +311,25 @@ class ConfigGenerator:
         #         prefix = '国服' if prefix == 'CN' else prefix
         #         deep_set(new, keys=path, value=f'[{prefix}] {_list[index]}')
 
-        ingame_lang = gui_lang_to_ingame_lang(lang)
-        dailies = deep_get(self.argument, keys='Dungeon.Name.option')
-        # Dungeon names
-        i18n_memories = {
-            'cn': '材料：角色经验（{dungeon} {world}）',
-            'cht': '材料：角色經驗（{dungeon} {world}）',
-            'jp': '素材：役割経験（{dungeon} {world}）：',
-            'en': 'Material: Character EXP ({dungeon}, {world})',
-            'es': 'Material: EXP de personaje ({dungeon}, {world})',
-        }
-        i18n_aether = {
-            'cn': '材料：武器经验（{dungeon} {world}）',
-            'cht': '材料：武器經驗（{dungeon} {world}）',
-            'jp': '素材：武器経験（{dungeon} {world}）',
-            'en': 'Material: Light Cone EXP ({dungeon}, {world})',
-            'es': 'Material: EXP de conos de luz ({dungeon}, {world})',
-        }
-        i18n_treasure = {
-            'cn': '材料：信用点（{dungeon} {world}）',
-            'cht': '材料：信用點（{dungeon} {world}）',
-            'jp': '素材：クレジット（{dungeon} {world}）',
-            'en': 'Material: Credit ({dungeon}, {world})',
-            'es': 'Material: Créditos ({dungeon}, {world})',
-        }
-        i18n_crimson = {
-            'cn': '行迹材料：{path}（{plane}）',
-            'cht': '行跡材料：{path}（{plane}）',
-            'jp': '軌跡素材：{path}（{plane}）',
-            'en': 'Trace: {path} ({plane})',
-            'es': 'Rastros: {path} ({plane})',
-        }
-        i18n_relic = {
-            'cn': '遗器：{relic}（{dungeon}）',
-            'cht': '遺器：{relic}（{dungeon}）',
-            'jp': '遺器：{relic}（{dungeon}）',
-            'en': 'Relics: {relic} ({dungeon})',
-            'es': 'Artefactos: {relic} ({dungeon})',
-        }
-        i18n_ornament = {
-            'cn': '饰品：{relic}（{dungeon}）',
-            'cht': '飾品：{relic}（{dungeon}）',
-            'jp': '飾品：{relic}（{dungeon}）',
-            'en': 'Ornament: {relic} ({dungeon})',
-            'es': 'Ornamentos: {relic} ({dungeon})',
-        }
-
-        from tasks.dungeon.keywords import DungeonList, DungeonDetailed
-        def relicdungeon2name(dun: DungeonList):
-            dungeon_id = dun.dungeon_id
-            relic_list = []
-            for name, row in self.relics_nickname.items():
-                if row.get('dungeon_id') == dungeon_id:
-                    relic_list.append(row.get(ingame_lang, ''))
-            return ' & '.join(relic_list)
-
-        for dungeon in DungeonList.instances.values():
-            dungeon: DungeonList = dungeon
-            dungeon_name = dungeon.__getattribute__(ingame_lang)
-            dungeon_name = re.sub('[「」]', '', dungeon_name)
-            if dungeon.world:
-                world_name = re.sub('[「」]', '', dungeon.world.__getattribute__(ingame_lang))
-            else:
-                world_name = ''
-            if dungeon.is_Calyx_Golden_Memories:
-                deep_set(new, keys=['Dungeon', 'Name', dungeon.name],
-                         value=i18n_memories[ingame_lang].format(dungeon=dungeon_name, world=world_name))
-            if dungeon.is_Calyx_Golden_Aether:
-                deep_set(new, keys=['Dungeon', 'Name', dungeon.name],
-                         value=i18n_aether[ingame_lang].format(dungeon=dungeon_name, world=world_name))
-            if dungeon.is_Calyx_Golden_Treasures:
-                deep_set(new, keys=['Dungeon', 'Name', dungeon.name],
-                         value=i18n_treasure[ingame_lang].format(dungeon=dungeon_name, world=world_name))
-            if dungeon.is_Calyx_Crimson:
-                plane = dungeon.plane.__getattribute__(ingame_lang)
-                plane = re.sub('[「」"]', '', plane)
-                path = dungeon.Calyx_Crimson_Path.__getattribute__(ingame_lang)
-                deep_set(new, keys=['Dungeon', 'Name', dungeon.name],
-                         value=i18n_crimson[ingame_lang].format(path=path, plane=plane))
-            if dungeon.is_Cavern_of_Corrosion:
-                value = relicdungeon2name(dungeon)
-                value = i18n_relic[ingame_lang].format(dungeon=dungeon_name, relic=value)
-                value = value.replace('Cavern of Corrosion: ', '')
-                deep_set(new, keys=['Dungeon', 'Name', dungeon.name], value=value)
-            if dungeon.is_Ornament_Extraction:
-                value = relicdungeon2name(dungeon)
-                value = i18n_ornament[ingame_lang].format(dungeon=dungeon_name, relic=value)
-                value = re.sub(
-                    r'(•差分宇宙'
-                    r'|Divergent Universe: '
-                    r'|階差宇宙・'
-                    r'|: Universo Diferenciado'
-                    r'|Universo Diferenciado: '
-                    r')', '', value)
-                deep_set(new, keys=['Ornament', 'Dungeon', dungeon.name], value=value)
-
-        # Stagnant shadows with character names
-        for dungeon in DungeonDetailed.instances.values():
-            if dungeon.name in dailies:
-                value = dungeon.__getattribute__(ingame_lang)
-                deep_set(new, keys=['Dungeon', 'Name', dungeon.name], value=value)
-
-        # Copy dungeon i18n to double events
-        def update_dungeon_names(keys):
-            for dungeon in deep_get(self.argument, keys=f'{keys}.option', default=[]):
-                value = deep_get(new, keys=['Dungeon', 'Name', dungeon])
-                if value:
-                    deep_set(new, keys=f'{keys}.{dungeon}', value=value)
-
-        def update_ornament_names(keys):
-            for dungeon in deep_get(self.argument, keys=f'{keys}.option', default=[]):
-                value = deep_get(new, keys=['Ornament', 'Dungeon', dungeon])
-                if value:
-                    deep_set(new, keys=f'{keys}.{dungeon}', value=value)
-
-        update_dungeon_names('Dungeon.NameAtDoubleCalyx')
-        update_dungeon_names('Dungeon.NameAtDoubleRelic')
-        update_dungeon_names('PlannerTarget.Relic')
-        update_ornament_names('PlannerTarget.Ornament')
-
-        # Character names
-        i18n_trailblazer = {
-            'cn': '开拓者',
-            'cht': '開拓者',
-            'jp': '開拓者',
-            'en': 'Trailblazer',
-            'es': 'Trailblazer',
-        }
-        from tasks.character.keywords import CharacterList
-        from tasks.character.aired_version import get_character_version
-        for keys in [
-            'DungeonSupport.Character.option',
-            'PlannerTarget.Character.option',
-        ]:
-            characters = deep_get(self.argument, keys=keys)
-            keys = keys.split('.')
-            base = keys[:-1]
-            for character in CharacterList.instances.values():
-                if character.name in characters:
-                    value = character.__getattribute__(ingame_lang)
-                    version = get_character_version(character)
-                    # [3.2] Castorice
-                    if version:
-                        value = f'[{version}] {value}'
-                    if 'trailblazer' in value.lower():
-                        value = re.sub('Trailblazer', i18n_trailblazer[ingame_lang], value)
-                    deep_set(new, keys=base + [character.name], value=value)
-
-        # Cone names
-        from tasks.cone.aired_version import Cone
-        keys = 'PlannerTarget.Cone.option'
-        cones = deep_get(self.argument, keys=keys)
-        keys = keys.split('.')
-        base = keys[:-1]
-        for cone in Cone.instances.values():
-            if cone.name in cones:
-                # 5* Cruising in the Stellar Sea
-                value = cone.star_string + ' ' + cone.__getattribute__(ingame_lang)
-                if cone.character:
-                    character = deep_get(new, ['PlannerTarget', 'Character', cone.character.name])
-                    if character:
-                        # [3.2] Castorice 5* Make Farewells More Beautiful
-                        value = f'{character} | {value}'
-                deep_set(new, keys=base + [cone.name], value=value)
-
-        # Assignments
-        from tasks.assignment.keywords import AssignmentEntryDetailed
-        for entry in AssignmentEntryDetailed.instances.values():
-            entry: AssignmentEntryDetailed
-            value = entry.__getattribute__(ingame_lang)
-            for i in range(4):
-                deep_set(new, keys=['Assignment', f'Name_{i + 1}', entry.name], value=value)
-
-        # Echo of War
-        dungeons = [d for d in DungeonList.instances.values() if d.is_Echo_of_War]
-        for dungeon in dungeons:
-            world = dungeon.plane.world
-            world_name = world.__getattribute__(ingame_lang)
-            dungeon_name = dungeon.__getattribute__(ingame_lang).replace('Echo of War: ', '')
-            value = f'{dungeon_name} ({world_name})'
-            deep_set(new, keys=['Weekly', 'Name', dungeon.name], value=value)
-        # Rogue worlds
-        for dungeon in [d for d in DungeonList.instances.values() if d.is_Simulated_Universe]:
-            name = deep_get(new, keys=['RogueWorld', 'World', dungeon.name], default=None)
-            if name:
-                deep_set(new, keys=['RogueWorld', 'World', dungeon.name], value=dungeon.__getattribute__(ingame_lang))
-        # Planner items
-        from tasks.planner.keywords.classes import ItemBase
-        for item in ItemBase.instances.values():
-            item: ItemBase = item
-            name = f'Item_{item.name}'
-            if item.is_ItemValuable:
-                continue
-            if item.is_ItemCurrency or item.name == 'Tracks_of_Destiny':
-                i18n = item.__getattribute__(ingame_lang)
-            elif item.is_ItemExp and item.is_group_base:
-                dungeon = item.dungeon
-                if dungeon is None:
-                    i18n = item.__getattribute__(ingame_lang)
-                elif dungeon.is_Calyx_Golden_Memories:
-                    i18n = i18n_memories[ingame_lang]
-                elif dungeon.is_Calyx_Golden_Aether:
-                    i18n = i18n_aether[ingame_lang]
-                else:
-                    continue
-                if res := re.search(r'[:：](.*)[(（]', i18n):
-                    i18n = res.group(1).strip()
-            elif item.is_ItemAscension or (item.is_ItemTrace and item.is_group_base):
-                dungeon = item.group_base.dungeon.name
-                i18n = deep_get(new, keys=['Dungeon', 'Name', dungeon], default='Unknown_Dungeon_Come_From')
-            elif item.is_ItemWeekly:
-                dungeon = item.dungeon.name
-                i18n = deep_get(new, keys=['Weekly', 'Name', dungeon], default='Unknown_Dungeon_Come_From')
-            elif item.is_ItemCalyx and item.is_group_base:
-                i18n = item.__getattribute__(ingame_lang)
-            else:
-                continue
-            deep_set(new, keys=['Planner', name, 'name'], value=i18n)
-            deep_set(new, keys=['Planner', name, 'help'], value='')
-
         # GUI i18n
         for path, _ in deep_iter(self.gui, depth=2):
             group, key = path
             deep_load(keys=['Gui', group], words=(key,))
 
-        # zh-TW
-        dic_repl = {
-            '設置': '設定',
-            '支持': '支援',
-            '啓': '啟',
-            '异': '異',
-            '服務器': '伺服器',
-            '文件': '檔案',
-            '自定義': '自訂'
-        }
+        # Keep the updater focused on the current AES config surface. The
+        # original legacy dungeon/planner auto-label generation was
+        # removed together with those config groups, but we still need to
+        # write the pruned translation tree back to disk.
         if lang == 'zh-TW':
+            dic_repl = {
+                '設置': '設定',
+                '支持': '支援',
+                '啓': '啟',
+                '异': '異',
+                '服務器': '伺服器',
+                '文件': '檔案',
+                '自定義': '自訂',
+            }
             for path, value in deep_iter(new, depth=3):
                 for before, after in dic_repl.items():
                     value = value.replace(before, after)
@@ -660,7 +371,7 @@ class ConfigGenerator:
         import module.config.stored.classes as classes
         data = {}
         for path, value in deep_iter(self.args, depth=3):
-            if value.get('type') not in ['stored', 'planner']:
+            if value.get('type') not in ['stored']:
                 continue
             name = path[-1]
             stored = value.get('stored')
@@ -734,19 +445,6 @@ class ConfigGenerator:
 
         update('./webapp/packages/main/public/deploy.yaml.tpl', tpl)
 
-    def check_character_templates(self):
-        characters = deep_get(self.args, 'Dungeon.DungeonSupport.Character.option', default=[])
-        for name in characters:
-            if name == 'FirstCharacter':
-                continue
-            if name.startswith('Trailblazer'):
-                for name in [f'Stelle{name[11:]}', f'Caelum{name[11:]}']:
-                    if not os.path.exists(f'./assets/character/{name}.png'):
-                        print(f'WARNING: character template not exist: {name}')
-            else:
-                if not os.path.exists(f'./assets/character/{name}.png'):
-                    print(f'WARNING: character template not exist: {name}')
-
     @timer
     def generate(self):
         _ = self.args
@@ -762,39 +460,11 @@ class ConfigGenerator:
         for lang in LANGUAGES:
             self.generate_i18n(lang)
         self.generate_deploy_template()
-        self.check_character_templates()
 
 
 class ConfigUpdater:
     # source, target, (optional)convert_func
-    redirection = [
-        # ('Dungeon.Dungeon.Name', 'Dungeon.Dungeon.Name', convert_20_dungeon),
-        # ('Dungeon.Dungeon.NameAtDoubleCalyx', 'Dungeon.Dungeon.NameAtDoubleCalyx', convert_20_dungeon),
-        # ('Dungeon.DungeonDaily.CalyxGolden', 'Dungeon.DungeonDaily.CalyxGolden', convert_20_dungeon),
-        # ('Dungeon.DungeonDaily.CalyxCrimson', 'Dungeon.DungeonDaily.CalyxCrimson', convert_20_dungeon),
-        # ('Rogue.RogueWorld.SimulatedUniverseElite', 'Rogue.RogueWorld.SimulatedUniverseFarm', convert_rogue_farm),
-        # 2.3
-        # ('Dungeon.Planner.Item_Moon_Madness_Fang', 'Dungeon.Planner.Item_Moon_Rage_Fang',
-        #  convert_Item_Moon_Madness_Fang),
-        # 3.1
-        ('Dungeon.Dungeon.Name', 'Dungeon.Dungeon.Name', convert_31_dungeon),
-        ('Dungeon.Dungeon.NameAtDoubleCalyx', 'Dungeon.Dungeon.NameAtDoubleCalyx', convert_31_dungeon),
-        ('Dungeon.DungeonDaily.CalyxGolden', 'Dungeon.DungeonDaily.CalyxGolden', convert_31_dungeon),
-        ('Dungeon.DungeonDaily.CalyxCrimson', 'Dungeon.DungeonDaily.CalyxCrimson', convert_31_dungeon),
-        # 3.2
-        ('Weekly.Weekly.Name', 'Weekly.Weekly.Name', convert_32_weekly),
-        # Knights GUI group split migration
-        ('Knights.Knights.ClaimSigninRateReward', 'Knights.KnightsBasic.ClaimSigninRateReward'),
-        ('Knights.Knights.WeeklyTask', 'Knights.KnightsBasic.WeeklyTask'),
-        ('Knights.Knights.Donate', 'Knights.KnightsDonate.Donate'),
-        ('Knights.Knights.Support', 'Knights.KnightsDonate.Support'),
-        ('Knights.Knights.DonateLowerLevelFairyFlower', 'Knights.KnightsDonate.DonateLowerLevelFairyFlower'),
-        ('Knights.Knights.DonateBeginnerPenguin', 'Knights.KnightsDonate.DonateBeginnerPenguin'),
-        ('Knights.Knights.RequestItem', 'Knights.KnightsDonate.RequestItem'),
-        ('Knights.Knights.Expedition', 'Knights.KnightsExpedition.Expedition'),
-        ('Knights.Knights.TeamBattle', 'Knights.KnightsExpedition.TeamBattle'),
-        ('Knights.Knights.WorldBoss', 'Knights.KnightsExpedition.WorldBoss'),
-    ]
+    redirection = []
 
     @cached_property
     def args(self):
@@ -882,74 +552,21 @@ class ConfigUpdater:
 
     @staticmethod
     def update_state(data):
-        # Limit setting combinations
-        if deep_get(data, keys='Rogue.RogueWorld.UseImmersifier') is False:
-            deep_set(data, keys='Rogue.RogueWorld.UseStamina', value=False)
-        if deep_get(data, keys='Rogue.RogueWorld.UseStamina') is True:
-            deep_set(data, keys='Rogue.RogueWorld.UseImmersifier', value=True)
-        if deep_get(data, keys='Rogue.RogueWorld.DoubleEvent') is True:
-            deep_set(data, keys='Rogue.RogueWorld.UseImmersifier', value=True)
-        # Store immersifier in dungeon task
-        if deep_get(data, keys='Rogue.RogueWorld.UseImmersifier') is True:
-            deep_set(data, keys='Dungeon.Scheduler.Enable', value=True)
         # Cloud settings
         if deep_get(data, keys='Alas.Emulator.GameClient') == 'cloud_android':
             deep_set(data, keys='Alas.Emulator.PackageName', value='CN-Official')
-
         return data
 
     def save_callback(self, key: str, value: t.Any) -> t.Iterable[t.Tuple[str, t.Any]]:
         """
-        Args:
-            key: Key path in config json, such as "Main.Emotion.Fleet1Value"
-            value: Value set by user, such as "98"
+        WebUI saves call this hook to apply related field updates immediately.
 
-        Yields:
-            str: Key path to set config json, such as "Main.Emotion.Fleet1Record"
-            any: Value to set, such as "2020-01-01 00:00:00"
+        The current AES config surface no longer needs the large SRC-era
+        cross-feature sync logic, but the hook itself is still part of the
+        save path and must exist.
         """
-        if key.startswith('Dungeon.Dungeon') or key.startswith('Dungeon.DungeonDaily'):
-            from tasks.dungeon.keywords.dungeon import DungeonList
-            from module.exception import ScriptError
-            try:
-                dungeon = DungeonList.find(value)
-            except ScriptError:
-                return
-            if key.endswith('Name'):
-                if dungeon.is_Calyx_Golden:
-                    yield 'Dungeon.Dungeon.NameAtDoubleCalyx', value
-                elif dungeon.is_Calyx_Crimson:
-                    yield 'Dungeon.Dungeon.NameAtDoubleCalyx', value
-                elif dungeon.is_Cavern_of_Corrosion:
-                    yield 'Dungeon.Dungeon.NameAtDoubleRelic', value
-            elif key.endswith('CavernOfCorrosion'):
-                yield 'Dungeon.Dungeon.NameAtDoubleRelic', value
-        if key == 'Rogue.RogueWorld.UseImmersifier' and value is False:
-            yield 'Rogue.RogueWorld.UseStamina', False
-        if key == 'Rogue.RogueWorld.UseStamina' and value is True:
-            yield 'Rogue.RogueWorld.UseImmersifier', True
-        if key == 'Rogue.RogueWorld.DoubleEvent' and value is True:
-            yield 'Rogue.RogueWorld.UseImmersifier', True
         if key == 'Alas.Emulator.GameClient' and value == 'cloud_android':
             yield 'Alas.Emulator.PackageName', 'CN-Official'
-            yield 'Alas.Optimization.WhenTaskQueueEmpty', 'close_game'
-        # Sync Dungeon.TrailblazePower and Ornament.TrailblazePower
-        if key == 'Dungeon.TrailblazePower.ExtractReservedTrailblazePower':
-            yield 'Ornament.TrailblazePower.ExtractReservedTrailblazePower', value
-        if key == 'Dungeon.TrailblazePower.UseFuel':
-            yield 'Ornament.TrailblazePower.UseFuel', value
-        if key == 'Dungeon.TrailblazePower.FuelReserve':
-            yield 'Ornament.TrailblazePower.FuelReserve', value
-        if key == 'Dungeon.TrailblazePower.FuelOnlyPlanner':
-            yield 'Ornament.TrailblazePower.FuelOnlyPlanner', value
-        if key == 'Ornament.TrailblazePower.ExtractReservedTrailblazePower':
-            yield 'Dungeon.TrailblazePower.ExtractReservedTrailblazePower', value
-        if key == 'Ornament.TrailblazePower.UseFuel':
-            yield 'Dungeon.TrailblazePower.UseFuel', value
-        if key == 'Ornament.TrailblazePower.FuelReserve':
-            yield 'Dungeon.TrailblazePower.FuelReserve', value
-        if key == 'Ornament.TrailblazePower.FuelOnlyPlanner':
-            yield 'Dungeon.TrailblazePower.FuelOnlyPlanner', value
 
     def iter_hidden_args(self, data) -> t.Iterator[str]:
         """
@@ -959,27 +576,18 @@ class ConfigUpdater:
         Yields:
             str: Arg path that should be hidden
         """
-        if deep_get(data, 'Dungeon.TrailblazePower.UseFuel') == False:
-            yield 'Dungeon.TrailblazePower.FuelReserve'
-        if deep_get(data, 'Dungeon.TrailblazePower.UseFuel') == False:
-            yield 'Dungeon.TrailblazePower.FuelOnlyPlanner'
-        if deep_get(data, 'Ornament.TrailblazePower.UseFuel') == False:
-            yield 'Ornament.TrailblazePower.FuelReserve'
-        if deep_get(data, 'Ornament.TrailblazePower.UseFuel') == False:
-            yield 'Ornament.TrailblazePower.FuelOnlyPlanner'
-        if deep_get(data, 'Rogue.RogueBlessing.PresetBlessingFilter') != 'custom':
-            yield 'Rogue.RogueBlessing.CustomBlessingFilter'
-        if deep_get(data, 'Rogue.RogueBlessing.PresetResonanceFilter') != 'custom':
-            yield 'Rogue.RogueBlessing.CustomResonanceFilter'
-        if deep_get(data, 'Rogue.RogueBlessing.PresetCurioFilter') != 'custom':
-            yield 'Rogue.RogueBlessing.CustomCurioFilter'
-        if deep_get(data, 'Rogue.RogueWorld.WeeklyFarming', default=False) is False:
-            yield 'Rogue.RogueWorld.SimulatedUniverseFarm'
-        if deep_get(data, 'SecretShop.SecretShop.OnlyFree', default=True) is True:
-            yield 'SecretShop.SecretShop.MaxRefresh'
+        # Knights
+        if deep_get(data, 'Knights.KnightsTeamBattle.Reminder', default=False) is False:
+            yield 'Knights.KnightsTeamBattle.ReminderLeadMinutes'
+        if deep_get(data, 'Knights.Knights.Support', default=True) is False:
+            yield 'Knights.Knights.RequestItem'
+        # Arena
         if deep_get(data, 'Arena.Arena.NPCCombat', default=False) is False:
             yield 'Arena.Arena.NPCCombatFastBattle'
             yield 'Arena.Arena.NPCCombatCount'
+        # SecretShop
+        if deep_get(data, 'SecretShop.SecretShop.OnlyFree', default=True) is True:
+            yield 'SecretShop.SecretShop.MaxRefresh'
         # Fast combat & repeat combat
         combat_mode = deep_get(data, 'Combat.Combat.Mode', default='Task')
         combat_domain = deep_get(data, 'Combat.Combat.Domain', default='Hunt')
@@ -997,13 +605,6 @@ class ConfigUpdater:
             yield 'Combat.Combat.AltarGrade'
         if deep_get(data, 'Combat.Combat.Domain', default='Hunt') != 'Hunt':
             yield 'Combat.Combat.HuntGrade'
-        if deep_get(data, 'Knights.KnightsExpedition.TeamBattleReminder', default=False) is False:
-            yield 'Knights.KnightsExpedition.TeamBattleReminderLeadMinutes'
-        if deep_get(data, 'Knights.KnightsDonate.Support', default=True) is False:
-            yield 'Knights.KnightsDonate.RequestItem'
-        # Backward compatibility for legacy group path.
-        if deep_get(data, 'Knights.Knights.Support', default=True) is False:
-            yield 'Knights.Knights.RequestItem'
 
     def get_hidden_args(self, data) -> t.Set[str]:
         """

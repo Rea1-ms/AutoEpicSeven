@@ -116,6 +116,6 @@ class SupportReward(UI):
 
 
 if __name__ == '__main__':
-    self = SupportReward('src')
+    self = SupportReward('aes')
     self.device.screenshot()
     self.run()

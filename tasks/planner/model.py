@@ -722,5 +722,5 @@ class PlannerMixin(UI):
 
 
 if __name__ == '__main__':
-    self = PlannerMixin('src')
+    self = PlannerMixin('aes')
     self.planner_write(self.planner)

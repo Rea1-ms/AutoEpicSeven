@@ -294,6 +294,6 @@ class PlannerScan(SynthesizeUI, PlannerMixin):
 
 
 if __name__ == '__main__':
-    self = PlannerScan('src', task='PlannerScan')
+    self = PlannerScan('aes', task='PlannerScan')
     self.device.screenshot()
     self.parse_planner_result()

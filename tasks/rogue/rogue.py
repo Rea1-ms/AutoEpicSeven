@@ -148,6 +148,6 @@ class Rogue(RouteLoader, RogueEntry):
 
 
 if __name__ == '__main__':
-    self = Rogue('src', task='Rogue')
+    self = Rogue('aes', task='Rogue')
     self.device.screenshot()
     self.rogue_once()
