@@ -234,11 +234,16 @@ class ConfigGenerator:
 
     @timer
     def generate_stored(self):
-        import module.config.stored.classes as classes
         gen = get_generator()
+        stored_classes = []
+        for _, data in deep_iter(self.args, depth=3):
+            cls = data.get('stored')
+            if cls and cls not in stored_classes:
+                stored_classes.append(cls)
+
         gen.add('from module.config.stored.classes import (')
         with gen.tab():
-            for cls in sorted([name for name in dir(classes) if name.startswith('Stored')]):
+            for cls in stored_classes:
                 gen.add(cls + ',')
         gen.add(')')
         gen.Empty()
