@@ -13,6 +13,7 @@ Epic Seven 登录模块
 流程:
     启动游戏 → 等待5秒 → 单循环轮询:
       终止条件: is_in_main() = True（主界面 + 无遮罩）
+      - LOGGED_OUT → 掉登录了直接报错
       - LOGIN_ERROR → 重启一次，再出现则报错
       - 维护公告(ANNOUNCEMENT_CLOSE) → UNDER_MAINTENANCE → 调度 → 退出
       - GAME_UPGRADE_AVAILABLE → 跳转 Google Play → 更新 → 重启
@@ -22,6 +23,7 @@ Epic Seven 登录模块
       - ui_additional() → 签到/新角色/buff/礼包等弹窗
       - handle_network_error() → 网络错误弹窗
 """
+from sympy.plotting.intervalmath import interval
 from datetime import datetime, timedelta
 
 from module.base.timer import Timer
@@ -31,6 +33,7 @@ import module.config.server as server_
 from module.exception import (
     GameNotRunningError,
     GameServerUnderMaintenance,
+    RequestHumanTakeover
 )
 from module.logger import logger
 from module.ocr.ocr import Duration, OcrWhiteLetterOnComplexBackground
@@ -39,6 +42,7 @@ from tasks.base.assets.assets_base_popup import TOUCH_TO_CLOSE
 from tasks.login.assets.assets_login import (
     GAME_UPGRADE_AVAILABLE,
     LOGIN_ANNOUNCEMENT_CLOSE,
+    LOGGED_OUT,
     LOGIN_ERROR,
     LOGIN_LOADING,
     PATCH_APPLY,
@@ -98,6 +102,7 @@ class Login(UI):
     def _is_login_progress_state(self) -> bool:
         return (
             self.is_in_main(interval=0)
+            or self.appear(LOGGED_OUT, interval=0)
             or self.appear(LOGIN_ERROR, interval=0)
             or self.appear(LOGIN_CONFIRM, interval=0)
             or self.appear(LOGIN_LOADING, interval=0, similarity=0.75)
@@ -239,7 +244,12 @@ class Login(UI):
             # 错误状态（优先级最高）
             # ==========================================
 
-            # 登录错误
+            # 掉登录，救不回来
+            if self.appear(LOGGED_OUT, interval=5):
+                logger.critical('Account logged out, please log in again.')
+                raise RequestHumanTakeover
+
+            # 登录错误 / 外服的变相网络错误（无法登录）
             if self.appear(LOGIN_ERROR, interval=5):
                 if error_retried:
                     logger.error('Login error appeared twice, stopping')
