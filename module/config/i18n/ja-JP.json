@@ -1,34 +1,26 @@
 {
   "Menu": {
     "Alas": {
-      "name": "Menu.Alas.name",
-      "help": "Menu.Alas.help"
+      "name": "AES",
+      "help": "AES 全体の基本設定です。"
     },
     "Daily": {
-      "name": "Menu.Daily.name",
-      "help": "Menu.Daily.help"
-    },
-    "Weekly": {
-      "name": "Menu.Weekly.name",
-      "help": "Menu.Weekly.help"
+      "name": "デイリー",
+      "help": "デイリー系タスクの設定をまとめています。"
     },
     "Monthly": {
-      "name": "Menu.Monthly.name",
-      "help": "Menu.Monthly.help"
-    },
-    "Tool": {
-      "name": "Menu.Tool.name",
-      "help": "Menu.Tool.help"
+      "name": "マンスリー",
+      "help": "長周期タスクの設定をまとめています。"
     }
   },
   "Task": {
     "Alas": {
-      "name": "Task.Alas.name",
-      "help": "Task.Alas.help"
+      "name": "AES設定",
+      "help": "エミュレータ、エラー処理、最適化など AES 全体の共通設定です。"
     },
     "Restart": {
       "name": "再起動設定",
-      "help": ""
+      "help": "エラー発生時の再起動方法とログ保存動作を設定します。"
     },
     "MissionReward": {
       "name": "ミッション報酬",
@@ -36,11 +28,11 @@
     },
     "Mail": {
       "name": "期限切れ間近メール",
-      "help": "残り時間の昇順でメールを確認し、残り 1 時間または 1 日以内のメールを受け取ります。"
+      "help": "表示上の残り時間が短い順でメールを確認し、表示で残り 1 時間または 1 日になったメールを受け取ります。ゲーム内表示は時間や日数を切り捨てるため、実際には約 2 時間または 2 日以内が対象です。"
     },
     "DataUpdate": {
-      "name": "Task.DataUpdate.name",
-      "help": "Task.DataUpdate.help"
+      "name": "ダッシュボード更新",
+      "help": "装備所持数、資源、アリーナ情報などダッシュボード用データを更新します。"
     },
     "SanctuaryDaily": {
       "name": "聖域-デイリー",
@@ -48,7 +40,7 @@
     },
     "Knights": {
       "name": "ギルド",
-      "help": "ギルド自動化：出席報酬、支援、遠征、ワールドボス。"
+      "help": "ギルド関連の日課です。出席報酬、支援、ギルド戦、ワールドボスを処理します。"
     },
     "Arena": {
       "name": "アリーナ",
@@ -64,94 +56,82 @@
     },
     "SecretShop": {
       "name": "シークレットショップ",
-      "help": ""
+      "help": "秘密商店を開いて自動更新を行い、設定した商品を購入します。"
     },
     "Combat": {
       "name": "デイリー副本",
       "help": "精霊祭壇または討伐を周回し、属性と難易度に応じて高速戦闘またはバックグラウンド連続戦闘を開始します。"
     },
     "Gacha": {
-      "name": "しょうかん",
-      "help": ""
+      "name": "召喚",
+      "help": "召喚関連の補助処理を行います。現在は金色継承石の回収に対応します。"
     },
     "Pets": {
       "name": "ペットショップ",
-      "help": ""
-    },
-    "SanctuaryWeekly": {
-      "name": "聖域-ウィークリー",
-      "help": "独立スケジューラで実行する聖域ウィークリーモジュール。"
+      "help": "ペットショップに入り、当日の無料孵化を処理します。"
     },
     "SanctuaryMonthly": {
       "name": "聖域-マンスリー",
       "help": "独立スケジューラで実行する聖域マンスリーモジュール。"
-    },
-    "Daemon": {
-      "name": "Task.Daemon.name",
-      "help": "Task.Daemon.help"
-    },
-    "PlannerScan": {
-      "name": "Task.PlannerScan.name",
-      "help": "Task.PlannerScan.help"
     }
   },
   "Scheduler": {
     "_info": {
-      "name": "Scheduler._info.name",
-      "help": "Scheduler._info.help"
+      "name": "タスク設定",
+      "help": "各タスクの有効化と実行タイミングを設定します。"
     },
     "Enable": {
-      "name": "Scheduler.Enable.name",
-      "help": "Scheduler.Enable.help",
-      "True": "True",
-      "False": "False"
+      "name": "この機能を有効化",
+      "help": "このタスクをスケジューラに追加します。",
+      "True": "有効",
+      "False": "無効"
     },
     "NextRun": {
-      "name": "Scheduler.NextRun.name",
-      "help": "Scheduler.NextRun.help"
+      "name": "次回実行時刻",
+      "help": "自動計算される値です。通常は手動変更不要です。空欄にすると直ちに実行します。"
     },
     "Command": {
-      "name": "Scheduler.Command.name",
-      "help": "Scheduler.Command.help"
+      "name": "内部タスク名",
+      "help": "内部で使用するタスク識別子です。通常は変更不要です。"
     },
     "ServerUpdate": {
-      "name": "Scheduler.ServerUpdate.name",
-      "help": "Scheduler.ServerUpdate.help"
+      "name": "サーバー更新時刻",
+      "help": "一部タスクは成功後、この時刻まで次回実行を延期します。タイムゾーンは自動換算されるため通常は変更不要です。"
     }
   },
   "Emulator": {
     "_info": {
-      "name": "Emulator._info.name",
-      "help": "Emulator._info.help"
+      "name": "エミュレータ設定",
+      "help": "接続先、クライアント、言語、操作方式などの実行環境を設定します。"
     },
     "Serial": {
-      "name": "Emulator.Serial.name",
-      "help": "Emulator.Serial.help"
+      "name": "エミュレータ Serial",
+      "help": "下の一覧から一般的な Serial を確認できます。\"auto\" は自動検出です。複数のエミュレータが起動中、または自動検出非対応の環境では手動入力が必要です。\n\n代表的な Serial:\n- BlueStacks 127.0.0.1:5555\n- BlueStacks 4 Hyper-V は \"bluestacks4-hyperv\"、多重起動は \"bluestacks4-hyperv-2\" 以降\n- BlueStacks 5 Hyper-V は \"bluestacks5-hyperv\"、多重起動は \"bluestacks5-hyperv-1\" 以降\n- NoxPlayer 127.0.0.1:62001\n- NoxPlayer64 127.0.0.1:59865\n- MuMu/MuMu X 127.0.0.1:7555\n- MuMu12 127.0.0.1:16384\n- MEmu 127.0.0.1:21503\n- LDPlayer emulator-5554 または 127.0.0.1:5555\n- WSA は \"wsa-0\" を入力するとバックグラウンド動作します\n複数起動時は公式ドキュメントや `adb devices` で確認してください。"
     },
     "GameClient": {
-      "name": "Emulator.GameClient.name",
-      "help": "Emulator.GameClient.help",
-      "android": "android",
-      "cloud_android": "cloud_android"
+      "name": "ゲームクライアント",
+      "help": "クラウドを選ぶと自動的にログイン待機列に入ります。現在クラウドゲームは中国本土版のみ対応しています。",
+      "android": "Android版",
+      "cloud_android": "クラウドゲーム Android版"
     },
     "PackageName": {
-      "name": "Emulator.PackageName.name",
-      "help": "Emulator.PackageName.help",
-      "auto": "auto",
-      "CN-Official": "CN-Official",
-      "OVERSEA-Play": "OVERSEA-Play"
+      "name": "ゲームサーバー",
+      "help": "国際版の地域差は自動判別できないため、必要に応じて手動で選択してください。",
+      "auto": "自動検出",
+      "CN-Official": "[中国本土版]-公式",
+      "OVERSEA-Play": "[グローバル]-Play"
     },
     "GameLanguage": {
-      "name": "Emulator.GameLanguage.name",
-      "help": "Emulator.GameLanguage.help",
-      "auto": "auto",
-      "cn": "cn",
-      "en": "en"
+      "name": "ゲーム内テキスト言語",
+      "help": "現在は簡体字中国語と英語のみ対応です。ゲーム内設定の表示言語もこのいずれかにしてください。",
+      "auto": "自動検出",
+      "cn": "簡体字中国語",
+      "en": "英語"
     },
     "ScreenshotMethod": {
-      "name": "Emulator.ScreenshotMethod.name",
-      "help": "Emulator.ScreenshotMethod.help",
-      "auto": "auto",
+      "name": "スクリーンショット方式",
+      "help": "自動選択時は一度ベンチマークを行い、最速の方式へ自動変更します。\n速度の目安: DroidCast_raw >> aScreenCap_nc > ADB_nc >>> aScreenCap > uiautomator2 ~= ADB\n「ツール - パフォーマンス」で最速の方式を確認できます。",
+      "auto": "最速を自動選択",
       "ADB": "ADB",
       "ADB_nc": "ADB_nc",
       "uiautomator2": "uiautomator2",
@@ -164,29 +144,25 @@
       "ldopengl": "ldopengl"
     },
     "ControlMethod": {
-      "name": "Emulator.ControlMethod.name",
-      "help": "Emulator.ControlMethod.help",
+      "name": "操作方式",
+      "help": "速度: MaaTouch = minitouch >>> uiautomator2 ~= ADB\nMaaTouch を推奨します。",
       "minitouch": "minitouch",
       "MaaTouch": "MaaTouch"
     },
-    "CloudPriorQueue": {
-      "name": "Emulator.CloudPriorQueue.name",
-      "help": "Emulator.CloudPriorQueue.help"
-    },
     "AdbRestart": {
-      "name": "Emulator.AdbRestart.name",
-      "help": "Emulator.AdbRestart.help"
+      "name": "デバイス未検出時に adb を再起動する",
+      "help": "デバイスを検出できない場合に adb サーバーの再起動を試みます。"
     }
   },
   "EmulatorInfo": {
     "_info": {
-      "name": "EmulatorInfo._info.name",
-      "help": "EmulatorInfo._info.help"
+      "name": "エミュレータ情報",
+      "help": "以下の値は Serial から自動補完されます。意味が分からない場合は変更しないでください。"
     },
     "Emulator": {
-      "name": "EmulatorInfo.Emulator.name",
-      "help": "EmulatorInfo.Emulator.help",
-      "auto": "auto",
+      "name": "エミュレータ種類",
+      "help": "Serial から推定したエミュレータ種別です。通常は手動変更不要です。",
+      "auto": "自動検出",
       "NoxPlayer": "NoxPlayer",
       "NoxPlayer64": "NoxPlayer64",
       "BlueStacks4": "BlueStacks4",
@@ -202,1054 +178,58 @@
       "MEmuPlayer": "MEmuPlayer"
     },
     "name": {
-      "name": "EmulatorInfo.name.name",
-      "help": "EmulatorInfo.name.help"
+      "name": "エミュレータインスタンス名",
+      "help": "検出されたエミュレータインスタンス名です。通常は確認用です。"
     },
     "path": {
-      "name": "EmulatorInfo.path.name",
-      "help": "EmulatorInfo.path.help"
+      "name": "エミュレータインストールパス",
+      "help": "検出されたエミュレータのインストールパスです。通常は確認用です。"
     }
   },
   "Error": {
     "_info": {
-      "name": "Error._info.name",
-      "help": "Error._info.help"
+      "name": "デバッグ設定",
+      "help": "異常終了時の再起動、ログ保存、通知に関する設定です。"
     },
     "Restart": {
-      "name": "Error.Restart.name",
-      "help": "Error.Restart.help",
-      "game": "game",
-      "game_emulator": "game_emulator"
+      "name": "エラー時にゲームを再起動",
+      "help": "異常終了時にゲームのみ再起動するか、エミュレータごと再起動するかを選択します。",
+      "game": "ゲームのみ再起動",
+      "game_emulator": "エミュレータとゲームを再起動"
     },
     "SaveError": {
-      "name": "Error.SaveError.name",
-      "help": "Error.SaveError.help"
+      "name": "エラー時にログとスクリーンショットを保存",
+      "help": "異常終了時にログと直前スクリーンショットを保存して調査しやすくします。"
     },
     "ScreenshotLength": {
-      "name": "Error.ScreenshotLength.name",
-      "help": "Error.ScreenshotLength.help"
+      "name": "エラー時に保持する直前スクリーンショット枚数",
+      "help": "エラー保存時に保持する直前スクリーンショットの枚数です。"
     },
     "OnePushConfig": {
-      "name": "Error.OnePushConfig.name",
-      "help": "Error.OnePushConfig.help"
+      "name": "エラー通知設定",
+      "help": "処理不能な例外が発生した後、OnePush でエラー通知を送信します。設定方法はドキュメントを参照してください: https://github.com/LmeSzinc/AzurLaneAutoScript/wiki/Onepush-configuration-%5BCN%5D"
     }
   },
   "Optimization": {
     "_info": {
-      "name": "Optimization._info.name",
-      "help": "Optimization._info.help"
+      "name": "最適化設定",
+      "help": "スクリーンショット頻度やアイドル時の動作を調整し、負荷を抑えます。"
     },
     "ScreenshotInterval": {
-      "name": "Optimization.ScreenshotInterval.name",
-      "help": "Optimization.ScreenshotInterval.help"
+      "name": "スクリーンショット間隔を X 秒まで下げる",
+      "help": "スクリーンショット間の最小間隔です。0.1〜0.3 の範囲で、CPU 使用率を下げられます。"
     },
     "CombatScreenshotInterval": {
-      "name": "Optimization.CombatScreenshotInterval.name",
-      "help": "Optimization.CombatScreenshotInterval.help"
+      "name": "戦闘中のスクリーンショット間隔を X 秒まで下げる",
+      "help": "スクリーンショット間の最小間隔です。0.1〜1.0 の範囲で、戦闘中の CPU 使用率を下げられます。"
     },
     "WhenTaskQueueEmpty": {
-      "name": "Optimization.WhenTaskQueueEmpty.name",
-      "help": "Optimization.WhenTaskQueueEmpty.help",
-      "stay_there": "stay_there",
-      "goto_main": "goto_main",
-      "close_game": "close_game",
-      "close_emulator": "close_emulator"
-    }
-  },
-  "Dungeon": {
-    "_info": {
-      "name": "Dungeon._info.name",
-      "help": "Dungeon._info.help"
-    },
-    "Name": {
-      "name": "Dungeon.Name.name",
-      "help": "Dungeon.Name.help",
-      "Cavern_of_Corrosion_Path_of_Hidden_Salvation": "遺器：救世主 & 隠者（隠救の路）",
-      "Cavern_of_Corrosion_Path_of_Thundersurge": "遺器：烈陽 & 船長（雷滾の路）",
-      "Cavern_of_Corrosion_Path_of_Aria": "遺器：英雄 & 詩人（弦歌の路）",
-      "Cavern_of_Corrosion_Path_of_Uncertainty": "遺器：司祭 & 学者（迷識の路）",
-      "Cavern_of_Corrosion_Path_of_Cavalier": "遺器：鉄騎 & 勇烈（勇騎の路）",
-      "Cavern_of_Corrosion_Path_of_Dreamdive": "遺器：死水 & 時計屋（夢潜の路）",
-      "Cavern_of_Corrosion_Path_of_Darkness": "遺器：大公 & DoT set（幽冥の路）",
-      "Cavern_of_Corrosion_Path_of_Elixir_Seekers": "遺器：蒔者 & メッセンジャー（薬使の路）",
-      "Cavern_of_Corrosion_Path_of_Conflagration": "遺器：炎套 & 虛數套（野焔の路）",
-      "Cavern_of_Corrosion_Path_of_Holy_Hymn": "遺器：防禦套 & 雷套（聖頌の路）",
-      "Cavern_of_Corrosion_Path_of_Providence": "遺器：兵士 & 量子套（睿治の路）",
-      "Cavern_of_Corrosion_Path_of_Drifting": "遺器：治療套 & ガンマン（漂泊の路）",
-      "Cavern_of_Corrosion_Path_of_Jabbing_Punch": "遺器：物理套 & 怪盗（迅拳の路）",
-      "Cavern_of_Corrosion_Path_of_Gelid_Wind": "遺器：氷套 & 風套（霜風の路）",
-      "Calyx_Golden_Memories_Amphoreus": "素材：役割経験（回憶の蕾 オンパロス）：",
-      "Calyx_Golden_Memories_Penacony": "素材：役割経験（回憶の蕾 ピノコニー）：",
-      "Calyx_Golden_Memories_The_Xianzhou_Luofu": "素材：役割経験（回憶の蕾 仙舟羅浮）：",
-      "Calyx_Golden_Memories_Jarilo_VI": "素材：役割経験（回憶の蕾 ヤリーロ-VI）：",
-      "Calyx_Golden_Aether_Amphoreus": "素材：武器経験（エーテルの蕾 オンパロス）",
-      "Calyx_Golden_Aether_Penacony": "素材：武器経験（エーテルの蕾 ピノコニー）",
-      "Calyx_Golden_Aether_The_Xianzhou_Luofu": "素材：武器経験（エーテルの蕾 仙舟羅浮）",
-      "Calyx_Golden_Aether_Jarilo_VI": "素材：武器経験（エーテルの蕾 ヤリーロ-VI）",
-      "Calyx_Golden_Treasures_Amphoreus": "素材：クレジット（秘蔵の蕾 オンパロス）",
-      "Calyx_Golden_Treasures_Penacony": "素材：クレジット（秘蔵の蕾 ピノコニー）",
-      "Calyx_Golden_Treasures_The_Xianzhou_Luofu": "素材：クレジット（秘蔵の蕾 仙舟羅浮）",
-      "Calyx_Golden_Treasures_Jarilo_VI": "素材：クレジット（秘蔵の蕾 ヤリーロ-VI）",
-      "Calyx_Crimson_Destruction_Herta_StorageZone": "軌跡素材：壊滅（収容部分）",
-      "Calyx_Crimson_Destruction_Luofu_ScalegorgeWaterscape": "軌跡素材：壊滅（鱗淵境）",
-      "Calyx_Crimson_Preservation_Herta_SupplyZone": "軌跡素材：存護（サポート部分）",
-      "Calyx_Crimson_Preservation_Penacony_ClockStudiosThemePark": "軌跡素材：存護（クラークフィルムランド）",
-      "Calyx_Crimson_The_Hunt_Jarilo_OutlyingSnowPlains": "軌跡素材：巡狩（郊外雪原）",
-      "Calyx_Crimson_The_Hunt_Penacony_SoulGladScorchsandAuditionVenue": "軌跡素材：巡狩（スラーダ熱砂オーディション会場）",
-      "Calyx_Crimson_Abundance_Jarilo_BackwaterPass": "軌跡素材：豊穣（外縁通路）",
-      "Calyx_Crimson_Abundance_Luofu_FyxestrollGarden": "軌跡素材：豊穣（綏園）",
-      "Calyx_Crimson_Erudition_Jarilo_RivetTown": "軌跡素材：知恵（リベットタウン）",
-      "Calyx_Crimson_Erudition_Penacony_PenaconyGrandTheater": "軌跡素材：知恵（ピノコニー大劇場）",
-      "Calyx_Crimson_Harmony_Jarilo_RobotSettlement": "軌跡素材：調和（機械集落）",
-      "Calyx_Crimson_Harmony_Penacony_TheReverieDreamscape": "軌跡素材：調和（ホテル・レバリー-夢境）",
-      "Calyx_Crimson_Nihility_Jarilo_GreatMine": "軌跡素材：虚無（大鉱区）",
-      "Calyx_Crimson_Nihility_Luofu_AlchemyCommission": "軌跡素材：虚無（丹鼎司）",
-      "Calyx_Crimson_Remembrance_Amphoreus_StrifeRuinsCastrumKremnos": "軌跡素材：記憶（紛争の爪痕クレムノス）",
-      "Stagnant_Shadow_Spike": "昇格素材：物理（ナターシャ / クラーラ / ルカ / 素裳）",
-      "Stagnant_Shadow_Perdition": "昇格素材：物理（寒鴉 / アルジェンティ）",
-      "Stagnant_Shadow_Duty": "昇格素材：物理（ブートヒル / ロビン / 雲璃）",
-      "Stagnant_Shadow_Deepsheaf": "昇格素材：物理（ファイノン / セイレンス / 丹恒・騰荒）",
-      "Stagnant_Shadow_Blaze": "昇格素材：炎（姫子 / アスター / フック）",
-      "Stagnant_Shadow_Scorch": "昇格素材：炎（桂乃芬 / トパーズ&カブ / 帰忘の流離人）",
-      "Stagnant_Shadow_Ire": "昇格素材：炎（ホタル / ギャラガー / 椒丘 / 霊砂）",
-      "Stagnant_Shadow_Ashes": "昇格素材：炎（ダリア）",
-      "Stagnant_Shadow_Rime": "昇格素材：氷（三月なのか / ヘルタ / ジェパード / ペラ）",
-      "Stagnant_Shadow_Icicle": "昇格素材：氷（彦卿 / 鏡流 / ルアン・メェイ）",
-      "Stagnant_Shadow_Nectar": "昇格素材：氷（ミーシャ / マダム・ヘルタ）",
-      "Stagnant_Shadow_Sirens": "昇格素材：氷（キュレネ / 長夜月）",
-      "Stagnant_Shadow_Fulmination": "昇格素材：雷（アーラン / セーバル / 停雲 / 白露）",
-      "Stagnant_Shadow_Doom": "昇格素材：雷（カフカ / 景元 / 黄泉）",
-      "Stagnant_Shadow_Mechwolf": "昇格素材：雷（モゼ / アグライア）",
-      "Stagnant_Shadow_Gust": "昇格素材：風（丹恒 / ブローニャ / サンポ）",
-      "Stagnant_Shadow_Celestial": "昇格素材：風（刃 / フォフォ / ブラックスワン）",
-      "Stagnant_Shadow_Gloam": "昇格素材：風（飛霄 / アナイクス / ヒアンシー / セイバー）",
-      "Stagnant_Shadow_Cinders": "昇格素材：風（ケリュドラ）",
-      "Stagnant_Shadow_Quanta": "昇格素材：量子（銀狼 / ゼーレ / 青雀）",
-      "Stagnant_Shadow_Abomination": "昇格素材：量子（リンクス / 符玄 / 雪衣）",
-      "Stagnant_Shadow_Roast": "昇格素材：量子（ジェイド / 花火）",
-      "Stagnant_Shadow_Gelidmoon": "昇格素材：量子（トリビー / キャストリス / サフェル / アーチャー）",
-      "Stagnant_Shadow_Mirage": "昇格素材：虚数（ヴェルト / 羅刹 / 御空）",
-      "Stagnant_Shadow_Puppetry": "昇格素材：虚数（丹恒・飲月 / アベンチュリン / Dr.レイシオ）",
-      "Stagnant_Shadow_Timbre": "昇格素材：虚数（サンデー / 乱破）",
-      "Stagnant_Shadow_Sloggyre": "昇格素材：虚数（モーディス）"
-    },
-    "NameAtDoubleCalyx": {
-      "name": "Dungeon.NameAtDoubleCalyx.name",
-      "help": "Dungeon.NameAtDoubleCalyx.help",
-      "Calyx_Golden_Memories_Amphoreus": "素材：役割経験（回憶の蕾 オンパロス）：",
-      "Calyx_Golden_Memories_Penacony": "素材：役割経験（回憶の蕾 ピノコニー）：",
-      "Calyx_Golden_Memories_The_Xianzhou_Luofu": "素材：役割経験（回憶の蕾 仙舟羅浮）：",
-      "Calyx_Golden_Memories_Jarilo_VI": "素材：役割経験（回憶の蕾 ヤリーロ-VI）：",
-      "Calyx_Golden_Aether_Amphoreus": "素材：武器経験（エーテルの蕾 オンパロス）",
-      "Calyx_Golden_Aether_Penacony": "素材：武器経験（エーテルの蕾 ピノコニー）",
-      "Calyx_Golden_Aether_The_Xianzhou_Luofu": "素材：武器経験（エーテルの蕾 仙舟羅浮）",
-      "Calyx_Golden_Aether_Jarilo_VI": "素材：武器経験（エーテルの蕾 ヤリーロ-VI）",
-      "Calyx_Golden_Treasures_Amphoreus": "素材：クレジット（秘蔵の蕾 オンパロス）",
-      "Calyx_Golden_Treasures_Penacony": "素材：クレジット（秘蔵の蕾 ピノコニー）",
-      "Calyx_Golden_Treasures_The_Xianzhou_Luofu": "素材：クレジット（秘蔵の蕾 仙舟羅浮）",
-      "Calyx_Golden_Treasures_Jarilo_VI": "素材：クレジット（秘蔵の蕾 ヤリーロ-VI）",
-      "Calyx_Crimson_Destruction_Herta_StorageZone": "軌跡素材：壊滅（収容部分）",
-      "Calyx_Crimson_Destruction_Luofu_ScalegorgeWaterscape": "軌跡素材：壊滅（鱗淵境）",
-      "Calyx_Crimson_Preservation_Herta_SupplyZone": "軌跡素材：存護（サポート部分）",
-      "Calyx_Crimson_Preservation_Penacony_ClockStudiosThemePark": "軌跡素材：存護（クラークフィルムランド）",
-      "Calyx_Crimson_The_Hunt_Jarilo_OutlyingSnowPlains": "軌跡素材：巡狩（郊外雪原）",
-      "Calyx_Crimson_The_Hunt_Penacony_SoulGladScorchsandAuditionVenue": "軌跡素材：巡狩（スラーダ熱砂オーディション会場）",
-      "Calyx_Crimson_Abundance_Jarilo_BackwaterPass": "軌跡素材：豊穣（外縁通路）",
-      "Calyx_Crimson_Abundance_Luofu_FyxestrollGarden": "軌跡素材：豊穣（綏園）",
-      "Calyx_Crimson_Erudition_Jarilo_RivetTown": "軌跡素材：知恵（リベットタウン）",
-      "Calyx_Crimson_Erudition_Penacony_PenaconyGrandTheater": "軌跡素材：知恵（ピノコニー大劇場）",
-      "Calyx_Crimson_Harmony_Jarilo_RobotSettlement": "軌跡素材：調和（機械集落）",
-      "Calyx_Crimson_Harmony_Penacony_TheReverieDreamscape": "軌跡素材：調和（ホテル・レバリー-夢境）",
-      "Calyx_Crimson_Nihility_Jarilo_GreatMine": "軌跡素材：虚無（大鉱区）",
-      "Calyx_Crimson_Nihility_Luofu_AlchemyCommission": "軌跡素材：虚無（丹鼎司）",
-      "Calyx_Crimson_Remembrance_Amphoreus_StrifeRuinsCastrumKremnos": "軌跡素材：記憶（紛争の爪痕クレムノス）"
-    },
-    "NameAtDoubleRelic": {
-      "name": "Dungeon.NameAtDoubleRelic.name",
-      "help": "Dungeon.NameAtDoubleRelic.help",
-      "Cavern_of_Corrosion_Path_of_Hidden_Salvation": "遺器：救世主 & 隠者（隠救の路）",
-      "Cavern_of_Corrosion_Path_of_Thundersurge": "遺器：烈陽 & 船長（雷滾の路）",
-      "Cavern_of_Corrosion_Path_of_Aria": "遺器：英雄 & 詩人（弦歌の路）",
-      "Cavern_of_Corrosion_Path_of_Uncertainty": "遺器：司祭 & 学者（迷識の路）",
-      "Cavern_of_Corrosion_Path_of_Cavalier": "遺器：鉄騎 & 勇烈（勇騎の路）",
-      "Cavern_of_Corrosion_Path_of_Dreamdive": "遺器：死水 & 時計屋（夢潜の路）",
-      "Cavern_of_Corrosion_Path_of_Darkness": "遺器：大公 & DoT set（幽冥の路）",
-      "Cavern_of_Corrosion_Path_of_Elixir_Seekers": "遺器：蒔者 & メッセンジャー（薬使の路）",
-      "Cavern_of_Corrosion_Path_of_Conflagration": "遺器：炎套 & 虛數套（野焔の路）",
-      "Cavern_of_Corrosion_Path_of_Holy_Hymn": "遺器：防禦套 & 雷套（聖頌の路）",
-      "Cavern_of_Corrosion_Path_of_Providence": "遺器：兵士 & 量子套（睿治の路）",
-      "Cavern_of_Corrosion_Path_of_Drifting": "遺器：治療套 & ガンマン（漂泊の路）",
-      "Cavern_of_Corrosion_Path_of_Jabbing_Punch": "遺器：物理套 & 怪盗（迅拳の路）",
-      "Cavern_of_Corrosion_Path_of_Gelid_Wind": "遺器：氷套 & 風套（霜風の路）"
-    },
-    "Team": {
-      "name": "Dungeon.Team.name",
-      "help": "Dungeon.Team.help",
-      "1": "1",
-      "2": "2",
-      "3": "3",
-      "4": "4",
-      "5": "5",
-      "6": "6",
-      "7": "7",
-      "8": "8",
-      "9": "9",
-      "10": "10",
-      "11": "11",
-      "12": "12"
-    }
-  },
-  "TrailblazePower": {
-    "_info": {
-      "name": "TrailblazePower._info.name",
-      "help": "TrailblazePower._info.help"
-    },
-    "ExtractReservedTrailblazePower": {
-      "name": "TrailblazePower.ExtractReservedTrailblazePower.name",
-      "help": "TrailblazePower.ExtractReservedTrailblazePower.help"
-    },
-    "UseFuel": {
-      "name": "TrailblazePower.UseFuel.name",
-      "help": "TrailblazePower.UseFuel.help"
-    },
-    "FuelOnlyPlanner": {
-      "name": "TrailblazePower.FuelOnlyPlanner.name",
-      "help": "TrailblazePower.FuelOnlyPlanner.help"
-    },
-    "FuelReserve": {
-      "name": "TrailblazePower.FuelReserve.name",
-      "help": "TrailblazePower.FuelReserve.help"
-    }
-  },
-  "DungeonSupport": {
-    "_info": {
-      "name": "DungeonSupport._info.name",
-      "help": "DungeonSupport._info.help"
-    },
-    "Use": {
-      "name": "DungeonSupport.Use.name",
-      "help": "DungeonSupport.Use.help",
-      "always_use": "always_use",
-      "when_daily": "when_daily",
-      "do_not_use": "do_not_use"
-    },
-    "Character": {
-      "name": "DungeonSupport.Character.name",
-      "help": "DungeonSupport.Character.help",
-      "FirstCharacter": "FirstCharacter",
-      "TheDahlia": "[3.8] ダリア",
-      "Cyrene": "[3.7] キュレネ",
-      "Evernight": "[3.6] 長夜月",
-      "DanHengPermansorTerrae": "[3.6] 丹恒・騰荒",
-      "Hysilens": "[3.5] セイレンス",
-      "Cerydra": "[3.5] ケリュドラ",
-      "Phainon": "[3.4] ファイノン",
-      "Saber": "[3.4] セイバー",
-      "Archer": "[3.4] アーチャー",
-      "Hyacine": "[3.3] ヒアンシー",
-      "Cipher": "[3.3] サフェル",
-      "Castorice": "[3.2] キャストリス",
-      "Anaxa": "[3.2] アナイクス",
-      "Tribbie": "[3.1] トリビー",
-      "Mydei": "[3.1] モーディス",
-      "TheHerta": "[3.0] マダム・ヘルタ",
-      "Aglaea": "[3.0] アグライア",
-      "Sunday": "[2.7] サンデー",
-      "Fugue": "[2.7] 帰忘の流離人",
-      "Rappa": "[2.6] 乱破",
-      "Feixiao": "[2.5] 飛霄",
-      "Lingsha": "[2.5] 霊砂",
-      "Moze": "[2.5] モゼ",
-      "Yunli": "[2.4] 雲璃",
-      "March7thTheHunt": "[2.4] 三月なのか・巡狩",
-      "Jiaoqiu": "[2.4] 椒丘",
-      "Firefly": "[2.3] ホタル",
-      "Jade": "[2.3] ジェイド",
-      "Robin": "[2.2] ロビン",
-      "Boothill": "[2.2] ブートヒル",
-      "Acheron": "[2.1] 黄泉",
-      "Aventurine": "[2.1] アベンチュリン",
-      "Gallagher": "[2.1] ギャラガー",
-      "BlackSwan": "[2.0] ブラックスワン",
-      "Sparkle": "[2.0] 花火",
-      "Misha": "[2.0] ミーシャ",
-      "RuanMei": "[1.6] ルアン・メェイ",
-      "DrRatio": "[1.6] Dr.レイシオ",
-      "Xueyi": "[1.6] 雪衣",
-      "Huohuo": "[1.5] フォフォ",
-      "Argenti": "[1.5] アルジェンティ",
-      "Hanya": "[1.5] 寒鴉",
-      "Jingliu": "[1.4] 鏡流",
-      "TopazNumby": "[1.4] トパーズ&カブ",
-      "Guinaifen": "[1.4] 桂乃芬",
-      "DanHengImbibitorLunae": "[1.3] 丹恒・飲月",
-      "FuXuan": "[1.3] 符玄",
-      "Lynx": "[1.3] リンクス",
-      "Blade": "[1.2] 刃",
-      "Kafka": "[1.2] カフカ",
-      "Luka": "[1.2] ルカ",
-      "SilverWolf": "[1.1] 銀狼",
-      "Luocha": "[1.1] 羅刹",
-      "Yukong": "[1.1] 御空",
-      "Seele": "[1.0] ゼーレ",
-      "JingYuan": "[1.0] 景元",
-      "TrailblazerDestruction": "開拓者・壊滅",
-      "TrailblazerPreservation": "開拓者・存護",
-      "TrailblazerHarmony": "開拓者・調和",
-      "TrailblazerRemembrance": "開拓者・記憶",
-      "Himeko": "姫子",
-      "Welt": "ヴェルト",
-      "Gepard": "ジェパード",
-      "Bronya": "ブローニャ",
-      "Clara": "クラーラ",
-      "Yanqing": "彦卿",
-      "Bailu": "白露",
-      "March7thPreservation": "三月なのか・存護",
-      "DanHeng": "丹恒",
-      "Asta": "アスター",
-      "Serval": "セーバル",
-      "Herta": "ヘルタ",
-      "Qingque": "青雀",
-      "Sushang": "素裳",
-      "Hook": "フック",
-      "Arlan": "アーラン",
-      "Sampo": "サンポ",
-      "Tingyun": "停雲",
-      "Pela": "ペラ",
-      "Natasha": "ナターシャ"
-    }
-  },
-  "DungeonStorage": {
-    "_info": {
-      "name": "DungeonStorage._info.name",
-      "help": "DungeonStorage._info.help"
-    },
-    "TrailblazePower": {
-      "name": "DungeonStorage.TrailblazePower.name",
-      "help": "DungeonStorage.TrailblazePower.help"
-    },
-    "Reserved": {
-      "name": "DungeonStorage.Reserved.name",
-      "help": "DungeonStorage.Reserved.help"
-    },
-    "Fuel": {
-      "name": "DungeonStorage.Fuel.name",
-      "help": "DungeonStorage.Fuel.help"
-    },
-    "Immersifier": {
-      "name": "DungeonStorage.Immersifier.name",
-      "help": "DungeonStorage.Immersifier.help"
-    },
-    "DungeonDouble": {
-      "name": "DungeonStorage.DungeonDouble.name",
-      "help": "DungeonStorage.DungeonDouble.help"
-    },
-    "EchoOfWar": {
-      "name": "DungeonStorage.EchoOfWar.name",
-      "help": "DungeonStorage.EchoOfWar.help"
-    },
-    "SimulatedUniverse": {
-      "name": "DungeonStorage.SimulatedUniverse.name",
-      "help": "DungeonStorage.SimulatedUniverse.help"
-    },
-    "Relic": {
-      "name": "DungeonStorage.Relic.name",
-      "help": "DungeonStorage.Relic.help"
-    }
-  },
-  "Freebies": {
-    "_info": {
-      "name": "Freebies._info.name",
-      "help": "Freebies._info.help"
-    },
-    "SupportReward": {
-      "name": "Freebies.SupportReward.name",
-      "help": "Freebies.SupportReward.help"
-    },
-    "MailReward": {
-      "name": "Freebies.MailReward.name",
-      "help": "Freebies.MailReward.help"
-    },
-    "RedemptionCode": {
-      "name": "Freebies.RedemptionCode.name",
-      "help": "Freebies.RedemptionCode.help"
-    },
-    "UsedCode": {
-      "name": "Freebies.UsedCode.name",
-      "help": "Freebies.UsedCode.help"
-    }
-  },
-  "Planner": {
-    "_info": {
-      "name": "Planner._info.name",
-      "help": "Planner._info.help"
-    },
-    "PlannerOverall": {
-      "name": "Planner.PlannerOverall.name",
-      "help": "Planner.PlannerOverall.help"
-    },
-    "Item_Credit": {
-      "name": "信用ポイント",
-      "help": ""
-    },
-    "Item_Trailblaze_EXP": {
-      "name": "マイレージ",
-      "help": ""
-    },
-    "Item_Traveler_Guide": {
-      "name": "役割経験",
-      "help": ""
-    },
-    "Item_Refined_Aether": {
-      "name": "武器経験",
-      "help": ""
-    },
-    "Item_Lost_Crystal": {
-      "name": "遺失晶塊",
-      "help": ""
-    },
-    "Item_Broken_Teeth_of_Iron_Wolf": {
-      "name": "昇格素材：物理（ナターシャ / クラーラ / ルカ / 素裳）",
-      "help": ""
-    },
-    "Item_Endotherm_Chitin": {
-      "name": "昇格素材：炎（姫子 / アスター / フック）",
-      "help": ""
-    },
-    "Item_Horn_of_Snow": {
-      "name": "昇格素材：氷（三月なのか / ヘルタ / ジェパード / ペラ）",
-      "help": ""
-    },
-    "Item_Lightning_Crown_of_the_Past_Shadow": {
-      "name": "昇格素材：雷（アーラン / セーバル / 停雲 / 白露）",
-      "help": ""
-    },
-    "Item_Storm_Eye": {
-      "name": "昇格素材：風（丹恒 / ブローニャ / サンポ）",
-      "help": ""
-    },
-    "Item_Void_Cast_Iron": {
-      "name": "昇格素材：量子（銀狼 / ゼーレ / 青雀）",
-      "help": ""
-    },
-    "Item_Golden_Crown_of_the_Past_Shadow": {
-      "name": "昇格素材：虚数（ヴェルト / 羅刹 / 御空）",
-      "help": ""
-    },
-    "Item_Netherworld_Token": {
-      "name": "昇格素材：物理（寒鴉 / アルジェンティ）",
-      "help": ""
-    },
-    "Item_Searing_Steel_Blade": {
-      "name": "昇格素材：炎（桂乃芬 / トパーズ&カブ / 帰忘の流離人）",
-      "help": ""
-    },
-    "Item_Gelid_Chitin": {
-      "name": "昇格素材：氷（彦卿 / 鏡流 / ルアン・メェイ）",
-      "help": ""
-    },
-    "Item_Shape_Shifter_Lightning_Staff": {
-      "name": "昇格素材：雷（カフカ / 景元 / 黄泉）",
-      "help": ""
-    },
-    "Item_Ascendant_Debris": {
-      "name": "昇格素材：風（刃 / フォフォ / ブラックスワン）",
-      "help": ""
-    },
-    "Item_Nail_of_the_Ape": {
-      "name": "昇格素材：量子（リンクス / 符玄 / 雪衣）",
-      "help": ""
-    },
-    "Item_Suppressing_Edict": {
-      "name": "昇格素材：虚数（丹恒・飲月 / アベンチュリン / Dr.レイシオ）",
-      "help": ""
-    },
-    "Item_IPC_Work_Permit": {
-      "name": "昇格素材：物理（ブートヒル / ロビン / 雲璃）",
-      "help": ""
-    },
-    "Item_Raging_Heart": {
-      "name": "昇格素材：炎（ホタル / ギャラガー / 椒丘 / 霊砂）",
-      "help": ""
-    },
-    "Item_Dream_Fridge": {
-      "name": "昇格素材：氷（ミーシャ / マダム・ヘルタ）",
-      "help": ""
-    },
-    "Item_Nail_of_the_Beast_Coffin": {
-      "name": "昇格素材：雷（モゼ / アグライア）",
-      "help": ""
-    },
-    "Item_A_Glass_of_the_Besotted_Era": {
-      "name": "昇格素材：風（飛霄 / アナイクス / ヒアンシー / セイバー）",
-      "help": ""
-    },
-    "Item_Dream_Flamer": {
-      "name": "昇格素材：量子（ジェイド / 花火）",
-      "help": ""
-    },
-    "Item_Chordal_Mirage": {
-      "name": "昇格素材：虚数（サンデー / 乱破）",
-      "help": ""
-    },
-    "Item_Invasive_Clot": {
-      "name": "昇格素材：物理（ファイノン / セイレンス / 丹恒・騰荒）",
-      "help": ""
-    },
-    "Item_Radiant_Prominence": {
-      "name": "昇格素材：炎（ダリア）",
-      "help": ""
-    },
-    "Item_Sea_Siren_Torn_Fin": {
-      "name": "昇格素材：氷（キュレネ / 長夜月）",
-      "help": ""
-    },
-    "Item_Charred_Bud_of_Twilight": {
-      "name": "昇格素材：風（ケリュドラ）",
-      "help": ""
-    },
-    "Item_Darkveil_Moonlight": {
-      "name": "昇格素材：量子（トリビー / キャストリス / サフェル / アーチャー）",
-      "help": ""
-    },
-    "Item_Harbinger_of_Strife": {
-      "name": "昇格素材：虚数（モーディス）",
-      "help": ""
-    },
-    "Item_Worldbreaker_Blade": {
-      "name": "軌跡素材：壊滅（収容部分）",
-      "help": ""
-    },
-    "Item_Arrow_of_the_Starchaser": {
-      "name": "軌跡素材：巡狩（郊外雪原）",
-      "help": ""
-    },
-    "Item_Key_of_Wisdom": {
-      "name": "軌跡素材：知恵（リベットタウン）",
-      "help": ""
-    },
-    "Item_Safeguard_of_Amber": {
-      "name": "軌跡素材：存護（サポート部分）",
-      "help": ""
-    },
-    "Item_Obsidian_of_Obsession": {
-      "name": "軌跡素材：虚無（大鉱区）",
-      "help": ""
-    },
-    "Item_Stellaris_Symphony": {
-      "name": "軌跡素材：調和（機械集落）",
-      "help": ""
-    },
-    "Item_Flower_of_Eternity": {
-      "name": "軌跡素材：豊穣（外縁通路）",
-      "help": ""
-    },
-    "Item_Moon_Rage_Fang": {
-      "name": "軌跡素材：壊滅（鱗淵境）",
-      "help": ""
-    },
-    "Item_Countertemporal_Shot": {
-      "name": "軌跡素材：巡狩（スラーダ熱砂オーディション会場）",
-      "help": ""
-    },
-    "Item_Exquisite_Colored_Draft": {
-      "name": "軌跡素材：知恵（ピノコニー大劇場）",
-      "help": ""
-    },
-    "Item_Divine_Amber": {
-      "name": "軌跡素材：存護（クラークフィルムランド）",
-      "help": ""
-    },
-    "Item_Heaven_Incinerator": {
-      "name": "軌跡素材：虚無（丹鼎司）",
-      "help": ""
-    },
-    "Item_Heavenly_Melody": {
-      "name": "軌跡素材：調和（ホテル・レバリー-夢境）",
-      "help": ""
-    },
-    "Item_Myriad_Fruit": {
-      "name": "軌跡素材：豊穣（綏園）",
-      "help": ""
-    },
-    "Item_Flower_of_Alaya": {
-      "name": "軌跡素材：記憶（紛争の爪痕クレムノス）",
-      "help": ""
-    },
-    "Item_Tracks_of_Destiny": {
-      "name": "運命の足跡",
-      "help": ""
-    },
-    "Item_Destroyer_Final_Road": {
-      "name": "壊滅の始まり (宇宙ステーション「ヘルタ」)",
-      "help": ""
-    },
-    "Item_Guardian_Lament": {
-      "name": "寒波の幕切れ (ヤリーロ-VI)",
-      "help": ""
-    },
-    "Item_Regret_of_Infinite_Ochema": {
-      "name": "不死の神実 (仙舟「羅浮」)",
-      "help": ""
-    },
-    "Item_Past_Evils_of_the_Borehole_Planet_Disaster": {
-      "name": "星を蝕む往日の悪夢 (宇宙ステーション「ヘルタ」)",
-      "help": ""
-    },
-    "Item_Lost_Echo_of_the_Shared_Wish": {
-      "name": "現世の夢の礼賛 (ピノコニー)",
-      "help": ""
-    },
-    "Item_Auspice_Sliver": {
-      "name": "心獣の戦場 (仙舟「羅浮」)",
-      "help": ""
-    },
-    "Item_Daythunder_Anamnesis": {
-      "name": "晨昏の回顧 (オンパロス)",
-      "help": ""
-    },
-    "Item_Vanquished_Flow_Reticence": {
-      "name": "鉄骸の錆び塚 (オンパロス)",
-      "help": ""
-    },
-    "Item_Squirming_Core": {
-      "name": "脈動する原核",
-      "help": ""
-    },
-    "Item_Conqueror_Will": {
-      "name": "踏みにじる意志",
-      "help": ""
-    },
-    "Item_Silvermane_Medal": {
-      "name": "シルバーメインの勲章",
-      "help": ""
-    },
-    "Item_Ancient_Engine": {
-      "name": "古代エンジン",
-      "help": ""
-    },
-    "Item_Immortal_Lumintwig": {
-      "name": "永寿の栄枝",
-      "help": ""
-    },
-    "Item_Artifex_Gyreheart": {
-      "name": "工造渾心",
-      "help": ""
-    },
-    "Item_Dream_Making_Engine": {
-      "name": "ドリームメイキングモーター",
-      "help": ""
-    },
-    "Item_Shards_of_Desires": {
-      "name": "砕けた欲望の鏡",
-      "help": ""
-    },
-    "Item_Glory_Aspersed_Torso": {
-      "name": "栄光は身体を洗礼する",
-      "help": ""
-    },
-    "Item_Eternal_Lament": {
-      "name": "果てしなく続く悲嘆",
-      "help": ""
-    }
-  },
-  "PlannerTarget": {
-    "_info": {
-      "name": "PlannerTarget._info.name",
-      "help": "PlannerTarget._info.help"
-    },
-    "Enable": {
-      "name": "PlannerTarget.Enable.name",
-      "help": "PlannerTarget.Enable.help"
-    },
-    "LastScan": {
-      "name": "PlannerTarget.LastScan.name",
-      "help": "PlannerTarget.LastScan.help"
-    },
-    "Character": {
-      "name": "PlannerTarget.Character.name",
-      "help": "PlannerTarget.Character.help",
-      "_none_": "_none_",
-      "TheDahlia": "[3.8] ダリア",
-      "Cyrene": "[3.7] キュレネ",
-      "Evernight": "[3.6] 長夜月",
-      "DanHengPermansorTerrae": "[3.6] 丹恒・騰荒",
-      "Hysilens": "[3.5] セイレンス",
-      "Cerydra": "[3.5] ケリュドラ",
-      "Phainon": "[3.4] ファイノン",
-      "Saber": "[3.4] セイバー",
-      "Archer": "[3.4] アーチャー",
-      "Hyacine": "[3.3] ヒアンシー",
-      "Cipher": "[3.3] サフェル",
-      "Castorice": "[3.2] キャストリス",
-      "Anaxa": "[3.2] アナイクス",
-      "Tribbie": "[3.1] トリビー",
-      "Mydei": "[3.1] モーディス",
-      "TheHerta": "[3.0] マダム・ヘルタ",
-      "Aglaea": "[3.0] アグライア",
-      "Sunday": "[2.7] サンデー",
-      "Fugue": "[2.7] 帰忘の流離人",
-      "Rappa": "[2.6] 乱破",
-      "Feixiao": "[2.5] 飛霄",
-      "Lingsha": "[2.5] 霊砂",
-      "Moze": "[2.5] モゼ",
-      "Yunli": "[2.4] 雲璃",
-      "March7thTheHunt": "[2.4] 三月なのか・巡狩",
-      "Jiaoqiu": "[2.4] 椒丘",
-      "Firefly": "[2.3] ホタル",
-      "Jade": "[2.3] ジェイド",
-      "Robin": "[2.2] ロビン",
-      "Boothill": "[2.2] ブートヒル",
-      "Acheron": "[2.1] 黄泉",
-      "Aventurine": "[2.1] アベンチュリン",
-      "Gallagher": "[2.1] ギャラガー",
-      "BlackSwan": "[2.0] ブラックスワン",
-      "Sparkle": "[2.0] 花火",
-      "Misha": "[2.0] ミーシャ",
-      "RuanMei": "[1.6] ルアン・メェイ",
-      "DrRatio": "[1.6] Dr.レイシオ",
-      "Xueyi": "[1.6] 雪衣",
-      "Huohuo": "[1.5] フォフォ",
-      "Argenti": "[1.5] アルジェンティ",
-      "Hanya": "[1.5] 寒鴉",
-      "Jingliu": "[1.4] 鏡流",
-      "TopazNumby": "[1.4] トパーズ&カブ",
-      "Guinaifen": "[1.4] 桂乃芬",
-      "DanHengImbibitorLunae": "[1.3] 丹恒・飲月",
-      "FuXuan": "[1.3] 符玄",
-      "Lynx": "[1.3] リンクス",
-      "Blade": "[1.2] 刃",
-      "Kafka": "[1.2] カフカ",
-      "Luka": "[1.2] ルカ",
-      "SilverWolf": "[1.1] 銀狼",
-      "Luocha": "[1.1] 羅刹",
-      "Yukong": "[1.1] 御空",
-      "Seele": "[1.0] ゼーレ",
-      "JingYuan": "[1.0] 景元",
-      "TrailblazerDestruction": "開拓者・壊滅",
-      "TrailblazerPreservation": "開拓者・存護",
-      "TrailblazerHarmony": "開拓者・調和",
-      "TrailblazerRemembrance": "開拓者・記憶",
-      "Himeko": "姫子",
-      "Welt": "ヴェルト",
-      "Gepard": "ジェパード",
-      "Bronya": "ブローニャ",
-      "Clara": "クラーラ",
-      "Yanqing": "彦卿",
-      "Bailu": "白露",
-      "March7thPreservation": "三月なのか・存護",
-      "DanHeng": "丹恒",
-      "Asta": "アスター",
-      "Serval": "セーバル",
-      "Herta": "ヘルタ",
-      "Qingque": "青雀",
-      "Sushang": "素裳",
-      "Hook": "フック",
-      "Arlan": "アーラン",
-      "Sampo": "サンポ",
-      "Tingyun": "停雲",
-      "Pela": "ペラ",
-      "Natasha": "ナターシャ"
-    },
-    "Cone": {
-      "name": "PlannerTarget.Cone.name",
-      "help": "PlannerTarget.Cone.help",
-      "_none_": "_none_",
-      "This_Love_Forever": "[3.7] キュレネ | 5* 愛はいま永遠に",
-      "Though_Worlds_Apart": "[3.6] 丹恒・騰荒 | 5* 万里の山河を越えて",
-      "Never_Forget_Her_Flame": "[3.8] ダリア | 5* 彼女の炎を忘れずに",
-      "To_Evernight_Stars": "[3.6] 長夜月 | 5* 長き夜に輝く星へ",
-      "Epoch_Etched_in_Golden_Blood": "[3.5] ケリュドラ | 5* 黄金の血で刻む時代",
-      "Why_Does_the_Ocean_Sing": "[3.5] セイレンス | 5* 海の歌は何がため",
-      "Thus_Burns_the_Dawn": "[3.4] ファイノン | 5* 燃え盛る黎明のように",
-      "Lies_Dance_on_the_Breeze": "[3.3] サフェル | 5* 風に揺蕩う虚言",
-      "Long_May_Rainbows_Adorn_the_Sky": "[3.3] ヒアンシー | 5* 空の虹が消えぬように",
-      "Life_Should_Be_Cast_to_Flames": "[3.2] アナイクス | 5* 生命、焼滅すべし",
-      "Make_Farewells_More_Beautiful": "[3.2] キャストリス | 5* 永訣よ美しくあれ",
-      "Flame_of_Blood_Blaze_My_Path": "[3.1] モーディス | 5* 前途燃やす血の如き炎",
-      "If_Time_Were_a_Flower": "[3.1] トリビー | 5* もしも時が花だったら",
-      "Into_the_Unreachable_Veil": "[3.0] マダム・ヘルタ | 5* 触れてはならぬ領域へ",
-      "Time_Woven_Into_Gold": "[3.0] アグライア | 5* 光陰を織り黄金と成す",
-      "Long_Road_Leads_Home": "[2.7] 帰忘の流離人 | 5* 長途はやがて帰途へと続く",
-      "A_Grounded_Ascent": "[2.7] サンデー | 5* 大地より天を目指して",
-      "Ninjutsu_Inscription_Dazzling_Evilbreaker": "[2.6] 乱破 | 5* 忍法帖・繚乱破魔",
-      "Scent_Alone_Stays_True": "[2.5] 霊砂 | 5* 昔日の香りは今も猶",
-      "I_Venture_Forth_to_Hunt": "[2.5] 飛霄 | 5* 我が征く巡狩の道",
-      "Dance_at_Sunset": "[2.4] 雲璃 | 5* 夕日に舞う",
-      "Those_Many_Springs": "[2.4] 椒丘 | 5* 幾度目かの春",
-      "Yet_Hope_Is_Priceless": "[2.3] ジェイド | 5* されど希望の銘は無価",
-      "Sailing_Towards_a_Second_Life": "[2.2] ブートヒル | 5* 二度目の生に向かって",
-      "Flowing_Nightglow": "[2.2] ロビン | 5* 光あふれる夜",
-      "Whereabouts_Should_Dreams_Rest": "[2.3] ホタル | 5* 夢が帰り着く場所",
-      "Along_the_Passing_Shore": "[2.1] 黄泉 | 5* 流れ逝く岸を歩いて",
-      "Inherently_Unjust_Destiny": "[2.1] アベンチュリン | 5* 運命は常に不公平",
-      "Reforged_Remembrance": "[2.0] ブラックスワン | 5* 時間の記憶を再構築して",
-      "Earthly_Escapade": "[2.0] 花火 | 5* 人生は遊び",
-      "Baptism_of_Pure_Thought": "[1.6] Dr.レイシオ | 5* 純粋なる思惟の洗礼",
-      "Past_Self_in_Mirror": "[1.6] ルアン・メェイ | 5* 鏡の中の私",
-      "An_Instant_Before_A_Gaze": "[1.5] アルジェンティ | 5* その一刻、目に焼き付けて",
-      "Night_of_Fright": "[1.5] フォフォ | 5* 驚魂の夜",
-      "Worrisome_Blissful": "[1.4] トパーズ&カブ | 5* 悩んで笑って",
-      "Brighter_Than_the_Sun": "[1.3] 丹恒・飲月 | 5* 陽光より輝くもの",
-      "I_Shall_Be_My_Own_Sword": "[1.4] 鏡流 | 5* この身は剣なり",
-      "She_Already_Shut_Her_Eyes": "[1.3] 符玄 | 5* 閉ざした瞳",
-      "Before_Dawn": "[1.0] 景元 | 5* 夜明け前",
-      "The_Unreachable_Side": "[1.2] 刃 | 5* 着かない彼岸",
-      "Echoes_of_the_Coffin": "[1.1] 羅刹 | 5* 棺のこだま",
-      "Incessant_Rain": "[1.1] 銀狼 | 5* 降りやまぬ雨",
-      "Patience_Is_All_You_Need": "[1.2] カフカ | 5* 待つのみ",
-      "In_the_Night": "[1.0] ゼーレ | 5* 夜の帳の中で",
-      "Memory_Curtain_Never_Falls": "5* 尽きぬ追憶",
-      "Eternal_Calculus": "5* 絶え間ない演算",
-      "Solitary_Healing": "5* 孤独の癒し",
-      "Texture_of_Memories": "5* 記憶の素材",
-      "Cruising_in_the_Stellar_Sea": "5* 星海巡航",
-      "On_the_Fall_of_an_Aeon": "5* とある星神の殞落を記す",
-      "The_Hell_Where_Ideals_Burn": "5* 理想を焼く奈落で",
-      "A_Thankless_Coronation": "5* 報われぬ戴冠",
-      "Time_Waits_for_No_One": "5* 時節は居らず",
-      "Sleep_Like_the_Dead": "5* 泥の如き眠り",
-      "Moment_of_Victory": "5* 勝利の刹那",
-      "In_the_Name_of_the_World": "5* 世界の名を以て",
-      "But_the_Battle_Isn_t_Over": "5* だが戦争は終わらない",
-      "Something_Irreplaceable": "5* かけがえのないもの",
-      "Night_on_the_Milky_Way": "5* 銀河鉄道の夜",
-      "Fly_Into_a_Pink_Tomorrow": "4* ピンク色の明日へ",
-      "The_Forever_Victual": "4* 永遠の迷境ごはん",
-      "The_Great_Cosmic_Enterprise": "4* 宇宙一の大商い！",
-      "Ninja_Record_Sound_Hunt": "4* 忍事録・音律狩猟",
-      "For_Tomorrow_Journey": "4* 明日のための旅",
-      "Hey_Over_Here": "4* よぉ、ここにいるぜ",
-      "Before_the_Tutorial_Mission_Starts": "4* 初めてのクエストの前に",
-      "See_You_at_the_End": "4* 終点でまた会おう",
-      "Holiday_Thermae_Escapade": "4* 休日のバルネア大冒険",
-      "A_Dream_Scented_in_Wheat": "4* 麦の香り漂う夢",
-      "A_Trail_of_Bygone_Blood": "4* 古より受け継がれる血",
-      "The_Flower_Remembers": "4* 花は忘れない",
-      "In_Pursuit_of_the_Wind": "4* 風を追う時",
-      "Unto_Tomorrow_Morrow": "4* 明日の明日まで",
-      "The_Story_Next_Page": "4* 物語をめくって",
-      "Journey_Forever_Peaceful": "4* 旅が平穏であるように",
-      "Sweat_Now_Cry_Less": "4* 流すなら涙より汗",
-      "Geniuse_Greetings": "4* 天才たちの「挨拶」",
-      "Victory_In_a_Blink": "4* 瞬刻の勝機",
-      "Dream_Montage": "4* 夢のモンタージュ",
-      "Shadowed_by_Night": "4* 夜は影のように付き纏う",
-      "Poised_to_Bloom": "4* 美しき華よ今咲かん",
-      "After_the_Charmony_Fall": "4* 調和が沈黙した後",
-      "Boundless_Choreo": "4* 終わりなき舞踏",
-      "Concert_for_Two": "4* 二人だけのコンサート",
-      "Indelible_Promise": "4* 心に刻まれた約束",
-      "It_Showtime": "4* ショーの始まり",
-      "The_Day_The_Cosmos_Fell": "4* 銀河が陥落した日",
-      "Destiny_Threads_Forewoven": "4* 運命を紡ぐ糸",
-      "Flames_Afar": "4* 烈火の彼方",
-      "Final_Victor": "4* 最後の勝者",
-      "Dreamville_Adventure": "4* ドリームタウンの大冒険",
-      "What_Is_Real": "4* 何が真か",
-      "Today_Is_Another_Peaceful_Day": "4* 今日も平和な一日",
-      "Nowhere_to_Run": "4* 逃げ場なし",
-      "Carve_the_Moon_Weave_the_Clouds": "4* 彫月裁雲の意",
-      "Return_to_Darkness": "4* 幽冥に帰す",
-      "This_Is_Me": "4* これがウチだよ！",
-      "We_Will_Meet_Again": "4* またお会いしましょう",
-      "Warmth_Shortens_Cold_Nights": "4* 暖かい夜は長くない",
-      "The_Seriousness_of_Breakfast": "4* 朝食の儀式感",
-      "Woof_Walk_Time": "4* ワン！散歩の時間！",
-      "Past_and_Future": "4* 過去と未来",
-      "River_Flows_in_Spring": "4* 春水に初生する",
-      "We_Are_Wildfire": "4* 我ら地炎",
-      "Fermata": "4* フェルマータ",
-      "Quid_Pro_Quo": "4* 等価交換",
-      "Geniuse_Repose": "4* 天才たちの休息",
-      "Under_the_Blue_Sky": "4* 青空の下で",
-      "Dance_Dance_Dance": "4* ダンス！ダンス！ダンス！",
-      "Subscribe_for_More": "4* フォローして！",
-      "Trend_of_the_Universal_Market": "4* 星間市場のトレンド",
-      "Resolution_Shines_As_Pearls_of_Sweat": "4* 決意は汗のように輝く",
-      "Perfect_Timing": "4* 今が丁度",
-      "Make_the_World_Clamor": "4* この世界に喧噪を",
-      "A_Secret_Vow": "4* 秘密の誓い",
-      "Planetary_Rendezvous": "4* 惑星との出会い",
-      "Swordplay": "4* 論剣",
-      "Landau_Choice": "4* ランドゥーの選択",
-      "Eyes_of_the_Prey": "4* 獲物の視線",
-      "Shared_Feeling": "4* 同じ気持ち",
-      "The_Birth_of_the_Self": "4* 「私」の誕生",
-      "The_Moles_Welcome_You": "4* モグラ党へようこそ",
-      "Memories_of_the_Past": "4* 記憶の中の姿",
-      "Only_Silence_Remains": "4* 沈黙のみ",
-      "Day_One_of_My_New_Life": "4* 余生の初日",
-      "Good_Night_and_Sleep_Well": "4* おやすみなさいと寝顔",
-      "Post_Op_Conversation": "4* 手術後の会話",
-      "Reminiscence": "3* 辿る記憶",
-      "Shadowburn": "3* 燃ゆる影",
-      "Sagacity": "3* 見識",
-      "Mediation": "3* 同調",
-      "Hidden_Shadow": "3* 匿影",
-      "Pioneering": "3* 新天地",
-      "Mutual_Demise": "3* 倶歿",
-      "Multiplication": "3* 蕃殖",
-      "Adversarial": "3* 相抗",
-      "Passkey": "3* 霊鍵",
-      "Meshing_Cogs": "3* 輪契",
-      "Loop": "3* 淵環",
-      "Defense": "3* 防衛",
-      "Shattered_Home": "3* 楽壊",
-      "Fine_Fruit": "3* 嘉果",
-      "Darting_Arrow": "3* 離弦",
-      "Data_Bank": "3* アーカイブ",
-      "Chorus": "3* 斉頌",
-      "Void": "3* 幽邃",
-      "Amber": "3* 琥珀",
-      "Collapsing_Sky": "3* 天傾",
-      "Cornucopia": "3* 物穣",
-      "Arrows": "3* 矢じり"
-    },
-    "Relic": {
-      "name": "PlannerTarget.Relic.name",
-      "help": "PlannerTarget.Relic.help",
-      "_none_": "_none_",
-      "Cavern_of_Corrosion_Path_of_Hidden_Salvation": "遺器：救世主 & 隠者（隠救の路）",
-      "Cavern_of_Corrosion_Path_of_Thundersurge": "遺器：烈陽 & 船長（雷滾の路）",
-      "Cavern_of_Corrosion_Path_of_Aria": "遺器：英雄 & 詩人（弦歌の路）",
-      "Cavern_of_Corrosion_Path_of_Uncertainty": "遺器：司祭 & 学者（迷識の路）",
-      "Cavern_of_Corrosion_Path_of_Cavalier": "遺器：鉄騎 & 勇烈（勇騎の路）",
-      "Cavern_of_Corrosion_Path_of_Dreamdive": "遺器：死水 & 時計屋（夢潜の路）",
-      "Cavern_of_Corrosion_Path_of_Darkness": "遺器：大公 & DoT set（幽冥の路）",
-      "Cavern_of_Corrosion_Path_of_Elixir_Seekers": "遺器：蒔者 & メッセンジャー（薬使の路）",
-      "Cavern_of_Corrosion_Path_of_Conflagration": "遺器：炎套 & 虛數套（野焔の路）",
-      "Cavern_of_Corrosion_Path_of_Holy_Hymn": "遺器：防禦套 & 雷套（聖頌の路）",
-      "Cavern_of_Corrosion_Path_of_Providence": "遺器：兵士 & 量子套（睿治の路）",
-      "Cavern_of_Corrosion_Path_of_Drifting": "遺器：治療套 & ガンマン（漂泊の路）",
-      "Cavern_of_Corrosion_Path_of_Jabbing_Punch": "遺器：物理套 & 怪盗（迅拳の路）",
-      "Cavern_of_Corrosion_Path_of_Gelid_Wind": "遺器：氷套 & 風套（霜風の路）"
-    },
-    "Ornament": {
-      "name": "PlannerTarget.Ornament.name",
-      "help": "PlannerTarget.Ornament.help",
-      "_none_": "_none_",
-      "Divergent_Universe_Within_the_West_Wind": "飾品：オンパロス & 天国（西風の中で）",
-      "Divergent_Universe_Moonlit_Blood": "飾品：妖精 & 酩酊（月下朱殷）",
-      "Divergent_Universe_Unceasing_Strife": "飾品：拾骨地 & 巨樹（絶えぬ紛争）",
-      "Divergent_Universe_Famished_Worker": "飾品：海に沈 & 奇想（飢えた虫卒）",
-      "Divergent_Universe_Eternal_Comedy": "飾品：奔狼 & 蓮灯（永遠の喜劇）",
-      "Divergent_Universe_To_Sweet_Dreams": "飾品：ツガンニヤ & 出雲（寄り添い眠る）",
-      "Divergent_Universe_Pouring_Blades": "飾品：蒼穹 & ピノコニー（剣の雨）",
-      "Divergent_Universe_Fruit_of_Evil": "飾品：星々 & 竜骨（渦巻く罪）",
-      "Divergent_Universe_Permafrost": "飾品：ベロブルグ & ったサルソット（永久凍土）",
-      "Divergent_Universe_Gentle_Words": "飾品：商事会社 & 階差機関（優しい言葉）",
-      "Divergent_Universe_Smelted_Heart": "飾品：盗賊 & ウェンワーク（鋼の意志）",
-      "Divergent_Universe_Untoppled_Walls": "飾品：宇宙 & 仙舟（不動の砦）"
-    },
-    "LevelTarget": {
-      "name": "PlannerTarget.LevelTarget.name",
-      "help": "PlannerTarget.LevelTarget.help",
-      "max": "max",
-      "699": "699",
-      "custom": "custom"
-    },
-    "CharacterLevel": {
-      "name": "PlannerTarget.CharacterLevel.name",
-      "help": "PlannerTarget.CharacterLevel.help",
-      "80": "80",
-      "70": "70",
-      "60": "60",
-      "50": "50",
-      "40": "40",
-      "20": "20"
-    },
-    "ConeLevel": {
-      "name": "PlannerTarget.ConeLevel.name",
-      "help": "PlannerTarget.ConeLevel.help",
-      "80": "80",
-      "70": "70",
-      "60": "60",
-      "50": "50",
-      "40": "40",
-      "20": "20"
-    },
-    "AttackLevel": {
-      "name": "PlannerTarget.AttackLevel.name",
-      "help": "PlannerTarget.AttackLevel.help",
-      "6": "6",
-      "5": "5",
-      "4": "4",
-      "3": "3",
-      "2": "2",
-      "1": "1"
-    },
-    "SkillLevel": {
-      "name": "PlannerTarget.SkillLevel.name",
-      "help": "PlannerTarget.SkillLevel.help",
-      "10": "10",
-      "9": "9",
-      "8": "8",
-      "7": "7",
-      "6": "6",
-      "5": "5",
-      "4": "4",
-      "3": "3",
-      "2": "2",
-      "1": "1"
-    },
-    "UltimateLevel": {
-      "name": "PlannerTarget.UltimateLevel.name",
-      "help": "PlannerTarget.UltimateLevel.help",
-      "10": "10",
-      "9": "9",
-      "8": "8",
-      "7": "7",
-      "6": "6",
-      "5": "5",
-      "4": "4",
-      "3": "3",
-      "2": "2",
-      "1": "1"
-    },
-    "TalentLevel": {
-      "name": "PlannerTarget.TalentLevel.name",
-      "help": "PlannerTarget.TalentLevel.help",
-      "10": "10",
-      "9": "9",
-      "8": "8",
-      "7": "7",
-      "6": "6",
-      "5": "5",
-      "4": "4",
-      "3": "3",
-      "2": "2",
-      "1": "1"
-    },
-    "MemoSkillLevel": {
-      "name": "PlannerTarget.MemoSkillLevel.name",
-      "help": "PlannerTarget.MemoSkillLevel.help",
-      "6": "6",
-      "5": "5",
-      "4": "4",
-      "3": "3",
-      "2": "2",
-      "1": "1"
-    },
-    "MemoTalentLevel": {
-      "name": "PlannerTarget.MemoTalentLevel.name",
-      "help": "PlannerTarget.MemoTalentLevel.help",
-      "6": "6",
-      "5": "5",
-      "4": "4",
-      "3": "3",
-      "2": "2",
-      "1": "1"
-    }
-  },
-  "Gacha": {
-    "_info": {
-      "name": "召喚設定",
-      "help": ""
-    },
-    "CollectGoldenInheritance": {
-      "name": "金色継承石を回収",
-      "help": "召喚終了後、金色継承石が満杯なら自動で回収します。"
+      "name": "タスクキューが空のとき",
+      "help": "無タスク時にゲームを閉じると、待機中の CPU 使用率を下げられます。",
+      "stay_there": "その場で待機",
+      "goto_main": "ホームに戻る",
+      "close_game": "ゲームを閉じる",
+      "close_emulator": "エミュレータを閉じる"
     }
   },
   "MissionReward": {
@@ -1269,40 +249,25 @@
   "Mail": {
     "_info": {
       "name": "期限間近メール設定",
-      "help": "残り時間の昇順でメールを並べ、期限切れが近いメールを受け取ります。"
+      "help": "表示上の残り時間が短い順でメールを並べ、期限切れが近いメールを受け取ります。ゲーム内表示は時間や日数を切り捨てるため、1時間/1日 の閾値は実際には約 2時間/2日 に相当します。"
     },
     "CollectWithin": {
-      "name": "残り何以内のメールを受け取る",
-      "help": "",
-      "1h": "1時間以内",
-      "1d": "1日以内"
+      "name": "表示残り時間がどこまでのメールを受け取るか",
+      "help": "判定はゲーム内の残り時間表示ベースです。表示上の 1時間以内 は実際には約 2時間以内、1日以内 は約 2日以内に相当します。",
+      "1h": "表示1時間以内（実際は約2時間以内）",
+      "1d": "表示1日以内（実際は約2日以内）"
     },
     "LastCheckAt": {
       "name": "前回確認時刻",
-      "help": ""
+      "help": "前回メール確認を行った時刻です。内部スケジューリングに使用します。"
     },
     "LastRemainingText": {
       "name": "前回の先頭残り時間テキスト",
-      "help": ""
+      "help": "前回確認時の先頭メール残り時間テキストです。内部比較に使用します。"
     },
     "LastRemainingSince": {
       "name": "同一残り時間ラベル開始時刻",
-      "help": ""
-    }
-  },
-  "SanctuaryMonthly": {
-    "_info": {
-      "name": "聖域-マンスリー設定",
-      "help": "聖域マンスリーモジュールの設定。"
-    },
-    "RewardTier": {
-      "name": "保管品質",
-      "help": "",
-      "A": "A以上",
-      "B": "B以上",
-      "S": "S以上",
-      "MaxMinus1": "現在の最高ランク-1",
-      "MaxMinus2": "現在の最高ランク-2（下限B）"
+      "help": "同じ残り時間表示が継続している開始時刻です。内部判定に使用します。"
     }
   },
   "Knights": {
@@ -1314,105 +279,47 @@
       "name": "出席報酬を受取",
       "help": "ギルドホームで出席報酬を自動受取します。"
     },
-    "WeeklyTask": {
-      "name": "ギルド週次報酬",
-      "help": "ギルド週次ページで受け取り可能な週次報酬とポイント報酬を受け取ります。"
-    },
-    "Donate": {
-      "name": "ギルド寄付",
-      "help": "ギルド寄付ページで寄付可能なボタンを、なくなるまで順に押します。"
-    },
     "Support": {
       "name": "ギルド支援",
       "help": "支援ページで寄付と要請を設定に従って実行します。"
     },
-    "DonateLowerLevelFairyFlower": {
+    "SupportLowerLevelFairyFlower": {
       "name": "下級精霊の花を寄付",
       "help": "ギルド支援で下級精霊の花を他メンバーに寄付します。"
     },
-    "DonateBeginnerPenguin": {
+    "SupportBeginnerPenguin": {
       "name": "初級ペンギンを寄付",
       "help": "ギルド支援で初級ペンギンを他メンバーに寄付します。"
     },
-    "Expedition": {
-      "name": "ギルド遠征",
-      "help": "遠征画面に入り、有効化されたサブ機能を実行します。"
+    "RequestItem": {
+      "name": "支援リクエスト素材",
+      "help": "ギルド支援でリクエストする素材を1つ選択します。",
+      "LowerLevelFairyFlower": "下級精霊の花",
+      "BeginnerPenguin": "初級ペンギン"
     },
-    "TeamBattle": {
-      "name": "ギルド戦",
-      "help": "ギルド戦ページに入り、精算ポップアップを処理して現在の攻撃回数を読み取ります。"
+    "WeeklyTask": {
+      "name": "ギルド週次報酬",
+      "help": "ギルド週次ページで受け取り可能な週次報酬とポイント報酬を受け取ります。"
     },
     "WorldBoss": {
       "name": "ワールドボス",
       "help": "ワールドボス基本フローを実行し、回数切れで戻ります。"
-    },
-    "RequestItem": {
-      "name": "支援リクエスト素材",
-      "help": "ギルド支援でリクエストする素材を1つ選択します。",
-      "LowerLevelFairyFlower": "下級精霊の花",
-      "BeginnerPenguin": "初級ペンギン"
     }
   },
-  "KnightsBasic": {
+  "KnightsTeamBattle": {
     "_info": {
-      "name": "ギルド-基本",
-      "help": "ギルド基本機能の設定。"
-    },
-    "ClaimSigninRateReward": {
-      "name": "出席報酬を受取",
-      "help": "ギルドホームで出席報酬を自動受取します。"
-    },
-    "WeeklyTask": {
-      "name": "ギルド週次報酬",
-      "help": "ギルド週次ページで受け取り可能な週次報酬とポイント報酬を受け取ります。"
-    }
-  },
-  "KnightsDonate": {
-    "_info": {
-      "name": "ギルド-寄付と支援",
-      "help": "寄付と支援関連の設定。"
-    },
-    "Donate": {
-      "name": "ギルド寄付",
-      "help": "ギルド寄付ページで寄付可能なボタンを、なくなるまで順に押します。"
-    },
-    "Support": {
-      "name": "ギルド支援",
-      "help": "支援ページで寄付と要請を設定に従って実行します。"
-    },
-    "RequestItem": {
-      "name": "支援リクエスト素材",
-      "help": "ギルド支援でリクエストする素材を1つ選択します。",
-      "LowerLevelFairyFlower": "下級精霊の花",
-      "BeginnerPenguin": "初級ペンギン"
-    },
-    "DonateLowerLevelFairyFlower": {
-      "name": "下級精霊の花を寄付",
-      "help": "ギルド支援で下級精霊の花を他メンバーに寄付します。"
-    },
-    "DonateBeginnerPenguin": {
-      "name": "初級ペンギンを寄付",
-      "help": "ギルド支援で初級ペンギンを他メンバーに寄付します。"
-    }
-  },
-  "KnightsExpedition": {
-    "_info": {
-      "name": "ギルド-遠征とワールドボス",
-      "help": "遠征、ギルド戦、ワールドボス関連設定。"
-    },
-    "Expedition": {
-      "name": "ギルド遠征",
-      "help": "遠征画面に入り、有効化されたサブ機能を実行します。"
+      "name": "ギルド戦",
+      "help": "ギルド戦関連設定。"
     },
     "TeamBattle": {
-      "name": "ギルド戦",
+      "name": "未使用の攻撃回数を読み取る",
       "help": "ギルド戦ページに入り、精算ポップアップを処理して現在の攻撃回数を読み取ります。"
     },
-    "TeamBattleReminder": {
+    "Reminder": {
       "name": "ギルド戦リマインダーを有効化",
-      "help": "ギルド戦開催中、終了前になっても未使用の攻撃回数が残っていれば通知します。"
+      "help": "ギルド戦開催中、終了前になっても未使用の攻撃回数が残っていれば通知でリマインドします。"
     },
-    "TeamBattleReminderLeadMinutes": {
+    "ReminderLeadMinutes": {
       "name": "終了前リマインダー時間",
       "help": "ギルド戦終了の何分前から未使用攻撃回数を確認するかを設定します。",
       "30": "30 分前",
@@ -1420,13 +327,9 @@
       "120": "120 分前",
       "180": "180 分前"
     },
-    "TeamBattleReminderLastEnd": {
+    "ReminderLastEnd": {
       "name": "前回通知したギルド戦終了時刻",
       "help": "ギルド戦リマインダーの内部重複防止状態です。"
-    },
-    "WorldBoss": {
-      "name": "ワールドボス",
-      "help": "ワールドボス基本フローを実行し、回数切れで戻ります。"
     }
   },
   "Arena": {
@@ -1457,93 +360,6 @@
     "NPCCombatCount": {
       "name": "NPC戦回数",
       "help": "この実行で行うNPC戦の最大回数。"
-    }
-  },
-  "Combat": {
-    "_info": {
-      "name": "デイリー副本設定",
-      "help": "戦闘モード、種類、属性、難易度を設定します。"
-    },
-    "Mode": {
-      "name": "モード",
-      "help": "回数指定のタスクモードと長時間放置のイベントモードを選択します。",
-      "Task": "タスクモード",
-      "Event": "イベントモード"
-    },
-    "Domain": {
-      "name": "副本種類",
-      "help": "今回周回するのが討伐か精霊祭壇かを選択します。",
-      "Hunt": "討伐",
-      "SpiritAltar": "精霊祭壇"
-    },
-    "Element": {
-      "name": "属性",
-      "help": "進入する副本の属性を選択します。",
-      "Dark": "闇",
-      "Light": "光",
-      "Water": "水",
-      "Fire": "火",
-      "Nature": "木"
-    },
-    "AltarGrade": {
-      "name": "祭壇難易度",
-      "help": "精霊祭壇で使用する難易度です。",
-      "Pri": "初級",
-      "Mid": "中級",
-      "High": "上級",
-      "Hell": "地獄"
-    },
-    "HuntGrade": {
-      "name": "討伐難易度",
-      "help": "討伐で使用する難易度です。",
-      "Mid": "中級",
-      "High": "上級",
-      "Hell": "地獄",
-      "Dimensional": "異界"
-    },
-    "FastCombat": {
-      "name": "高速戦闘を使用",
-      "help": "有効時は高速戦闘を優先します。無効時はペット委任の連続戦闘を開始し、主画面へ最小化します。"
-    },
-    "FastCombatCount": {
-      "name": "高速戦闘回数",
-      "help": "高速戦闘の目標回数です。"
-    },
-    "RepeatCombatCount": {
-      "name": "反復戦闘回数",
-      "help": "ペット委任の反復戦闘の目標回数です。"
-    }
-  },
-  "CombatRuntime": {
-    "_info": {
-      "name": "CombatRuntime._info.name",
-      "help": "CombatRuntime._info.help"
-    },
-    "Session": {
-      "name": "CombatRuntime.Session.name",
-      "help": "CombatRuntime.Session.help"
-    }
-  },
-  "SecretShop": {
-    "_info": {
-      "name": "秘密商店設定",
-      "help": ""
-    },
-    "OnlyFree": {
-      "name": "無料のみ",
-      "help": "更新しない"
-    },
-    "MaxRefresh": {
-      "name": "最大更新回数",
-      "help": ""
-    },
-    "BuyCovenantBookmark": {
-      "name": "聖約の栞を購入",
-      "help": ""
-    },
-    "BuyMysticMedal": {
-      "name": "神秘メダルを購入",
-      "help": ""
     }
   },
   "StoreDaily": {
@@ -1614,514 +430,174 @@
       "help": "次回のペットギフト受取可能時刻を推定するために使います。"
     }
   },
-  "Weekly": {
+  "Combat": {
     "_info": {
-      "name": "Weekly._info.name",
-      "help": "Weekly._info.help"
+      "name": "デイリー副本設定",
+      "help": "戦闘モード、種類、属性、難易度を設定します。"
     },
-    "Name": {
-      "name": "Weekly.Name.name",
-      "help": "Weekly.Name.help",
-      "Echo_of_War_Rusted_Crypt_of_the_Iron_Carcass": "鉄骸の錆び塚 (オンパロス)",
-      "Echo_of_War_Glance_of_Twilight": "晨昏の回顧 (オンパロス)",
-      "Echo_of_War_Inner_Beast_Battlefield": "心獣の戦場 (仙舟「羅浮」)",
-      "Echo_of_War_Salutations_of_Ashen_Dreams": "現世の夢の礼賛 (ピノコニー)",
-      "Echo_of_War_Borehole_Planet_Past_Nightmares": "星を蝕む往日の悪夢 (宇宙ステーション「ヘルタ」)",
-      "Echo_of_War_Divine_Seed": "不死の神実 (仙舟「羅浮」)",
-      "Echo_of_War_End_of_the_Eternal_Freeze": "寒波の幕切れ (ヤリーロ-VI)",
-      "Echo_of_War_Destruction_Beginning": "壊滅の始まり (宇宙ステーション「ヘルタ」)"
+    "Mode": {
+      "name": "モード",
+      "help": "回数指定のタスクモードと長時間放置のイベントモードを選択します。",
+      "Task": "タスクモード",
+      "Event": "イベントモード"
     },
-    "Team": {
-      "name": "Weekly.Team.name",
-      "help": "Weekly.Team.help",
-      "1": "1",
-      "2": "2",
-      "3": "3",
-      "4": "4",
-      "5": "5",
-      "6": "6",
-      "7": "7",
-      "8": "8",
-      "9": "9"
+    "Domain": {
+      "name": "副本種類",
+      "help": "今回周回するのが討伐か精霊祭壇かを選択します。",
+      "Hunt": "討伐",
+      "SpiritAltar": "精霊祭壇"
+    },
+    "Element": {
+      "name": "属性",
+      "help": "進入する副本の属性を選択します。",
+      "Dark": "闇",
+      "Light": "光",
+      "Water": "水",
+      "Fire": "火",
+      "Nature": "木"
+    },
+    "AltarGrade": {
+      "name": "祭壇難易度",
+      "help": "精霊祭壇で使用する難易度です。",
+      "Pri": "初級",
+      "Mid": "中級",
+      "High": "上級",
+      "Hell": "地獄"
+    },
+    "HuntGrade": {
+      "name": "討伐難易度",
+      "help": "討伐で使用する難易度です。",
+      "Mid": "中級",
+      "High": "上級",
+      "Hell": "地獄",
+      "Dimensional": "異界"
+    },
+    "FastCombat": {
+      "name": "高速戦闘を使用",
+      "help": "有効時は高速戦闘を優先します。無効時はペット委任の連続戦闘を開始し、主画面へ最小化します。"
+    },
+    "FastCombatCount": {
+      "name": "高速戦闘回数",
+      "help": "高速戦闘の目標回数です。"
+    },
+    "RepeatCombatCount": {
+      "name": "反復戦闘回数",
+      "help": "ペット委任の反復戦闘の目標回数です。"
     }
   },
-  "DailyStorage": {
+  "CombatRuntime": {
     "_info": {
-      "name": "DailyStorage._info.name",
-      "help": "DailyStorage._info.help"
+      "name": "戦闘ランタイム",
+      "help": "戦闘タスクの内部実行状態。再開と状態同期に使用します。"
+    },
+    "Session": {
+      "name": "ランタイムセッション",
+      "help": "内部セッション識別子です。手動変更は非推奨です。"
+    }
+  },
+  "SecretShop": {
+    "_info": {
+      "name": "秘密商店設定",
+      "help": "秘密商店の更新回数と購入対象を設定します。"
+    },
+    "OnlyFree": {
+      "name": "無料のみ",
+      "help": "更新しない"
+    },
+    "MaxRefresh": {
+      "name": "最大更新回数",
+      "help": "この実行で行う最大更新回数です。無料更新のみなら使用しません。"
+    },
+    "BuyCovenantBookmark": {
+      "name": "聖約の栞を購入",
+      "help": "聖約の栞を検出した場合に自動購入します。"
+    },
+    "BuyMysticMedal": {
+      "name": "神秘メダルを購入",
+      "help": "神秘メダルを検出した場合に自動購入します。"
+    }
+  },
+  "Gacha": {
+    "_info": {
+      "name": "召喚設定",
+      "help": "召喚関連の補助動作を設定します。"
+    },
+    "CollectGoldenInheritance": {
+      "name": "金色継承石を回収",
+      "help": "召喚終了後、金色継承石が満杯なら自動で回収します。"
+    }
+  },
+  "Dashboard": {
+    "_info": {
+      "name": "ダッシュボード",
+      "help": "ダッシュボードに表示する取得済みゲームデータです。"
+    },
+    "Gold": {
+      "name": "ゴールド",
+      "help": "現在のゴールド所持数です。"
+    },
+    "Skystone": {
+      "name": "天空石",
+      "help": "現在の天空石所持数です。"
+    },
+    "Stamina": {
+      "name": "行動力",
+      "help": "現在の行動力です。"
+    },
+    "EquipmentInventory": {
+      "name": "装備所持数",
+      "help": "現在の装備所持数と上限です。"
     },
     "DailyActivity": {
-      "name": "DailyStorage.DailyActivity.name",
-      "help": "DailyStorage.DailyActivity.help"
+      "name": "デイリー活動",
+      "help": "現在のデイリー活動ポイントです。"
     },
-    "DailyQuest": {
-      "name": "DailyStorage.DailyQuest.name",
-      "help": "DailyStorage.DailyQuest.help"
-    }
-  },
-  "BattlePassStorage": {
-    "_info": {
-      "name": "BattlePassStorage._info.name",
-      "help": "BattlePassStorage._info.help"
+    "WeeklyActivity": {
+      "name": "ウィークリー活動",
+      "help": "現在のウィークリー活動ポイントです。"
     },
-    "BattlePassLevel": {
-      "name": "BattlePassStorage.BattlePassLevel.name",
-      "help": "BattlePassStorage.BattlePassLevel.help"
-    },
-    "BattlePassWeeklyQuest": {
-      "name": "BattlePassStorage.BattlePassWeeklyQuest.name",
-      "help": "BattlePassStorage.BattlePassWeeklyQuest.help"
-    },
-    "BattlePassSimulatedUniverse": {
-      "name": "BattlePassStorage.BattlePassSimulatedUniverse.name",
-      "help": "BattlePassStorage.BattlePassSimulatedUniverse.help"
-    },
-    "BattlePassQuestCalyx": {
-      "name": "BattlePassStorage.BattlePassQuestCalyx.name",
-      "help": "BattlePassStorage.BattlePassQuestCalyx.help"
-    },
-    "BattlePassQuestEchoOfWar": {
-      "name": "BattlePassStorage.BattlePassQuestEchoOfWar.name",
-      "help": "BattlePassStorage.BattlePassQuestEchoOfWar.help"
-    },
-    "BattlePassQuestCredits": {
-      "name": "BattlePassStorage.BattlePassQuestCredits.name",
-      "help": "BattlePassStorage.BattlePassQuestCredits.help"
-    },
-    "BattlePassQuestSynthesizeConsumables": {
-      "name": "BattlePassStorage.BattlePassQuestSynthesizeConsumables.name",
-      "help": "BattlePassStorage.BattlePassQuestSynthesizeConsumables.help"
-    },
-    "BattlePassQuestStagnantShadow": {
-      "name": "BattlePassStorage.BattlePassQuestStagnantShadow.name",
-      "help": "BattlePassStorage.BattlePassQuestStagnantShadow.help"
-    },
-    "BattlePassQuestCavernOfCorrosion": {
-      "name": "BattlePassStorage.BattlePassQuestCavernOfCorrosion.name",
-      "help": "BattlePassStorage.BattlePassQuestCavernOfCorrosion.help"
-    },
-    "BattlePassQuestTrailblazePower": {
-      "name": "BattlePassStorage.BattlePassQuestTrailblazePower.name",
-      "help": "BattlePassStorage.BattlePassQuestTrailblazePower.help"
-    }
-  },
-  "Assignment": {
-    "_info": {
-      "name": "依頼設定",
-      "help": ""
-    },
-    "ClaimAll": {
-      "name": "Assignment.ClaimAll.name",
-      "help": "Assignment.ClaimAll.help"
-    },
-    "Name_1": {
-      "name": "依頼 1",
-      "help": "",
-      "Tranquility_of_Vimala_bhumi": "思考の粉末（離垢清浄）",
-      "A_Startling_Night_Terror": "ドリームコレクションパーツ（魂震える悪夢）",
-      "Fire_Lord_Inflames_Blades_of_War": "工造機関（剣戟を焼却する火帝炉）",
-      "Root_Out_the_Turpitude": "永寿の萌芽（悪孽を根絶やしに）",
-      "Born_to_Obey": "古代パーツ（生まれながらに服従する）",
-      "Winter_Soldiers": "シルバーメインの釦（寒冬の戦士たち）",
-      "Destruction_of_the_Destroyer": "略奪の本能（壊滅者の覆没）",
-      "Nine_Billion_Names": "消滅した原核（九十億の御名）",
-      "Akashic_Records": "光円錐経験値素材（アーカーシャの記録）",
-      "Nameless_Land_Nameless_People": "キャラクター経験値素材（無名の地、無名の人）",
-      "The_Invisible_Hand": "信用ポイント（見えざる手）",
-      "Scalpel_and_Screwdriver": "錆びた歯車 & 古びた大臼歯（メスとスクリュードライバー）",
-      "The_Wages_of_Humanity": "一人稲 & 薬草抽出物（人類扶養）",
-      "Legend_of_the_Puppet_Master": "廃棄された機巧部品 & 玉兆単元（傀儡師伝説）",
-      "The_Land_of_Gold": "基本食材 & タンパク米（黄金の大地）",
-      "Spring_of_Life": "固形純水 & 仮想粒子（生命の泉）",
-      "Fragments_of_Illusory_Dreams": "安逸 & 砕けた夢（幻夢の残片）",
-      "The_Blossom_in_the_Storm": "気態流体 & 種子（嵐の中で咲き誇る花）",
-      "Abandoned_and_Insulted": "燃素 & 金属（捨てられしものと傷つけられしもの）",
-      "Record_of_Expeditions": "恐怖は血肉を踏み潰す（遠征記）",
-      "Creationism_and_Beyond": "あるようでない予兆（造物論およびその他）",
-      "Work_and_Days": "鮮やかな残羽 & 思惟の枝（仕事と日々）"
-    },
-    "Name_2": {
-      "name": "依頼 2",
-      "help": "",
-      "Tranquility_of_Vimala_bhumi": "思考の粉末（離垢清浄）",
-      "A_Startling_Night_Terror": "ドリームコレクションパーツ（魂震える悪夢）",
-      "Fire_Lord_Inflames_Blades_of_War": "工造機関（剣戟を焼却する火帝炉）",
-      "Root_Out_the_Turpitude": "永寿の萌芽（悪孽を根絶やしに）",
-      "Born_to_Obey": "古代パーツ（生まれながらに服従する）",
-      "Winter_Soldiers": "シルバーメインの釦（寒冬の戦士たち）",
-      "Destruction_of_the_Destroyer": "略奪の本能（壊滅者の覆没）",
-      "Nine_Billion_Names": "消滅した原核（九十億の御名）",
-      "Akashic_Records": "光円錐経験値素材（アーカーシャの記録）",
-      "Nameless_Land_Nameless_People": "キャラクター経験値素材（無名の地、無名の人）",
-      "The_Invisible_Hand": "信用ポイント（見えざる手）",
-      "Scalpel_and_Screwdriver": "錆びた歯車 & 古びた大臼歯（メスとスクリュードライバー）",
-      "The_Wages_of_Humanity": "一人稲 & 薬草抽出物（人類扶養）",
-      "Legend_of_the_Puppet_Master": "廃棄された機巧部品 & 玉兆単元（傀儡師伝説）",
-      "The_Land_of_Gold": "基本食材 & タンパク米（黄金の大地）",
-      "Spring_of_Life": "固形純水 & 仮想粒子（生命の泉）",
-      "Fragments_of_Illusory_Dreams": "安逸 & 砕けた夢（幻夢の残片）",
-      "The_Blossom_in_the_Storm": "気態流体 & 種子（嵐の中で咲き誇る花）",
-      "Abandoned_and_Insulted": "燃素 & 金属（捨てられしものと傷つけられしもの）",
-      "Record_of_Expeditions": "恐怖は血肉を踏み潰す（遠征記）",
-      "Creationism_and_Beyond": "あるようでない予兆（造物論およびその他）",
-      "Work_and_Days": "鮮やかな残羽 & 思惟の枝（仕事と日々）"
-    },
-    "Name_3": {
-      "name": "依頼 3",
-      "help": "",
-      "Tranquility_of_Vimala_bhumi": "思考の粉末（離垢清浄）",
-      "A_Startling_Night_Terror": "ドリームコレクションパーツ（魂震える悪夢）",
-      "Fire_Lord_Inflames_Blades_of_War": "工造機関（剣戟を焼却する火帝炉）",
-      "Root_Out_the_Turpitude": "永寿の萌芽（悪孽を根絶やしに）",
-      "Born_to_Obey": "古代パーツ（生まれながらに服従する）",
-      "Winter_Soldiers": "シルバーメインの釦（寒冬の戦士たち）",
-      "Destruction_of_the_Destroyer": "略奪の本能（壊滅者の覆没）",
-      "Nine_Billion_Names": "消滅した原核（九十億の御名）",
-      "Akashic_Records": "光円錐経験値素材（アーカーシャの記録）",
-      "Nameless_Land_Nameless_People": "キャラクター経験値素材（無名の地、無名の人）",
-      "The_Invisible_Hand": "信用ポイント（見えざる手）",
-      "Scalpel_and_Screwdriver": "錆びた歯車 & 古びた大臼歯（メスとスクリュードライバー）",
-      "The_Wages_of_Humanity": "一人稲 & 薬草抽出物（人類扶養）",
-      "Legend_of_the_Puppet_Master": "廃棄された機巧部品 & 玉兆単元（傀儡師伝説）",
-      "The_Land_of_Gold": "基本食材 & タンパク米（黄金の大地）",
-      "Spring_of_Life": "固形純水 & 仮想粒子（生命の泉）",
-      "Fragments_of_Illusory_Dreams": "安逸 & 砕けた夢（幻夢の残片）",
-      "The_Blossom_in_the_Storm": "気態流体 & 種子（嵐の中で咲き誇る花）",
-      "Abandoned_and_Insulted": "燃素 & 金属（捨てられしものと傷つけられしもの）",
-      "Record_of_Expeditions": "恐怖は血肉を踏み潰す（遠征記）",
-      "Creationism_and_Beyond": "あるようでない予兆（造物論およびその他）",
-      "Work_and_Days": "鮮やかな残羽 & 思惟の枝（仕事と日々）"
-    },
-    "Name_4": {
-      "name": "依頼 4",
-      "help": "",
-      "Tranquility_of_Vimala_bhumi": "思考の粉末（離垢清浄）",
-      "A_Startling_Night_Terror": "ドリームコレクションパーツ（魂震える悪夢）",
-      "Fire_Lord_Inflames_Blades_of_War": "工造機関（剣戟を焼却する火帝炉）",
-      "Root_Out_the_Turpitude": "永寿の萌芽（悪孽を根絶やしに）",
-      "Born_to_Obey": "古代パーツ（生まれながらに服従する）",
-      "Winter_Soldiers": "シルバーメインの釦（寒冬の戦士たち）",
-      "Destruction_of_the_Destroyer": "略奪の本能（壊滅者の覆没）",
-      "Nine_Billion_Names": "消滅した原核（九十億の御名）",
-      "Akashic_Records": "光円錐経験値素材（アーカーシャの記録）",
-      "Nameless_Land_Nameless_People": "キャラクター経験値素材（無名の地、無名の人）",
-      "The_Invisible_Hand": "信用ポイント（見えざる手）",
-      "Scalpel_and_Screwdriver": "錆びた歯車 & 古びた大臼歯（メスとスクリュードライバー）",
-      "The_Wages_of_Humanity": "一人稲 & 薬草抽出物（人類扶養）",
-      "Legend_of_the_Puppet_Master": "廃棄された機巧部品 & 玉兆単元（傀儡師伝説）",
-      "The_Land_of_Gold": "基本食材 & タンパク米（黄金の大地）",
-      "Spring_of_Life": "固形純水 & 仮想粒子（生命の泉）",
-      "Fragments_of_Illusory_Dreams": "安逸 & 砕けた夢（幻夢の残片）",
-      "The_Blossom_in_the_Storm": "気態流体 & 種子（嵐の中で咲き誇る花）",
-      "Abandoned_and_Insulted": "燃素 & 金属（捨てられしものと傷つけられしもの）",
-      "Record_of_Expeditions": "恐怖は血肉を踏み潰す（遠征記）",
-      "Creationism_and_Beyond": "あるようでない予兆（造物論およびその他）",
-      "Work_and_Days": "鮮やかな残羽 & 思惟の枝（仕事と日々）"
-    },
-    "Duration": {
-      "name": "派遣時間",
-      "help": "",
-      "4": "4",
-      "8": "8",
-      "12": "12",
-      "20": "20"
-    },
-    "Event": {
-      "name": "Assignment.Event.name",
-      "help": ""
-    },
-    "Assignment": {
-      "name": "Assignment.Assignment.name",
-      "help": "Assignment.Assignment.help"
-    }
-  },
-  "ItemStorage": {
-    "_info": {
-      "name": "ItemStorage._info.name",
-      "help": "ItemStorage._info.help"
-    },
-    "Credit": {
-      "name": "ItemStorage.Credit.name",
-      "help": "ItemStorage.Credit.help"
-    },
-    "StallerJade": {
-      "name": "ItemStorage.StallerJade.name",
-      "help": "ItemStorage.StallerJade.help"
-    }
-  },
-  "E7Dashboard": {
-    "_info": {
-      "name": "E7 Dashboard",
-      "help": "Epic Seven overview fields shown on the home dashboard."
-    },
-    "E7Gold": {
-      "name": "Gold",
-      "help": ""
-    },
-    "E7Skystone": {
-      "name": "Skystone",
-      "help": ""
-    },
-    "E7Stamina": {
-      "name": "Stamina",
-      "help": ""
-    },
-    "E7EquipmentInventory": {
-      "name": "装備数",
-      "help": ""
-    },
-    "E7DailyActivity": {
-      "name": "Daily Activity",
-      "help": ""
-    },
-    "E7WeeklyActivity": {
-      "name": "Weekly Activity",
-      "help": ""
-    },
-    "E7ArenaRank": {
+    "ArenaRank": {
       "name": "アリーナ通行証レベル",
-      "help": ""
+      "help": "現在のアリーナ通行証レベルです。"
     },
-    "E7ArenaFlag": {
+    "ArenaFlag": {
       "name": "アリーナ旗",
-      "help": ""
+      "help": "現在のアリーナ旗の所持数です。"
     },
-    "E7ConquestPoint": {
+    "ConquestPoint": {
       "name": "征服ポイント",
-      "help": ""
+      "help": "現在の征服ポイント所持数です。"
     },
-    "E7ShadowCommission": {
+    "ShadowCommission": {
       "name": "暗影情報依頼レベル",
-      "help": ""
+      "help": "現在の暗影情報依頼レベルです。"
     },
-    "E7TeamBattle": {
-      "name": "ギルド戦攻撃回数",
-      "help": ""
+    "TeamBattle": {
+      "name": "ギルド戦残り攻撃回数",
+      "help": "現在のギルド戦残り攻撃回数です。"
     }
   },
-  "CloudStorage": {
+  "SanctuaryMonthly": {
     "_info": {
-      "name": "CloudStorage._info.name",
-      "help": "CloudStorage._info.help"
+      "name": "聖域-マンスリー設定",
+      "help": "聖域マンスリーモジュールの設定。"
     },
-    "CloudRemainSeasonPass": {
-      "name": "CloudStorage.CloudRemainSeasonPass.name",
-      "help": "CloudStorage.CloudRemainSeasonPass.help"
-    },
-    "CloudRemainPaid": {
-      "name": "CloudStorage.CloudRemainPaid.name",
-      "help": "CloudStorage.CloudRemainPaid.help"
-    },
-    "CloudRemainFree": {
-      "name": "CloudStorage.CloudRemainFree.name",
-      "help": "CloudStorage.CloudRemainFree.help"
-    }
-  },
-  "RogueWorld": {
-    "_info": {
-      "name": "RogueWorld._info.name",
-      "help": "RogueWorld._info.help"
-    },
-    "World": {
-      "name": "RogueWorld.World.name",
-      "help": "RogueWorld.World.help",
-      "Simulated_Universe_World_3": "第三世界",
-      "Simulated_Universe_World_4": "第四世界",
-      "Simulated_Universe_World_5": "第五世界",
-      "Simulated_Universe_World_6": "第六世界",
-      "Simulated_Universe_World_8": "第八世界"
-    },
-    "Path": {
-      "name": "RogueWorld.Path.name",
-      "help": "RogueWorld.Path.help",
-      "Preservation": "Preservation",
-      "Remembrance": "Remembrance",
-      "Nihility": "Nihility",
-      "Abundance": "Abundance",
-      "The_Hunt": "The_Hunt",
-      "Destruction": "Destruction",
-      "Elation": "Elation",
-      "Propagation": "Propagation",
-      "Erudition": "Erudition"
-    },
-    "Bonus": {
-      "name": "RogueWorld.Bonus.name",
-      "help": "RogueWorld.Bonus.help",
-      "Blessing Universe": "Blessing Universe",
-      "Miracle Universe": "Miracle Universe",
-      "Fragmented Universe": "Fragmented Universe"
-    },
-    "DomainStrategy": {
-      "name": "RogueWorld.DomainStrategy.name",
-      "help": "RogueWorld.DomainStrategy.help",
-      "combat": "combat",
-      "occurrence": "occurrence"
-    },
-    "UseImmersifier": {
-      "name": "RogueWorld.UseImmersifier.name",
-      "help": "RogueWorld.UseImmersifier.help"
-    },
-    "DoubleEvent": {
-      "name": "RogueWorld.DoubleEvent.name",
-      "help": "RogueWorld.DoubleEvent.help"
-    },
-    "WeeklyFarming": {
-      "name": "RogueWorld.WeeklyFarming.name",
-      "help": "RogueWorld.WeeklyFarming.help"
-    },
-    "UseStamina": {
-      "name": "RogueWorld.UseStamina.name",
-      "help": "RogueWorld.UseStamina.help"
-    },
-    "SimulatedUniverseFarm": {
-      "name": "RogueWorld.SimulatedUniverseFarm.name",
-      "help": "RogueWorld.SimulatedUniverseFarm.help"
-    },
-    "Team": {
-      "name": "RogueWorld.Team.name",
-      "help": "RogueWorld.Team.help"
-    }
-  },
-  "RogueBlessing": {
-    "_info": {
-      "name": "RogueBlessing._info.name",
-      "help": "RogueBlessing._info.help"
-    },
-    "PresetBlessingFilter": {
-      "name": "RogueBlessing.PresetBlessingFilter.name",
-      "help": "RogueBlessing.PresetBlessingFilter.help",
-      "preset": "preset",
-      "custom": "custom"
-    },
-    "CustomBlessingFilter": {
-      "name": "RogueBlessing.CustomBlessingFilter.name",
-      "help": "RogueBlessing.CustomBlessingFilter.help"
-    },
-    "PresetCurioFilter": {
-      "name": "RogueBlessing.PresetCurioFilter.name",
-      "help": "RogueBlessing.PresetCurioFilter.help",
-      "preset": "preset",
-      "custom": "custom"
-    },
-    "CustomCurioFilter": {
-      "name": "RogueBlessing.CustomCurioFilter.name",
-      "help": "RogueBlessing.CustomCurioFilter.help"
-    },
-    "PresetResonanceFilter": {
-      "name": "RogueBlessing.PresetResonanceFilter.name",
-      "help": "RogueBlessing.PresetResonanceFilter.help",
-      "preset": "preset",
-      "custom": "custom"
-    },
-    "CustomResonanceFilter": {
-      "name": "RogueBlessing.CustomResonanceFilter.name",
-      "help": "RogueBlessing.CustomResonanceFilter.help"
-    },
-    "SelectionStrategy": {
-      "name": "RogueBlessing.SelectionStrategy.name",
-      "help": "RogueBlessing.SelectionStrategy.help",
-      "follow-presets": "follow-presets",
-      "unrecorded-first": "unrecorded-first",
-      "before-random": "before-random"
-    }
-  },
-  "RogueDebug": {
-    "_info": {
-      "name": "RogueDebug._info.name",
-      "help": "RogueDebug._info.help"
-    },
-    "DebugMode": {
-      "name": "RogueDebug.DebugMode.name",
-      "help": "RogueDebug.DebugMode.help"
-    }
-  },
-  "Ornament": {
-    "_info": {
-      "name": "Ornament._info.name",
-      "help": "Ornament._info.help"
-    },
-    "Dungeon": {
-      "name": "Ornament.Dungeon.name",
-      "help": "Ornament.Dungeon.help",
-      "Divergent_Universe_Within_the_West_Wind": "飾品：オンパロス & 天国（西風の中で）",
-      "Divergent_Universe_Moonlit_Blood": "飾品：妖精 & 酩酊（月下朱殷）",
-      "Divergent_Universe_Unceasing_Strife": "飾品：拾骨地 & 巨樹（絶えぬ紛争）",
-      "Divergent_Universe_Famished_Worker": "飾品：海に沈 & 奇想（飢えた虫卒）",
-      "Divergent_Universe_Eternal_Comedy": "飾品：奔狼 & 蓮灯（永遠の喜劇）",
-      "Divergent_Universe_To_Sweet_Dreams": "飾品：ツガンニヤ & 出雲（寄り添い眠る）",
-      "Divergent_Universe_Pouring_Blades": "飾品：蒼穹 & ピノコニー（剣の雨）",
-      "Divergent_Universe_Fruit_of_Evil": "飾品：星々 & 竜骨（渦巻く罪）",
-      "Divergent_Universe_Permafrost": "飾品：ベロブルグ & ったサルソット（永久凍土）",
-      "Divergent_Universe_Gentle_Words": "飾品：商事会社 & 階差機関（優しい言葉）",
-      "Divergent_Universe_Smelted_Heart": "飾品：盗賊 & ウェンワーク（鋼の意志）",
-      "Divergent_Universe_Untoppled_Walls": "飾品：宇宙 & 仙舟（不動の砦）"
-    },
-    "Team": {
-      "name": "Ornament.Team.name",
-      "help": "Ornament.Team.help",
-      "1": "1",
-      "2": "2",
-      "3": "3",
-      "4": "4",
-      "5": "5",
-      "6": "6",
-      "7": "7",
-      "8": "8",
-      "9": "9",
-      "10": "10",
-      "11": "11",
-      "12": "12"
-    },
-    "UseImmersifier": {
-      "name": "Ornament.UseImmersifier.name",
-      "help": "Ornament.UseImmersifier.help",
-      "True": "True"
-    },
-    "DoubleEvent": {
-      "name": "Ornament.DoubleEvent.name",
-      "help": "Ornament.DoubleEvent.help",
-      "True": "True"
-    },
-    "UseStamina": {
-      "name": "Ornament.UseStamina.name",
-      "help": "Ornament.UseStamina.help"
-    }
-  },
-  "Daemon": {
-    "_info": {
-      "name": "Daemon._info.name",
-      "help": "Daemon._info.help"
-    },
-    "Enable": {
-      "name": "Daemon.Enable.name",
-      "help": "Daemon.Enable.help",
-      "True": "True"
-    },
-    "AimClicker": {
-      "name": "Daemon.AimClicker.name",
-      "help": "Daemon.AimClicker.help",
-      "item_enemy": "item_enemy",
-      "item": "item",
-      "enemy": "enemy",
-      "do_not_click": "do_not_click"
-    }
-  },
-  "PlannerScan": {
-    "_info": {
-      "name": "PlannerScan._info.name",
-      "help": "PlannerScan._info.help"
-    },
-    "ResultAdd": {
-      "name": "PlannerScan.ResultAdd.name",
-      "help": "PlannerScan.ResultAdd.help"
+    "RewardTier": {
+      "name": "保管品質",
+      "help": "受け取る報酬の最低品質を選択します。",
+      "A": "A以上",
+      "B": "B以上",
+      "S": "S以上",
+      "MaxMinus1": "現在の最高ランク-1",
+      "MaxMinus2": "現在の最高ランク-2（下限B）"
     }
   },
   "Gui": {
     "Aside": {
       "Install": "インストール",
-      "Home": "Gui.Aside.Home",
+      "Home": "ホーム",
       "Develop": "開発",
-      "Performance": "機能",
+      "Performance": "パフォーマンス",
       "Setting": "設定",
       "AddAlas": "追加"
     },
@@ -2130,24 +606,24 @@
       "Stop": "中止",
       "ScrollON": "自動スクロール ON",
       "ScrollOFF": "自動スクロール OFF",
-      "ClearLog": "ログクリーニング",
+      "ClearLog": "ログをクリア",
       "Setting": "設定",
-      "CheckUpdate": "アップデータチェック",
-      "ClickToUpdate": "アップデータ実行",
-      "RetryUpdate": "アップデータ再試行",
-      "CancelUpdate": "アップデータ中止"
+      "CheckUpdate": "更新を確認",
+      "ClickToUpdate": "更新を実行",
+      "RetryUpdate": "更新を再試行",
+      "CancelUpdate": "更新を中止"
     },
     "Toast": {
       "DisableTranslateMode": "クリックして翻訳モードを中止します",
-      "ConfigSaved": "コンフィグ設定は保存されました",
-      "AlasIsRunning": "スケジューラーはもう実行しています",
-      "ClickToUpdate": "新しいアップデータがあります。クリックしてアップデータ"
+      "ConfigSaved": "設定を保存しました",
+      "AlasIsRunning": "スケジューラは既に実行中です",
+      "ClickToUpdate": "新しい更新があります。ここをクリックして更新してください"
     },
     "Status": {
       "Running": "実行中",
-      "Inactive": "実行中止",
+      "Inactive": "停止中",
       "Warning": "エラー発生",
-      "Updating": "アップデータを待っています"
+      "Updating": "更新待ち"
     },
     "MenuAlas": {
       "Overview": "概要",
@@ -2156,7 +632,7 @@
     "MenuDevelop": {
       "HomePage": "ホームページ",
       "Translate": "翻訳",
-      "Update": "アップデータ",
+      "Update": "更新",
       "Remote": "遠隔操作",
       "Utils": "ツール"
     },
@@ -2164,61 +640,61 @@
       "Scheduler": "スケジューラー",
       "Log": "ログ",
       "Running": "実行中",
-      "Pending": "隊列中",
-      "Waiting": "Waiting",
-      "NoTask": "No Task"
+      "Pending": "キュー中",
+      "Waiting": "待機中",
+      "NoTask": "タスクなし"
     },
     "Dashboard": {
-      "NoData": "Gui.Dashboard.NoData",
-      "TimeError": "Gui.Dashboard.TimeError",
-      "JustNow": "Gui.Dashboard.JustNow",
-      "MinutesAgo": "Gui.Dashboard.MinutesAgo",
-      "HoursAgo": "Gui.Dashboard.HoursAgo",
-      "DaysAgo": "Gui.Dashboard.DaysAgo",
-      "LongTimeAgo": "Gui.Dashboard.LongTimeAgo",
-      "EtaDays": "Gui.Dashboard.EtaDays"
+      "NoData": "データなし",
+      "TimeError": "時刻エラー",
+      "JustNow": "たった今",
+      "MinutesAgo": "{time} 分前",
+      "HoursAgo": "{time} 時間前",
+      "DaysAgo": "{time} 日前",
+      "LongTimeAgo": "かなり前",
+      "EtaDays": "残り {time} 日"
     },
     "AddAlas": {
       "PopupTitle": "新しいコンフィグを追加",
       "NewName": "コンフィグ名",
       "CopyFrom": "既存コンフィグからコピー",
       "Confirm": "追加",
-      "FileExist": "既存コンフィグと同じネーミングとなっていますから別名前を入力してください",
+      "FileExist": "同名の設定ファイルが既に存在します。別の名前を入力してください",
       "InvalidChar": "コンフィグ名には下記の文字を含めることはできません：.\\/:*?\"<>|",
-      "InvalidPrefixTemplate": "設定ファイル名は temlpate で始めることはできません"
+      "InvalidPrefixTemplate": "設定ファイル名を template で始めることはできません"
     },
     "Update": {
-      "UpToDate": "今AESは最新バージョンです",
-      "HaveUpdate": "新しいアップデータがあります",
-      "UpdateStart": "アップデータ開始",
+      "UpToDate": "現在の AES は最新バージョンです",
+      "HaveUpdate": "新しい更新があります",
+      "UpdateStart": "更新を開始します",
       "UpdateWait": "全てのプロセスの完了を待っています",
-      "UpdateRun": "アップデータ中",
-      "UpdateSuccess": "アップデータ完了、再起動しています",
-      "UpdateFailed": "アップデータ失敗、./log/*_gui.txtでログをチェックしてください",
-      "UpdateChecking": "アップデータチェック中",
-      "UpdateCancel": "アップデータ中止、再起動しています",
-      "UpdateFinish": "アップデータ完了、再起動してください",
-      "Local": "ロケール",
-      "Upstream": "オンライン",
-      "Author": "提出者",
-      "Time": "提出時間",
-      "Message": "提出内容",
-      "DisabledWarn": "アップデータモジュールは稼働されませんのでAESを再起動してください",
-      "DetailedHistory": "詳しい提出履歴"
+      "UpdateRun": "更新中",
+      "UpdateSuccess": "更新が完了しました。再起動しています",
+      "UpdateFailed": "更新に失敗しました。./log/*_gui.txt を確認してください",
+      "UpdateChecking": "更新を確認中",
+      "UpdateCancel": "更新を中止しました。再起動しています",
+      "UpdateFinish": "更新が完了しました。再起動してください",
+      "Local": "ローカル",
+      "Upstream": "リモート",
+      "Author": "更新者",
+      "Time": "更新時刻",
+      "Message": "更新内容",
+      "DisabledWarn": "更新モジュールが読み込まれていないため、AES を再起動してください",
+      "DetailedHistory": "詳細な履歴"
     },
     "Remote": {
       "Running": "実行中",
-      "NotRunning": "サーバーとの接続が中断したため、実行していない",
-      "NotEnable": "未启用，在 deploy.yaml 中设置 webui 密码并启用远程控制",
-      "EntryPoint": "远程访问 url 地址:",
-      "ConfigureHint": "配置教程：",
-      "SSHNotInstall": "システムでsshツールが探さない、sshツールをインストールしてください"
+      "NotRunning": "サーバーとの接続が切れたため、現在は実行されていません",
+      "NotEnable": "無効です。deploy.yaml で WebUI パスワードを設定し、リモート操作を有効化してください",
+      "EntryPoint": "リモートアクセス URL:",
+      "ConfigureHint": "設定手順:",
+      "SSHNotInstall": "システムに ssh ツールが見つかりません。ssh をインストールしてください"
     },
     "Text": {
-      "InvalidFeedBack": "フォーマットエラー。 例：{0}",
-      "Clear": "消除",
-      "KnightsTeamBattleTodo": "ギルド戦 OCR 実装予定",
-      "KnightsNoStaminaTodo": "ワールドボス体力不足処理は実装予定"
+      "InvalidFeedBack": "形式エラーです。例: {0}",
+      "Clear": "クリア",
+      "KnightsTeamBattleTodo": "ギルド戦 OCR は今後実装予定です",
+      "KnightsNoStaminaTodo": "ワールドボスの体力不足処理は今後実装予定です"
     }
   }
 }

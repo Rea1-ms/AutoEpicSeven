@@ -111,8 +111,8 @@ class CombatEntryMixin:
             name="ShadowCommissionLevel",
         ).ocr_single_line(self.device.image)
         logger.attr("ShadowCommissionLevel", level)
-        if 0 < level <= self.config.stored.E7ShadowCommission.FIXED_TOTAL:
-            self.config.stored.E7ShadowCommission.set(level)
+        if 0 < level <= self.config.stored.ShadowCommission.FIXED_TOTAL:
+            self.config.stored.ShadowCommission.set(level)
         return level
 
     def _update_combat_dashboard_snapshot(self, skip_first_screenshot=True) -> bool:

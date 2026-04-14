@@ -2,8 +2,8 @@ from module.base.timer import Timer
 from module.exception import RequestHumanTakeover
 from module.logger import logger
 from module.ocr.ocr import DigitCounter
-from tasks.base.assets.assets_base_page import BACK
 from tasks.base.assets.assets_base_popup import POPUP_CONFIRM
+from tasks.base.page import page_knights
 from tasks.knights.assets.assets_knights_gvg import (
     KNIGHTS_CREST,
     OCR_KNIGHTS_CREST,
@@ -35,7 +35,6 @@ class KnightsTeamBattleMixin(KnightsTeamBattleStatusMixin):
     TEAM_BATTLE_LOCKED_SIMILARITY = 0.8
     TEAM_BATTLE_FLOW_TIMEOUT_SECONDS = 120
     TEAM_BATTLE_ENTRY_PENDING_SECONDS = 8
-    TEAM_BATTLE_BACK_TIMEOUT_SECONDS = 12
 
     def _is_knights_home(self, interval=0) -> bool:
         return self.appear(KNIGHTS_CHECK, interval=interval)
@@ -90,34 +89,22 @@ class KnightsTeamBattleMixin(KnightsTeamBattleStatusMixin):
         logger.warning(f"Knights crest OCR invalid: {current}/{total}")
         return None
 
-    def _back_to_knights(self, skip_first_screenshot=True) -> bool:
-        timeout = Timer(self.TEAM_BATTLE_BACK_TIMEOUT_SECONDS, count=36).start()
+    def _back_to_knights_from_team_battle(self, skip_first_screenshot=True) -> bool:
+        """
+        Return to knights home via the page graph.
 
-        while 1:
-            if skip_first_screenshot:
-                skip_first_screenshot = False
-            else:
-                self.device.screenshot()
+        Team battle can currently land on two exit-visible states:
+            1. the normal crest page
+            2. the "not enough people" page
 
-            if timeout.reached():
-                logger.warning("Team battle back-to-knights timeout")
-                return False
-
-            if self._is_knights_home(interval=1):
-                return True
-
-            if self.appear_then_click(TEAM_BATTLE_RESULT_CONFIRM, interval=1):
-                timeout.reset()
-                continue
-
-            if self._is_team_battle_home(interval=1):
-                self.device.click(BACK)
-                timeout.reset()
-                continue
-
-            if self.handle_network_error():
-                timeout.reset()
-                continue
+        Both are intentionally registered as `page_knights_team_battle` in
+        `tasks/base/page.py`. Using `ui_goto(page_knights)` keeps the exit
+        logic aligned with the shared BACK route instead of maintaining a
+        second bespoke state loop here, which already drifted once and missed
+        the insufficient-members branch.
+        """
+        self.ui_goto(page_knights, skip_first_screenshot=skip_first_screenshot)
+        return True
 
     def run_team_battle(self, skip_first_screenshot=True) -> bool:
         logger.info("Knights: team battle")
@@ -142,7 +129,7 @@ class KnightsTeamBattleMixin(KnightsTeamBattleStatusMixin):
             if self._is_team_battle_member_insufficient():
                 logger.info("Team battle: not enough people, skip for now")
                 self._update_team_battle_dashboard_not_enough_people()
-                return self._back_to_knights(skip_first_screenshot=True)
+                return self._back_to_knights_from_team_battle(skip_first_screenshot=True)
 
             if timeout.reached():
                 logger.warning("Team battle flow timeout")
@@ -156,7 +143,7 @@ class KnightsTeamBattleMixin(KnightsTeamBattleStatusMixin):
                     self._update_team_battle_dashboard_counter(status)
                     self._send_or_schedule_team_battle_reminder(status)
                 logger.info("Team battle home reached")
-                return self._back_to_knights(skip_first_screenshot=True)
+                return self._back_to_knights_from_team_battle(skip_first_screenshot=True)
 
             if self.appear_then_click(TEAM_BATTLE_RESULT_CONFIRM, interval=1):
                 timeout.reset()

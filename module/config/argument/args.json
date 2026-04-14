@@ -12,7 +12,8 @@
         "option": [
           "android",
           "cloud_android"
-        ]
+        ],
+        "display": "hide"
       },
       "PackageName": {
         "type": "select",
@@ -25,12 +26,13 @@
       },
       "GameLanguage": {
         "type": "select",
-        "value": "auto",
+        "value": "cn",
         "option": [
           "auto",
           "cn",
           "en"
-        ]
+        ],
+        "display": "hide"
       },
       "ScreenshotMethod": {
         "type": "select",
@@ -57,10 +59,6 @@
           "MaaTouch"
         ],
         "display": "hide"
-      },
-      "CloudPriorQueue": {
-        "type": "checkbox",
-        "value": false
       },
       "AdbRestart": {
         "type": "checkbox",
@@ -238,7 +236,7 @@
     "Mail": {
       "CollectWithin": {
         "type": "select",
-        "value": "1h",
+        "value": "1d",
         "option": [
           "1h",
           "1d"
@@ -294,22 +292,8 @@
         "display": "hide"
       }
     },
-    "ItemStorage": {
-      "Credit": {
-        "type": "stored",
-        "value": {},
-        "display": "hide",
-        "stored": "StoredInt"
-      },
-      "StallerJade": {
-        "type": "stored",
-        "value": {},
-        "display": "hide",
-        "stored": "StoredInt"
-      }
-    },
-    "E7Dashboard": {
-      "E7Gold": {
+    "Dashboard": {
+      "Gold": {
         "type": "stored",
         "value": {},
         "display": "display",
@@ -317,7 +301,7 @@
         "order": 1,
         "color": "#c89a54"
       },
-      "E7Skystone": {
+      "Skystone": {
         "type": "stored",
         "value": {},
         "display": "display",
@@ -325,7 +309,7 @@
         "order": 2,
         "color": "#49aee9"
       },
-      "E7Stamina": {
+      "Stamina": {
         "type": "stored",
         "value": {},
         "display": "display",
@@ -333,7 +317,7 @@
         "order": 3,
         "color": "#74c26e"
       },
-      "E7EquipmentInventory": {
+      "EquipmentInventory": {
         "type": "stored",
         "value": {},
         "display": "display",
@@ -341,31 +325,31 @@
         "order": 4,
         "color": "#8d80de"
       },
-      "E7DailyActivity": {
+      "DailyActivity": {
         "type": "stored",
         "value": {},
         "display": "display",
-        "stored": "StoredE7DailyActivity",
+        "stored": "StoredDailyActivity",
         "order": 5,
         "color": "#ffb45e"
       },
-      "E7WeeklyActivity": {
+      "WeeklyActivity": {
         "type": "stored",
         "value": {},
         "display": "display",
-        "stored": "StoredE7WeeklyActivity",
+        "stored": "StoredWeeklyActivity",
         "order": 6,
         "color": "#ff7f8a"
       },
-      "E7ArenaRank": {
+      "ArenaRank": {
         "type": "stored",
         "value": {},
         "display": "display",
-        "stored": "StoredE7ArenaRank",
+        "stored": "StoredArenaRank",
         "order": 7,
         "color": "#ffd36e"
       },
-      "E7ArenaFlag": {
+      "ArenaFlag": {
         "type": "stored",
         "value": {},
         "display": "display",
@@ -373,7 +357,7 @@
         "order": 8,
         "color": "#f2a93b"
       },
-      "E7ConquestPoint": {
+      "ConquestPoint": {
         "type": "stored",
         "value": {},
         "display": "display",
@@ -381,41 +365,21 @@
         "order": 9,
         "color": "#5ea3ff"
       },
-      "E7ShadowCommission": {
+      "ShadowCommission": {
         "type": "stored",
         "value": {},
         "display": "display",
-        "stored": "StoredE7ShadowCommission",
+        "stored": "StoredShadowCommission",
         "order": 10,
         "color": "#7796ff"
       },
-      "E7TeamBattle": {
+      "TeamBattle": {
         "type": "stored",
         "value": {},
         "display": "display",
-        "stored": "StoredE7TeamBattleStatus",
+        "stored": "StoredTeamBattleStatus",
         "order": 11,
         "color": "#d85f7c"
-      }
-    },
-    "CloudStorage": {
-      "CloudRemainSeasonPass": {
-        "type": "stored",
-        "value": {},
-        "display": "display",
-        "stored": "StoredInt"
-      },
-      "CloudRemainPaid": {
-        "type": "stored",
-        "value": {},
-        "display": "display",
-        "stored": "StoredInt"
-      },
-      "CloudRemainFree": {
-        "type": "stored",
-        "value": {},
-        "display": "display",
-        "stored": "StoredInt"
       }
     }
   },
@@ -423,7 +387,7 @@
     "Scheduler": {
       "Enable": {
         "type": "checkbox",
-        "value": false,
+        "value": true,
         "option": [
           true,
           false
@@ -472,22 +436,20 @@
         "display": "hide"
       }
     },
-    "KnightsBasic": {
+    "Knights": {
       "ClaimSigninRateReward": {
         "type": "checkbox",
         "value": true
       },
-      "WeeklyTask": {
-        "type": "checkbox",
-        "value": true
-      }
-    },
-    "KnightsDonate": {
-      "Donate": {
+      "Support": {
         "type": "checkbox",
         "value": true
       },
-      "Support": {
+      "SupportLowerLevelFairyFlower": {
+        "type": "checkbox",
+        "value": true
+      },
+      "SupportBeginnerPenguin": {
         "type": "checkbox",
         "value": true
       },
@@ -499,29 +461,25 @@
           "BeginnerPenguin"
         ]
       },
-      "DonateLowerLevelFairyFlower": {
+      "WeeklyTask": {
         "type": "checkbox",
         "value": true
       },
-      "DonateBeginnerPenguin": {
+      "WorldBoss": {
         "type": "checkbox",
         "value": true
       }
     },
-    "KnightsExpedition": {
-      "Expedition": {
-        "type": "checkbox",
-        "value": true
-      },
+    "KnightsTeamBattle": {
       "TeamBattle": {
         "type": "checkbox",
         "value": true
       },
-      "TeamBattleReminder": {
+      "Reminder": {
         "type": "checkbox",
         "value": false
       },
-      "TeamBattleReminderLeadMinutes": {
+      "ReminderLeadMinutes": {
         "type": "select",
         "value": 60,
         "option": [
@@ -531,15 +489,11 @@
           180
         ]
       },
-      "TeamBattleReminderLastEnd": {
+      "ReminderLastEnd": {
         "type": "input",
         "value": "",
         "keepvalue": true,
         "display": "hide"
-      },
-      "WorldBoss": {
-        "type": "checkbox",
-        "value": true
       }
     }
   },
@@ -547,7 +501,7 @@
     "Scheduler": {
       "Enable": {
         "type": "checkbox",
-        "value": false,
+        "value": true,
         "option": [
           true,
           false
@@ -584,7 +538,7 @@
       },
       "NPCCombat": {
         "type": "checkbox",
-        "value": false
+        "value": true
       },
       "NPCCombatFastBattle": {
         "type": "checkbox",
@@ -653,7 +607,7 @@
       },
       "BuyFriendshipArtifactEnhancementStone": {
         "type": "select",
-        "value": 3,
+        "value": 0,
         "option": [
           0,
           1,
@@ -663,7 +617,7 @@
       },
       "BuyInheritanceMorogora": {
         "type": "select",
-        "value": 2,
+        "value": 0,
         "option": [
           0,
           1,
@@ -721,7 +675,7 @@
     "Scheduler": {
       "Enable": {
         "type": "checkbox",
-        "value": false,
+        "value": true,
         "option": [
           true,
           false
@@ -862,7 +816,7 @@
     "Scheduler": {
       "Enable": {
         "type": "checkbox",
-        "value": false,
+        "value": true,
         "option": [
           true,
           false
@@ -918,33 +872,6 @@
       }
     }
   },
-  "SanctuaryWeekly": {
-    "Scheduler": {
-      "Enable": {
-        "type": "checkbox",
-        "value": false,
-        "option": [
-          true,
-          false
-        ]
-      },
-      "NextRun": {
-        "type": "datetime",
-        "value": "2020-01-01 00:00:00",
-        "validate": "datetime"
-      },
-      "Command": {
-        "type": "input",
-        "value": "SanctuaryWeekly",
-        "display": "hide"
-      },
-      "ServerUpdate": {
-        "type": "input",
-        "value": "02:00",
-        "display": "hide"
-      }
-    }
-  },
   "SanctuaryMonthly": {
     "Scheduler": {
       "Enable": {
@@ -982,38 +909,6 @@
           "MaxMinus1",
           "MaxMinus2"
         ]
-      }
-    }
-  },
-  "Daemon": {
-    "Daemon": {
-      "Enable": {
-        "type": "state",
-        "value": true,
-        "option": [
-          true
-        ],
-        "option_bold": [
-          true
-        ]
-      },
-      "AimClicker": {
-        "type": "select",
-        "value": "do_not_click",
-        "option": [
-          "item_enemy",
-          "item",
-          "enemy",
-          "do_not_click"
-        ]
-      }
-    }
-  },
-  "PlannerScan": {
-    "PlannerScan": {
-      "ResultAdd": {
-        "type": "checkbox",
-        "value": false
       }
     }
   }

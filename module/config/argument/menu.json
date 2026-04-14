@@ -25,26 +25,11 @@
       "Pets"
     ]
   },
-  "Weekly": {
-    "menu": "list",
-    "page": "setting",
-    "tasks": [
-      "SanctuaryWeekly"
-    ]
-  },
   "Monthly": {
     "menu": "list",
     "page": "setting",
     "tasks": [
       "SanctuaryMonthly"
-    ]
-  },
-  "Tool": {
-    "menu": "list",
-    "page": "tool",
-    "tasks": [
-      "Daemon",
-      "PlannerScan"
     ]
   }
 }
