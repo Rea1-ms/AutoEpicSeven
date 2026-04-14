@@ -5,7 +5,6 @@ from cached_property import cached_property
 
 from deploy.Windows.utils import DEPLOY_TEMPLATE, poor_yaml_read, poor_yaml_write
 from module.base.timer import timer
-from module.config.convert import *
 from module.config.deep import deep_default, deep_get, deep_iter, deep_set
 from module.config.server import VALID_SERVER
 from module.config.utils import *
@@ -321,10 +320,8 @@ class ConfigGenerator:
             group, key = path
             deep_load(keys=['Gui', group], words=(key,))
 
-        # Keep the updater focused on the current AES config surface. The
-        # original legacy dungeon/planner auto-label generation was
-        # removed together with those config groups, but we still need to
-        # write the pruned translation tree back to disk.
+        # Keep the updater focused on the current AES config surface after
+        # the legacy HSR config groups were removed.
         if lang == 'zh-TW':
             dic_repl = {
                 '設置': '設定',
