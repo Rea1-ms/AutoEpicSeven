@@ -545,6 +545,7 @@ class KnightsWorldBossMixin:
 
     def run_world_boss(self, skip_first_screenshot=True) -> bool:
         logger.hr("Knights WorldBoss", level=2)
+        self._world_boss_completed_rounds = 0
 
         enter_status = self._enter_world_boss(skip_first_screenshot=skip_first_screenshot)
         if enter_status == "locked":
@@ -557,6 +558,7 @@ class KnightsWorldBossMixin:
             status = self._world_boss_once(skip_first_screenshot=True)
             if status == "completed":
                 rounds += 1
+                self._world_boss_completed_rounds = rounds
                 logger.info(f"World boss round finished: {rounds}")
                 continue
 

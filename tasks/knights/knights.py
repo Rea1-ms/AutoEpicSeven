@@ -21,6 +21,10 @@ class Knights(
     WEEKLY_REWARDS_COLOR_THRESHOLD = 30
     WEEKLY_REWARDS_CLICK_INTERVAL_SECONDS = 1
 
+    @staticmethod
+    def _should_schedule_mission_reward_after_world_boss(rounds_completed: int) -> bool:
+        return rounds_completed > 0
+
     def _enter_knights(self) -> bool:
         if not hasattr(self.device, "image") or self.device.image is None:
             self.device.screenshot()
@@ -142,6 +146,10 @@ class Knights(
             success = self.run_team_battle(skip_first_screenshot=True) and success
         if run_world_boss:
             success = self.run_world_boss(skip_first_screenshot=True) and success
+            if self._should_schedule_mission_reward_after_world_boss(
+                getattr(self, "_world_boss_completed_rounds", 0)
+            ):
+                self.config.task_call("MissionReward", force_call=False)
         if run_support_donate or run_support_request:
             success = self.run_support(
                 skip_first_screenshot=True,
