@@ -44,6 +44,10 @@ class Gacha(UI):
     TAB_SWIPE_END = (105, 300)
     GOLDEN_INHERITANCE_TIMEOUT_SECONDS = 6
 
+    @staticmethod
+    def _should_schedule_mission_reward_after_free_summon(free_summon_completed: bool) -> bool:
+        return bool(free_summon_completed)
+
     def __init__(self, config, device=None, task=None):
         super().__init__(config, device=device, task=task)
         self._draw_count = 0
@@ -267,6 +271,9 @@ class Gacha(UI):
         if not self.device.app_is_running():
             from tasks.login.login import Login
             Login(self.config, device=self.device).app_start()
+        self._draw_count = 0
+        self._draw_free = False
+        self._in_standard_pool = False
         self._no_free = False
         self._enter_gacha()
         if not self._select_standard_tab():
@@ -279,5 +286,7 @@ class Gacha(UI):
             return False
         self._handle_summon_flow()
         self._collect_golden_inheritance_full(skip_first_screenshot=True)
+        if self._should_schedule_mission_reward_after_free_summon(self._draw_free):
+            self.config.task_call("MissionReward", force_call=False)
         self.config.task_delay(server_update=True)
         return True

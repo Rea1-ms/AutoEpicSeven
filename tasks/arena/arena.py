@@ -78,6 +78,10 @@ class Arena(ArenaEntryMixin, ArenaDashboardMixin, UI):
     ARENA_NPC_STAGE_PREPARE = "battle_prepare"
     ARENA_NPC_STAGE_BATTLE = "battle_running"
 
+    @staticmethod
+    def _should_schedule_mission_reward_after_npc(rounds_completed: int) -> bool:
+        return rounds_completed > 0
+
     def _is_challenge_ready(self, interval=0) -> bool:
         self.device.stuck_record_add(CHALLENGE)
 
@@ -728,6 +732,7 @@ class Arena(ArenaEntryMixin, ArenaDashboardMixin, UI):
             continue
 
     def _run_npc_combat(self, skip_first_screenshot=True) -> bool:
+        self._arena_npc_completed_rounds = 0
         use_fast_battle = getattr(self.config, "Arena_NPCCombatFastBattle", True)
         raw_count = getattr(self.config, "Arena_NPCCombatCount", 5)
         try:
@@ -755,6 +760,7 @@ class Arena(ArenaEntryMixin, ArenaDashboardMixin, UI):
 
             if status == "completed":
                 completed += 1
+                self._arena_npc_completed_rounds = completed
                 self._consume_stored_arena_flags(1)
                 logger.info(f"Arena NPC round finished: {completed}/{target_count}")
                 flag_status = self._stored_arena_flag_status()
@@ -795,6 +801,10 @@ class Arena(ArenaEntryMixin, ArenaDashboardMixin, UI):
                     return False
                 self._claim_weekly_battle_rewards(skip_first_screenshot=True)
                 self._claim_battle_pass_rewards(skip_first_screenshot=True)
+                if self._should_schedule_mission_reward_after_npc(
+                    getattr(self, "_arena_npc_completed_rounds", 0)
+                ):
+                    self.config.task_call("MissionReward", force_call=False)
                 self.config.task_call("DataUpdate", force_call=False)
                 self.config.task_delay(server_update=True)
                 return True
@@ -813,6 +823,10 @@ class Arena(ArenaEntryMixin, ArenaDashboardMixin, UI):
                     return False
                 self._claim_weekly_battle_rewards(skip_first_screenshot=True)
                 self._claim_battle_pass_rewards(skip_first_screenshot=True)
+                if self._should_schedule_mission_reward_after_npc(
+                    getattr(self, "_arena_npc_completed_rounds", 0)
+                ):
+                    self.config.task_call("MissionReward", force_call=False)
 
             self.config.task_call("DataUpdate", force_call=False)
             self.config.task_delay(server_update=True)

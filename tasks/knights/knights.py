@@ -5,21 +5,25 @@ from tasks.base.ui import UI
 from tasks.knights.assets.assets_knights_main_page import (
     WEEKLY_REWARDS,
 )
-from tasks.knights.expedition import KnightsExpeditionMixin
 from tasks.knights.support import KnightsSupportMixin
+from tasks.knights.team_battle import KnightsTeamBattleMixin
 from tasks.knights.weekly_task import KnightsWeeklyTaskMixin
 from tasks.knights.world_boss import KnightsWorldBossMixin
 
 
 class Knights(
     KnightsWorldBossMixin,
-    KnightsExpeditionMixin,
+    KnightsTeamBattleMixin,
     KnightsSupportMixin,
     KnightsWeeklyTaskMixin,
     UI,
 ):
     WEEKLY_REWARDS_COLOR_THRESHOLD = 30
     WEEKLY_REWARDS_CLICK_INTERVAL_SECONDS = 1
+
+    @staticmethod
+    def _should_schedule_mission_reward_after_world_boss(rounds_completed: int) -> bool:
+        return rounds_completed > 0
 
     def _enter_knights(self) -> bool:
         if not hasattr(self.device, "image") or self.device.image is None:
@@ -102,13 +106,18 @@ class Knights(
 
             Login(self.config, device=self.device).app_start()
 
-        run_weekly_rewards = self.config.KnightsBasic_ClaimSigninRateReward
-        run_weekly_task = self.config.KnightsBasic_WeeklyTask
-        run_support_donate = self.config.KnightsDonate_Donate
-        run_support_request = self.config.KnightsDonate_Support
-        run_team_battle = self.config.KnightsExpedition_TeamBattle
-        run_expedition = self.config.KnightsExpedition_Expedition or run_team_battle
-        run_world_boss = self.config.KnightsExpedition_WorldBoss
+        run_weekly_rewards = self.config.Knights_ClaimSigninRateReward
+        run_weekly_task = self.config.Knights_WeeklyTask
+        run_support = self.config.Knights_Support
+        run_support_donate = run_support and any(
+            [
+                self.config.Knights_SupportLowerLevelFairyFlower,
+                self.config.Knights_SupportBeginnerPenguin,
+            ]
+        )
+        run_support_request = run_support
+        run_team_battle = self.config.KnightsTeamBattle_TeamBattle
+        run_world_boss = self.config.Knights_WorldBoss
 
         if not any(
             [
@@ -116,7 +125,7 @@ class Knights(
                 run_weekly_task,
                 run_support_donate,
                 run_support_request,
-                run_expedition,
+                run_team_battle,
                 run_world_boss,
             ]
         ):
@@ -133,10 +142,14 @@ class Knights(
             self._claim_weekly_rewards(skip_first_screenshot=True)
 
         success = True
-        if run_expedition:
-            success = self.run_expedition(skip_first_screenshot=True) and success
+        if run_team_battle:
+            success = self.run_team_battle(skip_first_screenshot=True) and success
         if run_world_boss:
             success = self.run_world_boss(skip_first_screenshot=True) and success
+            if self._should_schedule_mission_reward_after_world_boss(
+                getattr(self, "_world_boss_completed_rounds", 0)
+            ):
+                self.config.task_call("MissionReward", force_call=False)
         if run_support_donate or run_support_request:
             success = self.run_support(
                 skip_first_screenshot=True,

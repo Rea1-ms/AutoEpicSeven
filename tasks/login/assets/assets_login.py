@@ -15,6 +15,24 @@ GAME_UPGRADE_AVAILABLE = ButtonWrapper(
     ),
     global_en=None,
 )
+LOGGED_OUT = ButtonWrapper(
+    name='LOGGED_OUT',
+    cn=Button(
+        file='./assets/cn/login/LOGGED_OUT.png',
+        area=(535, 174, 589, 230),
+        search=(515, 154, 609, 250),
+        color=(204, 182, 202),
+        button=(535, 174, 589, 230),
+    ),
+    global_cn=Button(
+        file='./assets/global_cn/login/LOGGED_OUT.png',
+        area=(262, 270, 286, 299),
+        search=(242, 250, 306, 319),
+        color=(254, 180, 166),
+        button=(262, 270, 286, 299),
+    ),
+    global_en=None,
+)
 LOGIN_ANNOUNCEMENT_CLOSE = ButtonWrapper(
     name='LOGIN_ANNOUNCEMENT_CLOSE',
     cn=Button(
@@ -47,38 +65,20 @@ LOGIN_CONFIRM = ButtonWrapper(
 )
 LOGIN_ERROR = ButtonWrapper(
     name='LOGIN_ERROR',
-    cn=[
-        Button(
-            file='./assets/cn/login/LOGIN_ERROR.png',
-            area=(619, 585, 662, 606),
-            search=(599, 565, 682, 626),
-            color=(160, 140, 149),
-            button=(619, 585, 662, 606),
-        ),
-        Button(
-            file='./assets/cn/login/LOGIN_ERROR.2.png',
-            area=(535, 174, 589, 230),
-            search=(515, 154, 609, 250),
-            color=(204, 182, 202),
-            button=(535, 174, 589, 230),
-        ),
-    ],
-    global_cn=[
-        Button(
-            file='./assets/global_cn/login/LOGIN_ERROR.png',
-            area=(618, 584, 662, 606),
-            search=(598, 564, 682, 626),
-            color=(159, 132, 144),
-            button=(618, 584, 662, 606),
-        ),
-        Button(
-            file='./assets/global_cn/login/LOGIN_ERROR.2.png',
-            area=(262, 270, 286, 299),
-            search=(242, 250, 306, 319),
-            color=(254, 180, 166),
-            button=(262, 270, 286, 299),
-        ),
-    ],
+    cn=Button(
+        file='./assets/cn/login/LOGIN_ERROR.png',
+        area=(619, 585, 662, 606),
+        search=(599, 565, 682, 626),
+        color=(160, 140, 149),
+        button=(619, 585, 662, 606),
+    ),
+    global_cn=Button(
+        file='./assets/global_cn/login/LOGIN_ERROR.png',
+        area=(618, 584, 662, 606),
+        search=(598, 564, 682, 626),
+        color=(159, 132, 144),
+        button=(618, 584, 662, 606),
+    ),
     global_en=None,
 )
 LOGIN_LOADING = ButtonWrapper(

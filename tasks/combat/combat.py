@@ -36,6 +36,30 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, CombatPre
     COMBAT_SCROLL_START_Y = 620
     COMBAT_SCROLL_END_Y = 220
 
+    @staticmethod
+    def _should_schedule_mission_reward(completed_sessions: int, runtime_active: bool) -> bool:
+        """
+        Only leave combat to claim mission rewards after at least one combat
+        session has fully settled and no background repeat-combat session is
+        still running.
+        """
+        return completed_sessions > 0 and not runtime_active
+
+    @staticmethod
+    def _runtime_active_after_success(event_mode: bool, use_fast_combat: bool) -> bool:
+        """
+        Describe the post-success runtime state before it is written to config.
+
+        This is intentionally derived from the flow mode instead of reading the
+        current runtime flag. In success branches that launch repeat combat into
+        the background, runtime has not been persisted yet at the moment we
+        decide whether MissionReward may interrupt the flow. Using the old
+        runtime value here would falsely treat the session as settled and cause
+        MissionReward/DataUpdate to steal focus while repeat combat is about to
+        continue in background.
+        """
+        return event_mode or not use_fast_combat
+
     def _combat_plan(self) -> CombatPlan:
         domain = getattr(self.config, "Combat_Domain", "Hunt")
         return COMBAT_PLANS.get(domain, HUNT_PLAN)
@@ -82,6 +106,7 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, CombatPre
 
     def run(self) -> bool:
         logger.hr("Combat", level=1)
+        completed_sessions = 0
 
         if not self.device.app_is_running():
             from tasks.login.login import Login
@@ -125,8 +150,14 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, CombatPre
 
             status = self._watch_repeat_combat(skip_first_screenshot=True)
             if status == "finished":
+                completed_sessions += 1
                 self._combat_runtime_clear()
                 if session_combat_mode != "Event":
+                    if self._should_schedule_mission_reward(
+                        completed_sessions,
+                        runtime_active=self._combat_runtime_active(),
+                    ):
+                        self.config.task_call("MissionReward", force_call=False)
                     self.config.task_delay(server_update=True)
                     return True
                 logger.info("Combat: event background session finished, restart combat")
@@ -175,6 +206,8 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, CombatPre
                 if use_fast_combat:
                     success = self._run_fast_combat(skip_first_screenshot=True)
                     if success:
+                        completed_sessions += 1
+                    if success:
                         success = self._prepare_repeat_combat(use_max=True, skip_first_screenshot=True)
                     if success:
                         success = self._run_repeat_combat(skip_first_screenshot=True)
@@ -188,6 +221,8 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, CombatPre
                 if success:
                     if use_fast_combat:
                         success = self._run_fast_combat(skip_first_screenshot=True)
+                        if success:
+                            completed_sessions += 1
                     else:
                         success = self._run_repeat_combat(skip_first_screenshot=True)
 
@@ -195,6 +230,15 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, CombatPre
             success = self._leave_to_main(skip_first_screenshot=True)
 
         if success:
+            runtime_active_after_success = self._runtime_active_after_success(
+                event_mode=event_mode,
+                use_fast_combat=use_fast_combat,
+            )
+            if self._should_schedule_mission_reward(
+                completed_sessions,
+                runtime_active=runtime_active_after_success,
+            ):
+                self.config.task_call("MissionReward", force_call=False)
             if event_mode:
                 self._combat_runtime_set(self._combat_runtime_build(plan))
                 self.config.task_delay(minute=self.COMBAT_BACKGROUND_CHECK_MINUTES)
@@ -208,5 +252,10 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, CombatPre
 
         self._combat_runtime_clear()
         self._leave_to_main(skip_first_screenshot=True)
+        if self._should_schedule_mission_reward(
+            completed_sessions,
+            runtime_active=self._combat_runtime_active(),
+        ):
+            self.config.task_call("MissionReward", force_call=False)
         self.config.task_delay(success=False)
         return False

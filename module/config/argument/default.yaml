@@ -10,18 +10,30 @@ Alas:
 
 # ==================== Daily ====================
 
-DataUpdate:
-  Scheduler:
-    Enable: true
 MissionReward:
   Scheduler:
     Enable: true
 Mail:
   Scheduler:
     Enable: true
+DataUpdate:
+  Scheduler:
+    Enable: true
+SanctuaryDaily:
+  Scheduler:
+    Enable: true
 Knights:
   Scheduler:
     Enable: true
+Arena:
+  Scheduler:
+    Enable: true
 PetsGift:
+  Scheduler:
+    Enable: true
+SecretShop:
+  Scheduler:
+    Enable: true
+Gacha:
   Scheduler:
     Enable: true

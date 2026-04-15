@@ -309,12 +309,8 @@ class AzurLaneConfig(ConfigUpdater, ManualConfig, GeneratedConfig, ConfigWatcher
                 if isinstance(next_run, datetime) and next_run > limit:
                     deep_set(self.data, keys=f"{task}.Scheduler.NextRun", value=now)
 
-        limit_next_run(['BattlePass'], limit=now + timedelta(days=40, seconds=-1))
-        limit_next_run(['Weekly'], limit=now + timedelta(days=7, seconds=-1))
-        # Sanctuary split tasks:
-        # - Weekly can schedule to next Monday.
-        # - Monthly can schedule to next month reset.
-        limit_next_run(['SanctuaryWeekly'], limit=now + timedelta(days=7, seconds=-1))
+        # Sanctuary monthly may delay to the next month reset, so clamp obviously
+        # stale future timestamps when old configs are loaded into newer schemas.
         limit_next_run(['SanctuaryMonthly'], limit=now + timedelta(days=40, seconds=-1))
         limit_next_run(self.args.keys(), limit=now + timedelta(hours=24, seconds=-1))
 
@@ -524,38 +520,21 @@ class AzurLaneConfig(ConfigUpdater, ManualConfig, GeneratedConfig, ConfigWatcher
 
     def update_daily_quests(self):
         """
-        Raises:
-            TaskEnd: Call task `DailyQuest` and stop current task
+        AES no longer maintains the legacy daily-quest state in the shared
+        config core.
+        Keep this method as a compatibility no-op so leftover exploratory
+        imports do not crash while HSR-only modules are being retired.
         """
-        with self.multi_set():
-            if self.stored.DailyActivity.is_expired():
-                logger.info('DailyActivity expired')
-                self.stored.DailyActivity.clear()
-            if self.stored.DailyQuest.is_expired():
-                logger.info('DailyQuest expired')
-                q = self.stored.DailyQuest
-                q.clear()
-                # Assume fixed quests
-                q.write_quests([
-                    'Complete_1_Daily_Mission',
-                    'Log_in_to_the_game',
-                    'Dispatch_1_assignments',
-                    'Complete_Divergent_Universe_or_Currency_Wars_1_times',
-                    'Obtain_victory_in_combat_with_Support_Characters_1_times',
-                    'Consume_120_Trailblaze_Power',
-                ])
+        return None
 
     def update_battle_pass_quests(self):
         """
-        Raises:
-            TaskEnd: Call task `BattlePass` and stop current task
+        AES no longer maintains the legacy battle-pass state in the shared
+        config core.
+        Keep this method as a compatibility no-op while old HSR-only modules
+        are being removed from the runnable task surface.
         """
-        if self.stored.BattlePassWeeklyQuest.is_expired():
-            if self.stored.BattlePassLevel.is_full():
-                logger.info('BattlePassLevel full, no updates')
-            else:
-                logger.info('BattlePassTodayQuest expired')
-                self.stored.BattlePassWeeklyQuest.clear()
+        return None
 
     @property
     def DEVICE_SCREENSHOT_METHOD(self):

@@ -30,16 +30,13 @@ Daily:
       - Mail
     DataUpdate:
       - Scheduler
-      - ItemStorage
-      - E7Dashboard
-      - CloudStorage
+      - Dashboard
     SanctuaryDaily:
       - Scheduler
     Knights:
       - Scheduler
-      - KnightsBasic
-      - KnightsDonate
-      - KnightsExpedition
+      - Knights
+      - KnightsTeamBattle
     Arena:
       - Scheduler
       - Arena
@@ -63,15 +60,6 @@ Daily:
     Pets:
       - Scheduler
 
-# ==================== Weekly ====================
-
-Weekly:
-  menu: 'list'
-  page: 'setting'
-  tasks:
-    SanctuaryWeekly:
-      - Scheduler
-
 # ==================== Monthly ====================
 
 Monthly:
@@ -81,14 +69,3 @@ Monthly:
     SanctuaryMonthly:
       - Scheduler
       - SanctuaryMonthly
-
-# ==================== Tool ====================
-
-Tool:
-  menu: 'list'
-  page: 'tool'
-  tasks:
-    Daemon:
-      - Daemon
-    PlannerScan:
-      - PlannerScan

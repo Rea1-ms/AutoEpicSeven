@@ -64,29 +64,17 @@ class KnightsSupportMixin:
             SupportPlan(
                 name="lower_level_fairy_flower",
                 asset=LOWER_LEVEL_FAIRY_FLOWER,
-                enabled=getattr(
-                    self.config,
-                    "KnightsDonate_DonateLowerLevelFairyFlower",
-                    getattr(self.config, "Knights_DonateLowerLevelFairyFlower", True),
-                ),
+                enabled=self.config.Knights_SupportLowerLevelFairyFlower,
             ),
             SupportPlan(
                 name="beginner_penguin",
                 asset=BEGGINER_PENGUIN,
-                enabled=getattr(
-                    self.config,
-                    "KnightsDonate_DonateBeginnerPenguin",
-                    getattr(self.config, "Knights_DonateBeginnerPenguin", True),
-                ),
+                enabled=self.config.Knights_SupportBeginnerPenguin,
             ),
         ]
 
     def _resolve_request_plan(self) -> SupportPlan | None:
-        request_item = getattr(
-            self.config,
-            "KnightsDonate_RequestItem",
-            getattr(self.config, "Knights_RequestItem", None),
-        )
+        request_item = self.config.Knights_RequestItem
         if request_item == "LowerLevelFairyFlower":
             return SupportPlan(
                 name="request_lower_level_fairy_flower",

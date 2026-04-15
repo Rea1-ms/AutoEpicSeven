@@ -50,20 +50,30 @@ def handle_notify(_config: str, **kwargs) -> bool:
             if access_token:
                 config["token"] = access_token
 
+        provider_key = provider_name.lower()
         resp = notifier.notify(**config)
-        if isinstance(resp, Response):
-            if resp.status_code != 200:
+        # onepush may log a transport error, retry internally, then swallow the
+        # final failure and return None from its request helper. Treat None as a
+        # definitive delivery failure here so we never report a false success.
+        if resp is None:
+            logger.error("Push notify failed: no response returned")
+            return False
+        if not isinstance(resp, Response):
+            logger.error(
+                f"Push notify failed: unexpected response type {type(resp).__name__}"
+            )
+            return False
+        if resp.status_code != 200:
+            logger.warning("Push notify failed!")
+            logger.warning(f"HTTP Code:{resp.status_code}")
+            return False
+        if provider_key == "gocqhttp":
+            return_data: dict = resp.json()
+            if return_data["status"] == "failed":
                 logger.warning("Push notify failed!")
-                logger.warning(f"HTTP Code:{resp.status_code}")
+                logger.warning(
+                    f"Return message:{return_data['wording']}")
                 return False
-            else:
-                if provider_name.lower() == "gocqhttp":
-                    return_data: dict = resp.json()
-                    if return_data["status"] == "failed":
-                        logger.warning("Push notify failed!")
-                        logger.warning(
-                            f"Return message:{return_data['wording']}")
-                        return False
     except OnePushException:
         logger.error("Push notify failed")
         return False

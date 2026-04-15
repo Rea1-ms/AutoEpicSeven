@@ -258,5 +258,5 @@ def run_benchmark(config):
 
 
 if __name__ == '__main__':
-    b = Benchmark('src', task='Benchmark')
+    b = Benchmark('aes', task='Benchmark')
     b.run()

@@ -55,7 +55,7 @@ class KnightsTeamBattleStatusMixin:
         self._team_battle_next_delay_target = None
 
     def _set_team_battle_dashboard_value(self, value: str) -> None:
-        self.config.stored.E7TeamBattle.value = value
+        self.config.stored.TeamBattle.value = value
 
     def _update_team_battle_dashboard_locked(self) -> None:
         logger.attr("TeamBattleStatus", self.TEAM_BATTLE_DASHBOARD_LOCKED_TEXT)
@@ -77,7 +77,7 @@ class KnightsTeamBattleStatusMixin:
         self._set_team_battle_dashboard_value(status.to_counter())
 
     def _get_team_battle_reminder_lead_minutes(self) -> int:
-        value = getattr(self.config, "KnightsExpedition_TeamBattleReminderLeadMinutes", 60)
+        value = self.config.KnightsTeamBattle_ReminderLeadMinutes
         try:
             return max(int(value), 0)
         except (TypeError, ValueError):
@@ -87,7 +87,7 @@ class KnightsTeamBattleStatusMixin:
     def _send_or_schedule_team_battle_reminder(self, status: TeamBattleCrestStatus) -> None:
         self._team_battle_next_delay_target = None
 
-        if not getattr(self.config, "KnightsExpedition_TeamBattleReminder", False):
+        if not self.config.KnightsTeamBattle_Reminder:
             return
         if not status.is_valid():
             return
@@ -105,7 +105,7 @@ class KnightsTeamBattleStatusMixin:
         lead = timedelta(minutes=self._get_team_battle_reminder_lead_minutes())
         reminder_time = end_time - lead
         end_text = end_time.strftime("%Y-%m-%d %H:%M:%S")
-        last_end = getattr(self.config, "KnightsExpedition_TeamBattleReminderLastEnd", "") or ""
+        last_end = self.config.KnightsTeamBattle_ReminderLastEnd or ""
 
         if last_end == end_text:
             logger.info(f"Team battle reminder already sent for war ending at {end_text}")
@@ -124,7 +124,7 @@ class KnightsTeamBattleStatusMixin:
         )
         if handle_notify(self.config.Error_OnePushConfig, title=title, content=content):
             logger.info("Team battle reminder sent")
-            self.config.KnightsExpedition_TeamBattleReminderLastEnd = end_text
+            self.config.KnightsTeamBattle_ReminderLastEnd = end_text
         else:
             logger.warning("Team battle reminder notify failed")
 
