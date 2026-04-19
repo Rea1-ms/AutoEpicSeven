@@ -25,6 +25,25 @@ RESOURCE_BAR_LAYOUT_ARENA_BATTLE_PASS = ("arena_flag", "conquest_point", "gold",
 RESOURCE_BAR_SEGMENT_LEFT_PADDING = 2
 RESOURCE_BAR_SEGMENT_RIGHT_PADDING = 6
 
+# Max horizontal reach, in pixels from the last currency icon's right edge,
+# used as the OCR right boundary when the last field in a layout has no
+# "next icon" to clamp against. All four current layouts end in skystone.
+#
+# Calibrated against the REPEAT_COMBAT_CHECK auto-combat marker that appears
+# to the right of skystone on certain pages. Measured pixel distances from
+# the skystone icon's asset right edge:
+#   - 7-digit skystone digits reach icon.right + 90 (observed max)
+#   - REPEAT_COMBAT_CHECK body sits ~45px past the 7-digit end
+#   - moving-element ring extends 0-21px outward from the REPEAT asset edge
+#     (so 24-45px past the last digit)
+#   - halo extends 21-31px outward from the REPEAT asset edge
+#     (so 14-24px past the last digit)
+#   - only the inner 0-14px past the last digit is fully empty
+# 100 covers 7-digit skystone with a 10px buffer and stops 4px before the
+# halo begins. Beyond 104 we'd start OCR-ing dynamic glow pixels, which is
+# how the "196园" / "196#" trailing-noise artifact was produced before.
+RESOURCE_BAR_TAIL_MAX_WIDTH = 100
+
 
 @dataclass(frozen=True)
 class ResourceBarSpec:
@@ -186,7 +205,16 @@ def get_resource_bar_segment_area(
         next_icon_area = area_offset(next_icon.area, icon_offsets.get(layout[index + 1], (0, 0)))
         x2 = min(OCR_RESOURCE_BAR.area[2], next_icon_area[0] - RESOURCE_BAR_SEGMENT_RIGHT_PADDING)
     else:
-        x2 = OCR_RESOURCE_BAR.area[2]
+        # Last field in the layout has no right-hand icon to clamp against.
+        # Capping at `icon_right + TAIL_MAX_WIDTH` stops OCR before it can
+        # reach the REPEAT_COMBAT_CHECK auto-combat marker (and its halo /
+        # moving-element dynamic pixels) that appears to the right of
+        # skystone on certain pages. See RESOURCE_BAR_TAIL_MAX_WIDTH for the
+        # geometry behind the 100px choice.
+        x2 = min(
+            OCR_RESOURCE_BAR.area[2],
+            current_icon_area[2] + RESOURCE_BAR_TAIL_MAX_WIDTH,
+        )
 
     if x2 <= x1:
         return None
