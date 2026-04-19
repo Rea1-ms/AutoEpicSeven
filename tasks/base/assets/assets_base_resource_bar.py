@@ -7,59 +7,59 @@ ARENA_FLAG_ICON = ButtonWrapper(
     name='ARENA_FLAG_ICON',
     share=Button(
         file='./assets/share/base/resource_bar/ARENA_FLAG_ICON.png',
-        area=(459, 21, 474, 39),
-        search=(439, 1, 494, 59),
-        color=(142, 70, 30),
-        button=(459, 21, 474, 39),
+        area=(553, 13, 583, 49),
+        search=(533, 0, 603, 69),
+        color=(72, 53, 46),
+        button=(553, 13, 583, 49),
     ),
 )
 CONQUEST_POINT_ICON = ButtonWrapper(
     name='CONQUEST_POINT_ICON',
     share=Button(
         file='./assets/share/base/resource_bar/CONQUEST_POINT_ICON.png',
-        area=(558, 24, 576, 41),
-        search=(538, 4, 596, 61),
-        color=(141, 102, 49),
-        button=(558, 24, 576, 41),
+        area=(642, 19, 671, 48),
+        search=(622, 0, 691, 68),
+        color=(90, 70, 47),
+        button=(642, 19, 671, 48),
     ),
 )
 GOLD_ICON = ButtonWrapper(
     name='GOLD_ICON',
     share=Button(
         file='./assets/share/base/resource_bar/GOLD_ICON.png',
-        area=(652, 23, 671, 43),
-        search=(632, 3, 691, 63),
-        color=(217, 143, 40),
-        button=(652, 23, 671, 43),
+        area=(647, 13, 678, 48),
+        search=(627, 0, 698, 68),
+        color=(128, 95, 50),
+        button=(647, 13, 678, 48),
     ),
 )
 OCR_RESOURCE_BAR = ButtonWrapper(
     name='OCR_RESOURCE_BAR',
     share=Button(
         file='./assets/share/base/resource_bar/OCR_RESOURCE_BAR.png',
-        area=(228, 10, 977, 55),
-        search=(208, 0, 997, 75),
-        color=(42, 57, 66),
-        button=(228, 10, 977, 55),
+        area=(228, 12, 977, 52),
+        search=(208, 0, 997, 72),
+        color=(45, 59, 67),
+        button=(228, 12, 977, 52),
     ),
 )
 SKYSTONE_ICON = ButtonWrapper(
     name='SKYSTONE_ICON',
     share=Button(
         file='./assets/share/base/resource_bar/SKYSTONE_ICON.png',
-        area=(864, 22, 876, 44),
-        search=(844, 2, 896, 64),
-        color=(107, 172, 214),
-        button=(864, 22, 876, 44),
+        area=(806, 13, 833, 50),
+        search=(786, 0, 853, 70),
+        color=(63, 94, 116),
+        button=(806, 13, 833, 50),
     ),
 )
 STAMINA_ICON = ButtonWrapper(
     name='STAMINA_ICON',
     share=Button(
         file='./assets/share/base/resource_bar/STAMINA_ICON.png',
-        area=(688, 18, 697, 47),
-        search=(668, 0, 717, 67),
-        color=(172, 146, 124),
-        button=(688, 18, 697, 47),
+        area=(526, 13, 554, 47),
+        search=(506, 0, 574, 67),
+        color=(91, 92, 90),
+        button=(526, 13, 554, 47),
     ),
 )
