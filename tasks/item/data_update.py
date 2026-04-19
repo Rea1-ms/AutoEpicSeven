@@ -8,11 +8,9 @@ from tasks.base.page import (
     page_combat_season,
     page_inventory_equipment,
     page_main,
-    page_secret_shop,
 )
 from tasks.base.resource_bar import (
     RESOURCE_BAR_LAYOUT_COMBAT,
-    RESOURCE_BAR_LAYOUT_SECRET_SHOP,
 )
 from tasks.base.ui import UI
 from tasks.combat.assets.assets_combat_configs_entry import OCR_SEASON_CHECK
@@ -78,16 +76,6 @@ class DataUpdate(ArenaEntryMixin, ArenaDashboardMixin, UI):
         self.ui_goto(page_main, skip_first_screenshot=True)
         return updated
 
-    def _update_secret_shop_resources(self, skip_first_screenshot=True) -> bool:
-        logger.hr("DataUpdate SecretShop", level=2)
-        self.ui_goto(page_secret_shop, skip_first_screenshot=skip_first_screenshot)
-        parsed = self.ocr_resource_bar_status(
-            layout=RESOURCE_BAR_LAYOUT_SECRET_SHOP,
-            layout_name="SecretShop",
-            skip_first_screenshot=True,
-        )
-        return self.write_resource_bar_status(parsed)
-
     def _ocr_shadow_commission_level(self) -> int:
         level = E7Digit(
             OCR_SEASON_CHECK,
@@ -140,7 +128,6 @@ class DataUpdate(ArenaEntryMixin, ArenaDashboardMixin, UI):
         updated_any = False
 
         updated_any |= self._update_equipment_inventory(skip_first_screenshot=False)
-        updated_any |= self._update_secret_shop_resources(skip_first_screenshot=True)
         updated_any |= self._update_combat_status(skip_first_screenshot=True)
         updated_any |= self._update_arena_status(skip_first_screenshot=True)
 

@@ -25,6 +25,25 @@ RESOURCE_BAR_LAYOUT_ARENA_BATTLE_PASS = ("arena_flag", "conquest_point", "gold",
 RESOURCE_BAR_SEGMENT_LEFT_PADDING = 2
 RESOURCE_BAR_SEGMENT_RIGHT_PADDING = 6
 
+# Max horizontal reach, in pixels from the last currency icon's right edge,
+# used as the OCR right boundary when the last field in a layout has no
+# "next icon" to clamp against. All four current layouts end in skystone.
+#
+# Calibrated against the REPEAT_COMBAT_CHECK auto-combat marker that appears
+# to the right of skystone on certain pages. Measured pixel distances from
+# the skystone icon's asset right edge:
+#   - 7-digit skystone digits reach icon.right + 90 (observed max)
+#   - REPEAT_COMBAT_CHECK body sits ~45px past the 7-digit end
+#   - moving-element ring extends 0-21px outward from the REPEAT asset edge
+#     (so 24-45px past the last digit)
+#   - halo extends 21-31px outward from the REPEAT asset edge
+#     (so 14-24px past the last digit)
+#   - only the inner 0-14px past the last digit is fully empty
+# 100 covers 7-digit skystone with a 10px buffer and stops 4px before the
+# halo begins. Beyond 104 we'd start OCR-ing dynamic glow pixels, which is
+# how the "196园" / "196#" trailing-noise artifact was produced before.
+RESOURCE_BAR_TAIL_MAX_WIDTH = 100
+
 
 @dataclass(frozen=True)
 class ResourceBarSpec:
@@ -46,6 +65,19 @@ class ResourceBarValue:
     text: str
     value: int
     total: int = 0
+
+
+@dataclass
+class ResourceBarInspectResult:
+    layout_name: str
+    icon_matches: list[str]
+    icon_offsets: dict[str, tuple[int, int]]
+    candidates: list[ResourceBarCandidate]
+    parsed_by_icon: dict[str, ResourceBarValue] | None
+    parsed_by_candidates: dict[str, ResourceBarValue] | None
+    parsed_by_candidate_split: dict[str, ResourceBarValue] | None
+    final: dict[str, ResourceBarValue] | None
+    final_source: str = ""
 
 
 RESOURCE_BAR_SPECS = {
@@ -101,177 +133,29 @@ def normalize_resource_bar_text(text: str) -> str:
     return text
 
 
-def normalize_resource_bar_counter_text(
-    text: str,
-    spec: ResourceBarSpec,
-) -> str:
-    text = normalize_resource_bar_text(text)
-    matched = re.search(r"(\d+)\s*/\s*(\d+)", text)
-    if matched is None:
-        return text
-
-    current_text = matched.group(1)
-    total_text = matched.group(2)
-    total = int(total_text)
-
-    candidate_currents: list[str] = [current_text]
-    if current_text.startswith("5") and len(current_text) > 1:
-        candidate_currents.append(current_text[1:])
-    if current_text.endswith("10") and len(current_text) > 2:
-        candidate_currents.append(current_text[:-2])
-    if current_text.endswith("0") and len(current_text) > 1:
-        candidate_currents.append(current_text[:-1])
-    if current_text.endswith("1") and len(current_text) > 1:
-        candidate_currents.append(current_text[:-1])
-
-    valid_currents = [
-        current
-        for current in candidate_currents
-        if current.isdigit() and current and int(current) <= total
-    ]
-    if not valid_currents:
-        return text
-
-    corrected_current = max(valid_currents, key=lambda item: int(item))
-    return f"{corrected_current}/{total_text}"
-
-
-def expand_resource_bar_candidates(
-    candidates: list[ResourceBarCandidate],
-) -> list[ResourceBarCandidate]:
-    expanded: list[ResourceBarCandidate] = []
-    token_pattern = re.compile(r"\d+\s*/\s*\d+|\d+")
-
-    for candidate in sorted(candidates, key=lambda item: item.box[0]):
-        text = normalize_resource_bar_text(candidate.text)
-        matches = list(token_pattern.finditer(text))
-        if not matches:
-            continue
-
-        if len(matches) == 1:
-            expanded.append(
-                ResourceBarCandidate(
-                    box=candidate.box,
-                    text=matches[0].group(0),
-                )
-            )
-            continue
-
-        x1, y1, x2, y2 = candidate.box
-        width = max(1, x2 - x1)
-        text_len = max(1, len(text))
-
-        for matched in matches:
-            start = x1 + int(width * matched.start() / text_len)
-            end = x1 + int(width * matched.end() / text_len)
-            if end <= start:
-                end = start + 1
-            expanded.append(
-                ResourceBarCandidate(
-                    box=(start, y1, end, y2),
-                    text=matched.group(0),
-                )
-            )
-
-    return expanded
-
-
-def merge_resource_bar_candidates(
-    candidates: list[ResourceBarCandidate],
-    expected_count: int,
-    max_gap: int = 24,
-) -> list[ResourceBarCandidate] | None:
-    merged = sorted(candidates, key=lambda item: item.box[0])
-    if len(merged) < expected_count:
-        return None
-
-    while len(merged) > expected_count:
-        best_index = -1
-        best_gap = None
-        for index in range(len(merged) - 1):
-            left = merged[index]
-            right = merged[index + 1]
-            gap = right.box[0] - left.box[2]
-            if best_gap is None or gap < best_gap:
-                best_gap = gap
-                best_index = index
-
-        if best_gap is None or best_gap > max_gap:
-            return None
-
-        left = merged[best_index]
-        right = merged[best_index + 1]
-        merged_box = (
-            min(left.box[0], right.box[0]),
-            min(left.box[1], right.box[1]),
-            max(left.box[2], right.box[2]),
-            max(left.box[3], right.box[3]),
-        )
-        merged_text = f"{left.text}{right.text}"
-        merged = (
-            merged[:best_index]
-            + [ResourceBarCandidate(box=merged_box, text=merged_text)]
-            + merged[best_index + 2 :]
-        )
-
-    return merged
-
-
-def maybe_correct_combat_stamina_candidate(
-    candidate: ResourceBarCandidate,
-    layout: tuple[str, ...],
-    key: str,
-    min_icon_overlap: int = 4,
-) -> ResourceBarCandidate:
-    if layout != RESOURCE_BAR_LAYOUT_COMBAT or key != "stamina":
-        return candidate
-
-    matched = re.fullmatch(r"(\d+)\s*/\s*(\d+)", candidate.text)
-    if matched is None:
-        return candidate
-
-    current = matched.group(1)
-    if len(current) < 2 or not current.startswith("5"):
-        return candidate
-
-    icon_x1, _, icon_x2, _ = STAMINA_ICON.area
-    overlap = min(candidate.box[2], icon_x2) - max(candidate.box[0], icon_x1)
-    if overlap < min_icon_overlap:
-        return candidate
-
-    corrected = f"{current[1:]}/{matched.group(2)}"
-    logger.attr("CombatStaminaIconFix", f"{candidate.text} -> {corrected}")
-    return ResourceBarCandidate(box=candidate.box, text=corrected)
-
-
-def parse_resource_bar_candidates(
-    candidates: list[ResourceBarCandidate],
-    layout: tuple[str, ...],
-) -> dict[str, ResourceBarValue] | None:
-    expanded = expand_resource_bar_candidates(candidates)
-    merged = merge_resource_bar_candidates(expanded, expected_count=len(layout))
-    if merged is None:
-        return None
-
-    parsed: dict[str, ResourceBarValue] = {}
-    for key, candidate in zip(layout, merged):
-        candidate = maybe_correct_combat_stamina_candidate(candidate, layout=layout, key=key)
-        value = parse_resource_bar_text(candidate.text, spec=RESOURCE_BAR_SPECS[key])
-        if value is None:
-            return None
-        parsed[key] = value
-
-    return parsed
-
-
 def parse_resource_bar_text(
     text: str,
     spec: ResourceBarSpec,
 ) -> ResourceBarValue | None:
-    if spec.kind == RESOURCE_KIND_COUNTER:
-        text = normalize_resource_bar_counter_text(text, spec=spec)
-    else:
-        text = normalize_resource_bar_text(text)
+    """
+    Parse a single segment's OCR text into a ResourceBarValue, or None on
+    malformed input.
+
+    Note on the intentional lack of a `value <= total` check for counters:
+    in Epic Seven, the counter `total` represents the passive regeneration
+    cap (e.g. 5 arena flags per day, 360 stamina at player level), not a
+    hard ceiling. Inventory-held stamina potions and stockpiled event flags
+    routinely push `value` well above `total` (observed: stamina 19448/336,
+    arena flags 344/5). A previous implementation both rejected `value > total`
+    AND tried to "recover" by chopping leading/trailing digits of the
+    numerator until it fit under `total`; that recovery silently truncated
+    legitimate large readings like 534/336 into 34/336. Both behaviours are
+    removed here. The remaining guards (`total <= 0`, `spec.fixed_total`
+    mismatch) catch genuine OCR corruption of the denominator without
+    corrupting a legitimately-large numerator.
+    """
+    text = normalize_resource_bar_text(text)
+
     if spec.kind == RESOURCE_KIND_COUNTER:
         matched = re.search(r"(\d+)\s*/\s*(\d+)", text)
         if matched is None:
@@ -279,8 +163,6 @@ def parse_resource_bar_text(
         value = int(matched.group(1))
         total = int(matched.group(2))
         if total <= 0:
-            return None
-        if value > total:
             return None
         if spec.fixed_total and total != spec.fixed_total:
             return None
@@ -299,53 +181,6 @@ def parse_resource_bar_text(
         text=text,
         value=int(matched.group(1)),
     )
-
-
-def split_resource_bar_text_for_specs(
-    text: str,
-    specs: list[ResourceBarSpec],
-    boundary_hints: list[int] | None = None,
-) -> list[ResourceBarValue] | None:
-    text = normalize_resource_bar_text(text)
-    if not specs:
-        return [] if not text else None
-
-    if len(specs) == 1:
-        value = parse_resource_bar_text(text, spec=specs[0])
-        return [value] if value is not None else None
-
-    if boundary_hints:
-        target = boundary_hints[0]
-        split_indexes: list[int] = []
-        seen: set[int] = set()
-        for delta in range(0, len(text)):
-            for index in (target - delta, target + delta):
-                if 1 <= index < len(text) and index not in seen:
-                    split_indexes.append(index)
-                    seen.add(index)
-        for index in range(1, len(text)):
-            if index not in seen:
-                split_indexes.append(index)
-    else:
-        split_indexes = list(range(1, len(text)))
-
-    for split_index in split_indexes:
-        left = parse_resource_bar_text(text[:split_index], spec=specs[0])
-        if left is None:
-            continue
-
-        next_hints = None
-        if boundary_hints:
-            next_hints = [index - split_index for index in boundary_hints[1:]]
-        right = split_resource_bar_text_for_specs(
-            text[split_index:],
-            specs=specs[1:],
-            boundary_hints=next_hints,
-        )
-        if right is not None:
-            return [left] + right
-
-    return None
 
 
 def get_resource_bar_segment_area(
@@ -370,7 +205,16 @@ def get_resource_bar_segment_area(
         next_icon_area = area_offset(next_icon.area, icon_offsets.get(layout[index + 1], (0, 0)))
         x2 = min(OCR_RESOURCE_BAR.area[2], next_icon_area[0] - RESOURCE_BAR_SEGMENT_RIGHT_PADDING)
     else:
-        x2 = OCR_RESOURCE_BAR.area[2]
+        # Last field in the layout has no right-hand icon to clamp against.
+        # Capping at `icon_right + TAIL_MAX_WIDTH` stops OCR before it can
+        # reach the REPEAT_COMBAT_CHECK auto-combat marker (and its halo /
+        # moving-element dynamic pixels) that appears to the right of
+        # skystone on certain pages. See RESOURCE_BAR_TAIL_MAX_WIDTH for the
+        # geometry behind the 100px choice.
+        x2 = min(
+            OCR_RESOURCE_BAR.area[2],
+            current_icon_area[2] + RESOURCE_BAR_TAIL_MAX_WIDTH,
+        )
 
     if x2 <= x1:
         return None
@@ -380,26 +224,6 @@ def get_resource_bar_segment_area(
         x2,
         OCR_RESOURCE_BAR.area[3] + current_offset[1],
     )
-
-
-def get_resource_bar_boundary_hints(
-    candidate: ResourceBarCandidate,
-    segment_areas: list[tuple[int, int, int, int]],
-    text: str,
-) -> list[int]:
-    text = normalize_resource_bar_text(text)
-    if len(segment_areas) <= 1 or not text:
-        return []
-
-    x1, _, x2, _ = candidate.box
-    width = max(1, x2 - x1)
-    hints: list[int] = []
-    for index in range(len(segment_areas) - 1):
-        boundary_x = int((segment_areas[index][2] + segment_areas[index + 1][0]) / 2)
-        split_index = round(len(text) * (boundary_x - x1) / width)
-        split_index = max(1, min(len(text) - 1, split_index))
-        hints.append(split_index)
-    return hints
 
 
 class OcrResourceBar(OcrWhiteLetterOnComplexBackground):
@@ -428,35 +252,51 @@ class ResourceBarMixin:
             return "tw"
         return "cn"
 
-    def _resource_bar_candidates(self) -> list[ResourceBarCandidate]:
-        results = OcrResourceBar(
-            OCR_RESOURCE_BAR,
-            lang=self._ocr_lang(),
-            name="ResourceBarOCR",
-        ).detect_and_ocr(self.device.image)
-        candidates = [
-            ResourceBarCandidate(box=result.box, text=result.ocr_text)
-            for result in sorted(results, key=lambda item: item.box[0])
-        ]
-        return candidates
-
     def _match_resource_bar_icons(
         self,
         layout: tuple[str, ...],
     ) -> tuple[dict[str, tuple[int, int]], list[str]]:
+        """
+        Match every currency icon in the resource bar band.
+
+        Unlike the earlier implementation, a single icon miss no longer aborts
+        the scan. A transient overlay or fade on one currency would otherwise
+        pin the whole frame to the fallback path and leak garbage into stored
+        data. We match all icons, then reject the whole frame if any missed
+        or if the matched icons are not left-to-right in layout order.
+
+        Returns:
+            icon_offsets: {key: (dx, dy)} when every icon matched in order.
+                          Empty dict when any icon missed or order was wrong.
+            matched_icons: per-icon status string, always populated for log.
+        """
         icon_offsets: dict[str, tuple[int, int]] = {}
         matched_icons: list[str] = []
 
         for key in layout:
             icon = RESOURCE_BAR_ICONS[key]
             icon.load_search(OCR_RESOURCE_BAR.area)
-            if not icon.match_template(self.device.image, similarity=0.75):
+            if icon.match_template(self.device.image, similarity=0.85):
+                offset = tuple(int(value) for value in icon.button_offset)
+                icon_offsets[key] = offset
+                matched_icons.append(f"{key}={offset}")
+            else:
                 matched_icons.append(f"{key}=miss")
-                return icon_offsets, matched_icons
 
-            offset = tuple(int(value) for value in icon.button_offset)
-            icon_offsets[key] = offset
-            matched_icons.append(f"{key}={offset}")
+        if len(icon_offsets) != len(layout):
+            return {}, matched_icons
+
+        # Guard against a template binding to the wrong slot. Template matching
+        # without positional check can let e.g. skystone pick up gold's glyph
+        # when the bar is partially occluded, producing plausible-but-wrong
+        # OCR segments downstream.
+        last_x = -1
+        for key in layout:
+            matched_x = RESOURCE_BAR_ICONS[key].area[0] + icon_offsets[key][0]
+            if matched_x <= last_x:
+                matched_icons.append(f"order_violation:{key}")
+                return {}, matched_icons
+            last_x = matched_x
 
         return icon_offsets, matched_icons
 
@@ -500,72 +340,65 @@ class ResourceBarMixin:
         logger.attr(f"{layout_name}ResourceBarIconSegments", raw_texts)
         return parsed
 
-    def _resource_bar_from_candidates_by_icon(
+    @staticmethod
+    def format_resource_bar_value(value: ResourceBarValue) -> str:
+        if value.spec.kind == RESOURCE_KIND_COUNTER:
+            return f"{value.value}/{value.total}"
+        return str(value.value)
+
+    def _log_resource_bar_values(
         self,
-        candidates: list[ResourceBarCandidate],
+        layout: tuple[str, ...],
+        parsed: dict[str, ResourceBarValue],
+    ) -> None:
+        for key in layout:
+            logger.attr(f"ResourceBar.{key}", self.format_resource_bar_value(parsed[key]))
+
+    def inspect_resource_bar_status(
+        self,
         layout: tuple[str, ...],
         layout_name: str,
-        icon_offsets: dict[str, tuple[int, int]],
-    ) -> dict[str, ResourceBarValue] | None:
-        parsed: dict[str, ResourceBarValue] = {}
-        split_logs: list[str] = []
-        layout_index = 0
+        log_result: bool = True,
+    ) -> ResourceBarInspectResult:
+        """
+        Inspect a single already-captured frame of the resource bar.
 
-        segment_areas: list[tuple[int, int, int, int] | None] = [
-            get_resource_bar_segment_area(layout, key, icon_offsets=icon_offsets) for key in layout
-        ]
-        if any(area is None for area in segment_areas):
-            return None
+        Single-frame, no retry. Only the icon-anchored path is evaluated.
+        Candidate-based fallbacks were removed because their text-fraction
+        splitting produced spatially plausible but numerically wrong readings
+        that then poisoned stored dashboard values. If the icon path fails
+        here, the production caller retries; offline debug prints the miss.
 
-        for candidate in sorted(candidates, key=lambda item: item.box[0]):
-            if layout_index >= len(layout):
-                break
+        The legacy `parsed_by_candidates`, `parsed_by_candidate_split`, and
+        `candidates` fields on the returned result are kept only so the
+        offline debug script's schema does not break; they are always empty
+        or None now.
+        """
+        icon_offsets, matched_icons = self._match_resource_bar_icons(layout)
+        parsed_by_icon = self._resource_bar_by_icon(
+            layout=layout,
+            layout_name=layout_name,
+            icon_offsets=icon_offsets,
+            matched_icons=matched_icons,
+        )
 
-            overlapped: list[int] = []
-            for index in range(layout_index, len(layout)):
-                area = segment_areas[index]
-                overlap = min(candidate.box[2], area[2]) - max(candidate.box[0], area[0])
-                if overlap > 0:
-                    overlapped.append(index)
+        final = parsed_by_icon
+        final_source = "icon" if final is not None else ""
 
-            if not overlapped:
-                continue
+        if final is not None and log_result:
+            self._log_resource_bar_values(layout, final)
 
-            start = overlapped[0]
-            end = overlapped[-1]
-            if start != layout_index:
-                return None
-
-            specs = [RESOURCE_BAR_SPECS[layout[index]] for index in range(start, end + 1)]
-            boundaries = get_resource_bar_boundary_hints(
-                candidate,
-                segment_areas=segment_areas[start : end + 1],
-                text=candidate.text,
-            )
-            values = split_resource_bar_text_for_specs(
-                candidate.text,
-                specs=specs,
-                boundary_hints=boundaries,
-            )
-            if values is None:
-                logger.attr(
-                    f"{layout_name}ResourceBarSplitFailed",
-                    f"{candidate.text} -> {[spec.key for spec in specs]}",
-                )
-                return None
-
-            for offset, value in enumerate(values):
-                key = layout[start + offset]
-                parsed[key] = value
-                split_logs.append(f"{key}={value.text}")
-
-            layout_index = end + 1
-
-        if len(parsed) != len(layout):
-            return None
-
-        logger.attr(f"{layout_name}ResourceBarCandidateSplit", split_logs)
-        return parsed
+        return ResourceBarInspectResult(
+            layout_name=layout_name,
+            icon_matches=matched_icons,
+            icon_offsets=icon_offsets,
+            candidates=[],
+            parsed_by_icon=parsed_by_icon,
+            parsed_by_candidates=None,
+            parsed_by_candidate_split=None,
+            final=final,
+            final_source=final_source,
+        )
 
     def ocr_resource_bar_status(
         self,
@@ -588,40 +421,19 @@ class ResourceBarMixin:
             else:
                 self.device.screenshot()
 
-            icon_offsets, matched_icons = self._match_resource_bar_icons(layout)
-            parsed = self._resource_bar_by_icon(
+            inspected = self.inspect_resource_bar_status(
                 layout=layout,
                 layout_name=layout_name,
-                icon_offsets=icon_offsets,
-                matched_icons=matched_icons,
+                log_result=True,
             )
-            if parsed is None:
-                candidates = self._resource_bar_candidates()
-                logger.attr(
-                    f"{layout_name}ResourceBarCandidates",
-                    [candidate.text for candidate in candidates],
-                )
-                parsed = parse_resource_bar_candidates(candidates, layout)
-                if parsed is None:
-                    parsed = self._resource_bar_from_candidates_by_icon(
-                        candidates=candidates,
-                        layout=layout,
-                        layout_name=layout_name,
-                        icon_offsets=icon_offsets,
-                    )
+            parsed = inspected.final
             if parsed is not None:
-                for key in layout:
-                    value = parsed[key]
-                    if value.spec.kind == RESOURCE_KIND_COUNTER:
-                        logger.attr(f"ResourceBar.{key}", f"{value.value}/{value.total}")
-                    else:
-                        logger.attr(f"ResourceBar.{key}", value.value)
                 return parsed
 
             if timeout.reached():
                 logger.warning(
                     f"Resource bar OCR timeout on {layout_name}: "
-                    f"{[candidate.text for candidate in candidates] if 'candidates' in locals() else 'icon-primary-failed'}"
+                    f"icons={inspected.icon_matches}"
                 )
                 return None
 
