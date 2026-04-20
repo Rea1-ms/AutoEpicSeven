@@ -12,6 +12,10 @@ declare global {
       channel: string,
       listener: (event: Electron.IpcRendererEvent, ...args: any[]) => void,
     ) => Electron.IpcRenderer;
+    __electron_preload__ipcRendererInvoke: <T = unknown>(
+      channel: string,
+      ...args: any[]
+    ) => Promise<T>;
     __electron_preload__getAlasConfig: () => AlasConfig;
     __electron_preload__checkIsNeedInstall: () => boolean;
     __electron_preload__getAlasConfigDirFiles: () => {

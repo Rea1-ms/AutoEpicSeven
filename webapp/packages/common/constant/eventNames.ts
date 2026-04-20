@@ -7,3 +7,8 @@ export const ALAS_READY = 'alas-config-path';
 export const ELECTRON_THEME = 'electron-theme';
 
 export const PAGE_ERROR = 'page-error';
+
+export const E7_OPEN_LOGIN = 'e7:open-login';
+export const E7_GET_CREDENTIALS = 'e7:get-credentials';
+export const E7_CLEAR_CREDENTIALS = 'e7:clear-credentials';
+export const E7_CREDENTIALS_PATH = 'e7:credentials-path';
