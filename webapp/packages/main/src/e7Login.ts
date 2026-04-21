@@ -57,7 +57,7 @@ export async function openE7LoginWindow(): Promise<E7Credentials | null> {
   });
 
   const win = new BrowserWindow({
-    width: 1100,
+    width: 1200,
     height: 780,
     title: 'Epic Seven Community Login',
     webPreferences: {
