@@ -13,6 +13,7 @@
     "tasks": [
       "MissionReward",
       "Mail",
+      "CommunityAio",
       "DataUpdate",
       "SanctuaryDaily",
       "Knights",

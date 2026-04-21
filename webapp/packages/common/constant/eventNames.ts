@@ -12,3 +12,5 @@ export const E7_OPEN_LOGIN = 'e7:open-login';
 export const E7_GET_CREDENTIALS = 'e7:get-credentials';
 export const E7_CLEAR_CREDENTIALS = 'e7:clear-credentials';
 export const E7_CREDENTIALS_PATH = 'e7:credentials-path';
+export const E7_GET_CREDENTIALS_STATUS = 'e7:get-credentials-status';
+export const E7_ENSURE_CREDENTIALS = 'e7:ensure-credentials';

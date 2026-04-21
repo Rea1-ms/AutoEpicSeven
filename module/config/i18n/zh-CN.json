@@ -30,6 +30,10 @@
       "name": "临期邮件",
       "help": "按显示剩余时间升序检查邮箱，领取显示剩余 1 小时或 1 天的邮件。由于游戏显示按整小时/整天取整，实际约等于 2 小时或 2 天内过期。"
     },
+    "CommunityAio": {
+      "name": "社区 AIO",
+      "help": "运行社区协议脚本（签到、任务、兑换），使用本地凭证。"
+    },
     "DataUpdate": {
       "name": "仪表盘更新",
       "help": ""
@@ -268,6 +272,16 @@
     "LastRemainingSince": {
       "name": "相同剩余时间起始时间",
       "help": ""
+    }
+  },
+  "CommunityAio": {
+    "_info": {
+      "name": "社区 AIO 设置",
+      "help": "配置 community/aio.py 运行参数。"
+    },
+    "CredentialsFile": {
+      "name": "凭证文件路径",
+      "help": "可选。Electron 登录导出的 e7-credentials.json 绝对路径；留空则使用默认路径。"
     }
   },
   "Knights": {
@@ -693,6 +707,7 @@
     "Text": {
       "InvalidFeedBack": "格式错误。 示例：{0}",
       "Clear": "清除",
+      "CommunityAioTodo": "社区 AIO 仅支持国服配置（cn）。",
       "KnightsTeamBattleTodo": "团战 OCR 功能待实现",
       "KnightsNoStaminaTodo": "世界 Boss 体力不足处理待实现"
     }

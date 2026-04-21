@@ -50,6 +50,9 @@ class GeneratedConfig:
     Mail_LastRemainingText = None
     Mail_LastRemainingSince = datetime.datetime(2020, 1, 1, 0, 0)
 
+    # Group `CommunityAio`
+    CommunityAio_CredentialsFile = None
+
     # Group `Knights`
     Knights_ClaimSigninRateReward = True
     Knights_Support = True

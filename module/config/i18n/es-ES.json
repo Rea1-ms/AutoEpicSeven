@@ -30,6 +30,10 @@
       "name": "Correo por vencer",
       "help": "Ordena el buzón por el tiempo restante mostrado y recoge los correos que muestran 1 hora o 1 día restantes. Como el juego redondea la visualización a horas o días enteros, esto equivale aproximadamente a 2 horas o 2 días reales antes del vencimiento."
     },
+    "CommunityAio": {
+      "name": "Comunidad AIO",
+      "help": "Ejecuta el script de la API de comunidad (check-in, tareas e intercambio) con credenciales locales."
+    },
     "DataUpdate": {
       "name": "Actualizar panel",
       "help": ""
@@ -268,6 +272,16 @@
     "LastRemainingSince": {
       "name": "Misma etiqueta restante desde",
       "help": ""
+    }
+  },
+  "CommunityAio": {
+    "_info": {
+      "name": "Ajustes de Comunidad AIO",
+      "help": "Configura las opciones de ejecución de community/aio.py."
+    },
+    "CredentialsFile": {
+      "name": "Ruta del archivo de credenciales",
+      "help": "Opcional. Ruta absoluta al e7-credentials.json exportado por Electron; en blanco usa la ruta predeterminada."
     }
   },
   "Knights": {
@@ -693,6 +707,7 @@
     "Text": {
       "InvalidFeedBack": "Formato inválido. Ejemplo: {0}",
       "Clear": "Limpiar",
+      "CommunityAioTodo": "Comunidad AIO solo está disponible en la configuración CN (cn).",
       "KnightsTeamBattleTodo": "OCR de Guerra de gremio pendiente",
       "KnightsNoStaminaTodo": "Manejo sin energía en Jefe Mundial pendiente"
     }

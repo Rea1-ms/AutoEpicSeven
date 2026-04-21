@@ -42,6 +42,7 @@ from pywebio.session import (
 import module.webui.lang as lang
 from module.config.config import AzurLaneConfig, Function
 from module.config.deep import deep_get, deep_iter, deep_set
+from module.config.server import is_cn_server
 from module.config.utils import (
     alas_instance,
     alas_template,
@@ -120,6 +121,31 @@ class AlasGUI(Frame):
         self.inst_cache = []
         self.load_home = False
         self.af_flag = False
+
+    def _is_cn_community_config(self) -> bool:
+        """
+        Decide whether current selected instance should expose CN-server-only tasks.
+
+        Important: we must read real config content to avoid hiding CN features on renamed
+        instances.
+        """
+        if not self.alas_name:
+            return False
+        config = self.alas_config.read_file(self.alas_name)
+        package_name = deep_get(config, "Alas.Emulator.PackageName", default="")
+        if not package_name:
+            return False
+        return is_cn_server(package_name)
+
+    def _is_task_visible_in_current_config(self, task: str) -> bool:
+        """
+        Filter task cards by selected config profile.
+
+        CommunityAio is intentionally exposed only for CN game configs.
+        """
+        if task != "CommunityAio":
+            return True
+        return self._is_cn_community_config()
 
     @use_scope("aside", clear=True)
     def set_aside(self) -> None:
@@ -236,6 +262,14 @@ class AlasGUI(Frame):
         ).style(f"--menu-Overview--")
 
         for menu, task_data in self.ALAS_MENU.items():
+            visible_tasks = [
+                task
+                for task in task_data.get("tasks", [])
+                if self._is_task_visible_in_current_config(task)
+            ]
+            if not visible_tasks:
+                continue
+
             if task_data.get("page") == "tool":
                 _onclick = self.alas_daemon_overview
             else:
@@ -251,7 +285,7 @@ class AlasGUI(Frame):
                         }],
                         onclick=_onclick,
                     ).style(f"--menu-{task}--")
-                    for task in task_data.get("tasks", [])
+                    for task in visible_tasks
                 ]
                 put_collapse(title=t(f"Menu.{menu}.name"), content=task_btn_list)
             else:
@@ -262,7 +296,7 @@ class AlasGUI(Frame):
                          '<span class="hr-task-group-line"></span>'
                          '</div>'
                          )
-                for task in task_data.get("tasks", []):
+                for task in visible_tasks:
                     put_buttons(
                         [{
                             "label": t(f"Task.{task}.name"),

@@ -30,6 +30,10 @@
       "name": "Expiring Mail",
       "help": "Sort the mailbox by displayed remaining time and collect mails showing 1 hour or 1 day left. Because the game rounds the display down to whole hours or days, this is effectively about 2 real hours or 2 real days before expiration."
     },
+    "CommunityAio": {
+      "name": "Community AIO",
+      "help": "Run the community API script (check-in, tasks, exchange) with local credentials."
+    },
     "DataUpdate": {
       "name": "Dashboard Upd",
       "help": ""
@@ -268,6 +272,16 @@
     "LastRemainingSince": {
       "name": "Same Remaining Label Since",
       "help": ""
+    }
+  },
+  "CommunityAio": {
+    "_info": {
+      "name": "Community AIO Settings",
+      "help": "Configure runtime options for community/aio.py."
+    },
+    "CredentialsFile": {
+      "name": "Credentials File Path",
+      "help": "Optional. Absolute path to Electron-exported e7-credentials.json; leave empty to use default path."
     }
   },
   "Knights": {
@@ -693,6 +707,7 @@
     "Text": {
       "InvalidFeedBack": "Invalid format. Example: {0}",
       "Clear": "Clear",
+      "CommunityAioTodo": "Community AIO is available only in CN config (cn).",
       "KnightsTeamBattleTodo": "Guild War OCR TODO",
       "KnightsNoStaminaTodo": "World Boss no-stamina handling TODO"
     }

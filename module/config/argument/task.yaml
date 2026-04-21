@@ -28,6 +28,9 @@ Daily:
     Mail:
       - Scheduler
       - Mail
+    CommunityAio:
+      - Scheduler
+      - CommunityAio
     DataUpdate:
       - Scheduler
       - Dashboard

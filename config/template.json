@@ -60,6 +60,17 @@
       "LastRemainingSince": "2020-01-01 00:00:00"
     }
   },
+  "CommunityAio": {
+    "Scheduler": {
+      "Enable": false,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "CommunityAio",
+      "ServerUpdate": "02:00"
+    },
+    "CommunityAio": {
+      "CredentialsFile": null
+    }
+  },
   "DataUpdate": {
     "Scheduler": {
       "Enable": true,

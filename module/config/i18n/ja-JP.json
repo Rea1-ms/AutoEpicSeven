@@ -30,6 +30,10 @@
       "name": "期限切れ間近メール",
       "help": "表示上の残り時間が短い順でメールを確認し、表示で残り 1 時間または 1 日になったメールを受け取ります。ゲーム内表示は時間や日数を切り捨てるため、実際には約 2 時間または 2 日以内が対象です。"
     },
+    "CommunityAio": {
+      "name": "コミュニティ AIO",
+      "help": "ローカル認証情報を使ってコミュニティ API スクリプト（チェックイン・タスク・交換）を実行します。"
+    },
     "DataUpdate": {
       "name": "ダッシュボード更新",
       "help": "装備所持数、資源、アリーナ情報などダッシュボード用データを更新します。"
@@ -268,6 +272,16 @@
     "LastRemainingSince": {
       "name": "同一残り時間ラベル開始時刻",
       "help": "同じ残り時間表示が継続している開始時刻です。内部判定に使用します。"
+    }
+  },
+  "CommunityAio": {
+    "_info": {
+      "name": "コミュニティ AIO 設定",
+      "help": "community/aio.py の実行オプションを設定します。"
+    },
+    "CredentialsFile": {
+      "name": "認証情報ファイルパス",
+      "help": "任意。Electron で出力した e7-credentials.json の絶対パス。空欄の場合は既定パスを使用します。"
     }
   },
   "Knights": {
@@ -693,6 +707,7 @@
     "Text": {
       "InvalidFeedBack": "形式エラーです。例: {0}",
       "Clear": "クリア",
+      "CommunityAioTodo": "コミュニティ AIO は CN 設定（cn）のみ対応です。",
       "KnightsTeamBattleTodo": "ギルド戦 OCR は今後実装予定です",
       "KnightsNoStaminaTodo": "ワールドボスの体力不足処理は今後実装予定です"
     }

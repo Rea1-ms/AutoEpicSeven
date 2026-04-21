@@ -30,6 +30,10 @@
       "name": "臨期郵件",
       "help": "按顯示剩餘時間升序檢查信箱，領取顯示剩餘 1 小時或 1 天的郵件。由於遊戲顯示會按整小時/整天取整，實際約等於 2 小時或 2 天內過期。"
     },
+    "CommunityAio": {
+      "name": "社群 AIO",
+      "help": "執行社群協議腳本（簽到、任務、兌換），使用本地憑證。"
+    },
     "DataUpdate": {
       "name": "儀表板更新",
       "help": ""
@@ -268,6 +272,16 @@
     "LastRemainingSince": {
       "name": "相同剩餘時間起始時間",
       "help": ""
+    }
+  },
+  "CommunityAio": {
+    "_info": {
+      "name": "社群 AIO 設定",
+      "help": "設定 community/aio.py 執行參數。"
+    },
+    "CredentialsFile": {
+      "name": "憑證檔案路徑",
+      "help": "可選。Electron 登入匯出的 e7-credentials.json 絕對路徑；留空則使用預設路徑。"
     }
   },
   "Knights": {
@@ -693,6 +707,7 @@
     "Text": {
       "InvalidFeedBack": "格式錯誤。 示例：{0}",
       "Clear": "清除",
+      "CommunityAioTodo": "社群 AIO 僅支援國服設定（cn）。",
       "KnightsTeamBattleTodo": "團戰 OCR 功能待實作",
       "KnightsNoStaminaTodo": "世界 Boss 體力不足處理待實作"
     }
