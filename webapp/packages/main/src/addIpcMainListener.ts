@@ -3,6 +3,7 @@ import type {BrowserWindow} from 'electron';
 import {app, ipcMain, nativeTheme} from 'electron';
 import {
   E7_CLEAR_CREDENTIALS,
+  E7_CLOSE_LOGIN,
   E7_CREDENTIALS_PATH,
   E7_GET_CREDENTIALS,
   E7_OPEN_LOGIN,
@@ -15,6 +16,7 @@ import {ThemeObj} from '@common/constant/theme';
 import logger from '/@/logger';
 import {
   clearE7Credentials,
+  closeE7LoginWindow,
   getE7Credentials,
   getE7CredentialsPath,
   openE7LoginWindow,
@@ -57,14 +59,21 @@ export const addIpcMainListener = async (mainWindow: BrowserWindow, coreService:
     logger.error(args);
   });
 
-  ipcMain.handle(E7_OPEN_LOGIN, async () => {
+  // Fire-and-forget: open the login window and return immediately.
+  // Credentials are persisted to disk asynchronously when captured;
+  // awaiting the full login flow here would block the IPC bridge
+  // and cause a timeout on the renderer/webui side.
+  ipcMain.handle(E7_OPEN_LOGIN, () => {
     logger.info('-----E7_OPEN_LOGIN-----');
-    try {
-      return await openE7LoginWindow();
-    } catch (e) {
-      logger.error(`E7_OPEN_LOGIN failed: ${e}`);
-      return null;
-    }
+    openE7LoginWindow().catch(e => {
+      logger.error(`E7_OPEN_LOGIN background error: ${e}`);
+    });
+    return {opened: true};
+  });
+
+  ipcMain.handle(E7_CLOSE_LOGIN, () => {
+    logger.info('-----E7_CLOSE_LOGIN-----');
+    return closeE7LoginWindow();
   });
 
   ipcMain.handle(E7_GET_CREDENTIALS, async () => {

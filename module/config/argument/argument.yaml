@@ -119,6 +119,14 @@ CommunityAio:
     value: ""
     display: hide
 
+CommunityAuth:
+  CredentialsFile:
+    value: ""
+    display: hide
+  WaitTimeout:
+    value: 300
+    option: [ 60, 180, 300, 600 ]
+
 Knights:
   ClaimSigninRateReward: true
   Support: true

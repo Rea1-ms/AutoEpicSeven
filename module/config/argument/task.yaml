@@ -63,6 +63,15 @@ Daily:
     Pets:
       - Scheduler
 
+# ==================== Tool ====================
+
+Tool:
+  menu: 'list'
+  page: 'tool'
+  tasks:
+    CommunityAuth:
+      - CommunityAuth
+
 # ==================== Monthly ====================
 
 Monthly:

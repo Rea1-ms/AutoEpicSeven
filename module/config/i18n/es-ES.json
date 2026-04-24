@@ -8,6 +8,10 @@
       "name": "Diario",
       "help": ""
     },
+    "Tool": {
+      "name": "Herramientas",
+      "help": ""
+    },
     "Monthly": {
       "name": "Mensual",
       "help": ""
@@ -73,6 +77,10 @@
     "Pets": {
       "name": "Tienda de mascotas",
       "help": ""
+    },
+    "CommunityAuth": {
+      "name": "Inicio comunidad",
+      "help": "Abre la ventana de inicio de sesión de Electron y actualiza la CK usada por Community AIO."
     },
     "SanctuaryMonthly": {
       "name": "Santuario - Mensual",
@@ -282,6 +290,24 @@
     "CredentialsFile": {
       "name": "Ruta del archivo de credenciales",
       "help": "Opcional. Ruta absoluta al e7-credentials.json exportado por Electron; en blanco usa la ruta predeterminada."
+    }
+  },
+  "CommunityAuth": {
+    "_info": {
+      "name": "Inicio comunidad",
+      "help": "Gestiona las credenciales locales para la tarea de protocolo de comunidad CN. Start abre la ventana y espera las credenciales en el registro."
+    },
+    "CredentialsFile": {
+      "name": "Archivo de credenciales",
+      "help": "Déjalo vacío para usar la ruta predeterminada compartida por Electron y Community AIO."
+    },
+    "WaitTimeout": {
+      "name": "Segundos máximos de espera",
+      "help": "Después de Start, la herramienta comprueba el archivo de credenciales en el registro y termina si no captura una CK válida a tiempo.",
+      "60": "60",
+      "180": "180",
+      "300": "300",
+      "600": "600"
     }
   },
   "Knights": {
@@ -707,6 +733,8 @@
     "Text": {
       "InvalidFeedBack": "Formato inválido. Ejemplo: {0}",
       "Clear": "Limpiar",
+      "CommunityAuthCredentials": "Credenciales de comunidad",
+      "CommunityAuthCredentialsHelp": "Comprueba el estado actual de la CK y abre la ventana de Electron para actualizar las credenciales locales.",
       "CommunityAioTodo": "Comunidad AIO solo está disponible en la configuración CN (cn).",
       "KnightsTeamBattleTodo": "OCR de Guerra de gremio pendiente",
       "KnightsNoStaminaTodo": "Manejo sin energía en Jefe Mundial pendiente"

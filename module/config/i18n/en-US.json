@@ -8,6 +8,10 @@
       "name": "Daily",
       "help": ""
     },
+    "Tool": {
+      "name": "Tools",
+      "help": ""
+    },
     "Monthly": {
       "name": "Monthly",
       "help": ""
@@ -73,6 +77,10 @@
     "Pets": {
       "name": "Pet Shop",
       "help": ""
+    },
+    "CommunityAuth": {
+      "name": "Community Login",
+      "help": "Open the Electron community login window and refresh the CK used by Community AIO."
     },
     "SanctuaryMonthly": {
       "name": "Sanctuary Monthly",
@@ -282,6 +290,24 @@
     "CredentialsFile": {
       "name": "Credentials File Path",
       "help": "Optional. Absolute path to Electron-exported e7-credentials.json; leave empty to use default path."
+    }
+  },
+  "CommunityAuth": {
+    "_info": {
+      "name": "Community Login",
+      "help": "Manage local credentials for the CN community protocol task. Start opens the login window and waits for credentials in the log."
+    },
+    "CredentialsFile": {
+      "name": "Credentials file",
+      "help": "Leave empty to use the default credentials path shared by Electron and Community AIO."
+    },
+    "WaitTimeout": {
+      "name": "Maximum login wait seconds",
+      "help": "After Start, the tool polls the credentials file in the log area and exits if no valid CK is captured in time.",
+      "60": "60",
+      "180": "180",
+      "300": "300",
+      "600": "600"
     }
   },
   "Knights": {
@@ -707,6 +733,8 @@
     "Text": {
       "InvalidFeedBack": "Invalid format. Example: {0}",
       "Clear": "Clear",
+      "CommunityAuthCredentials": "Community login credentials",
+      "CommunityAuthCredentialsHelp": "Check current CK status and open the Electron login window to refresh local credentials.",
       "CommunityAioTodo": "Community AIO is available only in CN config (cn).",
       "KnightsTeamBattleTodo": "Guild War OCR TODO",
       "KnightsNoStaminaTodo": "World Boss no-stamina handling TODO"

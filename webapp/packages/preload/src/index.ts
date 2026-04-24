@@ -2,6 +2,10 @@
  * @module preload
  */
 
+import {setupWebuiIpcBridge} from './webuiIpcBridge';
+
+setupWebuiIpcBridge();
+
 export {sha256sum} from './nodeCrypto';
 export {versions} from './versions';
 export {ipcRendererSend, ipcRendererOn, ipcRendererInvoke} from './electronApi';

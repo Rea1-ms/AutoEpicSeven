@@ -53,6 +53,10 @@ class GeneratedConfig:
     # Group `CommunityAio`
     CommunityAio_CredentialsFile = None
 
+    # Group `CommunityAuth`
+    CommunityAuth_CredentialsFile = None
+    CommunityAuth_WaitTimeout = 300  # 60, 180, 300, 600
+
     # Group `Knights`
     Knights_ClaimSigninRateReward = True
     Knights_Support = True

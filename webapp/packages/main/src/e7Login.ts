@@ -159,6 +159,17 @@ export async function openE7LoginWindow(): Promise<E7Credentials | null> {
   });
 }
 
+export function closeE7LoginWindow(): boolean {
+  if (!activeLoginWindow || activeLoginWindow.isDestroyed()) {
+    activeLoginWindow = null;
+    return false;
+  }
+  activeLoginWindow.close();
+  activeLoginWindow = null;
+  logger.info('[e7-login] login window closed by user request');
+  return true;
+}
+
 export async function persistE7Credentials(creds: E7Credentials): Promise<void> {
   const p = credentialsPath();
   await ensureFile(p);

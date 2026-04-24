@@ -906,6 +906,25 @@
       }
     }
   },
+  "CommunityAuth": {
+    "CommunityAuth": {
+      "CredentialsFile": {
+        "type": "input",
+        "value": "",
+        "display": "hide"
+      },
+      "WaitTimeout": {
+        "type": "select",
+        "value": 300,
+        "option": [
+          60,
+          180,
+          300,
+          600
+        ]
+      }
+    }
+  },
   "SanctuaryMonthly": {
     "Scheduler": {
       "Enable": {

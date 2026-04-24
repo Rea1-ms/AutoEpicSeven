@@ -42,7 +42,6 @@ from pywebio.session import (
 import module.webui.lang as lang
 from module.config.config import AzurLaneConfig, Function
 from module.config.deep import deep_get, deep_iter, deep_set
-from module.config.server import is_cn_server
 from module.config.utils import (
     alas_instance,
     alas_template,
@@ -64,6 +63,12 @@ from module.webui.pin import put_input, put_select
 from module.webui.process_manager import ProcessManager
 from module.webui.remote_access import RemoteAccess
 from module.webui.setting import State
+from module.webui.task_extension import (
+    get_task_start,
+    get_task_stop,
+    is_task_visible,
+    render_task_detail,
+)
 from module.webui.updater import updater
 from module.webui.utils import (
     Icon,
@@ -121,31 +126,6 @@ class AlasGUI(Frame):
         self.inst_cache = []
         self.load_home = False
         self.af_flag = False
-
-    def _is_cn_community_config(self) -> bool:
-        """
-        Decide whether current selected instance should expose CN-server-only tasks.
-
-        Important: we must read real config content to avoid hiding CN features on renamed
-        instances.
-        """
-        if not self.alas_name:
-            return False
-        config = self.alas_config.read_file(self.alas_name)
-        package_name = deep_get(config, "Alas.Emulator.PackageName", default="")
-        if not package_name:
-            return False
-        return is_cn_server(package_name)
-
-    def _is_task_visible_in_current_config(self, task: str) -> bool:
-        """
-        Filter task cards by selected config profile.
-
-        CommunityAio is intentionally exposed only for CN game configs.
-        """
-        if task != "CommunityAio":
-            return True
-        return self._is_cn_community_config()
 
     @use_scope("aside", clear=True)
     def set_aside(self) -> None:
@@ -265,7 +245,7 @@ class AlasGUI(Frame):
             visible_tasks = [
                 task
                 for task in task_data.get("tasks", [])
-                if self._is_task_visible_in_current_config(task)
+                if is_task_visible(self, task)
             ]
             if not visible_tasks:
                 continue
@@ -328,6 +308,7 @@ class AlasGUI(Frame):
 
         config = self.alas_config.read_file(self.alas_name)
         self.alas_config_hidden = self.alas_config.get_hidden_args(config)
+        render_task_detail(self, task)
         for group, arg_dict in deep_iter(self.ALAS_ARGS[task], depth=1):
             if self.set_group(group, arg_dict, config, task):
                 self.set_navigator(group)
@@ -747,8 +728,8 @@ class AlasGUI(Frame):
         switch_scheduler = BinarySwitchButton(
             label_on=t("Gui.Button.Stop"),
             label_off=t("Gui.Button.Start"),
-            onclick_on=lambda: self.alas.stop(),
-            onclick_off=lambda: self.alas.start(task),
+            onclick_on=get_task_stop(self, task, lambda: self.alas.stop()),
+            onclick_off=get_task_start(self, task, lambda: self.alas.start(task)),
             get_state=lambda: self.alas.alive,
             color_on="off",
             color_off="on",
@@ -779,6 +760,7 @@ class AlasGUI(Frame):
         )
 
         config = self.alas_config.read_file(self.alas_name)
+        render_task_detail(self, task)
         for group, arg_dict in deep_iter(self.ALAS_ARGS[task], depth=1):
             if group[0] == "Storage":
                 continue

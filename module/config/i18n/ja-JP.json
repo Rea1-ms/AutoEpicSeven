@@ -8,6 +8,10 @@
       "name": "デイリー",
       "help": "デイリー系タスクの設定をまとめています。"
     },
+    "Tool": {
+      "name": "ツール",
+      "help": ""
+    },
     "Monthly": {
       "name": "マンスリー",
       "help": "長周期タスクの設定をまとめています。"
@@ -73,6 +77,10 @@
     "Pets": {
       "name": "ペットショップ",
       "help": "ペットショップに入り、当日の無料孵化を処理します。"
+    },
+    "CommunityAuth": {
+      "name": "コミュニティログイン",
+      "help": "Electron のコミュニティログイン画面を開き、Community AIO が使用する CK を更新します。"
     },
     "SanctuaryMonthly": {
       "name": "聖域-マンスリー",
@@ -282,6 +290,24 @@
     "CredentialsFile": {
       "name": "認証情報ファイルパス",
       "help": "任意。Electron で出力した e7-credentials.json の絶対パス。空欄の場合は既定パスを使用します。"
+    }
+  },
+  "CommunityAuth": {
+    "_info": {
+      "name": "コミュニティログイン",
+      "help": "CN コミュニティプロトコルタスク用のローカル認証情報を管理します。Start でログイン画面を開き、ログで認証情報の書き込みを待機します。"
+    },
+    "CredentialsFile": {
+      "name": "認証情報ファイル",
+      "help": "空欄の場合、Electron と Community AIO が共有する既定の認証情報パスを使用します。"
+    },
+    "WaitTimeout": {
+      "name": "ログイン完了待機秒数",
+      "help": "Start 後、ツールはログ領域で認証情報ファイルを監視し、有効な CK を取得できないまま時間切れになると終了します。",
+      "60": "60",
+      "180": "180",
+      "300": "300",
+      "600": "600"
     }
   },
   "Knights": {
@@ -707,6 +733,8 @@
     "Text": {
       "InvalidFeedBack": "形式エラーです。例: {0}",
       "Clear": "クリア",
+      "CommunityAuthCredentials": "コミュニティログイン認証情報",
+      "CommunityAuthCredentialsHelp": "現在の CK 状態を確認し、Electron ログイン画面を開いてローカル認証情報を更新します。",
       "CommunityAioTodo": "コミュニティ AIO は CN 設定（cn）のみ対応です。",
       "KnightsTeamBattleTodo": "ギルド戦 OCR は今後実装予定です",
       "KnightsNoStaminaTodo": "ワールドボスの体力不足処理は今後実装予定です"

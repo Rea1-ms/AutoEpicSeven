@@ -8,6 +8,10 @@
       "name": "每日",
       "help": ""
     },
+    "Tool": {
+      "name": "工具",
+      "help": ""
+    },
     "Monthly": {
       "name": "每月",
       "help": ""
@@ -73,6 +77,10 @@
     "Pets": {
       "name": "宠物商店",
       "help": ""
+    },
+    "CommunityAuth": {
+      "name": "社区登录",
+      "help": "拉起 Electron 社区登录窗口，抓取并刷新 Community AIO 使用的 CK。"
     },
     "SanctuaryMonthly": {
       "name": "圣域-月常",
@@ -282,6 +290,24 @@
     "CredentialsFile": {
       "name": "凭证文件路径",
       "help": "可选。Electron 登录导出的 e7-credentials.json 绝对路径；留空则使用默认路径。"
+    }
+  },
+  "CommunityAuth": {
+    "_info": {
+      "name": "社区登录",
+      "help": "用于管理国服社区协议任务所需的本地凭证。点击 Start 会打开登录窗口并在日志中等待凭证写入。"
+    },
+    "CredentialsFile": {
+      "name": "凭证文件",
+      "help": "留空时使用 Electron 与 Community AIO 的默认凭证路径。"
+    },
+    "WaitTimeout": {
+      "name": "等待登录完成最多秒数",
+      "help": "Start 后工具任务会在日志区轮询凭证文件，超过该时间仍未抓到有效 CK 则结束。",
+      "60": "60",
+      "180": "180",
+      "300": "300",
+      "600": "600"
     }
   },
   "Knights": {
@@ -707,6 +733,8 @@
     "Text": {
       "InvalidFeedBack": "格式错误。 示例：{0}",
       "Clear": "清除",
+      "CommunityAuthCredentials": "社区登录凭证",
+      "CommunityAuthCredentialsHelp": "用于查看当前 CK 状态，并拉起 Electron 登录窗口更新本地凭证。",
       "CommunityAioTodo": "社区 AIO 仅支持国服配置（cn）。",
       "KnightsTeamBattleTodo": "团战 OCR 功能待实现",
       "KnightsNoStaminaTodo": "世界 Boss 体力不足处理待实现"

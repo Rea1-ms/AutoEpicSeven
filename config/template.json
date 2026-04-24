@@ -224,6 +224,12 @@
       "ServerUpdate": "02:00"
     }
   },
+  "CommunityAuth": {
+    "CommunityAuth": {
+      "CredentialsFile": null,
+      "WaitTimeout": 300
+    }
+  },
   "SanctuaryMonthly": {
     "Scheduler": {
       "Enable": false,

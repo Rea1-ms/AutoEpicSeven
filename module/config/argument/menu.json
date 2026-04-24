@@ -26,6 +26,13 @@
       "Pets"
     ]
   },
+  "Tool": {
+    "menu": "list",
+    "page": "tool",
+    "tasks": [
+      "CommunityAuth"
+    ]
+  },
   "Monthly": {
     "menu": "list",
     "page": "setting",
