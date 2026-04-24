@@ -5,7 +5,13 @@ from module.base.button import Button, ButtonWrapper
 
 COMMON_STORE_CHECK = ButtonWrapper(
     name='COMMON_STORE_CHECK',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/store/current/entries/COMMON_STORE_CHECK.png',
+        area=(23, 303, 59, 333),
+        search=(3, 283, 79, 353),
+        color=(105, 132, 174),
+        button=(23, 303, 59, 333),
+    ),
     global_cn=Button(
         file='./assets/global_cn/store/current/entries/COMMON_STORE_CHECK.png',
         area=(23, 383, 59, 412),
@@ -17,7 +23,13 @@ COMMON_STORE_CHECK = ButtonWrapper(
 )
 COMMON_STORE_ENTRY = ButtonWrapper(
     name='COMMON_STORE_ENTRY',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/store/current/entries/COMMON_STORE_ENTRY.png',
+        area=(25, 303, 53, 329),
+        search=(5, 283, 73, 349),
+        color=(50, 55, 74),
+        button=(25, 303, 53, 329),
+    ),
     global_cn=Button(
         file='./assets/global_cn/store/current/entries/COMMON_STORE_ENTRY.png',
         area=(25, 382, 53, 408),
@@ -29,7 +41,13 @@ COMMON_STORE_ENTRY = ButtonWrapper(
 )
 CONQUEST_POINTS_STORE_CHECK = ButtonWrapper(
     name='CONQUEST_POINTS_STORE_CHECK',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/store/current/entries/CONQUEST_POINTS_STORE_CHECK.png',
+        area=(25, 379, 57, 412),
+        search=(5, 359, 77, 432),
+        color=(134, 154, 188),
+        button=(25, 379, 57, 412),
+    ),
     global_cn=Button(
         file='./assets/global_cn/store/current/entries/CONQUEST_POINTS_STORE_CHECK.png',
         area=(25, 459, 57, 491),
@@ -41,7 +59,13 @@ CONQUEST_POINTS_STORE_CHECK = ButtonWrapper(
 )
 CONQUEST_POINTS_STORE_ENTRY = ButtonWrapper(
     name='CONQUEST_POINTS_STORE_ENTRY',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/store/current/entries/CONQUEST_POINTS_STORE_ENTRY.png',
+        area=(27, 383, 51, 407),
+        search=(7, 363, 71, 427),
+        color=(84, 89, 112),
+        button=(27, 383, 51, 407),
+    ),
     global_cn=Button(
         file='./assets/global_cn/store/current/entries/CONQUEST_POINTS_STORE_ENTRY.png',
         area=(27, 462, 51, 486),
@@ -53,19 +77,23 @@ CONQUEST_POINTS_STORE_ENTRY = ButtonWrapper(
 )
 FREE_STORE_CHECK = ButtonWrapper(
     name='FREE_STORE_CHECK',
-    cn=None,
-    global_cn=Button(
-        file='./assets/global_cn/store/current/entries/FREE_STORE_CHECK.png',
+    share=Button(
+        file='./assets/share/store/current/entries/FREE_STORE_CHECK.png',
         area=(377, 21, 402, 46),
         search=(137, 13, 843, 54),
         color=(69, 101, 54),
         button=(377, 21, 402, 46),
     ),
-    global_en=None,
 )
 FREE_STORE_ENTRY = ButtonWrapper(
     name='FREE_STORE_ENTRY',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/store/current/entries/FREE_STORE_ENTRY.png',
+        area=(382, 100, 419, 120),
+        search=(362, 80, 439, 140),
+        color=(60, 69, 98),
+        button=(382, 100, 419, 120),
+    ),
     global_cn=Button(
         file='./assets/global_cn/store/current/entries/FREE_STORE_ENTRY.png',
         area=(382, 99, 420, 117),
@@ -77,19 +105,23 @@ FREE_STORE_ENTRY = ButtonWrapper(
 )
 INHERITANCE_STONE_STORE_CHECK = ButtonWrapper(
     name='INHERITANCE_STONE_STORE_CHECK',
-    cn=None,
-    global_cn=Button(
-        file='./assets/global_cn/store/current/entries/INHERITANCE_STONE_STORE_CHECK.png',
+    share=Button(
+        file='./assets/share/store/current/entries/INHERITANCE_STONE_STORE_CHECK.png',
         area=(555, 22, 577, 49),
         search=(137, 13, 843, 54),
         color=(49, 121, 117),
         button=(555, 22, 577, 49),
     ),
-    global_en=None,
 )
 INHERITANCE_STONE_STORE_ENTRY = ButtonWrapper(
     name='INHERITANCE_STONE_STORE_ENTRY',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/store/current/entries/INHERITANCE_STONE_STORE_ENTRY.png',
+        area=(725, 100, 780, 120),
+        search=(705, 80, 800, 140),
+        color=(78, 87, 116),
+        button=(725, 100, 780, 120),
+    ),
     global_cn=Button(
         file='./assets/global_cn/store/current/entries/INHERITANCE_STONE_STORE_ENTRY.png',
         area=(724, 99, 781, 117),
@@ -101,7 +133,13 @@ INHERITANCE_STONE_STORE_ENTRY = ButtonWrapper(
 )
 STORE_CHECK = ButtonWrapper(
     name='STORE_CHECK',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/store/current/entries/STORE_CHECK.png',
+        area=(68, 20, 116, 45),
+        search=(48, 0, 136, 65),
+        color=(140, 142, 150),
+        button=(68, 20, 116, 45),
+    ),
     global_cn=Button(
         file='./assets/global_cn/store/current/entries/STORE_CHECK.png',
         area=(69, 21, 118, 45),

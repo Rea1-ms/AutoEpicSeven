@@ -82,18 +82,6 @@ INHERITANCE_STONE_STORE = ButtonWrapper(
         button=(1067, 220, 1089, 248),
     ),
 )
-STORE_CHECK = ButtonWrapper(
-    name='STORE_CHECK',
-    cn=Button(
-        file='./assets/cn/store/entries/STORE_CHECK.png',
-        area=(92, 21, 116, 45),
-        search=(72, 1, 136, 65),
-        color=(158, 155, 155),
-        button=(92, 21, 116, 45),
-    ),
-    global_cn=None,
-    global_en=None,
-)
 SUB_STORE_SEARCH = ButtonWrapper(
     name='SUB_STORE_SEARCH',
     share=Button(

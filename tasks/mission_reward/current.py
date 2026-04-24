@@ -81,14 +81,14 @@ class CurrentMissionReward(UI):
         self.ui_goto(page_mission_reward, skip_first_screenshot=skip_first_screenshot)
         return True
 
-    def _ocr_mission_points(self) -> int:
+    def _ocr_mission_points(self, label: str = "Daily") -> int:
         ocr = OcrMissionPoints(
             OCR_MISSION_POINTS,
             lang=self._mission_ocr_lang(),
-            name=f"MissionPoints",
+            name=f"{label}MissionPoints",
         )
         points = ocr.ocr_single_line(self.device.image)
-        logger.attr(f"MissionPoints", points)
+        logger.attr(f"{label}MissionPoints", points)
         return points
 
     def _get_ready_reward_button(self, buttons, action_name: str, interval=0):
@@ -203,7 +203,7 @@ class CurrentMissionReward(UI):
         claimed_daily = False
 
         if run_daily:
-            daily_points = self._ocr_mission_points()
+            daily_points = self._ocr_mission_points("Daily")
             claimed_daily = self._claim_rewards(
                 buttons=self.REWARD_BUTTONS,
                 action_name=self.REWARD_ACTION,

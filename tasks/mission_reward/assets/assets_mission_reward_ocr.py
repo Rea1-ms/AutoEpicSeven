@@ -7,9 +7,9 @@ OCR_MISSION_POINTS = ButtonWrapper(
     name='OCR_MISSION_POINTS',
     share=Button(
         file='./assets/share/mission_reward/ocr/OCR_MISSION_POINTS.png',
-        area=(318, 162, 394, 200),
-        search=(298, 142, 414, 220),
-        color=(55, 71, 98),
-        button=(318, 162, 394, 200),
+        area=(328, 117, 405, 152),
+        search=(308, 97, 425, 172),
+        color=(58, 73, 99),
+        button=(328, 117, 405, 152),
     ),
 )
