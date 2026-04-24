@@ -4,9 +4,9 @@ from module.base.button import ButtonWrapper
 from tasks.base.assets.assets_base_page import *
 from tasks.base.assets.assets_base_popup import AD_BUFF_X_CLOSE
 from tasks.base.assets.assets_base_main_page import MENU, MENU_CLOSE, WHITE_STAR
-from tasks.mission_reward.assets.assets_mission_reward_current_ocr import OCR_MISSION_POINTS
+from tasks.mission_reward.assets.assets_mission_reward_ocr import OCR_MISSION_POINTS
 from tasks.secret_shop.assets.assets_secret_shop import SECRET_SHOP_CHECK
-from tasks.store.assets.assets_store_current_entries import (
+from tasks.store.assets.assets_store_entries import (
     COMMON_STORE_ENTRY,
     COMMON_STORE_CHECK,
     CONQUEST_POINTS_STORE_ENTRY,

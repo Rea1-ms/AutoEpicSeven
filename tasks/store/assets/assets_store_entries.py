@@ -3,92 +3,149 @@ from module.base.button import Button, ButtonWrapper
 # This file was auto-generated, do not modify it manually. To generate:
 # ``` python -m dev_tools.button_extract ```
 
-COMMON_INHERITANCE_STONE = ButtonWrapper(
-    name='COMMON_INHERITANCE_STONE',
-    share=Button(
-        file='./assets/share/store/entries/COMMON_INHERITANCE_STONE.png',
-        area=(624, 22, 634, 46),
-        search=(323, 16, 925, 49),
-        color=(84, 183, 160),
-        button=(624, 22, 634, 46),
+COMMON_STORE_CHECK = ButtonWrapper(
+    name='COMMON_STORE_CHECK',
+    cn=Button(
+        file='./assets/cn/store/entries/COMMON_STORE_CHECK.png',
+        area=(23, 303, 59, 333),
+        search=(3, 283, 79, 353),
+        color=(105, 132, 174),
+        button=(23, 303, 59, 333),
     ),
+    global_cn=Button(
+        file='./assets/global_cn/store/entries/COMMON_STORE_CHECK.png',
+        area=(23, 383, 59, 412),
+        search=(3, 363, 79, 432),
+        color=(106, 133, 176),
+        button=(23, 383, 59, 412),
+    ),
+    global_en=None,
 )
-CONQUEST_POINTS_STORE = ButtonWrapper(
-    name='CONQUEST_POINTS_STORE',
-    share=Button(
-        file='./assets/share/store/entries/CONQUEST_POINTS_STORE.png',
-        area=(1064, 680, 1093, 707),
-        search=(1044, 660, 1113, 720),
-        color=(110, 121, 138),
-        button=(1064, 680, 1093, 707),
+COMMON_STORE_ENTRY = ButtonWrapper(
+    name='COMMON_STORE_ENTRY',
+    cn=Button(
+        file='./assets/cn/store/entries/COMMON_STORE_ENTRY.png',
+        area=(25, 303, 53, 329),
+        search=(5, 283, 73, 349),
+        color=(50, 55, 74),
+        button=(25, 303, 53, 329),
     ),
+    global_cn=Button(
+        file='./assets/global_cn/store/entries/COMMON_STORE_ENTRY.png',
+        area=(25, 382, 53, 408),
+        search=(5, 362, 73, 428),
+        color=(56, 62, 88),
+        button=(25, 382, 53, 408),
+    ),
+    global_en=None,
 )
 CONQUEST_POINTS_STORE_CHECK = ButtonWrapper(
     name='CONQUEST_POINTS_STORE_CHECK',
-    share=[
-        Button(
-            file='./assets/share/store/entries/CONQUEST_POINTS_STORE_CHECK.png',
-            area=(168, 506, 198, 540),
-            search=(148, 486, 218, 560),
-            color=(86, 68, 48),
-            button=(168, 506, 198, 540),
-        ),
-        Button(
-            file='./assets/share/store/entries/CONQUEST_POINTS_STORE_CHECK.2.png',
-            area=(176, 488, 190, 511),
-            search=(156, 468, 210, 531),
-            color=(94, 74, 54),
-            button=(176, 488, 190, 511),
-        ),
-    ],
+    cn=Button(
+        file='./assets/cn/store/entries/CONQUEST_POINTS_STORE_CHECK.png',
+        area=(25, 379, 57, 412),
+        search=(5, 359, 77, 432),
+        color=(134, 154, 188),
+        button=(25, 379, 57, 412),
+    ),
+    global_cn=Button(
+        file='./assets/global_cn/store/entries/CONQUEST_POINTS_STORE_CHECK.png',
+        area=(25, 459, 57, 491),
+        search=(5, 439, 77, 511),
+        color=(136, 157, 190),
+        button=(25, 459, 57, 491),
+    ),
+    global_en=None,
 )
-FRIENDSHIP_POINTS = ButtonWrapper(
-    name='FRIENDSHIP_POINTS',
+CONQUEST_POINTS_STORE_ENTRY = ButtonWrapper(
+    name='CONQUEST_POINTS_STORE_ENTRY',
+    cn=Button(
+        file='./assets/cn/store/entries/CONQUEST_POINTS_STORE_ENTRY.png',
+        area=(27, 383, 51, 407),
+        search=(7, 363, 71, 427),
+        color=(84, 89, 112),
+        button=(27, 383, 51, 407),
+    ),
+    global_cn=Button(
+        file='./assets/global_cn/store/entries/CONQUEST_POINTS_STORE_ENTRY.png',
+        area=(27, 462, 51, 486),
+        search=(7, 442, 71, 506),
+        color=(86, 92, 116),
+        button=(27, 462, 51, 486),
+    ),
+    global_en=None,
+)
+FREE_STORE_CHECK = ButtonWrapper(
+    name='FREE_STORE_CHECK',
     share=Button(
-        file='./assets/share/store/entries/FRIENDSHIP_POINTS.png',
-        area=(626, 21, 651, 45),
-        search=(344, 20, 953, 48),
-        color=(88, 121, 49),
-        button=(626, 21, 651, 45),
+        file='./assets/share/store/entries/FREE_STORE_CHECK.png',
+        area=(377, 21, 402, 46),
+        search=(137, 13, 843, 54),
+        color=(69, 101, 54),
+        button=(377, 21, 402, 46),
     ),
 )
-FRIENDSHIP_POINTS_STORE = ButtonWrapper(
-    name='FRIENDSHIP_POINTS_STORE',
+FREE_STORE_ENTRY = ButtonWrapper(
+    name='FREE_STORE_ENTRY',
+    cn=Button(
+        file='./assets/cn/store/entries/FREE_STORE_ENTRY.png',
+        area=(382, 100, 419, 120),
+        search=(362, 80, 439, 140),
+        color=(60, 69, 98),
+        button=(382, 100, 419, 120),
+    ),
+    global_cn=Button(
+        file='./assets/global_cn/store/entries/FREE_STORE_ENTRY.png',
+        area=(382, 99, 420, 117),
+        search=(362, 79, 440, 137),
+        color=(63, 72, 100),
+        button=(382, 99, 420, 117),
+    ),
+    global_en=None,
+)
+INHERITANCE_STONE_STORE_CHECK = ButtonWrapper(
+    name='INHERITANCE_STONE_STORE_CHECK',
     share=Button(
-        file='./assets/share/store/entries/FRIENDSHIP_POINTS_STORE.png',
-        area=(1065, 421, 1091, 446),
-        search=(1045, 401, 1111, 466),
-        color=(171, 177, 186),
-        button=(1065, 421, 1091, 446),
+        file='./assets/share/store/entries/INHERITANCE_STONE_STORE_CHECK.png',
+        area=(555, 22, 577, 49),
+        search=(137, 13, 843, 54),
+        color=(49, 121, 117),
+        button=(555, 22, 577, 49),
     ),
 )
-GOLDEN_INHERITANCE_STONE = ButtonWrapper(
-    name='GOLDEN_INHERITANCE_STONE',
-    share=Button(
-        file='./assets/share/store/entries/GOLDEN_INHERITANCE_STONE.png',
-        area=(559, 17, 579, 49),
-        search=(323, 16, 925, 49),
-        color=(131, 87, 31),
-        button=(559, 17, 579, 49),
+INHERITANCE_STONE_STORE_ENTRY = ButtonWrapper(
+    name='INHERITANCE_STONE_STORE_ENTRY',
+    cn=Button(
+        file='./assets/cn/store/entries/INHERITANCE_STONE_STORE_ENTRY.png',
+        area=(725, 100, 780, 120),
+        search=(705, 80, 800, 140),
+        color=(78, 87, 116),
+        button=(725, 100, 780, 120),
     ),
+    global_cn=Button(
+        file='./assets/global_cn/store/entries/INHERITANCE_STONE_STORE_ENTRY.png',
+        area=(724, 99, 781, 117),
+        search=(704, 79, 801, 137),
+        color=(80, 89, 117),
+        button=(724, 99, 781, 117),
+    ),
+    global_en=None,
 )
-INHERITANCE_STONE_STORE = ButtonWrapper(
-    name='INHERITANCE_STONE_STORE',
-    share=Button(
-        file='./assets/share/store/entries/INHERITANCE_STONE_STORE.png',
-        area=(1067, 220, 1089, 248),
-        search=(1047, 200, 1109, 268),
-        color=(110, 120, 135),
-        button=(1067, 220, 1089, 248),
+STORE_CHECK = ButtonWrapper(
+    name='STORE_CHECK',
+    cn=Button(
+        file='./assets/cn/store/entries/STORE_CHECK.png',
+        area=(68, 20, 116, 45),
+        search=(48, 0, 136, 65),
+        color=(140, 142, 150),
+        button=(68, 20, 116, 45),
     ),
-)
-SUB_STORE_SEARCH = ButtonWrapper(
-    name='SUB_STORE_SEARCH',
-    share=Button(
-        file='./assets/share/store/entries/SUB_STORE_SEARCH.png',
-        area=(1056, 68, 1099, 719),
-        search=(1036, 48, 1119, 720),
-        color=(37, 50, 74),
-        button=(1056, 68, 1099, 719),
+    global_cn=Button(
+        file='./assets/global_cn/store/entries/STORE_CHECK.png',
+        area=(69, 21, 118, 45),
+        search=(49, 1, 138, 65),
+        color=(137, 139, 147),
+        button=(69, 21, 118, 45),
     ),
+    global_en=None,
 )

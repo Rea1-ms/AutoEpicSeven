@@ -36,7 +36,7 @@ from tasks.store.assets.assets_store_actions import (
     OCR_BUY_TIMES,
     OCR_REMAINING_BUY_TIMES,
 )
-from tasks.store.assets.assets_store_current_items import (
+from tasks.store.assets.assets_store_items import (
     ARENA_FLAG,
     DAILY_FREE_ITEM,
     EQUIPMENT_REFORGING_STONE_SELECTION_CHEST,

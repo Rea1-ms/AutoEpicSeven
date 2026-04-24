@@ -15,7 +15,7 @@ from module.logger import logger
 from module.ocr.ocr import Digit
 from tasks.base.page import page_main, page_mission_reward
 from tasks.base.ui import UI
-from tasks.mission_reward.assets.assets_mission_reward_current_daily import (
+from tasks.mission_reward.assets.assets_mission_reward_daily import (
     DAILY_POINTS_1,
     DAILY_POINTS_2,
     DAILY_POINTS_3,
@@ -23,7 +23,7 @@ from tasks.mission_reward.assets.assets_mission_reward_current_daily import (
     DAILY_POINTS_5,
     DAILY_POINTS_6,
 )
-from tasks.mission_reward.assets.assets_mission_reward_current_ocr import OCR_MISSION_POINTS
+from tasks.mission_reward.assets.assets_mission_reward_ocr import OCR_MISSION_POINTS
 
 
 
