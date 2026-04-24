@@ -200,10 +200,6 @@
       "ClaimDailyRewards": {
         "type": "checkbox",
         "value": true
-      },
-      "ClaimWeeklyRewards": {
-        "type": "checkbox",
-        "value": true
       }
     }
   },
@@ -367,20 +363,12 @@
         "order": 5,
         "color": "#ffb45e"
       },
-      "WeeklyActivity": {
-        "type": "stored",
-        "value": {},
-        "display": "display",
-        "stored": "StoredWeeklyActivity",
-        "order": 6,
-        "color": "#ff7f8a"
-      },
       "ArenaRank": {
         "type": "stored",
         "value": {},
         "display": "display",
         "stored": "StoredArenaRank",
-        "order": 7,
+        "order": 6,
         "color": "#ffd36e"
       },
       "ArenaFlag": {
@@ -388,7 +376,7 @@
         "value": {},
         "display": "display",
         "stored": "StoredCounter",
-        "order": 8,
+        "order": 7,
         "color": "#f2a93b"
       },
       "ConquestPoint": {
@@ -396,7 +384,7 @@
         "value": {},
         "display": "display",
         "stored": "StoredInt",
-        "order": 9,
+        "order": 8,
         "color": "#5ea3ff"
       },
       "ShadowCommission": {
@@ -404,7 +392,7 @@
         "value": {},
         "display": "display",
         "stored": "StoredShadowCommission",
-        "order": 10,
+        "order": 9,
         "color": "#7796ff"
       },
       "TeamBattle": {
@@ -412,7 +400,7 @@
         "value": {},
         "display": "display",
         "stored": "StoredTeamBattleStatus",
-        "order": 11,
+        "order": 10,
         "color": "#d85f7c"
       }
     }

@@ -252,10 +252,6 @@
     "ClaimDailyRewards": {
       "name": "Claim Daily Rewards",
       "help": "Claim the daily mission reward chest when available."
-    },
-    "ClaimWeeklyRewards": {
-      "name": "Claim Weekly Rewards",
-      "help": "Claim the weekly mission reward chest when available."
     }
   },
   "Mail": {
@@ -590,10 +586,6 @@
     },
     "DailyActivity": {
       "name": "Daily Activity",
-      "help": ""
-    },
-    "WeeklyActivity": {
-      "name": "Weekly Activity",
       "help": ""
     },
     "ArenaRank": {

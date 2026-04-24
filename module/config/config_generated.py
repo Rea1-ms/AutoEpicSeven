@@ -42,7 +42,6 @@ class GeneratedConfig:
 
     # Group `MissionReward`
     MissionReward_ClaimDailyRewards = True
-    MissionReward_ClaimWeeklyRewards = True
 
     # Group `Mail`
     Mail_CollectWithin = '1d'  # 1h, 1d
@@ -123,7 +122,6 @@ class GeneratedConfig:
     Dashboard_Stamina = {}
     Dashboard_EquipmentInventory = {}
     Dashboard_DailyActivity = {}
-    Dashboard_WeeklyActivity = {}
     Dashboard_ArenaRank = {}
     Dashboard_ArenaFlag = {}
     Dashboard_ConquestPoint = {}

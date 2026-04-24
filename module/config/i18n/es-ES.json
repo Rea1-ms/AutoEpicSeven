@@ -252,10 +252,6 @@
     "ClaimDailyRewards": {
       "name": "Reclamar recompensas diarias",
       "help": "Reclama el cofre de recompensas diarias cuando esté disponible."
-    },
-    "ClaimWeeklyRewards": {
-      "name": "Reclamar recompensas semanales",
-      "help": "Reclama el cofre de recompensas semanales cuando esté disponible."
     }
   },
   "Mail": {
@@ -590,10 +586,6 @@
     },
     "DailyActivity": {
       "name": "Actividad Diaria",
-      "help": ""
-    },
-    "WeeklyActivity": {
-      "name": "Actividad Semanal",
       "help": ""
     },
     "ArenaRank": {

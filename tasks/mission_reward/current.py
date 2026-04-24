@@ -213,10 +213,6 @@ class CurrentMissionReward(UI):
         with self.config.multi_set():
             if daily_points is not None:
                 self.config.stored.DailyActivity.set(daily_points)
-            # Current oversea UI removed weekly mission points entirely.
-            # Clear the legacy weekly counter so the dashboard does not keep
-            # showing a stale pre-update value for this config profile.
-            self.config.stored.WeeklyActivity.clear()
 
         self.ui_goto(page_main, skip_first_screenshot=True)
         if claimed_daily:

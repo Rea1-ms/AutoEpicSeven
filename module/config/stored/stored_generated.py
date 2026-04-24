@@ -2,7 +2,6 @@ from module.config.stored.classes import (
     StoredInt,
     StoredCounter,
     StoredDailyActivity,
-    StoredWeeklyActivity,
     StoredArenaRank,
     StoredShadowCommission,
     StoredTeamBattleStatus,
@@ -18,7 +17,6 @@ class StoredGenerated:
     Stamina = StoredCounter("DataUpdate.Dashboard.Stamina")
     EquipmentInventory = StoredCounter("DataUpdate.Dashboard.EquipmentInventory")
     DailyActivity = StoredDailyActivity("DataUpdate.Dashboard.DailyActivity")
-    WeeklyActivity = StoredWeeklyActivity("DataUpdate.Dashboard.WeeklyActivity")
     ArenaRank = StoredArenaRank("DataUpdate.Dashboard.ArenaRank")
     ArenaFlag = StoredCounter("DataUpdate.Dashboard.ArenaFlag")
     ConquestPoint = StoredInt("DataUpdate.Dashboard.ConquestPoint")

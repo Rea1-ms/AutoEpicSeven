@@ -252,10 +252,6 @@
     "ClaimDailyRewards": {
       "name": "领取每日奖励",
       "help": "有可领取奖励时，领取每日任务奖励宝箱。"
-    },
-    "ClaimWeeklyRewards": {
-      "name": "领取每周奖励",
-      "help": "有可领取奖励时，领取每周任务奖励宝箱。"
     }
   },
   "Mail": {
@@ -590,10 +586,6 @@
     },
     "DailyActivity": {
       "name": "每日活跃",
-      "help": ""
-    },
-    "WeeklyActivity": {
-      "name": "每周活跃",
       "help": ""
     },
     "ArenaRank": {

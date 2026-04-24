@@ -42,8 +42,7 @@
       "ServerUpdate": "02:00"
     },
     "MissionReward": {
-      "ClaimDailyRewards": true,
-      "ClaimWeeklyRewards": true
+      "ClaimDailyRewards": true
     }
   },
   "Mail": {
@@ -84,7 +83,6 @@
       "Stamina": {},
       "EquipmentInventory": {},
       "DailyActivity": {},
-      "WeeklyActivity": {},
       "ArenaRank": {},
       "ArenaFlag": {},
       "ConquestPoint": {},

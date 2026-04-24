@@ -187,10 +187,6 @@ class StoredDailyActivity(StoredCounter):
     FIXED_TOTAL = 100
 
 
-class StoredWeeklyActivity(StoredCounter):
-    FIXED_TOTAL = 120
-
-
 class StoredShadowCommission(StoredCounter):
     FIXED_TOTAL = 30
 
