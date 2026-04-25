@@ -4,7 +4,7 @@ import {ensureFile, pathExists, readJson, remove, writeJson} from 'fs-extra';
 import {join} from 'node:path';
 import logger from '/@/logger';
 
-const PARTITION = 'persist:e7-login';
+const PARTITION_PREFIX = 'e7-login';
 const LOGIN_URL = 'https://epic7-community.zlongame.com/';
 const COOKIE_NAMESPACE = '1611630374326';
 const AUTH_COOKIE = `_pd_auth_${COOKIE_NAMESPACE}`;
@@ -49,7 +49,8 @@ export async function openE7LoginWindow(configName?: string): Promise<E7Credenti
     return null;
   }
 
-  const loginSession = session.fromPartition(PARTITION);
+  const partition = configName ? `${PARTITION_PREFIX}-${configName}` : PARTITION_PREFIX;
+  const loginSession = session.fromPartition(partition);
   let capturedPdDid: string | undefined;
 
   loginSession.webRequest.onBeforeSendHeaders(ZLONGAME_URL_FILTER, (details, callback) => {
@@ -66,7 +67,7 @@ export async function openE7LoginWindow(configName?: string): Promise<E7Credenti
     height: 780,
     title: 'Epic Seven Community Login',
     webPreferences: {
-      partition: PARTITION,
+      partition,
       contextIsolation: true,
       nodeIntegration: false,
       sandbox: true,
@@ -83,7 +84,7 @@ export async function openE7LoginWindow(configName?: string): Promise<E7Credenti
           action: 'allow',
           overrideBrowserWindowOptions: {
             webPreferences: {
-              partition: PARTITION,
+              partition,
               contextIsolation: true,
               nodeIntegration: false,
               sandbox: true,
