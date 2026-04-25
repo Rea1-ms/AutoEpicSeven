@@ -27,6 +27,19 @@ function credentialsPath(configName?: string): string {
   return join(app.getPath('userData'), filename);
 }
 
+function loginResultPath(configName?: string): string {
+  const filename = configName
+    ? `e7-login-result-${configName}.json`
+    : 'e7-login-result.json';
+  return join(app.getPath('userData'), filename);
+}
+
+async function writeLoginResult(ok: boolean, configName?: string): Promise<void> {
+  const p = loginResultPath(configName);
+  await ensureFile(p);
+  await writeJson(p, {ok, timestamp: Math.floor(Date.now() / 1000)}, {spaces: 2});
+}
+
 function decodeJwtExpiry(token: string): number | undefined {
   try {
     const parts = token.split('.');
@@ -51,6 +64,7 @@ export async function openE7LoginWindow(configName?: string): Promise<E7Credenti
 
   const partition = configName ? `${PARTITION_PREFIX}-${configName}` : PARTITION_PREFIX;
   const loginSession = session.fromPartition(partition);
+  await loginSession.clearStorageData();
   let capturedPdDid: string | undefined;
 
   loginSession.webRequest.onBeforeSendHeaders(ZLONGAME_URL_FILTER, (details, callback) => {
@@ -122,6 +136,9 @@ export async function openE7LoginWindow(configName?: string): Promise<E7Credenti
       if (!win.isDestroyed()) {
         win.close();
       }
+      writeLoginResult(value !== null, configName).catch(e => {
+        logger.warn(`[e7-login] write login result failed: ${e}`);
+      });
       resolve(value);
     };
 

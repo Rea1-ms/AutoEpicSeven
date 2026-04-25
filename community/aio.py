@@ -86,6 +86,17 @@ def get_default_credentials_path(config_name: str = "") -> str:
     return filename
 
 
+def get_login_result_path(config_name: str = "") -> str:
+    if config_name:
+        filename = f"e7-login-result-{config_name}.json"
+    else:
+        filename = "e7-login-result.json"
+    appdata = os.getenv("APPDATA")
+    if appdata:
+        return os.path.join(appdata, "aes", filename)
+    return filename
+
+
 def _pick_string(mapping: dict[str, Any], *keys: str) -> str | None:
     for key in keys:
         value = mapping.get(key)

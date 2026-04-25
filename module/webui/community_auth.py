@@ -236,13 +236,6 @@ def render_community_credentials_panel(gui: Any, scope: str) -> None:
     config = gui.alas_config.read_file(gui.alas_name)
     status = get_community_credentials_status(config, config_name=gui.alas_name)
 
-    def start_capture() -> None:
-        start_community_auth_tool(
-            gui,
-            COMMUNITY_AUTH_TASK,
-            lambda: gui.alas.start(COMMUNITY_AUTH_TASK),
-        )
-
     def refresh_panel() -> None:
         render_community_credentials_panel(gui, scope)
 
@@ -250,7 +243,6 @@ def render_community_credentials_panel(gui: Any, scope: str) -> None:
         put_text(t("Gui.Text.CommunityAuthCredentials"))
         put_text(t("Gui.Text.CommunityAuthCredentialsHelp"))
         put_html('<hr class="hr-group">')
-        put_text(f"凭证路径：{status['path']}").style("--arg-help--")
         if status["ok"]:
             put_text(status["summary"]).style("color: var(--bs-success);")
         else:
@@ -259,10 +251,9 @@ def render_community_credentials_panel(gui: Any, scope: str) -> None:
             put_text(status["detail"]).style("--arg-help--")
         put_buttons(
             buttons=[
-                {"label": "更新 CK", "value": "open-login", "color": "on"},
                 {"label": "刷新 CK 状态", "value": "refresh-ck", "color": "off"},
             ],
-            onclick=[start_capture, refresh_panel],
+            onclick=[refresh_panel],
         )
 
 
