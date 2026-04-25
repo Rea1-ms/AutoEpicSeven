@@ -52,6 +52,9 @@ class CommunityAio(ModuleBase):
             return False
 
         credentials_file = str(getattr(self.config, "CommunityAio_CredentialsFile", "") or "").strip()
+        if not credentials_file:
+            from community.aio import get_default_credentials_path
+            credentials_file = get_default_credentials_path(self.config.config_name)
         command = self._build_command(script_path, credentials_file=credentials_file)
         logger.attr("CommunityAioCmd", " ".join(command))
 

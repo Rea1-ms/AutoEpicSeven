@@ -63,9 +63,9 @@ export const addIpcMainListener = async (mainWindow: BrowserWindow, coreService:
   // Credentials are persisted to disk asynchronously when captured;
   // awaiting the full login flow here would block the IPC bridge
   // and cause a timeout on the renderer/webui side.
-  ipcMain.handle(E7_OPEN_LOGIN, () => {
-    logger.info('-----E7_OPEN_LOGIN-----');
-    openE7LoginWindow().catch(e => {
+  ipcMain.handle(E7_OPEN_LOGIN, (_, configName?: string) => {
+    logger.info(`-----E7_OPEN_LOGIN----- config=${configName ?? '(default)'}`);
+    openE7LoginWindow(configName).catch(e => {
       logger.error(`E7_OPEN_LOGIN background error: ${e}`);
     });
     return {opened: true};
@@ -76,16 +76,16 @@ export const addIpcMainListener = async (mainWindow: BrowserWindow, coreService:
     return closeE7LoginWindow();
   });
 
-  ipcMain.handle(E7_GET_CREDENTIALS, async () => {
-    return await getE7Credentials();
+  ipcMain.handle(E7_GET_CREDENTIALS, async (_, configName?: string) => {
+    return await getE7Credentials(configName);
   });
 
-  ipcMain.handle(E7_CLEAR_CREDENTIALS, async () => {
-    await clearE7Credentials();
+  ipcMain.handle(E7_CLEAR_CREDENTIALS, async (_, configName?: string) => {
+    await clearE7Credentials(configName);
     return true;
   });
 
-  ipcMain.handle(E7_CREDENTIALS_PATH, () => {
-    return getE7CredentialsPath();
+  ipcMain.handle(E7_CREDENTIALS_PATH, (_, configName?: string) => {
+    return getE7CredentialsPath(configName);
   });
 };

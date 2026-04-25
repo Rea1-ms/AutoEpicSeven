@@ -58,7 +58,7 @@ def format_remaining_time(seconds: int) -> str:
     return f"{minutes}m"
 
 
-def get_community_credentials_status(config: dict) -> dict:
+def get_community_credentials_status(config: dict, config_name: str = "") -> dict:
     from community.aio import (
         get_default_credentials_path,
         get_token_expiry,
@@ -70,7 +70,7 @@ def get_community_credentials_status(config: dict) -> dict:
         or deep_get(config, "CommunityAio.CommunityAio.CredentialsFile", default="")
         or ""
     ).strip()
-    credentials_path = configured_path or get_default_credentials_path()
+    credentials_path = configured_path or get_default_credentials_path(config_name)
     status = {
         "path": credentials_path,
         "ok": False,
@@ -111,16 +111,22 @@ def get_community_credentials_status(config: dict) -> dict:
     return status
 
 
-def _electron_invoke_js(channel: str, alert_message: str, console_label: str) -> str:
+def _electron_invoke_js(
+    channel: str,
+    alert_message: str,
+    console_label: str,
+    ipc_args: list | None = None,
+) -> str:
     script = """
         (async () => {
           const channel = __CHANNEL__;
+          const ipcArgs = __IPC_ARGS__;
           const alertMessage = __ALERT_MESSAGE__;
           const consoleLabel = __CONSOLE_LABEL__;
           const directInvoke = window.__electron_preload__ipcRendererInvoke;
           if (typeof directInvoke === 'function') {
             try {
-              await directInvoke(channel);
+              await directInvoke(channel, ...ipcArgs);
               return;
             } catch (error) {
               console.error(consoleLabel, error);
@@ -140,7 +146,7 @@ def _electron_invoke_js(channel: str, alert_message: str, console_label: str) ->
               const timer = window.setTimeout(() => {
                 window.removeEventListener('message', onMessage);
                 reject(new Error('Electron IPC bridge timed out'));
-              }, 3000);
+              }, 5000);
 
               function onMessage(event) {
                 const data = event.data;
@@ -161,7 +167,7 @@ def _electron_invoke_js(channel: str, alert_message: str, console_label: str) ->
                 type: __REQUEST_TYPE__,
                 requestId,
                 channel,
-                args: [],
+                args: ipcArgs,
               }, '*');
             });
           } catch (error) {
@@ -173,6 +179,7 @@ def _electron_invoke_js(channel: str, alert_message: str, console_label: str) ->
     return (
         script
         .replace("__CHANNEL__", dumps(channel))
+        .replace("__IPC_ARGS__", dumps(ipc_args or []))
         .replace("__ALERT_MESSAGE__", dumps(alert_message))
         .replace("__CONSOLE_LABEL__", dumps(console_label))
         .replace("__RESPONSE_SOURCE__", dumps(WEBUI_IPC_RESPONSE_SOURCE))
@@ -182,12 +189,13 @@ def _electron_invoke_js(channel: str, alert_message: str, console_label: str) ->
     )
 
 
-def open_community_login_window() -> None:
+def open_community_login_window(config_name: str = "") -> None:
     run_js(
         _electron_invoke_js(
             "e7:open-login",
             "当前运行环境不支持 Electron 登录拉起，请在桌面端使用。",
             "[CommunityAuth] open-login failed",
+            ipc_args=[config_name] if config_name else [],
         )
     )
     toast(
@@ -216,7 +224,7 @@ def close_community_login_window() -> None:
 
 def start_community_auth_tool(gui: Any, task: str, default_start) -> None:
     default_start()
-    open_community_login_window()
+    open_community_login_window(config_name=gui.alas_name)
 
 
 def stop_community_auth_tool(gui: Any, task: str, default_stop) -> None:
@@ -226,7 +234,7 @@ def stop_community_auth_tool(gui: Any, task: str, default_stop) -> None:
 
 def render_community_credentials_panel(gui: Any, scope: str) -> None:
     config = gui.alas_config.read_file(gui.alas_name)
-    status = get_community_credentials_status(config)
+    status = get_community_credentials_status(config, config_name=gui.alas_name)
 
     def start_capture() -> None:
         start_community_auth_tool(

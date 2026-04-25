@@ -20,7 +20,12 @@ export interface E7Credentials {
   captured_at: number;
 }
 
-const credentialsPath = () => join(app.getPath('userData'), 'e7-credentials.json');
+function credentialsPath(configName?: string): string {
+  const filename = configName
+    ? `e7-credentials-${configName}.json`
+    : 'e7-credentials.json';
+  return join(app.getPath('userData'), filename);
+}
 
 function decodeJwtExpiry(token: string): number | undefined {
   try {
@@ -38,7 +43,7 @@ function decodeJwtExpiry(token: string): number | undefined {
 
 let activeLoginWindow: BrowserWindow | null = null;
 
-export async function openE7LoginWindow(): Promise<E7Credentials | null> {
+export async function openE7LoginWindow(configName?: string): Promise<E7Credentials | null> {
   if (activeLoginWindow && !activeLoginWindow.isDestroyed()) {
     activeLoginWindow.focus();
     return null;
@@ -135,8 +140,8 @@ export async function openE7LoginWindow(): Promise<E7Credentials | null> {
           expiry: decodeJwtExpiry(auth),
           captured_at: Math.floor(Date.now() / 1000),
         };
-        await persistE7Credentials(creds);
-        logger.info(`[e7-login] captured credentials at ${credentialsPath()}`);
+        await persistE7Credentials(creds, configName);
+        logger.info(`[e7-login] captured credentials at ${credentialsPath(configName)}`);
         finish(creds);
       } catch (e) {
         logger.error(`[e7-login] capture error: ${e}`);
@@ -170,14 +175,14 @@ export function closeE7LoginWindow(): boolean {
   return true;
 }
 
-export async function persistE7Credentials(creds: E7Credentials): Promise<void> {
-  const p = credentialsPath();
+export async function persistE7Credentials(creds: E7Credentials, configName?: string): Promise<void> {
+  const p = credentialsPath(configName);
   await ensureFile(p);
   await writeJson(p, creds, {spaces: 2});
 }
 
-export async function getE7Credentials(): Promise<E7Credentials | null> {
-  const p = credentialsPath();
+export async function getE7Credentials(configName?: string): Promise<E7Credentials | null> {
+  const p = credentialsPath(configName);
   if (!(await pathExists(p))) return null;
   try {
     return (await readJson(p)) as E7Credentials;
@@ -187,14 +192,14 @@ export async function getE7Credentials(): Promise<E7Credentials | null> {
   }
 }
 
-export async function clearE7Credentials(): Promise<void> {
-  const p = credentialsPath();
+export async function clearE7Credentials(configName?: string): Promise<void> {
+  const p = credentialsPath(configName);
   if (await pathExists(p)) {
     await remove(p);
     logger.info(`[e7-login] cleared credentials at ${p}`);
   }
 }
 
-export function getE7CredentialsPath(): string {
-  return credentialsPath();
+export function getE7CredentialsPath(configName?: string): string {
+  return credentialsPath(configName);
 }

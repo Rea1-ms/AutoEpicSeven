@@ -75,11 +75,15 @@ def get_token_expiry(auth_token: str) -> int | None:
         return None
 
 
-def get_default_credentials_path() -> str:
+def get_default_credentials_path(config_name: str = "") -> str:
+    if config_name:
+        filename = f"e7-credentials-{config_name}.json"
+    else:
+        filename = DEFAULT_E7_CREDENTIALS_FILENAME
     appdata = os.getenv("APPDATA")
     if appdata:
-        return os.path.join(appdata, "aes", DEFAULT_E7_CREDENTIALS_FILENAME)
-    return DEFAULT_E7_CREDENTIALS_FILENAME
+        return os.path.join(appdata, "aes", filename)
+    return filename
 
 
 def _pick_string(mapping: dict[str, Any], *keys: str) -> str | None:

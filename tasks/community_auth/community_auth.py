@@ -30,7 +30,7 @@ class CommunityAuth:
             or deep_get(config.data, "CommunityAio.CommunityAio.CredentialsFile", default="")
             or ""
         ).strip()
-        return configured_path or get_default_credentials_path()
+        return configured_path or get_default_credentials_path(config.config_name)
 
     @staticmethod
     def _credentials_status(credentials_path: str) -> tuple[bool, str]:
