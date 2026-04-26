@@ -25,6 +25,13 @@ KNIGHTS_CHECK = ButtonWrapper(
 )
 TEAM_BATTLE_LOCKED = ButtonWrapper(
     name='TEAM_BATTLE_LOCKED',
+    global_cn=Button(
+        file='./assets/global_cn/knights/main_page/TEAM_BATTLE_LOCKED.png',
+        area=(618, 483, 662, 528),
+        search=(598, 463, 682, 548),
+        color=(142, 124, 100),
+        button=(618, 483, 662, 528),
+    ),
     share=Button(
         file='./assets/share/knights/main_page/TEAM_BATTLE_LOCKED.png',
         area=(622, 494, 662, 529),
@@ -83,6 +90,13 @@ WORLD_BOSS_LOCKED = ButtonWrapper(
 )
 WORLD_BOSS_OPENING = ButtonWrapper(
     name='WORLD_BOSS_OPENING',
+    global_cn=Button(
+        file='./assets/global_cn/knights/main_page/WORLD_BOSS_OPENING.png',
+        area=(274, 407, 312, 445),
+        search=(254, 387, 332, 465),
+        color=(140, 123, 108),
+        button=(274, 407, 312, 445),
+    ),
     share=Button(
         file='./assets/share/knights/main_page/WORLD_BOSS_OPENING.png',
         area=(278, 412, 311, 443),
