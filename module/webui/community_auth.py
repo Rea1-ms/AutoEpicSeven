@@ -79,35 +79,35 @@ def get_community_credentials_status(config: dict, config_name: str = "") -> dic
     }
 
     if not os.path.exists(credentials_path):
-        status["summary"] = "未找到 CK 文件，请先点击“更新 CK”完成登录。"
+        status["summary"] = "未找到凭证文件，请先点击上方的启动按钮完成登录。"
         return status
 
     try:
         creds = load_credentials_file(credentials_path)
     except ValueError as exc:
-        status["summary"] = f"CK 文件读取失败：{exc}"
+        status["summary"] = f"凭证文件读取失败: {exc}"
         return status
 
     missing = [key for key in ("token", "pd_did", "pd_dvid") if not creds.get(key)]
     if missing:
-        status["summary"] = f"CK 不完整：缺少 {', '.join(missing)}"
+        status["summary"] = f"凭证不完整，缺少 {', '.join(missing)}"
         return status
 
     expiry = get_token_expiry(creds["token"])
     if expiry is None:
         status["ok"] = True
-        status["summary"] = "CK 已就绪（token 未携带 exp 字段）"
+        status["summary"] = "凭证已就绪（token 未携带 exp 字段）"
         return status
 
     now = int(time.time())
     expiry_text = datetime.fromtimestamp(expiry).strftime("%Y-%m-%d %H:%M:%S")
     if expiry <= now:
-        status["summary"] = f"CK 已过期（过期时间：{expiry_text}）"
+        status["summary"] = f"凭证已过期（过期时间: {expiry_text}）"
         return status
 
     status["ok"] = True
-    status["summary"] = f"CK 有效，剩余约 {format_remaining_time(expiry - now)}"
-    status["detail"] = f"过期时间：{expiry_text}"
+    status["summary"] = f"凭证有效，剩余约 {format_remaining_time(expiry - now)}"
+    status["detail"] = f"过期时间: {expiry_text}"
     return status
 
 
@@ -199,7 +199,7 @@ def open_community_login_window(config_name: str = "") -> None:
         )
     )
     toast(
-        "已尝试拉起登录窗口。登录完成后可查看工具日志或刷新 CK 状态。",
+        "已尝试拉起登录窗口。登录完成后可查看工具日志或刷新凭证状态。",
         color="info",
         duration=3,
         position="right",
@@ -251,7 +251,7 @@ def render_community_credentials_panel(gui: Any, scope: str) -> None:
             put_text(status["detail"]).style("--arg-help--")
         put_buttons(
             buttons=[
-                {"label": "刷新 CK 状态", "value": "refresh-ck", "color": "off"},
+                {"label": "刷新凭证状态", "value": "refresh-ck", "color": "off"},
             ],
             onclick=[refresh_panel],
         )
