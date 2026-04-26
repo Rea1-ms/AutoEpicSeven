@@ -11,3 +11,7 @@ export function ipcRendererOn(
 ): IpcRenderer {
   return ipcRenderer.on(channel, listener);
 }
+
+export function ipcRendererInvoke<T = unknown>(channel: string, ...args: any[]): Promise<T> {
+  return ipcRenderer.invoke(channel, ...args) as Promise<T>;
+}

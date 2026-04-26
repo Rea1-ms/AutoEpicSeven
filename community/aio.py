@@ -29,6 +29,7 @@ SUCCESS_CODE = 0
 ALREADY_SIGNED_CODE = 1022
 BUY_STOP_CODES = {2100, 2104}
 COMMUNITY_COOKIE_NAMESPACE = "1611630374326"
+DEFAULT_E7_CREDENTIALS_FILENAME = "e7-credentials.json"
 
 
 @dataclass
@@ -72,6 +73,62 @@ def get_token_expiry(auth_token: str) -> int | None:
         return int(exp) if exp is not None else None
     except (TypeError, ValueError):
         return None
+
+
+def get_default_credentials_path(config_name: str = "") -> str:
+    if config_name:
+        filename = f"e7-credentials-{config_name}.json"
+    else:
+        filename = DEFAULT_E7_CREDENTIALS_FILENAME
+    appdata = os.getenv("APPDATA")
+    if appdata:
+        return os.path.join(appdata, "aes", filename)
+    return filename
+
+
+def get_login_result_path(config_name: str = "") -> str:
+    if config_name:
+        filename = f"e7-login-result-{config_name}.json"
+    else:
+        filename = "e7-login-result.json"
+    appdata = os.getenv("APPDATA")
+    if appdata:
+        return os.path.join(appdata, "aes", filename)
+    return filename
+
+
+def _pick_string(mapping: dict[str, Any], *keys: str) -> str | None:
+    for key in keys:
+        value = mapping.get(key)
+        if isinstance(value, str) and value.strip():
+            return value.strip()
+    return None
+
+
+def load_credentials_file(path: str) -> dict[str, str]:
+    try:
+        with open(path, "r", encoding="utf-8") as fp:
+            raw = json.load(fp)
+    except OSError as exc:
+        raise ValueError(f"读取凭证文件失败: {exc}") from exc
+    except json.JSONDecodeError as exc:
+        raise ValueError(f"凭证文件不是合法 JSON: {exc}") from exc
+
+    if not isinstance(raw, dict):
+        raise ValueError("凭证文件格式错误：根节点必须是对象")
+
+    auth_token = _pick_string(raw, "token", "auth_token", "authorization")
+    pd_did = _pick_string(raw, "pd_did", "pd-did", "pdDid")
+    pd_dvid = _pick_string(raw, "pd_dvid", "pd-dvid", "pdDvid")
+    user_id = _pick_string(raw, "uid", "user_id", "userId")
+    jsessionid = _pick_string(raw, "jsessionid", "jsessionId", "JSESSIONID")
+    return {
+        "token": auth_token or "",
+        "pd_did": pd_did or "",
+        "pd_dvid": pd_dvid or "",
+        "uid": user_id or "",
+        "jsessionid": jsessionid or "",
+    }
 
 
 class EpicSevenCommunityAIO:
@@ -532,6 +589,13 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--uid", help="可选。手动指定 JWT 内的真实用户 UID；默认自动从 token 解出")
     parser.add_argument("--token", help="社区 Authorization Token，也可通过环境变量 E7_TOKEN 提供")
+    parser.add_argument(
+        "--credentials-file",
+        help=(
+            "可选。读取 Electron 登录获取的凭证 JSON（默认尝试 "
+            f"{get_default_credentials_path()}，也可用环境变量 E7_CREDENTIALS_FILE 指定）"
+        ),
+    )
     parser.add_argument("--jsessionid", help="可选。若你抓包里有 JSESSIONID，可一并传入提升稳定性")
     parser.add_argument("--pd-did", help="必填。设备指纹 pd-did，也可通过环境变量 E7_PD_DID 提供")
     parser.add_argument(
@@ -559,28 +623,47 @@ def build_parser() -> argparse.ArgumentParser:
 def resolve_credentials(
     args: argparse.Namespace,
     parser: argparse.ArgumentParser,
-) -> tuple[str, str, str, str]:
-    auth_token = args.token or os.getenv("E7_TOKEN")
-    pd_did = args.pd_did or os.getenv("E7_PD_DID")
-    pd_dvid = args.pd_dvid or os.getenv("E7_PD_DVID")
+) -> tuple[str, str, str, str, str | None]:
+    credentials_path = args.credentials_file or os.getenv("E7_CREDENTIALS_FILE")
+    if not credentials_path:
+        default_path = get_default_credentials_path()
+        if os.path.exists(default_path):
+            credentials_path = default_path
+
+    file_credentials: dict[str, str] = {}
+    if credentials_path:
+        try:
+            file_credentials = load_credentials_file(credentials_path)
+        except ValueError as exc:
+            parser.error(f"无法读取凭证文件 {credentials_path}: {exc}")
+
+    auth_token = args.token or os.getenv("E7_TOKEN") or file_credentials.get("token")
+    pd_did = args.pd_did or os.getenv("E7_PD_DID") or file_credentials.get("pd_did")
+    pd_dvid = args.pd_dvid or os.getenv("E7_PD_DVID") or file_credentials.get("pd_dvid")
+    jsessionid = args.jsessionid or os.getenv("E7_JSESSIONID") or file_credentials.get("jsessionid")
     if not auth_token:
-        parser.error("必须提供 --token，或设置环境变量 E7_TOKEN")
+        parser.error(
+            "必须提供 --token，或设置环境变量 E7_TOKEN，或在凭证文件中提供 token 字段"
+        )
     if not pd_did or not pd_dvid:
-        parser.error("必须提供 --pd-did 和 --pd-dvid，或设置环境变量 E7_PD_DID / E7_PD_DVID")
+        parser.error(
+            "必须提供 --pd-did 和 --pd-dvid，或设置环境变量 E7_PD_DID / E7_PD_DVID，"
+            "或在凭证文件中提供 pd_did / pd_dvid 字段"
+        )
 
     token_user_id = get_token_user_id(auth_token)
-    user_id = args.uid or os.getenv("E7_UID") or token_user_id
+    user_id = args.uid or os.getenv("E7_UID") or file_credentials.get("uid") or token_user_id
     if not user_id:
         parser.error("无法从 token 解出真实用户 UID，请显式提供 --uid")
     if token_user_id and str(user_id) != token_user_id:
         parser.error(f"--uid 与 token 中的 UID 不一致，token UID 为 {token_user_id}")
-    return str(user_id), str(auth_token), str(pd_did), str(pd_dvid)
+    return str(user_id), str(auth_token), str(pd_did), str(pd_dvid), str(jsessionid) if jsessionid else None
 
 
 def main() -> None:
     parser = build_parser()
     args = parser.parse_args()
-    user_id, auth_token, pd_did, pd_dvid = resolve_credentials(args, parser)
+    user_id, auth_token, pd_did, pd_dvid, jsessionid = resolve_credentials(args, parser)
     token_expiry = get_token_expiry(auth_token)
     if token_expiry is not None and token_expiry <= int(time.time()):
         parser.error("提供的 token 已过期，请先刷新后再运行")
@@ -588,7 +671,7 @@ def main() -> None:
     bot = EpicSevenCommunityAIO(
         user_id=user_id,
         auth_token=auth_token,
-        jsessionid=args.jsessionid,
+        jsessionid=jsessionid,
         pd_did=pd_did,
         pd_dvid=pd_dvid,
         delay_min=args.delay_min,

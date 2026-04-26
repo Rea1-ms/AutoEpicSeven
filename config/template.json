@@ -42,8 +42,7 @@
       "ServerUpdate": "02:00"
     },
     "MissionReward": {
-      "ClaimDailyRewards": true,
-      "ClaimWeeklyRewards": true
+      "ClaimDailyRewards": true
     }
   },
   "Mail": {
@@ -60,6 +59,17 @@
       "LastRemainingSince": "2020-01-01 00:00:00"
     }
   },
+  "CommunityAio": {
+    "Scheduler": {
+      "Enable": false,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "CommunityAio",
+      "ServerUpdate": "02:00"
+    },
+    "CommunityAio": {
+      "CredentialsFile": null
+    }
+  },
   "DataUpdate": {
     "Scheduler": {
       "Enable": true,
@@ -73,7 +83,6 @@
       "Stamina": {},
       "EquipmentInventory": {},
       "DailyActivity": {},
-      "WeeklyActivity": {},
       "ArenaRank": {},
       "ArenaFlag": {},
       "ConquestPoint": {},
@@ -211,6 +220,12 @@
       "NextRun": "2020-01-01 00:00:00",
       "Command": "Pets",
       "ServerUpdate": "02:00"
+    }
+  },
+  "CommunityAuth": {
+    "CommunityAuth": {
+      "CredentialsFile": null,
+      "WaitTimeout": 300
     }
   },
   "SanctuaryMonthly": {

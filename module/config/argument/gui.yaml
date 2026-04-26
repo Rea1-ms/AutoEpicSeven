@@ -103,5 +103,8 @@ Remote:
 Text:
   InvalidFeedBack:
   Clear:
+  CommunityAuthCredentials:
+  CommunityAuthCredentialsHelp:
+  CommunityAioTodo:
   KnightsTeamBattleTodo:
   KnightsNoStaminaTodo:

@@ -8,6 +8,10 @@
       "name": "每日",
       "help": ""
     },
+    "Tool": {
+      "name": "工具",
+      "help": ""
+    },
     "Monthly": {
       "name": "每月",
       "help": ""
@@ -29,6 +33,10 @@
     "Mail": {
       "name": "臨期郵件",
       "help": "按顯示剩餘時間升序檢查信箱，領取顯示剩餘 1 小時或 1 天的郵件。由於遊戲顯示會按整小時/整天取整，實際約等於 2 小時或 2 天內過期。"
+    },
+    "CommunityAio": {
+      "name": "社群 AIO",
+      "help": "執行社群協議腳本（簽到、任務、兌換），使用本地憑證。"
     },
     "DataUpdate": {
       "name": "儀表板更新",
@@ -69,6 +77,10 @@
     "Pets": {
       "name": "寵物商店",
       "help": ""
+    },
+    "CommunityAuth": {
+      "name": "社群登入",
+      "help": "拉起 Electron 社群登入視窗，抓取並刷新 Community AIO 使用的 CK。"
     },
     "SanctuaryMonthly": {
       "name": "聖域-月常",
@@ -240,10 +252,6 @@
     "ClaimDailyRewards": {
       "name": "領取每日獎勵",
       "help": "有可領取獎勵時，領取每日任務獎勵寶箱。"
-    },
-    "ClaimWeeklyRewards": {
-      "name": "領取每週獎勵",
-      "help": "有可領取獎勵時，領取每週任務獎勵寶箱。"
     }
   },
   "Mail": {
@@ -268,6 +276,34 @@
     "LastRemainingSince": {
       "name": "相同剩餘時間起始時間",
       "help": ""
+    }
+  },
+  "CommunityAio": {
+    "_info": {
+      "name": "社群 AIO 設定",
+      "help": "設定 community/aio.py 執行參數。"
+    },
+    "CredentialsFile": {
+      "name": "憑證檔案路徑",
+      "help": "可選。Electron 登入匯出的 e7-credentials.json 絕對路徑；留空則使用預設路徑。"
+    }
+  },
+  "CommunityAuth": {
+    "_info": {
+      "name": "社群登入",
+      "help": "用於管理國服社群協議任務所需的本機憑證。點擊 Start 會開啟登入視窗並在日誌中等待憑證寫入。"
+    },
+    "CredentialsFile": {
+      "name": "憑證檔案",
+      "help": "留空時使用 Electron 與 Community AIO 共用的預設憑證路徑。"
+    },
+    "WaitTimeout": {
+      "name": "等待登入完成最多秒數",
+      "help": "Start 後工具任務會在日誌區輪詢憑證檔案，超過該時間仍未抓到有效 CK 則結束。",
+      "60": "60",
+      "180": "180",
+      "300": "300",
+      "600": "600"
     }
   },
   "Knights": {
@@ -552,10 +588,6 @@
       "name": "每日活躍",
       "help": ""
     },
-    "WeeklyActivity": {
-      "name": "每週活躍",
-      "help": ""
-    },
     "ArenaRank": {
       "name": "競技場通行證等級",
       "help": ""
@@ -693,6 +725,9 @@
     "Text": {
       "InvalidFeedBack": "格式錯誤。 示例：{0}",
       "Clear": "清除",
+      "CommunityAuthCredentials": "社群登入憑證",
+      "CommunityAuthCredentialsHelp": "用於查看目前 CK 狀態，並拉起 Electron 登入視窗更新本機憑證。",
+      "CommunityAioTodo": "社群 AIO 僅支援國服設定（cn）。",
       "KnightsTeamBattleTodo": "團戰 OCR 功能待實作",
       "KnightsNoStaminaTodo": "世界 Boss 體力不足處理待實作"
     }

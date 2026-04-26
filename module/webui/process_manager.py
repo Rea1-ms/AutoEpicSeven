@@ -11,7 +11,7 @@ from rich.console import Console, ConsoleRenderable
 from module.logger import logger, set_file_logger, set_func_logger
 from module.webui.fake import get_config_mod, mod_instance
 from module.webui.setting import State
-from module.webui.submodule.utils import get_available_func
+from module.webui.submodule.utils import get_available_func, get_tool_runner
 
 
 class ProcessManager:
@@ -154,6 +154,8 @@ class ProcessManager:
                 if e is not None:
                     AzurLaneAutoScript.stop_event = e
                 AutoEpicSeven(config_name=config_name).loop()
+            elif (tool_runner := get_tool_runner(func)) is not None:
+                tool_runner(config_name)
             elif func in get_available_func():
                 from aes import AutoEpicSeven
 

@@ -28,6 +28,9 @@ Daily:
     Mail:
       - Scheduler
       - Mail
+    CommunityAio:
+      - Scheduler
+      - CommunityAio
     DataUpdate:
       - Scheduler
       - Dashboard
@@ -59,6 +62,15 @@ Daily:
       - Gacha
     Pets:
       - Scheduler
+
+# ==================== Tool ====================
+
+Tool:
+  menu: 'list'
+  page: 'tool'
+  tasks:
+    CommunityAuth:
+      - CommunityAuth
 
 # ==================== Monthly ====================
 

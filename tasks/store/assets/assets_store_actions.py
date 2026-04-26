@@ -3,18 +3,6 @@ from module.base.button import Button, ButtonWrapper
 # This file was auto-generated, do not modify it manually. To generate:
 # ``` python -m dev_tools.button_extract ```
 
-BUY = ButtonWrapper(
-    name='BUY',
-    cn=Button(
-        file='./assets/cn/store/actions/BUY.png',
-        area=(961, 432, 999, 453),
-        search=(895, 140, 1003, 684),
-        color=(133, 149, 134),
-        button=(961, 432, 999, 453),
-    ),
-    global_cn=None,
-    global_en=None,
-)
 BUY_CONFIRM_MULTI = ButtonWrapper(
     name='BUY_CONFIRM_MULTI',
     cn=Button(

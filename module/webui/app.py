@@ -63,6 +63,12 @@ from module.webui.pin import put_input, put_select
 from module.webui.process_manager import ProcessManager
 from module.webui.remote_access import RemoteAccess
 from module.webui.setting import State
+from module.webui.task_extension import (
+    get_task_start,
+    get_task_stop,
+    is_task_visible,
+    render_task_detail,
+)
 from module.webui.updater import updater
 from module.webui.utils import (
     Icon,
@@ -236,6 +242,14 @@ class AlasGUI(Frame):
         ).style(f"--menu-Overview--")
 
         for menu, task_data in self.ALAS_MENU.items():
+            visible_tasks = [
+                task
+                for task in task_data.get("tasks", [])
+                if is_task_visible(self, task)
+            ]
+            if not visible_tasks:
+                continue
+
             if task_data.get("page") == "tool":
                 _onclick = self.alas_daemon_overview
             else:
@@ -251,7 +265,7 @@ class AlasGUI(Frame):
                         }],
                         onclick=_onclick,
                     ).style(f"--menu-{task}--")
-                    for task in task_data.get("tasks", [])
+                    for task in visible_tasks
                 ]
                 put_collapse(title=t(f"Menu.{menu}.name"), content=task_btn_list)
             else:
@@ -262,7 +276,7 @@ class AlasGUI(Frame):
                          '<span class="hr-task-group-line"></span>'
                          '</div>'
                          )
-                for task in task_data.get("tasks", []):
+                for task in visible_tasks:
                     put_buttons(
                         [{
                             "label": t(f"Task.{task}.name"),
@@ -294,6 +308,7 @@ class AlasGUI(Frame):
 
         config = self.alas_config.read_file(self.alas_name)
         self.alas_config_hidden = self.alas_config.get_hidden_args(config)
+        render_task_detail(self, task)
         for group, arg_dict in deep_iter(self.ALAS_ARGS[task], depth=1):
             if self.set_group(group, arg_dict, config, task):
                 self.set_navigator(group)
@@ -713,8 +728,8 @@ class AlasGUI(Frame):
         switch_scheduler = BinarySwitchButton(
             label_on=t("Gui.Button.Stop"),
             label_off=t("Gui.Button.Start"),
-            onclick_on=lambda: self.alas.stop(),
-            onclick_off=lambda: self.alas.start(task),
+            onclick_on=get_task_stop(self, task, lambda: self.alas.stop()),
+            onclick_off=get_task_start(self, task, lambda: self.alas.start(task)),
             get_state=lambda: self.alas.alive,
             color_on="off",
             color_off="on",
@@ -745,6 +760,7 @@ class AlasGUI(Frame):
         )
 
         config = self.alas_config.read_file(self.alas_name)
+        render_task_detail(self, task)
         for group, arg_dict in deep_iter(self.ALAS_ARGS[task], depth=1):
             if group[0] == "Storage":
                 continue

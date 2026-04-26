@@ -200,10 +200,6 @@
       "ClaimDailyRewards": {
         "type": "checkbox",
         "value": true
-      },
-      "ClaimWeeklyRewards": {
-        "type": "checkbox",
-        "value": true
       }
     }
   },
@@ -260,6 +256,40 @@
         "value": "2020-01-01 00:00:00",
         "validate": "datetime",
         "keepvalue": true,
+        "display": "hide"
+      }
+    }
+  },
+  "CommunityAio": {
+    "Scheduler": {
+      "Enable": {
+        "type": "checkbox",
+        "value": false,
+        "option": [
+          true,
+          false
+        ]
+      },
+      "NextRun": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime"
+      },
+      "Command": {
+        "type": "input",
+        "value": "CommunityAio",
+        "display": "hide"
+      },
+      "ServerUpdate": {
+        "type": "input",
+        "value": "02:00",
+        "display": "hide"
+      }
+    },
+    "CommunityAio": {
+      "CredentialsFile": {
+        "type": "input",
+        "value": "",
         "display": "hide"
       }
     }
@@ -333,20 +363,12 @@
         "order": 5,
         "color": "#ffb45e"
       },
-      "WeeklyActivity": {
-        "type": "stored",
-        "value": {},
-        "display": "display",
-        "stored": "StoredWeeklyActivity",
-        "order": 6,
-        "color": "#ff7f8a"
-      },
       "ArenaRank": {
         "type": "stored",
         "value": {},
         "display": "display",
         "stored": "StoredArenaRank",
-        "order": 7,
+        "order": 6,
         "color": "#ffd36e"
       },
       "ArenaFlag": {
@@ -354,7 +376,7 @@
         "value": {},
         "display": "display",
         "stored": "StoredCounter",
-        "order": 8,
+        "order": 7,
         "color": "#f2a93b"
       },
       "ConquestPoint": {
@@ -362,7 +384,7 @@
         "value": {},
         "display": "display",
         "stored": "StoredInt",
-        "order": 9,
+        "order": 8,
         "color": "#5ea3ff"
       },
       "ShadowCommission": {
@@ -370,7 +392,7 @@
         "value": {},
         "display": "display",
         "stored": "StoredShadowCommission",
-        "order": 10,
+        "order": 9,
         "color": "#7796ff"
       },
       "TeamBattle": {
@@ -378,7 +400,7 @@
         "value": {},
         "display": "display",
         "stored": "StoredTeamBattleStatus",
-        "order": 11,
+        "order": 10,
         "color": "#d85f7c"
       }
     }
@@ -869,6 +891,25 @@
         "type": "input",
         "value": "02:00",
         "display": "hide"
+      }
+    }
+  },
+  "CommunityAuth": {
+    "CommunityAuth": {
+      "CredentialsFile": {
+        "type": "input",
+        "value": "",
+        "display": "hide"
+      },
+      "WaitTimeout": {
+        "type": "select",
+        "value": 300,
+        "option": [
+          60,
+          180,
+          300,
+          600
+        ]
       }
     }
   },

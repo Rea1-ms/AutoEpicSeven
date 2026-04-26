@@ -137,20 +137,39 @@ MAIN_GOTO_SANCTUARY = ButtonWrapper(
 )
 MAIN_GOTO_SECRET_SHOP = ButtonWrapper(
     name='MAIN_GOTO_SECRET_SHOP',
-    global_cn=Button(
-        file='./assets/global_cn/base/page/MAIN_GOTO_SECRET_SHOP.png',
-        area=(65, 316, 77, 336),
-        search=(45, 296, 97, 356),
-        color=(166, 171, 175),
-        button=(65, 316, 77, 336),
-    ),
-    share=Button(
-        file='./assets/share/base/page/MAIN_GOTO_SECRET_SHOP.png',
-        area=(69, 255, 77, 272),
-        search=(49, 235, 97, 292),
-        color=(188, 191, 194),
-        button=(69, 255, 77, 272),
-    ),
+    cn=[
+        Button(
+            file='./assets/cn/base/page/MAIN_GOTO_SECRET_SHOP.png',
+            area=(26, 279, 39, 292),
+            search=(6, 259, 59, 312),
+            color=(151, 155, 160),
+            button=(26, 279, 39, 292),
+        ),
+        Button(
+            file='./assets/cn/base/page/MAIN_GOTO_SECRET_SHOP.2.png',
+            area=(26, 357, 39, 370),
+            search=(6, 337, 59, 390),
+            color=(146, 150, 154),
+            button=(26, 357, 39, 370),
+        ),
+    ],
+    global_cn=[
+        Button(
+            file='./assets/global_cn/base/page/MAIN_GOTO_SECRET_SHOP.png',
+            area=(25, 356, 38, 370),
+            search=(5, 336, 58, 390),
+            color=(131, 135, 139),
+            button=(25, 356, 38, 370),
+        ),
+        Button(
+            file='./assets/global_cn/base/page/MAIN_GOTO_SECRET_SHOP.2.png',
+            area=(25, 278, 38, 292),
+            search=(5, 258, 58, 312),
+            color=(131, 135, 139),
+            button=(25, 278, 38, 292),
+        ),
+    ],
+    global_en=None,
 )
 MAIN_GOTO_STORE = ButtonWrapper(
     name='MAIN_GOTO_STORE',

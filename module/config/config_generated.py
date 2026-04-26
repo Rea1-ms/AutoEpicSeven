@@ -42,13 +42,19 @@ class GeneratedConfig:
 
     # Group `MissionReward`
     MissionReward_ClaimDailyRewards = True
-    MissionReward_ClaimWeeklyRewards = True
 
     # Group `Mail`
     Mail_CollectWithin = '1d'  # 1h, 1d
     Mail_LastCheckAt = datetime.datetime(2020, 1, 1, 0, 0)
     Mail_LastRemainingText = None
     Mail_LastRemainingSince = datetime.datetime(2020, 1, 1, 0, 0)
+
+    # Group `CommunityAio`
+    CommunityAio_CredentialsFile = None
+
+    # Group `CommunityAuth`
+    CommunityAuth_CredentialsFile = None
+    CommunityAuth_WaitTimeout = 300  # 60, 180, 300, 600
 
     # Group `Knights`
     Knights_ClaimSigninRateReward = True
@@ -116,7 +122,6 @@ class GeneratedConfig:
     Dashboard_Stamina = {}
     Dashboard_EquipmentInventory = {}
     Dashboard_DailyActivity = {}
-    Dashboard_WeeklyActivity = {}
     Dashboard_ArenaRank = {}
     Dashboard_ArenaFlag = {}
     Dashboard_ConquestPoint = {}

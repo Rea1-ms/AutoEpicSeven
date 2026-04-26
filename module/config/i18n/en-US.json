@@ -8,6 +8,10 @@
       "name": "Daily",
       "help": ""
     },
+    "Tool": {
+      "name": "Tools",
+      "help": ""
+    },
     "Monthly": {
       "name": "Monthly",
       "help": ""
@@ -29,6 +33,10 @@
     "Mail": {
       "name": "Expiring Mail",
       "help": "Sort the mailbox by displayed remaining time and collect mails showing 1 hour or 1 day left. Because the game rounds the display down to whole hours or days, this is effectively about 2 real hours or 2 real days before expiration."
+    },
+    "CommunityAio": {
+      "name": "Community AIO",
+      "help": "Run the community API script (check-in, tasks, exchange) with local credentials."
     },
     "DataUpdate": {
       "name": "Dashboard Upd",
@@ -69,6 +77,10 @@
     "Pets": {
       "name": "Pet Shop",
       "help": ""
+    },
+    "CommunityAuth": {
+      "name": "Community Login",
+      "help": "Open the Electron community login window and refresh the CK used by Community AIO."
     },
     "SanctuaryMonthly": {
       "name": "Sanctuary Monthly",
@@ -240,10 +252,6 @@
     "ClaimDailyRewards": {
       "name": "Claim Daily Rewards",
       "help": "Claim the daily mission reward chest when available."
-    },
-    "ClaimWeeklyRewards": {
-      "name": "Claim Weekly Rewards",
-      "help": "Claim the weekly mission reward chest when available."
     }
   },
   "Mail": {
@@ -268,6 +276,34 @@
     "LastRemainingSince": {
       "name": "Same Remaining Label Since",
       "help": ""
+    }
+  },
+  "CommunityAio": {
+    "_info": {
+      "name": "Community AIO Settings",
+      "help": "Configure runtime options for community/aio.py."
+    },
+    "CredentialsFile": {
+      "name": "Credentials File Path",
+      "help": "Optional. Absolute path to Electron-exported e7-credentials.json; leave empty to use default path."
+    }
+  },
+  "CommunityAuth": {
+    "_info": {
+      "name": "Community Login",
+      "help": "Manage local credentials for the CN community protocol task. Start opens the login window and waits for credentials in the log."
+    },
+    "CredentialsFile": {
+      "name": "Credentials file",
+      "help": "Leave empty to use the default credentials path shared by Electron and Community AIO."
+    },
+    "WaitTimeout": {
+      "name": "Maximum login wait seconds",
+      "help": "After Start, the tool polls the credentials file in the log area and exits if no valid CK is captured in time.",
+      "60": "60",
+      "180": "180",
+      "300": "300",
+      "600": "600"
     }
   },
   "Knights": {
@@ -552,10 +588,6 @@
       "name": "Daily Activity",
       "help": ""
     },
-    "WeeklyActivity": {
-      "name": "Weekly Activity",
-      "help": ""
-    },
     "ArenaRank": {
       "name": "Arena Pass Level",
       "help": ""
@@ -693,6 +725,9 @@
     "Text": {
       "InvalidFeedBack": "Invalid format. Example: {0}",
       "Clear": "Clear",
+      "CommunityAuthCredentials": "Community login credentials",
+      "CommunityAuthCredentialsHelp": "Check current CK status and open the Electron login window to refresh local credentials.",
+      "CommunityAioTodo": "Community AIO is available only in CN config (cn).",
       "KnightsTeamBattleTodo": "Guild War OCR TODO",
       "KnightsNoStaminaTodo": "World Boss no-stamina handling TODO"
     }

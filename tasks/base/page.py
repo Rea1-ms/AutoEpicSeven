@@ -1,32 +1,26 @@
 import traceback
 
-import module.config.server as server
 from module.base.button import ButtonWrapper
 from tasks.base.assets.assets_base_page import *
 from tasks.base.assets.assets_base_popup import AD_BUFF_X_CLOSE
 from tasks.base.assets.assets_base_main_page import MENU, MENU_CLOSE, WHITE_STAR
-from tasks.mission_reward.assets.assets_mission_reward_entry import (
-    DAILY_TAB_CHECK,
-    DAILY_TAB_ENTRY,
+from tasks.mission_reward.assets.assets_mission_reward_entries import (
     MISSION_REWARD_CHECK,
-    WEEKLY_TAB_CHECK,
-    WEEKLY_TAB_ENTRY,
+    MISSION_REWARD_DAILY_ENTRY,
+    MISSION_REWARD_DAILY_ENTRY_CHECK,
 )
 from tasks.secret_shop.assets.assets_secret_shop import SECRET_SHOP_CHECK
-if server.lang == 'cn':
-    from tasks.store.assets.assets_store_entries import STORE_CHECK
-else:
-    from tasks.store.assets.assets_store_current_entries import (
-        COMMON_STORE_ENTRY,
-        COMMON_STORE_CHECK,
-        CONQUEST_POINTS_STORE_ENTRY,
-        CONQUEST_POINTS_STORE_CHECK,
-        FREE_STORE_ENTRY,
-        FREE_STORE_CHECK,
-        INHERITANCE_STONE_STORE_ENTRY,
-        INHERITANCE_STONE_STORE_CHECK,
-        STORE_CHECK,
-    )
+from tasks.store.assets.assets_store_entries import (
+    COMMON_STORE_ENTRY,
+    COMMON_STORE_CHECK,
+    CONQUEST_POINTS_STORE_ENTRY,
+    CONQUEST_POINTS_STORE_CHECK,
+    FREE_STORE_ENTRY,
+    FREE_STORE_CHECK,
+    INHERITANCE_STONE_STORE_ENTRY,
+    INHERITANCE_STONE_STORE_CHECK,
+    STORE_CHECK
+)
 from tasks.arena.assets.assets_arena import (
     ARENA_CHECK,
     ARENA_COMMON_ENTRY,
@@ -318,78 +312,65 @@ page_main.link(MAIN_GOTO_INVENTORY, destination=page_inventory_equipment)
 page_inventory.link(EQUIPMENT_ENTRY, destination=page_inventory_equipment)
 
 # Store
-#
-# Store page registration must stay server-specific.
-# ui_get_current_page()/ui_goto() iterate over every registered Page, so if CN
-# registers current-store-only checks such as FREE_STORE_CHECK, any unrelated
-# task can explode during route probing before it ever reaches its true target.
-# Keep the global page graph aligned with the active assets family instead of
-# trying to rely on runtime fallback behavior here.
+
 page_store = Page(STORE_CHECK)
 page_store.link(BACK, destination=page_main)
 page_main.link(MAIN_GOTO_STORE, destination=page_store)
 
-if server.lang != 'cn':
-    # Current top-bar checks overlap:
-    # - COMMON_STORE_CHECK stays valid inside both free / inheritance pages
-    # - store top-bar markers coexist with sub-store markers
-    # Define the more specific current sub-pages first so ui_get_current_page()
-    # does not stop at a broader container page too early.
-    page_free_store = Page(FREE_STORE_CHECK)
-    page_free_store.link(BACK, destination=page_main)
+# Current top-bar checks overlap:
+# - COMMON_STORE_CHECK stays valid inside both free / inheritance pages
+# - store top-bar markers coexist with sub-store markers
+# Define the more specific current sub-pages first so ui_get_current_page()
+# does not stop at a broader container page too early.
+page_free_store = Page(FREE_STORE_CHECK)
+page_free_store.link(BACK, destination=page_main)
 
-    page_inheritance_stone_store = Page(INHERITANCE_STONE_STORE_CHECK)
-    page_inheritance_stone_store.link(BACK, destination=page_main)
+page_inheritance_stone_store = Page(INHERITANCE_STONE_STORE_CHECK)
+page_inheritance_stone_store.link(BACK, destination=page_main)
 
-    page_conquest_points_store = Page(CONQUEST_POINTS_STORE_CHECK)
-    page_conquest_points_store.link(BACK, destination=page_main)
+page_conquest_points_store = Page(CONQUEST_POINTS_STORE_CHECK)
+page_conquest_points_store.link(BACK, destination=page_main)
 
-    page_common_store = Page(COMMON_STORE_CHECK)
-    page_common_store.link(BACK, destination=page_main)
+page_common_store = Page(COMMON_STORE_CHECK)
+page_common_store.link(BACK, destination=page_main)
 
-    # Enter common branch from store home
-    page_store.link(COMMON_STORE_ENTRY, destination=page_common_store)
-    page_store.link(COMMON_STORE_ENTRY, destination=page_free_store)
+# Enter common branch from store home
+page_store.link(COMMON_STORE_ENTRY, destination=page_common_store)
+page_store.link(COMMON_STORE_ENTRY, destination=page_free_store)
 
-    # Enter conquest directly from store home
-    page_store.link(CONQUEST_POINTS_STORE_ENTRY, destination=page_conquest_points_store)
+# Enter conquest directly from store home
+page_store.link(CONQUEST_POINTS_STORE_ENTRY, destination=page_conquest_points_store)
 
-    # Common branch internal switching
-    page_common_store.link(FREE_STORE_ENTRY, destination=page_free_store)
-    page_common_store.link(INHERITANCE_STONE_STORE_ENTRY, destination=page_inheritance_stone_store)
-    page_free_store.link(INHERITANCE_STONE_STORE_ENTRY, destination=page_inheritance_stone_store)
-    page_inheritance_stone_store.link(FREE_STORE_ENTRY, destination=page_free_store)
+# Common branch internal switching
+page_common_store.link(FREE_STORE_ENTRY, destination=page_free_store)
+page_common_store.link(INHERITANCE_STONE_STORE_ENTRY, destination=page_inheritance_stone_store)
+page_free_store.link(INHERITANCE_STONE_STORE_ENTRY, destination=page_inheritance_stone_store)
+page_inheritance_stone_store.link(FREE_STORE_ENTRY, destination=page_free_store)
 
-# Mission reward popup with daily / weekly tabs
+# Mission reward popup
 #
-# These checks belong to the same popup family. Closing the popup should return
-# to the page that opened it, which is usually page_menu but can also be a
-# runtime-tracked overlay chain. The static fallback stays on page_menu so
-# routes remain valid even when the popup was opened manually before the task.
-page_mission_reward_daily = Page(
-    DAILY_TAB_CHECK,
-    dynamic_return_button=AD_BUFF_X_CLOSE,
-    dynamic_return_group='overlay_mission_reward',
-)
-page_mission_reward_daily.link(AD_BUFF_X_CLOSE, destination=page_menu)
-
-page_mission_reward_weekly = Page(
-    WEEKLY_TAB_CHECK,
-    dynamic_return_button=AD_BUFF_X_CLOSE,
-    dynamic_return_group='overlay_mission_reward',
-)
-page_mission_reward_weekly.link(AD_BUFF_X_CLOSE, destination=page_menu)
-
+# Since the 2026-04-02 international server update, weekly missions have been
+# removed.  The popup now has two top-level tabs: daily missions and
+# "Inheritance Journey" (继承之旅).  If the Inheritance Journey tab has
+# unclaimed rewards, the popup defaults to that tab instead of daily missions.
+# page_mission_reward is the popup container (any tab), page_mission_reward_daily
+# is the daily missions tab specifically.  Both share the same overlay group so
+# tab switching does not overwrite the dynamic return origin.
 page_mission_reward = Page(
     MISSION_REWARD_CHECK,
     dynamic_return_button=AD_BUFF_X_CLOSE,
     dynamic_return_group='overlay_mission_reward',
 )
 page_mission_reward.link(AD_BUFF_X_CLOSE, destination=page_menu)
-page_mission_reward.link(DAILY_TAB_ENTRY, destination=page_mission_reward_daily)
-page_mission_reward.link(WEEKLY_TAB_ENTRY, destination=page_mission_reward_weekly)
-page_mission_reward_daily.link(WEEKLY_TAB_ENTRY, destination=page_mission_reward_weekly)
-page_mission_reward_weekly.link(DAILY_TAB_ENTRY, destination=page_mission_reward_daily)
+
+page_mission_reward_daily = Page(
+    MISSION_REWARD_DAILY_ENTRY_CHECK,
+    dynamic_return_button=AD_BUFF_X_CLOSE,
+    dynamic_return_group='overlay_mission_reward',
+)
+page_mission_reward_daily.link(AD_BUFF_X_CLOSE, destination=page_menu)
+
+page_mission_reward.link(MISSION_REWARD_DAILY_ENTRY, destination=page_mission_reward_daily)
 page_menu.link(MENU_GOTO_MISSION_REWARD, destination=page_mission_reward)
 page_menu.link(MENU_GOTO_MISSION_REWARD, destination=page_mission_reward_daily)
 
@@ -508,10 +489,9 @@ link_shared_toolbar(
     page_knights_team_battle,
 )
 
-if server.lang != 'cn':
-    link_shared_toolbar(
-        page_free_store,
-        page_inheritance_stone_store,
-        page_conquest_points_store,
-        page_common_store,
-    )
+link_shared_toolbar(
+    page_free_store,
+    page_inheritance_stone_store,
+    page_conquest_points_store,
+    page_common_store,
+)

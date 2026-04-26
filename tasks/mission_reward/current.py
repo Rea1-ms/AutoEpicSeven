@@ -5,7 +5,7 @@ Flow:
     menu -> mission reward popup -> main page
 
 Pages:
-    in: page_main, page_menu, page_mission_reward
+    in: page_main, page_menu, page_mission_reward_daily
     out: page_main
 """
 import re
@@ -13,9 +13,9 @@ import re
 from module.base.timer import Timer
 from module.logger import logger
 from module.ocr.ocr import Digit
-from tasks.base.page import page_main, page_mission_reward
+from tasks.base.page import page_main, page_mission_reward_daily
 from tasks.base.ui import UI
-from tasks.mission_reward.assets.assets_mission_reward_current_daily import (
+from tasks.mission_reward.assets.assets_mission_reward_daily import (
     DAILY_POINTS_1,
     DAILY_POINTS_2,
     DAILY_POINTS_3,
@@ -23,7 +23,7 @@ from tasks.mission_reward.assets.assets_mission_reward_current_daily import (
     DAILY_POINTS_5,
     DAILY_POINTS_6,
 )
-from tasks.mission_reward.assets.assets_mission_reward_current_ocr import OCR_MISSION_POINTS
+from tasks.mission_reward.assets.assets_mission_reward_ocr import OCR_MISSION_POINTS
 
 
 
@@ -75,20 +75,20 @@ class CurrentMissionReward(UI):
         """
         Pages:
             in: page_main, page_menu
-            out: page_mission_reward
+            out: page_mission_reward_daily
         """
         logger.info("Mission reward: enter")
-        self.ui_goto(page_mission_reward, skip_first_screenshot=skip_first_screenshot)
+        self.ui_goto(page_mission_reward_daily, skip_first_screenshot=skip_first_screenshot)
         return True
 
-    def _ocr_mission_points(self) -> int:
+    def _ocr_mission_points(self, label: str = "Daily") -> int:
         ocr = OcrMissionPoints(
             OCR_MISSION_POINTS,
             lang=self._mission_ocr_lang(),
-            name=f"MissionPoints",
+            name=f"{label}MissionPoints",
         )
         points = ocr.ocr_single_line(self.device.image)
-        logger.attr(f"MissionPoints", points)
+        logger.attr(f"{label}MissionPoints", points)
         return points
 
     def _get_ready_reward_button(self, buttons, action_name: str, interval=0):
@@ -203,7 +203,7 @@ class CurrentMissionReward(UI):
         claimed_daily = False
 
         if run_daily:
-            daily_points = self._ocr_mission_points()
+            daily_points = self._ocr_mission_points("Daily")
             claimed_daily = self._claim_rewards(
                 buttons=self.REWARD_BUTTONS,
                 action_name=self.REWARD_ACTION,
@@ -213,10 +213,6 @@ class CurrentMissionReward(UI):
         with self.config.multi_set():
             if daily_points is not None:
                 self.config.stored.DailyActivity.set(daily_points)
-            # Current oversea UI removed weekly mission points entirely.
-            # Clear the legacy weekly counter so the dashboard does not keep
-            # showing a stale pre-update value for this config profile.
-            self.config.stored.WeeklyActivity.clear()
 
         self.ui_goto(page_main, skip_first_screenshot=True)
         if claimed_daily:

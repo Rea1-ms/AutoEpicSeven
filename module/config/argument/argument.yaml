@@ -94,8 +94,6 @@ Optimization:
 
 MissionReward:
   ClaimDailyRewards: true
-  # Keep for the temporary legacy weekly-reward sunset window.
-  ClaimWeeklyRewards: true
 
 Mail:
   CollectWithin:
@@ -113,6 +111,19 @@ Mail:
     keepvalue: true
     display: hide
     value: 2020-01-01 00:00:00
+
+CommunityAio:
+  CredentialsFile:
+    value: ""
+    display: hide
+
+CommunityAuth:
+  CredentialsFile:
+    value: ""
+    display: hide
+  WaitTimeout:
+    value: 300
+    option: [ 60, 180, 300, 600 ]
 
 Knights:
   ClaimSigninRateReward: true
@@ -232,34 +243,29 @@ Dashboard:
     order: 5
     color: "#ffb45e"
     display: display
-  WeeklyActivity:
-    stored: StoredWeeklyActivity
-    order: 6
-    color: "#ff7f8a"
-    display: display
   ArenaRank:
     stored: StoredArenaRank
-    order: 7
+    order: 6
     color: "#ffd36e"
     display: display
   ArenaFlag:
     stored: StoredCounter
-    order: 8
+    order: 7
     color: "#f2a93b"
     display: display
   ConquestPoint:
     stored: StoredInt
-    order: 9
+    order: 8
     color: "#5ea3ff"
     display: display
   ShadowCommission:
     stored: StoredShadowCommission
-    order: 10
+    order: 9
     color: "#7796ff"
     display: display
   TeamBattle:
     stored: StoredTeamBattleStatus
-    order: 11
+    order: 10
     color: "#d85f7c"
     display: display
 

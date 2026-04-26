@@ -13,6 +13,7 @@
     "tasks": [
       "MissionReward",
       "Mail",
+      "CommunityAio",
       "DataUpdate",
       "SanctuaryDaily",
       "Knights",
@@ -23,6 +24,13 @@
       "Combat",
       "Gacha",
       "Pets"
+    ]
+  },
+  "Tool": {
+    "menu": "list",
+    "page": "tool",
+    "tasks": [
+      "CommunityAuth"
     ]
   },
   "Monthly": {

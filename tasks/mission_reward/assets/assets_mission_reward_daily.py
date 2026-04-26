@@ -7,59 +7,59 @@ DAILY_POINTS_1 = ButtonWrapper(
     name='DAILY_POINTS_1',
     share=Button(
         file='./assets/share/mission_reward/daily/DAILY_POINTS_1.png',
-        area=(490, 135, 515, 162),
-        search=(470, 115, 535, 182),
-        color=(114, 117, 116),
-        button=(490, 135, 515, 162),
+        area=(485, 82, 519, 119),
+        search=(465, 62, 539, 139),
+        color=(116, 118, 117),
+        button=(485, 82, 519, 119),
     ),
 )
 DAILY_POINTS_2 = ButtonWrapper(
     name='DAILY_POINTS_2',
     share=Button(
         file='./assets/share/mission_reward/daily/DAILY_POINTS_2.png',
-        area=(565, 135, 590, 162),
-        search=(545, 115, 610, 182),
-        color=(114, 117, 116),
-        button=(565, 135, 590, 162),
+        area=(560, 82, 595, 119),
+        search=(540, 62, 615, 139),
+        color=(114, 116, 115),
+        button=(560, 82, 595, 119),
     ),
 )
 DAILY_POINTS_3 = ButtonWrapper(
     name='DAILY_POINTS_3',
     share=Button(
         file='./assets/share/mission_reward/daily/DAILY_POINTS_3.png',
-        area=(640, 135, 665, 162),
-        search=(620, 115, 685, 182),
-        color=(114, 117, 116),
-        button=(640, 135, 665, 162),
+        area=(635, 82, 670, 118),
+        search=(615, 62, 690, 138),
+        color=(116, 118, 117),
+        button=(635, 82, 670, 118),
     ),
 )
 DAILY_POINTS_4 = ButtonWrapper(
     name='DAILY_POINTS_4',
     share=Button(
         file='./assets/share/mission_reward/daily/DAILY_POINTS_4.png',
-        area=(790, 135, 815, 162),
-        search=(770, 115, 835, 182),
-        color=(114, 117, 116),
-        button=(790, 135, 815, 162),
+        area=(785, 82, 819, 119),
+        search=(765, 62, 839, 139),
+        color=(116, 118, 117),
+        button=(785, 82, 819, 119),
     ),
 )
 DAILY_POINTS_5 = ButtonWrapper(
     name='DAILY_POINTS_5',
     share=Button(
         file='./assets/share/mission_reward/daily/DAILY_POINTS_5.png',
-        area=(1015, 135, 1040, 162),
-        search=(995, 115, 1060, 182),
-        color=(114, 117, 116),
-        button=(1015, 135, 1040, 162),
+        area=(1010, 82, 1044, 119),
+        search=(990, 62, 1064, 139),
+        color=(116, 118, 117),
+        button=(1010, 82, 1044, 119),
     ),
 )
 DAILY_POINTS_6 = ButtonWrapper(
     name='DAILY_POINTS_6',
     share=Button(
         file='./assets/share/mission_reward/daily/DAILY_POINTS_6.png',
-        area=(1165, 135, 1190, 162),
-        search=(1145, 115, 1210, 182),
-        color=(114, 117, 116),
-        button=(1165, 135, 1190, 162),
+        area=(1160, 82, 1195, 119),
+        search=(1140, 62, 1215, 139),
+        color=(114, 116, 115),
+        button=(1160, 82, 1195, 119),
     ),
 )
