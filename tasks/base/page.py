@@ -4,7 +4,11 @@ from module.base.button import ButtonWrapper
 from tasks.base.assets.assets_base_page import *
 from tasks.base.assets.assets_base_popup import AD_BUFF_X_CLOSE
 from tasks.base.assets.assets_base_main_page import MENU, MENU_CLOSE, WHITE_STAR
-from tasks.mission_reward.assets.assets_mission_reward_ocr import OCR_MISSION_POINTS
+from tasks.mission_reward.assets.assets_mission_reward_entries import (
+    MISSION_REWARD_CHECK,
+    MISSION_REWARD_DAILY_ENTRY,
+    MISSION_REWARD_DAILY_ENTRY_CHECK,
+)
 from tasks.secret_shop.assets.assets_secret_shop import SECRET_SHOP_CHECK
 from tasks.store.assets.assets_store_entries import (
     COMMON_STORE_ENTRY,
@@ -345,15 +349,30 @@ page_inheritance_stone_store.link(FREE_STORE_ENTRY, destination=page_free_store)
 
 # Mission reward popup
 #
-# Weekly missions were removed in the 4.2 layout. The popup now has one daily
-# mission reward page, and closing it should return to the page that opened it.
+# Since the 2026-04-02 international server update, weekly missions have been
+# removed.  The popup now has two top-level tabs: daily missions and
+# "Inheritance Journey" (继承之旅).  If the Inheritance Journey tab has
+# unclaimed rewards, the popup defaults to that tab instead of daily missions.
+# page_mission_reward is the popup container (any tab), page_mission_reward_daily
+# is the daily missions tab specifically.  Both share the same overlay group so
+# tab switching does not overwrite the dynamic return origin.
 page_mission_reward = Page(
-    OCR_MISSION_POINTS,
+    MISSION_REWARD_CHECK,
     dynamic_return_button=AD_BUFF_X_CLOSE,
     dynamic_return_group='overlay_mission_reward',
 )
 page_mission_reward.link(AD_BUFF_X_CLOSE, destination=page_menu)
+
+page_mission_reward_daily = Page(
+    MISSION_REWARD_DAILY_ENTRY_CHECK,
+    dynamic_return_button=AD_BUFF_X_CLOSE,
+    dynamic_return_group='overlay_mission_reward',
+)
+page_mission_reward_daily.link(AD_BUFF_X_CLOSE, destination=page_menu)
+
+page_mission_reward.link(MISSION_REWARD_DAILY_ENTRY, destination=page_mission_reward_daily)
 page_menu.link(MENU_GOTO_MISSION_REWARD, destination=page_mission_reward)
+page_menu.link(MENU_GOTO_MISSION_REWARD, destination=page_mission_reward_daily)
 
 # Arena mode-selection popup
 #
