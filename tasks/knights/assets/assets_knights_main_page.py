@@ -42,6 +42,13 @@ TEAM_BATTLE_LOCKED = ButtonWrapper(
 )
 TEAM_BATTLE_OPENING = ButtonWrapper(
     name='TEAM_BATTLE_OPENING',
+    global_cn=Button(
+        file='./assets/global_cn/knights/main_page/TEAM_BATTLE_OPENING.png',
+        area=(617, 482, 661, 526),
+        search=(597, 462, 681, 546),
+        color=(187, 172, 147),
+        button=(617, 482, 661, 526),
+    ),
     share=Button(
         file='./assets/share/knights/main_page/TEAM_BATTLE_OPENING.png',
         area=(622, 493, 658, 526),
