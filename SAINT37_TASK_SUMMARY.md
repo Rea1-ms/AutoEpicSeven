@@ -124,3 +124,12 @@ bun run compile
 - `bun install` 只需要首次安装依赖或依赖变更后执行，后续可跳过。
 - `bun run compile` 会先构建 webapp，再通过 Electron Builder 编译桌面端。
 - 编译输出通常位于 `webapp/dist/`，具体 exe 位置以 Electron Builder 输出日志为准。
+
+## 2026-04-28 反复刷取与每日副本拆分
+
+- 新增独立任务 `CombatFarm`，界面菜单为“重复刷取” -> “反复刷取”。
+- 原 `Combat` 保留为“每日副本”，成功完成后仍按服务器刷新时间调度，不再承担长时间反复刷取职责。
+- `CombatFarm` 复用原战斗副本配置与流程，支持 `Hunt`、`SpiritAltar`、`Saint37`，但固定走宠物托管重复战斗，不显示/不使用“模式”“快速战斗”。
+- `CombatFarm` 的后台重复战斗运行态保存到 `CombatFarm.CombatRuntime.Session`，与 `Combat.CombatRuntime.Session` 分开，互不覆盖。
+- 当前 `config/cn.json` 已把圣女 3-7 配置迁移到 `CombatFarm` 并启用，原 `Combat` 已关闭，避免圣女 3-7 被当作每日副本跑完后延迟到次日。
+- 如果以后要跑每日讨伐/祭坛，请在“每日副本”里单独开启 `Combat`；如果要长时间刷讨伐/祭坛/圣女 3-7，请在“重复刷取”里开启 `CombatFarm`。
