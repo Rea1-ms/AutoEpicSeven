@@ -591,22 +591,39 @@ class ConfigUpdater:
         if deep_get(data, 'SecretShop.SecretShop.OnlyFree', default=True) is True:
             yield 'SecretShop.SecretShop.MaxRefresh'
         # Fast combat & repeat combat
-        combat_mode = deep_get(data, 'Combat.Combat.Mode', default='Task')
-        combat_domain = deep_get(data, 'Combat.Combat.Domain', default='Hunt')
-        combat_hunt_grade = deep_get(data, 'Combat.Combat.HuntGrade', default='Hell')
-        if combat_mode != 'Task':
-            yield 'Combat.Combat.FastCombat'
-            yield 'Combat.Combat.FastCombatCount'
-            yield 'Combat.Combat.RepeatCombatCount'
-        elif combat_domain == 'Hunt' and combat_hunt_grade == 'Dimensional':
-            yield 'Combat.Combat.FastCombat'
-            yield 'Combat.Combat.FastCombatCount'
-        elif deep_get(data, 'Combat.Combat.FastCombat', default=True) is False:
-            yield 'Combat.Combat.FastCombatCount'
-        if deep_get(data, 'Combat.Combat.Domain', default='Hunt') != 'SpiritAltar':
-            yield 'Combat.Combat.AltarGrade'
-        if deep_get(data, 'Combat.Combat.Domain', default='Hunt') != 'Hunt':
-            yield 'Combat.Combat.HuntGrade'
+        for task in ('Combat', 'CombatFarm'):
+            task_prefix = f'{task}.Combat'
+            is_farm_task = task == 'CombatFarm'
+            combat_mode = deep_get(data, f'{task_prefix}.Mode', default='Task')
+            combat_domain = deep_get(data, f'{task_prefix}.Domain', default='Hunt')
+            combat_hunt_grade = deep_get(data, f'{task_prefix}.HuntGrade', default='Hell')
+
+            if is_farm_task:
+                yield f'{task_prefix}.Mode'
+                yield f'{task_prefix}.FastCombat'
+                yield f'{task_prefix}.FastCombatCount'
+            elif combat_domain == 'Saint37':
+                yield f'{task_prefix}.FastCombat'
+                yield f'{task_prefix}.FastCombatCount'
+            elif combat_mode != 'Task':
+                yield f'{task_prefix}.FastCombat'
+                yield f'{task_prefix}.FastCombatCount'
+                yield f'{task_prefix}.RepeatCombatCount'
+            elif combat_domain == 'Hunt' and combat_hunt_grade == 'Dimensional':
+                yield f'{task_prefix}.FastCombat'
+                yield f'{task_prefix}.FastCombatCount'
+            elif deep_get(data, f'{task_prefix}.FastCombat', default=True) is False:
+                yield f'{task_prefix}.FastCombatCount'
+
+            if combat_domain == 'Saint37':
+                yield f'{task_prefix}.Element'
+                yield f'{task_prefix}.AltarGrade'
+                yield f'{task_prefix}.HuntGrade'
+            else:
+                if combat_domain != 'SpiritAltar':
+                    yield f'{task_prefix}.AltarGrade'
+                if combat_domain != 'Hunt':
+                    yield f'{task_prefix}.HuntGrade'
 
     def get_hidden_args(self, data) -> t.Set[str]:
         """

@@ -12,7 +12,7 @@ class ManualConfig:
     Restart
     > Mail > SanctuaryDaily > SanctuaryMonthly
     > Knights > Arena > Store > PetsGift
-    > SecretShop > Combat > Gacha > MissionReward > Pets > DataUpdate > CommunityAio
+    > SecretShop > Combat > CombatFarm > Gacha > MissionReward > Pets > DataUpdate > CommunityAio
     """
 
     """

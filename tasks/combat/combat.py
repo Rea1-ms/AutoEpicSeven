@@ -7,9 +7,10 @@ from tasks.combat.execute import CombatExecuteMixin
 from tasks.combat.plan import COMBAT_PLANS, HUNT_PLAN, CombatPlan
 from tasks.combat.prepare import CombatPrepare
 from tasks.combat.runtime import CombatRuntimeMixin
+from tasks.combat.saint37 import CombatSaint37Mixin
 
 
-class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, CombatPrepare, ResourceBarMixin, UI):
+class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, CombatSaint37Mixin, CombatPrepare, ResourceBarMixin, UI):
     COMBAT_RESOURCE_BAR_TIMEOUT_SECONDS = 1
     COMBAT_RESOURCE_BAR_TIMEOUT_COUNT = 2
     COMBAT_RUNTIME_PATH = "Combat.CombatRuntime.Session"
@@ -64,7 +65,12 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, CombatPre
         domain = getattr(self.config, "Combat_Domain", "Hunt")
         return COMBAT_PLANS.get(domain, HUNT_PLAN)
 
+    def _combat_is_farm_task(self) -> bool:
+        return getattr(getattr(self.config, "task", None), "command", "Combat") == "CombatFarm"
+
     def _combat_mode(self) -> str:
+        if self._combat_is_farm_task():
+            return "Task"
         return getattr(self.config, "Combat_Mode", "Task")
 
     def _combat_is_event_mode(self) -> bool:
@@ -75,6 +81,8 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, CombatPre
 
     def _combat_grade(self) -> str:
         plan = self._combat_plan()
+        if plan.name == "Saint37":
+            return "3-7"
         if plan.name == "SpiritAltar":
             return getattr(self.config, "Combat_AltarGrade", "Hell")
         return getattr(self.config, "Combat_HuntGrade", "Hell")
@@ -95,14 +103,28 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, CombatPre
         if plan is None:
             plan = self._combat_plan()
 
+        if plan.name == "Saint37":
+            return False
+
         return not (plan.name == "Hunt" and self._combat_grade() == "Dimensional")
 
     def _combat_should_use_fast(self) -> bool:
+        if self._combat_is_farm_task():
+            return False
         if not self._combat_supports_fast_combat():
             return False
         if self._combat_is_event_mode():
             return True
         return self._combat_fast_enabled()
+
+    def _combat_delay_after_settled(self) -> None:
+        if self._combat_is_farm_task():
+            self.config.task_delay(minute=self.COMBAT_BACKGROUND_CHECK_MINUTES)
+        else:
+            self.config.task_delay(server_update=True)
+
+    def _combat_should_call_mission_reward(self) -> bool:
+        return not self._combat_is_farm_task()
 
     def run(self) -> bool:
         logger.hr("Combat", level=1)
@@ -153,12 +175,12 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, CombatPre
                 completed_sessions += 1
                 self._combat_runtime_clear()
                 if session_combat_mode != "Event":
-                    if self._should_schedule_mission_reward(
+                    if self._combat_should_call_mission_reward() and self._should_schedule_mission_reward(
                         completed_sessions,
                         runtime_active=self._combat_runtime_active(),
                     ):
                         self.config.task_call("MissionReward", force_call=False)
-                    self.config.task_delay(server_update=True)
+                    self._combat_delay_after_settled()
                     return True
                 logger.info("Combat: event background session finished, restart combat")
 
@@ -183,11 +205,14 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, CombatPre
         logger.attr("CombatFastCombatCount", self._combat_fast_count())
         logger.attr("CombatRepeatCombatCount", self._combat_repeat_count())
 
-        success = self._enter_stage_page(plan, skip_first_screenshot=True)
-        if success:
-            success = self._select_element(plan, skip_first_screenshot=True)
-        if success:
-            success = self._enter_prepare_page(plan, skip_first_screenshot=True)
+        if plan.name == "Saint37":
+            success = self._enter_saint37_prepare_page(skip_first_screenshot=True)
+        else:
+            success = self._enter_stage_page(plan, skip_first_screenshot=True)
+            if success:
+                success = self._select_element(plan, skip_first_screenshot=True)
+            if success:
+                success = self._enter_prepare_page(plan, skip_first_screenshot=True)
 
         if success and use_fast_combat and self._is_fast_combat_locked():
             logger.warning("Combat: fast combat locked, fallback to repeat combat")
@@ -234,7 +259,7 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, CombatPre
                 event_mode=event_mode,
                 use_fast_combat=use_fast_combat,
             )
-            if self._should_schedule_mission_reward(
+            if self._combat_should_call_mission_reward() and self._should_schedule_mission_reward(
                 completed_sessions,
                 runtime_active=runtime_active_after_success,
             ):
@@ -244,7 +269,7 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, CombatPre
                 self.config.task_delay(minute=self.COMBAT_BACKGROUND_CHECK_MINUTES)
             elif use_fast_combat:
                 self._combat_runtime_clear()
-                self.config.task_delay(server_update=True)
+                self._combat_delay_after_settled()
             else:
                 self._combat_runtime_set(self._combat_runtime_build(plan))
                 self.config.task_delay(minute=self.COMBAT_BACKGROUND_CHECK_MINUTES)
@@ -252,7 +277,7 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, CombatPre
 
         self._combat_runtime_clear()
         self._leave_to_main(skip_first_screenshot=True)
-        if self._should_schedule_mission_reward(
+        if self._combat_should_call_mission_reward() and self._should_schedule_mission_reward(
             completed_sessions,
             runtime_active=self._combat_runtime_active(),
         ):

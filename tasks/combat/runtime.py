@@ -6,15 +6,19 @@ from tasks.combat.plan import CombatPlan
 
 
 class CombatRuntimeMixin:
+    def _combat_runtime_path(self) -> str:
+        task = getattr(getattr(self.config, "task", None), "command", "Combat")
+        return f"{task}.CombatRuntime.Session"
+
     def _combat_runtime_session(self) -> dict:
-        session = self.config.cross_get(self.COMBAT_RUNTIME_PATH, default={})
+        session = self.config.cross_get(self._combat_runtime_path(), default={})
         return session if isinstance(session, dict) else {}
 
     def _combat_runtime_active(self) -> bool:
         return bool(self._combat_runtime_session().get("active"))
 
     def _combat_runtime_set(self, session: dict) -> None:
-        self.config.cross_set(self.COMBAT_RUNTIME_PATH, session)
+        self.config.cross_set(self._combat_runtime_path(), session)
 
     def _combat_runtime_clear(self) -> None:
         self._combat_runtime_set({})
@@ -25,7 +29,7 @@ class CombatRuntimeMixin:
             "mode": "repeat_background",
             "combat_mode": self._combat_mode(),
             "domain": plan.name,
-            "element": self._combat_element(),
+            "element": None if plan.name == "Saint37" else self._combat_element(),
             "grade": self._combat_grade(),
         }
 
@@ -117,6 +121,14 @@ class CombatRuntimeMixin:
                 if self.appear_then_click(REPEAT_COMBAT_OVER, interval=1):
                     timeout.reset()
                     continue
+
+                if self._combat_is_saint37():
+                    if self._cleanup_saint37_reward_items(skip_first_screenshot=True):
+                        stage = "finish"
+                        timeout.reset()
+                        result_main_confirm.clear()
+                        continue
+                    logger.warning("Combat Saint37: cleanup failed, fallback to close repeat result")
 
                 if self._is_repeat_result_window():
                     if self.handle_ad_buff_x_close(interval=0.5):
