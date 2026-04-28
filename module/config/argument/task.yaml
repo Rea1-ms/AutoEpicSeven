@@ -63,6 +63,18 @@ Daily:
     Pets:
       - Scheduler
 
+
+# ==================== Farm ====================
+
+Farm:
+  menu: 'list'
+  page: 'setting'
+  tasks:
+    CombatFarm:
+      - Scheduler
+      - Combat
+      - CombatRuntime
+
 # ==================== Tool ====================
 
 Tool:

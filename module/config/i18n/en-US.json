@@ -8,6 +8,10 @@
       "name": "Daily",
       "help": ""
     },
+    "Farm": {
+      "name": "Farming",
+      "help": "Independent long-running farming tasks."
+    },
     "Tool": {
       "name": "Tools",
       "help": ""
@@ -68,7 +72,7 @@
     },
     "Combat": {
       "name": "Daily Combat",
-      "help": "Farm Spirit Altar or Hunt with the selected element and grade, then start fast combat or background repeat combat."
+      "help": "Daily combat task. Runs the selected stage as a daily task and delays to the next server reset after completion. Use Repeat Farming for long-running farming."
     },
     "Gacha": {
       "name": "Gacha",
@@ -77,6 +81,10 @@
     "Pets": {
       "name": "Pet Shop",
       "help": ""
+    },
+    "CombatFarm": {
+      "name": "Repeat Farming",
+      "help": "Repeat farming task separated from daily combat. Use it for Hunt, Spirit Altar, Saint 3-7, and other stages that should keep farming instead of waiting for the next server reset."
     },
     "CommunityAuth": {
       "name": "Community Login",
@@ -468,8 +476,8 @@
   },
   "Combat": {
     "_info": {
-      "name": "Daily Combat Settings",
-      "help": "Configure combat mode, domain, element, and grade."
+      "name": "Combat Settings",
+      "help": "Configure combat domain, element, grade, and run counts."
     },
     "Mode": {
       "name": "Mode",

@@ -895,6 +895,103 @@
       }
     }
   },
+  "CombatFarm": {
+    "Scheduler": {
+      "Enable": {
+        "type": "checkbox",
+        "value": false,
+        "option": [
+          true,
+          false
+        ]
+      },
+      "NextRun": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime"
+      },
+      "Command": {
+        "type": "input",
+        "value": "CombatFarm",
+        "display": "hide"
+      },
+      "ServerUpdate": {
+        "type": "input",
+        "value": "02:00",
+        "display": "hide"
+      }
+    },
+    "Combat": {
+      "Mode": {
+        "type": "select",
+        "value": "Task",
+        "option": [
+          "Task",
+          "Event"
+        ]
+      },
+      "Domain": {
+        "type": "select",
+        "value": "Hunt",
+        "option": [
+          "Hunt",
+          "SpiritAltar",
+          "Saint37"
+        ]
+      },
+      "Element": {
+        "type": "select",
+        "value": "Water",
+        "option": [
+          "Dark",
+          "Light",
+          "Water",
+          "Fire",
+          "Nature"
+        ]
+      },
+      "AltarGrade": {
+        "type": "select",
+        "value": "Hell",
+        "option": [
+          "Pri",
+          "Mid",
+          "High",
+          "Hell"
+        ]
+      },
+      "HuntGrade": {
+        "type": "select",
+        "value": "Hell",
+        "option": [
+          "Mid",
+          "High",
+          "Hell",
+          "Dimensional"
+        ]
+      },
+      "FastCombat": {
+        "type": "checkbox",
+        "value": true
+      },
+      "FastCombatCount": {
+        "type": "input",
+        "value": 10
+      },
+      "RepeatCombatCount": {
+        "type": "input",
+        "value": 5
+      }
+    },
+    "CombatRuntime": {
+      "Session": {
+        "type": "dict",
+        "value": {},
+        "keepvalue": true,
+        "display": "hide"
+      }
+    }
+  },
   "CommunityAuth": {
     "CommunityAuth": {
       "CredentialsFile": {

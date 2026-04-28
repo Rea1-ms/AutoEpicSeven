@@ -222,6 +222,27 @@
       "ServerUpdate": "02:00"
     }
   },
+  "CombatFarm": {
+    "Scheduler": {
+      "Enable": false,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "CombatFarm",
+      "ServerUpdate": "02:00"
+    },
+    "Combat": {
+      "Mode": "Task",
+      "Domain": "Hunt",
+      "Element": "Water",
+      "AltarGrade": "Hell",
+      "HuntGrade": "Hell",
+      "FastCombat": true,
+      "FastCombatCount": 10,
+      "RepeatCombatCount": 5
+    },
+    "CombatRuntime": {
+      "Session": {}
+    }
+  },
   "CommunityAuth": {
     "CommunityAuth": {
       "CredentialsFile": null,

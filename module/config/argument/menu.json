@@ -26,6 +26,13 @@
       "Pets"
     ]
   },
+  "Farm": {
+    "menu": "list",
+    "page": "setting",
+    "tasks": [
+      "CombatFarm"
+    ]
+  },
   "Tool": {
     "menu": "list",
     "page": "tool",

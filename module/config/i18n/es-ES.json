@@ -8,6 +8,10 @@
       "name": "Diario",
       "help": ""
     },
+    "Farm": {
+      "name": "Farmeo",
+      "help": "Tareas independientes para farmear durante mucho tiempo."
+    },
     "Tool": {
       "name": "Herramientas",
       "help": ""
@@ -68,7 +72,7 @@
     },
     "Combat": {
       "name": "Combate diario",
-      "help": "Farmea Altar Espiritual o Cacería con el elemento y la dificultad elegidos, y luego inicia combate rápido o combate repetido en segundo plano."
+      "help": "Tarea de combate diario. Tras completarse espera al siguiente reinicio del servidor. Usa Farmeo repetido para farmeo prolongado."
     },
     "Gacha": {
       "name": "Invocación",
@@ -77,6 +81,10 @@
     "Pets": {
       "name": "Tienda de mascotas",
       "help": ""
+    },
+    "CombatFarm": {
+      "name": "Farmeo repetido",
+      "help": "Tarea de farmeo separada del combate diario. Úsala para Hunt, Spirit Altar, Saint 3-7 y otras fases que deban seguir farmeando sin esperar al reinicio del servidor."
     },
     "CommunityAuth": {
       "name": "Inicio comunidad",
@@ -468,8 +476,8 @@
   },
   "Combat": {
     "_info": {
-      "name": "Ajustes de combate diario",
-      "help": "Configura el modo, tipo, elemento y dificultad del combate."
+      "name": "Ajustes de combate",
+      "help": "Configura dominio, elemento, dificultad y recuentos de combate."
     },
     "Mode": {
       "name": "Modo",
