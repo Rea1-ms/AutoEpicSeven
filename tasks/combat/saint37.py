@@ -40,6 +40,9 @@ class CombatSaint37Mixin:
     SAINT37_CLEANUP_TIMEOUT_SECONDS = 25
 
     def _combat_is_saint37(self) -> bool:
+        session = self._combat_runtime_session()
+        if session.get("domain"):
+            return session.get("domain") == "Saint37"
         return self._combat_plan().name == "Saint37"
 
     def _is_saint37_side_story_page(self) -> bool:

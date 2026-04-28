@@ -208,6 +208,7 @@ class AzurLaneAutoScript:
                 method = self.config.Optimization_WhenTaskQueueEmpty
                 combat_session_active = bool(
                     self.config.cross_get('Combat.CombatRuntime.Session.active', default=False)
+                    or self.config.cross_get('CombatFarm.CombatRuntime.Session.active', default=False)
                 )
                 if combat_session_active and method in {'close_game', 'close_emulator'}:
                     logger.info('Combat background session active, override wait behavior to goto_main')
