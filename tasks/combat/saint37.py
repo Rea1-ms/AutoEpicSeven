@@ -17,6 +17,17 @@ from tasks.combat.assets.assets_combat_saint37 import (
     SAINT37_TIME_BOOK_MEMORIAL_CARD,
     SAINT37_TIME_BOOK_MEMORIAL_SELECTED,
 )
+from tasks.combat.assets.assets_combat_saint37_cleanup import (
+    SAINT37_CLEANUP_AFTER_SELL_WINDOW,
+    SAINT37_CLEANUP_QUICK_SELECT,
+    SAINT37_CLEANUP_RESULT_BAG,
+    SAINT37_CLEANUP_REWARD_MANAGE,
+    SAINT37_CLEANUP_REWARD_WINDOW,
+    SAINT37_CLEANUP_SELL_CONFIRM,
+    SAINT37_CLEANUP_SELL_SELECTED_CHECK,
+    SAINT37_CLEANUP_SELL_TAB,
+    SAINT37_CLEANUP_TOUCH_TO_CLOSE,
+)
 
 
 class CombatSaint37Mixin:
@@ -26,6 +37,7 @@ class CombatSaint37Mixin:
     SAINT37_CARD_SCROLL_X = 1100
     SAINT37_CARD_SCROLL_START_Y = 655
     SAINT37_CARD_SCROLL_END_Y = 250
+    SAINT37_CLEANUP_TIMEOUT_SECONDS = 25
 
     def _combat_is_saint37(self) -> bool:
         return self._combat_plan().name == "Saint37"
@@ -142,5 +154,85 @@ class CombatSaint37Mixin:
 
             if self.appear_then_click(BACK, interval=5):
                 logger.info("Combat Saint37: fallback back navigation")
+                timeout.reset()
+                continue
+
+    def _cleanup_saint37_reward_items(self, skip_first_screenshot=True) -> bool:
+        logger.info("Combat Saint37: cleanup reward equipment")
+        timeout = Timer(self.SAINT37_CLEANUP_TIMEOUT_SECONDS, count=100).start()
+        stage = "open_rewards"
+
+        while 1:
+            if skip_first_screenshot:
+                skip_first_screenshot = False
+            else:
+                self.device.screenshot()
+
+            if timeout.reached():
+                logger.warning(f"Combat Saint37: cleanup timeout at stage={stage}")
+                return False
+
+            if stage == "open_rewards":
+                if self.appear_then_click(SAINT37_CLEANUP_RESULT_BAG, interval=1):
+                    logger.info("Combat Saint37: open reward item window")
+                    stage = "manage"
+                    timeout.reset()
+                    continue
+
+                if self.appear(SAINT37_CLEANUP_REWARD_WINDOW, interval=0):
+                    stage = "manage"
+                    timeout.reset()
+                    continue
+
+            if stage == "manage":
+                if self.appear_then_click(SAINT37_CLEANUP_REWARD_MANAGE, interval=1):
+                    logger.info("Combat Saint37: click reward manage")
+                    stage = "quick_select"
+                    timeout.reset()
+                    continue
+
+                if self.appear(SAINT37_CLEANUP_QUICK_SELECT, interval=0):
+                    stage = "quick_select"
+                    timeout.reset()
+                    continue
+
+            if stage == "quick_select":
+                if self.appear_then_click(SAINT37_CLEANUP_QUICK_SELECT, interval=1):
+                    logger.info("Combat Saint37: click quick select")
+                    stage = "sell"
+                    timeout.reset()
+                    continue
+
+            if stage == "sell":
+                if self.appear(SAINT37_CLEANUP_SELL_SELECTED_CHECK, interval=0):
+                    if self.appear_then_click(SAINT37_CLEANUP_SELL_TAB, interval=1):
+                        logger.info("Combat Saint37: click sell selected items")
+                        stage = "confirm"
+                        timeout.reset()
+                        continue
+
+                if self.appear_then_click(SAINT37_CLEANUP_SELL_TAB, interval=1):
+                    logger.info("Combat Saint37: click sell tab")
+                    timeout.reset()
+                    continue
+
+            if stage == "confirm":
+                if self.appear_then_click(SAINT37_CLEANUP_SELL_CONFIRM, interval=1):
+                    logger.info("Combat Saint37: confirm sell")
+                    stage = "close"
+                    timeout.reset()
+                    continue
+
+            if stage == "close":
+                if self.appear(SAINT37_CLEANUP_AFTER_SELL_WINDOW, interval=0):
+                    if self.appear_then_click(SAINT37_CLEANUP_TOUCH_TO_CLOSE, interval=1):
+                        logger.info("Combat Saint37: close reward item window after cleanup")
+                        return True
+
+                if self.appear_then_click(SAINT37_CLEANUP_TOUCH_TO_CLOSE, interval=1):
+                    logger.info("Combat Saint37: close reward item window")
+                    return True
+
+            if self._handle_combat_additional():
                 timeout.reset()
                 continue

@@ -29,6 +29,8 @@
   - `tasks/combat/assets/assets_combat_saint37.py`
 - 已将原 `3-7素材` 文件夹内素材移动到：
   - `assets/cn/combat/saint37/`
+- 已新增圣女 3-7 专用奖励装备出售流程素材：
+  - `assets/cn/combat/saint37_cleanup/`
 
 ## 当前自动化流程
 
@@ -42,6 +44,10 @@
 8. 点击右下角 `准备战斗`。
 9. 在辅助英雄页点击 `选择队伍`。
 10. 进入准备战斗页后，复用现有宠物重复战斗次数设置与启动逻辑。
+11. 圣女 3-7 重复战斗完成后，打开战斗完成窗口里的背包奖励。
+12. 在“获得的道具”窗口点击整理，点击快速选择，再点击出售。
+13. 确认出售本次奖励窗口中被快速选择选中的装备。
+14. 关闭奖励窗口，回到原有完成页关闭逻辑。
 
 ## 素材命名
 
@@ -83,6 +89,19 @@
 - 3-7 未解锁或未通关时的提示弹窗。
 - 辅助英雄列表为空、无需辅助、或选择队伍按钮样式变化的页面。
 - 体力不足、背包满、网络异常之外的特殊提示弹窗。
+- 奖励页没有可出售装备时的快速选择/出售按钮状态。
+- 出售后奖励窗口关闭按钮样式变化。
+
+## 爆仓处理素材命名
+
+- `1.png` -> `REPEAT_COMPLETE_MARK.png`
+- `2.png` -> `REPEAT_RESULT_WINDOW.png`
+- `3.png` -> `REWARD_ITEM_WINDOW.png`
+- `4.png` -> `REWARD_ITEM_MANAGE.png`
+- `5.png` -> `REWARD_ITEM_SELL_SELECTED.png`
+- `6.png` -> `REWARD_ITEM_SELL_CONFIRM.png`
+- `7.png` -> `REWARD_ITEM_AFTER_SELL.png`
+- `顺序.txt` -> `FLOW.md`
 
 ## 后续建议
 

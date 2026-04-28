@@ -119,6 +119,13 @@ class CombatRuntimeMixin:
                     continue
 
                 if self._is_repeat_result_window():
+                    if self._combat_is_saint37():
+                        self._cleanup_saint37_reward_items(skip_first_screenshot=True)
+                        stage = "finish"
+                        timeout.reset()
+                        result_main_confirm.clear()
+                        continue
+
                     if self.handle_ad_buff_x_close(interval=0.5):
                         logger.info("Combat: close repeat combat result")
                         stage = "finish"
