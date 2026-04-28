@@ -481,7 +481,8 @@
       "name": "Domain",
       "help": "Choose whether this task farms Hunt or Spirit Altar.",
       "Hunt": "Hunt",
-      "SpiritAltar": "Spirit Altar"
+      "SpiritAltar": "Spirit Altar",
+      "Saint37": "Saint 3-7"
     },
     "Element": {
       "name": "Element",

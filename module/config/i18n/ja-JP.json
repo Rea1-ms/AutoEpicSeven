@@ -481,7 +481,8 @@
       "name": "副本種類",
       "help": "今回周回するのが討伐か精霊祭壇かを選択します。",
       "Hunt": "討伐",
-      "SpiritAltar": "精霊祭壇"
+      "SpiritAltar": "精霊祭壇",
+      "Saint37": "Saint 3-7"
     },
     "Element": {
       "name": "属性",

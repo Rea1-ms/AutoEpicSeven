@@ -7,9 +7,10 @@ from tasks.combat.execute import CombatExecuteMixin
 from tasks.combat.plan import COMBAT_PLANS, HUNT_PLAN, CombatPlan
 from tasks.combat.prepare import CombatPrepare
 from tasks.combat.runtime import CombatRuntimeMixin
+from tasks.combat.saint37 import CombatSaint37Mixin
 
 
-class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, CombatPrepare, ResourceBarMixin, UI):
+class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, CombatSaint37Mixin, CombatPrepare, ResourceBarMixin, UI):
     COMBAT_RESOURCE_BAR_TIMEOUT_SECONDS = 1
     COMBAT_RESOURCE_BAR_TIMEOUT_COUNT = 2
     COMBAT_RUNTIME_PATH = "Combat.CombatRuntime.Session"
@@ -75,6 +76,8 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, CombatPre
 
     def _combat_grade(self) -> str:
         plan = self._combat_plan()
+        if plan.name == "Saint37":
+            return "3-7"
         if plan.name == "SpiritAltar":
             return getattr(self.config, "Combat_AltarGrade", "Hell")
         return getattr(self.config, "Combat_HuntGrade", "Hell")
@@ -94,6 +97,9 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, CombatPre
         """
         if plan is None:
             plan = self._combat_plan()
+
+        if plan.name == "Saint37":
+            return False
 
         return not (plan.name == "Hunt" and self._combat_grade() == "Dimensional")
 
@@ -183,11 +189,14 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, CombatPre
         logger.attr("CombatFastCombatCount", self._combat_fast_count())
         logger.attr("CombatRepeatCombatCount", self._combat_repeat_count())
 
-        success = self._enter_stage_page(plan, skip_first_screenshot=True)
-        if success:
-            success = self._select_element(plan, skip_first_screenshot=True)
-        if success:
-            success = self._enter_prepare_page(plan, skip_first_screenshot=True)
+        if plan.name == "Saint37":
+            success = self._enter_saint37_prepare_page(skip_first_screenshot=True)
+        else:
+            success = self._enter_stage_page(plan, skip_first_screenshot=True)
+            if success:
+                success = self._select_element(plan, skip_first_screenshot=True)
+            if success:
+                success = self._enter_prepare_page(plan, skip_first_screenshot=True)
 
         if success and use_fast_combat and self._is_fast_combat_locked():
             logger.warning("Combat: fast combat locked, fallback to repeat combat")

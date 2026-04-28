@@ -25,7 +25,7 @@ class CombatRuntimeMixin:
             "mode": "repeat_background",
             "combat_mode": self._combat_mode(),
             "domain": plan.name,
-            "element": self._combat_element(),
+            "element": None if plan.name == "Saint37" else self._combat_element(),
             "grade": self._combat_grade(),
         }
 

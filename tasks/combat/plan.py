@@ -63,4 +63,11 @@ HUNT_PLAN = CombatPlan(
 COMBAT_PLANS = {
     "SpiritAltar": ALTAR_PLAN,
     "Hunt": HUNT_PLAN,
+    "Saint37": CombatPlan(
+        name="Saint37",
+        entry=HUNT,
+        stage_check=HUNT_CHECK,
+        elements={},
+        grades={},
+    ),
 }

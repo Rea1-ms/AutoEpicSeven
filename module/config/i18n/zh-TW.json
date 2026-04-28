@@ -481,7 +481,8 @@
       "name": "副本類型",
       "help": "選擇本次刷取的是討伐還是精靈祭壇。",
       "Hunt": "討伐",
-      "SpiritAltar": "精靈祭壇"
+      "SpiritAltar": "精靈祭壇",
+      "Saint37": "??3-7"
     },
     "Element": {
       "name": "屬性",

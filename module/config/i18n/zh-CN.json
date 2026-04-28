@@ -481,7 +481,8 @@
       "name": "副本类型",
       "help": "选择本次刷取的是讨伐还是精灵祭坛。",
       "Hunt": "讨伐",
-      "SpiritAltar": "精灵祭坛"
+      "SpiritAltar": "精灵祭坛",
+      "Saint37": "??3-7"
     },
     "Element": {
       "name": "属性",

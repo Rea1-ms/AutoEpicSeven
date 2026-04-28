@@ -481,7 +481,8 @@
       "name": "Dominio",
       "help": "Elige si esta tarea farmea Cacería o Altar Espiritual.",
       "Hunt": "Cacería",
-      "SpiritAltar": "Altar Espiritual"
+      "SpiritAltar": "Altar Espiritual",
+      "Saint37": "Saint 3-7"
     },
     "Element": {
       "name": "Elemento",

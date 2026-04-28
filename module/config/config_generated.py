@@ -96,7 +96,7 @@ class GeneratedConfig:
 
     # Group `Combat`
     Combat_Mode = 'Task'  # Task, Event
-    Combat_Domain = 'Hunt'  # Hunt, SpiritAltar
+    Combat_Domain = 'Hunt'  # Hunt, SpiritAltar, Saint37
     Combat_Element = 'Water'  # Dark, Light, Water, Fire, Nature
     Combat_AltarGrade = 'Hell'  # Pri, Mid, High, Hell
     Combat_HuntGrade = 'Hell'  # Mid, High, Hell, Dimensional

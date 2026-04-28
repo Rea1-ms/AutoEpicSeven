@@ -594,7 +594,13 @@ class ConfigUpdater:
         combat_mode = deep_get(data, 'Combat.Combat.Mode', default='Task')
         combat_domain = deep_get(data, 'Combat.Combat.Domain', default='Hunt')
         combat_hunt_grade = deep_get(data, 'Combat.Combat.HuntGrade', default='Hell')
-        if combat_mode != 'Task':
+        if combat_domain == 'Saint37':
+            yield 'Combat.Combat.Element'
+            yield 'Combat.Combat.AltarGrade'
+            yield 'Combat.Combat.HuntGrade'
+            yield 'Combat.Combat.FastCombat'
+            yield 'Combat.Combat.FastCombatCount'
+        elif combat_mode != 'Task':
             yield 'Combat.Combat.FastCombat'
             yield 'Combat.Combat.FastCombatCount'
             yield 'Combat.Combat.RepeatCombatCount'
