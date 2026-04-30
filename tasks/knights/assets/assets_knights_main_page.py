@@ -87,6 +87,13 @@ WORLD_BOSS_CHECK = ButtonWrapper(
 )
 WORLD_BOSS_LOCKED = ButtonWrapper(
     name='WORLD_BOSS_LOCKED',
+    global_cn=Button(
+        file='./assets/global_cn/knights/main_page/WORLD_BOSS_LOCKED.png',
+        area=(274, 403, 315, 445),
+        search=(254, 383, 335, 465),
+        color=(140, 129, 116),
+        button=(274, 403, 315, 445),
+    ),
     share=Button(
         file='./assets/share/knights/main_page/WORLD_BOSS_LOCKED.png',
         area=(278, 412, 315, 446),
