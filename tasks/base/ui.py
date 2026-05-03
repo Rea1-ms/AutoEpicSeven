@@ -17,7 +17,7 @@ from tasks.dungeon.assets.assets_dungeon_repeat_result import (
     REPEAT_COMBAT_CHECK,
     REPEAT_COMBAT_OVER,
 )
-from tasks.dungeon.assets.assets_dungeon_repeat_status_bar import WINDOW
+from tasks.dungeon.assets.assets_dungeon_repeat_window import WINDOW_CHECK
 from tasks.login.assets.assets_login import (
     LOGIN_ANNOUNCEMENT_CLOSE,
     LOGIN_CONFIRM,
@@ -512,7 +512,7 @@ class UI(MainPage):
     def _is_background_repeat_combat_running(self) -> bool:
         if self.match_template_luma(REPEAT_COMBAT_OVER, similarity=self.COMBAT_CHECK_SIMILARITY):
             return False
-        if self.match_template_luma(WINDOW, similarity=self.COMBAT_CHECK_SIMILARITY):
+        if self.match_template_luma(WINDOW_CHECK, similarity=self.COMBAT_CHECK_SIMILARITY):
             return False
         return self._has_background_repeat_combat_check()
 
@@ -526,7 +526,7 @@ class UI(MainPage):
             logger.info("Closed background combat finish prompt")
             return True
 
-        if self.match_template_luma(WINDOW, similarity=0.8):
+        if self.match_template_luma(WINDOW_CHECK, similarity=0.8):
             if self.handle_ad_buff_x_close(interval=0.5):
                 logger.info("Closed background combat result window")
                 if combat_mode == "Event":

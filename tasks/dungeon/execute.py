@@ -16,7 +16,8 @@ from tasks.dungeon.assets.assets_dungeon_repeat_result import (
     REPEAT_COMBAT_CHECK,
     REPEAT_COMBAT_OVER,
 )
-from tasks.dungeon.assets.assets_dungeon_repeat_status_bar import MINIMIZE, WINDOW
+from tasks.dungeon.assets.assets_dungeon_repeat_status_bar import MINIMIZE
+from tasks.dungeon.assets.assets_dungeon_repeat_window import WINDOW_CHECK
 
 
 class CombatExecuteMixin:
@@ -35,7 +36,7 @@ class CombatExecuteMixin:
         return self.match_color(REPEAT_COMBAT_ON, threshold=self.COMBAT_STATE_COLOR_THRESHOLD)
 
     def _is_repeat_result_window(self) -> bool:
-        return self.match_template_luma(WINDOW, similarity=self.COMBAT_CHECK_SIMILARITY)
+        return self.match_template_luma(WINDOW_CHECK, similarity=self.COMBAT_CHECK_SIMILARITY)
 
     def _is_repeat_combat_over(self) -> bool:
         return self.match_template_luma(REPEAT_COMBAT_OVER, similarity=self.COMBAT_CHECK_SIMILARITY)
