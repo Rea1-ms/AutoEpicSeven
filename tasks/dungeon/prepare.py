@@ -124,7 +124,7 @@ class CombatPrepare:
         While opening/configuring this overlay, avoid ui_additional() so the
         common X-close handler does not close our own menu.
         """
-        if self._handle_combat_network_error(interval=1):
+        if self._handle_dungeon_network_error(interval=1):
             return True
         if self.handle_ui_recovery():
             return True
@@ -143,7 +143,7 @@ class CombatPrepare:
         skip_first_screenshot=True,
     ) -> bool:
         if additional_handler is None:
-            additional_handler = self._handle_combat_additional
+            additional_handler = self._handle_dungeon_additional
 
         timeout = Timer(self.COMBAT_COUNT_TIMEOUT_SECONDS, count=80).start()
         click_interval = Timer(self.COMBAT_COUNT_CLICK_INTERVAL_SECONDS, count=0).start()
@@ -233,7 +233,7 @@ class CombatPrepare:
                 logger.warning("Combat: leave prepare page while preparing fast combat")
                 return "failed"
 
-            if self._handle_combat_additional():
+            if self._handle_dungeon_additional():
                 timeout.reset()
                 zero_confirm.clear()
                 continue
@@ -298,7 +298,7 @@ class CombatPrepare:
                     control_pending.clear()
                     continue
             else:
-                if self._handle_combat_additional():
+                if self._handle_dungeon_additional():
                     timeout.reset()
                     control_pending.clear()
                     continue

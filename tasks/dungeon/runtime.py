@@ -78,7 +78,7 @@ class CombatRuntimeMixin:
                 logger.warning("Combat: repeat combat watch timeout, keep session active")
                 return "running"
 
-            if self._handle_combat_network_error(interval=1):
+            if self._handle_dungeon_network_error(interval=1):
                 logger.warning("Combat: background repeat combat has network error, keep session active")
                 return "running"
 
@@ -111,7 +111,7 @@ class CombatRuntimeMixin:
                 else:
                     missing_check_confirm.clear()
 
-                if self._handle_combat_additional():
+                if self._handle_dungeon_additional():
                     missing_check_confirm.clear()
                     timeout.reset()
                     continue
@@ -147,7 +147,7 @@ class CombatRuntimeMixin:
                     result_main_confirm.clear()
                     continue
 
-                if self._handle_combat_additional():
+                if self._handle_dungeon_additional():
                     timeout.reset()
                     continue
                 continue
@@ -169,7 +169,7 @@ class CombatRuntimeMixin:
                 else:
                     result_main_confirm.clear()
 
-                if self._handle_combat_additional():
+                if self._handle_dungeon_additional():
                     timeout.reset()
                     continue
                 continue
@@ -204,7 +204,7 @@ class CombatRuntimeMixin:
             if self.is_in_main(interval=0):
                 return True
 
-            if self._handle_combat_additional():
+            if self._handle_dungeon_additional():
                 timeout.reset()
                 continue
 

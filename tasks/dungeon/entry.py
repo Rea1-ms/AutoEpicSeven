@@ -74,7 +74,7 @@ class CombatEntryMixin:
             duration=(0.2, 0.3),
         )
 
-    def _handle_combat_network_error(self, interval=1) -> bool:
+    def _handle_dungeon_network_error(self, interval=1) -> bool:
         if self.appear(NETWORK_ERROR_DISCONNECT, interval=interval):
             logger.warning("Combat: network disconnected, retry")
             self.device.click(TOUCH_TO_CLOSE)
@@ -87,8 +87,8 @@ class CombatEntryMixin:
 
         return False
 
-    def _handle_combat_additional(self) -> bool:
-        if self._handle_combat_network_error(interval=1):
+    def _handle_dungeon_additional(self) -> bool:
+        if self._handle_dungeon_network_error(interval=1):
             return True
         if self.ui_additional():
             return True
@@ -195,7 +195,7 @@ class CombatEntryMixin:
                     timeout.reset()
                     continue
 
-            if self._handle_combat_additional():
+            if self._handle_dungeon_additional():
                 timeout.reset()
                 continue
 
@@ -254,7 +254,7 @@ class CombatEntryMixin:
                 selected_confirm.clear()
                 continue
 
-            if self._handle_combat_additional():
+            if self._handle_dungeon_additional():
                 click_pending.clear()
                 timeout.reset()
                 selected_confirm.clear()
@@ -305,7 +305,7 @@ class CombatEntryMixin:
             if grade_pending.started() and not grade_pending.reached():
                 continue
 
-            if self._handle_combat_additional():
+            if self._handle_dungeon_additional():
                 timeout.reset()
                 continue
 

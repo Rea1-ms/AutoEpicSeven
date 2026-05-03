@@ -83,11 +83,11 @@ class AutoEpicSeven(AzurLaneAutoScript):
         Arena(config=self.config, device=self.device, task="Arena").run()
 
     def combat(self):
-        from tasks.combat.combat import Combat
+        from tasks.dungeon.dungeon import Combat
         Combat(config=self.config, device=self.device, task="Combat").run()
 
     def combat_farm(self):
-        from tasks.combat.combat import Combat
+        from tasks.dungeon.dungeon import Combat
         Combat(config=self.config, device=self.device, task="CombatFarm").run()
 
     def community_aio(self):

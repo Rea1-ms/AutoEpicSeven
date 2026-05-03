@@ -103,7 +103,7 @@ class CombatExecuteMixin:
 
             self._raise_if_package_full()
 
-            if self._handle_combat_additional():
+            if self._handle_dungeon_additional():
                 timeout.reset()
                 continue
 
@@ -176,7 +176,7 @@ class CombatExecuteMixin:
 
             self._raise_if_package_full()
 
-            if self._handle_combat_additional():
+            if self._handle_dungeon_additional():
                 timeout.reset()
                 continue
 

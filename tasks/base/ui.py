@@ -13,11 +13,11 @@ from tasks.base.assets.assets_base_popup import (
 from tasks.base.main_page import MainPage
 from tasks.base.page import Page, page_main, page_menu
 from tasks.base.popup import ANNOUNCEMENT_DONOT_REMIND
-from tasks.combat.assets.assets_combat_repeat_result import (
+from tasks.dungeon.assets.assets_dungeon_repeat_result import (
     REPEAT_COMBAT_CHECK,
     REPEAT_COMBAT_OVER,
 )
-from tasks.combat.assets.assets_combat_repeat_status_bar import WINDOW
+from tasks.dungeon.assets.assets_dungeon_repeat_status_bar import WINDOW
 from tasks.login.assets.assets_login import (
     LOGIN_ANNOUNCEMENT_CLOSE,
     LOGIN_CONFIRM,
