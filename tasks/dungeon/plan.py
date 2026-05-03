@@ -1,16 +1,16 @@
 from dataclasses import dataclass
 
 from module.base.button import ButtonWrapper
-from tasks.combat.assets import assets_combat_configs_element_altar as altar_elements
-from tasks.combat.assets import assets_combat_configs_element_hunt as hunt_elements
-from tasks.combat.assets.assets_combat_configs_entry import (
+from tasks.dungeon.assets import assets_dungeon_configs_combat_element_altar as altar_elements
+from tasks.dungeon.assets import assets_dungeon_configs_combat_element_hunt as hunt_elements
+from tasks.dungeon.assets.assets_dungeon_configs_combat_entry import (
     ALTER_CHECK,
     HUNT,
     HUNT_CHECK,
     SPIRIT_ALTAR,
 )
-from tasks.combat.assets import assets_combat_configs_grade_altar as altar_grades
-from tasks.combat.assets import assets_combat_configs_grade_hunt as hunt_grades
+from tasks.dungeon.assets import assets_dungeon_configs_combat_grade_altar as altar_grades
+from tasks.dungeon.assets import assets_dungeon_configs_combat_grade_hunt as hunt_grades
 
 
 @dataclass(frozen=True)

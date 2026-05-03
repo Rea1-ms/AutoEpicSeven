@@ -1,15 +1,15 @@
 from module.base.timer import Timer
 from module.logger import logger
 from module.ocr.ocr import Digit, DigitCounter
-from tasks.combat.assets.assets_combat_fast_combat import (
+from tasks.dungeon.assets.assets_dungeon_fast_combat import (
     FAST_COMBAT_LOCKED,
     FAST_COMBAT_TIMES_MINUS,
     FAST_COMBAT_TIMES_PLUS,
     OCR_FAST_COMBAT_CURRENT_TIMES,
     OCR_FAST_COMBAT_REMAINING_TIMES,
 )
-from tasks.combat.assets.assets_combat_repeat_entry import REPEAT_COMBAT_MENU
-from tasks.combat.assets.assets_combat_repeat_menu import (
+from tasks.dungeon.assets.assets_dungeon_repeat_entry import REPEAT_COMBAT_MENU
+from tasks.dungeon.assets.assets_dungeon_repeat_menu import (
     OCR_REPEAT_COMBAT_TIMES,
     REPEAT_COMBAT_TIMES_MINUS,
     REPEAT_COMBAT_TIMES_PLUS,

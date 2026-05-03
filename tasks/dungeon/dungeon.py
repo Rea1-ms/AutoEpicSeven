@@ -2,15 +2,15 @@ from module.logger import logger
 from tasks.base.page import page_combat
 from tasks.base.resource_bar import ResourceBarMixin
 from tasks.base.ui import UI
-from tasks.combat.entry import CombatEntryMixin
-from tasks.combat.execute import CombatExecuteMixin
-from tasks.combat.plan import COMBAT_PLANS, HUNT_PLAN, CombatPlan
-from tasks.combat.prepare import CombatPrepare
-from tasks.combat.runtime import CombatRuntimeMixin
-from tasks.combat.saint37 import CombatSaint37Mixin
+from tasks.dungeon.entry import CombatEntryMixin
+from tasks.dungeon.execute import CombatExecuteMixin
+from tasks.dungeon.plan import COMBAT_PLANS, HUNT_PLAN, CombatPlan
+from tasks.dungeon.prepare import CombatPrepare
+from tasks.dungeon.runtime import CombatRuntimeMixin
+from tasks.dungeon.saint37 import DungeonSaint37Mixin
 
 
-class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, CombatSaint37Mixin, CombatPrepare, ResourceBarMixin, UI):
+class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, DungeonSaint37Mixin, CombatPrepare, ResourceBarMixin, UI):
     COMBAT_RESOURCE_BAR_TIMEOUT_SECONDS = 1
     COMBAT_RESOURCE_BAR_TIMEOUT_COUNT = 2
     COMBAT_RUNTIME_PATH = "Combat.CombatRuntime.Session"

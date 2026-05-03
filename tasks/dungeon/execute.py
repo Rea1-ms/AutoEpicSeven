@@ -1,22 +1,22 @@
 from module.base.timer import Timer
 from module.logger import logger
-from tasks.combat.assets.assets_combat_action import COMBAT_START
-from tasks.combat.assets.assets_combat_fast_combat import (
+from tasks.dungeon.assets.assets_dungeon_action import COMBAT_START
+from tasks.dungeon.assets.assets_dungeon_fast_combat import (
     FAST_COMBAT_LOCKED,
     FAST_COMBAT_OFF,
     FAST_COMBAT_ON,
     FAST_COMBAT_RESULT_CLOSE,
     FAST_COMBAT_WINDOW,
 )
-from tasks.combat.assets.assets_combat_repeat_entry import (
+from tasks.dungeon.assets.assets_dungeon_repeat_entry import (
     REPEAT_COMBAT_OFF,
     REPEAT_COMBAT_ON,
 )
-from tasks.combat.assets.assets_combat_repeat_result import (
+from tasks.dungeon.assets.assets_dungeon_repeat_result import (
     REPEAT_COMBAT_CHECK,
     REPEAT_COMBAT_OVER,
 )
-from tasks.combat.assets.assets_combat_repeat_status_bar import MINIMIZE, WINDOW
+from tasks.dungeon.assets.assets_dungeon_repeat_status_bar import MINIMIZE, WINDOW
 
 
 class CombatExecuteMixin:

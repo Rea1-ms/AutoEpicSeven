@@ -1,8 +1,8 @@
 from module.base.timer import Timer
 from module.logger import logger
 from tasks.base.assets.assets_base_page import BACK
-from tasks.combat.assets.assets_combat_repeat_result import REPEAT_COMBAT_OVER
-from tasks.combat.plan import CombatPlan
+from tasks.dungeon.assets.assets_dungeon_repeat_result import REPEAT_COMBAT_OVER
+from tasks.dungeon.plan import CombatPlan
 
 
 class CombatRuntimeMixin:

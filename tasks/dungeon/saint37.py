@@ -1,7 +1,7 @@
 from module.base.timer import Timer
 from module.logger import logger
 from tasks.base.assets.assets_base_page import BACK
-from tasks.combat.assets.assets_combat_saint37 import (
+from tasks.dungeon.assets.assets_dungeon_configs_side_story_special_book_of_time import (
     SAINT37_ADVENTURE,
     SAINT37_DETAIL_CHECK,
     SAINT37_EPISODE,
@@ -17,7 +17,7 @@ from tasks.combat.assets.assets_combat_saint37 import (
     SAINT37_TIME_BOOK_MEMORIAL_CARD,
     SAINT37_TIME_BOOK_MEMORIAL_SELECTED,
 )
-from tasks.combat.assets.assets_combat_saint37_cleanup import (
+from tasks.dungeon.assets.assets_combat_saint37_cleanup import (
     SAINT37_CLEANUP_AFTER_SELL_WINDOW,
     SAINT37_CLEANUP_QUICK_SELECT,
     SAINT37_CLEANUP_RESULT_BAG,
@@ -30,7 +30,7 @@ from tasks.combat.assets.assets_combat_saint37_cleanup import (
 )
 
 
-class CombatSaint37Mixin:
+class DungeonSaint37Mixin:
     SAINT37_ENTRY_TIMEOUT_SECONDS = 45
     SAINT37_SCROLL_INTERVAL_SECONDS = 1.2
     SAINT37_MAX_CARD_SCROLLS = 8

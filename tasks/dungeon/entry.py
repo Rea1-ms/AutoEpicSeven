@@ -10,9 +10,9 @@ from tasks.base.assets.assets_base_popup import (
     TOUCH_TO_CLOSE,
 )
 from tasks.base.resource_bar import RESOURCE_BAR_LAYOUT_COMBAT
-from tasks.combat.assets import assets_combat_configs_element_altar as altar_elements
-from tasks.combat.assets import assets_combat_configs_element_hunt as hunt_elements
-from tasks.combat.assets.assets_combat_configs_entry import (
+from tasks.dungeon.assets import assets_dungeon_configs_combat_element_altar as altar_elements
+from tasks.dungeon.assets import assets_dungeon_configs_combat_element_hunt as hunt_elements
+from tasks.dungeon.assets.assets_dungeon_configs_combat_entry import (
     ALTER_CHECK,
     COMMON_ENTRY,
     HUNT,
@@ -22,9 +22,9 @@ from tasks.combat.assets.assets_combat_configs_entry import (
     SPIRIT_ALTAR,
     URGENT_TASKS,
 )
-from tasks.combat.assets.assets_combat_configs_popup import PACKAGE_FULL
-from tasks.combat.assets.assets_combat_repeat_entry import REPEAT_COMBAT_MENU
-from tasks.combat.plan import CombatPlan
+from tasks.dungeon.assets.assets_dungeon_popup import PACKAGE_FULL
+from tasks.dungeon.assets.assets_dungeon_repeat_entry import REPEAT_COMBAT_MENU
+from tasks.dungeon.plan import CombatPlan
 
 
 class CombatDigit(Digit):
