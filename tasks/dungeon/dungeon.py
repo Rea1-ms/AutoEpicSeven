@@ -7,10 +7,10 @@ from tasks.dungeon.execute import CombatExecuteMixin
 from tasks.dungeon.plan import COMBAT_PLANS, HUNT_PLAN, CombatPlan
 from tasks.dungeon.prepare import CombatPrepare
 from tasks.dungeon.runtime import CombatRuntimeMixin
-from tasks.dungeon.saint37 import DungeonSaint37Mixin
+from tasks.dungeon.side_story import SideStoryNavigateMixin
 
 
-class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, DungeonSaint37Mixin, CombatPrepare, ResourceBarMixin, UI):
+class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, SideStoryNavigateMixin, CombatPrepare, ResourceBarMixin, UI):
     COMBAT_RESOURCE_BAR_TIMEOUT_SECONDS = 1
     COMBAT_RESOURCE_BAR_TIMEOUT_COUNT = 2
     COMBAT_RUNTIME_PATH = "Combat.CombatRuntime.Session"
@@ -126,6 +126,17 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, DungeonSa
     def _combat_should_call_mission_reward(self) -> bool:
         return not self._combat_is_farm_task()
 
+    def _dungeon_navigate(self, plan: CombatPlan, skip_first_screenshot=True) -> bool:
+        if plan.name == "Saint37":
+            return self._navigate_side_story(skip_first_screenshot=skip_first_screenshot)
+
+        success = self._enter_stage_page(plan, skip_first_screenshot=skip_first_screenshot)
+        if success:
+            success = self._select_element(plan, skip_first_screenshot=skip_first_screenshot)
+        if success:
+            success = self._enter_prepare_page(plan, skip_first_screenshot=skip_first_screenshot)
+        return success
+
     def run(self) -> bool:
         logger.hr("Combat", level=1)
         completed_sessions = 0
@@ -144,8 +155,13 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, DungeonSa
             or self._is_combat_general_board()
             or self._is_combat_season_board()
             or self._is_combat_urgent_board()
+            or self._is_side_story_page()
+            or self._is_time_book_page()
+            or self._is_episode_preview_page()
+            or self._is_side_story_map_page()
+            or self._is_supporter_page()
         ):
-            logger.info("Combat: detected combat context, skip goto main")
+            logger.info("Combat: detected dungeon context, skip goto main")
         elif not self.is_in_main(interval=0):
             # Route into the combat hub directly instead of always backing out
             # to main first. _enter_stage_page() will normalize season/common
@@ -205,14 +221,7 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, DungeonSa
         logger.attr("CombatFastCombatCount", self._combat_fast_count())
         logger.attr("CombatRepeatCombatCount", self._combat_repeat_count())
 
-        if plan.name == "Saint37":
-            success = self._enter_saint37_prepare_page(skip_first_screenshot=True)
-        else:
-            success = self._enter_stage_page(plan, skip_first_screenshot=True)
-            if success:
-                success = self._select_element(plan, skip_first_screenshot=True)
-            if success:
-                success = self._enter_prepare_page(plan, skip_first_screenshot=True)
+        success = self._dungeon_navigate(plan, skip_first_screenshot=True)
 
         if success and use_fast_combat and self._is_fast_combat_locked():
             logger.warning("Combat: fast combat locked, fallback to repeat combat")

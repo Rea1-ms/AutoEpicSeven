@@ -176,19 +176,19 @@ class CombatRuntimeMixin:
 
     def _leave_to_main(self, skip_first_screenshot=True) -> bool:
         """
-        Recover back to main from combat-local pages.
+        Recover back to main from dungeon-local pages.
 
-        This is kept separate from generic page routing on purpose. Combat can
-        leave the task on transient local states such as stage boards, prepare
-        pages, or result windows that are not stable routing nodes. A generic
-        ui_goto(page_main) is fine on clean success paths, but failure cleanup
-        still needs a combat-aware unwind helper.
+        This is kept separate from generic page routing on purpose. Dungeon
+        tasks can leave on transient local states such as stage boards, prepare
+        pages, side story sub-pages, or result windows that are not stable
+        routing nodes. A generic ui_goto(page_main) is fine on clean success
+        paths, but failure cleanup still needs a dungeon-aware unwind helper.
 
         Pages:
-            in: combat-local pages
+            in: dungeon-local pages (combat or side story)
             out: main
         """
-        logger.info("Combat: return to main")
+        logger.info("Dungeon: return to main")
         timeout = Timer(self.COMBAT_EXIT_TIMEOUT_SECONDS, count=80).start()
 
         while 1:
@@ -198,7 +198,7 @@ class CombatRuntimeMixin:
                 self.device.screenshot()
 
             if timeout.reached():
-                logger.warning("Combat: return to main timeout")
+                logger.warning("Dungeon: return to main timeout")
                 return False
 
             if self.is_in_main(interval=0):
@@ -214,6 +214,11 @@ class CombatRuntimeMixin:
                 or self._is_combat_general_board()
                 or self._is_combat_season_board()
                 or self._is_combat_urgent_board()
+                or self._is_side_story_page()
+                or self._is_time_book_page()
+                or self._is_episode_preview_page()
+                or self._is_side_story_map_page()
+                or self._is_supporter_page()
             ):
                 if self.appear_then_click(BACK, interval=1):
                     timeout.reset()

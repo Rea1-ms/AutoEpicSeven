@@ -301,6 +301,24 @@ MENU_GOTO_PETS = ButtonWrapper(
         button=(1069, 243, 1087, 260),
     ),
 )
+MENU_GOTO_SIDE_STORY = ButtonWrapper(
+    name='MENU_GOTO_SIDE_STORY',
+    cn=Button(
+        file='./assets/cn/base/page/MENU_GOTO_SIDE_STORY.png',
+        area=(837, 248, 858, 270),
+        search=(817, 228, 878, 290),
+        color=(149, 149, 149),
+        button=(837, 248, 858, 270),
+    ),
+    global_cn=Button(
+        file='./assets/global_cn/base/page/MENU_GOTO_SIDE_STORY.png',
+        area=(837, 248, 858, 270),
+        search=(817, 228, 878, 290),
+        color=(144, 144, 145),
+        button=(837, 248, 858, 270),
+    ),
+    global_en=None,
+)
 MENU_GOTO_STORE = ButtonWrapper(
     name='MENU_GOTO_STORE',
     cn=Button(

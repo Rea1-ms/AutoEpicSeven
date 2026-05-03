@@ -27,7 +27,7 @@ from tasks.arena.assets.assets_arena import (
     BATTLE_PASS_CHECK,
     BATTLE_PASS_ENTRY,
 )
-from tasks.combat.assets.assets_combat_configs_entry import (
+from tasks.dungeon.assets.assets_dungeon_configs_combat_entry import (
     ALTER_CHECK,
     COMMON_ENTRY,
     HUNT_CHECK,
@@ -36,7 +36,14 @@ from tasks.combat.assets.assets_combat_configs_entry import (
     SPIRIT_ALTAR,
     URGENT_TASKS,
 )
-from tasks.combat.assets.assets_combat_repeat_entry import REPEAT_COMBAT_MENU
+from tasks.dungeon.assets.assets_dungeon_repeat_entry import REPEAT_COMBAT_MENU
+from tasks.dungeon.assets.assets_dungeon_configs_side_story_entry import (
+    EPISODE_PREVIEW_CHECK,
+    MAP_CHECK,
+    SIDE_STORY_CHECK,
+    SIDE_STORY_GOTO_SPECIAL_BOOK_OF_TIME,
+    SPECIAL_BOOK_OF_TIME_CHECK,
+)
 from tasks.knights.assets.assets_knights_main_page import (
     KNIGHTS_ACTIVITY_ENTRY,
     KNIGHTS_CHECK,
@@ -435,6 +442,22 @@ page_combat_stage.link(BACK, destination=page_combat_common)
 page_combat_prepare = Page(REPEAT_COMBAT_MENU)
 page_combat_prepare.link(BACK, destination=page_combat_stage)
 
+# Side Story
+page_side_story = Page(SIDE_STORY_CHECK)
+page_side_story.link(BACK, destination=page_main)
+page_main.link(MAIN_GOTO_SIDE_STORY, destination=page_side_story)
+page_menu.link(MENU_GOTO_SIDE_STORY, destination=page_side_story)
+
+page_side_story_time_book = Page(SPECIAL_BOOK_OF_TIME_CHECK)
+page_side_story_time_book.link(BACK, destination=page_side_story)
+page_side_story.link(SIDE_STORY_GOTO_SPECIAL_BOOK_OF_TIME, destination=page_side_story_time_book)
+
+page_side_story_episode_preview = Page(EPISODE_PREVIEW_CHECK)
+page_side_story_episode_preview.link(BACK, destination=page_side_story_time_book)
+
+page_side_story_map = Page(MAP_CHECK)
+page_side_story_map.link(BACK, destination=page_side_story_episode_preview)
+
 # Pets
 page_pets = Page(PETS_CHECK)
 page_pets.link(BACK, destination=page_main)
@@ -483,6 +506,10 @@ link_shared_toolbar(
     page_combat_urgent,
     page_combat_stage,
     page_combat_prepare,
+    page_side_story,
+    page_side_story_time_book,
+    page_side_story_episode_preview,
+    page_side_story_map,
     page_pets,
     page_knights,
     page_knights_world_boss,
