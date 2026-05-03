@@ -149,7 +149,7 @@ MAIN_GOTO_SECRET_SHOP = ButtonWrapper(
             file='./assets/cn/base/page/MAIN_GOTO_SECRET_SHOP.2.png',
             area=(26, 357, 39, 370),
             search=(6, 337, 59, 390),
-            color=(146, 150, 154),
+            color=(151, 154, 157),
             button=(26, 357, 39, 370),
         ),
     ],
@@ -169,6 +169,24 @@ MAIN_GOTO_SECRET_SHOP = ButtonWrapper(
             button=(25, 278, 38, 292),
         ),
     ],
+    global_en=None,
+)
+MAIN_GOTO_SIDE_STORY = ButtonWrapper(
+    name='MAIN_GOTO_SIDE_STORY',
+    cn=Button(
+        file='./assets/cn/base/page/MAIN_GOTO_SIDE_STORY.png',
+        area=(1213, 249, 1234, 269),
+        search=(1193, 229, 1254, 289),
+        color=(167, 164, 164),
+        button=(1213, 249, 1234, 269),
+    ),
+    global_cn=Button(
+        file='./assets/global_cn/base/page/MAIN_GOTO_SIDE_STORY.png',
+        area=(1213, 248, 1234, 270),
+        search=(1193, 228, 1254, 290),
+        color=(144, 142, 145),
+        button=(1213, 248, 1234, 270),
+    ),
     global_en=None,
 )
 MAIN_GOTO_STORE = ButtonWrapper(
