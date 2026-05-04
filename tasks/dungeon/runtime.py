@@ -53,9 +53,32 @@ class CombatRuntimeMixin:
         self._combat_runtime_set(session)
         return True
 
+    def _handle_repeat_combat_finish_return(self) -> bool:
+        """
+        Unwind local dungeon pages back to main after consuming a result.
+
+        This path only matters for the "adopt existing result" startup case:
+        - an old background repeat combat finishes
+        - user manually stays on a combat-local page
+        - a new Combat task starts and detects `state=result`
+        - result cleanup succeeds, but we are still sitting somewhere inside
+          the dungeon flow instead of already being on main
+
+        Without this extra unwind step, the watch loop would keep waiting for
+        `is_in_main()` to become true on its own and eventually time out.
+        """
+        if not self._is_in_dungeon_context():
+            return False
+
+        if self.appear_then_click(BACK, interval=1):
+            logger.info("Combat: return to main after repeat combat result")
+            return True
+
+        return False
+
     def _watch_repeat_combat(self, skip_first_screenshot=True) -> str:
         """
-        Watch a background repeat-combat session from main.
+        Watch and settle a background repeat-combat session.
 
         The return value is intentionally tri-state:
         - running: session is still active, or state is temporarily ambiguous
@@ -172,6 +195,10 @@ class CombatRuntimeMixin:
                 if self._handle_dungeon_additional():
                     timeout.reset()
                     continue
+
+                if self._handle_repeat_combat_finish_return():
+                    timeout.reset()
+                    continue
                 continue
 
     def _leave_to_main(self, skip_first_screenshot=True) -> bool:
@@ -183,6 +210,17 @@ class CombatRuntimeMixin:
         pages, side story sub-pages, or result windows that are not stable
         routing nodes. A generic ui_goto(page_main) is fine on clean success
         paths, but failure cleanup still needs a dungeon-aware unwind helper.
+
+        Why unwind one layer at a time:
+        - dungeon entry is not fixed; different combat branches may leave us on
+          different local pages, but they still converge back into the same
+          closed BACK chain toward prepare / stage / main
+        - some transitions are "swallowed" locally, for example side-story
+          supporter -> choose team -> prepare. Once prepare is open, BACK no
+          longer returns to supporter directly, so local unwind is more
+          reliable than trying to globally route from an inferred old page
+        - in short: not every dungeon-local page is suitable for global route
+          planning, but the BACK-based unwind path is closed and deterministic
 
         Pages:
             in: dungeon-local pages (combat or side story)
