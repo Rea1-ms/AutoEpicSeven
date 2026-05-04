@@ -105,15 +105,12 @@ class SideStoryResultMixin:
                     continue
 
             if stage == "fast_choose":
-                if self.appear_then_click(FAST_CHOOSE, interval=1):
-                    logger.info("SideStory: fast choose all")
-                    stage = "check_selected"
-                    timeout.reset()
-                    continue
-
-            if stage == "check_selected":
                 if self.appear(EQUIP_SELECTED, interval=0):
                     stage = "sell"
+                    timeout.reset()
+                    continue
+                if self.appear_then_click(FAST_CHOOSE, interval=1):
+                    logger.info("SideStory: fast choose all")
                     timeout.reset()
                     continue
 
@@ -138,10 +135,6 @@ class SideStoryResultMixin:
                 if self.handle_ad_buff_x_close(interval=0.5):
                     timeout.reset()
                     continue
-
-            if self._handle_dungeon_additional():
-                timeout.reset()
-                continue
 
 
 class SideStoryNavigateMixin(SideStoryResultMixin):
