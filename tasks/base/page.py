@@ -495,7 +495,6 @@ link_shared_toolbar(
     page_gacha,
     page_sanctuary,
     page_sanctuary_forest,
-    page_sanctuary_tower,
     page_sanctuary_heart,
     page_secret_shop,
     page_store,
