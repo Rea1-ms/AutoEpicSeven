@@ -17,9 +17,9 @@ REPEAT_COMBAT_OVER = ButtonWrapper(
     name='REPEAT_COMBAT_OVER',
     share=Button(
         file='./assets/share/dungeon/repeat/result/REPEAT_COMBAT_OVER.png',
-        area=(926, 10, 974, 53),
-        search=(906, 0, 994, 73),
-        color=(108, 117, 128),
-        button=(926, 10, 974, 53),
+        area=(929, 12, 937, 20),
+        search=(909, 0, 957, 40),
+        color=(222, 86, 11),
+        button=(929, 12, 937, 20),
     ),
 )

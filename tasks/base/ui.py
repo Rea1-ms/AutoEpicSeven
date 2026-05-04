@@ -13,11 +13,6 @@ from tasks.base.assets.assets_base_popup import (
 from tasks.base.main_page import MainPage
 from tasks.base.page import Page, page_main, page_menu
 from tasks.base.popup import ANNOUNCEMENT_DONOT_REMIND
-from tasks.dungeon.assets.assets_dungeon_repeat_result import (
-    REPEAT_COMBAT_CHECK,
-    REPEAT_COMBAT_OVER,
-)
-from tasks.dungeon.assets.assets_dungeon_repeat_window import WINDOW_CHECK
 from tasks.login.assets.assets_login import (
     LOGIN_ANNOUNCEMENT_CLOSE,
     LOGIN_CONFIRM,
@@ -34,11 +29,6 @@ from tasks.login.assets.assets_login_popup import (
 class UI(MainPage):
     ui_current: Page
     ui_main_confirm_timer = Timer(0.2, count=0)
-    _COMBAT_RUNTIME_PATHS = (
-        "Combat.CombatRuntime.Session",
-        "CombatFarm.CombatRuntime.Session",
-    )
-    COMBAT_CHECK_SIMILARITY = 0.8
 
     def _ui_dynamic_origin_store(self) -> dict[str, Page]:
         if not hasattr(self, "_ui_dynamic_origins"):
@@ -509,46 +499,6 @@ class UI(MainPage):
     def ui_goto_main(self):
         return self.ui_ensure(destination=page_main)
 
-    def _has_background_repeat_combat_check(self) -> bool:
-        return self.match_template_luma(REPEAT_COMBAT_CHECK, similarity=self.COMBAT_CHECK_SIMILARITY)
-
-    def _is_background_repeat_combat_running(self) -> bool:
-        if self.match_template_luma(REPEAT_COMBAT_OVER, similarity=self.COMBAT_CHECK_SIMILARITY):
-            return False
-        if self.match_template_luma(WINDOW_CHECK, similarity=self.COMBAT_CHECK_SIMILARITY):
-            return False
-        return self._has_background_repeat_combat_check()
-
-    def _handle_background_combat_result(self) -> bool:
-        active_path = None
-        for path in self._COMBAT_RUNTIME_PATHS:
-            s = self.config.cross_get(path, default={})
-            if isinstance(s, dict) and s.get("active"):
-                active_path = path
-                break
-        if active_path is None:
-            return False
-
-        if self.appear_then_click(REPEAT_COMBAT_OVER, interval=0.5):
-            logger.info("Closed background combat finish prompt")
-            return True
-
-        if self.match_template_luma(WINDOW_CHECK, similarity=0.8):
-            if self.handle_ad_buff_x_close(interval=0.5):
-                logger.info("Closed background combat result window")
-                self.config.cross_set(active_path, {})
-                if active_path == "Combat.CombatRuntime.Session":
-                    self.config.task_delay(server_update=True, task="Combat")
-                return True
-
-        if self.is_in_main(interval=0) and not self._is_background_repeat_combat_running():
-            if self.config.task.command != "Combat" and self.interval_is_reached(REPEAT_COMBAT_CHECK, interval=10):
-                logger.warning("Background combat session active but check is missing, wake Combat")
-                self.config.task_call("Combat")
-                self.interval_reset(REPEAT_COMBAT_CHECK, interval=10)
-
-        return False
-
     def ui_additional(self) -> bool:
         """
         Handle all possible popups during UI switching.
@@ -596,21 +546,17 @@ class UI(MainPage):
             logger.info('Skipped tutorial popup')
             return True
 
-        # 5. 后台托管战斗相关
-        if self._handle_background_combat_result():
-            return True
-
-        # 6. Buff 广告 - 点击关闭
+        # 5. Buff 广告 - 点击关闭
         if self.handle_ad_buff_x_close(interval=2):
             logger.info('Closed buff ad popup')
             return True
 
-        # 7. 各种捆绑礼包/公告 - 轻触关闭
+        # 6. 各种捆绑礼包/公告 - 轻触关闭
         if self.handle_touch_to_close():
             logger.info('Closed popup via touch to close')
             return True
 
-        # 8. 国服启动公告：高频出现，允许作为全局兜底弹窗处理
+        # 7. 国服启动公告：高频出现，允许作为全局兜底弹窗处理
         if server_.is_cn_server(self.config.Emulator_PackageName) and self.appear_then_click(
             LOGIN_ANNOUNCEMENT_CLOSE, interval=2
         ):
