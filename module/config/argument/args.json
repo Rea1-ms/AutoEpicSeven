@@ -765,14 +765,6 @@
       }
     },
     "Combat": {
-      "Mode": {
-        "type": "select",
-        "value": "Task",
-        "option": [
-          "Task",
-          "Event"
-        ]
-      },
       "Domain": {
         "type": "select",
         "value": "Hunt",
@@ -896,40 +888,7 @@
     }
   },
   "CombatFarm": {
-    "Scheduler": {
-      "Enable": {
-        "type": "checkbox",
-        "value": false,
-        "option": [
-          true,
-          false
-        ]
-      },
-      "NextRun": {
-        "type": "datetime",
-        "value": "2020-01-01 00:00:00",
-        "validate": "datetime"
-      },
-      "Command": {
-        "type": "input",
-        "value": "CombatFarm",
-        "display": "hide"
-      },
-      "ServerUpdate": {
-        "type": "input",
-        "value": "02:00",
-        "display": "hide"
-      }
-    },
     "Combat": {
-      "Mode": {
-        "type": "select",
-        "value": "Task",
-        "option": [
-          "Task",
-          "Event"
-        ]
-      },
       "Domain": {
         "type": "select",
         "value": "Hunt",
@@ -972,11 +931,13 @@
       },
       "FastCombat": {
         "type": "checkbox",
-        "value": true
+        "value": false,
+        "display": "hide"
       },
       "FastCombatCount": {
         "type": "input",
-        "value": 10
+        "value": 10,
+        "display": "hide"
       },
       "RepeatCombatCount": {
         "type": "input",

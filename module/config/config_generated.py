@@ -95,7 +95,6 @@ class GeneratedConfig:
     PetsGift_LastClaimAt = datetime.datetime(2020, 1, 1, 0, 0)
 
     # Group `Combat`
-    Combat_Mode = 'Task'  # Task, Event
     Combat_Domain = 'Hunt'  # Hunt, SpiritAltar, Saint37
     Combat_Element = 'Water'  # Dark, Light, Water, Fire, Nature
     Combat_AltarGrade = 'Hell'  # Pri, Mid, High, Hell

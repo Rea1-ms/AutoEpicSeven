@@ -64,23 +64,15 @@ Daily:
       - Scheduler
 
 
-# ==================== Farm ====================
-
-Farm:
-  menu: 'list'
-  page: 'setting'
-  tasks:
-    CombatFarm:
-      - Scheduler
-      - Combat
-      - CombatRuntime
-
 # ==================== Tool ====================
 
 Tool:
   menu: 'list'
   page: 'tool'
   tasks:
+    CombatFarm:
+      - Combat
+      - CombatRuntime
     CommunityAuth:
       - CommunityAuth
 

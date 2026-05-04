@@ -8,10 +8,6 @@
       "name": "Daily",
       "help": ""
     },
-    "Farm": {
-      "name": "Farming",
-      "help": "Independent long-running farming tasks."
-    },
     "Tool": {
       "name": "Tools",
       "help": ""
@@ -84,7 +80,7 @@
     },
     "CombatFarm": {
       "name": "Repeat Farming",
-      "help": "Repeat farming task separated from daily combat. Use it for Hunt, Spirit Altar, Saint 3-7, and other stages that should keep farming instead of waiting for the next server reset."
+      "help": "Stop the scheduler before running this tool. Continuously farms dungeons until manually stopped. Use it for Hunt, Spirit Altar, Saint 3-7, and other stages."
     },
     "CommunityAuth": {
       "name": "Community Login",
@@ -478,12 +474,6 @@
     "_info": {
       "name": "Combat Settings",
       "help": "Configure combat domain, element, grade, and run counts."
-    },
-    "Mode": {
-      "name": "Mode",
-      "help": "Choose between fixed-count task mode and long-running event mode.",
-      "Task": "Task",
-      "Event": "Event"
     },
     "Domain": {
       "name": "Domain",

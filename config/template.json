@@ -190,7 +190,6 @@
       "ServerUpdate": "02:00"
     },
     "Combat": {
-      "Mode": "Task",
       "Domain": "Hunt",
       "Element": "Water",
       "AltarGrade": "Hell",
@@ -223,19 +222,12 @@
     }
   },
   "CombatFarm": {
-    "Scheduler": {
-      "Enable": false,
-      "NextRun": "2020-01-01 00:00:00",
-      "Command": "CombatFarm",
-      "ServerUpdate": "02:00"
-    },
     "Combat": {
-      "Mode": "Task",
       "Domain": "Hunt",
       "Element": "Water",
       "AltarGrade": "Hell",
       "HuntGrade": "Hell",
-      "FastCombat": true,
+      "FastCombat": false,
       "FastCombatCount": 10,
       "RepeatCombatCount": 5
     },

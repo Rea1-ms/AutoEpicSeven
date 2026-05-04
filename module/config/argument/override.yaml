@@ -27,3 +27,10 @@ DataUpdate:
       value: true
       option: [ true, ]
       option_bold: [ true, ]
+
+# ==================== Tool ====================
+
+CombatFarm:
+  Combat:
+    FastCombat: false
+    FastCombatCount: 10

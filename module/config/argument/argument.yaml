@@ -182,9 +182,6 @@ PetsGift:
     value: 2020-01-01T00:00:00
 
 Combat:
-  Mode:
-    value: Task
-    option: [ Task, Event ]
   Domain:
     value: Hunt
     option: [ Hunt, SpiritAltar, Saint37 ]
