@@ -27,7 +27,6 @@ class CombatRuntimeMixin:
         return {
             "active": True,
             "mode": "repeat_background",
-            "combat_mode": self._combat_mode(),
             "domain": domain,
             "element": None if domain == "Saint37" else self._combat_element(),
             "grade": self._combat_grade(),
@@ -37,7 +36,6 @@ class CombatRuntimeMixin:
         return {
             "active": True,
             "mode": "repeat_background",
-            "combat_mode": self._combat_mode(),
             "source": "detected_existing",
         }
 
@@ -122,7 +120,7 @@ class CombatRuntimeMixin:
                     timeout.reset()
                     continue
 
-                if self._combat_is_saint37():
+                if self._combat_should_cleanup_saint37_reward_items():
                     if self._cleanup_saint37_reward_items(skip_first_screenshot=True):
                         stage = "finish"
                         timeout.reset()

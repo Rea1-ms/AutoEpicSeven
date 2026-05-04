@@ -196,7 +196,8 @@
       "HuntGrade": "Hell",
       "FastCombat": true,
       "FastCombatCount": 10,
-      "RepeatCombatCount": 5
+      "RepeatCombatCount": 5,
+      "Saint37AutoRecycle": false
     },
     "CombatRuntime": {
       "Session": {}
@@ -229,7 +230,8 @@
       "HuntGrade": "Hell",
       "FastCombat": false,
       "FastCombatCount": 10,
-      "RepeatCombatCount": 5
+      "RepeatCombatCount": 5,
+      "Saint37AutoRecycle": false
     },
     "CombatRuntime": {
       "Session": {}

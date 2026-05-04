@@ -80,7 +80,7 @@
     },
     "CombatFarm": {
       "name": "Farmeo repetido",
-      "help": "Detén el planificador antes de ejecutar esta herramienta. Farmea mazmorras continuamente hasta que se detenga manualmente. Úsala para Hunt, Spirit Altar, Saint 3-7 y otras fases."
+      "help": "Detén el planificador antes de ejecutar esta herramienta. Revisa el combate repetido en segundo plano cada minuto. Si se permite el combate rápido, primero consume todos los usos disponibles y luego pasa al combate repetido con mascota."
     },
     "CommunityAuth": {
       "name": "Inicio comunidad",
@@ -509,7 +509,7 @@
     },
     "FastCombat": {
       "name": "Usar combate rápido",
-      "help": "Activa combate rápido cuando esté disponible. Si se desactiva, la tarea inicia combate repetido y lo minimiza a la pantalla principal."
+      "help": "Usa primero el combate rápido cuando esté disponible y, cuando se agote, cambia al combate repetido con mascota. Si está desactivado, solo se usará el combate repetido con mascota."
     },
     "FastCombatCount": {
       "name": "Cantidad de combate rapido",
@@ -518,6 +518,10 @@
     "RepeatCombatCount": {
       "name": "Cantidad de combate repetido",
       "help": "Cantidad objetivo de combate repetido para la repeticion con mascota."
+    },
+    "Saint37AutoRecycle": {
+      "name": "Venta Automática de Equipo",
+      "help": "Solo se aplica a Saint 3-7. Tras liquidar el combate repetido en segundo plano, abre la bolsa temporal, selecciona rápido el equipo blanco y verde, lo vende y vuelve a la pantalla principal."
     }
   },
   "CombatRuntime": {

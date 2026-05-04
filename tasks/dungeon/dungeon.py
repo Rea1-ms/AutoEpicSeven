@@ -45,20 +45,16 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, SideStory
         """
         return completed_sessions > 0 and not runtime_active
 
-    @staticmethod
-    def _runtime_active_after_success(event_mode: bool, use_fast_combat: bool) -> bool:
+    def _combat_runs_repeat_in_background(self, use_fast_combat: bool) -> bool:
         """
-        Describe the post-success runtime state before it is written to config.
+        Return whether the current combat run should end in background repeat.
 
-        This is intentionally derived from the flow mode instead of reading the
-        current runtime flag. In success branches that launch repeat combat into
-        the background, runtime has not been persisted yet at the moment we
-        decide whether MissionReward may interrupt the flow. Using the old
-        runtime value here would falsely treat the session as settled and cause
-        MissionReward/DataUpdate to steal focus while repeat combat is about to
-        continue in background.
+        CombatFarm always consumes fast combat first when available, then
+        continues with repeat combat in background. The daily Combat task only
+        runs repeat combat when fast combat is disabled, unsupported, or
+        unavailable.
         """
-        return event_mode or not use_fast_combat
+        return self._combat_is_farm_task() or not use_fast_combat
 
     def _dungeon_domain(self) -> str:
         return getattr(self.config, "Combat_Domain", "Hunt")
@@ -68,14 +64,6 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, SideStory
 
     def _combat_is_farm_task(self) -> bool:
         return getattr(getattr(self.config, "task", None), "command", "Combat") == "CombatFarm"
-
-    def _combat_mode(self) -> str:
-        if self._combat_is_farm_task():
-            return "Task"
-        return getattr(self.config, "Combat_Mode", "Task")
-
-    def _combat_is_event_mode(self) -> bool:
-        return self._combat_mode() == "Event"
 
     def _combat_element(self) -> str:
         return getattr(self.config, "Combat_Element", "Water")
@@ -107,12 +95,8 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, SideStory
         return not (domain == "Hunt" and self._combat_grade() == "Dimensional")
 
     def _combat_should_use_fast(self) -> bool:
-        if self._combat_is_farm_task():
-            return False
         if not self._combat_supports_fast_combat():
             return False
-        if self._combat_is_event_mode():
-            return True
         return self._combat_fast_enabled()
 
     def _combat_delay_after_settled(self) -> None:
@@ -123,6 +107,9 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, SideStory
 
     def _combat_should_call_mission_reward(self) -> bool:
         return not self._combat_is_farm_task()
+
+    def _combat_should_cleanup_saint37_reward_items(self) -> bool:
+        return self._combat_is_saint37() and bool(getattr(self.config, "Combat_Saint37AutoRecycle", False))
 
     def _dungeon_navigate(self, skip_first_screenshot=True) -> bool:
         domain = self._dungeon_domain()
@@ -173,9 +160,7 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, SideStory
 
         if self._combat_runtime_active():
             session = self._combat_runtime_session()
-            session_combat_mode = session.get("combat_mode", "Task")
             logger.info("Combat: background session active, watch current session")
-            logger.attr("CombatSessionMode", session_combat_mode)
             if session.get("source"):
                 logger.attr("CombatSessionSource", session.get("source"))
             logger.attr("CombatSessionDomain", session.get("domain"))
@@ -190,15 +175,13 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, SideStory
             if status == "finished":
                 completed_sessions += 1
                 self._combat_runtime_clear()
-                if session_combat_mode != "Event":
-                    if self._combat_should_call_mission_reward() and self._should_schedule_mission_reward(
-                        completed_sessions,
-                        runtime_active=self._combat_runtime_active(),
-                    ):
-                        self.config.task_call("MissionReward", force_call=False)
-                    self._combat_delay_after_settled()
-                    return True
-                logger.info("Combat: event background session finished, restart combat")
+                if self._combat_should_call_mission_reward() and self._should_schedule_mission_reward(
+                    completed_sessions,
+                    runtime_active=self._combat_runtime_active(),
+                ):
+                    self.config.task_call("MissionReward", force_call=False)
+                self._combat_delay_after_settled()
+                return True
 
             if status == "lost":
                 logger.warning("Combat: background session lost, relaunch combat")
@@ -208,11 +191,9 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, SideStory
                 return True
 
         domain = self._dungeon_domain()
-        combat_mode = self._combat_mode()
-        event_mode = self._combat_is_event_mode()
         use_fast_combat = self._combat_should_use_fast()
+        repeat_in_background = self._combat_runs_repeat_in_background(use_fast_combat)
 
-        logger.attr("CombatMode", combat_mode)
         logger.attr("CombatDomain", domain)
         logger.attr("CombatElement", self._combat_element())
         logger.attr("CombatGrade", self._combat_grade())
@@ -220,6 +201,9 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, SideStory
         logger.attr("CombatFastCombat", use_fast_combat)
         logger.attr("CombatFastCombatCount", self._combat_fast_count())
         logger.attr("CombatRepeatCombatCount", self._combat_repeat_count())
+        logger.attr("CombatRepeatInBackground", repeat_in_background)
+        if domain == "Saint37":
+            logger.attr("CombatSaint37AutoRecycle", self._combat_should_cleanup_saint37_reward_items())
 
         success = self._dungeon_navigate(skip_first_screenshot=True)
 
@@ -229,59 +213,45 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, SideStory
 
         if success:
             if use_fast_combat:
-                fast_prepare = self._prepare_fast_combat(use_max=event_mode, skip_first_screenshot=True)
+                fast_prepare = self._prepare_fast_combat(
+                    use_max=self._combat_is_farm_task(),
+                    skip_first_screenshot=True,
+                )
                 if fast_prepare == "fallback":
                     use_fast_combat = False
+                    repeat_in_background = self._combat_runs_repeat_in_background(use_fast_combat)
                 else:
                     success = fast_prepare == "ready"
 
         if success:
-            if event_mode:
-                if use_fast_combat:
-                    success = self._run_fast_combat(skip_first_screenshot=True)
-                    if success:
-                        completed_sessions += 1
-                    if success:
-                        success = self._prepare_repeat_combat(use_max=True, skip_first_screenshot=True)
-                    if success:
-                        success = self._run_repeat_combat(skip_first_screenshot=True)
-                else:
-                    success = self._prepare_repeat_combat(use_max=True, skip_first_screenshot=True)
-                    if success:
-                        success = self._run_repeat_combat(skip_first_screenshot=True)
-            else:
-                if not use_fast_combat:
-                    success = self._prepare_repeat_combat(skip_first_screenshot=True)
+            if use_fast_combat:
+                success = self._run_fast_combat(skip_first_screenshot=True)
                 if success:
-                    if use_fast_combat:
-                        success = self._run_fast_combat(skip_first_screenshot=True)
-                        if success:
-                            completed_sessions += 1
-                    else:
-                        success = self._run_repeat_combat(skip_first_screenshot=True)
+                    completed_sessions += 1
 
-        if success and use_fast_combat and not event_mode:
+            if success and repeat_in_background:
+                success = self._prepare_repeat_combat(
+                    use_max=self._combat_is_farm_task(),
+                    skip_first_screenshot=True,
+                )
+                if success:
+                    success = self._run_repeat_combat(skip_first_screenshot=True)
+
+        if success and use_fast_combat and not repeat_in_background:
             success = self._leave_to_main(skip_first_screenshot=True)
 
         if success:
-            runtime_active_after_success = self._runtime_active_after_success(
-                event_mode=event_mode,
-                use_fast_combat=use_fast_combat,
-            )
             if self._combat_should_call_mission_reward() and self._should_schedule_mission_reward(
                 completed_sessions,
-                runtime_active=runtime_active_after_success,
+                runtime_active=repeat_in_background,
             ):
                 self.config.task_call("MissionReward", force_call=False)
-            if event_mode:
+            if repeat_in_background:
                 self._combat_runtime_set(self._combat_runtime_build())
                 self.config.task_delay(minute=self.COMBAT_BACKGROUND_CHECK_MINUTES)
-            elif use_fast_combat:
+            else:
                 self._combat_runtime_clear()
                 self._combat_delay_after_settled()
-            else:
-                self._combat_runtime_set(self._combat_runtime_build())
-                self.config.task_delay(minute=self.COMBAT_BACKGROUND_CHECK_MINUTES)
             return True
 
         self._combat_runtime_clear()

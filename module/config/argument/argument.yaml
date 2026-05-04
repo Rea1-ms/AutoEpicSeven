@@ -197,6 +197,7 @@ Combat:
   FastCombat: true
   FastCombatCount: 10
   RepeatCombatCount: 5
+  Saint37AutoRecycle: false
 
 CombatRuntime:
   Session:

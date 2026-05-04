@@ -102,6 +102,7 @@ class GeneratedConfig:
     Combat_FastCombat = True
     Combat_FastCombatCount = 10
     Combat_RepeatCombatCount = 5
+    Combat_Saint37AutoRecycle = False
 
     # Group `CombatRuntime`
     CombatRuntime_Session = {}

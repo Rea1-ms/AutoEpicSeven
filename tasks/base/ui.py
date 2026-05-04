@@ -521,16 +521,13 @@ class UI(MainPage):
 
     def _handle_background_combat_result(self) -> bool:
         active_path = None
-        session = {}
         for path in self._COMBAT_RUNTIME_PATHS:
             s = self.config.cross_get(path, default={})
             if isinstance(s, dict) and s.get("active"):
                 active_path = path
-                session = s
                 break
         if active_path is None:
             return False
-        combat_mode = session.get("combat_mode", "Task")
 
         if self.appear_then_click(REPEAT_COMBAT_OVER, interval=0.5):
             logger.info("Closed background combat finish prompt")
@@ -539,10 +536,8 @@ class UI(MainPage):
         if self.match_template_luma(WINDOW_CHECK, similarity=0.8):
             if self.handle_ad_buff_x_close(interval=0.5):
                 logger.info("Closed background combat result window")
-                if combat_mode == "Event":
-                    self.config.task_call("Combat")
-                else:
-                    self.config.cross_set(active_path, {})
+                self.config.cross_set(active_path, {})
+                if active_path == "Combat.CombatRuntime.Session":
                     self.config.task_delay(server_update=True, task="Combat")
                 return True
 

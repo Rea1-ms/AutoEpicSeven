@@ -816,6 +816,10 @@
       "RepeatCombatCount": {
         "type": "input",
         "value": 5
+      },
+      "Saint37AutoRecycle": {
+        "type": "checkbox",
+        "value": false
       }
     },
     "CombatRuntime": {
@@ -931,8 +935,7 @@
       },
       "FastCombat": {
         "type": "checkbox",
-        "value": false,
-        "display": "hide"
+        "value": false
       },
       "FastCombatCount": {
         "type": "input",
@@ -942,6 +945,10 @@
       "RepeatCombatCount": {
         "type": "input",
         "value": 5
+      },
+      "Saint37AutoRecycle": {
+        "type": "checkbox",
+        "value": false
       }
     },
     "CombatRuntime": {

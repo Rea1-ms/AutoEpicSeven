@@ -80,7 +80,7 @@
     },
     "CombatFarm": {
       "name": "Repeat Farming",
-      "help": "Stop the scheduler before running this tool. Continuously farms dungeons until manually stopped. Use it for Hunt, Spirit Altar, Saint 3-7, and other stages."
+      "help": "Stop the scheduler before running this tool. It checks background repeat combat once per minute. If fast combat is allowed, it consumes all available fast combats first, then switches to pet repeat combat."
     },
     "CommunityAuth": {
       "name": "Community Login",
@@ -509,7 +509,7 @@
     },
     "FastCombat": {
       "name": "Use Fast Combat",
-      "help": "Enable fast combat when available. If disabled, the task uses repeat combat and minimizes it to the main page."
+      "help": "Use fast combat first when available, then switch to pet repeat combat after fast combat is exhausted. If disabled, only pet repeat combat will be used."
     },
     "FastCombatCount": {
       "name": "Fast Combat Count",
@@ -518,6 +518,10 @@
     "RepeatCombatCount": {
       "name": "Repeat Combat Count",
       "help": "Target repeat combat count for pet repeat battle."
+    },
+    "Saint37AutoRecycle": {
+      "name": "Auto Sell Equipment",
+      "help": "Only applies to Saint 3-7. After background repeat combat settles, open the temporary bag, fast select white and green gear, sell them, then return to main."
     }
   },
   "CombatRuntime": {

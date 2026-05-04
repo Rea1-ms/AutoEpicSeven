@@ -594,26 +594,26 @@ class ConfigUpdater:
         for task in ('Combat', 'CombatFarm'):
             task_prefix = f'{task}.Combat'
             is_farm_task = task == 'CombatFarm'
-            combat_mode = deep_get(data, f'{task_prefix}.Mode', default='Task')
             combat_domain = deep_get(data, f'{task_prefix}.Domain', default='Hunt')
             combat_hunt_grade = deep_get(data, f'{task_prefix}.HuntGrade', default='Hell')
 
             if is_farm_task:
-                yield f'{task_prefix}.Mode'
-                yield f'{task_prefix}.FastCombat'
                 yield f'{task_prefix}.FastCombatCount'
+                yield f'{task_prefix}.RepeatCombatCount'
             elif combat_domain == 'Saint37':
                 yield f'{task_prefix}.FastCombat'
                 yield f'{task_prefix}.FastCombatCount'
-            elif combat_mode != 'Task':
-                yield f'{task_prefix}.FastCombat'
-                yield f'{task_prefix}.FastCombatCount'
-                yield f'{task_prefix}.RepeatCombatCount'
             elif combat_domain == 'Hunt' and combat_hunt_grade == 'Dimensional':
                 yield f'{task_prefix}.FastCombat'
                 yield f'{task_prefix}.FastCombatCount'
             elif deep_get(data, f'{task_prefix}.FastCombat', default=True) is False:
                 yield f'{task_prefix}.FastCombatCount'
+
+            if is_farm_task and (combat_domain == 'Saint37' or (combat_domain == 'Hunt' and combat_hunt_grade == 'Dimensional')):
+                yield f'{task_prefix}.FastCombat'
+
+            if combat_domain != 'Saint37':
+                yield f'{task_prefix}.Saint37AutoRecycle'
 
             if combat_domain == 'Saint37':
                 yield f'{task_prefix}.Element'

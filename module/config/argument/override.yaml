@@ -32,5 +32,4 @@ DataUpdate:
 
 CombatFarm:
   Combat:
-    FastCombat: false
     FastCombatCount: 10
