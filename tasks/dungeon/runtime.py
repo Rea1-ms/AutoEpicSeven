@@ -2,7 +2,6 @@ from module.base.timer import Timer
 from module.logger import logger
 from tasks.base.assets.assets_base_page import BACK
 from tasks.dungeon.assets.assets_dungeon_repeat_result import REPEAT_COMBAT_OVER
-from tasks.dungeon.plan import CombatPlan
 
 
 class CombatRuntimeMixin:
@@ -23,13 +22,14 @@ class CombatRuntimeMixin:
     def _combat_runtime_clear(self) -> None:
         self._combat_runtime_set({})
 
-    def _combat_runtime_build(self, plan: CombatPlan) -> dict:
+    def _combat_runtime_build(self) -> dict:
+        domain = self._dungeon_domain()
         return {
             "active": True,
             "mode": "repeat_background",
             "combat_mode": self._combat_mode(),
-            "domain": plan.name,
-            "element": None if plan.name == "Saint37" else self._combat_element(),
+            "domain": domain,
+            "element": None if domain == "Saint37" else self._combat_element(),
             "grade": self._combat_grade(),
         }
 

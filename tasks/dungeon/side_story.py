@@ -39,7 +39,7 @@ class SideStoryResultMixin:
         session = self._combat_runtime_session()
         if session.get("domain"):
             return session.get("domain") == "Saint37"
-        return self._combat_plan().name == "Saint37"
+        return self._dungeon_domain() == "Saint37"
 
     def _is_package_page(self) -> bool:
         return self.match_template_luma(PACKAGE_CHECK, similarity=self.COMBAT_CHECK_SIMILARITY)

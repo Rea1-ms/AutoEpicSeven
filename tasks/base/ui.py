@@ -34,7 +34,10 @@ from tasks.login.assets.assets_login_popup import (
 class UI(MainPage):
     ui_current: Page
     ui_main_confirm_timer = Timer(0.2, count=0)
-    COMBAT_RUNTIME_PATH = "Combat.CombatRuntime.Session"
+    _COMBAT_RUNTIME_PATHS = (
+        "Combat.CombatRuntime.Session",
+        "CombatFarm.CombatRuntime.Session",
+    )
     COMBAT_CHECK_SIMILARITY = 0.8
 
     def _ui_dynamic_origin_store(self) -> dict[str, Page]:
@@ -517,8 +520,15 @@ class UI(MainPage):
         return self._has_background_repeat_combat_check()
 
     def _handle_background_combat_result(self) -> bool:
-        session = self.config.cross_get(self.COMBAT_RUNTIME_PATH, default={})
-        if not isinstance(session, dict) or not session.get("active"):
+        active_path = None
+        session = {}
+        for path in self._COMBAT_RUNTIME_PATHS:
+            s = self.config.cross_get(path, default={})
+            if isinstance(s, dict) and s.get("active"):
+                active_path = path
+                session = s
+                break
+        if active_path is None:
             return False
         combat_mode = session.get("combat_mode", "Task")
 
@@ -532,7 +542,7 @@ class UI(MainPage):
                 if combat_mode == "Event":
                     self.config.task_call("Combat")
                 else:
-                    self.config.cross_set(self.COMBAT_RUNTIME_PATH, {})
+                    self.config.cross_set(active_path, {})
                     self.config.task_delay(server_update=True, task="Combat")
                 return True
 

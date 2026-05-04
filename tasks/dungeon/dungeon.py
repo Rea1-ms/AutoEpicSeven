@@ -4,7 +4,7 @@ from tasks.base.resource_bar import ResourceBarMixin
 from tasks.base.ui import UI
 from tasks.dungeon.entry import CombatEntryMixin
 from tasks.dungeon.execute import CombatExecuteMixin
-from tasks.dungeon.plan import COMBAT_PLANS, HUNT_PLAN, CombatPlan
+from tasks.dungeon.plan import COMBAT_PLANS, HUNT_PLAN
 from tasks.dungeon.prepare import CombatPrepare
 from tasks.dungeon.runtime import CombatRuntimeMixin
 from tasks.dungeon.side_story import SideStoryNavigateMixin
@@ -13,7 +13,6 @@ from tasks.dungeon.side_story import SideStoryNavigateMixin
 class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, SideStoryNavigateMixin, CombatPrepare, ResourceBarMixin, UI):
     COMBAT_RESOURCE_BAR_TIMEOUT_SECONDS = 1
     COMBAT_RESOURCE_BAR_TIMEOUT_COUNT = 2
-    COMBAT_RUNTIME_PATH = "Combat.CombatRuntime.Session"
     COMBAT_CHECK_SIMILARITY = 0.8
     COMBAT_STATE_COLOR_THRESHOLD = 30
     COMBAT_ENTRY_TIMEOUT_SECONDS = 25
@@ -61,9 +60,11 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, SideStory
         """
         return event_mode or not use_fast_combat
 
-    def _combat_plan(self) -> CombatPlan:
-        domain = getattr(self.config, "Combat_Domain", "Hunt")
-        return COMBAT_PLANS.get(domain, HUNT_PLAN)
+    def _dungeon_domain(self) -> str:
+        return getattr(self.config, "Combat_Domain", "Hunt")
+
+    def _combat_plan(self):
+        return COMBAT_PLANS.get(self._dungeon_domain(), HUNT_PLAN)
 
     def _combat_is_farm_task(self) -> bool:
         return getattr(getattr(self.config, "task", None), "command", "Combat") == "CombatFarm"
@@ -80,33 +81,30 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, SideStory
         return getattr(self.config, "Combat_Element", "Water")
 
     def _combat_grade(self) -> str:
-        plan = self._combat_plan()
-        if plan.name == "Saint37":
+        domain = self._dungeon_domain()
+        if domain == "Saint37":
             return "3-7"
-        if plan.name == "SpiritAltar":
+        if domain == "SpiritAltar":
             return getattr(self.config, "Combat_AltarGrade", "Hell")
         return getattr(self.config, "Combat_HuntGrade", "Hell")
 
     def _combat_fast_enabled(self) -> bool:
         return bool(getattr(self.config, "Combat_FastCombat", True))
 
-    def _combat_supports_fast_combat(self, plan: CombatPlan | None = None) -> bool:
+    def _combat_supports_fast_combat(self) -> bool:
         """
         Return whether the current combat target provides a fast-combat toggle.
 
-        Dimensional Hunt uses Spectral Cores and does not expose the fast-combat
-        button on the prepare page. GUI-side hiding alone is not enough because
-        an old persisted config may still keep FastCombat=True. Keep this rule
-        on the backend so state loops do not try to click a missing toggle and
-        get stuck on the prepare page.
+        Side story and Dimensional Hunt do not expose the fast-combat button on
+        the prepare page. GUI-side hiding alone is not enough because an old
+        persisted config may still keep FastCombat=True. Keep this rule on the
+        backend so state loops do not try to click a missing toggle and get
+        stuck on the prepare page.
         """
-        if plan is None:
-            plan = self._combat_plan()
-
-        if plan.name == "Saint37":
+        domain = self._dungeon_domain()
+        if domain == "Saint37":
             return False
-
-        return not (plan.name == "Hunt" and self._combat_grade() == "Dimensional")
+        return not (domain == "Hunt" and self._combat_grade() == "Dimensional")
 
     def _combat_should_use_fast(self) -> bool:
         if self._combat_is_farm_task():
@@ -126,10 +124,12 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, SideStory
     def _combat_should_call_mission_reward(self) -> bool:
         return not self._combat_is_farm_task()
 
-    def _dungeon_navigate(self, plan: CombatPlan, skip_first_screenshot=True) -> bool:
-        if plan.name == "Saint37":
+    def _dungeon_navigate(self, skip_first_screenshot=True) -> bool:
+        domain = self._dungeon_domain()
+        if domain == "Saint37":
             return self._navigate_side_story(skip_first_screenshot=skip_first_screenshot)
 
+        plan = self._combat_plan()
         success = self._enter_stage_page(plan, skip_first_screenshot=skip_first_screenshot)
         if success:
             success = self._select_element(plan, skip_first_screenshot=skip_first_screenshot)
@@ -207,21 +207,21 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, SideStory
                 self.config.task_delay(minute=self.COMBAT_BACKGROUND_CHECK_MINUTES)
                 return True
 
-        plan = self._combat_plan()
+        domain = self._dungeon_domain()
         combat_mode = self._combat_mode()
         event_mode = self._combat_is_event_mode()
         use_fast_combat = self._combat_should_use_fast()
 
         logger.attr("CombatMode", combat_mode)
-        logger.attr("CombatDomain", plan.name)
+        logger.attr("CombatDomain", domain)
         logger.attr("CombatElement", self._combat_element())
         logger.attr("CombatGrade", self._combat_grade())
-        logger.attr("CombatFastCombatSupported", self._combat_supports_fast_combat(plan))
+        logger.attr("CombatFastCombatSupported", self._combat_supports_fast_combat())
         logger.attr("CombatFastCombat", use_fast_combat)
         logger.attr("CombatFastCombatCount", self._combat_fast_count())
         logger.attr("CombatRepeatCombatCount", self._combat_repeat_count())
 
-        success = self._dungeon_navigate(plan, skip_first_screenshot=True)
+        success = self._dungeon_navigate(skip_first_screenshot=True)
 
         if success and use_fast_combat and self._is_fast_combat_locked():
             logger.warning("Combat: fast combat locked, fallback to repeat combat")
@@ -274,13 +274,13 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, SideStory
             ):
                 self.config.task_call("MissionReward", force_call=False)
             if event_mode:
-                self._combat_runtime_set(self._combat_runtime_build(plan))
+                self._combat_runtime_set(self._combat_runtime_build())
                 self.config.task_delay(minute=self.COMBAT_BACKGROUND_CHECK_MINUTES)
             elif use_fast_combat:
                 self._combat_runtime_clear()
                 self._combat_delay_after_settled()
             else:
-                self._combat_runtime_set(self._combat_runtime_build(plan))
+                self._combat_runtime_set(self._combat_runtime_build())
                 self.config.task_delay(minute=self.COMBAT_BACKGROUND_CHECK_MINUTES)
             return True
 
