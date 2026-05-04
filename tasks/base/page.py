@@ -173,6 +173,8 @@ class Page:
         self.check_button = check_button
         self.links = {}
         self.link_priority = []
+        self.shared_toolbar = False
+        self.background_repeat_check = False
         self.dynamic_return_button = dynamic_return_button
         (filename, line_number, function_name, text) = traceback.extract_stack()[-2]
         self.name = text[:text.find('=')].strip()
@@ -223,6 +225,9 @@ def link_shared_toolbar(*pages):
     local and avoids pointless backtracking through the main page.
     """
     for page in pages:
+        page.shared_toolbar = True
+        page.background_repeat_check = True
+
         if page not in (page_inventory, page_inventory_equipment):
             page.link(MAIN_GOTO_INVENTORY, destination=page_inventory)
             page.link(MAIN_GOTO_INVENTORY, destination=page_inventory_equipment)
@@ -521,3 +526,11 @@ link_shared_toolbar(
     page_conquest_points_store,
     page_common_store,
 )
+
+# These pages share the same top-right controls for routing, but background
+# repeat-combat precheck should not rely on them:
+# - gacha never reaches a repeat-combat background state
+# - combat prepare is already inside the local dungeon flow and does not show
+#   the stable top-right repeat marker used by startup precheck
+page_gacha.background_repeat_check = False
+page_combat_prepare.background_repeat_check = False

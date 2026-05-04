@@ -49,6 +49,52 @@ class CombatExecuteMixin:
             return False
         return self._has_repeat_combat_check()
 
+    def _has_background_repeat_combat_check(self) -> bool:
+        """
+        Return whether the top-right background repeat marker is visible.
+
+        This is a thin semantic wrapper around `_has_repeat_combat_check()`.
+        The actual asset is the same, but callers that run before a new dungeon
+        starts read much clearer when they talk about "background repeat
+        combat" explicitly instead of the generic in-combat helper name.
+        """
+        return self._has_repeat_combat_check()
+
+    def _detect_background_repeat_combat_state(self) -> str | None:
+        """
+        Detect whether an old background repeat-combat session still exists.
+
+        Startup pre-check needs to care about more than just the "still
+        running" marker:
+        - `REPEAT_COMBAT_CHECK` means the old session is still running
+        - `REPEAT_COMBAT_OVER` means the old session has already finished and
+          is waiting for us to open the result
+        - `WINDOW_CHECK` means the result window is already open and still
+          needs cleanup before a new dungeon run may start
+
+        Treat all three as "there is already an old background combat state on
+        screen", then let the dedicated watch/result logic finish the cleanup.
+        """
+        if self._is_repeat_result_window() or self._is_repeat_combat_over():
+            return "result"
+        if self._has_background_repeat_combat_check():
+            return "running"
+        return None
+
+    def _is_background_repeat_combat_running(self) -> bool:
+        """
+        Detect whether a previous dungeon session is still running in background.
+
+        The signal is intentionally conservative:
+        - if the finish prompt is already visible, the background run is no
+          longer considered "running"
+        - if the result window is already visible, the background run is no
+          longer considered "running"
+        - otherwise, the top-right repeat marker means the old session is still
+          alive and should be adopted before launching a new dungeon flow
+        """
+        return self._detect_background_repeat_combat_state() == "running"
+
     def _ensure_fast_combat_state(self, enabled: bool) -> bool:
         if not self._combat_supports_fast_combat():
             return not enabled

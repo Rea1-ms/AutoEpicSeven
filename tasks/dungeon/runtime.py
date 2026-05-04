@@ -42,13 +42,15 @@ class CombatRuntimeMixin:
     def _adopt_existing_background_repeat_combat(self) -> bool:
         if self._combat_runtime_active():
             return False
-        if not self.is_in_main(interval=0):
-            return False
-        if not self._is_background_repeat_combat_running():
+
+        state = self._detect_background_repeat_combat_state()
+        if state is None:
             return False
 
-        logger.info("Combat: detected existing background repeat combat before task start")
-        self._combat_runtime_set(self._combat_runtime_build_detected_existing())
+        logger.info(f"Combat: detected existing background repeat combat before task start ({state})")
+        session = self._combat_runtime_build_detected_existing()
+        session["state"] = state
+        self._combat_runtime_set(session)
         return True
 
     def _watch_repeat_combat(self, skip_first_screenshot=True) -> str:
