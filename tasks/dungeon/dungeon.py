@@ -1,5 +1,5 @@
 from module.logger import logger
-from tasks.base.page import page_combat
+from tasks.base.page import page_combat, page_side_story
 from tasks.base.resource_bar import ResourceBarMixin
 from tasks.base.ui import UI
 from tasks.dungeon.entry import CombatEntryMixin
@@ -134,6 +134,24 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, SideStory
             or self._is_supporter_page()
         )
 
+    def _is_in_saint37_flow_context(self) -> bool:
+        """
+        Return whether the current screen is already on the Saint 3-7 route.
+
+        Saint 3-7 lives under Side Story instead of the normal combat hub.
+        Generic combat boards such as `page_combat_common` are still "dungeon
+        context", but they are not useful local context for the Saint flow and
+        should be routed into `page_side_story` before navigation starts.
+        """
+        return (
+            self._is_prepare_page()
+            or self._is_side_story_page()
+            or self._is_time_book_page()
+            or self._is_episode_preview_page()
+            or self._is_side_story_map_page()
+            or self._is_supporter_page()
+        )
+
     def _is_background_repeat_check_page(self, page) -> bool:
         return bool(getattr(page, "background_repeat_check", False))
 
@@ -259,12 +277,17 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, SideStory
                 self.config.task_delay(minute=self.COMBAT_BACKGROUND_CHECK_MINUTES)
                 return True
 
-        if not self._is_in_dungeon_context() and not self.is_in_main(interval=0):
+        domain = self._dungeon_domain()
+        # main story remained
+        if domain == "Saint37":
+            if not self._is_in_saint37_flow_context():
+                logger.info("Combat Saint37: route to side story hub before navigation")
+                self.ui_goto(page_side_story, skip_first_screenshot=True)
+        elif not self._is_in_dungeon_context() and not self.is_in_main(interval=0):
             # Route into the combat hub only after the old-background-session
             # adoption check has already had a chance to run on main.
             self.ui_goto(page_combat, skip_first_screenshot=True)
 
-        domain = self._dungeon_domain()
         use_fast_combat = self._combat_should_use_fast()
         repeat_in_background = self._combat_runs_repeat_in_background(use_fast_combat)
 
