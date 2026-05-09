@@ -765,20 +765,13 @@
       }
     },
     "Combat": {
-      "Mode": {
-        "type": "select",
-        "value": "Task",
-        "option": [
-          "Task",
-          "Event"
-        ]
-      },
       "Domain": {
         "type": "select",
         "value": "Hunt",
         "option": [
           "Hunt",
-          "SpiritAltar"
+          "SpiritAltar",
+          "Saint37"
         ]
       },
       "Element": {
@@ -823,6 +816,10 @@
       "RepeatCombatCount": {
         "type": "input",
         "value": 5
+      },
+      "Saint37AutoRecycle": {
+        "type": "checkbox",
+        "value": false
       }
     },
     "CombatRuntime": {
@@ -890,6 +887,75 @@
       "ServerUpdate": {
         "type": "input",
         "value": "02:00",
+        "display": "hide"
+      }
+    }
+  },
+  "CombatFarm": {
+    "Combat": {
+      "Domain": {
+        "type": "select",
+        "value": "Hunt",
+        "option": [
+          "Hunt",
+          "SpiritAltar",
+          "Saint37"
+        ]
+      },
+      "Element": {
+        "type": "select",
+        "value": "Water",
+        "option": [
+          "Dark",
+          "Light",
+          "Water",
+          "Fire",
+          "Nature"
+        ]
+      },
+      "AltarGrade": {
+        "type": "select",
+        "value": "Hell",
+        "option": [
+          "Pri",
+          "Mid",
+          "High",
+          "Hell"
+        ]
+      },
+      "HuntGrade": {
+        "type": "select",
+        "value": "Hell",
+        "option": [
+          "Mid",
+          "High",
+          "Hell",
+          "Dimensional"
+        ]
+      },
+      "FastCombat": {
+        "type": "checkbox",
+        "value": false
+      },
+      "FastCombatCount": {
+        "type": "input",
+        "value": 10,
+        "display": "hide"
+      },
+      "RepeatCombatCount": {
+        "type": "input",
+        "value": 5
+      },
+      "Saint37AutoRecycle": {
+        "type": "checkbox",
+        "value": false
+      }
+    },
+    "CombatRuntime": {
+      "Session": {
+        "type": "dict",
+        "value": {},
+        "keepvalue": true,
         "display": "hide"
       }
     }

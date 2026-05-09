@@ -182,12 +182,9 @@ PetsGift:
     value: 2020-01-01T00:00:00
 
 Combat:
-  Mode:
-    value: Task
-    option: [ Task, Event ]
   Domain:
     value: Hunt
-    option: [ Hunt, SpiritAltar ]
+    option: [ Hunt, SpiritAltar, Saint37 ]
   Element:
     value: Water
     option: [ Dark, Light, Water, Fire, Nature ]
@@ -200,6 +197,7 @@ Combat:
   FastCombat: true
   FastCombatCount: 10
   RepeatCombatCount: 5
+  Saint37AutoRecycle: false
 
 CombatRuntime:
   Session:

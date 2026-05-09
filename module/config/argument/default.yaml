@@ -37,3 +37,9 @@ SecretShop:
 Gacha:
   Scheduler:
     Enable: true
+
+# ==================== Tool ====================
+
+CombatFarm:
+  Combat:
+    FastCombat: false

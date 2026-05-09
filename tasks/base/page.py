@@ -27,7 +27,7 @@ from tasks.arena.assets.assets_arena import (
     BATTLE_PASS_CHECK,
     BATTLE_PASS_ENTRY,
 )
-from tasks.combat.assets.assets_combat_configs_entry import (
+from tasks.dungeon.assets.assets_dungeon_configs_combat_entry import (
     ALTER_CHECK,
     COMMON_ENTRY,
     HUNT_CHECK,
@@ -36,7 +36,14 @@ from tasks.combat.assets.assets_combat_configs_entry import (
     SPIRIT_ALTAR,
     URGENT_TASKS,
 )
-from tasks.combat.assets.assets_combat_repeat_entry import REPEAT_COMBAT_MENU
+from tasks.dungeon.assets.assets_dungeon_repeat_entry import REPEAT_COMBAT_MENU
+from tasks.dungeon.assets.assets_dungeon_configs_side_story_entry import (
+    EPISODE_PREVIEW_CHECK,
+    MAP_CHECK,
+    SIDE_STORY_CHECK,
+    SIDE_STORY_GOTO_SPECIAL_BOOK_OF_TIME,
+    SPECIAL_BOOK_OF_TIME_CHECK,
+)
 from tasks.knights.assets.assets_knights_main_page import (
     KNIGHTS_ACTIVITY_ENTRY,
     KNIGHTS_CHECK,
@@ -166,6 +173,8 @@ class Page:
         self.check_button = check_button
         self.links = {}
         self.link_priority = []
+        self.shared_toolbar = False
+        self.background_repeat_check = False
         self.dynamic_return_button = dynamic_return_button
         (filename, line_number, function_name, text) = traceback.extract_stack()[-2]
         self.name = text[:text.find('=')].strip()
@@ -216,6 +225,9 @@ def link_shared_toolbar(*pages):
     local and avoids pointless backtracking through the main page.
     """
     for page in pages:
+        page.shared_toolbar = True
+        page.background_repeat_check = True
+
         if page not in (page_inventory, page_inventory_equipment):
             page.link(MAIN_GOTO_INVENTORY, destination=page_inventory)
             page.link(MAIN_GOTO_INVENTORY, destination=page_inventory_equipment)
@@ -435,6 +447,22 @@ page_combat_stage.link(BACK, destination=page_combat_common)
 page_combat_prepare = Page(REPEAT_COMBAT_MENU)
 page_combat_prepare.link(BACK, destination=page_combat_stage)
 
+# Side Story
+page_side_story = Page(SIDE_STORY_CHECK)
+page_side_story.link(BACK, destination=page_main)
+page_main.link(MAIN_GOTO_SIDE_STORY, destination=page_side_story)
+page_menu.link(MENU_GOTO_SIDE_STORY, destination=page_side_story)
+
+page_side_story_time_book = Page(SPECIAL_BOOK_OF_TIME_CHECK)
+page_side_story_time_book.link(BACK, destination=page_side_story)
+page_side_story.link(SIDE_STORY_GOTO_SPECIAL_BOOK_OF_TIME, destination=page_side_story_time_book)
+
+page_side_story_episode_preview = Page(EPISODE_PREVIEW_CHECK)
+page_side_story_episode_preview.link(BACK, destination=page_side_story_time_book)
+
+page_side_story_map = Page(MAP_CHECK)
+page_side_story_map.link(BACK, destination=page_side_story_episode_preview)
+
 # Pets
 page_pets = Page(PETS_CHECK)
 page_pets.link(BACK, destination=page_main)
@@ -472,7 +500,6 @@ link_shared_toolbar(
     page_gacha,
     page_sanctuary,
     page_sanctuary_forest,
-    page_sanctuary_tower,
     page_sanctuary_heart,
     page_secret_shop,
     page_store,
@@ -483,6 +510,10 @@ link_shared_toolbar(
     page_combat_urgent,
     page_combat_stage,
     page_combat_prepare,
+    page_side_story,
+    page_side_story_time_book,
+    page_side_story_episode_preview,
+    page_side_story_map,
     page_pets,
     page_knights,
     page_knights_world_boss,
@@ -495,3 +526,11 @@ link_shared_toolbar(
     page_conquest_points_store,
     page_common_store,
 )
+
+# These pages share the same top-right controls for routing, but background
+# repeat-combat precheck should not rely on them:
+# - gacha never reaches a repeat-combat background state
+# - combat prepare is already inside the local dungeon flow and does not show
+#   the stable top-right repeat marker used by startup precheck
+page_gacha.background_repeat_check = False
+page_combat_prepare.background_repeat_check = False

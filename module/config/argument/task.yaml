@@ -63,12 +63,16 @@ Daily:
     Pets:
       - Scheduler
 
+
 # ==================== Tool ====================
 
 Tool:
   menu: 'list'
   page: 'tool'
   tasks:
+    CombatFarm:
+      - Combat
+      - CombatRuntime
     CommunityAuth:
       - CommunityAuth
 

@@ -13,7 +13,7 @@ from tasks.base.resource_bar import (
     RESOURCE_BAR_LAYOUT_COMBAT,
 )
 from tasks.base.ui import UI
-from tasks.combat.assets.assets_combat_configs_entry import OCR_SEASON_CHECK
+from tasks.dungeon.assets.assets_dungeon_configs_combat_entry import OCR_SEASON_CHECK
 from tasks.item.assets.assets_item_inventory import OCR_EQUIPMENT_COUNT
 
 

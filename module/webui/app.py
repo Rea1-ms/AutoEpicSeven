@@ -760,6 +760,9 @@ class AlasGUI(Frame):
         )
 
         config = self.alas_config.read_file(self.alas_name)
+        # alas_set_group initializes this but daemon_overview was missing it,
+        # causing iter_hidden_args conditions to be ignored on first render.
+        self.alas_config_hidden = self.alas_config.get_hidden_args(config)
         render_task_detail(self, task)
         for group, arg_dict in deep_iter(self.ALAS_ARGS[task], depth=1):
             if group[0] == "Storage":

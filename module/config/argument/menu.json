@@ -30,6 +30,7 @@
     "menu": "list",
     "page": "tool",
     "tasks": [
+      "CombatFarm",
       "CommunityAuth"
     ]
   },

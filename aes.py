@@ -1,3 +1,6 @@
+import time
+from datetime import datetime, timedelta
+
 from module.alas import AzurLaneAutoScript
 from module.logger import logger
 
@@ -83,8 +86,24 @@ class AutoEpicSeven(AzurLaneAutoScript):
         Arena(config=self.config, device=self.device, task="Arena").run()
 
     def combat(self):
-        from tasks.combat.combat import Combat
+        from tasks.dungeon.dungeon import Combat
         Combat(config=self.config, device=self.device, task="Combat").run()
+
+    def combat_farm(self):
+        from tasks.dungeon.dungeon import Combat
+        self.device.disable_stuck_detection()
+        while 1:
+            Combat(config=self.config, device=self.device, task="CombatFarm").run()
+            next_run = self.config.cross_get("CombatFarm.Scheduler.NextRun", default=None)
+            if not isinstance(next_run, datetime):
+                next_run = datetime.now().replace(microsecond=0) + timedelta(minutes=1)
+            logger.info(f"CombatFarm: wait until {next_run} for next background check")
+            while datetime.now() < next_run:
+                if self.stop_event is not None and self.stop_event.is_set():
+                    logger.info("CombatFarm: stop event detected during wait")
+                    return
+                remaining = max((next_run - datetime.now()).total_seconds(), 0)
+                time.sleep(min(5, remaining or 0.1))
 
     def community_aio(self):
         from tasks.community_aio.community_aio import CommunityAio
