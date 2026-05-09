@@ -157,35 +157,41 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, SideStory
 
     def _prepare_background_repeat_check_context(self) -> None:
         """
-        Normalize to a stable page before checking for an old background run.
+        Normalize to a safe page before checking for an old background run.
 
         Why this exists:
-            The background repeat marker belongs to the shared-toolbar page
-            group. Before opening a new dungeon flow, we should first check on
-            the nearest page in that group whether an older repeat-combat
-            session is already running or already waiting on a result window.
-            Otherwise a fresh Combat start may overlap with an old session.
+            Old repeat-combat session handling has higher priority than opening
+            a new dungeon flow. Before deciding whether to continue the current
+            local flow or route into a fresh one, we must first answer:
+
+                "Is there already an older background repeat-combat session
+                that this task should adopt instead of starting a new run?"
+
+            That question can only be asked on a safe page:
+            - a shared-toolbar page where the top-right repeat marker is
+              expected to be stable
+            - or page_main as the global fallback
+
+            Do not detect directly on arbitrary current screenshots. A local
+            dungeon page may still be valid context for the *new* flow while
+            being unsafe for old-session detection, and those two concerns must
+            stay separate.
 
         Current policy:
-            - First try the current screenshot directly. This catches the easy
-              cases where the marker / finish prompt / result window is already
-              visible before we navigate anywhere.
-            - If the current page is already in the shared-toolbar group, keep
-              that local context and run the pre-check there.
-            - Only when we are outside that group do we normalize to main and
-              perform the startup pre-check there.
+            - If the current page is already a safe background-repeat precheck
+              page, keep that local context and run the old-session detection
+              there.
+            - Otherwise, normalize to main first, then perform the old-session
+              detection on main.
 
-        We keep this separate from the real combat flow on purpose. The combat
-        state loop has higher priority and should only start after the "is
-        there an old background session?" question has been answered.
+        We keep this separate from the real combat flow on purpose. The
+        old-session branch must be decided before we continue any new Combat
+        or Saint37 navigation.
         """
         if self._combat_runtime_active():
             return
 
-        if self._detect_background_repeat_combat_state() == "result":
-            self._adopt_existing_background_repeat_combat()
-            return
-
+        current = self.ui_get_current_page(skip_first_screenshot=True)
         if self._is_supporter_page():
             # The side-story choose-team page is already deep inside the local
             # dungeon flow. It does not expose the stable top-right background
@@ -195,20 +201,16 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, SideStory
             logger.info("Combat: goto main before checking background repeat combat from supporter page")
             self.ui_goto_main()
             self.device.screenshot()
-            self._adopt_existing_background_repeat_combat()
             return
 
-        current = self.ui_get_current_page(skip_first_screenshot=True)
         if self._is_background_repeat_check_page(current):
             logger.info(f"Combat: precheck background repeat combat on {current}")
             self.device.screenshot()
-            self._adopt_existing_background_repeat_combat()
             return
 
-        logger.info("Combat: goto main before checking background repeat combat")
+        logger.info("Combat: current page is unsafe for background repeat precheck, goto main")
         self.ui_goto_main()
         self.device.screenshot()
-        self._adopt_existing_background_repeat_combat()
 
     def _dungeon_navigate(self, skip_first_screenshot=True) -> bool:
         domain = self._dungeon_domain()
@@ -235,13 +237,11 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, SideStory
         if not hasattr(self.device, "image") or self.device.image is None:
             self.device.screenshot()
 
-        if self._is_in_dungeon_context():
-            logger.info("Combat: detected dungeon context, skip goto main")
-
         # Before opening a new dungeon flow, first make sure we are on a page
         # where the background repeat marker is expected to be visible, then
         # adopt the old session if one is still alive.
         self._prepare_background_repeat_check_context()
+        self._adopt_existing_background_repeat_combat()
 
         if self._combat_runtime_active():
             session = self._combat_runtime_session()
@@ -278,15 +278,18 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, SideStory
                 return True
 
         domain = self._dungeon_domain()
-        # main story remained
         if domain == "Saint37":
-            if not self._is_in_saint37_flow_context():
+            if self._is_in_saint37_flow_context():
+                logger.info("Combat Saint37: continue local side story flow")
+            else:
                 logger.info("Combat Saint37: route to side story hub before navigation")
                 self.ui_goto(page_side_story, skip_first_screenshot=True)
         elif not self._is_in_dungeon_context() and not self.is_in_main(interval=0):
             # Route into the combat hub only after the old-background-session
             # adoption check has already had a chance to run on main.
             self.ui_goto(page_combat, skip_first_screenshot=True)
+        elif self._is_in_dungeon_context():
+            logger.info("Combat: continue local dungeon flow")
 
         use_fast_combat = self._combat_should_use_fast()
         repeat_in_background = self._combat_runs_repeat_in_background(use_fast_combat)
