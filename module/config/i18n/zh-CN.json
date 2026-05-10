@@ -303,7 +303,7 @@
     },
     "WaitTimeout": {
       "name": "等待登录完成最多秒数",
-      "help": "Start 后工具任务会在日志区轮询凭证文件，超过该时间仍未抓到有效 CK 则结束。",
+      "help": "Start 后工具任务会在日志区轮询凭证文件，超过该时间仍未抓到有效凭证则结束。",
       "60": "60",
       "180": "180",
       "300": "300",
@@ -729,7 +729,7 @@
       "InvalidFeedBack": "格式错误。 示例：{0}",
       "Clear": "清除",
       "CommunityAuthCredentials": "社区登录凭证",
-      "CommunityAuthCredentialsHelp": "用于查看当前 CK 状态，并拉起 Electron 登录窗口更新本地凭证。",
+      "CommunityAuthCredentialsHelp": "用于查看当前凭证状态，并拉起 Electron 登录窗口更新本地凭证。",
       "CommunityAioTodo": "社区 AIO 仅支持国服配置（cn）。",
       "KnightsTeamBattleTodo": "团战 OCR 功能待实现",
       "KnightsNoStaminaTodo": "世界 Boss 体力不足处理待实现"
