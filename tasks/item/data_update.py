@@ -105,6 +105,10 @@ class DataUpdate(ArenaEntryMixin, ArenaDashboardMixin, UI):
         return updated
 
     def _update_arena_status(self, skip_first_screenshot=True) -> bool:
+        if not self.config.is_task_enabled("Arena"):
+            logger.info("DataUpdate: arena task disabled, skip arena snapshot")
+            return False
+
         logger.hr("DataUpdate Arena", level=2)
         status = self._enter_arena(skip_first_screenshot=skip_first_screenshot)
         if status == "settling":
