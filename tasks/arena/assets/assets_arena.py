@@ -291,10 +291,10 @@ WEEKLY_REWARDS_CHECK = ButtonWrapper(
     name='WEEKLY_REWARDS_CHECK',
     share=Button(
         file='./assets/share/arena/WEEKLY_REWARDS_CHECK.png',
-        area=(481, 327, 495, 477),
-        search=(461, 307, 515, 497),
-        color=(67, 76, 68),
-        button=(481, 327, 495, 477),
+        area=(539, 355, 577, 411),
+        search=(519, 335, 597, 431),
+        color=(95, 132, 160),
+        button=(539, 355, 577, 411),
     ),
 )
 WEEKLY_REWARDS_CLAIM = ButtonWrapper(
@@ -319,9 +319,9 @@ WEEKLY_REWARDS_SELECTED = ButtonWrapper(
     name='WEEKLY_REWARDS_SELECTED',
     share=Button(
         file='./assets/share/arena/WEEKLY_REWARDS_SELECTED.png',
-        area=(539, 355, 577, 411),
-        search=(519, 335, 597, 431),
-        color=(95, 132, 160),
-        button=(539, 355, 577, 411),
+        area=(481, 327, 495, 477),
+        search=(461, 307, 515, 497),
+        color=(67, 76, 68),
+        button=(481, 327, 495, 477),
     ),
 )

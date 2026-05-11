@@ -15,6 +15,10 @@ class ArenaEntryMixin:
     ARENA_ENTRY_TIMEOUT_SECONDS = 45
     ARENA_CHECK_LUMA_SIMILARITY = 0.8
     ARENA_CHECK_COLOR_THRESHOLD = 5
+    ARENA_WEEKLY_REWARDS_SELECT_INTERVAL_SECONDS = 1
+    ARENA_WEEKLY_REWARDS_CLAIM_INTERVAL_SECONDS = 1
+    ARENA_WEEKLY_REWARDS_CLAIM_SIMILARITY = 0.85
+    ARENA_WEEKLY_REWARDS_CLAIM_COLOR_THRESHOLD = 30
 
     def _is_arena_page_ready(self, interval=0) -> bool:
         """
@@ -38,33 +42,37 @@ class ArenaEntryMixin:
 
     def _handle_weekly_rewards_popup(self) -> bool:
         """
-        Handle weekly rewards popup branch during arena entry.
+        Handle the weekly rewards popup that blocks arena entry.
+
+        Popup semantics are easy to mix up after asset refreshes, so keep the
+        state rules explicit here:
+            1. `WEEKLY_REWARDS_CHECK` means the popup is active, and the reward
+               entry can be clicked when the reward is not selected yet.
+            2. `WEEKLY_REWARDS_SELECTED` only marks that the reward has already
+               been selected. It is not the click target anymore.
+            3. `WEEKLY_REWARDS_CLAIM` must use template-plus-color matching so
+               the loop only clicks the bright enabled button, and naturally
+               ignores the grey disabled state after claim is consumed.
 
         Returns:
-            bool: True if an action is taken.
+            bool: True if an action is taken and caller should refresh frame.
         """
         if not self.appear(WEEKLY_REWARDS_SELECTED):
-            self._arena_weekly_selected_clicked = False
-            return False
-
-        logger.info("Arena: weekly rewards popup detected")
-
-        if not getattr(self, "_arena_weekly_selected_clicked", False):
-            if self.appear_then_click(WEEKLY_REWARDS_SELECTED, interval=1):
-                self._arena_weekly_selected_clicked = True
-                logger.info("Arena: weekly rewards selected")
+            if self.appear_then_click(
+                WEEKLY_REWARDS_CHECK,
+                interval=self.ARENA_WEEKLY_REWARDS_SELECT_INTERVAL_SECONDS,
+            ):
+                logger.info("Arena: weekly rewards select reward")
                 return True
-            return False
 
-        if not self.appear(WEEKLY_REWARDS_CHECK):
-            return False
-
-        if not self.config.Arena_ClaimWeeklyRewards:
-            logger.info("Arena: weekly rewards claim disabled by config")
-            return True
-
-        if self.appear_then_click(WEEKLY_REWARDS_CLAIM, interval=1):
-            logger.info("Arena: weekly rewards claimed")
+        if self.match_template_color(
+            WEEKLY_REWARDS_CLAIM,
+            interval=self.ARENA_WEEKLY_REWARDS_CLAIM_INTERVAL_SECONDS,
+            similarity=self.ARENA_WEEKLY_REWARDS_CLAIM_SIMILARITY,
+            threshold=self.ARENA_WEEKLY_REWARDS_CLAIM_COLOR_THRESHOLD,
+        ):
+            self.device.click(WEEKLY_REWARDS_CLAIM)
+            logger.info("Arena: weekly rewards claim selected reward")
             return True
 
         return False
@@ -95,7 +103,6 @@ class ArenaEntryMixin:
     def _enter_arena_from_popup(self, skip_first_screenshot=True) -> str:
         logger.info("Arena: enter from arena entry surface")
         timeout = Timer(self.ARENA_ENTRY_TIMEOUT_SECONDS, count=180).start()
-        self._arena_weekly_selected_clicked = False
 
         while 1:
             if skip_first_screenshot:
@@ -117,8 +124,12 @@ class ArenaEntryMixin:
                     return "settling"
                 continue
 
-            if self._handle_weekly_rewards_popup():
-                timeout.reset()
+            # Weekly rewards popup must block all arena-entry clicks until the
+            # branch is fully resolved. Otherwise the overlay can keep the
+            # common-arena entry visible while still intercepting clicks.
+            if self.appear(WEEKLY_REWARDS_CHECK):
+                if self._handle_weekly_rewards_popup():
+                    timeout.reset()
                 continue
 
             if self.appear_then_click(ARENA_COMMON_ENTRY, interval=1):
