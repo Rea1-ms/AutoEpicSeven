@@ -4,13 +4,13 @@ import argparse
 import base64
 import json
 import os
-import random
 import re
 import time
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Callable
 
 import requests
+from module.base.utils import ensure_time
 
 BASE_URL = "https://sns.zlongame.com/pdapi"
 DEFAULT_HEADERS = {
@@ -30,6 +30,16 @@ ALREADY_SIGNED_CODE = 1022
 BUY_STOP_CODES = {2100, 2104}
 COMMUNITY_COOKIE_NAMESPACE = "1611630374326"
 DEFAULT_E7_CREDENTIALS_FILENAME = "e7-credentials.json"
+DEFAULT_BROWSE_TARGET = 3
+DEFAULT_LIKE_TARGET = 3
+DEFAULT_SHARE_TARGET = 1
+DEFAULT_TOPIC_PAGES = 5
+DEFAULT_TOPIC_PAGE_SIZE = 20
+DEFAULT_GOODS_PAGES = 3
+DEFAULT_GOODS_PAGE_SIZE = 20
+DEFAULT_DELAY_MIN = 0.6
+DEFAULT_DELAY_MAX = 1.2
+DEFAULT_TIMEOUT = 10.0
 
 
 @dataclass
@@ -39,6 +49,10 @@ class ApiResult:
     message: str
     data: Any = None
     raw: dict[str, Any] | None = None
+
+
+def default_sleep(second: int | float | tuple[float, float] | str) -> None:
+    time.sleep(ensure_time(second))
 
 
 def decode_jwt_claims(token: str) -> dict[str, Any]:
@@ -139,9 +153,12 @@ class EpicSevenCommunityAIO:
         jsessionid: str | None = None,
         pd_did: str | None = None,
         pd_dvid: str | None = None,
-        delay_min: float = 0.6,
-        delay_max: float = 1.2,
-        timeout: float = 10.0,
+        delay_min: float = DEFAULT_DELAY_MIN,
+        delay_max: float = DEFAULT_DELAY_MAX,
+        timeout: float = DEFAULT_TIMEOUT,
+        sleep_func: Callable[[int | float | tuple[float, float] | str], None] | None = None,
+        log_func: Callable[[str], None] | None = None,
+        stop_checker: Callable[[], None] | None = None,
     ):
         if not pd_did or not pd_dvid:
             raise ValueError("pd-did 和 pd-dvid 必须显式提供")
@@ -150,6 +167,9 @@ class EpicSevenCommunityAIO:
         self.delay_min = max(delay_min, 0.0)
         self.delay_max = max(delay_max, self.delay_min)
         self.timeout = timeout
+        self._sleep = sleep_func or default_sleep
+        self._log_func = log_func or print
+        self._stop_checker = stop_checker
         self.session = requests.Session()
         self.session.headers.update(DEFAULT_HEADERS)
         self.session.headers.update(
@@ -177,12 +197,20 @@ class EpicSevenCommunityAIO:
         except (TypeError, ValueError):
             return default
 
+    def _check_stop(self) -> None:
+        if self._stop_checker is not None:
+            self._stop_checker()
+
+    def _log(self, message: str) -> None:
+        self._log_func(str(message))
+
     def delay(self, min_sec: float | None = None, max_sec: float | None = None) -> None:
+        self._check_stop()
         lower = self.delay_min if min_sec is None else max(min_sec, 0.0)
         upper = self.delay_max if max_sec is None else max(max_sec, lower)
         if upper <= 0:
             return
-        time.sleep(random.uniform(lower, upper))
+        self._sleep((lower, upper))
 
     def _request_json(
         self,
@@ -192,6 +220,7 @@ class EpicSevenCommunityAIO:
         params: dict[str, Any] | None = None,
         data: dict[str, Any] | None = None,
     ) -> ApiResult:
+        self._check_stop()
         url = f"{BASE_URL}{path}"
         try:
             response = self.session.request(
@@ -228,13 +257,13 @@ class EpicSevenCommunityAIO:
         result = self._request_json("GET", "/task/sign")
         if result.ok:
             data = result.data or {}
-            print(
+            self._log(
                 f"✅ [签到成功] {data.get('desc', '签到成功')} "
                 f"(经验+{self._as_int(data.get('exp'))})"
             )
             return result
         if result.code == ALREADY_SIGNED_CODE:
-            print(f"☑️ [签到提示] {result.message or '今日已签到'}")
+            self._log(f"☑️ [签到提示] {result.message or '今日已签到'}")
             return ApiResult(
                 ok=True,
                 code=result.code,
@@ -242,7 +271,7 @@ class EpicSevenCommunityAIO:
                 data=result.data,
                 raw=result.raw,
             )
-        print(f"❌ [签到失败] {result.message or result.raw}")
+        self._log(f"❌ [签到失败] {result.message or result.raw}")
         return result
 
     def get_recommend_topics(self, page: int = 1, limit: int = 20) -> list[dict[str, Any]]:
@@ -263,7 +292,7 @@ class EpicSevenCommunityAIO:
             last_result = result
             if result.ok:
                 topics = result.data.get("list", []) if isinstance(result.data, dict) else []
-                print(
+                self._log(
                     f"🔍 [获取列表] 第 {page} 页抓取到 {len(topics)} 篇帖子 "
                     f"(参数 {params})"
                 )
@@ -271,7 +300,7 @@ class EpicSevenCommunityAIO:
             if result.message != "分页参数错误":
                 break
 
-        print(
+        self._log(
             f"⚠️ [获取帖子列表失败] 第 {page} 页: "
             f"{(last_result.message if last_result else '未知错误')}"
         )
@@ -280,17 +309,17 @@ class EpicSevenCommunityAIO:
     def get_topic_detail(self, topic_id: int | str) -> ApiResult:
         result = self._request_json("GET", f"/topic/detail/{topic_id}")
         if result.ok:
-            print(f"📖 [浏览帖子] ID={topic_id}")
+            self._log(f"📖 [浏览帖子] ID={topic_id}")
         else:
-            print(f"⚠️ [浏览失败] ID={topic_id}: {result.message or result.raw}")
+            self._log(f"⚠️ [浏览失败] ID={topic_id}: {result.message or result.raw}")
         return result
 
     def like_topic(self, topic_id: int | str) -> ApiResult:
         result = self._request_json("GET", f"/topic/like/{topic_id}")
         if result.ok:
-            print(f"👍 [点赞成功] ID={topic_id}: {result.message or 'success'}")
+            self._log(f"👍 [点赞成功] ID={topic_id}: {result.message or 'success'}")
         else:
-            print(f"⚠️ [点赞失败] ID={topic_id}: {result.message or result.raw}")
+            self._log(f"⚠️ [点赞失败] ID={topic_id}: {result.message or result.raw}")
         return result
 
     def share_topic(self, topic_id: int | str, way: int = 5) -> ApiResult:
@@ -300,9 +329,9 @@ class EpicSevenCommunityAIO:
             params={"way": str(way)},
         )
         if result.ok:
-            print(f"🔗 [分享成功] ID={topic_id}: {result.message or 'success'}")
+            self._log(f"🔗 [分享成功] ID={topic_id}: {result.message or 'success'}")
         else:
-            print(f"⚠️ [分享失败] ID={topic_id}: {result.message or result.raw}")
+            self._log(f"⚠️ [分享失败] ID={topic_id}: {result.message or result.raw}")
         return result
 
     def run_action_tasks(
@@ -313,11 +342,12 @@ class EpicSevenCommunityAIO:
         max_pages: int = 5,
         page_size: int = 20,
     ) -> dict[str, int]:
-        print("\n🎯 开始执行社区任务...")
+        self._log("\n🎯 开始执行社区任务...")
         progress = {"browse": 0, "like": 0, "share": 0}
         seen_topic_ids: set[int | str] = set()
 
         for page in range(1, max_pages + 1):
+            self._check_stop()
             if (
                 progress["browse"] >= browse_target
                 and progress["like"] >= like_target
@@ -330,6 +360,7 @@ class EpicSevenCommunityAIO:
                 break
 
             for topic in topics:
+                self._check_stop()
                 if (
                     progress["browse"] >= browse_target
                     and progress["like"] >= like_target
@@ -342,7 +373,7 @@ class EpicSevenCommunityAIO:
                     continue
                 seen_topic_ids.add(topic_id)
                 author = topic.get("memberNickName") or topic.get("title") or "未知作者"
-                print(f"\n--- 处理帖子 {topic_id} [{author}] ---")
+                self._log(f"\n--- 处理帖子 {topic_id} [{author}] ---")
 
                 detail_result = self.get_topic_detail(topic_id)
                 if not detail_result.ok:
@@ -352,7 +383,7 @@ class EpicSevenCommunityAIO:
                 detail = detail_result.data if isinstance(detail_result.data, dict) else {}
                 if progress["browse"] < browse_target:
                     progress["browse"] += 1
-                    print(f"📘 [浏览进度] {progress['browse']}/{browse_target}")
+                    self._log(f"📘 [浏览进度] {progress['browse']}/{browse_target}")
                 self.delay()
 
                 if progress["like"] < like_target:
@@ -360,19 +391,19 @@ class EpicSevenCommunityAIO:
                         like_result = self.like_topic(topic_id)
                         if like_result.ok and "取消" not in like_result.message:
                             progress["like"] += 1
-                            print(f"❤️ [点赞进度] {progress['like']}/{like_target}")
+                            self._log(f"❤️ [点赞进度] {progress['like']}/{like_target}")
                         self.delay()
                     else:
-                        print("ℹ️ [点赞跳过] 该帖子已点赞，继续找下一篇。")
+                        self._log("ℹ️ [点赞跳过] 该帖子已点赞，继续找下一篇。")
 
                 if progress["share"] < share_target:
                     share_result = self.share_topic(topic_id)
                     if share_result.ok:
                         progress["share"] += 1
-                        print(f"📤 [分享进度] {progress['share']}/{share_target}")
+                        self._log(f"📤 [分享进度] {progress['share']}/{share_target}")
                     self.delay()
 
-        print(
+        self._log(
             "\n📊 [任务汇总] "
             f"浏览 {progress['browse']}/{browse_target} | "
             f"点赞 {progress['like']}/{like_target} | "
@@ -417,9 +448,9 @@ class EpicSevenCommunityAIO:
             data={"goodsId": str(goods_id)},
         )
         if result.ok:
-            print(f"🛍️ [兑换成功] 商品ID={goods_id}: {result.message or 'success'}")
+            self._log(f"🛍️ [兑换成功] 商品ID={goods_id}: {result.message or 'success'}")
         else:
-            print(f"⚠️ [兑换失败] 商品ID={goods_id}: {result.message or result.raw}")
+            self._log(f"⚠️ [兑换失败] 商品ID={goods_id}: {result.message or result.raw}")
         return result
 
     @staticmethod
@@ -458,15 +489,16 @@ class EpicSevenCommunityAIO:
         max_pages: int = 3,
         max_purchase_attempts: int = 20,
     ) -> dict[str, Any]:
-        print("\n🛒 开始自动兑换所有可兑商品...")
+        self._log("\n🛒 开始自动兑换所有可兑商品...")
         purchased_items: list[str] = []
         last_points = 0
         attempts = 0
 
         while attempts < max_purchase_attempts:
+            self._check_stop()
             goods_result = self.get_goods_list(page_size=page_size, max_pages=max_pages)
             if not goods_result.ok:
-                print(f"❌ [拉取商城失败] {goods_result.message or goods_result.raw}")
+                self._log(f"❌ [拉取商城失败] {goods_result.message or goods_result.raw}")
                 break
 
             data = goods_result.data if isinstance(goods_result.data, dict) else {}
@@ -475,11 +507,12 @@ class EpicSevenCommunityAIO:
             last_points = self._as_int(data.get("points"))
 
             if not goods_list:
-                print("ℹ️ [兑换结束] 商品列表为空。")
+                self._log("ℹ️ [兑换结束] 商品列表为空。")
                 break
 
             purchased_this_round = False
             for goods in goods_list:
+                self._check_stop()
                 if attempts >= max_purchase_attempts:
                     break
                 if not self._can_attempt_goods(goods, last_points):
@@ -491,7 +524,7 @@ class EpicSevenCommunityAIO:
 
                 goods_name = str(goods.get("goodsName") or f"商品{goods_id}")
                 price = self._as_int(goods.get("price"))
-                print(
+                self._log(
                     f"🧾 [准备兑换] {goods_name} | "
                     f"ID={goods_id} | 价格={price} | 当前积分={last_points}"
                 )
@@ -505,19 +538,19 @@ class EpicSevenCommunityAIO:
                     break
 
                 if result.code in BUY_STOP_CODES:
-                    print(f"ℹ️ [跳过商品] {goods_name}: {result.message}")
+                    self._log(f"ℹ️ [跳过商品] {goods_name}: {result.message}")
                 else:
-                    print(f"⚠️ [兑换异常] {goods_name}: {result.message or result.raw}")
+                    self._log(f"⚠️ [兑换异常] {goods_name}: {result.message or result.raw}")
                 self.delay(0.1, 0.3)
 
             if not purchased_this_round:
                 if last_points <= 0:
-                    print("ℹ️ [兑换结束] 当前积分不足。")
+                    self._log("ℹ️ [兑换结束] 当前积分不足。")
                 else:
-                    print("ℹ️ [兑换结束] 当前已无可继续兑换的商品。")
+                    self._log("ℹ️ [兑换结束] 当前已无可继续兑换的商品。")
                 break
 
-        print(
+        self._log(
             f"📦 [兑换汇总] 成功兑换 {len(purchased_items)} 次，"
             f"剩余积分约 {last_points}"
         )
@@ -539,13 +572,20 @@ class EpicSevenCommunityAIO:
         goods_page_size: int,
         skip_actions: bool,
         skip_exchange: bool,
-    ) -> None:
-        print(f"🚀 开始执行第七史诗社区 AIO 流程，UID={self.user_id}")
+    ) -> dict[str, Any]:
+        self._check_stop()
+        self._log(f"🚀 开始执行第七史诗社区 AIO 流程，UID={self.user_id}")
         sign_result = self.sign_in()
         sign_ok = sign_result.ok
         if sign_result.message == "当前登陆账号不满足发奖条件":
-            print("⛔ [流程终止] 当前社区账号未绑定对应角色，后续任务和兑换已跳过。")
-            return
+            self._log("⛔ [流程终止] 当前社区账号未绑定对应角色，后续任务和兑换已跳过。")
+            return {
+                "sign_ok": sign_ok,
+                "sign_message": sign_result.message,
+                "action_summary": None,
+                "exchange_summary": None,
+                "skipped_reason": "role_not_bound",
+            }
         self.delay()
 
         action_summary: dict[str, int] | None = None
@@ -565,10 +605,10 @@ class EpicSevenCommunityAIO:
                 max_pages=goods_pages,
             )
 
-        print("\n================ 最终结果 ================")
-        print(f"签到: {'成功/已签到' if sign_ok else '失败'}")
+        self._log("\n================ 最终结果 ================")
+        self._log(f"签到: {'成功/已签到' if sign_ok else '失败'}")
         if action_summary is not None:
-            print(
+            self._log(
                 "任务: "
                 f"浏览 {action_summary['browse']}/{browse_target} | "
                 f"点赞 {action_summary['like']}/{like_target} | "
@@ -576,11 +616,18 @@ class EpicSevenCommunityAIO:
             )
         if exchange_summary is not None:
             items = ", ".join(exchange_summary["items"]) if exchange_summary["items"] else "无"
-            print(
+            self._log(
                 f"兑换: {exchange_summary['count']} 次 | "
                 f"剩余积分约 {exchange_summary['final_points']} | "
                 f"商品: {items}"
             )
+        return {
+            "sign_ok": sign_ok,
+            "sign_message": sign_result.message,
+            "action_summary": action_summary,
+            "exchange_summary": exchange_summary,
+            "skipped_reason": None,
+        }
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -605,28 +652,34 @@ def build_parser() -> argparse.ArgumentParser:
             "也可通过环境变量 E7_PD_DVID 提供"
         ),
     )
-    parser.add_argument("--browse-target", type=int, default=3, help="浏览帖子目标数，默认 3")
-    parser.add_argument("--like-target", type=int, default=3, help="点赞帖子目标数，默认 3")
-    parser.add_argument("--share-target", type=int, default=1, help="分享帖子目标数，默认 1")
-    parser.add_argument("--topic-pages", type=int, default=5, help="最多扫描多少页推荐帖子，默认 5")
-    parser.add_argument("--topic-page-size", type=int, default=20, help="每页拉取多少帖子，默认 20")
-    parser.add_argument("--goods-pages", type=int, default=3, help="最多扫描多少页商品，默认 3")
-    parser.add_argument("--goods-page-size", type=int, default=20, help="每页拉取多少商品，默认 20")
-    parser.add_argument("--delay-min", type=float, default=0.6, help="请求间最小延迟秒数，默认 0.6")
-    parser.add_argument("--delay-max", type=float, default=1.2, help="请求间最大延迟秒数，默认 1.2")
-    parser.add_argument("--timeout", type=float, default=10.0, help="单次请求超时秒数，默认 10")
+    parser.add_argument("--browse-target", type=int, default=DEFAULT_BROWSE_TARGET, help="浏览帖子目标数，默认 3")
+    parser.add_argument("--like-target", type=int, default=DEFAULT_LIKE_TARGET, help="点赞帖子目标数，默认 3")
+    parser.add_argument("--share-target", type=int, default=DEFAULT_SHARE_TARGET, help="分享帖子目标数，默认 1")
+    parser.add_argument("--topic-pages", type=int, default=DEFAULT_TOPIC_PAGES, help="最多扫描多少页推荐帖子，默认 5")
+    parser.add_argument("--topic-page-size", type=int, default=DEFAULT_TOPIC_PAGE_SIZE, help="每页拉取多少帖子，默认 20")
+    parser.add_argument("--goods-pages", type=int, default=DEFAULT_GOODS_PAGES, help="最多扫描多少页商品，默认 3")
+    parser.add_argument("--goods-page-size", type=int, default=DEFAULT_GOODS_PAGE_SIZE, help="每页拉取多少商品，默认 20")
+    parser.add_argument("--delay-min", type=float, default=DEFAULT_DELAY_MIN, help="请求间最小延迟秒数，默认 0.6")
+    parser.add_argument("--delay-max", type=float, default=DEFAULT_DELAY_MAX, help="请求间最大延迟秒数，默认 1.2")
+    parser.add_argument("--timeout", type=float, default=DEFAULT_TIMEOUT, help="单次请求超时秒数，默认 10")
     parser.add_argument("--skip-actions", action="store_true", help="只签到+兑换，不做浏览/点赞/分享")
     parser.add_argument("--skip-exchange", action="store_true", help="只签到+做任务，不自动兑换商品")
     return parser
 
 
-def resolve_credentials(
-    args: argparse.Namespace,
-    parser: argparse.ArgumentParser,
+def resolve_credentials_inputs(
+    *,
+    uid: str | None = None,
+    token: str | None = None,
+    pd_did: str | None = None,
+    pd_dvid: str | None = None,
+    jsessionid: str | None = None,
+    credentials_file: str | None = None,
+    config_name: str = "",
 ) -> tuple[str, str, str, str, str | None]:
-    credentials_path = args.credentials_file or os.getenv("E7_CREDENTIALS_FILE")
+    credentials_path = credentials_file or os.getenv("E7_CREDENTIALS_FILE")
     if not credentials_path:
-        default_path = get_default_credentials_path()
+        default_path = get_default_credentials_path(config_name)
         if os.path.exists(default_path):
             credentials_path = default_path
 
@@ -635,29 +688,46 @@ def resolve_credentials(
         try:
             file_credentials = load_credentials_file(credentials_path)
         except ValueError as exc:
-            parser.error(f"无法读取凭证文件 {credentials_path}: {exc}")
+            raise ValueError(f"无法读取凭证文件 {credentials_path}: {exc}") from exc
 
-    auth_token = args.token or os.getenv("E7_TOKEN") or file_credentials.get("token")
-    pd_did = args.pd_did or os.getenv("E7_PD_DID") or file_credentials.get("pd_did")
-    pd_dvid = args.pd_dvid or os.getenv("E7_PD_DVID") or file_credentials.get("pd_dvid")
-    jsessionid = args.jsessionid or os.getenv("E7_JSESSIONID") or file_credentials.get("jsessionid")
+    auth_token = token or os.getenv("E7_TOKEN") or file_credentials.get("token")
+    pd_did = pd_did or os.getenv("E7_PD_DID") or file_credentials.get("pd_did")
+    pd_dvid = pd_dvid or os.getenv("E7_PD_DVID") or file_credentials.get("pd_dvid")
+    jsessionid = jsessionid or os.getenv("E7_JSESSIONID") or file_credentials.get("jsessionid")
     if not auth_token:
-        parser.error(
-            "必须提供 --token，或设置环境变量 E7_TOKEN，或在凭证文件中提供 token 字段"
+        raise ValueError(
+            "必须提供 token，或设置环境变量 E7_TOKEN，或在凭证文件中提供 token 字段"
         )
     if not pd_did or not pd_dvid:
-        parser.error(
-            "必须提供 --pd-did 和 --pd-dvid，或设置环境变量 E7_PD_DID / E7_PD_DVID，"
+        raise ValueError(
+            "必须提供 pd-did 和 pd-dvid，或设置环境变量 E7_PD_DID / E7_PD_DVID，"
             "或在凭证文件中提供 pd_did / pd_dvid 字段"
         )
 
     token_user_id = get_token_user_id(auth_token)
-    user_id = args.uid or os.getenv("E7_UID") or file_credentials.get("uid") or token_user_id
+    user_id = uid or os.getenv("E7_UID") or file_credentials.get("uid") or token_user_id
     if not user_id:
-        parser.error("无法从 token 解出真实用户 UID，请显式提供 --uid")
+        raise ValueError("无法从 token 解出真实用户 UID，请显式提供 uid")
     if token_user_id and str(user_id) != token_user_id:
-        parser.error(f"--uid 与 token 中的 UID 不一致，token UID 为 {token_user_id}")
+        raise ValueError(f"uid 与 token 中的 UID 不一致，token UID 为 {token_user_id}")
     return str(user_id), str(auth_token), str(pd_did), str(pd_dvid), str(jsessionid) if jsessionid else None
+
+
+def resolve_credentials(
+    args: argparse.Namespace,
+    parser: argparse.ArgumentParser,
+) -> tuple[str, str, str, str, str | None]:
+    try:
+        return resolve_credentials_inputs(
+            uid=args.uid,
+            token=args.token,
+            pd_did=args.pd_did,
+            pd_dvid=args.pd_dvid,
+            jsessionid=args.jsessionid,
+            credentials_file=args.credentials_file,
+        )
+    except ValueError as exc:
+        parser.error(str(exc))
 
 
 def main() -> None:
