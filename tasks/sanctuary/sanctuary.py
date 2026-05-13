@@ -10,7 +10,7 @@ import re
 
 from module.base.button import ClickButton
 from module.base.timer import Timer
-from module.config.utils import get_os_next_reset, get_server_next_monday_update, get_server_next_update
+from module.config.utils import get_server_next_monday_update, get_server_next_month_update, get_server_next_update
 from module.exception import ScriptError
 from module.logger import logger
 from module.ocr.ocr import Digit, DigitCounter, Duration, Ocr, OcrWhiteLetterOnComplexBackground
@@ -43,6 +43,7 @@ from tasks.sanctuary.assets.assets_sanctuary_heart_of_eulerbis import (
     REWARDS_TIER_A,
     REWARDS_TIER_B,
     REWARDS_TIER_S,
+    STATE_MONTHLY_CLAIMED,
     CUSTODY,
 )
 
@@ -124,6 +125,10 @@ class Sanctuary(UI):
     DAILY_FOREST_DELAY_BUFFER_SECONDS = 10
     DAILY_FOREST_MAX_SECONDS = 168 * 60 * 60 + 59 * 60 + 59
     DAILY_FOREST_ZERO_SKIP_TIMERS = {"Care"}
+    MONTHLY_STATUS_CLAIMED = "claimed"
+    MONTHLY_STATUS_FULL = "full"
+    MONTHLY_STATUS_EXHAUSTED = "exhausted"
+    MONTHLY_STATUS_FAILED = "failed"
 
     @staticmethod
     def _should_schedule_mission_reward_after_daily(claimed_any: bool) -> bool:
@@ -593,12 +598,33 @@ class Sanctuary(UI):
 
         return best
 
+    def _is_monthly_claimed(self) -> bool:
+        """
+        Check whether the monthly reward has already been claimed.
+
+        This state has the highest priority for monthly scheduling:
+        once claimed, future weekly refreshes are irrelevant until next month.
+        """
+        return self.appear(STATE_MONTHLY_CLAIMED)
+
+    def _is_monthly_deposit_box_full(self) -> bool:
+        """
+        Detect whether the deposit box is already full.
+
+        We currently only have a stable positive asset for the "not full" state,
+        so this helper keeps the transitional negative check in one place.
+        Once a dedicated "deposit box full" asset is added, only this method
+        needs to change.
+        """
+        return not self.appear(DEPOSIT_BOX_NOT_FULL)
+
     def _monthly_purify(self) -> str:
         """
         Returns:
             str:
-                completed: monthly done (exhausted)
-                full: deposit box full, retry next day
+                claimed: monthly reward already claimed
+                full: deposit box full before monthly reward is claimed
+                exhausted: weekly purify times exhausted before monthly reward is claimed
                 failed: timeout/flow failure
         """
         logger.info("Monthly: purify loop")
@@ -625,7 +651,7 @@ class Sanctuary(UI):
 
             if timeout.reached():
                 logger.warning("Monthly purify timeout")
-                return "failed"
+                return self.MONTHLY_STATUS_FAILED
 
             if self.handle_touch_to_close(interval=1):
                 timeout.reset()
@@ -636,6 +662,10 @@ class Sanctuary(UI):
             if self.handle_network_error():
                 timeout.reset()
                 continue
+
+            if self._is_monthly_claimed():
+                logger.info("Monthly reward already claimed")
+                return self.MONTHLY_STATUS_CLAIMED
 
             if times_total <= 0 or times_ocr_timer.reached():
                 read_current, _, read_total, read_layout = self._ocr_purify_times(
@@ -660,8 +690,8 @@ class Sanctuary(UI):
                         # OCR jitter or layout switch, accept new baseline.
                         last_times_current = times_current
                     if times_current <= 0:
-                        logger.info("Monthly purify exhausted by OCR counter")
-                        return "completed"
+                        logger.info("Monthly purify exhausted by OCR counter before monthly reward is claimed")
+                        return self.MONTHLY_STATUS_EXHAUSTED
 
             purify_luma = PURIFY.match_template_luma(self.device.image)
             if not purify_luma:
@@ -676,13 +706,13 @@ class Sanctuary(UI):
 
             purify_ready = PURIFY.match_template_color(self.device.image)
             if not purify_ready:
-                logger.info("Monthly purify unavailable: PURIFY is gray, treat as exhausted")
-                return "completed"
+                logger.info("Monthly purify unavailable: PURIFY is gray, treat as weekly times exhausted")
+                return self.MONTHLY_STATUS_EXHAUSTED
 
             # Purify exists and clickable but deposit is full -> end without marking complete
-            if not self.appear(DEPOSIT_BOX_NOT_FULL):
+            if self._is_monthly_deposit_box_full():
                 logger.info("Monthly purify ended: deposit box full")
-                return "full"
+                return self.MONTHLY_STATUS_FULL
 
             if target_tier is None:
                 heart_level = self._ocr_heart_level(level_ocr)
@@ -727,9 +757,12 @@ class Sanctuary(UI):
                     if CUSTODY.match_color(self.device.image, threshold=10):
                         if self.appear_then_click(CUSTODY, interval=2):
                             self._wait_monthly_custody_settle(tier_ocr)
-                            if not self.appear(DEPOSIT_BOX_NOT_FULL):
+                            if self._is_monthly_claimed():
+                                logger.info("Monthly reward claimed after custody")
+                                return self.MONTHLY_STATUS_CLAIMED
+                            if self._is_monthly_deposit_box_full():
                                 logger.info("Monthly purify ended: deposit box full after custody")
-                                return "full"
+                                return self.MONTHLY_STATUS_FULL
                             timeout.reset()
                             already_stored_clear_confirm = 0
                             continue
@@ -743,10 +776,10 @@ class Sanctuary(UI):
                 timeout.reset()
                 continue
 
-        return "failed"
+        return self.MONTHLY_STATUS_FAILED
 
     def run_monthly(self) -> bool:
-        self._monthly_status = "failed"
+        self._monthly_status = self.MONTHLY_STATUS_FAILED
         if not self._enter_sanctuary():
             return False
         if not self._back_to_sanctuary():
@@ -757,7 +790,7 @@ class Sanctuary(UI):
         monthly_status = self._monthly_purify()
         self._monthly_status = monthly_status
         self._back_to_sanctuary()
-        if monthly_status == "failed":
+        if monthly_status == self.MONTHLY_STATUS_FAILED:
             return False
         return True
 
@@ -790,13 +823,11 @@ class Sanctuary(UI):
         self._ensure_app_running()
         success = self.run_monthly()
 
-        monthly_status = getattr(self, "_monthly_status", "failed")
-        if monthly_status == "completed":
-            self.config.task_delay(target=get_os_next_reset())
-        elif monthly_status == "full":
-            # Deposit box full: retry with next daily sanctuary cycle.
-            self.config.task_delay(target=get_server_next_update(self.config.Scheduler_ServerUpdate))
+        monthly_status = getattr(self, "_monthly_status", self.MONTHLY_STATUS_FAILED)
+        if monthly_status == self.MONTHLY_STATUS_CLAIMED:
+            self.config.task_delay(target=get_server_next_month_update(self.config.Scheduler_ServerUpdate))
+        elif monthly_status in (self.MONTHLY_STATUS_FULL, self.MONTHLY_STATUS_EXHAUSTED):
+            self.config.task_delay(target=get_server_next_monday_update(self.config.Scheduler_ServerUpdate))
         else:
-            # Failed monthly flow should retry next day.
             self.config.task_delay(target=get_server_next_update(self.config.Scheduler_ServerUpdate))
         return success
