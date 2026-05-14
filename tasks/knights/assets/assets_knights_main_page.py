@@ -25,36 +25,22 @@ KNIGHTS_CHECK = ButtonWrapper(
 )
 TEAM_BATTLE_LOCKED = ButtonWrapper(
     name='TEAM_BATTLE_LOCKED',
-    global_cn=Button(
-        file='./assets/global_cn/knights/main_page/TEAM_BATTLE_LOCKED.png',
+    share=Button(
+        file='./assets/share/knights/main_page/TEAM_BATTLE_LOCKED.png',
         area=(618, 483, 662, 528),
         search=(598, 463, 682, 548),
         color=(142, 124, 100),
         button=(618, 483, 662, 528),
     ),
-    share=Button(
-        file='./assets/share/knights/main_page/TEAM_BATTLE_LOCKED.png',
-        area=(622, 494, 662, 529),
-        search=(602, 474, 682, 549),
-        color=(119, 104, 87),
-        button=(622, 494, 662, 529),
-    ),
 )
 TEAM_BATTLE_OPENING = ButtonWrapper(
     name='TEAM_BATTLE_OPENING',
-    global_cn=Button(
-        file='./assets/global_cn/knights/main_page/TEAM_BATTLE_OPENING.png',
+    share=Button(
+        file='./assets/share/knights/main_page/TEAM_BATTLE_OPENING.png',
         area=(617, 482, 661, 526),
         search=(597, 462, 681, 546),
         color=(187, 172, 147),
         button=(617, 482, 661, 526),
-    ),
-    share=Button(
-        file='./assets/share/knights/main_page/TEAM_BATTLE_OPENING.png',
-        area=(622, 493, 658, 526),
-        search=(602, 473, 678, 546),
-        color=(176, 161, 137),
-        button=(622, 493, 658, 526),
     ),
 )
 WEEKLY_REWARDS = ButtonWrapper(
@@ -87,35 +73,21 @@ WORLD_BOSS_CHECK = ButtonWrapper(
 )
 WORLD_BOSS_LOCKED = ButtonWrapper(
     name='WORLD_BOSS_LOCKED',
-    global_cn=Button(
-        file='./assets/global_cn/knights/main_page/WORLD_BOSS_LOCKED.png',
+    share=Button(
+        file='./assets/share/knights/main_page/WORLD_BOSS_LOCKED.png',
         area=(292, 419, 315, 445),
         search=(272, 399, 335, 465),
         color=(154, 145, 133),
         button=(292, 419, 315, 445),
     ),
-    share=Button(
-        file='./assets/share/knights/main_page/WORLD_BOSS_LOCKED.png',
-        area=(278, 412, 315, 446),
-        search=(258, 392, 335, 466),
-        color=(139, 129, 118),
-        button=(278, 412, 315, 446),
-    ),
 )
 WORLD_BOSS_OPENING = ButtonWrapper(
     name='WORLD_BOSS_OPENING',
-    global_cn=Button(
-        file='./assets/global_cn/knights/main_page/WORLD_BOSS_OPENING.png',
+    share=Button(
+        file='./assets/share/knights/main_page/WORLD_BOSS_OPENING.png',
         area=(274, 407, 312, 445),
         search=(254, 387, 332, 465),
         color=(140, 123, 108),
         button=(274, 407, 312, 445),
-    ),
-    share=Button(
-        file='./assets/share/knights/main_page/WORLD_BOSS_OPENING.png',
-        area=(278, 412, 311, 443),
-        search=(258, 392, 331, 463),
-        color=(136, 123, 109),
-        button=(278, 412, 311, 443),
     ),
 )
