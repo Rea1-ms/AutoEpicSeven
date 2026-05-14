@@ -431,7 +431,10 @@ else:
 
 # Arena
 page_arena = Page(ARENA_CHECK)
-page_arena.link(BACK, destination=page_main)
+if server_.is_oversea_server():
+    page_arena.link(BACK, destination=page_arena_hub)
+else:
+    page_arena.link(BACK, destination=page_main)
 if page_arena_hub is not None:
     page_arena_hub.link(ARENA_COMMON_ENTRY, destination=page_arena)
 if page_arena_mode_popup is not None:
