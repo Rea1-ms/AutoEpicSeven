@@ -1,3 +1,4 @@
+from module.base.decorator import Config
 from module.base.timer import Timer
 from module.logger import logger
 from tasks.arena.assets.assets_arena import (
@@ -8,7 +9,7 @@ from tasks.arena.assets.assets_arena import (
     WEEKLY_REWARDS_CLAIM,
     WEEKLY_REWARDS_SELECTED,
 )
-from tasks.base.page import page_arena_mode_popup
+from tasks.base.page import page_arena_hub, page_arena_mode_popup
 
 
 class ArenaEntryMixin:
@@ -77,31 +78,111 @@ class ArenaEntryMixin:
 
         return False
 
+    @Config.when(Emulator_PackageName='OVERSEA-Play')
+    def _arena_entry_surface_page(self):
+        return page_arena_hub
+
+    @Config.when(Emulator_PackageName=None)
+    def _arena_entry_surface_page(self):
+        return page_arena_mode_popup
+
+    @Config.when(Emulator_PackageName='OVERSEA-Play')
+    def _arena_entry_surface_name(self) -> str:
+        return "arena hub"
+
+    @Config.when(Emulator_PackageName=None)
+    def _arena_entry_surface_name(self) -> str:
+        return "arena mode popup"
+
     def _ensure_arena_entry_surface(self, skip_first_screenshot=True) -> str:
         """
         Route to the arena entry boundary before running arena-specific logic.
 
-        Arena uses a mode-selection popup as the real entry surface:
-        - route switching should only care about reaching this popup
-        - the popup -> common arena transition stays inside arena state logic
+        Arena currently has two server-specific entry surfaces:
+        - CN: popup overlay
+        - OVERSEA: formal hub page
+
+        Keep the routing target abstract so page-graph navigation stays local
+        to the correct server shape. The follow-up click into common arena is
+        still handled by arena-specific state loops because weekly rewards /
+        settling branches can interrupt that last hop.
 
         Returns:
-            str: "arena" if already inside arena, "popup" otherwise.
+            str: "arena" if already inside arena, "surface" otherwise.
         """
+        surface_page = self._arena_entry_surface_page()
+        surface_name = self._arena_entry_surface_name()
+
         if self._is_arena_page_ready(interval=0):
             logger.info("Arena: already in arena page")
             return "arena"
 
-        if self.ui_page_appear(page_arena_mode_popup, interval=0):
-            logger.info("Arena: already in arena mode popup")
-            return "popup"
+        if self.ui_page_appear(surface_page, interval=0):
+            logger.info(f"Arena: already in {surface_name}")
+            return "surface"
 
-        logger.info("Arena: goto arena entry surface")
-        self.ui_goto(page_arena_mode_popup, skip_first_screenshot=skip_first_screenshot)
-        return "popup"
+        logger.info(f"Arena: goto {surface_name}")
+        self.ui_goto(surface_page, skip_first_screenshot=skip_first_screenshot)
+        return "surface"
 
-    def _enter_arena_from_popup(self, skip_first_screenshot=True) -> str:
-        logger.info("Arena: enter from arena entry surface")
+    @Config.when(Emulator_PackageName='OVERSEA-Play')
+    def _enter_arena_from_entry_surface(self, skip_first_screenshot=True) -> str:
+        """
+        OVERSEA arena entry is now a formal page instead of an overlay popup.
+
+        Important behavioral differences from the old popup flow:
+        1. BACK now returns to page_main, so ui_goto() must treat this as a
+           normal page in the static graph.
+        2. The top-right toolbar remains active on the hub page.
+        3. The final click from hub -> common arena can still be interrupted by
+           weekly rewards or settling states, so it stays in a dedicated loop.
+        """
+        logger.info("Arena: enter from arena hub")
+        timeout = Timer(self.ARENA_ENTRY_TIMEOUT_SECONDS, count=180).start()
+
+        while 1:
+            if skip_first_screenshot:
+                skip_first_screenshot = False
+            else:
+                self.device.screenshot()
+
+            if timeout.reached():
+                logger.warning("Arena entry timeout")
+                return "failed"
+
+            if self._is_arena_page_ready(interval=1):
+                logger.info("Arena page reached")
+                return "entered"
+
+            if self.appear(ARENA_SETTLING, interval=1):
+                if self.handle_ad_buff_x_close(interval=0.5):
+                    logger.info("Arena is in settling period, skip until next server update")
+                    return "settling"
+                continue
+
+            if self.appear(WEEKLY_REWARDS_CHECK):
+                if self._handle_weekly_rewards_popup():
+                    timeout.reset()
+                continue
+
+            if self.appear_then_click(ARENA_COMMON_ENTRY, interval=1):
+                logger.info("Arena hub: choose common arena")
+                timeout.reset()
+                continue
+
+            if self.ui_additional():
+                timeout.reset()
+                continue
+            if self.handle_touch_to_close(interval=0.5):
+                timeout.reset()
+                continue
+            if self.handle_network_error():
+                timeout.reset()
+                continue
+
+    @Config.when(Emulator_PackageName=None)
+    def _enter_arena_from_entry_surface(self, skip_first_screenshot=True) -> str:
+        logger.info("Arena: enter from arena mode popup")
         timeout = Timer(self.ARENA_ENTRY_TIMEOUT_SECONDS, count=180).start()
 
         while 1:
@@ -150,4 +231,4 @@ class ArenaEntryMixin:
         surface = self._ensure_arena_entry_surface(skip_first_screenshot=skip_first_screenshot)
         if surface == "arena":
             return "entered"
-        return self._enter_arena_from_popup(skip_first_screenshot=True)
+        return self._enter_arena_from_entry_surface(skip_first_screenshot=True)
