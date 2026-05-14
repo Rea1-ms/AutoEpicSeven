@@ -1,5 +1,6 @@
 import traceback
 
+import module.config.server as server_
 from module.base.button import ButtonWrapper
 from tasks.base.assets.assets_base_page import *
 from tasks.base.assets.assets_base_popup import AD_BUFF_X_CLOSE
@@ -27,6 +28,10 @@ from tasks.arena.assets.assets_arena import (
     BATTLE_PASS_CHECK,
     BATTLE_PASS_ENTRY,
 )
+if server_.is_oversea_server():
+    from tasks.arena.assets.assets_arena import ARENA_HUB_CHECK
+else:
+    ARENA_HUB_CHECK = None
 from tasks.dungeon.assets.assets_dungeon_configs_combat_entry import (
     ALTER_CHECK,
     COMMON_ENTRY,
@@ -386,25 +391,54 @@ page_mission_reward.link(MISSION_REWARD_DAILY_ENTRY, destination=page_mission_re
 page_menu.link(MENU_GOTO_MISSION_REWARD, destination=page_mission_reward)
 page_menu.link(MENU_GOTO_MISSION_REWARD, destination=page_mission_reward_daily)
 
-# Arena mode-selection popup
-#
-# Main entry and menu entry both land on the same mode-selection popup.
-# Similar to mission reward, the close button returns to the page underneath
-# the popup. Keep page_menu as static fallback because both popup sources
-# can still recover through menu/main routing if the runtime origin is absent.
-page_arena_mode_popup = Page(
-    ARENA_COMMON_ENTRY,
-    dynamic_return_button=AD_BUFF_X_CLOSE,
-    dynamic_return_group='overlay_arena_mode',
-)
-page_arena_mode_popup.link(AD_BUFF_X_CLOSE, destination=page_menu)
-page_main.link(MAIN_ARENA_ENTRY, destination=page_arena_mode_popup)
-page_menu.link(MENU_ARENA_ENTRY, destination=page_arena_mode_popup)
+page_arena_hub = None
+page_arena_mode_popup = None
+
+if server_.is_oversea_server():
+    # Arena hub page
+    #
+    # OVERSEA temporarily diverges from CN after the 2026-05 update:
+    # - arena entry no longer opens a popup
+    # - BACK returns to page_main directly
+    # - top-right toolbar stays active (menu / mail / inventory)
+    # - ARENA_COMMON_ENTRY is now an in-page action instead of popup content
+    #
+    # This page only exists on oversea for now, so register it conditionally.
+    # Otherwise CN would still try to probe ARENA_HUB_CHECK during global page
+    # scan and raise on missing server-local assets.
+    page_arena_hub = Page(ARENA_HUB_CHECK)
+    page_arena_hub.link(BACK, destination=page_main)
+    page_main.link(MAIN_ARENA_ENTRY, destination=page_arena_hub)
+    page_menu.link(MENU_ARENA_ENTRY, destination=page_arena_hub)
+else:
+    # Arena mode-selection popup
+    #
+    # CN still uses the old overlay-style arena mode popup:
+    # - MAIN_ARENA_ENTRY / MENU_ARENA_ENTRY open an overlay instead of a normal page
+    # - AD_BUFF_X_CLOSE returns to the page underneath the popup
+    # - keep page_menu as static fallback because runtime origin may be absent
+    #
+    # Register it only on non-oversea servers. The popup marker is
+    # ARENA_COMMON_ENTRY, which also appears inside the new oversea hub page.
+    page_arena_mode_popup = Page(
+        ARENA_COMMON_ENTRY,
+        dynamic_return_button=AD_BUFF_X_CLOSE,
+        dynamic_return_group='overlay_arena_mode',
+    )
+    page_arena_mode_popup.link(AD_BUFF_X_CLOSE, destination=page_menu)
+    page_main.link(MAIN_ARENA_ENTRY, destination=page_arena_mode_popup)
+    page_menu.link(MENU_ARENA_ENTRY, destination=page_arena_mode_popup)
 
 # Arena
 page_arena = Page(ARENA_CHECK)
-page_arena.link(BACK, destination=page_main)
-page_arena_mode_popup.link(ARENA_COMMON_ENTRY, destination=page_arena)
+if server_.is_oversea_server():
+    page_arena.link(BACK, destination=page_arena_hub)
+else:
+    page_arena.link(BACK, destination=page_main)
+if page_arena_hub is not None:
+    page_arena_hub.link(ARENA_COMMON_ENTRY, destination=page_arena)
+if page_arena_mode_popup is not None:
+    page_arena_mode_popup.link(ARENA_COMMON_ENTRY, destination=page_arena)
 
 page_arena_battle_pass = Page(BATTLE_PASS_CHECK)
 page_arena_battle_pass.link(BACK, destination=page_arena)
@@ -495,7 +529,7 @@ page_menu.link(MENU_GOTO_GACHA, destination=page_gacha)
 page_menu.link(MENU_GOTO_STORE, destination=page_store)
 
 # Most stable hub pages share the same top-right toolbar.
-link_shared_toolbar(
+shared_toolbar_pages = [
     page_main,
     page_gacha,
     page_sanctuary,
@@ -518,7 +552,11 @@ link_shared_toolbar(
     page_knights,
     page_knights_world_boss,
     page_knights_team_battle,
-)
+]
+if page_arena_hub is not None:
+    shared_toolbar_pages.insert(7, page_arena_hub)
+
+link_shared_toolbar(*shared_toolbar_pages)
 
 link_shared_toolbar(
     page_free_store,

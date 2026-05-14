@@ -113,3 +113,13 @@ REWARDS_TIER_S = ButtonWrapper(
         button=(366, 397, 392, 429),
     ),
 )
+STATE_MONTHLY_CLAIMED = ButtonWrapper(
+    name='STATE_MONTHLY_CLAIMED',
+    share=Button(
+        file='./assets/share/sanctuary/heart_of_eulerbis/STATE_MONTHLY_CLAIMED.png',
+        area=(1221, 541, 1247, 559),
+        search=(1201, 521, 1267, 579),
+        color=(34, 53, 50),
+        button=(1221, 541, 1247, 559),
+    ),
+)

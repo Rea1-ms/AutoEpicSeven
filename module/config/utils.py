@@ -357,6 +357,35 @@ def get_os_next_reset():
     return local_reset
 
 
+def get_server_next_month_update(daily_trigger):
+    """
+    Get the next month reset aligned to the configured server update time.
+
+    Args:
+        daily_trigger (list[str], str): [ "00:00", "12:00", "18:00",]
+
+    Returns:
+        datetime.datetime
+    """
+    if isinstance(daily_trigger, str):
+        daily_trigger = daily_trigger.replace(' ', '').split(',')
+
+    first_update = daily_trigger[0]
+    hour, minute = [int(x) for x in first_update.split(':')]
+
+    diff = server_time_offset()
+    server_now = datetime.now() - diff
+    server_reset = (server_now.replace(day=1) + timedelta(days=32)).replace(
+        day=1,
+        hour=hour,
+        minute=minute,
+        second=0,
+        microsecond=0,
+    )
+    local_reset = server_reset + diff
+    return local_reset
+
+
 def get_os_reset_remain():
     """
     Returns:

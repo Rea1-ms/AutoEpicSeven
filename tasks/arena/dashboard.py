@@ -3,6 +3,8 @@ from module.ocr.ocr import Digit
 from tasks.arena.assets.assets_arena import OCR_BATTLE_PASS_LEVEL
 from tasks.base.resource_bar import RESOURCE_BAR_LAYOUT_ARENA_BATTLE_PASS, ResourceBarMixin
 
+ARENA_BATTLE_PASS_MAX_LEVEL = 38
+
 
 def estimate_remaining_arena_flags(current: int, total: int, consumed: int) -> tuple[int, int] | None:
     if total <= 0:
@@ -18,6 +20,13 @@ class ArenaDigit(Digit):
         result = result.replace("I", "1").replace("l", "1").replace("|", "1")
         result = result.replace(" ", "")
         return super().after_process(result)
+
+    def format_result(self, result) -> int:
+        normalized = result.strip().lower()
+        if normalized == "max":
+            logger.attr(name=self.name, text=str(result))
+            return ARENA_BATTLE_PASS_MAX_LEVEL
+        return super().format_result(result)
 
 
 class ArenaDashboardMixin(ResourceBarMixin):
