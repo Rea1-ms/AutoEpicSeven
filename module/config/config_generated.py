@@ -95,10 +95,11 @@ class GeneratedConfig:
     PetsGift_LastClaimAt = datetime.datetime(2020, 1, 1, 0, 0)
 
     # Group `Combat`
-    Combat_Domain = 'Hunt'  # Hunt, SpiritAltar, Saint37
+    Combat_Domain = 'Hunt'  # Hunt, SpiritAltar, Saint37, Episode4
     Combat_Element = 'Water'  # Dark, Light, Water, Fire, Nature
     Combat_AltarGrade = 'Hell'  # Pri, Mid, High, Hell
     Combat_HuntGrade = 'Hell'  # Mid, High, Hell, Dimensional
+    Combat_Episode4Material = 'BREATH_OF_KARMA'  # CATALYST_RARE_BENEVOLENT, CATALYST_RARE_SECRET, CATALYST_RARE_FIGHTING_SPIRIT, CATALYST_RARE_SNIPER, HEART_OF_THE_WOODS, CATALYST_RARE_OATH, CATALYST_RARE_MYSTERIOUS, CATALYST_EPIC_OATH, BREATH_OF_KARMA, CATALYST_EPIC_SNIPER, CATALYST_EPIC_FIGHTING_SPIRIT, FROZEN_SEED, CATALYST_EPIC_BENEVOLENT, CATALYST_EPIC_MYSTERIOUS, CATALYST_EPIC_SECRET, TRACES_OF_BRILLIANCE
     Combat_FastCombat = True
     Combat_FastCombatCount = 10
     Combat_RepeatCombatCount = 5

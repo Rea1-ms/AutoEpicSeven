@@ -28,7 +28,7 @@ class CombatRuntimeMixin:
             "active": True,
             "mode": "repeat_background",
             "domain": domain,
-            "element": None if domain == "Saint37" else self._combat_element(),
+            "element": None if domain in ("Saint37", "Episode4") else self._combat_element(),
             "grade": self._combat_grade(),
         }
 
@@ -257,6 +257,9 @@ class CombatRuntimeMixin:
                 or self._is_episode_preview_page()
                 or self._is_side_story_map_page()
                 or self._is_supporter_page()
+                or self._is_episode_choose_page()
+                or self._is_episode_stage_page()
+                or self._is_episode_supporter_page()
             ):
                 if self.appear_then_click(BACK, interval=1):
                     timeout.reset()

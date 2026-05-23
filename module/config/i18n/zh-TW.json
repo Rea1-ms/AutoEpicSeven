@@ -477,10 +477,11 @@
     },
     "Domain": {
       "name": "副本類型",
-      "help": "選擇本次刷取的是討伐還是精靈祭壇。",
+      "help": "選擇本次刷取的是討伐、精靈祭壇，還是 Episode 4 定向材料。",
       "Hunt": "討伐",
       "SpiritAltar": "精靈祭壇",
-      "Saint37": "聖女3-7"
+      "Saint37": "聖女3-7",
+      "Episode4": "Episode 4"
     },
     "Element": {
       "name": "屬性",
@@ -506,6 +507,26 @@
       "High": "高級",
       "Hell": "地獄",
       "Dimensional": "異界"
+    },
+    "Episode4Material": {
+      "name": "第四季目標材料",
+      "help": "僅對 Episode 4 生效。根據材料自動路由到對應章節與關卡。",
+      "CATALYST_RARE_BENEVOLENT": "稀有慈愛催化劑",
+      "CATALYST_RARE_SECRET": "稀有隱匿催化劑",
+      "CATALYST_RARE_FIGHTING_SPIRIT": "稀有鬥志催化劑",
+      "CATALYST_RARE_SNIPER": "稀有狙擊催化劑",
+      "HEART_OF_THE_WOODS": "綠蔭心臟",
+      "CATALYST_RARE_OATH": "稀有誓言催化劑",
+      "CATALYST_RARE_MYSTERIOUS": "稀有神秘催化劑",
+      "CATALYST_EPIC_OATH": "傳說誓言催化劑",
+      "BREATH_OF_KARMA": "業火氣息",
+      "CATALYST_EPIC_SNIPER": "傳說狙擊催化劑",
+      "CATALYST_EPIC_FIGHTING_SPIRIT": "傳說鬥志催化劑",
+      "FROZEN_SEED": "酷寒種子",
+      "CATALYST_EPIC_BENEVOLENT": "傳說慈愛催化劑",
+      "CATALYST_EPIC_MYSTERIOUS": "傳說神秘催化劑",
+      "CATALYST_EPIC_SECRET": "傳說隱匿催化劑",
+      "TRACES_OF_BRILLIANCE": "光輝痕跡"
     },
     "FastCombat": {
       "name": "啟用快速戰鬥",

@@ -184,7 +184,7 @@ PetsGift:
 Combat:
   Domain:
     value: Hunt
-    option: [ Hunt, SpiritAltar, Saint37 ]
+    option: [ Hunt, SpiritAltar, Saint37, Episode4 ]
   Element:
     value: Water
     option: [ Dark, Light, Water, Fire, Nature ]
@@ -194,6 +194,26 @@ Combat:
   HuntGrade:
     value: Hell
     option: [ Mid, High, Hell, Dimensional ]
+  Episode4Material:
+    value: BREATH_OF_KARMA
+    option: [
+      CATALYST_RARE_BENEVOLENT,
+      CATALYST_RARE_SECRET,
+      CATALYST_RARE_FIGHTING_SPIRIT,
+      CATALYST_RARE_SNIPER,
+      HEART_OF_THE_WOODS,
+      CATALYST_RARE_OATH,
+      CATALYST_RARE_MYSTERIOUS,
+      CATALYST_EPIC_OATH,
+      BREATH_OF_KARMA,
+      CATALYST_EPIC_SNIPER,
+      CATALYST_EPIC_FIGHTING_SPIRIT,
+      FROZEN_SEED,
+      CATALYST_EPIC_BENEVOLENT,
+      CATALYST_EPIC_MYSTERIOUS,
+      CATALYST_EPIC_SECRET,
+      TRACES_OF_BRILLIANCE,
+    ]
   FastCombat: true
   FastCombatCount: 10
   RepeatCombatCount: 5

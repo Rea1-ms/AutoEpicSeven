@@ -1,7 +1,8 @@
 from module.logger import logger
-from tasks.base.page import page_combat, page_side_story
+from tasks.base.page import page_combat, page_episode, page_side_story
 from tasks.base.resource_bar import ResourceBarMixin
 from tasks.base.ui import UI
+from tasks.dungeon.episode import EpisodeNavigateMixin
 from tasks.dungeon.entry import CombatEntryMixin
 from tasks.dungeon.execute import CombatExecuteMixin
 from tasks.dungeon.plan import COMBAT_PLANS, HUNT_PLAN
@@ -10,7 +11,16 @@ from tasks.dungeon.runtime import CombatRuntimeMixin
 from tasks.dungeon.side_story import SideStoryNavigateMixin
 
 
-class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, SideStoryNavigateMixin, CombatPrepare, ResourceBarMixin, UI):
+class Combat(
+    CombatRuntimeMixin,
+    CombatExecuteMixin,
+    CombatEntryMixin,
+    EpisodeNavigateMixin,
+    SideStoryNavigateMixin,
+    CombatPrepare,
+    ResourceBarMixin,
+    UI,
+):
     COMBAT_RESOURCE_BAR_TIMEOUT_SECONDS = 1
     COMBAT_RESOURCE_BAR_TIMEOUT_COUNT = 2
     COMBAT_CHECK_SIMILARITY = 0.8
@@ -70,6 +80,8 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, SideStory
 
     def _combat_grade(self) -> str:
         domain = self._dungeon_domain()
+        if domain == "Episode4":
+            return self._combat_episode_target().stage_label
         if domain == "Saint37":
             return "3-7"
         if domain == "SpiritAltar":
@@ -83,7 +95,7 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, SideStory
         """
         Return whether the current combat target provides a fast-combat toggle.
 
-        Side story and Dimensional Hunt do not expose the fast-combat button on
+        Saint 3-7 and Dimensional Hunt do not expose the fast-combat button on
         the prepare page. GUI-side hiding alone is not enough because an old
         persisted config may still keep FastCombat=True. Keep this rule on the
         backend so state loops do not try to click a missing toggle and get
@@ -132,6 +144,9 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, SideStory
             or self._is_episode_preview_page()
             or self._is_side_story_map_page()
             or self._is_supporter_page()
+            or self._is_episode_stage_page()
+            or self._is_episode_choose_page()
+            or self._is_episode_supporter_page()
         )
 
     def _is_in_saint37_flow_context(self) -> bool:
@@ -150,6 +165,14 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, SideStory
             or self._is_episode_preview_page()
             or self._is_side_story_map_page()
             or self._is_supporter_page()
+        )
+
+    def _is_in_episode4_flow_context(self) -> bool:
+        return (
+            self._is_prepare_page()
+            or self._is_episode_choose_page()
+            or self._is_episode_stage_page()
+            or self._is_episode_supporter_page()
         )
 
     def _is_background_repeat_check_page(self, page) -> bool:
@@ -214,6 +237,8 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, SideStory
 
     def _dungeon_navigate(self, skip_first_screenshot=True) -> bool:
         domain = self._dungeon_domain()
+        if domain == "Episode4":
+            return self._navigate_episode4(skip_first_screenshot=skip_first_screenshot)
         if domain == "Saint37":
             return self._navigate_side_story(skip_first_screenshot=skip_first_screenshot)
 
@@ -278,7 +303,13 @@ class Combat(CombatRuntimeMixin, CombatExecuteMixin, CombatEntryMixin, SideStory
                 return True
 
         domain = self._dungeon_domain()
-        if domain == "Saint37":
+        if domain == "Episode4":
+            if self._is_in_episode4_flow_context():
+                logger.info("Combat Episode4: continue local episode flow")
+            else:
+                logger.info("Combat Episode4: route to episode hub before navigation")
+                self.ui_goto(page_episode, skip_first_screenshot=True)
+        elif domain == "Saint37":
             if self._is_in_saint37_flow_context():
                 logger.info("Combat Saint37: continue local side story flow")
             else:
