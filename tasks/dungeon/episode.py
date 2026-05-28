@@ -357,11 +357,12 @@ class EpisodeNavigateMixin:
 
                 current_stage = self._ocr_episode_current_stage_index()
 
-                # 这一段按固定顺序运行，故意只保留 4 个分支。
-                # 之前的问题就是这里混进了“点到目标后再进入重置状态”的旧逻辑，
-                # 结果已经跳到目标关卡，下一轮又因为索引暂时没看到而把列表翻回去。
+                # Keep this logic in a fixed order with only four branches.
+                # A previous regression mixed in old "reset after clicking target" behavior:
+                # even after jumping to the target stage, the next loop could fail to see the index
+                # briefly and scroll the list back away.
                 #
-                # 当前约定如下：
+                # Contract:
                 # 1. 右侧掉落预览已经出现目标材料：说明当前关卡就是目标关卡，
                 #    只处理 READY_TO_FIGHT，不再碰左侧列表。
                 # 2. OCR 看到当前关卡序号已经高于目标序号：说明目标在上面，
