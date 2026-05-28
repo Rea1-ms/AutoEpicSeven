@@ -363,12 +363,11 @@ class EpisodeNavigateMixin:
                 # briefly and scroll the list back away.
                 #
                 # Contract:
-                # 1. 右侧掉落预览已经出现目标材料：说明当前关卡就是目标关卡，
-                #    只处理 READY_TO_FIGHT，不再碰左侧列表。
-                # 2. OCR 看到当前关卡序号已经高于目标序号：说明目标在上面，
-                #    直接大力上滑回顶。
-                # 3. 左侧搜索区能看到目标索引：直接点击它，E7 会跳到对应关卡。
-                # 4. 上面都不成立：说明目标还在更下面，点击搜索区下三分之一推进。
+                # 1) Target material is visible in the right-side drop preview: current stage is the target.
+                #    Only handle READY_TO_FIGHT; do not touch the left list.
+                # 2) OCR reports the current stage number is above the target: swipe hard to the top.
+                # 3) Target index is visible in the left list search area: click it to jump to the stage.
+                # 4) Otherwise the target is further down: click the lower third to advance.
                 if self._episode_has_target_material(target):
                     if self.appear_then_click(READY_TO_FIGHT, interval=2):
                         logger.info(f"Episode4: enter fight for {target.stage_label}")
