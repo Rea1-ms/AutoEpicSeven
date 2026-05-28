@@ -597,6 +597,9 @@ class ConfigUpdater:
             combat_domain = deep_get(data, f'{task_prefix}.Domain', default='Hunt')
             combat_hunt_grade = deep_get(data, f'{task_prefix}.HuntGrade', default='Hell')
 
+            if combat_domain != 'Episode4':
+                yield f'{task_prefix}.Episode4Material'
+
             if is_farm_task:
                 yield f'{task_prefix}.FastCombatCount'
                 yield f'{task_prefix}.RepeatCombatCount'
@@ -609,13 +612,16 @@ class ConfigUpdater:
             elif deep_get(data, f'{task_prefix}.FastCombat', default=True) is False:
                 yield f'{task_prefix}.FastCombatCount'
 
-            if is_farm_task and (combat_domain == 'Saint37' or (combat_domain == 'Hunt' and combat_hunt_grade == 'Dimensional')):
+            if is_farm_task and (
+                combat_domain == 'Saint37'
+                or (combat_domain == 'Hunt' and combat_hunt_grade == 'Dimensional')
+            ):
                 yield f'{task_prefix}.FastCombat'
 
             if combat_domain != 'Saint37':
                 yield f'{task_prefix}.Saint37AutoRecycle'
 
-            if combat_domain == 'Saint37':
+            if combat_domain in ('Saint37', 'Episode4'):
                 yield f'{task_prefix}.Element'
                 yield f'{task_prefix}.AltarGrade'
                 yield f'{task_prefix}.HuntGrade'

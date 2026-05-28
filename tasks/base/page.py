@@ -42,6 +42,9 @@ from tasks.dungeon.assets.assets_dungeon_configs_combat_entry import (
     URGENT_TASKS,
 )
 from tasks.dungeon.assets.assets_dungeon_repeat_entry import REPEAT_COMBAT_MENU
+from tasks.dungeon.assets.assets_dungeon_configs_episode_entry import (
+    EPISODE_CHOOSE,
+)
 from tasks.dungeon.assets.assets_dungeon_configs_side_story_entry import (
     EPISODE_PREVIEW_CHECK,
     MAP_CHECK,
@@ -481,6 +484,12 @@ page_combat_stage.link(BACK, destination=page_combat_common)
 page_combat_prepare = Page(REPEAT_COMBAT_MENU)
 page_combat_prepare.link(BACK, destination=page_combat_stage)
 
+# Episode
+page_episode = Page(EPISODE_CHOOSE)
+page_episode.link(BACK, destination=page_main)
+page_main.link(MAIN_GOTO_EPISODE, destination=page_episode)
+page_menu.link(MENU_GOTO_EPISODE, destination=page_episode)
+
 # Side Story
 page_side_story = Page(SIDE_STORY_CHECK)
 page_side_story.link(BACK, destination=page_main)
@@ -544,6 +553,7 @@ shared_toolbar_pages = [
     page_combat_urgent,
     page_combat_stage,
     page_combat_prepare,
+    page_episode,
     page_side_story,
     page_side_story_time_book,
     page_side_story_episode_preview,

@@ -477,10 +477,11 @@
     },
     "Domain": {
       "name": "副本種類",
-      "help": "今回周回するのが討伐か精霊祭壇かを選択します。",
+      "help": "今回周回するのが討伐、精霊祭壇、または Episode 4 の素材ルートかを選択します。",
       "Hunt": "討伐",
       "SpiritAltar": "精霊祭壇",
-      "Saint37": "Saint 3-7"
+      "Saint37": "Saint 3-7",
+      "Episode4": "Episode 4"
     },
     "Element": {
       "name": "属性",
@@ -506,6 +507,26 @@
       "High": "上級",
       "Hell": "地獄",
       "Dimensional": "異界"
+    },
+    "Episode4Material": {
+      "name": "Episode 4 目標素材",
+      "help": "Episode 4 のみ有効です。選んだ素材に応じて章とステージへ移動します。",
+      "CATALYST_RARE_BENEVOLENT": "Rare Benevolent Catalyst",
+      "CATALYST_RARE_SECRET": "Rare Secret Catalyst",
+      "CATALYST_RARE_FIGHTING_SPIRIT": "Rare Fighting Spirit Catalyst",
+      "CATALYST_RARE_SNIPER": "Rare Sniper Catalyst",
+      "HEART_OF_THE_WOODS": "Heart of the Woods",
+      "CATALYST_RARE_OATH": "Rare Oath Catalyst",
+      "CATALYST_RARE_MYSTERIOUS": "Rare Mysterious Catalyst",
+      "CATALYST_EPIC_OATH": "Epic Oath Catalyst",
+      "BREATH_OF_KARMA": "Breath of Karma",
+      "CATALYST_EPIC_SNIPER": "Epic Sniper Catalyst",
+      "CATALYST_EPIC_FIGHTING_SPIRIT": "Epic Fighting Spirit Catalyst",
+      "FROZEN_SEED": "Frozen Seed",
+      "CATALYST_EPIC_BENEVOLENT": "Epic Benevolent Catalyst",
+      "CATALYST_EPIC_MYSTERIOUS": "Epic Mysterious Catalyst",
+      "CATALYST_EPIC_SECRET": "Epic Secret Catalyst",
+      "TRACES_OF_BRILLIANCE": "Traces of Brilliance"
     },
     "FastCombat": {
       "name": "高速戦闘を使用",

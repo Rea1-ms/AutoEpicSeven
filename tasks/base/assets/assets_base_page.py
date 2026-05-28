@@ -77,6 +77,16 @@ MAIN_GOTO_COMBAT = ButtonWrapper(
     ),
     global_en=None,
 )
+MAIN_GOTO_EPISODE = ButtonWrapper(
+    name='MAIN_GOTO_EPISODE',
+    share=Button(
+        file='./assets/share/base/page/MAIN_GOTO_EPISODE.png',
+        area=(1164, 179, 1184, 197),
+        search=(1144, 159, 1204, 217),
+        color=(181, 171, 166),
+        button=(1164, 179, 1184, 197),
+    ),
+)
 MAIN_GOTO_GACHA = ButtonWrapper(
     name='MAIN_GOTO_GACHA',
     cn=Button(
@@ -242,6 +252,16 @@ MENU_GOTO_COMBAT = ButtonWrapper(
         button=(814, 313, 858, 335),
     ),
     global_en=None,
+)
+MENU_GOTO_EPISODE = ButtonWrapper(
+    name='MENU_GOTO_EPISODE',
+    share=Button(
+        file='./assets/share/base/page/MENU_GOTO_EPISODE.png',
+        area=(827, 172, 856, 197),
+        search=(807, 152, 876, 217),
+        color=(140, 138, 138),
+        button=(827, 172, 856, 197),
+    ),
 )
 MENU_GOTO_GACHA = ButtonWrapper(
     name='MENU_GOTO_GACHA',

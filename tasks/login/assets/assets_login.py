@@ -51,7 +51,7 @@ LOGIN_CONFIRM = ButtonWrapper(
         file='./assets/cn/login/LOGIN_CONFIRM.png',
         area=(1206, 650, 1233, 677),
         search=(1186, 630, 1253, 697),
-        color=(113, 121, 131),
+        color=(136, 122, 105),
         button=(465, 94, 815, 294),
     ),
     global_cn=Button(

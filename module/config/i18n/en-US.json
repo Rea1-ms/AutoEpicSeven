@@ -477,10 +477,11 @@
     },
     "Domain": {
       "name": "Domain",
-      "help": "Choose whether this task farms Hunt or Spirit Altar.",
+      "help": "Choose whether this task farms Hunt, Spirit Altar, or a routed Episode 4 material stage.",
       "Hunt": "Hunt",
       "SpiritAltar": "Spirit Altar",
-      "Saint37": "Saint 3-7"
+      "Saint37": "Saint 3-7",
+      "Episode4": "Episode 4"
     },
     "Element": {
       "name": "Element",
@@ -506,6 +507,26 @@
       "High": "High",
       "Hell": "Hell",
       "Dimensional": "Dimensional"
+    },
+    "Episode4Material": {
+      "name": "Episode 4 target material",
+      "help": "Only applies to Episode 4. Route to the mapped chapter and stage by target material.",
+      "CATALYST_RARE_BENEVOLENT": "Rare Benevolent Catalyst",
+      "CATALYST_RARE_SECRET": "Rare Secret Catalyst",
+      "CATALYST_RARE_FIGHTING_SPIRIT": "Rare Fighting Spirit Catalyst",
+      "CATALYST_RARE_SNIPER": "Rare Sniper Catalyst",
+      "HEART_OF_THE_WOODS": "Heart of the Woods",
+      "CATALYST_RARE_OATH": "Rare Oath Catalyst",
+      "CATALYST_RARE_MYSTERIOUS": "Rare Mysterious Catalyst",
+      "CATALYST_EPIC_OATH": "Epic Oath Catalyst",
+      "BREATH_OF_KARMA": "Breath of Karma",
+      "CATALYST_EPIC_SNIPER": "Epic Sniper Catalyst",
+      "CATALYST_EPIC_FIGHTING_SPIRIT": "Epic Fighting Spirit Catalyst",
+      "FROZEN_SEED": "Frozen Seed",
+      "CATALYST_EPIC_BENEVOLENT": "Epic Benevolent Catalyst",
+      "CATALYST_EPIC_MYSTERIOUS": "Epic Mysterious Catalyst",
+      "CATALYST_EPIC_SECRET": "Epic Secret Catalyst",
+      "TRACES_OF_BRILLIANCE": "Traces of Brilliance"
     },
     "FastCombat": {
       "name": "Use Fast Combat",
