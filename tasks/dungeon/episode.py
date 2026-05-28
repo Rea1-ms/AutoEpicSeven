@@ -261,10 +261,10 @@ class EpisodeNavigateMixin:
         return index
 
     def _episode_has_target_material(self, plan: EpisodeMaterialPlan) -> bool:
-        # 这里只是在判断右侧掉落预览里“有没有这个材料”，
-        # 不关心按钮亮灰状态，所以不要再叠颜色判定。
-        # 之前这里用 match_template_color() 时，已经切到目标关卡也可能
-        # 因为背景或亮度波动被误判成 False，随后状态机会把列表又翻走。
+        # Only check whether the target material appears in the right-side drop preview.
+        # Do not include color checks here: we don't care whether the button is enabled/disabled.
+        # Using match_template_color() here has caused false negatives due to background/brightness variance,
+        # which then made the state machine scroll the list away from an already-selected target stage.
         return self.match_template_luma(
             plan.material_check,
             similarity=self.COMBAT_CHECK_SIMILARITY,
