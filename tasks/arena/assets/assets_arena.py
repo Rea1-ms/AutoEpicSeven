@@ -15,41 +15,23 @@ ARENA_CHECK = ButtonWrapper(
 )
 ARENA_COMMON_ENTRY = ButtonWrapper(
     name='ARENA_COMMON_ENTRY',
-    global_cn=Button(
-        file='./assets/global_cn/arena/ARENA_COMMON_ENTRY.png',
+    share=Button(
+        file='./assets/share/arena/ARENA_COMMON_ENTRY.png',
         area=(339, 636, 601, 656),
         search=(319, 616, 621, 676),
         color=(86, 41, 38),
         button=(339, 636, 601, 656),
     ),
-    share=[
-        Button(
-            file='./assets/share/arena/ARENA_COMMON_ENTRY.png',
-            area=(274, 114, 310, 148),
-            search=(254, 94, 330, 168),
-            color=(156, 151, 150),
-            button=(274, 114, 310, 148),
-        ),
-        Button(
-            file='./assets/share/arena/ARENA_COMMON_ENTRY.2.png',
-            area=(270, 115, 318, 153),
-            search=(250, 95, 338, 173),
-            color=(154, 150, 148),
-            button=(270, 115, 318, 153),
-        ),
-    ],
 )
 ARENA_HUB_CHECK = ButtonWrapper(
     name='ARENA_HUB_CHECK',
-    cn=None,
-    global_cn=Button(
-        file='./assets/global_cn/arena/ARENA_HUB_CHECK.png',
-        area=(616, 640, 665, 701),
-        search=(596, 620, 685, 720),
-        color=(116, 105, 111),
-        button=(616, 640, 665, 701),
+    share=Button(
+        file='./assets/share/arena/ARENA_HUB_CHECK.png',
+        area=(166, 597, 198, 633),
+        search=(146, 577, 218, 653),
+        color=(189, 170, 154),
+        button=(166, 597, 198, 633),
     ),
-    global_en=None,
 )
 ARENA_SETTLING = ButtonWrapper(
     name='ARENA_SETTLING',
