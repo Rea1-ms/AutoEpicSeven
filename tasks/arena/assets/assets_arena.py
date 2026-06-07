@@ -35,13 +35,21 @@ ARENA_HUB_CHECK = ButtonWrapper(
 )
 ARENA_SETTLING = ButtonWrapper(
     name='ARENA_SETTLING',
-    share=Button(
-        file='./assets/share/arena/ARENA_SETTLING.png',
-        area=(426, 471, 439, 492),
-        search=(406, 451, 459, 512),
-        color=(55, 54, 55),
-        button=(426, 471, 439, 492),
+    cn=Button(
+        file='./assets/cn/arena/ARENA_SETTLING.png',
+        area=(414, 620, 526, 636),
+        search=(394, 600, 546, 656),
+        color=(108, 70, 68),
+        button=(414, 620, 526, 636),
     ),
+    global_cn=Button(
+        file='./assets/global_cn/arena/ARENA_SETTLING.png',
+        area=(412, 619, 528, 635),
+        search=(392, 599, 548, 655),
+        color=(104, 65, 63),
+        button=(412, 619, 528, 635),
+    ),
+    global_en=None,
 )
 AUTO_BATTLE_RESULT_CONFIRM = ButtonWrapper(
     name='AUTO_BATTLE_RESULT_CONFIRM',
