@@ -21,9 +21,9 @@ Epic Seven 登录模块
       - LOGIN_LOADING → 等待加载中
       - LOGIN_CONFIRM → 点击进入
       - ui_additional() → 签到/新角色/buff/礼包等弹窗
+      - handle_login_popup() → special activity popups
       - handle_network_error() → 网络错误弹窗
 """
-from sympy.plotting.intervalmath import interval
 from datetime import datetime, timedelta
 
 from module.base.timer import Timer
@@ -56,7 +56,11 @@ from tasks.login.assets.assets_login_maintenance import (
     OCR_MAINTENANCE_TIME,
 )
 from tasks.login.update import UpdateHandler
-
+from tasks.base.page import BACK
+from tasks.login.assets.assets_login_popup import (
+    ACTIVITY_2026SUMMER,
+    ADVERTISE_RHIANNALUCIELLA
+)
 
 class Login(UI):
     """
@@ -162,6 +166,29 @@ class Login(UI):
             if timeout.reached():
                 logger.warning('Login popup flow timeout, restart login app flow')
                 return 'restart'
+
+    def handle_login_popup(self):
+        """
+        For game advertisements & activities.
+
+        Returns:
+            bool: If clicked
+        """
+        # (cn-26.6.25)
+        # Triggers upon initial login post-update.
+        if self.match_template_luma(ADVERTISE_RHIANNALUCIELLA, interval=2):
+            logger.info(f'{ADVERTISE_RHIANNALUCIELLA} -> {BACK}')
+            self.device.click(BACK)
+            return True
+
+        # (global-26.6.25)
+        # Triggers upon initial daily login.
+        if self.match_template_luma(ACTIVITY_2026SUMMER, interval=2):
+            logger.info(f'{ACTIVITY_2026SUMMER} -> {BACK}')
+            self.device.click(BACK)
+            return True
+
+        return False
 
     def _handle_app_login(self):
         """
@@ -348,6 +375,13 @@ class Login(UI):
             # ==========================================
 
             if self.ui_additional():
+                network_error_count = 0
+                timeout.reset()
+                main_confirm.reset()
+                continue
+
+            # popups
+            if self.handle_login_popup():
                 network_error_count = 0
                 timeout.reset()
                 main_confirm.reset()
