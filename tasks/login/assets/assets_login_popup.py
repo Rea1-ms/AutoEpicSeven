@@ -3,6 +3,26 @@ from module.base.button import Button, ButtonWrapper
 # This file was auto-generated, do not modify it manually. To generate:
 # ``` python -m dev_tools.button_extract ```
 
+ACTIVITY_2026SUMMER = ButtonWrapper(
+    name='ACTIVITY_2026SUMMER',
+    share=Button(
+        file='./assets/share/login/popup/ACTIVITY_2026SUMMER.png',
+        area=(1001, 349, 1026, 369),
+        search=(981, 329, 1046, 389),
+        color=(201, 189, 171),
+        button=(1001, 349, 1026, 369),
+    ),
+)
+ADVERTISE_RHIANNALUCIELLA = ButtonWrapper(
+    name='ADVERTISE_RHIANNALUCIELLA',
+    share=Button(
+        file='./assets/share/login/popup/ADVERTISE_RHIANNALUCIELLA.png',
+        area=(54, 666, 78, 689),
+        search=(34, 646, 98, 709),
+        color=(92, 71, 93),
+        button=(54, 666, 78, 689),
+    ),
+)
 CHECK_IN_CONFIRM = ButtonWrapper(
     name='CHECK_IN_CONFIRM',
     cn=Button(

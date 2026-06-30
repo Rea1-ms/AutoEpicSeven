@@ -166,10 +166,10 @@ MAIN_GOTO_SECRET_SHOP = ButtonWrapper(
     global_cn=[
         Button(
             file='./assets/global_cn/base/page/MAIN_GOTO_SECRET_SHOP.png',
-            area=(25, 356, 38, 370),
-            search=(5, 336, 58, 390),
-            color=(131, 135, 139),
-            button=(25, 356, 38, 370),
+            area=(23, 340, 39, 355),
+            search=(3, 320, 59, 375),
+            color=(123, 126, 128),
+            button=(23, 340, 39, 355),
         ),
         Button(
             file='./assets/global_cn/base/page/MAIN_GOTO_SECRET_SHOP.2.png',
