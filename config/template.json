@@ -223,6 +223,20 @@
       "ServerUpdate": "02:00"
     }
   },
+  "SpecialActivity": {
+    "Scheduler": {
+      "Enable": false,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "SpecialActivity",
+      "ServerUpdate": "02:00"
+    },
+    "SpecialActivity": {
+      "GetDailyReward": true,
+      "GetTaskReward": true,
+      "FreeGacha": true,
+      "GetEnergyDrink": true
+    }
+  },
   "CombatFarm": {
     "Combat": {
       "Domain": "Hunt",

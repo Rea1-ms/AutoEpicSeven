@@ -78,6 +78,10 @@
       "name": "寵物商店",
       "help": ""
     },
+    "SpecialActivity": {
+      "name": "Task.SpecialActivity.name",
+      "help": "Task.SpecialActivity.help"
+    },
     "CombatFarm": {
       "name": "反覆刷取",
       "help": "工具需要停止調度器再單獨運行。會按1分鐘輪詢背景托管狀態；若允許使用快速戰鬥，則先把現有快速戰鬥打完，再轉入寵物托管重複戰鬥。"
@@ -585,6 +589,28 @@
     "CollectGoldenInheritance": {
       "name": "收取金光傳承石",
       "help": "召喚結束後若金光傳承石滿溢則自動收取。"
+    }
+  },
+  "SpecialActivity": {
+    "_info": {
+      "name": "SpecialActivity._info.name",
+      "help": "SpecialActivity._info.help"
+    },
+    "GetDailyReward": {
+      "name": "SpecialActivity.GetDailyReward.name",
+      "help": "SpecialActivity.GetDailyReward.help"
+    },
+    "GetTaskReward": {
+      "name": "SpecialActivity.GetTaskReward.name",
+      "help": "SpecialActivity.GetTaskReward.help"
+    },
+    "FreeGacha": {
+      "name": "SpecialActivity.FreeGacha.name",
+      "help": "SpecialActivity.FreeGacha.help"
+    },
+    "GetEnergyDrink": {
+      "name": "SpecialActivity.GetEnergyDrink.name",
+      "help": "SpecialActivity.GetEnergyDrink.help"
     }
   },
   "Dashboard": {

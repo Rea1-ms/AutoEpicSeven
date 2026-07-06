@@ -62,6 +62,9 @@ Daily:
       - Gacha
     Pets:
       - Scheduler
+    SpecialActivity:
+      - Scheduler
+      - SpecialActivity
 
 
 # ==================== Tool ====================

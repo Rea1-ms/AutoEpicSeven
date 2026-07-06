@@ -117,6 +117,12 @@ class GeneratedConfig:
     # Group `Gacha`
     Gacha_CollectGoldenInheritance = True
 
+    # Group `SpecialActivity`
+    SpecialActivity_GetDailyReward = True
+    SpecialActivity_GetTaskReward = True
+    SpecialActivity_FreeGacha = True
+    SpecialActivity_GetEnergyDrink = True
+
     # Group `Dashboard`
     Dashboard_Gold = {}
     Dashboard_Skystone = {}
