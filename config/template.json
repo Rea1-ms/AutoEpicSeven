@@ -233,7 +233,7 @@
     "SpecialActivity": {
       "GetDailyReward": true,
       "GetTaskReward": true,
-      "FreeGacha": true,
+      "GetFreeGacha": true,
       "GetEnergyDrink": true
     }
   },

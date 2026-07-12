@@ -90,8 +90,8 @@ class AutoEpicSeven(AzurLaneAutoScript):
         Combat(config=self.config, device=self.device, task="Combat").run()
 
     def special_activity(self):
-        from tasks.activity.special_activity import SpecialActivity
-        SpecialActivity(config=self.config, device=self.device, task="SpecialActivity").run()
+        from tasks.activity.entry import SpecialActivityEntry
+        SpecialActivityEntry(config=self.config, device=self.device, task="SpecialActivity").run()
 
     def combat_farm(self):
         from tasks.dungeon.dungeon import Combat

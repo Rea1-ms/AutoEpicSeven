@@ -79,8 +79,8 @@
       "help": "ペットショップに入り、当日の無料孵化を処理します。"
     },
     "SpecialActivity": {
-      "name": "Task.SpecialActivity.name",
-      "help": "Task.SpecialActivity.help"
+      "name": "特別イベント",
+      "help": "期間限定イベントの受け取り可能な報酬を獲得します。"
     },
     "CombatFarm": {
       "name": "反復周回",
@@ -593,24 +593,24 @@
   },
   "SpecialActivity": {
     "_info": {
-      "name": "SpecialActivity._info.name",
-      "help": "SpecialActivity._info.help"
+      "name": "特別イベント",
+      "help": "現在のイベントで受け取る報酬を選択します。"
     },
     "GetDailyReward": {
-      "name": "SpecialActivity.GetDailyReward.name",
-      "help": "SpecialActivity.GetDailyReward.help"
+      "name": "デイリー報酬を受け取る",
+      "help": "イベントのデイリー報酬を受け取ります。"
     },
     "GetTaskReward": {
-      "name": "SpecialActivity.GetTaskReward.name",
-      "help": "SpecialActivity.GetTaskReward.help"
+      "name": "ミッション報酬を受け取る",
+      "help": "達成済みイベントミッションの報酬を受け取ります。"
     },
-    "FreeGacha": {
-      "name": "SpecialActivity.FreeGacha.name",
-      "help": "SpecialActivity.FreeGacha.help"
+    "GetFreeGacha": {
+      "name": "イベント無料召喚",
+      "help": "利用可能なイベント無料召喚をすべて実行します。"
     },
     "GetEnergyDrink": {
-      "name": "SpecialActivity.GetEnergyDrink.name",
-      "help": "SpecialActivity.GetEnergyDrink.help"
+      "name": "エナジードリンクを受け取る",
+      "help": "受け取り可能なイベントのエナジードリンクを獲得します。"
     }
   },
   "Dashboard": {

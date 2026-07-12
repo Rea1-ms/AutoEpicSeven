@@ -120,7 +120,7 @@ class GeneratedConfig:
     # Group `SpecialActivity`
     SpecialActivity_GetDailyReward = True
     SpecialActivity_GetTaskReward = True
-    SpecialActivity_FreeGacha = True
+    SpecialActivity_GetFreeGacha = True
     SpecialActivity_GetEnergyDrink = True
 
     # Group `Dashboard`

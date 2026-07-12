@@ -79,8 +79,8 @@
       "help": ""
     },
     "SpecialActivity": {
-      "name": "Task.SpecialActivity.name",
-      "help": "Task.SpecialActivity.help"
+      "name": "特別活動",
+      "help": "領取限時活動中可用的獎勵。"
     },
     "CombatFarm": {
       "name": "反覆刷取",
@@ -593,24 +593,24 @@
   },
   "SpecialActivity": {
     "_info": {
-      "name": "SpecialActivity._info.name",
-      "help": "SpecialActivity._info.help"
+      "name": "特別活動",
+      "help": "選擇目前活動中要領取的獎勵。"
     },
     "GetDailyReward": {
-      "name": "SpecialActivity.GetDailyReward.name",
-      "help": "SpecialActivity.GetDailyReward.help"
+      "name": "領取每日獎勵",
+      "help": "領取活動中的每日獎勵。"
     },
     "GetTaskReward": {
-      "name": "SpecialActivity.GetTaskReward.name",
-      "help": "SpecialActivity.GetTaskReward.help"
+      "name": "領取任務獎勵",
+      "help": "領取已完成的活動任務獎勵。"
     },
-    "FreeGacha": {
-      "name": "SpecialActivity.FreeGacha.name",
-      "help": "SpecialActivity.FreeGacha.help"
+    "GetFreeGacha": {
+      "name": "活動免費召喚",
+      "help": "使用目前可用的全部活動免費召喚次數。"
     },
     "GetEnergyDrink": {
-      "name": "SpecialActivity.GetEnergyDrink.name",
-      "help": "SpecialActivity.GetEnergyDrink.help"
+      "name": "領取能量飲料",
+      "help": "可領取時自動領取活動能量飲料。"
     }
   },
   "Dashboard": {

@@ -949,7 +949,7 @@
         "type": "checkbox",
         "value": true
       },
-      "FreeGacha": {
+      "GetFreeGacha": {
         "type": "checkbox",
         "value": true
       },

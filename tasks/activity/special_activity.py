@@ -1,10 +1,42 @@
 import module.config.server as server_
 
+import re
+from datetime import datetime
+from pathlib import Path
+import json
 
+from module.ocr.ocr import Ocr
 from module.base.timer import Timer
+from module.base.utils import save_image
 from module.logger import logger
-from tasks.base.page import page_special_activity
+from tasks.base.page import (
+    page_special_activity,
+    page_special_activity_task,
+    page_special_activity_gacha,
+    page_special_activity_energy_drink,
+)
 from tasks.base.ui import UI
+from tasks.activity.assets.assets_activity_special_26_6_25 import (
+    LEAF_OBTAIN,
+    LEAF_CHECKMARK,
+    FAST_COMBAT_TIMES_OBTAIN,
+    FAST_COMBAT_TIMES_CHECKMARK,
+    TASK_REWARD_OBTAIN,
+    TASK_CHECKMARK,
+    TASK_NAVIGATE_NOW,
+    FREE_GACHA,
+    FREE_GACHA_AVAILABLE,
+    FREE_GACHA_UNAVAILABLE,
+    OCR_ENERGY_DRINK,
+    ENERGY_DRINK_OBTAIN,
+    SPECIAL_TOUCH_TO_CLOSE
+)
+from tasks.gacha.assets.assets_gacha import (
+    SUMMON_NEW,
+    SUMMON_SKIP,
+    SUMMON_RESULT_BACK,
+    SUMMON_FREE_CONTINUE
+)
 
 
 class SpecialActivity(UI):
@@ -14,15 +46,96 @@ class SpecialActivity(UI):
 
     SIGNIN_RATE_REWARD_LUMA_SIMILARITY = 0.8
     SIGNIN_RATE_REWARD_COLOR_THRESHOLD = 30
+    GET_ENERGY_DRINK_FLOW_TIMEOUT_SECONDS = 30
+    GET_DAILY_REWARD_FLOW_TIMEOUT_SECONDS = 30
+    GET_TASK_REWARD_FLOW_TIMEOUT_SECONDS = 30
+    FREE_GACHA_FLOW_TIMEOUT_SECONDS = 120
+    CLICK_FAST_COMBAT_TIMES = 0
+
+    def __init__(self, config, device=None, task=None):
+        super().__init__(config, device=device, task=task)
+        self._draw_count = 1
+        self._draw_free = True
+        self._in_standard_pool = False
+        self._no_free = False
+
+    def _ocr_lang(self) -> str:
+        lang = self.config.Emulator_GameLanguage
+        if lang in ("auto", "", None):
+            return "cn"
+        if lang in ("cn", "global_cn"):
+            return "cn"
+        return "cn"
+
+    def _read_energy_drink_text(self) -> str:
+        text = Ocr(
+            OCR_ENERGY_DRINK,
+            lang=self._ocr_lang(),
+            name="EnergyDrink",
+        ).ocr_single_line(self.device.image)
+        return re.sub(r"\s+", "", text or "")
+
+    def _parse_energy_drink(self) -> str:
+        text = self._read_energy_drink_text()
+        # numeric
+        if re.fullmatch(r"\d+", text):
+            return "number"
+        # none
+        if any(k in text for k in ("获得", "领取", "信息", "Get", "Claim", "Info")):
+            return "unclaimable"
+        return "unknown"
+
+    def _save_result(self, tag="result"):
+        now = datetime.now()
+        day = now.strftime("%Y%m%d")
+        ts = now.strftime("%Y%m%d_%H%M%S_%f")
+        folder = Path("log/special_activity") / day
+        folder.mkdir(parents=True, exist_ok=True)
+
+        image_path = folder / f"{ts}_{tag}.png"
+        save_image(self.device.image, str(image_path))
+
+        record = {
+            "ts": ts,
+            "tag": tag,
+            "count": self._draw_count,
+            "free": self._draw_free,
+            "image": str(image_path),
+        }
+        with open(folder / "draws.jsonl", "a", encoding="utf-8") as f:
+            f.write(json.dumps(record, ensure_ascii=False) + "\n")
+
+    def _wait_return_to_sa_gacha(self):
+        timeout = Timer(10, count=20).start()
+        while 1:
+            self.device.screenshot()
+            if timeout.reached():
+                return False
+            if self.ui_page_appear(page_special_activity_gacha):
+                return True
+            if self.ui_additional():
+                continue
+            if self.handle_network_error():
+                continue
+
+    def handle_sa_touch_to_close(self, interval=2) -> bool:
+        """
+        Handle special activity touch to close.
+
+        Returns:
+            If handled.
+        """
+        if self.appear_then_click(SPECIAL_TOUCH_TO_CLOSE, interval=interval):
+            return True
+        return False
 
     def run_get_daily_reward(self, skip_first_screenshot=True) -> bool:
 
-        self.goto(special_activity_daily_reward)
+        self.ui_goto(page_special_activity)
 
         logger.info("SpecialActivity: get daily reward")
         timeout = Timer(self.GET_DAILY_REWARD_FLOW_TIMEOUT_SECONDS, count=60).start()
         click_fast_combat_times = self.CLICK_FAST_COMBAT_TIMES
-        self._reset_get_daily_reward_status_runtime()
 
         while 1:
             if skip_first_screenshot:
@@ -33,11 +146,11 @@ class SpecialActivity(UI):
             # two meet
             if self.appear(LEAF_CHECKMARK) and self.appear(FAST_COMBAT_TIMES_CHECKMARK):
                 logger.info("SpecialActivity: has obtained daily reward, skip task")
-                return False
+                return True
 
             # fast combat times >= 20
             if click_fast_combat_times >= 3:
-                logger.info("SpecialActivity: can't obtain fast combat times, skip for now")
+                logger.warning("SpecialActivity: can't obtain fast combat times, skip for now")
                 return False
 
             if timeout.reached():
@@ -53,7 +166,6 @@ class SpecialActivity(UI):
                 timeout.reset()
                 continue
 
-            # I forgot if x or touch to close
             if self.handle_ad_buff_x_close():
                 timeout.reset()
                 continue
@@ -64,11 +176,10 @@ class SpecialActivity(UI):
     
     def run_get_task_reward(self, skip_first_screenshot=True) -> bool:
 
-        self.goto(special_activity_task_reward)
+        self.ui_goto(page_special_activity_task)
 
         logger.info("SpecialActivity: get task reward")
         timeout = Timer(self.GET_TASK_REWARD_FLOW_TIMEOUT_SECONDS, count=60).start()
-        self._reset_get_task_reward_status_runtime()
 
         while 1:
             if skip_first_screenshot:
@@ -79,7 +190,7 @@ class SpecialActivity(UI):
             # checkmark or navigate right now
             if self.appear(TASK_CHECKMARK) or self.appear(TASK_NAVIGATE_NOW):
                 logger.info("SpecialActivity: no task reward needs to be obtain, skip task")
-                return False
+                return True
 
             if timeout.reached():
                 logger.warning("SpecialActivity flow timeout")
@@ -100,13 +211,14 @@ class SpecialActivity(UI):
     
     def run_free_gacha(self, skip_first_screenshot=True) -> bool:
 
-        self.goto(special_activity_free_gacha)
-
-        free_gacha_available = True
+        self.ui_goto(page_special_activity_gacha)
 
         logger.info("SpecialActivity: run free gacha")
         timeout = Timer(self.FREE_GACHA_FLOW_TIMEOUT_SECONDS, count=60).start()
-        self._reset_free_gacha_status_runtime()
+
+        result_saved = False
+
+        self.device.screenshot_interval_set(1.0)
         try:
             while 1:
                 if skip_first_screenshot:
@@ -116,15 +228,15 @@ class SpecialActivity(UI):
 
                 if timeout.reached():
                     logger.warning("Special activity summon flow timeout")
-                    break
+                    return False
 
                 if self.appear(FREE_GACHA_UNAVAILABLE):
                     logger.info("SpecialActivity: no free gacha times, skip task")
-                    break
+                    return True
 
                 # 0) Start summon
                 if self.appear(FREE_GACHA_AVAILABLE, interval=1):
-                    self.device.click(FREE_SUMMON)
+                    self.device.click(FREE_GACHA)
                     continue
 
                 # 1) Skip animation
@@ -141,24 +253,22 @@ class SpecialActivity(UI):
 
                 # 3) Result page
                 back = self.appear(SUMMON_RESULT_BACK)
-                free_continue = self.appear(FREE_GACHA_CONTINUE)
+                free_continue = self.appear(SUMMON_FREE_CONTINUE)
                 if back and free_continue:
                     self._save_result(tag="result")
                     result_saved = True
-                    self.device.click(FREE_GACHA_CONTINUE)
-                    result_saved = False
-                    timeout.reset()
+                    if self.appear_then_click(SUMMON_FREE_CONTINUE, interval=1):
+                        result_saved = False
+                        timeout.reset()
                     continue
                 if back:
-                    self._save_result(tag="result")
                     self.device.click(SUMMON_RESULT_BACK)
-                    self._wait_return_to_free_gacha()
-                    break
+                    return self._wait_return_to_sa_gacha()
 
                 if self.ui_additional():
                     timeout.reset()
                     continue
-                    
+
                 if self.handle_network_error():
                     timeout.reset()
                     continue
@@ -168,11 +278,11 @@ class SpecialActivity(UI):
     
     def run_get_energy_drink(self, skip_first_screenshot=True) -> bool:
 
-        self.goto(special_activity_energy_drink)
+        self.ui_goto(page_special_activity_energy_drink)
 
         logger.info("SpecialActivity: get energy drink")
         timeout = Timer(self.GET_ENERGY_DRINK_FLOW_TIMEOUT_SECONDS, count=60).start()
-        self._reset_get_energy_drink_status_runtime()
+        obtained = False
 
         while 1:
             if skip_first_screenshot:
@@ -180,25 +290,21 @@ class SpecialActivity(UI):
             else:
                 self.device.screenshot()
 
-            # TODO: OCR required
-            if self.appear(TASK_CHECKMARK) or self.appear(TASK_NAVIGATE_NOW):
-                logger.info(
-                    "SpecialActivity: no energy drink needs to be obtain, skip task"
-                )
-                return False
+            if obtained and self.ui_page_appear(page_special_activity_energy_drink):
+                return True
+
+            status = self._parse_energy_drink()
+            if status == "unclaimable":
+                logger.info("SpecialActivity: energy drink already claimed")
+                obtained = True
+            if status == "number":
+                if self.appear_then_click(ENERGY_DRINK_OBTAIN, interval=1):
+                    obtained = True
+                    continue
 
             if timeout.reached():
                 logger.warning("SpecialActivity flow timeout")
                 return False
-
-            if self.appear_then_click(ENERGY_DRINK_OBTAIN, interval=1):
-                timeout.reset()
-                continue
-
-            # I forgot if x or touch to close
-            if self.handle_ad_buff_x_close():
-                timeout.reset()
-                continue
 
             if self.handle_network_error():
                 timeout.reset()
@@ -211,19 +317,19 @@ class SpecialActivity(UI):
 
         if server_.is_cn_server(self.config.Emulator_PackageName) :
             logger.info("SpecialActivity: cn server, skip task")
-            return False
+            return True
 
         if not self.device.app_is_running():
             from tasks.login.login import Login
 
             Login(self.config, device=self.device).app_start()
 
-        self.ui_goto(special_activity)
+        self.ui_goto(page_special_activity)
 
-        run_get_daily_reward = self.config.SpecialActivity.GetDailyReward
-        run_get_task_reward = self.config.SpecialActivity.GetTaskReward
-        run_free_gacha = self.config.SpecialActivity.FreeGacha
-        run_get_energy_drink = self.config.SpecialActivity.GetEnergyDrink
+        run_get_daily_reward = self.config.SpecialActivity_GetDailyReward
+        run_get_task_reward = self.config.SpecialActivity_GetTaskReward
+        run_free_gacha = self.config.SpecialActivity_GetFreeGacha
+        run_get_energy_drink = self.config.SpecialActivity_GetEnergyDrink
 
         if not any(
             [
@@ -247,5 +353,8 @@ class SpecialActivity(UI):
         if run_get_energy_drink:
             success = self.run_get_energy_drink(skip_first_screenshot=True) and success
 
-        self.config.task_delay(server_update=True)
+        if success:
+            self.config.task_delay(server_update=True)
+        else:
+            self.config.task_delay(success=False)
         return success

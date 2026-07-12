@@ -10,7 +10,7 @@ class ManualConfig:
 
     SCHEDULER_PRIORITY = """
     Restart
-    > Mail > SanctuaryDaily > SanctuaryMonthly
+    > SpecialActivity > Mail > SanctuaryDaily > SanctuaryMonthly
     > Knights > Arena > Store > PetsGift
     > SecretShop > Combat > Gacha > MissionReward > Pets > DataUpdate > CommunityAio
     """

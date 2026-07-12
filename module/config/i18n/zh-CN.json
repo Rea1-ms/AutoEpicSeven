@@ -593,24 +593,24 @@
   },
   "SpecialActivity": {
     "_info": {
-      "name": "SpecialActivity._info.name",
-      "help": "SpecialActivity._info.help"
+      "name": "特别活动",
+      "help": "选择当前活动中需要领取的奖励。"
     },
     "GetDailyReward": {
-      "name": "SpecialActivity.GetDailyReward.name",
-      "help": "SpecialActivity.GetDailyReward.help"
+      "name": "领取每日奖励",
+      "help": "领取活动中的每日奖励。"
     },
     "GetTaskReward": {
-      "name": "SpecialActivity.GetTaskReward.name",
-      "help": "SpecialActivity.GetTaskReward.help"
+      "name": "领取任务奖励",
+      "help": "领取已完成的活动任务奖励。"
     },
-    "FreeGacha": {
-      "name": "SpecialActivity.FreeGacha.name",
-      "help": "SpecialActivity.FreeGacha.help"
+    "GetFreeGacha": {
+      "name": "活动免费召唤",
+      "help": "使用当前可用的全部活动免费召唤次数。"
     },
     "GetEnergyDrink": {
-      "name": "SpecialActivity.GetEnergyDrink.name",
-      "help": "SpecialActivity.GetEnergyDrink.help"
+      "name": "领取能量饮料",
+      "help": "可领取时自动领取活动能量饮料。"
     }
   },
   "Dashboard": {

@@ -79,8 +79,8 @@
       "help": ""
     },
     "SpecialActivity": {
-      "name": "Task.SpecialActivity.name",
-      "help": "Task.SpecialActivity.help"
+      "name": "Special Activity",
+      "help": "Claim available rewards from limited-time activities."
     },
     "CombatFarm": {
       "name": "Repeat Farming",
@@ -593,24 +593,24 @@
   },
   "SpecialActivity": {
     "_info": {
-      "name": "SpecialActivity._info.name",
-      "help": "SpecialActivity._info.help"
+      "name": "Special Activity",
+      "help": "Choose which rewards to claim from the current activity."
     },
     "GetDailyReward": {
-      "name": "SpecialActivity.GetDailyReward.name",
-      "help": "SpecialActivity.GetDailyReward.help"
+      "name": "Claim daily rewards",
+      "help": "Claim the activity's daily rewards."
     },
     "GetTaskReward": {
-      "name": "SpecialActivity.GetTaskReward.name",
-      "help": "SpecialActivity.GetTaskReward.help"
+      "name": "Claim task rewards",
+      "help": "Claim completed activity task rewards."
     },
-    "FreeGacha": {
-      "name": "SpecialActivity.FreeGacha.name",
-      "help": "SpecialActivity.FreeGacha.help"
+    "GetFreeGacha": {
+      "name": "Free event summons",
+      "help": "Use all currently available free event summons."
     },
     "GetEnergyDrink": {
-      "name": "SpecialActivity.GetEnergyDrink.name",
-      "help": "SpecialActivity.GetEnergyDrink.help"
+      "name": "Claim energy drink",
+      "help": "Claim the activity energy drink when available."
     }
   },
   "Dashboard": {
