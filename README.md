@@ -32,6 +32,7 @@ EpicSeven auto script | 第七史诗脚本，基于第二代 Alas 框架，由 [
 
 - 建议阅读源码和历史提交。
 - 欢迎提交 PR，挑选你感兴趣的部分进行开发即可。
+- 已炼化出 skill，参考 [ALAS-Game-Porting-For-AutoEpicSeven](https://github.com/Rea1-ms/ALAS-Game-Porting-For-AutoEpicSeven)
 
 > **如何添加多语言 / 多服务器支持？** 需要适配 assets，参考 [开发文档 “添加一个 Button” 一节](https://github.com/LmeSzinc/AzurLaneAutoScript/wiki/4.1.-Detection-objects#%E6%B7%BB%E5%8A%A0%E4%B8%80%E4%B8%AA-button)。
 
