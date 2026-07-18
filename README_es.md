@@ -1,45 +1,39 @@
 **| [English](README_en.md) | [简体中文](README.md) | Español | [日本語](README_ja.md) |**
 
-# StarRailCopilot
-Star Rail Copilot, un bot para Honkai: Star Rail, basado en la siguiente generación del framework ALAS.
+# AutoEpicSeven
 
-![gui](https://raw.githubusercontent.com/wiki/LmeSzinc/StarRailCopilot/README.assets/gui_es.png)
+Script de automatización para Epic Seven, basado en la nueva generación del framework Alas y adaptado de [StarRailCopilot](https://github.com/LmeSzinc/StarRailCopilot).
 
-![setting](https://raw.githubusercontent.com/wiki/LmeSzinc/StarRailCopilot/README.assets/setting_es.png)
+![gui](https://raw.githubusercontent.com/wiki/LmeSzinc/StarRailCopilot/README.assets/gui_cn.png)
 
-## Características
+![setting](https://raw.githubusercontent.com/wiki/LmeSzinc/StarRailCopilot/README.assets/setting_cn.png)
 
-- **Mazmorras**: [Planificador de personajes](https://github.com/LmeSzinc/StarRailCopilot/wiki/Planner_en), Mazmorras, y mazmorras en eventos de doble recompensa (materiales de XP de personaje, de conos de luz, rastros, ascensión, artefactos...), ecos de la guerra.
-- **Recompensas diarias**: Se completan las misiones de actividad diarias, la misión diaria, las misiones de Honor Anónimo...
-- **Universo Simulado**: Farm SU hasta alcanzar el límite de puntos semanal, farm planars usando poder trazacaminos.
-- **Farmeo automático AFK**: El bot lo hace todo de manera automática, abre los emuladores, completa las misiones y realiza las tareas diarias, realice un seguimiento de los recursos a través del panel.
-- **Juegos en la nube**: [solo CN] [Ejecute SRC en HSR en la nube](https://github.com/LmeSzinc/StarRailCopilot/wiki/Cloud_cn)
+## Funciones
 
-## Instalación [![](https://img.shields.io/github/downloads/LmeSzinc/StarRailCopilot/total?color=4e4c97)](https://github.com/LmeSzinc/StarRailCopilot/releases)
+- **Farmeo**: Cacerías diarias, Altar Espiritual e historia secundaria del Episodio 3-7.
+- **Recompensas**: Completa las misiones diarias, recoge recursos del Santuario y reclama recompensas del pase de Arena, correos próximos a vencer y regalos de mascotas.
+- **Invocaciones**: Usa automáticamente las invocaciones gratuitas diarias y las oportunidades gratuitas de la Casa de Mascotas.
+- **Farmeo AFK**: Actualiza la tienda y farmea etapas.
+- **Arena**: Farmea rivales NPC de Arena y reclama las recompensas semanales de combate.
+- ~~**Tienda**: Compra automáticamente artículos diarios y semanales~~ No disponible actualmente; no hay planes de actualizarlo por ahora.
+- **Gremio**: Automatiza el Jefe Mundial, detecta y avisa sobre ataques de Guerra de Gremios, dona flores y pingüinos, y reclama recompensas semanales.
+- **Automatización en segundo plano**: Inicia automáticamente el emulador y el juego, ejecuta tareas diarias y de resistencia en segundo plano, y muestra los recursos en el panel.
+- **Eventos principales**: Participa automáticamente en grandes eventos de versión y reclama recompensas. Las actualizaciones se publican cuando sea posible.
 
-[Guía de Instalación](https://github.com/LmeSzinc/StarRailCopilot/wiki/Installation_en) para consultar cómo hacer la instalación automática, el manual de uso, etc.
+## Instalación
 
-[Manual del dispositivo](https://github.com/LmeSzinc/AzurLaneAutoScript/wiki/Emulator_cn), compatible con Windows/Mac/Linux y varios métodos de ejecución.
+[Guía de dispositivos compatibles](https://github.com/LmeSzinc/AzurLaneAutoScript/wiki/Emulator_cn), compatible con Windows, Mac, Linux y diversas formas de ejecutar el script.
 
-> **¿Por qué usar un emulador?** Si ejecutas el bot en la versión de escritorio, la ventana debe de estar al frente. Imagino que no quieres quedarte esperando sin poder mover el ratón y teclado mientras el bot se ejecuta. Por esto se usa emulador.
-> **¿Cómo es el rendimiento?** Con un 8700k + 1080 Ti y usando el emulador MuMu12 con los gráficos en Muy Alto, se obtienen 40 FPS. No debería ser un problema ejecutar el juego en gráficos al máximo y tener 60 FPS si tienes un PC más nuevo.
-
+> **¿Por qué usar un emulador?** Al ejecutar el script en el cliente de escritorio, la ventana del juego debe permanecer en primer plano. Probablemente no quieras perder el uso del ratón y el teclado mientras se ejecuta, por eso se recomienda usar un emulador.
 
 ## Desarrollo
 
-Discord: https://discord.gg/aJkt3mKDEr
+- Se recomienda leer el código fuente y el historial de commits.
+- Las solicitudes de extracción son bienvenidas. Elige cualquier área que te interese desarrollar.
+- Hay un skill específico disponible; consulta [ALAS-Game-Porting-For-AutoEpicSeven](https://github.com/Rea1-ms/ALAS-Game-Porting-For-AutoEpicSeven).
 
-- [Seguimiento del Minimapa](https://github.com/LmeSzinc/StarRailCopilot/wiki/MinimapTracking)
-- Documentación para desarrolladores (el menú está en la barra lateral): [Wiki de ALAS](https://github.com/LmeSzinc/AzurLaneAutoScript/wiki/1.-Start) (en Chino). Sin embargo, hay un montón de código nuevo, por lo que es recomendado leer el código fuente y el historial de commits.
-- Roadmap del desarrollo: Ver issues fijados. Los pull requests son bienvenidos. Simplemente, elige la parte en la que estás interesado trabajar.
+> **¿Cómo agrego soporte para varios idiomas o servidores?** Es necesario adaptar los assets. Consulta la [sección "Agregar un Button" de la documentación de desarrollo](https://github.com/LmeSzinc/AzurLaneAutoScript/wiki/4.1.-Detection-objects#%E6%B7%BB%E5%8A%A0%E4%B8%80%E4%B8%AA-button).
 
-> **¿Cómo añadir nuevos idiomas o servidores?** Si necesitas actualizar los recursos del bot, échale un vistazo a ["Añadiendo un Botón" en la documentación para desarrolladores](https://github.com/LmeSzinc/AzurLaneAutoScript/wiki/4.1.-Detection-objects#%E6%B7%BB%E5%8A%A0%E4%B8%80%E4%B8%AA-button).
+## Acerca de Alas
 
-## Acerca de ALAS
-
-SRC está basado en un bot de Azur Lane ([AzurLaneAutoScript](https://github.com/LmeSzinc/AzurLaneAutoScript)). Tras 3 años de desarrollo, se ha alcanzado un alto grado de completitud en ALAS, pero también se ha acumulado una gran cantidad de código basura que es difícil cambiar. Esperamos arreglar dichos problemas en este nuevo proyecto.
-
-- Actualizar el OCR. ALAS ha entrenado múltiples modelos en cnocr==1.2.2, pero la dependencia [mxnet](https://github.com/apache/mxnet) ya no está activa. El aprendizaje automático se está desarrollando muy rápido, y la velocidad y precisión de los nuevos modelos destroza a los antiguos.
-- Se han convertido los ficheros de configuración en modelos [pydantic](https://github.com/pydantic/pydantic). Desde que el concepto de tarea y planificador fueron añadidos, el número de ajustes de usuario se ha incrementado enormemente. ALAS ha construido un generador de código para implementar la lectura y actualización de ajustes. Pydantic permitirá hacer esto de forma más elegante.
-- Mejor gestión de los recursos: button_extract ayuda a ALAS a mantener fácilmente +4000 imágenes de plantilla, pero tiene serios problemas de rendimiento, y el resultado de soportar varios servidores también ha provocado una gran cantidad de logs sin significado.
-- Se ha reducido el acoplamiento a Azur Lane. El framework ALAS y ALAS GUI tienen capacidad de tener interfaz con otros juegos pero el acabado plugin [MAA](https://github.com/MaaAssistantArknights/MaaAssistantArknights) para Arknights y el plugin en desarrollo [fgo-py](https: //github.com/hgjazhgj/FGO-py) han encontrado serios problemas de acoplamiento entre ALAS y el juego Azur Lane.
+AES se basa en el script de automatización de Honkai: Star Rail [StarRailCopilot](https://github.com/LmeSzinc/StarRailCopilot).
