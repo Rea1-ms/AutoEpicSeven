@@ -279,9 +279,13 @@ class SpecialActivity(UI):
         if entered is None:
             return False
 
-        # The counter only exists on the free-gacha page. Reading it during
-        # animations or result screens produces meaningless OCR misses and
-        # cannot contribute to the event-wide limit decision.
+        # Both limits are only meaningful on the free-gacha page. Check them
+        # before announcing the flow so a skipped task never looks like a
+        # summon attempt in the log.
+        if self.appear(FREE_GACHA_UNAVAILABLE):
+            logger.info("SpecialActivity: no free gacha times remaining today, skip task")
+            return True
+
         if self._has_used_all_free_gacha_times():
             logger.info("SpecialActivity: all free gacha times have been used up, skip task")
             return True
@@ -306,7 +310,9 @@ class SpecialActivity(UI):
                     logger.info("SpecialActivity: returned to free gacha page")
                     return True
 
-                # Daily limit reached
+                # This can change after the last draw of the current daily
+                # allowance. Keep the in-flow check so the state loop exits
+                # cleanly instead of waiting for an unrelated screen change.
                 if self.appear(FREE_GACHA_UNAVAILABLE):
                     logger.info("SpecialActivity: no free gacha times remaining today, skip task")
                     return True
