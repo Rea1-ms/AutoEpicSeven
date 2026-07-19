@@ -15,6 +15,9 @@ class SpecialActivityEntry:
 
     def run(self) -> bool:
         if (
+                server_.is_cn_server(self.config.Emulator_PackageName)
+                and server_.lang == 'cn'
+        ) or (
                 server_.is_oversea_server(self.config.Emulator_PackageName)
                 and server_.lang == 'global_cn'
         ):

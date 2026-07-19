@@ -25,7 +25,13 @@ FAST_COMBAT_TIMES_CHECKMARK = ButtonWrapper(
 )
 FAST_COMBAT_TIMES_OBTAIN = ButtonWrapper(
     name='FAST_COMBAT_TIMES_OBTAIN',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/activity/special/26_6_25/FAST_COMBAT_TIMES_OBTAIN.png',
+        area=(1029, 648, 1063, 665),
+        search=(1009, 628, 1083, 685),
+        color=(144, 148, 150),
+        button=(1029, 648, 1063, 665),
+    ),
     global_cn=Button(
         file='./assets/global_cn/activity/special/26_6_25/FAST_COMBAT_TIMES_OBTAIN.png',
         area=(1029, 648, 1064, 665),
@@ -57,7 +63,13 @@ FREE_GACHA_AVAILABLE = ButtonWrapper(
 )
 FREE_GACHA_UNAVAILABLE = ButtonWrapper(
     name='FREE_GACHA_UNAVAILABLE',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/activity/special/26_6_25/FREE_GACHA_UNAVAILABLE.png',
+        area=(580, 583, 703, 619),
+        search=(560, 563, 723, 639),
+        color=(65, 169, 181),
+        button=(580, 583, 703, 619),
+    ),
     global_cn=Button(
         file='./assets/global_cn/activity/special/26_6_25/FREE_GACHA_UNAVAILABLE.png',
         area=(580, 583, 703, 619),
@@ -79,7 +91,13 @@ LEAF_CHECKMARK = ButtonWrapper(
 )
 LEAF_OBTAIN = ButtonWrapper(
     name='LEAF_OBTAIN',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/activity/special/26_6_25/LEAF_OBTAIN.png',
+        area=(1177, 648, 1211, 665),
+        search=(1157, 628, 1231, 685),
+        color=(141, 144, 148),
+        button=(1177, 648, 1211, 665),
+    ),
     global_cn=Button(
         file='./assets/global_cn/activity/special/26_6_25/LEAF_OBTAIN.png',
         area=(1177, 648, 1212, 665),
@@ -91,7 +109,13 @@ LEAF_OBTAIN = ButtonWrapper(
 )
 MAIN_GOTO_SPECIAL_ACTIVITY = ButtonWrapper(
     name='MAIN_GOTO_SPECIAL_ACTIVITY',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/activity/special/26_6_25/MAIN_GOTO_SPECIAL_ACTIVITY.png',
+        area=(41, 502, 71, 518),
+        search=(21, 482, 91, 538),
+        color=(176, 140, 78),
+        button=(41, 502, 71, 518),
+    ),
     global_cn=Button(
         file='./assets/global_cn/activity/special/26_6_25/MAIN_GOTO_SPECIAL_ACTIVITY.png',
         area=(43, 564, 69, 578),
@@ -143,7 +167,13 @@ SPECIAL_ACTIVITY_GACHA_LOCKED = ButtonWrapper(
 )
 SPECIAL_ACTIVITY_GOTO_SPECIAL_ACTIVITY_ENERGY = ButtonWrapper(
     name='SPECIAL_ACTIVITY_GOTO_SPECIAL_ACTIVITY_ENERGY',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/activity/special/26_6_25/SPECIAL_ACTIVITY_GOTO_SPECIAL_ACTIVITY_ENERGY.png',
+        area=(90, 339, 127, 358),
+        search=(70, 319, 147, 378),
+        color=(78, 126, 160),
+        button=(90, 339, 127, 358),
+    ),
     global_cn=Button(
         file='./assets/global_cn/activity/special/26_6_25/SPECIAL_ACTIVITY_GOTO_SPECIAL_ACTIVITY_ENERGY.png',
         area=(92, 339, 130, 358),
@@ -155,7 +185,13 @@ SPECIAL_ACTIVITY_GOTO_SPECIAL_ACTIVITY_ENERGY = ButtonWrapper(
 )
 SPECIAL_ACTIVITY_GOTO_TASK = ButtonWrapper(
     name='SPECIAL_ACTIVITY_GOTO_TASK',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/activity/special/26_6_25/SPECIAL_ACTIVITY_GOTO_TASK.png',
+        area=(128, 200, 184, 218),
+        search=(108, 180, 204, 238),
+        color=(122, 184, 203),
+        button=(128, 200, 184, 218),
+    ),
     global_cn=Button(
         file='./assets/global_cn/activity/special/26_6_25/SPECIAL_ACTIVITY_GOTO_TASK.png',
         area=(132, 199, 190, 218),
@@ -177,7 +213,13 @@ SPECIAL_ACTIVITY_TASK_CHECK = ButtonWrapper(
 )
 SPECIAL_ACTIVITY_TASK_GOTO_SPECIAL_ACTIVITY_GACHA = ButtonWrapper(
     name='SPECIAL_ACTIVITY_TASK_GOTO_SPECIAL_ACTIVITY_GACHA',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/activity/special/26_6_25/SPECIAL_ACTIVITY_TASK_GOTO_SPECIAL_ACTIVITY_GACHA.png',
+        area=(128, 269, 165, 288),
+        search=(108, 249, 185, 308),
+        color=(125, 185, 205),
+        button=(128, 269, 165, 288),
+    ),
     global_cn=Button(
         file='./assets/global_cn/activity/special/26_6_25/SPECIAL_ACTIVITY_TASK_GOTO_SPECIAL_ACTIVITY_GACHA.png',
         area=(132, 269, 170, 288),
@@ -209,7 +251,13 @@ TASK_CHECKMARK = ButtonWrapper(
 )
 TASK_NAVIGATE_NOW = ButtonWrapper(
     name='TASK_NAVIGATE_NOW',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/activity/special/26_6_25/TASK_NAVIGATE_NOW.png',
+        area=(1158, 208, 1187, 222),
+        search=(1138, 188, 1207, 242),
+        color=(184, 174, 162),
+        button=(1158, 208, 1187, 222),
+    ),
     global_cn=Button(
         file='./assets/global_cn/activity/special/26_6_25/TASK_NAVIGATE_NOW.png',
         area=(1158, 208, 1188, 223),
@@ -221,7 +269,13 @@ TASK_NAVIGATE_NOW = ButtonWrapper(
 )
 TASK_REWARD_OBTAIN = ButtonWrapper(
     name='TASK_REWARD_OBTAIN',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/activity/special/26_6_25/TASK_REWARD_OBTAIN.png',
+        area=(1142, 208, 1172, 223),
+        search=(1122, 188, 1192, 243),
+        color=(177, 167, 154),
+        button=(1142, 208, 1172, 223),
+    ),
     global_cn=Button(
         file='./assets/global_cn/activity/special/26_6_25/TASK_REWARD_OBTAIN.png',
         area=(1142, 208, 1172, 222),

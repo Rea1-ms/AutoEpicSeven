@@ -1,5 +1,3 @@
-import module.config.server as server_
-
 import re
 from datetime import datetime
 from pathlib import Path
@@ -388,10 +386,6 @@ class SpecialActivity(UI):
     # main special activity starter
     def run(self) -> bool:
         logger.hr("SpecialActivity", level=1)
-
-        if server_.is_cn_server(self.config.Emulator_PackageName) :
-            logger.info("SpecialActivity: cn server, skip task")
-            return True
 
         if not self.device.app_is_running():
             from tasks.login.login import Login
