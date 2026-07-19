@@ -1,0 +1,3 @@
+[submodule ".agents/skills/alas-game-porting-for-autoepicseven"]
+	path = .agents/skills/alas-game-porting-for-autoepicseven
+	url = git@github.com:Rea1-ms/ALAS-Game-Porting-For-AutoEpicSeven.git
