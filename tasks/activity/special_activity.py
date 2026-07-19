@@ -370,6 +370,8 @@ class SpecialActivity(UI):
 
         logger.info("SpecialActivity: get energy drink")
         timeout = Timer(self.GET_ENERGY_DRINK_FLOW_TIMEOUT_SECONDS, count=60).start()
+        claim_requested = False
+        touch_to_close_clicked = False
 
         while 1:
             if skip_first_screenshot:
@@ -378,11 +380,23 @@ class SpecialActivity(UI):
                 self.device.screenshot()
 
             status = self._parse_energy_drink()
-            if status == "claimed":
+            # A pre-claimed drink has no result popup. After this task clicks
+            # CLAIM, however, the popup can appear after OCR has already read
+            # "获得信息". Require both observations before leaving the page.
+            if status == "claimed" and (
+                    not claim_requested or touch_to_close_clicked
+            ):
                 logger.info("SpecialActivity: energy drink claimed")
                 return True
+
+            if claim_requested and self.handle_sa_touch_to_close(interval=2):
+                touch_to_close_clicked = True
+                timeout.reset()
+                continue
+
             if status == "number":
                 if self.appear_then_click(ENERGY_DRINK_OBTAIN, interval=1):
+                    claim_requested = True
                     timeout.reset()
                     continue
 
