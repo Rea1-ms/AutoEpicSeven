@@ -5,7 +5,7 @@ from datetime import datetime
 from pathlib import Path
 import json
 
-from module.ocr.ocr import Ocr
+from module.ocr.ocr import DigitCounter, Ocr
 from module.base.timer import Timer
 from module.base.utils import save_image
 from module.logger import logger
@@ -24,9 +24,12 @@ from tasks.activity.assets.assets_activity_special_26_6_25 import (
     TASK_REWARD_OBTAIN,
     TASK_CHECKMARK,
     TASK_NAVIGATE_NOW,
+    OCR_FREE_GACHA_TIMES,
     FREE_GACHA,
     FREE_GACHA_AVAILABLE,
     FREE_GACHA_UNAVAILABLE,
+    SPECIAL_ACTIVITY_GACHA_LOCKED,
+    SPECIAL_ACTIVITY_TASK_GOTO_SPECIAL_ACTIVITY_GACHA,
     OCR_ENERGY_DRINK,
     ENERGY_DRINK_OBTAIN,
     SPECIAL_TOUCH_TO_CLOSE
@@ -85,6 +88,17 @@ class SpecialActivity(UI):
             return "unclaimable"
         return "unknown"
 
+    def _has_used_all_free_gacha_times(self) -> bool:
+        current, _, total = DigitCounter(
+            OCR_FREE_GACHA_TIMES,
+            lang=self._ocr_lang(),
+            name="FreeGachaTimes",
+        ).ocr_single_line(self.device.image)
+        if (current, total) == (100, 100):
+            logger.attr("FreeGachaTimes", "100/100")
+            return True
+        return False
+
     def _save_result(self, tag="result"):
         now = datetime.now()
         day = now.strftime("%Y%m%d")
@@ -128,6 +142,57 @@ class SpecialActivity(UI):
         if self.appear_then_click(SPECIAL_TOUCH_TO_CLOSE, interval=interval):
             return True
         return False
+
+    def goto_free_gacha(self, skip_first_screenshot=True) -> bool | None:
+        """
+        Enter the special activity free-gacha page.
+
+        Pages:
+            in: page_special_activity_task
+            out: page_special_activity_gacha, page_special_activity_task
+
+        Returns:
+            True: The free-gacha page was entered.
+            False: The event-wide free-gacha limit has locked its entry.
+            None: The entry flow timed out.
+        """
+        self.ui_goto(page_special_activity_task, skip_first_screenshot=skip_first_screenshot)
+
+        timeout = Timer(self.FREE_GACHA_FLOW_TIMEOUT_SECONDS, count=60).start()
+        while 1:
+            if skip_first_screenshot:
+                skip_first_screenshot = False
+            else:
+                self.device.screenshot()
+
+            # The lock only appears after all 100 draws and their task rewards
+            # are claimed. Treat it as normal completion before clicking the
+            # adjacent entry; otherwise this loop would retry an unclickable UI.
+            if self.appear(SPECIAL_ACTIVITY_GACHA_LOCKED):
+                logger.info("SpecialActivity: free gacha entry locked, skip task")
+                return False
+
+            if self.ui_page_appear(page_special_activity_gacha):
+                return True
+
+            if timeout.reached():
+                logger.warning("SpecialActivity: free gacha entry timeout")
+                return None
+
+            if self.appear_then_click(
+                SPECIAL_ACTIVITY_TASK_GOTO_SPECIAL_ACTIVITY_GACHA,
+                interval=2,
+            ):
+                timeout.reset()
+                continue
+
+            if self.ui_additional():
+                timeout.reset()
+                continue
+
+            if self.handle_network_error():
+                timeout.reset()
+                continue
 
     def run_get_daily_reward(self, skip_first_screenshot=True) -> bool:
 
@@ -210,8 +275,11 @@ class SpecialActivity(UI):
                 continue
     
     def run_free_gacha(self, skip_first_screenshot=True) -> bool:
-
-        self.ui_goto(page_special_activity_gacha)
+        entered = self.goto_free_gacha(skip_first_screenshot=skip_first_screenshot)
+        if entered is False:
+            return True
+        if entered is None:
+            return False
 
         logger.info("SpecialActivity: run free gacha")
         timeout = Timer(self.FREE_GACHA_FLOW_TIMEOUT_SECONDS, count=60).start()
@@ -230,8 +298,14 @@ class SpecialActivity(UI):
                     logger.warning("Special activity summon flow timeout")
                     return False
 
+                # Daily limit reached
                 if self.appear(FREE_GACHA_UNAVAILABLE):
-                    logger.info("SpecialActivity: no free gacha times, skip task")
+                    logger.info("SpecialActivity: no free gacha times remaining today, skip task")
+                    return True
+
+                # Event-wide limit reached
+                if self._has_used_all_free_gacha_times():
+                    logger.info("SpecialActivity: all free gacha times have been used up, skip task")
                     return True
 
                 # 0) Start summon

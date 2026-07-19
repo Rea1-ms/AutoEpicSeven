@@ -85,6 +85,19 @@ from tasks.sanctuary.assets.assets_sanctuary import (
 from tasks.sanctuary.assets.assets_sanctuary_forest_of_elves import (
     ALTAR_OF_GROWTH,
 )
+from tasks.activity.assets.assets_activity_special_26_6_25 import (
+    MAIN_GOTO_SPECIAL_ACTIVITY,
+    SPECIAL_ACTIVITY_FREE_GACHA_CHECK,
+    ENERGY_DRINK_OBTAIN,
+    SPECIAL_ACTIVITY_GOTO_TASK,
+    SPECIAL_ACTIVITY_TASK_CHECK,
+    SPECIAL_ACTIVITY_TASK_GOTO_SPECIAL_ACTIVITY_GACHA,
+    SPECIAL_ACTIVITY_GOTO_SPECIAL_ACTIVITY_ENERGY
+
+)
+from tasks.login.assets.assets_login_popup import (
+    ACTIVITY_2026SUMMER,
+)
 
 
 class Page:
@@ -470,38 +483,24 @@ page_pets = Page(PETS_CHECK)
 page_pets.link(BACK, destination=page_main)
 page_menu.link(MENU_GOTO_PETS, destination=page_pets)
 
-if server_.is_oversea_server():
-    from tasks.activity.assets.assets_activity_special_26_6_25 import (
-        MAIN_GOTO_SPECIAL_ACTIVITY,
-        FREE_GACHA,
-        ENERGY_DRINK_OBTAIN,
-        SPECIAL_ACTIVITY_GOTO_TASK,
-        SPECIAL_ACTIVITY_TASK_CHECK,
-        SPECIAL_ACTIVITY_TASK_GOTO_SPECIAL_ACTIVITY_GACHA,
-        SPECIAL_ACTIVITY_GACHA_GOTO_SPECIAL_ACTIVITY_ENERGY
+# Special Activity
+page_special_activity = Page(ACTIVITY_2026SUMMER)
+page_special_activity.link(BACK, destination=page_main)
+page_main.link(MAIN_GOTO_SPECIAL_ACTIVITY, destination=page_special_activity)
 
-    )
-    from tasks.login.assets.assets_login_popup import (
-        ACTIVITY_2026SUMMER,
-    )
-    # Special Activity
-    page_special_activity = Page(ACTIVITY_2026SUMMER)
-    page_special_activity.link(BACK, destination=page_main)
-    page_main.link(MAIN_GOTO_SPECIAL_ACTIVITY, destination=page_special_activity)
+page_special_activity_task = Page(SPECIAL_ACTIVITY_TASK_CHECK)
+page_special_activity_task.link(BACK, destination=page_main)
+page_special_activity.link(SPECIAL_ACTIVITY_GOTO_TASK, destination=page_special_activity_task)
 
-    page_special_activity_task = Page(SPECIAL_ACTIVITY_TASK_CHECK)
-    page_special_activity_task.link(BACK, destination=page_main)
-    page_special_activity.link(SPECIAL_ACTIVITY_GOTO_TASK, destination=page_special_activity_task)
+page_special_activity_gacha = Page(SPECIAL_ACTIVITY_FREE_GACHA_CHECK)
+page_special_activity_gacha.link(BACK, destination=page_main)
+page_special_activity_task.link(SPECIAL_ACTIVITY_TASK_GOTO_SPECIAL_ACTIVITY_GACHA, destination=page_special_activity_gacha)
 
-    page_special_activity_gacha = Page(FREE_GACHA)
-    page_special_activity_gacha.link(BACK, destination=page_main)
-    page_special_activity_task.link(SPECIAL_ACTIVITY_TASK_GOTO_SPECIAL_ACTIVITY_GACHA, destination=page_special_activity_gacha)
-
-    page_special_activity_energy_drink = Page(ENERGY_DRINK_OBTAIN)
-    page_special_activity_energy_drink.link(BACK, destination=page_main)
-    page_special_activity_gacha.link(SPECIAL_ACTIVITY_GACHA_GOTO_SPECIAL_ACTIVITY_ENERGY, destination=page_special_activity_energy_drink)
-
-
+page_special_activity_energy_drink = Page(ENERGY_DRINK_OBTAIN)
+page_special_activity_energy_drink.link(BACK, destination=page_main)
+page_special_activity_gacha.link(SPECIAL_ACTIVITY_GOTO_SPECIAL_ACTIVITY_ENERGY, destination=page_special_activity_energy_drink)
+page_special_activity_task.link(SPECIAL_ACTIVITY_GOTO_SPECIAL_ACTIVITY_ENERGY, destination=page_special_activity_energy_drink)
+page_special_activity.link(SPECIAL_ACTIVITY_GOTO_SPECIAL_ACTIVITY_ENERGY, destination=page_special_activity_energy_drink)
 
 # Knights
 page_knights = Page(KNIGHTS_CHECK)

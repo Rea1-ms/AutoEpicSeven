@@ -111,11 +111,41 @@ OCR_ENERGY_DRINK = ButtonWrapper(
         button=(111, 577, 173, 599),
     ),
 )
-SPECIAL_ACTIVITY_GACHA_GOTO_SPECIAL_ACTIVITY_ENERGY = ButtonWrapper(
-    name='SPECIAL_ACTIVITY_GACHA_GOTO_SPECIAL_ACTIVITY_ENERGY',
+OCR_FREE_GACHA_TIMES = ButtonWrapper(
+    name='OCR_FREE_GACHA_TIMES',
+    share=Button(
+        file='./assets/share/activity/special/26_6_25/OCR_FREE_GACHA_TIMES.png',
+        area=(256, 459, 345, 487),
+        search=(236, 439, 365, 507),
+        color=(63, 93, 123),
+        button=(256, 459, 345, 487),
+    ),
+)
+SPECIAL_ACTIVITY_FREE_GACHA_CHECK = ButtonWrapper(
+    name='SPECIAL_ACTIVITY_FREE_GACHA_CHECK',
+    share=Button(
+        file='./assets/share/activity/special/26_6_25/SPECIAL_ACTIVITY_FREE_GACHA_CHECK.png',
+        area=(1188, 635, 1230, 680),
+        search=(1168, 615, 1250, 700),
+        color=(106, 128, 137),
+        button=(1188, 635, 1230, 680),
+    ),
+)
+SPECIAL_ACTIVITY_GACHA_LOCKED = ButtonWrapper(
+    name='SPECIAL_ACTIVITY_GACHA_LOCKED',
+    share=Button(
+        file='./assets/share/activity/special/26_6_25/SPECIAL_ACTIVITY_GACHA_LOCKED.png',
+        area=(21, 276, 37, 287),
+        search=(1, 256, 57, 307),
+        color=(155, 161, 162),
+        button=(21, 276, 37, 287),
+    ),
+)
+SPECIAL_ACTIVITY_GOTO_SPECIAL_ACTIVITY_ENERGY = ButtonWrapper(
+    name='SPECIAL_ACTIVITY_GOTO_SPECIAL_ACTIVITY_ENERGY',
     cn=None,
     global_cn=Button(
-        file='./assets/global_cn/activity/special/26_6_25/SPECIAL_ACTIVITY_GACHA_GOTO_SPECIAL_ACTIVITY_ENERGY.png',
+        file='./assets/global_cn/activity/special/26_6_25/SPECIAL_ACTIVITY_GOTO_SPECIAL_ACTIVITY_ENERGY.png',
         area=(92, 339, 130, 358),
         search=(72, 319, 150, 378),
         color=(69, 120, 155),
