@@ -5,9 +5,9 @@
 
 EpicSeven auto script | 第七史诗脚本，基于第二代 Alas 框架，由 [StarRailCopilot](https://github.com/LmeSzinc/StarRailCopilot) 修改而来
 
-![gui](https://raw.githubusercontent.com/wiki/LmeSzinc/StarRailCopilot/README.assets/gui_cn.png)
+![gui](https://raw.githubusercontent.com/Rea1-ms/AutoEpicSeven/refs/heads/master/README.assets/gui_cn.png)
 
-![setting](https://raw.githubusercontent.com/wiki/LmeSzinc/StarRailCopilot/README.assets/setting_cn.png)
+![setting](https://raw.githubusercontent.com/Rea1-ms/AutoEpicSeven/refs/heads/master/README.assets/setting_cn.png)
 
 ## 功能
 
