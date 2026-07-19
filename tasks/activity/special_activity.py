@@ -279,10 +279,18 @@ class SpecialActivity(UI):
         if entered is None:
             return False
 
+        # The counter only exists on the free-gacha page. Reading it during
+        # animations or result screens produces meaningless OCR misses and
+        # cannot contribute to the event-wide limit decision.
+        if self._has_used_all_free_gacha_times():
+            logger.info("SpecialActivity: all free gacha times have been used up, skip task")
+            return True
+
         logger.info("SpecialActivity: run free gacha")
         timeout = Timer(self.FREE_GACHA_FLOW_TIMEOUT_SECONDS, count=60).start()
 
         result_saved = False
+        returning_to_gacha = False
 
         self.device.screenshot_interval_set(1.0)
         try:
@@ -292,19 +300,20 @@ class SpecialActivity(UI):
                 else:
                     self.device.screenshot()
 
-                if timeout.reached():
-                    logger.warning("Special activity summon flow timeout")
-                    return False
+                # The result-back click can be ignored by the client. Do not
+                # finish until the stable free-gacha page confirms its effect.
+                if returning_to_gacha and self.ui_page_appear(page_special_activity_gacha):
+                    logger.info("SpecialActivity: returned to free gacha page")
+                    return True
 
                 # Daily limit reached
                 if self.appear(FREE_GACHA_UNAVAILABLE):
                     logger.info("SpecialActivity: no free gacha times remaining today, skip task")
                     return True
 
-                # Event-wide limit reached
-                if self._has_used_all_free_gacha_times():
-                    logger.info("SpecialActivity: all free gacha times have been used up, skip task")
-                    return True
+                if timeout.reached():
+                    logger.warning("Special activity summon flow timeout")
+                    return False
 
                 # 0) Start summon
                 if self.appear(FREE_GACHA_AVAILABLE, interval=1):
@@ -334,8 +343,10 @@ class SpecialActivity(UI):
                         timeout.reset()
                     continue
                 if back:
-                    self.device.click(SUMMON_RESULT_BACK)
-                    return self._wait_return_to_sa_gacha()
+                    if self.appear_then_click(SUMMON_RESULT_BACK, interval=2):
+                        returning_to_gacha = True
+                        timeout.reset()
+                    continue
 
                 if self.ui_additional():
                     timeout.reset()
