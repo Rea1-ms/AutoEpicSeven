@@ -235,6 +235,12 @@ SecretShop:
 Gacha:
   CollectGoldenInheritance: true
 
+SpecialActivity:
+  GetDailyReward: true
+  GetTaskReward: true
+  GetFreeGacha: true
+  GetEnergyDrink: true
+
 Dashboard:
   Gold:
     stored: StoredInt

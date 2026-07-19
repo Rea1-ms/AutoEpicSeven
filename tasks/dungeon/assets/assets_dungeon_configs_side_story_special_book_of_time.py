@@ -17,9 +17,9 @@ SAINT_MEMORIAL_SELECTED = ButtonWrapper(
     name='SAINT_MEMORIAL_SELECTED',
     share=Button(
         file='./assets/share/dungeon/configs/side_story/special_book_of_time/SAINT_MEMORIAL_SELECTED.png',
-        area=(657, 551, 727, 622),
-        search=(637, 531, 747, 642),
-        color=(125, 111, 105),
-        button=(657, 551, 727, 622),
+        area=(732, 548, 801, 626),
+        search=(712, 528, 821, 646),
+        color=(145, 107, 69),
+        button=(732, 548, 801, 626),
     ),
 )

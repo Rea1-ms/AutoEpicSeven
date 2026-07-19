@@ -78,6 +78,10 @@
       "name": "宠物商店",
       "help": ""
     },
+    "SpecialActivity": {
+      "name": "特别活动",
+      "help": "限时版本大活动，随缘更新~"
+    },
     "CombatFarm": {
       "name": "反复刷取",
       "help": "工具需要停止调度器再单独运行。会按1分钟轮询后台托管状态；若允许使用快速战斗，则先把现有快速战斗打完，再转入宠物托管重复战斗。"
@@ -585,6 +589,28 @@
     "CollectGoldenInheritance": {
       "name": "收取金光传承石",
       "help": "召唤结束后若金光传承石满溢则自动收取。"
+    }
+  },
+  "SpecialActivity": {
+    "_info": {
+      "name": "特别活动",
+      "help": "选择当前活动中需要领取的奖励。"
+    },
+    "GetDailyReward": {
+      "name": "领取每日奖励",
+      "help": "领取活动中的每日奖励。"
+    },
+    "GetTaskReward": {
+      "name": "领取任务奖励",
+      "help": "领取已完成的活动任务奖励。"
+    },
+    "GetFreeGacha": {
+      "name": "活动免费召唤",
+      "help": "使用当前可用的全部活动免费召唤次数。"
+    },
+    "GetEnergyDrink": {
+      "name": "领取能量饮料",
+      "help": "可领取时自动领取活动能量饮料。"
     }
   },
   "Dashboard": {

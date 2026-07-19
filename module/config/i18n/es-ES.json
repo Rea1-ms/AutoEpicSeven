@@ -78,6 +78,10 @@
       "name": "Tienda de mascotas",
       "help": ""
     },
+    "SpecialActivity": {
+      "name": "Actividad especial",
+      "help": "Recoge las recompensas disponibles de las actividades temporales."
+    },
     "CombatFarm": {
       "name": "Farmeo repetido",
       "help": "Detén el planificador antes de ejecutar esta herramienta. Revisa el combate repetido en segundo plano cada minuto. Si se permite el combate rápido, primero consume todos los usos disponibles y luego pasa al combate repetido con mascota."
@@ -585,6 +589,28 @@
     "CollectGoldenInheritance": {
       "name": "Recoger Herencia Dorada",
       "help": "Tras la invocación, recoger automáticamente cuando Herencia Dorada esté llena."
+    }
+  },
+  "SpecialActivity": {
+    "_info": {
+      "name": "Actividad especial",
+      "help": "Elige las recompensas de la actividad actual que quieres recoger."
+    },
+    "GetDailyReward": {
+      "name": "Recoger recompensas diarias",
+      "help": "Recoge las recompensas diarias de la actividad."
+    },
+    "GetTaskReward": {
+      "name": "Recoger recompensas de tareas",
+      "help": "Recoge las recompensas de tareas de actividad completadas."
+    },
+    "GetFreeGacha": {
+      "name": "Invocaciones gratis del evento",
+      "help": "Usa todas las invocaciones gratis del evento disponibles."
+    },
+    "GetEnergyDrink": {
+      "name": "Recoger bebida de energía",
+      "help": "Recoge la bebida de energía de la actividad cuando esté disponible."
     }
   },
   "Dashboard": {

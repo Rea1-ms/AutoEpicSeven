@@ -51,6 +51,7 @@ class KnightsTeamBattleStatusMixin:
 
         return None
 
+    # team battle reminder
     def _reset_team_battle_status_runtime(self) -> None:
         self._team_battle_next_delay_target = None
 

@@ -37,6 +37,9 @@ SecretShop:
 Gacha:
   Scheduler:
     Enable: true
+SpecialActivity:
+  Scheduler:
+    Enable: false
 
 # ==================== Tool ====================
 

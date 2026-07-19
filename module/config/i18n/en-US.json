@@ -78,6 +78,10 @@
       "name": "Pet Shop",
       "help": ""
     },
+    "SpecialActivity": {
+      "name": "Special Activity",
+      "help": "Claim available rewards from limited-time activities."
+    },
     "CombatFarm": {
       "name": "Repeat Farming",
       "help": "Stop the scheduler before running this tool. It checks background repeat combat once per minute. If fast combat is allowed, it consumes all available fast combats first, then switches to pet repeat combat."
@@ -585,6 +589,28 @@
     "CollectGoldenInheritance": {
       "name": "Collect Golden Inheritance",
       "help": "After summoning, click to collect when Golden Inheritance is full."
+    }
+  },
+  "SpecialActivity": {
+    "_info": {
+      "name": "Special Activity",
+      "help": "Choose which rewards to claim from the current activity."
+    },
+    "GetDailyReward": {
+      "name": "Claim daily rewards",
+      "help": "Claim the activity's daily rewards."
+    },
+    "GetTaskReward": {
+      "name": "Claim task rewards",
+      "help": "Claim completed activity task rewards."
+    },
+    "GetFreeGacha": {
+      "name": "Free event summons",
+      "help": "Use all currently available free event summons."
+    },
+    "GetEnergyDrink": {
+      "name": "Claim energy drink",
+      "help": "Claim the activity energy drink when available."
     }
   },
   "Dashboard": {
