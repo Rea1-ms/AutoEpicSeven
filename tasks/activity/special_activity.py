@@ -78,12 +78,10 @@ class SpecialActivity(UI):
 
     def _parse_energy_drink(self) -> str:
         text = self._read_energy_drink_text()
-        # numeric
         if re.fullmatch(r"\d+", text):
             return "number"
-        # none
-        if any(k in text for k in ("获得", "领取", "信息", "Get", "Claim", "Info")):
-            return "unclaimable"
+        if text == "获得信息":
+            return "claimed"
         return "unknown"
 
     def _has_used_all_free_gacha_times(self) -> bool:
@@ -371,7 +369,6 @@ class SpecialActivity(UI):
 
         logger.info("SpecialActivity: get energy drink")
         timeout = Timer(self.GET_ENERGY_DRINK_FLOW_TIMEOUT_SECONDS, count=60).start()
-        obtained = False
 
         while 1:
             if skip_first_screenshot:
@@ -379,16 +376,13 @@ class SpecialActivity(UI):
             else:
                 self.device.screenshot()
 
-            if obtained and self.ui_page_appear(page_special_activity_energy_drink):
-                return True
-
             status = self._parse_energy_drink()
-            if status == "unclaimable":
-                logger.info("SpecialActivity: energy drink already claimed")
-                obtained = True
+            if status == "claimed":
+                logger.info("SpecialActivity: energy drink claimed")
+                return True
             if status == "number":
                 if self.appear_then_click(ENERGY_DRINK_OBTAIN, interval=1):
-                    obtained = True
+                    timeout.reset()
                     continue
 
             if timeout.reached():
