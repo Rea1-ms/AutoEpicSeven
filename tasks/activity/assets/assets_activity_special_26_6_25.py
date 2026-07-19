@@ -65,10 +65,10 @@ FREE_GACHA_UNAVAILABLE = ButtonWrapper(
     name='FREE_GACHA_UNAVAILABLE',
     cn=Button(
         file='./assets/cn/activity/special/26_6_25/FREE_GACHA_UNAVAILABLE.png',
-        area=(580, 583, 703, 619),
-        search=(560, 563, 723, 639),
-        color=(65, 169, 181),
-        button=(580, 583, 703, 619),
+        area=(582, 584, 701, 619),
+        search=(562, 564, 721, 639),
+        color=(69, 170, 182),
+        button=(582, 584, 701, 619),
     ),
     global_cn=Button(
         file='./assets/global_cn/activity/special/26_6_25/FREE_GACHA_UNAVAILABLE.png',
