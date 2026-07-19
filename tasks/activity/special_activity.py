@@ -8,6 +8,7 @@ from module.base.timer import Timer
 from module.base.utils import save_image
 from module.logger import logger
 from tasks.base.page import (
+    page_main,
     page_special_activity,
     page_special_activity_task,
     page_special_activity_gacha,
@@ -433,6 +434,7 @@ class SpecialActivity(UI):
             success = self.run_get_energy_drink(skip_first_screenshot=True) and success
 
         if success:
+            self.ui_goto(page_main, skip_first_screenshot=True)
             self.config.task_delay(server_update=True)
         else:
             self.config.task_delay(success=False)
