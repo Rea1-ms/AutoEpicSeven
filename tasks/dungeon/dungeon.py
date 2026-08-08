@@ -2,6 +2,7 @@ from module.logger import logger
 from tasks.base.page import page_combat, page_episode, page_side_story
 from tasks.base.resource_bar import ResourceBarMixin
 from tasks.base.ui import UI
+from tasks.dungeon.burnout import CombatBurnoutMixin
 from tasks.dungeon.episode import EpisodeNavigateMixin
 from tasks.dungeon.entry import CombatEntryMixin
 from tasks.dungeon.execute import CombatExecuteMixin
@@ -12,6 +13,7 @@ from tasks.dungeon.side_story import SideStoryNavigateMixin
 
 
 class Combat(
+    CombatBurnoutMixin,
     CombatRuntimeMixin,
     CombatExecuteMixin,
     CombatEntryMixin,
@@ -114,8 +116,13 @@ class Combat(
     def _combat_delay_after_settled(self) -> None:
         if self._combat_is_farm_task():
             self.config.task_delay(minute=self.COMBAT_BACKGROUND_CHECK_MINUTES)
-        else:
-            self.config.task_delay(server_update=True)
+            return
+        # Burnout mode schedules the next run by stamina regeneration. It
+        # only applies to fully settled runs; failure paths keep the normal
+        # failure retry interval.
+        if self._combat_burnout_schedule():
+            return
+        self.config.task_delay(server_update=True)
 
     def _combat_should_call_mission_reward(self) -> bool:
         return not self._combat_is_farm_task()
@@ -371,6 +378,7 @@ class Combat(
             if success and repeat_in_background:
                 success = self._prepare_repeat_combat(
                     use_max=self._combat_is_farm_task(),
+                    clamp_to_counter=self._combat_burnout_enabled(),
                     skip_first_screenshot=True,
                 )
                 if success:

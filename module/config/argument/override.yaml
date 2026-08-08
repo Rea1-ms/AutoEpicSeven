@@ -33,3 +33,4 @@ DataUpdate:
 CombatFarm:
   Combat:
     FastCombatCount: 10
+    BurnoutMode: false

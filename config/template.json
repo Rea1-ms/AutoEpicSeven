@@ -134,7 +134,8 @@
       "ClaimBattlePassRewards": true,
       "NPCCombat": true,
       "NPCCombatFastBattle": true,
-      "NPCCombatCount": 5
+      "NPCCombatCount": 5,
+      "BurnoutMode": false
     }
   },
   "Store": {
@@ -198,6 +199,7 @@
       "FastCombat": true,
       "FastCombatCount": 10,
       "RepeatCombatCount": 5,
+      "BurnoutMode": false,
       "Saint37AutoRecycle": false
     },
     "CombatRuntime": {
@@ -247,6 +249,7 @@
       "FastCombat": false,
       "FastCombatCount": 10,
       "RepeatCombatCount": 5,
+      "BurnoutMode": false,
       "Saint37AutoRecycle": false
     },
     "CombatRuntime": {

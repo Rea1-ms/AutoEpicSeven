@@ -404,6 +404,10 @@
     "NPCCombatCount": {
       "name": "Cantidad de combates NPC",
       "help": "Número máximo de combates NPC en esta ejecución."
+    },
+    "BurnoutMode": {
+      "name": "Modo de agotamiento",
+      "help": "Tras cada ejecución, espera a que las banderas de la arena se regeneren al máximo (1 por hora, límite 5) y vuelve a desafiar a los PNJ, gastando las banderas continuamente. Requiere activar \"Farmear NPC\"."
     }
   },
   "StoreDaily": {
@@ -543,6 +547,10 @@
     "RepeatCombatCount": {
       "name": "Cantidad de combate repetido",
       "help": "Cantidad objetivo de combate repetido para la repeticion con mascota."
+    },
+    "BurnoutMode": {
+      "name": "Modo de agotamiento",
+      "help": "Tras cada ejecución, espera a que la regeneración natural de energía (1 punto cada 4 minutos) cubra el siguiente lote y vuelve a ejecutar, gastando la energía durante todo el día en lugar de esperar al reinicio diario. La caza Dimensional consume hojas y no es compatible."
     },
     "Saint37AutoRecycle": {
       "name": "Venta Automática de Equipo",

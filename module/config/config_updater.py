@@ -587,6 +587,9 @@ class ConfigUpdater:
         if deep_get(data, 'Arena.Arena.NPCCombat', default=False) is False:
             yield 'Arena.Arena.NPCCombatFastBattle'
             yield 'Arena.Arena.NPCCombatCount'
+            # Burnout mode reruns arena when flags refill; without NPC combat
+            # nothing consumes flags, so the option is meaningless.
+            yield 'Arena.Arena.BurnoutMode'
         # SecretShop
         if deep_get(data, 'SecretShop.SecretShop.OnlyFree', default=True) is True:
             yield 'SecretShop.SecretShop.MaxRefresh'
@@ -620,6 +623,12 @@ class ConfigUpdater:
 
             if combat_domain != 'Saint37':
                 yield f'{task_prefix}.Saint37AutoRecycle'
+
+            # Burnout mode schedules by stamina regeneration. Dimensional hunt
+            # consumes leaves instead of stamina, and CombatFarm already loops
+            # continuously (its BurnoutMode is also locked by override.yaml).
+            if is_farm_task or (combat_domain == 'Hunt' and combat_hunt_grade == 'Dimensional'):
+                yield f'{task_prefix}.BurnoutMode'
 
             if combat_domain in ('Saint37', 'Episode4'):
                 yield f'{task_prefix}.Element'

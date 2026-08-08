@@ -1,6 +1,7 @@
 from module.base.timer import Timer
 from module.logger import logger
 from module.ocr.ocr import DigitCounter
+from tasks.arena.burnout import ArenaBurnoutMixin
 from tasks.arena.dashboard import ArenaDashboardMixin
 from tasks.arena.entry import ArenaEntryMixin
 from tasks.arena.assets.assets_arena import (
@@ -35,7 +36,7 @@ class OcrFastBattleTimes(DigitCounter):
         return result
 
 
-class Arena(ArenaEntryMixin, ArenaDashboardMixin, UI):
+class Arena(ArenaBurnoutMixin, ArenaEntryMixin, ArenaDashboardMixin, UI):
     """
     Arena task.
 
@@ -806,7 +807,7 @@ class Arena(ArenaEntryMixin, ArenaDashboardMixin, UI):
                 ):
                     self.config.task_call("MissionReward", force_call=False)
                 self.config.task_call("DataUpdate", force_call=False)
-                self.config.task_delay(server_update=True)
+                self._arena_delay_after_run()
                 return True
 
         status = self._enter_arena(skip_first_screenshot=True)
@@ -829,7 +830,7 @@ class Arena(ArenaEntryMixin, ArenaDashboardMixin, UI):
                     self.config.task_call("MissionReward", force_call=False)
 
             self.config.task_call("DataUpdate", force_call=False)
-            self.config.task_delay(server_update=True)
+            self._arena_delay_after_run()
             return True
 
         self.config.task_delay(success=False)

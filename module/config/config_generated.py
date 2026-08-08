@@ -78,6 +78,7 @@ class GeneratedConfig:
     Arena_NPCCombat = True
     Arena_NPCCombatFastBattle = True
     Arena_NPCCombatCount = 5
+    Arena_BurnoutMode = False
 
     # Group `StoreDaily`
     StoreDaily_BuyDailyFreeItem = True
@@ -103,6 +104,7 @@ class GeneratedConfig:
     Combat_FastCombat = True
     Combat_FastCombatCount = 10
     Combat_RepeatCombatCount = 5
+    Combat_BurnoutMode = False
     Combat_Saint37AutoRecycle = False
 
     # Group `CombatRuntime`

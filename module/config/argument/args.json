@@ -343,7 +343,7 @@
         "type": "stored",
         "value": {},
         "display": "display",
-        "stored": "StoredCounter",
+        "stored": "StoredStamina",
         "order": 3,
         "color": "#74c26e"
       },
@@ -375,7 +375,7 @@
         "type": "stored",
         "value": {},
         "display": "display",
-        "stored": "StoredCounter",
+        "stored": "StoredArenaFlag",
         "order": 7,
         "color": "#f2a93b"
       },
@@ -569,6 +569,10 @@
       "NPCCombatCount": {
         "type": "input",
         "value": 5
+      },
+      "BurnoutMode": {
+        "type": "checkbox",
+        "value": false
       }
     }
   },
@@ -840,6 +844,10 @@
         "type": "input",
         "value": 5
       },
+      "BurnoutMode": {
+        "type": "checkbox",
+        "value": false
+      },
       "Saint37AutoRecycle": {
         "type": "checkbox",
         "value": false
@@ -1036,6 +1044,11 @@
       "RepeatCombatCount": {
         "type": "input",
         "value": 5
+      },
+      "BurnoutMode": {
+        "type": "checkbox",
+        "value": false,
+        "display": "hide"
       },
       "Saint37AutoRecycle": {
         "type": "checkbox",

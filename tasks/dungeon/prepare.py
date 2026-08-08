@@ -270,7 +270,17 @@ class CombatPrepare:
                 return "ready"
             return "failed"
 
-    def _prepare_repeat_combat(self, skip_first_screenshot=True, use_max=False) -> bool:
+    def _prepare_repeat_combat(self, skip_first_screenshot=True, use_max=False, clamp_to_counter=False) -> bool:
+        """
+        Args:
+            use_max: Set the repeat count to the game-computed maximum.
+            clamp_to_counter: Clamp the configured repeat count to the
+                game-computed maximum. Burnout mode wakes with just enough
+                stamina for the configured batch; if the user spent stamina
+                manually in between, the configured count may exceed what the
+                game allows and the plus button would stall at the cap. The
+                clamp burns whatever is affordable instead of failing.
+        """
         logger.hr("Combat Prepare Repeat", level=2)
         timeout = Timer(self.COMBAT_COUNT_TIMEOUT_SECONDS, count=80).start()
         control_pending = Timer(0.8, count=2).clear()
@@ -304,11 +314,17 @@ class CombatPrepare:
                     continue
 
             if controls_open:
-                if use_max:
+                if use_max or clamp_to_counter:
                     _, _, total = self._ocr_repeat_combat_counter()
                     if total <= 0:
                         continue
-                    target = total
+                    if use_max:
+                        target = total
+                    else:
+                        target = self._combat_repeat_count()
+                        if total < target:
+                            logger.info(f"Combat: repeat count clamped to game maximum {total}")
+                            target = total
                     ocr_getter = lambda: self._ocr_repeat_combat_counter()[0]
                 else:
                     target = self._combat_repeat_count()
