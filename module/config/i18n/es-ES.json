@@ -401,15 +401,15 @@
       "name": "Usar combate rápido",
       "help": "Prioriza el combate rápido para peleas contra NPC."
     },
-    "NPCCombatCount": {
-      "name": "Cantidad de combates NPC",
-      "help": "Número máximo de combates NPC en esta ejecución."
-    },
     "BurnoutMode": {
       "name": "Modo de ejecución",
       "help": "La cantidad fija diaria desafía al número configurado de PNJ. El modo de agotamiento gasta todas las banderas disponibles y vuelve a ejecutarse cuando se regeneran al máximo (1 por hora, límite 5). Requiere activar \"Farmear NPC\".",
       "Daily": "Cantidad fija diaria",
       "Burnout": "Modo de agotamiento"
+    },
+    "NPCCombatCount": {
+      "name": "Cantidad de combates NPC",
+      "help": "Número máximo de combates NPC en esta ejecución."
     }
   },
   "StoreDaily": {
@@ -546,15 +546,15 @@
       "name": "Cantidad de combate rapido",
       "help": "Cantidad objetivo de combate rapido."
     },
-    "RepeatCombatCount": {
-      "name": "Cantidad de combate repetido",
-      "help": "Cantidad objetivo de combate repetido para la repeticion con mascota."
-    },
     "BurnoutMode": {
       "name": "Modo de ejecución",
       "help": "La cantidad fija diaria usa el número configurado de combates repetidos. El combate rápido se limita por la cantidad configurada, los usos diarios restantes y la energía actual. El modo de agotamiento usa el máximo permitido por la energía actual. La caza Dimensional consume hojas y no es compatible.",
       "Daily": "Cantidad fija diaria",
       "Burnout": "Modo de agotamiento"
+    },
+    "RepeatCombatCount": {
+      "name": "Cantidad de combate repetido",
+      "help": "Cantidad objetivo de combate repetido para la repeticion con mascota."
     },
     "Saint37AutoRecycle": {
       "name": "Venta Automática de Equipo",

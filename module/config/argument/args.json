@@ -566,10 +566,6 @@
         "type": "checkbox",
         "value": true
       },
-      "NPCCombatCount": {
-        "type": "input",
-        "value": 5
-      },
       "BurnoutMode": {
         "type": "select",
         "value": "Daily",
@@ -577,6 +573,10 @@
           "Daily",
           "Burnout"
         ]
+      },
+      "NPCCombatCount": {
+        "type": "input",
+        "value": 5
       }
     }
   },
@@ -844,10 +844,6 @@
         "type": "input",
         "value": 10
       },
-      "RepeatCombatCount": {
-        "type": "input",
-        "value": 5
-      },
       "BurnoutMode": {
         "type": "select",
         "value": "Daily",
@@ -855,6 +851,10 @@
           "Daily",
           "Burnout"
         ]
+      },
+      "RepeatCombatCount": {
+        "type": "input",
+        "value": 5
       },
       "Saint37AutoRecycle": {
         "type": "checkbox",
@@ -1049,10 +1049,6 @@
         "value": 10,
         "display": "hide"
       },
-      "RepeatCombatCount": {
-        "type": "input",
-        "value": 5
-      },
       "BurnoutMode": {
         "type": "select",
         "value": "Daily",
@@ -1061,6 +1057,10 @@
           "Burnout"
         ],
         "display": "hide"
+      },
+      "RepeatCombatCount": {
+        "type": "input",
+        "value": 5
       },
       "Saint37AutoRecycle": {
         "type": "checkbox",

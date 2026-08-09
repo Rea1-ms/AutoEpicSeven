@@ -401,15 +401,15 @@
       "name": "启用快速战斗",
       "help": "NPC 刷新时优先使用快速战斗。"
     },
-    "NPCCombatCount": {
-      "name": "NPC 挑战次数",
-      "help": "本次任务最多挑战 NPC 的次数。"
-    },
     "BurnoutMode": {
       "name": "执行模式",
       "help": "每日固定次数按设定次数挑战 NPC；燃竭模式会用完当前全部旗帜，并在旗帜自然回满（每小时1面，上限5）后再次运行。需要同时开启「刷 NPC」。",
       "Daily": "每日固定次数",
       "Burnout": "燃竭模式"
+    },
+    "NPCCombatCount": {
+      "name": "NPC 挑战次数",
+      "help": "本次任务最多挑战 NPC 的次数。"
     }
   },
   "StoreDaily": {
@@ -546,15 +546,15 @@
       "name": "快速战斗次数",
       "help": "快速战斗的目标次数。"
     },
-    "RepeatCombatCount": {
-      "name": "重复战斗次数",
-      "help": "宠物托管重复战斗的目标次数。"
-    },
     "BurnoutMode": {
       "name": "执行模式",
       "help": "每日固定次数按设定次数进行宠物托管；快速战斗会受设定次数、剩余次数和当前体力共同限制。燃竭模式会使用当前体力可负担的最大次数。异界讨伐消耗叶子，不适用燃竭模式。",
       "Daily": "每日固定次数",
       "Burnout": "燃竭模式"
+    },
+    "RepeatCombatCount": {
+      "name": "重复战斗次数",
+      "help": "宠物托管重复战斗的目标次数。"
     },
     "Saint37AutoRecycle": {
       "name": "装备自动出售",

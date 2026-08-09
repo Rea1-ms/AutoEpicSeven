@@ -77,8 +77,8 @@ class GeneratedConfig:
     Arena_ClaimBattlePassRewards = True
     Arena_NPCCombat = True
     Arena_NPCCombatFastBattle = True
-    Arena_NPCCombatCount = 5
     Arena_BurnoutMode = 'Daily'  # Daily, Burnout
+    Arena_NPCCombatCount = 5
 
     # Group `StoreDaily`
     StoreDaily_BuyDailyFreeItem = True
@@ -103,8 +103,8 @@ class GeneratedConfig:
     Combat_Episode4Material = 'BREATH_OF_KARMA'  # CATALYST_RARE_BENEVOLENT, CATALYST_RARE_SECRET, CATALYST_RARE_FIGHTING_SPIRIT, CATALYST_RARE_SNIPER, HEART_OF_THE_WOODS, CATALYST_RARE_OATH, CATALYST_RARE_MYSTERIOUS, CATALYST_EPIC_OATH, BREATH_OF_KARMA, CATALYST_EPIC_SNIPER, CATALYST_EPIC_FIGHTING_SPIRIT, FROZEN_SEED, CATALYST_EPIC_BENEVOLENT, CATALYST_EPIC_MYSTERIOUS, CATALYST_EPIC_SECRET, TRACES_OF_BRILLIANCE
     Combat_FastCombat = True
     Combat_FastCombatCount = 10
-    Combat_RepeatCombatCount = 5
     Combat_BurnoutMode = 'Daily'  # Daily, Burnout
+    Combat_RepeatCombatCount = 5
     Combat_Saint37AutoRecycle = False
 
     # Group `CombatRuntime`

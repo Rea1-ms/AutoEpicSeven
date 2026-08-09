@@ -153,10 +153,10 @@ Arena:
   ClaimBattlePassRewards: true
   NPCCombat: true
   NPCCombatFastBattle: true
-  NPCCombatCount: 5
   BurnoutMode:
     value: Daily
     option: [ Daily, Burnout ]
+  NPCCombatCount: 5
 
 StoreDaily:
   BuyDailyFreeItem: true
@@ -219,10 +219,10 @@ Combat:
     ]
   FastCombat: true
   FastCombatCount: 10
-  RepeatCombatCount: 5
   BurnoutMode:
     value: Daily
     option: [ Daily, Burnout ]
+  RepeatCombatCount: 5
   Saint37AutoRecycle: false
 
 CombatRuntime:

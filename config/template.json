@@ -134,8 +134,8 @@
       "ClaimBattlePassRewards": true,
       "NPCCombat": true,
       "NPCCombatFastBattle": true,
-      "NPCCombatCount": 5,
-      "BurnoutMode": "Daily"
+      "BurnoutMode": "Daily",
+      "NPCCombatCount": 5
     }
   },
   "Store": {
@@ -198,8 +198,8 @@
       "Episode4Material": "BREATH_OF_KARMA",
       "FastCombat": true,
       "FastCombatCount": 10,
-      "RepeatCombatCount": 5,
       "BurnoutMode": "Daily",
+      "RepeatCombatCount": 5,
       "Saint37AutoRecycle": false
     },
     "CombatRuntime": {
@@ -248,8 +248,8 @@
       "Episode4Material": "BREATH_OF_KARMA",
       "FastCombat": false,
       "FastCombatCount": 10,
-      "RepeatCombatCount": 5,
       "BurnoutMode": "Daily",
+      "RepeatCombatCount": 5,
       "Saint37AutoRecycle": false
     },
     "CombatRuntime": {
