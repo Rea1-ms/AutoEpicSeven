@@ -735,25 +735,33 @@ class Arena(ArenaBurnoutMixin, ArenaEntryMixin, ArenaDashboardMixin, UI):
     def _run_npc_combat(self, skip_first_screenshot=True) -> bool:
         self._arena_npc_completed_rounds = 0
         use_fast_battle = getattr(self.config, "Arena_NPCCombatFastBattle", True)
-        raw_count = getattr(self.config, "Arena_NPCCombatCount", 5)
-        try:
-            target_count = max(0, int(raw_count))
-        except (TypeError, ValueError):
-            logger.warning(f"Arena NPC count invalid: {raw_count}, fallback to 5")
-            target_count = 5
-
-        if target_count <= 0:
-            logger.info("Arena NPC: target count <= 0, skip")
-            return True
-
         flag_status = self._stored_arena_flag_status()
         if flag_status is not None and flag_status[0] <= 0:
             logger.info("Arena NPC: arena flag is already 0, skip combat")
             return True
 
-        logger.info(f"Arena NPC: target={target_count}, fast_battle={use_fast_battle}")
+        if self._arena_burnout_enabled():
+            # Burnout mode is resource-bounded, not batch-bounded. The fresh
+            # dashboard snapshot normally gives an exact target, including
+            # stockpiled flags above the natural recovery cap. If OCR was not
+            # available, keep running until the game reports no usable flag.
+            target_count = flag_status[0] if flag_status is not None else None
+            logger.info(f"Arena NPC: burnout target={target_count or 'until exhausted'}")
+        else:
+            raw_count = getattr(self.config, "Arena_NPCCombatCount", 5)
+            try:
+                target_count = max(0, int(raw_count))
+            except (TypeError, ValueError):
+                logger.warning(f"Arena NPC count invalid: {raw_count}, fallback to 5")
+                target_count = 5
+
+            if target_count <= 0:
+                logger.info("Arena NPC: target count <= 0, skip")
+                return True
+
+        logger.info(f"Arena NPC: target={target_count or 'until exhausted'}, fast_battle={use_fast_battle}")
         completed = 0
-        while completed < target_count:
+        while target_count is None or completed < target_count:
             # Avoid stale click history across rounds triggering false-positive too-many-click.
             self.device.click_record_clear()
             status = self._npc_combat_once(use_fast_battle=use_fast_battle, skip_first_screenshot=skip_first_screenshot)
@@ -765,7 +773,9 @@ class Arena(ArenaBurnoutMixin, ArenaEntryMixin, ArenaDashboardMixin, UI):
                 self._consume_stored_arena_flags(1)
                 logger.info(f"Arena NPC round finished: {completed}/{target_count}")
                 flag_status = self._stored_arena_flag_status()
-                if flag_status is not None and flag_status[0] <= 0 and completed < target_count:
+                if flag_status is not None and flag_status[0] <= 0 and (
+                    target_count is None or completed < target_count
+                ):
                     logger.info(f"Arena NPC stop early: local arena flag depleted ({completed}/{target_count})")
                     return True
                 continue

@@ -338,7 +338,10 @@ class Combat(
         logger.attr("CombatFastCombatSupported", self._combat_supports_fast_combat())
         logger.attr("CombatFastCombat", use_fast_combat)
         logger.attr("CombatFastCombatCount", self._combat_fast_count())
-        logger.attr("CombatRepeatCombatCount", self._combat_repeat_count())
+        if self._combat_burnout_enabled():
+            logger.attr("CombatRepeatCombatCount", "maximum affordable")
+        else:
+            logger.attr("CombatRepeatCombatCount", self._combat_repeat_count())
         logger.attr("CombatRepeatInBackground", repeat_in_background)
         if domain == "Saint37":
             logger.attr("CombatSaint37AutoRecycle", self._combat_should_cleanup_saint37_reward_items())
@@ -376,9 +379,9 @@ class Combat(
                     completed_sessions += 1
 
             if success and repeat_in_background:
+                use_max_repeat = self._combat_is_farm_task() or self._combat_burnout_enabled()
                 success = self._prepare_repeat_combat(
-                    use_max=self._combat_is_farm_task(),
-                    clamp_to_counter=self._combat_burnout_enabled(),
+                    use_max=use_max_repeat,
                     skip_first_screenshot=True,
                 )
                 if success:

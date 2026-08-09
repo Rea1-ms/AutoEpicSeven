@@ -406,8 +406,10 @@
       "help": "Maximum number of NPC battles in this run."
     },
     "BurnoutMode": {
-      "name": "Burnout Mode",
-      "help": "After each finished run, wait until arena flags regenerate to full (1 flag per hour, cap 5) and challenge NPCs again, so no natural flag regeneration is wasted at the cap. Requires \"Farm NPC\" to be enabled."
+      "name": "Execution Mode",
+      "help": "Daily fixed count challenges the configured number of NPCs. Burnout mode spends every available flag, then runs again when flags naturally refill (1 per hour, cap 5). Requires \"Farm NPC\" to be enabled.",
+      "Daily": "Daily Fixed Count",
+      "Burnout": "Burnout Mode"
     }
   },
   "StoreDaily": {
@@ -549,8 +551,10 @@
       "help": "Target repeat combat count for pet repeat battle."
     },
     "BurnoutMode": {
-      "name": "Burnout Mode",
-      "help": "After each finished run, wait until natural stamina regeneration (1 point per 4 minutes) covers the next batch and run again, burning stamina all day instead of waiting for the daily reset. Dimensional hunt consumes leaves and is not supported."
+      "name": "Execution Mode",
+      "help": "Daily fixed count uses the configured pet repeat count. In burnout mode, fast combat still uses its configured count; after fast combat is exhausted, pet repeat uses the maximum count currently affordable. Dimensional Hunt consumes leaves and does not support burnout mode.",
+      "Daily": "Daily Fixed Count",
+      "Burnout": "Burnout Mode"
     },
     "Saint37AutoRecycle": {
       "name": "Auto Sell Equipment",

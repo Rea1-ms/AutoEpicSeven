@@ -30,6 +30,16 @@ DICT_GUI_TO_INGAME = {
     'es-ES': 'es',
 }
 
+EXECUTION_MODE_DAILY = 'Daily'
+EXECUTION_MODE_BURNOUT = 'Burnout'
+
+
+def normalize_execution_mode(value: t.Any) -> str:
+    """Convert legacy burnout booleans to the execution-mode select value."""
+    if value is True or value == EXECUTION_MODE_BURNOUT:
+        return EXECUTION_MODE_BURNOUT
+    return EXECUTION_MODE_DAILY
+
 
 def gui_lang_to_ingame_lang(lang: str) -> str:
     return DICT_GUI_TO_INGAME.get(lang, 'en')
@@ -466,7 +476,11 @@ class ConfigGenerator:
 
 class ConfigUpdater:
     # source, target, (optional)convert_func
-    redirection = []
+    redirection = [
+        ('Arena.Arena.BurnoutMode', 'Arena.Arena.BurnoutMode', normalize_execution_mode),
+        ('Combat.Combat.BurnoutMode', 'Combat.Combat.BurnoutMode', normalize_execution_mode),
+        ('CombatFarm.Combat.BurnoutMode', 'CombatFarm.Combat.BurnoutMode', normalize_execution_mode),
+    ]
 
     @cached_property
     def args(self):
@@ -590,6 +604,10 @@ class ConfigUpdater:
             # Burnout mode reruns arena when flags refill; without NPC combat
             # nothing consumes flags, so the option is meaningless.
             yield 'Arena.Arena.BurnoutMode'
+        elif normalize_execution_mode(
+            deep_get(data, 'Arena.Arena.BurnoutMode', default=EXECUTION_MODE_DAILY)
+        ) == EXECUTION_MODE_BURNOUT:
+            yield 'Arena.Arena.NPCCombatCount'
         # SecretShop
         if deep_get(data, 'SecretShop.SecretShop.OnlyFree', default=True) is True:
             yield 'SecretShop.SecretShop.MaxRefresh'
@@ -614,6 +632,11 @@ class ConfigUpdater:
                 yield f'{task_prefix}.FastCombatCount'
             elif deep_get(data, f'{task_prefix}.FastCombat', default=True) is False:
                 yield f'{task_prefix}.FastCombatCount'
+
+            if not is_farm_task and normalize_execution_mode(
+                deep_get(data, f'{task_prefix}.BurnoutMode', default=EXECUTION_MODE_DAILY)
+            ) == EXECUTION_MODE_BURNOUT:
+                yield f'{task_prefix}.RepeatCombatCount'
 
             if is_farm_task and (
                 combat_domain == 'Saint37'

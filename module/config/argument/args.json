@@ -571,8 +571,12 @@
         "value": 5
       },
       "BurnoutMode": {
-        "type": "checkbox",
-        "value": false
+        "type": "select",
+        "value": "Daily",
+        "option": [
+          "Daily",
+          "Burnout"
+        ]
       }
     }
   },
@@ -845,8 +849,12 @@
         "value": 5
       },
       "BurnoutMode": {
-        "type": "checkbox",
-        "value": false
+        "type": "select",
+        "value": "Daily",
+        "option": [
+          "Daily",
+          "Burnout"
+        ]
       },
       "Saint37AutoRecycle": {
         "type": "checkbox",
@@ -1046,8 +1054,12 @@
         "value": 5
       },
       "BurnoutMode": {
-        "type": "checkbox",
-        "value": false,
+        "type": "select",
+        "value": "Daily",
+        "option": [
+          "Daily",
+          "Burnout"
+        ],
         "display": "hide"
       },
       "Saint37AutoRecycle": {

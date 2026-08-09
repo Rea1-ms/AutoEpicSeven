@@ -135,7 +135,7 @@
       "NPCCombat": true,
       "NPCCombatFastBattle": true,
       "NPCCombatCount": 5,
-      "BurnoutMode": false
+      "BurnoutMode": "Daily"
     }
   },
   "Store": {
@@ -199,7 +199,7 @@
       "FastCombat": true,
       "FastCombatCount": 10,
       "RepeatCombatCount": 5,
-      "BurnoutMode": false,
+      "BurnoutMode": "Daily",
       "Saint37AutoRecycle": false
     },
     "CombatRuntime": {
@@ -249,7 +249,7 @@
       "FastCombat": false,
       "FastCombatCount": 10,
       "RepeatCombatCount": 5,
-      "BurnoutMode": false,
+      "BurnoutMode": "Daily",
       "Saint37AutoRecycle": false
     },
     "CombatRuntime": {

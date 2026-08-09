@@ -406,8 +406,10 @@
       "help": "Número máximo de combates NPC en esta ejecución."
     },
     "BurnoutMode": {
-      "name": "Modo de agotamiento",
-      "help": "Tras cada ejecución, espera a que las banderas de la arena se regeneren al máximo (1 por hora, límite 5) y vuelve a desafiar a los PNJ, gastando las banderas continuamente. Requiere activar \"Farmear NPC\"."
+      "name": "Modo de ejecución",
+      "help": "La cantidad fija diaria desafía al número configurado de PNJ. El modo de agotamiento gasta todas las banderas disponibles y vuelve a ejecutarse cuando se regeneran al máximo (1 por hora, límite 5). Requiere activar \"Farmear NPC\".",
+      "Daily": "Cantidad fija diaria",
+      "Burnout": "Modo de agotamiento"
     }
   },
   "StoreDaily": {
@@ -549,8 +551,10 @@
       "help": "Cantidad objetivo de combate repetido para la repeticion con mascota."
     },
     "BurnoutMode": {
-      "name": "Modo de agotamiento",
-      "help": "Tras cada ejecución, espera a que la regeneración natural de energía (1 punto cada 4 minutos) cubra el siguiente lote y vuelve a ejecutar, gastando la energía durante todo el día en lugar de esperar al reinicio diario. La caza Dimensional consume hojas y no es compatible."
+      "name": "Modo de ejecución",
+      "help": "La cantidad fija diaria usa el número configurado de combates repetidos. En modo de agotamiento, el combate rápido conserva su cantidad configurada; cuando se agota, la repetición con mascota usa el máximo que permite la energía actual. La caza Dimensional consume hojas y no es compatible.",
+      "Daily": "Cantidad fija diaria",
+      "Burnout": "Modo de agotamiento"
     },
     "Saint37AutoRecycle": {
       "name": "Venta Automática de Equipo",

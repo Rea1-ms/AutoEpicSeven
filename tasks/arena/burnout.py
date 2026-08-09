@@ -21,7 +21,8 @@ class ArenaBurnoutMixin:
     ARENA_BURNOUT_RECHECK_MINUTES = 1
 
     def _arena_burnout_enabled(self) -> bool:
-        return bool(getattr(self.config, "Arena_BurnoutMode", False))
+        mode = getattr(self.config, "Arena_BurnoutMode", "Daily")
+        return mode is True or mode == "Burnout"
 
     def _arena_burnout_schedule(self) -> bool:
         """
