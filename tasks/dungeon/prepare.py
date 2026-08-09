@@ -13,7 +13,6 @@ from tasks.dungeon.assets.assets_dungeon_repeat_menu import (
     REPEAT_COMBAT_TIMES_MINUS,
     REPEAT_COMBAT_TIMES_PLUS,
 )
-from tasks.dungeon.assets.assets_dungeon_stamina_status import OCR_STAMINA, STAMINA_ICON
 
 
 def calculate_fast_combat_target(
@@ -106,22 +105,6 @@ class CombatPrepare:
             name="FastCombatCurrentTimes",
         ).ocr_single_line(self.device.image)
         logger.attr("FastCombatCurrentTimes", value)
-        return value
-
-    def _ocr_combat_stamina(self) -> int | None:
-        if not self.match_template_luma(
-            STAMINA_ICON,
-            similarity=getattr(self, "COMBAT_CHECK_SIMILARITY", 0.8),
-        ):
-            logger.info("Combat: stamina icon not detected on prepare page")
-            return None
-
-        value = CombatPrepareDigit(
-            OCR_STAMINA,
-            lang=self._ocr_lang(),
-            name="CombatStamina",
-        ).ocr_single_line(self.device.image)
-        logger.attr("CombatStamina", value)
         return value
 
     def _ocr_repeat_combat_times(self) -> int:
@@ -242,7 +225,7 @@ class CombatPrepare:
             click_interval.reset()
             timeout.reset()
 
-    def _prepare_fast_combat(self, use_max=False, skip_first_screenshot=True) -> str:
+    def _prepare_fast_combat(self, stamina: int, use_max=False, skip_first_screenshot=True) -> str:
         """Prepare a stamina-safe fast-combat count.
 
         Returns:
@@ -289,10 +272,6 @@ class CombatPrepare:
                 continue
 
             zero_confirm.clear()
-
-            stamina = self._ocr_combat_stamina()
-            if stamina is None:
-                continue
 
             stamina_cost = self._combat_stage_stamina_cost()
             if stamina_cost is None:
@@ -381,7 +360,8 @@ class CombatPrepare:
                         if total < target:
                             logger.info(f"Combat: repeat count clamped to game maximum {total}")
                             target = total
-                    ocr_getter = lambda: self._ocr_repeat_combat_counter()[0]
+                    def ocr_getter():
+                        return self._ocr_repeat_combat_counter()[0]
                 else:
                     target = self._combat_repeat_count()
                     ocr_getter = self._ocr_repeat_combat_times

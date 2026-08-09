@@ -10,6 +10,7 @@ from tasks.dungeon.plan import COMBAT_PLANS, HUNT_PLAN
 from tasks.dungeon.prepare import CombatPrepare
 from tasks.dungeon.runtime import CombatRuntimeMixin
 from tasks.dungeon.side_story import SideStoryNavigateMixin
+from tasks.dungeon.stamina_status import CombatStaminaStatusMixin
 
 
 class Combat(
@@ -19,6 +20,7 @@ class Combat(
     CombatEntryMixin,
     EpisodeNavigateMixin,
     SideStoryNavigateMixin,
+    CombatStaminaStatusMixin,
     CombatPrepare,
     ResourceBarMixin,
     UI,
@@ -348,6 +350,11 @@ class Combat(
 
         success = self._dungeon_navigate(skip_first_screenshot=True)
 
+        prepare_resources = None
+        if success:
+            prepare_resources = self._update_prepare_resource_snapshot(skip_first_screenshot=True)
+            success = prepare_resources is not None
+
         if success and use_fast_combat and self._is_fast_combat_locked():
             logger.warning("Combat: fast combat locked, fallback to repeat combat")
             use_fast_combat = False
@@ -362,7 +369,9 @@ class Combat(
 
         if success:
             if use_fast_combat:
+                assert prepare_resources is not None
                 fast_prepare = self._prepare_fast_combat(
+                    stamina=prepare_resources["stamina"].value,
                     use_max=self._combat_is_farm_task(),
                     skip_first_screenshot=True,
                 )
