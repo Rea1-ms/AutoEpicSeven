@@ -552,7 +552,7 @@
     },
     "BurnoutMode": {
       "name": "Modo de ejecución",
-      "help": "La cantidad fija diaria usa el número configurado de combates repetidos. En modo de agotamiento, el combate rápido conserva su cantidad configurada; cuando se agota, la repetición con mascota usa el máximo que permite la energía actual. La caza Dimensional consume hojas y no es compatible.",
+      "help": "La cantidad fija diaria usa el número configurado de combates repetidos. El combate rápido se limita por la cantidad configurada, los usos diarios restantes y la energía actual. El modo de agotamiento usa el máximo permitido por la energía actual. La caza Dimensional consume hojas y no es compatible.",
       "Daily": "Cantidad fija diaria",
       "Burnout": "Modo de agotamiento"
     },

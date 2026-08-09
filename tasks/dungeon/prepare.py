@@ -2,7 +2,6 @@ from module.base.timer import Timer
 from module.logger import logger
 from module.ocr.ocr import Digit, DigitCounter
 from tasks.dungeon.assets.assets_dungeon_fast_combat import (
-    FAST_COMBAT_LOCKED,
     FAST_COMBAT_TIMES_MINUS,
     FAST_COMBAT_TIMES_PLUS,
     OCR_FAST_COMBAT_CURRENT_TIMES,
@@ -14,13 +13,26 @@ from tasks.dungeon.assets.assets_dungeon_repeat_menu import (
     REPEAT_COMBAT_TIMES_MINUS,
     REPEAT_COMBAT_TIMES_PLUS,
 )
+from tasks.dungeon.assets.assets_dungeon_stamina_status import OCR_STAMINA, STAMINA_ICON
+
+
+def calculate_fast_combat_target(
+    configured: int,
+    remaining: int,
+    stamina: int,
+    stamina_cost: int,
+) -> int:
+    """Return the largest safe fast-combat count for the current resources."""
+    if configured <= 0 or remaining <= 0 or stamina <= 0 or stamina_cost <= 0:
+        return 0
+    return min(configured, remaining, stamina // stamina_cost)
 
 
 class CombatPrepareDigit(Digit):
     def after_process(self, result):
         result = result.replace("O", "0").replace("o", "0")
         result = result.replace("I", "1").replace("l", "1").replace("|", "1")
-        result = result.replace(" ", "")
+        result = result.replace(" ", "").replace(",", "").replace("，", "")
         return super().after_process(result)
 
 
@@ -94,6 +106,22 @@ class CombatPrepare:
             name="FastCombatCurrentTimes",
         ).ocr_single_line(self.device.image)
         logger.attr("FastCombatCurrentTimes", value)
+        return value
+
+    def _ocr_combat_stamina(self) -> int | None:
+        if not self.match_template_luma(
+            STAMINA_ICON,
+            similarity=getattr(self, "COMBAT_CHECK_SIMILARITY", 0.8),
+        ):
+            logger.info("Combat: stamina icon not detected on prepare page")
+            return None
+
+        value = CombatPrepareDigit(
+            OCR_STAMINA,
+            lang=self._ocr_lang(),
+            name="CombatStamina",
+        ).ocr_single_line(self.device.image)
+        logger.attr("CombatStamina", value)
         return value
 
     def _ocr_repeat_combat_times(self) -> int:
@@ -215,6 +243,11 @@ class CombatPrepare:
             timeout.reset()
 
     def _prepare_fast_combat(self, use_max=False, skip_first_screenshot=True) -> str:
+        """Prepare a stamina-safe fast-combat count.
+
+        Returns:
+            str: ready / fallback / no_stamina / failed
+        """
         logger.hr("Combat Prepare Fast", level=2)
         timeout = Timer(self.COMBAT_COUNT_TIMEOUT_SECONDS, count=80).start()
         zero_confirm = Timer(self.COMBAT_ZERO_CONFIRM_SECONDS, count=2).clear()
@@ -257,8 +290,31 @@ class CombatPrepare:
 
             zero_confirm.clear()
 
-            target = remaining if use_max else min(self._combat_fast_count(), remaining)
+            stamina = self._ocr_combat_stamina()
+            if stamina is None:
+                continue
+
+            stamina_cost = self._combat_stage_stamina_cost()
+            if stamina_cost is None:
+                logger.warning("Combat: fast combat target has no stamina cost")
+                return "failed"
+
+            configured = remaining if use_max else self._combat_fast_count()
+            target = calculate_fast_combat_target(
+                configured=configured,
+                remaining=remaining,
+                stamina=stamina,
+                stamina_cost=stamina_cost,
+            )
+            logger.attr("CombatFastCombatStaminaCost", stamina_cost)
             logger.attr("CombatFastCombatTargetCount", target)
+            if target <= 0:
+                logger.info(
+                    f"Combat: insufficient stamina for fast combat "
+                    f"({stamina}/{stamina_cost})"
+                )
+                return "no_stamina"
+
             if self._set_prepare_count(
                 target,
                 self._ocr_fast_combat_current_times,

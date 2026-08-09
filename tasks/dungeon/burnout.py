@@ -45,7 +45,7 @@ class CombatBurnoutMixin:
         mode = getattr(self.config, "Combat_BurnoutMode", "Daily")
         return mode is True or mode == "Burnout"
 
-    def _combat_burnout_stage_cost(self) -> int | None:
+    def _combat_stage_stamina_cost(self) -> int | None:
         """
         Returns:
             int | None: Stamina cost of one run for the configured target,
@@ -62,21 +62,22 @@ class CombatBurnoutMixin:
             return ALTAR_STAMINA_COST.get(self._combat_grade())
         return None
 
+    def _combat_burnout_stage_cost(self) -> int | None:
+        """Compatibility entry for burnout scheduling and existing tests."""
+        return self._combat_stage_stamina_cost()
+
     def _combat_burnout_batch_need(self) -> int | None:
         """
         Stamina needed to start the next burnout run.
 
-        Burnout repeat combat uses the maximum currently affordable count,
-        so the hidden fixed-count setting must not affect wake-up time. One
-        stage worth of stamina is sufficient; the game counter determines
-        how many stages the next repeat batch can actually run. Fast combat
-        keeps its visible target count and therefore waits for that batch.
+        Burnout combat uses the maximum currently affordable count on the
+        prepare page, so fixed-count settings must not affect wake-up time.
+        One stage worth of stamina is sufficient; the current resource value
+        determines how many stages the next fast or repeat batch can run.
         """
         cost = self._combat_burnout_stage_cost()
         if cost is None:
             return None
-        if self._combat_should_use_fast():
-            return cost * self._combat_fast_count()
         return cost
 
     def _combat_burnout_refresh_status(self) -> bool:

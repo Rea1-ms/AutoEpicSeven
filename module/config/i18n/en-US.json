@@ -552,7 +552,7 @@
     },
     "BurnoutMode": {
       "name": "Execution Mode",
-      "help": "Daily fixed count uses the configured pet repeat count. In burnout mode, fast combat still uses its configured count; after fast combat is exhausted, pet repeat uses the maximum count currently affordable. Dimensional Hunt consumes leaves and does not support burnout mode.",
+      "help": "Daily fixed count uses the configured pet repeat count. Fast combat is limited by its configured count, remaining daily count, and current stamina. Burnout mode uses the maximum count currently affordable. Dimensional Hunt consumes leaves and does not support burnout mode.",
       "Daily": "Daily Fixed Count",
       "Burnout": "Burnout Mode"
     },

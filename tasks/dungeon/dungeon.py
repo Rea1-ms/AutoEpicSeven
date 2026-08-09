@@ -369,6 +369,14 @@ class Combat(
                 if fast_prepare == "fallback":
                     use_fast_combat = False
                     repeat_in_background = self._combat_runs_repeat_in_background(use_fast_combat)
+                elif fast_prepare == "no_stamina":
+                    logger.info("Combat: no stamina available, leave prepare page")
+                    self._combat_runtime_clear()
+                    if self._leave_to_main(skip_first_screenshot=True):
+                        self._combat_delay_after_settled()
+                        return True
+                    self.config.task_delay(success=False)
+                    return False
                 else:
                     success = fast_prepare == "ready"
 
