@@ -22,6 +22,7 @@ from tasks.base.ui import UI
 from tasks.pets.assets.assets_pets import (
     ADOPTION_CHECK,
     ADOPTION_ENTRY,
+    ADOPTION_FREE_UNAVAILABLE,
     ADOPTION_ONE_FREE,
     ADOPTION_RESULT,
     OCR_PACK_FULL,
@@ -110,7 +111,6 @@ class Pets(UI):
     def _adopt_one_free(self) -> bool:
         logger.info("Adopt one free")
         timeout = Timer(10, count=20).start()
-        no_free_timer = Timer(2, count=4).start()
         while 1:
             self.device.screenshot()
 
@@ -119,6 +119,11 @@ class Pets(UI):
                 return False
 
             in_adoption = self.appear(ADOPTION_CHECK)
+            if in_adoption and self.appear(ADOPTION_FREE_UNAVAILABLE):
+                logger.info("Free adoption already used today, skip")
+                self._no_free = True
+                return False
+
             if in_adoption and not self._pack_full_checked:
                 full = self._check_pack_full_by_ocr()
                 if full is True:
@@ -133,10 +138,6 @@ class Pets(UI):
 
             if self.appear_then_click(ADOPTION_ONE_FREE, interval=1):
                 return True
-            if in_adoption and no_free_timer.reached():
-                logger.info("Free adoption already used today, skip")
-                self._no_free = True
-                return False
 
             if not in_adoption:
                 if self.ui_additional():

@@ -24,6 +24,7 @@ from tasks.gacha.assets.assets_gacha import (
     EPIC_BOOKMARK,
     GACHA_STANDARD_TAB,
     GOLDEN_INHERITANCE_FULL,
+    SUMMON_FREE_UNAVAILABLE,
     SUMMON_TEN_FREE,
     SUMMON_ONE_FREE,
     SUMMON_NEW,
@@ -116,25 +117,21 @@ class Gacha(UI):
     def _start_summon(self) -> bool:
         logger.info("Start summon")
         timeout = Timer(10, count=20).start()
-        no_free_timer = Timer(2, count=4).start()
         while 1:
             self.device.screenshot()
 
             if timeout.reached():
-                logger.warning("No free summon found")
+                logger.warning("Start summon timeout")
                 return False
 
             if self.ui_additional():
-                no_free_timer.reset()
                 continue
             if self.handle_network_error():
-                no_free_timer.reset()
                 continue
 
             if not self.ui_page_appear(page_gacha):
                 self.ui_goto(page_gacha)
                 timeout.reset()
-                no_free_timer.reset()
                 continue
 
             if self.appear(EPIC_BOOKMARK, interval=1, similarity=0.8):
@@ -143,8 +140,12 @@ class Gacha(UI):
             if not self._in_standard_pool:
                 if not self._select_standard_tab():
                     return False
-                no_free_timer.reset()
                 continue
+
+            if self.appear(SUMMON_FREE_UNAVAILABLE):
+                logger.info("Free summon already used today, skip")
+                self._no_free = True
+                return False
 
             if self.appear_then_click(SUMMON_TEN_FREE, interval=2, similarity=0.9):
                 self._draw_count = 10
@@ -155,11 +156,6 @@ class Gacha(UI):
                 self._draw_count = 1
                 self._draw_free = True
                 return True
-
-            if self._in_standard_pool and no_free_timer.reached():
-                logger.info("Free summon already used today, skip")
-                self._no_free = True
-                return False
 
     def _handle_summon_flow(self):
         logger.info("Summon flow")
