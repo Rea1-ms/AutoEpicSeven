@@ -197,8 +197,8 @@
       "HuntGrade": "Hell",
       "Episode4Material": "BREATH_OF_KARMA",
       "FastCombat": true,
-      "FastCombatCount": 10,
       "BurnoutMode": "Daily",
+      "FastCombatCount": 10,
       "RepeatCombatCount": 5,
       "Saint37AutoRecycle": false
     },
@@ -247,8 +247,8 @@
       "HuntGrade": "Hell",
       "Episode4Material": "BREATH_OF_KARMA",
       "FastCombat": false,
-      "FastCombatCount": 10,
       "BurnoutMode": "Daily",
+      "FastCombatCount": 10,
       "RepeatCombatCount": 5,
       "Saint37AutoRecycle": false
     },

@@ -840,10 +840,6 @@
         "type": "checkbox",
         "value": true
       },
-      "FastCombatCount": {
-        "type": "input",
-        "value": 10
-      },
       "BurnoutMode": {
         "type": "select",
         "value": "Daily",
@@ -851,6 +847,10 @@
           "Daily",
           "Burnout"
         ]
+      },
+      "FastCombatCount": {
+        "type": "input",
+        "value": 10
       },
       "RepeatCombatCount": {
         "type": "input",
@@ -1044,11 +1044,6 @@
         "type": "checkbox",
         "value": false
       },
-      "FastCombatCount": {
-        "type": "input",
-        "value": 10,
-        "display": "hide"
-      },
       "BurnoutMode": {
         "type": "select",
         "value": "Daily",
@@ -1056,6 +1051,11 @@
           "Daily",
           "Burnout"
         ],
+        "display": "hide"
+      },
+      "FastCombatCount": {
+        "type": "input",
+        "value": 10,
         "display": "hide"
       },
       "RepeatCombatCount": {

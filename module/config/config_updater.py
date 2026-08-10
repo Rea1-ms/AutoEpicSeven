@@ -636,6 +636,7 @@ class ConfigUpdater:
             if not is_farm_task and normalize_execution_mode(
                 deep_get(data, f'{task_prefix}.BurnoutMode', default=EXECUTION_MODE_DAILY)
             ) == EXECUTION_MODE_BURNOUT:
+                yield f'{task_prefix}.FastCombatCount'
                 yield f'{task_prefix}.RepeatCombatCount'
 
             if is_farm_task and (

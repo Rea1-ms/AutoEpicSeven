@@ -542,15 +542,15 @@
       "name": "Use Fast Combat",
       "help": "Use fast combat first when available, then switch to pet repeat combat after fast combat is exhausted. If disabled, only pet repeat combat will be used."
     },
-    "FastCombatCount": {
-      "name": "Fast Combat Count",
-      "help": "Target fast combat count."
-    },
     "BurnoutMode": {
       "name": "Execution Mode",
       "help": "Daily fixed count uses the configured pet repeat count. Fast combat is limited by its configured count, remaining daily count, and current stamina. Burnout mode uses the maximum count currently affordable. Dimensional Hunt consumes leaves and does not support burnout mode.",
       "Daily": "Daily Fixed Count",
       "Burnout": "Burnout Mode"
+    },
+    "FastCombatCount": {
+      "name": "Fast Combat Count",
+      "help": "Target fast combat count."
     },
     "RepeatCombatCount": {
       "name": "Repeat Combat Count",
