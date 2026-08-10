@@ -1,4 +1,5 @@
 from module.logger import logger
+from tasks.activity.scheduling import should_schedule_after_battle
 from tasks.base.page import page_combat, page_episode, page_side_story
 from tasks.base.resource_bar import ResourceBarMixin
 from tasks.base.ui import UI
@@ -11,6 +12,7 @@ from tasks.dungeon.prepare import CombatPrepare
 from tasks.dungeon.runtime import CombatRuntimeMixin
 from tasks.dungeon.side_story import SideStoryNavigateMixin
 from tasks.dungeon.stamina_status import CombatStaminaStatusMixin
+from tasks.mission_reward.scheduling import should_schedule_mission_reward
 
 
 class Combat(
@@ -285,11 +287,18 @@ class Combat(
             if status == "finished":
                 completed_sessions += 1
                 self._combat_runtime_clear()
-                if self._combat_should_call_mission_reward() and self._should_schedule_mission_reward(
-                    completed_sessions,
-                    runtime_active=self._combat_runtime_active(),
-                ):
-                    self.config.task_call("MissionReward", force_call=False)
+                should_schedule_reward = (
+                    self._combat_should_call_mission_reward()
+                    and self._should_schedule_mission_reward(
+                        completed_sessions,
+                        runtime_active=self._combat_runtime_active(),
+                    )
+                )
+                if should_schedule_reward:
+                    if should_schedule_mission_reward(self.config):
+                        self.config.task_call("MissionReward", force_call=False)
+                    if should_schedule_after_battle(self.config):
+                        self.config.task_call("SpecialActivity", force_call=False)
                 self._combat_delay_after_settled()
                 return True
 
@@ -433,11 +442,18 @@ class Combat(
         logger.attr("CombatRepeatCombatStarted", repeat_combat_started)
 
         if success:
-            if self._combat_should_call_mission_reward() and self._should_schedule_mission_reward(
-                completed_sessions,
-                runtime_active=repeat_combat_started,
-            ):
-                self.config.task_call("MissionReward", force_call=False)
+            should_schedule_reward = (
+                self._combat_should_call_mission_reward()
+                and self._should_schedule_mission_reward(
+                    completed_sessions,
+                    runtime_active=repeat_combat_started,
+                )
+            )
+            if should_schedule_reward:
+                if should_schedule_mission_reward(self.config):
+                    self.config.task_call("MissionReward", force_call=False)
+                if should_schedule_after_battle(self.config):
+                    self.config.task_call("SpecialActivity", force_call=False)
             if repeat_combat_started:
                 self._combat_runtime_set(self._combat_runtime_build())
                 self.config.task_delay(minute=self.COMBAT_BACKGROUND_CHECK_MINUTES)
@@ -448,10 +464,17 @@ class Combat(
 
         self._combat_runtime_clear()
         self._leave_to_main(skip_first_screenshot=True)
-        if self._combat_should_call_mission_reward() and self._should_schedule_mission_reward(
-            completed_sessions,
-            runtime_active=self._combat_runtime_active(),
-        ):
-            self.config.task_call("MissionReward", force_call=False)
+        should_schedule_reward = (
+            self._combat_should_call_mission_reward()
+            and self._should_schedule_mission_reward(
+                completed_sessions,
+                runtime_active=self._combat_runtime_active(),
+            )
+        )
+        if should_schedule_reward:
+            if should_schedule_mission_reward(self.config):
+                self.config.task_call("MissionReward", force_call=False)
+            if should_schedule_after_battle(self.config):
+                self.config.task_call("SpecialActivity", force_call=False)
         self.config.task_delay(success=False)
         return False

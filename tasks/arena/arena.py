@@ -1,6 +1,7 @@
 from module.base.timer import Timer
 from module.logger import logger
 from module.ocr.ocr import DigitCounter
+from tasks.activity.scheduling import should_schedule_after_battle
 from tasks.arena.burnout import ArenaBurnoutMixin
 from tasks.arena.dashboard import ArenaDashboardMixin
 from tasks.arena.entry import ArenaEntryMixin
@@ -24,6 +25,7 @@ from tasks.arena.assets.assets_arena import (
     WEEKLY_BATTLE_REWARDS,
 )
 from tasks.base.ui import UI
+from tasks.mission_reward.scheduling import should_schedule_mission_reward
 
 
 class OcrFastBattleTimes(DigitCounter):
@@ -812,10 +814,14 @@ class Arena(ArenaBurnoutMixin, ArenaEntryMixin, ArenaDashboardMixin, UI):
                     return False
                 self._claim_weekly_battle_rewards(skip_first_screenshot=True)
                 self._claim_battle_pass_rewards(skip_first_screenshot=True)
-                if self._should_schedule_mission_reward_after_npc(
+                battle_completed = self._should_schedule_mission_reward_after_npc(
                     getattr(self, "_arena_npc_completed_rounds", 0)
-                ):
-                    self.config.task_call("MissionReward", force_call=False)
+                )
+                if battle_completed:
+                    if should_schedule_mission_reward(self.config):
+                        self.config.task_call("MissionReward", force_call=False)
+                    if should_schedule_after_battle(self.config):
+                        self.config.task_call("SpecialActivity", force_call=False)
                 self.config.task_call("DataUpdate", force_call=False)
                 self._arena_delay_after_run()
                 return True
@@ -834,10 +840,14 @@ class Arena(ArenaBurnoutMixin, ArenaEntryMixin, ArenaDashboardMixin, UI):
                     return False
                 self._claim_weekly_battle_rewards(skip_first_screenshot=True)
                 self._claim_battle_pass_rewards(skip_first_screenshot=True)
-                if self._should_schedule_mission_reward_after_npc(
+                battle_completed = self._should_schedule_mission_reward_after_npc(
                     getattr(self, "_arena_npc_completed_rounds", 0)
-                ):
-                    self.config.task_call("MissionReward", force_call=False)
+                )
+                if battle_completed:
+                    if should_schedule_mission_reward(self.config):
+                        self.config.task_call("MissionReward", force_call=False)
+                    if should_schedule_after_battle(self.config):
+                        self.config.task_call("SpecialActivity", force_call=False)
 
             self.config.task_call("DataUpdate", force_call=False)
             self._arena_delay_after_run()

@@ -32,7 +32,7 @@ from tasks.gacha.assets.assets_gacha import (
     SUMMON_RESULT_BACK,
     SUMMON_FREE_CONTINUE,
 )
-
+from tasks.mission_reward.scheduling import should_schedule_mission_reward
 
 
 class Gacha(UI):
@@ -286,7 +286,10 @@ class Gacha(UI):
             return False
         self._handle_summon_flow()
         self._collect_golden_inheritance_full(skip_first_screenshot=True)
-        if self._should_schedule_mission_reward_after_free_summon(self._draw_free):
+        if (
+            self._should_schedule_mission_reward_after_free_summon(self._draw_free)
+            and should_schedule_mission_reward(self.config)
+        ):
             self.config.task_call("MissionReward", force_call=False)
         self.config.task_delay(server_update=True)
         return True

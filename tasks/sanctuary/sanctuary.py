@@ -16,6 +16,7 @@ from module.logger import logger
 from module.ocr.ocr import Digit, DigitCounter, Duration, Ocr, OcrWhiteLetterOnComplexBackground
 from tasks.base.page import page_sanctuary
 from tasks.base.ui import UI
+from tasks.mission_reward.scheduling import should_schedule_mission_reward
 from tasks.sanctuary.assets.assets_sanctuary import (
     FOREST_OF_ELVES,
     ALCHEMISTS_TOWER,
@@ -804,7 +805,7 @@ class Sanctuary(UI):
         success = self.run_daily()
         if success and self._should_schedule_mission_reward_after_daily(
             getattr(self, "_daily_claimed_any", False)
-        ):
+        ) and should_schedule_mission_reward(self.config):
             self.config.task_call("MissionReward", force_call=False)
         target = getattr(self, "_daily_delay_target", None)
         if success and target is not None:
