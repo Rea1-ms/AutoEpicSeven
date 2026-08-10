@@ -10,8 +10,8 @@ Epic Seven automation script, based on the next-generation Alas framework and ad
 
 ## Features
 
-- **Farming**: Daily hunts, Spirit Altar, and Episode side story 3-7.
-- **Rewards**: Complete daily missions, collect Sanctuary resources, and claim Arena pass rewards, expiring mail, and pet gifts.
+- **Farming**: Daily hunts, Spirit Altar, Episode 4 catalysts and Adin Specialty Change materials, and Episode side story 3-7.
+- **Rewards**: Complete daily missions, collect daily and monthly Sanctuary resources, and claim Arena pass rewards, expiring mail, and pet gifts.
 - **Summoning**: Use daily free summons and free Pet House opportunities automatically.
 - **AFK Farming**: Refresh the shop and farm stages.
 - **Arena**: Farm Arena NPC opponents and claim weekly battle rewards.
