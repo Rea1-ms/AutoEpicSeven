@@ -55,20 +55,20 @@ FAST_COMBAT_TIMES_MINUS = ButtonWrapper(
     name='FAST_COMBAT_TIMES_MINUS',
     share=Button(
         file='./assets/share/dungeon/fast_combat/FAST_COMBAT_TIMES_MINUS.png',
-        area=(1222, 556, 1245, 577),
-        search=(1202, 536, 1265, 597),
-        color=(64, 63, 65),
-        button=(1222, 556, 1245, 577),
+        area=(946, 562, 967, 583),
+        search=(926, 542, 987, 603),
+        color=(53, 51, 55),
+        button=(946, 562, 967, 583),
     ),
 )
 FAST_COMBAT_TIMES_PLUS = ButtonWrapper(
     name='FAST_COMBAT_TIMES_PLUS',
     share=Button(
         file='./assets/share/dungeon/fast_combat/FAST_COMBAT_TIMES_PLUS.png',
-        area=(946, 562, 967, 583),
-        search=(926, 542, 987, 603),
-        color=(53, 51, 55),
-        button=(946, 562, 967, 583),
+        area=(1222, 556, 1245, 577),
+        search=(1202, 536, 1265, 597),
+        color=(64, 63, 65),
+        button=(1222, 556, 1245, 577),
     ),
 )
 FAST_COMBAT_WINDOW = ButtonWrapper(
