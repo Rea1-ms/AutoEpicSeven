@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from module.base.timer import Timer
 from module.logger import logger
 from module.ocr.ocr import DigitCounter
@@ -27,6 +29,20 @@ from tasks.arena.assets.assets_arena import (
 from tasks.base.ui import UI
 from tasks.dungeon.runtime import is_background_repeat_combat_active
 from tasks.mission_reward.scheduling import should_schedule_mission_reward
+
+
+def next_battle_pass_recheck(recorded_at: datetime) -> datetime:
+    """Return the first Thursday 11:00 after the last stored MAX record."""
+    days_until_thursday = (3 - recorded_at.weekday()) % 7
+    recheck = (recorded_at + timedelta(days=days_until_thursday)).replace(
+        hour=11,
+        minute=0,
+        second=0,
+        microsecond=0,
+    )
+    if recheck <= recorded_at:
+        recheck += timedelta(days=7)
+    return recheck
 
 
 class OcrFastBattleTimes(DigitCounter):
@@ -271,6 +287,21 @@ class Arena(ArenaBurnoutMixin, ArenaEntryMixin, ArenaDashboardMixin, UI):
         """
         if not getattr(self.config, "Arena_ClaimBattlePassRewards", True):
             return False
+
+        arena_rank = self.config.stored.ArenaRank
+        if arena_rank.value >= arena_rank.FIXED_TOTAL:
+            recheck = next_battle_pass_recheck(arena_rank.time)
+            if datetime.now() < recheck:
+                # Maintenance is not weekly, but season maintenance always
+                # happens on Thursday. After MAX is confirmed, checking once
+                # after each Thursday 11:00 is enough. If the pass is still
+                # MAX, OCR refreshes the record and moves the next check to
+                # the following Thursday instead of retrying every day.
+                logger.info(
+                    "Arena: battle pass already max level, skip reward check "
+                    f"until Thursday recheck at {recheck}"
+                )
+                return False
 
         timeout = Timer(self.ARENA_BATTLE_PASS_TIMEOUT_SECONDS, count=60).start()
         stage = "enter"
