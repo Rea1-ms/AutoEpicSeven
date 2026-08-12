@@ -6,15 +6,14 @@ Epic Seven 宠物商店模块
     ADOPTION_ENTRY -> ADOPTION_ONE_FREE
     轮询:
         - ADOPTION_RESULT: 截图保存 -> 关闭 AD_BUFF_X_CLOSE 两次 -> 回到 PETS_CHECK
-        - PETS_PACK_FULL: 关闭 AD_BUFF_X_CLOSE 一次 -> 回到 PETS_CHECK
-
-    TODO: 暂未测试满仓直接退出是否生效
+        - PETS_PACK_FULL: 直接报错并请求人工处理
 """
 from datetime import datetime
 from pathlib import Path
 
 from module.base.timer import Timer
 from module.base.utils import save_image
+from module.exception import RequestHumanTakeover
 from module.logger import logger
 from module.ocr.ocr import DigitCounter
 from tasks.base.page import page_pets
@@ -52,10 +51,6 @@ class Pets(UI):
 
         for _ in range(2):
             full = self._check_pack_full_by_ocr()
-            if full is True:
-                self._pack_full = True
-                self._pack_full_checked = True
-                return True
             if full is False:
                 self._pack_full_checked = True
                 return False
@@ -77,8 +72,11 @@ class Pets(UI):
             logger.warning(f'Pets pack OCR invalid: {current}/{total}')
             return None
         if current >= total:
-            logger.warning(f'Pets pack full: {current}/{total}')
-            return True
+            logger.critical(
+                f"Pets pack full: {current}/{total}. "
+                "Please clear pet inventory before running Pets again."
+            )
+            raise RequestHumanTakeover
         return False
 
     def _enter_pets(self) -> bool:
@@ -126,9 +124,6 @@ class Pets(UI):
 
             if in_adoption and not self._pack_full_checked:
                 full = self._check_pack_full_by_ocr()
-                if full is True:
-                    self._pack_full = True
-                    return False
                 if full is False:
                     self._pack_full_checked = True
                 else:
@@ -168,8 +163,11 @@ class Pets(UI):
                     close_need = 2
 
             if self.appear(PETS_PACK_FULL):
-                if close_need == 0:
-                    close_need = 1
+                logger.critical(
+                    "Pets pack full popup detected after adoption. "
+                    "Please clear pet inventory before running Pets again."
+                )
+                raise RequestHumanTakeover
 
             # test if interval sets to 0
             if close_need > 0:
@@ -196,19 +194,14 @@ class Pets(UI):
             Login(self.config, device=self.device).app_start()
 
         self._no_free = False
-        self._pack_full = False
         self._pack_full_checked = False
         self._pack_full_retry = 0
         self._enter_pets()
         self._precheck_pack_full_on_pets()
-        if self._pack_full:
-            self.ui_goto(page_pets)
-            self.config.task_delay(server_update=True)
-            return True
         if not self._enter_adoption():
             return False
         if not self._adopt_one_free():
-            if self._no_free or self._pack_full:
+            if self._no_free:
                 self.ui_goto(page_pets)
                 self.config.task_delay(server_update=True)
                 return True
