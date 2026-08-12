@@ -1,0 +1,54 @@
+from datetime import datetime
+
+from module.config.utils import get_server_last_update
+from module.logger import logger
+
+
+TASK_REWARD_CLAIMED_AT = "SpecialActivity.ActivityRuntime.TaskRewardClaimedAt"
+
+
+def _task_reward_claimed_at(config) -> datetime | None:
+    value = config.cross_get(TASK_REWARD_CLAIMED_AT, default=None)
+    if isinstance(value, datetime):
+        return value
+    if isinstance(value, str):
+        try:
+            return datetime.fromisoformat(value)
+        except ValueError:
+            return None
+    return None
+
+
+def is_task_reward_claimed_today(config) -> bool:
+    """
+    Return whether the task-reward completion state belongs to this server day.
+
+    The timestamp is intentionally kept after expiry. Comparing it with the
+    configured server update makes process restarts safe without needing a
+    separate reset task that could run after Arena or Combat by priority.
+    """
+    claimed_at = _task_reward_claimed_at(config)
+    if claimed_at is None:
+        return False
+
+    server_update = config.cross_get(
+        "SpecialActivity.Scheduler.ServerUpdate",
+        default=config.Scheduler_ServerUpdate,
+    )
+    return claimed_at >= get_server_last_update(server_update)
+
+
+def mark_task_reward_claimed(config) -> None:
+    claimed_at = datetime.now().replace(microsecond=0)
+    config.cross_set(TASK_REWARD_CLAIMED_AT, claimed_at)
+    logger.info(f"SpecialActivity: task reward locked for today at {claimed_at}")
+
+
+def should_schedule_after_battle(config) -> bool:
+    if not config.SpecialActivity_GetTaskReward:
+        logger.info("SpecialActivity: task reward disabled, skip task call")
+        return False
+    if is_task_reward_claimed_today(config):
+        logger.info("SpecialActivity: task reward already claimed today, skip task call")
+        return False
+    return True

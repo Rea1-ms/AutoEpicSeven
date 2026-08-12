@@ -53,3 +53,28 @@ class SpecialActivityEntry:
             device=self.device,
             task=self.task,
         ).run()
+
+    def run_login_daily_reward(self) -> bool:
+        if not self.config.is_task_enabled("SpecialActivity"):
+            logger.info("SpecialActivity: disabled, skip post-login daily reward")
+            return True
+        if not self.config.SpecialActivity_GetDailyReward:
+            logger.info("SpecialActivity: daily reward disabled, skip post-login claim")
+            return True
+
+        event_end_time = self._event_end_time()
+        if event_end_time is None or datetime.now(self.EVENT_TIMEZONE) >= event_end_time:
+            logger.info("SpecialActivity: unavailable, skip post-login daily reward")
+            return True
+
+        from tasks.activity.special_activity import SpecialActivity
+        from tasks.base.page import page_main
+
+        activity = SpecialActivity(
+            config=self.config,
+            device=self.device,
+            task=self.task,
+        )
+        success = activity.run_get_daily_reward(skip_first_screenshot=True)
+        activity.ui_goto(page_main, skip_first_screenshot=True)
+        return success

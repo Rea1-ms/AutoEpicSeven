@@ -415,6 +415,15 @@ class Login(UI):
         if self._maintenance_backup is not None:
             self._maintenance_backup.recover()
             self._maintenance_backup = None
+
+        from tasks.activity.entry import SpecialActivityEntry
+
+        if not SpecialActivityEntry(
+            config=self.config,
+            device=self.device,
+            task="SpecialActivity",
+        ).run_login_daily_reward():
+            logger.warning('SpecialActivity: post-login daily reward failed')
         return True
 
     def _handle_maintenance(self):

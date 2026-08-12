@@ -59,6 +59,16 @@ SUMMON_FREE_CONTINUE = ButtonWrapper(
     ),
     global_en=None,
 )
+SUMMON_FREE_UNAVAILABLE = ButtonWrapper(
+    name='SUMMON_FREE_UNAVAILABLE',
+    share=Button(
+        file='./assets/share/gacha/SUMMON_FREE_UNAVAILABLE.png',
+        area=(809, 647, 850, 675),
+        search=(789, 627, 870, 695),
+        color=(32, 36, 32),
+        button=(809, 647, 850, 675),
+    ),
+)
 SUMMON_NEW = ButtonWrapper(
     name='SUMMON_NEW',
     share=Button(

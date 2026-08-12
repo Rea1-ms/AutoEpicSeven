@@ -343,7 +343,7 @@
         "type": "stored",
         "value": {},
         "display": "display",
-        "stored": "StoredCounter",
+        "stored": "StoredStamina",
         "order": 3,
         "color": "#74c26e"
       },
@@ -375,7 +375,7 @@
         "type": "stored",
         "value": {},
         "display": "display",
-        "stored": "StoredCounter",
+        "stored": "StoredArenaFlag",
         "order": 7,
         "color": "#f2a93b"
       },
@@ -565,6 +565,14 @@
       "NPCCombatFastBattle": {
         "type": "checkbox",
         "value": true
+      },
+      "BurnoutMode": {
+        "type": "select",
+        "value": "Daily",
+        "option": [
+          "Daily",
+          "Burnout"
+        ]
       },
       "NPCCombatCount": {
         "type": "input",
@@ -832,6 +840,14 @@
         "type": "checkbox",
         "value": true
       },
+      "BurnoutMode": {
+        "type": "select",
+        "value": "Daily",
+        "option": [
+          "Daily",
+          "Burnout"
+        ]
+      },
       "FastCombatCount": {
         "type": "input",
         "value": 10
@@ -1027,6 +1043,15 @@
       "FastCombat": {
         "type": "checkbox",
         "value": false
+      },
+      "BurnoutMode": {
+        "type": "select",
+        "value": "Daily",
+        "option": [
+          "Daily",
+          "Burnout"
+        ],
+        "display": "hide"
       },
       "FastCombatCount": {
         "type": "input",

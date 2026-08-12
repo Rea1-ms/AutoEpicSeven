@@ -33,6 +33,7 @@ from tasks.activity.assets.assets_activity_special_26_6_25 import (
     ENERGY_DRINK_OBTAIN,
     SPECIAL_TOUCH_TO_CLOSE
 )
+from tasks.activity.scheduling import mark_task_reward_claimed
 from tasks.gacha.assets.assets_gacha import (
     SUMMON_NEW,
     SUMMON_SKIP,
@@ -249,8 +250,12 @@ class SpecialActivity(UI):
             else:
                 self.device.screenshot()
 
-            # checkmark or navigate right now
-            if self.appear(TASK_CHECKMARK) or self.appear(TASK_NAVIGATE_NOW):
+            if self.appear(TASK_CHECKMARK):
+                mark_task_reward_claimed(self.config)
+                logger.info("SpecialActivity: task rewards completed today")
+                return True
+
+            if self.appear(TASK_NAVIGATE_NOW):
                 logger.info("SpecialActivity: no task reward needs to be obtain, skip task")
                 return True
 

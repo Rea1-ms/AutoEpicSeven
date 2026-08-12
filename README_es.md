@@ -10,8 +10,8 @@ Script de automatización para Epic Seven, basado en la nueva generación del fr
 
 ## Funciones
 
-- **Farmeo**: Cacerías diarias, Altar Espiritual e historia secundaria del Episodio 3-7.
-- **Recompensas**: Completa las misiones diarias, recoge recursos del Santuario y reclama recompensas del pase de Arena, correos próximos a vencer y regalos de mascotas.
+- **Farmeo**: Cacerías diarias, Altar Espiritual, catalizadores de Episode 4 y materiales de cambio de especialidad de Adin, e historia secundaria del Episodio 3-7.
+- **Recompensas**: Completa las misiones diarias, recoge recursos diarios y mensuales del Santuario y reclama recompensas del pase de Arena, correos próximos a vencer y regalos de mascotas.
 - **Invocaciones**: Usa automáticamente las invocaciones gratuitas diarias y las oportunidades gratuitas de la Casa de Mascotas.
 - **Farmeo AFK**: Actualiza la tienda y farmea etapas.
 - **Arena**: Farmea rivales NPC de Arena y reclama las recompensas semanales de combate.

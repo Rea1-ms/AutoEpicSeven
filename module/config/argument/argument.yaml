@@ -153,6 +153,9 @@ Arena:
   ClaimBattlePassRewards: true
   NPCCombat: true
   NPCCombatFastBattle: true
+  BurnoutMode:
+    value: Daily
+    option: [ Daily, Burnout ]
   NPCCombatCount: 5
 
 StoreDaily:
@@ -215,6 +218,9 @@ Combat:
       TRACES_OF_BRILLIANCE,
     ]
   FastCombat: true
+  BurnoutMode:
+    value: Daily
+    option: [ Daily, Burnout ]
   FastCombatCount: 10
   RepeatCombatCount: 5
   Saint37AutoRecycle: false
@@ -253,7 +259,7 @@ Dashboard:
     color: "#49aee9"
     display: display
   Stamina:
-    stored: StoredCounter
+    stored: StoredStamina
     order: 3
     color: "#74c26e"
     display: display
@@ -273,7 +279,7 @@ Dashboard:
     color: "#ffd36e"
     display: display
   ArenaFlag:
-    stored: StoredCounter
+    stored: StoredArenaFlag
     order: 7
     color: "#f2a93b"
     display: display
