@@ -25,6 +25,7 @@ from tasks.arena.assets.assets_arena import (
     WEEKLY_BATTLE_REWARDS,
 )
 from tasks.base.ui import UI
+from tasks.dungeon.runtime import is_background_repeat_combat_active
 from tasks.mission_reward.scheduling import should_schedule_mission_reward
 
 
@@ -737,6 +738,9 @@ class Arena(ArenaBurnoutMixin, ArenaEntryMixin, ArenaDashboardMixin, UI):
     def _run_npc_combat(self, skip_first_screenshot=True) -> bool:
         self._arena_npc_completed_rounds = 0
         use_fast_battle = getattr(self.config, "Arena_NPCCombatFastBattle", True)
+        if use_fast_battle and is_background_repeat_combat_active(self.config):
+            logger.info("Arena NPC: background repeat combat active, use normal battle")
+            use_fast_battle = False
         flag_status = self._stored_arena_flag_status()
         if flag_status is not None and flag_status[0] <= 0:
             logger.info("Arena NPC: arena flag is already 0, skip combat")

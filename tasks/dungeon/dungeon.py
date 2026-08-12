@@ -9,7 +9,7 @@ from tasks.dungeon.entry import CombatEntryMixin
 from tasks.dungeon.execute import CombatExecuteMixin
 from tasks.dungeon.plan import COMBAT_PLANS, HUNT_PLAN
 from tasks.dungeon.prepare import CombatPrepare
-from tasks.dungeon.runtime import CombatRuntimeMixin
+from tasks.dungeon.runtime import CombatRuntimeMixin, is_background_repeat_combat_active
 from tasks.dungeon.side_story import SideStoryNavigateMixin
 from tasks.dungeon.stamina_status import CombatStaminaStatusMixin
 from tasks.mission_reward.scheduling import should_schedule_mission_reward
@@ -103,6 +103,9 @@ class Combat(
 
     def _combat_should_use_fast(self) -> bool:
         if not self._combat_supports_fast_combat():
+            return False
+        if is_background_repeat_combat_active(self.config):
+            logger.info("Combat: background repeat combat active, use normal combat")
             return False
         return self._combat_fast_enabled()
 
