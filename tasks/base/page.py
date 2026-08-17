@@ -30,6 +30,7 @@ from tasks.arena.assets.assets_arena import (
     ARENA_HUB_CHECK,
     BATTLE_PASS_CHECK,
     BATTLE_PASS_ENTRY,
+    SETTLING_INFO_ICON,
 )
 from tasks.dungeon.assets.assets_dungeon_configs_combat_entry import (
     ALTER_CHECK,
@@ -408,11 +409,13 @@ page_menu.link(MENU_GOTO_MISSION_REWARD, destination=page_mission_reward_daily)
 
 # Arena
 page_arena = Page(ARENA_CHECK)
+page_arena_settling = Page(SETTLING_INFO_ICON)
 page_arena_hub = Page(ARENA_HUB_CHECK)
 page_arena_hub.link(BACK, destination=page_main)
 page_main.link(MAIN_ARENA_ENTRY, destination=page_arena_hub)
 page_menu.link(MENU_ARENA_ENTRY, destination=page_arena_hub)
 page_arena.link(BACK, destination=page_arena_hub)
+page_arena_settling.link(BACK, destination=page_arena_hub)
 page_arena_hub.link(ARENA_COMMON_ENTRY, destination=page_arena)
 
 page_arena_battle_pass = Page(BATTLE_PASS_CHECK)
@@ -537,6 +540,7 @@ shared_toolbar_pages = [
     page_secret_shop,
     page_store,
     page_arena,
+    page_arena_settling,
     page_arena_hub,
     page_arena_battle_pass,
     page_combat_season,

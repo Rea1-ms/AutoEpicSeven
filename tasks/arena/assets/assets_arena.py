@@ -286,6 +286,16 @@ OPPONENT = ButtonWrapper(
         ),
     ],
 )
+SETTLING_INFO_ICON = ButtonWrapper(
+    name='SETTLING_INFO_ICON',
+    share=Button(
+        file='./assets/share/arena/SETTLING_INFO_ICON.png',
+        area=(124, 340, 146, 362),
+        search=(104, 320, 166, 382),
+        color=(40, 36, 33),
+        button=(124, 340, 146, 362),
+    ),
+)
 WEEKLY_BATTLE_REWARDS = ButtonWrapper(
     name='WEEKLY_BATTLE_REWARDS',
     share=Button(

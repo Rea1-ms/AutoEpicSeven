@@ -2,7 +2,7 @@ from module.logger import logger
 from tasks.activity.scheduling import should_schedule_after_battle
 from tasks.arena.burnout import ArenaBurnoutMixin
 from tasks.arena.dashboard import ArenaDashboardMixin
-from tasks.arena.entry import ArenaEntryMixin
+from tasks.arena.entry import ArenaEntryMixin, is_arena_settling_period
 from tasks.arena.npc_combat import ArenaNpcCombatMixin, OcrFastBattleTimes
 from tasks.arena.rewards import ArenaRewardsMixin, next_battle_pass_recheck
 from tasks.base.ui import UI
@@ -36,43 +36,30 @@ class Arena(
         if not hasattr(self.device, "image") or self.device.image is None:
             self.device.screenshot()
 
+        status = None
+
         # Fast-path: if task starts inside arena/NPC context, do not force return to main page.
-        # This keeps manual "already in arena" starts seamless.
+        # This keeps manual "already in arena" starts seamless while preserving
+        # the settlement capability flag used to suppress unavailable rewards.
         if getattr(self.config, "Arena_NPCCombat", False):
             if self._is_npc_combat_context():
                 logger.info("Arena: detected NPC combat context, skip goto main")
-                self._update_arena_dashboard_snapshot(skip_first_screenshot=True)
-                if not self._run_npc_combat(skip_first_screenshot=True):
-                    self.config.task_delay(success=False)
-                    return False
-                self._claim_weekly_battle_rewards(skip_first_screenshot=True)
-                self._claim_battle_pass_rewards(skip_first_screenshot=True)
-                battle_completed = self._should_schedule_mission_reward_after_npc(
-                    getattr(self, "_arena_npc_completed_rounds", 0)
-                )
-                if battle_completed:
-                    if should_schedule_mission_reward(self.config):
-                        self.config.task_call("MissionReward", force_call=False)
-                    if should_schedule_after_battle(self.config):
-                        self.config.task_call("SpecialActivity", force_call=False)
-                self.config.task_call("DataUpdate", force_call=False)
-                self._arena_delay_after_run()
-                return True
+                status = "settling_npc" if is_arena_settling_period() else "entered"
 
-        status = self._enter_arena(skip_first_screenshot=True)
+        if status is None:
+            status = self.arena_goto(skip_first_screenshot=True)
 
-        if status == "settling":
-            self.config.task_delay(server_update=True)
-            return True
-
-        if status == "entered":
+        if status in {"entered", "settling_npc"}:
             self._update_arena_dashboard_snapshot(skip_first_screenshot=True)
             if getattr(self.config, "Arena_NPCCombat", False):
                 if not self._run_npc_combat(skip_first_screenshot=True):
                     self.config.task_delay(success=False)
                     return False
-                self._claim_weekly_battle_rewards(skip_first_screenshot=True)
-                self._claim_battle_pass_rewards(skip_first_screenshot=True)
+
+                if status == "entered":
+                    self._claim_weekly_battle_rewards(skip_first_screenshot=True)
+                    self._claim_battle_pass_rewards(skip_first_screenshot=True)
+
                 battle_completed = self._should_schedule_mission_reward_after_npc(
                     getattr(self, "_arena_npc_completed_rounds", 0)
                 )

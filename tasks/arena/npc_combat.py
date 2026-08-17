@@ -200,8 +200,9 @@ class ArenaNpcCombatMixin:
                 return "failed"
 
             # End condition: one NPC fight settled and returned to arena home.
-            if stage == self.ARENA_NPC_STAGE_BATTLE and self._is_arena_page_ready(
-                interval=0
+            if (
+                stage == self.ARENA_NPC_STAGE_BATTLE
+                and self._is_arena_combat_home_ready()
             ):
                 return "completed"
 
