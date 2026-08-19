@@ -110,11 +110,8 @@ class DataUpdate(ArenaEntryMixin, ArenaDashboardMixin, UI):
             return False
 
         logger.hr("DataUpdate Arena", level=2)
-        status = self._enter_arena(skip_first_screenshot=skip_first_screenshot)
-        if status == "settling":
-            logger.info("DataUpdate: arena is settling, skip arena snapshot")
-            return False
-        if status != "entered":
+        status = self.arena_goto(skip_first_screenshot=skip_first_screenshot)
+        if status not in {"entered", "settling_npc"}:
             return False
         return self._update_arena_dashboard_snapshot(skip_first_screenshot=True)
 
