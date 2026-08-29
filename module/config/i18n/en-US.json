@@ -682,6 +682,7 @@
       "A": "A or higher",
       "B": "B or higher",
       "S": "S or higher",
+      "SS": "SS or higher",
       "MaxMinus1": "Current max tier -1",
       "MaxMinus2": "Current max tier -2 (floor B)"
     }

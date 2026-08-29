@@ -138,4 +138,4 @@ class GeneratedConfig:
     Dashboard_TeamBattle = {}
 
     # Group `SanctuaryMonthly`
-    SanctuaryMonthly_RewardTier = 'A'  # A, B, S, MaxMinus1, MaxMinus2
+    SanctuaryMonthly_RewardTier = 'A'  # A, B, S, SS, MaxMinus1, MaxMinus2

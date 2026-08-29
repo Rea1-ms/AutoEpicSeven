@@ -304,4 +304,4 @@ Dashboard:
 SanctuaryMonthly:
   RewardTier:
     value: A
-    option: [ A, B, S, MaxMinus1, MaxMinus2 ]
+    option: [ A, B, S, SS, MaxMinus1, MaxMinus2 ]

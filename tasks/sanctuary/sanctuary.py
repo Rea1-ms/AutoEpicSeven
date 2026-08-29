@@ -44,6 +44,7 @@ from tasks.sanctuary.assets.assets_sanctuary_heart_of_eulerbis import (
     REWARDS_TIER_A,
     REWARDS_TIER_B,
     REWARDS_TIER_S,
+    REWARDS_TIER_SS,
     STATE_MONTHLY_CLAIMED,
     CUSTODY,
 )
@@ -438,7 +439,7 @@ class Sanctuary(UI):
 
     def _resolve_monthly_target_tier(self, heart_level: int | None) -> str:
         tier = self.config.SanctuaryMonthly_RewardTier
-        if tier in ("A", "B", "S"):
+        if tier in ("A", "B", "S", "SS"):
             return tier
 
         if heart_level is None:
@@ -499,6 +500,8 @@ class Sanctuary(UI):
         return None
 
     def _detect_current_reward_tier(self, tier_ocr: OcrRewardTier) -> str | None:
+        if self.appear(REWARDS_TIER_SS):
+            return "SS"
         if self.appear(REWARDS_TIER_S):
             return "S"
         if self.appear(REWARDS_TIER_A):
@@ -506,11 +509,12 @@ class Sanctuary(UI):
         if self.appear(REWARDS_TIER_B):
             return "B"
 
+
         tier = tier_ocr.ocr_single_line(self.device.image)
-        if tier in ("SS", "SSS"):
+        if tier == "SSS":
             logger.attr("RewardTierOCR", tier)
             raise ScriptError(
-                f"Detected reward tier {tier}, but only A/B/S templates are available. "
+                f"Detected reward tier {tier}, but only A/B/S/SS templates are available. "
                 f"Please capture and add REWARDS_TIER_{tier} assets first."
             )
         if tier in self.REWARD_TIER_ORDER:
