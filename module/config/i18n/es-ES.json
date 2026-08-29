@@ -679,6 +679,7 @@
     "RewardTier": {
       "name": "Calidad de recompensa",
       "help": "",
+      "Smart": "Custodia inteligente",
       "A": "A o superior",
       "B": "B o superior",
       "S": "S o superior",

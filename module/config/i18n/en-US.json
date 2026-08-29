@@ -679,6 +679,7 @@
     "RewardTier": {
       "name": "Reward Tier",
       "help": "",
+      "Smart": "Smart custody",
       "A": "A or higher",
       "B": "B or higher",
       "S": "S or higher",

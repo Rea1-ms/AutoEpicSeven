@@ -1126,6 +1126,7 @@
         "type": "select",
         "value": "A",
         "option": [
+          "Smart",
           "A",
           "B",
           "S",

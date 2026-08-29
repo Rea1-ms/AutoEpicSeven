@@ -68,6 +68,7 @@ class OcrRewardTier(Ocr):
 class SanctuaryMonthlyMixin:
     """Monthly sanctuary behavior mixed into the public Sanctuary task."""
 
+    MONTHLY_REWARD_TIER_SMART = "Smart"
     REWARD_TIER_ORDER = ["B", "A", "S", "SS", "SSS"]
     HEART_MAX_LEVEL = 11
     MONTHLY_OCR_INTERVAL_SECONDS = 0.8
@@ -293,6 +294,137 @@ class SanctuaryMonthlyMixin:
         """
         return not self.appear(DEPOSIT_BOX_NOT_FULL)
 
+    def _monthly_purify_smart(self) -> str:
+        """
+        Purify until the game's high-value confirmation protects a new item.
+
+        Any cancel popup is intentionally treated as the high-value signal in
+        this mode. After canceling, purifying must stay blocked until custody
+        finishes through the existing custody settle check. This prevents a
+        delayed or dropped custody click from destroying the protected item on
+        the next refresh. Deposit capacity keeps using the existing last-slot
+        check.
+        """
+        logger.info("Monthly: smart custody loop")
+        timeout = Timer(60, count=120).start()
+        purify_missing_confirm = Timer(8, count=24).start()
+        lang = self._ocr_lang()
+        times_ocr_full = OcrPurifyTimes(OCR_PURIFY_TIMES_FULL, lang=lang, name="PurifyTimesOCRFull")
+        times_ocr_not_full = OcrPurifyTimes(OCR_PURIFY_TIMES_NOT_FULL, lang=lang, name="PurifyTimesOCRNotFull")
+        tier_ocr = OcrRewardTier(ClickButton(REWARDS_TIER_A.search, name="OCR_REWARD_TIER"), lang=lang,
+                                 name="RewardTierOCR")
+        times_layout = None
+        times_current = 0
+        last_times_current = None
+        custody_pending = False
+
+        while 1:
+            self.device.screenshot()
+
+            if timeout.reached():
+                logger.warning("Monthly smart custody timeout")
+                return self.MONTHLY_STATUS_FAILED
+
+            if self._is_monthly_claimed():
+                logger.info("Monthly reward already claimed")
+                return self.MONTHLY_STATUS_CLAIMED
+
+            if self.handle_popup_cancel(interval=2):
+                custody_pending = True
+                purify_missing_confirm.reset()
+                timeout.reset()
+                logger.info("Monthly smart custody: high-value refresh canceled")
+                continue
+
+            if self.handle_touch_to_close(interval=1):
+                timeout.reset()
+                continue
+            if self.ui_additional():
+                timeout.reset()
+                continue
+            if self.handle_network_error():
+                timeout.reset()
+                continue
+
+            if custody_pending:
+                if not PURIFY.match_template_luma(self.device.image):
+                    continue
+
+                if self._is_monthly_deposit_box_full():
+                    logger.info("Monthly smart custody ended: deposit box full")
+                    return self.MONTHLY_STATUS_FULL
+
+                if CUSTODY.match_color(self.device.image, threshold=10):
+                    if self.appear_then_click(CUSTODY, interval=2):
+                        custody_settled = self._wait_monthly_custody_settle(tier_ocr)
+                        if self._is_monthly_claimed():
+                            logger.info("Monthly reward claimed after smart custody")
+                            return self.MONTHLY_STATUS_CLAIMED
+                        if self._is_monthly_deposit_box_full():
+                            logger.info("Monthly smart custody ended: deposit box full after custody")
+                            return self.MONTHLY_STATUS_FULL
+                        if not custody_settled:
+                            logger.warning("Monthly smart custody not settled, keep refresh blocked")
+                            continue
+                        logger.info("Monthly smart custody stored protected item")
+                        custody_pending = False
+                        timeout.reset()
+                        continue
+
+                continue
+
+            read_current, _, read_total, read_layout = self._ocr_purify_times(
+                times_ocr_full,
+                times_ocr_not_full,
+                preferred_layout=times_layout,
+            )
+            if read_total <= 0:
+                continue
+
+            times_current = read_current
+            times_layout = read_layout
+            logger.attr("PurifyTimes", f"{times_current}/{read_total} ({times_layout})")
+            if last_times_current is None:
+                last_times_current = times_current
+            elif times_current < last_times_current:
+                logger.info(f"Monthly smart purify progressed: {last_times_current} -> {times_current}")
+                self.device.click_record_clear()
+                last_times_current = times_current
+            elif times_current > last_times_current:
+                last_times_current = times_current
+
+            if times_current <= 0:
+                logger.info("Monthly smart purify exhausted before monthly reward is claimed")
+                return self.MONTHLY_STATUS_EXHAUSTED
+
+            purify_luma = PURIFY.match_template_luma(self.device.image)
+            if not purify_luma:
+                if purify_missing_confirm.reached():
+                    raise ScriptError(
+                        "PURIFY not detected for too long while smart custody has remaining attempts. "
+                        "Likely covered by an unhandled overlay."
+                    )
+                continue
+            purify_missing_confirm.reset()
+
+            if not PURIFY.match_template_color(self.device.image):
+                logger.info("Monthly smart purify unavailable: PURIFY is gray")
+                return self.MONTHLY_STATUS_EXHAUSTED
+
+            if self.appear_then_click(LEVEL_UP, interval=2):
+                self._wait_monthly_level_up_settle()
+                timeout.reset()
+                continue
+
+            if self.appear_then_click(PURIFY, interval=self.MONTHLY_PURIFY_CLICK_INTERVAL_SECONDS):
+                # The counter is read on every following frame. The warning
+                # does not consume an attempt, while a successful refresh does;
+                # re-reading keeps both paths tied to game state.
+                timeout.reset()
+                continue
+
+        return self.MONTHLY_STATUS_FAILED
+
     def _monthly_purify(self) -> str:
         """
         Returns:
@@ -302,6 +434,9 @@ class SanctuaryMonthlyMixin:
                 exhausted: weekly purify times exhausted before monthly reward is claimed
                 failed: timeout/flow failure
         """
+        if self.config.SanctuaryMonthly_RewardTier == self.MONTHLY_REWARD_TIER_SMART:
+            return self._monthly_purify_smart()
+
         logger.info("Monthly: purify loop")
         timeout = Timer(60, count=120).start()
         purify_missing_confirm = Timer(8, count=24).start()
