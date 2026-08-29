@@ -1,5 +1,6 @@
 from datetime import datetime
 
+import module.config.server as server_
 from module.config.utils import get_server_last_update
 from module.logger import logger
 
@@ -45,10 +46,16 @@ def mark_task_reward_claimed(config) -> None:
 
 
 def should_schedule_after_battle(config) -> bool:
+    # The overseas event reward is claimed once immediately after login. Only
+    # the legacy CN activity still unlocks daily task rewards through battles.
+    if not server_.is_cn_server(config.Emulator_PackageName):
+        return False
     if not config.SpecialActivity_GetTaskReward:
         logger.info("SpecialActivity: task reward disabled, skip task call")
         return False
     if is_task_reward_claimed_today(config):
-        logger.info("SpecialActivity: task reward already claimed today, skip task call")
+        logger.info(
+            "SpecialActivity: task reward already claimed today, skip task call"
+        )
         return False
     return True

@@ -86,6 +86,7 @@ from tasks.sanctuary.assets.assets_sanctuary import (
 from tasks.sanctuary.assets.assets_sanctuary_forest_of_elves import (
     ALTAR_OF_GROWTH,
 )
+from tasks.activity.assets.assets_activity_common import COMMON_ACTIVITY_CHECK
 from tasks.activity.assets.assets_activity_special_26_6_25 import (
     MAIN_GOTO_SPECIAL_ACTIVITY,
     SPECIAL_ACTIVITY_FREE_GACHA_CHECK,
@@ -487,6 +488,10 @@ page_pets.link(BACK, destination=page_main)
 page_menu.link(MENU_GOTO_PETS, destination=page_pets)
 
 # Special Activity
+page_common_activity = Page(COMMON_ACTIVITY_CHECK)
+page_common_activity.link(BACK, destination=page_main)
+page_main.link(MAIN_GOTO_COMMON_ACTIVITY, destination=page_common_activity)
+
 page_special_activity = Page(ACTIVITY_2026SUMMER)
 page_special_activity.link(BACK, destination=page_main)
 page_main.link(MAIN_GOTO_SPECIAL_ACTIVITY, destination=page_special_activity)

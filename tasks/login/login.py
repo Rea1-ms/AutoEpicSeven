@@ -423,7 +423,7 @@ class Login(UI):
             device=self.device,
             task="SpecialActivity",
         ).run_login_daily_reward():
-            logger.warning('SpecialActivity: post-login daily reward failed')
+            logger.warning('SpecialActivity: post-login reward failed')
         return True
 
     def _handle_maintenance(self):
