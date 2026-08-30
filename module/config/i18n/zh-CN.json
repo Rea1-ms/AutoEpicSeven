@@ -554,7 +554,49 @@
     },
     "RepeatCombatCount": {
       "name": "重复战斗次数",
-      "help": "宠物托管重复战斗的目标次数。"
+      "help": "国服旧版宠物托管的目标次数；国际服新版忽略此项。"
+    },
+    "RepeatCombatLeifCount": {
+      "name": "托管消耗生命之叶数量",
+      "help": "国际服新版托管允许消耗的生命之叶数量，范围为1至50。"
+    },
+    "RepeatCombatPrioritizeStamina": {
+      "name": "优先使用持有的行动力",
+      "help": "开启后，托管战斗会先消耗当前持有的行动力。"
+    },
+    "RepeatCombatGearMode": {
+      "name": "托管装备整理方式",
+      "help": "选择托管过程中自动整理装备时使用出售还是萃取。",
+      "Sell": "出售",
+      "Extract": "萃取"
+    },
+    "RepeatCombatEquipmentScore": {
+      "name": "装备分数阈值",
+      "help": "自动选择低于此装备分数的装备。数值必须是游戏滑条提供的档位。"
+    },
+    "RepeatCombatHeroSpeedFilter": {
+      "name": "排除英雄级速度词条",
+      "help": "开启后，保留速度达到指定值的英雄级装备。"
+    },
+    "RepeatCombatHeroSpeed": {
+      "name": "英雄级速度阈值",
+      "help": "英雄级装备的速度保留阈值。数值必须是游戏滑条提供的档位。"
+    },
+    "RepeatCombatLegendarySpeedFilter": {
+      "name": "排除传说级速度词条",
+      "help": "开启后，保留速度达到指定值的传说级装备。"
+    },
+    "RepeatCombatLegendarySpeed": {
+      "name": "传说级速度阈值",
+      "help": "传说级装备的速度保留阈值。数值必须是游戏滑条提供的档位。"
+    },
+    "RepeatCombatFlatMainStatExceptSpeed": {
+      "name": "必选主能力值固值词条装备",
+      "help": "自动选择主能力值为固值的装备，速度主属性除外。"
+    },
+    "RepeatCombatExcludeOtherworldLegendary": {
+      "name": "不选异界传说级装备",
+      "help": "开启后，异界讨伐获得的传说级装备不会被自动整理。"
     },
     "Saint37AutoRecycle": {
       "name": "装备自动出售",

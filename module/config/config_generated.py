@@ -105,6 +105,16 @@ class GeneratedConfig:
     Combat_BurnoutMode = 'Daily'  # Daily, Burnout
     Combat_FastCombatCount = 10
     Combat_RepeatCombatCount = 5
+    Combat_RepeatCombatLeifCount = 1
+    Combat_RepeatCombatPrioritizeStamina = True
+    Combat_RepeatCombatGearMode = 'Extract'  # Sell, Extract
+    Combat_RepeatCombatEquipmentScore = 28
+    Combat_RepeatCombatHeroSpeedFilter = True
+    Combat_RepeatCombatHeroSpeed = 4
+    Combat_RepeatCombatLegendarySpeedFilter = True
+    Combat_RepeatCombatLegendarySpeed = 4
+    Combat_RepeatCombatFlatMainStatExceptSpeed = True
+    Combat_RepeatCombatExcludeOtherworldLegendary = False
     Combat_Saint37AutoRecycle = False
 
     # Group `CombatRuntime`

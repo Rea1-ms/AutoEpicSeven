@@ -856,6 +856,50 @@
         "type": "input",
         "value": 5
       },
+      "RepeatCombatLeifCount": {
+        "type": "input",
+        "value": 1
+      },
+      "RepeatCombatPrioritizeStamina": {
+        "type": "checkbox",
+        "value": true
+      },
+      "RepeatCombatGearMode": {
+        "type": "select",
+        "value": "Extract",
+        "option": [
+          "Sell",
+          "Extract"
+        ]
+      },
+      "RepeatCombatEquipmentScore": {
+        "type": "input",
+        "value": 28
+      },
+      "RepeatCombatHeroSpeedFilter": {
+        "type": "checkbox",
+        "value": true
+      },
+      "RepeatCombatHeroSpeed": {
+        "type": "input",
+        "value": 4
+      },
+      "RepeatCombatLegendarySpeedFilter": {
+        "type": "checkbox",
+        "value": true
+      },
+      "RepeatCombatLegendarySpeed": {
+        "type": "input",
+        "value": 4
+      },
+      "RepeatCombatFlatMainStatExceptSpeed": {
+        "type": "checkbox",
+        "value": true
+      },
+      "RepeatCombatExcludeOtherworldLegendary": {
+        "type": "checkbox",
+        "value": false
+      },
       "Saint37AutoRecycle": {
         "type": "checkbox",
         "value": false
@@ -1061,6 +1105,50 @@
       "RepeatCombatCount": {
         "type": "input",
         "value": 5
+      },
+      "RepeatCombatLeifCount": {
+        "type": "input",
+        "value": 1
+      },
+      "RepeatCombatPrioritizeStamina": {
+        "type": "checkbox",
+        "value": true
+      },
+      "RepeatCombatGearMode": {
+        "type": "select",
+        "value": "Extract",
+        "option": [
+          "Sell",
+          "Extract"
+        ]
+      },
+      "RepeatCombatEquipmentScore": {
+        "type": "input",
+        "value": 28
+      },
+      "RepeatCombatHeroSpeedFilter": {
+        "type": "checkbox",
+        "value": true
+      },
+      "RepeatCombatHeroSpeed": {
+        "type": "input",
+        "value": 4
+      },
+      "RepeatCombatLegendarySpeedFilter": {
+        "type": "checkbox",
+        "value": true
+      },
+      "RepeatCombatLegendarySpeed": {
+        "type": "input",
+        "value": 4
+      },
+      "RepeatCombatFlatMainStatExceptSpeed": {
+        "type": "checkbox",
+        "value": true
+      },
+      "RepeatCombatExcludeOtherworldLegendary": {
+        "type": "checkbox",
+        "value": false
       },
       "Saint37AutoRecycle": {
         "type": "checkbox",

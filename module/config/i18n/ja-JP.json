@@ -554,7 +554,49 @@
     },
     "RepeatCombatCount": {
       "name": "反復戦闘回数",
-      "help": "ペット委任の反復戦闘の目標回数です。"
+      "help": "中国版の旧委任戦闘回数です。グローバル版の新方式では使用しません。"
+    },
+    "RepeatCombatLeifCount": {
+      "name": "消費する生命の葉の数",
+      "help": "サーバー委任戦闘で消費できる生命の葉の上限です。1～50。"
+    },
+    "RepeatCombatPrioritizeStamina": {
+      "name": "所持エネルギーを優先",
+      "help": "生命の葉より先に現在のエネルギーを使用します。"
+    },
+    "RepeatCombatGearMode": {
+      "name": "装備自動整理方式",
+      "help": "委任戦闘中に選択された装備を売却するか抽出するかを設定します。",
+      "Sell": "売却",
+      "Extract": "抽出"
+    },
+    "RepeatCombatEquipmentScore": {
+      "name": "装備スコアしきい値",
+      "help": "このスコア未満の装備を選択します。ゲーム内スライダーの値を指定してください。"
+    },
+    "RepeatCombatHeroSpeedFilter": {
+      "name": "英雄速度装備を保護",
+      "help": "指定速度以上の英雄装備を残します。"
+    },
+    "RepeatCombatHeroSpeed": {
+      "name": "英雄速度しきい値",
+      "help": "英雄装備の速度しきい値です。ゲーム内スライダーの値を指定してください。"
+    },
+    "RepeatCombatLegendarySpeedFilter": {
+      "name": "エピック速度装備を保護",
+      "help": "指定速度以上のエピック装備を残します。"
+    },
+    "RepeatCombatLegendarySpeed": {
+      "name": "エピック速度しきい値",
+      "help": "エピック装備の速度しきい値です。ゲーム内スライダーの値を指定してください。"
+    },
+    "RepeatCombatFlatMainStatExceptSpeed": {
+      "name": "固定値メイン装備を常に選択",
+      "help": "速度を除き、メイン能力が固定値の装備を常に選択します。"
+    },
+    "RepeatCombatExcludeOtherworldLegendary": {
+      "name": "異界エピック装備を除外",
+      "help": "異界討伐で獲得したエピック装備を自動整理から除外します。"
     },
     "Saint37AutoRecycle": {
       "name": "装備自動売却",

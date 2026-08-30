@@ -1,3 +1,4 @@
+import module.config.server as server
 from module.logger import logger
 from tasks.activity.scheduling import should_schedule_after_battle
 from tasks.base.page import page_combat, page_episode, page_side_story
@@ -9,6 +10,7 @@ from tasks.dungeon.entry import CombatEntryMixin
 from tasks.dungeon.execute import CombatExecuteMixin
 from tasks.dungeon.plan import COMBAT_PLANS, HUNT_PLAN
 from tasks.dungeon.prepare import CombatPrepare
+from tasks.dungeon.repeat import CombatRepeatMixin
 from tasks.dungeon.runtime import CombatRuntimeMixin, is_background_repeat_combat_active
 from tasks.dungeon.side_story import SideStoryNavigateMixin
 from tasks.dungeon.stamina_status import CombatStaminaStatusMixin
@@ -16,6 +18,7 @@ from tasks.mission_reward.scheduling import should_schedule_mission_reward
 
 
 class Combat(
+    CombatRepeatMixin,
     CombatBurnoutMixin,
     CombatRuntimeMixin,
     CombatExecuteMixin,
@@ -53,7 +56,9 @@ class Combat(
     COMBAT_SCROLL_END_Y = 220
 
     @staticmethod
-    def _should_schedule_mission_reward(completed_sessions: int, runtime_active: bool) -> bool:
+    def _should_schedule_mission_reward(
+        completed_sessions: int, runtime_active: bool
+    ) -> bool:
         """
         Only leave combat to claim mission rewards after at least one combat
         session has fully settled and no background repeat-combat session is
@@ -68,7 +73,10 @@ class Combat(
         return COMBAT_PLANS.get(self._dungeon_domain(), HUNT_PLAN)
 
     def _combat_is_farm_task(self) -> bool:
-        return getattr(getattr(self.config, "task", None), "command", "Combat") == "CombatFarm"
+        return (
+            getattr(getattr(self.config, "task", None), "command", "Combat")
+            == "CombatFarm"
+        )
 
     def _combat_element(self) -> str:
         return getattr(self.config, "Combat_Element", "Water")
@@ -124,7 +132,11 @@ class Combat(
         return not self._combat_is_farm_task()
 
     def _combat_should_cleanup_saint37_reward_items(self) -> bool:
-        return self._combat_is_saint37() and bool(getattr(self.config, "Combat_Saint37AutoRecycle", False))
+        if self._uses_server_repeat_combat():
+            return False
+        return self._combat_is_saint37() and bool(
+            getattr(self.config, "Combat_Saint37AutoRecycle", False)
+        )
 
     def _is_in_dungeon_context(self) -> bool:
         """
@@ -224,7 +236,9 @@ class Combat(
             # repeat marker used by startup precheck, so do not try to treat it
             # like a shared-toolbar page. Normalize to main first, then run the
             # old-session adoption check there.
-            logger.info("Combat: goto main before checking background repeat combat from supporter page")
+            logger.info(
+                "Combat: goto main before checking background repeat combat from supporter page"
+            )
             self.ui_goto_main()
             self.device.screenshot()
             return
@@ -234,7 +248,9 @@ class Combat(
             self.device.screenshot()
             return
 
-        logger.info("Combat: current page is unsafe for background repeat precheck, goto main")
+        logger.info(
+            "Combat: current page is unsafe for background repeat precheck, goto main"
+        )
         self.ui_goto_main()
         self.device.screenshot()
 
@@ -243,19 +259,38 @@ class Combat(
         if domain == "Episode4":
             return self._navigate_episode4(skip_first_screenshot=skip_first_screenshot)
         if domain == "Saint37":
-            return self._navigate_side_story(skip_first_screenshot=skip_first_screenshot)
+            return self._navigate_side_story(
+                skip_first_screenshot=skip_first_screenshot
+            )
 
         plan = self._combat_plan()
-        success = self._enter_stage_page(plan, skip_first_screenshot=skip_first_screenshot)
+        success = self._enter_stage_page(
+            plan, skip_first_screenshot=skip_first_screenshot
+        )
         if success:
-            success = self._select_element(plan, skip_first_screenshot=skip_first_screenshot)
+            success = self._select_element(
+                plan, skip_first_screenshot=skip_first_screenshot
+            )
         if success:
-            success = self._enter_prepare_page(plan, skip_first_screenshot=skip_first_screenshot)
+            success = self._enter_prepare_page(
+                plan, skip_first_screenshot=skip_first_screenshot
+            )
         return success
 
     def run(self) -> bool:
         logger.hr("Combat", level=1)
         completed_sessions = 0
+
+        if (
+            server.is_oversea_server(self.config.Emulator_PackageName)
+            and server.lang != "global_cn"
+        ):
+            logger.info(
+                "Combat: the new global-server repeat flow currently supports Chinese assets only; "
+                f"skip language={server.lang}"
+            )
+            self.config.task_delay(server_update=True)
+            return True
 
         if not self.device.app_is_running():
             from tasks.login.login import Login
@@ -309,7 +344,7 @@ class Combat(
                 logger.warning("Combat: background session lost, relaunch combat")
                 self._combat_runtime_clear()
             else:
-                self.config.task_delay(minute=self.COMBAT_BACKGROUND_CHECK_MINUTES)
+                self._delay_running_repeat_combat()
                 return True
 
         domain = self._dungeon_domain()
@@ -346,23 +381,35 @@ class Combat(
         logger.attr("CombatFastCombatAllowed", fast_combat_allowed)
         logger.attr("CombatFastCombatSelected", fast_combat_selected)
         logger.attr("CombatFastCombatCount", self._combat_fast_count())
-        if self._combat_burnout_enabled():
+        if self._uses_server_repeat_combat():
+            logger.attr("CombatRepeatCombatLeifCount", self._repeat_combat_leif_count())
+            logger.attr(
+                "CombatRepeatPrioritizeStamina", self._repeat_prioritize_stamina()
+            )
+            logger.attr("CombatRepeatGearMode", self._repeat_gear_mode())
+        elif self._combat_burnout_enabled():
             logger.attr("CombatRepeatCombatCount", "maximum affordable")
         else:
             logger.attr("CombatRepeatCombatCount", self._combat_repeat_count())
         logger.attr("CombatRepeatCombatPlanned", repeat_combat_planned)
         if domain == "Saint37":
-            logger.attr("CombatSaint37AutoRecycle", self._combat_should_cleanup_saint37_reward_items())
+            logger.attr(
+                "CombatSaint37AutoRecycle",
+                self._combat_should_cleanup_saint37_reward_items(),
+            )
 
         success = self._dungeon_navigate(skip_first_screenshot=True)
 
         prepare_resources = None
         current_stamina = None
         if success:
-            prepare_resources = self._update_prepare_resource_snapshot(skip_first_screenshot=True)
+            prepare_resources = self._update_prepare_resource_snapshot(
+                skip_first_screenshot=True
+            )
             success = prepare_resources is not None
             if prepare_resources is not None:
-                current_stamina = prepare_resources["stamina"].value
+                stamina = prepare_resources.get("stamina")
+                current_stamina = stamina.value if stamina is not None else None
 
         if success and fast_combat_selected and self._is_fast_combat_locked():
             logger.warning("Combat: fast combat locked, fallback to repeat combat")
@@ -370,24 +417,37 @@ class Combat(
 
         if success:
             if fast_combat_selected:
-                assert current_stamina is not None
-                fast_prepare, fast_combat_prepared_count = self._prepare_fast_combat(
-                    stamina=current_stamina,
-                    use_max=self._combat_is_farm_task(),
-                    skip_first_screenshot=True,
-                )
-                if fast_prepare == "fallback":
-                    fast_combat_selected = False
-                elif fast_prepare == "no_stamina":
-                    logger.info("Combat: no stamina available, leave prepare page")
-                    self._combat_runtime_clear()
-                    if self._leave_to_main(skip_first_screenshot=True):
-                        self._combat_delay_after_settled()
-                        return True
-                    self.config.task_delay(success=False)
-                    return False
+                if current_stamina is None:
+                    logger.warning("Combat: no stamina field available for fast combat")
+                    success = False
                 else:
-                    success = fast_prepare == "ready"
+                    fast_prepare, fast_combat_prepared_count = (
+                        self._prepare_fast_combat(
+                            stamina=current_stamina,
+                            use_max=self._combat_is_farm_task(),
+                            skip_first_screenshot=True,
+                        )
+                    )
+                    if fast_prepare == "fallback":
+                        fast_combat_selected = False
+                    elif fast_prepare == "no_stamina":
+                        if self._uses_server_repeat_combat():
+                            logger.info(
+                                "Combat: no stamina for fast combat, continue with server repeat"
+                            )
+                            fast_combat_selected = False
+                        else:
+                            logger.info(
+                                "Combat: no stamina available, leave prepare page"
+                            )
+                            self._combat_runtime_clear()
+                            if self._leave_to_main(skip_first_screenshot=True):
+                                self._combat_delay_after_settled()
+                                return True
+                            self.config.task_delay(success=False)
+                            return False
+                    else:
+                        success = fast_prepare == "ready"
 
         if success:
             if fast_combat_selected:
@@ -395,51 +455,75 @@ class Combat(
                 if success:
                     fast_combat_completed_count = fast_combat_prepared_count
                     completed_sessions += 1
-                    prepare_resources = self._update_prepare_resource_snapshot(skip_first_screenshot=True)
+                    prepare_resources = self._update_prepare_resource_snapshot(
+                        skip_first_screenshot=True
+                    )
                     success = prepare_resources is not None
                     if prepare_resources is not None:
-                        current_stamina = prepare_resources["stamina"].value
+                        stamina = prepare_resources.get("stamina")
+                        current_stamina = stamina.value if stamina is not None else None
 
             if success and repeat_combat_planned:
-                stamina_cost = self._combat_stage_stamina_cost()
-                affordable_count = None
-                if stamina_cost is not None:
-                    assert current_stamina is not None
-                    affordable_count = current_stamina // stamina_cost
-                    logger.attr("CombatRepeatAffordableCount", affordable_count)
-
-                if not (self._combat_is_farm_task() or self._combat_burnout_enabled()):
-                    fixed_remaining = max(
-                        self._combat_repeat_count() - fast_combat_completed_count,
-                        0,
-                    )
-                    if affordable_count is None:
-                        affordable_count = fixed_remaining
-                    else:
-                        affordable_count = min(affordable_count, fixed_remaining)
-                    logger.attr("CombatRepeatFixedRemainingCount", fixed_remaining)
-
-                if affordable_count == 0:
-                    if (
-                        not (self._combat_is_farm_task() or self._combat_burnout_enabled())
-                        and fast_combat_completed_count >= self._combat_repeat_count()
-                    ):
-                        logger.info("Combat: fixed combat count completed by fast combat")
-                    else:
-                        logger.info("Combat: insufficient stamina for pet repeat combat")
-                else:
-                    use_max_repeat = self._combat_is_farm_task() or self._combat_burnout_enabled()
-                    success = self._prepare_repeat_combat(
-                        use_max=use_max_repeat,
-                        affordable_count=affordable_count,
-                        completed_count=fast_combat_completed_count,
-                        skip_first_screenshot=True,
-                    )
+                if self._uses_server_repeat_combat():
+                    success = self._prepare_repeat_combat(skip_first_screenshot=True)
                     if success:
                         success = self._run_repeat_combat(skip_first_screenshot=True)
                         repeat_combat_started = success
+                else:
+                    stamina_cost = self._combat_stage_stamina_cost()
+                    affordable_count = None
+                    if stamina_cost is not None:
+                        assert current_stamina is not None
+                        affordable_count = current_stamina // stamina_cost
+                        logger.attr("CombatRepeatAffordableCount", affordable_count)
 
-        if success and not repeat_combat_started:
+                    if not (
+                        self._combat_is_farm_task() or self._combat_burnout_enabled()
+                    ):
+                        fixed_remaining = max(
+                            self._combat_repeat_count() - fast_combat_completed_count,
+                            0,
+                        )
+                        if affordable_count is None:
+                            affordable_count = fixed_remaining
+                        else:
+                            affordable_count = min(affordable_count, fixed_remaining)
+                        logger.attr("CombatRepeatFixedRemainingCount", fixed_remaining)
+
+                    if affordable_count == 0:
+                        if (
+                            not (
+                                self._combat_is_farm_task()
+                                or self._combat_burnout_enabled()
+                            )
+                            and fast_combat_completed_count
+                            >= self._combat_repeat_count()
+                        ):
+                            logger.info(
+                                "Combat: fixed combat count completed by fast combat"
+                            )
+                        else:
+                            logger.info(
+                                "Combat: insufficient stamina for pet repeat combat"
+                            )
+                    else:
+                        use_max_repeat = (
+                            self._combat_is_farm_task()
+                            or self._combat_burnout_enabled()
+                        )
+                        success = self._prepare_repeat_combat(
+                            use_max=use_max_repeat,
+                            affordable_count=affordable_count,
+                            completed_count=fast_combat_completed_count,
+                            skip_first_screenshot=True,
+                        )
+                        if success:
+                            success = self._run_repeat_combat(
+                                skip_first_screenshot=True
+                            )
+                            repeat_combat_started = success
+
+        if success and (not repeat_combat_started or self._uses_server_repeat_combat()):
             success = self._leave_to_main(skip_first_screenshot=True)
 
         logger.attr("CombatRepeatCombatStarted", repeat_combat_started)
@@ -459,7 +543,7 @@ class Combat(
                     self.config.task_call("SpecialActivity", force_call=False)
             if repeat_combat_started:
                 self._combat_runtime_set(self._combat_runtime_build())
-                self.config.task_delay(minute=self.COMBAT_BACKGROUND_CHECK_MINUTES)
+                self._delay_running_repeat_combat()
             else:
                 self._combat_runtime_clear()
                 self._combat_delay_after_settled()

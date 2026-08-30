@@ -41,7 +41,10 @@ from tasks.dungeon.assets.assets_dungeon_configs_combat_entry import (
     SPIRIT_ALTAR,
     URGENT_TASKS,
 )
-from tasks.dungeon.assets.assets_dungeon_repeat_entry import REPEAT_COMBAT_MENU
+if server_.lang == "global_cn":
+    from tasks.dungeon.assets.assets_dungeon_repeat_common import REPEAT_COMBAT_MENU
+else:
+    from tasks.dungeon.assets.assets_dungeon_repeat_entry import REPEAT_COMBAT_MENU
 from tasks.dungeon.assets.assets_dungeon_configs_episode_entry import (
     EPISODE_CHOOSE,
 )

@@ -223,6 +223,18 @@ Combat:
     option: [ Daily, Burnout ]
   FastCombatCount: 10
   RepeatCombatCount: 5
+  RepeatCombatLeifCount: 1
+  RepeatCombatPrioritizeStamina: true
+  RepeatCombatGearMode:
+    value: Extract
+    option: [ Sell, Extract ]
+  RepeatCombatEquipmentScore: 28
+  RepeatCombatHeroSpeedFilter: true
+  RepeatCombatHeroSpeed: 4
+  RepeatCombatLegendarySpeedFilter: true
+  RepeatCombatLegendarySpeed: 4
+  RepeatCombatFlatMainStatExceptSpeed: true
+  RepeatCombatExcludeOtherworldLegendary: false
   Saint37AutoRecycle: false
 
 CombatRuntime:

@@ -633,6 +633,19 @@ class ConfigUpdater:
             elif deep_get(data, f'{task_prefix}.FastCombat', default=True) is False:
                 yield f'{task_prefix}.FastCombatCount'
 
+            if deep_get(
+                data,
+                f'{task_prefix}.RepeatCombatHeroSpeedFilter',
+                default=True,
+            ) is False:
+                yield f'{task_prefix}.RepeatCombatHeroSpeed'
+            if deep_get(
+                data,
+                f'{task_prefix}.RepeatCombatLegendarySpeedFilter',
+                default=True,
+            ) is False:
+                yield f'{task_prefix}.RepeatCombatLegendarySpeed'
+
             if not is_farm_task and normalize_execution_mode(
                 deep_get(data, f'{task_prefix}.BurnoutMode', default=EXECUTION_MODE_DAILY)
             ) == EXECUTION_MODE_BURNOUT:

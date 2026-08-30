@@ -554,7 +554,49 @@
     },
     "RepeatCombatCount": {
       "name": "Repeat Combat Count",
-      "help": "Target repeat combat count for pet repeat battle."
+      "help": "Legacy CN-server repeat count. The new global-server flow ignores this option."
+    },
+    "RepeatCombatLeifCount": {
+      "name": "Leifs to Spend",
+      "help": "Maximum Leifs the new server-managed repeat battle may spend, from 1 to 50."
+    },
+    "RepeatCombatPrioritizeStamina": {
+      "name": "Prioritize Owned Energy",
+      "help": "Use currently owned Energy before spending Leifs."
+    },
+    "RepeatCombatGearMode": {
+      "name": "Auto Gear Cleanup Mode",
+      "help": "Sell or extract equipment selected during server-managed repeat battle.",
+      "Sell": "Sell",
+      "Extract": "Extract"
+    },
+    "RepeatCombatEquipmentScore": {
+      "name": "Equipment Score Threshold",
+      "help": "Select equipment below this score. The value must exist on the in-game slider."
+    },
+    "RepeatCombatHeroSpeedFilter": {
+      "name": "Protect Heroic Speed Gear",
+      "help": "Keep Heroic gear whose Speed reaches the configured threshold."
+    },
+    "RepeatCombatHeroSpeed": {
+      "name": "Heroic Speed Threshold",
+      "help": "Speed threshold for Heroic gear. The value must exist on the in-game slider."
+    },
+    "RepeatCombatLegendarySpeedFilter": {
+      "name": "Protect Epic Speed Gear",
+      "help": "Keep Epic gear whose Speed reaches the configured threshold."
+    },
+    "RepeatCombatLegendarySpeed": {
+      "name": "Epic Speed Threshold",
+      "help": "Speed threshold for Epic gear. The value must exist on the in-game slider."
+    },
+    "RepeatCombatFlatMainStatExceptSpeed": {
+      "name": "Always Select Flat Main Stats",
+      "help": "Always select equipment with flat main stats, except Speed boots."
+    },
+    "RepeatCombatExcludeOtherworldLegendary": {
+      "name": "Exclude Otherworld Epic Gear",
+      "help": "Do not auto-clean Epic equipment obtained from Rift."
     },
     "Saint37AutoRecycle": {
       "name": "Auto Sell Equipment",

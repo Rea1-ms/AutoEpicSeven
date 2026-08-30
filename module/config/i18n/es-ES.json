@@ -554,7 +554,49 @@
     },
     "RepeatCombatCount": {
       "name": "Cantidad de combate repetido",
-      "help": "Cantidad objetivo de combate repetido para la repeticion con mascota."
+      "help": "Cantidad del sistema antiguo del servidor chino. El nuevo sistema global ignora esta opción."
+    },
+    "RepeatCombatLeifCount": {
+      "name": "Hojas de vida a gastar",
+      "help": "Máximo de Hojas de vida que puede gastar el combate delegado, de 1 a 50."
+    },
+    "RepeatCombatPrioritizeStamina": {
+      "name": "Priorizar energía disponible",
+      "help": "Usa primero la energía disponible antes de gastar Hojas de vida."
+    },
+    "RepeatCombatGearMode": {
+      "name": "Modo de limpieza de equipo",
+      "help": "Vende o extrae el equipo seleccionado durante el combate delegado.",
+      "Sell": "Vender",
+      "Extract": "Extraer"
+    },
+    "RepeatCombatEquipmentScore": {
+      "name": "Umbral de puntuación de equipo",
+      "help": "Selecciona equipo por debajo de esta puntuación. Debe ser un valor del deslizador del juego."
+    },
+    "RepeatCombatHeroSpeedFilter": {
+      "name": "Proteger velocidad heroica",
+      "help": "Conserva equipo heroico cuya velocidad alcance el umbral configurado."
+    },
+    "RepeatCombatHeroSpeed": {
+      "name": "Umbral de velocidad heroica",
+      "help": "Umbral de velocidad para equipo heroico. Debe ser un valor del deslizador del juego."
+    },
+    "RepeatCombatLegendarySpeedFilter": {
+      "name": "Proteger velocidad épica",
+      "help": "Conserva equipo épico cuya velocidad alcance el umbral configurado."
+    },
+    "RepeatCombatLegendarySpeed": {
+      "name": "Umbral de velocidad épica",
+      "help": "Umbral de velocidad para equipo épico. Debe ser un valor del deslizador del juego."
+    },
+    "RepeatCombatFlatMainStatExceptSpeed": {
+      "name": "Seleccionar estadísticas principales planas",
+      "help": "Selecciona siempre equipo con estadística principal plana, excepto botas de Velocidad."
+    },
+    "RepeatCombatExcludeOtherworldLegendary": {
+      "name": "Excluir equipo épico de Grieta",
+      "help": "No limpia automáticamente equipo épico obtenido en Grieta."
     },
     "Saint37AutoRecycle": {
       "name": "Venta Automática de Equipo",

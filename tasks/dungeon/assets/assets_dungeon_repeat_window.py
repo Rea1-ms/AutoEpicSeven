@@ -52,13 +52,7 @@ FAST_CHOOSE = ButtonWrapper(
         color=(157, 149, 143),
         button=(286, 164, 368, 185),
     ),
-    global_cn=Button(
-        file='./assets/global_cn/dungeon/repeat/window/FAST_CHOOSE.png',
-        area=(285, 164, 369, 184),
-        search=(265, 144, 389, 204),
-        color=(158, 151, 146),
-        button=(285, 164, 369, 184),
-    ),
+    global_cn=None,
     global_en=None,
 )
 PACKAGE_CHECK = ButtonWrapper(
@@ -90,13 +84,7 @@ SELL = ButtonWrapper(
         color=(148, 158, 172),
         button=(526, 164, 565, 184),
     ),
-    global_cn=Button(
-        file='./assets/global_cn/dungeon/repeat/window/SELL.png',
-        area=(526, 164, 566, 184),
-        search=(506, 144, 586, 204),
-        color=(140, 151, 166),
-        button=(526, 164, 566, 184),
-    ),
+    global_cn=None,
     global_en=None,
 )
 SORT = ButtonWrapper(
@@ -108,13 +96,7 @@ SORT = ButtonWrapper(
         color=(84, 85, 87),
         button=(953, 166, 992, 185),
     ),
-    global_cn=Button(
-        file='./assets/global_cn/dungeon/repeat/window/SORT.png',
-        area=(954, 165, 992, 184),
-        search=(934, 145, 1012, 204),
-        color=(84, 85, 87),
-        button=(954, 165, 992, 184),
-    ),
+    global_cn=None,
     global_en=None,
 )
 WINDOW_CHECK = ButtonWrapper(
