@@ -898,11 +898,15 @@ class CombatRepeatMixin:
                 if self.appear_then_click(REPEAT_COMBAT_OVER, interval=1):
                     timeout.reset()
                     continue
-                if self._handle_dungeon_additional():
-                    timeout.reset()
-                    continue
+                # Keep the settlement state scoped to the known result
+                # controls and TOUCH_TO_CLOSE; generic popup handling may
+                # incorrectly click an advertisement close asset here.
 
             if stage == "finish":
+                if self.appear_then_click(TOUCH_TO_CLOSE, interval=1):
+                    logger.info("Combat: close server repeat settlement summary")
+                    timeout.reset()
+                    continue
                 if self._is_repeat_result_window():
                     if self.appear_then_click(SETTLEMENT_CLOSE, interval=1):
                         timeout.reset()
@@ -915,9 +919,6 @@ class CombatRepeatMixin:
                         return "finished"
                 else:
                     finish_confirm.clear()
-                if self._handle_dungeon_additional():
-                    timeout.reset()
-                    continue
                 if self._is_in_dungeon_context() and self.appear_then_click(
                     BACK, interval=1
                 ):
