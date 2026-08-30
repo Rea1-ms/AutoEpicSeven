@@ -418,7 +418,12 @@ class Combat(
                 stamina = prepare_resources.get("stamina")
                 current_stamina = stamina.value if stamina is not None else None
 
-        if success and fast_combat_selected and self._is_fast_combat_locked():
+        if (
+            success
+            and not self._uses_server_repeat_combat()
+            and fast_combat_selected
+            and self._is_fast_combat_locked()
+        ):
             logger.warning("Combat: fast combat locked, fallback to repeat combat")
             fast_combat_selected = False
 

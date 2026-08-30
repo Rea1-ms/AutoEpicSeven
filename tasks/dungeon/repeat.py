@@ -7,7 +7,7 @@ from module.exception import RequestHumanTakeover
 from module.logger import logger
 from module.ocr.ocr import Digit, DigitCounter, Duration
 from tasks.base.assets.assets_base_page import BACK
-from tasks.base.assets.assets_base_popup import AD_BUFF_X_CLOSE, TOUCH_TO_CLOSE
+from tasks.base.assets.assets_base_popup import TOUCH_TO_CLOSE
 from tasks.base.resource_bar import (
     RESOURCE_KIND_INT,
     OcrResourceBar,
@@ -501,8 +501,6 @@ class CombatRepeatMixin:
 
         logger.hr("Combat Prepare Resources", level=2)
         timeout = Timer(self.COMBAT_PREPARE_TIMEOUT_SECONDS, count=90).start()
-        parsed = None
-        close_pending = False
 
         while 1:
             if skip_first_screenshot:
@@ -516,24 +514,19 @@ class CombatRepeatMixin:
 
             if self._is_prepare_page():
                 self._raise_if_repeat_combat_unavailable()
-                if close_pending:
-                    return parsed
                 if self.appear_then_click(REPEAT_COMBAT_MENU, interval=1):
                     logger.info("Combat: open server repeat menu for resource snapshot")
                     timeout.reset()
                     continue
 
             if self._is_repeat_menu_open():
-                if not close_pending:
-                    parsed = self._ocr_server_repeat_resources()
-                    if parsed is not None:
-                        close_pending = True
-                if close_pending and self.appear_then_click(
-                    AD_BUFF_X_CLOSE, interval=1
-                ):
-                    logger.info("Combat: close server repeat resource panel")
-                    timeout.reset()
-                    continue
+                parsed = self._ocr_server_repeat_resources()
+                if parsed is not None:
+                    # Resource OCR and repeat settings share this window. Keep
+                    # it open so the next state loop can continue directly on
+                    # the battle-settings tab instead of closing and reopening
+                    # the exact same overlay.
+                    return parsed
 
             if self._handle_repeat_count_overlay_additional():
                 timeout.reset()
