@@ -5,14 +5,9 @@ from typing import Literal
 from module.base.button import ButtonWrapper, ClickButton
 from module.base.timer import Timer
 from module.base.utils import save_image
+from module.exception import RequestHumanTakeover
 from module.logger import logger
-from tasks.base.page import (
-    page_common_store,
-    page_conquest_points_store,
-    page_free_store,
-    page_inheritance_stone_store,
-    page_store,
-)
+from tasks.base.page import page_store
 from tasks.base.ui import UI
 from tasks.store.purchase import (
     ItemPurchasePlan,
@@ -45,6 +40,19 @@ from tasks.store.assets.assets_store_items import (
     MOBILITY_40,
     MOROGORA,
     STORE_ITEMS_SEARCH,
+)
+from tasks.store.assets.assets_store_entries import (
+    COMMON_STORE_CHECK,
+    COMMON_STORE_ENTRY,
+    CONQUEST_POINTS_STORE_CHECK,
+    CONQUEST_POINTS_STORE_ENTRY,
+    FREE_STORE_CHECK,
+    FREE_STORE_ENTRY,
+    INHERITANCE_STONE_STORE_CHECK,
+    INHERITANCE_STONE_STORE_ENTRY,
+    STORE_CHECK,
+    SUB_STORE_ENTRY,
+    SUB_TAB_ENTRY,
 )
 
 PurchasePopupLayout = Literal['unknown', 'single', 'multi']
@@ -199,6 +207,29 @@ class CurrentStore(UI):
         ):
             button.load_search(STORE_ITEMS_SEARCH.area)
 
+    @staticmethod
+    def _load_sub_store_entry_search() -> None:
+        # The outer store list is a vertical column whose position changes when
+        # promotional entries are inserted. Search the complete column for both
+        # selected and unselected states instead of keeping version-specific Y
+        # coordinates.
+        for button in (
+            COMMON_STORE_CHECK,
+            COMMON_STORE_ENTRY,
+            CONQUEST_POINTS_STORE_CHECK,
+            CONQUEST_POINTS_STORE_ENTRY,
+        ):
+            button.load_search(SUB_STORE_ENTRY.area)
+
+        # Promotional tabs can shift the free and inheritance tabs horizontally.
+        # Unselected entries live inside the tab row, so they use its complete
+        # area directly.
+        for button in (
+            FREE_STORE_ENTRY,
+            INHERITANCE_STONE_STORE_ENTRY,
+        ):
+            button.load_search(SUB_TAB_ENTRY.area)
+
     def _save_debug_image(self, tag: str):
         now = datetime.now()
         folder = Path('log/store_debug') / now.strftime('%Y%m%d')
@@ -253,14 +284,14 @@ class CurrentStore(UI):
         return sorted(matches, key=lambda x: (x.area[1], x.area[0]))[0]
 
     def _is_on_any_store_page(self) -> bool:
-        for page in (
-            page_free_store,
-            page_inheritance_stone_store,
-            page_conquest_points_store,
-            page_common_store,
-            page_store,
+        for check_button in (
+            FREE_STORE_CHECK,
+            INHERITANCE_STONE_STORE_CHECK,
+            CONQUEST_POINTS_STORE_CHECK,
+            COMMON_STORE_CHECK,
+            STORE_CHECK,
         ):
-            if self.ui_page_appear(page, interval=0):
+            if self.appear(check_button, interval=0):
                 return True
         return False
 
@@ -767,20 +798,79 @@ class CurrentStore(UI):
             if stable_count >= self.POST_PURCHASE_STABLE_FRAMES:
                 return True
 
+    def _enter_sub_store(
+        self,
+        name: str,
+        check_button: ButtonWrapper,
+        entry_button: ButtonWrapper,
+        parent_entry_button: ButtonWrapper | None = None,
+        skip_first_screenshot: bool = True,
+    ) -> bool:
+        """
+        Enter one concrete store tab without adding overlapping pages globally.
+
+        The store title and outer-category selection remain visible inside
+        child tabs, so they cannot uniquely identify a Page. This local loop
+        always checks the concrete target first, then enters its outer category
+        and finally handles common popups. A bounded timeout prevents an asset
+        mismatch from turning into an endless navigation loop.
+
+        Pages:
+            in: page_store, any store sub-page
+            out: target store tab identified by check_button
+        """
+        logger.info(f'Store: enter {name}')
+        timeout = Timer(15, count=30).start()
+
+        while 1:
+            if skip_first_screenshot:
+                skip_first_screenshot = False
+            else:
+                self.device.screenshot()
+
+            if self.appear(check_button):
+                return True
+
+            if timeout.reached():
+                logger.critical(f'Store: enter {name} timeout')
+                self._save_debug_image(f'enter_{name}_timeout')
+                raise RequestHumanTakeover
+
+            if self.appear_then_click(entry_button, interval=2):
+                continue
+            if parent_entry_button is not None and self.appear_then_click(
+                parent_entry_button,
+                interval=2,
+            ):
+                continue
+            if self.ui_additional():
+                continue
+
     def _enter_free_store(self, skip_first_screenshot=True) -> bool:
-        logger.info('Store: enter free store')
-        self.ui_goto(page_free_store, skip_first_screenshot=skip_first_screenshot)
-        return True
+        return self._enter_sub_store(
+            name='free_store',
+            check_button=FREE_STORE_CHECK,
+            entry_button=FREE_STORE_ENTRY,
+            parent_entry_button=COMMON_STORE_ENTRY,
+            skip_first_screenshot=skip_first_screenshot,
+        )
 
     def _goto_inheritance_stone_store(self, skip_first_screenshot=True) -> bool:
-        logger.info('Store: switch to inheritance stone store')
-        self.ui_goto(page_inheritance_stone_store, skip_first_screenshot=skip_first_screenshot)
-        return True
+        return self._enter_sub_store(
+            name='inheritance_stone_store',
+            check_button=INHERITANCE_STONE_STORE_CHECK,
+            entry_button=INHERITANCE_STONE_STORE_ENTRY,
+            parent_entry_button=COMMON_STORE_ENTRY,
+            skip_first_screenshot=skip_first_screenshot,
+        )
 
     def _enter_conquest_points_store(self, skip_first_screenshot=True) -> bool:
-        logger.info('Store: enter conquest points store')
-        self.ui_goto(page_conquest_points_store, skip_first_screenshot=skip_first_screenshot)
-        return True
+        return self._enter_sub_store(
+            name='conquest_points_store',
+            check_button=CONQUEST_POINTS_STORE_CHECK,
+            entry_button=CONQUEST_POINTS_STORE_ENTRY,
+            skip_first_screenshot=skip_first_screenshot,
+        )
 
     def _scroll_inheritance_store_once(self):
         # Swipe left to reveal later cards in the horizontal inheritance list.
@@ -929,6 +1019,7 @@ class CurrentStore(UI):
 
             Login(self.config, device=self.device).app_start()
 
+        self._load_sub_store_entry_search()
         self.ui_goto(page_store)
         self._load_shared_item_search()
 

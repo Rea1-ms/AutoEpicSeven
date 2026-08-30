@@ -13,17 +13,7 @@ from tasks.mission_reward.assets.assets_mission_reward_entries import (
     MISSION_REWARD_DAILY_ENTRY_CHECK,
 )
 from tasks.secret_shop.assets.assets_secret_shop import SECRET_SHOP_CHECK
-from tasks.store.assets.assets_store_entries import (
-    COMMON_STORE_ENTRY,
-    COMMON_STORE_CHECK,
-    CONQUEST_POINTS_STORE_ENTRY,
-    CONQUEST_POINTS_STORE_CHECK,
-    FREE_STORE_ENTRY,
-    FREE_STORE_CHECK,
-    INHERITANCE_STONE_STORE_ENTRY,
-    INHERITANCE_STONE_STORE_CHECK,
-    STORE_CHECK
-)
+from tasks.store.assets.assets_store_entries import STORE_CHECK
 from tasks.arena.assets.assets_arena import (
     ARENA_CHECK,
     ARENA_COMMON_ENTRY,
@@ -349,40 +339,14 @@ page_main.link(MAIN_GOTO_INVENTORY, destination=page_inventory_equipment)
 page_inventory.link(EQUIPMENT_ENTRY, destination=page_inventory_equipment)
 
 # Store
+# Store sub-categories and their top tabs deliberately stay out of the global
+# page graph. STORE_CHECK persists across those child views, while their outer
+# selection markers overlap with concrete tab markers. The Store task handles
+# that nested hierarchy with a local state loop after reaching this container.
 
 page_store = Page(STORE_CHECK)
 page_store.link(BACK, destination=page_main)
 page_main.link(MAIN_GOTO_STORE, destination=page_store)
-
-# Current top-bar checks overlap:
-# - COMMON_STORE_CHECK stays valid inside both free / inheritance pages
-# - store top-bar markers coexist with sub-store markers
-# Define the more specific current sub-pages first so ui_get_current_page()
-# does not stop at a broader container page too early.
-page_free_store = Page(FREE_STORE_CHECK)
-page_free_store.link(BACK, destination=page_main)
-
-page_inheritance_stone_store = Page(INHERITANCE_STONE_STORE_CHECK)
-page_inheritance_stone_store.link(BACK, destination=page_main)
-
-page_conquest_points_store = Page(CONQUEST_POINTS_STORE_CHECK)
-page_conquest_points_store.link(BACK, destination=page_main)
-
-page_common_store = Page(COMMON_STORE_CHECK)
-page_common_store.link(BACK, destination=page_main)
-
-# Enter common branch from store home
-page_store.link(COMMON_STORE_ENTRY, destination=page_common_store)
-page_store.link(COMMON_STORE_ENTRY, destination=page_free_store)
-
-# Enter conquest directly from store home
-page_store.link(CONQUEST_POINTS_STORE_ENTRY, destination=page_conquest_points_store)
-
-# Common branch internal switching
-page_common_store.link(FREE_STORE_ENTRY, destination=page_free_store)
-page_common_store.link(INHERITANCE_STONE_STORE_ENTRY, destination=page_inheritance_stone_store)
-page_free_store.link(INHERITANCE_STONE_STORE_ENTRY, destination=page_inheritance_stone_store)
-page_inheritance_stone_store.link(FREE_STORE_ENTRY, destination=page_free_store)
 
 # Mission reward popup
 #
@@ -568,13 +532,6 @@ shared_toolbar_pages = [
 ]
 
 link_shared_toolbar(*shared_toolbar_pages)
-
-link_shared_toolbar(
-    page_free_store,
-    page_inheritance_stone_store,
-    page_conquest_points_store,
-    page_common_store,
-)
 
 # These pages share the same top-right controls for routing, but background
 # repeat-combat precheck should not rely on them:
