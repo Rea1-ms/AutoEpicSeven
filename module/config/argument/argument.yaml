@@ -228,11 +228,17 @@ Combat:
   RepeatCombatGearMode:
     value: Extract
     option: [ Sell, Extract ]
-  RepeatCombatEquipmentScore: 28
+  RepeatCombatEquipmentScore:
+    value: 28
+    option: [ 22, 24, 26, 28, 30, 32 ]
   RepeatCombatHeroSpeedFilter: true
-  RepeatCombatHeroSpeed: 4
+  RepeatCombatHeroSpeed:
+    value: 4
+    option: [ 2, 3, 4 ]
   RepeatCombatLegendarySpeedFilter: true
-  RepeatCombatLegendarySpeed: 4
+  RepeatCombatLegendarySpeed:
+    value: 4
+    option: [ 2, 3, 4, 5 ]
   RepeatCombatFlatMainStatExceptSpeed: true
   RepeatCombatExcludeOtherworldLegendary: false
   Saint37AutoRecycle: false

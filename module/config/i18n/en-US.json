@@ -82,10 +82,6 @@
       "name": "Special Activity",
       "help": "Claim available rewards from limited-time activities."
     },
-    "CombatFarm": {
-      "name": "Repeat Farming",
-      "help": "Stop the scheduler before running this tool. It checks background repeat combat once per minute. If fast combat is allowed, it consumes all available fast combats first, then switches to pet repeat combat."
-    },
     "CommunityAuth": {
       "name": "Community Login",
       "help": "Open the Electron community login window and refresh the CK used by Community AIO."
@@ -540,11 +536,11 @@
     },
     "FastCombat": {
       "name": "Use Fast Combat",
-      "help": "Use fast combat first when available, then switch to pet repeat combat after fast combat is exhausted. If disabled, only pet repeat combat will be used."
+      "help": "On the new global flow, start server-managed repeat combat first, then spend only the unreserved Energy on fast combat. The CN server keeps the legacy order."
     },
     "BurnoutMode": {
       "name": "Execution Mode",
-      "help": "Daily fixed count uses the configured pet repeat count. Fast combat is limited by its configured count, remaining daily count, and current stamina. Burnout mode uses the maximum count currently affordable. Dimensional Hunt consumes leaves and does not support burnout mode.",
+      "help": "On the new global flow, Burnout converts each whole 80 Energy into one server-repeat unit, forces owned Energy priority, and gives the remainder to fast combat. After settlement it schedules for 80 Energy. Dimensional Hunt is unsupported.",
       "Daily": "Daily Fixed Count",
       "Burnout": "Burnout Mode"
     },
@@ -558,11 +554,11 @@
     },
     "RepeatCombatLeifCount": {
       "name": "Leifs to Spend",
-      "help": "Maximum Leifs the new server-managed repeat battle may spend, from 1 to 50."
+      "help": "Leifs the new global daily mode may spend, from 1 to 50. Burnout derives this value from current Energy."
     },
     "RepeatCombatPrioritizeStamina": {
-      "name": "Prioritize Owned Energy",
-      "help": "Use currently owned Energy before spending Leifs."
+      "name": "Prioritize Owned Energy / Spectral Cores",
+      "help": "Prioritize Energy on regular stages and Spectral Cores on Dimensional Hunt. Burnout always enables this option."
     },
     "RepeatCombatGearMode": {
       "name": "Auto Gear Cleanup Mode",
@@ -572,7 +568,13 @@
     },
     "RepeatCombatEquipmentScore": {
       "name": "Equipment Score Threshold",
-      "help": "Select equipment below this score. The value must exist on the in-game slider."
+      "help": "Select equipment below this score. The value must exist on the in-game slider.",
+      "22": "22",
+      "24": "24",
+      "26": "26",
+      "28": "28",
+      "30": "30",
+      "32": "32"
     },
     "RepeatCombatHeroSpeedFilter": {
       "name": "Protect Heroic Speed Gear",
@@ -580,7 +582,10 @@
     },
     "RepeatCombatHeroSpeed": {
       "name": "Heroic Speed Threshold",
-      "help": "Speed threshold for Heroic gear. The value must exist on the in-game slider."
+      "help": "Speed threshold for Heroic gear. The value must exist on the in-game slider.",
+      "2": "2",
+      "3": "3",
+      "4": "4"
     },
     "RepeatCombatLegendarySpeedFilter": {
       "name": "Protect Epic Speed Gear",
@@ -588,7 +593,11 @@
     },
     "RepeatCombatLegendarySpeed": {
       "name": "Epic Speed Threshold",
-      "help": "Speed threshold for Epic gear. The value must exist on the in-game slider."
+      "help": "Speed threshold for Epic gear. The value must exist on the in-game slider.",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5"
     },
     "RepeatCombatFlatMainStatExceptSpeed": {
       "name": "Always Select Flat Main Stats",

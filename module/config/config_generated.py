@@ -108,11 +108,11 @@ class GeneratedConfig:
     Combat_RepeatCombatLeifCount = 1
     Combat_RepeatCombatPrioritizeStamina = True
     Combat_RepeatCombatGearMode = 'Extract'  # Sell, Extract
-    Combat_RepeatCombatEquipmentScore = 28
+    Combat_RepeatCombatEquipmentScore = 28  # 22, 24, 26, 28, 30, 32
     Combat_RepeatCombatHeroSpeedFilter = True
-    Combat_RepeatCombatHeroSpeed = 4
+    Combat_RepeatCombatHeroSpeed = 4  # 2, 3, 4
     Combat_RepeatCombatLegendarySpeedFilter = True
-    Combat_RepeatCombatLegendarySpeed = 4
+    Combat_RepeatCombatLegendarySpeed = 4  # 2, 3, 4, 5
     Combat_RepeatCombatFlatMainStatExceptSpeed = True
     Combat_RepeatCombatExcludeOtherworldLegendary = False
     Combat_Saint37AutoRecycle = False

@@ -612,7 +612,7 @@ class ConfigUpdater:
         if deep_get(data, 'SecretShop.SecretShop.OnlyFree', default=True) is True:
             yield 'SecretShop.SecretShop.MaxRefresh'
         # Fast combat & repeat combat
-        for task in ('Combat', 'CombatFarm'):
+        for task in ('Combat',):
             task_prefix = f'{task}.Combat'
             is_farm_task = task == 'CombatFarm'
             combat_domain = deep_get(data, f'{task_prefix}.Domain', default='Hunt')
@@ -651,6 +651,8 @@ class ConfigUpdater:
             ) == EXECUTION_MODE_BURNOUT:
                 yield f'{task_prefix}.FastCombatCount'
                 yield f'{task_prefix}.RepeatCombatCount'
+                yield f'{task_prefix}.RepeatCombatLeifCount'
+                yield f'{task_prefix}.RepeatCombatPrioritizeStamina'
 
             if is_farm_task and (
                 combat_domain == 'Saint37'
@@ -662,8 +664,7 @@ class ConfigUpdater:
                 yield f'{task_prefix}.Saint37AutoRecycle'
 
             # Burnout mode schedules by stamina regeneration. Dimensional hunt
-            # consumes leaves instead of stamina, and CombatFarm already loops
-            # continuously (its BurnoutMode is also locked by override.yaml).
+            # consumes its own resource, so it remains outside this mode.
             if is_farm_task or (combat_domain == 'Hunt' and combat_hunt_grade == 'Dimensional'):
                 yield f'{task_prefix}.BurnoutMode'
 

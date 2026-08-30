@@ -112,7 +112,9 @@ class Combat(
     def _combat_should_use_fast(self) -> bool:
         if not self._combat_supports_fast_combat():
             return False
-        if is_background_repeat_combat_active(self.config):
+        if not self._uses_server_repeat_combat() and is_background_repeat_combat_active(
+            self.config
+        ):
             logger.info("Combat: background repeat combat active, use normal combat")
             return False
         return self._combat_fast_enabled()
@@ -382,7 +384,12 @@ class Combat(
         logger.attr("CombatFastCombatSelected", fast_combat_selected)
         logger.attr("CombatFastCombatCount", self._combat_fast_count())
         if self._uses_server_repeat_combat():
-            logger.attr("CombatRepeatCombatLeifCount", self._repeat_combat_leif_count())
+            logger.attr(
+                "CombatRepeatCombatLeifCount",
+                "stamina // 80"
+                if self._combat_burnout_enabled()
+                else self._repeat_combat_leif_count(),
+            )
             logger.attr(
                 "CombatRepeatPrioritizeStamina", self._repeat_prioritize_stamina()
             )
@@ -415,7 +422,7 @@ class Combat(
             logger.warning("Combat: fast combat locked, fallback to repeat combat")
             fast_combat_selected = False
 
-        if success:
+        if success and not self._uses_server_repeat_combat():
             if fast_combat_selected:
                 if current_stamina is None:
                     logger.warning("Combat: no stamina field available for fast combat")
@@ -449,7 +456,53 @@ class Combat(
                     else:
                         success = fast_prepare == "ready"
 
-        if success:
+        if success and self._uses_server_repeat_combat():
+            target_leif_count = self._server_repeat_target_leif_count(current_stamina)
+            logger.attr("CombatRepeatTargetLeifCount", target_leif_count)
+            fast_stamina = current_stamina or 0
+
+            if target_leif_count > 0:
+                success = self._prepare_repeat_combat(
+                    leif_count=target_leif_count,
+                    skip_first_screenshot=True,
+                )
+                if success:
+                    success = self._run_repeat_combat(skip_first_screenshot=True)
+                    repeat_combat_started = success
+
+                if success:
+                    prepared_leif_count = getattr(
+                        self, "_repeat_combat_prepared_leif_count", target_leif_count
+                    )
+                    reserved_stamina, fast_stamina = self._server_repeat_stamina_budget(
+                        current_stamina or 0,
+                        prepared_leif_count,
+                        self._repeat_prioritize_stamina(),
+                    )
+                    logger.attr("CombatRepeatReservedStamina", reserved_stamina)
+                    logger.attr("CombatFastAvailableStamina", fast_stamina)
+            else:
+                logger.info("Combat: less than one 80-stamina unit, skip server repeat")
+
+            if success and fast_combat_selected and fast_stamina > 0:
+                fast_prepare, fast_combat_prepared_count = self._prepare_fast_combat(
+                    stamina=fast_stamina,
+                    use_max=False,
+                    skip_first_screenshot=True,
+                )
+                if fast_prepare == "ready":
+                    success = self._run_fast_combat(skip_first_screenshot=True)
+                    if success:
+                        fast_combat_completed_count = fast_combat_prepared_count
+                        completed_sessions += 1
+                elif fast_prepare == "fallback":
+                    fast_combat_selected = False
+                elif fast_prepare == "no_stamina":
+                    logger.info("Combat: remaining stamina cannot start fast combat")
+                else:
+                    success = False
+
+        elif success:
             if fast_combat_selected:
                 success = self._run_fast_combat(skip_first_screenshot=True)
                 if success:

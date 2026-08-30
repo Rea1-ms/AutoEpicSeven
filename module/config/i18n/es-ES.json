@@ -82,10 +82,6 @@
       "name": "Actividad especial",
       "help": "Recoge las recompensas disponibles de las actividades temporales."
     },
-    "CombatFarm": {
-      "name": "Farmeo repetido",
-      "help": "Detén el planificador antes de ejecutar esta herramienta. Revisa el combate repetido en segundo plano cada minuto. Si se permite el combate rápido, primero consume todos los usos disponibles y luego pasa al combate repetido con mascota."
-    },
     "CommunityAuth": {
       "name": "Inicio comunidad",
       "help": "Abre la ventana de inicio de sesión de Electron y actualiza la CK usada por Community AIO."
@@ -540,11 +536,11 @@
     },
     "FastCombat": {
       "name": "Usar combate rápido",
-      "help": "Usa primero el combate rápido cuando esté disponible y, cuando se agote, cambia al combate repetido con mascota. Si está desactivado, solo se usará el combate repetido con mascota."
+      "help": "En el nuevo flujo global, inicia primero el combate delegado en segundo plano y usa solo la energía no reservada en combate rápido. El servidor chino mantiene el orden anterior."
     },
     "BurnoutMode": {
       "name": "Modo de ejecución",
-      "help": "La cantidad fija diaria usa el número configurado de combates repetidos. El combate rápido se limita por la cantidad configurada, los usos diarios restantes y la energía actual. El modo de agotamiento usa el máximo permitido por la energía actual. La caza Dimensional consume hojas y no es compatible.",
+      "help": "En el nuevo flujo global, Agotamiento convierte cada 80 de energía completos en una unidad delegada, fuerza la prioridad de energía disponible y deja el resto al combate rápido. Tras liquidar, programa la recuperación hasta 80. La caza Dimensional no es compatible.",
       "Daily": "Cantidad fija diaria",
       "Burnout": "Modo de agotamiento"
     },
@@ -558,11 +554,11 @@
     },
     "RepeatCombatLeifCount": {
       "name": "Hojas de vida a gastar",
-      "help": "Máximo de Hojas de vida que puede gastar el combate delegado, de 1 a 50."
+      "help": "Hojas de vida que puede gastar el modo diario global, de 1 a 50. Agotamiento calcula el valor desde la energía actual."
     },
     "RepeatCombatPrioritizeStamina": {
-      "name": "Priorizar energía disponible",
-      "help": "Usa primero la energía disponible antes de gastar Hojas de vida."
+      "name": "Priorizar energía / núcleos espectrales",
+      "help": "Prioriza energía en fases normales y núcleos espectrales en la caza Dimensional. Agotamiento siempre activa esta opción."
     },
     "RepeatCombatGearMode": {
       "name": "Modo de limpieza de equipo",
@@ -572,7 +568,13 @@
     },
     "RepeatCombatEquipmentScore": {
       "name": "Umbral de puntuación de equipo",
-      "help": "Selecciona equipo por debajo de esta puntuación. Debe ser un valor del deslizador del juego."
+      "help": "Selecciona equipo por debajo de esta puntuación. Debe ser un valor del deslizador del juego.",
+      "22": "22",
+      "24": "24",
+      "26": "26",
+      "28": "28",
+      "30": "30",
+      "32": "32"
     },
     "RepeatCombatHeroSpeedFilter": {
       "name": "Proteger velocidad heroica",
@@ -580,7 +582,10 @@
     },
     "RepeatCombatHeroSpeed": {
       "name": "Umbral de velocidad heroica",
-      "help": "Umbral de velocidad para equipo heroico. Debe ser un valor del deslizador del juego."
+      "help": "Umbral de velocidad para equipo heroico. Debe ser un valor del deslizador del juego.",
+      "2": "2",
+      "3": "3",
+      "4": "4"
     },
     "RepeatCombatLegendarySpeedFilter": {
       "name": "Proteger velocidad épica",
@@ -588,7 +593,11 @@
     },
     "RepeatCombatLegendarySpeed": {
       "name": "Umbral de velocidad épica",
-      "help": "Umbral de velocidad para equipo épico. Debe ser un valor del deslizador del juego."
+      "help": "Umbral de velocidad para equipo épico. Debe ser un valor del deslizador del juego.",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5"
     },
     "RepeatCombatFlatMainStatExceptSpeed": {
       "name": "Seleccionar estadísticas principales planas",

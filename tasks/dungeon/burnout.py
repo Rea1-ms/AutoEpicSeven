@@ -1,9 +1,11 @@
 from module.logger import logger
 from tasks.base.resource_bar import RESOURCE_BAR_LAYOUT_MAIN
 
+SERVER_REPEAT_LEIF_STAMINA = 80
+
 # Stamina cost of one combat run from in-game data.
-# Dimensional hunt is intentionally absent: it consumes leaves instead of
-# stamina (1 leaf = 160 stamina) and is out of burnout-mode scope for now.
+# Dimensional hunt is intentionally absent: it consumes its own resource and
+# is out of burnout-mode scope for now.
 EPISODE4_STAMINA_COST = 20
 SAINT37_STAMINA_COST = 8
 HUNT_STAMINA_COST = {
@@ -72,12 +74,18 @@ class CombatBurnoutMixin:
 
         Burnout combat uses the maximum currently affordable count on the
         prepare page, so fixed-count settings must not affect wake-up time.
-        One stage worth of stamina is sufficient; the current resource value
-        determines how many stages the next fast or repeat batch can run.
+        The legacy flow wakes for one stage. The global server-managed flow
+        waits for one complete 80-stamina unit so fast combat cannot consume
+        the partial remainder before a repeat batch can be formed.
         """
         cost = self._combat_burnout_stage_cost()
         if cost is None:
             return None
+        if self._uses_server_repeat_combat():
+            # The new server-repeat selector consumes 80-stamina Leif units.
+            # Waiting for a whole unit prevents the fast-combat remainder from
+            # repeatedly spending stamina before a server batch can be formed.
+            return SERVER_REPEAT_LEIF_STAMINA
         return cost
 
     def _combat_burnout_refresh_status(self) -> bool:

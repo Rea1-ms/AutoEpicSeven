@@ -873,24 +873,43 @@
         ]
       },
       "RepeatCombatEquipmentScore": {
-        "type": "input",
-        "value": 28
+        "type": "select",
+        "value": 28,
+        "option": [
+          22,
+          24,
+          26,
+          28,
+          30,
+          32
+        ]
       },
       "RepeatCombatHeroSpeedFilter": {
         "type": "checkbox",
         "value": true
       },
       "RepeatCombatHeroSpeed": {
-        "type": "input",
-        "value": 4
+        "type": "select",
+        "value": 4,
+        "option": [
+          2,
+          3,
+          4
+        ]
       },
       "RepeatCombatLegendarySpeedFilter": {
         "type": "checkbox",
         "value": true
       },
       "RepeatCombatLegendarySpeed": {
-        "type": "input",
-        "value": 4
+        "type": "select",
+        "value": 4,
+        "option": [
+          2,
+          3,
+          4,
+          5
+        ]
       },
       "RepeatCombatFlatMainStatExceptSpeed": {
         "type": "checkbox",
@@ -1016,151 +1035,6 @@
       "GetEnergyDrink": {
         "type": "checkbox",
         "value": true
-      }
-    }
-  },
-  "CombatFarm": {
-    "Combat": {
-      "Domain": {
-        "type": "select",
-        "value": "Hunt",
-        "option": [
-          "Hunt",
-          "SpiritAltar",
-          "Saint37",
-          "Episode4"
-        ]
-      },
-      "Element": {
-        "type": "select",
-        "value": "Water",
-        "option": [
-          "Dark",
-          "Light",
-          "Water",
-          "Fire",
-          "Nature"
-        ]
-      },
-      "AltarGrade": {
-        "type": "select",
-        "value": "Hell",
-        "option": [
-          "Pri",
-          "Mid",
-          "High",
-          "Hell"
-        ]
-      },
-      "HuntGrade": {
-        "type": "select",
-        "value": "Hell",
-        "option": [
-          "Mid",
-          "High",
-          "Hell",
-          "Dimensional"
-        ]
-      },
-      "Episode4Material": {
-        "type": "select",
-        "value": "BREATH_OF_KARMA",
-        "option": [
-          "CATALYST_RARE_BENEVOLENT",
-          "CATALYST_RARE_SECRET",
-          "CATALYST_RARE_FIGHTING_SPIRIT",
-          "CATALYST_RARE_SNIPER",
-          "HEART_OF_THE_WOODS",
-          "CATALYST_RARE_OATH",
-          "CATALYST_RARE_MYSTERIOUS",
-          "CATALYST_EPIC_OATH",
-          "BREATH_OF_KARMA",
-          "CATALYST_EPIC_SNIPER",
-          "CATALYST_EPIC_FIGHTING_SPIRIT",
-          "FROZEN_SEED",
-          "CATALYST_EPIC_BENEVOLENT",
-          "CATALYST_EPIC_MYSTERIOUS",
-          "CATALYST_EPIC_SECRET",
-          "TRACES_OF_BRILLIANCE"
-        ]
-      },
-      "FastCombat": {
-        "type": "checkbox",
-        "value": false
-      },
-      "BurnoutMode": {
-        "type": "select",
-        "value": "Daily",
-        "option": [
-          "Daily",
-          "Burnout"
-        ],
-        "display": "hide"
-      },
-      "FastCombatCount": {
-        "type": "input",
-        "value": 10,
-        "display": "hide"
-      },
-      "RepeatCombatCount": {
-        "type": "input",
-        "value": 5
-      },
-      "RepeatCombatLeifCount": {
-        "type": "input",
-        "value": 1
-      },
-      "RepeatCombatPrioritizeStamina": {
-        "type": "checkbox",
-        "value": true
-      },
-      "RepeatCombatGearMode": {
-        "type": "select",
-        "value": "Extract",
-        "option": [
-          "Sell",
-          "Extract"
-        ]
-      },
-      "RepeatCombatEquipmentScore": {
-        "type": "input",
-        "value": 28
-      },
-      "RepeatCombatHeroSpeedFilter": {
-        "type": "checkbox",
-        "value": true
-      },
-      "RepeatCombatHeroSpeed": {
-        "type": "input",
-        "value": 4
-      },
-      "RepeatCombatLegendarySpeedFilter": {
-        "type": "checkbox",
-        "value": true
-      },
-      "RepeatCombatLegendarySpeed": {
-        "type": "input",
-        "value": 4
-      },
-      "RepeatCombatFlatMainStatExceptSpeed": {
-        "type": "checkbox",
-        "value": true
-      },
-      "RepeatCombatExcludeOtherworldLegendary": {
-        "type": "checkbox",
-        "value": false
-      },
-      "Saint37AutoRecycle": {
-        "type": "checkbox",
-        "value": false
-      }
-    },
-    "CombatRuntime": {
-      "Session": {
-        "type": "dict",
-        "value": {},
-        "keepvalue": true,
-        "display": "hide"
       }
     }
   },

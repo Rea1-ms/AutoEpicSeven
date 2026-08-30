@@ -7,7 +7,7 @@ from module.exception import RequestHumanTakeover
 from module.logger import logger
 from module.ocr.ocr import Digit, DigitCounter, Duration
 from tasks.base.assets.assets_base_page import BACK
-from tasks.base.assets.assets_base_popup import AD_BUFF_X_CLOSE
+from tasks.base.assets.assets_base_popup import AD_BUFF_X_CLOSE, TOUCH_TO_CLOSE
 from tasks.base.resource_bar import (
     RESOURCE_KIND_INT,
     OcrResourceBar,
@@ -69,6 +69,7 @@ from tasks.dungeon.assets.assets_dungeon_repeat_settlement import (
     SETTLEMENT_SETTLE,
     SETTLEMENT_WINDOW_CHECK,
 )
+from tasks.dungeon.burnout import SERVER_REPEAT_LEIF_STAMINA
 
 
 SERVER_REPEAT_RESOURCE_SPECS = {
@@ -81,6 +82,38 @@ SERVER_REPEAT_RESOURCE_ICONS = {
     "spectral_core": SPECTRAL_CORE_ICON,
     "leif": LEIF_ICON,
 }
+
+
+def calculate_server_repeat_leif_count(stamina: int, maximum: int = 50) -> int:
+    """Convert owned stamina into whole server-repeat Leif units."""
+    return min(max(int(stamina), 0) // SERVER_REPEAT_LEIF_STAMINA, maximum)
+
+
+def calculate_server_repeat_stamina_budget(
+    stamina: int,
+    leif_count: int,
+    prioritize_stamina: bool,
+) -> tuple[int, int]:
+    """Split current stamina between server repeat and fast combat."""
+    stamina = max(int(stamina), 0)
+    if not prioritize_stamina:
+        return 0, stamina
+    reserved = min(stamina, max(int(leif_count), 0) * SERVER_REPEAT_LEIF_STAMINA)
+    return reserved, stamina - reserved
+
+
+def plan_server_repeat_counter_action(
+    current: int,
+    target: int,
+    maximum: int,
+) -> str:
+    """Choose the counter route requiring the fewest clicks."""
+    costs = {
+        "adjust": abs(target - current),
+        "minimum": 1 + target - 1,
+        "maximum": 1 + maximum - target,
+    }
+    return min(costs, key=costs.get)
 
 
 class RepeatCombatDigit(Digit):
@@ -106,10 +139,15 @@ class CombatRepeatMixin:
     REPEAT_SLIDER_MAX_PASSES = 2
     REPEAT_FINISH_BUFFER_MINUTES = 1
 
+    # The slider assets are deliberately cropped to the narrow safe tracks.
+    # Their left edges must never be expanded: even a slightly farther-left
+    # click toggles the Heroic/Epic filter instead of moving the slider. These
+    # small insets locate the endpoint-dot centers inside those exact crops;
+    # they are not generic padding and must follow future asset range changes.
     REPEAT_SLIDER_GEOMETRY = {
-        "equipment_score": (EQUIPMENT_SCORE_SLIDER, 20, 23, 6),
-        "hero_speed": (HERO_SPEED_SLIDER, 18, 14, 3),
-        "legendary_speed": (LEGENDARY_SPEED_SLIDER, 18, 18, 4),
+        "equipment_score": (EQUIPMENT_SCORE_SLIDER, 4, 4, 6),
+        "hero_speed": (HERO_SPEED_SLIDER, 5, 6, 3),
+        "legendary_speed": (LEGENDARY_SPEED_SLIDER, 5, 4, 4),
     }
 
     def _uses_server_repeat_combat(self) -> bool:
@@ -125,7 +163,31 @@ class CombatRepeatMixin:
         )
 
     def _repeat_prioritize_stamina(self) -> bool:
+        if self._uses_server_repeat_combat() and self._combat_burnout_enabled():
+            return True
         return bool(getattr(self.config, "Combat_RepeatCombatPrioritizeStamina", True))
+
+    def _repeat_owned_resource_label(self) -> str:
+        if self._dungeon_domain() == "Hunt" and self._combat_grade() == "Dimensional":
+            return "owned spectral core"
+        return "owned stamina"
+
+    def _server_repeat_target_leif_count(self, stamina: int | None) -> int:
+        if self._combat_burnout_enabled() and stamina is not None:
+            return calculate_server_repeat_leif_count(stamina)
+        return self._repeat_combat_leif_count()
+
+    @staticmethod
+    def _server_repeat_stamina_budget(
+        stamina: int,
+        leif_count: int,
+        prioritize_stamina: bool,
+    ) -> tuple[int, int]:
+        return calculate_server_repeat_stamina_budget(
+            stamina,
+            leif_count,
+            prioritize_stamina,
+        )
 
     def _repeat_gear_mode(self) -> str:
         value = str(getattr(self.config, "Combat_RepeatCombatGearMode", "Extract"))
@@ -249,7 +311,9 @@ class CombatRepeatMixin:
             x = start + ((end - start) * index + divisor // 2) // divisor
             points.append(
                 ClickButton(
-                    area=(x - 4, center_y - 4, x + 5, center_y + 5),
+                    # Keep the randomized click fully inside the endpoint dot.
+                    # A wider box can spill into the adjacent filter toggle.
+                    area=(x - 2, center_y - 2, x + 3, center_y + 3),
                     name=f"REPEAT_{key.upper()}_{index}",
                 )
             )
@@ -306,25 +370,33 @@ class CombatRepeatMixin:
         logger.attr("RepeatCombatLeifMaximum", total)
         return current, total
 
-    def _ensure_repeat_leif_count(self) -> bool:
+    def _ensure_repeat_leif_count(self, requested: int) -> bool:
         current, maximum = self._ocr_repeat_leif_counter()
         if maximum <= 0:
             return False
 
-        target = min(self._repeat_combat_leif_count(), maximum)
+        target = min(max(requested, 1), maximum)
         if current == target:
             logger.attr("RepeatCombatLeifTarget", target)
+            self._repeat_combat_prepared_leif_count = target
             return True
 
-        if target == 1 and self.appear_then_click(
-            REPEAT_COMBAT_TIMES_MINIMUM, interval=1
-        ):
-            logger.info("Combat: set repeat leif count to minimum")
+        # MINIMUM/MAX are not just endpoint buttons. They are shortcuts into a
+        # nearer part of the counter when the current value is far away from
+        # the target. Re-evaluating after every screenshot keeps this retryable
+        # when a shortcut click is dropped by the emulator.
+        action = plan_server_repeat_counter_action(current, target, maximum)
+        if action == "minimum":
+            if self.appear_then_click(REPEAT_COMBAT_TIMES_MINIMUM, interval=1):
+                logger.info(
+                    f"Combat: use minimum shortcut for repeat leif count {current}->{target}"
+                )
             return False
-        if target == maximum and self.appear_then_click(
-            REPEAT_COMBAT_TIMES_MAX, interval=1
-        ):
-            logger.info("Combat: set repeat leif count to maximum")
+        if action == "maximum":
+            if self.appear_then_click(REPEAT_COMBAT_TIMES_MAX, interval=1):
+                logger.info(
+                    f"Combat: use maximum shortcut for repeat leif count {current}->{target}"
+                )
             return False
 
         diff = target - current
@@ -474,6 +546,7 @@ class CombatRepeatMixin:
         clamp_to_counter=False,
         affordable_count: int | None = None,
         completed_count: int = 0,
+        leif_count: int | None = None,
     ) -> bool:
         if not self._uses_server_repeat_combat():
             return super()._prepare_repeat_combat(
@@ -490,6 +563,10 @@ class CombatRepeatMixin:
         stage = "open"
         slider_scan: dict[str, int] = {}
         self._repeat_combat_estimated_duration = timedelta()
+        self._repeat_combat_prepared_leif_count = 0
+        requested_leif_count = (
+            self._repeat_combat_leif_count() if leif_count is None else leif_count
+        )
 
         while 1:
             if skip_first_screenshot:
@@ -535,13 +612,13 @@ class CombatRepeatMixin:
                     self._repeat_prioritize_stamina(),
                     PRIORITIZE_OWNED_STAMINA_ON,
                     PRIORITIZE_OWNED_STAMINA_OFF,
-                    "prioritize owned stamina",
+                    f"prioritize {self._repeat_owned_resource_label()}",
                 ):
                     stage = "leif"
                 continue
 
             if stage == "leif":
-                if self._ensure_repeat_leif_count():
+                if self._ensure_repeat_leif_count(requested_leif_count):
                     stage = "gear_tab"
                 continue
 
@@ -814,6 +891,11 @@ class CombatRepeatMixin:
                     timeout.reset()
                     continue
                 if self.appear(SETTLEMENT_PROCESSING):
+                    timeout.reset()
+                    continue
+                if self.appear_then_click(TOUCH_TO_CLOSE, interval=1):
+                    logger.info("Combat: close server repeat settlement summary")
+                    timeout.reset()
                     continue
                 if self.appear_then_click(SETTLEMENT_CLOSE, interval=1):
                     logger.info("Combat: close server repeat settlement")

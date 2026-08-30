@@ -40,9 +40,3 @@ Gacha:
 SpecialActivity:
   Scheduler:
     Enable: false
-
-# ==================== Tool ====================
-
-CombatFarm:
-  Combat:
-    FastCombat: false

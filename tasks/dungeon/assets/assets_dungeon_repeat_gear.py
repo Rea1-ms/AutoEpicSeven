@@ -8,10 +8,10 @@ EQUIPMENT_SCORE_SLIDER = ButtonWrapper(
     cn=None,
     global_cn=Button(
         file='./assets/global_cn/dungeon/repeat/gear/EQUIPMENT_SCORE_SLIDER.png',
-        area=(295, 337, 921, 373),
-        search=(275, 317, 941, 393),
-        color=(17, 35, 54),
-        button=(295, 337, 921, 373),
+        area=(311, 344, 902, 366),
+        search=(291, 324, 922, 386),
+        color=(20, 38, 56),
+        button=(311, 344, 902, 366),
     ),
     global_en=None,
 )
@@ -140,10 +140,10 @@ HERO_SPEED_SLIDER = ButtonWrapper(
     cn=None,
     global_cn=Button(
         file='./assets/global_cn/dungeon/repeat/gear/HERO_SPEED_SLIDER.png',
-        area=(405, 449, 572, 483),
-        search=(385, 429, 592, 503),
-        color=(27, 53, 83),
-        button=(405, 449, 572, 483),
+        area=(418, 454, 564, 478),
+        search=(398, 434, 584, 498),
+        color=(33, 58, 86),
+        button=(418, 454, 564, 478),
     ),
     global_en=None,
 )
@@ -176,10 +176,10 @@ LEGENDARY_SPEED_SLIDER = ButtonWrapper(
     cn=None,
     global_cn=Button(
         file='./assets/global_cn/dungeon/repeat/gear/LEGENDARY_SPEED_SLIDER.png',
-        area=(762, 449, 933, 483),
-        search=(742, 429, 953, 503),
-        color=(26, 52, 81),
-        button=(762, 449, 933, 483),
+        area=(775, 457, 919, 476),
+        search=(755, 437, 939, 496),
+        color=(36, 61, 89),
+        button=(775, 457, 919, 476),
     ),
     global_en=None,
 )
