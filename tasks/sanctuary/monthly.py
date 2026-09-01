@@ -6,6 +6,7 @@ from module.base.timer import Timer
 from module.exception import ScriptError
 from module.logger import logger
 from module.ocr.ocr import Digit, DigitCounter, Ocr
+from tasks.base.assets.assets_base_popup import POPUP_CANCEL
 from tasks.sanctuary.assets.assets_sanctuary import HEART_OF_EULERBIS, HEART_OF_EULERBIS_CHECK
 from tasks.sanctuary.assets.assets_sanctuary_heart_of_eulerbis import (
     ALREADY_STORED,
@@ -317,6 +318,7 @@ class SanctuaryMonthlyMixin:
         times_current = 0
         last_times_current = None
         custody_pending = False
+        initial_deposit_box_checked = False
 
         while 1:
             self.device.screenshot()
@@ -336,6 +338,15 @@ class SanctuaryMonthlyMixin:
                 logger.info("Monthly smart custody: high-value refresh canceled")
                 continue
 
+            # POPUP_CANCEL may remain visible for several frames after the
+            # click. During the click interval handle_popup_cancel() skips its
+            # template check, so the dimmed background can otherwise look like
+            # the monthly page and make the negative last-slot check report a
+            # false full deposit box. Keep this transition inside the popup
+            # state until the existing cancel asset is actually gone.
+            if custody_pending and self.appear(POPUP_CANCEL):
+                continue
+
             if self.handle_touch_to_close(interval=1):
                 timeout.reset()
                 continue
@@ -350,22 +361,18 @@ class SanctuaryMonthlyMixin:
                 if not PURIFY.match_template_luma(self.device.image):
                     continue
 
-                if self._is_monthly_deposit_box_full():
-                    logger.info("Monthly smart custody ended: deposit box full")
-                    return self.MONTHLY_STATUS_FULL
-
                 if CUSTODY.match_color(self.device.image, threshold=10):
                     if self.appear_then_click(CUSTODY, interval=2):
                         custody_settled = self._wait_monthly_custody_settle(tier_ocr)
                         if self._is_monthly_claimed():
                             logger.info("Monthly reward claimed after smart custody")
                             return self.MONTHLY_STATUS_CLAIMED
-                        if self._is_monthly_deposit_box_full():
-                            logger.info("Monthly smart custody ended: deposit box full after custody")
-                            return self.MONTHLY_STATUS_FULL
                         if not custody_settled:
                             logger.warning("Monthly smart custody not settled, keep refresh blocked")
                             continue
+                        if self._is_monthly_deposit_box_full():
+                            logger.info("Monthly smart custody ended: deposit box full after custody")
+                            return self.MONTHLY_STATUS_FULL
                         logger.info("Monthly smart custody stored protected item")
                         custody_pending = False
                         timeout.reset()
@@ -406,6 +413,17 @@ class SanctuaryMonthlyMixin:
                     )
                 continue
             purify_missing_confirm.reset()
+
+            # The negative last-slot detector is valid only on a stable,
+            # unobscured monthly page. Run it exactly once on initial entry;
+            # later checks belong exclusively to the confirmed custody branch.
+            # Checking while the warning popup is closing turns its dimmed
+            # background into a false "full" result.
+            if not initial_deposit_box_checked:
+                if self._is_monthly_deposit_box_full():
+                    logger.info("Monthly smart custody ended: deposit box full on entry")
+                    return self.MONTHLY_STATUS_FULL
+                initial_deposit_box_checked = True
 
             if not PURIFY.match_template_color(self.device.image):
                 logger.info("Monthly smart purify unavailable: PURIFY is gray")
