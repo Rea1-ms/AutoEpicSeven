@@ -1,11 +1,8 @@
 import re
-from datetime import datetime
 from pathlib import Path
-import json
 
 from module.ocr.ocr import DigitCounter, Ocr
 from module.base.timer import Timer
-from module.base.utils import save_image
 from module.logger import logger
 from tasks.base.page import (
     page_main,
@@ -40,9 +37,10 @@ from tasks.gacha.assets.assets_gacha import (
     SUMMON_RESULT_BACK,
     SUMMON_FREE_CONTINUE
 )
+from tasks.gacha.result import SummonResultCaptureGate, SummonResultRecorder
 
 
-class SpecialActivity(UI):
+class SpecialActivity(SummonResultRecorder, UI):
     """
     Epic Seven Special Activity
     """
@@ -54,6 +52,7 @@ class SpecialActivity(UI):
     GET_TASK_REWARD_FLOW_TIMEOUT_SECONDS = 30
     FREE_GACHA_FLOW_TIMEOUT_SECONDS = 120
     CLICK_FAST_COMBAT_TIMES = 0
+    RESULT_LOG_ROOT = Path("log/special_activity")
 
     def __init__(self, config, device=None, task=None):
         super().__init__(config, device=device, task=task)
@@ -61,14 +60,6 @@ class SpecialActivity(UI):
         self._draw_free = True
         self._in_standard_pool = False
         self._no_free = False
-
-    def _ocr_lang(self) -> str:
-        lang = self.config.Emulator_GameLanguage
-        if lang in ("auto", "", None):
-            return "cn"
-        if lang in ("cn", "global_cn"):
-            return "cn"
-        return "cn"
 
     def _read_energy_drink_text(self) -> str:
         text = Ocr(
@@ -96,26 +87,6 @@ class SpecialActivity(UI):
             logger.attr("FreeGachaTimes", "100/100")
             return True
         return False
-
-    def _save_result(self, tag="result"):
-        now = datetime.now()
-        day = now.strftime("%Y%m%d")
-        ts = now.strftime("%Y%m%d_%H%M%S_%f")
-        folder = Path("log/special_activity") / day
-        folder.mkdir(parents=True, exist_ok=True)
-
-        image_path = folder / f"{ts}_{tag}.png"
-        save_image(self.device.image, str(image_path))
-
-        record = {
-            "ts": ts,
-            "tag": tag,
-            "count": self._draw_count,
-            "free": self._draw_free,
-            "image": str(image_path),
-        }
-        with open(folder / "draws.jsonl", "a", encoding="utf-8") as f:
-            f.write(json.dumps(record, ensure_ascii=False) + "\n")
 
     def _wait_return_to_sa_gacha(self):
         timeout = Timer(10, count=20).start()
@@ -297,7 +268,7 @@ class SpecialActivity(UI):
         logger.info("SpecialActivity: run free gacha")
         timeout = Timer(self.FREE_GACHA_FLOW_TIMEOUT_SECONDS, count=60).start()
 
-        result_saved = False
+        capture = SummonResultCaptureGate()
         returning_to_gacha = False
 
         self.device.screenshot_interval_set(1.0)
@@ -325,35 +296,49 @@ class SpecialActivity(UI):
                     logger.warning("Special activity summon flow timeout")
                     return False
 
+                new = self.appear(SUMMON_NEW)
+                skip = self.appear(SUMMON_SKIP)
+                back = self.appear(SUMMON_RESULT_BACK)
+                free_continue = self.appear(SUMMON_FREE_CONTINUE)
+
+                capture.observe_transition(
+                    next_result_visible=skip or new,
+                    previous_result_visible=back,
+                )
+
                 # 0) Start summon
                 if self.appear(FREE_GACHA_AVAILABLE, interval=1):
                     self.device.click(FREE_GACHA)
+                    capture.reset()
                     continue
 
                 # 1) Skip animation
-                if self.appear_then_click(SUMMON_SKIP, interval=1):
+                if skip and self.interval_is_reached(SUMMON_SKIP, interval=1):
+                    self.device.click(SUMMON_SKIP)
+                    self.interval_reset(SUMMON_SKIP, interval=1)
                     continue
 
                 # 2) New overlay
-                if self.appear(SUMMON_NEW, interval=1):
-                    if not result_saved:
-                        self._save_result(tag="new")
-                        result_saved = True
+                if new and self.interval_is_reached(SUMMON_NEW, interval=1):
+                    capture.save_once(self, tag="new")
                     self.device.click(SUMMON_NEW)
+                    self.interval_reset(SUMMON_NEW, interval=1)
                     continue
 
                 # 3) Result page
-                back = self.appear(SUMMON_RESULT_BACK)
-                free_continue = self.appear(SUMMON_FREE_CONTINUE)
                 if back and free_continue:
-                    self._save_result(tag="result")
-                    result_saved = True
-                    if self.appear_then_click(SUMMON_FREE_CONTINUE, interval=1):
-                        result_saved = False
+                    capture.save_once(self, tag="result")
+                    if self.interval_is_reached(SUMMON_FREE_CONTINUE, interval=1):
+                        self.device.click(SUMMON_FREE_CONTINUE)
+                        self.interval_reset(SUMMON_FREE_CONTINUE, interval=1)
+                        capture.mark_advance_requested()
                         timeout.reset()
                     continue
                 if back:
-                    if self.appear_then_click(SUMMON_RESULT_BACK, interval=2):
+                    capture.save_once(self, tag="result")
+                    if self.interval_is_reached(SUMMON_RESULT_BACK, interval=2):
+                        self.device.click(SUMMON_RESULT_BACK)
+                        self.interval_reset(SUMMON_RESULT_BACK, interval=2)
                         returning_to_gacha = True
                         timeout.reset()
                     continue

@@ -4,19 +4,16 @@ Epic Seven 召唤模块
 流程:
     MAIN_GOTO_GACHA -> 进入召唤页 -> 选择常驻池
     优先点击免费10抽，其次免费1抽
-    抽卡流程:
-        SUMMON_NEW -> 截图 + 点击去遮罩
-        SUMMON_NEXT_PAGE
+    单抽流程:
+        SUMMON_NEW -> 截图 + OCR 名称 + 点击去遮罩
+        SUMMON_NEXT_PAGE -> 截图 + OCR 名称 + 翻页
         SUMMON_SKIP
-        SUMMON_RESULT_BACK + SUMMON_FREE_CONTINUE -> 截图 -> 点击继续
-        SUMMON_RESULT_BACK -> 截图 -> 返回召唤页
+        SUMMON_RESULT_BACK + SUMMON_FREE_CONTINUE -> 截图 + OCR 名称 -> 点击继续
+        SUMMON_RESULT_BACK -> 截图 + OCR 名称 -> 返回召唤页
+    十连结果:
+        等待自动传送结束 -> 保存最终整页 -> OCR 未传送卡位 -> 点击继续或返回
 """
-from datetime import datetime
-from pathlib import Path
-import json
-
 from module.base.timer import Timer
-from module.base.utils import save_image
 from module.logger import logger
 from tasks.base.page import page_gacha
 from tasks.base.ui import UI
@@ -33,10 +30,15 @@ from tasks.gacha.assets.assets_gacha import (
     SUMMON_RESULT_BACK,
     SUMMON_FREE_CONTINUE,
 )
+from tasks.gacha.result import (
+    SummonResultCaptureGate,
+    SummonResultRecorder,
+    TenPullResultCollector,
+)
 from tasks.mission_reward.scheduling import should_schedule_mission_reward
 
 
-class Gacha(UI):
+class Gacha(SummonResultRecorder, UI):
     """
     召唤任务（常驻池）
     """
@@ -55,26 +57,6 @@ class Gacha(UI):
         self._draw_free = False
         self._in_standard_pool = False
         self._no_free = False
-
-    def _save_result(self, tag="result"):
-        now = datetime.now()
-        day = now.strftime("%Y%m%d")
-        ts = now.strftime("%Y%m%d_%H%M%S_%f")
-        folder = Path("log/gacha") / day
-        folder.mkdir(parents=True, exist_ok=True)
-
-        image_path = folder / f"{ts}_{tag}.png"
-        save_image(self.device.image, str(image_path))
-
-        record = {
-            "ts": ts,
-            "tag": tag,
-            "count": self._draw_count,
-            "free": self._draw_free,
-            "image": str(image_path),
-        }
-        with open(folder / "draws.jsonl", "a", encoding="utf-8") as f:
-            f.write(json.dumps(record, ensure_ascii=False) + "\n")
 
     def _enter_gacha(self):
         if not hasattr(self.device, "image") or self.device.image is None:
@@ -160,7 +142,10 @@ class Gacha(UI):
     def _handle_summon_flow(self):
         logger.info("Summon flow")
         timeout = Timer(120, count=240).start()
-        result_saved = False
+        capture = SummonResultCaptureGate()
+        ten_pull_collector = None
+        pending_draw_count = None
+        returning_to_gacha = False
 
         # Slow down screenshot interval during animation
         self.device.screenshot_interval_set(1.0)
@@ -172,38 +157,86 @@ class Gacha(UI):
                     logger.warning("Summon flow timeout")
                     break
 
+                if returning_to_gacha and self.ui_page_appear(page_gacha):
+                    break
+
+                new = self.appear(SUMMON_NEW)
+                skip = self.appear(SUMMON_SKIP)
+                next_page = (
+                    SUMMON_NEXT_PAGE is not None
+                    and self.appear(SUMMON_NEXT_PAGE)
+                )
+                back = self.appear(SUMMON_RESULT_BACK)
+                free_continue = self.appear(SUMMON_FREE_CONTINUE)
+
+                transition_completed = capture.observe_transition(
+                    next_result_visible=skip or new,
+                    previous_result_visible=next_page or back,
+                )
+                if transition_completed and pending_draw_count is not None:
+                    self._draw_count = pending_draw_count
+                    pending_draw_count = None
+                    ten_pull_collector = None
+                    logger.attr("SummonResultCount", self._draw_count)
+
                 # 1) New overlay
-                if self.appear(SUMMON_NEW, interval=1):
-                    if not result_saved:
-                        self._save_result(tag="new")
-                        result_saved = True
+                if new and self.interval_is_reached(SUMMON_NEW, interval=1):
+                    capture.save_once(self, tag="new")
                     self.device.click(SUMMON_NEW)
+                    self.interval_reset(SUMMON_NEW, interval=1)
                     continue
 
                 # 2) Skip animation
-                if self.appear_then_click(SUMMON_SKIP, interval=1):
+                if skip and self.interval_is_reached(SUMMON_SKIP, interval=1):
+                    self.device.click(SUMMON_SKIP)
+                    self.interval_reset(SUMMON_SKIP, interval=1)
                     continue
 
                 # 3) Next page (optional)
-                if SUMMON_NEXT_PAGE is not None:
-                    if self.appear_then_click(SUMMON_NEXT_PAGE, interval=1):
-                        continue
+                if next_page and self.interval_is_reached(SUMMON_NEXT_PAGE, interval=1):
+                    capture.save_once(self, tag="result")
+                    self.device.click(SUMMON_NEXT_PAGE)
+                    self.interval_reset(SUMMON_NEXT_PAGE, interval=1)
+                    capture.mark_advance_requested()
+                    continue
 
                 # 4) Result page
-                back = self.appear(SUMMON_RESULT_BACK)
-                free_continue = self.appear(SUMMON_FREE_CONTINUE)
                 if back and free_continue:
-                    self._save_result(tag="result")
-                    result_saved = True
-                    self.device.click(SUMMON_FREE_CONTINUE)
-                    result_saved = False
-                    timeout.reset()
+                    if self._draw_count == 10:
+                        if ten_pull_collector is None:
+                            ten_pull_collector = TenPullResultCollector()
+                        if not ten_pull_collector.observe(self.device.image):
+                            continue
+                        ten_pull_collector.save_once(self)
+                    else:
+                        capture.save_once(self, tag="result")
+                    if pending_draw_count is None:
+                        pending_draw_count = self._read_next_free_summon_count(
+                            self.device.image
+                        )
+                        if pending_draw_count is None:
+                            continue
+                    if self.interval_is_reached(SUMMON_FREE_CONTINUE, interval=1):
+                        self.device.click(SUMMON_FREE_CONTINUE)
+                        self.interval_reset(SUMMON_FREE_CONTINUE, interval=1)
+                        capture.mark_advance_requested()
+                        timeout.reset()
                     continue
                 if back:
-                    self._save_result(tag="result")
-                    self.device.click(SUMMON_RESULT_BACK)
-                    self._wait_return_to_gacha()
-                    break
+                    if self._draw_count == 10:
+                        if ten_pull_collector is None:
+                            ten_pull_collector = TenPullResultCollector()
+                        if not ten_pull_collector.observe(self.device.image):
+                            continue
+                        ten_pull_collector.save_once(self)
+                    else:
+                        capture.save_once(self, tag="result")
+                    if self.interval_is_reached(SUMMON_RESULT_BACK, interval=2):
+                        self.device.click(SUMMON_RESULT_BACK)
+                        self.interval_reset(SUMMON_RESULT_BACK, interval=2)
+                        returning_to_gacha = True
+                        timeout.reset()
+                    continue
 
                 if self.ui_additional():
                     timeout.reset()
