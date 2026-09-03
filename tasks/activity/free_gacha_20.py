@@ -4,6 +4,7 @@ from tasks.activity.assets.assets_activity_special_26_8_27 import (
     FREE_20_GACHA,
     FREE_20_GACHA_OBTAINED,
 )
+from tasks.activity.scheduling import mark_free_gacha_20_checked
 from tasks.base.page import page_common_activity, page_main
 from tasks.base.ui import UI
 
@@ -39,6 +40,7 @@ class FreeGacha20(UI):
             # reward popup may close before the activity page has refreshed,
             # so observing TOUCH_TO_CLOSE alone must never finish the flow.
             if self.appear(FREE_20_GACHA_OBTAINED):
+                mark_free_gacha_20_checked(self.config)
                 logger.info("SpecialActivity: 20 free summons obtained")
                 return True
 

@@ -3,6 +3,7 @@ import module.config.server as server_
 from datetime import datetime, timedelta, timezone
 
 from module.logger import logger
+from tasks.activity.scheduling import is_free_gacha_20_checked_today
 
 
 class SpecialActivityEntry:
@@ -59,6 +60,13 @@ class SpecialActivityEntry:
             return True
 
         if event_mode == self.FREE_GACHA_20_ACTIVITY:
+            if is_free_gacha_20_checked_today(self.config):
+                logger.info(
+                    "SpecialActivity: 20-free-summon reward already checked today"
+                )
+                self.config.task_delay(server_update=True)
+                return True
+
             from tasks.activity.free_gacha_20 import FreeGacha20
 
             return FreeGacha20(
@@ -102,6 +110,11 @@ class SpecialActivityEntry:
             if not self.config.SpecialActivity_GetFreeGacha:
                 logger.info(
                     "SpecialActivity: free-gacha reward disabled, skip post-login claim"
+                )
+                return True
+            if is_free_gacha_20_checked_today(self.config):
+                logger.info(
+                    "SpecialActivity: skip post-login reward already checked today"
                 )
                 return True
 
