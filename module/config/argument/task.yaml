@@ -60,11 +60,13 @@ Daily:
     Gacha:
       - Scheduler
       - Gacha
+      - GachaResult
     Pets:
       - Scheduler
     SpecialActivity:
       - Scheduler
       - SpecialActivity
+      - GachaResult
 
 
 # ==================== Tool ====================

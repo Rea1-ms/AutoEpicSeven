@@ -654,6 +654,20 @@
       "help": "After summoning, click to collect when Golden Inheritance is full."
     }
   },
+  "GachaResult": {
+    "_info": {
+      "name": "Gacha Result Recording",
+      "help": ""
+    },
+    "SaveScreenshot": {
+      "name": "Save Result Screenshots",
+      "help": "Save summon result screenshots before continuing or returning."
+    },
+    "OcrResult": {
+      "name": "Recognize Result Names (Experimental)",
+      "help": "Recognizes summon result names and records them in the log. Accuracy is currently low; results are for reference only."
+    }
+  },
   "SpecialActivity": {
     "_info": {
       "name": "Special Activity",

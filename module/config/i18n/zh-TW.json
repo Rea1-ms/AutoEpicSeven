@@ -654,6 +654,20 @@
       "help": "召喚結束後若金光傳承石滿溢則自動收取。"
     }
   },
+  "GachaResult": {
+    "_info": {
+      "name": "召喚結果記錄",
+      "help": ""
+    },
+    "SaveScreenshot": {
+      "name": "儲存結果截圖",
+      "help": "繼續召喚或返回前儲存召喚結果截圖。"
+    },
+    "OcrResult": {
+      "name": "辨識結果名稱（實驗性）",
+      "help": "辨識召喚結果名稱並記錄於日誌中。目前準確率較低，結果僅供參考。"
+    }
+  },
   "SpecialActivity": {
     "_info": {
       "name": "特別活動",

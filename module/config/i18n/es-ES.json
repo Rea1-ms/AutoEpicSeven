@@ -654,6 +654,20 @@
       "help": "Tras la invocación, recoger automáticamente cuando Herencia Dorada esté llena."
     }
   },
+  "GachaResult": {
+    "_info": {
+      "name": "Registro de resultados de invocación",
+      "help": ""
+    },
+    "SaveScreenshot": {
+      "name": "Guardar capturas de resultados",
+      "help": "Guarda capturas del resultado antes de continuar o volver."
+    },
+    "OcrResult": {
+      "name": "Reconocer nombres de resultados (Experimental)",
+      "help": "Reconoce los nombres de los resultados de invocación y los registra. La precisión actual es baja; los resultados son solo de referencia."
+    }
+  },
   "SpecialActivity": {
     "_info": {
       "name": "Actividad especial",

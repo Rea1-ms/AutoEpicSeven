@@ -259,6 +259,10 @@ SecretShop:
 Gacha:
   CollectGoldenInheritance: true
 
+GachaResult:
+  SaveScreenshot: true
+  OcrResult: false
+
 SpecialActivity:
   GetDailyReward: true
   GetTaskReward: true

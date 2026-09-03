@@ -178,6 +178,15 @@ class SummonResultRecorder:
 
     RESULT_LOG_ROOT = Path("log/gacha")
 
+    def _save_result_screenshot_enabled(self) -> bool:
+        return self.config.GachaResult_SaveScreenshot
+
+    def _ocr_result_enabled(self) -> bool:
+        return self.config.GachaResult_OcrResult
+
+    def _result_recording_enabled(self) -> bool:
+        return self._save_result_screenshot_enabled() or self._ocr_result_enabled()
+
     def _ocr_lang(self) -> str:
         lang = getattr(self.config, "Emulator_GameLanguage", "cn")
         if lang in ("auto", "", None, "cn", "global_cn", "zh", "zh_cn"):
@@ -277,37 +286,47 @@ class SummonResultRecorder:
         folder = self.RESULT_LOG_ROOT / day
         folder.mkdir(parents=True, exist_ok=True)
 
-        image_path = folder / f"{ts}_{tag}.png"
-        save_image(image, str(image_path))
-
         record = {
             "ts": ts,
             "tag": tag,
             "count": self._draw_count,
             "free": self._draw_free,
-            "image": str(image_path),
         }
+        if self._save_result_screenshot_enabled():
+            image_path = folder / f"{ts}_{tag}.png"
+            save_image(image, str(image_path))
+            record["image"] = str(image_path)
         record.update(metadata)
         with open(folder / "draws.jsonl", "a", encoding="utf-8") as file:
             file.write(json.dumps(record, ensure_ascii=False) + "\n")
 
-        logger.info(f"Summon result saved: {image_path}")
+        logger.info(f"Summon result recorded: {record}")
 
     def _save_result(self, tag: str = "result") -> None:
+        if not self._result_recording_enabled():
+            return
         image = self.device.image
+        metadata = {}
+        if self._ocr_result_enabled():
+            metadata["result_name"] = self._read_result_name(image)
         self._write_result_record(
             image=image,
             tag=tag,
-            metadata={"result_name": self._read_result_name(image)},
+            metadata=metadata,
         )
 
     def _save_ten_pull_result(self, image, card_images) -> None:
-        result_names = self._read_ten_pull_names(card_images)
+        if not self._result_recording_enabled():
+            return
+        metadata = {}
+        if self._ocr_result_enabled():
+            result_names = self._read_ten_pull_names(card_images)
+            metadata = {
+                "result_names": result_names,
+                "retained_count": len(result_names),
+            }
         self._write_result_record(
             image=image,
             tag="result",
-            metadata={
-                "result_names": result_names,
-                "retained_count": len(result_names),
-            },
+            metadata=metadata,
         )

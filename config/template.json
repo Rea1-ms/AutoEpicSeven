@@ -225,6 +225,10 @@
     },
     "Gacha": {
       "CollectGoldenInheritance": true
+    },
+    "GachaResult": {
+      "SaveScreenshot": true,
+      "OcrResult": false
     }
   },
   "Pets": {
@@ -247,6 +251,10 @@
       "GetTaskReward": true,
       "GetFreeGacha": true,
       "GetEnergyDrink": true
+    },
+    "GachaResult": {
+      "SaveScreenshot": true,
+      "OcrResult": false
     }
   },
   "CommunityAuth": {

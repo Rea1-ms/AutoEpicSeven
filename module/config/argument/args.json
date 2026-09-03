@@ -964,6 +964,16 @@
         "type": "checkbox",
         "value": true
       }
+    },
+    "GachaResult": {
+      "SaveScreenshot": {
+        "type": "checkbox",
+        "value": true
+      },
+      "OcrResult": {
+        "type": "checkbox",
+        "value": false
+      }
     }
   },
   "Pets": {
@@ -1035,6 +1045,16 @@
       "GetEnergyDrink": {
         "type": "checkbox",
         "value": true
+      }
+    },
+    "GachaResult": {
+      "SaveScreenshot": {
+        "type": "checkbox",
+        "value": true
+      },
+      "OcrResult": {
+        "type": "checkbox",
+        "value": false
       }
     }
   },

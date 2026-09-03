@@ -654,6 +654,20 @@
       "help": "召唤结束后若金光传承石满溢则自动收取。"
     }
   },
+  "GachaResult": {
+    "_info": {
+      "name": "召唤结果记录",
+      "help": ""
+    },
+    "SaveScreenshot": {
+      "name": "保存结果截图",
+      "help": "在继续召唤或返回前保存召唤结果截图。"
+    },
+    "OcrResult": {
+      "name": "识别结果名称（实验性）",
+      "help": "识别并在日志中记录召唤结果名称。当前准确率较低，结果仅供参考。"
+    }
+  },
   "SpecialActivity": {
     "_info": {
       "name": "特别活动",

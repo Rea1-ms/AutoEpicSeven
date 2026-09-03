@@ -129,6 +129,10 @@ class GeneratedConfig:
     # Group `Gacha`
     Gacha_CollectGoldenInheritance = True
 
+    # Group `GachaResult`
+    GachaResult_SaveScreenshot = True
+    GachaResult_OcrResult = False
+
     # Group `SpecialActivity`
     SpecialActivity_GetDailyReward = True
     SpecialActivity_GetTaskReward = True
