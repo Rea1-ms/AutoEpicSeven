@@ -202,7 +202,7 @@ class Gacha(SummonResultRecorder, UI):
 
                 # 4) Result page
                 if back and free_continue:
-                    if self._draw_count == 10:
+                    if self._draw_count == 10 and self._result_recording_enabled():
                         if ten_pull_collector is None:
                             ten_pull_collector = TenPullResultCollector()
                         if not ten_pull_collector.observe(self.device.image):
@@ -223,7 +223,7 @@ class Gacha(SummonResultRecorder, UI):
                         timeout.reset()
                     continue
                 if back:
-                    if self._draw_count == 10:
+                    if self._draw_count == 10 and self._result_recording_enabled():
                         if ten_pull_collector is None:
                             ten_pull_collector = TenPullResultCollector()
                         if not ten_pull_collector.observe(self.device.image):
