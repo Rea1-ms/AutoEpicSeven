@@ -15,7 +15,7 @@ Script de automatización para Epic Seven, basado en la nueva generación del fr
 - **Invocaciones**: Usa automáticamente las invocaciones gratuitas diarias y las oportunidades gratuitas de la Casa de Mascotas.
 - **Farmeo AFK**: Actualiza la tienda y farmea etapas.
 - **Arena**: Farmea rivales NPC de Arena y reclama las recompensas semanales de combate.
-- ~~**Tienda**: Compra automáticamente artículos diarios y semanales~~ No disponible actualmente; no hay planes de actualizarlo por ahora.
+- **Tienda**: Compra automáticamente artículos diarios y semanales.
 - **Gremio**: Automatiza el Jefe Mundial, detecta y avisa sobre ataques de Guerra de Gremios, dona flores y pingüinos, y reclama recompensas semanales.
 - **Automatización en segundo plano**: Inicia automáticamente el emulador y el juego, ejecuta tareas diarias y de resistencia en segundo plano, y muestra los recursos en el panel.
 - **Eventos principales**: Participa automáticamente en grandes eventos de versión y reclama recompensas. Las actualizaciones se publican cuando sea posible.

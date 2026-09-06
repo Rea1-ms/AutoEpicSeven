@@ -56,15 +56,18 @@ Daily:
     Combat:
       - Scheduler
       - Combat
+      - UrgentTasks
       - CombatRuntime
     Gacha:
       - Scheduler
       - Gacha
+      - GachaResult
     Pets:
       - Scheduler
     SpecialActivity:
       - Scheduler
       - SpecialActivity
+      - GachaResult
 
 
 # ==================== Tool ====================
@@ -73,9 +76,6 @@ Tool:
   menu: 'list'
   page: 'tool'
   tasks:
-    CombatFarm:
-      - Combat
-      - CombatRuntime
     CommunityAuth:
       - CommunityAuth
 

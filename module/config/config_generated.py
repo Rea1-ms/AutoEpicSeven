@@ -105,7 +105,22 @@ class GeneratedConfig:
     Combat_BurnoutMode = 'Daily'  # Daily, Burnout
     Combat_FastCombatCount = 10
     Combat_RepeatCombatCount = 5
+    Combat_RepeatCombatLeifCount = 1
+    Combat_RepeatCombatPrioritizeStamina = True
+    Combat_RepeatCombatGearMode = 'Extract'  # Sell, Extract
+    Combat_RepeatCombatEquipmentScore = 28  # 22, 24, 26, 28, 30, 32
+    Combat_RepeatCombatHeroSpeedFilter = True
+    Combat_RepeatCombatHeroSpeed = 4  # 2, 3, 4
+    Combat_RepeatCombatLegendarySpeedFilter = True
+    Combat_RepeatCombatLegendarySpeed = 4  # 2, 3, 4, 5
+    Combat_RepeatCombatFlatMainStatExceptSpeed = True
+    Combat_RepeatCombatExcludeOtherworldLegendary = False
     Combat_Saint37AutoRecycle = False
+
+    # Group `UrgentTasks`
+    UrgentTasks_Enable = True
+    UrgentTasks_Difficulty = 'Superior'  # Normal, Superior
+    UrgentTasks_LastCheckAt = datetime.datetime(2020, 1, 1, 0, 0)
 
     # Group `CombatRuntime`
     CombatRuntime_Session = {}
@@ -118,6 +133,10 @@ class GeneratedConfig:
 
     # Group `Gacha`
     Gacha_CollectGoldenInheritance = True
+
+    # Group `GachaResult`
+    GachaResult_SaveScreenshot = True
+    GachaResult_OcrResult = False
 
     # Group `SpecialActivity`
     SpecialActivity_GetDailyReward = True
@@ -138,4 +157,4 @@ class GeneratedConfig:
     Dashboard_TeamBattle = {}
 
     # Group `SanctuaryMonthly`
-    SanctuaryMonthly_RewardTier = 'A'  # A, B, S, MaxMinus1, MaxMinus2
+    SanctuaryMonthly_RewardTier = 'A'  # Smart, A, B, S, SS, MaxMinus1, MaxMinus2

@@ -5,75 +5,43 @@ from module.base.button import Button, ButtonWrapper
 
 COMMON_STORE_CHECK = ButtonWrapper(
     name='COMMON_STORE_CHECK',
-    cn=Button(
-        file='./assets/cn/store/entries/COMMON_STORE_CHECK.png',
-        area=(23, 379, 59, 413),
-        search=(3, 359, 79, 433),
-        color=(100, 128, 172),
-        button=(23, 379, 59, 413),
-    ),
-    global_cn=Button(
-        file='./assets/global_cn/store/entries/COMMON_STORE_CHECK.png',
+    share=Button(
+        file='./assets/share/store/entries/COMMON_STORE_CHECK.png',
         area=(23, 383, 59, 412),
         search=(3, 363, 79, 432),
         color=(106, 133, 176),
         button=(23, 383, 59, 412),
     ),
-    global_en=None,
 )
 COMMON_STORE_ENTRY = ButtonWrapper(
     name='COMMON_STORE_ENTRY',
-    cn=Button(
-        file='./assets/cn/store/entries/COMMON_STORE_ENTRY.png',
+    share=Button(
+        file='./assets/share/store/entries/COMMON_STORE_ENTRY.png',
         area=(25, 382, 53, 408),
         search=(5, 362, 73, 428),
         color=(56, 62, 88),
         button=(25, 382, 53, 408),
     ),
-    global_cn=Button(
-        file='./assets/global_cn/store/entries/COMMON_STORE_ENTRY.png',
-        area=(25, 382, 53, 408),
-        search=(5, 362, 73, 428),
-        color=(56, 62, 88),
-        button=(25, 382, 53, 408),
-    ),
-    global_en=None,
 )
 CONQUEST_POINTS_STORE_CHECK = ButtonWrapper(
     name='CONQUEST_POINTS_STORE_CHECK',
-    cn=Button(
-        file='./assets/cn/store/entries/CONQUEST_POINTS_STORE_CHECK.png',
+    share=Button(
+        file='./assets/share/store/entries/CONQUEST_POINTS_STORE_CHECK.png',
         area=(25, 459, 57, 491),
         search=(5, 439, 77, 511),
         color=(136, 157, 190),
         button=(25, 459, 57, 491),
     ),
-    global_cn=Button(
-        file='./assets/global_cn/store/entries/CONQUEST_POINTS_STORE_CHECK.png',
-        area=(25, 459, 57, 491),
-        search=(5, 439, 77, 511),
-        color=(136, 157, 190),
-        button=(25, 459, 57, 491),
-    ),
-    global_en=None,
 )
 CONQUEST_POINTS_STORE_ENTRY = ButtonWrapper(
     name='CONQUEST_POINTS_STORE_ENTRY',
-    cn=Button(
-        file='./assets/cn/store/entries/CONQUEST_POINTS_STORE_ENTRY.png',
+    share=Button(
+        file='./assets/share/store/entries/CONQUEST_POINTS_STORE_ENTRY.png',
         area=(27, 462, 51, 486),
         search=(7, 442, 71, 506),
         color=(86, 92, 116),
         button=(27, 462, 51, 486),
     ),
-    global_cn=Button(
-        file='./assets/global_cn/store/entries/CONQUEST_POINTS_STORE_ENTRY.png',
-        area=(27, 462, 51, 486),
-        search=(7, 442, 71, 506),
-        color=(86, 92, 116),
-        button=(27, 462, 51, 486),
-    ),
-    global_en=None,
 )
 FREE_STORE_CHECK = ButtonWrapper(
     name='FREE_STORE_CHECK',
@@ -148,4 +116,24 @@ STORE_CHECK = ButtonWrapper(
         button=(69, 21, 118, 45),
     ),
     global_en=None,
+)
+SUB_STORE_ENTRY = ButtonWrapper(
+    name='SUB_STORE_ENTRY',
+    share=Button(
+        file='./assets/share/store/entries/SUB_STORE_ENTRY.png',
+        area=(21, 280, 62, 672),
+        search=(1, 260, 82, 692),
+        color=(49, 59, 94),
+        button=(21, 280, 62, 672),
+    ),
+)
+SUB_TAB_ENTRY = ButtonWrapper(
+    name='SUB_TAB_ENTRY',
+    share=Button(
+        file='./assets/share/store/entries/SUB_TAB_ENTRY.png',
+        area=(306, 76, 1280, 148),
+        search=(286, 56, 1280, 168),
+        color=(21, 34, 66),
+        button=(306, 76, 1280, 148),
+    ),
 )

@@ -95,6 +95,9 @@ class AutoEpicSeven(AzurLaneAutoScript):
 
     def combat_farm(self):
         from tasks.dungeon.dungeon import Combat
+        logger.warning(
+            "CombatFarm is deprecated and hidden from Tools; use Combat burnout mode"
+        )
         self.device.disable_stuck_detection()
         while 1:
             Combat(config=self.config, device=self.device, task="CombatFarm").run()

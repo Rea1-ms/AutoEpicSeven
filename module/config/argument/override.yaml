@@ -27,10 +27,3 @@ DataUpdate:
       value: true
       option: [ true, ]
       option_bold: [ true, ]
-
-# ==================== Tool ====================
-
-CombatFarm:
-  Combat:
-    FastCombatCount: 10
-    BurnoutMode: Daily

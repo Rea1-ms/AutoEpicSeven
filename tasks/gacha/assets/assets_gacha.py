@@ -13,6 +13,106 @@ EPIC_BOOKMARK = ButtonWrapper(
         button=(722, 23, 736, 39),
     ),
 )
+GACHA_10_1 = ButtonWrapper(
+    name='GACHA_10_1',
+    share=Button(
+        file='./assets/share/gacha/GACHA_10_1.png',
+        area=(120, 214, 413, 261),
+        search=(100, 194, 433, 281),
+        color=(137, 113, 93),
+        button=(120, 214, 413, 261),
+    ),
+)
+GACHA_10_10 = ButtonWrapper(
+    name='GACHA_10_10',
+    share=Button(
+        file='./assets/share/gacha/GACHA_10_10.png',
+        area=(842, 476, 1114, 514),
+        search=(822, 456, 1134, 534),
+        color=(62, 59, 69),
+        button=(842, 476, 1114, 514),
+    ),
+)
+GACHA_10_2 = ButtonWrapper(
+    name='GACHA_10_2',
+    share=Button(
+        file='./assets/share/gacha/GACHA_10_2.png',
+        area=(100, 351, 369, 386),
+        search=(80, 331, 389, 406),
+        color=(91, 80, 80),
+        button=(100, 351, 369, 386),
+    ),
+)
+GACHA_10_3 = ButtonWrapper(
+    name='GACHA_10_3',
+    share=Button(
+        file='./assets/share/gacha/GACHA_10_3.png',
+        area=(114, 468, 371, 501),
+        search=(94, 448, 391, 521),
+        color=(105, 72, 87),
+        button=(114, 468, 371, 501),
+    ),
+)
+GACHA_10_4 = ButtonWrapper(
+    name='GACHA_10_4',
+    share=Button(
+        file='./assets/share/gacha/GACHA_10_4.png',
+        area=(472, 163, 751, 191),
+        search=(452, 143, 771, 211),
+        color=(82, 85, 129),
+        button=(472, 163, 751, 191),
+    ),
+)
+GACHA_10_5 = ButtonWrapper(
+    name='GACHA_10_5',
+    share=Button(
+        file='./assets/share/gacha/GACHA_10_5.png',
+        area=(477, 285, 746, 322),
+        search=(457, 265, 766, 342),
+        color=(60, 74, 118),
+        button=(477, 285, 746, 322),
+    ),
+)
+GACHA_10_6 = ButtonWrapper(
+    name='GACHA_10_6',
+    share=Button(
+        file='./assets/share/gacha/GACHA_10_6.png',
+        area=(482, 402, 752, 441),
+        search=(462, 382, 772, 461),
+        color=(78, 74, 69),
+        button=(482, 402, 752, 441),
+    ),
+)
+GACHA_10_7 = ButtonWrapper(
+    name='GACHA_10_7',
+    share=Button(
+        file='./assets/share/gacha/GACHA_10_7.png',
+        area=(481, 535, 771, 574),
+        search=(461, 515, 791, 594),
+        color=(140, 115, 107),
+        button=(481, 535, 771, 574),
+    ),
+)
+GACHA_10_8 = ButtonWrapper(
+    name='GACHA_10_8',
+    share=Button(
+        file='./assets/share/gacha/GACHA_10_8.png',
+        area=(843, 223, 1132, 261),
+        search=(823, 203, 1152, 281),
+        color=(77, 66, 73),
+        button=(843, 223, 1132, 261),
+    ),
+)
+GACHA_10_9 = ButtonWrapper(
+    name='GACHA_10_9',
+    share=Button(
+        file='./assets/share/gacha/GACHA_10_9.png',
+        area=(842, 349, 1136, 386),
+        search=(822, 329, 1156, 406),
+        color=(78, 86, 123),
+        button=(842, 349, 1136, 386),
+    ),
+)
 GACHA_STANDARD_TAB = ButtonWrapper(
     name='GACHA_STANDARD_TAB',
     cn=Button(
@@ -39,6 +139,26 @@ GOLDEN_INHERITANCE_FULL = ButtonWrapper(
         search=(520, 608, 591, 664),
         color=(69, 83, 55),
         button=(540, 628, 571, 644),
+    ),
+)
+OCR_CHARACTER_NAME = ButtonWrapper(
+    name='OCR_CHARACTER_NAME',
+    share=Button(
+        file='./assets/share/gacha/OCR_CHARACTER_NAME.png',
+        area=(33, 58, 509, 122),
+        search=(13, 38, 529, 142),
+        color=(27, 27, 36),
+        button=(33, 58, 509, 122),
+    ),
+)
+OCR_REMAINING_GACHA_TIMES = ButtonWrapper(
+    name='OCR_REMAINING_GACHA_TIMES',
+    share=Button(
+        file='./assets/share/gacha/OCR_REMAINING_GACHA_TIMES.png',
+        area=(933, 596, 1174, 620),
+        search=(913, 576, 1194, 640),
+        color=(217, 227, 203),
+        button=(933, 596, 1174, 620),
     ),
 )
 SUMMON_FREE_CONTINUE = ButtonWrapper(

@@ -113,6 +113,16 @@ REWARDS_TIER_S = ButtonWrapper(
         button=(366, 397, 392, 429),
     ),
 )
+REWARDS_TIER_SS = ButtonWrapper(
+    name='REWARDS_TIER_SS',
+    share=Button(
+        file='./assets/share/sanctuary/heart_of_eulerbis/REWARDS_TIER_SS.png',
+        area=(360, 397, 397, 429),
+        search=(340, 377, 417, 449),
+        color=(107, 24, 20),
+        button=(360, 397, 397, 429),
+    ),
+)
 STATE_MONTHLY_CLAIMED = ButtonWrapper(
     name='STATE_MONTHLY_CLAIMED',
     share=Button(

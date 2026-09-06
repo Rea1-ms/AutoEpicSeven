@@ -1,6 +1,13 @@
 from module.base.timer import Timer
+from module.exception import RequestHumanTakeover
 from module.logger import logger
-from tasks.dungeon.assets.assets_dungeon_action import COMBAT_START
+from tasks.dungeon.assets.assets_dungeon_action import (
+    AUTO_COMBAT,
+    AUTO_COMBAT_ENEMY_SELECT,
+    COMBAT_RESULT_CONFIRM,
+    COMBAT_RESULT_LEAVE,
+    COMBAT_START,
+)
 from tasks.dungeon.assets.assets_dungeon_fast_combat import (
     FAST_COMBAT_LOCKED,
     FAST_COMBAT_OFF,
@@ -18,9 +25,21 @@ from tasks.dungeon.assets.assets_dungeon_repeat_result import (
 )
 from tasks.dungeon.assets.assets_dungeon_repeat_status_bar import MINIMIZE
 from tasks.dungeon.assets.assets_dungeon_repeat_window import WINDOW_CHECK
+from tasks.dungeon.assets.assets_dungeon_state import (
+    AUTO_COMBAT_EXIST,
+    AUTO_COMBAT_SKILL_CLOSED,
+    AUTO_COMBAT_SKILL_OPENED,
+    COMBAT_RESULT_CLEAR,
+    COMBAT_RESULT_FAILED,
+    ENEMY_NUM_EXIST,
+)
 
 
 class CombatExecuteMixin:
+    AUTO_COMBAT_ENTER_SECONDS = 2
+    AUTO_COMBAT_CLICK_INTERVAL_SECONDS = 2
+    AUTO_COMBAT_UNKNOWN_WARN_SECONDS = 15
+
     def _is_fast_combat_locked(self) -> bool:
         return self.match_template_luma(FAST_COMBAT_LOCKED, similarity=self.COMBAT_CHECK_SIMILARITY)
 
@@ -130,6 +149,160 @@ class CombatExecuteMixin:
             logger.info("Combat: enable repeat combat")
             return False
         return False
+
+    def _detect_auto_combat_state(self) -> bool | None:
+        """Return the positively identified auto-combat state.
+
+        ``True`` is deliberately based on several intermittent battle HUD
+        elements instead of the auto button itself.  During skill animations
+        every HUD element may disappear, so no match is an unknown state, not
+        proof that auto combat is disabled.  ``False`` is only returned when
+        an enemy-number target is visible during the player's actionable turn.
+        """
+        if (
+            self.appear(AUTO_COMBAT_ENEMY_SELECT)
+            or self.appear(AUTO_COMBAT_SKILL_CLOSED)
+            or self.appear(AUTO_COMBAT_SKILL_OPENED)
+        ):
+            return True
+        if self.appear(ENEMY_NUM_EXIST):
+            return False
+        return None
+
+    def _run_normal_combat(
+        self,
+        completion_check,
+        skip_first_screenshot=True,
+    ) -> bool:
+        """Run one foreground combat and return on a caller-owned page.
+
+        Args:
+            completion_check: Side-effect-free predicate for the page reached
+                after leaving the battle result.
+
+        Pages:
+            in: combat prepare
+            out: page recognized by ``completion_check``
+
+        The only known ambiguous case is a manual battle against one elite
+        enemy: it has neither an enemy-number marker nor a distinct auto-off
+        asset.  The loop therefore keeps observing instead of blindly toggling
+        AUTO_COMBAT, which could disable an already-running automatic battle
+        during an ultimate animation.
+        """
+        logger.info("Combat: run normal foreground combat")
+        stage = "prepare"
+        start_pending = Timer(self.COMBAT_START_PENDING_SECONDS, count=0).clear()
+        auto_enter = Timer(self.AUTO_COMBAT_ENTER_SECONDS, count=3).clear()
+        auto_warning = Timer(
+            self.AUTO_COMBAT_UNKNOWN_WARN_SECONDS,
+            count=0,
+        ).clear()
+        battle_result_seen = False
+
+        while 1:
+            if skip_first_screenshot:
+                skip_first_screenshot = False
+            else:
+                self.device.screenshot()
+
+            if battle_result_seen and completion_check():
+                logger.info("Combat: normal foreground combat completed")
+                return True
+
+            self._raise_if_package_full()
+
+            if self.appear(COMBAT_RESULT_FAILED):
+                message = (
+                    "Combat: foreground battle failed. "
+                    "Please adjust the team before retrying."
+                )
+                logger.critical(message)
+                raise RequestHumanTakeover(message)
+
+            if self.appear(COMBAT_RESULT_CLEAR):
+                battle_result_seen = True
+                if self.interval_is_reached(
+                    COMBAT_RESULT_CLEAR,
+                    interval=self.COMBAT_RESULT_INTERVAL_SECONDS,
+                ):
+                    logger.info("Combat: advance clear result")
+                    self.device.click(COMBAT_RESULT_CLEAR)
+                    self.interval_reset(
+                        COMBAT_RESULT_CLEAR,
+                        interval=self.COMBAT_RESULT_INTERVAL_SECONDS,
+                    )
+                continue
+
+            if self.appear_then_click(
+                COMBAT_RESULT_CONFIRM,
+                interval=self.COMBAT_RESULT_INTERVAL_SECONDS,
+            ):
+                battle_result_seen = True
+                logger.info("Combat: confirm foreground battle rewards")
+                continue
+
+            if self.appear_then_click(
+                COMBAT_RESULT_LEAVE,
+                interval=self.COMBAT_RESULT_INTERVAL_SECONDS,
+            ):
+                battle_result_seen = True
+                logger.info("Combat: leave foreground battle")
+                continue
+
+            if stage == "prepare" and self._is_prepare_page():
+                if not self._ensure_fast_combat_state(enabled=False):
+                    continue
+                if self.appear_then_click(
+                    COMBAT_START,
+                    interval=self.COMBAT_START_INTERVAL_SECONDS,
+                ):
+                    logger.info("Combat: start normal foreground battle")
+                    stage = "battle"
+                    start_pending.reset()
+                    auto_enter.reset()
+                    auto_warning.reset()
+                    continue
+
+            if stage == "battle":
+                auto_state = self._detect_auto_combat_state()
+                if auto_state is True:
+                    auto_warning.reset()
+                    self.device.stuck_record_clear()
+                    continue
+                if auto_state is False:
+                    auto_warning.reset()
+                    self.device.stuck_record_clear()
+                    if auto_enter.reached() and self.interval_is_reached(
+                        AUTO_COMBAT,
+                        interval=self.AUTO_COMBAT_CLICK_INTERVAL_SECONDS,
+                    ):
+                        logger.info("Combat: enable automatic combat")
+                        self.device.click_record_remove(AUTO_COMBAT)
+                        self.device.click(AUTO_COMBAT)
+                        self.interval_reset(
+                            AUTO_COMBAT,
+                            interval=self.AUTO_COMBAT_CLICK_INTERVAL_SECONDS,
+                        )
+                    continue
+
+                if self.appear(AUTO_COMBAT_EXIST):
+                    self.device.stuck_record_clear()
+
+                if auto_warning.reached():
+                    logger.warning(
+                        "Combat: automatic-combat state is still ambiguous; "
+                        "waiting for a positive HUD state"
+                    )
+                    auto_warning.reset()
+
+                if start_pending.reached() and self._is_prepare_page():
+                    logger.info("Combat: normal battle start pending timeout, retry")
+                    stage = "prepare"
+                    continue
+
+            if self._handle_dungeon_additional():
+                continue
 
     def _run_fast_combat(self, skip_first_screenshot=True) -> bool:
         logger.info("Combat: run fast combat")

@@ -15,7 +15,7 @@ Epic Seven automation script, based on the next-generation Alas framework and ad
 - **Summoning**: Use daily free summons and free Pet House opportunities automatically.
 - **AFK Farming**: Refresh the shop and farm stages.
 - **Arena**: Farm Arena NPC opponents and claim weekly battle rewards.
-- ~~**Shop**: Buy daily and weekly items automatically~~ Currently unavailable; no update planned for now.
+- **Shop**: Buy daily and weekly items automatically.
 - **Guild**: Automate World Boss, detect and remind about Guild War attacks, donate blooms and penguins, and claim weekly rewards.
 - **Background Automation**: Start the emulator and game automatically, run stamina and daily tasks in the background, and view resources from the dashboard.
 - **Major Events**: Participate in major version events and claim rewards. Updates are provided as available.

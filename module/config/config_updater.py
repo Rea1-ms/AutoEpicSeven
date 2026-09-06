@@ -612,7 +612,7 @@ class ConfigUpdater:
         if deep_get(data, 'SecretShop.SecretShop.OnlyFree', default=True) is True:
             yield 'SecretShop.SecretShop.MaxRefresh'
         # Fast combat & repeat combat
-        for task in ('Combat', 'CombatFarm'):
+        for task in ('Combat',):
             task_prefix = f'{task}.Combat'
             is_farm_task = task == 'CombatFarm'
             combat_domain = deep_get(data, f'{task_prefix}.Domain', default='Hunt')
@@ -633,11 +633,26 @@ class ConfigUpdater:
             elif deep_get(data, f'{task_prefix}.FastCombat', default=True) is False:
                 yield f'{task_prefix}.FastCombatCount'
 
+            if deep_get(
+                data,
+                f'{task_prefix}.RepeatCombatHeroSpeedFilter',
+                default=True,
+            ) is False:
+                yield f'{task_prefix}.RepeatCombatHeroSpeed'
+            if deep_get(
+                data,
+                f'{task_prefix}.RepeatCombatLegendarySpeedFilter',
+                default=True,
+            ) is False:
+                yield f'{task_prefix}.RepeatCombatLegendarySpeed'
+
             if not is_farm_task and normalize_execution_mode(
                 deep_get(data, f'{task_prefix}.BurnoutMode', default=EXECUTION_MODE_DAILY)
             ) == EXECUTION_MODE_BURNOUT:
                 yield f'{task_prefix}.FastCombatCount'
                 yield f'{task_prefix}.RepeatCombatCount'
+                yield f'{task_prefix}.RepeatCombatLeifCount'
+                yield f'{task_prefix}.RepeatCombatPrioritizeStamina'
 
             if is_farm_task and (
                 combat_domain == 'Saint37'
@@ -649,9 +664,11 @@ class ConfigUpdater:
                 yield f'{task_prefix}.Saint37AutoRecycle'
 
             # Burnout mode schedules by stamina regeneration. Dimensional hunt
-            # consumes leaves instead of stamina, and CombatFarm already loops
-            # continuously (its BurnoutMode is also locked by override.yaml).
-            if is_farm_task or (combat_domain == 'Hunt' and combat_hunt_grade == 'Dimensional'):
+            # consumes its own resource, so it remains outside this mode.
+            if (
+                is_farm_task
+                or (combat_domain == 'Hunt' and combat_hunt_grade == 'Dimensional')
+            ):
                 yield f'{task_prefix}.BurnoutMode'
 
             if combat_domain in ('Saint37', 'Episode4'):
@@ -663,6 +680,9 @@ class ConfigUpdater:
                     yield f'{task_prefix}.AltarGrade'
                 if combat_domain != 'Hunt':
                     yield f'{task_prefix}.HuntGrade'
+
+        if deep_get(data, 'Combat.UrgentTasks.Enable', default=True) is False:
+            yield 'Combat.UrgentTasks.Difficulty'
 
     def get_hidden_args(self, data) -> t.Set[str]:
         """

@@ -187,6 +187,8 @@ def get_resource_bar_segment_area(
     layout: tuple[str, ...],
     key: str,
     icon_offsets: dict[str, tuple[int, int]] | None = None,
+    icons: dict | None = None,
+    segment_left_paddings: dict[str, int] | None = None,
 ) -> tuple[int, int, int, int] | None:
     try:
         index = layout.index(key)
@@ -195,13 +197,21 @@ def get_resource_bar_segment_area(
 
     if icon_offsets is None:
         icon_offsets = {}
+    if icons is None:
+        icons = RESOURCE_BAR_ICONS
+    if segment_left_paddings is None:
+        segment_left_paddings = {}
 
-    icon = RESOURCE_BAR_ICONS[key]
+    icon = icons[key]
     current_offset = icon_offsets.get(key, (0, 0))
     current_icon_area = area_offset(icon.area, current_offset)
-    x1 = max(OCR_RESOURCE_BAR.area[0], current_icon_area[2] - RESOURCE_BAR_SEGMENT_LEFT_PADDING)
+    left_padding = segment_left_paddings.get(
+        key,
+        RESOURCE_BAR_SEGMENT_LEFT_PADDING,
+    )
+    x1 = max(OCR_RESOURCE_BAR.area[0], current_icon_area[2] - left_padding)
     if index + 1 < len(layout):
-        next_icon = RESOURCE_BAR_ICONS[layout[index + 1]]
+        next_icon = icons[layout[index + 1]]
         next_icon_area = area_offset(next_icon.area, icon_offsets.get(layout[index + 1], (0, 0)))
         x2 = min(OCR_RESOURCE_BAR.area[2], next_icon_area[0] - RESOURCE_BAR_SEGMENT_RIGHT_PADDING)
     else:
@@ -255,6 +265,8 @@ class ResourceBarMixin:
     def _match_resource_bar_icons(
         self,
         layout: tuple[str, ...],
+        icons: dict | None = None,
+        similarity: float = 0.85,
     ) -> tuple[dict[str, tuple[int, int]], list[str]]:
         """
         Match every currency icon in the resource bar band.
@@ -272,11 +284,13 @@ class ResourceBarMixin:
         """
         icon_offsets: dict[str, tuple[int, int]] = {}
         matched_icons: list[str] = []
+        if icons is None:
+            icons = RESOURCE_BAR_ICONS
 
         for key in layout:
-            icon = RESOURCE_BAR_ICONS[key]
+            icon = icons[key]
             icon.load_search(OCR_RESOURCE_BAR.area)
-            if icon.match_template(self.device.image, similarity=0.85):
+            if icon.match_template(self.device.image, similarity=similarity):
                 offset = tuple(int(value) for value in icon.button_offset)
                 icon_offsets[key] = offset
                 matched_icons.append(f"{key}={offset}")
@@ -292,7 +306,7 @@ class ResourceBarMixin:
         # OCR segments downstream.
         last_x = -1
         for key in layout:
-            matched_x = RESOURCE_BAR_ICONS[key].area[0] + icon_offsets[key][0]
+            matched_x = icons[key].area[0] + icon_offsets[key][0]
             if matched_x <= last_x:
                 matched_icons.append(f"order_violation:{key}")
                 return {}, matched_icons
@@ -306,16 +320,29 @@ class ResourceBarMixin:
         layout_name: str,
         icon_offsets: dict[str, tuple[int, int]],
         matched_icons: list[str],
+        icons: dict | None = None,
+        specs: dict[str, ResourceBarSpec] | None = None,
+        segment_left_paddings: dict[str, int] | None = None,
     ) -> dict[str, ResourceBarValue] | None:
         parsed: dict[str, ResourceBarValue] = {}
         raw_texts: list[str] = []
+        if icons is None:
+            icons = RESOURCE_BAR_ICONS
+        if specs is None:
+            specs = RESOURCE_BAR_SPECS
         if len(icon_offsets) != len(layout):
             logger.attr(f"{layout_name}ResourceBarIconMatches", matched_icons)
             logger.attr(f"{layout_name}ResourceBarIconSegments", raw_texts)
             return None
 
         for key in layout:
-            area = get_resource_bar_segment_area(layout, key, icon_offsets=icon_offsets)
+            area = get_resource_bar_segment_area(
+                layout,
+                key,
+                icon_offsets=icon_offsets,
+                icons=icons,
+                segment_left_paddings=segment_left_paddings,
+            )
             if area is None:
                 logger.attr(f"{layout_name}ResourceBarIconMatches", matched_icons)
                 logger.attr(f"{layout_name}ResourceBarIconSegments", raw_texts)
@@ -329,7 +356,7 @@ class ResourceBarMixin:
             ).ocr_single_line(image, direct_ocr=True)
             raw_texts.append(f"{key}={text}")
 
-            value = parse_resource_bar_text(text, spec=RESOURCE_BAR_SPECS[key])
+            value = parse_resource_bar_text(text, spec=specs[key])
             if value is None:
                 logger.attr(f"{layout_name}ResourceBarIconMatches", matched_icons)
                 logger.attr(f"{layout_name}ResourceBarIconSegments", raw_texts)
@@ -359,6 +386,10 @@ class ResourceBarMixin:
         layout: tuple[str, ...],
         layout_name: str,
         log_result: bool = True,
+        icons: dict | None = None,
+        specs: dict[str, ResourceBarSpec] | None = None,
+        icon_similarity: float = 0.85,
+        segment_left_paddings: dict[str, int] | None = None,
     ) -> ResourceBarInspectResult:
         """
         Inspect a single already-captured frame of the resource bar.
@@ -374,12 +405,19 @@ class ResourceBarMixin:
         offline debug script's schema does not break; they are always empty
         or None now.
         """
-        icon_offsets, matched_icons = self._match_resource_bar_icons(layout)
+        icon_offsets, matched_icons = self._match_resource_bar_icons(
+            layout,
+            icons=icons,
+            similarity=icon_similarity,
+        )
         parsed_by_icon = self._resource_bar_by_icon(
             layout=layout,
             layout_name=layout_name,
             icon_offsets=icon_offsets,
             matched_icons=matched_icons,
+            icons=icons,
+            specs=specs,
+            segment_left_paddings=segment_left_paddings,
         )
 
         final = parsed_by_icon
@@ -407,6 +445,10 @@ class ResourceBarMixin:
         skip_first_screenshot=True,
         timeout_seconds: float | None = None,
         timeout_count: int | None = None,
+        icons: dict | None = None,
+        specs: dict[str, ResourceBarSpec] | None = None,
+        icon_similarity: float = 0.85,
+        segment_left_paddings: dict[str, int] | None = None,
     ) -> dict[str, ResourceBarValue] | None:
         if timeout_seconds is None:
             timeout_seconds = self.RESOURCE_BAR_TIMEOUT_SECONDS
@@ -425,6 +467,10 @@ class ResourceBarMixin:
                 layout=layout,
                 layout_name=layout_name,
                 log_result=True,
+                icons=icons,
+                specs=specs,
+                icon_similarity=icon_similarity,
+                segment_left_paddings=segment_left_paddings,
             )
             parsed = inspected.final
             if parsed is not None:

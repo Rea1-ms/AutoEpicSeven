@@ -223,7 +223,35 @@ Combat:
     option: [ Daily, Burnout ]
   FastCombatCount: 10
   RepeatCombatCount: 5
+  RepeatCombatLeifCount: 1
+  RepeatCombatPrioritizeStamina: true
+  RepeatCombatGearMode:
+    value: Extract
+    option: [ Sell, Extract ]
+  RepeatCombatEquipmentScore:
+    value: 28
+    option: [ 22, 24, 26, 28, 30, 32 ]
+  RepeatCombatHeroSpeedFilter: true
+  RepeatCombatHeroSpeed:
+    value: 4
+    option: [ 2, 3, 4 ]
+  RepeatCombatLegendarySpeedFilter: true
+  RepeatCombatLegendarySpeed:
+    value: 4
+    option: [ 2, 3, 4, 5 ]
+  RepeatCombatFlatMainStatExceptSpeed: true
+  RepeatCombatExcludeOtherworldLegendary: false
   Saint37AutoRecycle: false
+
+UrgentTasks:
+  Enable: true
+  Difficulty:
+    value: Superior
+    option: [ Normal, Superior ]
+  LastCheckAt:
+    keepvalue: true
+    display: hide
+    value: 2020-01-01 00:00:00
 
 CombatRuntime:
   Session:
@@ -240,6 +268,10 @@ SecretShop:
 
 Gacha:
   CollectGoldenInheritance: true
+
+GachaResult:
+  SaveScreenshot: true
+  OcrResult: false
 
 SpecialActivity:
   GetDailyReward: true
@@ -304,4 +336,4 @@ Dashboard:
 SanctuaryMonthly:
   RewardTier:
     value: A
-    option: [ A, B, S, MaxMinus1, MaxMinus2 ]
+    option: [ Smart, A, B, S, SS, MaxMinus1, MaxMinus2 ]
