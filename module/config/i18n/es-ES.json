@@ -464,6 +464,34 @@
       "0": "0",
       "1": "1",
       "2": "2"
+    },
+    "BuyInheritanceEquipmentReforgingStoneSelectionChest": {
+      "name": "Comprar cofre de selección de piedras de reforja (Herencia)",
+      "help": "Compra el cofre de selección de piedras de reforja con límite semanal en la tienda de Herencia."
+    },
+    "BuyInheritanceLesserArtifactCharm": {
+      "name": "Cantidad de piedras menores de mejora de artefacto (Herencia)",
+      "help": "Cuántas piedras menores de mejora de artefacto comprar en la tienda de Herencia. Máximo 3.",
+      "0": "0",
+      "1": "1",
+      "2": "2",
+      "3": "3"
+    },
+    "BuyInheritanceGreaterArtifactCharm": {
+      "name": "Comprar piedra superior de mejora de artefacto (Herencia)",
+      "help": "Compra la piedra superior de mejora de artefacto con límite semanal en la tienda de Herencia."
+    },
+    "BuyInheritanceLesserAccessoryCharm": {
+      "name": "Cantidad de lotes de 2 piedras menores de accesorio (Herencia)",
+      "help": "Cuántos lotes de 2 piedras menores de mejora de accesorio comprar en la tienda de Herencia. Máximo 3.",
+      "0": "0",
+      "1": "1",
+      "2": "2",
+      "3": "3"
+    },
+    "BuyInheritanceGreaterAccessoryCharm": {
+      "name": "Comprar 2 piedras superiores de accesorio (Herencia)",
+      "help": "Compra el lote semanal de 2 piedras superiores de mejora de accesorio en la tienda de Herencia."
     }
   },
   "PetsGift": {

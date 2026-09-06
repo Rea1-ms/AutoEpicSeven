@@ -35,10 +35,14 @@ from tasks.store.assets.assets_store_items import (
     ARENA_FLAG,
     DAILY_FREE_ITEM,
     EQUIPMENT_REFORGING_STONE_SELECTION_CHEST,
+    GREATER_ACCESSORY_CHARM,
+    GREATER_ARTIFACT_CHARM,
     ITEM_IN_CD,
+    LESSER_ACCESSORY_CHARM,
     LESSER_ARTIFACT_CHARM,
     MOBILITY_40,
     MOROGORA,
+    POTENTIAL_FRAGMENTS,
     STORE_ITEMS_SEARCH,
 )
 from tasks.store.assets.assets_store_entries import (
@@ -130,12 +134,31 @@ class CurrentStore(UI):
     def _build_inheritance_store_items(self) -> list[ItemPurchasePlan]:
         return [
             ItemPurchasePlan(
-                name='inheritance_reforging_stone_selection_chest',
-                asset=EQUIPMENT_REFORGING_STONE_SELECTION_CHEST,
-                # Temporary mapping from the legacy potential-fragments option.
+                name='inheritance_potential_fragments',
+                asset=POTENTIAL_FRAGMENTS,
                 desired_quantity=normalize_config_purchase_quantity(
                     self.config.StoreWeekly_BuyInheritancePotentialFragments,
-                    maximum=1,
+                    maximum=2,
+                ),
+                quantity_strategy='target',
+                direct_click=True,
+                counter_preset=PurchaseCounterPreset(
+                    name='StoreInheritancePotentialFragmentsCounter',
+                    area=self.BUY_COUNTER_AREA,
+                ),
+                purchase_limit=2,
+                remaining_counter_preset=PurchaseCounterPreset(
+                    name='StoreInheritancePotentialFragmentsRemainingTimes',
+                    area=self.REMAINING_BUY_TIMES_AREA,
+                ),
+            ),
+            ItemPurchasePlan(
+                name='inheritance_reforging_stone_selection_chest',
+                asset=EQUIPMENT_REFORGING_STONE_SELECTION_CHEST,
+                desired_quantity=(
+                    1
+                    if self.config.StoreWeekly_BuyInheritanceEquipmentReforgingStoneSelectionChest
+                    else 0
                 ),
                 quantity_strategy='once',
                 direct_click=True,
@@ -158,6 +181,62 @@ class CurrentStore(UI):
                     name='StoreInheritanceMorogoraRemainingTimes',
                     area=self.REMAINING_BUY_TIMES_AREA,
                 ),
+            ),
+            ItemPurchasePlan(
+                name='inheritance_lesser_artifact_charm',
+                asset=LESSER_ARTIFACT_CHARM,
+                desired_quantity=normalize_config_purchase_quantity(
+                    self.config.StoreWeekly_BuyInheritanceLesserArtifactCharm,
+                    maximum=3,
+                ),
+                quantity_strategy='target',
+                direct_click=True,
+                counter_preset=PurchaseCounterPreset(
+                    name='StoreInheritanceLesserArtifactCharmCounter',
+                    area=self.BUY_COUNTER_AREA,
+                ),
+                purchase_limit=3,
+                remaining_counter_preset=PurchaseCounterPreset(
+                    name='StoreInheritanceLesserArtifactCharmRemainingTimes',
+                    area=self.REMAINING_BUY_TIMES_AREA,
+                ),
+            ),
+            ItemPurchasePlan(
+                name='inheritance_greater_artifact_charm',
+                asset=GREATER_ARTIFACT_CHARM,
+                desired_quantity=(
+                    1 if self.config.StoreWeekly_BuyInheritanceGreaterArtifactCharm else 0
+                ),
+                quantity_strategy='once',
+                direct_click=True,
+            ),
+            ItemPurchasePlan(
+                name='inheritance_lesser_accessory_charm',
+                asset=LESSER_ACCESSORY_CHARM,
+                desired_quantity=normalize_config_purchase_quantity(
+                    self.config.StoreWeekly_BuyInheritanceLesserAccessoryCharm,
+                    maximum=3,
+                ),
+                quantity_strategy='target',
+                direct_click=True,
+                counter_preset=PurchaseCounterPreset(
+                    name='StoreInheritanceLesserAccessoryCharmCounter',
+                    area=self.BUY_COUNTER_AREA,
+                ),
+                purchase_limit=3,
+                remaining_counter_preset=PurchaseCounterPreset(
+                    name='StoreInheritanceLesserAccessoryCharmRemainingTimes',
+                    area=self.REMAINING_BUY_TIMES_AREA,
+                ),
+            ),
+            ItemPurchasePlan(
+                name='inheritance_greater_accessory_charm',
+                asset=GREATER_ACCESSORY_CHARM,
+                desired_quantity=(
+                    1 if self.config.StoreWeekly_BuyInheritanceGreaterAccessoryCharm else 0
+                ),
+                quantity_strategy='once',
+                direct_click=True,
             ),
         ]
 
@@ -200,10 +279,14 @@ class CurrentStore(UI):
             ARENA_FLAG,
             DAILY_FREE_ITEM,
             EQUIPMENT_REFORGING_STONE_SELECTION_CHEST,
+            GREATER_ACCESSORY_CHARM,
+            GREATER_ARTIFACT_CHARM,
             ITEM_IN_CD,
+            LESSER_ACCESSORY_CHARM,
             LESSER_ARTIFACT_CHARM,
             MOBILITY_40,
             MOROGORA,
+            POTENTIAL_FRAGMENTS,
         ):
             button.load_search(STORE_ITEMS_SEARCH.area)
 
