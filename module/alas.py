@@ -3,7 +3,7 @@ import time
 from datetime import datetime, timedelta
 
 import inflection
-from cached_property import cached_property
+from functools import cached_property
 
 from module.base.decorator import del_cached_property
 from module.config.config import AzurLaneConfig, TaskEnd

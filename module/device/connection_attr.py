@@ -1,12 +1,12 @@
 import os
 import re
 
-import adbutils
 import uiautomator2 as u2
 from adbutils import AdbClient, AdbDevice
 
 from module.base.decorator import cached_property
 from module.config.config import AzurLaneConfig
+from module.device.method.atx_agent import AtxAgentClient
 from module.device.method.utils import get_serial_pair
 from module.exception import RequestHumanTakeover
 from module.logger import logger
@@ -35,8 +35,8 @@ class ConnectionAttr:
 
         # Init adb client
         logger.attr('AdbBinary', self.adb_binary)
-        # Monkey patch to custom adb
-        adbutils.adb_path = lambda: self.adb_binary
+        # adbutils resolves this documented override whenever it launches ADB.
+        os.environ['ADBUTILS_ADB_PATH'] = self.adb_binary
         # Remove global proxies, or uiautomator2 will go through it
         for k in list(os.environ.keys()):
             if k.lower().endswith('_proxy'):
@@ -315,19 +315,14 @@ class ConnectionAttr:
         return AdbDevice(self.adb_client, self.serial)
 
     @cached_property
-    def u2(self) -> u2.Device:
+    def u2(self):
         if self.is_over_http:
-            # Using uiautomator2_http
-            device = u2.connect(self.serial)
+            device = AtxAgentClient(self.serial)
+            device.set_new_command_timeout(604800)
         else:
-            # Normal uiautomator2
-            if self.serial.startswith('emulator-') or self.serial.startswith('127.0.0.1:'):
-                device = u2.connect_usb(self.serial)
-            else:
-                device = u2.connect(self.serial)
+            # Pass the configured adbutils device so uiautomator2 uses the same
+            # ADB server and executable selected by AutoEpicSeven.
+            device = u2.connect(self.adb)
 
-        # Stay alive
-        device.set_new_command_timeout(604800)
-
-        logger.attr('u2.Device', f'Device(atx_agent_url={device._get_atx_agent_url()})')
+        logger.attr('u2.Device', f'Device(serial={self.serial})')
         return device

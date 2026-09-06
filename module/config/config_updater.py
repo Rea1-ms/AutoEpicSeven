@@ -1,7 +1,7 @@
 import typing as t
 from copy import deepcopy
 
-from cached_property import cached_property
+from functools import cached_property
 
 from deploy.Windows.utils import DEPLOY_TEMPLATE, poor_yaml_read, poor_yaml_write
 from module.base.timer import timer

@@ -1,51 +1,11 @@
-import os
+import logging
 import random
 import re
 import socket
 import time
-import typing as t
 
-import uiautomator2 as u2
-import uiautomator2cache
-from adbutils import AdbTimeout
+from adbutils import AdbConnection, AdbTimeout
 from lxml import etree
-
-try:
-    # adbutils 0.x
-    from adbutils import _AdbStreamConnection as AdbConnection
-except ImportError:
-    # adbutils >= 1.0
-    from adbutils import AdbConnection
-    # Patch list2cmdline back to subprocess.list2cmdline
-    # We expect `screencap | nc 192.168.0.1 20298` instead of `screencap '|' nc 192.168.80.1 20298`
-    import adbutils
-    import subprocess
-
-    adbutils._utils.list2cmdline = subprocess.list2cmdline
-    adbutils._device.list2cmdline = subprocess.list2cmdline
-
-
-    # BaseDevice.shell() is missing a check_okay() call before reading output,
-    # resulting in an `OKAY` prefix in output.
-    def shell(self,
-              cmdargs: t.Union[str, list, tuple],
-              stream: bool = False,
-              timeout: t.Optional[float] = None,
-              rstrip=True) -> t.Union[AdbConnection, str]:
-        if isinstance(cmdargs, (list, tuple)):
-            cmdargs = subprocess.list2cmdline(cmdargs)
-        if stream:
-            timeout = None
-        c = self.open_transport(timeout=timeout)
-        c.send_command("shell:" + cmdargs)
-        c.check_okay()  # check_okay() is missing here
-        if stream:
-            return c
-        output = c.read_until_close()
-        return output.rstrip() if rstrip else output
-
-
-    adbutils._device.BaseDevice.shell = shell
 
 from module.base.decorator import cached_property
 from module.logger import logger
@@ -53,56 +13,23 @@ from module.logger import logger
 RETRY_TRIES = 5
 RETRY_DELAY = 3
 
-# Patch uiautomator2 appdir
-u2.init.appdir = os.path.dirname(uiautomator2cache.__file__)
+class Uiautomator2LogHandler(logging.Handler):
+    """Forward uiautomator2's public logging output to the project logger."""
 
-# Patch uiautomator2 logger
-u2_logger = u2.logger
-u2_logger.debug = logger.info
-u2_logger.info = logger.info
-u2_logger.warning = logger.warning
-u2_logger.error = logger.error
-u2_logger.critical = logger.critical
-
-
-def setup_logger(*args, **kwargs):
-    return u2_logger
+    def emit(self, record):
+        message = self.format(record)
+        if record.levelno >= logging.ERROR:
+            logger.error(message)
+        elif record.levelno >= logging.WARNING:
+            logger.warning(message)
+        else:
+            logger.info(message)
 
 
-u2.setup_logger = setup_logger
-u2.init.setup_logger = setup_logger
-
-
-# Patch Initer
-class PatchedIniter(u2.init.Initer):
-    @property
-    def atx_agent_url(self):
-        files = {
-            'armeabi-v7a': 'atx-agent_{v}_linux_armv7.tar.gz',
-            # 'arm64-v8a': 'atx-agent_{v}_linux_armv7.tar.gz',
-            'arm64-v8a': 'atx-agent_{v}_linux_arm64.tar.gz',
-            'armeabi': 'atx-agent_{v}_linux_armv6.tar.gz',
-            'x86': 'atx-agent_{v}_linux_386.tar.gz',
-            'x86_64': 'atx-agent_{v}_linux_386.tar.gz',
-        }
-        name = None
-        for abi in self.abis:
-            name = files.get(abi)
-            if name:
-                break
-        if not name:
-            raise Exception(
-                "arch(%s) need to be supported yet, please report an issue in github"
-                % self.abis)
-        return u2.init.GITHUB_BASEURL + '/atx-agent/releases/download/%s/%s' % (
-            u2.version.__atx_agent_version__, name.format(v=u2.version.__atx_agent_version__))
-
-    @property
-    def minicap_urls(self):
-        return []
-
-
-u2.init.Initer = PatchedIniter
+uiautomator2_logger = logging.getLogger('uiautomator2')
+if not any(isinstance(handler, Uiautomator2LogHandler) for handler in uiautomator2_logger.handlers):
+    uiautomator2_logger.addHandler(Uiautomator2LogHandler())
+uiautomator2_logger.propagate = False
 
 
 def is_port_using(port_num):
@@ -393,31 +320,6 @@ def remove_shell_warning(s):
                 if s.startswith('See "dumpsys'):
                     _, _, s = s.partition('\n')
     return s
-
-
-class IniterNoMinicap(u2.init.Initer):
-    @property
-    def minicap_urls(self):
-        """
-        Don't install minicap on emulators, return empty urls.
-
-        binary from https://github.com/openatx/stf-binaries
-        only got abi: armeabi-v7a and arm64-v8a
-        """
-        return []
-
-
-class Device(u2.Device):
-    def show_float_window(self, show=True):
-        """
-        Don't show float windows.
-        """
-        pass
-
-
-# Monkey patch
-u2.init.Initer = IniterNoMinicap
-u2.Device = Device
 
 
 class HierarchyButton:

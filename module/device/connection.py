@@ -1,13 +1,12 @@
 import ipaddress
 import json
-import logging
 import re
+import shlex
 import socket
 import subprocess
 import time
 from functools import wraps
 
-import uiautomator2 as u2
 from adbutils import AdbClient, AdbDevice, AdbTimeout, ForwardItem, ReverseItem
 from adbutils.errors import AdbError
 
@@ -219,7 +218,7 @@ class Connection(ConnectionAttr):
             cmd = list(map(str, cmd))
 
         if stream:
-            result = self.adb.shell(cmd, stream=stream, timeout=timeout, rstrip=rstrip)
+            result = self.adb.open_shell(cmd)
             if recvall:
                 # bytes
                 return recv_all(result)
@@ -227,7 +226,7 @@ class Connection(ConnectionAttr):
                 # socket
                 return result
         else:
-            result = self.adb.shell(cmd, stream=stream, timeout=timeout, rstrip=rstrip)
+            result = self.adb.shell(cmd, timeout=timeout, rstrip=rstrip)
             result = remove_shell_warning(result)
             # str
             return result
@@ -546,8 +545,12 @@ class Connection(ConnectionAttr):
         server.settimeout(timeout)
         # Client send data, waiting for server accept
         # <command> | nc 127.0.0.1 {port}
-        cmd += ["|", *self.nc_command, *self._nc_server_host_port[2:]]
-        stream = self.adb_shell(cmd, stream=True, recvall=False)
+        command = shlex.join([str(arg) for arg in cmd])
+        nc_command = shlex.join([
+            *[str(arg) for arg in self.nc_command],
+            *[str(arg) for arg in self._nc_server_host_port[2:]],
+        ])
+        stream = self.adb_shell(f'{command} | {nc_command}', stream=True, recvall=False)
         try:
             # Server accept connection
             conn, conn_port = server.accept()
@@ -607,19 +610,9 @@ class Connection(ConnectionAttr):
 
     def _adb_reverse_transport(self, remote: str, local: str, norebind: bool = False):
         """
-        Backport fixes from https://github.com/openatx/adbutils/pull/116
-        Don't use self.adb.reverse(), use this method.
+        Create an ADB reverse tunnel through adbutils' public device API.
         """
-        args = ["reverse:forward"]
-        if norebind:
-            args.append("norebind")
-        args.append(remote + ";" + local)
-        cmd = ":".join(args)
-        with self.adb_client._connect() as c:
-            c.send_command(f'host:transport:{self.serial}')
-            c.check_okay()
-            c.send_command(cmd)
-            c.check_okay()
+        self.adb.reverse(remote, local, norebind=norebind)
 
     def adb_reverse(self, remote):
         port = 0
@@ -654,10 +647,7 @@ class Connection(ConnectionAttr):
             local (str): Such as 'tcp:2437'
         """
         try:
-            with self.adb_client._connect() as c:
-                list_cmd = f"host-serial:{self.serial}:killforward:{local}"
-                c.send_command(list_cmd)
-                c.check_okay()
+            self.adb.forward_remove(local)
         except AdbError as e:
             # No error raised when removing a non-existed forward
             # adbutils.errors.AdbError: listener 'tcp:8888' not found
@@ -676,12 +666,7 @@ class Connection(ConnectionAttr):
             local (str): Such as 'tcp:2437'
         """
         try:
-            with self.adb_client._connect() as c:
-                c.send_command(f"host:transport:{self.serial}")
-                c.check_okay()
-                list_cmd = f"reverse:killforward:{local}"
-                c.send_command(list_cmd)
-                c.check_okay()
+            self.adb.reverse_remove(local)
         except AdbError as e:
             # No error raised when removing a non-existed forward
             # adbutils.errors.AdbError: listener 'tcp:8888' not found
@@ -925,20 +910,11 @@ class Connection(ConnectionAttr):
 
     def install_uiautomator2(self):
         """
-        Init uiautomator2 and remove minicap.
+        Recreate the uiautomator2 client and provision its bundled server.
         """
         logger.info('Install uiautomator2')
-        init = u2.init.Initer(self.adb, loglevel=logging.DEBUG)
-        # MuMu X has no ro.product.cpu.abi, pick abi from ro.product.cpu.abilist
-        if init.abi not in ['x86_64', 'x86', 'arm64-v8a', 'armeabi-v7a', 'armeabi']:
-            init.abi = init.abis[0]
-        init.set_atx_agent_addr('127.0.0.1:7912')
-        try:
-            init.install()
-        except ConnectionError:
-            u2.init.GITHUB_BASEURL = 'http://tool.appetizer.io/openatx'
-            init.install()
-        self.uninstall_minicap()
+        del_cached_property(self, 'u2')
+        _ = self.u2
 
     def uninstall_minicap(self):
         """ minicap can't work or will send compressed images on some emulators. """
@@ -949,20 +925,15 @@ class Connection(ConnectionAttr):
     @Config.when(DEVICE_OVER_HTTP=False)
     def restart_atx(self):
         """
-        Minitouch supports only one connection at a time.
-        Restart ATX to kick the existing one.
+        Restart the uiautomator2 server managed by the public client API.
         """
-        logger.info('Restart ATX')
-        atx_agent_path = '/data/local/tmp/atx-agent'
-        self.adb_shell([atx_agent_path, 'server', '--stop'])
-        self.adb_shell([atx_agent_path, 'server', '--nouia', '-d', '--addr', '127.0.0.1:7912'])
+        logger.info('Restart uiautomator2')
+        self.u2.reset_uiautomator()
 
     @Config.when(DEVICE_OVER_HTTP=True)
     def restart_atx(self):
-        logger.warning(
-            f'When connecting a device over http: {self.serial} '
-            f'restart_atx() is skipped, you may need to restart ATX manually'
-        )
+        logger.info('Restart remote uiautomator service')
+        self.u2.reset_uiautomator()
 
     @staticmethod
     def sleep(second):
@@ -1022,16 +993,9 @@ class Connection(ConnectionAttr):
         """
         devices = []
         try:
-            with self.adb_client._connect() as c:
-                c.send_command("host:devices")
-                c.check_okay()
-                output = c.read_string_block()
-                for line in output.splitlines():
-                    parts = line.strip().split("\t")
-                    if len(parts) != 2:
-                        continue
-                    device = AdbDeviceWithStatus(self.adb_client, parts[0], parts[1])
-                    devices.append(device)
+            for info in self.adb_client.list():
+                device = AdbDeviceWithStatus(self.adb_client, info.serial, info.state)
+                devices.append(device)
         except ConnectionResetError as e:
             # Happens only on CN users.
             # ConnectionResetError: [WinError 10054] 远程主机强迫关闭了一个现有的连接。

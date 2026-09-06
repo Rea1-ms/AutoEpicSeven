@@ -163,8 +163,6 @@ class DroidCast(Uiautomator2):
             'app_process',
             '/',
             'ink.mol.droidcast_raw.Main',
-            '>',
-            '/dev/null'
         ])
         logger.info(resp)
         del_cached_property(self, 'droidcast_session')

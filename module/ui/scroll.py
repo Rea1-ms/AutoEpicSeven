@@ -1,11 +1,121 @@
 import numpy as np
-from scipy import signal
 
-from module.base.base import ModuleBase
 from module.base.button import Button, ButtonWrapper
 from module.base.timer import Timer
 from module.base.utils import color_similarity_2d, random_rectangle_point, rgb2gray
 from module.logger import logger
+
+
+def _within_bounds(values, bounds):
+    if np.isscalar(bounds):
+        return values >= bounds
+
+    lower, upper = bounds
+    mask = np.ones(values.shape, dtype=np.bool_)
+    if lower is not None:
+        mask &= values >= lower
+    if upper is not None:
+        mask &= values <= upper
+    return mask
+
+
+def _local_maxima(values):
+    peaks = []
+    index = 1
+    while index < len(values) - 1:
+        if values[index - 1] < values[index]:
+            right = index
+            while right < len(values) - 1 and values[right] == values[right + 1]:
+                right += 1
+            if right < len(values) - 1 and values[right] > values[right + 1]:
+                peaks.append((index + right) // 2)
+            index = right + 1
+        else:
+            index += 1
+    return np.asarray(peaks, dtype=int)
+
+
+def _peak_prominence(values, peak, window_length):
+    half_window = len(values) if window_length is None else int(window_length) // 2
+    left_limit = max(0, peak - half_window)
+    right_limit = min(len(values) - 1, peak + half_window)
+    peak_height = values[peak]
+
+    left = peak
+    while left > left_limit and values[left - 1] <= peak_height:
+        left -= 1
+    right = peak
+    while right < right_limit and values[right + 1] <= peak_height:
+        right += 1
+
+    left_base = left + int(np.argmin(values[left : peak + 1]))
+    right_base = peak + int(np.argmin(values[peak : right + 1]))
+    prominence = peak_height - max(values[left_base], values[right_base])
+    return prominence, left_base, right_base
+
+
+def _peak_width(values, peak, prominence, left_base, right_base):
+    target_height = values[peak] - prominence / 2
+
+    left = peak
+    while left > left_base and values[left] > target_height:
+        left -= 1
+    if values[left] == values[left + 1]:
+        left_crossing = float(left)
+    else:
+        left_crossing = left + (target_height - values[left]) / (values[left + 1] - values[left])
+
+    right = peak
+    while right < right_base and values[right] > target_height:
+        right += 1
+    if values[right] == values[right - 1]:
+        right_crossing = float(right)
+    else:
+        right_crossing = right - (target_height - values[right]) / (values[right - 1] - values[right])
+
+    return right_crossing - left_crossing
+
+
+def _find_peaks(values, height=None, prominence=None, wlen=None, width=None, distance=None):
+    values = np.asarray(values)
+    peaks = _local_maxima(values)
+
+    if height is not None:
+        peaks = peaks[_within_bounds(values[peaks], height)]
+
+    if distance is not None and len(peaks):
+        keep = np.ones(len(peaks), dtype=np.bool_)
+        for index in np.argsort(values[peaks])[::-1]:
+            if not keep[index]:
+                continue
+            before = index - 1
+            while before >= 0 and peaks[index] - peaks[before] < distance:
+                keep[before] = False
+                before -= 1
+            after = index + 1
+            while after < len(peaks) and peaks[after] - peaks[index] < distance:
+                keep[after] = False
+                after += 1
+        peaks = peaks[keep]
+
+    if prominence is not None or width is not None:
+        properties = [_peak_prominence(values, peak, wlen) for peak in peaks]
+        prominences = np.asarray([item[0] for item in properties])
+        if prominence is not None:
+            keep = _within_bounds(prominences, prominence)
+            peaks = peaks[keep]
+            properties = [item for item, selected in zip(properties, keep) if selected]
+            prominences = prominences[keep]
+        if width is not None:
+            widths = np.asarray(
+                [
+                    _peak_width(values, peak, peak_prominence, left_base, right_base)
+                    for peak, peak_prominence, (_, left_base, right_base) in zip(peaks, prominences, properties)
+                ]
+            )
+            peaks = peaks[_within_bounds(widths, width)]
+
+    return peaks
 
 
 class Scroll:
@@ -214,11 +324,11 @@ class Scroll:
 
 
 class AdaptiveScroll(Scroll):
-    def __init__(self, area, parameters: dict = None, background=5, is_vertical=True, name='Scroll'):
+    def __init__(self, area, parameters: dict | None = None, background=5, is_vertical=True, name='Scroll'):
         """
         Args:
             area (Button, tuple): A button or area of the whole scroll.
-            parameters (dict): Parameters passing to scipy.find_peaks
+            parameters (dict): Peak detection parameters.
             background (int):
             is_vertical (bool): True if vertical, false if horizontal.
             name (str):
@@ -251,7 +361,7 @@ class AdaptiveScroll(Scroll):
             # 'distance': wlen / 2,
         }
         parameters.update(self.parameters)
-        peaks, _ = signal.find_peaks(image, **parameters)
+        peaks = _find_peaks(image, **parameters)
         peaks //= wlen
 
         self.length = len(peaks)

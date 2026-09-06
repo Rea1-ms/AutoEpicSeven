@@ -8,7 +8,6 @@ from typing import List
 
 import websockets
 from adbutils.errors import AdbError
-from uiautomator2 import _Service
 
 from module.base.decorator import Config, cached_property, del_cached_property, has_cached_property
 from module.base.timer import Timer
@@ -286,11 +285,18 @@ class MinitouchOccupiedError(Exception):
     pass
 
 
-class U2Service(_Service):
+class U2Service:
     def __init__(self, name, u2obj):
-        self.name = name
-        self.u2obj = u2obj
-        self.service_url = self.u2obj.path2url("/services/" + name)
+        self.service = u2obj.service(name)
+
+    def start(self):
+        return self.service.start()
+
+    def stop(self):
+        return self.service.stop()
+
+    def running(self):
+        return self.service.running()
 
 
 def retry(func):
@@ -408,9 +414,11 @@ class Minitouch(Connection):
 
     def early_minitouch_init(self):
         """
-        Start a thread to init minitouch connection while the Alas instance just starting to take screenshots
-        This would speed up the first click 0.05s.
+        Warm up MaaTouch, which now provides the legacy minitouch control option.
         """
+        if not self.config.DEVICE_OVER_HTTP:
+            self.early_maatouch_init()
+            return
         if has_cached_property(self, '_minitouch_builder'):
             return
 
@@ -584,53 +592,66 @@ class Minitouch(Connection):
         time.sleep(builder.delay / 1000 + builder.DEFAULT_DELAY)
         builder.clear()
 
-    @retry
     def click_minitouch(self, x, y):
+        if self.config.DEVICE_OVER_HTTP:
+            return self._click_minitouch_http(x, y)
+        return self.click_maatouch(x, y)
+
+    @retry
+    def _click_minitouch_http(self, x, y):
         builder = self.minitouch_builder
         builder.down(x, y).commit()
         builder.up().commit()
         builder.send()
 
-    @retry
     def long_click_minitouch(self, x, y, duration=1.0):
+        if self.config.DEVICE_OVER_HTTP:
+            return self._long_click_minitouch_http(x, y, duration)
+        return self.long_click_maatouch(x, y, duration)
+
+    @retry
+    def _long_click_minitouch_http(self, x, y, duration):
         duration = int(duration * 1000)
         builder = self.minitouch_builder
         builder.down(x, y).commit().wait(duration)
         builder.up().commit()
         builder.send()
 
-    @retry
     def swipe_minitouch(self, p1, p2):
+        if self.config.DEVICE_OVER_HTTP:
+            return self._swipe_minitouch_http(p1, p2)
+        return self.swipe_maatouch(p1, p2)
+
+    @retry
+    def _swipe_minitouch_http(self, p1, p2):
         points = insert_swipe(p0=p1, p3=p2)
         builder = self.minitouch_builder
-
         builder.down(*points[0]).commit().wait(10)
         builder.send()
-
         for point in points[1:]:
             builder.move(*point).commit().wait(10)
         builder.send()
-
         builder.up().commit()
         builder.send()
 
-    @retry
     def drag_minitouch(self, p1, p2, point_random=(-10, -10, 10, 10)):
+        if self.config.DEVICE_OVER_HTTP:
+            return self._drag_minitouch_http(p1, p2, point_random)
+        return self.drag_maatouch(p1, p2, point_random=point_random)
+
+    @retry
+    def _drag_minitouch_http(self, p1, p2, point_random):
         p1 = np.array(p1) - random_rectangle_point(point_random)
         p2 = np.array(p2) - random_rectangle_point(point_random)
         points = insert_swipe(p0=p1, p3=p2, speed=20)
         builder = self.minitouch_builder
-
         builder.down(*points[0]).commit().wait(10)
         builder.send()
-
         for point in points[1:]:
             builder.move(*point).commit().wait(10)
         builder.send()
-
         builder.move(*p2).commit().wait(140)
         builder.move(*p2).commit().wait(140)
         builder.send()
-
         builder.up().commit()
         builder.send()

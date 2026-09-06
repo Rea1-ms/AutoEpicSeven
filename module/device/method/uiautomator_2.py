@@ -1,10 +1,10 @@
+import re
+import shlex
 import time
 from dataclasses import dataclass
 from functools import wraps
 from json.decoder import JSONDecodeError
-from subprocess import list2cmdline
 
-import uiautomator2 as u2
 from adbutils.errors import AdbError
 from lxml import etree
 
@@ -118,18 +118,9 @@ class ShellBackgroundResponse:
 class Uiautomator2(Connection):
     @retry
     def screenshot_uiautomator2(self):
-        image = self.u2.screenshot(format='raw')
-        image = np.frombuffer(image, np.uint8)
+        image = np.array(self.u2.screenshot(format='pillow').convert('RGB'), copy=True)
         if image is None:
-            raise ImageTruncated('Empty image after reading from buffer')
-
-        image = cv2.imdecode(image, cv2.IMREAD_COLOR)
-        if image is None:
-            raise ImageTruncated('Empty image after cv2.imdecode')
-
-        cv2.cvtColor(image, cv2.COLOR_BGR2RGB, dst=image)
-        if image is None:
-            raise ImageTruncated('Empty image after cv2.cvtColor')
+            raise ImageTruncated('Empty image after reading uiautomator2 screenshot')
 
         return image
 
@@ -275,19 +266,29 @@ class Uiautomator2(Connection):
         if not package_name:
             package_name = self.package
         if not activity_name:
-            try:
-                info = self.u2.app_info(package_name)
-            except u2.BaseError as e:
+            result = self.u2.shell([
+                'cmd', 'package', 'resolve-activity', '--brief', package_name,
+            ])
+            components = [
+                line.strip() for line in result.output.splitlines()
+                if '/' in line
+            ]
+            if components:
+                _, activity_name = components[-1].split('/', 1)
+            else:
+                result = self.u2.shell(['dumpsys', 'package', package_name])
+                match = re.search(
+                    r'android.intent.action.MAIN:\s+\w+ ([\w./]+) filter \w+\s+'
+                    r'.*\s+Category: "android.intent.category.LAUNCHER"',
+                    result.output,
+                )
+                if match:
+                    component = match.group(1)
+                    _, _, activity_name = component.partition('/')
+            if not activity_name:
                 if allow_failure:
                     return False
-                # BaseError('package "111" not found')
-                elif 'not found' in str(e):
-                    logger.error(e)
-                    raise PackageNotInstalled(package_name)
-                # Unknown error
-                else:
-                    raise
-            activity_name = info['mainActivity']
+                raise PackageNotInstalled(package_name)
 
         cmd = ['am', 'start', '-a', 'android.intent.action.MAIN', '-c',
                'android.intent.category.LAUNCHER', '-n', f'{package_name}/{activity_name}']
@@ -394,16 +395,15 @@ class Uiautomator2(Connection):
     @retry
     def resolution_uiautomator2(self, cal_rotation=True) -> t.Tuple[int, int]:
         """
-        Faster u2.window_size(), cause that calls `dumpsys display` twice.
+        Get screen size through uiautomator2's public device API.
 
         Returns:
             (width, height)
         """
-        info = self.u2.http.get('/info').json()
-        w, h = info['display']['width'], info['display']['height']
-        if cal_rotation:
+        w, h = self.u2.window_size()
+        if not cal_rotation:
             rotation = self.get_orientation()
-            if (w > h) != (rotation % 2 == 1):
+            if rotation % 2 == 1:
                 w, h = h, w
         return w, h
 
@@ -434,42 +434,70 @@ class Uiautomator2(Connection):
         """
         Get info about current processes.
         """
-        resp = self.u2.http.get("/proc/list", timeout=10)
-        resp.raise_for_status()
-        result = [
-            ProcessInfo(
-                pid=proc['pid'],
-                ppid=proc['ppid'],
-                thread_count=proc['threadCount'],
-                cmdline=' '.join(proc['cmdline']) if proc['cmdline'] is not None else '',
-                name=proc['name'],
-            ) for proc in resp.json()
+        commands = [
+            ['ps', '-A', '-o', 'PID,PPID,NLWP,ARGS'],
+            ['ps', '-A'],
+            ['ps'],
         ]
-        return result
+        for command in commands:
+            output = self.adb_shell(command)
+            lines = [line for line in output.splitlines() if line.strip()]
+            if not lines:
+                continue
+
+            header = lines[0].split()
+            if 'PID' not in header:
+                continue
+            pid_index = header.index('PID')
+            ppid_index = header.index('PPID') if 'PPID' in header else None
+            thread_index = header.index('NLWP') if 'NLWP' in header else None
+            command_index = next(
+                (header.index(name) for name in ('ARGS', 'CMDLINE', 'COMMAND', 'CMD', 'NAME') if name in header),
+                len(header) - 1,
+            )
+
+            processes = []
+            for line in lines[1:]:
+                fields = line.split()
+                try:
+                    pid = int(fields[pid_index])
+                    ppid = int(fields[ppid_index]) if ppid_index is not None else 0
+                    thread_count = int(fields[thread_index]) if thread_index is not None else 0
+                    name = fields[command_index]
+                except (IndexError, ValueError):
+                    continue
+                cmdline = ' '.join(fields[command_index:])
+                processes.append(ProcessInfo(
+                    pid=pid,
+                    ppid=ppid,
+                    thread_count=thread_count,
+                    cmdline=cmdline,
+                    name=name,
+                ))
+            return processes
+        return []
 
     @retry
     def u2_shell_background(self, cmdline, timeout=10) -> ShellBackgroundResponse:
         """
         Run at background.
 
-        Note that this function will always return a success response,
-        as this is a untested and hidden method in ATX.
+        The process is detached through the Android shell and its PID is
+        returned, avoiding the removed atx-agent background endpoint.
         """
         if isinstance(cmdline, (list, tuple)):
-            cmdline = list2cmdline(cmdline)
+            cmdline = shlex.join([str(arg) for arg in cmdline])
         elif isinstance(cmdline, str):
             cmdline = cmdline
         else:
             raise TypeError("cmdargs type invalid", type(cmdline))
 
-        data = dict(command=cmdline, timeout=str(timeout))
-        ret = self.u2.http.post("/shell/background", data=data, timeout=timeout + 10)
-        ret.raise_for_status()
-
-        resp = ret.json()
-        resp = ShellBackgroundResponse(
-            success=bool(resp.get('success', False)),
-            pid=resp.get('pid', 0),
-            description=resp.get('description', '')
+        output = self.adb_shell(
+            f'{cmdline} >/dev/null 2>&1 & echo $!',
+            timeout=timeout,
         )
-        return resp
+        try:
+            pid = int(output.strip().splitlines()[-1])
+        except (IndexError, ValueError):
+            return ShellBackgroundResponse(False, 0, output.strip())
+        return ShellBackgroundResponse(True, pid, '')

@@ -1,5 +1,4 @@
 import numpy as np
-from scipy import optimize
 
 from .utils import area_pad
 
@@ -362,6 +361,66 @@ def perspective_transform(points, data):
     return points
 
 
+def _nelder_mead_2d(function, start):
+    """Refine a two-dimensional minimum without an external optimizer."""
+    simplex = np.vstack((start, start.copy(), start.copy())).astype(float)
+    for axis in range(2):
+        simplex[axis + 1, axis] = simplex[axis + 1, axis] * 1.05 or 0.00025
+    scores = np.asarray([function(point) for point in simplex])
+    evaluations = len(simplex)
+
+    for _ in range(399):
+        order = np.argsort(scores)
+        simplex = simplex[order]
+        scores = scores[order]
+        if np.max(np.abs(simplex[1:] - simplex[0])) <= 1e-4 and np.max(np.abs(scores[1:] - scores[0])) <= 1e-4:
+            break
+        if evaluations >= 400:
+            break
+
+        centroid = np.mean(simplex[:-1], axis=0)
+        reflected = 2 * centroid - simplex[-1]
+        reflected_score = function(reflected)
+        evaluations += 1
+
+        if reflected_score < scores[0]:
+            expanded = 3 * centroid - 2 * simplex[-1]
+            expanded_score = function(expanded)
+            evaluations += 1
+            if expanded_score < reflected_score:
+                simplex[-1], scores[-1] = expanded, expanded_score
+            else:
+                simplex[-1], scores[-1] = reflected, reflected_score
+        elif reflected_score < scores[-2]:
+            simplex[-1], scores[-1] = reflected, reflected_score
+        else:
+            shrink = False
+            if reflected_score < scores[-1]:
+                contracted = 1.5 * centroid - 0.5 * simplex[-1]
+                contracted_score = function(contracted)
+                evaluations += 1
+                if contracted_score <= reflected_score:
+                    simplex[-1], scores[-1] = contracted, contracted_score
+                else:
+                    shrink = True
+            else:
+                contracted = 0.5 * centroid + 0.5 * simplex[-1]
+                contracted_score = function(contracted)
+                evaluations += 1
+                if contracted_score < scores[-1]:
+                    simplex[-1], scores[-1] = contracted, contracted_score
+                else:
+                    shrink = True
+
+            if shrink:
+                for index in (1, 2):
+                    simplex[index] = simplex[0] + 0.5 * (simplex[index] - simplex[0])
+                    scores[index] = function(simplex[index])
+                    evaluations += 1
+
+    return simplex[np.argmin(scores)]
+
+
 def fit_points(points, mod, encourage=1):
     """
     Get a closet point in a group of points with common difference.
@@ -377,19 +436,30 @@ def fit_points(points, mod, encourage=1):
         np.ndarray: (x, y)
     """
     encourage = np.square(encourage)
-    mod = np.array(mod)
-    points = np.array(points) % mod
-    points = np.append(points - mod, points, axis=0)
+    mod = np.asarray(mod, dtype=float)
+    points = np.asarray(points, dtype=float) % mod
+    points = np.concatenate((points - mod, points), axis=0)
 
     def cal_distance(point):
         distance = np.linalg.norm(points - point, axis=1)
-        return np.sum(1 / (1 + np.exp(encourage / distance) / distance))
+        with np.errstate(divide='ignore', over='ignore', invalid='ignore'):
+            score = 1 / (1 + np.exp(encourage / distance) / distance)
+        return float(np.nansum(score))
 
-    # Fast local minimizer
-    # result = optimize.minimize(cal_distance, np.mean(points, axis=0), method='SLSQP')
-    # return result['x'] % mod
+    # Keep the previous global-search strategy: first search a 20x20 grid,
+    # then refine the best point locally until sub-pixel convergence.
+    lower = -mod - 10
+    upper = mod + 10
+    axes = [np.linspace(low, high, 20) for low, high in zip(lower, upper)]
+    result = np.array((axes[0][0], axes[1][0]))
+    result_score = cal_distance(result)
+    for x in axes[0]:
+        for y in axes[1]:
+            candidate = np.array((x, y))
+            candidate_score = cal_distance(candidate)
+            if candidate_score < result_score:
+                result = candidate
+                result_score = candidate_score
 
-    # Brute-force global minimizer
-    area = np.append(-mod - 10, mod + 10)
-    result = optimize.brute(cal_distance, ((area[0], area[2]), (area[1], area[3])))
+    result = _nelder_mead_2d(cal_distance, result)
     return result % mod
