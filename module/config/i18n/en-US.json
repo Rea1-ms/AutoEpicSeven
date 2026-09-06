@@ -483,7 +483,7 @@
     },
     "Domain": {
       "name": "Domain",
-      "help": "Choose whether this task farms Hunt, Spirit Altar, or a routed Episode 4 material stage.",
+      "help": "Choose the regular dungeon to run after Urgent Tasks: Hunt, Spirit Altar, Saint 3-7, or a routed Episode 4 material stage.",
       "Hunt": "Hunt",
       "SpiritAltar": "Spirit Altar",
       "Saint37": "Saint 3-7",
@@ -610,6 +610,26 @@
     "Saint37AutoRecycle": {
       "name": "Auto Sell Equipment",
       "help": "Only applies to Saint 3-7. After background repeat combat settles, open the temporary bag, fast select white and green gear, sell them, then return to main."
+    }
+  },
+  "UrgentTasks": {
+    "_info": {
+      "name": "Urgent Tasks",
+      "help": "Check Urgent Tasks before the regular daily dungeon. When available, try to complete all five daily attempts."
+    },
+    "Enable": {
+      "name": "Run Urgent Tasks Automatically",
+      "help": "Check whether Urgent Tasks are available before every daily Combat run."
+    },
+    "Difficulty": {
+      "name": "Urgent Task Difficulty",
+      "help": "Choose General or Superior difficulty.",
+      "Normal": "General",
+      "Superior": "Superior"
+    },
+    "LastCheckAt": {
+      "name": "Last Check Time",
+      "help": "Prevents repeated Urgent Tasks checks during the same server-day window."
     }
   },
   "CombatRuntime": {

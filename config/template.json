@@ -212,6 +212,11 @@
       "RepeatCombatExcludeOtherworldLegendary": false,
       "Saint37AutoRecycle": false
     },
+    "UrgentTasks": {
+      "Enable": true,
+      "Difficulty": "Superior",
+      "LastCheckAt": "2020-01-01 00:00:00"
+    },
     "CombatRuntime": {
       "Session": {}
     }

@@ -924,6 +924,27 @@
         "value": false
       }
     },
+    "UrgentTasks": {
+      "Enable": {
+        "type": "checkbox",
+        "value": true
+      },
+      "Difficulty": {
+        "type": "select",
+        "value": "Superior",
+        "option": [
+          "Normal",
+          "Superior"
+        ]
+      },
+      "LastCheckAt": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime",
+        "keepvalue": true,
+        "display": "hide"
+      }
+    },
     "CombatRuntime": {
       "Session": {
         "type": "dict",

@@ -29,7 +29,9 @@ from tasks.dungeon.assets.assets_dungeon_configs_combat_entry import (
     SEASON_ENTRY,
     SEASON_CHECK,
     SPIRIT_ALTAR,
+    URGENT_ENTRY,
     URGENT_TASKS,
+    URGENT_CHECK,
 )
 if server_.lang == "global_cn":
     from tasks.dungeon.assets.assets_dungeon_repeat_common import REPEAT_COMBAT_MENU
@@ -419,6 +421,13 @@ page_menu.link(MENU_GOTO_COMBAT, destination=page_combat_season)
 page_menu.link(MENU_GOTO_COMBAT, destination=page_combat_common)
 page_menu.link(MENU_GOTO_COMBAT, destination=page_combat_urgent)
 
+if server_.lang == "global_cn":
+    page_combat_season.link(URGENT_ENTRY, destination=page_combat_urgent)
+    page_combat_common.link(URGENT_ENTRY, destination=page_combat_urgent)
+    page_urgent_tasks = Page(URGENT_CHECK)
+    page_urgent_tasks.link(BACK, destination=page_combat_urgent)
+    page_combat_urgent.link(URGENT_TASKS, destination=page_urgent_tasks)
+
 # Combat stage selection page (element / grade)
 page_combat_stage = Page((ALTER_CHECK, HUNT_CHECK))
 page_combat_stage.link(BACK, destination=page_combat_common)
@@ -530,6 +539,8 @@ shared_toolbar_pages = [
     page_knights_world_boss,
     page_knights_team_battle,
 ]
+if server_.lang == "global_cn":
+    shared_toolbar_pages.append(page_urgent_tasks)
 
 link_shared_toolbar(*shared_toolbar_pages)
 

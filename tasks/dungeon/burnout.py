@@ -8,6 +8,10 @@ SERVER_REPEAT_LEIF_STAMINA = 80
 # is out of burnout-mode scope for now.
 EPISODE4_STAMINA_COST = 20
 SAINT37_STAMINA_COST = 8
+URGENT_TASKS_STAMINA_COST = {
+    "Normal": 15,
+    "Superior": 30,
+}
 HUNT_STAMINA_COST = {
     "Mid": 16,
     "High": 18,
@@ -44,6 +48,8 @@ class CombatBurnoutMixin:
     def _combat_burnout_enabled(self) -> bool:
         if self._combat_is_farm_task():
             return False
+        if self._dungeon_domain() == "UrgentTasks":
+            return False
         mode = getattr(self.config, "Combat_BurnoutMode", "Daily")
         return mode is True or mode == "Burnout"
 
@@ -58,6 +64,8 @@ class CombatBurnoutMixin:
             return EPISODE4_STAMINA_COST
         if domain == "Saint37":
             return SAINT37_STAMINA_COST
+        if domain == "UrgentTasks":
+            return URGENT_TASKS_STAMINA_COST.get(self._combat_grade())
         if domain == "Hunt":
             return HUNT_STAMINA_COST.get(self._combat_grade())
         if domain == "SpiritAltar":

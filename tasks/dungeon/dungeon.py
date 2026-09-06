@@ -1,7 +1,11 @@
 import module.config.server as server
 from module.logger import logger
 from tasks.activity.scheduling import should_schedule_after_battle
-from tasks.base.page import page_combat, page_episode, page_side_story
+from tasks.base.page import (
+    page_combat,
+    page_episode,
+    page_side_story,
+)
 from tasks.base.resource_bar import ResourceBarMixin
 from tasks.base.ui import UI
 from tasks.dungeon.burnout import CombatBurnoutMixin
@@ -14,6 +18,7 @@ from tasks.dungeon.repeat import CombatRepeatMixin
 from tasks.dungeon.runtime import CombatRuntimeMixin, is_background_repeat_combat_active
 from tasks.dungeon.side_story import SideStoryNavigateMixin
 from tasks.dungeon.stamina_status import CombatStaminaStatusMixin
+from tasks.dungeon.urgent_tasks import UrgentTasksNavigateMixin
 from tasks.mission_reward.scheduling import should_schedule_mission_reward
 
 
@@ -25,6 +30,7 @@ class Combat(
     CombatEntryMixin,
     EpisodeNavigateMixin,
     SideStoryNavigateMixin,
+    UrgentTasksNavigateMixin,
     CombatStaminaStatusMixin,
     CombatPrepare,
     ResourceBarMixin,
@@ -66,8 +72,19 @@ class Combat(
         """
         return completed_sessions > 0 and not runtime_active
 
+    def _configured_dungeon_domain(self) -> str:
+        domain = getattr(self.config, "Combat_Domain", "Hunt")
+        # Urgent Tasks used to be a regular domain option during initial
+        # development.  Treat that persisted value as Hunt after the feature
+        # moved into its own daily section, so an upgraded profile still has a
+        # valid regular dungeon to resume after the urgent priority pass.
+        return "Hunt" if domain == "UrgentTasks" else domain
+
     def _dungeon_domain(self) -> str:
-        return getattr(self.config, "Combat_Domain", "Hunt")
+        return (
+            getattr(self, "_combat_domain_override", None)
+            or self._configured_dungeon_domain()
+        )
 
     def _combat_plan(self):
         return COMBAT_PLANS.get(self._dungeon_domain(), HUNT_PLAN)
@@ -87,6 +104,8 @@ class Combat(
             return self._combat_episode_target().stage_label
         if domain == "Saint37":
             return "3-7"
+        if domain == "UrgentTasks":
+            return self._urgent_tasks_difficulty()
         if domain == "SpiritAltar":
             return getattr(self.config, "Combat_AltarGrade", "Hell")
         return getattr(self.config, "Combat_HuntGrade", "Hell")
@@ -161,6 +180,7 @@ class Combat(
             or self._is_episode_preview_page()
             or self._is_side_story_map_page()
             or self._is_supporter_page()
+            or self._is_urgent_tasks_detail_page()
             or self._is_episode_stage_page()
             or self._is_episode_choose_page()
             or self._is_episode_supporter_page()
@@ -264,6 +284,10 @@ class Combat(
             return self._navigate_side_story(
                 skip_first_screenshot=skip_first_screenshot
             )
+        if domain == "UrgentTasks":
+            return self._navigate_urgent_tasks(
+                skip_first_screenshot=skip_first_screenshot
+            )
 
         plan = self._combat_plan()
         success = self._enter_stage_page(
@@ -282,6 +306,7 @@ class Combat(
     def run(self) -> bool:
         logger.hr("Combat", level=1)
         completed_sessions = 0
+        normal_session_settled = False
 
         if (
             server.is_oversea_server(self.config.Emulator_PackageName)
@@ -327,29 +352,93 @@ class Combat(
             if status == "finished":
                 completed_sessions += 1
                 self._combat_runtime_clear()
-                should_schedule_reward = (
-                    self._combat_should_call_mission_reward()
-                    and self._should_schedule_mission_reward(
-                        completed_sessions,
-                        runtime_active=self._combat_runtime_active(),
+                if session.get("domain") == "UrgentTasks":
+                    normal_session_settled = not bool(
+                        session.get("resume_normal", True)
                     )
-                )
-                if should_schedule_reward:
-                    if should_schedule_mission_reward(self.config):
-                        self.config.task_call("MissionReward", force_call=False)
-                    if should_schedule_after_battle(self.config):
-                        self.config.task_call("SpecialActivity", force_call=False)
-                self._combat_delay_after_settled()
-                return True
+                    logger.info(
+                        "Combat UrgentTasks: repeat session settled, "
+                        "continue daily attempts and reward exchange"
+                    )
+                else:
+                    normal_session_settled = True
+                    logger.info(
+                        "Combat: regular repeat session settled, "
+                        "check prioritized Urgent Tasks before scheduling"
+                    )
 
             if status == "lost":
                 logger.warning("Combat: background session lost, relaunch combat")
                 self._combat_runtime_clear()
-            else:
+            elif status != "finished":
                 self._delay_running_repeat_combat()
                 return True
 
+        urgent_tasks_enabled = self._urgent_tasks_enabled()
+        urgent_tasks_checked = (
+            urgent_tasks_enabled
+            and server.lang == "global_cn"
+            and self._urgent_tasks_checked_today()
+        )
+
+        if (
+            urgent_tasks_enabled
+            and server.lang == "global_cn"
+            and not urgent_tasks_checked
+        ):
+            self._combat_domain_override = "UrgentTasks"
+            logger.info("Combat: check prioritized daily Urgent Tasks")
+
+            if not self._is_in_urgent_tasks_flow_context():
+                self.ui_goto(page_combat, skip_first_screenshot=True)
+
+            urgent_success, urgent_completed = self._run_urgent_tasks_daily(
+                skip_first_screenshot=True
+            )
+            completed_sessions += urgent_completed
+
+            if urgent_success and getattr(self, "_urgent_tasks_repeat_started", False):
+                session = self._combat_runtime_build()
+                session["resume_normal"] = not normal_session_settled
+                self._combat_runtime_set(session)
+                self._delay_running_repeat_combat()
+                return True
+
+            self._combat_runtime_clear()
+            if urgent_success:
+                urgent_success = self._leave_to_main(skip_first_screenshot=True)
+
+            self._combat_domain_override = None
+            if not urgent_success:
+                self._leave_to_main(skip_first_screenshot=True)
+                self.config.task_delay(success=False)
+                return False
+        elif urgent_tasks_checked:
+            logger.info("Combat: Urgent Tasks already checked this server day")
+        elif urgent_tasks_enabled:
+            logger.info(
+                "Combat: prioritized Urgent Tasks currently support "
+                f"global-server Chinese only, skip language={server.lang}"
+            )
+
+        if normal_session_settled:
+            should_schedule_reward = (
+                self._combat_should_call_mission_reward()
+                and self._should_schedule_mission_reward(
+                    completed_sessions,
+                    runtime_active=self._combat_runtime_active(),
+                )
+            )
+            if should_schedule_reward:
+                if should_schedule_mission_reward(self.config):
+                    self.config.task_call("MissionReward", force_call=False)
+                if should_schedule_after_battle(self.config):
+                    self.config.task_call("SpecialActivity", force_call=False)
+            self._combat_delay_after_settled()
+            return True
+
         domain = self._dungeon_domain()
+
         if domain == "Episode4":
             if self._is_in_episode4_flow_context():
                 logger.info("Combat Episode4: continue local episode flow")

@@ -117,6 +117,11 @@ class GeneratedConfig:
     Combat_RepeatCombatExcludeOtherworldLegendary = False
     Combat_Saint37AutoRecycle = False
 
+    # Group `UrgentTasks`
+    UrgentTasks_Enable = True
+    UrgentTasks_Difficulty = 'Superior'  # Normal, Superior
+    UrgentTasks_LastCheckAt = datetime.datetime(2020, 1, 1, 0, 0)
+
     # Group `CombatRuntime`
     CombatRuntime_Session = {}
 

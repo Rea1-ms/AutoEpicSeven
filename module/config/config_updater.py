@@ -665,7 +665,10 @@ class ConfigUpdater:
 
             # Burnout mode schedules by stamina regeneration. Dimensional hunt
             # consumes its own resource, so it remains outside this mode.
-            if is_farm_task or (combat_domain == 'Hunt' and combat_hunt_grade == 'Dimensional'):
+            if (
+                is_farm_task
+                or (combat_domain == 'Hunt' and combat_hunt_grade == 'Dimensional')
+            ):
                 yield f'{task_prefix}.BurnoutMode'
 
             if combat_domain in ('Saint37', 'Episode4'):
@@ -677,6 +680,9 @@ class ConfigUpdater:
                     yield f'{task_prefix}.AltarGrade'
                 if combat_domain != 'Hunt':
                     yield f'{task_prefix}.HuntGrade'
+
+        if deep_get(data, 'Combat.UrgentTasks.Enable', default=True) is False:
+            yield 'Combat.UrgentTasks.Difficulty'
 
     def get_hidden_args(self, data) -> t.Set[str]:
         """
