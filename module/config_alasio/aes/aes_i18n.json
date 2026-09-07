@@ -1,0 +1,134 @@
+{
+  "Game": {
+    "_info": {
+      "zh-CN": {"name": "AES设置", "help": ""},
+      "en-US": {"name": "AES Settings", "help": ""},
+      "ja-JP": {
+        "name": "AES設定",
+        "help": "エミュレータ、エラー処理、最適化など AES 全体の共通設定です。"
+      },
+      "zh-TW": {"name": "AES設定", "help": ""}
+    },
+    "PackageName": {
+      "zh-CN": {
+        "name": "游戏服务器",
+        "help": "无法区分国际服的不同地区，请手动选择服务器",
+        "option_i18n": {
+          "auto": "自动检测",
+          "CN-Official": "[国服]-官服",
+          "OVERSEA-Play": "[国际服]-Play"
+        }
+      },
+      "en-US": {
+        "name": "Game Server",
+        "help": "Can't distinguish different regions of oversea servers, please select the server manually.",
+        "option_i18n": {
+          "auto": "Auto-detect",
+          "CN-Official": "[CN]-Official",
+          "OVERSEA-Play": "OVERSEA-Play"
+        }
+      },
+      "ja-JP": {
+        "name": "ゲームサーバー",
+        "help": "国際版の地域差は自動判別できないため、必要に応じて手動で選択してください。",
+        "option_i18n": {
+          "auto": "自動検出",
+          "CN-Official": "[中国本土版]-公式",
+          "OVERSEA-Play": "[グローバル]-Play"
+        }
+      },
+      "zh-TW": {
+        "name": "遊戲伺服器",
+        "help": "無法區分國際服的不同地區，請手動選擇伺服器",
+        "option_i18n": {
+          "auto": "自動檢測",
+          "CN-Official": "[國服]-官服",
+          "OVERSEA-Play": "OVERSEA-Play"
+        }
+      }
+    },
+    "GameLanguage": {
+      "zh-CN": {
+        "name": "游戏内文本语言",
+        "help": "目前仅支持简体中文和英文，请将游戏内设置文本语言设置为其中的一种",
+        "option_i18n": {
+          "auto": "自动检测",
+          "cn": "简体中文",
+          "en": "English"
+        }
+      },
+      "en-US": {
+        "name": "In-game Text Language",
+        "help": "Currently, only Simplified Chinese and English are supported. Please set the text language in game to one of them.",
+        "option_i18n": {
+          "auto": "Auto-detect",
+          "cn": "简体中文",
+          "en": "English"
+        }
+      },
+      "ja-JP": {
+        "name": "ゲーム内テキスト言語",
+        "help": "現在は簡体字中国語と英語のみ対応です。ゲーム内設定の表示言語もこのいずれかにしてください。",
+        "option_i18n": {
+          "auto": "自動検出",
+          "cn": "簡体字中国語",
+          "en": "英語"
+        }
+      },
+      "zh-TW": {
+        "name": "遊戲內文本語言",
+        "help": "目前僅支援簡體中文和英文，請在遊戲內設定文本語言為其中的一種",
+        "option_i18n": {
+          "auto": "自動檢測",
+          "cn": "简体中文",
+          "en": "English"
+        }
+      }
+    },
+    "GameClient": {
+      "zh-CN": {
+        "name": "游戏客户端",
+        "help": "选择云游戏时，将自动排队登录，云游戏目前仅有国服",
+        "option_i18n": {
+          "android": "安卓端",
+          "cloud_android": "云游戏安卓端"
+        }
+      },
+      "en-US": {
+        "name": "Game Client",
+        "help": "When using cloud, you will be automatically queued to log in. Cloud game is available in CN only",
+        "option_i18n": {
+          "android": "Android client",
+          "cloud_android": "Cloud game android client"
+        }
+      },
+      "ja-JP": {
+        "name": "ゲームクライアント",
+        "help": "クラウドを選ぶと自動的にログイン待機列に入ります。現在クラウドゲームは中国本土版のみ対応しています。",
+        "option_i18n": {
+          "android": "Android版",
+          "cloud_android": "クラウドゲーム Android版"
+        }
+      },
+      "zh-TW": {
+        "name": "遊戲客戶端",
+        "help": "選擇雲端遊戲時，將自動排隊登入，雲端遊戲目前僅有國服",
+        "option_i18n": {
+          "android": "安卓端",
+          "cloud_android": "雲端遊戲安卓端"
+        }
+      }
+    }
+  },
+  "Restart": {
+    "_info": {
+      "zh-CN": {"name": "异常处理", "help": ""},
+      "en-US": {"name": "Error Handling", "help": ""},
+      "ja-JP": {
+        "name": "再起動設定",
+        "help": "エラー発生時の再起動方法とログ保存動作を設定します。"
+      },
+      "zh-TW": {"name": "除錯", "help": ""}
+    }
+  }
+}

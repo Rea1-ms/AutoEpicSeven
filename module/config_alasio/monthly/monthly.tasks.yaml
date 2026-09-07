@@ -1,0 +1,5 @@
+SanctuaryMonthly:
+  groups:
+    Scheduler: SchedulerUedit
+    SanctuaryMonthly:
+  displays: flat

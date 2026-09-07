@@ -1,0 +1,208 @@
+MissionReward:
+  args:
+    ClaimDailyRewards: true
+
+Mail:
+  args:
+    CollectWithin:
+      value: 1d
+      option: [1h, 1d]
+    LastCheckAt:
+      value: 2020-01-01T00:00:00Z
+      advanced: true
+    LastRemainingText:
+      value: ''
+      advanced: true
+    LastRemainingSince:
+      value: 2020-01-01T00:00:00Z
+      advanced: true
+
+CommunityAio:
+  args:
+    CredentialsFile:
+      value: ''
+      advanced: true
+
+Knights:
+  args:
+    ClaimSigninRateReward: true
+    Support: true
+    SupportLowerLevelFairyFlower: true
+    SupportBeginnerPenguin: true
+    RequestItem:
+      value: LowerLevelFairyFlower
+      option: [LowerLevelFairyFlower, BeginnerPenguin]
+    WeeklyTask: true
+    WorldBoss: true
+
+KnightsTeamBattle:
+  args:
+    TeamBattle: true
+    Reminder: false
+    ReminderLeadMinutes:
+      value: 60
+      option: [30, 60, 120, 180]
+    ReminderLastEnd:
+      value: ''
+      advanced: true
+
+Arena:
+  args:
+    ClaimWeeklyRewards: true
+    ClaimWeeklyBattleRewards: true
+    ClaimBattlePassRewards: true
+    NPCCombat: true
+    NPCCombatFastBattle: true
+    NPCCombatCount: 5
+
+StoreDaily:
+  args:
+    BuyDailyFreeItem: true
+    BuyFriendshipMobility40: true
+    BuyFriendshipArenaFlag: true
+    BuyConquestMobility40:
+      value: 0
+      option: [0, 1, 2, 3]
+
+StoreWeekly:
+  args:
+    BuyConquestMorogora: false
+    BuyFriendshipArtifactEnhancementStone:
+      value: 0
+      option: [0, 1, 2, 3]
+    BuyInheritanceMorogora:
+      value: 0
+      option: [0, 1, 2]
+    BuyInheritancePotentialFragments:
+      value: 0
+      option: [0, 1, 2]
+
+PetsGift:
+  args:
+    LastClaimAt:
+      value: 2020-01-01T00:00:00Z
+      advanced: true
+
+Combat:
+  args:
+    Domain:
+      value: Hunt
+      option: [Hunt, SpiritAltar, Saint37, Episode4]
+    Element:
+      value: Water
+      option: [Dark, Light, Water, Fire, Nature]
+    AltarGrade:
+      value: Hell
+      option: [Pri, Mid, High, Hell]
+    HuntGrade:
+      value: Hell
+      option: [Mid, High, Hell, Dimensional]
+    Episode4Material:
+      value: BREATH_OF_KARMA
+      option: [
+        CATALYST_RARE_BENEVOLENT,
+        CATALYST_RARE_SECRET,
+        CATALYST_RARE_FIGHTING_SPIRIT,
+        CATALYST_RARE_SNIPER,
+        HEART_OF_THE_WOODS,
+        CATALYST_RARE_OATH,
+        CATALYST_RARE_MYSTERIOUS,
+        CATALYST_EPIC_OATH,
+        BREATH_OF_KARMA,
+        CATALYST_EPIC_SNIPER,
+        CATALYST_EPIC_FIGHTING_SPIRIT,
+        FROZEN_SEED,
+        CATALYST_EPIC_BENEVOLENT,
+        CATALYST_EPIC_MYSTERIOUS,
+        CATALYST_EPIC_SECRET,
+        TRACES_OF_BRILLIANCE,
+      ]
+    FastCombat: true
+    FastCombatCount: 10
+    RepeatCombatCount: 5
+    Saint37AutoRecycle: false
+
+CombatFarmCombat:
+  parent: Combat
+  args:
+    FastCombat: false
+    FastCombatCount:
+      value: 10
+      option: [10,]
+
+CombatRuntime:
+  args:
+    Session:
+      value: '{}'
+      dt: textarea
+      advanced: true
+
+SecretShop:
+  args:
+    OnlyFree: true
+    MaxRefresh: 10
+    BuyCovenantBookmark: true
+    BuyMysticMedal: true
+
+Gacha:
+  args:
+    CollectGoldenInheritance: true
+
+SpecialActivity:
+  args:
+    GetDailyReward: true
+    GetTaskReward: true
+    GetFreeGacha: true
+    GetEnergyDrink: true
+
+Dashboard:
+  args:
+    Gold:
+      value: '{}'
+      dt: textarea
+      advanced: true
+    Skystone:
+      value: '{}'
+      dt: textarea
+      advanced: true
+    Stamina:
+      value: '{}'
+      dt: textarea
+      advanced: true
+    EquipmentInventory:
+      value: '{}'
+      dt: textarea
+      advanced: true
+    DailyActivity:
+      value: '{}'
+      dt: textarea
+      advanced: true
+    ArenaRank:
+      value: '{}'
+      dt: textarea
+      advanced: true
+    ArenaFlag:
+      value: '{}'
+      dt: textarea
+      advanced: true
+    ConquestPoint:
+      value: '{}'
+      dt: textarea
+      advanced: true
+    ShadowCommission:
+      value: '{}'
+      dt: textarea
+      advanced: true
+    TeamBattle:
+      value: '{}'
+      dt: textarea
+      advanced: true
+
+# Empty groups for _info
+SanctuaryDaily:
+
+Pets:
+
+DataUpdate:
+
+Store:

@@ -1,0 +1,5 @@
+SanctuaryMonthly:
+  args:
+    RewardTier:
+      value: A
+      option: [A, B, S, MaxMinus1, MaxMinus2]

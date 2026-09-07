@@ -1,0 +1,17 @@
+Alas:
+  global_bind: true
+  groups:
+    Game:
+  displays:
+    - Game
+    - { task: Device, group: Emulator }
+    - { task: Device, group: EmulatorInfo }
+    - { task: Device, group: Error }
+    - { task: Device, group: Optimization }
+
+Restart:
+  groups:
+    Scheduler: SchedulerUedit
+  displays:
+    - info: Restart
+      groups: { task: Restart, group: Scheduler }

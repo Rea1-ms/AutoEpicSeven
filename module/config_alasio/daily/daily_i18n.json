@@ -1,0 +1,1577 @@
+{
+  "MissionReward": {
+    "_info": {
+      "zh-CN": {
+        "name": "任务奖励设置",
+        "help": "选择需要领取的任务奖励板块。"
+      },
+      "en-US": {
+        "name": "Mission Reward Settings",
+        "help": "Choose which mission reward tabs should be claimed."
+      },
+      "ja-JP": {
+        "name": "ミッション報酬設定",
+        "help": "受け取るミッション報酬タブを選択します。"
+      },
+      "zh-TW": {
+        "name": "任務獎勵設定",
+        "help": "選擇需要領取的任務獎勵分頁。"
+      }
+    },
+    "ClaimDailyRewards": {
+      "zh-CN": {
+        "name": "领取每日奖励",
+        "help": "有可领取奖励时，领取每日任务奖励宝箱。"
+      },
+      "en-US": {
+        "name": "Claim Daily Rewards",
+        "help": "Claim the daily mission reward chest when available."
+      },
+      "ja-JP": {
+        "name": "デイリー報酬を受け取る",
+        "help": "受け取り可能な場合、デイリーミッション報酬を受け取ります。"
+      },
+      "zh-TW": {
+        "name": "領取每日獎勵",
+        "help": "有可領取獎勵時，領取每日任務獎勵寶箱。"
+      }
+    }
+  },
+  "Mail": {
+    "_info": {
+      "zh-CN": {
+        "name": "临期邮件设置",
+        "help": "按显示剩余时间升序检查邮箱，领取临近过期的邮件。游戏显示按整小时/整天取整，因此 1 小时/1 天档位实际约等于 2 小时/2 天内过期。"
+      },
+      "en-US": {
+        "name": "Expiring Mail Settings",
+        "help": "Sort the mailbox by displayed remaining time and collect mails close to expiration. The game rounds the display down to whole hours or days, so the 1-hour and 1-day thresholds are effectively about 2 real hours and 2 real days."
+      },
+      "ja-JP": {
+        "name": "期限間近メール設定",
+        "help": "表示上の残り時間が短い順でメールを並べ、期限切れが近いメールを受け取ります。ゲーム内表示は時間や日数を切り捨てるため、1時間/1日 の閾値は実際には約 2時間/2日 に相当します。"
+      },
+      "zh-TW": {
+        "name": "臨期郵件設定",
+        "help": "依顯示剩餘時間升序檢查信箱，領取即將過期的郵件。遊戲顯示按整小時/整天取整，因此 1 小時/1 天檔位實際約等於 2 小時/2 天內過期。"
+      }
+    },
+    "CollectWithin": {
+      "zh-CN": {
+        "name": "收取显示剩余多久的邮件",
+        "help": "按邮件上显示的剩余时间判断。显示 1 小时内约等于实际 2 小时内，显示 1 天内约等于实际 2 天内。",
+        "option_i18n": {
+          "1h": "显示 1 小时内（实际约 2 小时内）",
+          "1d": "显示 1 天内（实际约 2 天内）"
+        }
+      },
+      "en-US": {
+        "name": "Collect Mails Showing Within",
+        "help": "This threshold uses the remaining time shown in game. '1 Hour' is effectively about 2 real hours, and '1 Day' about 2 real days before expiration.",
+        "option_i18n": {
+          "1h": "Shown as 1 Hour Left (~2h real)",
+          "1d": "Shown as 1 Day Left (~2d real)"
+        }
+      },
+      "ja-JP": {
+        "name": "表示残り時間がどこまでのメールを受け取るか",
+        "help": "判定はゲーム内の残り時間表示ベースです。表示上の 1時間以内 は実際には約 2時間以内、1日以内 は約 2日以内に相当します。",
+        "option_i18n": {
+          "1h": "表示1時間以内（実際は約2時間以内）",
+          "1d": "表示1日以内（実際は約2日以内）"
+        }
+      },
+      "zh-TW": {
+        "name": "收取顯示剩餘多久的郵件",
+        "help": "依郵件上顯示的剩餘時間判斷。顯示 1 小時內約等於實際 2 小時內，顯示 1 天內約等於實際 2 天內。",
+        "option_i18n": {
+          "1h": "顯示 1 小時內（實際約 2 小時內）",
+          "1d": "顯示 1 天內（實際約 2 天內）"
+        }
+      }
+    },
+    "LastCheckAt": {
+      "zh-CN": {"name": "上次检查时间", "help": ""},
+      "en-US": {"name": "Last Check At", "help": ""},
+      "ja-JP": {
+        "name": "前回確認時刻",
+        "help": "前回メール確認を行った時刻です。内部スケジューリングに使用します。"
+      },
+      "zh-TW": {"name": "上次檢查時間", "help": ""}
+    },
+    "LastRemainingText": {
+      "zh-CN": {"name": "上次顶部剩余时间文本", "help": ""},
+      "en-US": {"name": "Last Top Remaining Text", "help": ""},
+      "ja-JP": {
+        "name": "前回の先頭残り時間テキスト",
+        "help": "前回確認時の先頭メール残り時間テキストです。内部比較に使用します。"
+      },
+      "zh-TW": {"name": "上次頂部剩餘時間文字", "help": ""}
+    },
+    "LastRemainingSince": {
+      "zh-CN": {"name": "相同剩余时间起始时间", "help": ""},
+      "en-US": {"name": "Same Remaining Label Since", "help": ""},
+      "ja-JP": {
+        "name": "同一残り時間ラベル開始時刻",
+        "help": "同じ残り時間表示が継続している開始時刻です。内部判定に使用します。"
+      },
+      "zh-TW": {"name": "相同剩餘時間起始時間", "help": ""}
+    }
+  },
+  "CommunityAio": {
+    "_info": {
+      "zh-CN": {
+        "name": "社区 AIO 设置",
+        "help": "配置 community/aio.py 运行参数。"
+      },
+      "en-US": {
+        "name": "Community AIO Settings",
+        "help": "Configure runtime options for community/aio.py."
+      },
+      "ja-JP": {
+        "name": "コミュニティ AIO 設定",
+        "help": "community/aio.py の実行オプションを設定します。"
+      },
+      "zh-TW": {
+        "name": "社群 AIO 設定",
+        "help": "設定 community/aio.py 執行參數。"
+      }
+    },
+    "CredentialsFile": {
+      "zh-CN": {
+        "name": "凭证文件路径",
+        "help": "可选。Electron 登录导出的 e7-credentials.json 绝对路径；留空则使用默认路径。"
+      },
+      "en-US": {
+        "name": "Credentials File Path",
+        "help": "Optional. Absolute path to Electron-exported e7-credentials.json; leave empty to use default path."
+      },
+      "ja-JP": {
+        "name": "認証情報ファイルパス",
+        "help": "任意。Electron で出力した e7-credentials.json の絶対パス。空欄の場合は既定パスを使用します。"
+      },
+      "zh-TW": {
+        "name": "憑證檔案路徑",
+        "help": "可選。Electron 登入匯出的 e7-credentials.json 絕對路徑；留空則使用預設路徑。"
+      }
+    }
+  },
+  "Knights": {
+    "_info": {
+      "zh-CN": {
+        "name": "骑士团设置",
+        "help": "骑士团任务总开关与子功能配置。"
+      },
+      "en-US": {
+        "name": "Guild Settings",
+        "help": "Toggle guild sub-features and configure behavior."
+      },
+      "ja-JP": {
+        "name": "ギルド設定",
+        "help": "ギルド機能の有効化とサブ機能設定。"
+      },
+      "zh-TW": {
+        "name": "騎士團設定",
+        "help": "騎士團任務總開關與子功能設定。"
+      }
+    },
+    "ClaimSigninRateReward": {
+      "zh-CN": {
+        "name": "领取签到加成奖励",
+        "help": "在骑士团主页检测到可领取时自动点击领取。"
+      },
+      "en-US": {
+        "name": "Claim Sign-in Reward",
+        "help": "Automatically claim sign-in rate reward on guild home."
+      },
+      "ja-JP": {
+        "name": "出席報酬を受取",
+        "help": "ギルドホームで出席報酬を自動受取します。"
+      },
+      "zh-TW": {
+        "name": "領取簽到加成獎勵",
+        "help": "在騎士團首頁偵測到可領取時自動點擊領取。"
+      }
+    },
+    "Support": {
+      "zh-CN": {
+        "name": "骑士团支援",
+        "help": "进入支援页面并按配置执行捐赠与请求。"
+      },
+      "en-US": {
+        "name": "Guild Support",
+        "help": "Enter guild support and run donation/request flows."
+      },
+      "ja-JP": {
+        "name": "ギルド支援",
+        "help": "支援ページで寄付と要請を設定に従って実行します。"
+      },
+      "zh-TW": {
+        "name": "騎士團支援",
+        "help": "進入支援頁面並依設定執行捐贈與請求。"
+      }
+    },
+    "SupportLowerLevelFairyFlower": {
+      "zh-CN": {
+        "name": "捐赠下级精灵之花",
+        "help": "在骑士团支援中向他人捐赠下级精灵之花。"
+      },
+      "en-US": {
+        "name": "Donate Lower-Level Fairy Flower",
+        "help": "Donate Lower-Level Fairy Flower to guild requests in support."
+      },
+      "ja-JP": {
+        "name": "下級精霊の花を寄付",
+        "help": "ギルド支援で下級精霊の花を他メンバーに寄付します。"
+      },
+      "zh-TW": {
+        "name": "捐贈下級精靈之花",
+        "help": "在騎士團支援中向他人捐贈下級精靈之花。"
+      }
+    },
+    "SupportBeginnerPenguin": {
+      "zh-CN": {
+        "name": "捐赠初级企鹅",
+        "help": "在骑士团支援中向他人捐赠初级企鹅。"
+      },
+      "en-US": {
+        "name": "Donate Beginner Penguin",
+        "help": "Donate Beginner Penguin to guild requests in support."
+      },
+      "ja-JP": {
+        "name": "初級ペンギンを寄付",
+        "help": "ギルド支援で初級ペンギンを他メンバーに寄付します。"
+      },
+      "zh-TW": {
+        "name": "捐贈初級企鵝",
+        "help": "在騎士團支援中向他人捐贈初級企鵝。"
+      }
+    },
+    "RequestItem": {
+      "zh-CN": {
+        "name": "支援请求物品",
+        "help": "在骑士团支援中选择要发起请求的物品（二选一）。",
+        "option_i18n": {
+          "LowerLevelFairyFlower": "下级精灵之花",
+          "BeginnerPenguin": "初级企鹅"
+        }
+      },
+      "en-US": {
+        "name": "Support Request Item",
+        "help": "Select one item to request in guild support.",
+        "option_i18n": {
+          "LowerLevelFairyFlower": "Lower-Level Fairy Flower",
+          "BeginnerPenguin": "Beginner Penguin"
+        }
+      },
+      "ja-JP": {
+        "name": "支援リクエスト素材",
+        "help": "ギルド支援でリクエストする素材を1つ選択します。",
+        "option_i18n": {
+          "LowerLevelFairyFlower": "下級精霊の花",
+          "BeginnerPenguin": "初級ペンギン"
+        }
+      },
+      "zh-TW": {
+        "name": "支援請求物品",
+        "help": "在騎士團支援中選擇要發起請求的物品（二選一）。",
+        "option_i18n": {
+          "LowerLevelFairyFlower": "下級精靈之花",
+          "BeginnerPenguin": "初級企鵝"
+        }
+      }
+    },
+    "WeeklyTask": {
+      "zh-CN": {
+        "name": "骑士团周常奖励",
+        "help": "进入骑士团周常页面，领取可领取的周常奖励与积分奖励。"
+      },
+      "en-US": {
+        "name": "Guild Weekly Rewards",
+        "help": "Enter guild weekly page and claim available weekly task rewards and points rewards."
+      },
+      "ja-JP": {
+        "name": "ギルド週次報酬",
+        "help": "ギルド週次ページで受け取り可能な週次報酬とポイント報酬を受け取ります。"
+      },
+      "zh-TW": {
+        "name": "騎士團週常獎勵",
+        "help": "進入騎士團週常頁面，領取可領取的週常獎勵與積分獎勵。"
+      }
+    },
+    "WorldBoss": {
+      "zh-CN": {
+        "name": "世界 Boss",
+        "help": "自动执行世界 Boss 基础流程，次数用尽后返回骑士团。"
+      },
+      "en-US": {
+        "name": "World Boss",
+        "help": "Run World Boss base flow and return when attempts are exhausted."
+      },
+      "ja-JP": {
+        "name": "ワールドボス",
+        "help": "ワールドボス基本フローを実行し、回数切れで戻ります。"
+      },
+      "zh-TW": {
+        "name": "世界 Boss",
+        "help": "自動執行世界 Boss 基礎流程，次數用盡後返回騎士團。"
+      }
+    }
+  },
+  "KnightsTeamBattle": {
+    "_info": {
+      "zh-CN": {
+        "name": "骑士团团战",
+        "help": "团战相关配置。"
+      },
+      "en-US": {
+        "name": "Guild War",
+        "help": "Guild war related settings."
+      },
+      "ja-JP": {
+        "name": "ギルド戦",
+        "help": "ギルド戦関連設定。"
+      },
+      "zh-TW": {
+        "name": "騎士團團戰",
+        "help": "團戰相關設定。"
+      }
+    },
+    "TeamBattle": {
+      "zh-CN": {
+        "name": "识别团战剩余刀数",
+        "help": "进入团战页面，处理结算并读取当前刀数。"
+      },
+      "en-US": {
+        "name": "Read Remaining Guild War Attacks",
+        "help": "Enter guild war, clear settlement popups, and read the current attack count."
+      },
+      "ja-JP": {
+        "name": "未使用の攻撃回数を読み取る",
+        "help": "ギルド戦ページに入り、精算ポップアップを処理して現在の攻撃回数を読み取ります。"
+      },
+      "zh-TW": {
+        "name": "識別團戰剩餘刀數",
+        "help": "進入團戰頁面，處理結算並讀取目前刀數。"
+      }
+    },
+    "Reminder": {
+      "zh-CN": {
+        "name": "启用团战提醒",
+        "help": "团战开放期间，若到结束前仍有未出的刀，则通过通知渠道提醒。"
+      },
+      "en-US": {
+        "name": "Enable Guild War Reminder",
+        "help": "During active guild war, send a notification reminder if unused attacks still remain near the end time."
+      },
+      "ja-JP": {
+        "name": "ギルド戦リマインダーを有効化",
+        "help": "ギルド戦開催中、終了前になっても未使用の攻撃回数が残っていれば通知でリマインドします。"
+      },
+      "zh-TW": {
+        "name": "啟用團戰提醒",
+        "help": "團戰開放期間，若到結束前仍有未出的刀，則透過通知渠道提醒。"
+      }
+    },
+    "ReminderLeadMinutes": {
+      "zh-CN": {
+        "name": "结束前提醒时间",
+        "help": "距离团战结束多少分钟前，开始检查是否仍有未出的刀。",
+        "option_i18n": {
+          "30": "30 分钟",
+          "60": "60 分钟",
+          "120": "120 分钟",
+          "180": "180 分钟"
+        }
+      },
+      "en-US": {
+        "name": "Reminder Lead Time",
+        "help": "How many minutes before guild war ends to start checking for unused attacks.",
+        "option_i18n": {
+          "30": "30 minutes",
+          "60": "60 minutes",
+          "120": "120 minutes",
+          "180": "180 minutes"
+        }
+      },
+      "ja-JP": {
+        "name": "終了前リマインダー時間",
+        "help": "ギルド戦終了の何分前から未使用攻撃回数を確認するかを設定します。",
+        "option_i18n": {
+          "30": "30 分前",
+          "60": "60 分前",
+          "120": "120 分前",
+          "180": "180 分前"
+        }
+      },
+      "zh-TW": {
+        "name": "結束前提醒時間",
+        "help": "距離團戰結束多少分鐘前，開始檢查是否仍有未出的刀。",
+        "option_i18n": {
+          "30": "30 分鐘",
+          "60": "60 分鐘",
+          "120": "120 分鐘",
+          "180": "180 分鐘"
+        }
+      }
+    },
+    "ReminderLastEnd": {
+      "zh-CN": {
+        "name": "上次提醒团战结束时间",
+        "help": "内部去重状态，不在 GUI 中显示。"
+      },
+      "en-US": {
+        "name": "Last Guild War Reminder End",
+        "help": "Internal deduplication state for guild war reminders."
+      },
+      "ja-JP": {
+        "name": "前回通知したギルド戦終了時刻",
+        "help": "ギルド戦リマインダーの内部重複防止状態です。"
+      },
+      "zh-TW": {
+        "name": "上次提醒團戰結束時間",
+        "help": "內部去重狀態，不在 GUI 中顯示。"
+      }
+    }
+  },
+  "Arena": {
+    "_info": {
+      "zh-CN": {
+        "name": "竞技场设置",
+        "help": "竞技场任务相关配置。"
+      },
+      "en-US": {
+        "name": "Arena",
+        "help": "Arena task options."
+      },
+      "ja-JP": {
+        "name": "アリーナ設定",
+        "help": "アリーナタスクの設定。"
+      },
+      "zh-TW": {
+        "name": "競技場設定",
+        "help": "競技場任務相關設定。"
+      }
+    },
+    "ClaimWeeklyRewards": {
+      "zh-CN": {
+        "name": "领取每周奖励",
+        "help": "在进入竞技场时遇到每周奖励弹窗时自动领取。"
+      },
+      "en-US": {
+        "name": "Claim Weekly Rewards",
+        "help": "Automatically claim weekly rewards when the popup appears during arena entry."
+      },
+      "ja-JP": {
+        "name": "週次報酬を受け取る",
+        "help": "アリーナ入場時に週次報酬ポップアップが出た場合、自動で受け取ります。"
+      },
+      "zh-TW": {
+        "name": "領取每週獎勵",
+        "help": "進入競技場時若出現每週獎勵彈窗，則自動領取。"
+      }
+    },
+    "ClaimWeeklyBattleRewards": {
+      "zh-CN": {
+        "name": "自动领取每周对战奖励",
+        "help": "刷完竞技场 NPC 后，在离开竞技场前自动领取每周对战奖励。"
+      },
+      "en-US": {
+        "name": "Claim Weekly Battle Rewards",
+        "help": "After NPC arena farming, claim weekly battle rewards before leaving arena."
+      },
+      "ja-JP": {
+        "name": "週次対戦報酬を自動受取",
+        "help": "アリーナNPC周回後、アリーナ離脱前に週次対戦報酬を自動で受け取ります。"
+      },
+      "zh-TW": {
+        "name": "自動領取每週對戰獎勵",
+        "help": "刷完競技場 NPC 後，在離開競技場前自動領取每週對戰獎勵。"
+      }
+    },
+    "ClaimBattlePassRewards": {
+      "zh-CN": {
+        "name": "自动获取通行证等级并领取奖励",
+        "help": "自动获取通行证等级并领取奖励。"
+      },
+      "en-US": {
+        "name": "Read Battle Pass Level and Claim Rewards",
+        "help": "Automatically read the battle pass level and claim rewards."
+      },
+      "ja-JP": {
+        "name": "通行証レベルを取得して報酬受取",
+        "help": "通行証レベルを自動取得し、報酬を受け取ります。"
+      },
+      "zh-TW": {
+        "name": "自動取得通行證等級並領取獎勵",
+        "help": "自動取得通行證等級並領取獎勵。"
+      }
+    },
+    "NPCCombat": {
+      "zh-CN": {
+        "name": "刷 NPC",
+        "help": "启用后在竞技场自动挑战 NPC。"
+      },
+      "en-US": {
+        "name": "Farm NPC",
+        "help": "Enable automatic NPC battles in arena."
+      },
+      "ja-JP": {
+        "name": "NPC周回",
+        "help": "有効にするとアリーナでNPC戦を自動実行します。"
+      },
+      "zh-TW": {
+        "name": "刷 NPC",
+        "help": "啟用後在競技場自動挑戰 NPC。"
+      }
+    },
+    "NPCCombatFastBattle": {
+      "zh-CN": {
+        "name": "启用快速战斗",
+        "help": "NPC 刷新时优先使用快速战斗。"
+      },
+      "en-US": {
+        "name": "Use Fast Battle",
+        "help": "Prefer fast battle mode for NPC fights."
+      },
+      "ja-JP": {
+        "name": "高速戦闘を使用",
+        "help": "NPC戦で高速戦闘を優先します。"
+      },
+      "zh-TW": {
+        "name": "啟用快速戰鬥",
+        "help": "NPC 刷新時優先使用快速戰鬥。"
+      }
+    },
+    "NPCCombatCount": {
+      "zh-CN": {
+        "name": "NPC 挑战次数",
+        "help": "本次任务最多挑战 NPC 的次数。"
+      },
+      "en-US": {
+        "name": "NPC Battle Count",
+        "help": "Maximum number of NPC battles in this run."
+      },
+      "ja-JP": {
+        "name": "NPC戦回数",
+        "help": "この実行で行うNPC戦の最大回数。"
+      },
+      "zh-TW": {
+        "name": "NPC 挑戰次數",
+        "help": "本次任務最多挑戰 NPC 的次數。"
+      }
+    }
+  },
+  "StoreDaily": {
+    "_info": {
+      "zh-CN": {
+        "name": "商店每日购买",
+        "help": "单次购买项目使用对勾，限购项目使用下拉选择次数。"
+      },
+      "en-US": {
+        "name": "Store Daily Purchases",
+        "help": "Use checkboxes for one-time buys and dropdowns for limited-count items."
+      },
+      "ja-JP": {
+        "name": "ショップ毎日購入",
+        "help": "単発購入項目はチェック、回数指定項目はプルダウンで選択します。"
+      },
+      "zh-TW": {
+        "name": "商店每日購買",
+        "help": "單次購買項目使用勾選，限購項目使用下拉選擇次數。"
+      }
+    },
+    "BuyDailyFreeItem": {
+      "zh-CN": {
+        "name": "购买每日免费商品",
+        "help": "在推荐商店购买每日免费商品。"
+      },
+      "en-US": {
+        "name": "Buy Daily Free Item",
+        "help": "Buy the daily free item in the Recommended store."
+      },
+      "ja-JP": {
+        "name": "デイリー無料商品を購入",
+        "help": "おすすめショップのデイリー無料商品を購入します。"
+      },
+      "zh-TW": {
+        "name": "購買每日免費商品",
+        "help": "在推薦商店購買每日免費商品。"
+      }
+    },
+    "BuyFriendshipMobility40": {
+      "zh-CN": {
+        "name": "购买友情商店40行动力",
+        "help": "在友情商店购买 40 行动力。"
+      },
+      "en-US": {
+        "name": "Buy 40 Energy (Friendship)",
+        "help": "Buy the 40 Energy item in the Friendship Points store."
+      },
+      "ja-JP": {
+        "name": "友情ショップの行動力40を購入",
+        "help": "友情ポイントショップで行動力40を購入します。"
+      },
+      "zh-TW": {
+        "name": "購買友情商店40行動力",
+        "help": "在友情商店購買 40 行動力。"
+      }
+    },
+    "BuyFriendshipArenaFlag": {
+      "zh-CN": {
+        "name": "购买友情商店旗帜",
+        "help": "在友情商店购买竞技场旗帜。"
+      },
+      "en-US": {
+        "name": "Buy Arena Flag (Friendship)",
+        "help": "Buy Arena Flag in the Friendship Points store."
+      },
+      "ja-JP": {
+        "name": "友情ショップの旗を購入",
+        "help": "友情ポイントショップで闘技場の旗を購入します。"
+      },
+      "zh-TW": {
+        "name": "購買友情商店旗幟",
+        "help": "在友情商店購買競技場旗幟。"
+      }
+    },
+    "BuyConquestMobility40": {
+      "zh-CN": {
+        "name": "征服点数商店40行动力购买次数",
+        "help": "在征服点数商店购买 40 行动力的次数，最多 3 次。",
+        "option_i18n": {"0": "0", "1": "1", "2": "2", "3": "3"}
+      },
+      "en-US": {
+        "name": "40 Energy Count (Conquest)",
+        "help": "How many 40 Energy items to buy in the Conquest store. Max 3.",
+        "option_i18n": {"0": "0", "1": "1", "2": "2", "3": "3"}
+      },
+      "ja-JP": {
+        "name": "征服ポイントの行動力40購入回数",
+        "help": "征服ポイントショップで行動力40を購入する回数です。最大3回。",
+        "option_i18n": {"0": "0", "1": "1", "2": "2", "3": "3"}
+      },
+      "zh-TW": {
+        "name": "征服點數商店40行動力購買次數",
+        "help": "在征服點數商店購買 40 行動力的次數，最多 3 次。",
+        "option_i18n": {"0": "0", "1": "1", "2": "2", "3": "3"}
+      }
+    }
+  },
+  "StoreWeekly": {
+    "_info": {
+      "zh-CN": {
+        "name": "商店每周购买",
+        "help": "单次购买项目使用对勾，限购项目使用下拉选择次数。"
+      },
+      "en-US": {
+        "name": "Store Weekly Purchases",
+        "help": "Use checkboxes for one-time buys and dropdowns for limited-count items."
+      },
+      "ja-JP": {
+        "name": "ショップ毎週購入",
+        "help": "単発購入項目はチェック、回数指定項目はプルダウンで選択します。"
+      },
+      "zh-TW": {
+        "name": "商店每週購買",
+        "help": "單次購買項目使用勾選，限購項目使用下拉選擇次數。"
+      }
+    },
+    "BuyConquestMorogora": {
+      "zh-CN": {
+        "name": "购买征服点数商店魔罗戈拉",
+        "help": "在征服点数商店购买每周限次的魔罗戈拉。"
+      },
+      "en-US": {
+        "name": "Buy Morogora (Conquest)",
+        "help": "Buy weekly-limited Morogora in the Conquest Points store."
+      },
+      "ja-JP": {
+        "name": "征服ポイントのモラゴラを購入",
+        "help": "征服ポイントショップで週制限のモラゴラを購入します。"
+      },
+      "zh-TW": {
+        "name": "購買征服點數商店魔羅戈拉",
+        "help": "在征服點數商店購買每週限次的魔羅戈拉。"
+      }
+    },
+    "BuyFriendshipArtifactEnhancementStone": {
+      "zh-CN": {
+        "name": "友情商店强化石购买次数",
+        "help": "在友情商店购买强化石的次数，最多 3 次。",
+        "option_i18n": {"0": "0", "1": "1", "2": "2", "3": "3"}
+      },
+      "en-US": {
+        "name": "Artifact Enhancement Stone Count (Friendship)",
+        "help": "How many Artifact Enhancement Stones to buy in the Friendship Points store. Max 3.",
+        "option_i18n": {"0": "0", "1": "1", "2": "2", "3": "3"}
+      },
+      "ja-JP": {
+        "name": "友情ショップ強化石購入回数",
+        "help": "友情ポイントショップでアーティファクト強化石を購入する回数です。最大3回。",
+        "option_i18n": {"0": "0", "1": "1", "2": "2", "3": "3"}
+      },
+      "zh-TW": {
+        "name": "友情商店強化石購買次數",
+        "help": "在友情商店購買強化石的次數，最多 3 次。",
+        "option_i18n": {"0": "0", "1": "1", "2": "2", "3": "3"}
+      }
+    },
+    "BuyInheritanceMorogora": {
+      "zh-CN": {
+        "name": "传承石商店魔罗戈拉购买次数",
+        "help": "在传承石商店购买魔罗戈拉的次数，最多 2 次。",
+        "option_i18n": {"0": "0", "1": "1", "2": "2"}
+      },
+      "en-US": {
+        "name": "Morogora Count (Inheritance)",
+        "help": "How many Morogora to buy in the Inheritance store. Max 2.",
+        "option_i18n": {"0": "0", "1": "1", "2": "2"}
+      },
+      "ja-JP": {
+        "name": "継承石ショップのモラゴラ購入回数",
+        "help": "継承石ショップでモラゴラを購入する回数です。最大2回。",
+        "option_i18n": {"0": "0", "1": "1", "2": "2"}
+      },
+      "zh-TW": {
+        "name": "傳承石商店魔羅戈拉購買次數",
+        "help": "在傳承石商店購買魔羅戈拉的次數，最多 2 次。",
+        "option_i18n": {"0": "0", "1": "1", "2": "2"}
+      }
+    },
+    "BuyInheritancePotentialFragments": {
+      "zh-CN": {
+        "name": "潜能激发碎片购买次数",
+        "help": "在传承石商店购买潜能激发碎片的次数，最多 2 次。",
+        "option_i18n": {"0": "0", "1": "1", "2": "2"}
+      },
+      "en-US": {
+        "name": "Potential Fragments Count",
+        "help": "How many Potential Fragments to buy in the Inheritance store. Max 2.",
+        "option_i18n": {"0": "0", "1": "1", "2": "2"}
+      },
+      "ja-JP": {
+        "name": "潜在能力欠片の購入回数",
+        "help": "継承石ショップで潜在能力欠片を購入する回数です。最大2回。",
+        "option_i18n": {"0": "0", "1": "1", "2": "2"}
+      },
+      "zh-TW": {
+        "name": "潛能激發碎片購買次數",
+        "help": "在傳承石商店購買潛能激發碎片的次數，最多 2 次。",
+        "option_i18n": {"0": "0", "1": "1", "2": "2"}
+      }
+    }
+  },
+  "PetsGift": {
+    "_info": {
+      "zh-CN": {
+        "name": "宠物礼物设置",
+        "help": "内部调度状态，正常情况下不需要手动修改。"
+      },
+      "en-US": {
+        "name": "Pet Gift Settings",
+        "help": "Internal scheduling state. Normally this does not need manual changes."
+      },
+      "ja-JP": {
+        "name": "ペットギフト設定",
+        "help": "内部スケジューリング状態です。通常は手動変更不要です。"
+      },
+      "zh-TW": {
+        "name": "寵物禮物設定",
+        "help": "內部排程狀態，通常不需要手動修改。"
+      }
+    },
+    "LastClaimAt": {
+      "zh-CN": {
+        "name": "上次领取时间",
+        "help": "用于推测下一次宠物礼物的大致可领取时间。"
+      },
+      "en-US": {
+        "name": "Last Claim Time",
+        "help": "Used to estimate when the next pet gift should become available."
+      },
+      "ja-JP": {
+        "name": "前回受取時刻",
+        "help": "次回のペットギフト受取可能時刻を推定するために使います。"
+      },
+      "zh-TW": {
+        "name": "上次領取時間",
+        "help": "用於推測下一次寵物禮物的大致可領取時間。"
+      }
+    }
+  },
+  "Combat": {
+    "_info": {
+      "zh-CN": {
+        "name": "战斗副本设置",
+        "help": "配置战斗副本的类型、属性、难度与次数。"
+      },
+      "en-US": {
+        "name": "Combat Settings",
+        "help": "Configure combat domain, element, grade, and run counts."
+      },
+      "ja-JP": {
+        "name": "戦闘設定",
+        "help": "戦闘の種類、属性、難易度、回数を設定します。"
+      },
+      "zh-TW": {
+        "name": "戰鬥副本設定",
+        "help": "配置戰鬥副本的類型、屬性、難度與次數。"
+      }
+    },
+    "Domain": {
+      "zh-CN": {
+        "name": "副本类型",
+        "help": "选择本次刷取的是讨伐、精灵祭坛，还是 Episode 4 定向材料。",
+        "option_i18n": {
+          "Hunt": "讨伐",
+          "SpiritAltar": "精灵祭坛",
+          "Saint37": "圣女3-7",
+          "Episode4": "Episode 4"
+        }
+      },
+      "en-US": {
+        "name": "Domain",
+        "help": "Choose whether this task farms Hunt, Spirit Altar, or a routed Episode 4 material stage.",
+        "option_i18n": {
+          "Hunt": "Hunt",
+          "SpiritAltar": "Spirit Altar",
+          "Saint37": "Saint 3-7",
+          "Episode4": "Episode 4"
+        }
+      },
+      "ja-JP": {
+        "name": "副本種類",
+        "help": "今回周回するのが討伐、精霊祭壇、または Episode 4 の素材ルートかを選択します。",
+        "option_i18n": {
+          "Hunt": "討伐",
+          "SpiritAltar": "精霊祭壇",
+          "Saint37": "Saint 3-7",
+          "Episode4": "Episode 4"
+        }
+      },
+      "zh-TW": {
+        "name": "副本類型",
+        "help": "選擇本次刷取的是討伐、精靈祭壇，還是 Episode 4 定向材料。",
+        "option_i18n": {
+          "Hunt": "討伐",
+          "SpiritAltar": "精靈祭壇",
+          "Saint37": "聖女3-7",
+          "Episode4": "Episode 4"
+        }
+      }
+    },
+    "Element": {
+      "zh-CN": {
+        "name": "属性",
+        "help": "选择要进入的副本属性分支。",
+        "option_i18n": {
+          "Dark": "暗",
+          "Light": "光",
+          "Water": "水",
+          "Fire": "火",
+          "Nature": "木"
+        }
+      },
+      "en-US": {
+        "name": "Element",
+        "help": "Choose the element branch to enter.",
+        "option_i18n": {
+          "Dark": "Dark",
+          "Light": "Light",
+          "Water": "Water",
+          "Fire": "Fire",
+          "Nature": "Nature"
+        }
+      },
+      "ja-JP": {
+        "name": "属性",
+        "help": "進入する副本の属性を選択します。",
+        "option_i18n": {
+          "Dark": "闇",
+          "Light": "光",
+          "Water": "水",
+          "Fire": "火",
+          "Nature": "木"
+        }
+      },
+      "zh-TW": {
+        "name": "屬性",
+        "help": "選擇要進入的副本屬性分支。",
+        "option_i18n": {
+          "Dark": "暗",
+          "Light": "光",
+          "Water": "水",
+          "Fire": "火",
+          "Nature": "木"
+        }
+      }
+    },
+    "AltarGrade": {
+      "zh-CN": {
+        "name": "祭坛难度",
+        "help": "精灵祭坛使用的难度等级。",
+        "option_i18n": {
+          "Pri": "初级",
+          "Mid": "中级",
+          "High": "高级",
+          "Hell": "地狱"
+        }
+      },
+      "en-US": {
+        "name": "Altar Grade",
+        "help": "Difficulty used for Spirit Altar runs.",
+        "option_i18n": {
+          "Pri": "Pri",
+          "Mid": "Mid",
+          "High": "High",
+          "Hell": "Hell"
+        }
+      },
+      "ja-JP": {
+        "name": "祭壇難易度",
+        "help": "精霊祭壇で使用する難易度です。",
+        "option_i18n": {
+          "Pri": "初級",
+          "Mid": "中級",
+          "High": "上級",
+          "Hell": "地獄"
+        }
+      },
+      "zh-TW": {
+        "name": "祭壇難度",
+        "help": "精靈祭壇使用的難度等級。",
+        "option_i18n": {
+          "Pri": "初級",
+          "Mid": "中級",
+          "High": "高級",
+          "Hell": "地獄"
+        }
+      }
+    },
+    "HuntGrade": {
+      "zh-CN": {
+        "name": "讨伐难度",
+        "help": "讨伐使用的难度等级。",
+        "option_i18n": {
+          "Mid": "中级",
+          "High": "高级",
+          "Hell": "地狱",
+          "Dimensional": "异界"
+        }
+      },
+      "en-US": {
+        "name": "Hunt Grade",
+        "help": "Difficulty used for Hunt runs.",
+        "option_i18n": {
+          "Mid": "Mid",
+          "High": "High",
+          "Hell": "Hell",
+          "Dimensional": "Dimensional"
+        }
+      },
+      "ja-JP": {
+        "name": "討伐難易度",
+        "help": "討伐で使用する難易度です。",
+        "option_i18n": {
+          "Mid": "中級",
+          "High": "上級",
+          "Hell": "地獄",
+          "Dimensional": "異界"
+        }
+      },
+      "zh-TW": {
+        "name": "討伐難度",
+        "help": "討伐使用的難度等級。",
+        "option_i18n": {
+          "Mid": "中級",
+          "High": "高級",
+          "Hell": "地獄",
+          "Dimensional": "異界"
+        }
+      }
+    },
+    "Episode4Material": {
+      "zh-CN": {
+        "name": "第四季目标材料",
+        "help": "仅对 Episode 4 生效。根据材料自动路由到对应章节与关卡。",
+        "option_i18n": {
+          "CATALYST_RARE_BENEVOLENT": "稀有慈爱催化剂",
+          "CATALYST_RARE_SECRET": "稀有隐匿催化剂",
+          "CATALYST_RARE_FIGHTING_SPIRIT": "稀有斗志催化剂",
+          "CATALYST_RARE_SNIPER": "稀有狙击催化剂",
+          "HEART_OF_THE_WOODS": "绿荫心脏",
+          "CATALYST_RARE_OATH": "稀有誓言催化剂",
+          "CATALYST_RARE_MYSTERIOUS": "稀有神秘催化剂",
+          "CATALYST_EPIC_OATH": "传说誓言催化剂",
+          "BREATH_OF_KARMA": "业火气息",
+          "CATALYST_EPIC_SNIPER": "传说狙击催化剂",
+          "CATALYST_EPIC_FIGHTING_SPIRIT": "传说斗志催化剂",
+          "FROZEN_SEED": "酷寒种子",
+          "CATALYST_EPIC_BENEVOLENT": "传说慈爱催化剂",
+          "CATALYST_EPIC_MYSTERIOUS": "传说神秘催化剂",
+          "CATALYST_EPIC_SECRET": "传说隐匿催化剂",
+          "TRACES_OF_BRILLIANCE": "光辉痕迹"
+        }
+      },
+      "en-US": {
+        "name": "Episode 4 target material",
+        "help": "Only applies to Episode 4. Route to the mapped chapter and stage by target material.",
+        "option_i18n": {
+          "CATALYST_RARE_BENEVOLENT": "Rare Benevolent Catalyst",
+          "CATALYST_RARE_SECRET": "Rare Secret Catalyst",
+          "CATALYST_RARE_FIGHTING_SPIRIT": "Rare Fighting Spirit Catalyst",
+          "CATALYST_RARE_SNIPER": "Rare Sniper Catalyst",
+          "HEART_OF_THE_WOODS": "Heart of the Woods",
+          "CATALYST_RARE_OATH": "Rare Oath Catalyst",
+          "CATALYST_RARE_MYSTERIOUS": "Rare Mysterious Catalyst",
+          "CATALYST_EPIC_OATH": "Epic Oath Catalyst",
+          "BREATH_OF_KARMA": "Breath of Karma",
+          "CATALYST_EPIC_SNIPER": "Epic Sniper Catalyst",
+          "CATALYST_EPIC_FIGHTING_SPIRIT": "Epic Fighting Spirit Catalyst",
+          "FROZEN_SEED": "Frozen Seed",
+          "CATALYST_EPIC_BENEVOLENT": "Epic Benevolent Catalyst",
+          "CATALYST_EPIC_MYSTERIOUS": "Epic Mysterious Catalyst",
+          "CATALYST_EPIC_SECRET": "Epic Secret Catalyst",
+          "TRACES_OF_BRILLIANCE": "Traces of Brilliance"
+        }
+      },
+      "ja-JP": {
+        "name": "Episode 4 目標素材",
+        "help": "Episode 4 のみ有効です。選んだ素材に応じて章とステージへ移動します。",
+        "option_i18n": {
+          "CATALYST_RARE_BENEVOLENT": "Rare Benevolent Catalyst",
+          "CATALYST_RARE_SECRET": "Rare Secret Catalyst",
+          "CATALYST_RARE_FIGHTING_SPIRIT": "Rare Fighting Spirit Catalyst",
+          "CATALYST_RARE_SNIPER": "Rare Sniper Catalyst",
+          "HEART_OF_THE_WOODS": "Heart of the Woods",
+          "CATALYST_RARE_OATH": "Rare Oath Catalyst",
+          "CATALYST_RARE_MYSTERIOUS": "Rare Mysterious Catalyst",
+          "CATALYST_EPIC_OATH": "Epic Oath Catalyst",
+          "BREATH_OF_KARMA": "Breath of Karma",
+          "CATALYST_EPIC_SNIPER": "Epic Sniper Catalyst",
+          "CATALYST_EPIC_FIGHTING_SPIRIT": "Epic Fighting Spirit Catalyst",
+          "FROZEN_SEED": "Frozen Seed",
+          "CATALYST_EPIC_BENEVOLENT": "Epic Benevolent Catalyst",
+          "CATALYST_EPIC_MYSTERIOUS": "Epic Mysterious Catalyst",
+          "CATALYST_EPIC_SECRET": "Epic Secret Catalyst",
+          "TRACES_OF_BRILLIANCE": "Traces of Brilliance"
+        }
+      },
+      "zh-TW": {
+        "name": "第四季目標材料",
+        "help": "僅對 Episode 4 生效。根據材料自動路由到對應章節與關卡。",
+        "option_i18n": {
+          "CATALYST_RARE_BENEVOLENT": "稀有慈愛催化劑",
+          "CATALYST_RARE_SECRET": "稀有隱匿催化劑",
+          "CATALYST_RARE_FIGHTING_SPIRIT": "稀有鬥志催化劑",
+          "CATALYST_RARE_SNIPER": "稀有狙擊催化劑",
+          "HEART_OF_THE_WOODS": "綠蔭心臟",
+          "CATALYST_RARE_OATH": "稀有誓言催化劑",
+          "CATALYST_RARE_MYSTERIOUS": "稀有神秘催化劑",
+          "CATALYST_EPIC_OATH": "傳說誓言催化劑",
+          "BREATH_OF_KARMA": "業火氣息",
+          "CATALYST_EPIC_SNIPER": "傳說狙擊催化劑",
+          "CATALYST_EPIC_FIGHTING_SPIRIT": "傳說鬥志催化劑",
+          "FROZEN_SEED": "酷寒種子",
+          "CATALYST_EPIC_BENEVOLENT": "傳說慈愛催化劑",
+          "CATALYST_EPIC_MYSTERIOUS": "傳說神秘催化劑",
+          "CATALYST_EPIC_SECRET": "傳說隱匿催化劑",
+          "TRACES_OF_BRILLIANCE": "光輝痕跡"
+        }
+      }
+    },
+    "FastCombat": {
+      "zh-CN": {
+        "name": "启用快速战斗",
+        "help": "开启后优先使用快速战斗，会在快速战斗用尽后转入宠物托管重复战斗。关闭后仅使用宠物托管重复战斗。"
+      },
+      "en-US": {
+        "name": "Use Fast Combat",
+        "help": "Use fast combat first when available, then switch to pet repeat combat after fast combat is exhausted. If disabled, only pet repeat combat will be used."
+      },
+      "ja-JP": {
+        "name": "高速戦闘を使用",
+        "help": "高速戦闘が使える場合は優先して使用し、使い切った後にペット托管の反復戦闘へ切り替えます。無効ならペット托管の反復戦闘のみを使います。"
+      },
+      "zh-TW": {
+        "name": "啟用快速戰鬥",
+        "help": "開啟後優先使用快速戰鬥，會在快速戰鬥用盡後轉入寵物托管重複戰鬥。關閉後僅使用寵物托管重複戰鬥。"
+      }
+    },
+    "FastCombatCount": {
+      "zh-CN": {
+        "name": "快速战斗次数",
+        "help": "快速战斗的目标次数。"
+      },
+      "en-US": {
+        "name": "Fast Combat Count",
+        "help": "Target fast combat count."
+      },
+      "ja-JP": {
+        "name": "高速戦闘回数",
+        "help": "高速戦闘の目標回数です。"
+      },
+      "zh-TW": {
+        "name": "快速戰鬥次數",
+        "help": "快速戰鬥的目標次數。"
+      }
+    },
+    "RepeatCombatCount": {
+      "zh-CN": {
+        "name": "重复战斗次数",
+        "help": "宠物托管重复战斗的目标次数。"
+      },
+      "en-US": {
+        "name": "Repeat Combat Count",
+        "help": "Target repeat combat count for pet repeat battle."
+      },
+      "ja-JP": {
+        "name": "反復戦闘回数",
+        "help": "ペット委任の反復戦闘の目標回数です。"
+      },
+      "zh-TW": {
+        "name": "重複戰鬥次數",
+        "help": "寵物託管重複戰鬥的目標次數。"
+      }
+    },
+    "Saint37AutoRecycle": {
+      "zh-CN": {
+        "name": "装备自动出售",
+        "help": "仅对圣女3-7生效。后台托管结算后自动进入临时背包，快捷选择并出售白装与绿装，然后回到主界面。"
+      },
+      "en-US": {
+        "name": "Auto Sell Equipment",
+        "help": "Only applies to Saint 3-7. After background repeat combat settles, open the temporary bag, fast select white and green gear, sell them, then return to main."
+      },
+      "ja-JP": {
+        "name": "装備自動売却",
+        "help": "Saint 3-7 のみ有効です。バックグラウンド反復戦闘の精算後に一時バッグを開き、白装備と緑装備を一括選択して売却し、メイン画面へ戻ります。"
+      },
+      "zh-TW": {
+        "name": "裝備自動出售",
+        "help": "僅對聖女3-7生效。背景托管結算後自動進入臨時背包，快速選擇並出售白裝與綠裝，然後回到主畫面。"
+      }
+    }
+  },
+  "CombatFarmCombat": {
+    "FastCombat": {
+      "zh-CN": {
+        "name": "启用快速战斗",
+        "help": "开启后优先使用快速战斗，会在快速战斗用尽后转入宠物托管重复战斗。关闭后仅使用宠物托管重复战斗。"
+      },
+      "en-US": {
+        "name": "Use Fast Combat",
+        "help": "Use fast combat first when available, then switch to pet repeat combat after fast combat is exhausted. If disabled, only pet repeat combat will be used."
+      },
+      "ja-JP": {
+        "name": "高速戦闘を使用",
+        "help": "高速戦闘が使える場合は優先して使用し、使い切った後にペット托管の反復戦闘へ切り替えます。無効ならペット托管の反復戦闘のみを使います。"
+      },
+      "zh-TW": {
+        "name": "啟用快速戰鬥",
+        "help": "開啟後優先使用快速戰鬥，會在快速戰鬥用盡後轉入寵物托管重複戰鬥。關閉後僅使用寵物托管重複戰鬥。"
+      }
+    },
+    "FastCombatCount": {
+      "zh-CN": {
+        "name": "快速战斗次数",
+        "help": "快速战斗的目标次数。",
+        "option_i18n": {"10": "10"}
+      },
+      "en-US": {
+        "name": "Fast Combat Count",
+        "help": "Target fast combat count.",
+        "option_i18n": {"10": "10"}
+      },
+      "ja-JP": {
+        "name": "高速戦闘回数",
+        "help": "高速戦闘の目標回数です。",
+        "option_i18n": {"10": "10"}
+      },
+      "zh-TW": {
+        "name": "快速戰鬥次數",
+        "help": "快速戰鬥的目標次數。",
+        "option_i18n": {"10": "10"}
+      }
+    }
+  },
+  "CombatRuntime": {
+    "_info": {
+      "zh-CN": {
+        "name": "副本运行时",
+        "help": "副本任务内部运行状态，仅用于续跑与状态同步。"
+      },
+      "en-US": {
+        "name": "Combat Runtime",
+        "help": "Internal combat task state used for resume and runtime sync."
+      },
+      "ja-JP": {
+        "name": "戦闘ランタイム",
+        "help": "戦闘タスクの内部実行状態。再開と状態同期に使用します。"
+      },
+      "zh-TW": {
+        "name": "副本執行階段",
+        "help": "副本任務內部執行狀態，僅用於續跑與狀態同步。"
+      }
+    },
+    "Session": {
+      "zh-CN": {
+        "name": "运行会话",
+        "help": "内部会话标识，不建议手动修改。"
+      },
+      "en-US": {
+        "name": "Runtime Session",
+        "help": "Internal session marker. Manual edits are not recommended."
+      },
+      "ja-JP": {
+        "name": "ランタイムセッション",
+        "help": "内部セッション識別子です。手動変更は非推奨です。"
+      },
+      "zh-TW": {
+        "name": "執行工作階段",
+        "help": "內部工作階段標識，不建議手動修改。"
+      }
+    }
+  },
+  "SecretShop": {
+    "_info": {
+      "zh-CN": {"name": "秘密商店设置", "help": ""},
+      "en-US": {"name": "Secret Shop Settings", "help": ""},
+      "ja-JP": {
+        "name": "秘密商店設定",
+        "help": "秘密商店の更新回数と購入対象を設定します。"
+      },
+      "zh-TW": {"name": "秘密商店設定", "help": ""}
+    },
+    "OnlyFree": {
+      "zh-CN": {
+        "name": "纯白嫖",
+        "help": "不消耗钻石，不刷新"
+      },
+      "en-US": {
+        "name": "Free Only",
+        "help": "No refresh, no skystones"
+      },
+      "ja-JP": {
+        "name": "無料のみ",
+        "help": "更新しない"
+      },
+      "zh-TW": {
+        "name": "僅免費",
+        "help": "不刷新、不耗鑽"
+      }
+    },
+    "MaxRefresh": {
+      "zh-CN": {"name": "最大刷新次数", "help": ""},
+      "en-US": {"name": "Max Refresh", "help": ""},
+      "ja-JP": {
+        "name": "最大更新回数",
+        "help": "この実行で行う最大更新回数です。無料更新のみなら使用しません。"
+      },
+      "zh-TW": {"name": "最大刷新次數", "help": ""}
+    },
+    "BuyCovenantBookmark": {
+      "zh-CN": {"name": "购买圣约书签", "help": ""},
+      "en-US": {"name": "Buy Covenant Bookmarks", "help": ""},
+      "ja-JP": {
+        "name": "聖約の栞を購入",
+        "help": "聖約の栞を検出した場合に自動購入します。"
+      },
+      "zh-TW": {"name": "購買聖約書籤", "help": ""}
+    },
+    "BuyMysticMedal": {
+      "zh-CN": {"name": "购买神秘奖牌", "help": ""},
+      "en-US": {"name": "Buy Mystic Medals", "help": ""},
+      "ja-JP": {
+        "name": "神秘メダルを購入",
+        "help": "神秘メダルを検出した場合に自動購入します。"
+      },
+      "zh-TW": {"name": "購買神秘獎牌", "help": ""}
+    }
+  },
+  "Gacha": {
+    "_info": {
+      "zh-CN": {"name": "召唤设置", "help": ""},
+      "en-US": {"name": "Gacha Settings", "help": ""},
+      "ja-JP": {
+        "name": "召喚設定",
+        "help": "召喚関連の補助動作を設定します。"
+      },
+      "zh-TW": {"name": "召喚設定", "help": ""}
+    },
+    "CollectGoldenInheritance": {
+      "zh-CN": {
+        "name": "收取金光传承石",
+        "help": "召唤结束后若金光传承石满溢则自动收取。"
+      },
+      "en-US": {
+        "name": "Collect Golden Inheritance",
+        "help": "After summoning, click to collect when Golden Inheritance is full."
+      },
+      "ja-JP": {
+        "name": "金色継承石を回収",
+        "help": "召喚終了後、金色継承石が満杯なら自動で回収します。"
+      },
+      "zh-TW": {
+        "name": "收取金光傳承石",
+        "help": "召喚結束後若金光傳承石滿溢則自動收取。"
+      }
+    }
+  },
+  "SpecialActivity": {
+    "_info": {
+      "zh-CN": {
+        "name": "特别活动",
+        "help": "选择当前活动中需要领取的奖励。"
+      },
+      "en-US": {
+        "name": "Special Activity",
+        "help": "Choose which rewards to claim from the current activity."
+      },
+      "ja-JP": {
+        "name": "特別イベント",
+        "help": "現在のイベントで受け取る報酬を選択します。"
+      },
+      "zh-TW": {
+        "name": "特別活動",
+        "help": "選擇目前活動中要領取的獎勵。"
+      }
+    },
+    "GetDailyReward": {
+      "zh-CN": {
+        "name": "领取每日奖励",
+        "help": "领取活动中的每日奖励。"
+      },
+      "en-US": {
+        "name": "Claim daily rewards",
+        "help": "Claim the activity's daily rewards."
+      },
+      "ja-JP": {
+        "name": "デイリー報酬を受け取る",
+        "help": "イベントのデイリー報酬を受け取ります。"
+      },
+      "zh-TW": {
+        "name": "領取每日獎勵",
+        "help": "領取活動中的每日獎勵。"
+      }
+    },
+    "GetTaskReward": {
+      "zh-CN": {
+        "name": "领取任务奖励",
+        "help": "领取已完成的活动任务奖励。"
+      },
+      "en-US": {
+        "name": "Claim task rewards",
+        "help": "Claim completed activity task rewards."
+      },
+      "ja-JP": {
+        "name": "ミッション報酬を受け取る",
+        "help": "達成済みイベントミッションの報酬を受け取ります。"
+      },
+      "zh-TW": {
+        "name": "領取任務獎勵",
+        "help": "領取已完成的活動任務獎勵。"
+      }
+    },
+    "GetFreeGacha": {
+      "zh-CN": {
+        "name": "活动免费召唤",
+        "help": "使用当前可用的全部活动免费召唤次数。"
+      },
+      "en-US": {
+        "name": "Free event summons",
+        "help": "Use all currently available free event summons."
+      },
+      "ja-JP": {
+        "name": "イベント無料召喚",
+        "help": "利用可能なイベント無料召喚をすべて実行します。"
+      },
+      "zh-TW": {
+        "name": "活動免費召喚",
+        "help": "使用目前可用的全部活動免費召喚次數。"
+      }
+    },
+    "GetEnergyDrink": {
+      "zh-CN": {
+        "name": "领取能量饮料",
+        "help": "可领取时自动领取活动能量饮料。"
+      },
+      "en-US": {
+        "name": "Claim energy drink",
+        "help": "Claim the activity energy drink when available."
+      },
+      "ja-JP": {
+        "name": "エナジードリンクを受け取る",
+        "help": "受け取り可能なイベントのエナジードリンクを獲得します。"
+      },
+      "zh-TW": {
+        "name": "領取能量飲料",
+        "help": "可領取時自動領取活動能量飲料。"
+      }
+    }
+  },
+  "Dashboard": {
+    "_info": {
+      "zh-CN": {"name": "仪表盘", "help": ""},
+      "en-US": {"name": "Dashboard", "help": ""},
+      "ja-JP": {
+        "name": "ダッシュボード",
+        "help": "ダッシュボードに表示する取得済みゲームデータです。"
+      },
+      "zh-TW": {"name": "儀表板", "help": ""}
+    },
+    "Gold": {
+      "zh-CN": {"name": "金币", "help": ""},
+      "en-US": {"name": "Gold", "help": ""},
+      "ja-JP": {
+        "name": "ゴールド",
+        "help": "現在のゴールド所持数です。"
+      },
+      "zh-TW": {"name": "金幣", "help": ""}
+    },
+    "Skystone": {
+      "zh-CN": {"name": "天空石", "help": ""},
+      "en-US": {"name": "Skystone", "help": ""},
+      "ja-JP": {
+        "name": "天空石",
+        "help": "現在の天空石所持数です。"
+      },
+      "zh-TW": {"name": "天空石", "help": ""}
+    },
+    "Stamina": {
+      "zh-CN": {"name": "行动力", "help": ""},
+      "en-US": {"name": "Stamina", "help": ""},
+      "ja-JP": {
+        "name": "行動力",
+        "help": "現在の行動力です。"
+      },
+      "zh-TW": {"name": "行動力", "help": ""}
+    },
+    "EquipmentInventory": {
+      "zh-CN": {"name": "装备数量", "help": ""},
+      "en-US": {"name": "Equipment Count", "help": ""},
+      "ja-JP": {
+        "name": "装備所持数",
+        "help": "現在の装備所持数と上限です。"
+      },
+      "zh-TW": {"name": "裝備數量", "help": ""}
+    },
+    "DailyActivity": {
+      "zh-CN": {"name": "每日活跃", "help": ""},
+      "en-US": {"name": "Daily Activity", "help": ""},
+      "ja-JP": {
+        "name": "デイリー活動",
+        "help": "現在のデイリー活動ポイントです。"
+      },
+      "zh-TW": {"name": "每日活躍", "help": ""}
+    },
+    "ArenaRank": {
+      "zh-CN": {"name": "竞技场通行证等级", "help": ""},
+      "en-US": {"name": "Arena Pass Level", "help": ""},
+      "ja-JP": {
+        "name": "アリーナ通行証レベル",
+        "help": "現在のアリーナ通行証レベルです。"
+      },
+      "zh-TW": {"name": "競技場通行證等級", "help": ""}
+    },
+    "ArenaFlag": {
+      "zh-CN": {"name": "竞技场旗帜", "help": ""},
+      "en-US": {"name": "Arena Flags", "help": ""},
+      "ja-JP": {
+        "name": "アリーナ旗",
+        "help": "現在のアリーナ旗の所持数です。"
+      },
+      "zh-TW": {"name": "競技場旗幟", "help": ""}
+    },
+    "ConquestPoint": {
+      "zh-CN": {"name": "征服点数", "help": ""},
+      "en-US": {"name": "Conquest Points", "help": ""},
+      "ja-JP": {
+        "name": "征服ポイント",
+        "help": "現在の征服ポイント所持数です。"
+      },
+      "zh-TW": {"name": "征服點數", "help": ""}
+    },
+    "ShadowCommission": {
+      "zh-CN": {"name": "暗影情报委托等级", "help": ""},
+      "en-US": {"name": "Shadow Commission Level", "help": ""},
+      "ja-JP": {
+        "name": "暗影情報依頼レベル",
+        "help": "現在の暗影情報依頼レベルです。"
+      },
+      "zh-TW": {"name": "暗影情報委託等級", "help": ""}
+    },
+    "TeamBattle": {
+      "zh-CN": {"name": "团战刀数", "help": ""},
+      "en-US": {"name": "Guild War Attacks", "help": ""},
+      "ja-JP": {
+        "name": "ギルド戦残り攻撃回数",
+        "help": "現在のギルド戦残り攻撃回数です。"
+      },
+      "zh-TW": {"name": "團戰刀數", "help": ""}
+    }
+  },
+  "SanctuaryDaily": {
+    "_info": {
+      "zh-CN": {
+        "name": "圣域-日常",
+        "help": "独立调度的圣域日常模块。"
+      },
+      "en-US": {
+        "name": "Sanctuary Daily",
+        "help": "Sanctuary daily module with independent scheduler."
+      },
+      "ja-JP": {
+        "name": "聖域-デイリー",
+        "help": "独立スケジューラで実行する聖域デイリーモジュール。"
+      },
+      "zh-TW": {
+        "name": "聖域-日常",
+        "help": "獨立排程的聖域日常模組。"
+      }
+    }
+  },
+  "Pets": {
+    "_info": {
+      "zh-CN": {"name": "宠物商店", "help": ""},
+      "en-US": {"name": "Pet Shop", "help": ""},
+      "ja-JP": {
+        "name": "ペットショップ",
+        "help": "ペットショップに入り、当日の無料孵化を処理します。"
+      },
+      "zh-TW": {"name": "寵物商店", "help": ""}
+    }
+  },
+  "DataUpdate": {
+    "_info": {
+      "zh-CN": {"name": "仪表盘更新", "help": ""},
+      "en-US": {"name": "Dashboard Upd", "help": ""},
+      "ja-JP": {
+        "name": "ダッシュボード更新",
+        "help": "装備所持数、資源、アリーナ情報などダッシュボード用データを更新します。"
+      },
+      "zh-TW": {"name": "儀表板更新", "help": ""}
+    }
+  },
+  "Store": {
+    "_info": {
+      "zh-CN": {
+        "name": "商店",
+        "help": "购买商店中的每日与每周资源。"
+      },
+      "en-US": {
+        "name": "Store",
+        "help": "Buy daily and weekly items from the in-game store."
+      },
+      "ja-JP": {
+        "name": "ショップ",
+        "help": "ゲーム内ショップでデイリー・ウィークリー商品を購入します。"
+      },
+      "zh-TW": {
+        "name": "商店",
+        "help": "購買商店中的每日與每週資源。"
+      }
+    }
+  }
+}

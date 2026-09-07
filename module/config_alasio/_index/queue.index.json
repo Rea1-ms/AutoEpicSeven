@@ -1,0 +1,122 @@
+{
+  "RestartDevice": {
+    "zh-CN": "RestartDevice",
+    "en-US": "RestartDevice",
+    "ja-JP": "RestartDevice",
+    "zh-TW": "RestartDevice"
+  },
+  "RestartGame": {
+    "zh-CN": "RestartGame",
+    "en-US": "RestartGame",
+    "ja-JP": "RestartGame",
+    "zh-TW": "RestartGame"
+  },
+  "Restart": {
+    "zh-CN": "Restart",
+    "en-US": "Restart",
+    "ja-JP": "Restart",
+    "zh-TW": "Restart"
+  },
+  "MissionReward": {
+    "zh-CN": "MissionReward",
+    "en-US": "MissionReward",
+    "ja-JP": "MissionReward",
+    "zh-TW": "MissionReward"
+  },
+  "Mail": {
+    "zh-CN": "Mail",
+    "en-US": "Mail",
+    "ja-JP": "Mail",
+    "zh-TW": "Mail"
+  },
+  "CommunityAio": {
+    "zh-CN": "CommunityAio",
+    "en-US": "CommunityAio",
+    "ja-JP": "CommunityAio",
+    "zh-TW": "CommunityAio"
+  },
+  "DataUpdate": {
+    "zh-CN": "DataUpdate",
+    "en-US": "DataUpdate",
+    "ja-JP": "DataUpdate",
+    "zh-TW": "DataUpdate"
+  },
+  "SanctuaryDaily": {
+    "zh-CN": "SanctuaryDaily",
+    "en-US": "SanctuaryDaily",
+    "ja-JP": "SanctuaryDaily",
+    "zh-TW": "SanctuaryDaily"
+  },
+  "Knights": {
+    "zh-CN": "Knights",
+    "en-US": "Knights",
+    "ja-JP": "Knights",
+    "zh-TW": "Knights"
+  },
+  "Arena": {
+    "zh-CN": "Arena",
+    "en-US": "Arena",
+    "ja-JP": "Arena",
+    "zh-TW": "Arena"
+  },
+  "Store": {
+    "zh-CN": "Store",
+    "en-US": "Store",
+    "ja-JP": "Store",
+    "zh-TW": "Store"
+  },
+  "PetsGift": {
+    "zh-CN": "PetsGift",
+    "en-US": "PetsGift",
+    "ja-JP": "PetsGift",
+    "zh-TW": "PetsGift"
+  },
+  "SecretShop": {
+    "zh-CN": "SecretShop",
+    "en-US": "SecretShop",
+    "ja-JP": "SecretShop",
+    "zh-TW": "SecretShop"
+  },
+  "Combat": {
+    "zh-CN": "Combat",
+    "en-US": "Combat",
+    "ja-JP": "Combat",
+    "zh-TW": "Combat"
+  },
+  "Gacha": {
+    "zh-CN": "Gacha",
+    "en-US": "Gacha",
+    "ja-JP": "Gacha",
+    "zh-TW": "Gacha"
+  },
+  "Pets": {
+    "zh-CN": "Pets",
+    "en-US": "Pets",
+    "ja-JP": "Pets",
+    "zh-TW": "Pets"
+  },
+  "SpecialActivity": {
+    "zh-CN": "SpecialActivity",
+    "en-US": "SpecialActivity",
+    "ja-JP": "SpecialActivity",
+    "zh-TW": "SpecialActivity"
+  },
+  "SanctuaryMonthly": {
+    "zh-CN": "SanctuaryMonthly",
+    "en-US": "SanctuaryMonthly",
+    "ja-JP": "SanctuaryMonthly",
+    "zh-TW": "SanctuaryMonthly"
+  },
+  "CombatFarm": {
+    "zh-CN": "CombatFarm",
+    "en-US": "CombatFarm",
+    "ja-JP": "CombatFarm",
+    "zh-TW": "CombatFarm"
+  },
+  "CommunityAuth": {
+    "zh-CN": "CommunityAuth",
+    "en-US": "CommunityAuth",
+    "ja-JP": "CommunityAuth",
+    "zh-TW": "CommunityAuth"
+  }
+}

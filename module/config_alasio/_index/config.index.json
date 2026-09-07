@@ -1,0 +1,48 @@
+{
+  "aes": {
+    "file": "aes/aes_config.json",
+    "i18n": [
+      "alasio/alasio_i18n.json",
+      "alasio/device_i18n.json",
+      "aes/aes_i18n.json"
+    ],
+    "config": {
+      "task": ["Alas", "Device", "Restart"],
+      "group": []
+    }
+  },
+  "daily": {
+    "file": "daily/daily_config.json",
+    "i18n": [
+      "alasio/alasio_i18n.json",
+      "daily/daily_i18n.json"
+    ],
+    "config": {
+      "task": ["MissionReward", "Mail", "SanctuaryDaily", "Knights", "Arena", "Store", "SecretShop", "Gacha", "Pets", "SpecialActivity"],
+      "group": [["CommunityAio", "Scheduler"], ["DataUpdate", "Scheduler"], ["PetsGift", "Scheduler"], ["Combat", "Combat"], ["Combat", "Scheduler"]]
+    }
+  },
+  "monthly": {
+    "file": "monthly/monthly_config.json",
+    "i18n": [
+      "alasio/alasio_i18n.json",
+      "monthly/monthly_i18n.json"
+    ],
+    "config": {
+      "task": ["SanctuaryMonthly"],
+      "group": []
+    }
+  },
+  "tool": {
+    "file": "tool/tool_config.json",
+    "i18n": [
+      "alasio/alasio_i18n.json",
+      "daily/daily_i18n.json",
+      "tool/tool_i18n.json"
+    ],
+    "config": {
+      "task": ["CommunityAuth"],
+      "group": [["CombatFarm", "Combat"], ["CombatFarm", "Scheduler"]]
+    }
+  }
+}

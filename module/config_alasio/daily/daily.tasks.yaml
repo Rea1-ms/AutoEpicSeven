@@ -1,0 +1,109 @@
+MissionReward:
+  groups:
+    Scheduler: SchedulerUedit
+    MissionReward:
+  displays: flat
+
+Mail:
+  groups:
+    Scheduler: SchedulerUedit
+    Mail:
+  displays: flat
+
+CommunityAio:
+  groups:
+    Scheduler: SchedulerUedit
+    CommunityAio:
+  displays:
+    - info: CommunityAio
+      groups:
+        - { task: CommunityAio, group: Scheduler }
+
+DataUpdate:
+  groups:
+    Scheduler: SchedulerUedit
+    Dashboard:
+  displays:
+    - info: DataUpdate
+      groups: { task: DataUpdate, group: Scheduler }
+
+SanctuaryDaily:
+  groups:
+    Scheduler: SchedulerUedit
+  displays:
+    - info: SanctuaryDaily
+      groups: { task: SanctuaryDaily, group: Scheduler }
+
+Knights:
+  groups:
+    Scheduler: SchedulerUedit
+    Knights:
+    KnightsTeamBattle:
+  displays:
+    - info: Knights
+      groups:
+        - { task: Knights, group: Scheduler }
+        - Knights
+    - KnightsTeamBattle
+
+Arena:
+  groups:
+    Scheduler: SchedulerUedit
+    Arena:
+  displays: flat
+
+Store:
+  groups:
+    Scheduler: SchedulerUedit
+    StoreDaily:
+    StoreWeekly:
+  displays:
+    - info: Store
+      groups:
+        - { task: Store, group: Scheduler }
+        - StoreDaily
+    - StoreWeekly
+
+PetsGift:
+  groups:
+    Scheduler: SchedulerUedit
+    PetsGift:
+  displays:
+    - info: PetsGift
+      groups: { task: PetsGift, group: Scheduler }
+
+SecretShop:
+  groups:
+    Scheduler: SchedulerUedit
+    SecretShop:
+  displays: flat
+
+Combat:
+  groups:
+    Scheduler: SchedulerUedit
+    Combat:
+    CombatRuntime:
+  displays:
+    - info: Combat
+      groups:
+        - { task: Combat, group: Scheduler }
+        - Combat
+
+Gacha:
+  groups:
+    Scheduler: SchedulerUedit
+    Gacha:
+  displays: flat
+
+Pets:
+  groups:
+    Scheduler: SchedulerUedit
+  displays:
+    - info: Pets
+      groups: { task: Pets, group: Scheduler }
+
+SpecialActivity:
+  groups:
+    Scheduler: SchedulerUedit
+    SpecialActivity:
+  displays: flat

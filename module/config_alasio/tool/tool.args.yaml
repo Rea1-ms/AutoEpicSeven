@@ -1,0 +1,11 @@
+# Empty group for _info
+CombatFarm:
+
+CommunityAuth:
+  args:
+    CredentialsFile:
+      value: ''
+      advanced: true
+    WaitTimeout:
+      value: 300
+      option: [60, 180, 300, 600]

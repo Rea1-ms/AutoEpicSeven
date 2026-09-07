@@ -1,0 +1,43 @@
+{
+  "card-SanctuaryMonthly-SanctuaryMonthly": {
+    "_info": {"group": "SanctuaryMonthly", "arg": "_info", "card": "card-SanctuaryMonthly-SanctuaryMonthly"},
+    "Scheduler": {
+      "Enable": {
+        "task": "SanctuaryMonthly",
+        "group": "Scheduler",
+        "arg": "Enable",
+        "cls": "SchedulerUedit",
+        "dt": "enable",
+        "value": false,
+        "option": ["true", "false"]
+      },
+      "NextRun": {
+        "task": "SanctuaryMonthly",
+        "group": "Scheduler",
+        "arg": "NextRun",
+        "cls": "SchedulerUedit",
+        "dt": "datetime",
+        "value": "2020-01-01T00:00:00Z"
+      },
+      "ServerUpdate": {
+        "task": "SanctuaryMonthly",
+        "group": "Scheduler",
+        "arg": "ServerUpdate",
+        "cls": "SchedulerUedit",
+        "i18ngroup": "SchedulerUedit",
+        "dt": "input",
+        "value": "00:00"
+      }
+    },
+    "SanctuaryMonthly": {
+      "RewardTier": {
+        "task": "SanctuaryMonthly",
+        "group": "SanctuaryMonthly",
+        "arg": "RewardTier",
+        "dt": "select",
+        "value": "A",
+        "option": ["A", "B", "S", "MaxMinus1", "MaxMinus2"]
+      }
+    }
+  }
+}

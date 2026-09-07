@@ -1,0 +1,68 @@
+{
+  "SanctuaryMonthly": {
+    "_info": {
+      "zh-CN": {
+        "name": "圣域-月常设置",
+        "help": "圣域月常任务配置。"
+      },
+      "en-US": {
+        "name": "Sanctuary Monthly",
+        "help": "Monthly sanctuary module options."
+      },
+      "ja-JP": {
+        "name": "聖域-マンスリー設定",
+        "help": "聖域マンスリーモジュールの設定。"
+      },
+      "zh-TW": {
+        "name": "聖域-月常設定",
+        "help": "聖域月常模組設定。"
+      }
+    },
+    "RewardTier": {
+      "zh-CN": {
+        "name": "入库品质",
+        "help": "",
+        "option_i18n": {
+          "A": "A及以上",
+          "B": "B及以上",
+          "S": "S及以上",
+          "MaxMinus1": "当前最高品质-1",
+          "MaxMinus2": "当前最高品质-2（保底B）"
+        }
+      },
+      "en-US": {
+        "name": "Reward Tier",
+        "help": "",
+        "option_i18n": {
+          "A": "A or higher",
+          "B": "B or higher",
+          "S": "S or higher",
+          "MaxMinus1": "Current max tier -1",
+          "MaxMinus2": "Current max tier -2 (floor B)"
+        }
+      },
+      "ja-JP": {
+        "name": "保管品質",
+        "help": "受け取る報酬の最低品質を選択します。",
+        "option_i18n": {
+          "A": "A以上",
+          "B": "B以上",
+          "S": "S以上",
+          "MaxMinus1": "現在の最高ランク-1",
+          "MaxMinus2": "現在の最高ランク-2（下限B）"
+        }
+      },
+      "zh-TW": {
+        "name": "入庫品質",
+        "help": "",
+        "option_i18n": {
+          "A": "A及以上",
+          "B": "B及以上",
+          "S": "S及以上",
+          "MaxMinus1": "當前最高品質-1",
+          "MaxMinus2": "當前最高品質-2（保底B）"
+        }
+      }
+    }
+  }
+}

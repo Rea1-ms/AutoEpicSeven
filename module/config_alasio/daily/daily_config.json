@@ -1,0 +1,816 @@
+{
+  "card-MissionReward-MissionReward": {
+    "_info": {"group": "MissionReward", "arg": "_info", "card": "card-MissionReward-MissionReward"},
+    "Scheduler": {
+      "Enable": {
+        "task": "MissionReward",
+        "group": "Scheduler",
+        "arg": "Enable",
+        "cls": "SchedulerUedit",
+        "dt": "enable",
+        "value": false,
+        "option": ["true", "false"]
+      },
+      "NextRun": {
+        "task": "MissionReward",
+        "group": "Scheduler",
+        "arg": "NextRun",
+        "cls": "SchedulerUedit",
+        "dt": "datetime",
+        "value": "2020-01-01T00:00:00Z"
+      },
+      "ServerUpdate": {
+        "task": "MissionReward",
+        "group": "Scheduler",
+        "arg": "ServerUpdate",
+        "cls": "SchedulerUedit",
+        "i18ngroup": "SchedulerUedit",
+        "dt": "input",
+        "value": "00:00"
+      }
+    },
+    "MissionReward": {
+      "ClaimDailyRewards": {
+        "task": "MissionReward",
+        "group": "MissionReward",
+        "arg": "ClaimDailyRewards",
+        "dt": "checkbox",
+        "value": true
+      }
+    }
+  },
+  "card-Mail-Mail": {
+    "_info": {"group": "Mail", "arg": "_info", "card": "card-Mail-Mail"},
+    "Scheduler": {
+      "Enable": {
+        "task": "Mail",
+        "group": "Scheduler",
+        "arg": "Enable",
+        "cls": "SchedulerUedit",
+        "dt": "enable",
+        "value": false,
+        "option": ["true", "false"]
+      },
+      "NextRun": {
+        "task": "Mail",
+        "group": "Scheduler",
+        "arg": "NextRun",
+        "cls": "SchedulerUedit",
+        "dt": "datetime",
+        "value": "2020-01-01T00:00:00Z"
+      },
+      "ServerUpdate": {
+        "task": "Mail",
+        "group": "Scheduler",
+        "arg": "ServerUpdate",
+        "cls": "SchedulerUedit",
+        "i18ngroup": "SchedulerUedit",
+        "dt": "input",
+        "value": "00:00"
+      }
+    },
+    "Mail": {
+      "CollectWithin": {
+        "task": "Mail",
+        "group": "Mail",
+        "arg": "CollectWithin",
+        "dt": "select",
+        "value": "1d",
+        "option": ["1h", "1d"]
+      },
+      "LastCheckAt": {
+        "task": "Mail",
+        "group": "Mail",
+        "arg": "LastCheckAt",
+        "dt": "datetime",
+        "value": "2020-01-01T00:00:00Z",
+        "advanced": true
+      },
+      "LastRemainingText": {
+        "task": "Mail",
+        "group": "Mail",
+        "arg": "LastRemainingText",
+        "dt": "input",
+        "value": "",
+        "advanced": true
+      },
+      "LastRemainingSince": {
+        "task": "Mail",
+        "group": "Mail",
+        "arg": "LastRemainingSince",
+        "dt": "datetime",
+        "value": "2020-01-01T00:00:00Z",
+        "advanced": true
+      }
+    }
+  },
+  "card-CommunityAio-CommunityAio": {
+    "_info": {"group": "CommunityAio", "arg": "_info", "card": "card-CommunityAio-CommunityAio"},
+    "Scheduler": {
+      "Enable": {
+        "task": "CommunityAio",
+        "group": "Scheduler",
+        "arg": "Enable",
+        "cls": "SchedulerUedit",
+        "dt": "enable",
+        "value": false,
+        "option": ["true", "false"]
+      },
+      "NextRun": {
+        "task": "CommunityAio",
+        "group": "Scheduler",
+        "arg": "NextRun",
+        "cls": "SchedulerUedit",
+        "dt": "datetime",
+        "value": "2020-01-01T00:00:00Z"
+      },
+      "ServerUpdate": {
+        "task": "CommunityAio",
+        "group": "Scheduler",
+        "arg": "ServerUpdate",
+        "cls": "SchedulerUedit",
+        "i18ngroup": "SchedulerUedit",
+        "dt": "input",
+        "value": "00:00"
+      }
+    }
+  },
+  "card-DataUpdate-DataUpdate": {
+    "_info": {"group": "DataUpdate", "arg": "_info", "card": "card-DataUpdate-DataUpdate"},
+    "Scheduler": {
+      "Enable": {
+        "task": "DataUpdate",
+        "group": "Scheduler",
+        "arg": "Enable",
+        "cls": "SchedulerUedit",
+        "dt": "enable",
+        "value": false,
+        "option": ["true", "false"]
+      },
+      "NextRun": {
+        "task": "DataUpdate",
+        "group": "Scheduler",
+        "arg": "NextRun",
+        "cls": "SchedulerUedit",
+        "dt": "datetime",
+        "value": "2020-01-01T00:00:00Z"
+      },
+      "ServerUpdate": {
+        "task": "DataUpdate",
+        "group": "Scheduler",
+        "arg": "ServerUpdate",
+        "cls": "SchedulerUedit",
+        "i18ngroup": "SchedulerUedit",
+        "dt": "input",
+        "value": "00:00"
+      }
+    }
+  },
+  "card-SanctuaryDaily-SanctuaryDaily": {
+    "_info": {"group": "SanctuaryDaily", "arg": "_info", "card": "card-SanctuaryDaily-SanctuaryDaily"},
+    "Scheduler": {
+      "Enable": {
+        "task": "SanctuaryDaily",
+        "group": "Scheduler",
+        "arg": "Enable",
+        "cls": "SchedulerUedit",
+        "dt": "enable",
+        "value": false,
+        "option": ["true", "false"]
+      },
+      "NextRun": {
+        "task": "SanctuaryDaily",
+        "group": "Scheduler",
+        "arg": "NextRun",
+        "cls": "SchedulerUedit",
+        "dt": "datetime",
+        "value": "2020-01-01T00:00:00Z"
+      },
+      "ServerUpdate": {
+        "task": "SanctuaryDaily",
+        "group": "Scheduler",
+        "arg": "ServerUpdate",
+        "cls": "SchedulerUedit",
+        "i18ngroup": "SchedulerUedit",
+        "dt": "input",
+        "value": "00:00"
+      }
+    }
+  },
+  "card-Knights-Knights": {
+    "_info": {"group": "Knights", "arg": "_info", "card": "card-Knights-Knights"},
+    "Scheduler": {
+      "Enable": {
+        "task": "Knights",
+        "group": "Scheduler",
+        "arg": "Enable",
+        "cls": "SchedulerUedit",
+        "dt": "enable",
+        "value": false,
+        "option": ["true", "false"]
+      },
+      "NextRun": {
+        "task": "Knights",
+        "group": "Scheduler",
+        "arg": "NextRun",
+        "cls": "SchedulerUedit",
+        "dt": "datetime",
+        "value": "2020-01-01T00:00:00Z"
+      },
+      "ServerUpdate": {
+        "task": "Knights",
+        "group": "Scheduler",
+        "arg": "ServerUpdate",
+        "cls": "SchedulerUedit",
+        "i18ngroup": "SchedulerUedit",
+        "dt": "input",
+        "value": "00:00"
+      }
+    },
+    "Knights": {
+      "ClaimSigninRateReward": {
+        "task": "Knights",
+        "group": "Knights",
+        "arg": "ClaimSigninRateReward",
+        "dt": "checkbox",
+        "value": true
+      },
+      "Support": {
+        "task": "Knights",
+        "group": "Knights",
+        "arg": "Support",
+        "dt": "checkbox",
+        "value": true
+      },
+      "SupportLowerLevelFairyFlower": {
+        "task": "Knights",
+        "group": "Knights",
+        "arg": "SupportLowerLevelFairyFlower",
+        "dt": "checkbox",
+        "value": true
+      },
+      "SupportBeginnerPenguin": {
+        "task": "Knights",
+        "group": "Knights",
+        "arg": "SupportBeginnerPenguin",
+        "dt": "checkbox",
+        "value": true
+      },
+      "RequestItem": {
+        "task": "Knights",
+        "group": "Knights",
+        "arg": "RequestItem",
+        "dt": "select",
+        "value": "LowerLevelFairyFlower",
+        "option": ["LowerLevelFairyFlower", "BeginnerPenguin"]
+      },
+      "WeeklyTask": {
+        "task": "Knights",
+        "group": "Knights",
+        "arg": "WeeklyTask",
+        "dt": "checkbox",
+        "value": true
+      },
+      "WorldBoss": {
+        "task": "Knights",
+        "group": "Knights",
+        "arg": "WorldBoss",
+        "dt": "checkbox",
+        "value": true
+      }
+    }
+  },
+  "card-Knights-KnightsTeamBattle": {
+    "_info": {"group": "KnightsTeamBattle", "arg": "_info", "card": "card-Knights-KnightsTeamBattle"},
+    "KnightsTeamBattle": {
+      "TeamBattle": {
+        "task": "Knights",
+        "group": "KnightsTeamBattle",
+        "arg": "TeamBattle",
+        "dt": "checkbox",
+        "value": true
+      },
+      "Reminder": {
+        "task": "Knights",
+        "group": "KnightsTeamBattle",
+        "arg": "Reminder",
+        "dt": "checkbox",
+        "value": false
+      },
+      "ReminderLeadMinutes": {
+        "task": "Knights",
+        "group": "KnightsTeamBattle",
+        "arg": "ReminderLeadMinutes",
+        "dt": "select",
+        "value": 60,
+        "option": [30, 60, 120, 180]
+      },
+      "ReminderLastEnd": {
+        "task": "Knights",
+        "group": "KnightsTeamBattle",
+        "arg": "ReminderLastEnd",
+        "dt": "input",
+        "value": "",
+        "advanced": true
+      }
+    }
+  },
+  "card-Arena-Arena": {
+    "_info": {"group": "Arena", "arg": "_info", "card": "card-Arena-Arena"},
+    "Scheduler": {
+      "Enable": {
+        "task": "Arena",
+        "group": "Scheduler",
+        "arg": "Enable",
+        "cls": "SchedulerUedit",
+        "dt": "enable",
+        "value": false,
+        "option": ["true", "false"]
+      },
+      "NextRun": {
+        "task": "Arena",
+        "group": "Scheduler",
+        "arg": "NextRun",
+        "cls": "SchedulerUedit",
+        "dt": "datetime",
+        "value": "2020-01-01T00:00:00Z"
+      },
+      "ServerUpdate": {
+        "task": "Arena",
+        "group": "Scheduler",
+        "arg": "ServerUpdate",
+        "cls": "SchedulerUedit",
+        "i18ngroup": "SchedulerUedit",
+        "dt": "input",
+        "value": "00:00"
+      }
+    },
+    "Arena": {
+      "ClaimWeeklyRewards": {
+        "task": "Arena",
+        "group": "Arena",
+        "arg": "ClaimWeeklyRewards",
+        "dt": "checkbox",
+        "value": true
+      },
+      "ClaimWeeklyBattleRewards": {
+        "task": "Arena",
+        "group": "Arena",
+        "arg": "ClaimWeeklyBattleRewards",
+        "dt": "checkbox",
+        "value": true
+      },
+      "ClaimBattlePassRewards": {
+        "task": "Arena",
+        "group": "Arena",
+        "arg": "ClaimBattlePassRewards",
+        "dt": "checkbox",
+        "value": true
+      },
+      "NPCCombat": {
+        "task": "Arena",
+        "group": "Arena",
+        "arg": "NPCCombat",
+        "dt": "checkbox",
+        "value": true
+      },
+      "NPCCombatFastBattle": {
+        "task": "Arena",
+        "group": "Arena",
+        "arg": "NPCCombatFastBattle",
+        "dt": "checkbox",
+        "value": true
+      },
+      "NPCCombatCount": {
+        "task": "Arena",
+        "group": "Arena",
+        "arg": "NPCCombatCount",
+        "dt": "input-int",
+        "value": 5
+      }
+    }
+  },
+  "card-Store-Store": {
+    "_info": {"group": "Store", "arg": "_info", "card": "card-Store-Store"},
+    "Scheduler": {
+      "Enable": {
+        "task": "Store",
+        "group": "Scheduler",
+        "arg": "Enable",
+        "cls": "SchedulerUedit",
+        "dt": "enable",
+        "value": false,
+        "option": ["true", "false"]
+      },
+      "NextRun": {
+        "task": "Store",
+        "group": "Scheduler",
+        "arg": "NextRun",
+        "cls": "SchedulerUedit",
+        "dt": "datetime",
+        "value": "2020-01-01T00:00:00Z"
+      },
+      "ServerUpdate": {
+        "task": "Store",
+        "group": "Scheduler",
+        "arg": "ServerUpdate",
+        "cls": "SchedulerUedit",
+        "i18ngroup": "SchedulerUedit",
+        "dt": "input",
+        "value": "00:00"
+      }
+    },
+    "StoreDaily": {
+      "BuyDailyFreeItem": {
+        "task": "Store",
+        "group": "StoreDaily",
+        "arg": "BuyDailyFreeItem",
+        "dt": "checkbox",
+        "value": true
+      },
+      "BuyFriendshipMobility40": {
+        "task": "Store",
+        "group": "StoreDaily",
+        "arg": "BuyFriendshipMobility40",
+        "dt": "checkbox",
+        "value": true
+      },
+      "BuyFriendshipArenaFlag": {
+        "task": "Store",
+        "group": "StoreDaily",
+        "arg": "BuyFriendshipArenaFlag",
+        "dt": "checkbox",
+        "value": true
+      },
+      "BuyConquestMobility40": {
+        "task": "Store",
+        "group": "StoreDaily",
+        "arg": "BuyConquestMobility40",
+        "dt": "select",
+        "value": 0,
+        "option": [0, 1, 2, 3]
+      }
+    }
+  },
+  "card-Store-StoreWeekly": {
+    "_info": {"group": "StoreWeekly", "arg": "_info", "card": "card-Store-StoreWeekly"},
+    "StoreWeekly": {
+      "BuyConquestMorogora": {
+        "task": "Store",
+        "group": "StoreWeekly",
+        "arg": "BuyConquestMorogora",
+        "dt": "checkbox",
+        "value": false
+      },
+      "BuyFriendshipArtifactEnhancementStone": {
+        "task": "Store",
+        "group": "StoreWeekly",
+        "arg": "BuyFriendshipArtifactEnhancementStone",
+        "dt": "select",
+        "value": 0,
+        "option": [0, 1, 2, 3]
+      },
+      "BuyInheritanceMorogora": {
+        "task": "Store",
+        "group": "StoreWeekly",
+        "arg": "BuyInheritanceMorogora",
+        "dt": "select",
+        "value": 0,
+        "option": [0, 1, 2]
+      },
+      "BuyInheritancePotentialFragments": {
+        "task": "Store",
+        "group": "StoreWeekly",
+        "arg": "BuyInheritancePotentialFragments",
+        "dt": "select",
+        "value": 0,
+        "option": [0, 1, 2]
+      }
+    }
+  },
+  "card-PetsGift-PetsGift": {
+    "_info": {"group": "PetsGift", "arg": "_info", "card": "card-PetsGift-PetsGift"},
+    "Scheduler": {
+      "Enable": {
+        "task": "PetsGift",
+        "group": "Scheduler",
+        "arg": "Enable",
+        "cls": "SchedulerUedit",
+        "dt": "enable",
+        "value": false,
+        "option": ["true", "false"]
+      },
+      "NextRun": {
+        "task": "PetsGift",
+        "group": "Scheduler",
+        "arg": "NextRun",
+        "cls": "SchedulerUedit",
+        "dt": "datetime",
+        "value": "2020-01-01T00:00:00Z"
+      },
+      "ServerUpdate": {
+        "task": "PetsGift",
+        "group": "Scheduler",
+        "arg": "ServerUpdate",
+        "cls": "SchedulerUedit",
+        "i18ngroup": "SchedulerUedit",
+        "dt": "input",
+        "value": "00:00"
+      }
+    }
+  },
+  "card-SecretShop-SecretShop": {
+    "_info": {"group": "SecretShop", "arg": "_info", "card": "card-SecretShop-SecretShop"},
+    "Scheduler": {
+      "Enable": {
+        "task": "SecretShop",
+        "group": "Scheduler",
+        "arg": "Enable",
+        "cls": "SchedulerUedit",
+        "dt": "enable",
+        "value": false,
+        "option": ["true", "false"]
+      },
+      "NextRun": {
+        "task": "SecretShop",
+        "group": "Scheduler",
+        "arg": "NextRun",
+        "cls": "SchedulerUedit",
+        "dt": "datetime",
+        "value": "2020-01-01T00:00:00Z"
+      },
+      "ServerUpdate": {
+        "task": "SecretShop",
+        "group": "Scheduler",
+        "arg": "ServerUpdate",
+        "cls": "SchedulerUedit",
+        "i18ngroup": "SchedulerUedit",
+        "dt": "input",
+        "value": "00:00"
+      }
+    },
+    "SecretShop": {
+      "OnlyFree": {
+        "task": "SecretShop",
+        "group": "SecretShop",
+        "arg": "OnlyFree",
+        "dt": "checkbox",
+        "value": true
+      },
+      "MaxRefresh": {
+        "task": "SecretShop",
+        "group": "SecretShop",
+        "arg": "MaxRefresh",
+        "dt": "input-int",
+        "value": 10
+      },
+      "BuyCovenantBookmark": {
+        "task": "SecretShop",
+        "group": "SecretShop",
+        "arg": "BuyCovenantBookmark",
+        "dt": "checkbox",
+        "value": true
+      },
+      "BuyMysticMedal": {
+        "task": "SecretShop",
+        "group": "SecretShop",
+        "arg": "BuyMysticMedal",
+        "dt": "checkbox",
+        "value": true
+      }
+    }
+  },
+  "card-Combat-Combat": {
+    "_info": {"group": "Combat", "arg": "_info", "card": "card-Combat-Combat"},
+    "Scheduler": {
+      "Enable": {
+        "task": "Combat",
+        "group": "Scheduler",
+        "arg": "Enable",
+        "cls": "SchedulerUedit",
+        "dt": "enable",
+        "value": false,
+        "option": ["true", "false"]
+      },
+      "NextRun": {
+        "task": "Combat",
+        "group": "Scheduler",
+        "arg": "NextRun",
+        "cls": "SchedulerUedit",
+        "dt": "datetime",
+        "value": "2020-01-01T00:00:00Z"
+      },
+      "ServerUpdate": {
+        "task": "Combat",
+        "group": "Scheduler",
+        "arg": "ServerUpdate",
+        "cls": "SchedulerUedit",
+        "i18ngroup": "SchedulerUedit",
+        "dt": "input",
+        "value": "00:00"
+      }
+    },
+    "Combat": {
+      "Domain": {
+        "task": "Combat",
+        "group": "Combat",
+        "arg": "Domain",
+        "dt": "select",
+        "value": "Hunt",
+        "option": ["Hunt", "SpiritAltar", "Saint37", "Episode4"]
+      },
+      "Element": {
+        "task": "Combat",
+        "group": "Combat",
+        "arg": "Element",
+        "dt": "select",
+        "value": "Water",
+        "option": ["Dark", "Light", "Water", "Fire", "Nature"]
+      },
+      "AltarGrade": {
+        "task": "Combat",
+        "group": "Combat",
+        "arg": "AltarGrade",
+        "dt": "select",
+        "value": "Hell",
+        "option": ["Pri", "Mid", "High", "Hell"]
+      },
+      "HuntGrade": {
+        "task": "Combat",
+        "group": "Combat",
+        "arg": "HuntGrade",
+        "dt": "select",
+        "value": "Hell",
+        "option": ["Mid", "High", "Hell", "Dimensional"]
+      },
+      "Episode4Material": {
+        "task": "Combat",
+        "group": "Combat",
+        "arg": "Episode4Material",
+        "dt": "select",
+        "value": "BREATH_OF_KARMA",
+        "option": ["CATALYST_RARE_BENEVOLENT", "CATALYST_RARE_SECRET", "CATALYST_RARE_FIGHTING_SPIRIT", "CATALYST_RARE_SNIPER", "HEART_OF_THE_WOODS", "CATALYST_RARE_OATH", "CATALYST_RARE_MYSTERIOUS", "CATALYST_EPIC_OATH", "BREATH_OF_KARMA", "CATALYST_EPIC_SNIPER", "CATALYST_EPIC_FIGHTING_SPIRIT", "FROZEN_SEED", "CATALYST_EPIC_BENEVOLENT", "CATALYST_EPIC_MYSTERIOUS", "CATALYST_EPIC_SECRET", "TRACES_OF_BRILLIANCE"]
+      },
+      "FastCombat": {
+        "task": "Combat",
+        "group": "Combat",
+        "arg": "FastCombat",
+        "dt": "checkbox",
+        "value": true
+      },
+      "FastCombatCount": {
+        "task": "Combat",
+        "group": "Combat",
+        "arg": "FastCombatCount",
+        "dt": "input-int",
+        "value": 10
+      },
+      "RepeatCombatCount": {
+        "task": "Combat",
+        "group": "Combat",
+        "arg": "RepeatCombatCount",
+        "dt": "input-int",
+        "value": 5
+      },
+      "Saint37AutoRecycle": {
+        "task": "Combat",
+        "group": "Combat",
+        "arg": "Saint37AutoRecycle",
+        "dt": "checkbox",
+        "value": false
+      }
+    }
+  },
+  "card-Gacha-Gacha": {
+    "_info": {"group": "Gacha", "arg": "_info", "card": "card-Gacha-Gacha"},
+    "Scheduler": {
+      "Enable": {
+        "task": "Gacha",
+        "group": "Scheduler",
+        "arg": "Enable",
+        "cls": "SchedulerUedit",
+        "dt": "enable",
+        "value": false,
+        "option": ["true", "false"]
+      },
+      "NextRun": {
+        "task": "Gacha",
+        "group": "Scheduler",
+        "arg": "NextRun",
+        "cls": "SchedulerUedit",
+        "dt": "datetime",
+        "value": "2020-01-01T00:00:00Z"
+      },
+      "ServerUpdate": {
+        "task": "Gacha",
+        "group": "Scheduler",
+        "arg": "ServerUpdate",
+        "cls": "SchedulerUedit",
+        "i18ngroup": "SchedulerUedit",
+        "dt": "input",
+        "value": "00:00"
+      }
+    },
+    "Gacha": {
+      "CollectGoldenInheritance": {
+        "task": "Gacha",
+        "group": "Gacha",
+        "arg": "CollectGoldenInheritance",
+        "dt": "checkbox",
+        "value": true
+      }
+    }
+  },
+  "card-Pets-Pets": {
+    "_info": {"group": "Pets", "arg": "_info", "card": "card-Pets-Pets"},
+    "Scheduler": {
+      "Enable": {
+        "task": "Pets",
+        "group": "Scheduler",
+        "arg": "Enable",
+        "cls": "SchedulerUedit",
+        "dt": "enable",
+        "value": false,
+        "option": ["true", "false"]
+      },
+      "NextRun": {
+        "task": "Pets",
+        "group": "Scheduler",
+        "arg": "NextRun",
+        "cls": "SchedulerUedit",
+        "dt": "datetime",
+        "value": "2020-01-01T00:00:00Z"
+      },
+      "ServerUpdate": {
+        "task": "Pets",
+        "group": "Scheduler",
+        "arg": "ServerUpdate",
+        "cls": "SchedulerUedit",
+        "i18ngroup": "SchedulerUedit",
+        "dt": "input",
+        "value": "00:00"
+      }
+    }
+  },
+  "card-SpecialActivity-SpecialActivity": {
+    "_info": {"group": "SpecialActivity", "arg": "_info", "card": "card-SpecialActivity-SpecialActivity"},
+    "Scheduler": {
+      "Enable": {
+        "task": "SpecialActivity",
+        "group": "Scheduler",
+        "arg": "Enable",
+        "cls": "SchedulerUedit",
+        "dt": "enable",
+        "value": false,
+        "option": ["true", "false"]
+      },
+      "NextRun": {
+        "task": "SpecialActivity",
+        "group": "Scheduler",
+        "arg": "NextRun",
+        "cls": "SchedulerUedit",
+        "dt": "datetime",
+        "value": "2020-01-01T00:00:00Z"
+      },
+      "ServerUpdate": {
+        "task": "SpecialActivity",
+        "group": "Scheduler",
+        "arg": "ServerUpdate",
+        "cls": "SchedulerUedit",
+        "i18ngroup": "SchedulerUedit",
+        "dt": "input",
+        "value": "00:00"
+      }
+    },
+    "SpecialActivity": {
+      "GetDailyReward": {
+        "task": "SpecialActivity",
+        "group": "SpecialActivity",
+        "arg": "GetDailyReward",
+        "dt": "checkbox",
+        "value": true
+      },
+      "GetTaskReward": {
+        "task": "SpecialActivity",
+        "group": "SpecialActivity",
+        "arg": "GetTaskReward",
+        "dt": "checkbox",
+        "value": true
+      },
+      "GetFreeGacha": {
+        "task": "SpecialActivity",
+        "group": "SpecialActivity",
+        "arg": "GetFreeGacha",
+        "dt": "checkbox",
+        "value": true
+      },
+      "GetEnergyDrink": {
+        "task": "SpecialActivity",
+        "group": "SpecialActivity",
+        "arg": "GetEnergyDrink",
+        "dt": "checkbox",
+        "value": true
+      }
+    }
+  }
+}

@@ -1,0 +1,164 @@
+{
+  "card-CombatFarm-CombatFarm": {
+    "_info": {"group": "CombatFarm", "arg": "_info", "card": "card-CombatFarm-CombatFarm"},
+    "Scheduler": {
+      "Enable": {
+        "task": "CombatFarm",
+        "group": "Scheduler",
+        "arg": "Enable",
+        "cls": "SchedulerUedit",
+        "dt": "enable",
+        "value": false,
+        "option": ["true", "false"]
+      },
+      "NextRun": {
+        "task": "CombatFarm",
+        "group": "Scheduler",
+        "arg": "NextRun",
+        "cls": "SchedulerUedit",
+        "dt": "datetime",
+        "value": "2020-01-01T00:00:00Z"
+      },
+      "ServerUpdate": {
+        "task": "CombatFarm",
+        "group": "Scheduler",
+        "arg": "ServerUpdate",
+        "cls": "SchedulerUedit",
+        "i18ngroup": "SchedulerUedit",
+        "dt": "input",
+        "value": "00:00"
+      }
+    },
+    "Combat": {
+      "Domain": {
+        "task": "CombatFarm",
+        "group": "Combat",
+        "arg": "Domain",
+        "cls": "CombatFarmCombat",
+        "dt": "select",
+        "value": "Hunt",
+        "option": ["Hunt", "SpiritAltar", "Saint37", "Episode4"]
+      },
+      "Element": {
+        "task": "CombatFarm",
+        "group": "Combat",
+        "arg": "Element",
+        "cls": "CombatFarmCombat",
+        "dt": "select",
+        "value": "Water",
+        "option": ["Dark", "Light", "Water", "Fire", "Nature"]
+      },
+      "AltarGrade": {
+        "task": "CombatFarm",
+        "group": "Combat",
+        "arg": "AltarGrade",
+        "cls": "CombatFarmCombat",
+        "dt": "select",
+        "value": "Hell",
+        "option": ["Pri", "Mid", "High", "Hell"]
+      },
+      "HuntGrade": {
+        "task": "CombatFarm",
+        "group": "Combat",
+        "arg": "HuntGrade",
+        "cls": "CombatFarmCombat",
+        "dt": "select",
+        "value": "Hell",
+        "option": ["Mid", "High", "Hell", "Dimensional"]
+      },
+      "Episode4Material": {
+        "task": "CombatFarm",
+        "group": "Combat",
+        "arg": "Episode4Material",
+        "cls": "CombatFarmCombat",
+        "dt": "select",
+        "value": "BREATH_OF_KARMA",
+        "option": ["CATALYST_RARE_BENEVOLENT", "CATALYST_RARE_SECRET", "CATALYST_RARE_FIGHTING_SPIRIT", "CATALYST_RARE_SNIPER", "HEART_OF_THE_WOODS", "CATALYST_RARE_OATH", "CATALYST_RARE_MYSTERIOUS", "CATALYST_EPIC_OATH", "BREATH_OF_KARMA", "CATALYST_EPIC_SNIPER", "CATALYST_EPIC_FIGHTING_SPIRIT", "FROZEN_SEED", "CATALYST_EPIC_BENEVOLENT", "CATALYST_EPIC_MYSTERIOUS", "CATALYST_EPIC_SECRET", "TRACES_OF_BRILLIANCE"]
+      },
+      "FastCombat": {
+        "task": "CombatFarm",
+        "group": "Combat",
+        "arg": "FastCombat",
+        "cls": "CombatFarmCombat",
+        "i18ngroup": "CombatFarmCombat",
+        "dt": "checkbox",
+        "value": false
+      },
+      "FastCombatCount": {
+        "task": "CombatFarm",
+        "group": "Combat",
+        "arg": "FastCombatCount",
+        "cls": "CombatFarmCombat",
+        "i18ngroup": "CombatFarmCombat",
+        "dt": "select",
+        "value": 10,
+        "option": [10]
+      },
+      "RepeatCombatCount": {
+        "task": "CombatFarm",
+        "group": "Combat",
+        "arg": "RepeatCombatCount",
+        "cls": "CombatFarmCombat",
+        "dt": "input-int",
+        "value": 5
+      },
+      "Saint37AutoRecycle": {
+        "task": "CombatFarm",
+        "group": "Combat",
+        "arg": "Saint37AutoRecycle",
+        "cls": "CombatFarmCombat",
+        "dt": "checkbox",
+        "value": false
+      }
+    }
+  },
+  "card-CommunityAuth-CommunityAuth": {
+    "_info": {"group": "CommunityAuth", "arg": "_info", "card": "card-CommunityAuth-CommunityAuth"},
+    "Scheduler": {
+      "Enable": {
+        "task": "CommunityAuth",
+        "group": "Scheduler",
+        "arg": "Enable",
+        "cls": "SchedulerUedit",
+        "dt": "enable",
+        "value": false,
+        "option": ["true", "false"]
+      },
+      "NextRun": {
+        "task": "CommunityAuth",
+        "group": "Scheduler",
+        "arg": "NextRun",
+        "cls": "SchedulerUedit",
+        "dt": "datetime",
+        "value": "2020-01-01T00:00:00Z"
+      },
+      "ServerUpdate": {
+        "task": "CommunityAuth",
+        "group": "Scheduler",
+        "arg": "ServerUpdate",
+        "cls": "SchedulerUedit",
+        "i18ngroup": "SchedulerUedit",
+        "dt": "input",
+        "value": "00:00"
+      }
+    },
+    "CommunityAuth": {
+      "CredentialsFile": {
+        "task": "CommunityAuth",
+        "group": "CommunityAuth",
+        "arg": "CredentialsFile",
+        "dt": "input",
+        "value": "",
+        "advanced": true
+      },
+      "WaitTimeout": {
+        "task": "CommunityAuth",
+        "group": "CommunityAuth",
+        "arg": "WaitTimeout",
+        "dt": "select",
+        "value": 300,
+        "option": [60, 180, 300, 600]
+      }
+    }
+  }
+}

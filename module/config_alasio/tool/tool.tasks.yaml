@@ -1,0 +1,16 @@
+CombatFarm:
+  groups:
+    Scheduler: SchedulerUedit
+    Combat: CombatFarmCombat
+    CombatRuntime:
+  displays:
+    - info: CombatFarm
+      groups:
+        - { task: CombatFarm, group: Scheduler }
+        - { task: CombatFarm, group: Combat }
+
+CommunityAuth:
+  groups:
+    Scheduler: SchedulerUedit
+    CommunityAuth:
+  displays: flat

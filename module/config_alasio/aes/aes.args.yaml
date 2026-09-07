@@ -1,0 +1,14 @@
+Game:
+  args:
+    PackageName:
+      value: auto
+      option: [auto, CN-Official, OVERSEA-Play]
+    GameLanguage:
+      value: cn
+      option: [auto, cn, en]
+    GameClient:
+      value: android
+      option: [android, cloud_android]
+
+# Empty group for _info
+Restart:

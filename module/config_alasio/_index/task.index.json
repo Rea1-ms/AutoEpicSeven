@@ -1,0 +1,166 @@
+{
+  "Device": {
+    "group": {
+      "Emulator": {"file": "alasio/device_model.py", "cls": "Emulator", "task": "Device"},
+      "EmulatorInfo": {"file": "alasio/device_model.py", "cls": "EmulatorInfo", "task": "Device"},
+      "Error": {"file": "alasio/device_model.py", "cls": "Error", "task": "Device"},
+      "Optimization": {"file": "alasio/device_model.py", "cls": "Optimization", "task": "Device"}
+    },
+    "config": {"task": ["Device"], "group": []}
+  },
+  "RestartDevice": {
+    "group": {
+      "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerStatic", "task": "RestartDevice"}
+    },
+    "config": {"task": ["RestartDevice"], "group": []}
+  },
+  "RestartGame": {
+    "group": {
+      "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerStatic", "task": "RestartGame"}
+    },
+    "config": {"task": ["RestartGame"], "group": []}
+  },
+  "Alas": {
+    "group": {
+      "Game": {"file": "aes/aes_model.py", "cls": "Game", "task": "Alas"}
+    },
+    "config": {"task": ["Alas"], "group": []}
+  },
+  "Restart": {
+    "group": {
+      "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerUedit", "task": "Restart"}
+    },
+    "config": {"task": ["Restart"], "group": []}
+  },
+  "MissionReward": {
+    "group": {
+      "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerUedit", "task": "MissionReward"},
+      "MissionReward": {"file": "daily/daily_model.py", "cls": "MissionReward", "task": "MissionReward"}
+    },
+    "config": {"task": ["MissionReward"], "group": []}
+  },
+  "Mail": {
+    "group": {
+      "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerUedit", "task": "Mail"},
+      "Mail": {"file": "daily/daily_model.py", "cls": "Mail", "task": "Mail"}
+    },
+    "config": {"task": ["Mail"], "group": []}
+  },
+  "CommunityAio": {
+    "group": {
+      "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerUedit", "task": "CommunityAio"},
+      "CommunityAio": {"file": "daily/daily_model.py", "cls": "CommunityAio", "task": "CommunityAio"}
+    },
+    "config": {"task": ["CommunityAio"], "group": []}
+  },
+  "DataUpdate": {
+    "group": {
+      "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerUedit", "task": "DataUpdate"},
+      "Dashboard": {"file": "daily/daily_model.py", "cls": "Dashboard", "task": "DataUpdate"}
+    },
+    "config": {"task": ["DataUpdate"], "group": []}
+  },
+  "SanctuaryDaily": {
+    "group": {
+      "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerUedit", "task": "SanctuaryDaily"}
+    },
+    "config": {"task": ["SanctuaryDaily"], "group": []}
+  },
+  "Knights": {
+    "group": {
+      "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerUedit", "task": "Knights"},
+      "Knights": {"file": "daily/daily_model.py", "cls": "Knights", "task": "Knights"},
+      "KnightsTeamBattle": {"file": "daily/daily_model.py", "cls": "KnightsTeamBattle", "task": "Knights"}
+    },
+    "config": {"task": ["Knights"], "group": []}
+  },
+  "Arena": {
+    "group": {
+      "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerUedit", "task": "Arena"},
+      "Arena": {"file": "daily/daily_model.py", "cls": "Arena", "task": "Arena"}
+    },
+    "config": {"task": ["Arena"], "group": []}
+  },
+  "Store": {
+    "group": {
+      "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerUedit", "task": "Store"},
+      "StoreDaily": {"file": "daily/daily_model.py", "cls": "StoreDaily", "task": "Store"},
+      "StoreWeekly": {"file": "daily/daily_model.py", "cls": "StoreWeekly", "task": "Store"}
+    },
+    "config": {"task": ["Store"], "group": []}
+  },
+  "PetsGift": {
+    "group": {
+      "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerUedit", "task": "PetsGift"},
+      "PetsGift": {"file": "daily/daily_model.py", "cls": "PetsGift", "task": "PetsGift"}
+    },
+    "config": {"task": ["PetsGift"], "group": []}
+  },
+  "SecretShop": {
+    "group": {
+      "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerUedit", "task": "SecretShop"},
+      "SecretShop": {"file": "daily/daily_model.py", "cls": "SecretShop", "task": "SecretShop"}
+    },
+    "config": {"task": ["SecretShop"], "group": []}
+  },
+  "Combat": {
+    "group": {
+      "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerUedit", "task": "Combat"},
+      "Combat": {"file": "daily/daily_model.py", "cls": "Combat", "task": "Combat"},
+      "CombatRuntime": {"file": "daily/daily_model.py", "cls": "CombatRuntime", "task": "Combat"}
+    },
+    "config": {"task": ["Combat"], "group": []}
+  },
+  "Gacha": {
+    "group": {
+      "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerUedit", "task": "Gacha"},
+      "Gacha": {"file": "daily/daily_model.py", "cls": "Gacha", "task": "Gacha"}
+    },
+    "config": {"task": ["Gacha"], "group": []}
+  },
+  "Pets": {
+    "group": {
+      "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerUedit", "task": "Pets"}
+    },
+    "config": {"task": ["Pets"], "group": []}
+  },
+  "SpecialActivity": {
+    "group": {
+      "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerUedit", "task": "SpecialActivity"},
+      "SpecialActivity": {"file": "daily/daily_model.py", "cls": "SpecialActivity", "task": "SpecialActivity"}
+    },
+    "config": {"task": ["SpecialActivity"], "group": []}
+  },
+  "SanctuaryMonthly": {
+    "group": {
+      "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerUedit", "task": "SanctuaryMonthly"},
+      "SanctuaryMonthly": {"file": "monthly/monthly_model.py", "cls": "SanctuaryMonthly", "task": "SanctuaryMonthly"}
+    },
+    "config": {"task": ["SanctuaryMonthly"], "group": []}
+  },
+  "CombatFarm": {
+    "group": {
+      "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerUedit", "task": "CombatFarm"},
+      "Combat": {"file": "daily/daily_model.py", "cls": "CombatFarmCombat", "task": "CombatFarm"},
+      "CombatRuntime": {"file": "daily/daily_model.py", "cls": "CombatRuntime", "task": "CombatFarm"}
+    },
+    "config": {"task": ["CombatFarm"], "group": []}
+  },
+  "CommunityAuth": {
+    "group": {
+      "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerUedit", "task": "CommunityAuth"},
+      "CommunityAuth": {"file": "tool/tool_model.py", "cls": "CommunityAuth", "task": "CommunityAuth"}
+    },
+    "config": {"task": ["CommunityAuth"], "group": []}
+  },
+  "_global_bind": {
+    "group": {
+      "Emulator": {"file": "alasio/device_model.py", "cls": "Emulator", "task": "Device"},
+      "EmulatorInfo": {"file": "alasio/device_model.py", "cls": "EmulatorInfo", "task": "Device"},
+      "Error": {"file": "alasio/device_model.py", "cls": "Error", "task": "Device"},
+      "Optimization": {"file": "alasio/device_model.py", "cls": "Optimization", "task": "Device"},
+      "Game": {"file": "aes/aes_model.py", "cls": "Game", "task": "Alas"}
+    },
+    "config": {"task": ["Device", "Alas"], "group": []}
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "CombatFarm": {
+    "_info": {
+      "zh-CN": {
+        "name": "反复刷取",
+        "help": "工具需要停止调度器再单独运行。会按1分钟轮询后台托管状态；若允许使用快速战斗，则先把现有快速战斗打完，再转入宠物托管重复战斗。"
+      },
+      "en-US": {
+        "name": "Repeat Farming",
+        "help": "Stop the scheduler before running this tool. It checks background repeat combat once per minute. If fast combat is allowed, it consumes all available fast combats first, then switches to pet repeat combat."
+      },
+      "ja-JP": {
+        "name": "反復周回",
+        "help": "スケジューラを停止してから単独で実行してください。バックグラウンド托管を1分ごとに確認します。高速戦闘を許可した場合は、先に使える高速戦闘を使い切ってからペット托管の反復戦闘に入ります。"
+      },
+      "zh-TW": {
+        "name": "反覆刷取",
+        "help": "工具需要停止調度器再單獨運行。會按1分鐘輪詢背景托管狀態；若允許使用快速戰鬥，則先把現有快速戰鬥打完，再轉入寵物托管重複戰鬥。"
+      }
+    }
+  },
+  "CommunityAuth": {
+    "_info": {
+      "zh-CN": {
+        "name": "社区登录",
+        "help": "用于管理国服社区协议任务所需的本地凭证。点击 Start 会打开登录窗口并在日志中等待凭证写入。"
+      },
+      "en-US": {
+        "name": "Community Login",
+        "help": "Manage local credentials for the CN community protocol task. Start opens the login window and waits for credentials in the log."
+      },
+      "ja-JP": {
+        "name": "コミュニティログイン",
+        "help": "CN コミュニティプロトコルタスク用のローカル認証情報を管理します。Start でログイン画面を開き、ログで認証情報の書き込みを待機します。"
+      },
+      "zh-TW": {
+        "name": "社群登入",
+        "help": "用於管理國服社群協議任務所需的本機憑證。點擊 Start 會開啟登入視窗並在日誌中等待憑證寫入。"
+      }
+    },
+    "CredentialsFile": {
+      "zh-CN": {
+        "name": "凭证文件",
+        "help": "留空时使用 Electron 与 Community AIO 的默认凭证路径。"
+      },
+      "en-US": {
+        "name": "Credentials file",
+        "help": "Leave empty to use the default credentials path shared by Electron and Community AIO."
+      },
+      "ja-JP": {
+        "name": "認証情報ファイル",
+        "help": "空欄の場合、Electron と Community AIO が共有する既定の認証情報パスを使用します。"
+      },
+      "zh-TW": {
+        "name": "憑證檔案",
+        "help": "留空時使用 Electron 與 Community AIO 共用的預設憑證路徑。"
+      }
+    },
+    "WaitTimeout": {
+      "zh-CN": {
+        "name": "等待登录完成最多秒数",
+        "help": "Start 后工具任务会在日志区轮询凭证文件，超过该时间仍未抓到有效凭证则结束。",
+        "option_i18n": {"60": "60", "180": "180", "300": "300", "600": "600"}
+      },
+      "en-US": {
+        "name": "Maximum login wait seconds",
+        "help": "After Start, the tool polls the credentials file in the log area and exits if no valid CK is captured in time.",
+        "option_i18n": {"60": "60", "180": "180", "300": "300", "600": "600"}
+      },
+      "ja-JP": {
+        "name": "ログイン完了待機秒数",
+        "help": "Start 後、ツールはログ領域で認証情報ファイルを監視し、有効な CK を取得できないまま時間切れになると終了します。",
+        "option_i18n": {"60": "60", "180": "180", "300": "300", "600": "600"}
+      },
+      "zh-TW": {
+        "name": "等待登入完成最多秒數",
+        "help": "Start 後工具任務會在日誌區輪詢憑證檔案，超過該時間仍未抓到有效 CK 則結束。",
+        "option_i18n": {"60": "60", "180": "180", "300": "300", "600": "600"}
+      }
+    }
+  }
+}
