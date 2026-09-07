@@ -15,6 +15,7 @@ dev_tools/debug_tools
 /campaign/test/
 /toolkit
 *.lock
+!uv.lock
 config/reloadflag
 config/reloadalas
 test.py

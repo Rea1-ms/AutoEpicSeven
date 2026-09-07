@@ -3,19 +3,17 @@ import operator
 import threading
 from datetime import datetime, timedelta
 
-import pywebio
-
 from module.base.decorator import cached_property, del_cached_property
 from module.base.filter import Filter
 import module.config.server as server_
 from module.config.config_generated import GeneratedConfig
-from module.config.config_manual import ManualConfig, OutputConfig
-from module.config.config_updater import ConfigUpdater, ensure_time, get_server_next_update, nearest_future
+from module.config.config_manual import ManualConfig
+from module.config.config_updater import ensure_time, get_server_next_update, nearest_future
 from module.config.deep import deep_get, deep_set
 from module.config.stored.classes import iter_attribute
 from module.config.stored.stored_generated import StoredGenerated
-from module.config.utils import DEFAULT_TIME, dict_to_kv, filepath_config, path_to_arg
-from module.config.watcher import ConfigWatcher
+from module.config.utils import DEFAULT_TIME, dict_to_kv, path_to_arg
+from module.config_alasio.adapter import AesSqliteAdapter
 from module.exception import RequestHumanTakeover, ScriptError
 from module.logger import logger
 
@@ -60,7 +58,7 @@ def name_to_function(name):
     return function
 
 
-class AzurLaneConfig(ConfigUpdater, ManualConfig, GeneratedConfig, ConfigWatcher):
+class AzurLaneConfig(AesSqliteAdapter, ManualConfig, GeneratedConfig):
     stop_event: threading.Event = None
     bound = {}
 
@@ -271,12 +269,13 @@ class AzurLaneConfig(ConfigUpdater, ManualConfig, GeneratedConfig, ConfigWatcher
             deep_set(self.data, keys=path, value=value)
 
         logger.info(
-            f"Save config {filepath_config(self.config_name, mod_name)}, {dict_to_kv(self.modified)}"
+            f"Save config {self.config_name}, {dict_to_kv(self.modified)}"
         )
+        # Persist BEFORE clearing modified, _persist needs the modified paths
+        self._persist(self.config_name, self.modified)
         # Don't use self.modified = {}, that will create a new object.
         self.modified.clear()
         del_cached_property(self, 'stored')
-        self.write_file(self.config_name, data=self.data)
 
     def update(self):
         self.load()
@@ -562,10 +561,6 @@ class AzurLaneConfig(ConfigUpdater, ManualConfig, GeneratedConfig, ConfigWatcher
         backup = ConfigBackup(config=self)
         backup.cover(**kwargs)
         return backup
-
-
-pywebio.output.Output = OutputConfig
-pywebio.pin.Output = OutputConfig
 
 
 class ConfigBackup:

@@ -1,9 +1,5 @@
 import traceback
 
-from pywebio.platform import page
-
-import module.config.server as server_
-from module.base.button import ButtonWrapper
 from tasks.base.assets.assets_base_page import *
 from tasks.base.assets.assets_base_popup import AD_BUFF_X_CLOSE
 from tasks.base.assets.assets_base_main_page import MENU, MENU_CLOSE, WHITE_STAR

@@ -4,7 +4,7 @@ from multiprocessing.managers import SyncManager
 from typing import TYPE_CHECKING, Callable, Generic, TypeVar
 
 if TYPE_CHECKING:
-    from module.config.config_updater import ConfigUpdater
+    from module.config_alasio.adapter import AesSqliteAdapter
     from module.webui.config import DeployConfig
 
 T = TypeVar("T")
@@ -81,11 +81,11 @@ class State:
         return DeployConfig()
 
     @cached_class_property
-    def config_updater(self) -> "ConfigUpdater":
+    def config_updater(self) -> "AesSqliteAdapter":
         """
         Returns:
-            ConfigUpdater：
+            AesSqliteAdapter：
         """
-        from module.config.config_updater import ConfigUpdater
+        from module.config_alasio.adapter import AesSqliteAdapter
 
-        return ConfigUpdater()
+        return AesSqliteAdapter()
