@@ -6,6 +6,34 @@ from typing import Callable, Generic, TypeVar
 T = TypeVar("T")
 
 
+class cached_class_property(Generic[T]):
+    """Class-level read-only property whose value is cached per class.
+
+    Based on the descriptor from https://github.com/dssg/dickens, with typing
+    support. Inherited access is cached independently on each subclass.
+    """
+
+    class AliasConflict(ValueError):
+        pass
+
+    def __init__(self, func: Callable[..., T]):
+        self.__func__ = func
+        self.__cache_name__ = f'_{func.__name__.strip("_")}_'
+        if self.__cache_name__ == func.__name__:
+            raise self.AliasConflict(self.__cache_name__)
+
+    def __get__(self, instance, cls=None) -> T:
+        if cls is None:
+            cls = type(instance)
+
+        try:
+            return vars(cls)[self.__cache_name__]
+        except KeyError:
+            result = self.__func__(cls)
+            setattr(cls, self.__cache_name__, result)
+            return result
+
+
 class Config:
     """
     Decorator that calls different function with a same name according to config.

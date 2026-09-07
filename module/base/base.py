@@ -1,12 +1,12 @@
 import module.config.server as server_
 from module.base.button import Button, ButtonWrapper, ClickButton, match_template
+from module.base.decorator import cached_class_property
 from module.base.timer import Timer
 from module.base.utils import *
 from module.config.config import AzurLaneConfig
 from module.device.device import Device
 from module.device.method.utils import HierarchyButton
 from module.logger import logger
-from module.webui.setting import cached_class_property
 
 
 class ModuleBase:

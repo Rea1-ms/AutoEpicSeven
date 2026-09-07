@@ -272,8 +272,9 @@ class ConnectionAttr:
     @cached_property
     def adb_binary(self):
         # Try adb in deploy.yaml
-        from module.webui.setting import State
-        file = State.deploy_config.AdbExecutable
+        from alasio.deploy.config.model import DeployConfig
+
+        file = DeployConfig().config.data.Adb.AdbExecutable
         file = file.replace('\\', '/')
         if os.path.exists(file):
             return os.path.abspath(file)
