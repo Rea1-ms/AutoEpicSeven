@@ -23,6 +23,7 @@ dependencies = [
     "rich>=14.1.0,<=15.0.0",
     "tqdm==4.65.0",
     "uiautomator2==3.7.0",
+    "websockets==11.0.3",
     "wrapt>=1.14.0",
 ]
 
