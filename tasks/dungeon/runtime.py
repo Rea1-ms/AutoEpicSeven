@@ -4,6 +4,22 @@ from tasks.base.assets.assets_base_page import BACK
 from tasks.dungeon.assets.assets_dungeon_repeat_result import REPEAT_COMBAT_OVER
 
 
+BACKGROUND_REPEAT_COMBAT_RUNTIME_PATHS = (
+    "Combat.CombatRuntime.Session.active",
+    "CombatFarm.CombatRuntime.Session.active",
+)
+
+
+def is_background_repeat_combat_active(config) -> bool:
+    """
+    Return whether any dungeon task owns an active background run.
+
+    The game does not allow another fast battle while a background repeat
+    combat session is active, so all later battles must use normal combat.
+    """
+    return any(config.cross_get(path, default=False) for path in BACKGROUND_REPEAT_COMBAT_RUNTIME_PATHS)
+
+
 class CombatRuntimeMixin:
     def _combat_runtime_path(self) -> str:
         task = getattr(getattr(self.config, "task", None), "command", "Combat")
@@ -28,7 +44,11 @@ class CombatRuntimeMixin:
             "active": True,
             "mode": "repeat_background",
             "domain": domain,
-            "element": None if domain in ("Saint37", "Episode4") else self._combat_element(),
+            "element": (
+                None
+                if domain in ("Saint37", "Episode4", "UrgentTasks")
+                else self._combat_element()
+            ),
             "grade": self._combat_grade(),
         }
 
@@ -257,6 +277,7 @@ class CombatRuntimeMixin:
                 or self._is_episode_preview_page()
                 or self._is_side_story_map_page()
                 or self._is_supporter_page()
+                or self._is_urgent_tasks_detail_page()
                 or self._is_episode_choose_page()
                 or self._is_episode_stage_page()
                 or self._is_episode_supporter_page()

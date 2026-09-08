@@ -2,7 +2,6 @@ from module.base.timer import Timer
 from module.logger import logger
 from module.ocr.ocr import Digit, DigitCounter
 from tasks.dungeon.assets.assets_dungeon_fast_combat import (
-    FAST_COMBAT_LOCKED,
     FAST_COMBAT_TIMES_MINUS,
     FAST_COMBAT_TIMES_PLUS,
     OCR_FAST_COMBAT_CURRENT_TIMES,
@@ -16,11 +15,46 @@ from tasks.dungeon.assets.assets_dungeon_repeat_menu import (
 )
 
 
+def calculate_fast_combat_target(
+    configured: int,
+    remaining: int,
+    stamina: int,
+    stamina_cost: int,
+) -> int:
+    """Return the largest safe fast-combat count for the current resources."""
+    if configured <= 0 or remaining <= 0 or stamina <= 0 or stamina_cost <= 0:
+        return 0
+    return min(configured, remaining, stamina // stamina_cost)
+
+
+def calculate_repeat_combat_target(
+    configured: int,
+    game_maximum: int,
+    affordable: int,
+    use_max: bool,
+    completed: int = 0,
+) -> int:
+    """Return the pet-repeat counter for the requested actual run count.
+
+    The counter excludes the first combat launched from the prepare page. A
+    counter of four therefore produces five actual runs. Keep configured,
+    completed, and affordable in actual-run units, and convert only at this
+    final UI boundary.
+    """
+    if game_maximum <= 0 or affordable <= 0:
+        return 0
+    affordable_repeats = affordable - 1
+    desired_repeats = game_maximum if use_max else configured - max(completed, 0) - 1
+    if desired_repeats <= 0 or affordable_repeats <= 0:
+        return 0
+    return min(desired_repeats, game_maximum, affordable_repeats)
+
+
 class CombatPrepareDigit(Digit):
     def after_process(self, result):
         result = result.replace("O", "0").replace("o", "0")
         result = result.replace("I", "1").replace("l", "1").replace("|", "1")
-        result = result.replace(" ", "")
+        result = result.replace(" ", "").replace(",", "").replace("，", "")
         return super().after_process(result)
 
 
@@ -40,6 +74,9 @@ class CombatPrepare:
     COMBAT_ZERO_CONFIRM_SECONDS = 0.4
     COMBAT_COUNT_STABLE_SECONDS = 2.5
     COMBAT_DEFAULT_FAST_COUNT = 10
+    # The account may store up to 20 fast-combat charges, but the game only
+    # accepts at most 10 in one launch. Never use the stored remainder as the
+    # per-launch target directly.
     COMBAT_MAX_FAST_COUNT = 10
     COMBAT_DEFAULT_REPEAT_COUNT = 10
     COMBAT_MAX_REPEAT_COUNT = 30
@@ -214,7 +251,18 @@ class CombatPrepare:
             click_interval.reset()
             timeout.reset()
 
-    def _prepare_fast_combat(self, use_max=False, skip_first_screenshot=True) -> str:
+    def _prepare_fast_combat(
+        self,
+        stamina: int,
+        use_max=False,
+        skip_first_screenshot=True,
+    ) -> tuple[str, int]:
+        """Prepare a stamina-safe fast-combat count.
+
+        Returns:
+            tuple[str, int]: Status and prepared count. Count is zero unless
+                status is ready.
+        """
         logger.hr("Combat Prepare Fast", level=2)
         timeout = Timer(self.COMBAT_COUNT_TIMEOUT_SECONDS, count=80).start()
         zero_confirm = Timer(self.COMBAT_ZERO_CONFIRM_SECONDS, count=2).clear()
@@ -227,11 +275,11 @@ class CombatPrepare:
 
             if timeout.reached():
                 logger.warning("Combat: prepare fast combat timeout")
-                return "failed"
+                return "failed", 0
 
             if not self._is_prepare_page():
                 logger.warning("Combat: leave prepare page while preparing fast combat")
-                return "failed"
+                return "failed", 0
 
             if self._handle_dungeon_additional():
                 timeout.reset()
@@ -240,7 +288,7 @@ class CombatPrepare:
 
             if self._is_fast_combat_locked():
                 logger.info("Combat: fast combat locked during prepare, fallback to repeat combat")
-                return "fallback"
+                return "fallback", 0
 
             if not self._ensure_fast_combat_state(enabled=True):
                 timeout.reset()
@@ -252,13 +300,32 @@ class CombatPrepare:
                     zero_confirm.start()
                 elif zero_confirm.reached():
                     logger.info("Combat: fast combat remaining times exhausted, fallback to repeat combat")
-                    return "fallback"
+                    return "fallback", 0
                 continue
 
             zero_confirm.clear()
 
-            target = remaining if use_max else min(self._combat_fast_count(), remaining)
+            stamina_cost = self._combat_stage_stamina_cost()
+            if stamina_cost is None:
+                logger.warning("Combat: fast combat target has no stamina cost")
+                return "failed", 0
+
+            configured = self.COMBAT_MAX_FAST_COUNT if use_max else self._combat_fast_count()
+            target = calculate_fast_combat_target(
+                configured=configured,
+                remaining=remaining,
+                stamina=stamina,
+                stamina_cost=stamina_cost,
+            )
+            logger.attr("CombatFastCombatStaminaCost", stamina_cost)
             logger.attr("CombatFastCombatTargetCount", target)
+            if target <= 0:
+                logger.info(
+                    f"Combat: insufficient stamina for fast combat "
+                    f"({stamina}/{stamina_cost})"
+                )
+                return "no_stamina", 0
+
             if self._set_prepare_count(
                 target,
                 self._ocr_fast_combat_current_times,
@@ -267,10 +334,32 @@ class CombatPrepare:
                 "FastCombatCurrentTimes",
                 skip_first_screenshot=True,
             ):
-                return "ready"
-            return "failed"
+                return "ready", target
+            return "failed", 0
 
-    def _prepare_repeat_combat(self, skip_first_screenshot=True, use_max=False) -> bool:
+    def _prepare_repeat_combat(
+        self,
+        skip_first_screenshot=True,
+        use_max=False,
+        clamp_to_counter=False,
+        affordable_count: int | None = None,
+        completed_count: int = 0,
+    ) -> bool:
+        """
+        Args:
+            use_max: Set the repeat count to the game-computed maximum.
+            clamp_to_counter: Clamp the configured repeat count to the
+                game-computed maximum. Burnout mode wakes with just enough
+                stamina for the configured batch; if the user spent stamina
+                manually in between, the configured count may exceed what the
+                game allows and the plus button would stall at the cap. The
+                clamp burns whatever is affordable instead of failing.
+            affordable_count: Maximum count allowed by the latest stamina
+                snapshot, including the first combat. None for targets that do
+                not consume stamina.
+            completed_count: Runs already completed by fast combat. Fixed-count
+                mode subtracts these from the configured total.
+        """
         logger.hr("Combat Prepare Repeat", level=2)
         timeout = Timer(self.COMBAT_COUNT_TIMEOUT_SECONDS, count=80).start()
         control_pending = Timer(0.8, count=2).clear()
@@ -304,12 +393,30 @@ class CombatPrepare:
                     continue
 
             if controls_open:
-                if use_max:
+                if use_max or clamp_to_counter or affordable_count is not None:
                     _, _, total = self._ocr_repeat_combat_counter()
                     if total <= 0:
                         continue
-                    target = total
-                    ocr_getter = lambda: self._ocr_repeat_combat_counter()[0]
+
+                    if affordable_count is not None:
+                        target = calculate_repeat_combat_target(
+                            configured=self._combat_repeat_count(),
+                            game_maximum=total,
+                            affordable=affordable_count,
+                            use_max=use_max,
+                            completed=completed_count,
+                        )
+                        if target <= 0:
+                            logger.info("Combat: no stamina available for repeat combat")
+                            return False
+                    else:
+                        target = total if use_max else min(self._combat_repeat_count(), total)
+
+                    if not use_max and target < self._combat_repeat_count():
+                        logger.info(f"Combat: repeat count clamped to {target}")
+
+                    def ocr_getter():
+                        return self._ocr_repeat_combat_counter()[0]
                 else:
                     target = self._combat_repeat_count()
                     ocr_getter = self._ocr_repeat_combat_times

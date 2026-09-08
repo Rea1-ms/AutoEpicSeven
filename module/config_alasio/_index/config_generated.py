@@ -11,8 +11,13 @@ if t.TYPE_CHECKING:
     from ..tool import tool_model as tool
 
 
+# This file was auto-generated, do not modify it manually. To generate:
+# ``` python -m module.config.gen ```
+
 class ConfigGenerated(AlasioConfigBase):
-    # A generated config struct to fool IDE's type-predict and auto-complete
+    """
+    A generated config struct to fool IDE's type-predict and auto-complete
+    """
     entry = entry
 
     """
@@ -71,11 +76,13 @@ class ConfigGenerated(AlasioConfigBase):
     # ----- Combat -----
     # Scheduler: "alasio.SchedulerUedit"
     Combat: "daily.Combat"
+    UrgentTasks: "daily.UrgentTasks"
     CombatRuntime: "daily.CombatRuntime"
 
     # ----- Gacha -----
     # Scheduler: "alasio.SchedulerUedit"
     Gacha: "daily.Gacha"
+    GachaResult: "daily.GachaResult"
 
     # ----- Pets -----
     # Scheduler: "alasio.SchedulerUedit"
@@ -83,6 +90,7 @@ class ConfigGenerated(AlasioConfigBase):
     # ----- SpecialActivity -----
     # Scheduler: "alasio.SchedulerUedit"
     SpecialActivity: "daily.SpecialActivity"
+    # GachaResult: "daily.GachaResult"
 
     """
     ========== nav: monthly ==========

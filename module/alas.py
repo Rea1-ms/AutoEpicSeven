@@ -206,10 +206,9 @@ class AzurLaneAutoScript:
                 logger.info(f'Wait until {task.next_run} for task `{task.command}`')
                 self.is_first_task = False
                 method = self.config.Optimization_WhenTaskQueueEmpty
-                combat_session_active = bool(
-                    self.config.cross_get('Combat.CombatRuntime.Session.active', default=False)
-                    or self.config.cross_get('CombatFarm.CombatRuntime.Session.active', default=False)
-                )
+                from tasks.dungeon.runtime import is_background_repeat_combat_active
+
+                combat_session_active = is_background_repeat_combat_active(self.config)
                 if combat_session_active and method in {'close_game', 'close_emulator'}:
                     logger.info('Combat background session active, override wait behavior to goto_main')
                     method = 'goto_main'

@@ -82,10 +82,6 @@
       "name": "特别活动",
       "help": "限时版本大活动，随缘更新~"
     },
-    "CombatFarm": {
-      "name": "反复刷取",
-      "help": "工具需要停止调度器再单独运行。会按1分钟轮询后台托管状态；若允许使用快速战斗，则先把现有快速战斗打完，再转入宠物托管重复战斗。"
-    },
     "CommunityAuth": {
       "name": "社区登录",
       "help": "拉起 Electron 社区登录窗口，抓取并刷新 Community AIO 使用的 CK。"
@@ -401,6 +397,12 @@
       "name": "启用快速战斗",
       "help": "NPC 刷新时优先使用快速战斗。"
     },
+    "BurnoutMode": {
+      "name": "执行模式",
+      "help": "每日固定次数按设定次数挑战 NPC；燃竭模式会用完当前全部旗帜，并在旗帜自然回满（每小时1面，上限5）后再次运行。需要同时开启「刷 NPC」。",
+      "Daily": "每日固定次数",
+      "Burnout": "燃竭模式"
+    },
     "NPCCombatCount": {
       "name": "NPC 挑战次数",
       "help": "本次任务最多挑战 NPC 的次数。"
@@ -462,6 +464,34 @@
       "0": "0",
       "1": "1",
       "2": "2"
+    },
+    "BuyInheritanceEquipmentReforgingStoneSelectionChest": {
+      "name": "购买装备炼制石选择箱",
+      "help": "在传承石商店购买每周限购的装备炼制石选择箱。"
+    },
+    "BuyInheritanceLesserArtifactCharm": {
+      "name": "下级神器强化石购买次数",
+      "help": "在传承石商店购买下级神器强化石的次数，最多 3 次。",
+      "0": "0",
+      "1": "1",
+      "2": "2",
+      "3": "3"
+    },
+    "BuyInheritanceGreaterArtifactCharm": {
+      "name": "购买上级神器强化石",
+      "help": "在传承石商店购买每周限购的上级神器强化石。"
+    },
+    "BuyInheritanceLesserAccessoryCharm": {
+      "name": "2 个下级饰品强化石购买次数",
+      "help": "在传承石商店购买“2 个下级饰品强化石”的次数，最多 3 次。",
+      "0": "0",
+      "1": "1",
+      "2": "2",
+      "3": "3"
+    },
+    "BuyInheritanceGreaterAccessoryCharm": {
+      "name": "购买 2 个上级饰品强化石",
+      "help": "在传承石商店购买每周限购的“2 个上级饰品强化石”。"
     }
   },
   "PetsGift": {
@@ -481,7 +511,7 @@
     },
     "Domain": {
       "name": "副本类型",
-      "help": "选择本次刷取的是讨伐、精灵祭坛，还是 Episode 4 定向材料。",
+      "help": "选择紧急任务完成后继续刷取的常规副本类型，包括讨伐、精灵祭坛、圣女3-7和 Episode 4 定向材料。",
       "Hunt": "讨伐",
       "SpiritAltar": "精灵祭坛",
       "Saint37": "圣女3-7",
@@ -534,7 +564,13 @@
     },
     "FastCombat": {
       "name": "启用快速战斗",
-      "help": "开启后优先使用快速战斗，会在快速战斗用尽后转入宠物托管重复战斗。关闭后仅使用宠物托管重复战斗。"
+      "help": "开启后，国际服新版会先启动后台托管，再使用未预留的剩余行动力进行快速战斗；国服仍按原流程执行。"
+    },
+    "BurnoutMode": {
+      "name": "执行模式",
+      "help": "国际服新版燃竭模式按当前行动力每80点折算1个托管单位，强制优先使用持有的行动力，余量再用于快速战斗；托管结束后按恢复至80行动力调度。异界讨伐不适用燃竭模式。",
+      "Daily": "每日固定次数",
+      "Burnout": "燃竭模式"
     },
     "FastCombatCount": {
       "name": "快速战斗次数",
@@ -542,11 +578,86 @@
     },
     "RepeatCombatCount": {
       "name": "重复战斗次数",
-      "help": "宠物托管重复战斗的目标次数。"
+      "help": "国服旧版宠物托管的目标次数；国际服新版忽略此项。"
+    },
+    "RepeatCombatLeifCount": {
+      "name": "托管消耗生命之叶数量",
+      "help": "国际服新版每日模式允许消耗的生命之叶数量，范围为1至50；燃竭模式会按当前行动力自动计算。"
+    },
+    "RepeatCombatPrioritizeStamina": {
+      "name": "优先使用持有的行动力／光谱核心",
+      "help": "普通关卡优先消耗行动力，异界难度优先消耗光谱核心；燃竭模式始终开启此项。"
+    },
+    "RepeatCombatGearMode": {
+      "name": "托管装备整理方式",
+      "help": "选择托管过程中自动整理装备时使用出售还是萃取。",
+      "Sell": "出售",
+      "Extract": "萃取"
+    },
+    "RepeatCombatEquipmentScore": {
+      "name": "装备分数阈值",
+      "help": "自动选择低于此装备分数的装备。数值必须是游戏滑条提供的档位。",
+      "22": "22",
+      "24": "24",
+      "26": "26",
+      "28": "28",
+      "30": "30",
+      "32": "32"
+    },
+    "RepeatCombatHeroSpeedFilter": {
+      "name": "排除英雄级速度词条",
+      "help": "开启后，保留速度达到指定值的英雄级装备。"
+    },
+    "RepeatCombatHeroSpeed": {
+      "name": "英雄级速度阈值",
+      "help": "英雄级装备的速度保留阈值。数值必须是游戏滑条提供的档位。",
+      "2": "2",
+      "3": "3",
+      "4": "4"
+    },
+    "RepeatCombatLegendarySpeedFilter": {
+      "name": "排除传说级速度词条",
+      "help": "开启后，保留速度达到指定值的传说级装备。"
+    },
+    "RepeatCombatLegendarySpeed": {
+      "name": "传说级速度阈值",
+      "help": "传说级装备的速度保留阈值。数值必须是游戏滑条提供的档位。",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5"
+    },
+    "RepeatCombatFlatMainStatExceptSpeed": {
+      "name": "必选主能力值固值词条装备",
+      "help": "自动选择主能力值为固值的装备，速度主属性除外。"
+    },
+    "RepeatCombatExcludeOtherworldLegendary": {
+      "name": "不选异界传说级装备",
+      "help": "开启后，异界讨伐获得的传说级装备不会被自动整理。"
     },
     "Saint37AutoRecycle": {
       "name": "装备自动出售",
       "help": "仅对圣女3-7生效。后台托管结算后自动进入临时背包，快捷选择并出售白装与绿装，然后回到主界面。"
+    }
+  },
+  "UrgentTasks": {
+    "_info": {
+      "name": "紧急任务",
+      "help": "每日副本运行时优先检查紧急任务；开放时尽量完成当日5次，未开放时继续常规副本。"
+    },
+    "Enable": {
+      "name": "是否自动进行紧急战斗",
+      "help": "开启后，每次每日副本运行都会先检查紧急任务是否开放。"
+    },
+    "Difficulty": {
+      "name": "紧急任务难度",
+      "help": "选择一般难度或上级难度。",
+      "Normal": "一般难度",
+      "Superior": "上级难度"
+    },
+    "LastCheckAt": {
+      "name": "上次检查时间",
+      "help": "用于避免同一服务器刷新周期内重复检查紧急任务。"
     }
   },
   "CombatRuntime": {
@@ -589,6 +700,20 @@
     "CollectGoldenInheritance": {
       "name": "收取金光传承石",
       "help": "召唤结束后若金光传承石满溢则自动收取。"
+    }
+  },
+  "GachaResult": {
+    "_info": {
+      "name": "召唤结果记录",
+      "help": ""
+    },
+    "SaveScreenshot": {
+      "name": "保存结果截图",
+      "help": "在继续召唤或返回前保存召唤结果截图。"
+    },
+    "OcrResult": {
+      "name": "识别结果名称（实验性）",
+      "help": "识别并在日志中记录召唤结果名称。当前准确率较低，结果仅供参考。"
     }
   },
   "SpecialActivity": {
@@ -667,9 +792,11 @@
     "RewardTier": {
       "name": "入库品质",
       "help": "",
+      "Smart": "智能入库",
       "A": "A及以上",
       "B": "B及以上",
       "S": "S及以上",
+      "SS": "SS及以上",
       "MaxMinus1": "当前最高品质-1",
       "MaxMinus2": "当前最高品质-2（保底B）"
     }

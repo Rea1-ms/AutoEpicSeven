@@ -27,10 +27,10 @@ ARENA_HUB_CHECK = ButtonWrapper(
     name='ARENA_HUB_CHECK',
     share=Button(
         file='./assets/share/arena/ARENA_HUB_CHECK.png',
-        area=(166, 597, 198, 633),
-        search=(146, 577, 218, 653),
-        color=(189, 170, 154),
-        button=(166, 597, 198, 633),
+        area=(634, 675, 646, 690),
+        search=(614, 655, 666, 710),
+        color=(121, 101, 83),
+        button=(634, 675, 646, 690),
     ),
 )
 ARENA_SETTLING = ButtonWrapper(
@@ -285,6 +285,16 @@ OPPONENT = ButtonWrapper(
             button=(1065, 255, 1091, 276),
         ),
     ],
+)
+SETTLING_INFO_ICON = ButtonWrapper(
+    name='SETTLING_INFO_ICON',
+    share=Button(
+        file='./assets/share/arena/SETTLING_INFO_ICON.png',
+        area=(124, 340, 146, 362),
+        search=(104, 320, 166, 382),
+        color=(40, 36, 33),
+        button=(124, 340, 146, 362),
+    ),
 )
 WEEKLY_BATTLE_REWARDS = ButtonWrapper(
     name='WEEKLY_BATTLE_REWARDS',

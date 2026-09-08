@@ -153,6 +153,9 @@ Arena:
   ClaimBattlePassRewards: true
   NPCCombat: true
   NPCCombatFastBattle: true
+  BurnoutMode:
+    value: Daily
+    option: [ Daily, Burnout ]
   NPCCombatCount: 5
 
 StoreDaily:
@@ -174,6 +177,15 @@ StoreWeekly:
   BuyInheritancePotentialFragments:
     value: 0
     option: [ 0, 1, 2 ]
+  BuyInheritanceEquipmentReforgingStoneSelectionChest: false
+  BuyInheritanceLesserArtifactCharm:
+    value: 0
+    option: [ 0, 1, 2, 3 ]
+  BuyInheritanceGreaterArtifactCharm: false
+  BuyInheritanceLesserAccessoryCharm:
+    value: 0
+    option: [ 0, 1, 2, 3 ]
+  BuyInheritanceGreaterAccessoryCharm: false
 
 PetsGift:
   LastClaimAt:
@@ -215,9 +227,40 @@ Combat:
       TRACES_OF_BRILLIANCE,
     ]
   FastCombat: true
+  BurnoutMode:
+    value: Daily
+    option: [ Daily, Burnout ]
   FastCombatCount: 10
   RepeatCombatCount: 5
+  RepeatCombatLeifCount: 1
+  RepeatCombatPrioritizeStamina: true
+  RepeatCombatGearMode:
+    value: Extract
+    option: [ Sell, Extract ]
+  RepeatCombatEquipmentScore:
+    value: 28
+    option: [ 22, 24, 26, 28, 30, 32 ]
+  RepeatCombatHeroSpeedFilter: true
+  RepeatCombatHeroSpeed:
+    value: 4
+    option: [ 2, 3, 4 ]
+  RepeatCombatLegendarySpeedFilter: true
+  RepeatCombatLegendarySpeed:
+    value: 4
+    option: [ 2, 3, 4, 5 ]
+  RepeatCombatFlatMainStatExceptSpeed: true
+  RepeatCombatExcludeOtherworldLegendary: false
   Saint37AutoRecycle: false
+
+UrgentTasks:
+  Enable: true
+  Difficulty:
+    value: Superior
+    option: [ Normal, Superior ]
+  LastCheckAt:
+    keepvalue: true
+    display: hide
+    value: 2020-01-01 00:00:00
 
 CombatRuntime:
   Session:
@@ -234,6 +277,10 @@ SecretShop:
 
 Gacha:
   CollectGoldenInheritance: true
+
+GachaResult:
+  SaveScreenshot: true
+  OcrResult: false
 
 SpecialActivity:
   GetDailyReward: true
@@ -253,7 +300,7 @@ Dashboard:
     color: "#49aee9"
     display: display
   Stamina:
-    stored: StoredCounter
+    stored: StoredStamina
     order: 3
     color: "#74c26e"
     display: display
@@ -273,7 +320,7 @@ Dashboard:
     color: "#ffd36e"
     display: display
   ArenaFlag:
-    stored: StoredCounter
+    stored: StoredArenaFlag
     order: 7
     color: "#f2a93b"
     display: display
@@ -298,4 +345,4 @@ Dashboard:
 SanctuaryMonthly:
   RewardTier:
     value: A
-    option: [ A, B, S, MaxMinus1, MaxMinus2 ]
+    option: [ Smart, A, B, S, SS, MaxMinus1, MaxMinus2 ]

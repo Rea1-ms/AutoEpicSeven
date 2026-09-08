@@ -41,6 +41,7 @@ class KnightsTeamBattle(a.GroupBase):
 
 
 class Arena(a.GroupBase):
+    BurnoutMode: t.Literal['Daily', 'Burnout'] = 'Daily'
     ClaimWeeklyRewards: bool = True
     ClaimWeeklyBattleRewards: bool = True
     ClaimBattlePassRewards: bool = True
@@ -61,6 +62,11 @@ class StoreWeekly(a.GroupBase):
     BuyFriendshipArtifactEnhancementStone: t.Literal[0, 1, 2, 3] = 0
     BuyInheritanceMorogora: t.Literal[0, 1, 2] = 0
     BuyInheritancePotentialFragments: t.Literal[0, 1, 2] = 0
+    BuyInheritanceEquipmentReforgingStoneSelectionChest: bool = False
+    BuyInheritanceLesserArtifactCharm: t.Literal[0, 1, 2, 3] = 0
+    BuyInheritanceGreaterArtifactCharm: bool = False
+    BuyInheritanceLesserAccessoryCharm: t.Literal[0, 1, 2, 3] = 0
+    BuyInheritanceGreaterAccessoryCharm: bool = False
 
 
 class PetsGift(a.GroupBase):
@@ -68,6 +74,7 @@ class PetsGift(a.GroupBase):
 
 
 class Combat(a.GroupBase):
+    BurnoutMode: t.Literal['Daily', 'Burnout'] = 'Daily'
     Domain: t.Literal['Hunt', 'SpiritAltar', 'Saint37', 'Episode4'] = 'Hunt'
     Element: t.Literal['Dark', 'Light', 'Water', 'Fire', 'Nature'] = 'Water'
     AltarGrade: t.Literal['Pri', 'Mid', 'High', 'Hell'] = 'Hell'
@@ -81,7 +88,23 @@ class Combat(a.GroupBase):
     FastCombat: bool = True
     FastCombatCount: int = 10
     RepeatCombatCount: int = 5
+    RepeatCombatLeifCount: int = 1
+    RepeatCombatPrioritizeStamina: bool = True
+    RepeatCombatGearMode: t.Literal['Sell', 'Extract'] = 'Extract'
+    RepeatCombatEquipmentScore: t.Literal[22, 24, 26, 28, 30, 32] = 28
+    RepeatCombatHeroSpeedFilter: bool = True
+    RepeatCombatHeroSpeed: t.Literal[2, 3, 4] = 4
+    RepeatCombatLegendarySpeedFilter: bool = True
+    RepeatCombatLegendarySpeed: t.Literal[2, 3, 4, 5] = 4
+    RepeatCombatFlatMainStatExceptSpeed: bool = True
+    RepeatCombatExcludeOtherworldLegendary: bool = False
     Saint37AutoRecycle: bool = False
+
+
+class UrgentTasks(a.GroupBase):
+    Enable: bool = True
+    Difficulty: t.Literal['Normal', 'Superior'] = 'Superior'
+    LastCheckAt: a.T_DATETIME = a.DEFAULT_TIME
 
 
 class CombatFarmCombat(Combat):
@@ -102,6 +125,11 @@ class SecretShop(a.GroupBase):
 
 class Gacha(a.GroupBase):
     CollectGoldenInheritance: bool = True
+
+
+class GachaResult(a.GroupBase):
+    SaveScreenshot: bool = True
+    OcrResult: bool = False
 
 
 class SpecialActivity(a.GroupBase):

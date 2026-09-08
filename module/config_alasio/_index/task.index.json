@@ -107,6 +107,7 @@
     "group": {
       "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerUedit", "task": "Combat"},
       "Combat": {"file": "daily/daily_model.py", "cls": "Combat", "task": "Combat"},
+      "UrgentTasks": {"file": "daily/daily_model.py", "cls": "UrgentTasks", "task": "Combat"},
       "CombatRuntime": {"file": "daily/daily_model.py", "cls": "CombatRuntime", "task": "Combat"}
     },
     "config": {"task": ["Combat"], "group": []}
@@ -114,7 +115,8 @@
   "Gacha": {
     "group": {
       "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerUedit", "task": "Gacha"},
-      "Gacha": {"file": "daily/daily_model.py", "cls": "Gacha", "task": "Gacha"}
+      "Gacha": {"file": "daily/daily_model.py", "cls": "Gacha", "task": "Gacha"},
+      "GachaResult": {"file": "daily/daily_model.py", "cls": "GachaResult", "task": "Gacha"}
     },
     "config": {"task": ["Gacha"], "group": []}
   },
@@ -127,7 +129,8 @@
   "SpecialActivity": {
     "group": {
       "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerUedit", "task": "SpecialActivity"},
-      "SpecialActivity": {"file": "daily/daily_model.py", "cls": "SpecialActivity", "task": "SpecialActivity"}
+      "SpecialActivity": {"file": "daily/daily_model.py", "cls": "SpecialActivity", "task": "SpecialActivity"},
+      "GachaResult": {"file": "daily/daily_model.py", "cls": "GachaResult", "task": "SpecialActivity"}
     },
     "config": {"task": ["SpecialActivity"], "group": []}
   },

@@ -77,6 +77,16 @@ MAIN_GOTO_COMBAT = ButtonWrapper(
     ),
     global_en=None,
 )
+MAIN_GOTO_COMMON_ACTIVITY = ButtonWrapper(
+    name='MAIN_GOTO_COMMON_ACTIVITY',
+    share=Button(
+        file='./assets/share/base/page/MAIN_GOTO_COMMON_ACTIVITY.png',
+        area=(52, 484, 63, 495),
+        search=(32, 464, 83, 515),
+        color=(172, 180, 186),
+        button=(52, 484, 63, 495),
+    ),
+)
 MAIN_GOTO_EPISODE = ButtonWrapper(
     name='MAIN_GOTO_EPISODE',
     share=Button(

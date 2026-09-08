@@ -77,6 +77,7 @@ class GeneratedConfig:
     Arena_ClaimBattlePassRewards = True
     Arena_NPCCombat = True
     Arena_NPCCombatFastBattle = True
+    Arena_BurnoutMode = 'Daily'  # Daily, Burnout
     Arena_NPCCombatCount = 5
 
     # Group `StoreDaily`
@@ -90,6 +91,11 @@ class GeneratedConfig:
     StoreWeekly_BuyFriendshipArtifactEnhancementStone = 0  # 0, 1, 2, 3
     StoreWeekly_BuyInheritanceMorogora = 0  # 0, 1, 2
     StoreWeekly_BuyInheritancePotentialFragments = 0  # 0, 1, 2
+    StoreWeekly_BuyInheritanceEquipmentReforgingStoneSelectionChest = False
+    StoreWeekly_BuyInheritanceLesserArtifactCharm = 0  # 0, 1, 2, 3
+    StoreWeekly_BuyInheritanceGreaterArtifactCharm = False
+    StoreWeekly_BuyInheritanceLesserAccessoryCharm = 0  # 0, 1, 2, 3
+    StoreWeekly_BuyInheritanceGreaterAccessoryCharm = False
 
     # Group `PetsGift`
     PetsGift_LastClaimAt = datetime.datetime(2020, 1, 1, 0, 0)
@@ -101,9 +107,25 @@ class GeneratedConfig:
     Combat_HuntGrade = 'Hell'  # Mid, High, Hell, Dimensional
     Combat_Episode4Material = 'BREATH_OF_KARMA'  # CATALYST_RARE_BENEVOLENT, CATALYST_RARE_SECRET, CATALYST_RARE_FIGHTING_SPIRIT, CATALYST_RARE_SNIPER, HEART_OF_THE_WOODS, CATALYST_RARE_OATH, CATALYST_RARE_MYSTERIOUS, CATALYST_EPIC_OATH, BREATH_OF_KARMA, CATALYST_EPIC_SNIPER, CATALYST_EPIC_FIGHTING_SPIRIT, FROZEN_SEED, CATALYST_EPIC_BENEVOLENT, CATALYST_EPIC_MYSTERIOUS, CATALYST_EPIC_SECRET, TRACES_OF_BRILLIANCE
     Combat_FastCombat = True
+    Combat_BurnoutMode = 'Daily'  # Daily, Burnout
     Combat_FastCombatCount = 10
     Combat_RepeatCombatCount = 5
+    Combat_RepeatCombatLeifCount = 1
+    Combat_RepeatCombatPrioritizeStamina = True
+    Combat_RepeatCombatGearMode = 'Extract'  # Sell, Extract
+    Combat_RepeatCombatEquipmentScore = 28  # 22, 24, 26, 28, 30, 32
+    Combat_RepeatCombatHeroSpeedFilter = True
+    Combat_RepeatCombatHeroSpeed = 4  # 2, 3, 4
+    Combat_RepeatCombatLegendarySpeedFilter = True
+    Combat_RepeatCombatLegendarySpeed = 4  # 2, 3, 4, 5
+    Combat_RepeatCombatFlatMainStatExceptSpeed = True
+    Combat_RepeatCombatExcludeOtherworldLegendary = False
     Combat_Saint37AutoRecycle = False
+
+    # Group `UrgentTasks`
+    UrgentTasks_Enable = True
+    UrgentTasks_Difficulty = 'Superior'  # Normal, Superior
+    UrgentTasks_LastCheckAt = datetime.datetime(2020, 1, 1, 0, 0)
 
     # Group `CombatRuntime`
     CombatRuntime_Session = {}
@@ -116,6 +138,10 @@ class GeneratedConfig:
 
     # Group `Gacha`
     Gacha_CollectGoldenInheritance = True
+
+    # Group `GachaResult`
+    GachaResult_SaveScreenshot = True
+    GachaResult_OcrResult = False
 
     # Group `SpecialActivity`
     SpecialActivity_GetDailyReward = True
@@ -136,4 +162,4 @@ class GeneratedConfig:
     Dashboard_TeamBattle = {}
 
     # Group `SanctuaryMonthly`
-    SanctuaryMonthly_RewardTier = 'A'  # A, B, S, MaxMinus1, MaxMinus2
+    SanctuaryMonthly_RewardTier = 'A'  # Smart, A, B, S, SS, MaxMinus1, MaxMinus2

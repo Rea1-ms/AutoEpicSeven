@@ -82,6 +82,7 @@ Combat:
   groups:
     Scheduler: SchedulerUedit
     Combat:
+    UrgentTasks:
     CombatRuntime:
   displays:
     - info: Combat
@@ -93,6 +94,7 @@ Gacha:
   groups:
     Scheduler: SchedulerUedit
     Gacha:
+    GachaResult:
   displays: flat
 
 Pets:
@@ -106,4 +108,5 @@ SpecialActivity:
   groups:
     Scheduler: SchedulerUedit
     SpecialActivity:
+    GachaResult:
   displays: flat

@@ -41,6 +41,13 @@ COMMON_ENTRY = ButtonWrapper(
 )
 HUNT = ButtonWrapper(
     name='HUNT',
+    global_cn=Button(
+        file='./assets/global_cn/dungeon/configs/combat/entry/HUNT.png',
+        area=(360, 186, 384, 215),
+        search=(340, 166, 404, 235),
+        color=(152, 158, 163),
+        button=(360, 186, 384, 215),
+    ),
     share=Button(
         file='./assets/share/dungeon/configs/combat/entry/HUNT.png',
         area=(667, 186, 691, 215),
@@ -113,6 +120,38 @@ SPIRIT_ALTAR = ButtonWrapper(
         search=(33, 165, 97, 233),
         color=(99, 101, 98),
         button=(53, 185, 77, 213),
+    ),
+)
+URGENT_CHECK = ButtonWrapper(
+    name='URGENT_CHECK',
+    share=Button(
+        file='./assets/share/dungeon/configs/combat/entry/URGENT_CHECK.png',
+        area=(612, 556, 654, 596),
+        search=(592, 536, 674, 616),
+        color=(96, 93, 89),
+        button=(612, 556, 654, 596),
+    ),
+)
+URGENT_ENTRY = ButtonWrapper(
+    name='URGENT_ENTRY',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dungeon/configs/combat/entry/URGENT_ENTRY.png',
+        area=(454, 105, 537, 134),
+        search=(434, 85, 557, 154),
+        color=(54, 74, 79),
+        button=(454, 105, 537, 134),
+    ),
+    global_en=None,
+)
+URGENT_LOCKED = ButtonWrapper(
+    name='URGENT_LOCKED',
+    share=Button(
+        file='./assets/share/dungeon/configs/combat/entry/URGENT_LOCKED.png',
+        area=(514, 108, 532, 130),
+        search=(494, 88, 552, 150),
+        color=(125, 131, 132),
+        button=(514, 108, 532, 130),
     ),
 )
 URGENT_TASKS = ButtonWrapper(

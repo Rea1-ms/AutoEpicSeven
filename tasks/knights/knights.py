@@ -9,6 +9,7 @@ from tasks.knights.support import KnightsSupportMixin
 from tasks.knights.team_battle import KnightsTeamBattleMixin
 from tasks.knights.weekly_task import KnightsWeeklyTaskMixin
 from tasks.knights.world_boss import KnightsWorldBossMixin
+from tasks.mission_reward.scheduling import should_schedule_mission_reward
 
 
 class Knights(
@@ -148,7 +149,7 @@ class Knights(
             success = self.run_world_boss(skip_first_screenshot=True) and success
             if self._should_schedule_mission_reward_after_world_boss(
                 getattr(self, "_world_boss_completed_rounds", 0)
-            ):
+            ) and should_schedule_mission_reward(self.config):
                 self.config.task_call("MissionReward", force_call=False)
         if run_support_donate or run_support_request:
             success = self.run_support(

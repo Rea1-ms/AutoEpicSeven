@@ -23,6 +23,16 @@ ADOPTION_ENTRY = ButtonWrapper(
         button=(803, 654, 832, 679),
     ),
 )
+ADOPTION_FREE_UNAVAILABLE = ButtonWrapper(
+    name='ADOPTION_FREE_UNAVAILABLE',
+    share=Button(
+        file='./assets/share/pets/ADOPTION_FREE_UNAVAILABLE.png',
+        area=(417, 598, 476, 625),
+        search=(397, 578, 496, 645),
+        color=(19, 34, 15),
+        button=(417, 598, 476, 625),
+    ),
+)
 ADOPTION_ONE_FREE = ButtonWrapper(
     name='ADOPTION_ONE_FREE',
     cn=Button(

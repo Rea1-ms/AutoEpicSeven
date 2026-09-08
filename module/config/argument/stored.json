@@ -27,7 +27,7 @@
     "name": "Stamina",
     "path": "DataUpdate.Dashboard.Stamina",
     "i18n": "Dashboard.Stamina.name",
-    "stored": "StoredCounter",
+    "stored": "StoredStamina",
     "attrs": {
       "time": "2020-01-01 00:00:00",
       "total": 0,
@@ -79,7 +79,7 @@
     "name": "ArenaFlag",
     "path": "DataUpdate.Dashboard.ArenaFlag",
     "i18n": "Dashboard.ArenaFlag.name",
-    "stored": "StoredCounter",
+    "stored": "StoredArenaFlag",
     "attrs": {
       "time": "2020-01-01 00:00:00",
       "total": 0,

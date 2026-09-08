@@ -82,10 +82,6 @@
       "name": "Actividad especial",
       "help": "Recoge las recompensas disponibles de las actividades temporales."
     },
-    "CombatFarm": {
-      "name": "Farmeo repetido",
-      "help": "Detén el planificador antes de ejecutar esta herramienta. Revisa el combate repetido en segundo plano cada minuto. Si se permite el combate rápido, primero consume todos los usos disponibles y luego pasa al combate repetido con mascota."
-    },
     "CommunityAuth": {
       "name": "Inicio comunidad",
       "help": "Abre la ventana de inicio de sesión de Electron y actualiza la CK usada por Community AIO."
@@ -401,6 +397,12 @@
       "name": "Usar combate rápido",
       "help": "Prioriza el combate rápido para peleas contra NPC."
     },
+    "BurnoutMode": {
+      "name": "Modo de ejecución",
+      "help": "La cantidad fija diaria desafía al número configurado de PNJ. El modo de agotamiento gasta todas las banderas disponibles y vuelve a ejecutarse cuando se regeneran al máximo (1 por hora, límite 5). Requiere activar \"Farmear NPC\".",
+      "Daily": "Cantidad fija diaria",
+      "Burnout": "Modo de agotamiento"
+    },
     "NPCCombatCount": {
       "name": "Cantidad de combates NPC",
       "help": "Número máximo de combates NPC en esta ejecución."
@@ -462,6 +464,34 @@
       "0": "0",
       "1": "1",
       "2": "2"
+    },
+    "BuyInheritanceEquipmentReforgingStoneSelectionChest": {
+      "name": "Comprar cofre de selección de piedras de reforja (Herencia)",
+      "help": "Compra el cofre de selección de piedras de reforja con límite semanal en la tienda de Herencia."
+    },
+    "BuyInheritanceLesserArtifactCharm": {
+      "name": "Cantidad de piedras menores de mejora de artefacto (Herencia)",
+      "help": "Cuántas piedras menores de mejora de artefacto comprar en la tienda de Herencia. Máximo 3.",
+      "0": "0",
+      "1": "1",
+      "2": "2",
+      "3": "3"
+    },
+    "BuyInheritanceGreaterArtifactCharm": {
+      "name": "Comprar piedra superior de mejora de artefacto (Herencia)",
+      "help": "Compra la piedra superior de mejora de artefacto con límite semanal en la tienda de Herencia."
+    },
+    "BuyInheritanceLesserAccessoryCharm": {
+      "name": "Cantidad de lotes de 2 piedras menores de accesorio (Herencia)",
+      "help": "Cuántos lotes de 2 piedras menores de mejora de accesorio comprar en la tienda de Herencia. Máximo 3.",
+      "0": "0",
+      "1": "1",
+      "2": "2",
+      "3": "3"
+    },
+    "BuyInheritanceGreaterAccessoryCharm": {
+      "name": "Comprar 2 piedras superiores de accesorio (Herencia)",
+      "help": "Compra el lote semanal de 2 piedras superiores de mejora de accesorio en la tienda de Herencia."
     }
   },
   "PetsGift": {
@@ -481,7 +511,7 @@
     },
     "Domain": {
       "name": "Dominio",
-      "help": "Elige si esta tarea farmea Cacería, Altar Espiritual o una ruta de materiales de Episode 4.",
+      "help": "Elige el dominio normal que se ejecutará después de las Misiones urgentes: Cacería, Altar Espiritual, Saint 3-7 o una ruta de materiales de Episode 4.",
       "Hunt": "Cacería",
       "SpiritAltar": "Altar Espiritual",
       "Saint37": "Saint 3-7",
@@ -534,7 +564,13 @@
     },
     "FastCombat": {
       "name": "Usar combate rápido",
-      "help": "Usa primero el combate rápido cuando esté disponible y, cuando se agote, cambia al combate repetido con mascota. Si está desactivado, solo se usará el combate repetido con mascota."
+      "help": "En el nuevo flujo global, inicia primero el combate delegado en segundo plano y usa solo la energía no reservada en combate rápido. El servidor chino mantiene el orden anterior."
+    },
+    "BurnoutMode": {
+      "name": "Modo de ejecución",
+      "help": "En el nuevo flujo global, Agotamiento convierte cada 80 de energía completos en una unidad delegada, fuerza la prioridad de energía disponible y deja el resto al combate rápido. Tras liquidar, programa la recuperación hasta 80. La caza Dimensional no es compatible.",
+      "Daily": "Cantidad fija diaria",
+      "Burnout": "Modo de agotamiento"
     },
     "FastCombatCount": {
       "name": "Cantidad de combate rapido",
@@ -542,11 +578,86 @@
     },
     "RepeatCombatCount": {
       "name": "Cantidad de combate repetido",
-      "help": "Cantidad objetivo de combate repetido para la repeticion con mascota."
+      "help": "Cantidad del sistema antiguo del servidor chino. El nuevo sistema global ignora esta opción."
+    },
+    "RepeatCombatLeifCount": {
+      "name": "Hojas de vida a gastar",
+      "help": "Hojas de vida que puede gastar el modo diario global, de 1 a 50. Agotamiento calcula el valor desde la energía actual."
+    },
+    "RepeatCombatPrioritizeStamina": {
+      "name": "Priorizar energía / núcleos espectrales",
+      "help": "Prioriza energía en fases normales y núcleos espectrales en la caza Dimensional. Agotamiento siempre activa esta opción."
+    },
+    "RepeatCombatGearMode": {
+      "name": "Modo de limpieza de equipo",
+      "help": "Vende o extrae el equipo seleccionado durante el combate delegado.",
+      "Sell": "Vender",
+      "Extract": "Extraer"
+    },
+    "RepeatCombatEquipmentScore": {
+      "name": "Umbral de puntuación de equipo",
+      "help": "Selecciona equipo por debajo de esta puntuación. Debe ser un valor del deslizador del juego.",
+      "22": "22",
+      "24": "24",
+      "26": "26",
+      "28": "28",
+      "30": "30",
+      "32": "32"
+    },
+    "RepeatCombatHeroSpeedFilter": {
+      "name": "Proteger velocidad heroica",
+      "help": "Conserva equipo heroico cuya velocidad alcance el umbral configurado."
+    },
+    "RepeatCombatHeroSpeed": {
+      "name": "Umbral de velocidad heroica",
+      "help": "Umbral de velocidad para equipo heroico. Debe ser un valor del deslizador del juego.",
+      "2": "2",
+      "3": "3",
+      "4": "4"
+    },
+    "RepeatCombatLegendarySpeedFilter": {
+      "name": "Proteger velocidad épica",
+      "help": "Conserva equipo épico cuya velocidad alcance el umbral configurado."
+    },
+    "RepeatCombatLegendarySpeed": {
+      "name": "Umbral de velocidad épica",
+      "help": "Umbral de velocidad para equipo épico. Debe ser un valor del deslizador del juego.",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5"
+    },
+    "RepeatCombatFlatMainStatExceptSpeed": {
+      "name": "Seleccionar estadísticas principales planas",
+      "help": "Selecciona siempre equipo con estadística principal plana, excepto botas de Velocidad."
+    },
+    "RepeatCombatExcludeOtherworldLegendary": {
+      "name": "Excluir equipo épico de Grieta",
+      "help": "No limpia automáticamente equipo épico obtenido en Grieta."
     },
     "Saint37AutoRecycle": {
       "name": "Venta Automática de Equipo",
       "help": "Solo se aplica a Saint 3-7. Tras liquidar el combate repetido en segundo plano, abre la bolsa temporal, selecciona rápido el equipo blanco y verde, lo vende y vuelve a la pantalla principal."
+    }
+  },
+  "UrgentTasks": {
+    "_info": {
+      "name": "Misiones urgentes",
+      "help": "Comprueba las Misiones urgentes antes del dominio diario e intenta completar los cinco intentos cuando estén disponibles."
+    },
+    "Enable": {
+      "name": "Ejecutar Misiones urgentes automáticamente",
+      "help": "Comprueba si las Misiones urgentes están disponibles antes de cada combate diario."
+    },
+    "Difficulty": {
+      "name": "Dificultad de Misiones urgentes",
+      "help": "Elige dificultad General o Superior.",
+      "Normal": "General",
+      "Superior": "Superior"
+    },
+    "LastCheckAt": {
+      "name": "Hora de última comprobación",
+      "help": "Evita comprobar repetidamente las Misiones urgentes durante el mismo día del servidor."
     }
   },
   "CombatRuntime": {
@@ -589,6 +700,20 @@
     "CollectGoldenInheritance": {
       "name": "Recoger Herencia Dorada",
       "help": "Tras la invocación, recoger automáticamente cuando Herencia Dorada esté llena."
+    }
+  },
+  "GachaResult": {
+    "_info": {
+      "name": "Registro de resultados de invocación",
+      "help": ""
+    },
+    "SaveScreenshot": {
+      "name": "Guardar capturas de resultados",
+      "help": "Guarda capturas del resultado antes de continuar o volver."
+    },
+    "OcrResult": {
+      "name": "Reconocer nombres de resultados (Experimental)",
+      "help": "Reconoce los nombres de los resultados de invocación y los registra. La precisión actual es baja; los resultados son solo de referencia."
     }
   },
   "SpecialActivity": {
@@ -667,9 +792,11 @@
     "RewardTier": {
       "name": "Calidad de recompensa",
       "help": "",
+      "Smart": "Custodia inteligente",
       "A": "A o superior",
       "B": "B o superior",
       "S": "S o superior",
+      "SS": "SS o superior",
       "MaxMinus1": "Máx. actual -1",
       "MaxMinus2": "Máx. actual -2 (mínimo B)"
     }

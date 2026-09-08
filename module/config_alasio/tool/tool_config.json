@@ -30,6 +30,15 @@
       }
     },
     "Combat": {
+      "BurnoutMode": {
+        "task": "CombatFarm",
+        "group": "Combat",
+        "arg": "BurnoutMode",
+        "cls": "CombatFarmCombat",
+        "dt": "select",
+        "value": "Daily",
+        "option": ["Daily", "Burnout"]
+      },
       "Domain": {
         "task": "CombatFarm",
         "group": "Combat",
@@ -101,6 +110,90 @@
         "cls": "CombatFarmCombat",
         "dt": "input-int",
         "value": 5
+      },
+      "RepeatCombatLeifCount": {
+        "task": "CombatFarm",
+        "group": "Combat",
+        "arg": "RepeatCombatLeifCount",
+        "cls": "CombatFarmCombat",
+        "dt": "input-int",
+        "value": 1
+      },
+      "RepeatCombatPrioritizeStamina": {
+        "task": "CombatFarm",
+        "group": "Combat",
+        "arg": "RepeatCombatPrioritizeStamina",
+        "cls": "CombatFarmCombat",
+        "dt": "checkbox",
+        "value": true
+      },
+      "RepeatCombatGearMode": {
+        "task": "CombatFarm",
+        "group": "Combat",
+        "arg": "RepeatCombatGearMode",
+        "cls": "CombatFarmCombat",
+        "dt": "select",
+        "value": "Extract",
+        "option": ["Sell", "Extract"]
+      },
+      "RepeatCombatEquipmentScore": {
+        "task": "CombatFarm",
+        "group": "Combat",
+        "arg": "RepeatCombatEquipmentScore",
+        "cls": "CombatFarmCombat",
+        "dt": "select",
+        "value": 28,
+        "option": [22, 24, 26, 28, 30, 32]
+      },
+      "RepeatCombatHeroSpeedFilter": {
+        "task": "CombatFarm",
+        "group": "Combat",
+        "arg": "RepeatCombatHeroSpeedFilter",
+        "cls": "CombatFarmCombat",
+        "dt": "checkbox",
+        "value": true
+      },
+      "RepeatCombatHeroSpeed": {
+        "task": "CombatFarm",
+        "group": "Combat",
+        "arg": "RepeatCombatHeroSpeed",
+        "cls": "CombatFarmCombat",
+        "dt": "select",
+        "value": 4,
+        "option": [2, 3, 4]
+      },
+      "RepeatCombatLegendarySpeedFilter": {
+        "task": "CombatFarm",
+        "group": "Combat",
+        "arg": "RepeatCombatLegendarySpeedFilter",
+        "cls": "CombatFarmCombat",
+        "dt": "checkbox",
+        "value": true
+      },
+      "RepeatCombatLegendarySpeed": {
+        "task": "CombatFarm",
+        "group": "Combat",
+        "arg": "RepeatCombatLegendarySpeed",
+        "cls": "CombatFarmCombat",
+        "dt": "select",
+        "value": 4,
+        "option": [2, 3, 4, 5]
+      },
+      "RepeatCombatFlatMainStatExceptSpeed": {
+        "task": "CombatFarm",
+        "group": "Combat",
+        "arg": "RepeatCombatFlatMainStatExceptSpeed",
+        "cls": "CombatFarmCombat",
+        "dt": "checkbox",
+        "value": true
+      },
+      "RepeatCombatExcludeOtherworldLegendary": {
+        "task": "CombatFarm",
+        "group": "Combat",
+        "arg": "RepeatCombatExcludeOtherworldLegendary",
+        "cls": "CombatFarmCombat",
+        "dt": "checkbox",
+        "value": false
       },
       "Saint37AutoRecycle": {
         "task": "CombatFarm",

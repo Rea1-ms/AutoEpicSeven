@@ -82,10 +82,6 @@
       "name": "Special Activity",
       "help": "Claim available rewards from limited-time activities."
     },
-    "CombatFarm": {
-      "name": "Repeat Farming",
-      "help": "Stop the scheduler before running this tool. It checks background repeat combat once per minute. If fast combat is allowed, it consumes all available fast combats first, then switches to pet repeat combat."
-    },
     "CommunityAuth": {
       "name": "Community Login",
       "help": "Open the Electron community login window and refresh the CK used by Community AIO."
@@ -401,6 +397,12 @@
       "name": "Use Fast Battle",
       "help": "Prefer fast battle mode for NPC fights."
     },
+    "BurnoutMode": {
+      "name": "Execution Mode",
+      "help": "Daily fixed count challenges the configured number of NPCs. Burnout mode spends every available flag, then runs again when flags naturally refill (1 per hour, cap 5). Requires \"Farm NPC\" to be enabled.",
+      "Daily": "Daily Fixed Count",
+      "Burnout": "Burnout Mode"
+    },
     "NPCCombatCount": {
       "name": "NPC Battle Count",
       "help": "Maximum number of NPC battles in this run."
@@ -462,6 +464,34 @@
       "0": "0",
       "1": "1",
       "2": "2"
+    },
+    "BuyInheritanceEquipmentReforgingStoneSelectionChest": {
+      "name": "Buy Equipment Reforging Stone Selection Chest (Inheritance)",
+      "help": "Buy the weekly-limited Equipment Reforging Stone Selection Chest in the Inheritance store."
+    },
+    "BuyInheritanceLesserArtifactCharm": {
+      "name": "Lesser Artifact Charm Count (Inheritance)",
+      "help": "How many Lesser Artifact Charms to buy in the Inheritance store. Max 3.",
+      "0": "0",
+      "1": "1",
+      "2": "2",
+      "3": "3"
+    },
+    "BuyInheritanceGreaterArtifactCharm": {
+      "name": "Buy Greater Artifact Charm (Inheritance)",
+      "help": "Buy the weekly-limited Greater Artifact Charm in the Inheritance store."
+    },
+    "BuyInheritanceLesserAccessoryCharm": {
+      "name": "Lesser Accessory Charm Pack Count (Inheritance)",
+      "help": "How many 2-charm packs to buy in the Inheritance store. Max 3.",
+      "0": "0",
+      "1": "1",
+      "2": "2",
+      "3": "3"
+    },
+    "BuyInheritanceGreaterAccessoryCharm": {
+      "name": "Buy 2 Greater Accessory Charms (Inheritance)",
+      "help": "Buy the weekly-limited pack of 2 Greater Accessory Charms in the Inheritance store."
     }
   },
   "PetsGift": {
@@ -481,7 +511,7 @@
     },
     "Domain": {
       "name": "Domain",
-      "help": "Choose whether this task farms Hunt, Spirit Altar, or a routed Episode 4 material stage.",
+      "help": "Choose the regular dungeon to run after Urgent Tasks: Hunt, Spirit Altar, Saint 3-7, or a routed Episode 4 material stage.",
       "Hunt": "Hunt",
       "SpiritAltar": "Spirit Altar",
       "Saint37": "Saint 3-7",
@@ -534,7 +564,13 @@
     },
     "FastCombat": {
       "name": "Use Fast Combat",
-      "help": "Use fast combat first when available, then switch to pet repeat combat after fast combat is exhausted. If disabled, only pet repeat combat will be used."
+      "help": "On the new global flow, start server-managed repeat combat first, then spend only the unreserved Energy on fast combat. The CN server keeps the legacy order."
+    },
+    "BurnoutMode": {
+      "name": "Execution Mode",
+      "help": "On the new global flow, Burnout converts each whole 80 Energy into one server-repeat unit, forces owned Energy priority, and gives the remainder to fast combat. After settlement it schedules for 80 Energy. Dimensional Hunt is unsupported.",
+      "Daily": "Daily Fixed Count",
+      "Burnout": "Burnout Mode"
     },
     "FastCombatCount": {
       "name": "Fast Combat Count",
@@ -542,11 +578,86 @@
     },
     "RepeatCombatCount": {
       "name": "Repeat Combat Count",
-      "help": "Target repeat combat count for pet repeat battle."
+      "help": "Legacy CN-server repeat count. The new global-server flow ignores this option."
+    },
+    "RepeatCombatLeifCount": {
+      "name": "Leifs to Spend",
+      "help": "Leifs the new global daily mode may spend, from 1 to 50. Burnout derives this value from current Energy."
+    },
+    "RepeatCombatPrioritizeStamina": {
+      "name": "Prioritize Owned Energy / Spectral Cores",
+      "help": "Prioritize Energy on regular stages and Spectral Cores on Dimensional Hunt. Burnout always enables this option."
+    },
+    "RepeatCombatGearMode": {
+      "name": "Auto Gear Cleanup Mode",
+      "help": "Sell or extract equipment selected during server-managed repeat battle.",
+      "Sell": "Sell",
+      "Extract": "Extract"
+    },
+    "RepeatCombatEquipmentScore": {
+      "name": "Equipment Score Threshold",
+      "help": "Select equipment below this score. The value must exist on the in-game slider.",
+      "22": "22",
+      "24": "24",
+      "26": "26",
+      "28": "28",
+      "30": "30",
+      "32": "32"
+    },
+    "RepeatCombatHeroSpeedFilter": {
+      "name": "Protect Heroic Speed Gear",
+      "help": "Keep Heroic gear whose Speed reaches the configured threshold."
+    },
+    "RepeatCombatHeroSpeed": {
+      "name": "Heroic Speed Threshold",
+      "help": "Speed threshold for Heroic gear. The value must exist on the in-game slider.",
+      "2": "2",
+      "3": "3",
+      "4": "4"
+    },
+    "RepeatCombatLegendarySpeedFilter": {
+      "name": "Protect Epic Speed Gear",
+      "help": "Keep Epic gear whose Speed reaches the configured threshold."
+    },
+    "RepeatCombatLegendarySpeed": {
+      "name": "Epic Speed Threshold",
+      "help": "Speed threshold for Epic gear. The value must exist on the in-game slider.",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5"
+    },
+    "RepeatCombatFlatMainStatExceptSpeed": {
+      "name": "Always Select Flat Main Stats",
+      "help": "Always select equipment with flat main stats, except Speed boots."
+    },
+    "RepeatCombatExcludeOtherworldLegendary": {
+      "name": "Exclude Otherworld Epic Gear",
+      "help": "Do not auto-clean Epic equipment obtained from Rift."
     },
     "Saint37AutoRecycle": {
       "name": "Auto Sell Equipment",
       "help": "Only applies to Saint 3-7. After background repeat combat settles, open the temporary bag, fast select white and green gear, sell them, then return to main."
+    }
+  },
+  "UrgentTasks": {
+    "_info": {
+      "name": "Urgent Tasks",
+      "help": "Check Urgent Tasks before the regular daily dungeon. When available, try to complete all five daily attempts."
+    },
+    "Enable": {
+      "name": "Run Urgent Tasks Automatically",
+      "help": "Check whether Urgent Tasks are available before every daily Combat run."
+    },
+    "Difficulty": {
+      "name": "Urgent Task Difficulty",
+      "help": "Choose General or Superior difficulty.",
+      "Normal": "General",
+      "Superior": "Superior"
+    },
+    "LastCheckAt": {
+      "name": "Last Check Time",
+      "help": "Prevents repeated Urgent Tasks checks during the same server-day window."
     }
   },
   "CombatRuntime": {
@@ -589,6 +700,20 @@
     "CollectGoldenInheritance": {
       "name": "Collect Golden Inheritance",
       "help": "After summoning, click to collect when Golden Inheritance is full."
+    }
+  },
+  "GachaResult": {
+    "_info": {
+      "name": "Gacha Result Recording",
+      "help": ""
+    },
+    "SaveScreenshot": {
+      "name": "Save Result Screenshots",
+      "help": "Save summon result screenshots before continuing or returning."
+    },
+    "OcrResult": {
+      "name": "Recognize Result Names (Experimental)",
+      "help": "Recognizes summon result names and records them in the log. Accuracy is currently low; results are for reference only."
     }
   },
   "SpecialActivity": {
@@ -667,9 +792,11 @@
     "RewardTier": {
       "name": "Reward Tier",
       "help": "",
+      "Smart": "Smart custody",
       "A": "A or higher",
       "B": "B or higher",
       "S": "S or higher",
+      "SS": "SS or higher",
       "MaxMinus1": "Current max tier -1",
       "MaxMinus2": "Current max tier -2 (floor B)"
     }

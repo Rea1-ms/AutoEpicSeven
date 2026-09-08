@@ -48,6 +48,9 @@ KnightsTeamBattle:
 
 Arena:
   args:
+    BurnoutMode:
+      value: Daily
+      option: [Daily, Burnout]
     ClaimWeeklyRewards: true
     ClaimWeeklyBattleRewards: true
     ClaimBattlePassRewards: true
@@ -76,6 +79,15 @@ StoreWeekly:
     BuyInheritancePotentialFragments:
       value: 0
       option: [0, 1, 2]
+    BuyInheritanceEquipmentReforgingStoneSelectionChest: false
+    BuyInheritanceLesserArtifactCharm:
+      value: 0
+      option: [0, 1, 2, 3]
+    BuyInheritanceGreaterArtifactCharm: false
+    BuyInheritanceLesserAccessoryCharm:
+      value: 0
+      option: [0, 1, 2, 3]
+    BuyInheritanceGreaterAccessoryCharm: false
 
 PetsGift:
   args:
@@ -85,6 +97,9 @@ PetsGift:
 
 Combat:
   args:
+    BurnoutMode:
+      value: Daily
+      option: [Daily, Burnout]
     Domain:
       value: Hunt
       option: [Hunt, SpiritAltar, Saint37, Episode4]
@@ -120,7 +135,35 @@ Combat:
     FastCombat: true
     FastCombatCount: 10
     RepeatCombatCount: 5
+    RepeatCombatLeifCount: 1
+    RepeatCombatPrioritizeStamina: true
+    RepeatCombatGearMode:
+      value: Extract
+      option: [Sell, Extract]
+    RepeatCombatEquipmentScore:
+      value: 28
+      option: [22, 24, 26, 28, 30, 32]
+    RepeatCombatHeroSpeedFilter: true
+    RepeatCombatHeroSpeed:
+      value: 4
+      option: [2, 3, 4]
+    RepeatCombatLegendarySpeedFilter: true
+    RepeatCombatLegendarySpeed:
+      value: 4
+      option: [2, 3, 4, 5]
+    RepeatCombatFlatMainStatExceptSpeed: true
+    RepeatCombatExcludeOtherworldLegendary: false
     Saint37AutoRecycle: false
+
+UrgentTasks:
+  args:
+    Enable: true
+    Difficulty:
+      value: Superior
+      option: [Normal, Superior]
+    LastCheckAt:
+      value: 2020-01-01T00:00:00Z
+      advanced: true
 
 CombatFarmCombat:
   parent: Combat
@@ -147,6 +190,11 @@ SecretShop:
 Gacha:
   args:
     CollectGoldenInheritance: true
+
+GachaResult:
+  args:
+    SaveScreenshot: true
+    OcrResult: false
 
 SpecialActivity:
   args:

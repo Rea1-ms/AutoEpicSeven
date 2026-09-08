@@ -134,6 +134,7 @@
       "ClaimBattlePassRewards": true,
       "NPCCombat": true,
       "NPCCombatFastBattle": true,
+      "BurnoutMode": "Daily",
       "NPCCombatCount": 5
     }
   },
@@ -154,7 +155,12 @@
       "BuyConquestMorogora": false,
       "BuyFriendshipArtifactEnhancementStone": 0,
       "BuyInheritanceMorogora": 0,
-      "BuyInheritancePotentialFragments": 0
+      "BuyInheritancePotentialFragments": 0,
+      "BuyInheritanceEquipmentReforgingStoneSelectionChest": false,
+      "BuyInheritanceLesserArtifactCharm": 0,
+      "BuyInheritanceGreaterArtifactCharm": false,
+      "BuyInheritanceLesserAccessoryCharm": 0,
+      "BuyInheritanceGreaterAccessoryCharm": false
     }
   },
   "PetsGift": {
@@ -196,9 +202,25 @@
       "HuntGrade": "Hell",
       "Episode4Material": "BREATH_OF_KARMA",
       "FastCombat": true,
+      "BurnoutMode": "Daily",
       "FastCombatCount": 10,
       "RepeatCombatCount": 5,
+      "RepeatCombatLeifCount": 1,
+      "RepeatCombatPrioritizeStamina": true,
+      "RepeatCombatGearMode": "Extract",
+      "RepeatCombatEquipmentScore": 28,
+      "RepeatCombatHeroSpeedFilter": true,
+      "RepeatCombatHeroSpeed": 4,
+      "RepeatCombatLegendarySpeedFilter": true,
+      "RepeatCombatLegendarySpeed": 4,
+      "RepeatCombatFlatMainStatExceptSpeed": true,
+      "RepeatCombatExcludeOtherworldLegendary": false,
       "Saint37AutoRecycle": false
+    },
+    "UrgentTasks": {
+      "Enable": true,
+      "Difficulty": "Superior",
+      "LastCheckAt": "2020-01-01 00:00:00"
     },
     "CombatRuntime": {
       "Session": {}
@@ -213,6 +235,10 @@
     },
     "Gacha": {
       "CollectGoldenInheritance": true
+    },
+    "GachaResult": {
+      "SaveScreenshot": true,
+      "OcrResult": false
     }
   },
   "Pets": {
@@ -235,22 +261,10 @@
       "GetTaskReward": true,
       "GetFreeGacha": true,
       "GetEnergyDrink": true
-    }
-  },
-  "CombatFarm": {
-    "Combat": {
-      "Domain": "Hunt",
-      "Element": "Water",
-      "AltarGrade": "Hell",
-      "HuntGrade": "Hell",
-      "Episode4Material": "BREATH_OF_KARMA",
-      "FastCombat": false,
-      "FastCombatCount": 10,
-      "RepeatCombatCount": 5,
-      "Saint37AutoRecycle": false
     },
-    "CombatRuntime": {
-      "Session": {}
+    "GachaResult": {
+      "SaveScreenshot": true,
+      "OcrResult": false
     }
   },
   "CommunityAuth": {

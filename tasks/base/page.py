@@ -1,5 +1,6 @@
 import traceback
 
+import module.config.server as server_
 from tasks.base.assets.assets_base_page import *
 from tasks.base.assets.assets_base_popup import AD_BUFF_X_CLOSE
 from tasks.base.assets.assets_base_main_page import MENU, MENU_CLOSE, WHITE_STAR
@@ -9,23 +10,14 @@ from tasks.mission_reward.assets.assets_mission_reward_entries import (
     MISSION_REWARD_DAILY_ENTRY_CHECK,
 )
 from tasks.secret_shop.assets.assets_secret_shop import SECRET_SHOP_CHECK
-from tasks.store.assets.assets_store_entries import (
-    COMMON_STORE_ENTRY,
-    COMMON_STORE_CHECK,
-    CONQUEST_POINTS_STORE_ENTRY,
-    CONQUEST_POINTS_STORE_CHECK,
-    FREE_STORE_ENTRY,
-    FREE_STORE_CHECK,
-    INHERITANCE_STONE_STORE_ENTRY,
-    INHERITANCE_STONE_STORE_CHECK,
-    STORE_CHECK
-)
+from tasks.store.assets.assets_store_entries import STORE_CHECK
 from tasks.arena.assets.assets_arena import (
     ARENA_CHECK,
     ARENA_COMMON_ENTRY,
     ARENA_HUB_CHECK,
     BATTLE_PASS_CHECK,
     BATTLE_PASS_ENTRY,
+    SETTLING_INFO_ICON,
 )
 from tasks.dungeon.assets.assets_dungeon_configs_combat_entry import (
     ALTER_CHECK,
@@ -34,9 +26,14 @@ from tasks.dungeon.assets.assets_dungeon_configs_combat_entry import (
     SEASON_ENTRY,
     SEASON_CHECK,
     SPIRIT_ALTAR,
+    URGENT_ENTRY,
     URGENT_TASKS,
+    URGENT_CHECK,
 )
-from tasks.dungeon.assets.assets_dungeon_repeat_entry import REPEAT_COMBAT_MENU
+if server_.lang == "global_cn":
+    from tasks.dungeon.assets.assets_dungeon_repeat_common import REPEAT_COMBAT_MENU
+else:
+    from tasks.dungeon.assets.assets_dungeon_repeat_entry import REPEAT_COMBAT_MENU
 from tasks.dungeon.assets.assets_dungeon_configs_episode_entry import (
     EPISODE_CHOOSE,
 )
@@ -81,6 +78,7 @@ from tasks.sanctuary.assets.assets_sanctuary import (
 from tasks.sanctuary.assets.assets_sanctuary_forest_of_elves import (
     ALTAR_OF_GROWTH,
 )
+from tasks.activity.assets.assets_activity_common import COMMON_ACTIVITY_CHECK
 from tasks.activity.assets.assets_activity_special_26_6_25 import (
     MAIN_GOTO_SPECIAL_ACTIVITY,
     SPECIAL_ACTIVITY_FREE_GACHA_CHECK,
@@ -340,40 +338,14 @@ page_main.link(MAIN_GOTO_INVENTORY, destination=page_inventory_equipment)
 page_inventory.link(EQUIPMENT_ENTRY, destination=page_inventory_equipment)
 
 # Store
+# Store sub-categories and their top tabs deliberately stay out of the global
+# page graph. STORE_CHECK persists across those child views, while their outer
+# selection markers overlap with concrete tab markers. The Store task handles
+# that nested hierarchy with a local state loop after reaching this container.
 
 page_store = Page(STORE_CHECK)
 page_store.link(BACK, destination=page_main)
 page_main.link(MAIN_GOTO_STORE, destination=page_store)
-
-# Current top-bar checks overlap:
-# - COMMON_STORE_CHECK stays valid inside both free / inheritance pages
-# - store top-bar markers coexist with sub-store markers
-# Define the more specific current sub-pages first so ui_get_current_page()
-# does not stop at a broader container page too early.
-page_free_store = Page(FREE_STORE_CHECK)
-page_free_store.link(BACK, destination=page_main)
-
-page_inheritance_stone_store = Page(INHERITANCE_STONE_STORE_CHECK)
-page_inheritance_stone_store.link(BACK, destination=page_main)
-
-page_conquest_points_store = Page(CONQUEST_POINTS_STORE_CHECK)
-page_conquest_points_store.link(BACK, destination=page_main)
-
-page_common_store = Page(COMMON_STORE_CHECK)
-page_common_store.link(BACK, destination=page_main)
-
-# Enter common branch from store home
-page_store.link(COMMON_STORE_ENTRY, destination=page_common_store)
-page_store.link(COMMON_STORE_ENTRY, destination=page_free_store)
-
-# Enter conquest directly from store home
-page_store.link(CONQUEST_POINTS_STORE_ENTRY, destination=page_conquest_points_store)
-
-# Common branch internal switching
-page_common_store.link(FREE_STORE_ENTRY, destination=page_free_store)
-page_common_store.link(INHERITANCE_STONE_STORE_ENTRY, destination=page_inheritance_stone_store)
-page_free_store.link(INHERITANCE_STONE_STORE_ENTRY, destination=page_inheritance_stone_store)
-page_inheritance_stone_store.link(FREE_STORE_ENTRY, destination=page_free_store)
 
 # Mission reward popup
 #
@@ -404,11 +376,13 @@ page_menu.link(MENU_GOTO_MISSION_REWARD, destination=page_mission_reward_daily)
 
 # Arena
 page_arena = Page(ARENA_CHECK)
+page_arena_settling = Page(SETTLING_INFO_ICON)
 page_arena_hub = Page(ARENA_HUB_CHECK)
 page_arena_hub.link(BACK, destination=page_main)
 page_main.link(MAIN_ARENA_ENTRY, destination=page_arena_hub)
 page_menu.link(MENU_ARENA_ENTRY, destination=page_arena_hub)
 page_arena.link(BACK, destination=page_arena_hub)
+page_arena_settling.link(BACK, destination=page_arena_hub)
 page_arena_hub.link(ARENA_COMMON_ENTRY, destination=page_arena)
 
 page_arena_battle_pass = Page(BATTLE_PASS_CHECK)
@@ -443,6 +417,13 @@ page_menu.link(MENU_GOTO_COMBAT, destination=page_combat)
 page_menu.link(MENU_GOTO_COMBAT, destination=page_combat_season)
 page_menu.link(MENU_GOTO_COMBAT, destination=page_combat_common)
 page_menu.link(MENU_GOTO_COMBAT, destination=page_combat_urgent)
+
+if server_.lang == "global_cn":
+    page_combat_season.link(URGENT_ENTRY, destination=page_combat_urgent)
+    page_combat_common.link(URGENT_ENTRY, destination=page_combat_urgent)
+    page_urgent_tasks = Page(URGENT_CHECK)
+    page_urgent_tasks.link(BACK, destination=page_combat_urgent)
+    page_combat_urgent.link(URGENT_TASKS, destination=page_urgent_tasks)
 
 # Combat stage selection page (element / grade)
 page_combat_stage = Page((ALTER_CHECK, HUNT_CHECK))
@@ -480,6 +461,10 @@ page_pets.link(BACK, destination=page_main)
 page_menu.link(MENU_GOTO_PETS, destination=page_pets)
 
 # Special Activity
+page_common_activity = Page(COMMON_ACTIVITY_CHECK)
+page_common_activity.link(BACK, destination=page_main)
+page_main.link(MAIN_GOTO_COMMON_ACTIVITY, destination=page_common_activity)
+
 page_special_activity = Page(ACTIVITY_2026SUMMER)
 page_special_activity.link(BACK, destination=page_main)
 page_main.link(MAIN_GOTO_SPECIAL_ACTIVITY, destination=page_special_activity)
@@ -533,6 +518,7 @@ shared_toolbar_pages = [
     page_secret_shop,
     page_store,
     page_arena,
+    page_arena_settling,
     page_arena_hub,
     page_arena_battle_pass,
     page_combat_season,
@@ -550,15 +536,10 @@ shared_toolbar_pages = [
     page_knights_world_boss,
     page_knights_team_battle,
 ]
+if server_.lang == "global_cn":
+    shared_toolbar_pages.append(page_urgent_tasks)
 
 link_shared_toolbar(*shared_toolbar_pages)
-
-link_shared_toolbar(
-    page_free_store,
-    page_inheritance_stone_store,
-    page_conquest_points_store,
-    page_common_store,
-)
 
 # These pages share the same top-right controls for routing, but background
 # repeat-combat precheck should not rely on them:

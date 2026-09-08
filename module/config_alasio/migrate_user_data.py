@@ -44,6 +44,58 @@ def parse_args():
     return parser.parse_args()
 
 
+def verify_native_fields(adapter, config_name, events):
+    """Verify every migrated value directly against its native SQLite row."""
+    from alasio.config.table.config import AlasioConfigTable
+    from msgspecerror import load_msgpack_with_default
+    from module.config_alasio.adapter import ConfigAdapterError
+
+    refs = {}
+    for task_info in adapter._task_index.values():
+        for group_name, ref in task_info.group.items():
+            refs.setdefault((ref.task, group_name), ref)
+
+    rows = {
+        (row.task, row.group): row.value
+        for row in AlasioConfigTable(config_name).select()
+    }
+    decoded = {}
+    failures = []
+    for event in events:
+        key = (event.task, event.group)
+        ref = refs.get(key)
+        raw = rows.get(key)
+        if ref is None:
+            failures.append(f'{event.task}.{event.group}: model reference is missing')
+            continue
+        if raw is None:
+            failures.append(f'{event.task}.{event.group}: database row is missing')
+            continue
+
+        if key not in decoded:
+            model = adapter._mod.get_group_model(file=ref.file, cls=ref.cls)
+            value, errors = load_msgpack_with_default(raw, model)
+            if errors:
+                failures.extend(
+                    f'{event.task}.{event.group}: {error}' for error in errors
+                )
+                continue
+            decoded[key] = value
+
+        actual = getattr(decoded[key], event.arg)
+        if actual != event.value:
+            failures.append(
+                f'{event.task}.{event.group}.{event.arg}: '
+                f'expected {event.value!r}, got {actual!r}'
+            )
+
+    if failures:
+        details = '\n'.join(f'  {failure}' for failure in failures)
+        raise ConfigAdapterError(
+            f'{len(failures)} fields failed strict readback:\n{details}'
+        )
+
+
 def main():
     args = parse_args()
 
@@ -90,6 +142,7 @@ def main():
     # Flatten old JSON at depth 3 into modified-style paths
     modified = {}
     skipped_paths = []
+    unmapped_paths = []
     for task, task_data in old.items():
         if not isinstance(task_data, dict):
             raise ConfigAdapterError(f'Expected object at {task}, got {type(task_data).__name__}')
@@ -106,7 +159,8 @@ def main():
                     if adapter._is_ignored_legacy_field(task, group, arg):
                         skipped_paths.append(path)
                         continue
-                    raise ConfigAdapterError(f'Config field has no Alasio mapping: {path}')
+                    unmapped_paths.append(path)
+                    continue
                 # Clean old JSON values against the new model's field type,
                 # judged by the default value of the target field
                 default = field_defaults.get((new_task, new_group), {}).get(new_arg)
@@ -122,6 +176,12 @@ def main():
                     value = int(value)
                 modified[path] = value
 
+    if unmapped_paths:
+        details = '\n'.join(f'  {path}' for path in unmapped_paths)
+        raise ConfigAdapterError(
+            f'{len(unmapped_paths)} config fields have no Alasio mapping:\n{details}'
+        )
+
     events = adapter._build_events(modified)
     print(f'Old JSON: {args.json}')
     print(f'Target DB: {env.PROJECT_ROOT}/config/{name}.db')
@@ -135,7 +195,14 @@ def main():
         return 0
 
     # The write is atomic: schema or value errors leave the target unchanged.
-    adapter._persist(name, modified)
+    # Alasio's normal config log includes raw values. Migration inputs can
+    # contain notification credentials, so keep this one batch out of logs.
+    from alasio.logger import logger as alasio_logger
+    alasio_logger.mute(all=True)
+    try:
+        adapter._persist(name, modified)
+    finally:
+        alasio_logger.mute_clear()
     print(f'Batch write OK, {len(events)} fields')
 
     # Bind the config to the aes mod, so the Alasio GUI scan picks it up
@@ -145,16 +212,9 @@ def main():
     print(f'Mod binding written: {name} -> {entry.name}')
 
     if args.verify:
-        print('--- verify: read back through adapter ---')
-        data = adapter.read_file(name)
-        for task, task_data in data.items():
-            sched = task_data.get('Scheduler')
-            if sched:
-                print(f'  {task}.Scheduler: Enable={sched.get("Enable")} NextRun={sched.get("NextRun")}')
-        emu = data.get('Alas', {}).get('Emulator', {})
-        print(f'  Alas.Emulator: {emu}')
-        info = data.get('Alas', {}).get('EmulatorInfo', {})
-        print(f'  Alas.EmulatorInfo: {info}')
+        print('--- verify: strict field readback ---')
+        verify_native_fields(adapter, name, events)
+        print(f'Strict readback OK, {len(events)} fields matched')
 
     return 0
 

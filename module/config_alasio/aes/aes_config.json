@@ -44,7 +44,7 @@
         "arg": "ScreenshotMethod",
         "dt": "select",
         "value": "auto",
-        "option": ["auto", "ADB", "ADB_nc", "uiautomator2", "aScreenCap", "aScreenCap_nc", "DroidCast", "DroidCast_raw", "nemu_ipc", "ldopengl"]
+        "option": ["auto", "ADB", "ADB_nc", "uiautomator2", "aScreenCap", "aScreenCap_nc", "DroidCast", "DroidCast_raw", "scrcpy", "nemu_ipc", "ldopengl"]
       },
       "ControlMethod": {
         "task": "Device",
@@ -163,7 +163,7 @@
         "arg": "WhenTaskQueueEmpty",
         "dt": "select",
         "value": "goto_main",
-        "option": ["stay_there", "goto_main", "stop_game"]
+        "option": ["stay_there", "goto_main", "stop_game", "stop_device"]
       }
     }
   },

@@ -16,9 +16,10 @@ entry.root = PathStr.new(__file__).uppath(3)
 class ConfigConst(ConfigConst_):
     SCHEDULER_PRIORITY = """
     Restart
-    > SpecialActivity > Mail > SanctuaryDaily > SanctuaryMonthly
-    > Knights > Arena > Store > PetsGift
+    > Mail > SanctuaryDaily > SanctuaryMonthly
+    > Knights > Store > Arena > PetsGift
     > SecretShop > Combat > Gacha > MissionReward > Pets > DataUpdate > CommunityAio
+    > SpecialActivity
     > CombatFarm > CommunityAuth
     """
 

@@ -1,20 +1,30 @@
+import argparse
+import json
+import logging
 import os
 import re
+import sys
 import typing as t
 from dataclasses import dataclass
+from pathlib import Path
 
-import cv2
+import cv2 as _cv2
 import numpy as np
 from tqdm import tqdm
 
-from module.base.code_generator import CodeGenerator
-from module.base.utils import (
+if __package__ in (None, ''):
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from module.base.code_generator import CodeGenerator  # noqa: E402
+from module.base.utils import (  # noqa: E402
     SelectedGrids, area_center, area_limit, area_pad, corner2area, get_bbox, get_color, image_size, load_image)
-from module.config.config_manual import ManualConfig as AzurLaneConfig
-from module.config.deep import deep_get, deep_iter, deep_set
-from module.config.server import VALID_LANG
-from module.config.utils import iter_folder
-from module.logger import logger
+from module.config.config_manual import ManualConfig as AzurLaneConfig  # noqa: E402
+from module.config.deep import deep_get, deep_iter, deep_set  # noqa: E402
+from module.config.server import VALID_LANG  # noqa: E402
+from module.config.utils import iter_folder  # noqa: E402
+
+logger = logging.getLogger(__name__)
+cv2: t.Any = _cv2
 
 SHARE_SERVER = 'share'
 ASSET_SERVER = [SHARE_SERVER] + VALID_LANG
@@ -155,13 +165,25 @@ class AssetsImage:
             yield image
 
 
-def iter_images():
+def iter_images(modules: t.Optional[t.Iterable[str]] = None):
+    module_set = set(modules) if modules is not None else None
     for server in ASSET_SERVER:
-        for path, folders, files in os.walk(os.path.join(AzurLaneConfig.ASSETS_FOLDER, server)):
-            for file in files:
-                if not file.startswith('.'):
+        if module_set is None:
+            roots = [os.path.join(AzurLaneConfig.ASSETS_FOLDER, server)]
+        else:
+            roots = [
+                os.path.join(AzurLaneConfig.ASSETS_FOLDER, server, module)
+                for module in module_set
+            ]
+        for root in roots:
+            for path, folders, files in os.walk(root):
+                for file in files:
+                    if file.startswith('.'):
+                        continue
                     file = os.path.join(path, file).replace('\\', '/')
-                    yield AssetsImage(file)
+                    image = AssetsImage(file)
+                    if module_set is None or image.module in module_set:
+                        yield image
 
 
 def iter_grids(images):
@@ -178,10 +200,10 @@ class DataAssets:
     frame: int
     file: str = ''
     posi = None
-    area: t.Tuple[int, int, int, int] = ()
-    search: t.Tuple[int, int, int, int] = ()
-    color: t.Tuple[int, int, int] = ()
-    button: t.Tuple[int, int, int, int] = ()
+    area: t.Tuple = ()
+    search: t.Tuple = ()
+    color: t.Tuple = ()
+    button: t.Tuple = ()
 
     has_raw_area = False
     has_raw_search = False
@@ -230,8 +252,8 @@ class DataAssets:
         return f'Assets(file="{self.file}", area={self.area}, search={self.search}, color={self.color}, button={self.button})'
 
 
-def iter_assets():
-    images = list(iter_images())
+def iter_assets(modules: t.Optional[t.Iterable[str]] = None):
+    images = list(iter_images(modules=modules))
 
     # parse images, this may take a while
     for image in tqdm(images):
@@ -293,23 +315,39 @@ def iter_assets():
     return data
 
 
-def generate_code():
-    all_assets = iter_assets()
+def generate_code(modules: t.Optional[t.Iterable[str]] = None):
+    """Generate all wrappers, or only wrappers for explicitly selected modules.
+
+    Filtered generation deliberately skips the historical owner-wide cleanup.
+    Several modules share one ``tasks/<owner>/assets`` directory, so deleting
+    siblings while generating one module would silently remove valid wrappers.
+    The unfiltered path retains the existing full-regeneration behavior.
+    """
+    module_list = None if modules is None else sorted(set(modules))
+    all_assets = iter_assets(modules=module_list)
+    if module_list is not None:
+        missing = sorted(set(module_list) - set(all_assets))
+        if missing:
+            raise ValueError(f'No valid assets found for modules: {missing}')
+
+    if module_list is None:
+        for module, module_data in all_assets.items():
+            path = os.path.join(AzurLaneConfig.ASSETS_MODULE, module.split('/', maxsplit=1)[0])
+            output = os.path.join(path, 'assets.py')
+            if os.path.exists(output):
+                os.remove(output)
+            output = os.path.join(path, 'assets')
+            os.makedirs(output, exist_ok=True)
+            for prev in iter_folder(output, ext='.py'):
+                if os.path.basename(prev) == '__init__.py':
+                    continue
+                os.remove(prev)
+
+    generated = []
     for module, module_data in all_assets.items():
         path = os.path.join(AzurLaneConfig.ASSETS_MODULE, module.split('/', maxsplit=1)[0])
-        output = os.path.join(path, 'assets.py')
-        if os.path.exists(output):
-            os.remove(output)
         output = os.path.join(path, 'assets')
         os.makedirs(output, exist_ok=True)
-        for prev in iter_folder(output, ext='.py'):
-            if os.path.basename(prev) == '__init__.py':
-                continue
-            os.remove(prev)
-
-    for module, module_data in all_assets.items():
-        path = os.path.join(AzurLaneConfig.ASSETS_MODULE, module.split('/', maxsplit=1)[0])
-        output = os.path.join(path, 'assets')
         gen = CodeGenerator()
         gen.Import("""
         from module.base.button import Button, ButtonWrapper
@@ -348,8 +386,38 @@ def generate_code():
                                 gen.ObjectAttr(key='posi', value=frame.posi)
                     else:
                         gen.ObjectAttr(key=server, value=None)
-        gen.write(os.path.join(output, f'assets_{module.replace("/", "_")}.py'))
+        output_file = os.path.join(output, f'assets_{module.replace("/", "_")}.py')
+        gen.write(output_file)
+        generated.append(output_file.replace('\\', '/'))
+    return generated
+
+
+def build_parser():
+    parser = argparse.ArgumentParser(description='Generate Python wrappers from asset images')
+    parser.add_argument(
+        '--module',
+        action='append',
+        dest='modules',
+        help='generate one exact asset module; may be repeated',
+    )
+    parser.add_argument('--json', action='store_true', dest='json_output')
+    return parser
+
+
+def main(argv=None):
+    args = build_parser().parse_args(argv)
+    try:
+        generated = generate_code(modules=args.modules)
+    except ValueError as exc:
+        if args.json_output:
+            print(json.dumps({'version': 1, 'status': 'error', 'error': str(exc)}, ensure_ascii=False))
+        else:
+            print(f'error: {exc}', file=sys.stderr)
+        return 2
+    if args.json_output:
+        print(json.dumps({'version': 1, 'status': 'written', 'generated': generated}, ensure_ascii=False, indent=2))
+    return 0
 
 
 if __name__ == '__main__':
-    generate_code()
+    raise SystemExit(main())

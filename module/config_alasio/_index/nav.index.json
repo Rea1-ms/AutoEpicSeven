@@ -15,25 +15,25 @@
     "card-Alas-Emulator": {
       "zh-CN": "模拟器设置",
       "en-US": "Emulator Settings",
-      "ja-JP": "Emulator._info.name",
+      "ja-JP": "エミュレータ設定",
       "zh-TW": "模擬器設定"
     },
     "card-Alas-EmulatorInfo": {
       "zh-CN": "模拟器设置",
       "en-US": "Emulator Settings",
-      "ja-JP": "EmulatorInfo._info.name",
+      "ja-JP": "エミュレータ情報",
       "zh-TW": "模擬器設定"
     },
     "card-Alas-Error": {
       "zh-CN": "调试设置",
       "en-US": "Debug Settings",
-      "ja-JP": "Error._info.name",
+      "ja-JP": "デバッグ設定",
       "zh-TW": "除錯設定"
     },
     "card-Alas-Optimization": {
       "zh-CN": "优化设置",
       "en-US": "Optimization Settings",
-      "ja-JP": "Optimization._info.name",
+      "ja-JP": "最適化設定",
       "zh-TW": "優化設定"
     },
     "card-Restart-Restart": {

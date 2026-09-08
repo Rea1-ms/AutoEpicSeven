@@ -346,6 +346,14 @@
       }
     },
     "Arena": {
+      "BurnoutMode": {
+        "task": "Arena",
+        "group": "Arena",
+        "arg": "BurnoutMode",
+        "dt": "select",
+        "value": "Daily",
+        "option": ["Daily", "Burnout"]
+      },
       "ClaimWeeklyRewards": {
         "task": "Arena",
         "group": "Arena",
@@ -485,6 +493,43 @@
         "dt": "select",
         "value": 0,
         "option": [0, 1, 2]
+      },
+      "BuyInheritanceEquipmentReforgingStoneSelectionChest": {
+        "task": "Store",
+        "group": "StoreWeekly",
+        "arg": "BuyInheritanceEquipmentReforgingStoneSelectionChest",
+        "dt": "checkbox",
+        "value": false
+      },
+      "BuyInheritanceLesserArtifactCharm": {
+        "task": "Store",
+        "group": "StoreWeekly",
+        "arg": "BuyInheritanceLesserArtifactCharm",
+        "dt": "select",
+        "value": 0,
+        "option": [0, 1, 2, 3]
+      },
+      "BuyInheritanceGreaterArtifactCharm": {
+        "task": "Store",
+        "group": "StoreWeekly",
+        "arg": "BuyInheritanceGreaterArtifactCharm",
+        "dt": "checkbox",
+        "value": false
+      },
+      "BuyInheritanceLesserAccessoryCharm": {
+        "task": "Store",
+        "group": "StoreWeekly",
+        "arg": "BuyInheritanceLesserAccessoryCharm",
+        "dt": "select",
+        "value": 0,
+        "option": [0, 1, 2, 3]
+      },
+      "BuyInheritanceGreaterAccessoryCharm": {
+        "task": "Store",
+        "group": "StoreWeekly",
+        "arg": "BuyInheritanceGreaterAccessoryCharm",
+        "dt": "checkbox",
+        "value": false
       }
     }
   },
@@ -611,6 +656,14 @@
       }
     },
     "Combat": {
+      "BurnoutMode": {
+        "task": "Combat",
+        "group": "Combat",
+        "arg": "BurnoutMode",
+        "dt": "select",
+        "value": "Daily",
+        "option": ["Daily", "Burnout"]
+      },
       "Domain": {
         "task": "Combat",
         "group": "Combat",
@@ -672,6 +725,80 @@
         "dt": "input-int",
         "value": 5
       },
+      "RepeatCombatLeifCount": {
+        "task": "Combat",
+        "group": "Combat",
+        "arg": "RepeatCombatLeifCount",
+        "dt": "input-int",
+        "value": 1
+      },
+      "RepeatCombatPrioritizeStamina": {
+        "task": "Combat",
+        "group": "Combat",
+        "arg": "RepeatCombatPrioritizeStamina",
+        "dt": "checkbox",
+        "value": true
+      },
+      "RepeatCombatGearMode": {
+        "task": "Combat",
+        "group": "Combat",
+        "arg": "RepeatCombatGearMode",
+        "dt": "select",
+        "value": "Extract",
+        "option": ["Sell", "Extract"]
+      },
+      "RepeatCombatEquipmentScore": {
+        "task": "Combat",
+        "group": "Combat",
+        "arg": "RepeatCombatEquipmentScore",
+        "dt": "select",
+        "value": 28,
+        "option": [22, 24, 26, 28, 30, 32]
+      },
+      "RepeatCombatHeroSpeedFilter": {
+        "task": "Combat",
+        "group": "Combat",
+        "arg": "RepeatCombatHeroSpeedFilter",
+        "dt": "checkbox",
+        "value": true
+      },
+      "RepeatCombatHeroSpeed": {
+        "task": "Combat",
+        "group": "Combat",
+        "arg": "RepeatCombatHeroSpeed",
+        "dt": "select",
+        "value": 4,
+        "option": [2, 3, 4]
+      },
+      "RepeatCombatLegendarySpeedFilter": {
+        "task": "Combat",
+        "group": "Combat",
+        "arg": "RepeatCombatLegendarySpeedFilter",
+        "dt": "checkbox",
+        "value": true
+      },
+      "RepeatCombatLegendarySpeed": {
+        "task": "Combat",
+        "group": "Combat",
+        "arg": "RepeatCombatLegendarySpeed",
+        "dt": "select",
+        "value": 4,
+        "option": [2, 3, 4, 5]
+      },
+      "RepeatCombatFlatMainStatExceptSpeed": {
+        "task": "Combat",
+        "group": "Combat",
+        "arg": "RepeatCombatFlatMainStatExceptSpeed",
+        "dt": "checkbox",
+        "value": true
+      },
+      "RepeatCombatExcludeOtherworldLegendary": {
+        "task": "Combat",
+        "group": "Combat",
+        "arg": "RepeatCombatExcludeOtherworldLegendary",
+        "dt": "checkbox",
+        "value": false
+      },
       "Saint37AutoRecycle": {
         "task": "Combat",
         "group": "Combat",
@@ -718,6 +845,22 @@
         "arg": "CollectGoldenInheritance",
         "dt": "checkbox",
         "value": true
+      }
+    },
+    "GachaResult": {
+      "SaveScreenshot": {
+        "task": "Gacha",
+        "group": "GachaResult",
+        "arg": "SaveScreenshot",
+        "dt": "checkbox",
+        "value": true
+      },
+      "OcrResult": {
+        "task": "Gacha",
+        "group": "GachaResult",
+        "arg": "OcrResult",
+        "dt": "checkbox",
+        "value": false
       }
     }
   },
@@ -810,6 +953,22 @@
         "arg": "GetEnergyDrink",
         "dt": "checkbox",
         "value": true
+      }
+    },
+    "GachaResult": {
+      "SaveScreenshot": {
+        "task": "SpecialActivity",
+        "group": "GachaResult",
+        "arg": "SaveScreenshot",
+        "dt": "checkbox",
+        "value": true
+      },
+      "OcrResult": {
+        "task": "SpecialActivity",
+        "group": "GachaResult",
+        "arg": "OcrResult",
+        "dt": "checkbox",
+        "value": false
       }
     }
   }
