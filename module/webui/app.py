@@ -596,18 +596,19 @@ class AlasGUI(Frame):
             self.alas_config_hidden = new_hidden_args
 
             if modified:
+                logger.info(
+                    f"Save config {filepath_config(config_name)}, {dict_to_kv(modified)}"
+                )
+                config_updater._persist(config_name, modified)
                 toast(
                     t("Gui.Toast.ConfigSaved"),
                     duration=1,
                     position="right",
                     color="success",
                 )
-                logger.info(
-                    f"Save config {filepath_config(config_name)}, {dict_to_kv(modified)}"
-                )
-                config_updater.write_file(config_name, config)
         except Exception as e:
             logger.exception(e)
+            toast("Config save failed, see logs", duration=3, position="right", color="error")
 
     def alas_update_overview_task(self) -> None:
         if not self.visible:
