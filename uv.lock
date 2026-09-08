@@ -28,7 +28,7 @@ wheels = [
 [[package]]
 name = "alasio"
 version = "0.1.0"
-source = { editable = "../Alasio" }
+source = { git = "https://github.com/Rea1-ms/Alasio.git?branch=aes#0f9c9578ceb3a4458d3fb93d541a4d2f327640b6" }
 dependencies = [
     { name = "colorama" },
     { name = "exceptiongroup" },
@@ -49,32 +49,6 @@ backend = [
     { name = "starlette" },
     { name = "trio" },
 ]
-
-[package.metadata]
-requires-dist = [
-    { name = "alasio", extras = ["image", "backend", "test"], marker = "extra == 'all'" },
-    { name = "colorama", specifier = ">=0.4.6" },
-    { name = "exceptiongroup" },
-    { name = "httpx" },
-    { name = "hypercorn", marker = "extra == 'backend'", specifier = ">=0.17.3" },
-    { name = "isort", marker = "extra == 'test'", specifier = ">=5.2.0" },
-    { name = "msgspec", specifier = ">=0.18.6,<=0.21.1" },
-    { name = "msgspecerror", specifier = ">=0.21.1.1" },
-    { name = "numpy", marker = "extra == 'image'" },
-    { name = "opencv-python-headless", marker = "extra == 'image'" },
-    { name = "psutil" },
-    { name = "pyjwt", marker = "extra == 'backend'", specifier = ">=2.9.0" },
-    { name = "pytest", marker = "extra == 'test'", specifier = ">=8.3.4" },
-    { name = "pytest-trio", marker = "extra == 'test'", specifier = ">=0.8.0" },
-    { name = "pyyaml", specifier = ">=6.0" },
-    { name = "rich", specifier = ">=14.1.0,<=15.0.0" },
-    { name = "ruff", marker = "extra == 'test'", specifier = ">=0.16.0" },
-    { name = "starlette", marker = "extra == 'backend'", specifier = ">=0.44.0" },
-    { name = "trio", marker = "extra == 'backend'", specifier = ">=0.27.0" },
-    { name = "typing-extensions" },
-    { name = "zstandard", specifier = ">=0.23.0" },
-]
-provides-extras = ["image", "backend", "test", "all"]
 
 [[package]]
 name = "annotated-types"
@@ -139,7 +113,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "adbutils", specifier = "==2.12.0" },
-    { name = "alasio", extras = ["backend"], editable = "../Alasio" },
+    { name = "alasio", extras = ["backend"], git = "https://github.com/Rea1-ms/Alasio.git?branch=aes" },
     { name = "av", specifier = ">=16.1.0" },
     { name = "inflection", specifier = "==0.5.1" },
     { name = "jellyfish", specifier = "==0.11.2" },

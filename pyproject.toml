@@ -28,4 +28,4 @@ dependencies = [
 ]
 
 [tool.uv.sources]
-alasio = { path = "../Alasio", editable = true }
+alasio = { git = "https://github.com/Rea1-ms/Alasio.git", branch = "aes" }
