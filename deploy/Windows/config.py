@@ -24,6 +24,7 @@ class ConfigModel:
 
     # Python
     PythonExecutable: str = "./toolkit/python.exe"
+    UvExecutable: Optional[str] = None
     PypiMirror: Optional[str] = None
     InstallDependencies: bool = True
     RequirementsFile: str = "requirements.txt"
@@ -94,7 +95,7 @@ class DeployConfig(ConfigModel):
                 continue
             logger.info(f"{k}: {v}")
 
-        logger.info(f"Rest of the configs are the same as default")
+        logger.info("Rest of the configs are the same as default")
 
     def read(self):
         """
@@ -241,7 +242,7 @@ class DeployConfig(ConfigModel):
                 self.show_error(command)
                 raise ExecutionError
         else:
-            logger.info(f"[ success ]")
+            logger.info("[ success ]")
             return True
 
     def subprocess_execute(self, cmd, timeout=10):

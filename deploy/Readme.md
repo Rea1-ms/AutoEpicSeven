@@ -2,7 +2,11 @@
 
 This directory holds the Alas installer.
 
-Install Alas by running `python -m deploy.installer` in Alas root folder.
+Install Alas by running `python -m deploy.installer` in Alas root folder. The
+installer exports `requirements.txt` from `uv.lock`, then synchronizes the
+current Python environment with `uv`. It looks for `toolkit/uv.exe` first and
+falls back to `uv` from `PATH`; `UvExecutable` can override the location in
+`config/deploy.yaml`.
 
 
 
