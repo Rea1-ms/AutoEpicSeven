@@ -3,11 +3,12 @@ param(
     [Parameter(Mandatory = $true)]
     [string]$WebAppPath,
 
+    [Parameter(Mandatory = $true)]
+    [string]$PortablePythonPath,
+
     [string]$OutputRoot,
 
-    [string]$ReleaseName,
-
-    [string]$PythonVersion = "3.10.19"
+    [string]$ReleaseName
 )
 
 Set-StrictMode -Version Latest
@@ -32,6 +33,37 @@ foreach ($requiredWebAppFile in @($webAppExecutable, $webAppAsar)) {
         throw "WebApp build is incomplete, missing: $requiredWebAppFile"
     }
 }
+
+$portablePythonSource = (Resolve-Path -LiteralPath $PortablePythonPath).Path
+if (-not (Test-Path -LiteralPath $portablePythonSource -PathType Container)) {
+    throw "Portable Python source is not a directory: $portablePythonSource"
+}
+$portablePythonExecutable = Join-Path $portablePythonSource "python.exe"
+if (-not (Test-Path -LiteralPath $portablePythonExecutable -PathType Leaf)) {
+    throw "Portable Python source is incomplete, missing: $portablePythonExecutable"
+}
+if (Test-Path -LiteralPath (Join-Path $portablePythonSource "WebApp")) {
+    throw "PortablePythonPath must not contain WebApp; pass a Python runtime directory only."
+}
+
+$pythonInfoJson = (& $portablePythonExecutable -c "import json, platform, sys; print(json.dumps({'implementation': platform.python_implementation(), 'major': sys.version_info.major, 'minor': sys.version_info.minor, 'patch': sys.version_info.micro, 'architecture': platform.architecture()[0]}))" | Out-String).Trim()
+if ($LASTEXITCODE -ne 0 -or -not $pythonInfoJson) {
+    throw "Portable Python could not be inspected: $portablePythonExecutable"
+}
+$pythonInfo = $pythonInfoJson | ConvertFrom-Json
+if (
+    $pythonInfo.implementation -ne "CPython" -or
+    $pythonInfo.major -ne 3 -or
+    $pythonInfo.minor -ne 10 -or
+    $pythonInfo.architecture -ne "64bit"
+) {
+    throw "Portable Python must be 64-bit CPython 3.10.x, found: $pythonInfoJson"
+}
+& $portablePythonExecutable -c "import bz2, ctypes, ensurepip, lzma, multiprocessing, sqlite3, ssl, venv"
+if ($LASTEXITCODE -ne 0) {
+    throw "Portable Python is missing required standard-library components."
+}
+$pythonVersion = "$($pythonInfo.major).$($pythonInfo.minor).$($pythonInfo.patch)"
 
 & git -C $projectRoot diff --quiet
 if ($LASTEXITCODE -ne 0) {
@@ -76,47 +108,29 @@ foreach ($privateRelativePath in @("config\deploy.yaml", "config\aes.db", "confi
     }
 }
 
-Write-Host "Locating uv-managed CPython $PythonVersion"
-& uv python install $PythonVersion
-if ($LASTEXITCODE -ne 0) {
-    throw "uv could not install CPython $PythonVersion. Partial outputs were kept in: $OutputRoot"
-}
-
-$pythonListJson = (& uv python list --only-installed --managed-python --output-format json $PythonVersion | Out-String)
-if ($LASTEXITCODE -ne 0) {
-    throw "uv could not list managed Python installations."
-}
-$pythonInstall = @($pythonListJson | ConvertFrom-Json) |
-    Where-Object {
-        $_.version -eq $PythonVersion -and
-        $_.implementation -eq "cpython" -and
-        $_.os -eq "windows" -and
-        $_.arch -eq "x86_64" -and
-        $_.path
-    } |
-    Select-Object -First 1
-if (-not $pythonInstall) {
-    throw "No uv-managed 64-bit Windows CPython $PythonVersion installation was found."
-}
-
-$pythonHome = Split-Path -Parent $pythonInstall.path
 $toolkitPath = Join-Path $releasePath "toolkit"
-Write-Host "Copying the managed Python runtime"
-Copy-Item -LiteralPath $pythonHome -Destination $toolkitPath -Recurse
+Write-Host "Copying portable CPython $pythonVersion"
+Copy-Item -LiteralPath $portablePythonSource -Destination $toolkitPath -Recurse
 
 $releasePython = Join-Path $toolkitPath "python.exe"
 if (-not (Test-Path -LiteralPath $releasePython -PathType Leaf)) {
     throw "The copied Python runtime is incomplete: $releasePython"
 }
 
+$releaseUv = Join-Path $toolkitPath "uv.exe"
+if (-not (Test-Path -LiteralPath $releaseUv -PathType Leaf)) {
+    $uvCommand = Get-Command uv -CommandType Application -ErrorAction Stop
+    Copy-Item -LiteralPath $uvCommand.Source -Destination $releaseUv
+}
+
 Write-Host "Exporting dependencies from uv.lock"
-& uv export --project $projectRoot --frozen --no-dev --no-emit-project --format requirements.txt --output-file $requirementsPath
+& $releaseUv --quiet export --project $projectRoot --frozen --no-dev --no-emit-project --format requirements.txt --output-file $requirementsPath
 if ($LASTEXITCODE -ne 0) {
     throw "uv export failed. uv.lock was not changed."
 }
 
 Write-Host "Installing the locked dependencies into the release runtime"
-& uv pip sync --python $releasePython --strict --link-mode copy $requirementsPath
+& $releaseUv pip sync --python $releasePython --strict --link-mode copy $requirementsPath
 if ($LASTEXITCODE -ne 0) {
     throw "uv pip sync failed. Partial outputs were kept in: $OutputRoot"
 }
@@ -130,6 +144,7 @@ $requiredReleaseFiles = @(
     "config\deploy.template.yaml",
     "config\deploy.template-cn.yaml",
     "toolkit\python.exe",
+    "toolkit\uv.exe",
     "toolkit\Lib\site-packages\adbutils\binaries\adb.exe",
     "toolkit\WebApp\Alasio.exe",
     "toolkit\WebApp\resources\app.asar"
@@ -158,7 +173,10 @@ finally {
 $manifest = [ordered]@{
     project = "AutoEpicSeven"
     project_commit = $projectCommit
-    python_version = $PythonVersion
+    python_distribution = "portable"
+    python_version = $pythonVersion
+    python_executable_sha256 = (Get-FileHash -LiteralPath $releasePython -Algorithm SHA256).Hash.ToLowerInvariant()
+    uv_executable_sha256 = (Get-FileHash -LiteralPath $releaseUv -Algorithm SHA256).Hash.ToLowerInvariant()
     source_archive_sha256 = (Get-FileHash -LiteralPath $sourceArchivePath -Algorithm SHA256).Hash.ToLowerInvariant()
     requirements_sha256 = (Get-FileHash -LiteralPath $requirementsPath -Algorithm SHA256).Hash.ToLowerInvariant()
     uv_lock_sha256 = (Get-FileHash -LiteralPath (Join-Path $releasePath "uv.lock") -Algorithm SHA256).Hash.ToLowerInvariant()
