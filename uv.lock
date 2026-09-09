@@ -28,7 +28,7 @@ wheels = [
 [[package]]
 name = "alasio"
 version = "0.1.0"
-source = { git = "https://github.com/Rea1-ms/Alasio.git?branch=aes#0f9c9578ceb3a4458d3fb93d541a4d2f327640b6" }
+source = { git = "https://github.com/Rea1-ms/Alasio.git?branch=aes#fc6ce5f13cdc39cec7d91fe58831193c8ebeb5b5" }
 dependencies = [
     { name = "colorama" },
     { name = "exceptiongroup" },
