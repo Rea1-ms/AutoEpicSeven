@@ -1,8 +1,11 @@
 * text=auto
+.gitattributes text eol=lf
 *.jpg -text
 *.png -text
 *.bat text eol=crlf
 *.txt text eol=lf
+*.md text eol=lf
+*.ps1 text eol=lf
 *.sh text eol=lf
 *.js text eol=lf
 *.ts text eol=lf
