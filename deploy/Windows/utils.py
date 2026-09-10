@@ -96,6 +96,11 @@ def poor_yaml_write(data, file, template_file=DEPLOY_TEMPLATE):
         file (str):
         template_file (str):
     """
+    if os.path.basename(os.path.normpath(file)).lower() == 'deploy.yaml':
+        raise RuntimeError(
+            'The legacy YAML writer cannot write deploy.yaml; use the Alasio config writer'
+        )
+
     text = atomic_read_text(template_file)
     text = text.replace('\\', '/')
 

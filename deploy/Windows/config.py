@@ -1,15 +1,21 @@
-import copy
 import os
 import subprocess
 import sys
 from typing import Optional, Union
 
 from deploy.Windows.logger import logger
-from deploy.Windows.utils import DEPLOY_CONFIG, DEPLOY_TEMPLATE, cached_property, poor_yaml_read, poor_yaml_write
+from deploy.Windows.utils import DEPLOY_CONFIG, cached_property
 
 
 class ExecutionError(Exception):
     pass
+
+
+def _current_config_paths():
+    """Return legacy flat option names mapped to the Alasio config model."""
+    from alasio.deploy.config.legacy import LEGACY_PATHS
+
+    return {legacy_path[-1]: current_path for current_path, legacy_path in LEGACY_PATHS.items()}
 
 
 class ConfigModel:
@@ -99,12 +105,27 @@ class DeployConfig(ConfigModel):
 
     def read(self):
         """
-        Read and update deploy config, copy `self.configs` to properties.
+        Read deploy settings through Alasio's current config model.
         """
-        self.config = poor_yaml_read(DEPLOY_TEMPLATE)
-        self.config_template = copy.deepcopy(self.config)
-        origin = poor_yaml_read(self.file)
-        self.config.update(origin)
+        from alasio.deploy.config.legacy import is_legacy_deploy_config
+        from alasio.deploy.config.model import DeployModel
+        from alasio.ext.file.yamlconfig import YamlConfig
+
+        if is_legacy_deploy_config(self.file):
+            raise ExecutionError(
+                'Legacy deploy config is no longer writable; use the current Alasio schema'
+            )
+        self._yaml_config = YamlConfig(self.file, model=DeployModel)
+        paths = _current_config_paths()
+        defaults = DeployModel()
+        self.config = {
+            name: self._get_model_value(self._yaml_config.data, path)
+            for name, path in paths.items()
+        }
+        self.config_template = {
+            name: self._get_model_value(defaults, path)
+            for name, path in paths.items()
+        }
 
         for key, value in self.config.items():
             if hasattr(self, key):
@@ -112,11 +133,30 @@ class DeployConfig(ConfigModel):
 
         self.config_redirect()
 
-        if self.config != origin:
-            self.write()
+    @staticmethod
+    def _get_model_value(data, path):
+        value = data
+        for key in path:
+            value = getattr(value, key)
+        return value
+
+    def set(self, key, value):
+        path = _current_config_paths().get(key)
+        if path is None:
+            return False
+        if not self._yaml_config.set(path, value):
+            return False
+        self.config[key] = value
+        super().__setattr__(key, value)
+        return True
 
     def write(self):
-        poor_yaml_write(self.config, self.file)
+        paths = _current_config_paths()
+        for key, value in self.config.items():
+            path = paths.get(key)
+            if path is not None and not self._yaml_config.set(path, value):
+                raise ExecutionError(f'Invalid deploy config value: {key}')
+        return self._yaml_config.write()
 
     def config_redirect(self):
         """

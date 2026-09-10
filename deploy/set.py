@@ -1,7 +1,7 @@
 import sys
 import typing as t
 
-from deploy.Windows.utils import poor_yaml_read, poor_yaml_write, DEPLOY_TEMPLATE
+from deploy.Windows.config import DeployConfig
 
 """
 Set config/deploy.yaml with commands like
@@ -30,16 +30,26 @@ def config_set(modify: t.Dict[str, str], output='./config/deploy.yaml') -> t.Dic
     Returns:
         The updated key-value in deploy.yaml
     """
-    data = poor_yaml_read(DEPLOY_TEMPLATE)
-    data.update(poor_yaml_read(output))
+    config = DeployConfig(file=output)
     for k, v in modify.items():
-        if k in data:
+        if k in config.config:
+            default = getattr(config, k)
+            if isinstance(default, bool):
+                value = v.lower() == 'true'
+            elif isinstance(default, int):
+                value = int(v)
+            elif v.lower() == 'null':
+                value = None
+            else:
+                value = v
+            if not config.set(k, value):
+                print(f'Value for key "{k}" is invalid')
+                continue
             print(f'Key "{k}" set')
-            data[k] = v
         else:
             print(f'Key "{k}" not exist')
-    poor_yaml_write(data, file=output)
-    return data
+    config.write()
+    return config.config
 
 
 if __name__ == '__main__':
