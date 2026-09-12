@@ -11,10 +11,6 @@ from PIL import Image  # noqa: E402
 from dev_tools.capture_utils import handle_sensitive_info  # noqa: E402
 from module.config.config import AzurLaneConfig  # noqa: E402
 from module.config.utils import alas_instance  # noqa: E402
-from module.device.pkg_resources import get_distribution  # noqa: E402
-
-# Patch pkg_resources before importing the connection layer and uiautomator2.
-_ = get_distribution
 
 from module.device.connection import Connection, ConnectionAttr  # noqa: E402
 from module.device.device import Device  # noqa: E402
