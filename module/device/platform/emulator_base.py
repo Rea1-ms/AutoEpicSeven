@@ -1,6 +1,6 @@
 import os
 import re
-import typing as t
+from collections.abc import Iterable
 from dataclasses import dataclass
 
 from module.device.platform.utils import cached_property, iter_folder
@@ -174,14 +174,14 @@ class EmulatorBase:
         """
         return ''
 
-    def iter_instances(self) -> t.Iterable[EmulatorInstanceBase]:
+    def iter_instances(self) -> Iterable[EmulatorInstanceBase]:
         """
         Yields:
             EmulatorInstance: Emulator instances found in this emulator
         """
         pass
 
-    def iter_adb_binaries(self) -> t.Iterable[str]:
+    def iter_adb_binaries(self) -> Iterable[str]:
         """
         Yields:
             str: Filepath to adb binaries found in this emulator
@@ -256,21 +256,21 @@ class EmulatorManagerBase:
         return
 
     @cached_property
-    def all_emulators(self) -> t.List[EmulatorBase]:
+    def all_emulators(self) -> list[EmulatorBase]:
         """
         Get all emulators installed on current computer.
         """
         return []
 
     @cached_property
-    def all_emulator_instances(self) -> t.List[EmulatorInstanceBase]:
+    def all_emulator_instances(self) -> list[EmulatorInstanceBase]:
         """
         Get all emulator instances installed on current computer.
         """
         return []
 
     @cached_property
-    def all_emulator_serials(self) -> t.List[str]:
+    def all_emulator_serials(self) -> list[str]:
         """
         Returns:
             list[str]: All possible serials on current computer.
@@ -285,7 +285,7 @@ class EmulatorManagerBase:
         return out
 
     @cached_property
-    def all_adb_binaries(self) -> t.List[str]:
+    def all_adb_binaries(self) -> list[str]:
         """
         Returns:
             list[str]: All adb binaries of emulators on current computer.

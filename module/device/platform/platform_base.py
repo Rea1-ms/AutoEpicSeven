@@ -1,5 +1,4 @@
 import sys
-import typing as t
 
 from pydantic import BaseModel
 
@@ -93,7 +92,7 @@ class PlatformBase(Connection, EmulatorManagerBase):
         )
 
     @cached_property
-    def emulator_instance(self) -> t.Optional[EmulatorInstanceBase]:
+    def emulator_instance(self) -> EmulatorInstanceBase | None:
         """
         Returns:
             EmulatorInstanceBase: Emulator instance or None
@@ -139,7 +138,7 @@ class PlatformBase(Connection, EmulatorManagerBase):
             name: str = None,
             path: str = None,
             emulator: str = None
-    ) -> t.Optional[EmulatorInstanceBase]:
+    ) -> EmulatorInstanceBase | None:
         """
         Args:
             serial: Serial like "127.0.0.1:5555"
