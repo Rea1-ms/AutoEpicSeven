@@ -2,7 +2,6 @@ import socket
 import struct
 import threading
 import time
-import typing as t
 from time import sleep
 
 import numpy as np
@@ -28,17 +27,17 @@ class ScrcpyCore(Connection):
     Module from https://github.com/leng-yue/py-scrcpy-client
     """
 
-    _scrcpy_last_frame: t.Optional[np.ndarray] = None
+    _scrcpy_last_frame: np.ndarray | None = None
     _scrcpy_last_frame_time: float = 0.
 
     _scrcpy_alive = False
-    _scrcpy_server_stream: t.Optional[AdbConnection] = None
-    _scrcpy_video_socket: t.Optional[socket.socket] = None
-    _scrcpy_control_socket: t.Optional[socket.socket] = None
+    _scrcpy_server_stream: AdbConnection | None = None
+    _scrcpy_video_socket: socket.socket | None = None
+    _scrcpy_control_socket: socket.socket | None = None
     _scrcpy_control_socket_lock = threading.Lock()
 
     _scrcpy_stream_loop_thread = None
-    _scrcpy_resolution: t.Tuple[int, int] = (1280, 720)
+    _scrcpy_resolution: tuple[int, int] = (1280, 720)
 
     @cached_property
     def _scrcpy_control(self) -> ControlSender:

@@ -1,5 +1,3 @@
-import typing as t
-
 import module.device.method.scrcpy.const as const
 
 
@@ -40,7 +38,7 @@ class ScrcpyOptions:
         return ','.join([f'{k}={v}' for k, v in options.items()])
 
     @classmethod
-    def arguments(cls) -> t.List[str]:
+    def arguments(cls) -> list[str]:
         """
         https://github.com/Genymobile/scrcpy/blob/master/server/src/main/java/com/genymobile/scrcpy/Server.java
         https://github.com/Genymobile/scrcpy/blob/master/server/src/main/java/com/genymobile/scrcpy/Options.java
@@ -87,7 +85,7 @@ class ScrcpyOptions:
         return options
 
     @classmethod
-    def command_v125(cls, jar_path='/data/local/tmp/scrcpy-server.jar') -> t.List[str]:
+    def command_v125(cls, jar_path='/data/local/tmp/scrcpy-server.jar') -> list[str]:
         """
         Generate the commands to run scrcpy.
         """
@@ -102,7 +100,7 @@ class ScrcpyOptions:
         return commands
 
     @classmethod
-    def command_v120(cls, jar_path='/data/local/tmp/scrcpy-server.jar') -> t.List[str]:
+    def command_v120(cls, jar_path='/data/local/tmp/scrcpy-server.jar') -> list[str]:
         commands = [
             f"CLASSPATH={jar_path}",
             "app_process",
