@@ -139,8 +139,18 @@ $webAppDestination = Join-Path $toolkitPath "WebApp"
 Write-Host "Copying the Alasio desktop build"
 Copy-Item -LiteralPath $webAppSource -Destination $webAppDestination -Recurse
 
+$manifestPath = Join-Path $releasePath "release-manifest.json"
+[ordered]@{
+    SchemaVersion = 1
+    ProjectCommit = $projectCommit
+    PythonVersion = $pythonVersion
+    Architecture = $pythonInfo.architecture
+    WebAppSHA256 = (Get-FileHash -LiteralPath (Join-Path $webAppDestination "Alasio.exe") -Algorithm SHA256).Hash
+} | ConvertTo-Json | Set-Content -LiteralPath $manifestPath -Encoding utf8NoBOM
+
 $requiredReleaseFiles = @(
     "gui.py",
+    "release-manifest.json",
     "config\deploy.template.yaml",
     "config\deploy.template-cn.yaml",
     "toolkit\python.exe",
@@ -171,6 +181,7 @@ finally {
 }
 
 $manifest = [ordered]@{
+    schema_version = 1
     project = "AutoEpicSeven"
     project_commit = $projectCommit
     python_distribution = "portable"
