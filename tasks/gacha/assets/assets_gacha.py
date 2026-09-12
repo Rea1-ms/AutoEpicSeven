@@ -47,10 +47,10 @@ GACHA_10_3 = ButtonWrapper(
     name='GACHA_10_3',
     share=Button(
         file='./assets/share/gacha/GACHA_10_3.png',
-        area=(114, 468, 371, 501),
-        search=(94, 448, 391, 521),
-        color=(105, 72, 87),
-        button=(114, 468, 371, 501),
+        area=(102, 476, 391, 514),
+        search=(82, 456, 411, 534),
+        color=(187, 253, 255),
+        button=(102, 476, 391, 514),
     ),
 )
 GACHA_10_4 = ButtonWrapper(
