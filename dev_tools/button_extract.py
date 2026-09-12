@@ -73,10 +73,10 @@ class AssetsImage:
         f'^{AzurLaneConfig.ASSETS_FOLDER}/'
         f'(?P<server>{"|".join(ASSET_SERVER).lower()})/'
         f'(?P<module>[a-zA-Z0-9_/]+?)/'
-        f'(?P<assets>\w+)'
-        f'(?P<frame>\.\d+)?'
-        f'(?P<attr>\.AREA|\.SEARCH|\.COLOR|\.BUTTON|\.GRID)?'
-        f'\.png$'
+        rf'(?P<assets>\w+)'
+        rf'(?P<frame>\.\d+)?'
+        rf'(?P<attr>\.AREA|\.SEARCH|\.COLOR|\.BUTTON|\.GRID)?'
+        rf'\.png$'
     )
 
     def __init__(self, file: str):
