@@ -51,8 +51,8 @@ def retry(func):
                 def init():
                     self.scrcpy_init()
             # AdbTimeout
-            # socket.timeout
-            except (AdbTimeout, socket.timeout) as e:
+            # TimeoutError
+            except (AdbTimeout, TimeoutError) as e:
                 logger.error(e)
 
                 def init():

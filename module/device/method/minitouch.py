@@ -465,7 +465,7 @@ class Minitouch(Connection):
             # protocol version, usually it is 1. needn't use this
             try:
                 out = socket_out.readline().replace("\n", "").replace("\r", "")
-            except socket.timeout:
+            except TimeoutError:
                 client.close()
                 raise MinitouchOccupiedError(
                     'Timeout when connecting to minitouch, '

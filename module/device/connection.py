@@ -554,7 +554,7 @@ class Connection(ConnectionAttr):
         try:
             # Server accept connection
             conn, conn_port = server.accept()
-        except socket.timeout:
+        except TimeoutError:
             output = recv_all(stream, chunk_size=chunk_size)
             logger.warning(str(output))
             raise AdbTimeout('reverse server accept timeout')
