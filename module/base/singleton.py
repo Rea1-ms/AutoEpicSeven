@@ -1,5 +1,5 @@
 import threading
-from typing import Type, TypeVar
+from typing import TypeVar
 
 T = TypeVar('T')
 
@@ -18,7 +18,7 @@ class Singleton(type):
         cls.__instances = None
         cls.__lock = threading.Lock()
 
-    def __call__(cls: Type[T], *args, **kwargs) -> T:
+    def __call__(cls: type[T], *args, **kwargs) -> T:
         # return cached instance directly
         instance = cls.__instances
         if instance is not None:
@@ -58,7 +58,7 @@ class SingletonNamed(type):
         cls.__instances = {}
         cls.__lock = threading.Lock()
 
-    def __call__(cls: Type[T], name, *args, **kwargs) -> T:
+    def __call__(cls: type[T], name, *args, **kwargs) -> T:
         # return cached instance directly
         try:
             return cls.__instances[name]

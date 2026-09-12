@@ -1,4 +1,4 @@
-from typing import Callable
+from collections.abc import Callable
 
 from module.base.base import ModuleBase
 from module.base.utils import color_similarity_2d

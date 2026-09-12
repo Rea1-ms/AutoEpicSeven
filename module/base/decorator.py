@@ -1,7 +1,8 @@
 import random
 import re
+from collections.abc import Callable
 from functools import wraps
-from typing import Callable, Generic, TypeVar
+from typing import Generic, TypeVar
 
 T = TypeVar("T")
 

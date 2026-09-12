@@ -2,7 +2,7 @@ import datetime
 import logging
 import os
 import sys
-from typing import Callable, List
+from collections.abc import Callable
 
 from rich.console import Console, ConsoleOptions, ConsoleRenderable, NewLine
 from rich.highlighter import NullHighlighter, RegexHighlighter
@@ -253,7 +253,7 @@ def set_func_logger(func):
 
 def _get_renderables(
         self: Console, *objects, sep=" ", end="\n", justify=None, emoji=None, markup=None, highlight=None,
-) -> List[ConsoleRenderable]:
+) -> list[ConsoleRenderable]:
     """
     Refer to rich.console.Console.print()
     """
