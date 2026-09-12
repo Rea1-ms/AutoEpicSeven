@@ -20,6 +20,24 @@ def is_background_repeat_combat_active(config) -> bool:
     return any(config.cross_get(path, default=False) for path in BACKGROUND_REPEAT_COMBAT_RUNTIME_PATHS)
 
 
+def background_repeat_combat_requires_game_client(config) -> bool:
+    """
+    Return whether an active background run still depends on the game client.
+
+    Server-managed repeat combat continues after the global client goes
+    offline. Legacy client-managed sessions, including sessions without a
+    recognized mode, must keep the game alive so an upgrade or malformed
+    runtime record cannot silently interrupt an active battle.
+    """
+    for active_path in BACKGROUND_REPEAT_COMBAT_RUNTIME_PATHS:
+        if not config.cross_get(active_path, default=False):
+            continue
+        mode_path = active_path.removesuffix(".active") + ".mode"
+        if config.cross_get(mode_path, default=None) != "repeat_server":
+            return True
+    return False
+
+
 class CombatRuntimeMixin:
     def _combat_runtime_path(self) -> str:
         task = getattr(getattr(self.config, "task", None), "command", "Combat")
