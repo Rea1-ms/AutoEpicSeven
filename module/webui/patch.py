@@ -18,7 +18,7 @@ def wrap(func):
     @wraps(func)
     async def run(*args, loop=None, executor=None, **kwargs):
         if loop is None:
-            loop = asyncio.get_event_loop()
+            loop = asyncio.get_running_loop()
         if executor is None:
             executor = CachedThreadPoolExecutor.executor
         pfunc = partial(func, *args, **kwargs)
@@ -33,9 +33,9 @@ def patch_executor():
     so starlette.staticfiles -> aiofiles won't create tons of threads
     """
     try:
-        import aiofiles
+        import aiofiles  # noqa: F401
     except ImportError:
         return
 
-    loop = asyncio.get_event_loop()
+    loop = asyncio.get_running_loop()
     loop.set_default_executor(CachedThreadPoolExecutor.executor)
