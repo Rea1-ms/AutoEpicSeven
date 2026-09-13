@@ -10,6 +10,31 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
+function Get-DirectoryTreeHash([string]$Path) {
+    $root = (Resolve-Path -LiteralPath $Path).Path.TrimEnd(
+        [System.IO.Path]::DirectorySeparatorChar,
+        [System.IO.Path]::AltDirectorySeparatorChar
+    )
+    $files = @(Get-ChildItem -LiteralPath $root -Recurse -File | Sort-Object FullName)
+    if ($files.Count -eq 0) {
+        throw "Cannot hash an empty directory: $root"
+    }
+
+    $entries = foreach ($file in $files) {
+        $relativePath = $file.FullName.Substring($root.Length + 1).Replace('\', '/')
+        $fileHash = (Get-FileHash -LiteralPath $file.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
+        "$relativePath`t$fileHash`n"
+    }
+    $payload = [System.Text.Encoding]::UTF8.GetBytes(($entries -join ""))
+    $sha256 = [System.Security.Cryptography.SHA256]::Create()
+    try {
+        return ([System.BitConverter]::ToString($sha256.ComputeHash($payload))).Replace("-", "").ToLowerInvariant()
+    }
+    finally {
+        $sha256.Dispose()
+    }
+}
+
 function Resolve-ReleaseDirectory([string]$Path, [string]$Name) {
     $resolved = (Resolve-Path -LiteralPath $Path).Path
     if (-not (Test-Path -LiteralPath $resolved -PathType Container)) {
@@ -60,6 +85,7 @@ $requiredPackageFiles = @(
     "gui.py",
     "release-manifest.json",
     "toolkit\python.exe",
+    "toolkit\Lib\site-packages\frontend\build\index.html",
     "toolkit\WebApp\Alasio.exe",
     "toolkit\WebApp\resources\app.asar"
 )
@@ -105,6 +131,16 @@ foreach ($entry in $manifestFiles.GetEnumerator()) {
     if (-not $actualHash.Equals($manifestProperty.Value, [System.StringComparison]::OrdinalIgnoreCase)) {
         throw "Release package hash mismatch: $($entry.Value)"
     }
+}
+
+$frontendTreeProperty = $manifest.PSObject.Properties["frontend_tree_sha256"]
+if ($null -eq $frontendTreeProperty -or [string]::IsNullOrWhiteSpace($frontendTreeProperty.Value)) {
+    throw "Release manifest is missing hash: frontend_tree_sha256"
+}
+$packageFrontend = Join-Path $packageRoot "toolkit\Lib\site-packages\frontend\build"
+$frontendTreeHash = Get-DirectoryTreeHash $packageFrontend
+if (-not $frontendTreeHash.Equals($frontendTreeProperty.Value, [System.StringComparison]::OrdinalIgnoreCase)) {
+    throw "Release package hash mismatch: toolkit\Lib\site-packages\frontend\build"
 }
 
 $protectedRelativePaths = @(

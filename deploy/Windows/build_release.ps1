@@ -4,6 +4,9 @@ param(
     [string]$WebAppPath,
 
     [Parameter(Mandatory = $true)]
+    [string]$FrontendPath,
+
+    [Parameter(Mandatory = $true)]
     [string]$PortablePythonPath,
 
     [string]$OutputRoot,
@@ -13,6 +16,31 @@ param(
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
+
+function Get-DirectoryTreeHash([string]$Path) {
+    $root = (Resolve-Path -LiteralPath $Path).Path.TrimEnd(
+        [System.IO.Path]::DirectorySeparatorChar,
+        [System.IO.Path]::AltDirectorySeparatorChar
+    )
+    $files = @(Get-ChildItem -LiteralPath $root -Recurse -File | Sort-Object FullName)
+    if ($files.Count -eq 0) {
+        throw "Cannot hash an empty directory: $root"
+    }
+
+    $entries = foreach ($file in $files) {
+        $relativePath = $file.FullName.Substring($root.Length + 1).Replace('\', '/')
+        $fileHash = (Get-FileHash -LiteralPath $file.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
+        "$relativePath`t$fileHash`n"
+    }
+    $payload = [System.Text.Encoding]::UTF8.GetBytes(($entries -join ""))
+    $sha256 = [System.Security.Cryptography.SHA256]::Create()
+    try {
+        return ([System.BitConverter]::ToString($sha256.ComputeHash($payload))).Replace("-", "").ToLowerInvariant()
+    }
+    finally {
+        $sha256.Dispose()
+    }
+}
 
 $projectRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot "..\..")).Path
 
@@ -32,6 +60,22 @@ foreach ($requiredWebAppFile in @($webAppExecutable, $webAppAsar)) {
     if (-not (Test-Path -LiteralPath $requiredWebAppFile -PathType Leaf)) {
         throw "WebApp build is incomplete, missing: $requiredWebAppFile"
     }
+}
+
+$frontendSource = (Resolve-Path -LiteralPath $FrontendPath).Path
+if (-not (Test-Path -LiteralPath $frontendSource -PathType Container)) {
+    throw "Frontend source is not a directory: $frontendSource"
+}
+$frontendIndex = Join-Path $frontendSource "index.html"
+$frontendAssets = Join-Path $frontendSource "_app"
+if (-not (Test-Path -LiteralPath $frontendIndex -PathType Leaf)) {
+    throw "Frontend build is incomplete, missing: $frontendIndex"
+}
+if (-not (Test-Path -LiteralPath $frontendAssets -PathType Container)) {
+    throw "Frontend build is incomplete, missing: $frontendAssets"
+}
+if (-not (Get-ChildItem -LiteralPath $frontendAssets -Recurse -File -Filter "*.js" | Select-Object -First 1)) {
+    throw "Frontend build is incomplete, no JavaScript bundle was found in: $frontendAssets"
 }
 
 $portablePythonSource = (Resolve-Path -LiteralPath $PortablePythonPath).Path
@@ -135,6 +179,12 @@ if ($LASTEXITCODE -ne 0) {
     throw "uv pip sync failed. Partial outputs were kept in: $OutputRoot"
 }
 
+$frontendPackageRoot = Join-Path $toolkitPath "Lib\site-packages\frontend"
+$frontendDestination = Join-Path $frontendPackageRoot "build"
+New-Item -ItemType Directory -Path $frontendPackageRoot -Force | Out-Null
+Write-Host "Copying the Alasio frontend build"
+Copy-Item -LiteralPath $frontendSource -Destination $frontendDestination -Recurse
+
 $webAppDestination = Join-Path $toolkitPath "WebApp"
 Write-Host "Copying the Alasio desktop build"
 Copy-Item -LiteralPath $webAppSource -Destination $webAppDestination -Recurse
@@ -156,6 +206,7 @@ $requiredReleaseFiles = @(
     "toolkit\python.exe",
     "toolkit\uv.exe",
     "toolkit\Lib\site-packages\adbutils\binaries\adb.exe",
+    "toolkit\Lib\site-packages\frontend\build\index.html",
     "toolkit\WebApp\Alasio.exe",
     "toolkit\WebApp\resources\app.asar"
 )
@@ -191,6 +242,7 @@ $manifest = [ordered]@{
     source_archive_sha256 = (Get-FileHash -LiteralPath $sourceArchivePath -Algorithm SHA256).Hash.ToLowerInvariant()
     requirements_sha256 = (Get-FileHash -LiteralPath $requirementsPath -Algorithm SHA256).Hash.ToLowerInvariant()
     uv_lock_sha256 = (Get-FileHash -LiteralPath (Join-Path $releasePath "uv.lock") -Algorithm SHA256).Hash.ToLowerInvariant()
+    frontend_tree_sha256 = Get-DirectoryTreeHash $frontendDestination
     webapp_executable_sha256 = (Get-FileHash -LiteralPath (Join-Path $webAppDestination "Alasio.exe") -Algorithm SHA256).Hash.ToLowerInvariant()
     webapp_asar_sha256 = (Get-FileHash -LiteralPath (Join-Path $webAppDestination "resources\app.asar") -Algorithm SHA256).Hash.ToLowerInvariant()
 }
