@@ -42,6 +42,22 @@ function Get-DirectoryTreeHash([string]$Path) {
     }
 }
 
+function Resolve-GitRepositoryRoot([string]$Path, [string]$Name) {
+    $current = Get-Item -LiteralPath $Path
+    if (-not $current.PSIsContainer) {
+        $current = $current.Directory
+    }
+
+    while ($null -ne $current) {
+        if (Test-Path -LiteralPath (Join-Path $current.FullName ".git")) {
+            return $current.FullName
+        }
+        $current = $current.Parent
+    }
+
+    throw "$Name is not inside a Git repository: $Path"
+}
+
 $projectRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot "..\..")).Path
 
 if (-not $OutputRoot) {
@@ -76,6 +92,29 @@ if (-not (Test-Path -LiteralPath $frontendAssets -PathType Container)) {
 }
 if (-not (Get-ChildItem -LiteralPath $frontendAssets -Recurse -File -Filter "*.js" | Select-Object -First 1)) {
     throw "Frontend build is incomplete, no JavaScript bundle was found in: $frontendAssets"
+}
+
+$webAppRepository = Resolve-GitRepositoryRoot $webAppSource "WebAppPath"
+$frontendRepository = Resolve-GitRepositoryRoot $frontendSource "FrontendPath"
+if (-not $webAppRepository.Equals($frontendRepository, [System.StringComparison]::OrdinalIgnoreCase)) {
+    throw "WebAppPath and FrontendPath must come from the same Alasio repository."
+}
+$alasioRepository = $webAppRepository
+$alasioGitArgs = @("-c", "safe.directory=$alasioRepository", "-C", $alasioRepository)
+$alasioChanges = (& git @alasioGitArgs status --porcelain=v1 --untracked-files=no | Out-String).Trim()
+if ($LASTEXITCODE -ne 0) {
+    throw "Unable to inspect the Alasio repository: $alasioRepository"
+}
+if ($alasioChanges) {
+    throw "Tracked Alasio changes must be committed before assembling a release."
+}
+$alasioCommit = (& git @alasioGitArgs rev-parse HEAD | Out-String).Trim().ToLowerInvariant()
+if ($LASTEXITCODE -ne 0 -or $alasioCommit -notmatch "^[0-9a-f]{40}$") {
+    throw "Unable to read the Alasio commit."
+}
+& git @alasioGitArgs merge-base --is-ancestor $alasioCommit refs/remotes/origin/aes
+if ($LASTEXITCODE -ne 0) {
+    throw "The Alasio commit is not present in origin/aes; push it before assembling a release."
 }
 
 $portablePythonSource = (Resolve-Path -LiteralPath $PortablePythonPath).Path
@@ -191,8 +230,9 @@ Copy-Item -LiteralPath $webAppSource -Destination $webAppDestination -Recurse
 
 $manifestPath = Join-Path $releasePath "release-manifest.json"
 [ordered]@{
-    SchemaVersion = 1
+    SchemaVersion = 2
     ProjectCommit = $projectCommit
+    AlasioCommit = $alasioCommit
     PythonVersion = $pythonVersion
     Architecture = $pythonInfo.architecture
     WebAppSHA256 = (Get-FileHash -LiteralPath (Join-Path $webAppDestination "Alasio.exe") -Algorithm SHA256).Hash
@@ -232,9 +272,10 @@ finally {
 }
 
 $manifest = [ordered]@{
-    schema_version = 1
+    schema_version = 2
     project = "AutoEpicSeven"
     project_commit = $projectCommit
+    alasio_commit = $alasioCommit
     python_distribution = "portable"
     python_version = $pythonVersion
     python_executable_sha256 = (Get-FileHash -LiteralPath $releasePython -Algorithm SHA256).Hash.ToLowerInvariant()

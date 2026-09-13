@@ -35,7 +35,8 @@ CSP 拦截，最终表现为桌面端白屏。Alasio 的 `pnpm package` 已按�
 
 ## 3. 组装发行目录
 
-回到 AutoEpicSeven 仓库，在所有受版本控制的改动均已提交后执行：
+回到 AutoEpicSeven 仓库，在两个仓库的受版本控制改动均已提交后执行。用于构建前端和桌面端的
+Alasio 提交还必须已经推送到 `origin/aes`：
 
 ```powershell
 pwsh -File .\deploy\Windows\build_release.ps1 `
@@ -56,6 +57,9 @@ pwsh -File .\deploy\Windows\build_release.ps1 `
 `toolkit/Lib/site-packages/frontend/build`，并把整棵目录的 SHA-256 写入发行清单；
 更新脚本会在覆盖程序文件前重新核对。
 
+`WebAppPath` 和 `FrontendPath` 必须来自同一个 Alasio 仓库。组装脚本拒绝未提交的已跟踪改动，
+并把当前 Alasio 提交号与 AutoEpicSeven 提交号一起写入发行清单，确保产物能够追溯到两侧源码。
+
 ## 4. 更新并启动现有发行目录
 
 先关闭 AutoEpicSeven 和 Alasio 桌面端，再使用新发行目录更新现有安装目录：
@@ -71,9 +75,9 @@ pwsh -File .\deploy\Windows\update_release.ps1 `
 Windows ACL 和文件属性，任一变化都会终止并报错。新发行目录如果意外包含这些用户数据，
 脚本会在复制前拒绝执行。
 
-复制前还会读取 `release-manifest.json`，确认目录来自 AutoEpicSeven 的完整发行流程，并核对
-便携 Python、uv、锁文件、实际前端、桌面端程序和 `app.asar` 的 SHA-256。文件不完整或内容与
-清单不符时不会开始更新。
+复制前还会读取 `release-manifest.json`，确认目录来自 AutoEpicSeven 的完整发行流程，校验两侧
+源码提交号，并核对便携 Python、uv、锁文件、实际前端、桌面端程序和 `app.asar` 的 SHA-256。
+文件不完整或内容与清单不符时不会开始更新。
 
 更新完成后只从桌面端入口启动：
 

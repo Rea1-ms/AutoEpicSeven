@@ -104,11 +104,21 @@ catch {
     throw "Release manifest is invalid: $manifestPath"
 }
 if (
-    $manifest.schema_version -ne 1 -or
+    $manifest.schema_version -ne 2 -or
     $manifest.project -ne "AutoEpicSeven" -or
     $manifest.python_distribution -ne "portable"
 ) {
     throw "Release manifest does not describe a supported AutoEpicSeven package."
+}
+
+foreach ($commitField in @("project_commit", "alasio_commit")) {
+    $commitProperty = $manifest.PSObject.Properties[$commitField]
+    if (
+        $null -eq $commitProperty -or
+        [string]$commitProperty.Value -notmatch "^[0-9a-fA-F]{40}$"
+    ) {
+        throw "Release manifest has an invalid source commit: $commitField"
+    }
 }
 
 $manifestFiles = [ordered]@{
