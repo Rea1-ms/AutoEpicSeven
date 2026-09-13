@@ -91,6 +91,9 @@ class AesSqliteAdapter:
     config_name = 'alas'
     start_mtime = DEFAULT_TIME
     redirection = []
+    # The new framework has no equivalent setting. Keep the former default as
+    # a non-persisted compatibility value for any remaining legacy consumer.
+    Error_Restart = 'game'
 
     @cached_property
     def _mod(self):
@@ -128,15 +131,17 @@ class AesSqliteAdapter:
 
     def read_file(self, config_name, is_template=False):
         _ensure_env()
-        from alasio.config.table.config import AlasioConfigTable
         from msgspec import NODEFAULT
         from msgspec.structs import asdict
         from msgspecerror import load_msgpack_with_default
 
-        table = AlasioConfigTable(config_name)
         dict_row = {}
-        for row in table.select():
-            dict_row[(row.task, row.group)] = row.value
+        if not is_template:
+            from alasio.config.table.config import AlasioConfigTable
+
+            table = AlasioConfigTable(config_name)
+            for row in table.select():
+                dict_row[(row.task, row.group)] = row.value
 
         def read_group(task_name, group_name, ref):
             model = self._mod.get_group_model(file=ref.file, cls=ref.cls)

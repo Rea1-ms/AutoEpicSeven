@@ -6,13 +6,18 @@ from datetime import datetime, timedelta
 from module.base.decorator import cached_property, del_cached_property
 from module.base.filter import Filter
 import module.config.server as server_
-from module.config.config_generated import GeneratedConfig
 from module.config.config_manual import ManualConfig
-from module.config.config_updater import ensure_time, get_server_next_update, nearest_future
 from module.config.deep import deep_get, deep_set
 from module.config.stored.classes import iter_attribute
 from module.config.stored.stored_generated import StoredGenerated
-from module.config.utils import DEFAULT_TIME, dict_to_kv, path_to_arg
+from module.config.utils import (
+    DEFAULT_TIME,
+    dict_to_kv,
+    ensure_time,
+    get_server_next_update,
+    nearest_future,
+    path_to_arg,
+)
 from module.config_alasio.adapter import AesSqliteAdapter
 from module.exception import RequestHumanTakeover, ScriptError
 from module.logger import logger
@@ -58,7 +63,7 @@ def name_to_function(name):
     return function
 
 
-class AzurLaneConfig(AesSqliteAdapter, ManualConfig, GeneratedConfig):
+class AzurLaneConfig(AesSqliteAdapter, ManualConfig):
     stop_event: threading.Event = None
     bound = {}
 
@@ -83,12 +88,12 @@ class AzurLaneConfig(AesSqliteAdapter, ManualConfig, GeneratedConfig):
         # Modified arguments. Key: Argument path in yaml file. Value: Modified value.
         # All variable modifications will be record here and saved in method `save()`.
         self.modified = {}
-        # Key: Argument name in GeneratedConfig. Value: Path in `data`.
+        # Key: Flat argument name. Value: Path in `data`.
         self.bound = {}
         # If write after every variable modification.
         self.auto_update = True
         # Force override variables
-        # Key: Argument name in GeneratedConfig. Value: Modified value.
+        # Key: Flat argument name. Value: Modified value.
         self.overridden = {}
         # Scheduler queue, will be updated in `get_next_task()`, list of Function objects
         # pending_task: Run time has been reached, but haven't been run due to task scheduling.
@@ -110,6 +115,8 @@ class AzurLaneConfig(AesSqliteAdapter, ManualConfig, GeneratedConfig):
 
     def init_task(self, task=None):
         if self.is_template_config:
+            self.data = self.read_file(self.config_name, is_template=True)
+            self.bind("Alas")
             return
 
         self.load()
