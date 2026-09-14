@@ -18,8 +18,19 @@
       "daily/daily_i18n.json"
     ],
     "config": {
-      "task": ["MissionReward", "Mail", "SanctuaryDaily", "Knights", "Arena", "Store", "SecretShop", "Gacha", "Pets"],
-      "group": [["CommunityAio", "Scheduler"], ["DataUpdate", "Scheduler"], ["PetsGift", "Scheduler"], ["Combat", "Combat"], ["Combat", "Scheduler"], ["SpecialActivity", "GachaResult"], ["SpecialActivity", "Scheduler"], ["SpecialActivity", "SpecialActivity"]]
+      "task": ["MissionReward", "Mail", "DataUpdate", "SanctuaryDaily", "Knights", "Arena", "Store", "SecretShop", "Gacha", "Pets"],
+      "group": [["CommunityAio", "Scheduler"], ["PetsGift", "Scheduler"], ["Combat", "Combat"], ["Combat", "Scheduler"], ["SpecialActivity", "GachaResult"], ["SpecialActivity", "Scheduler"], ["SpecialActivity", "SpecialActivity"]]
+    }
+  },
+  "dashboard": {
+    "file": "dashboard/dashboard_config.json",
+    "i18n": [
+      "alasio/store_i18n.json",
+      "dashboard/dashboard_i18n.json"
+    ],
+    "config": {
+      "task": ["Dashboard"],
+      "group": []
     }
   },
   "monthly": {

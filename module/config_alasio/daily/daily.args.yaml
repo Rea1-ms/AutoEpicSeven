@@ -212,49 +212,6 @@ ActivityRuntime:
       value: 2020-01-01T00:00:00Z
       advanced: true
 
-Dashboard:
-  args:
-    Gold:
-      value: '{}'
-      dt: textarea
-      advanced: true
-    Skystone:
-      value: '{}'
-      dt: textarea
-      advanced: true
-    Stamina:
-      value: '{}'
-      dt: textarea
-      advanced: true
-    EquipmentInventory:
-      value: '{}'
-      dt: textarea
-      advanced: true
-    DailyActivity:
-      value: '{}'
-      dt: textarea
-      advanced: true
-    ArenaRank:
-      value: '{}'
-      dt: textarea
-      advanced: true
-    ArenaFlag:
-      value: '{}'
-      dt: textarea
-      advanced: true
-    ConquestPoint:
-      value: '{}'
-      dt: textarea
-      advanced: true
-    ShadowCommission:
-      value: '{}'
-      dt: textarea
-      advanced: true
-    TeamBattle:
-      value: '{}'
-      dt: textarea
-      advanced: true
-
 # Empty groups for _info
 SanctuaryDaily:
 

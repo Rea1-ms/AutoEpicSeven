@@ -142,16 +142,3 @@ class SpecialActivity(a.GroupBase):
 class ActivityRuntime(a.GroupBase):
     TaskRewardClaimedAt: a.T_DATETIME = a.DEFAULT_TIME
     FreeGacha20CheckedAt: a.T_DATETIME = a.DEFAULT_TIME
-
-
-class Dashboard(a.GroupBase):
-    Gold: str = '{}'
-    Skystone: str = '{}'
-    Stamina: str = '{}'
-    EquipmentInventory: str = '{}'
-    DailyActivity: str = '{}'
-    ArenaRank: str = '{}'
-    ArenaFlag: str = '{}'
-    ConquestPoint: str = '{}'
-    ShadowCommission: str = '{}'
-    TeamBattle: str = '{}'

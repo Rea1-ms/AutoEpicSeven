@@ -22,7 +22,6 @@ CommunityAio:
 DataUpdate:
   groups:
     Scheduler: SchedulerUedit
-    Dashboard:
   displays:
     - info: DataUpdate
       groups: { task: DataUpdate, group: Scheduler }

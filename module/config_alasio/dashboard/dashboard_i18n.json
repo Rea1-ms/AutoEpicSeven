@@ -1,0 +1,114 @@
+{
+  "DashboardText": {
+    "_info": {
+      "zh-CN": {"name": "文本状态", "help": ""},
+      "en-US": {"name": "Text status", "help": ""},
+      "ja-JP": {"name": "テキスト状態", "help": ""},
+      "zh-TW": {"name": "文字狀態", "help": ""}
+    },
+    "Value": {
+      "zh-CN": {"name": "状态", "help": ""},
+      "en-US": {"name": "Status", "help": ""},
+      "ja-JP": {"name": "状態", "help": ""},
+      "zh-TW": {"name": "狀態", "help": ""}
+    }
+  },
+  "Gold": {
+    "_info": {
+      "zh-CN": {"name": "金币", "help": ""},
+      "en-US": {"name": "Gold", "help": ""},
+      "ja-JP": {"name": "ゴールド", "help": ""},
+      "zh-TW": {"name": "金幣", "help": ""}
+    }
+  },
+  "Skystone": {
+    "_info": {
+      "zh-CN": {"name": "天空石", "help": ""},
+      "en-US": {"name": "Skystone", "help": ""},
+      "ja-JP": {"name": "天空石", "help": ""},
+      "zh-TW": {"name": "天空石", "help": ""}
+    }
+  },
+  "Stamina": {
+    "_info": {
+      "zh-CN": {"name": "行动力", "help": ""},
+      "en-US": {"name": "Stamina", "help": ""},
+      "ja-JP": {"name": "行動力", "help": ""},
+      "zh-TW": {"name": "行動力", "help": ""}
+    }
+  },
+  "EquipmentInventory": {
+    "_info": {
+      "zh-CN": {"name": "装备数量", "help": ""},
+      "en-US": {"name": "Equipment count", "help": ""},
+      "ja-JP": {"name": "装備所持数", "help": ""},
+      "zh-TW": {"name": "裝備數量", "help": ""}
+    }
+  },
+  "DailyActivity": {
+    "_info": {
+      "zh-CN": {"name": "每日活跃", "help": ""},
+      "en-US": {"name": "Daily activity", "help": ""},
+      "ja-JP": {"name": "デイリー活動", "help": ""},
+      "zh-TW": {"name": "每日活躍", "help": ""}
+    },
+    "Value": {
+      "zh-CN": {"name": "DailyActivity.Value", "help": ""},
+      "en-US": {"name": "DailyActivity.Value", "help": ""},
+      "ja-JP": {"name": "DailyActivity.Value", "help": ""},
+      "zh-TW": {"name": "DailyActivity.Value", "help": ""}
+    }
+  },
+  "ArenaRank": {
+    "_info": {
+      "zh-CN": {"name": "竞技场通行证等级", "help": ""},
+      "en-US": {"name": "Arena pass level", "help": ""},
+      "ja-JP": {"name": "アリーナ通行証レベル", "help": ""},
+      "zh-TW": {"name": "競技場通行證等級", "help": ""}
+    },
+    "Value": {
+      "zh-CN": {"name": "ArenaRank.Value", "help": ""},
+      "en-US": {"name": "ArenaRank.Value", "help": ""},
+      "ja-JP": {"name": "ArenaRank.Value", "help": ""},
+      "zh-TW": {"name": "ArenaRank.Value", "help": ""}
+    }
+  },
+  "ArenaFlag": {
+    "_info": {
+      "zh-CN": {"name": "竞技场旗帜", "help": ""},
+      "en-US": {"name": "Arena flags", "help": ""},
+      "ja-JP": {"name": "アリーナ旗", "help": ""},
+      "zh-TW": {"name": "競技場旗幟", "help": ""}
+    }
+  },
+  "ConquestPoint": {
+    "_info": {
+      "zh-CN": {"name": "征服点数", "help": ""},
+      "en-US": {"name": "Conquest points", "help": ""},
+      "ja-JP": {"name": "征服ポイント", "help": ""},
+      "zh-TW": {"name": "征服點數", "help": ""}
+    }
+  },
+  "ShadowCommission": {
+    "_info": {
+      "zh-CN": {"name": "暗影情报委托等级", "help": ""},
+      "en-US": {"name": "Shadow commission level", "help": ""},
+      "ja-JP": {"name": "暗影情報依頼レベル", "help": ""},
+      "zh-TW": {"name": "暗影情報委託等級", "help": ""}
+    },
+    "Value": {
+      "zh-CN": {"name": "ShadowCommission.Value", "help": ""},
+      "en-US": {"name": "ShadowCommission.Value", "help": ""},
+      "ja-JP": {"name": "ShadowCommission.Value", "help": ""},
+      "zh-TW": {"name": "ShadowCommission.Value", "help": ""}
+    }
+  },
+  "TeamBattle": {
+    "_info": {
+      "zh-CN": {"name": "团战刀数", "help": ""},
+      "en-US": {"name": "Guild war attacks", "help": ""},
+      "ja-JP": {"name": "ギルド戦残り攻撃回数", "help": ""},
+      "zh-TW": {"name": "團戰刀數", "help": ""}
+    }
+  }
+}
