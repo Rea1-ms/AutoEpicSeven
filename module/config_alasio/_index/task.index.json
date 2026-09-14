@@ -130,7 +130,8 @@
     "group": {
       "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerUedit", "task": "SpecialActivity"},
       "SpecialActivity": {"file": "daily/daily_model.py", "cls": "SpecialActivity", "task": "SpecialActivity"},
-      "GachaResult": {"file": "daily/daily_model.py", "cls": "GachaResult", "task": "SpecialActivity"}
+      "GachaResult": {"file": "daily/daily_model.py", "cls": "GachaResult", "task": "SpecialActivity"},
+      "ActivityRuntime": {"file": "daily/daily_model.py", "cls": "ActivityRuntime", "task": "SpecialActivity"}
     },
     "config": {"task": ["SpecialActivity"], "group": []}
   },

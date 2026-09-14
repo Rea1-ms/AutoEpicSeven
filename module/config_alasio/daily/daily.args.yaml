@@ -203,6 +203,15 @@ SpecialActivity:
     GetFreeGacha: true
     GetEnergyDrink: true
 
+ActivityRuntime:
+  args:
+    TaskRewardClaimedAt:
+      value: 2020-01-01T00:00:00Z
+      advanced: true
+    FreeGacha20CheckedAt:
+      value: 2020-01-01T00:00:00Z
+      advanced: true
+
 Dashboard:
   args:
     Gold:

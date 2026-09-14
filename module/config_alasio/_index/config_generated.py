@@ -91,6 +91,7 @@ class ConfigGenerated(AlasioConfigBase):
     # Scheduler: "alasio.SchedulerUedit"
     SpecialActivity: "daily.SpecialActivity"
     # GachaResult: "daily.GachaResult"
+    ActivityRuntime: "daily.ActivityRuntime"
 
     """
     ========== nav: monthly ==========

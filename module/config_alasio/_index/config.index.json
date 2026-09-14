@@ -18,8 +18,8 @@
       "daily/daily_i18n.json"
     ],
     "config": {
-      "task": ["MissionReward", "Mail", "SanctuaryDaily", "Knights", "Arena", "Store", "SecretShop", "Gacha", "Pets", "SpecialActivity"],
-      "group": [["CommunityAio", "Scheduler"], ["DataUpdate", "Scheduler"], ["PetsGift", "Scheduler"], ["Combat", "Combat"], ["Combat", "Scheduler"]]
+      "task": ["MissionReward", "Mail", "SanctuaryDaily", "Knights", "Arena", "Store", "SecretShop", "Gacha", "Pets"],
+      "group": [["CommunityAio", "Scheduler"], ["DataUpdate", "Scheduler"], ["PetsGift", "Scheduler"], ["Combat", "Combat"], ["Combat", "Scheduler"], ["SpecialActivity", "GachaResult"], ["SpecialActivity", "Scheduler"], ["SpecialActivity", "SpecialActivity"]]
     }
   },
   "monthly": {

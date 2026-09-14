@@ -109,4 +109,10 @@ SpecialActivity:
     Scheduler: SchedulerUedit
     SpecialActivity:
     GachaResult:
-  displays: flat
+    ActivityRuntime:
+  displays:
+    - info: SpecialActivity
+      groups:
+        - { task: SpecialActivity, group: Scheduler }
+        - SpecialActivity
+        - GachaResult

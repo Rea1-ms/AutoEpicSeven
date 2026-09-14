@@ -139,6 +139,11 @@ class SpecialActivity(a.GroupBase):
     GetEnergyDrink: bool = True
 
 
+class ActivityRuntime(a.GroupBase):
+    TaskRewardClaimedAt: a.T_DATETIME = a.DEFAULT_TIME
+    FreeGacha20CheckedAt: a.T_DATETIME = a.DEFAULT_TIME
+
+
 class Dashboard(a.GroupBase):
     Gold: str = '{}'
     Skystone: str = '{}'

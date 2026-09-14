@@ -1919,6 +1919,38 @@
       }
     }
   },
+  "ActivityRuntime": {
+    "_info": {
+      "zh-CN": {
+        "name": "活动运行状态",
+        "help": "特别活动的内部调度状态，不建议手动修改。"
+      },
+      "en-US": {
+        "name": "Activity Runtime",
+        "help": "Internal scheduling state for special activities. Manual edits are not recommended."
+      },
+      "ja-JP": {
+        "name": "イベントランタイム",
+        "help": "特別イベントの内部スケジュール状態です。手動変更は非推奨です。"
+      },
+      "zh-TW": {
+        "name": "活動執行狀態",
+        "help": "特別活動的內部排程狀態，不建議手動修改。"
+      }
+    },
+    "TaskRewardClaimedAt": {
+      "zh-CN": {"name": "任务奖励领取时间", "help": "上次确认活动任务奖励已领取的时间。"},
+      "en-US": {"name": "Task Reward Claimed At", "help": "Last time the activity task reward was confirmed as claimed."},
+      "ja-JP": {"name": "タスク報酬受取時刻", "help": "イベントタスク報酬の受取を最後に確認した時刻です。"},
+      "zh-TW": {"name": "任務獎勵領取時間", "help": "上次確認活動任務獎勵已領取的時間。"}
+    },
+    "FreeGacha20CheckedAt": {
+      "zh-CN": {"name": "20 连检查时间", "help": "上次确认活动免费 20 连奖励状态的时间。"},
+      "en-US": {"name": "20 Summons Checked At", "help": "Last time the free 20-summon activity reward was checked."},
+      "ja-JP": {"name": "無料20連確認時刻", "help": "イベントの無料20連報酬を最後に確認した時刻です。"},
+      "zh-TW": {"name": "20 連檢查時間", "help": "上次確認活動免費 20 連獎勵狀態的時間。"}
+    }
+  },
   "Dashboard": {
     "_info": {
       "zh-CN": {"name": "仪表盘", "help": ""},

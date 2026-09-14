@@ -1,184 +1,260 @@
 {
   "aes": {
     "_info": {
-      "zh-CN": "aes",
-      "en-US": "aes",
-      "ja-JP": "aes",
-      "zh-TW": "aes"
+      "i18n": {
+        "zh-CN": "aes",
+        "en-US": "aes",
+        "ja-JP": "aes",
+        "zh-TW": "aes"
+      }
     },
     "card-Alas-Game": {
-      "zh-CN": "AES设置",
-      "en-US": "AES Settings",
-      "ja-JP": "AES設定",
-      "zh-TW": "AES設定"
+      "i18n": {
+        "zh-CN": "AES设置",
+        "en-US": "AES Settings",
+        "ja-JP": "AES設定",
+        "zh-TW": "AES設定"
+      }
     },
     "card-Alas-Emulator": {
-      "zh-CN": "模拟器设置",
-      "en-US": "Emulator Settings",
-      "ja-JP": "エミュレータ設定",
-      "zh-TW": "模擬器設定"
+      "i18n": {
+        "zh-CN": "模拟器设置",
+        "en-US": "Emulator Settings",
+        "ja-JP": "エミュレータ設定",
+        "zh-TW": "模擬器設定"
+      }
     },
     "card-Alas-EmulatorInfo": {
-      "zh-CN": "模拟器设置",
-      "en-US": "Emulator Settings",
-      "ja-JP": "エミュレータ情報",
-      "zh-TW": "模擬器設定"
+      "i18n": {
+        "zh-CN": "模拟器设置",
+        "en-US": "Emulator Settings",
+        "ja-JP": "エミュレータ情報",
+        "zh-TW": "模擬器設定"
+      }
     },
     "card-Alas-Error": {
-      "zh-CN": "调试设置",
-      "en-US": "Debug Settings",
-      "ja-JP": "デバッグ設定",
-      "zh-TW": "除錯設定"
+      "i18n": {
+        "zh-CN": "调试设置",
+        "en-US": "Debug Settings",
+        "ja-JP": "デバッグ設定",
+        "zh-TW": "除錯設定"
+      }
     },
     "card-Alas-Optimization": {
-      "zh-CN": "优化设置",
-      "en-US": "Optimization Settings",
-      "ja-JP": "最適化設定",
-      "zh-TW": "優化設定"
+      "i18n": {
+        "zh-CN": "优化设置",
+        "en-US": "Optimization Settings",
+        "ja-JP": "最適化設定",
+        "zh-TW": "優化設定"
+      }
     },
     "card-Restart-Restart": {
-      "zh-CN": "异常处理",
-      "en-US": "Error Handling",
-      "ja-JP": "再起動設定",
-      "zh-TW": "除錯"
+      "scheduler": true,
+      "i18n": {
+        "zh-CN": "异常处理",
+        "en-US": "Error Handling",
+        "ja-JP": "再起動設定",
+        "zh-TW": "除錯"
+      }
     }
   },
   "daily": {
     "_info": {
-      "zh-CN": "daily",
-      "en-US": "daily",
-      "ja-JP": "daily",
-      "zh-TW": "daily"
+      "i18n": {
+        "zh-CN": "daily",
+        "en-US": "daily",
+        "ja-JP": "daily",
+        "zh-TW": "daily"
+      }
     },
     "card-MissionReward-MissionReward": {
-      "zh-CN": "任务奖励设置",
-      "en-US": "Mission Reward Settings",
-      "ja-JP": "ミッション報酬設定",
-      "zh-TW": "任務獎勵設定"
+      "scheduler": true,
+      "i18n": {
+        "zh-CN": "任务奖励设置",
+        "en-US": "Mission Reward Settings",
+        "ja-JP": "ミッション報酬設定",
+        "zh-TW": "任務獎勵設定"
+      }
     },
     "card-Mail-Mail": {
-      "zh-CN": "临期邮件设置",
-      "en-US": "Expiring Mail Settings",
-      "ja-JP": "期限間近メール設定",
-      "zh-TW": "臨期郵件設定"
+      "scheduler": true,
+      "i18n": {
+        "zh-CN": "临期邮件设置",
+        "en-US": "Expiring Mail Settings",
+        "ja-JP": "期限間近メール設定",
+        "zh-TW": "臨期郵件設定"
+      }
     },
     "card-CommunityAio-CommunityAio": {
-      "zh-CN": "社区 AIO 设置",
-      "en-US": "Community AIO Settings",
-      "ja-JP": "コミュニティ AIO 設定",
-      "zh-TW": "社群 AIO 設定"
+      "scheduler": true,
+      "i18n": {
+        "zh-CN": "社区 AIO 设置",
+        "en-US": "Community AIO Settings",
+        "ja-JP": "コミュニティ AIO 設定",
+        "zh-TW": "社群 AIO 設定"
+      }
     },
     "card-DataUpdate-DataUpdate": {
-      "zh-CN": "仪表盘更新",
-      "en-US": "Dashboard Upd",
-      "ja-JP": "ダッシュボード更新",
-      "zh-TW": "儀表板更新"
+      "scheduler": true,
+      "i18n": {
+        "zh-CN": "仪表盘更新",
+        "en-US": "Dashboard Upd",
+        "ja-JP": "ダッシュボード更新",
+        "zh-TW": "儀表板更新"
+      }
     },
     "card-SanctuaryDaily-SanctuaryDaily": {
-      "zh-CN": "圣域-日常",
-      "en-US": "Sanctuary Daily",
-      "ja-JP": "聖域-デイリー",
-      "zh-TW": "聖域-日常"
+      "scheduler": true,
+      "i18n": {
+        "zh-CN": "圣域-日常",
+        "en-US": "Sanctuary Daily",
+        "ja-JP": "聖域-デイリー",
+        "zh-TW": "聖域-日常"
+      }
     },
     "card-Knights-Knights": {
-      "zh-CN": "骑士团设置",
-      "en-US": "Guild Settings",
-      "ja-JP": "ギルド設定",
-      "zh-TW": "騎士團設定"
+      "scheduler": true,
+      "i18n": {
+        "zh-CN": "骑士团设置",
+        "en-US": "Guild Settings",
+        "ja-JP": "ギルド設定",
+        "zh-TW": "騎士團設定"
+      }
     },
     "card-Knights-KnightsTeamBattle": {
-      "zh-CN": "骑士团团战",
-      "en-US": "Guild War",
-      "ja-JP": "ギルド戦",
-      "zh-TW": "騎士團團戰"
+      "i18n": {
+        "zh-CN": "骑士团团战",
+        "en-US": "Guild War",
+        "ja-JP": "ギルド戦",
+        "zh-TW": "騎士團團戰"
+      }
     },
     "card-Arena-Arena": {
-      "zh-CN": "竞技场设置",
-      "en-US": "Arena",
-      "ja-JP": "アリーナ設定",
-      "zh-TW": "競技場設定"
+      "scheduler": true,
+      "i18n": {
+        "zh-CN": "竞技场设置",
+        "en-US": "Arena",
+        "ja-JP": "アリーナ設定",
+        "zh-TW": "競技場設定"
+      }
     },
     "card-Store-Store": {
-      "zh-CN": "商店",
-      "en-US": "Store",
-      "ja-JP": "ショップ",
-      "zh-TW": "商店"
+      "scheduler": true,
+      "i18n": {
+        "zh-CN": "商店",
+        "en-US": "Store",
+        "ja-JP": "ショップ",
+        "zh-TW": "商店"
+      }
     },
     "card-Store-StoreWeekly": {
-      "zh-CN": "商店每周购买",
-      "en-US": "Store Weekly Purchases",
-      "ja-JP": "ショップ毎週購入",
-      "zh-TW": "商店每週購買"
+      "i18n": {
+        "zh-CN": "商店每周购买",
+        "en-US": "Store Weekly Purchases",
+        "ja-JP": "ショップ毎週購入",
+        "zh-TW": "商店每週購買"
+      }
     },
     "card-PetsGift-PetsGift": {
-      "zh-CN": "宠物礼物设置",
-      "en-US": "Pet Gift Settings",
-      "ja-JP": "ペットギフト設定",
-      "zh-TW": "寵物禮物設定"
+      "scheduler": true,
+      "i18n": {
+        "zh-CN": "宠物礼物设置",
+        "en-US": "Pet Gift Settings",
+        "ja-JP": "ペットギフト設定",
+        "zh-TW": "寵物禮物設定"
+      }
     },
     "card-SecretShop-SecretShop": {
-      "zh-CN": "秘密商店设置",
-      "en-US": "Secret Shop Settings",
-      "ja-JP": "秘密商店設定",
-      "zh-TW": "秘密商店設定"
+      "scheduler": true,
+      "i18n": {
+        "zh-CN": "秘密商店设置",
+        "en-US": "Secret Shop Settings",
+        "ja-JP": "秘密商店設定",
+        "zh-TW": "秘密商店設定"
+      }
     },
     "card-Combat-Combat": {
-      "zh-CN": "战斗副本设置",
-      "en-US": "Combat Settings",
-      "ja-JP": "戦闘設定",
-      "zh-TW": "戰鬥副本設定"
+      "scheduler": true,
+      "i18n": {
+        "zh-CN": "战斗副本设置",
+        "en-US": "Combat Settings",
+        "ja-JP": "戦闘設定",
+        "zh-TW": "戰鬥副本設定"
+      }
     },
     "card-Gacha-Gacha": {
-      "zh-CN": "召唤设置",
-      "en-US": "Gacha Settings",
-      "ja-JP": "召喚設定",
-      "zh-TW": "召喚設定"
+      "scheduler": true,
+      "i18n": {
+        "zh-CN": "召唤设置",
+        "en-US": "Gacha Settings",
+        "ja-JP": "召喚設定",
+        "zh-TW": "召喚設定"
+      }
     },
     "card-Pets-Pets": {
-      "zh-CN": "宠物商店",
-      "en-US": "Pet Shop",
-      "ja-JP": "ペットショップ",
-      "zh-TW": "寵物商店"
+      "scheduler": true,
+      "i18n": {
+        "zh-CN": "宠物商店",
+        "en-US": "Pet Shop",
+        "ja-JP": "ペットショップ",
+        "zh-TW": "寵物商店"
+      }
     },
     "card-SpecialActivity-SpecialActivity": {
-      "zh-CN": "特别活动",
-      "en-US": "Special Activity",
-      "ja-JP": "特別イベント",
-      "zh-TW": "特別活動"
+      "scheduler": true,
+      "i18n": {
+        "zh-CN": "特别活动",
+        "en-US": "Special Activity",
+        "ja-JP": "特別イベント",
+        "zh-TW": "特別活動"
+      }
     }
   },
   "monthly": {
     "_info": {
-      "zh-CN": "monthly",
-      "en-US": "monthly",
-      "ja-JP": "monthly",
-      "zh-TW": "monthly"
+      "i18n": {
+        "zh-CN": "monthly",
+        "en-US": "monthly",
+        "ja-JP": "monthly",
+        "zh-TW": "monthly"
+      }
     },
     "card-SanctuaryMonthly-SanctuaryMonthly": {
-      "zh-CN": "圣域-月常设置",
-      "en-US": "Sanctuary Monthly",
-      "ja-JP": "聖域-マンスリー設定",
-      "zh-TW": "聖域-月常設定"
+      "scheduler": true,
+      "i18n": {
+        "zh-CN": "圣域-月常设置",
+        "en-US": "Sanctuary Monthly",
+        "ja-JP": "聖域-マンスリー設定",
+        "zh-TW": "聖域-月常設定"
+      }
     }
   },
   "tool": {
     "_info": {
-      "zh-CN": "tool",
-      "en-US": "tool",
-      "ja-JP": "tool",
-      "zh-TW": "tool"
+      "i18n": {
+        "zh-CN": "tool",
+        "en-US": "tool",
+        "ja-JP": "tool",
+        "zh-TW": "tool"
+      }
     },
     "card-CombatFarm-CombatFarm": {
-      "zh-CN": "反复刷取",
-      "en-US": "Repeat Farming",
-      "ja-JP": "反復周回",
-      "zh-TW": "反覆刷取"
+      "scheduler": true,
+      "i18n": {
+        "zh-CN": "反复刷取",
+        "en-US": "Repeat Farming",
+        "ja-JP": "反復周回",
+        "zh-TW": "反覆刷取"
+      }
     },
     "card-CommunityAuth-CommunityAuth": {
-      "zh-CN": "社区登录",
-      "en-US": "Community Login",
-      "ja-JP": "コミュニティログイン",
-      "zh-TW": "社群登入"
+      "scheduler": true,
+      "i18n": {
+        "zh-CN": "社区登录",
+        "en-US": "Community Login",
+        "ja-JP": "コミュニティログイン",
+        "zh-TW": "社群登入"
+      }
     }
   }
 }
