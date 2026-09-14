@@ -1,0 +1,57 @@
+DashboardText:
+  parent: DashboardBase
+  dashboard: value
+  args:
+    Value: ''
+
+Gold:
+  parent: DashboardAmount
+  dashboard_color: '#F5C451'
+
+Skystone:
+  parent: DashboardAmount
+  dashboard_color: '#71B7FF'
+
+Stamina:
+  parent: DashboardDynamicTotal
+  dashboard_color: '#72C47A'
+
+EquipmentInventory:
+  parent: DashboardDynamicTotal
+  dashboard_color: '#A8B3BE'
+
+DailyActivity:
+  parent: DashboardTotal
+  dashboard_color: '#FF8B66'
+  args:
+    Value:
+      value: 0
+      range: 0~100
+
+ArenaRank:
+  parent: DashboardTotal
+  dashboard_color: '#9879D3'
+  args:
+    Value:
+      value: 0
+      range: 0~38
+
+ArenaFlag:
+  parent: DashboardDynamicTotal
+  dashboard_color: '#EF6666'
+
+ConquestPoint:
+  parent: DashboardAmount
+  dashboard_color: '#58A6E7'
+
+ShadowCommission:
+  parent: DashboardTotal
+  dashboard_color: '#75899A'
+  args:
+    Value:
+      value: 0
+      range: 0~30
+
+TeamBattle:
+  parent: DashboardText
+  dashboard_color: '#A968C5'

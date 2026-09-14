@@ -1,0 +1,13 @@
+Dashboard:
+  global_bind: true
+  groups:
+    Gold:
+    Skystone:
+    Stamina:
+    EquipmentInventory:
+    DailyActivity:
+    ArenaRank:
+    ArenaFlag:
+    ConquestPoint:
+    ShadowCommission:
+    TeamBattle:

@@ -7,6 +7,7 @@ from ..const import entry
 if t.TYPE_CHECKING:
     from ..aes import aes_model as aes
     from ..daily import daily_model as daily
+    from ..dashboard import dashboard_model as dashboard
     from ..monthly import monthly_model as monthly
     from ..tool import tool_model as tool
 
@@ -46,7 +47,6 @@ class ConfigGenerated(AlasioConfigBase):
 
     # ----- DataUpdate -----
     # Scheduler: "alasio.SchedulerUedit"
-    Dashboard: "daily.Dashboard"
 
     # ----- SanctuaryDaily -----
     # Scheduler: "alasio.SchedulerUedit"
@@ -111,3 +111,18 @@ class ConfigGenerated(AlasioConfigBase):
     # ----- CommunityAuth -----
     # Scheduler: "alasio.SchedulerUedit"
     CommunityAuth: "tool.CommunityAuth"
+
+    """
+    ========== nav: dashboard ==========
+    """
+    # ----- Dashboard -----
+    Gold: "dashboard.Gold"
+    Skystone: "dashboard.Skystone"
+    Stamina: "dashboard.Stamina"
+    EquipmentInventory: "dashboard.EquipmentInventory"
+    DailyActivity: "dashboard.DailyActivity"
+    ArenaRank: "dashboard.ArenaRank"
+    ArenaFlag: "dashboard.ArenaFlag"
+    ConquestPoint: "dashboard.ConquestPoint"
+    ShadowCommission: "dashboard.ShadowCommission"
+    TeamBattle: "dashboard.TeamBattle"

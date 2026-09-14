@@ -106,7 +106,11 @@ def main():
     elif not env.PROJECT_ROOT:
         env.set_project_root(env.ALASIO_ROOT)
 
-    from module.config_alasio.adapter import AesSqliteAdapter, ConfigAdapterError
+    from module.config_alasio.adapter import (
+        AesSqliteAdapter,
+        ConfigAdapterError,
+        _DASHBOARD_ITEMS,
+    )
 
     name = args.name or os.path.splitext(os.path.basename(args.json))[0]
     with open(args.json, encoding='utf-8') as f:
@@ -153,6 +157,12 @@ def main():
                 )
             for arg, value in group_data.items():
                 path = f'{task}.{group}.{arg}'
+                if task == 'DataUpdate' and group == 'Dashboard' and arg in _DASHBOARD_ITEMS:
+                    # Dashboard fields moved from one JSON-backed legacy
+                    # group to one native Alasio group per item. Keep the
+                    # legacy path here; adapter._build_events expands it.
+                    modified[path] = value
+                    continue
                 new_task, new_group, new_arg = adapter._remap_path(task, group, arg)
                 valid = adapter._valid_fields.get((new_task, new_group))
                 if valid is None or new_arg not in valid:

@@ -55,8 +55,7 @@
   },
   "DataUpdate": {
     "group": {
-      "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerUedit", "task": "DataUpdate"},
-      "Dashboard": {"file": "daily/daily_model.py", "cls": "Dashboard", "task": "DataUpdate"}
+      "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerUedit", "task": "DataUpdate"}
     },
     "config": {"task": ["DataUpdate"], "group": []}
   },
@@ -135,6 +134,21 @@
     },
     "config": {"task": ["SpecialActivity"], "group": []}
   },
+  "Dashboard": {
+    "group": {
+      "Gold": {"file": "dashboard/dashboard_model.py", "cls": "Gold", "task": "Dashboard"},
+      "Skystone": {"file": "dashboard/dashboard_model.py", "cls": "Skystone", "task": "Dashboard"},
+      "Stamina": {"file": "dashboard/dashboard_model.py", "cls": "Stamina", "task": "Dashboard"},
+      "EquipmentInventory": {"file": "dashboard/dashboard_model.py", "cls": "EquipmentInventory", "task": "Dashboard"},
+      "DailyActivity": {"file": "dashboard/dashboard_model.py", "cls": "DailyActivity", "task": "Dashboard"},
+      "ArenaRank": {"file": "dashboard/dashboard_model.py", "cls": "ArenaRank", "task": "Dashboard"},
+      "ArenaFlag": {"file": "dashboard/dashboard_model.py", "cls": "ArenaFlag", "task": "Dashboard"},
+      "ConquestPoint": {"file": "dashboard/dashboard_model.py", "cls": "ConquestPoint", "task": "Dashboard"},
+      "ShadowCommission": {"file": "dashboard/dashboard_model.py", "cls": "ShadowCommission", "task": "Dashboard"},
+      "TeamBattle": {"file": "dashboard/dashboard_model.py", "cls": "TeamBattle", "task": "Dashboard"}
+    },
+    "config": {"task": ["Dashboard"], "group": []}
+  },
   "SanctuaryMonthly": {
     "group": {
       "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerUedit", "task": "SanctuaryMonthly"},
@@ -163,8 +177,18 @@
       "EmulatorInfo": {"file": "alasio/device_model.py", "cls": "EmulatorInfo", "task": "Device"},
       "Error": {"file": "alasio/device_model.py", "cls": "Error", "task": "Device"},
       "Optimization": {"file": "alasio/device_model.py", "cls": "Optimization", "task": "Device"},
-      "Game": {"file": "aes/aes_model.py", "cls": "Game", "task": "Alas"}
+      "Game": {"file": "aes/aes_model.py", "cls": "Game", "task": "Alas"},
+      "Gold": {"file": "dashboard/dashboard_model.py", "cls": "Gold", "task": "Dashboard"},
+      "Skystone": {"file": "dashboard/dashboard_model.py", "cls": "Skystone", "task": "Dashboard"},
+      "Stamina": {"file": "dashboard/dashboard_model.py", "cls": "Stamina", "task": "Dashboard"},
+      "EquipmentInventory": {"file": "dashboard/dashboard_model.py", "cls": "EquipmentInventory", "task": "Dashboard"},
+      "DailyActivity": {"file": "dashboard/dashboard_model.py", "cls": "DailyActivity", "task": "Dashboard"},
+      "ArenaRank": {"file": "dashboard/dashboard_model.py", "cls": "ArenaRank", "task": "Dashboard"},
+      "ArenaFlag": {"file": "dashboard/dashboard_model.py", "cls": "ArenaFlag", "task": "Dashboard"},
+      "ConquestPoint": {"file": "dashboard/dashboard_model.py", "cls": "ConquestPoint", "task": "Dashboard"},
+      "ShadowCommission": {"file": "dashboard/dashboard_model.py", "cls": "ShadowCommission", "task": "Dashboard"},
+      "TeamBattle": {"file": "dashboard/dashboard_model.py", "cls": "TeamBattle", "task": "Dashboard"}
     },
-    "config": {"task": ["Device", "Alas"], "group": []}
+    "config": {"task": ["Device", "Alas", "Dashboard"], "group": []}
   }
 }

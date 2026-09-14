@@ -21,14 +21,26 @@ _GAME_FIELDS = frozenset({'PackageName', 'GameLanguage', 'GameClient'})
 # Old groups under Alas task that map to Device task in new system
 _DEVICE_GROUPS = frozenset({'Emulator', 'EmulatorInfo', 'Error', 'Optimization'})
 # Framework-only tasks excluded from old self.data
-_FRAMEWORK_TASKS = frozenset({'Device', 'RestartDevice', 'RestartGame', '_global_bind'})
+_FRAMEWORK_TASKS = frozenset({
+    'Dashboard', 'Device', 'RestartDevice', 'RestartGame', '_global_bind',
+})
+# Dashboard items now use one Alasio group per item. Legacy task code still
+# accesses the old DataUpdate.Dashboard.<Item> dictionaries through StoredBase.
+_DASHBOARD_ITEMS = (
+    'Gold', 'Skystone', 'Stamina', 'EquipmentInventory',
+    'DailyActivity', 'ArenaRank', 'ArenaFlag',
+    'ConquestPoint', 'ShadowCommission', 'TeamBattle',
+)
+_DASHBOARD_DYNAMIC_TOTAL = frozenset({
+    'Stamina', 'EquipmentInventory', 'ArenaFlag',
+})
+_DASHBOARD_FIXED_TOTAL = {
+    'DailyActivity': 100,
+    'ArenaRank': 38,
+    'ShadowCommission': 30,
+}
 # Groups whose fields are JSON-encoded strings in the new model but dicts in old code
 _STORED_DICT_FIELDS = {
-    'Dashboard': frozenset({
-        'Gold', 'Skystone', 'Stamina', 'EquipmentInventory',
-        'DailyActivity', 'ArenaRank', 'ArenaFlag',
-        'ConquestPoint', 'ShadowCommission', 'TeamBattle',
-    }),
     'CombatRuntime': frozenset({'Session'}),
 }
 # Per-group field renames, old name -> new name (applied after group remap on write)
@@ -79,6 +91,17 @@ def _to_utc_aware(dt):
     return dt.astimezone().astimezone(timezone.utc)
 
 
+def _parse_legacy_datetime(value):
+    if isinstance(value, str):
+        try:
+            value = datetime.fromisoformat(value.replace('Z', '+00:00'))
+        except ValueError:
+            return None
+    if isinstance(value, datetime):
+        return _to_utc_aware(value)
+    return None
+
+
 def _ensure_env():
     from alasio.ext import env
     if not env.PROJECT_ROOT:
@@ -127,6 +150,108 @@ class AesSqliteAdapter:
     def args(self):
         return {name: {} for name in self._task_index if name not in _FRAMEWORK_TASKS}
 
+    @staticmethod
+    def _decode_legacy_dashboard(raw):
+        if raw is None:
+            return {}
+
+        from msgspec.msgpack import decode
+
+        try:
+            data = decode(raw)
+        except Exception as e:
+            logger.warning(f'Cannot decode legacy dashboard row: {e}')
+            return {}
+        if not isinstance(data, dict):
+            logger.warning(f'Legacy dashboard row is not a mapping: {type(data).__name__}')
+            return {}
+
+        out = {}
+        for name in _DASHBOARD_ITEMS:
+            value = data.get(name)
+            if isinstance(value, str):
+                try:
+                    value = json.loads(value) if value else {}
+                except json.JSONDecodeError as e:
+                    logger.warning(f'Invalid legacy dashboard JSON at {name}: {e}')
+                    continue
+            if isinstance(value, dict):
+                out[name] = value
+        return out
+
+    def _dashboard_events(self, name, value):
+        from alasio.config.entry.model import ConfigSetEvent
+
+        if isinstance(value, str):
+            try:
+                value = json.loads(value) if value else {}
+            except json.JSONDecodeError:
+                return []
+        if not isinstance(value, dict):
+            return []
+
+        events = []
+        valid = self._valid_fields.get(('Dashboard', name), frozenset())
+
+        if 'value' in value and 'Value' in valid:
+            events.append(ConfigSetEvent(
+                task='Dashboard', group=name, arg='Value', value=value['value']))
+        if name in _DASHBOARD_DYNAMIC_TOTAL and 'total' in value and 'Total' in valid:
+            events.append(ConfigSetEvent(
+                task='Dashboard', group=name, arg='Total', value=value['total']))
+        if 'time' in value and 'Time' in valid:
+            record_time = _parse_legacy_datetime(value['time'])
+            if record_time is not None:
+                events.append(ConfigSetEvent(
+                    task='Dashboard', group=name, arg='Time', value=record_time))
+        return events
+
+    @staticmethod
+    def _broadcast_config_events(events):
+        """Forward successful worker-side writes to the open GUI views."""
+        if not events:
+            return
+
+        from alasio.backend.worker.bridge import BackendBridge
+        from alasio.backend.worker.event import ConfigEvent
+
+        backend = BackendBridge()
+        if backend.inited:
+            backend.send(ConfigEvent(t='ConfigArg', v=events))
+
+    def _migrate_legacy_dashboard(self, config_name, dict_row):
+        """Copy legacy dashboard values into their new per-item rows once.
+
+        The old row is intentionally left untouched as a rollback source. Once
+        an item has a new row, all reads and writes use that row exclusively,
+        so compatibility never becomes a permanent dual-write scheme.
+        """
+        legacy = self._decode_legacy_dashboard(
+            dict_row.get(('DataUpdate', 'Dashboard')))
+        if not legacy:
+            return False
+
+        migrated = False
+        for name, value in legacy.items():
+            if ('Dashboard', name) in dict_row:
+                continue
+            events = self._dashboard_events(name, value)
+            if not events:
+                continue
+            ok, result = self._mod.config_batch_set(config_name, events)
+            if ok:
+                migrated = True
+                self._broadcast_config_events(result)
+                continue
+            errors = []
+            for event in result:
+                if event.error is not None:
+                    message = getattr(event.error, 'msg', str(event.error))
+                    errors.append(f'{event.arg}: {message}')
+            detail = '; '.join(errors) or 'unknown validation error'
+            logger.warning(f'Cannot migrate legacy dashboard item {name}: {detail}')
+        return migrated
+
     # --- Read ---
 
     def read_file(self, config_name, is_template=False):
@@ -142,6 +267,10 @@ class AesSqliteAdapter:
             table = AlasioConfigTable(config_name)
             for row in table.select():
                 dict_row[(row.task, row.group)] = row.value
+            if self._migrate_legacy_dashboard(config_name, dict_row):
+                dict_row.clear()
+                for row in table.select():
+                    dict_row[(row.task, row.group)] = row.value
 
         def read_group(task_name, group_name, ref):
             model = self._mod.get_group_model(file=ref.file, cls=ref.cls)
@@ -230,6 +359,32 @@ class AesSqliteAdapter:
             if gn in device_groups:
                 alas[gn] = device_groups[gn]
 
+        dashboard_info = self._task_index.get('Dashboard')
+        if dashboard_info:
+            legacy_row = self._decode_legacy_dashboard(
+                dict_row.get(('DataUpdate', 'Dashboard')))
+            dashboard = {}
+            for name in _DASHBOARD_ITEMS:
+                ref = dashboard_info.group.get(name)
+                if ref is None:
+                    continue
+                if ('Dashboard', name) in dict_row or name not in legacy_row:
+                    group_data = read_group('Dashboard', name, ref)
+                    value = {
+                        'time': group_data.get('Time', DEFAULT_TIME),
+                        'value': group_data.get('Value', '' if name == 'TeamBattle' else 0),
+                    }
+                    if name in _DASHBOARD_DYNAMIC_TOTAL:
+                        value['total'] = group_data.get('Total', 0)
+                    elif name in _DASHBOARD_FIXED_TOTAL:
+                        value['total'] = _DASHBOARD_FIXED_TOTAL[name]
+                else:
+                    # A malformed legacy item may fail migration. Keep exposing
+                    # its old value to the task code instead of silently losing it.
+                    value = legacy_row[name]
+                dashboard[name] = value
+            out.setdefault('DataUpdate', {})['Dashboard'] = dashboard
+
         return out
 
     # --- Write ---
@@ -278,6 +433,15 @@ class AesSqliteAdapter:
             if self._is_ignored_legacy_field(task, group, arg):
                 continue
 
+            if task == 'DataUpdate' and group == 'Dashboard' and arg in _DASHBOARD_ITEMS:
+                dashboard_events = self._dashboard_events(arg, value)
+                if not dashboard_events:
+                    raise ConfigAdapterError(
+                        f'Dashboard value is invalid or has no supported fields: '
+                        f'{task}.{group}.{arg}')
+                events.extend(dashboard_events)
+                continue
+
             task, group, arg = self._remap_path(task, group, arg)
 
             valid = self._valid_fields.get((task, group))
@@ -315,6 +479,7 @@ class AesSqliteAdapter:
                     errors.append(f'{e.task}.{e.group}.{e.arg}: {message}')
             detail = '; '.join(errors) or 'unknown validation error'
             raise ConfigAdapterError(f'Config write rejected: {detail}')
+        self._broadcast_config_events(result)
 
     @staticmethod
     def write_file(config_name, data, mod_name='alas'):

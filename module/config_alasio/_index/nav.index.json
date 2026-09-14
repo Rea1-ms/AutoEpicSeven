@@ -20,7 +20,7 @@
       "i18n": {
         "zh-CN": "模拟器设置",
         "en-US": "Emulator Settings",
-        "ja-JP": "エミュレータ設定",
+        "ja-JP": "Emulator._info.name",
         "zh-TW": "模擬器設定"
       }
     },
@@ -28,7 +28,7 @@
       "i18n": {
         "zh-CN": "模拟器设置",
         "en-US": "Emulator Settings",
-        "ja-JP": "エミュレータ情報",
+        "ja-JP": "EmulatorInfo._info.name",
         "zh-TW": "模擬器設定"
       }
     },
@@ -36,7 +36,7 @@
       "i18n": {
         "zh-CN": "调试设置",
         "en-US": "Debug Settings",
-        "ja-JP": "デバッグ設定",
+        "ja-JP": "Error._info.name",
         "zh-TW": "除錯設定"
       }
     },
@@ -44,7 +44,7 @@
       "i18n": {
         "zh-CN": "优化设置",
         "en-US": "Optimization Settings",
-        "ja-JP": "最適化設定",
+        "ja-JP": "Optimization._info.name",
         "zh-TW": "優化設定"
       }
     },
