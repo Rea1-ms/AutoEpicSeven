@@ -8,10 +8,6 @@ import typing_extensions as e
 # This file was auto-generated, do not modify it manually. To generate:
 # ``` python -m module.config.gen ```
 
-class DashboardText(a.DashboardBase):
-    Value: str = ''
-
-
 class Gold(a.DashboardAmount):
     pass
 
@@ -28,8 +24,8 @@ class EquipmentInventory(a.DashboardDynamicTotal):
     pass
 
 
-class DailyActivity(a.DashboardTotal):
-    Value: e.Annotated[int, m.Meta(ge=0, le=100)] = 0
+class DailyActivity(a.DashboardDynamicTotal):
+    Total: int = 100
 
 
 class ArenaRank(a.DashboardTotal):

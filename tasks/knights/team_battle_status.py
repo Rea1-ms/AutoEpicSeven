@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime, timedelta
+from typing import ClassVar
 
 from module.logger import logger
 from module.notify import handle_notify
@@ -9,12 +10,18 @@ from module.notify import handle_notify
 
 @dataclass(frozen=True)
 class TeamBattleCrestStatus:
+    TOTAL_ATTACKS: ClassVar[int] = 3
+
     current: int
     remain: int
     total: int
 
     def is_valid(self) -> bool:
-        return self.total > 0 and 0 <= self.current <= self.total
+        # Epic Seven Guild War always grants exactly three attacks. Keeping
+        # this as a hard semantic check prevents OCR spill from a neighbouring
+        # digit (for example, reading 3/3 as 3/34) from reaching the dashboard
+        # or reminder scheduler as an otherwise well-formed counter.
+        return self.total == self.TOTAL_ATTACKS and 0 <= self.current <= self.total
 
     def to_counter(self) -> str:
         return f"{self.current}/{self.total}"

@@ -1,9 +1,3 @@
-DashboardText:
-  parent: DashboardBase
-  dashboard: value
-  args:
-    Value: ''
-
 Gold:
   parent: DashboardAmount
   dashboard_color: '#F5C451'
@@ -21,12 +15,10 @@ EquipmentInventory:
   dashboard_color: '#A8B3BE'
 
 DailyActivity:
-  parent: DashboardTotal
+  parent: DashboardDynamicTotal
   dashboard_color: '#FF8B66'
   args:
-    Value:
-      value: 0
-      range: 0~100
+    Total: 100
 
 ArenaRank:
   parent: DashboardTotal

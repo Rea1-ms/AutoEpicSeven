@@ -35,8 +35,14 @@ _DASHBOARD_ITEMS = (
 _DASHBOARD_DYNAMIC_TOTAL = frozenset({
     'Stamina', 'EquipmentInventory', 'ArenaFlag',
 })
-_DASHBOARD_FIXED_TOTAL = {
+_DASHBOARD_OVERFLOW_TOTAL = {
+    # Claiming several completed missions at once can legitimately raise the
+    # displayed daily activity above the final 100-point reward threshold.
+    # Keep the threshold in a separate Total field so Value is not validated
+    # against it as a hard upper bound.
     'DailyActivity': 100,
+}
+_DASHBOARD_FIXED_TOTAL = {
     'ArenaRank': 38,
     'ShadowCommission': 30,
 }
@@ -199,6 +205,10 @@ class AesSqliteAdapter:
         if name in _DASHBOARD_DYNAMIC_TOTAL and 'total' in value and 'Total' in valid:
             events.append(ConfigSetEvent(
                 task='Dashboard', group=name, arg='Total', value=value['total']))
+        elif name in _DASHBOARD_OVERFLOW_TOTAL and 'Total' in valid:
+            events.append(ConfigSetEvent(
+                task='Dashboard', group=name, arg='Total',
+                value=_DASHBOARD_OVERFLOW_TOTAL[name]))
         if 'time' in value and 'Time' in valid:
             record_time = _parse_legacy_datetime(value['time'])
             if record_time is not None:
@@ -376,6 +386,8 @@ class AesSqliteAdapter:
                     }
                     if name in _DASHBOARD_DYNAMIC_TOTAL:
                         value['total'] = group_data.get('Total', 0)
+                    elif name in _DASHBOARD_OVERFLOW_TOTAL:
+                        value['total'] = _DASHBOARD_OVERFLOW_TOTAL[name]
                     elif name in _DASHBOARD_FIXED_TOTAL:
                         value['total'] = _DASHBOARD_FIXED_TOTAL[name]
                 else:

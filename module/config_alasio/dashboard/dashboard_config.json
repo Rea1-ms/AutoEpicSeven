@@ -99,7 +99,7 @@
       }
     },
     "DailyActivity": {
-      "_info": {"group": "DailyActivity", "arg": "_info", "dashboard": "Total", "dashboard_color": "#FF8B66"},
+      "_info": {"group": "DailyActivity", "arg": "_info", "dashboard": "DynamicTotal", "dashboard_color": "#FF8B66"},
       "Time": {
         "task": "Dashboard",
         "group": "DailyActivity",
@@ -112,10 +112,17 @@
         "task": "Dashboard",
         "group": "DailyActivity",
         "arg": "Value",
+        "i18ngroup": "DashboardAmount",
         "dt": "input-int",
         "value": 0,
-        "ge": 0,
-        "le": 100
+        "ge": 0
+      },
+      "Total": {
+        "task": "Dashboard",
+        "group": "DailyActivity",
+        "arg": "Total",
+        "dt": "input-int",
+        "value": 100
       }
     },
     "ArenaRank": {
