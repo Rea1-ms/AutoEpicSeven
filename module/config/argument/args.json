@@ -662,6 +662,38 @@
           1,
           2
         ]
+      },
+      "BuyInheritanceEquipmentReforgingStoneSelectionChest": {
+        "type": "checkbox",
+        "value": false
+      },
+      "BuyInheritanceLesserArtifactCharm": {
+        "type": "select",
+        "value": 0,
+        "option": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "BuyInheritanceGreaterArtifactCharm": {
+        "type": "checkbox",
+        "value": false
+      },
+      "BuyInheritanceLesserAccessoryCharm": {
+        "type": "select",
+        "value": 0,
+        "option": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "BuyInheritanceGreaterAccessoryCharm": {
+        "type": "checkbox",
+        "value": false
       }
     }
   },

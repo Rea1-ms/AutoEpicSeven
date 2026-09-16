@@ -464,6 +464,34 @@
       "0": "0",
       "1": "1",
       "2": "2"
+    },
+    "BuyInheritanceEquipmentReforgingStoneSelectionChest": {
+      "name": "装備錬成石選択ボックスを購入",
+      "help": "継承石ショップで週制限の装備錬成石選択ボックスを購入します。"
+    },
+    "BuyInheritanceLesserArtifactCharm": {
+      "name": "下級アーティファクト強化石の購入回数",
+      "help": "継承石ショップで下級アーティファクト強化石を購入する回数です。最大3回。",
+      "0": "0",
+      "1": "1",
+      "2": "2",
+      "3": "3"
+    },
+    "BuyInheritanceGreaterArtifactCharm": {
+      "name": "上級アーティファクト強化石を購入",
+      "help": "継承石ショップで週制限の上級アーティファクト強化石を購入します。"
+    },
+    "BuyInheritanceLesserAccessoryCharm": {
+      "name": "下級アクセサリー強化石2個セットの購入回数",
+      "help": "継承石ショップで下級アクセサリー強化石2個セットを購入する回数です。最大3回。",
+      "0": "0",
+      "1": "1",
+      "2": "2",
+      "3": "3"
+    },
+    "BuyInheritanceGreaterAccessoryCharm": {
+      "name": "上級アクセサリー強化石2個セットを購入",
+      "help": "継承石ショップで週制限の上級アクセサリー強化石2個セットを購入します。"
     }
   },
   "PetsGift": {

@@ -155,7 +155,12 @@
       "BuyConquestMorogora": false,
       "BuyFriendshipArtifactEnhancementStone": 0,
       "BuyInheritanceMorogora": 0,
-      "BuyInheritancePotentialFragments": 0
+      "BuyInheritancePotentialFragments": 0,
+      "BuyInheritanceEquipmentReforgingStoneSelectionChest": false,
+      "BuyInheritanceLesserArtifactCharm": 0,
+      "BuyInheritanceGreaterArtifactCharm": false,
+      "BuyInheritanceLesserAccessoryCharm": 0,
+      "BuyInheritanceGreaterAccessoryCharm": false
     }
   },
   "PetsGift": {

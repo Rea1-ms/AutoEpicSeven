@@ -177,6 +177,15 @@ StoreWeekly:
   BuyInheritancePotentialFragments:
     value: 0
     option: [ 0, 1, 2 ]
+  BuyInheritanceEquipmentReforgingStoneSelectionChest: false
+  BuyInheritanceLesserArtifactCharm:
+    value: 0
+    option: [ 0, 1, 2, 3 ]
+  BuyInheritanceGreaterArtifactCharm: false
+  BuyInheritanceLesserAccessoryCharm:
+    value: 0
+    option: [ 0, 1, 2, 3 ]
+  BuyInheritanceGreaterAccessoryCharm: false
 
 PetsGift:
   LastClaimAt:

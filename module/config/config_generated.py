@@ -91,6 +91,11 @@ class GeneratedConfig:
     StoreWeekly_BuyFriendshipArtifactEnhancementStone = 0  # 0, 1, 2, 3
     StoreWeekly_BuyInheritanceMorogora = 0  # 0, 1, 2
     StoreWeekly_BuyInheritancePotentialFragments = 0  # 0, 1, 2
+    StoreWeekly_BuyInheritanceEquipmentReforgingStoneSelectionChest = False
+    StoreWeekly_BuyInheritanceLesserArtifactCharm = 0  # 0, 1, 2, 3
+    StoreWeekly_BuyInheritanceGreaterArtifactCharm = False
+    StoreWeekly_BuyInheritanceLesserAccessoryCharm = 0  # 0, 1, 2, 3
+    StoreWeekly_BuyInheritanceGreaterAccessoryCharm = False
 
     # Group `PetsGift`
     PetsGift_LastClaimAt = datetime.datetime(2020, 1, 1, 0, 0)

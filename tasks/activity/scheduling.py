@@ -78,8 +78,9 @@ def mark_free_gacha_20_checked(config) -> None:
 
 
 def should_schedule_after_battle(config) -> bool:
-    # The overseas event reward is claimed once immediately after login. Only
-    # the legacy CN activity still unlocks daily task rewards through battles.
+    # The overseas event has its own scheduled claim flow and does not depend
+    # on battle completion. Only the legacy CN activity still unlocks daily
+    # task rewards through battles.
     if not server_.is_cn_server(config.Emulator_PackageName):
         return False
     if not config.SpecialActivity_GetTaskReward:

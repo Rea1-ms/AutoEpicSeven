@@ -464,6 +464,34 @@
       "0": "0",
       "1": "1",
       "2": "2"
+    },
+    "BuyInheritanceEquipmentReforgingStoneSelectionChest": {
+      "name": "购买装备炼制石选择箱",
+      "help": "在传承石商店购买每周限购的装备炼制石选择箱。"
+    },
+    "BuyInheritanceLesserArtifactCharm": {
+      "name": "下级神器强化石购买次数",
+      "help": "在传承石商店购买下级神器强化石的次数，最多 3 次。",
+      "0": "0",
+      "1": "1",
+      "2": "2",
+      "3": "3"
+    },
+    "BuyInheritanceGreaterArtifactCharm": {
+      "name": "购买上级神器强化石",
+      "help": "在传承石商店购买每周限购的上级神器强化石。"
+    },
+    "BuyInheritanceLesserAccessoryCharm": {
+      "name": "2 个下级饰品强化石购买次数",
+      "help": "在传承石商店购买“2 个下级饰品强化石”的次数，最多 3 次。",
+      "0": "0",
+      "1": "1",
+      "2": "2",
+      "3": "3"
+    },
+    "BuyInheritanceGreaterAccessoryCharm": {
+      "name": "购买 2 个上级饰品强化石",
+      "help": "在传承石商店购买每周限购的“2 个上级饰品强化石”。"
     }
   },
   "PetsGift": {

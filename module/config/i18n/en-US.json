@@ -464,6 +464,34 @@
       "0": "0",
       "1": "1",
       "2": "2"
+    },
+    "BuyInheritanceEquipmentReforgingStoneSelectionChest": {
+      "name": "Buy Equipment Reforging Stone Selection Chest (Inheritance)",
+      "help": "Buy the weekly-limited Equipment Reforging Stone Selection Chest in the Inheritance store."
+    },
+    "BuyInheritanceLesserArtifactCharm": {
+      "name": "Lesser Artifact Charm Count (Inheritance)",
+      "help": "How many Lesser Artifact Charms to buy in the Inheritance store. Max 3.",
+      "0": "0",
+      "1": "1",
+      "2": "2",
+      "3": "3"
+    },
+    "BuyInheritanceGreaterArtifactCharm": {
+      "name": "Buy Greater Artifact Charm (Inheritance)",
+      "help": "Buy the weekly-limited Greater Artifact Charm in the Inheritance store."
+    },
+    "BuyInheritanceLesserAccessoryCharm": {
+      "name": "Lesser Accessory Charm Pack Count (Inheritance)",
+      "help": "How many 2-charm packs to buy in the Inheritance store. Max 3.",
+      "0": "0",
+      "1": "1",
+      "2": "2",
+      "3": "3"
+    },
+    "BuyInheritanceGreaterAccessoryCharm": {
+      "name": "Buy 2 Greater Accessory Charms (Inheritance)",
+      "help": "Buy the weekly-limited pack of 2 Greater Accessory Charms in the Inheritance store."
     }
   },
   "PetsGift": {

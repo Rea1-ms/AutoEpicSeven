@@ -42,6 +42,8 @@ class FreeGacha20(UI):
             if self.appear(FREE_20_GACHA_OBTAINED):
                 mark_free_gacha_20_checked(self.config)
                 logger.info("SpecialActivity: 20 free summons obtained")
+                if claim_requested:
+                    self.config.task_call("Gacha", force_call=False)
                 return True
 
             if timeout.reached():

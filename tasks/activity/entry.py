@@ -107,40 +107,26 @@ class SpecialActivityEntry:
         from tasks.base.page import page_main
 
         if event_mode == self.FREE_GACHA_20_ACTIVITY:
-            if not self.config.SpecialActivity_GetFreeGacha:
-                logger.info(
-                    "SpecialActivity: free-gacha reward disabled, skip post-login claim"
-                )
-                return True
-            if is_free_gacha_20_checked_today(self.config):
-                logger.info(
-                    "SpecialActivity: skip post-login reward already checked today"
-                )
-                return True
-
-            from tasks.activity.free_gacha_20 import FreeGacha20
-
-            activity = FreeGacha20(
-                config=self.config,
-                device=self.device,
-                task=self.task,
+            logger.info(
+                "SpecialActivity: overseas reward uses normal scheduling, "
+                "skip post-login claim"
             )
-            success = activity.run_claim(skip_first_screenshot=True)
-        else:
-            if not self.config.SpecialActivity_GetDailyReward:
-                logger.info(
-                    "SpecialActivity: daily reward disabled, skip post-login claim"
-                )
-                return True
+            return True
 
-            from tasks.activity.special_activity import SpecialActivity
-
-            activity = SpecialActivity(
-                config=self.config,
-                device=self.device,
-                task=self.task,
+        if not self.config.SpecialActivity_GetDailyReward:
+            logger.info(
+                "SpecialActivity: daily reward disabled, skip post-login claim"
             )
-            success = activity.run_get_daily_reward(skip_first_screenshot=True)
+            return True
+
+        from tasks.activity.special_activity import SpecialActivity
+
+        activity = SpecialActivity(
+            config=self.config,
+            device=self.device,
+            task=self.task,
+        )
+        success = activity.run_get_daily_reward(skip_first_screenshot=True)
 
         activity.ui_goto(page_main, skip_first_screenshot=True)
         return success
