@@ -81,10 +81,11 @@ class KnightsTeamBattleMixin(KnightsTeamBattleStatusMixin):
             lang = "cn"
         ocr = OcrKnightsCrest(OCR_KNIGHTS_CREST, lang=lang, name="KnightsCrest")
         current, remain, total = ocr.ocr_single_line(self.device.image)
-        if total and current <= total:
+        status = TeamBattleCrestStatus(current=current, remain=current, total=total)
+        if status.is_valid():
             logger.attr("KnightsCrest", f"{current}/{total}")
             # Guild war counter is remaining_attacks / total_attacks.
-            return TeamBattleCrestStatus(current=current, remain=current, total=total)
+            return status
 
         logger.warning(f"Knights crest OCR invalid: {current}/{total}")
         return None
