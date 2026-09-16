@@ -4,11 +4,11 @@ from alasio.ext import env
 from alasio.ext.path import PathStr
 from alasio.logger import logger
 
-from module.config_alasio.adapter import (
+from module.config.visibility import (
     DYNAMIC_HIDE_DEPENDENCIES,
     DYNAMIC_HIDE_TARGETS,
-    AesSqliteAdapter,
 )
+from module.config_alasio.adapter import AesSqliteAdapter
 
 entry = ModEntryInfo(
     name='aes',

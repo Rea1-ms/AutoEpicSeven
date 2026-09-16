@@ -8,6 +8,10 @@ from module.base.timer import timer
 from module.config.deep import deep_default, deep_get, deep_iter, deep_set
 from module.config.server import VALID_SERVER
 from module.config.utils import *
+from module.config.visibility import (
+    iter_hidden_args as iter_config_hidden_args,
+    normalize_execution_mode,
+)
 
 CONFIG_IMPORT = '''
 import datetime
@@ -29,17 +33,6 @@ DICT_GUI_TO_INGAME = {
     'zh-TW': 'cht',
     'es-ES': 'es',
 }
-
-EXECUTION_MODE_DAILY = 'Daily'
-EXECUTION_MODE_BURNOUT = 'Burnout'
-
-
-def normalize_execution_mode(value: t.Any) -> str:
-    """Convert legacy burnout booleans to the execution-mode select value."""
-    if value is True or value == EXECUTION_MODE_BURNOUT:
-        return EXECUTION_MODE_BURNOUT
-    return EXECUTION_MODE_DAILY
-
 
 def gui_lang_to_ingame_lang(lang: str) -> str:
     return DICT_GUI_TO_INGAME.get(lang, 'en')
@@ -592,97 +585,7 @@ class ConfigUpdater:
         Yields:
             str: Arg path that should be hidden
         """
-        # Knights
-        if deep_get(data, 'Knights.KnightsTeamBattle.Reminder', default=False) is False:
-            yield 'Knights.KnightsTeamBattle.ReminderLeadMinutes'
-        if deep_get(data, 'Knights.Knights.Support', default=True) is False:
-            yield 'Knights.Knights.RequestItem'
-        # Arena
-        if deep_get(data, 'Arena.Arena.NPCCombat', default=False) is False:
-            yield 'Arena.Arena.NPCCombatFastBattle'
-            yield 'Arena.Arena.NPCCombatCount'
-            # Burnout mode reruns arena when flags refill; without NPC combat
-            # nothing consumes flags, so the option is meaningless.
-            yield 'Arena.Arena.BurnoutMode'
-        elif normalize_execution_mode(
-            deep_get(data, 'Arena.Arena.BurnoutMode', default=EXECUTION_MODE_DAILY)
-        ) == EXECUTION_MODE_BURNOUT:
-            yield 'Arena.Arena.NPCCombatCount'
-        # SecretShop
-        if deep_get(data, 'SecretShop.SecretShop.OnlyFree', default=True) is True:
-            yield 'SecretShop.SecretShop.MaxRefresh'
-        # Fast combat & repeat combat
-        for task in ('Combat',):
-            task_prefix = f'{task}.Combat'
-            is_farm_task = task == 'CombatFarm'
-            combat_domain = deep_get(data, f'{task_prefix}.Domain', default='Hunt')
-            combat_hunt_grade = deep_get(data, f'{task_prefix}.HuntGrade', default='Hell')
-
-            if combat_domain != 'Episode4':
-                yield f'{task_prefix}.Episode4Material'
-
-            if is_farm_task:
-                yield f'{task_prefix}.FastCombatCount'
-                yield f'{task_prefix}.RepeatCombatCount'
-            elif combat_domain == 'Saint37':
-                yield f'{task_prefix}.FastCombat'
-                yield f'{task_prefix}.FastCombatCount'
-            elif combat_domain == 'Hunt' and combat_hunt_grade == 'Dimensional':
-                yield f'{task_prefix}.FastCombat'
-                yield f'{task_prefix}.FastCombatCount'
-            elif deep_get(data, f'{task_prefix}.FastCombat', default=True) is False:
-                yield f'{task_prefix}.FastCombatCount'
-
-            if deep_get(
-                data,
-                f'{task_prefix}.RepeatCombatHeroSpeedFilter',
-                default=True,
-            ) is False:
-                yield f'{task_prefix}.RepeatCombatHeroSpeed'
-            if deep_get(
-                data,
-                f'{task_prefix}.RepeatCombatLegendarySpeedFilter',
-                default=True,
-            ) is False:
-                yield f'{task_prefix}.RepeatCombatLegendarySpeed'
-
-            if not is_farm_task and normalize_execution_mode(
-                deep_get(data, f'{task_prefix}.BurnoutMode', default=EXECUTION_MODE_DAILY)
-            ) == EXECUTION_MODE_BURNOUT:
-                yield f'{task_prefix}.FastCombatCount'
-                yield f'{task_prefix}.RepeatCombatCount'
-                yield f'{task_prefix}.RepeatCombatLeifCount'
-                yield f'{task_prefix}.RepeatCombatPrioritizeStamina'
-
-            if is_farm_task and (
-                combat_domain == 'Saint37'
-                or (combat_domain == 'Hunt' and combat_hunt_grade == 'Dimensional')
-            ):
-                yield f'{task_prefix}.FastCombat'
-
-            if combat_domain != 'Saint37':
-                yield f'{task_prefix}.Saint37AutoRecycle'
-
-            # Burnout mode schedules by stamina regeneration. Dimensional hunt
-            # consumes its own resource, so it remains outside this mode.
-            if (
-                is_farm_task
-                or (combat_domain == 'Hunt' and combat_hunt_grade == 'Dimensional')
-            ):
-                yield f'{task_prefix}.BurnoutMode'
-
-            if combat_domain in ('Saint37', 'Episode4'):
-                yield f'{task_prefix}.Element'
-                yield f'{task_prefix}.AltarGrade'
-                yield f'{task_prefix}.HuntGrade'
-            else:
-                if combat_domain != 'SpiritAltar':
-                    yield f'{task_prefix}.AltarGrade'
-                if combat_domain != 'Hunt':
-                    yield f'{task_prefix}.HuntGrade'
-
-        if deep_get(data, 'Combat.UrgentTasks.Enable', default=True) is False:
-            yield 'Combat.UrgentTasks.Difficulty'
+        yield from iter_config_hidden_args(data)
 
     def get_hidden_args(self, data) -> t.Set[str]:
         """

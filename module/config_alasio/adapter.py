@@ -14,6 +14,7 @@ from datetime import datetime, timezone
 from module.base.decorator import cached_property
 from module.config.deep import deep_get, deep_set
 from module.config.utils import DEFAULT_TIME
+from module.config.visibility import iter_hidden_args as iter_config_hidden_args
 from module.logger import logger
 
 # Old Alas.Emulator fields that belong to new Alas.Game group
@@ -69,44 +70,6 @@ _VALUE_RENAME_READ = {
 _IGNORED_LEGACY_FIELDS = frozenset({
     ('Alas', 'Error', 'Restart'),
 })
-
-# Dynamic GUI visibility stays in the adapter so legacy task configuration
-# keeps one source of truth. Alasio uses the target set to decide whether a
-# displayed navigation can contain conditionally hidden args, and the
-# dependency set to avoid rebuilding that navigation for unrelated writes.
-DYNAMIC_HIDE_TARGETS = frozenset({
-    'Knights.KnightsTeamBattle.ReminderLeadMinutes',
-    'Knights.Knights.RequestItem',
-    'Arena.Arena.NPCCombatFastBattle',
-    'Arena.Arena.NPCCombatCount',
-    'SecretShop.SecretShop.MaxRefresh',
-    *(
-        f'{task}.Combat.{arg}'
-        for task in ('Combat', 'CombatFarm')
-        for arg in (
-            'Episode4Material',
-            'FastCombat',
-            'FastCombatCount',
-            'RepeatCombatCount',
-            'Saint37AutoRecycle',
-            'Element',
-            'AltarGrade',
-            'HuntGrade',
-        )
-    ),
-})
-DYNAMIC_HIDE_DEPENDENCIES = frozenset({
-    'Knights.KnightsTeamBattle.Reminder',
-    'Knights.Knights.Support',
-    'Arena.Arena.NPCCombat',
-    'SecretShop.SecretShop.OnlyFree',
-    *(
-        f'{task}.Combat.{arg}'
-        for task in ('Combat', 'CombatFarm')
-        for arg in ('Domain', 'HuntGrade', 'FastCombat')
-    ),
-})
-
 
 class ConfigAdapterError(RuntimeError):
     """Raised when legacy config cannot be represented or persisted safely."""
@@ -573,46 +536,7 @@ class AesSqliteAdapter:
             yield 'Alas.Emulator.PackageName', 'CN-Official'
 
     def iter_hidden_args(self, data):
-        if deep_get(data, 'Knights.KnightsTeamBattle.Reminder', default=False) is False:
-            yield 'Knights.KnightsTeamBattle.ReminderLeadMinutes'
-        if deep_get(data, 'Knights.Knights.Support', default=True) is False:
-            yield 'Knights.Knights.RequestItem'
-        if deep_get(data, 'Arena.Arena.NPCCombat', default=False) is False:
-            yield 'Arena.Arena.NPCCombatFastBattle'
-            yield 'Arena.Arena.NPCCombatCount'
-        if deep_get(data, 'SecretShop.SecretShop.OnlyFree', default=True) is True:
-            yield 'SecretShop.SecretShop.MaxRefresh'
-        for task in ('Combat', 'CombatFarm'):
-            p = f'{task}.Combat'
-            is_farm = task == 'CombatFarm'
-            domain = deep_get(data, f'{p}.Domain', default='Hunt')
-            hg = deep_get(data, f'{p}.HuntGrade', default='Hell')
-            if domain != 'Episode4':
-                yield f'{p}.Episode4Material'
-            if is_farm:
-                yield f'{p}.FastCombatCount'
-                yield f'{p}.RepeatCombatCount'
-            elif domain == 'Saint37':
-                yield f'{p}.FastCombat'
-                yield f'{p}.FastCombatCount'
-            elif domain == 'Hunt' and hg == 'Dimensional':
-                yield f'{p}.FastCombat'
-                yield f'{p}.FastCombatCount'
-            elif deep_get(data, f'{p}.FastCombat', default=True) is False:
-                yield f'{p}.FastCombatCount'
-            if is_farm and (domain == 'Saint37' or (domain == 'Hunt' and hg == 'Dimensional')):
-                yield f'{p}.FastCombat'
-            if domain != 'Saint37':
-                yield f'{p}.Saint37AutoRecycle'
-            if domain in ('Saint37', 'Episode4'):
-                yield f'{p}.Element'
-                yield f'{p}.AltarGrade'
-                yield f'{p}.HuntGrade'
-            else:
-                if domain != 'SpiritAltar':
-                    yield f'{p}.AltarGrade'
-                if domain != 'Hunt':
-                    yield f'{p}.HuntGrade'
+        yield from iter_config_hidden_args(data)
 
     def get_hidden_args(self, data):
         return set(self.iter_hidden_args(data))
