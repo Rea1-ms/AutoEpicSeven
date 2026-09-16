@@ -4,6 +4,12 @@ from alasio.ext import env
 from alasio.ext.path import PathStr
 from alasio.logger import logger
 
+from module.config_alasio.adapter import (
+    DYNAMIC_HIDE_DEPENDENCIES,
+    DYNAMIC_HIDE_TARGETS,
+    AesSqliteAdapter,
+)
+
 entry = ModEntryInfo(
     name='aes',
     path_config='module/config_alasio',
@@ -14,6 +20,13 @@ entry.root = PathStr.new(__file__).uppath(3)
 
 
 class ConfigConst(ConfigConst_):
+    GUI_CONFIG_HIDDEN_TARGETS = DYNAMIC_HIDE_TARGETS
+    GUI_CONFIG_HIDDEN_DEPENDENCIES = DYNAMIC_HIDE_DEPENDENCIES
+
+    @staticmethod
+    def gui_config_hidden(data):
+        return AesSqliteAdapter().get_hidden_args(data)
+
     SCHEDULER_PRIORITY = """
     Restart
     > Mail > SanctuaryDaily > SanctuaryMonthly

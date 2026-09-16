@@ -70,6 +70,43 @@ _IGNORED_LEGACY_FIELDS = frozenset({
     ('Alas', 'Error', 'Restart'),
 })
 
+# Dynamic GUI visibility stays in the adapter so legacy task configuration
+# keeps one source of truth. Alasio uses the target set to decide whether a
+# displayed navigation can contain conditionally hidden args, and the
+# dependency set to avoid rebuilding that navigation for unrelated writes.
+DYNAMIC_HIDE_TARGETS = frozenset({
+    'Knights.KnightsTeamBattle.ReminderLeadMinutes',
+    'Knights.Knights.RequestItem',
+    'Arena.Arena.NPCCombatFastBattle',
+    'Arena.Arena.NPCCombatCount',
+    'SecretShop.SecretShop.MaxRefresh',
+    *(
+        f'{task}.Combat.{arg}'
+        for task in ('Combat', 'CombatFarm')
+        for arg in (
+            'Episode4Material',
+            'FastCombat',
+            'FastCombatCount',
+            'RepeatCombatCount',
+            'Saint37AutoRecycle',
+            'Element',
+            'AltarGrade',
+            'HuntGrade',
+        )
+    ),
+})
+DYNAMIC_HIDE_DEPENDENCIES = frozenset({
+    'Knights.KnightsTeamBattle.Reminder',
+    'Knights.Knights.Support',
+    'Arena.Arena.NPCCombat',
+    'SecretShop.SecretShop.OnlyFree',
+    *(
+        f'{task}.Combat.{arg}'
+        for task in ('Combat', 'CombatFarm')
+        for arg in ('Domain', 'HuntGrade', 'FastCombat')
+    ),
+})
+
 
 class ConfigAdapterError(RuntimeError):
     """Raised when legacy config cannot be represented or persisted safely."""
