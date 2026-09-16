@@ -10,5 +10,10 @@ Game:
       value: android
       option: [android, cloud_android]
 
+AesScheduler:
+  parent: SchedulerUedit
+  args:
+    ServerUpdate: "02:00"
+
 # Empty group for _info
 Restart:

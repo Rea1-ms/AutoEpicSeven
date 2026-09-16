@@ -12,3 +12,7 @@ class Game(a.GroupBase):
     PackageName: t.Literal['auto', 'CN-Official', 'OVERSEA-Play'] = 'auto'
     GameLanguage: t.Literal['auto', 'cn', 'en'] = 'cn'
     GameClient: t.Literal['android', 'cloud_android'] = 'android'
+
+
+class AesScheduler(a.SchedulerUedit):
+    ServerUpdate: str = '02:00'

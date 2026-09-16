@@ -28,46 +28,46 @@
   },
   "Restart": {
     "group": {
-      "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerUedit", "task": "Restart"}
+      "Scheduler": {"file": "aes/aes_model.py", "cls": "AesScheduler", "task": "Restart"}
     },
     "config": {"task": ["Restart"], "group": []}
   },
   "MissionReward": {
     "group": {
-      "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerUedit", "task": "MissionReward"},
+      "Scheduler": {"file": "aes/aes_model.py", "cls": "AesScheduler", "task": "MissionReward"},
       "MissionReward": {"file": "daily/daily_model.py", "cls": "MissionReward", "task": "MissionReward"}
     },
     "config": {"task": ["MissionReward"], "group": []}
   },
   "Mail": {
     "group": {
-      "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerUedit", "task": "Mail"},
+      "Scheduler": {"file": "aes/aes_model.py", "cls": "AesScheduler", "task": "Mail"},
       "Mail": {"file": "daily/daily_model.py", "cls": "Mail", "task": "Mail"}
     },
     "config": {"task": ["Mail"], "group": []}
   },
   "CommunityAio": {
     "group": {
-      "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerUedit", "task": "CommunityAio"},
+      "Scheduler": {"file": "aes/aes_model.py", "cls": "AesScheduler", "task": "CommunityAio"},
       "CommunityAio": {"file": "daily/daily_model.py", "cls": "CommunityAio", "task": "CommunityAio"}
     },
     "config": {"task": ["CommunityAio"], "group": []}
   },
   "DataUpdate": {
     "group": {
-      "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerUedit", "task": "DataUpdate"}
+      "Scheduler": {"file": "aes/aes_model.py", "cls": "AesScheduler", "task": "DataUpdate"}
     },
     "config": {"task": ["DataUpdate"], "group": []}
   },
   "SanctuaryDaily": {
     "group": {
-      "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerUedit", "task": "SanctuaryDaily"}
+      "Scheduler": {"file": "aes/aes_model.py", "cls": "AesScheduler", "task": "SanctuaryDaily"}
     },
     "config": {"task": ["SanctuaryDaily"], "group": []}
   },
   "Knights": {
     "group": {
-      "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerUedit", "task": "Knights"},
+      "Scheduler": {"file": "aes/aes_model.py", "cls": "AesScheduler", "task": "Knights"},
       "Knights": {"file": "daily/daily_model.py", "cls": "Knights", "task": "Knights"},
       "KnightsTeamBattle": {"file": "daily/daily_model.py", "cls": "KnightsTeamBattle", "task": "Knights"}
     },
@@ -75,14 +75,14 @@
   },
   "Arena": {
     "group": {
-      "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerUedit", "task": "Arena"},
+      "Scheduler": {"file": "aes/aes_model.py", "cls": "AesScheduler", "task": "Arena"},
       "Arena": {"file": "daily/daily_model.py", "cls": "Arena", "task": "Arena"}
     },
     "config": {"task": ["Arena"], "group": []}
   },
   "Store": {
     "group": {
-      "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerUedit", "task": "Store"},
+      "Scheduler": {"file": "aes/aes_model.py", "cls": "AesScheduler", "task": "Store"},
       "StoreDaily": {"file": "daily/daily_model.py", "cls": "StoreDaily", "task": "Store"},
       "StoreWeekly": {"file": "daily/daily_model.py", "cls": "StoreWeekly", "task": "Store"}
     },
@@ -90,21 +90,21 @@
   },
   "PetsGift": {
     "group": {
-      "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerUedit", "task": "PetsGift"},
+      "Scheduler": {"file": "aes/aes_model.py", "cls": "AesScheduler", "task": "PetsGift"},
       "PetsGift": {"file": "daily/daily_model.py", "cls": "PetsGift", "task": "PetsGift"}
     },
     "config": {"task": ["PetsGift"], "group": []}
   },
   "SecretShop": {
     "group": {
-      "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerUedit", "task": "SecretShop"},
+      "Scheduler": {"file": "aes/aes_model.py", "cls": "AesScheduler", "task": "SecretShop"},
       "SecretShop": {"file": "daily/daily_model.py", "cls": "SecretShop", "task": "SecretShop"}
     },
     "config": {"task": ["SecretShop"], "group": []}
   },
   "Combat": {
     "group": {
-      "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerUedit", "task": "Combat"},
+      "Scheduler": {"file": "aes/aes_model.py", "cls": "AesScheduler", "task": "Combat"},
       "Combat": {"file": "daily/daily_model.py", "cls": "Combat", "task": "Combat"},
       "UrgentTasks": {"file": "daily/daily_model.py", "cls": "UrgentTasks", "task": "Combat"},
       "CombatRuntime": {"file": "daily/daily_model.py", "cls": "CombatRuntime", "task": "Combat"}
@@ -113,7 +113,7 @@
   },
   "Gacha": {
     "group": {
-      "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerUedit", "task": "Gacha"},
+      "Scheduler": {"file": "aes/aes_model.py", "cls": "AesScheduler", "task": "Gacha"},
       "Gacha": {"file": "daily/daily_model.py", "cls": "Gacha", "task": "Gacha"},
       "GachaResult": {"file": "daily/daily_model.py", "cls": "GachaResult", "task": "Gacha"}
     },
@@ -121,13 +121,13 @@
   },
   "Pets": {
     "group": {
-      "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerUedit", "task": "Pets"}
+      "Scheduler": {"file": "aes/aes_model.py", "cls": "AesScheduler", "task": "Pets"}
     },
     "config": {"task": ["Pets"], "group": []}
   },
   "SpecialActivity": {
     "group": {
-      "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerUedit", "task": "SpecialActivity"},
+      "Scheduler": {"file": "aes/aes_model.py", "cls": "AesScheduler", "task": "SpecialActivity"},
       "SpecialActivity": {"file": "daily/daily_model.py", "cls": "SpecialActivity", "task": "SpecialActivity"},
       "GachaResult": {"file": "daily/daily_model.py", "cls": "GachaResult", "task": "SpecialActivity"},
       "ActivityRuntime": {"file": "daily/daily_model.py", "cls": "ActivityRuntime", "task": "SpecialActivity"}
@@ -151,14 +151,14 @@
   },
   "SanctuaryMonthly": {
     "group": {
-      "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerUedit", "task": "SanctuaryMonthly"},
+      "Scheduler": {"file": "aes/aes_model.py", "cls": "AesScheduler", "task": "SanctuaryMonthly"},
       "SanctuaryMonthly": {"file": "monthly/monthly_model.py", "cls": "SanctuaryMonthly", "task": "SanctuaryMonthly"}
     },
     "config": {"task": ["SanctuaryMonthly"], "group": []}
   },
   "CombatFarm": {
     "group": {
-      "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerUedit", "task": "CombatFarm"},
+      "Scheduler": {"file": "aes/aes_model.py", "cls": "AesScheduler", "task": "CombatFarm"},
       "Combat": {"file": "daily/daily_model.py", "cls": "CombatFarmCombat", "task": "CombatFarm"},
       "CombatRuntime": {"file": "daily/daily_model.py", "cls": "CombatRuntime", "task": "CombatFarm"}
     },
@@ -166,7 +166,7 @@
   },
   "CommunityAuth": {
     "group": {
-      "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerUedit", "task": "CommunityAuth"},
+      "Scheduler": {"file": "aes/aes_model.py", "cls": "AesScheduler", "task": "CommunityAuth"},
       "CommunityAuth": {"file": "tool/tool_model.py", "cls": "CommunityAuth", "task": "CommunityAuth"}
     },
     "config": {"task": ["CommunityAuth"], "group": []}

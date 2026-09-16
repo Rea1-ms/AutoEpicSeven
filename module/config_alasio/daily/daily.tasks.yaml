@@ -1,18 +1,18 @@
 MissionReward:
   groups:
-    Scheduler: SchedulerUedit
+    Scheduler: AesScheduler
     MissionReward:
   displays: flat
 
 Mail:
   groups:
-    Scheduler: SchedulerUedit
+    Scheduler: AesScheduler
     Mail:
   displays: flat
 
 CommunityAio:
   groups:
-    Scheduler: SchedulerUedit
+    Scheduler: AesScheduler
     CommunityAio:
   displays:
     - info: CommunityAio
@@ -21,21 +21,21 @@ CommunityAio:
 
 DataUpdate:
   groups:
-    Scheduler: SchedulerUedit
+    Scheduler: AesScheduler
   displays:
     - info: DataUpdate
       groups: { task: DataUpdate, group: Scheduler }
 
 SanctuaryDaily:
   groups:
-    Scheduler: SchedulerUedit
+    Scheduler: AesScheduler
   displays:
     - info: SanctuaryDaily
       groups: { task: SanctuaryDaily, group: Scheduler }
 
 Knights:
   groups:
-    Scheduler: SchedulerUedit
+    Scheduler: AesScheduler
     Knights:
     KnightsTeamBattle:
   displays:
@@ -47,13 +47,13 @@ Knights:
 
 Arena:
   groups:
-    Scheduler: SchedulerUedit
+    Scheduler: AesScheduler
     Arena:
   displays: flat
 
 Store:
   groups:
-    Scheduler: SchedulerUedit
+    Scheduler: AesScheduler
     StoreDaily:
     StoreWeekly:
   displays:
@@ -65,7 +65,7 @@ Store:
 
 PetsGift:
   groups:
-    Scheduler: SchedulerUedit
+    Scheduler: AesScheduler
     PetsGift:
   displays:
     - info: PetsGift
@@ -73,13 +73,13 @@ PetsGift:
 
 SecretShop:
   groups:
-    Scheduler: SchedulerUedit
+    Scheduler: AesScheduler
     SecretShop:
   displays: flat
 
 Combat:
   groups:
-    Scheduler: SchedulerUedit
+    Scheduler: AesScheduler
     Combat:
     UrgentTasks:
     CombatRuntime:
@@ -91,21 +91,21 @@ Combat:
 
 Gacha:
   groups:
-    Scheduler: SchedulerUedit
+    Scheduler: AesScheduler
     Gacha:
     GachaResult:
   displays: flat
 
 Pets:
   groups:
-    Scheduler: SchedulerUedit
+    Scheduler: AesScheduler
   displays:
     - info: Pets
       groups: { task: Pets, group: Scheduler }
 
 SpecialActivity:
   groups:
-    Scheduler: SchedulerUedit
+    Scheduler: AesScheduler
     SpecialActivity:
     GachaResult:
     ActivityRuntime:

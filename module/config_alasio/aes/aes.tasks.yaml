@@ -11,7 +11,7 @@ Alas:
 
 Restart:
   groups:
-    Scheduler: SchedulerUedit
+    Scheduler: AesScheduler
   displays:
     - info: Restart
       groups: { task: Restart, group: Scheduler }

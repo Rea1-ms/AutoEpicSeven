@@ -6,7 +6,7 @@
         "task": "SanctuaryMonthly",
         "group": "Scheduler",
         "arg": "Enable",
-        "cls": "SchedulerUedit",
+        "cls": "AesScheduler",
         "dt": "enable",
         "value": false,
         "option": ["true", "false"]
@@ -15,7 +15,7 @@
         "task": "SanctuaryMonthly",
         "group": "Scheduler",
         "arg": "NextRun",
-        "cls": "SchedulerUedit",
+        "cls": "AesScheduler",
         "dt": "datetime",
         "value": "2020-01-01T00:00:00Z"
       },
@@ -23,10 +23,10 @@
         "task": "SanctuaryMonthly",
         "group": "Scheduler",
         "arg": "ServerUpdate",
-        "cls": "SchedulerUedit",
-        "i18ngroup": "SchedulerUedit",
+        "cls": "AesScheduler",
+        "i18ngroup": "AesScheduler",
         "dt": "input",
-        "value": "00:00"
+        "value": "02:00"
       }
     },
     "SanctuaryMonthly": {

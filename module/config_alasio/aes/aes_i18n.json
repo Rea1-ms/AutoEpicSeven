@@ -120,6 +120,26 @@
       }
     }
   },
+  "AesScheduler": {
+    "ServerUpdate": {
+      "zh-CN": {
+        "name": "服务器刷新时间",
+        "help": "用于计算任务在服务器刷新后的下次运行时间；国际服默认 02:00。"
+      },
+      "en-US": {
+        "name": "Server Update",
+        "help": "Used to calculate the next run after the server resets; the global server defaults to 02:00."
+      },
+      "ja-JP": {
+        "name": "サーバー更新時刻",
+        "help": "サーバー更新後の次回実行時刻の計算に使用します。グローバル版の既定値は 02:00 です。"
+      },
+      "zh-TW": {
+        "name": "伺服器刷新時間",
+        "help": "用於計算任務在伺服器刷新後的下次執行時間；國際服預設為 02:00。"
+      }
+    }
+  },
   "Restart": {
     "_info": {
       "zh-CN": {"name": "异常处理", "help": ""},

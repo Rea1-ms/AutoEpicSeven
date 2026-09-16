@@ -28,67 +28,67 @@ class ConfigGenerated(AlasioConfigBase):
     Game: "aes.Game"
 
     # ----- Restart -----
-    # Scheduler: "alasio.SchedulerUedit"
+    # Scheduler: "aes.AesScheduler"
 
     """
     ========== nav: daily ==========
     """
     # ----- MissionReward -----
-    # Scheduler: "alasio.SchedulerUedit"
+    # Scheduler: "aes.AesScheduler"
     MissionReward: "daily.MissionReward"
 
     # ----- Mail -----
-    # Scheduler: "alasio.SchedulerUedit"
+    # Scheduler: "aes.AesScheduler"
     Mail: "daily.Mail"
 
     # ----- CommunityAio -----
-    # Scheduler: "alasio.SchedulerUedit"
+    # Scheduler: "aes.AesScheduler"
     CommunityAio: "daily.CommunityAio"
 
     # ----- DataUpdate -----
-    # Scheduler: "alasio.SchedulerUedit"
+    # Scheduler: "aes.AesScheduler"
 
     # ----- SanctuaryDaily -----
-    # Scheduler: "alasio.SchedulerUedit"
+    # Scheduler: "aes.AesScheduler"
 
     # ----- Knights -----
-    # Scheduler: "alasio.SchedulerUedit"
+    # Scheduler: "aes.AesScheduler"
     Knights: "daily.Knights"
     KnightsTeamBattle: "daily.KnightsTeamBattle"
 
     # ----- Arena -----
-    # Scheduler: "alasio.SchedulerUedit"
+    # Scheduler: "aes.AesScheduler"
     Arena: "daily.Arena"
 
     # ----- Store -----
-    # Scheduler: "alasio.SchedulerUedit"
+    # Scheduler: "aes.AesScheduler"
     StoreDaily: "daily.StoreDaily"
     StoreWeekly: "daily.StoreWeekly"
 
     # ----- PetsGift -----
-    # Scheduler: "alasio.SchedulerUedit"
+    # Scheduler: "aes.AesScheduler"
     PetsGift: "daily.PetsGift"
 
     # ----- SecretShop -----
-    # Scheduler: "alasio.SchedulerUedit"
+    # Scheduler: "aes.AesScheduler"
     SecretShop: "daily.SecretShop"
 
     # ----- Combat -----
-    # Scheduler: "alasio.SchedulerUedit"
+    # Scheduler: "aes.AesScheduler"
     Combat: "daily.Combat"
     UrgentTasks: "daily.UrgentTasks"
     CombatRuntime: "daily.CombatRuntime"
 
     # ----- Gacha -----
-    # Scheduler: "alasio.SchedulerUedit"
+    # Scheduler: "aes.AesScheduler"
     Gacha: "daily.Gacha"
     GachaResult: "daily.GachaResult"
 
     # ----- Pets -----
-    # Scheduler: "alasio.SchedulerUedit"
+    # Scheduler: "aes.AesScheduler"
 
     # ----- SpecialActivity -----
-    # Scheduler: "alasio.SchedulerUedit"
+    # Scheduler: "aes.AesScheduler"
     SpecialActivity: "daily.SpecialActivity"
     # GachaResult: "daily.GachaResult"
     ActivityRuntime: "daily.ActivityRuntime"
@@ -97,19 +97,19 @@ class ConfigGenerated(AlasioConfigBase):
     ========== nav: monthly ==========
     """
     # ----- SanctuaryMonthly -----
-    # Scheduler: "alasio.SchedulerUedit"
+    # Scheduler: "aes.AesScheduler"
     SanctuaryMonthly: "monthly.SanctuaryMonthly"
 
     """
     ========== nav: tool ==========
     """
     # ----- CombatFarm -----
-    # Scheduler: "alasio.SchedulerUedit"
+    # Scheduler: "aes.AesScheduler"
     # Combat: "daily.CombatFarmCombat"
     # CombatRuntime: "daily.CombatRuntime"
 
     # ----- CommunityAuth -----
-    # Scheduler: "alasio.SchedulerUedit"
+    # Scheduler: "aes.AesScheduler"
     CommunityAuth: "tool.CommunityAuth"
 
     """

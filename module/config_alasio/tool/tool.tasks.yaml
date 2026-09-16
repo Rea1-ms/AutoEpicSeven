@@ -1,6 +1,6 @@
 CombatFarm:
   groups:
-    Scheduler: SchedulerUedit
+    Scheduler: AesScheduler
     Combat: CombatFarmCombat
     CombatRuntime:
   displays:
@@ -11,6 +11,6 @@ CombatFarm:
 
 CommunityAuth:
   groups:
-    Scheduler: SchedulerUedit
+    Scheduler: AesScheduler
     CommunityAuth:
   displays: flat

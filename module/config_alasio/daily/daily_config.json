@@ -6,7 +6,7 @@
         "task": "MissionReward",
         "group": "Scheduler",
         "arg": "Enable",
-        "cls": "SchedulerUedit",
+        "cls": "AesScheduler",
         "dt": "enable",
         "value": false,
         "option": ["true", "false"]
@@ -15,7 +15,7 @@
         "task": "MissionReward",
         "group": "Scheduler",
         "arg": "NextRun",
-        "cls": "SchedulerUedit",
+        "cls": "AesScheduler",
         "dt": "datetime",
         "value": "2020-01-01T00:00:00Z"
       },
@@ -23,10 +23,10 @@
         "task": "MissionReward",
         "group": "Scheduler",
         "arg": "ServerUpdate",
-        "cls": "SchedulerUedit",
-        "i18ngroup": "SchedulerUedit",
+        "cls": "AesScheduler",
+        "i18ngroup": "AesScheduler",
         "dt": "input",
-        "value": "00:00"
+        "value": "02:00"
       }
     },
     "MissionReward": {
@@ -46,7 +46,7 @@
         "task": "Mail",
         "group": "Scheduler",
         "arg": "Enable",
-        "cls": "SchedulerUedit",
+        "cls": "AesScheduler",
         "dt": "enable",
         "value": false,
         "option": ["true", "false"]
@@ -55,7 +55,7 @@
         "task": "Mail",
         "group": "Scheduler",
         "arg": "NextRun",
-        "cls": "SchedulerUedit",
+        "cls": "AesScheduler",
         "dt": "datetime",
         "value": "2020-01-01T00:00:00Z"
       },
@@ -63,10 +63,10 @@
         "task": "Mail",
         "group": "Scheduler",
         "arg": "ServerUpdate",
-        "cls": "SchedulerUedit",
-        "i18ngroup": "SchedulerUedit",
+        "cls": "AesScheduler",
+        "i18ngroup": "AesScheduler",
         "dt": "input",
-        "value": "00:00"
+        "value": "02:00"
       }
     },
     "Mail": {
@@ -111,7 +111,7 @@
         "task": "CommunityAio",
         "group": "Scheduler",
         "arg": "Enable",
-        "cls": "SchedulerUedit",
+        "cls": "AesScheduler",
         "dt": "enable",
         "value": false,
         "option": ["true", "false"]
@@ -120,7 +120,7 @@
         "task": "CommunityAio",
         "group": "Scheduler",
         "arg": "NextRun",
-        "cls": "SchedulerUedit",
+        "cls": "AesScheduler",
         "dt": "datetime",
         "value": "2020-01-01T00:00:00Z"
       },
@@ -128,10 +128,10 @@
         "task": "CommunityAio",
         "group": "Scheduler",
         "arg": "ServerUpdate",
-        "cls": "SchedulerUedit",
-        "i18ngroup": "SchedulerUedit",
+        "cls": "AesScheduler",
+        "i18ngroup": "AesScheduler",
         "dt": "input",
-        "value": "00:00"
+        "value": "02:00"
       }
     }
   },
@@ -142,7 +142,7 @@
         "task": "DataUpdate",
         "group": "Scheduler",
         "arg": "Enable",
-        "cls": "SchedulerUedit",
+        "cls": "AesScheduler",
         "dt": "enable",
         "value": false,
         "option": ["true", "false"]
@@ -151,7 +151,7 @@
         "task": "DataUpdate",
         "group": "Scheduler",
         "arg": "NextRun",
-        "cls": "SchedulerUedit",
+        "cls": "AesScheduler",
         "dt": "datetime",
         "value": "2020-01-01T00:00:00Z"
       },
@@ -159,10 +159,10 @@
         "task": "DataUpdate",
         "group": "Scheduler",
         "arg": "ServerUpdate",
-        "cls": "SchedulerUedit",
-        "i18ngroup": "SchedulerUedit",
+        "cls": "AesScheduler",
+        "i18ngroup": "AesScheduler",
         "dt": "input",
-        "value": "00:00"
+        "value": "02:00"
       }
     }
   },
@@ -173,7 +173,7 @@
         "task": "SanctuaryDaily",
         "group": "Scheduler",
         "arg": "Enable",
-        "cls": "SchedulerUedit",
+        "cls": "AesScheduler",
         "dt": "enable",
         "value": false,
         "option": ["true", "false"]
@@ -182,7 +182,7 @@
         "task": "SanctuaryDaily",
         "group": "Scheduler",
         "arg": "NextRun",
-        "cls": "SchedulerUedit",
+        "cls": "AesScheduler",
         "dt": "datetime",
         "value": "2020-01-01T00:00:00Z"
       },
@@ -190,10 +190,10 @@
         "task": "SanctuaryDaily",
         "group": "Scheduler",
         "arg": "ServerUpdate",
-        "cls": "SchedulerUedit",
-        "i18ngroup": "SchedulerUedit",
+        "cls": "AesScheduler",
+        "i18ngroup": "AesScheduler",
         "dt": "input",
-        "value": "00:00"
+        "value": "02:00"
       }
     }
   },
@@ -204,7 +204,7 @@
         "task": "Knights",
         "group": "Scheduler",
         "arg": "Enable",
-        "cls": "SchedulerUedit",
+        "cls": "AesScheduler",
         "dt": "enable",
         "value": false,
         "option": ["true", "false"]
@@ -213,7 +213,7 @@
         "task": "Knights",
         "group": "Scheduler",
         "arg": "NextRun",
-        "cls": "SchedulerUedit",
+        "cls": "AesScheduler",
         "dt": "datetime",
         "value": "2020-01-01T00:00:00Z"
       },
@@ -221,10 +221,10 @@
         "task": "Knights",
         "group": "Scheduler",
         "arg": "ServerUpdate",
-        "cls": "SchedulerUedit",
-        "i18ngroup": "SchedulerUedit",
+        "cls": "AesScheduler",
+        "i18ngroup": "AesScheduler",
         "dt": "input",
-        "value": "00:00"
+        "value": "02:00"
       }
     },
     "Knights": {
@@ -322,7 +322,7 @@
         "task": "Arena",
         "group": "Scheduler",
         "arg": "Enable",
-        "cls": "SchedulerUedit",
+        "cls": "AesScheduler",
         "dt": "enable",
         "value": false,
         "option": ["true", "false"]
@@ -331,7 +331,7 @@
         "task": "Arena",
         "group": "Scheduler",
         "arg": "NextRun",
-        "cls": "SchedulerUedit",
+        "cls": "AesScheduler",
         "dt": "datetime",
         "value": "2020-01-01T00:00:00Z"
       },
@@ -339,10 +339,10 @@
         "task": "Arena",
         "group": "Scheduler",
         "arg": "ServerUpdate",
-        "cls": "SchedulerUedit",
-        "i18ngroup": "SchedulerUedit",
+        "cls": "AesScheduler",
+        "i18ngroup": "AesScheduler",
         "dt": "input",
-        "value": "00:00"
+        "value": "02:00"
       }
     },
     "Arena": {
@@ -405,7 +405,7 @@
         "task": "Store",
         "group": "Scheduler",
         "arg": "Enable",
-        "cls": "SchedulerUedit",
+        "cls": "AesScheduler",
         "dt": "enable",
         "value": false,
         "option": ["true", "false"]
@@ -414,7 +414,7 @@
         "task": "Store",
         "group": "Scheduler",
         "arg": "NextRun",
-        "cls": "SchedulerUedit",
+        "cls": "AesScheduler",
         "dt": "datetime",
         "value": "2020-01-01T00:00:00Z"
       },
@@ -422,10 +422,10 @@
         "task": "Store",
         "group": "Scheduler",
         "arg": "ServerUpdate",
-        "cls": "SchedulerUedit",
-        "i18ngroup": "SchedulerUedit",
+        "cls": "AesScheduler",
+        "i18ngroup": "AesScheduler",
         "dt": "input",
-        "value": "00:00"
+        "value": "02:00"
       }
     },
     "StoreDaily": {
@@ -540,7 +540,7 @@
         "task": "PetsGift",
         "group": "Scheduler",
         "arg": "Enable",
-        "cls": "SchedulerUedit",
+        "cls": "AesScheduler",
         "dt": "enable",
         "value": false,
         "option": ["true", "false"]
@@ -549,7 +549,7 @@
         "task": "PetsGift",
         "group": "Scheduler",
         "arg": "NextRun",
-        "cls": "SchedulerUedit",
+        "cls": "AesScheduler",
         "dt": "datetime",
         "value": "2020-01-01T00:00:00Z"
       },
@@ -557,10 +557,10 @@
         "task": "PetsGift",
         "group": "Scheduler",
         "arg": "ServerUpdate",
-        "cls": "SchedulerUedit",
-        "i18ngroup": "SchedulerUedit",
+        "cls": "AesScheduler",
+        "i18ngroup": "AesScheduler",
         "dt": "input",
-        "value": "00:00"
+        "value": "02:00"
       }
     }
   },
@@ -571,7 +571,7 @@
         "task": "SecretShop",
         "group": "Scheduler",
         "arg": "Enable",
-        "cls": "SchedulerUedit",
+        "cls": "AesScheduler",
         "dt": "enable",
         "value": false,
         "option": ["true", "false"]
@@ -580,7 +580,7 @@
         "task": "SecretShop",
         "group": "Scheduler",
         "arg": "NextRun",
-        "cls": "SchedulerUedit",
+        "cls": "AesScheduler",
         "dt": "datetime",
         "value": "2020-01-01T00:00:00Z"
       },
@@ -588,10 +588,10 @@
         "task": "SecretShop",
         "group": "Scheduler",
         "arg": "ServerUpdate",
-        "cls": "SchedulerUedit",
-        "i18ngroup": "SchedulerUedit",
+        "cls": "AesScheduler",
+        "i18ngroup": "AesScheduler",
         "dt": "input",
-        "value": "00:00"
+        "value": "02:00"
       }
     },
     "SecretShop": {
@@ -632,7 +632,7 @@
         "task": "Combat",
         "group": "Scheduler",
         "arg": "Enable",
-        "cls": "SchedulerUedit",
+        "cls": "AesScheduler",
         "dt": "enable",
         "value": false,
         "option": ["true", "false"]
@@ -641,7 +641,7 @@
         "task": "Combat",
         "group": "Scheduler",
         "arg": "NextRun",
-        "cls": "SchedulerUedit",
+        "cls": "AesScheduler",
         "dt": "datetime",
         "value": "2020-01-01T00:00:00Z"
       },
@@ -649,10 +649,10 @@
         "task": "Combat",
         "group": "Scheduler",
         "arg": "ServerUpdate",
-        "cls": "SchedulerUedit",
-        "i18ngroup": "SchedulerUedit",
+        "cls": "AesScheduler",
+        "i18ngroup": "AesScheduler",
         "dt": "input",
-        "value": "00:00"
+        "value": "02:00"
       }
     },
     "Combat": {
@@ -815,7 +815,7 @@
         "task": "Gacha",
         "group": "Scheduler",
         "arg": "Enable",
-        "cls": "SchedulerUedit",
+        "cls": "AesScheduler",
         "dt": "enable",
         "value": false,
         "option": ["true", "false"]
@@ -824,7 +824,7 @@
         "task": "Gacha",
         "group": "Scheduler",
         "arg": "NextRun",
-        "cls": "SchedulerUedit",
+        "cls": "AesScheduler",
         "dt": "datetime",
         "value": "2020-01-01T00:00:00Z"
       },
@@ -832,10 +832,10 @@
         "task": "Gacha",
         "group": "Scheduler",
         "arg": "ServerUpdate",
-        "cls": "SchedulerUedit",
-        "i18ngroup": "SchedulerUedit",
+        "cls": "AesScheduler",
+        "i18ngroup": "AesScheduler",
         "dt": "input",
-        "value": "00:00"
+        "value": "02:00"
       }
     },
     "Gacha": {
@@ -871,7 +871,7 @@
         "task": "Pets",
         "group": "Scheduler",
         "arg": "Enable",
-        "cls": "SchedulerUedit",
+        "cls": "AesScheduler",
         "dt": "enable",
         "value": false,
         "option": ["true", "false"]
@@ -880,7 +880,7 @@
         "task": "Pets",
         "group": "Scheduler",
         "arg": "NextRun",
-        "cls": "SchedulerUedit",
+        "cls": "AesScheduler",
         "dt": "datetime",
         "value": "2020-01-01T00:00:00Z"
       },
@@ -888,10 +888,10 @@
         "task": "Pets",
         "group": "Scheduler",
         "arg": "ServerUpdate",
-        "cls": "SchedulerUedit",
-        "i18ngroup": "SchedulerUedit",
+        "cls": "AesScheduler",
+        "i18ngroup": "AesScheduler",
         "dt": "input",
-        "value": "00:00"
+        "value": "02:00"
       }
     }
   },
@@ -902,7 +902,7 @@
         "task": "SpecialActivity",
         "group": "Scheduler",
         "arg": "Enable",
-        "cls": "SchedulerUedit",
+        "cls": "AesScheduler",
         "dt": "enable",
         "value": false,
         "option": ["true", "false"]
@@ -911,7 +911,7 @@
         "task": "SpecialActivity",
         "group": "Scheduler",
         "arg": "NextRun",
-        "cls": "SchedulerUedit",
+        "cls": "AesScheduler",
         "dt": "datetime",
         "value": "2020-01-01T00:00:00Z"
       },
@@ -919,10 +919,10 @@
         "task": "SpecialActivity",
         "group": "Scheduler",
         "arg": "ServerUpdate",
-        "cls": "SchedulerUedit",
-        "i18ngroup": "SchedulerUedit",
+        "cls": "AesScheduler",
+        "i18ngroup": "AesScheduler",
         "dt": "input",
-        "value": "00:00"
+        "value": "02:00"
       }
     },
     "SpecialActivity": {

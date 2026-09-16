@@ -15,6 +15,7 @@
     "file": "daily/daily_config.json",
     "i18n": [
       "alasio/alasio_i18n.json",
+      "aes/aes_i18n.json",
       "daily/daily_i18n.json"
     ],
     "config": {
@@ -37,6 +38,7 @@
     "file": "monthly/monthly_config.json",
     "i18n": [
       "alasio/alasio_i18n.json",
+      "aes/aes_i18n.json",
       "monthly/monthly_i18n.json"
     ],
     "config": {
@@ -48,6 +50,7 @@
     "file": "tool/tool_config.json",
     "i18n": [
       "alasio/alasio_i18n.json",
+      "aes/aes_i18n.json",
       "daily/daily_i18n.json",
       "tool/tool_i18n.json"
     ],
