@@ -1,16 +1,31 @@
 from datetime import datetime
 
-import module.config.server as server_
 from module.config.utils import get_server_last_update
 from module.logger import logger
+from tasks.activity.calendar import DEFAULT_FREE_GACHA_20_ID, active_activities, next_activity_start
 
 
-TASK_REWARD_CLAIMED_AT = "SpecialActivity.ActivityRuntime.TaskRewardClaimedAt"
 FREE_GACHA_20_CHECKED_AT = "SpecialActivity.ActivityRuntime.FreeGacha20CheckedAt"
 
 
-def _task_reward_claimed_at(config) -> datetime | None:
-    value = config.cross_get(TASK_REWARD_CLAIMED_AT, default=None)
+def delay_next_activity_check(config) -> None:
+    starts_at = next_activity_start(config)
+    if starts_at is None:
+        config.task_delay(server_update=True)
+        return
+    # Calendar dates are timezone-aware; the scheduler stores local naive
+    # datetimes. Wake at the earlier of the next reset and campaign launch,
+    # so a CN maintenance opening at 11:00 is not postponed until tomorrow.
+    target = starts_at.astimezone().replace(tzinfo=None)
+    config.task_delay(server_update=True, target=target)
+
+
+def _free_gacha_20_checked_at(config, event_id: str) -> datetime | None:
+    value = config.cross_get(_checked_path(config, event_id), default=None)
+    # Only the original campaign may inherit the pre-calendar daily marker.
+    # Reusing it for later campaigns would skip a new reward on transition day.
+    if value is None and event_id == DEFAULT_FREE_GACHA_20_ID:
+        value = config.cross_get(FREE_GACHA_20_CHECKED_AT, default=None)
     if isinstance(value, datetime):
         return value
     if isinstance(value, str):
@@ -21,46 +36,16 @@ def _task_reward_claimed_at(config) -> datetime | None:
     return None
 
 
-def is_task_reward_claimed_today(config) -> bool:
-    """
-    Return whether the task-reward completion state belongs to this server day.
+def _checked_path(config, event_id: str) -> str:
+    from module.config.server import server_family
 
-    The timestamp is intentionally kept after expiry. Comparing it with the
-    configured server update makes process restarts safe without needing a
-    separate reset task that could run after Arena or Combat by priority.
-    """
-    claimed_at = _task_reward_claimed_at(config)
-    if claimed_at is None:
-        return False
-
-    server_update = config.cross_get(
-        "SpecialActivity.Scheduler.ServerUpdate",
-        default=config.Scheduler_ServerUpdate,
-    )
-    return claimed_at >= get_server_last_update(server_update)
+    family = server_family(config.Emulator_PackageName)
+    return f"SpecialActivity.ActivityRuntime.CheckedEvents.{event_id}.{family}"
 
 
-def mark_task_reward_claimed(config) -> None:
-    claimed_at = datetime.now().replace(microsecond=0)
-    config.cross_set(TASK_REWARD_CLAIMED_AT, claimed_at)
-    logger.info(f"SpecialActivity: task reward locked for today at {claimed_at}")
-
-
-def _free_gacha_20_checked_at(config) -> datetime | None:
-    value = config.cross_get(FREE_GACHA_20_CHECKED_AT, default=None)
-    if isinstance(value, datetime):
-        return value
-    if isinstance(value, str):
-        try:
-            return datetime.fromisoformat(value)
-        except ValueError:
-            return None
-    return None
-
-
-def is_free_gacha_20_checked_today(config) -> bool:
-    """Return whether the overseas reward was checked this server day."""
-    checked_at = _free_gacha_20_checked_at(config)
+def is_free_gacha_20_checked_today(config, event_id=DEFAULT_FREE_GACHA_20_ID) -> bool:
+    """Return whether this campaign's reward was checked this server day."""
+    checked_at = _free_gacha_20_checked_at(config, event_id)
     if checked_at is None:
         return False
 
@@ -71,24 +56,15 @@ def is_free_gacha_20_checked_today(config) -> bool:
     return checked_at >= get_server_last_update(server_update)
 
 
-def mark_free_gacha_20_checked(config) -> None:
+def mark_free_gacha_20_checked(config, event_id=DEFAULT_FREE_GACHA_20_ID) -> None:
     checked_at = datetime.now().replace(microsecond=0)
-    config.cross_set(FREE_GACHA_20_CHECKED_AT, checked_at)
+    config.cross_set(_checked_path(config, event_id), checked_at)
     logger.info(f"SpecialActivity: 20-free-summon reward checked at {checked_at}")
 
 
 def should_schedule_after_battle(config) -> bool:
-    # The overseas event has its own scheduled claim flow and does not depend
-    # on battle completion. Only the legacy CN activity still unlocks daily
-    # task rewards through battles.
-    if not server_.is_cn_server(config.Emulator_PackageName):
+    if not any(event.mode == "legacy" for event in active_activities(config)):
         return False
-    if not config.SpecialActivity_GetTaskReward:
-        logger.info("SpecialActivity: task reward disabled, skip task call")
-        return False
-    if is_task_reward_claimed_today(config):
-        logger.info(
-            "SpecialActivity: task reward already claimed today, skip task call"
-        )
-        return False
-    return True
+    from tasks.activity.scheduling_legacy import should_schedule_after_battle as legacy_schedule
+
+    return legacy_schedule(config)

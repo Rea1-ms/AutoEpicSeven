@@ -3,16 +3,23 @@ from module.logger import logger
 from tasks.activity.assets.assets_activity_special_26_8_27 import (
     FREE_20_GACHA,
     FREE_20_GACHA_OBTAINED,
+    FREE_20_GACHA_SELECTED,
 )
+from tasks.activity.navigation import ActivityNavigationMixin
 from tasks.activity.scheduling import mark_free_gacha_20_checked
+from tasks.activity.calendar import DEFAULT_FREE_GACHA_20_ID
 from tasks.base.page import page_common_activity, page_main
 from tasks.base.ui import UI
 
 
-class FreeGacha20(UI):
-    """Claim the overseas event reward containing 20 free summons."""
+class FreeGacha20(ActivityNavigationMixin, UI):
+    """Claim the CN or overseas event reward containing 20 free summons."""
 
     CLAIM_FLOW_TIMEOUT_SECONDS = 30
+
+    def __init__(self, config, device=None, task=None, activity_id=DEFAULT_FREE_GACHA_20_ID):
+        super().__init__(config=config, device=device, task=task)
+        self.activity_id = activity_id
 
     def run_claim(self, skip_first_screenshot=True) -> bool:
         """Claim the reward and wait until the activity page confirms it.
@@ -25,6 +32,8 @@ class FreeGacha20(UI):
             page_common_activity,
             skip_first_screenshot=skip_first_screenshot,
         )
+        if not self.select_activity("INFINITY", FREE_20_GACHA_SELECTED):
+            return False
 
         logger.info("SpecialActivity: claim 20 free summons")
         timeout = Timer(self.CLAIM_FLOW_TIMEOUT_SECONDS, count=60).start()
@@ -40,7 +49,7 @@ class FreeGacha20(UI):
             # reward popup may close before the activity page has refreshed,
             # so observing TOUCH_TO_CLOSE alone must never finish the flow.
             if self.appear(FREE_20_GACHA_OBTAINED):
-                mark_free_gacha_20_checked(self.config)
+                mark_free_gacha_20_checked(self.config, self.activity_id)
                 logger.info("SpecialActivity: 20 free summons obtained")
                 if claim_requested:
                     self.config.task_call("Gacha", force_call=False)

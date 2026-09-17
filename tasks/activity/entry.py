@@ -1,125 +1,69 @@
-import module.config.server as server_
-
-from datetime import datetime, timedelta, timezone
-
 from module.logger import logger
-from tasks.activity.scheduling import is_free_gacha_20_checked_today
+from tasks.activity.calendar import active_activities
+from tasks.activity.scheduling import delay_next_activity_check, is_free_gacha_20_checked_today
 
 
 class SpecialActivityEntry:
-    """
-    Dispatch the special activity task by the active server and asset language.
-    """
-
-    EVENT_TIMEZONE = timezone(timedelta(hours=8), name="Asia/Shanghai")
-    CN_EVENT_END_TIME = datetime(2026, 9, 17, 11, tzinfo=EVENT_TIMEZONE)
-    OVERSEA_EVENT_END_TIME = datetime(2026, 10, 29, 2, tzinfo=EVENT_TIMEZONE)
-
-    LEGACY_ACTIVITY = "legacy"
-    FREE_GACHA_20_ACTIVITY = "free_gacha_20"
+    """Dispatch the supported activities currently active on this server."""
 
     def __init__(self, config, device=None, task=None):
         self.config = config
         self.device = device
         self.task = task
 
-    def _event_mode(self) -> str | None:
-        if (
-            server_.is_cn_server(self.config.Emulator_PackageName)
-            and server_.lang == "cn"
-        ):
-            return self.LEGACY_ACTIVITY
-        if (
-            server_.is_oversea_server(self.config.Emulator_PackageName)
-            and server_.lang == "global_cn"
-        ):
-            return self.FREE_GACHA_20_ACTIVITY
-        return None
-
-    def _event_end_time(self, event_mode: str | None = None) -> datetime | None:
-        event_mode = event_mode or self._event_mode()
-        if event_mode == self.LEGACY_ACTIVITY:
-            return self.CN_EVENT_END_TIME
-        if event_mode == self.FREE_GACHA_20_ACTIVITY:
-            return self.OVERSEA_EVENT_END_TIME
-        return None
-
     def run(self) -> bool:
-        event_mode = self._event_mode()
-        event_end_time = self._event_end_time(event_mode)
-        if event_mode is None or event_end_time is None:
-            logger.info(
-                "SpecialActivity: unavailable for current server or game language, skip task"
-            )
-            self.config.task_delay(server_update=True)
+        activities = active_activities(self.config)
+        if not activities:
+            logger.info("SpecialActivity: no supported active event, skip task")
+            delay_next_activity_check(self.config)
             return True
 
-        if datetime.now(self.EVENT_TIMEZONE) >= event_end_time:
-            logger.info(f"SpecialActivity: expired at {event_end_time}, skip task")
-            self.config.task_delay(server_update=True)
-            return True
+        for event in activities:
+            logger.info(f"SpecialActivity: {event.name}, ends at {event.end}")
+            if event.mode == "free_gacha_20":
+                if is_free_gacha_20_checked_today(self.config, event.event_id):
+                    logger.info("SpecialActivity: reward already checked today")
+                    continue
 
-        if event_mode == self.FREE_GACHA_20_ACTIVITY:
-            if is_free_gacha_20_checked_today(self.config):
-                logger.info(
-                    "SpecialActivity: 20-free-summon reward already checked today"
-                )
-                self.config.task_delay(server_update=True)
-                return True
+                from tasks.activity.free_gacha_20 import FreeGacha20
 
-            from tasks.activity.free_gacha_20 import FreeGacha20
+                success = FreeGacha20(
+                    config=self.config,
+                    device=self.device,
+                    task=self.task,
+                    activity_id=event.event_id,
+                ).run()
+            else:
+                from tasks.activity.special_activity import SpecialActivity
 
-            return FreeGacha20(
-                config=self.config,
-                device=self.device,
-                task=self.task,
-            ).run()
+                success = SpecialActivity(
+                    config=self.config,
+                    device=self.device,
+                    task=self.task,
+                ).run()
+            if not success:
+                return False
 
-        from tasks.activity.special_activity import SpecialActivity
-
-        return SpecialActivity(
-            config=self.config,
-            device=self.device,
-            task=self.task,
-        ).run()
+        delay_next_activity_check(self.config)
+        return True
 
     def run_login_daily_reward(self) -> bool:
-        """Claim the active server's reward before normal tasks begin.
+        """Claim a legacy login reward only while its calendar entry is active.
 
         Pages:
             in: page_main
             out: page_main
         """
         if not self.config.is_task_enabled("SpecialActivity"):
-            logger.info("SpecialActivity: disabled, skip post-login reward")
             return True
-
-        event_mode = self._event_mode()
-        event_end_time = self._event_end_time(event_mode)
-        if (
-            event_mode is None
-            or event_end_time is None
-            or datetime.now(self.EVENT_TIMEZONE) >= event_end_time
-        ):
-            logger.info("SpecialActivity: unavailable, skip post-login reward")
+        if not any(event.mode == "legacy" for event in active_activities(self.config)):
+            logger.info("SpecialActivity: active rewards use normal scheduling")
             return True
-
-        from tasks.base.page import page_main
-
-        if event_mode == self.FREE_GACHA_20_ACTIVITY:
-            logger.info(
-                "SpecialActivity: overseas reward uses normal scheduling, "
-                "skip post-login claim"
-            )
-            return True
-
         if not self.config.SpecialActivity_GetDailyReward:
-            logger.info(
-                "SpecialActivity: daily reward disabled, skip post-login claim"
-            )
             return True
 
         from tasks.activity.special_activity import SpecialActivity
+        from tasks.base.page import page_main
 
         activity = SpecialActivity(
             config=self.config,
@@ -127,6 +71,5 @@ class SpecialActivityEntry:
             task=self.task,
         )
         success = activity.run_get_daily_reward(skip_first_screenshot=True)
-
         activity.ui_goto(page_main, skip_first_screenshot=True)
         return success

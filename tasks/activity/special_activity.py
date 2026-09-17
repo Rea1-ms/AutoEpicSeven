@@ -30,7 +30,7 @@ from tasks.activity.assets.assets_activity_special_26_6_25 import (
     ENERGY_DRINK_OBTAIN,
     SPECIAL_TOUCH_TO_CLOSE
 )
-from tasks.activity.scheduling import mark_task_reward_claimed
+from tasks.activity.scheduling_legacy import mark_task_reward_claimed
 from tasks.gacha.assets.assets_gacha import (
     SUMMON_NEW,
     SUMMON_SKIP,
