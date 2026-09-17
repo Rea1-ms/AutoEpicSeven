@@ -281,7 +281,7 @@
     }
   },
   "card-Knights-KnightsTeamBattle": {
-    "_info": {"group": "KnightsTeamBattle", "arg": "_info", "card": "card-Knights-KnightsTeamBattle"},
+    "_info": {"group": "KnightsTeamBattle", "arg": "_info", "card": "card-Knights-KnightsTeamBattle", "nav": false},
     "KnightsTeamBattle": {
       "TeamBattle": {
         "task": "Knights",
@@ -461,7 +461,7 @@
     }
   },
   "card-Store-StoreWeekly": {
-    "_info": {"group": "StoreWeekly", "arg": "_info", "card": "card-Store-StoreWeekly"},
+    "_info": {"group": "StoreWeekly", "arg": "_info", "card": "card-Store-StoreWeekly", "nav": false},
     "StoreWeekly": {
       "BuyConquestMorogora": {
         "task": "Store",

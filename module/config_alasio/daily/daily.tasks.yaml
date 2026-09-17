@@ -43,7 +43,7 @@ Knights:
       groups:
         - { task: Knights, group: Scheduler }
         - Knights
-    - KnightsTeamBattle
+    - { group: KnightsTeamBattle, nav: false }
 
 Arena:
   groups:
@@ -61,7 +61,7 @@ Store:
       groups:
         - { task: Store, group: Scheduler }
         - StoreDaily
-    - StoreWeekly
+    - { group: StoreWeekly, nav: false }
 
 PetsGift:
   groups:

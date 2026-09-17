@@ -28,7 +28,7 @@ wheels = [
 [[package]]
 name = "alasio"
 version = "0.1.0"
-source = { git = "https://github.com/Rea1-ms/Alasio.git?branch=aes#e94aa53a4124843a549aa6a110c600fe4c1afcb5" }
+source = { git = "https://github.com/Rea1-ms/Alasio.git?branch=aes#db39396810c22703dcd8c05868280f34577ac6db" }
 dependencies = [
     { name = "exceptiongroup" },
     { name = "httpx" },

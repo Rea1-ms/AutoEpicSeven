@@ -89,14 +89,6 @@
         "zh-TW": "騎士團設定"
       }
     },
-    "card-Knights-KnightsTeamBattle": {
-      "i18n": {
-        "zh-CN": "骑士团团战",
-        "en-US": "Guild War",
-        "ja-JP": "ギルド戦",
-        "zh-TW": "騎士團團戰"
-      }
-    },
     "card-Arena-Arena": {
       "scheduler": true,
       "i18n": {
@@ -113,14 +105,6 @@
         "en-US": "Store",
         "ja-JP": "ショップ",
         "zh-TW": "商店"
-      }
-    },
-    "card-Store-StoreWeekly": {
-      "i18n": {
-        "zh-CN": "商店每周购买",
-        "en-US": "Store Weekly Purchases",
-        "ja-JP": "ショップ毎週購入",
-        "zh-TW": "商店每週購買"
       }
     },
     "card-PetsGift-PetsGift": {
