@@ -2,10 +2,10 @@
   "aes": {
     "_info": {
       "i18n": {
-        "zh-CN": "aes",
-        "en-US": "aes",
-        "ja-JP": "aes",
-        "zh-TW": "aes"
+        "zh-CN": "游戏设置",
+        "en-US": "Game Settings",
+        "ja-JP": "ゲーム設定",
+        "zh-TW": "遊戲設定"
       }
     },
     "card-Alas-Game": {
@@ -29,10 +29,10 @@
   "daily": {
     "_info": {
       "i18n": {
-        "zh-CN": "daily",
-        "en-US": "daily",
-        "ja-JP": "daily",
-        "zh-TW": "daily"
+        "zh-CN": "日常",
+        "en-US": "Daily",
+        "ja-JP": "デイリー",
+        "zh-TW": "日常"
       }
     },
     "card-MissionReward-MissionReward": {
@@ -165,10 +165,10 @@
   "monthly": {
     "_info": {
       "i18n": {
-        "zh-CN": "monthly",
-        "en-US": "monthly",
-        "ja-JP": "monthly",
-        "zh-TW": "monthly"
+        "zh-CN": "月常",
+        "en-US": "Monthly",
+        "ja-JP": "マンスリー",
+        "zh-TW": "月常"
       }
     },
     "card-SanctuaryMonthly-SanctuaryMonthly": {
@@ -184,10 +184,10 @@
   "tool": {
     "_info": {
       "i18n": {
-        "zh-CN": "tool",
-        "en-US": "tool",
-        "ja-JP": "tool",
-        "zh-TW": "tool"
+        "zh-CN": "工具",
+        "en-US": "Tools",
+        "ja-JP": "ツール",
+        "zh-TW": "工具"
       }
     },
     "card-CombatFarm-CombatFarm": {

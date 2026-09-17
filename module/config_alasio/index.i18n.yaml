@@ -1,0 +1,127 @@
+# Editable source for sidebar section titles and short queue task names.
+# Ported from module/config/i18n/*.json (Menu and Task), with short labels
+# for Restart, Mail and Sanctuary, plus the new restart and farming tasks.
+# Keys are internal identifiers; only their translated labels are displayed.
+nav:
+  aes:
+    zh-CN: 游戏设置
+    en-US: Game Settings
+    ja-JP: ゲーム設定
+    zh-TW: 遊戲設定
+  daily:
+    zh-CN: 日常
+    en-US: Daily
+    ja-JP: デイリー
+    zh-TW: 日常
+  monthly:
+    zh-CN: 月常
+    en-US: Monthly
+    ja-JP: マンスリー
+    zh-TW: 月常
+  tool:
+    zh-CN: 工具
+    en-US: Tools
+    ja-JP: ツール
+    zh-TW: 工具
+
+queue:
+  RestartDevice:
+    zh-CN: 重启设备
+    en-US: Restart Device
+    ja-JP: デバイスを再起動
+    zh-TW: 重新啟動設備
+  RestartGame:
+    zh-CN: 重启游戏
+    en-US: Restart Game
+    ja-JP: ゲームを再起動
+    zh-TW: 重新啟動遊戲
+  Restart:
+    zh-CN: 重启
+    en-US: Restart
+    ja-JP: 再起動
+    zh-TW: 重新啟動
+  MissionReward:
+    zh-CN: 任务奖励
+    en-US: Mission Reward
+    ja-JP: ミッション報酬
+    zh-TW: 任務獎勵
+  Mail:
+    zh-CN: 邮件
+    en-US: Mail
+    ja-JP: メール
+    zh-TW: 郵件
+  CommunityAio:
+    zh-CN: 社区 AIO
+    en-US: Community AIO
+    ja-JP: コミュニティ AIO
+    zh-TW: 社群 AIO
+  DataUpdate:
+    zh-CN: 仪表盘更新
+    en-US: Dashboard Upd
+    ja-JP: ダッシュボード更新
+    zh-TW: 儀表板更新
+  SanctuaryDaily:
+    zh-CN: 圣域日常
+    en-US: Sanctuary Daily
+    ja-JP: 聖域デイリー
+    zh-TW: 聖域日常
+  Knights:
+    zh-CN: 骑士团
+    en-US: Guild
+    ja-JP: ギルド
+    zh-TW: 騎士團
+  Arena:
+    zh-CN: 竞技场
+    en-US: Arena
+    ja-JP: アリーナ
+    zh-TW: 競技場
+  Store:
+    zh-CN: 商店
+    en-US: Store
+    ja-JP: ショップ
+    zh-TW: 商店
+  PetsGift:
+    zh-CN: 宠物礼物
+    en-US: Pet Gift
+    ja-JP: ペットギフト
+    zh-TW: 寵物禮物
+  SecretShop:
+    zh-CN: 秘密商店
+    en-US: Secret Shop
+    ja-JP: シークレットショップ
+    zh-TW: 秘密商店
+  Combat:
+    zh-CN: 每日副本
+    en-US: Daily Combat
+    ja-JP: デイリー戦闘
+    zh-TW: 每日副本
+  Gacha:
+    zh-CN: 召唤
+    en-US: Gacha
+    ja-JP: 召喚
+    zh-TW: 召喚
+  Pets:
+    zh-CN: 宠物商店
+    en-US: Pet Shop
+    ja-JP: ペットショップ
+    zh-TW: 寵物商店
+  SpecialActivity:
+    zh-CN: 特别活动
+    en-US: Special Activity
+    ja-JP: 特別イベント
+    zh-TW: 特別活動
+  SanctuaryMonthly:
+    zh-CN: 圣域月常
+    en-US: Sanctuary Monthly
+    ja-JP: 聖域マンスリー
+    zh-TW: 聖域月常
+  CombatFarm:
+    zh-CN: 反复刷取
+    en-US: Repeat Farming
+    ja-JP: 反復周回
+    zh-TW: 反覆刷取
+  CommunityAuth:
+    zh-CN: 社区登录
+    en-US: Community Login
+    ja-JP: コミュニティログイン
+    zh-TW: 社群登入
