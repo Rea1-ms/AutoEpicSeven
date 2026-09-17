@@ -5,43 +5,43 @@ from module.base.button import Button, ButtonWrapper
 
 OCR_REPEAT_COMBAT_TIMES = ButtonWrapper(
     name='OCR_REPEAT_COMBAT_TIMES',
-    cn=None,
-    global_cn=Button(
-        file='./assets/global_cn/dungeon/repeat/battle/OCR_REPEAT_COMBAT_TIMES.png',
+    share=Button(
+        file='./assets/share/dungeon/repeat/battle/OCR_REPEAT_COMBAT_TIMES.png',
         area=(732, 414, 817, 445),
         search=(712, 394, 837, 465),
         color=(115, 129, 145),
         button=(732, 414, 817, 445),
     ),
-    global_en=None,
 )
 PRIORITIZE_OWNED_STAMINA_OFF = ButtonWrapper(
     name='PRIORITIZE_OWNED_STAMINA_OFF',
-    cn=None,
-    global_cn=Button(
-        file='./assets/global_cn/dungeon/repeat/battle/PRIORITIZE_OWNED_STAMINA_OFF.png',
+    share=Button(
+        file='./assets/share/dungeon/repeat/battle/PRIORITIZE_OWNED_STAMINA_OFF.png',
         area=(556, 304, 588, 340),
         search=(536, 284, 608, 360),
         color=(25, 34, 41),
         button=(556, 304, 588, 340),
     ),
-    global_en=None,
 )
 PRIORITIZE_OWNED_STAMINA_ON = ButtonWrapper(
     name='PRIORITIZE_OWNED_STAMINA_ON',
-    cn=None,
-    global_cn=Button(
-        file='./assets/global_cn/dungeon/repeat/battle/PRIORITIZE_OWNED_STAMINA_ON.png',
+    share=Button(
+        file='./assets/share/dungeon/repeat/battle/PRIORITIZE_OWNED_STAMINA_ON.png',
         area=(557, 306, 589, 337),
         search=(537, 286, 609, 357),
         color=(42, 69, 33),
         button=(557, 306, 589, 337),
     ),
-    global_en=None,
 )
 REPEAT_COMBAT_TIMES_MAX = ButtonWrapper(
     name='REPEAT_COMBAT_TIMES_MAX',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/dungeon/repeat/battle/REPEAT_COMBAT_TIMES_MAX.png',
+        area=(940, 420, 973, 437),
+        search=(920, 400, 993, 457),
+        color=(129, 132, 136),
+        button=(940, 420, 973, 437),
+    ),
     global_cn=Button(
         file='./assets/global_cn/dungeon/repeat/battle/REPEAT_COMBAT_TIMES_MAX.png',
         area=(940, 419, 973, 436),
@@ -53,7 +53,13 @@ REPEAT_COMBAT_TIMES_MAX = ButtonWrapper(
 )
 REPEAT_COMBAT_TIMES_MINIMUM = ButtonWrapper(
     name='REPEAT_COMBAT_TIMES_MINIMUM',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/dungeon/repeat/battle/REPEAT_COMBAT_TIMES_MINIMUM.png',
+        area=(563, 420, 597, 437),
+        search=(543, 400, 617, 457),
+        color=(111, 115, 121),
+        button=(563, 420, 597, 437),
+    ),
     global_cn=Button(
         file='./assets/global_cn/dungeon/repeat/battle/REPEAT_COMBAT_TIMES_MINIMUM.png',
         area=(564, 419, 598, 436),
@@ -65,25 +71,21 @@ REPEAT_COMBAT_TIMES_MINIMUM = ButtonWrapper(
 )
 REPEAT_COMBAT_TIMES_MINUS = ButtonWrapper(
     name='REPEAT_COMBAT_TIMES_MINUS',
-    cn=None,
-    global_cn=Button(
-        file='./assets/global_cn/dungeon/repeat/battle/REPEAT_COMBAT_TIMES_MINUS.png',
+    share=Button(
+        file='./assets/share/dungeon/repeat/battle/REPEAT_COMBAT_TIMES_MINUS.png',
         area=(631, 420, 646, 438),
         search=(611, 400, 666, 458),
         color=(67, 75, 84),
         button=(631, 420, 646, 438),
     ),
-    global_en=None,
 )
 REPEAT_COMBAT_TIMES_PLUS = ButtonWrapper(
     name='REPEAT_COMBAT_TIMES_PLUS',
-    cn=None,
-    global_cn=Button(
-        file='./assets/global_cn/dungeon/repeat/battle/REPEAT_COMBAT_TIMES_PLUS.png',
+    share=Button(
+        file='./assets/share/dungeon/repeat/battle/REPEAT_COMBAT_TIMES_PLUS.png',
         area=(889, 421, 909, 438),
         search=(869, 401, 929, 458),
         color=(73, 80, 88),
         button=(889, 421, 909, 438),
     ),
-    global_en=None,
 )

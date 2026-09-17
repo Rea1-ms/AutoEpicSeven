@@ -5,13 +5,6 @@ from module.base.button import Button, ButtonWrapper
 
 AD_BUFF_X_CLOSE = ButtonWrapper(
     name='AD_BUFF_X_CLOSE',
-    global_cn=Button(
-        file='./assets/global_cn/base/popup/AD_BUFF_X_CLOSE.png',
-        area=(731, 690, 745, 704),
-        search=(587, 685, 832, 705),
-        color=(55, 54, 54),
-        button=(731, 690, 745, 704),
-    ),
     share=Button(
         file='./assets/share/base/popup/AD_BUFF_X_CLOSE.png',
         area=(731, 690, 745, 704),
@@ -42,13 +35,22 @@ BROADCAST = ButtonWrapper(
 )
 NETWORK_ERROR_ABNORMAL = ButtonWrapper(
     name='NETWORK_ERROR_ABNORMAL',
-    cn=Button(
-        file='./assets/cn/base/popup/NETWORK_ERROR_ABNORMAL.png',
-        area=(674, 313, 711, 333),
-        search=(654, 293, 731, 353),
-        color=(98, 101, 104),
-        button=(674, 313, 711, 333),
-    ),
+    cn=[
+        Button(
+            file='./assets/cn/base/popup/NETWORK_ERROR_ABNORMAL.png',
+            area=(674, 313, 711, 333),
+            search=(654, 293, 731, 353),
+            color=(98, 101, 104),
+            button=(674, 313, 711, 333),
+        ),
+        Button(
+            file='./assets/cn/base/popup/NETWORK_ERROR_ABNORMAL.2.png',
+            area=(675, 340, 713, 358),
+            search=(655, 320, 733, 378),
+            color=(100, 104, 110),
+            button=(675, 340, 713, 358),
+        ),
+    ],
     global_cn=[
         Button(
             file='./assets/global_cn/base/popup/NETWORK_ERROR_ABNORMAL.png',
