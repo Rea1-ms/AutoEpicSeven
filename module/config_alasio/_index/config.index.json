@@ -3,11 +3,10 @@
     "file": "aes/aes_config.json",
     "i18n": [
       "alasio/alasio_i18n.json",
-      "alasio/device_i18n.json",
       "aes/aes_i18n.json"
     ],
     "config": {
-      "task": ["Alas", "Device", "Restart"],
+      "task": ["Alas", "Restart"],
       "group": []
     }
   },
@@ -31,6 +30,18 @@
     ],
     "config": {
       "task": ["Dashboard"],
+      "group": []
+    }
+  },
+  "device": {
+    "file": "device/device_config.json",
+    "i18n": [
+      "alasio/device_i18n.json",
+      "aes/aes_i18n.json",
+      "device/device_i18n.json"
+    ],
+    "config": {
+      "task": ["Device", "Alas"],
       "group": []
     }
   },

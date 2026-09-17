@@ -7,7 +7,7 @@ class ManualConfig:
         return server.lang
 
     SCHEDULER_PRIORITY = """
-    Restart
+    RestartDevice > RestartGame > Restart
     > Mail > SanctuaryDaily > SanctuaryMonthly
     > Knights > Store > Arena > PetsGift
     > SecretShop > Combat > Gacha > MissionReward > Pets > DataUpdate > CommunityAio

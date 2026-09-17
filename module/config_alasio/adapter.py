@@ -23,7 +23,7 @@ _GAME_FIELDS = frozenset({'PackageName', 'GameLanguage', 'GameClient'})
 _DEVICE_GROUPS = frozenset({'Emulator', 'EmulatorInfo', 'Error', 'Optimization'})
 # Framework-only tasks excluded from old self.data
 _FRAMEWORK_TASKS = frozenset({
-    'Dashboard', 'Device', 'RestartDevice', 'RestartGame', '_global_bind',
+    'Dashboard', 'Device', '_global_bind',
 })
 # Dashboard items now use one Alasio group per item. Legacy task code still
 # accesses the old DataUpdate.Dashboard.<Item> dictionaries through StoredBase.

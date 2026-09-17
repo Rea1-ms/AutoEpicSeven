@@ -28,7 +28,7 @@ class ConfigConst(ConfigConst_):
         return AesSqliteAdapter().get_hidden_args(data)
 
     SCHEDULER_PRIORITY = """
-    Restart
+    RestartDevice > RestartGame > Restart
     > Mail > SanctuaryDaily > SanctuaryMonthly
     > Knights > Store > Arena > PetsGift
     > SecretShop > Combat > Gacha > MissionReward > Pets > DataUpdate > CommunityAio

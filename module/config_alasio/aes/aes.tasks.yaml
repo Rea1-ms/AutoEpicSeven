@@ -3,11 +3,7 @@ Alas:
   groups:
     Game:
   displays:
-    - Game
-    - { task: Device, group: Emulator }
-    - { task: Device, group: EmulatorInfo }
-    - { task: Device, group: Error }
-    - { task: Device, group: Optimization }
+    - { group: Game, args: [GameLanguage] }
 
 Restart:
   groups:

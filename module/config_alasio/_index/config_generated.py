@@ -113,6 +113,10 @@ class ConfigGenerated(AlasioConfigBase):
     CommunityAuth: "tool.CommunityAuth"
 
     """
+    ========== nav: device ==========
+    """
+
+    """
     ========== nav: dashboard ==========
     """
     # ----- Dashboard -----

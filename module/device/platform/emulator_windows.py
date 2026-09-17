@@ -259,7 +259,7 @@ class Emulator(EmulatorBase):
                 # Serial from BlueStacks4 are not static, they get increased on every emulator launch
                 # Assume all use 127.0.0.1:5555
                 yield EmulatorInstance(
-                    serial=f'127.0.0.1:5555',
+                    serial='127.0.0.1:5555',
                     name=folder,
                     path=self.path
                 )
@@ -560,12 +560,21 @@ class EmulatorManager(EmulatorManagerBase):
         """
         Get all emulator instances installed on current computer.
         """
-        instances = []
+        instances: dict[tuple[str, str, str, str], EmulatorInstance] = {}
         for emulator in self.all_emulators:
-            instances += list(emulator.iter_instances())
+            for instance in emulator.iter_instances():
+                # MuMu can keep multiple .nemu files in one instance folder.
+                # They describe the same player and must not turn an exact
+                # serial match into an ambiguous multi-instance result.
+                key = (
+                    instance.type,
+                    instance.serial.casefold(),
+                    instance.name.casefold(),
+                    os.path.normcase(instance.path),
+                )
+                instances.setdefault(key, instance)
 
-        instances: list[EmulatorInstance] = sorted(instances, key=lambda x: str(x))
-        return instances
+        return sorted(instances.values(), key=lambda instance: str(instance))
 
 
 if __name__ == '__main__':

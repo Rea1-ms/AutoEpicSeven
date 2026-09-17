@@ -10,13 +10,13 @@
   },
   "RestartDevice": {
     "group": {
-      "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerStatic", "task": "RestartDevice"}
+      "Scheduler": {"file": "alasio/alasio_model.py", "cls": "Scheduler", "task": "RestartDevice"}
     },
     "config": {"task": ["RestartDevice"], "group": []}
   },
   "RestartGame": {
     "group": {
-      "Scheduler": {"file": "alasio/alasio_model.py", "cls": "SchedulerStatic", "task": "RestartGame"}
+      "Scheduler": {"file": "alasio/alasio_model.py", "cls": "Scheduler", "task": "RestartGame"}
     },
     "config": {"task": ["RestartGame"], "group": []}
   },

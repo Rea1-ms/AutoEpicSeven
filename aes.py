@@ -6,11 +6,30 @@ from module.logger import logger
 
 
 class AutoEpicSeven(AzurLaneAutoScript):
+    def get_next_task(self):
+        task = super().get_next_task()
+        if task in {'RestartGame', 'RestartDevice'}:
+            # Consume manual requests at selection time, before the scheduler
+            # initializes the device or takes its first screenshot. Clearing
+            # only inside the handler leaves a failed startup queued forever.
+            # The selected task still runs once; another click queues a new one.
+            self.config.cross_set(f'{task}.Scheduler.Enable', False)
+        return task
+
     def restart(self):
         from tasks.login.login import Login
         Login(self.config, device=self.device).app_restart()
         # Cool down Restart task itself after recovery to avoid infinite restart loops.
         self.config.task_delay(server_update=True, task='Restart')
+
+    def restart_game(self):
+        from tasks.login.login import Login
+        Login(self.config, device=self.device).app_restart()
+
+    def restart_device(self):
+        if not self.device.emulator_start():
+            from module.exception import RequestHumanTakeover
+            raise RequestHumanTakeover('Failed to restart emulator')
 
     def start(self):
         from tasks.login.login import Login

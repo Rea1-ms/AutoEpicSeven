@@ -1,0 +1,35 @@
+DevicePage:
+  displays:
+    - info: ConnectionTarget
+      groups:
+        - { task: Device, group: Emulator, args: [Serial] }
+        - { task: Device, group: EmulatorInfo, args: [Emulator, Name, Path] }
+        - { task: Alas, group: Game, args: [PackageName, GameClient] }
+    - info: ScreenshotControl
+      groups:
+        - {
+            task: Device,
+            group: Emulator,
+            args: [ScreenshotMethod, ControlMethod, ScreenshotDedithering],
+          }
+    - info: Recovery
+      groups:
+        - { task: Device, group: Emulator, args: [AdbRestart] }
+        - {
+            task: Device,
+            group: Error,
+            args: [HandleError, SaveError, ScreenshotLength],
+          }
+    - info: RuntimeOptimization
+      groups:
+        - {
+            task: Device,
+            group: Optimization,
+            args:
+              [
+                ScreenshotInterval,
+                CombatScreenshotInterval,
+                TaskHoardingDuration,
+                WhenTaskQueueEmpty,
+              ],
+          }

@@ -1,0 +1,82 @@
+{
+  "ConnectionTarget": {
+    "_info": {
+      "zh-CN": {
+        "name": "连接目标",
+        "help": "选择游戏服务器、客户端和模拟器实例。"
+      },
+      "en-US": {
+        "name": "Connection Target",
+        "help": "Select the game server, client, and emulator instance."
+      },
+      "ja-JP": {
+        "name": "接続先",
+        "help": "ゲームサーバー、クライアント、エミュレーターのインスタンスを選択します。"
+      },
+      "zh-TW": {
+        "name": "連線目標",
+        "help": "選擇遊戲伺服器、客戶端和模擬器實例。"
+      }
+    }
+  },
+  "ScreenshotControl": {
+    "_info": {
+      "zh-CN": {
+        "name": "截图与控制",
+        "help": "设置设备截图和输入控制方式。"
+      },
+      "en-US": {
+        "name": "Screenshot and Control",
+        "help": "Configure device screenshot and input control methods."
+      },
+      "ja-JP": {
+        "name": "スクリーンショットと操作",
+        "help": "デバイスのスクリーンショット方式と入力操作方式を設定します。"
+      },
+      "zh-TW": {
+        "name": "截圖與控制",
+        "help": "設定設備截圖和輸入控制方式。"
+      }
+    }
+  },
+  "Recovery": {
+    "_info": {
+      "zh-CN": {
+        "name": "故障恢复",
+        "help": "设置设备异常处理和错误现场保存。"
+      },
+      "en-US": {
+        "name": "Recovery",
+        "help": "Configure device error handling and diagnostic capture."
+      },
+      "ja-JP": {
+        "name": "障害復旧",
+        "help": "デバイスのエラー処理と診断情報の保存を設定します。"
+      },
+      "zh-TW": {
+        "name": "故障復原",
+        "help": "設定設備異常處理和錯誤現場保存。"
+      }
+    }
+  },
+  "RuntimeOptimization": {
+    "_info": {
+      "zh-CN": {
+        "name": "运行优化",
+        "help": "调整截图频率、任务缓冲和队列结束行为。"
+      },
+      "en-US": {
+        "name": "Runtime Optimization",
+        "help": "Tune screenshot frequency, task buffering, and idle behavior."
+      },
+      "ja-JP": {
+        "name": "実行最適化",
+        "help": "スクリーンショット頻度、タスク待機時間、キュー終了時の動作を調整します。"
+      },
+      "zh-TW": {
+        "name": "執行最佳化",
+        "help": "調整截圖頻率、任務緩衝和佇列結束行為。"
+      }
+    }
+  }
+}

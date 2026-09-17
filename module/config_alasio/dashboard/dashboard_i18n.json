@@ -39,10 +39,22 @@
       "zh-TW": {"name": "每日活躍", "help": ""}
     },
     "Total": {
-      "zh-CN": {"name": "奖励阈值", "help": "每日活跃度达到 100 时可领取最终奖励，累计值可以超过该阈值。"},
-      "en-US": {"name": "Reward Threshold", "help": "The final reward unlocks at 100 daily activity points; the accumulated value may exceed this threshold."},
-      "ja-JP": {"name": "報酬しきい値", "help": "デイリー活動度が 100 に達すると最終報酬を受け取れます。累積値はこのしきい値を超える場合があります。"},
-      "zh-TW": {"name": "獎勵門檻", "help": "每日活躍度達到 100 時可領取最終獎勵，累計值可以超過此門檻。"}
+      "zh-CN": {
+        "name": "奖励阈值",
+        "help": "每日活跃度达到 100 时可领取最终奖励，累计值可以超过该阈值。"
+      },
+      "en-US": {
+        "name": "Reward Threshold",
+        "help": "The final reward unlocks at 100 daily activity points; the accumulated value may exceed this threshold."
+      },
+      "ja-JP": {
+        "name": "報酬しきい値",
+        "help": "デイリー活動度が 100 に達すると最終報酬を受け取れます。累積値はこのしきい値を超える場合があります。"
+      },
+      "zh-TW": {
+        "name": "獎勵門檻",
+        "help": "每日活躍度達到 100 時可領取最終獎勵，累計值可以超過此門檻。"
+      }
     }
   },
   "ArenaRank": {
