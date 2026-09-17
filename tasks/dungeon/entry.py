@@ -23,7 +23,7 @@ from tasks.dungeon.assets.assets_dungeon_configs_combat_entry import (
     URGENT_TASKS,
 )
 from tasks.dungeon.assets.assets_dungeon_popup import PACKAGE_FULL
-from tasks.dungeon.assets.assets_dungeon_repeat_entry import REPEAT_COMBAT_MENU
+from tasks.dungeon.assets.assets_dungeon_repeat_common import REPEAT_COMBAT_MENU
 from tasks.dungeon.plan import CombatPlan
 
 

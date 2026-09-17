@@ -17,7 +17,6 @@ from tasks.dungeon.prepare import CombatPrepare
 from tasks.dungeon.repeat import CombatRepeatMixin
 from tasks.dungeon.runtime import CombatRuntimeMixin, is_background_repeat_combat_active
 from tasks.dungeon.side_story import SideStoryNavigateMixin
-from tasks.dungeon.stamina_status import CombatStaminaStatusMixin
 from tasks.dungeon.urgent_tasks import UrgentTasksNavigateMixin
 from tasks.mission_reward.scheduling import should_schedule_mission_reward
 
@@ -31,7 +30,6 @@ class Combat(
     EpisodeNavigateMixin,
     SideStoryNavigateMixin,
     UrgentTasksNavigateMixin,
-    CombatStaminaStatusMixin,
     CombatPrepare,
     ResourceBarMixin,
     UI,

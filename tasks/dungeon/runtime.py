@@ -1,7 +1,6 @@
 from module.base.timer import Timer
 from module.logger import logger
 from tasks.base.assets.assets_base_page import BACK
-from tasks.dungeon.assets.assets_dungeon_repeat_result import REPEAT_COMBAT_OVER
 
 
 BACKGROUND_REPEAT_COMBAT_RUNTIME_PATHS = (
@@ -24,7 +23,7 @@ def background_repeat_combat_requires_game_client(config) -> bool:
     """
     Return whether an active background run still depends on the game client.
 
-    Server-managed repeat combat continues after the global client goes
+    Server-managed repeat combat continues after the CN or global client goes
     offline. Legacy client-managed sessions, including sessions without a
     recognized mode, must keep the game alive so an upgrade or malformed
     runtime record cannot silently interrupt an active battle.
@@ -113,131 +112,6 @@ class CombatRuntimeMixin:
             return True
 
         return False
-
-    def _watch_repeat_combat(self, skip_first_screenshot=True) -> str:
-        """
-        Watch and settle a background repeat-combat session.
-
-        The return value is intentionally tri-state:
-        - running: session is still active, or state is temporarily ambiguous
-        - finished: result window has been consumed and we are back on main
-        - lost: repeat marker disappeared twice on main, treat session as gone
-        """
-        logger.info("Combat: watch repeat combat")
-        timeout = Timer(self.COMBAT_WATCH_TIMEOUT_SECONDS, count=60).start()
-        stage = "watch"
-        result_main_confirm = Timer(0.4, count=2).clear()
-        missing_check_confirm = Timer(self.COMBAT_MISSING_CHECK_CONFIRM_SECONDS, count=2).clear()
-
-        while 1:
-            if skip_first_screenshot:
-                skip_first_screenshot = False
-            else:
-                self.device.screenshot()
-
-            if timeout.reached():
-                logger.warning("Combat: repeat combat watch timeout, keep session active")
-                return "running"
-
-            if self._handle_dungeon_network_error(interval=1):
-                logger.warning("Combat: background repeat combat has network error, keep session active")
-                return "running"
-
-            if stage == "watch":
-                if self.appear_then_click(REPEAT_COMBAT_OVER, interval=1):
-                    logger.info("Combat: repeat combat over, open result")
-                    stage = "result"
-                    missing_check_confirm.clear()
-                    timeout.reset()
-                    continue
-
-                if self._is_repeat_result_window():
-                    stage = "result"
-                    missing_check_confirm.clear()
-                    timeout.reset()
-                    continue
-
-                if self._is_repeat_combat_running():
-                    missing_check_confirm.clear()
-                    logger.info("Combat: repeat combat still running in background")
-                    return "running"
-
-                if self.is_in_main(interval=0):
-                    if not missing_check_confirm.started():
-                        logger.info("Combat: repeat combat check missing once, confirm again")
-                        missing_check_confirm.start()
-                    elif missing_check_confirm.reached():
-                        logger.warning("Combat: repeat combat session active but check is missing")
-                        return "lost"
-                else:
-                    missing_check_confirm.clear()
-
-                if self._handle_dungeon_additional():
-                    missing_check_confirm.clear()
-                    timeout.reset()
-                    continue
-                continue
-
-            if stage == "result":
-                if self.appear_then_click(REPEAT_COMBAT_OVER, interval=1):
-                    timeout.reset()
-                    continue
-
-                if self._combat_should_cleanup_saint37_reward_items():
-                    if self._cleanup_saint37_reward_items(skip_first_screenshot=True):
-                        stage = "finish"
-                        timeout.reset()
-                        result_main_confirm.clear()
-                        continue
-                    logger.warning("Combat Saint37: cleanup failed, fallback to close repeat result")
-
-                if self._is_repeat_result_window():
-                    if self.handle_ad_buff_x_close(interval=0.5):
-                        logger.info("Combat: close repeat combat result")
-                        stage = "finish"
-                        timeout.reset()
-                        result_main_confirm.clear()
-                        continue
-                    timeout.reset()
-                    continue
-
-                if self.handle_ad_buff_x_close(interval=0.5):
-                    logger.info("Combat: close repeat combat result")
-                    stage = "finish"
-                    timeout.reset()
-                    result_main_confirm.clear()
-                    continue
-
-                if self._handle_dungeon_additional():
-                    timeout.reset()
-                    continue
-                continue
-
-            if stage == "finish":
-                if self._is_repeat_result_window():
-                    if self.handle_ad_buff_x_close(interval=0.5):
-                        timeout.reset()
-                        continue
-                    timeout.reset()
-                    continue
-
-                if self.is_in_main(interval=0):
-                    if not result_main_confirm.started():
-                        result_main_confirm.start()
-                    elif result_main_confirm.reached():
-                        logger.info("Combat: repeat combat finished")
-                        return "finished"
-                else:
-                    result_main_confirm.clear()
-
-                if self._handle_dungeon_additional():
-                    timeout.reset()
-                    continue
-
-                if self._handle_repeat_combat_finish_return():
-                    timeout.reset()
-                    continue
-                continue
 
     def _leave_to_main(self, skip_first_screenshot=True) -> bool:
         """

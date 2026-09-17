@@ -7,12 +7,6 @@ from tasks.dungeon.assets.assets_dungeon_fast_combat import (
     OCR_FAST_COMBAT_CURRENT_TIMES,
     OCR_FAST_COMBAT_REMAINING_TIMES,
 )
-from tasks.dungeon.assets.assets_dungeon_repeat_entry import REPEAT_COMBAT_MENU
-from tasks.dungeon.assets.assets_dungeon_repeat_menu import (
-    OCR_REPEAT_COMBAT_TIMES,
-    REPEAT_COMBAT_TIMES_MINUS,
-    REPEAT_COMBAT_TIMES_PLUS,
-)
 
 
 def calculate_fast_combat_target(
@@ -132,28 +126,6 @@ class CombatPrepare:
         ).ocr_single_line(self.device.image)
         logger.attr("FastCombatCurrentTimes", value)
         return value
-
-    def _ocr_repeat_combat_times(self) -> int:
-        value = CombatPrepareDigit(
-            OCR_REPEAT_COMBAT_TIMES,
-            lang=self._ocr_lang(),
-            name="RepeatCombatTimes",
-        ).ocr_single_line(self.device.image)
-        logger.attr("RepeatCombatTimes", value)
-        return value
-
-    def _ocr_repeat_combat_counter(self) -> tuple[int, int, int]:
-        current, remain, total = CombatPrepareCounter(
-            OCR_REPEAT_COMBAT_TIMES,
-            lang=self._ocr_lang(),
-            name="RepeatCombatTimesCounter",
-        ).ocr_single_line(self.device.image)
-        logger.attr("RepeatCombatTimesCurrent", current)
-        logger.attr("RepeatCombatTimesTotal", total)
-        return current, remain, total
-
-    def _is_repeat_count_controls_open(self) -> bool:
-        return self.appear(REPEAT_COMBAT_TIMES_PLUS) and self.appear(REPEAT_COMBAT_TIMES_MINUS)
 
     def _handle_repeat_count_overlay_additional(self) -> bool:
         """
@@ -336,117 +308,3 @@ class CombatPrepare:
             ):
                 return "ready", target
             return "failed", 0
-
-    def _prepare_repeat_combat(
-        self,
-        skip_first_screenshot=True,
-        use_max=False,
-        clamp_to_counter=False,
-        affordable_count: int | None = None,
-        completed_count: int = 0,
-    ) -> bool:
-        """
-        Args:
-            use_max: Set the repeat count to the game-computed maximum.
-            clamp_to_counter: Clamp the configured repeat count to the
-                game-computed maximum. Burnout mode wakes with just enough
-                stamina for the configured batch; if the user spent stamina
-                manually in between, the configured count may exceed what the
-                game allows and the plus button would stall at the cap. The
-                clamp burns whatever is affordable instead of failing.
-            affordable_count: Maximum count allowed by the latest stamina
-                snapshot, including the first combat. None for targets that do
-                not consume stamina.
-            completed_count: Runs already completed by fast combat. Fixed-count
-                mode subtracts these from the configured total.
-        """
-        logger.hr("Combat Prepare Repeat", level=2)
-        timeout = Timer(self.COMBAT_COUNT_TIMEOUT_SECONDS, count=80).start()
-        control_pending = Timer(0.8, count=2).clear()
-
-        while 1:
-            if skip_first_screenshot:
-                skip_first_screenshot = False
-            else:
-                self.device.screenshot()
-
-            if timeout.reached():
-                logger.warning("Combat: prepare repeat combat timeout")
-                return False
-
-            controls_open = self._is_repeat_count_controls_open()
-            controls_pending = control_pending.started() and not control_pending.reached()
-
-            if not (self._is_prepare_page() or controls_open or controls_pending):
-                logger.warning("Combat: leave prepare page while preparing repeat combat")
-                return False
-
-            if controls_open or controls_pending:
-                if self._handle_repeat_count_overlay_additional():
-                    timeout.reset()
-                    control_pending.clear()
-                    continue
-            else:
-                if self._handle_dungeon_additional():
-                    timeout.reset()
-                    control_pending.clear()
-                    continue
-
-            if controls_open:
-                if use_max or clamp_to_counter or affordable_count is not None:
-                    _, _, total = self._ocr_repeat_combat_counter()
-                    if total <= 0:
-                        continue
-
-                    if affordable_count is not None:
-                        target = calculate_repeat_combat_target(
-                            configured=self._combat_repeat_count(),
-                            game_maximum=total,
-                            affordable=affordable_count,
-                            use_max=use_max,
-                            completed=completed_count,
-                        )
-                        if target <= 0:
-                            logger.info("Combat: no stamina available for repeat combat")
-                            return False
-                    else:
-                        target = total if use_max else min(self._combat_repeat_count(), total)
-
-                    if not use_max and target < self._combat_repeat_count():
-                        logger.info(f"Combat: repeat count clamped to {target}")
-
-                    def ocr_getter():
-                        return self._ocr_repeat_combat_counter()[0]
-                else:
-                    target = self._combat_repeat_count()
-                    ocr_getter = self._ocr_repeat_combat_times
-                logger.attr("CombatRepeatCombatTargetCount", target)
-                return self._set_prepare_count(
-                    target,
-                    ocr_getter,
-                    REPEAT_COMBAT_TIMES_PLUS,
-                    REPEAT_COMBAT_TIMES_MINUS,
-                    "RepeatCombatTimes",
-                    additional_handler=self._handle_repeat_count_overlay_additional,
-                    skip_first_screenshot=True,
-                )
-
-            if controls_pending:
-                continue
-
-            if not self._ensure_fast_combat_state(enabled=False):
-                timeout.reset()
-                continue
-
-            if not self._ensure_repeat_combat_enabled():
-                timeout.reset()
-                continue
-
-            if not self.appear(REPEAT_COMBAT_TIMES_PLUS) or not self.appear(REPEAT_COMBAT_TIMES_MINUS):
-                if control_pending.started() and not control_pending.reached():
-                    continue
-                if self.appear_then_click(REPEAT_COMBAT_MENU, interval=1):
-                    logger.info("Combat: open repeat combat count controls")
-                    control_pending.reset()
-                    timeout.reset()
-                    continue

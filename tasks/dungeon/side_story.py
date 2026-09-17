@@ -18,18 +18,6 @@ from tasks.dungeon.assets.assets_dungeon_configs_side_story_special_book_of_time
     SAINT_MEMORIAL_CARD,
     SAINT_MEMORIAL_SELECTED,
 )
-from tasks.dungeon.assets.assets_dungeon_repeat_window import (
-    EQUIP_LVL15_GREEN,
-    EQUIP_LVL15_WHITE,
-    EQUIP_SEARCH,
-    EQUIP_SELECTED,
-    FAST_CHOOSE,
-    PACKAGE_CHECK,
-    PACKAGE_ENTRY,
-    SELL,
-    SORT,
-    WINDOW_CHECK,
-)
 
 
 class SideStoryResultMixin:
@@ -40,101 +28,6 @@ class SideStoryResultMixin:
         if session.get("domain"):
             return session.get("domain") == "Saint37"
         return self._dungeon_domain() == "Saint37"
-
-    def _is_package_page(self) -> bool:
-        return self.match_template_luma(PACKAGE_CHECK, similarity=self.COMBAT_CHECK_SIMILARITY)
-
-    def _has_sellable_equips(self) -> bool:
-        return self.appear(EQUIP_LVL15_GREEN) or self.appear(EQUIP_LVL15_WHITE)
-
-    def _cleanup_saint37_reward_items(self, skip_first_screenshot=True) -> bool:
-        """
-        Sell low-level equipment from the repeat combat result bag.
-
-        Flow:
-            result window → package → (sort → fast choose → sell → confirm)
-            → ad_buff_x_close back to main
-
-        Pages:
-            in: repeat result window (WINDOW_CHECK)
-            out: main
-        """
-        logger.info("SideStory: cleanup reward items")
-        timeout = Timer(self.SIDE_STORY_CLEANUP_TIMEOUT_SECONDS, count=100).start()
-        stage = "window"
-
-        EQUIP_LVL15_GREEN.load_search(EQUIP_SEARCH.area)
-        EQUIP_LVL15_WHITE.load_search(EQUIP_SEARCH.area)
-
-        while 1:
-            if skip_first_screenshot:
-                skip_first_screenshot = False
-            else:
-                self.device.screenshot()
-
-            if timeout.reached():
-                logger.warning(f"SideStory: cleanup timeout at stage={stage}")
-                return False
-
-            if stage == "window":
-                if self._is_repeat_result_window():
-                    if self.appear_then_click(PACKAGE_ENTRY, interval=2):
-                        logger.info("SideStory: open temp package")
-                        stage = "package"
-                        timeout.reset()
-                        continue
-
-            if stage == "package":
-                if self._is_package_page():
-                    if self._has_sellable_equips():
-                        logger.info("SideStory: sellable equips found, start sell flow")
-                        stage = "sort"
-                    else:
-                        logger.info("SideStory: no sellable equips, close")
-                        stage = "close"
-                    timeout.reset()
-                    continue
-
-            if stage == "sort":
-                if self.appear(FAST_CHOOSE, interval=0):
-                    stage = "fast_choose"
-                    timeout.reset()
-                    continue
-                if self.appear_then_click(SORT, interval=1):
-                    timeout.reset()
-                    continue
-
-            if stage == "fast_choose":
-                if self.appear(EQUIP_SELECTED, interval=0):
-                    stage = "sell"
-                    timeout.reset()
-                    continue
-                if self.appear_then_click(FAST_CHOOSE, interval=1):
-                    logger.info("SideStory: fast choose all")
-                    timeout.reset()
-                    continue
-
-            if stage == "sell":
-                if self.appear_then_click(SELL, interval=1):
-                    logger.info("SideStory: sell selected items")
-                    stage = "confirm"
-                    timeout.reset()
-                    continue
-
-            if stage == "confirm":
-                if self.handle_popup_confirm(interval=1):
-                    logger.info("SideStory: sell confirmed")
-                    stage = "close"
-                    timeout.reset()
-                    continue
-
-            if stage == "close":
-                if self.is_in_main(interval=0):
-                    logger.info("SideStory: cleanup finished")
-                    return True
-                if self.handle_ad_buff_x_close(interval=0.5):
-                    timeout.reset()
-                    continue
 
 
 class SideStoryNavigateMixin(SideStoryResultMixin):

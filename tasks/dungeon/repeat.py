@@ -151,7 +151,7 @@ class CombatRepeatMixin:
     }
 
     def _uses_server_repeat_combat(self) -> bool:
-        return server.lang == "global_cn"
+        return server.lang in ("cn", "global_cn")
 
     def _repeat_combat_leif_count(self) -> int:
         value = getattr(self.config, "Combat_RepeatCombatLeifCount", 1)
@@ -216,8 +216,6 @@ class CombatRepeatMixin:
             return default
 
     def _is_prepare_page(self) -> bool:
-        if not self._uses_server_repeat_combat():
-            return super()._is_prepare_page()
         return self.match_template_luma(
             REPEAT_COMBAT_MENU,
             similarity=self.COMBAT_CHECK_SIMILARITY,
@@ -494,11 +492,6 @@ class CombatRepeatMixin:
         return parsed
 
     def _update_prepare_resource_snapshot(self, skip_first_screenshot=True):
-        if not self._uses_server_repeat_combat():
-            return super()._update_prepare_resource_snapshot(
-                skip_first_screenshot=skip_first_screenshot
-            )
-
         logger.hr("Combat Prepare Resources", level=2)
         timeout = Timer(self.COMBAT_PREPARE_TIMEOUT_SECONDS, count=90).start()
 
@@ -541,15 +534,6 @@ class CombatRepeatMixin:
         completed_count: int = 0,
         leif_count: int | None = None,
     ) -> bool:
-        if not self._uses_server_repeat_combat():
-            return super()._prepare_repeat_combat(
-                skip_first_screenshot=skip_first_screenshot,
-                use_max=use_max,
-                clamp_to_counter=clamp_to_counter,
-                affordable_count=affordable_count,
-                completed_count=completed_count,
-            )
-
         logger.hr("Combat Prepare Server Repeat", level=2)
         timeout = Timer(self.REPEAT_MENU_TIMEOUT_SECONDS, count=120).start()
         duration_retry = Timer(3, count=8).clear()
@@ -741,11 +725,6 @@ class CombatRepeatMixin:
                 continue
 
     def _run_repeat_combat(self, skip_first_screenshot=True) -> bool:
-        if not self._uses_server_repeat_combat():
-            return super()._run_repeat_combat(
-                skip_first_screenshot=skip_first_screenshot
-            )
-
         logger.info("Combat: start server repeat combat")
         timeout = Timer(self.COMBAT_RUN_TIMEOUT_SECONDS, count=240).start()
         start_clicked = False
@@ -801,35 +780,24 @@ class CombatRepeatMixin:
                 continue
 
     def _is_repeat_result_window(self) -> bool:
-        if not self._uses_server_repeat_combat():
-            return super()._is_repeat_result_window()
         return self.match_template_luma(
             SETTLEMENT_WINDOW_CHECK,
             similarity=self.COMBAT_CHECK_SIMILARITY,
         )
 
     def _is_repeat_combat_over(self) -> bool:
-        if not self._uses_server_repeat_combat():
-            return super()._is_repeat_combat_over()
         return self.match_template_luma(
             REPEAT_COMBAT_OVER,
             similarity=self.COMBAT_CHECK_SIMILARITY,
         )
 
     def _has_repeat_combat_check(self) -> bool:
-        if not self._uses_server_repeat_combat():
-            return super()._has_repeat_combat_check()
         return self.match_template_luma(
             REPEAT_COMBAT_CHECK,
             similarity=self.COMBAT_CHECK_SIMILARITY,
         )
 
     def _watch_repeat_combat(self, skip_first_screenshot=True) -> str:
-        if not self._uses_server_repeat_combat():
-            return super()._watch_repeat_combat(
-                skip_first_screenshot=skip_first_screenshot
-            )
-
         logger.info("Combat: watch server repeat combat")
         timeout = Timer(self.COMBAT_WATCH_TIMEOUT_SECONDS, count=60).start()
         stage = "watch"
