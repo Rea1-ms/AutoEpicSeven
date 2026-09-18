@@ -7,6 +7,11 @@ from module.base.timer import Timer
 from module.base.utils import save_image
 from module.exception import RequestHumanTakeover
 from module.logger import logger
+from tasks.base.assets.assets_base_popup import (
+    NETWORK_ERROR_ABNORMAL,
+    NETWORK_ERROR_DISCONNECT,
+    TOUCH_TO_CLOSE,
+)
 from tasks.base.page import page_store
 from tasks.base.ui import UI
 from tasks.store.purchase import (
@@ -93,6 +98,7 @@ class CurrentStore(UI):
                 asset=DAILY_FREE_ITEM,
                 desired_quantity=1 if self.config.StoreDaily_BuyDailyFreeItem else 0,
                 direct_click=True,
+                requires_reward_popup=True,
             ),
             ItemPurchasePlan(
                 name='free_mobility_40',
@@ -578,6 +584,8 @@ class CurrentStore(UI):
         clicked_target = False
         clicked_confirm = False
         clicked_cancel = False
+        reward_closed = False
+        reward_timeout = Timer(20, count=60)
         layout: PurchasePopupLayout = 'unknown'
         needs_target_resolution = self._needs_remaining_target_resolution(item)
         effective_desired_quantity = item.desired_quantity
@@ -602,10 +610,34 @@ class CurrentStore(UI):
                 self._log_purchase_debug(item.name, item.asset, 'timeout')
                 return PurchaseResult(success=False)
 
-            if self.ui_additional():
-                timeout.reset()
+            if clicked_confirm and item.requires_reward_popup and reward_timeout.reached():
+                logger.warning(f'{item.name}: reward popup did not settle')
+                return PurchaseResult(success=False)
+
+            if self.appear(NETWORK_ERROR_DISCONNECT) or self.appear(NETWORK_ERROR_ABNORMAL):
+                # A recognized network dialog still blocks reward handling
+                # when its retry button is on cooldown. A False handler result
+                # means no click happened, not that this dialog disappeared.
+                if self.handle_network_error():
+                    timeout.reset()
                 continue
-            if self.handle_network_error():
+
+            # Daily free goods open a reward popup after the purchase dialog
+            # disappears. A briefly visible store is not completion. Never let
+            # a generic handler consume this popup without recording it, and
+            # never mistake a network-error TOUCH_TO_CLOSE for a reward.
+            if clicked_confirm and item.requires_reward_popup:
+                if self.appear(TOUCH_TO_CLOSE):
+                    if self.handle_touch_to_close(interval=1):
+                        reward_closed = True
+                    continue
+                if not reward_closed:
+                    current_layout = self._detect_purchase_popup_layout()
+                    if current_layout != 'unknown':
+                        self._click_purchase_confirm(current_layout, interval=1)
+                    continue
+
+            if self.ui_additional():
                 timeout.reset()
                 continue
 
@@ -776,6 +808,8 @@ class CurrentStore(UI):
                     continue
 
             if quantity_resolved and self._click_purchase_confirm(layout, interval=1):
+                if not clicked_confirm:
+                    reward_timeout.start()
                 clicked_confirm = True
                 progress = True
 
@@ -785,15 +819,9 @@ class CurrentStore(UI):
 
             current_layout = self._detect_purchase_popup_layout()
             popup_active = current_layout != 'unknown'
-            item_visible = self._has_item(item.asset, self.device.image)
 
-            if clicked_confirm and not popup_active and not item_visible:
-                return PurchaseResult(
-                    success=True,
-                    quantity=purchase_quantity,
-                    counter=purchase_counter,
-                    quantity_source=quantity_source,
-                )
+            # A loading frame can hide both the dialog and the item. Only a
+            # positively recognized store proves the purchase flow returned.
             if clicked_confirm and self._is_on_any_store_page() and not popup_active:
                 return PurchaseResult(
                     success=True,
@@ -829,9 +857,9 @@ class CurrentStore(UI):
         while 1:
             self.device.screenshot()
 
-            if self.ui_additional():
-                continue
             if self.handle_network_error(interval=0.2):
+                continue
+            if self.ui_additional():
                 continue
             if self._detect_purchase_popup_layout() != 'unknown':
                 continue
@@ -861,11 +889,11 @@ class CurrentStore(UI):
                 logger.warning('Store: post-purchase settle timeout')
                 return False
 
-            if self.ui_additional():
+            if self.handle_network_error(interval=0.2):
                 timeout.reset()
                 stable_count = 0
                 continue
-            if self.handle_network_error(interval=0.2):
+            if self.ui_additional():
                 timeout.reset()
                 stable_count = 0
                 continue
@@ -1053,11 +1081,11 @@ class CurrentStore(UI):
                 timeout.reset()
                 continue
 
-    def _run_store_page_items(self, name: str, enter, items: list[ItemPurchasePlan]) -> None:
+    def _run_store_page_items(self, name: str, enter, items: list[ItemPurchasePlan]) -> bool:
         items = self._enabled_items(items)
         if not items:
             logger.info(f'Skip {name} by config')
-            return
+            return True
 
         self._wait_purchase_cooldown_before_switch()
         enter(skip_first_screenshot=True)
@@ -1071,13 +1099,17 @@ class CurrentStore(UI):
             if result.success:
                 self._record_purchase_result(item, result)
                 self._record_purchase_time()
-                self._wait_store_ready_after_purchase()
+                if not self._wait_store_ready_after_purchase():
+                    return False
+            elif result.quantity_source != 'target_reached':
+                return False
+        return True
 
     def _run_inheritance_store(self):
         items = self._enabled_items(self._build_inheritance_store_items())
         if not items:
             logger.info('Skip inheritance stone store by config')
-            return
+            return True
 
         for index, item in enumerate(items):
             self._wait_purchase_cooldown_before_switch()
@@ -1093,7 +1125,11 @@ class CurrentStore(UI):
             if result.success:
                 self._record_purchase_result(item, result)
                 self._record_purchase_time()
-                self._wait_store_ready_after_purchase()
+                if not self._wait_store_ready_after_purchase():
+                    return False
+            elif result.quantity_source != 'target_reached':
+                return False
+        return True
 
     def run(self):
         logger.hr('Store', level=1)
@@ -1106,17 +1142,23 @@ class CurrentStore(UI):
         self.ui_goto(page_store)
         self._load_shared_item_search()
 
-        self._run_store_page_items(
+        if not self._run_store_page_items(
             name='free store',
             enter=self._enter_free_store,
             items=self._build_free_store_items(),
-        )
-        self._run_inheritance_store()
-        self._run_store_page_items(
+        ):
+            self.config.task_delay(success=False)
+            return False
+        if not self._run_inheritance_store():
+            self.config.task_delay(success=False)
+            return False
+        if not self._run_store_page_items(
             name='conquest points store',
             enter=self._enter_conquest_points_store,
             items=self._build_conquest_store_items(),
-        )
+        ):
+            self.config.task_delay(success=False)
+            return False
 
         if self.purchase_stats:
             logger.hr('Store purchase summary', level=2)

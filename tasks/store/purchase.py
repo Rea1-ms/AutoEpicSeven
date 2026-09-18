@@ -29,6 +29,7 @@ class ItemPurchasePlan:
     counter_preset: PurchaseCounterPreset | None = None
     purchase_limit: int = 1
     remaining_counter_preset: PurchaseCounterPreset | None = None
+    requires_reward_popup: bool = False
 
 
 @dataclass(frozen=True)
