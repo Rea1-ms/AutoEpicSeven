@@ -29,6 +29,7 @@ from tasks.login.assets.assets_login_popup import (
 class UI(MainPage):
     ui_current: Page
     ui_main_confirm_timer = Timer(0.2, count=0)
+    UI_SWITCH_RETRY_SECONDS = 2
 
     def _ui_dynamic_origin_store(self) -> dict[str, Page]:
         if not hasattr(self, "_ui_dynamic_origins"):
@@ -287,11 +288,17 @@ class UI(MainPage):
         self.interval_clear(list(Page.iter_check_buttons()))
 
         logger.hr(f"UI goto {destination}")
+        pending_source = None
+        pending_target = None
+        switch_retry = Timer(self.UI_SWITCH_RETRY_SECONDS, count=0)
         while 1:
             if skip_first_screenshot:
                 skip_first_screenshot = False
             else:
                 self.device.screenshot()
+
+            if self.handle_ui_recovery():
+                continue
 
             # Destination page
             if self.ui_page_appear(destination):
@@ -300,12 +307,27 @@ class UI(MainPage):
                     logger.info(f'Page arrive confirm {destination}')
                 break
 
+            if self.ui_additional():
+                continue
+
             # Other pages
             clicked = False
-            for page in Page.iter_pages():
+            # Recognition must run on every frame, including during a retry
+            # interval. Previously a five-second interval hid the source page
+            # itself, letting overlapping inventory markers send BACK during
+            # a transition. Prefer the expected next page, then the source;
+            # only the repeated click (or an unrelated recovery route) waits.
+            pages = list(dict.fromkeys(
+                [pending_target, pending_source, *Page.iter_pages()]
+            ))
+            for page in pages:
+                if page is None:
+                    continue
                 if page.parent is None or page.check_button is None:
                     continue
-                if self.ui_page_appear(page, interval=5):
+                if self.ui_page_appear(page):
+                    if pending_source is not None and page != pending_target and not switch_retry.reached():
+                        break
                     logger.info(f'Page switch: {page} -> {page.parent}')
                     # Keep ui_goto deterministic: do not mix opportunistic side actions
                     # (e.g. MENU_PETS_GIFT) into route switching, otherwise navigation
@@ -317,14 +339,14 @@ class UI(MainPage):
                     self._ui_record_transition(page, button, page.parent)
                     self.device.click(button)
                     self.ui_button_interval_reset(button)
+                    pending_source = page
+                    pending_target = page.parent
+                    switch_retry.reset()
                     clicked = True
                     break
             if clicked:
                 continue
 
-            # Additional
-            if self.ui_additional():
-                continue
             # if self.handle_popup_single():
             #     continue
             if self.handle_popup_confirm():
