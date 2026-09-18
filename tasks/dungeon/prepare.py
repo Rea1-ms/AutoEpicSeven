@@ -62,6 +62,7 @@ class CombatPrepareCounter(DigitCounter):
 
 class CombatPrepare:
     COMBAT_COUNT_TIMEOUT_SECONDS = 18
+    COMBAT_FAST_ENABLE_TIMEOUT_SECONDS = 3
     COMBAT_COUNT_CLICK_INTERVAL_SECONDS = 0.8
     COMBAT_COUNT_BATCH_CLICK_INTERVAL = (0.2, 0.3)
     COMBAT_COUNT_POST_CLICK_SETTLE_SECONDS = 0.6
@@ -228,8 +229,14 @@ class CombatPrepare:
         stamina: int,
         use_max=False,
         skip_first_screenshot=True,
+        fallback_on_enable_timeout=False,
     ) -> tuple[str, int]:
         """Prepare a stamina-safe fast-combat count.
+
+        Args:
+            fallback_on_enable_timeout: Allow Urgent Tasks to continue with a
+                foreground battle if the visible fast-mode toggle stays off.
+                Other callers retain their existing failure policy.
 
         Returns:
             tuple[str, int]: Status and prepared count. Count is zero unless
@@ -238,6 +245,7 @@ class CombatPrepare:
         logger.hr("Combat Prepare Fast", level=2)
         timeout = Timer(self.COMBAT_COUNT_TIMEOUT_SECONDS, count=80).start()
         zero_confirm = Timer(self.COMBAT_ZERO_CONFIRM_SECONDS, count=2).clear()
+        enable_pending = Timer(self.COMBAT_FAST_ENABLE_TIMEOUT_SECONDS, count=0).clear()
 
         while 1:
             if skip_first_screenshot:
@@ -263,10 +271,31 @@ class CombatPrepare:
                 continue
 
             if self._is_fast_combat_locked():
-                logger.info("Combat: fast combat locked during prepare, fallback to repeat combat")
+                logger.info("Combat: fast combat locked during prepare, use another combat mode")
+                return "fallback", 0
+
+            # A disabled toggle can still match FAST_COMBAT_OFF without a lock
+            # icon. Urgent Tasks may establish a new clear-time record with a
+            # foreground run, so bound retries against a positively visible
+            # OFF state. Loading/unknown frames alone never imply unavailability,
+            # and a late ON state is accepted even after this retry window.
+            if (
+                fallback_on_enable_timeout
+                and enable_pending.started()
+                and enable_pending.reached()
+                and self._is_fast_combat_off()
+                and not self._is_fast_combat_on()
+            ):
+                logger.info("Combat: fast combat toggle remained off, use another combat mode")
                 return "fallback", 0
 
             if not self._ensure_fast_combat_state(enabled=True):
+                if (
+                    fallback_on_enable_timeout
+                    and not enable_pending.started()
+                    and self._is_fast_combat_off()
+                ):
+                    enable_pending.start()
                 continue
 
             remaining = self._ocr_fast_combat_remaining_times()
@@ -274,7 +303,7 @@ class CombatPrepare:
                 if not zero_confirm.started():
                     zero_confirm.start()
                 elif zero_confirm.reached():
-                    logger.info("Combat: fast combat remaining times exhausted, fallback to repeat combat")
+                    logger.info("Combat: fast combat remaining times exhausted, use another combat mode")
                     return "fallback", 0
                 continue
 

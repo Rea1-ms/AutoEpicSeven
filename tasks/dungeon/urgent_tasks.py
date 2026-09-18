@@ -508,14 +508,17 @@ class UrgentTasksNavigateMixin:
             out: Urgent Tasks detail page with zero remaining attempts
 
         The game-owned remaining counter is re-read after every settled mode.
-        Fast combat is capped to that counter.  A configured pet may hand the
-        remainder to the ordinary server-repeat implementation after the
-        stage has been cleared once; without a pet, foreground combat remains
-        fully automatic through the shared normal-combat loop.
+        Fast combat is capped to that counter. A gray repeat button requires
+        one foreground clear before trying fast combat, even if the button
+        stays gray afterward. If fast mode cannot be enabled, this invocation
+        finishes with foreground battles. Otherwise, a configured pet may
+        hand remaining attempts to the ordinary server-repeat implementation.
         """
         completed = 0
         first = skip_first_screenshot
         self._urgent_tasks_repeat_started = False
+        normal_clear_completed = False
+        fast_available = True
 
         while 1:
             if not self._navigate_urgent_tasks(skip_first_screenshot=first):
@@ -542,7 +545,19 @@ class UrgentTasksNavigateMixin:
             stamina = self._read_urgent_tasks_stamina(skip_first_screenshot=True)
             stamina_cost = self._combat_stage_stamina_cost()
 
-            if self._combat_should_use_fast() and stamina is not None:
+            # A gray repeat button on first entry may mean this stage lacks a
+            # recorded clear time, even when fast combat has no lock icon. This
+            # also applies when a restarted task still reads 5/5: dismissing the
+            # initial hint in an earlier run does not establish a clear record.
+            # Only a completed foreground battle permits a later fast attempt.
+            # Do not require repeat to become enabled after that battle: without
+            # a pet it can remain gray while fast combat is already usable.
+            needs_normal_clear = not normal_clear_completed and self._is_repeat_combat_unavailable()
+            force_normal = needs_normal_clear or not fast_available
+            if needs_normal_clear:
+                logger.info("UrgentTasks: repeat unavailable, clear one foreground battle before trying fast combat")
+
+            if not force_normal and self._combat_should_use_fast() and stamina is not None:
                 fast_stamina = stamina
                 if stamina_cost is not None:
                     fast_stamina = min(stamina, remaining * stamina_cost)
@@ -550,6 +565,7 @@ class UrgentTasksNavigateMixin:
                     stamina=fast_stamina,
                     use_max=True,
                     skip_first_screenshot=True,
+                    fallback_on_enable_timeout=True,
                 )
                 if fast_prepare == "ready":
                     if not self._run_fast_combat(skip_first_screenshot=True):
@@ -561,11 +577,18 @@ class UrgentTasksNavigateMixin:
                     if remaining <= 0:
                         first = True
                         continue
-                elif fast_prepare not in ("fallback", "no_stamina"):
+                elif fast_prepare == "fallback":
+                    # Do not spend another toggle retry window after every
+                    # foreground clear. This is only a decision for this run;
+                    # the next scheduled run checks the game again.
+                    fast_available = False
+                    force_normal = True
+                    logger.info("UrgentTasks: fast combat unavailable, use foreground combat for this run")
+                elif fast_prepare != "no_stamina":
                     return False, completed
 
-            has_pet = self._urgent_tasks_prepare_has_pet(
-                skip_first_screenshot=True
+            has_pet = not force_normal and self._urgent_tasks_prepare_has_pet(
+                skip_first_screenshot=True,
             )
             repeat_ready = has_pet and not self._is_repeat_combat_unavailable()
             if repeat_ready and remaining > 1:
@@ -590,4 +613,5 @@ class UrgentTasksNavigateMixin:
             ):
                 return False, completed
             completed += 1
+            normal_clear_completed = True
             first = True
