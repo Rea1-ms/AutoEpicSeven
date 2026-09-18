@@ -283,8 +283,9 @@ GachaResult:
   OcrResult: false
 
 SpecialActivity:
-  # 当前活动只领取每日20抽机会，实际抽取由 Gacha（召唤任务）执行。
+  # 按资料中的活动时间领取奖励；20抽的实际抽取由 Gacha（召唤任务）执行。
   GetFreeGacha: true
+  GetE7wcBattleGateReward: true
 
 ActivityRuntime:
   CheckedEvents:

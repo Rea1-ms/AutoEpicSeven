@@ -44,6 +44,10 @@ def _checked_path(config, event_id: str) -> str:
 
 
 def is_free_gacha_20_checked_today(config, event_id=DEFAULT_FREE_GACHA_20_ID) -> bool:
+    return is_activity_checked_today(config, event_id)
+
+
+def is_activity_checked_today(config, event_id: str) -> bool:
     """Return whether this campaign's reward was checked this server day."""
     checked_at = _free_gacha_20_checked_at(config, event_id)
     if checked_at is None:
@@ -57,9 +61,13 @@ def is_free_gacha_20_checked_today(config, event_id=DEFAULT_FREE_GACHA_20_ID) ->
 
 
 def mark_free_gacha_20_checked(config, event_id=DEFAULT_FREE_GACHA_20_ID) -> None:
+    mark_activity_checked(config, event_id)
+
+
+def mark_activity_checked(config, event_id: str) -> None:
     checked_at = datetime.now().replace(microsecond=0)
     config.cross_set(_checked_path(config, event_id), checked_at)
-    logger.info(f"SpecialActivity: 20-free-summon reward checked at {checked_at}")
+    logger.info(f"SpecialActivity: {event_id} reward checked at {checked_at}")
 
 
 def should_schedule_after_battle(config) -> bool:

@@ -257,7 +257,8 @@
       "ServerUpdate": "02:00"
     },
     "SpecialActivity": {
-      "GetFreeGacha": true
+      "GetFreeGacha": true,
+      "GetE7wcBattleGateReward": true
     },
     "ActivityRuntime": {
       "CheckedEvents": {},

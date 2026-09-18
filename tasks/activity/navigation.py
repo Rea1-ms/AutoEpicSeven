@@ -23,6 +23,19 @@ class ActivityNavigationMixin:
             for (old_text, old_box), (text, box) in zip(previous, current)
         )
 
+    def _activity_selected(self, selected_button) -> bool:
+        # Every event shares the scrollable sidebar. Keep the per-frame search
+        # bounds intact: wrappers are global objects reused by later tasks.
+        buttons = tuple(selected_button.iter_buttons())
+        searches = tuple(button.search for button in buttons)
+        try:
+            selected_button.load_search(COMMON_ACTIVITY_LIST.area)
+            return self.match_template_color(selected_button)
+        finally:
+            for button, search in zip(buttons, searches):
+                button.load_search(search)
+                button.clear_offset()
+
     def select_activity(self, keyword, selected_button, skip_first_screenshot=True) -> bool:
         """Select an event by sidebar text and confirm its selected template.
 
@@ -49,7 +62,7 @@ class ActivityNavigationMixin:
             # orange template must match at its current position before the
             # caller can claim anything. A successful click alone is never
             # evidence of navigation, and must remain retryable.
-            if self.match_template_color(selected_button):
+            if self._activity_selected(selected_button):
                 logger.info(f"SpecialActivity: selected sidebar event {keyword}")
                 return True
             if timeout.reached():

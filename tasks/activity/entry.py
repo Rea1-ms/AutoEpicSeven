@@ -1,6 +1,6 @@
 from module.logger import logger
 from tasks.activity.calendar import active_activities
-from tasks.activity.scheduling import delay_next_activity_check, is_free_gacha_20_checked_today
+from tasks.activity.scheduling import delay_next_activity_check, is_activity_checked_today
 
 
 class SpecialActivityEntry:
@@ -20,14 +20,22 @@ class SpecialActivityEntry:
 
         for event in activities:
             logger.info(f"SpecialActivity: {event.name}, ends at {event.end}")
+            if event.mode != "legacy" and is_activity_checked_today(self.config, event.event_id):
+                logger.info("SpecialActivity: reward already checked today")
+                continue
             if event.mode == "free_gacha_20":
-                if is_free_gacha_20_checked_today(self.config, event.event_id):
-                    logger.info("SpecialActivity: reward already checked today")
-                    continue
-
                 from tasks.activity.free_gacha_20 import FreeGacha20
 
                 success = FreeGacha20(
+                    config=self.config,
+                    device=self.device,
+                    task=self.task,
+                    activity_id=event.event_id,
+                ).run()
+            elif event.mode == "e7wc_battle_gate":
+                from tasks.activity.e7wc_battle_gate import E7wcBattleGate
+
+                success = E7wcBattleGate(
                     config=self.config,
                     device=self.device,
                     task=self.task,

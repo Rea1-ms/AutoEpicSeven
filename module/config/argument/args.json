@@ -1086,6 +1086,10 @@
       "GetFreeGacha": {
         "type": "checkbox",
         "value": true
+      },
+      "GetE7wcBattleGateReward": {
+        "type": "checkbox",
+        "value": true
       }
     },
     "ActivityRuntime": {

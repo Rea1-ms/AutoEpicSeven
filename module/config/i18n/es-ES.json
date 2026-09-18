@@ -80,7 +80,7 @@
     },
     "SpecialActivity": {
       "name": "Actividad especial",
-      "help": "Recoge las 20 invocaciones gratis diarias del evento actual. La tarea de invocación realiza las invocaciones."
+      "help": "Recoge las 20 invocaciones gratuitas diarias y las recompensas de E7WC Battle Gate del servidor internacional durante sus eventos. La tarea Invocar realiza las invocaciones."
     },
     "CommunityAuth": {
       "name": "Inicio comunidad",
@@ -719,11 +719,15 @@
   "SpecialActivity": {
     "_info": {
       "name": "Actividad especial",
-      "help": "Recoge las 20 invocaciones gratis diarias del evento actual. La tarea de invocación realiza las invocaciones."
+      "help": "Recoge las 20 invocaciones gratuitas diarias y las recompensas de E7WC Battle Gate del servidor internacional durante sus eventos. La tarea Invocar realiza las invocaciones."
     },
     "GetFreeGacha": {
       "name": "Recoger las 20 invocaciones gratis diarias",
       "help": "Recoge las 20 invocaciones gratis diarias del evento actual. La tarea de invocación realiza las invocaciones."
+    },
+    "GetE7wcBattleGateReward": {
+      "name": "Recoger recompensas de E7WC Battle Gate",
+      "help": "Solo para la interfaz en chino simplificado del servidor internacional. Un clic recoge ambas recompensas; cierra la ventana y verifica la recepción."
     }
   },
   "ActivityRuntime": {

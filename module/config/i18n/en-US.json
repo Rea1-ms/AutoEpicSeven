@@ -80,7 +80,7 @@
     },
     "SpecialActivity": {
       "name": "Special Activity",
-      "help": "Claim the current event's daily 20 free summons. The Summon task performs the summons."
+      "help": "Claim daily 20 free summons and overseas E7WC Battle Gate rewards during their event periods. The Summon task performs the summons."
     },
     "CommunityAuth": {
       "name": "Community Login",
@@ -719,11 +719,15 @@
   "SpecialActivity": {
     "_info": {
       "name": "Special Activity",
-      "help": "Claim the current event's daily 20 free summons. The Summon task performs the summons."
+      "help": "Claim daily 20 free summons and overseas E7WC Battle Gate rewards during their event periods. The Summon task performs the summons."
     },
     "GetFreeGacha": {
       "name": "Claim Daily 20 Free Summons",
       "help": "Claim the current event's daily 20 free summons. The Summon task performs the summons."
+    },
+    "GetE7wcBattleGateReward": {
+      "name": "Claim E7WC Battle Gate Rewards",
+      "help": "Overseas Simplified Chinese interface only. One reward click claims both items; close the popup and verify receipt."
     }
   },
   "ActivityRuntime": {
