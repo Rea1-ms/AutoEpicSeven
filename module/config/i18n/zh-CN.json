@@ -80,7 +80,7 @@
     },
     "SpecialActivity": {
       "name": "特别活动",
-      "help": "限时版本大活动，随缘更新~"
+      "help": "领取当前活动每天赠送的20次免费召唤机会，实际召唤由「召唤」任务执行。"
     },
     "CommunityAuth": {
       "name": "社区登录",
@@ -719,23 +719,25 @@
   "SpecialActivity": {
     "_info": {
       "name": "特别活动",
-      "help": "选择当前活动中需要领取的奖励。"
-    },
-    "GetDailyReward": {
-      "name": "领取每日奖励",
-      "help": "领取活动中的每日奖励。"
-    },
-    "GetTaskReward": {
-      "name": "领取任务奖励",
-      "help": "领取已完成的活动任务奖励。"
+      "help": "领取当前活动每天赠送的20次免费召唤机会，实际召唤由「召唤」任务执行。"
     },
     "GetFreeGacha": {
-      "name": "活动免费召唤",
-      "help": "使用当前可用的全部活动免费召唤次数。"
+      "name": "领取每日20抽",
+      "help": "领取当前活动每天赠送的20次免费召唤机会，实际召唤由「召唤」任务执行。"
+    }
+  },
+  "ActivityRuntime": {
+    "_info": {
+      "name": "活动运行记录",
+      "help": "保存各期活动的每日领取状态。"
     },
-    "GetEnergyDrink": {
-      "name": "领取能量饮料",
-      "help": "可领取时自动领取活动能量饮料。"
+    "CheckedEvents": {
+      "name": "分活动领取记录",
+      "help": "按活动和服务器记录已检查的日期。"
+    },
+    "FreeGacha20CheckedAt": {
+      "name": "20抽旧版检查时间",
+      "help": "兼容旧版本保存的每日检查记录。"
     }
   },
   "Dashboard": {

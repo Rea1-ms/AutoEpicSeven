@@ -1083,31 +1083,24 @@
       }
     },
     "SpecialActivity": {
-      "GetDailyReward": {
-        "type": "checkbox",
-        "value": true
-      },
-      "GetTaskReward": {
-        "type": "checkbox",
-        "value": true
-      },
       "GetFreeGacha": {
-        "type": "checkbox",
-        "value": true
-      },
-      "GetEnergyDrink": {
         "type": "checkbox",
         "value": true
       }
     },
-    "GachaResult": {
-      "SaveScreenshot": {
-        "type": "checkbox",
-        "value": true
+    "ActivityRuntime": {
+      "CheckedEvents": {
+        "type": "dict",
+        "value": {},
+        "keepvalue": true,
+        "display": "hide"
       },
-      "OcrResult": {
-        "type": "checkbox",
-        "value": false
+      "FreeGacha20CheckedAt": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime",
+        "keepvalue": true,
+        "display": "hide"
       }
     }
   },

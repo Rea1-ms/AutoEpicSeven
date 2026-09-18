@@ -80,7 +80,7 @@
     },
     "SpecialActivity": {
       "name": "Actividad especial",
-      "help": "Recoge las recompensas disponibles de las actividades temporales."
+      "help": "Recoge las 20 invocaciones gratis diarias del evento actual. La tarea de invocación realiza las invocaciones."
     },
     "CommunityAuth": {
       "name": "Inicio comunidad",
@@ -719,23 +719,25 @@
   "SpecialActivity": {
     "_info": {
       "name": "Actividad especial",
-      "help": "Elige las recompensas de la actividad actual que quieres recoger."
-    },
-    "GetDailyReward": {
-      "name": "Recoger recompensas diarias",
-      "help": "Recoge las recompensas diarias de la actividad."
-    },
-    "GetTaskReward": {
-      "name": "Recoger recompensas de tareas",
-      "help": "Recoge las recompensas de tareas de actividad completadas."
+      "help": "Recoge las 20 invocaciones gratis diarias del evento actual. La tarea de invocación realiza las invocaciones."
     },
     "GetFreeGacha": {
-      "name": "Invocaciones gratis del evento",
-      "help": "Usa todas las invocaciones gratis del evento disponibles."
+      "name": "Recoger las 20 invocaciones gratis diarias",
+      "help": "Recoge las 20 invocaciones gratis diarias del evento actual. La tarea de invocación realiza las invocaciones."
+    }
+  },
+  "ActivityRuntime": {
+    "_info": {
+      "name": "Registro de actividad",
+      "help": "Guarda el estado diario de recogida de cada evento."
     },
-    "GetEnergyDrink": {
-      "name": "Recoger bebida de energía",
-      "help": "Recoge la bebida de energía de la actividad cuando esté disponible."
+    "CheckedEvents": {
+      "name": "Registros de recogida por evento",
+      "help": "Registra la fecha de comprobación por evento y servidor."
+    },
+    "FreeGacha20CheckedAt": {
+      "name": "Comprobación diaria de versiones anteriores",
+      "help": "Conserva los registros diarios guardados por versiones anteriores."
     }
   },
   "Dashboard": {

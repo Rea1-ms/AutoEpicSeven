@@ -80,7 +80,7 @@
     },
     "SpecialActivity": {
       "name": "特別活動",
-      "help": "領取限時活動中可用的獎勵。"
+      "help": "領取目前活動每天贈送的20次免費召喚機會，實際召喚由「召喚」任務執行。"
     },
     "CommunityAuth": {
       "name": "社群登入",
@@ -719,23 +719,25 @@
   "SpecialActivity": {
     "_info": {
       "name": "特別活動",
-      "help": "選擇目前活動中要領取的獎勵。"
-    },
-    "GetDailyReward": {
-      "name": "領取每日獎勵",
-      "help": "領取活動中的每日獎勵。"
-    },
-    "GetTaskReward": {
-      "name": "領取任務獎勵",
-      "help": "領取已完成的活動任務獎勵。"
+      "help": "領取目前活動每天贈送的20次免費召喚機會，實際召喚由「召喚」任務執行。"
     },
     "GetFreeGacha": {
-      "name": "活動免費召喚",
-      "help": "使用目前可用的全部活動免費召喚次數。"
+      "name": "領取每日20抽",
+      "help": "領取目前活動每天贈送的20次免費召喚機會，實際召喚由「召喚」任務執行。"
+    }
+  },
+  "ActivityRuntime": {
+    "_info": {
+      "name": "活動執行記錄",
+      "help": "儲存各期活動的每日領取狀態。"
     },
-    "GetEnergyDrink": {
-      "name": "領取能量飲料",
-      "help": "可領取時自動領取活動能量飲料。"
+    "CheckedEvents": {
+      "name": "各活動領取記錄",
+      "help": "按活動和伺服器記錄已檢查的日期。"
+    },
+    "FreeGacha20CheckedAt": {
+      "name": "20抽舊版檢查時間",
+      "help": "相容舊版本儲存的每日檢查記錄。"
     }
   },
   "Dashboard": {

@@ -257,14 +257,11 @@
       "ServerUpdate": "02:00"
     },
     "SpecialActivity": {
-      "GetDailyReward": true,
-      "GetTaskReward": true,
-      "GetFreeGacha": true,
-      "GetEnergyDrink": true
+      "GetFreeGacha": true
     },
-    "GachaResult": {
-      "SaveScreenshot": true,
-      "OcrResult": false
+    "ActivityRuntime": {
+      "CheckedEvents": {},
+      "FreeGacha20CheckedAt": "2020-01-01 00:00:00"
     }
   },
   "CommunityAuth": {

@@ -65,6 +65,8 @@ def mark_free_gacha_20_checked(config, event_id=DEFAULT_FREE_GACHA_20_ID) -> Non
 def should_schedule_after_battle(config) -> bool:
     if not any(event.mode == "legacy" for event in active_activities(config)):
         return False
-    from tasks.activity.scheduling_legacy import should_schedule_after_battle as legacy_schedule
+    from tasks.activity.legacy.summer_2026_06_25.scheduling import (
+        should_schedule_after_battle as legacy_schedule,
+    )
 
     return legacy_schedule(config)

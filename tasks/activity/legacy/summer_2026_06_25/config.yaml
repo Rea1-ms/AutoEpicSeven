@@ -1,0 +1,14 @@
+# 2026-06-25 夏日活动配置备份，不参与当前配置生成。
+# 恢复旧活动时，将参数组和任务绑定接回对应配置源文件。
+argument:
+  SpecialActivity:
+    GetDailyReward: true
+    GetTaskReward: true
+    GetFreeGacha: true
+    GetEnergyDrink: true
+
+task:
+  SpecialActivity:
+    - Scheduler
+    - SpecialActivity
+    - GachaResult

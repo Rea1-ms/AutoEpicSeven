@@ -283,10 +283,19 @@ GachaResult:
   OcrResult: false
 
 SpecialActivity:
-  GetDailyReward: true
-  GetTaskReward: true
+  # 当前活动只领取每日20抽机会，实际抽取由 Gacha（召唤任务）执行。
   GetFreeGacha: true
-  GetEnergyDrink: true
+
+ActivityRuntime:
+  CheckedEvents:
+    keepvalue: true
+    display: hide
+    type: dict
+    value: {}
+  FreeGacha20CheckedAt:
+    keepvalue: true
+    display: hide
+    value: 2020-01-01 00:00:00
 
 Dashboard:
   Gold:

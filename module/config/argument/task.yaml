@@ -67,7 +67,7 @@ Daily:
     SpecialActivity:
       - Scheduler
       - SpecialActivity
-      - GachaResult
+      - ActivityRuntime
 
 
 # ==================== Tool ====================

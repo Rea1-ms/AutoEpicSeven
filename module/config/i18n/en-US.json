@@ -80,7 +80,7 @@
     },
     "SpecialActivity": {
       "name": "Special Activity",
-      "help": "Claim available rewards from limited-time activities."
+      "help": "Claim the current event's daily 20 free summons. The Summon task performs the summons."
     },
     "CommunityAuth": {
       "name": "Community Login",
@@ -719,23 +719,25 @@
   "SpecialActivity": {
     "_info": {
       "name": "Special Activity",
-      "help": "Choose which rewards to claim from the current activity."
-    },
-    "GetDailyReward": {
-      "name": "Claim daily rewards",
-      "help": "Claim the activity's daily rewards."
-    },
-    "GetTaskReward": {
-      "name": "Claim task rewards",
-      "help": "Claim completed activity task rewards."
+      "help": "Claim the current event's daily 20 free summons. The Summon task performs the summons."
     },
     "GetFreeGacha": {
-      "name": "Free event summons",
-      "help": "Use all currently available free event summons."
+      "name": "Claim Daily 20 Free Summons",
+      "help": "Claim the current event's daily 20 free summons. The Summon task performs the summons."
+    }
+  },
+  "ActivityRuntime": {
+    "_info": {
+      "name": "Activity Runtime",
+      "help": "Save each event's daily claim status."
     },
-    "GetEnergyDrink": {
-      "name": "Claim energy drink",
-      "help": "Claim the activity energy drink when available."
+    "CheckedEvents": {
+      "name": "Event Claim Records",
+      "help": "Track the date checked for each event and server."
+    },
+    "FreeGacha20CheckedAt": {
+      "name": "Previous Daily Check Time",
+      "help": "Preserve daily check records from earlier versions."
     }
   },
   "Dashboard": {

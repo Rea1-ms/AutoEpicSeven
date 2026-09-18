@@ -34,7 +34,7 @@ class SpecialActivityEntry:
                     activity_id=event.event_id,
                 ).run()
             else:
-                from tasks.activity.special_activity import SpecialActivity
+                from tasks.activity.legacy.summer_2026_06_25.special_activity import SpecialActivity
 
                 success = SpecialActivity(
                     config=self.config,
@@ -62,7 +62,7 @@ class SpecialActivityEntry:
         if not self.config.SpecialActivity_GetDailyReward:
             return True
 
-        from tasks.activity.special_activity import SpecialActivity
+        from tasks.activity.legacy.summer_2026_06_25.special_activity import SpecialActivity
         from tasks.base.page import page_main
 
         activity = SpecialActivity(

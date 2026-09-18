@@ -144,10 +144,11 @@ class GeneratedConfig:
     GachaResult_OcrResult = False
 
     # Group `SpecialActivity`
-    SpecialActivity_GetDailyReward = True
-    SpecialActivity_GetTaskReward = True
     SpecialActivity_GetFreeGacha = True
-    SpecialActivity_GetEnergyDrink = True
+
+    # Group `ActivityRuntime`
+    ActivityRuntime_CheckedEvents = {}
+    ActivityRuntime_FreeGacha20CheckedAt = datetime.datetime(2020, 1, 1, 0, 0)
 
     # Group `Dashboard`
     Dashboard_Gold = {}
