@@ -39,6 +39,16 @@ COMMON_ENTRY = ButtonWrapper(
     ),
     global_en=None,
 )
+CONBAT_ENTRIES = ButtonWrapper(
+    name='CONBAT_ENTRIES',
+    share=Button(
+        file='./assets/share/dungeon/configs/combat/entry/CONBAT_ENTRIES.png',
+        area=(0, 181, 1280, 223),
+        search=(0, 161, 1280, 243),
+        color=(44, 48, 51),
+        button=(0, 181, 1280, 223),
+    ),
+)
 HUNT = ButtonWrapper(
     name='HUNT',
     share=Button(

@@ -15,6 +15,7 @@ from tasks.dungeon.assets import assets_dungeon_configs_combat_element_hunt as h
 from tasks.dungeon.assets.assets_dungeon_configs_combat_entry import (
     ALTER_CHECK,
     COMMON_ENTRY,
+    CONBAT_ENTRIES,
     HUNT,
     HUNT_CHECK,
     OCR_SEASON_CHECK,
@@ -40,6 +41,11 @@ class CombatEntryMixin:
         return self.match_template_luma(SEASON_CHECK, similarity=self.COMBAT_CHECK_SIMILARITY)
 
     def _is_combat_general_board(self) -> bool:
+        # Event cards shift both entries. Set their search ranges at the
+        # recognition boundary instead of relying on page-module import side
+        # effects; _enter_stage_page clicks these same button objects afterward.
+        HUNT.load_search(CONBAT_ENTRIES.area)
+        SPIRIT_ALTAR.load_search(CONBAT_ENTRIES.area)
         return (
             self.match_template_luma(SPIRIT_ALTAR, similarity=self.COMBAT_CHECK_SIMILARITY)
             or self.match_template_luma(HUNT, similarity=self.COMBAT_CHECK_SIMILARITY)

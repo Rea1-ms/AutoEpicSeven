@@ -25,6 +25,7 @@ from tasks.arena.assets.assets_arena import (
 from tasks.dungeon.assets.assets_dungeon_configs_combat_entry import (
     ALTER_CHECK,
     COMMON_ENTRY,
+    CONBAT_ENTRIES,
     HUNT_CHECK,
     SEASON_ENTRY,
     SEASON_CHECK,
@@ -390,6 +391,10 @@ page_arena_battle_pass.link(BACK, destination=page_arena)
 page_arena.link(BATTLE_PASS_ENTRY, destination=page_arena_battle_pass)
 
 # Combat
+# The common-page check must find the altar after event cards move it.
+# Dungeon entry matching configures its own search ranges independently.
+SPIRIT_ALTAR.load_search(CONBAT_ENTRIES.area)
+
 # Combat season tab
 page_combat_season = Page(SEASON_CHECK)
 page_combat_season.link(BACK, destination=page_main)
