@@ -217,7 +217,7 @@ class SecretShop(ResourceBarMixin, PopupHandler):
                 return True
         else:
             if self._stable_count > 0:
-                logger.info(f'[Stable] 重置计数 (之前={self._stable_count})')
+                logger.info(f'[Stable] Reset count (previous={self._stable_count})')
             self._stable_count = 0
         return False
 
@@ -338,7 +338,7 @@ class SecretShop(ResourceBarMixin, PopupHandler):
 
             # 超时退出
             if timeout.reached():
-                logger.warning('购买确认超时')
+                logger.warning('Secret shop purchase confirmation timeout')
                 return False
 
             # 点击确认购买
@@ -378,11 +378,11 @@ class SecretShop(ResourceBarMixin, PopupHandler):
                 skip_first_screenshot=True,
             )
         )
-        logger.hr('秘密商店刷书签', level=1)
-        logger.info(f'最大刷新次数: {self.max_refresh}')
-        logger.info(f'纯白嫖: {self.only_free}')
-        logger.info(f'购买圣约书签: {self.buy_covenant}')
-        logger.info(f'购买神秘奖牌: {self.buy_mystic}')
+        logger.hr('Secret Shop Bookmark Farming', level=1)
+        logger.info(f'Maximum refresh count: {self.max_refresh}')
+        logger.info(f'Free refreshes only: {self.only_free}')
+        logger.info(f'Buy Covenant Bookmarks: {self.buy_covenant}')
+        logger.info(f'Buy Mystic Medals: {self.buy_mystic}')
 
         # 超时保护
         timeout = Timer(60, count=120).start()
@@ -397,10 +397,10 @@ class SecretShop(ResourceBarMixin, PopupHandler):
 
             # 2. 退出条件（不带 interval，不带操作）
             if timeout.reached():
-                logger.warning('运行超时，停止')
+                logger.warning('Secret shop runtime timeout, stopping')
                 break
             if (not self.only_free) and self.refresh_count >= self.max_refresh:
-                logger.info('达到最大刷新次数（不再发起刷新）')
+                logger.info('Maximum refresh count reached, no further refreshes')
 
             # 3. 优先处理弹窗
             if self.appear_then_click(BUY_CONFIRM, interval=2):
@@ -430,7 +430,7 @@ class SecretShop(ResourceBarMixin, PopupHandler):
                     self._refresh_in_progress = False
                 elif self._is_shop_stable():
                     self.refresh_count += 1
-                    logger.info(f'刷新商店完成 (累计: {self.refresh_count})')
+                    logger.info(f'Shop refresh completed (total: {self.refresh_count})')
                     self._refresh_in_progress = False
                     timeout.reset()
                 continue
@@ -443,7 +443,7 @@ class SecretShop(ResourceBarMixin, PopupHandler):
             targets = self._find_target_buy_buttons()
             if targets:
                 item_type, buy_btn = targets[0]
-                logger.info(f'找到 {item_type}: area={buy_btn.area}')
+                logger.info(f'Found {item_type}: area={buy_btn.area}')
                 self.device.click(buy_btn)
 
                 # 清除子状态机共用 assets 的 interval
@@ -454,11 +454,11 @@ class SecretShop(ResourceBarMixin, PopupHandler):
                     if item_type == 'covenant':
                         self.covenant_bought += 1
                         self._covenant_purchased_this_round = True
-                        logger.info(f'购买圣约书签成功 (累计: {self.covenant_bought})')
+                        logger.info(f'Covenant Bookmarks purchased (total: {self.covenant_bought})')
                     else:
                         self.mystic_bought += 1
                         self._mystic_purchased_this_round = True
-                        logger.info(f'购买神秘奖牌成功 (累计: {self.mystic_bought})')
+                        logger.info(f'Mystic Medals purchased (total: {self.mystic_bought})')
 
                 # 购买完成后画面变化，重置稳定检测
                 self._reset_stable()
@@ -467,7 +467,7 @@ class SecretShop(ResourceBarMixin, PopupHandler):
 
             # 6. 当前页面没有目标，尝试滚动
             if not self._scrolled:
-                logger.info('向下滚动')
+                logger.info('Scroll down')
                 self.device.swipe(
                     (self.SCROLL_AREA[0], self.SCROLL_AREA[1]),
                     (self.SCROLL_AREA[2], self.SCROLL_AREA[3]),
@@ -488,10 +488,10 @@ class SecretShop(ResourceBarMixin, PopupHandler):
                     continue
 
         # 输出统计
-        logger.hr('刷书签完成', level=1)
-        logger.info(f'刷新次数: {self.refresh_count}')
-        logger.info(f'圣约书签: {self.covenant_bought}')
-        logger.info(f'神秘奖牌: {self.mystic_bought}')
+        logger.hr('Secret Shop Finished', level=1)
+        logger.info(f'Refresh count: {self.refresh_count}')
+        logger.info(f'Covenant Bookmarks: {self.covenant_bought}')
+        logger.info(f'Mystic Medals: {self.mystic_bought}')
         self._delay_to_auto_refresh()
         return True
 

@@ -386,7 +386,7 @@ class Connection(ConnectionAttr):
             return True
         elif res == 'true':
             # https://mumu.163.com/help/20230802/35047_1102450.html
-            logger.critical('请在MuMu模拟器设置内关闭 "后台挂机时保活运行"')
+            logger.critical('Please disable "Keep running in background" in MuMu emulator settings')
             raise RequestHumanTakeover
         else:
             logger.warning(f'Invalid nemud.app_keep_alive value: {res}')
@@ -864,7 +864,7 @@ class Connection(ConnectionAttr):
         logger.attr('customer.network_bridge_opened', value)
         if str(value).lower() == 'true':
             logger.critical('Please turn off "Network Bridging" in the settings of MuMuPlayer')
-            logger.critical('请在MuMU模拟器设置中关闭 网络桥接')
+            logger.critical('Please disable network bridging in MuMu emulator settings')
             raise RequestHumanTakeover
         return True
 
@@ -1037,8 +1037,8 @@ class Connection(ConnectionAttr):
             # ConnectionResetError: [WinError 10054] 远程主机强迫关闭了一个现有的连接。
             logger.error(e)
             if '强迫关闭' in str(e):
-                logger.critical('无法连接至ADB服务，请关闭UU加速器、原神私服、以及一些劣质代理软件。'
-                                '它们会劫持电脑上所有的网络连接，包括Alas与模拟器之间的本地连接。')
+                logger.critical('Unable to connect to the ADB server. Close UU Accelerator, private game servers, and conflicting proxy software. '
+                                'They may intercept local connections between Alas and the emulator.')
         return SelectedGrids(devices)
 
     def detect_device(self):

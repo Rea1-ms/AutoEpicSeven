@@ -561,7 +561,7 @@ class NemuIpc(Platform):
         if str(value).lower() == 'true':
             # https://mumu.163.com/help/20230802/35047_1102450.html
             logger.critical('Please turn off "Keep alive in the background" in the settings or MuMuPlayer')
-            logger.critical('请在MuMu模拟器设置内关闭 "后台挂机时保活运行"')
+            logger.critical('Please disable "Keep running in background" in MuMu emulator settings')
             raise RequestHumanTakeover
         return True
 

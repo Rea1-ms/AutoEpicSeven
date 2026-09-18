@@ -19,7 +19,7 @@ class SpecialActivityEntry:
             return True
 
         for event in activities:
-            logger.info(f"SpecialActivity: {event.name}, ends at {event.end}")
+            logger.info(f"SpecialActivity: {event.event_id}, ends at {event.end}")
             if event.mode != "legacy" and is_activity_checked_today(self.config, event.event_id):
                 logger.info("SpecialActivity: reward already checked today")
                 continue
