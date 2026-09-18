@@ -69,7 +69,7 @@
     "stored": "StoredArenaRank",
     "attrs": {
       "time": "2020-01-01 00:00:00",
-      "total": 38,
+      "total": 0,
       "value": 0
     },
     "order": 6,
@@ -107,7 +107,7 @@
     "stored": "StoredShadowCommission",
     "attrs": {
       "time": "2020-01-01 00:00:00",
-      "total": 30,
+      "total": 0,
       "value": 0
     },
     "order": 9,

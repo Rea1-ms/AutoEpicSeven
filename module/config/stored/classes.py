@@ -265,16 +265,32 @@ class StoredArenaFlag(StoredNaturalRecoverCounter):
     RECOVER_SECONDS = 60 * 60
 
 
-class StoredArenaRank(StoredCounter):
-    FIXED_TOTAL = 38
+class StoredSeasonCounter(StoredCounter):
+    """Store observed progress and its cap together; catalog edits do not reset it."""
+
+    KIND = ''
+
+    def set(self, value, total=0):
+        if not total:
+            from module.game_info.context import level_cap
+
+            total = level_cap(self._config, self.KIND)
+        super().set(value, total)
+
+    def is_full(self) -> bool:
+        return self.total > 0 and super().is_full()
+
+
+class StoredArenaRank(StoredSeasonCounter):
+    KIND = 'arena_pass'
 
 
 class StoredDailyActivity(StoredCounter):
     FIXED_TOTAL = 100
 
 
-class StoredShadowCommission(StoredCounter):
-    FIXED_TOTAL = 30
+class StoredShadowCommission(StoredSeasonCounter):
+    KIND = 'shadow_commission'
 
 
 class StoredTeamBattleStatus(StoredBase):

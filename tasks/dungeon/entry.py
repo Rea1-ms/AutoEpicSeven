@@ -1,6 +1,7 @@
 from module.base.button import ButtonWrapper
 from module.base.timer import Timer
 from module.exception import RequestHumanTakeover
+from module.game_info.context import level_cap
 from module.logger import logger
 from module.ocr.ocr import Digit
 from tasks.base.assets.assets_base_page import BACK, MAIN_GOTO_COMBAT
@@ -117,8 +118,9 @@ class CombatEntryMixin:
             name="ShadowCommissionLevel",
         ).ocr_single_line(self.device.image)
         logger.attr("ShadowCommissionLevel", level)
-        if 0 < level <= self.config.stored.ShadowCommission.FIXED_TOTAL:
-            self.config.stored.ShadowCommission.set(level)
+        maximum = level_cap(self.config, "shadow_commission")
+        if 0 < level <= maximum:
+            self.config.stored.ShadowCommission.set(level, maximum)
         return level
 
     def _update_combat_dashboard_snapshot(self, skip_first_screenshot=True) -> bool:

@@ -1,9 +1,8 @@
+from module.game_info.context import level_cap
 from module.logger import logger
 from module.ocr.ocr import Digit
 from tasks.arena.assets.assets_arena import OCR_BATTLE_PASS_LEVEL
 from tasks.base.resource_bar import RESOURCE_BAR_LAYOUT_ARENA_BATTLE_PASS, ResourceBarMixin
-
-ARENA_BATTLE_PASS_MAX_LEVEL = 38
 
 
 def estimate_remaining_arena_flags(current: int, total: int, consumed: int) -> tuple[int, int] | None:
@@ -15,6 +14,10 @@ def estimate_remaining_arena_flags(current: int, total: int, consumed: int) -> t
 
 
 class ArenaDigit(Digit):
+    def __init__(self, *args, max_level: int, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.max_level = max_level
+
     def after_process(self, result):
         result = result.replace("O", "0").replace("o", "0")
         result = result.replace("I", "1").replace("l", "1").replace("|", "1")
@@ -25,7 +28,7 @@ class ArenaDigit(Digit):
         normalized = result.strip().lower()
         if normalized == "max":
             logger.attr(name=self.name, text=str(result))
-            return ARENA_BATTLE_PASS_MAX_LEVEL
+            return self.max_level
         return super().format_result(result)
 
 
@@ -34,15 +37,17 @@ class ArenaDashboardMixin(ResourceBarMixin):
     ARENA_RESOURCE_BAR_TIMEOUT_COUNT = 2
 
     def _ocr_arena_rank(self) -> int:
+        maximum = level_cap(self.config, "arena_pass")
         ocr = ArenaDigit(
             OCR_BATTLE_PASS_LEVEL,
             lang=self._ocr_lang(),
             name="ArenaRank",
+            max_level=maximum,
         )
         level = ocr.ocr_single_line(self.device.image)
         logger.attr("ArenaRank", level)
-        if 0 < level <= self.config.stored.ArenaRank.FIXED_TOTAL:
-            self.config.stored.ArenaRank.set(level)
+        if 0 < level <= maximum:
+            self.config.stored.ArenaRank.set(level, maximum)
         return level
 
     def _ocr_arena_resource_bar(self, skip_first_screenshot=True):

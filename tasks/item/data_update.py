@@ -1,5 +1,6 @@
 import re
 
+from module.game_info.context import level_cap
 from module.logger import logger
 from module.ocr.ocr import Digit, DigitCounter
 from tasks.arena.dashboard import ArenaDashboardMixin
@@ -83,8 +84,9 @@ class DataUpdate(ArenaEntryMixin, ArenaDashboardMixin, UI):
             name="ShadowCommissionLevel",
         ).ocr_single_line(self.device.image)
         logger.attr("ShadowCommissionLevel", level)
-        if 0 < level <= self.config.stored.ShadowCommission.FIXED_TOTAL:
-            self.config.stored.ShadowCommission.set(level)
+        maximum = level_cap(self.config, "shadow_commission")
+        if 0 < level <= maximum:
+            self.config.stored.ShadowCommission.set(level, maximum)
         return level
 
     def _update_combat_status(self, skip_first_screenshot=True) -> bool:

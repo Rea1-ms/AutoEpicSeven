@@ -1,3 +1,4 @@
+# 历史快照，不再读取；当前资料见 module/game_info/data.yaml（共享游戏资料）。
 # 时间统一使用北京时间。国际服更新一条记录，国服默认顺延21天。
 # 国服维护时间不同时，只填写对应的 cn_start / cn_end 覆盖值。
 cn_delay_days: 21
