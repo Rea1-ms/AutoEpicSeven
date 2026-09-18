@@ -249,12 +249,16 @@ class CombatPrepare:
                 logger.warning("Combat: prepare fast combat timeout")
                 return "failed", 0
 
-            if not self._is_prepare_page():
-                logger.warning("Combat: leave prepare page while preparing fast combat")
-                return "failed", 0
-
             if self._handle_dungeon_additional():
                 timeout.reset()
+                zero_confirm.clear()
+                continue
+
+            # Toggling fast combat can temporarily hide every prepare marker
+            # behind loading or a confirmation popup. Absence does not prove
+            # that we left the page. Handle the popup first and wait for a
+            # positive prepare/fast-mode marker before reading any counters.
+            if not (self._is_prepare_page() or self._is_fast_combat_on()):
                 zero_confirm.clear()
                 continue
 
@@ -263,7 +267,6 @@ class CombatPrepare:
                 return "fallback", 0
 
             if not self._ensure_fast_combat_state(enabled=True):
-                timeout.reset()
                 continue
 
             remaining = self._ocr_fast_combat_remaining_times()
