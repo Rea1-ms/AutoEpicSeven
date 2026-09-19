@@ -65,6 +65,7 @@ class CombatPrepare:
     COMBAT_FAST_ENABLE_TIMEOUT_SECONDS = 3
     COMBAT_COUNT_CLICK_INTERVAL_SECONDS = 0.8
     COMBAT_COUNT_BATCH_CLICK_INTERVAL = (0.2, 0.3)
+    COMBAT_COUNT_BATCH_CLICK_LIMIT = 3
     COMBAT_COUNT_POST_CLICK_SETTLE_SECONDS = 0.6
     COMBAT_ZERO_CONFIRM_SECONDS = 0.4
     COMBAT_COUNT_STABLE_SECONDS = 2.5
@@ -120,13 +121,20 @@ class CombatPrepare:
         return value
 
     def _ocr_fast_combat_current_times(self) -> int:
-        value = CombatPrepareDigit(
+        current, _, maximum = CombatPrepareCounter(
             OCR_FAST_COMBAT_CURRENT_TIMES,
             lang=self._ocr_lang(),
             name="FastCombatCurrentTimes",
         ).ocr_single_line(self.device.image)
-        logger.attr("FastCombatCurrentTimes", value)
-        return value
+        # This region contains the entire current/maximum counter. Digit OCR
+        # turns a missed slash in "1/10" into 110, which must never become a
+        # click count. Require a readable separator and a valid per-launch
+        # range; do not guess the missing separator or clamp an invalid read.
+        if not 1 <= current <= maximum <= self.COMBAT_MAX_FAST_COUNT:
+            logger.info(f"Combat: ignore invalid fast combat counter {current}/{maximum}")
+            return 0
+        logger.attr("FastCombatCurrentTimes", current)
+        return current
 
     def _handle_repeat_count_overlay_additional(self) -> bool:
         """
@@ -151,9 +159,14 @@ class CombatPrepare:
         label: str,
         additional_handler=None,
         skip_first_screenshot=True,
+        max_count: int | None = None,
     ) -> bool:
+        """Adjust a valid counter in short batches, confirming each with OCR."""
         if additional_handler is None:
             additional_handler = self._handle_dungeon_additional
+        if target <= 0 or (max_count is not None and target > max_count):
+            logger.warning(f"Combat: invalid {label} target={target}, maximum={max_count}")
+            return False
 
         timeout = Timer(self.COMBAT_COUNT_TIMEOUT_SECONDS, count=80).start()
         click_interval = Timer(self.COMBAT_COUNT_CLICK_INTERVAL_SECONDS, count=0).start()
@@ -172,7 +185,6 @@ class CombatPrepare:
                 return False
 
             if additional_handler():
-                timeout.reset()
                 post_click_settle.clear()
                 stable_timer.clear()
                 last_value = None
@@ -185,7 +197,7 @@ class CombatPrepare:
                 continue
 
             current = ocr_getter()
-            if current <= 0:
+            if current <= 0 or (max_count is not None and current > max_count):
                 continue
 
             if current == target:
@@ -203,26 +215,22 @@ class CombatPrepare:
                 continue
 
             diff = target - current
-            if diff > 0:
-                _ = self.appear(plus_button)
-                self.device.multi_click(
-                    plus_button,
-                    n=abs(diff),
-                    interval=self.COMBAT_COUNT_BATCH_CLICK_INTERVAL,
-                )
-            else:
-                _ = self.appear(minus_button)
-                self.device.multi_click(
-                    minus_button,
-                    n=abs(diff),
-                    interval=self.COMBAT_COUNT_BATCH_CLICK_INTERVAL,
-                )
-
+            button = plus_button if diff > 0 else minus_button
+            # A malformed or stale read must not queue a long, unobserved
+            # series of taps. Bound each batch and re-read after the control
+            # settles. Preserve last_value/stable_timer across our own clicks:
+            # clicking is not progress, and a disabled control must time out.
+            # The overall deadline also survives popups and retry attempts.
+            _ = self.appear(button)
+            clicks = min(abs(diff), self.COMBAT_COUNT_BATCH_CLICK_LIMIT)
+            logger.info(f"Combat: adjust {label} from {current} toward {target}, clicks={clicks}")
+            self.device.multi_click(
+                button,
+                n=clicks,
+                interval=self.COMBAT_COUNT_BATCH_CLICK_INTERVAL,
+            )
             post_click_settle.reset()
-            stable_timer.clear()
-            last_value = None
             click_interval.reset()
-            timeout.reset()
 
     def _prepare_fast_combat(
         self,
@@ -337,6 +345,7 @@ class CombatPrepare:
                 FAST_COMBAT_TIMES_MINUS,
                 "FastCombatCurrentTimes",
                 skip_first_screenshot=True,
+                max_count=self.COMBAT_MAX_FAST_COUNT,
             ):
                 return "ready", target
             return "failed", 0
