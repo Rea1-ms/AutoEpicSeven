@@ -117,8 +117,8 @@ def _values(value):
         _identifier(key)
         if type(item) not in (str, int, bool):
             raise ValueError(f"Game-info values must be strings, integers or booleans: {key}")
-        if key == "max_level" and (type(item) is not int or item <= 0):
-            raise ValueError("max_level must be a positive integer")
+        if key in ("max_level", "cycle_days") and (type(item) is not int or item <= 0):
+            raise ValueError(f"{key} must be a positive integer")
     return MappingProxyType(dict(value))
 
 

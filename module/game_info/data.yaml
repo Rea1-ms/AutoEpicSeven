@@ -5,16 +5,45 @@ schema_version: 1
 defaults:
   arena_pass:
     max_level: 38
-    source: '现有竞技场通行证实现；2026-09-18迁入，赛季日期待补'
+    cycle_days: 84
+    source: '等级上限沿用现有实现；84天周期由用户于2026-09-19确认'
   shadow_commission:
     max_level: 30
-    source: '现有暗影情报委托实现；2026-09-18迁入，赛季日期待补'
+    cycle_days: 21
+    source: '等级上限沿用现有实现；21天周期由用户于2026-09-19确认'
 
 # 只对明确列出的类别推算国服时间；其他类别必须填写国服日期。
 cn_delay_days:
   free_gacha_20: 21
 
 events:
+  - id: arena_pass_cn_2026_season_3
+    kind: arena_pass
+    name: 竞技场通行证 第三赛季
+    source: '用户2026-09-19确认国服第三赛季于10月4日结束；北京时间周日20点进入结算，与tasks/arena/entry.py一致。起点按84天周期倒推，未独立核实正式开季时刻。'
+    cn_start: '2026-07-12T20:00:00+08:00'
+    cn_end: '2026-10-04T20:00:00+08:00'
+    values:
+      season: 3
+
+  - id: arena_pass_oversea_2026_season_4
+    kind: arena_pass
+    name: 竞技场通行证 第四赛季
+    source: '用户2026-09-19确认国际服第四赛季于12月6日结束；北京时间周日20点进入结算，与tasks/arena/entry.py一致。起点按84天周期倒推，未独立核实正式开季时刻。'
+    oversea_start: '2026-09-13T20:00:00+08:00'
+    oversea_end: '2026-12-06T20:00:00+08:00'
+    values:
+      season: 4
+
+  - id: shadow_commission_2026_09_17
+    kind: shadow_commission
+    name: 暗影情报委托
+    source: '用户2026-09-19确认两服均剩18天，结束时刻按维护开始的北京时间11点约定；按剩余18个整天推算为10月8日11点，起点按21天周期倒推。'
+    oversea_start: '2026-09-17T11:00:00+08:00'
+    oversea_end: '2026-10-08T11:00:00+08:00'
+    cn_start: '2026-09-17T11:00:00+08:00'
+    cn_end: '2026-10-08T11:00:00+08:00'
+
   - id: free_gacha_20_2026_08_27
     kind: free_gacha_20
     name: 每日20抽

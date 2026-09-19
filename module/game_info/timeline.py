@@ -7,7 +7,7 @@ from module.game_info.catalog import GameInfo
 
 def render_timeline(info: GameInfo) -> str:
     lines = [
-        "时间表由共享游戏资料生成，时间均为北京时间。推算时间会单独标注。",
+        "时间表由共享游戏资料生成，时间均为北京时间。国服自动顺延会单独标注；手动推算的依据见共享资料的来源说明。",
         "",
         "```mermaid",
         "gantt",
