@@ -14,7 +14,7 @@ from tasks.activity.assets.assets_activity_special_26_9_12 import (
 )
 from tasks.activity.navigation import ActivityNavigationMixin
 from tasks.activity.scheduling import mark_activity_checked
-from tasks.base.page import page_common_activity, page_main
+from tasks.base.page import page_common_activity
 from tasks.base.ui import UI
 
 
@@ -97,11 +97,11 @@ class E7wcBattleGate(ActivityNavigationMixin, UI):
                 continue
 
     def run(self) -> bool:
-        """Run this overseas-only claim and return to the main page.
+        """Run this overseas-only claim and leave final navigation to the entry.
 
         Pages:
             in: page_main, any
-            out: page_main
+            out: page_common_activity after a claim; current page when skipped
         """
         if not server.is_oversea_server(self.config.Emulator_PackageName) or server.lang != "global_cn":
             logger.info("SpecialActivity: E7WC Battle Gate unsupported on this server/language")

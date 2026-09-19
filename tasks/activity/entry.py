@@ -1,10 +1,17 @@
 from module.logger import logger
 from tasks.activity.calendar import active_activities
 from tasks.activity.scheduling import delay_next_activity_check, is_activity_checked_today
+from tasks.base.page import page_main
 
 
 class SpecialActivityEntry:
     """Dispatch the supported activities currently active on this server."""
+
+    COMMON_ACTIVITY_OPTIONS = {
+        "free_gacha_20": "SpecialActivity_GetFreeGacha",
+        "e7wc_battle_gate": "SpecialActivity_GetE7wcBattleGateReward",
+        "koharu_raffle": "SpecialActivity_GetKoharuRaffleReward",
+    }
 
     def __init__(self, config, device=None, task=None):
         self.config = config
@@ -12,55 +19,78 @@ class SpecialActivityEntry:
         self.task = task
 
     def run(self) -> bool:
+        """Claim the active tabs together, then return to main once.
+
+        Pages:
+            in: page_main, any
+            out: page_main after claims; current page when all events skip
+        """
         activities = active_activities(self.config)
         if not activities:
             logger.info("SpecialActivity: no supported active event, skip task")
             delay_next_activity_check(self.config)
             return True
 
+        last_activity = None
         for event in activities:
             logger.info(f"SpecialActivity: {event.event_id}, ends at {event.end}")
             if event.mode != "legacy" and is_activity_checked_today(self.config, event.event_id):
                 logger.info("SpecialActivity: reward already checked today")
                 continue
+            option = self.COMMON_ACTIVITY_OPTIONS.get(event.mode)
+            if option is not None and not getattr(self.config, option):
+                logger.info(f"SpecialActivity: {event.event_id} reward disabled")
+                continue
             if event.mode == "free_gacha_20":
                 from tasks.activity.free_gacha_20 import FreeGacha20
 
-                success = FreeGacha20(
+                activity = FreeGacha20(
                     config=self.config,
                     device=self.device,
                     task=self.task,
                     activity_id=event.event_id,
-                ).run()
+                )
             elif event.mode == "e7wc_battle_gate":
                 from tasks.activity.e7wc_battle_gate import E7wcBattleGate
 
-                success = E7wcBattleGate(
+                activity = E7wcBattleGate(
                     config=self.config,
                     device=self.device,
                     task=self.task,
                     activity_id=event.event_id,
-                ).run()
+                )
             elif event.mode == "koharu_raffle":
                 from tasks.activity.koharu_raffle import KoharuRaffle
 
-                success = KoharuRaffle(
+                activity = KoharuRaffle(
                     config=self.config,
                     device=self.device,
                     task=self.task,
                     activity_id=event.event_id,
-                ).run()
+                )
             else:
                 from tasks.activity.legacy.summer_2026_06_25.special_activity import SpecialActivity
 
-                success = SpecialActivity(
+                activity = SpecialActivity(
                     config=self.config,
                     device=self.device,
                     task=self.task,
-                ).run()
-            if not success:
+                )
+            # Every tab uses the same device and its latest screenshot, even
+            # when the entry was constructed without a device. A skipped tab
+            # must not create a client or take ownership of final navigation.
+            self.device = activity.device
+            if not activity.run():
                 return False
+            # Modern flows leave a verified claim page for the next tab. The
+            # legacy flow owns its separate page and already returns to main.
+            # Keep failure handling in the failing flow; never overwrite its
+            # retry schedule or hide its unresolved popup by continuing.
+            last_activity = activity if option is not None else None
 
+        if last_activity is not None:
+            logger.info("SpecialActivity: all activity rewards checked, return to main")
+            last_activity.ui_goto(page_main, skip_first_screenshot=True)
         delay_next_activity_check(self.config)
         return True
 
@@ -80,7 +110,6 @@ class SpecialActivityEntry:
             return True
 
         from tasks.activity.legacy.summer_2026_06_25.special_activity import SpecialActivity
-        from tasks.base.page import page_main
 
         activity = SpecialActivity(
             config=self.config,

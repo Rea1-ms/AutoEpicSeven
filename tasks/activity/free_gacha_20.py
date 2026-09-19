@@ -8,7 +8,7 @@ from tasks.activity.assets.assets_activity_special_26_8_27 import (
 from tasks.activity.navigation import ActivityNavigationMixin
 from tasks.activity.scheduling import mark_free_gacha_20_checked
 from tasks.activity.calendar import DEFAULT_FREE_GACHA_20_ID
-from tasks.base.page import page_common_activity, page_main
+from tasks.base.page import page_common_activity
 from tasks.base.ui import UI
 
 
@@ -73,11 +73,11 @@ class FreeGacha20(ActivityNavigationMixin, UI):
                 continue
 
     def run(self) -> bool:
-        """Run the scheduled claim task and return to the main page.
+        """Run the scheduled claim and leave final navigation to the entry.
 
         Pages:
             in: page_main, any
-            out: page_main
+            out: page_common_activity after a claim; current page when skipped
         """
         logger.hr("SpecialActivity: 20 Free Summons", level=1)
 

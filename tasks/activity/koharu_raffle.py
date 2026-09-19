@@ -10,7 +10,7 @@ from tasks.activity.assets.assets_activity_special_26_9_17 import (
 )
 from tasks.activity.navigation import ActivityNavigationMixin
 from tasks.activity.scheduling import mark_activity_checked
-from tasks.base.page import page_common_activity, page_main
+from tasks.base.page import page_common_activity
 from tasks.base.ui import UI
 
 
@@ -96,11 +96,11 @@ class KoharuRaffle(ActivityNavigationMixin, UI):
                     continue
 
     def run(self) -> bool:
-        """Run this overseas-only task claim and return to the main page.
+        """Run this overseas-only task claim and leave final navigation to the entry.
 
         Pages:
             in: page_main, any
-            out: page_main
+            out: page_common_activity after a claim; current page when skipped
         """
         if not server.is_oversea_server(self.config.Emulator_PackageName) or server.lang != "global_cn":
             logger.info("SpecialActivity: Koharu raffle unsupported on this server/language")
