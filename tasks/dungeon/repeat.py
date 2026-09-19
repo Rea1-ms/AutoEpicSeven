@@ -8,6 +8,7 @@ from module.logger import logger
 from module.ocr.ocr import Digit, DigitCounter, Duration
 from tasks.base.assets.assets_base_page import BACK
 from tasks.base.assets.assets_base_popup import TOUCH_TO_CLOSE
+from tasks.base.page import Page
 from tasks.base.resource_bar import (
     RESOURCE_KIND_INT,
     OcrResourceBar,
@@ -797,7 +798,28 @@ class CombatRepeatMixin:
             similarity=self.COMBAT_CHECK_SIMILARITY,
         )
 
+    def _repeat_combat_return_page(self):
+        """Recognize a page that can open the background-repeat overlay.
+
+        Callers must check result/reward overlays first: a page's own marker
+        can remain visible behind them. Use the same explicit page capability
+        as startup precheck, including the shop, instead of assuming that
+        closing settlement always returns to main. Re-read the current image;
+        ui_current may refer to a page visited by an earlier task.
+        """
+        for page in Page.iter_pages():
+            if page.background_repeat_check and self.ui_page_appear(page, interval=0):
+                return page
+        return None
+
     def _watch_repeat_combat(self, skip_first_screenshot=True) -> str:
+        """Settle a background run and confirm its underlying page is usable.
+
+        Pages:
+            in: A background-repeat toolbar page, or its settlement overlay.
+            out: A recognized toolbar page after settlement, or an unfinished
+                state when returning running/lost for the caller to handle.
+        """
         logger.info("Combat: watch server repeat combat")
         timeout = Timer(self.COMBAT_WATCH_TIMEOUT_SECONDS, count=60).start()
         stage = "watch"
@@ -834,7 +856,12 @@ class CombatRepeatMixin:
                 if self._is_repeat_combat_running():
                     logger.info("Combat: server repeat combat still running")
                     return "running"
-                if self.is_in_main(interval=0):
+                if self.appear(TOUCH_TO_CLOSE):
+                    missing_check_confirm.clear()
+                    if self.appear_then_click(TOUCH_TO_CLOSE, interval=1):
+                        timeout.reset()
+                    continue
+                if self._repeat_combat_return_page() is not None:
                     if not missing_check_confirm.started():
                         missing_check_confirm.start()
                     elif missing_check_confirm.reached():
@@ -871,20 +898,39 @@ class CombatRepeatMixin:
                 # incorrectly click an advertisement close asset here.
 
             if stage == "finish":
-                if self.appear_then_click(TOUCH_TO_CLOSE, interval=1):
-                    logger.info("Combat: close server repeat settlement summary")
-                    timeout.reset()
+                # Recognition must remain active during a click cooldown.
+                # The shop marker can still match behind a reward popup; a
+                # throttled close click is not evidence that it disappeared.
+                # Any visible overlay also invalidates earlier clean frames.
+                if self.appear(TOUCH_TO_CLOSE):
+                    finish_confirm.clear()
+                    if self.appear_then_click(TOUCH_TO_CLOSE, interval=1):
+                        logger.info("Combat: close server repeat settlement summary")
+                        timeout.reset()
                     continue
-                if self._is_repeat_result_window():
+                if self.appear(SETTLEMENT_SETTLE) or self.appear(SETTLEMENT_PROCESSING):
+                    finish_confirm.clear()
+                    stage = "settlement"
+                    continue
+                if self._is_repeat_result_window() or self.appear(SETTLEMENT_CLOSE):
+                    finish_confirm.clear()
                     if self.appear_then_click(SETTLEMENT_CLOSE, interval=1):
                         timeout.reset()
                     continue
-                if self.is_in_main(interval=0):
+                if self._is_repeat_combat_over():
+                    finish_confirm.clear()
+                    stage = "settlement"
+                    continue
+                if self._is_repeat_combat_running():
+                    return "running"
+                return_page = self._repeat_combat_return_page()
+                if return_page is not None:
                     if not finish_confirm.started():
                         finish_confirm.start()
                     elif finish_confirm.reached():
-                        logger.info("Combat: server repeat settlement finished")
+                        logger.info(f"Combat: server repeat settlement finished on {return_page}")
                         return "finished"
+                    continue
                 else:
                     finish_confirm.clear()
                 if self._is_in_dungeon_context() and self.appear_then_click(
