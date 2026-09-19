@@ -93,7 +93,6 @@ class FreeGacha20(ActivityNavigationMixin, UI):
 
         success = self.run_claim(skip_first_screenshot=True)
         if success:
-            self.ui_goto(page_main, skip_first_screenshot=True)
             self.config.task_delay(server_update=True)
         else:
             self.config.task_delay(success=False)

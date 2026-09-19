@@ -83,7 +83,7 @@ class KoharuRaffle(ActivityNavigationMixin, UI):
             # so their dismissal cannot stand in for a reward confirmation.
             if self.handle_network_error():
                 continue
-            if self.handle_ad_buff_x_close():
+            if self.handle_touch_to_close():
                 awaiting_reward_popup = False
                 continue
 
@@ -119,7 +119,6 @@ class KoharuRaffle(ActivityNavigationMixin, UI):
 
         success = self.run_claim()
         if success:
-            self.ui_goto(page_main, skip_first_screenshot=True)
             self.config.task_delay(server_update=True)
         else:
             self.config.task_delay(success=False)

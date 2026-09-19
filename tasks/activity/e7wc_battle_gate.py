@@ -120,7 +120,6 @@ class E7wcBattleGate(ActivityNavigationMixin, UI):
 
         success = self.run_claim()
         if success:
-            self.ui_goto(page_main, skip_first_screenshot=True)
             self.config.task_delay(server_update=True)
         else:
             self.config.task_delay(success=False)
