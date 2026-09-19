@@ -74,7 +74,7 @@ class SanctuaryMonthlyMixin:
     HEART_MAX_LEVEL = 11
     MONTHLY_OCR_INTERVAL_SECONDS = 0.8
     MONTHLY_PURIFY_OCR_STABLE_FRAMES = 3
-    MONTHLY_DEPOSIT_FULL_STABLE_FRAMES = 3
+    MONTHLY_DEPOSIT_CHECK_TIMEOUT_SECONDS = 8
     MONTHLY_PURIFY_CLICK_INTERVAL_SECONDS = 1
     MONTHLY_STATUS_CLAIMED = "claimed"
     MONTHLY_STATUS_FULL = "full"
@@ -202,12 +202,11 @@ class SanctuaryMonthlyMixin:
         """
         Wait for a positive stored state after clicking custody.
 
-        ALREADY_STORED is the normal completion state. The tier marker may
-        remain visible after a successful custody action, so its disappearance
-        is retained only as a two-frame fallback for older UI variants.
+        Only ALREADY_STORED or the monthly claimed state confirms success.
+        A missing tier marker can be an animation or an OCR failure; treating
+        it as success would release the protected reward for another purify.
         """
         timeout = Timer(5, count=15).start()
-        tier_missing_frames = 0
         while 1:
             self.device.screenshot()
 
@@ -222,25 +221,14 @@ class SanctuaryMonthlyMixin:
                 return True
 
             if self.handle_touch_to_close(interval=1):
-                tier_missing_frames = 0
                 timeout.reset()
                 continue
             if self.ui_additional():
-                tier_missing_frames = 0
                 timeout.reset()
                 continue
             if self.handle_network_error():
-                tier_missing_frames = 0
                 timeout.reset()
                 continue
-
-            if self._detect_current_reward_tier(tier_ocr) is None:
-                tier_missing_frames += 1
-                if tier_missing_frames >= 2:
-                    logger.info("Monthly custody settled: reward tier marker cleared")
-                    return True
-            else:
-                tier_missing_frames = 0
 
     def _wait_monthly_level_up_settle(self) -> bool:
         """Wait until monthly level-up popup is dismissed."""
@@ -273,6 +261,10 @@ class SanctuaryMonthlyMixin:
         Layouts:
             - full: OCR_PURIFY_TIMES_FULL
             - not_full: OCR_PURIFY_TIMES_NOT_FULL
+
+        These legacy names describe resource-counter positions, not deposit
+        capacity. Both crops contain balance / single-purify cost; the balance
+        may exceed the cost (400/10 is valid). Never infer box capacity here.
         """
         def read(layout: str):
             if layout == "full":
@@ -304,16 +296,34 @@ class SanctuaryMonthlyMixin:
         """
         return self.appear(STATE_MONTHLY_CLAIMED)
 
-    def _is_monthly_deposit_box_full(self) -> bool:
+    def _is_monthly_deposit_box_full(self) -> bool | None:
         """
-        Detect whether the deposit box is already full.
+        Return False for a visible free slot, or None for unknown capacity.
 
-        We currently only have a stable positive asset for the "not full" state,
-        so this helper keeps the transitional negative check in one place.
-        Once a dedicated "deposit box full" asset is added, only this method
-        needs to change.
+        There is no positive full-box asset yet. A missing free-slot marker
+        cannot prove fullness, even across several frames. Keep the unknown
+        result distinct from False so callers never purify on an unverified box.
         """
-        return not self.appear(DEPOSIT_BOX_NOT_FULL)
+        if self.appear(DEPOSIT_BOX_NOT_FULL, interval=0):
+            return False
+        return None
+
+    def _monthly_deposit_box_ready(self, missing_confirm: Timer) -> bool:
+        """Require a positively recognized free slot before purify or custody."""
+        if self._is_monthly_deposit_box_full() is False:
+            missing_confirm.clear()
+            return True
+
+        # Start once per uninterrupted unknown state. Do not reset this deadline
+        # on retries or use the OCR layout to bypass it. Explicit popup handling
+        # clears the timer because a covered slot is not a capacity observation.
+        missing_confirm.start()
+        if missing_confirm.reached():
+            raise ScriptError(
+                "Monthly deposit capacity is unknown: free slot not detected. "
+                "Cannot confirm a full box without a dedicated full-state asset."
+            )
+        return False
 
     def _monthly_purify_smart(self) -> str:
         """
@@ -329,6 +339,8 @@ class SanctuaryMonthlyMixin:
         logger.info("Monthly: smart custody loop")
         timeout = Timer(60, count=120).start()
         purify_ocr_missing_confirm = Timer(8, count=24).start()
+        purify_missing_confirm = Timer(8, count=24)
+        deposit_missing_confirm = Timer(self.MONTHLY_DEPOSIT_CHECK_TIMEOUT_SECONDS)
         lang = self._ocr_lang()
         times_ocr_full = OcrPurifyTimes(OCR_PURIFY_TIMES_FULL, lang=lang, name="PurifyTimesOCRFull")
         times_ocr_not_full = OcrPurifyTimes(OCR_PURIFY_TIMES_NOT_FULL, lang=lang, name="PurifyTimesOCRNotFull")
@@ -340,7 +352,6 @@ class SanctuaryMonthlyMixin:
         times_ocr_candidate = None
         times_ocr_stable_frames = 0
         custody_pending = False
-        custody_full_frames = 0
 
         while 1:
             self.device.screenshot()
@@ -355,7 +366,8 @@ class SanctuaryMonthlyMixin:
 
             if self.handle_popup_cancel(interval=2):
                 custody_pending = True
-                custody_full_frames = 0
+                deposit_missing_confirm.clear()
+                purify_missing_confirm.clear()
                 times_ocr_candidate = None
                 times_ocr_stable_frames = 0
                 purify_ocr_missing_confirm.reset()
@@ -365,30 +377,33 @@ class SanctuaryMonthlyMixin:
 
             # POPUP_CANCEL may remain visible for several frames after the
             # click. During the click interval handle_popup_cancel() skips its
-            # template check, so the dimmed background can otherwise look like
-            # the monthly page and make the negative last-slot check report a
-            # false full deposit box. Keep this transition inside the popup
-            # state until the existing cancel asset is actually gone.
+            # template check. Keep this transition inside the popup state until
+            # the cancel asset is actually gone; the obscured box and buttons
+            # are not actionable capacity or location observations.
             if custody_pending and self.appear(POPUP_CANCEL):
-                custody_full_frames = 0
+                deposit_missing_confirm.clear()
+                purify_missing_confirm.clear()
                 continue
 
             if self.handle_touch_to_close(interval=1):
-                custody_full_frames = 0
+                deposit_missing_confirm.clear()
+                purify_missing_confirm.clear()
                 times_ocr_candidate = None
                 times_ocr_stable_frames = 0
                 purify_ocr_missing_confirm.reset()
                 timeout.reset()
                 continue
             if self.ui_additional():
-                custody_full_frames = 0
+                deposit_missing_confirm.clear()
+                purify_missing_confirm.clear()
                 times_ocr_candidate = None
                 times_ocr_stable_frames = 0
                 purify_ocr_missing_confirm.reset()
                 timeout.reset()
                 continue
             if self.handle_network_error():
-                custody_full_frames = 0
+                deposit_missing_confirm.clear()
+                purify_missing_confirm.clear()
                 times_ocr_candidate = None
                 times_ocr_stable_frames = 0
                 purify_ocr_missing_confirm.reset()
@@ -396,21 +411,8 @@ class SanctuaryMonthlyMixin:
                 continue
 
             if custody_pending:
-                if not PURIFY.match_template_luma(self.device.image):
-                    custody_full_frames = 0
+                if not self._monthly_deposit_box_ready(deposit_missing_confirm):
                     continue
-
-                # DEPOSIT_BOX_NOT_FULL is a positive marker. Its absence is
-                # only accepted as "full" after several clean monthly-page
-                # frames, otherwise the high-tier gold flash or a closing
-                # popup can turn one damaged screenshot into a false full box.
-                if self._is_monthly_deposit_box_full():
-                    custody_full_frames += 1
-                    if custody_full_frames >= self.MONTHLY_DEPOSIT_FULL_STABLE_FRAMES:
-                        logger.info("Monthly smart custody ended: deposit box full before custody")
-                        return self.MONTHLY_STATUS_FULL
-                    continue
-                custody_full_frames = 0
 
                 if CUSTODY.match_color(self.device.image, threshold=10):
                     if self.appear_then_click(CUSTODY, interval=2):
@@ -423,11 +425,10 @@ class SanctuaryMonthlyMixin:
                             continue
                         logger.info("Monthly smart custody stored protected item")
                         custody_pending = False
-                        custody_full_frames = 0
-                        # Custody can move the counter between the full and
-                        # not-full layouts. Never carry confirmation frames
-                        # across that UI change; the next stable OCR result is
-                        # also the positive deposit-capacity check.
+                        deposit_missing_confirm.clear()
+                        purify_missing_confirm.clear()
+                        # Never reuse resource readings across custody. The next
+                        # action also requires a new, independent free-slot check.
                         times_layout = None
                         times_ocr_candidate = None
                         times_ocr_stable_frames = 0
@@ -470,7 +471,7 @@ class SanctuaryMonthlyMixin:
 
             times_current = read_current
             times_layout = read_layout
-            logger.attr("PurifyTimes", f"{times_current}/{read_total} ({times_layout})")
+            logger.attr("PurifyResource", f"balance={times_current}, cost={read_total}, counter_layout={times_layout}")
             if last_times_current is None:
                 last_times_current = times_current
             elif times_current < last_times_current:
@@ -484,29 +485,35 @@ class SanctuaryMonthlyMixin:
                 logger.info("Monthly smart purify exhausted before monthly reward is claimed")
                 return self.MONTHLY_STATUS_EXHAUSTED
 
-            # These OCR crops exist at different fixed positions in the two
-            # deposit-capacity layouts. Repeated recognition is therefore a
-            # positive page-state signal and avoids treating a gold-flash frame
-            # as a full box merely because DEPOSIT_BOX_NOT_FULL disappeared.
-            if times_layout == "full":
-                logger.info("Monthly smart custody ended: deposit box full")
-                return self.MONTHLY_STATUS_FULL
+            if not self._monthly_deposit_box_ready(deposit_missing_confirm):
+                times_ocr_candidate = None
+                times_ocr_stable_frames = 0
+                continue
 
             if self.appear_then_click(LEVEL_UP, interval=2):
                 self._wait_monthly_level_up_settle()
                 times_ocr_candidate = None
                 times_ocr_stable_frames = 0
                 purify_ocr_missing_confirm.reset()
+                purify_missing_confirm.clear()
                 timeout.reset()
                 continue
+
+            # Both resource layouts allow purify. Locate the button on this
+            # screenshot so its horizontal offset follows the current layout.
+            # Gold effects may hide it temporarily; wait instead of clicking a
+            # stale/default location or declaring the remaining balance exhausted.
+            if not PURIFY.match_template_luma(self.device.image):
+                purify_missing_confirm.start()
+                if purify_missing_confirm.reached():
+                    raise ScriptError("Monthly purify button not detected with sufficient resource balance")
+                continue
+            purify_missing_confirm.clear()
 
             if self.interval_is_reached(
                     PURIFY,
                     interval=self.MONTHLY_PURIFY_CLICK_INTERVAL_SECONDS,
             ):
-                # PURIFY has a fixed hit box. The stable counter proves that the
-                # unobstructed not-full layout has enough currency even when the
-                # button template is recolored by the reward animation.
                 self.device.click(PURIFY)
                 self.interval_reset(
                     PURIFY,
@@ -525,7 +532,7 @@ class SanctuaryMonthlyMixin:
             str:
                 claimed: monthly reward already claimed
                 full: deposit box full before monthly reward is claimed
-                exhausted: weekly purify times exhausted before monthly reward is claimed
+                exhausted: insufficient purify resources before monthly reward is claimed
                 failed: timeout/flow failure
         """
         if self.config.SanctuaryMonthly_RewardTier == self.MONTHLY_REWARD_TIER_SMART:
@@ -534,6 +541,7 @@ class SanctuaryMonthlyMixin:
         logger.info("Monthly: purify loop")
         timeout = Timer(60, count=120).start()
         purify_missing_confirm = Timer(8, count=24).start()
+        deposit_missing_confirm = Timer(self.MONTHLY_DEPOSIT_CHECK_TIMEOUT_SECONDS)
         lang = self._ocr_lang()
         times_ocr_full = OcrPurifyTimes(OCR_PURIFY_TIMES_FULL, lang=lang, name="PurifyTimesOCRFull")
         times_ocr_not_full = OcrPurifyTimes(OCR_PURIFY_TIMES_NOT_FULL, lang=lang, name="PurifyTimesOCRNotFull")
@@ -558,12 +566,15 @@ class SanctuaryMonthlyMixin:
                 return self.MONTHLY_STATUS_FAILED
 
             if self.handle_touch_to_close(interval=1):
+                deposit_missing_confirm.clear()
                 timeout.reset()
                 continue
             if self.ui_additional():
+                deposit_missing_confirm.clear()
                 timeout.reset()
                 continue
             if self.handle_network_error():
+                deposit_missing_confirm.clear()
                 timeout.reset()
                 continue
 
@@ -582,7 +593,7 @@ class SanctuaryMonthlyMixin:
                     times_current = read_current
                     times_total = read_total
                     times_layout = read_layout
-                    logger.attr("PurifyTimes", f"{times_current}/{times_total} ({times_layout})")
+                    logger.attr("PurifyResource", f"balance={times_current}, cost={times_total}, counter_layout={times_layout}")
                     if last_times_current is None:
                         last_times_current = times_current
                     elif times_current < last_times_current:
@@ -593,9 +604,14 @@ class SanctuaryMonthlyMixin:
                     elif times_current > last_times_current:
                         # OCR jitter or layout switch, accept new baseline.
                         last_times_current = times_current
-                    if times_current <= 0:
+                    if times_current < times_total:
                         logger.info("Monthly purify exhausted by OCR counter before monthly reward is claimed")
                         return self.MONTHLY_STATUS_EXHAUSTED
+                else:
+                    # An invalid read must not reuse a previous balance to
+                    # authorize another click or infer exhaustion from color.
+                    times_total = 0
+                    continue
 
             purify_luma = PURIFY.match_template_luma(self.device.image)
             if not purify_luma:
@@ -608,15 +624,8 @@ class SanctuaryMonthlyMixin:
                 continue
             purify_missing_confirm.reset()
 
-            purify_ready = PURIFY.match_template_color(self.device.image)
-            if not purify_ready:
-                logger.info("Monthly purify unavailable: PURIFY is gray, treat as weekly times exhausted")
-                return self.MONTHLY_STATUS_EXHAUSTED
-
-            # Purify exists and clickable but deposit is full -> end without marking complete
-            if self._is_monthly_deposit_box_full():
-                logger.info("Monthly purify ended: deposit box full")
-                return self.MONTHLY_STATUS_FULL
+            if not self._monthly_deposit_box_ready(deposit_missing_confirm):
+                continue
 
             if target_tier is None:
                 heart_level = self._ocr_heart_level(level_ocr)
@@ -660,13 +669,12 @@ class SanctuaryMonthlyMixin:
                 if self.appear(CUSTODY, interval=1):
                     if CUSTODY.match_color(self.device.image, threshold=10):
                         if self.appear_then_click(CUSTODY, interval=2):
-                            self._wait_monthly_custody_settle(tier_ocr)
+                            if not self._wait_monthly_custody_settle(tier_ocr):
+                                raise ScriptError("Monthly custody was not confirmed; purify remains blocked")
                             if self._is_monthly_claimed():
                                 logger.info("Monthly reward claimed after custody")
                                 return self.MONTHLY_STATUS_CLAIMED
-                            if self._is_monthly_deposit_box_full():
-                                logger.info("Monthly purify ended: deposit box full after custody")
-                                return self.MONTHLY_STATUS_FULL
+                            deposit_missing_confirm.clear()
                             timeout.reset()
                             already_stored_clear_confirm = 0
                             continue
@@ -675,7 +683,12 @@ class SanctuaryMonthlyMixin:
             else:
                 already_stored_clear_confirm = 0
 
-            if self.appear_then_click(PURIFY, interval=self.MONTHLY_PURIFY_CLICK_INTERVAL_SECONDS):
+            # The current frame already located PURIFY with luma matching and
+            # verified balance / cost. Reuse that offset; a colored reward flash
+            # must not turn sufficient resources into a false exhausted result.
+            if self.interval_is_reached(PURIFY, interval=self.MONTHLY_PURIFY_CLICK_INTERVAL_SECONDS):
+                self.device.click(PURIFY)
+                self.interval_reset(PURIFY, interval=self.MONTHLY_PURIFY_CLICK_INTERVAL_SECONDS)
                 times_ocr_timer.clear()
                 timeout.reset()
                 continue
