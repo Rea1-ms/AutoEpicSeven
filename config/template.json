@@ -258,7 +258,8 @@
     },
     "SpecialActivity": {
       "GetFreeGacha": true,
-      "GetE7wcBattleGateReward": true
+      "GetE7wcBattleGateReward": true,
+      "GetKoharuRaffleReward": true
     },
     "ActivityRuntime": {
       "CheckedEvents": {},

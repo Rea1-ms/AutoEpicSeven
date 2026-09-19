@@ -41,6 +41,15 @@ class SpecialActivityEntry:
                     task=self.task,
                     activity_id=event.event_id,
                 ).run()
+            elif event.mode == "koharu_raffle":
+                from tasks.activity.koharu_raffle import KoharuRaffle
+
+                success = KoharuRaffle(
+                    config=self.config,
+                    device=self.device,
+                    task=self.task,
+                    activity_id=event.event_id,
+                ).run()
             else:
                 from tasks.activity.legacy.summer_2026_06_25.special_activity import SpecialActivity
 

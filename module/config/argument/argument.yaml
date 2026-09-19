@@ -286,6 +286,7 @@ SpecialActivity:
   # 按资料中的活动时间领取奖励；20抽的实际抽取由 Gacha（召唤任务）执行。
   GetFreeGacha: true
   GetE7wcBattleGateReward: true
+  GetKoharuRaffleReward: true
 
 ActivityRuntime:
   CheckedEvents:

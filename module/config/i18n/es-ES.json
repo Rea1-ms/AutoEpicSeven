@@ -80,7 +80,7 @@
     },
     "SpecialActivity": {
       "name": "Actividad especial",
-      "help": "Recoge las 20 invocaciones gratuitas diarias y las recompensas de E7WC Battle Gate del servidor internacional durante sus eventos. La tarea Invocar realiza las invocaciones."
+      "help": "Recoge las 20 invocaciones gratuitas diarias, las recompensas de E7WC Battle Gate y las tareas de Koharu del servidor internacional durante sus eventos. La tarea Invocar realiza las invocaciones."
     },
     "CommunityAuth": {
       "name": "Inicio comunidad",
@@ -719,7 +719,7 @@
   "SpecialActivity": {
     "_info": {
       "name": "Actividad especial",
-      "help": "Recoge las 20 invocaciones gratuitas diarias y las recompensas de E7WC Battle Gate del servidor internacional durante sus eventos. La tarea Invocar realiza las invocaciones."
+      "help": "Recoge las 20 invocaciones gratuitas diarias, las recompensas de E7WC Battle Gate y las tareas de Koharu del servidor internacional durante sus eventos. La tarea Invocar realiza las invocaciones."
     },
     "GetFreeGacha": {
       "name": "Recoger las 20 invocaciones gratis diarias",
@@ -728,6 +728,10 @@
     "GetE7wcBattleGateReward": {
       "name": "Recoger recompensas de E7WC Battle Gate",
       "help": "Solo para la interfaz en chino simplificado del servidor internacional. Un clic recoge ambas recompensas; cierra la ventana y verifica la recepción."
+    },
+    "GetKoharuRaffleReward": {
+      "name": "Recoger recompensas de tareas de Koharu",
+      "help": "Solo para la interfaz en chino simplificado del servidor internacional. Recoge las tareas completadas del evento de boletos de Koharu. Si no hay recompensas disponibles, vuelve a comprobar tras Arena o Combate; espera al reinicio diario solo cuando todas las tareas estén completadas."
     }
   },
   "ActivityRuntime": {

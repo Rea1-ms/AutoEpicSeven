@@ -71,10 +71,22 @@ def mark_activity_checked(config, event_id: str) -> None:
 
 
 def should_schedule_after_battle(config) -> bool:
-    if not any(event.mode == "legacy" for event in active_activities(config)):
+    if not config.is_task_enabled("SpecialActivity"):
         return False
-    from tasks.activity.legacy.summer_2026_06_25.scheduling import (
-        should_schedule_after_battle as legacy_schedule,
-    )
 
-    return legacy_schedule(config)
+    for event in active_activities(config):
+        if event.mode == "koharu_raffle":
+            # An empty reward queue is not daily completion. The claim flow
+            # only writes this event/server record after ALL_TASK_DONE, so
+            # later battles can request another check without waking retired
+            # events or reusing a different campaign's completion timestamp.
+            if config.SpecialActivity_GetKoharuRaffleReward and not is_activity_checked_today(config, event.event_id):
+                return True
+        elif event.mode == "legacy":
+            from tasks.activity.legacy.summer_2026_06_25.scheduling import (
+                should_schedule_after_battle as legacy_schedule,
+            )
+
+            if legacy_schedule(config):
+                return True
+    return False

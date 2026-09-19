@@ -80,7 +80,7 @@
     },
     "SpecialActivity": {
       "name": "Special Activity",
-      "help": "Claim daily 20 free summons and overseas E7WC Battle Gate rewards during their event periods. The Summon task performs the summons."
+      "help": "Claim daily 20 free summons, overseas E7WC Battle Gate rewards, and Koharu task rewards during their event periods. The Summon task performs the summons."
     },
     "CommunityAuth": {
       "name": "Community Login",
@@ -719,7 +719,7 @@
   "SpecialActivity": {
     "_info": {
       "name": "Special Activity",
-      "help": "Claim daily 20 free summons and overseas E7WC Battle Gate rewards during their event periods. The Summon task performs the summons."
+      "help": "Claim daily 20 free summons, overseas E7WC Battle Gate rewards, and Koharu task rewards during their event periods. The Summon task performs the summons."
     },
     "GetFreeGacha": {
       "name": "Claim Daily 20 Free Summons",
@@ -728,6 +728,10 @@
     "GetE7wcBattleGateReward": {
       "name": "Claim E7WC Battle Gate Rewards",
       "help": "Overseas Simplified Chinese interface only. One reward click claims both items; close the popup and verify receipt."
+    },
+    "GetKoharuRaffleReward": {
+      "name": "Claim Koharu Task Rewards",
+      "help": "Overseas Simplified Chinese interface only. Claim completed tasks in the Koharu raffle event. Recheck after Arena or Combat if no reward is ready; stop daily checks only when all tasks are complete."
     }
   },
   "ActivityRuntime": {
