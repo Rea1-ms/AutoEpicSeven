@@ -14,6 +14,7 @@ from tasks.base.main_page import MainPage
 from tasks.base.page import Page, page_main, page_menu
 from tasks.base.popup import ANNOUNCEMENT_DONOT_REMIND
 from tasks.login.assets.assets_login import (
+    LOGIN_AGREEMENT_UNCHECKED,
     LOGIN_ANNOUNCEMENT_CLOSE,
     LOGIN_CONFIRM,
     LOGIN_LOADING,
@@ -136,6 +137,13 @@ class UI(MainPage):
         return True
 
     def _is_login_startup_state(self) -> bool:
+        # CN may return to the title screen before its first agreement is checked.
+        # Hand it to Login as well; only the checked state permits entering game.
+        if server_.is_cn_server(self.config.Emulator_PackageName) and self.appear(
+            LOGIN_AGREEMENT_UNCHECKED, interval=0
+        ):
+            return True
+
         return self.is_in_login_confirm(interval=0) \
             or self.appear(LOGIN_LOADING, interval=0, similarity=0.75) \
             or self.appear(VERIFYING, interval=0) \
