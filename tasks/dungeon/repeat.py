@@ -7,7 +7,7 @@ from module.exception import RequestHumanTakeover
 from module.logger import logger
 from module.ocr.ocr import Digit, DigitCounter, Duration
 from tasks.base.assets.assets_base_page import BACK
-from tasks.base.assets.assets_base_popup import TOUCH_TO_CLOSE
+from tasks.base.assets.assets_base_popup import AD_BUFF_X_CLOSE, TOUCH_TO_CLOSE
 from tasks.base.page import Page
 from tasks.base.resource_bar import (
     RESOURCE_KIND_INT,
@@ -66,11 +66,13 @@ from tasks.dungeon.assets.assets_dungeon_repeat_resource import (
 )
 from tasks.dungeon.assets.assets_dungeon_repeat_settlement import (
     SETTLEMENT_CLOSE,
+    SETTLEMENT_INTERRUPT,
     SETTLEMENT_PROCESSING,
     SETTLEMENT_SETTLE,
     SETTLEMENT_WINDOW_CHECK,
 )
 from tasks.dungeon.burnout import SERVER_REPEAT_LEIF_STAMINA
+from tasks.dungeon.repeat_progress import read_repeat_combat_progress
 
 
 SERVER_REPEAT_RESOURCE_SPECS = {
@@ -786,6 +788,19 @@ class CombatRepeatMixin:
             similarity=self.COMBAT_CHECK_SIMILARITY,
         )
 
+    def _is_repeat_combat_running_window(self) -> bool:
+        # The running detail and completed result share the same window title.
+        # Only the Interrupt control proves this is still an active run; it is
+        # a state marker here and must never be clicked to dismiss the window.
+        return (
+            self._uses_server_repeat_combat()
+            and self._is_repeat_result_window()
+            and self.match_template_luma(
+                SETTLEMENT_INTERRUPT,
+                similarity=self.COMBAT_CHECK_SIMILARITY,
+            )
+        )
+
     def _is_repeat_combat_over(self) -> bool:
         return self.match_template_luma(
             REPEAT_COMBAT_OVER,
@@ -812,6 +827,44 @@ class CombatRepeatMixin:
                 return page
         return None
 
+    def _refresh_repeat_combat_progress(self) -> bool:
+        progress = read_repeat_combat_progress(self.device.image, self._ocr_lang())
+        if progress is None:
+            return False
+
+        session = dict(self._combat_runtime_session())
+        now = datetime.now()
+        session["progress"] = {
+            "completed": progress.completed,
+            "total": progress.total,
+            "elapsed_seconds": int(progress.elapsed.total_seconds()),
+            "observed_at": now.isoformat(timespec="seconds"),
+        }
+        remaining = progress.estimated_remaining
+        if remaining is not None:
+            target = now + remaining + timedelta(minutes=self.REPEAT_FINISH_BUFFER_MINUTES)
+            session["expected_finish_at"] = target.isoformat(timespec="seconds")
+            logger.attr("RepeatCombatEstimatedRemaining", remaining)
+            logger.attr("CombatRepeatExpectedFinishAt", target)
+        else:
+            session.pop("expected_finish_at", None)
+            logger.info("Combat: repeat progress has no timing sample, use short polling")
+        # Preserve ownership, urgent-task continuation and active status.
+        # Neither a full counter nor a zero time may settle or clear a run.
+        self._combat_runtime_set(session)
+        return True
+
+    def _repeat_combat_future_finish(self) -> datetime | None:
+        raw = self._combat_runtime_session().get("expected_finish_at")
+        if isinstance(raw, str):
+            try:
+                target = datetime.fromisoformat(raw)
+            except ValueError:
+                return None
+            if target.tzinfo is None and target > datetime.now():
+                return target
+        return None
+
     def _watch_repeat_combat(self, skip_first_screenshot=True) -> str:
         """Settle a background run and confirm its underlying page is usable.
 
@@ -823,6 +876,8 @@ class CombatRepeatMixin:
         logger.info("Combat: watch server repeat combat")
         timeout = Timer(self.COMBAT_WATCH_TIMEOUT_SECONDS, count=60).start()
         stage = "watch"
+        progress_read = False
+        progress_retry = Timer(3, count=8).clear()
         finish_confirm = Timer(0.4, count=2).clear()
         missing_check_confirm = Timer(
             self.COMBAT_MISSING_CHECK_CONFIRM_SECONDS, count=2
@@ -843,7 +898,42 @@ class CombatRepeatMixin:
             if self._handle_dungeon_network_error(interval=1):
                 return "running"
 
-            if stage == "watch":
+            # The same window title is used while running and after finishing.
+            # Handle the positive Interrupt marker before any settlement click;
+            # never press Interrupt and never infer completion from OCR alone.
+            if self._is_repeat_combat_running_window():
+                if stage != "running_detail":
+                    stage = "running_detail"
+                    progress_read = False
+                    progress_retry.reset()
+                    timeout.reset()
+                finish_confirm.clear()
+                missing_check_confirm.clear()
+                if not progress_read:
+                    progress_read = self._refresh_repeat_combat_progress()
+                    if not progress_read and not progress_retry.reached():
+                        continue
+                    if not progress_read:
+                        logger.warning("Combat: repeat progress OCR failed, keep existing schedule")
+                        progress_read = True
+                # This generic X is valid here only after the active-run
+                # window is positively identified. Do not use it for rewards.
+                if self.appear_then_click(AD_BUFF_X_CLOSE, interval=1):
+                    logger.info("Combat: close running repeat detail")
+                continue
+
+            if stage == "running_detail":
+                if self._is_repeat_result_window() or self._is_repeat_combat_over():
+                    stage = "settlement"
+                    continue
+                if (
+                    self._has_repeat_combat_check()
+                    and self._repeat_combat_return_page() is not None
+                ):
+                    return "running"
+                continue
+
+            if stage in ("watch", "open_detail"):
                 if self.appear_then_click(REPEAT_COMBAT_OVER, interval=1):
                     logger.info("Combat: server repeat complete, open settlement")
                     stage = "settlement"
@@ -854,12 +944,26 @@ class CombatRepeatMixin:
                     timeout.reset()
                     continue
                 if self._is_repeat_combat_running():
-                    logger.info("Combat: server repeat combat still running")
-                    return "running"
+                    missing_check_confirm.clear()
+                    if stage == "watch" and self._repeat_combat_future_finish() is not None:
+                        logger.info("Combat: server repeat combat still running")
+                        return "running"
+                    # Adopted sessions have no menu duration; expired estimates
+                    # also need a fresh sample. Keep screenshotting until the
+                    # detail opens, including when a click is dropped.
+                    if self.appear_then_click(REPEAT_COMBAT_CHECK, interval=1):
+                        logger.info("Combat: open running repeat detail for progress")
+                        stage = "open_detail"
+                    continue
                 if self.appear(TOUCH_TO_CLOSE):
                     missing_check_confirm.clear()
                     if self.appear_then_click(TOUCH_TO_CLOSE, interval=1):
                         timeout.reset()
+                    continue
+                # Opening the detail can temporarily hide both the toolbar
+                # marker and the window title. A visible underlying page is
+                # not evidence that this known active session disappeared.
+                if stage == "open_detail":
                     continue
                 if self._repeat_combat_return_page() is not None:
                     if not missing_check_confirm.started():
@@ -960,15 +1064,10 @@ class CombatRepeatMixin:
             self.config.task_delay(minute=self.COMBAT_BACKGROUND_CHECK_MINUTES)
             return
 
-        raw = self._combat_runtime_session().get("expected_finish_at")
-        if isinstance(raw, str):
-            try:
-                target = datetime.fromisoformat(raw)
-            except ValueError:
-                target = None
-            if target is not None and target > datetime.now():
-                logger.attr("CombatRepeatExpectedFinishAt", target)
-                self.config.task_delay(target=target)
-                return
+        target = self._repeat_combat_future_finish()
+        if target is not None:
+            logger.attr("CombatRepeatExpectedFinishAt", target)
+            self.config.task_delay(target=target)
+            return
 
         self.config.task_delay(minute=self.COMBAT_BACKGROUND_CHECK_MINUTES)

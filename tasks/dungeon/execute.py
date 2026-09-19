@@ -42,6 +42,8 @@ class CombatExecuteMixin:
         return self.match_template_luma(FAST_COMBAT_OFF, similarity=self.COMBAT_CHECK_SIMILARITY)
 
     def _is_repeat_combat_running(self) -> bool:
+        if self._is_repeat_combat_running_window():
+            return True
         if self._is_repeat_combat_over() or self._is_repeat_result_window():
             return False
         return self._has_repeat_combat_check()
@@ -66,12 +68,14 @@ class CombatExecuteMixin:
         - `REPEAT_COMBAT_CHECK` means the old session is still running
         - `REPEAT_COMBAT_OVER` means the old session has already finished and
           is waiting for us to open the result
-        - `SETTLEMENT_WINDOW_CHECK` means the result window is already open and still
-          needs cleanup before a new dungeon run may start
+        - `SETTLEMENT_WINDOW_CHECK` identifies the shared detail/result window;
+          `SETTLEMENT_INTERRUPT` distinguishes an active run from its result
 
         Treat all three as "there is already an old background combat state on
         screen", then let the dedicated watch/result logic finish the cleanup.
         """
+        if self._is_repeat_combat_running_window():
+            return "running"
         if self._is_repeat_result_window() or self._is_repeat_combat_over():
             return "result"
         if self._has_background_repeat_combat_check():

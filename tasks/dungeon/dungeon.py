@@ -249,6 +249,12 @@ class Combat(
         if self._combat_runtime_active():
             return
 
+        # A running detail window is a valid adoption context even though it
+        # covers the toolbar page. Read/close it in the repeat watcher before
+        # generic navigation has a chance to dismiss or misclassify it.
+        if self._uses_server_repeat_combat() and self._is_repeat_result_window():
+            return
+
         current = self.ui_get_current_page(skip_first_screenshot=True)
         if self._is_supporter_page():
             # The side-story choose-team page is already deep inside the local
@@ -342,7 +348,11 @@ class Combat(
             logger.attr("CombatSessionElement", session.get("element"))
             logger.attr("CombatSessionGrade", session.get("grade"))
 
-            if session.get("state") != "result" and not self.is_in_main(interval=0):
+            if (
+                session.get("state") != "result"
+                and not self._is_repeat_result_window()
+                and not self.is_in_main(interval=0)
+            ):
                 # Return to main so the session can keep running in background.
                 self.ui_goto_main()
 

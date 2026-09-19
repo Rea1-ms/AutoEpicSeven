@@ -3,6 +3,26 @@ from module.base.button import Button, ButtonWrapper
 # This file was auto-generated, do not modify it manually. To generate:
 # ``` python -m dev_tools.button_extract ```
 
+OCR_SETTLEMENT_PROGRESS = ButtonWrapper(
+    name='OCR_SETTLEMENT_PROGRESS',
+    share=Button(
+        file='./assets/share/dungeon/repeat/settlement/OCR_SETTLEMENT_PROGRESS.png',
+        area=(526, 239, 747, 271),
+        search=(506, 219, 767, 291),
+        color=(59, 61, 64),
+        button=(526, 239, 747, 271),
+    ),
+)
+OCR_SETTLEMENT_TIME_SPENT = ButtonWrapper(
+    name='OCR_SETTLEMENT_TIME_SPENT',
+    share=Button(
+        file='./assets/share/dungeon/repeat/settlement/OCR_SETTLEMENT_TIME_SPENT.png',
+        area=(230, 364, 406, 407),
+        search=(210, 344, 426, 427),
+        color=(50, 77, 129),
+        button=(230, 364, 406, 407),
+    ),
+)
 SETTLEMENT_CLOSE = ButtonWrapper(
     name='SETTLEMENT_CLOSE',
     cn=Button(
