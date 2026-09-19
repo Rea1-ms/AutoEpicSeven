@@ -169,24 +169,45 @@ class UrgentTasksNavigateMixin:
         logger.attr("UrgentTasksRemaining", current)
         return current
 
-    def _dismiss_urgent_tasks_times_hint(self) -> bool:
-        """Close the daily-times hint only after positively recognizing it."""
-        current, _, total = DigitCounter(
+    def _is_urgent_tasks_times_hint(self) -> bool:
+        """Recognize the light hint panel over the dark prepare controls."""
+        # This fixed area stays light while the hint is open, regardless of
+        # the remaining digit. OCR can read "4/5" as "4" or "4/"; requiring a
+        # complete counter used to mistake those failures for an absent hint
+        # and let subsequent count clicks hit the overlay. Only the detail
+        # page counter supplies daily attempts; this region just blocks input.
+        return self.match_color(
             OCR_URGENT_COMBAT_TIMES_REMAINING,
-            lang=self._ocr_lang(),
-            name="UrgentCombatTimesHint",
-        ).ocr_single_line(self.device.image)
-        if total != self.URGENT_TASKS_DAILY_TOTAL or not 0 <= current <= total:
+            threshold=self.COMBAT_STATE_COLOR_THRESHOLD,
+        )
+
+    def _dismiss_urgent_tasks_times_hint(self) -> bool:
+        """Return True only when a recognized hint was actually clicked."""
+        if not self._is_urgent_tasks_times_hint():
             return False
         if not self.interval_is_reached(
             OCR_URGENT_COMBAT_TIMES_REMAINING,
             interval=1,
         ):
             return False
-        logger.info(f"UrgentTasks: close daily-times hint ({current}/{total})")
+        logger.info("UrgentTasks: close daily-times hint")
         self.device.click(OCR_URGENT_COMBAT_TIMES_REMAINING)
         self.interval_reset(OCR_URGENT_COMBAT_TIMES_REMAINING, interval=1)
         return True
+
+    def _is_urgent_tasks_prepare_ready(self) -> bool:
+        """Confirm prepare controls are visible without the daily-times hint."""
+        return (
+            self._is_urgent_tasks_target_prepare_page()
+            and not self._is_urgent_tasks_times_hint()
+        )
+
+    def _handle_urgent_tasks_prepare_additional(self) -> bool:
+        if self._handle_dungeon_additional():
+            return True
+        if self._is_urgent_tasks_target_prepare_page():
+            return self._dismiss_urgent_tasks_times_hint()
+        return False
 
     def _inspect_urgent_tasks_resource(self, key: str):
         """Read one value through the shared resource-bar implementation."""
@@ -218,17 +239,17 @@ class UrgentTasksNavigateMixin:
             else:
                 self.device.screenshot()
 
+            if timeout.reached():
+                logger.warning("UrgentTasks: stamina OCR timeout")
+                return None
+
             if self._is_urgent_tasks_target_prepare_page():
-                if self._dismiss_urgent_tasks_times_hint():
-                    timeout.reset()
+                if self._is_urgent_tasks_times_hint():
+                    self._dismiss_urgent_tasks_times_hint()
                     continue
                 value = self._inspect_urgent_tasks_resource("stamina")
                 if value is not None:
                     return value.value
-
-            if timeout.reached():
-                logger.warning("UrgentTasks: stamina OCR timeout")
-                return None
 
             if self._handle_dungeon_additional():
                 timeout.reset()
@@ -251,10 +272,14 @@ class UrgentTasksNavigateMixin:
             else:
                 self.device.screenshot()
 
+            if timeout.reached():
+                logger.warning("UrgentTasks: pet state timeout, use foreground combat")
+                return False
+
             if self._is_urgent_tasks_target_prepare_page():
-                if self._dismiss_urgent_tasks_times_hint():
+                if self._is_urgent_tasks_times_hint():
+                    self._dismiss_urgent_tasks_times_hint()
                     stable.clear()
-                    timeout.reset()
                     continue
                 if self.appear(COMBAT_PREPARE_PET_EMPTY):
                     logger.info("UrgentTasks: no pet configured on prepare page")
@@ -266,10 +291,6 @@ class UrgentTasksNavigateMixin:
                     return True
             else:
                 stable.clear()
-
-            if timeout.reached():
-                logger.warning("UrgentTasks: pet state timeout, use foreground combat")
-                return False
 
             if self._handle_dungeon_additional():
                 stable.clear()
@@ -321,8 +342,11 @@ class UrgentTasksNavigateMixin:
                 continue
 
             if self._is_urgent_tasks_target_prepare_page():
-                if self._dismiss_urgent_tasks_times_hint():
-                    timeout.reset()
+                # A click on cooldown is not proof that the hint disappeared.
+                # Stay here until a fresh prepare frame is unobstructed, even
+                # when the last dismissal tap failed or has not settled yet.
+                if self._is_urgent_tasks_times_hint():
+                    self._dismiss_urgent_tasks_times_hint()
                     continue
                 if self._urgent_tasks_remaining_count is not None:
                     logger.info("UrgentTasks: reached target prepare page")
@@ -566,6 +590,8 @@ class UrgentTasksNavigateMixin:
                     use_max=True,
                     skip_first_screenshot=True,
                     fallback_on_enable_timeout=True,
+                    prepare_check=self._is_urgent_tasks_prepare_ready,
+                    additional_handler=self._handle_urgent_tasks_prepare_additional,
                 )
                 if fast_prepare == "ready":
                     if not self._run_fast_combat(skip_first_screenshot=True):

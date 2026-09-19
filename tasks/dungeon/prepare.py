@@ -160,6 +160,7 @@ class CombatPrepare:
         additional_handler=None,
         skip_first_screenshot=True,
         max_count: int | None = None,
+        prepare_check=None,
     ) -> bool:
         """Adjust a valid counter in short batches, confirming each with OCR."""
         if additional_handler is None:
@@ -185,6 +186,16 @@ class CombatPrepare:
                 return False
 
             if additional_handler():
+                post_click_settle.clear()
+                stable_timer.clear()
+                last_value = None
+                continue
+
+            # A hint can arrive after navigation or after a previous count
+            # batch. A handler returning False may only mean its click is on
+            # cooldown, not that the overlay is gone. Keep presence checking
+            # separate from actions, including before accepting target==current.
+            if prepare_check is not None and not prepare_check():
                 post_click_settle.clear()
                 stable_timer.clear()
                 last_value = None
@@ -238,6 +249,8 @@ class CombatPrepare:
         use_max=False,
         skip_first_screenshot=True,
         fallback_on_enable_timeout=False,
+        prepare_check=None,
+        additional_handler=None,
     ) -> tuple[str, int]:
         """Prepare a stamina-safe fast-combat count.
 
@@ -245,11 +258,16 @@ class CombatPrepare:
             fallback_on_enable_timeout: Allow Urgent Tasks to continue with a
                 foreground battle if the visible fast-mode toggle stays off.
                 Other callers retain their existing failure policy.
+            prepare_check: Optional side-effect-free check for unobstructed
+                prepare controls, also used while adjusting the counter.
+            additional_handler: Optional popup handler for this prepare flow.
 
         Returns:
             tuple[str, int]: Status and prepared count. Count is zero unless
                 status is ready.
         """
+        if additional_handler is None:
+            additional_handler = self._handle_dungeon_additional
         logger.hr("Combat Prepare Fast", level=2)
         timeout = Timer(self.COMBAT_COUNT_TIMEOUT_SECONDS, count=80).start()
         zero_confirm = Timer(self.COMBAT_ZERO_CONFIRM_SECONDS, count=2).clear()
@@ -265,7 +283,16 @@ class CombatPrepare:
                 logger.warning("Combat: prepare fast combat timeout")
                 return "failed", 0
 
-            if self._handle_dungeon_additional():
+            # Urgent Tasks may show its daily-times hint only after fast mode
+            # becomes available. Dismissing it during navigation is insufficient:
+            # check every new frame and retain this guard in the count loop.
+            # Do not extend the deadline while a recognized blocker persists.
+            if prepare_check is not None and not prepare_check():
+                additional_handler()
+                zero_confirm.clear()
+                continue
+
+            if additional_handler():
                 timeout.reset()
                 zero_confirm.clear()
                 continue
@@ -346,6 +373,8 @@ class CombatPrepare:
                 "FastCombatCurrentTimes",
                 skip_first_screenshot=True,
                 max_count=self.COMBAT_MAX_FAST_COUNT,
+                prepare_check=prepare_check,
+                additional_handler=additional_handler,
             ):
                 return "ready", target
             return "failed", 0
