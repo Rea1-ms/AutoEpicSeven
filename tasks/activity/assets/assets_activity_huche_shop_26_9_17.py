@@ -111,6 +111,30 @@ HUCHE_PRICE_CURRENCY = ButtonWrapper(
     ),
     global_en=None,
 )
+HUCHE_REFRESH_ITEM = ButtonWrapper(
+    name='HUCHE_REFRESH_ITEM',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/activity/huche_shop/26_9_17/HUCHE_REFRESH_ITEM.png',
+        area=(552, 230, 581, 258),
+        search=(532, 210, 601, 278),
+        color=(101, 74, 42),
+        button=(552, 230, 581, 258),
+    ),
+    global_en=None,
+)
+HUCHE_REGULAR_ITEM_CHECK = ButtonWrapper(
+    name='HUCHE_REGULAR_ITEM_CHECK',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/activity/huche_shop/26_9_17/HUCHE_REGULAR_ITEM_CHECK.png',
+        area=(634, 583, 713, 606),
+        search=(614, 563, 733, 626),
+        color=(65, 64, 64),
+        button=(634, 583, 713, 606),
+    ),
+    global_en=None,
+)
 HUCHE_SHOP_CHECK = ButtonWrapper(
     name='HUCHE_SHOP_CHECK',
     cn=None,
@@ -168,6 +192,18 @@ OCR_HUCHE_PRICE = ButtonWrapper(
         search=(1130, 223, 1257, 298),
         color=(22, 22, 22),
         button=(1150, 243, 1237, 278),
+    ),
+    global_en=None,
+)
+OCR_HUCHE_REFRESH_NAME = ButtonWrapper(
+    name='OCR_HUCHE_REFRESH_NAME',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/activity/huche_shop/26_9_17/OCR_HUCHE_REFRESH_NAME.png',
+        area=(633, 282, 1048, 334),
+        search=(613, 262, 1068, 354),
+        color=(17, 18, 18),
+        button=(633, 282, 1048, 334),
     ),
     global_en=None,
 )

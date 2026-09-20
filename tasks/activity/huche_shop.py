@@ -2,7 +2,8 @@
 
 Reuse the regular store's quantity planner and action assets, and the shared
 resource-bar reader. Unlike a refresh-farming shop, this task never refreshes
-stock itself and only records completion from same-row stock/sold-out evidence.
+stock itself. Completion requires verified stock or a fully inspected rotating
+batch ending at the regular-item boundary, never a missing item match alone.
 """
 
 from dataclasses import dataclass
@@ -25,10 +26,13 @@ from tasks.activity.assets.assets_activity_huche_shop_26_9_17 import (
     HUCHE_MYSTIC_BUY,
     HUCHE_MYSTIC_ITEM,
     HUCHE_PRICE_CURRENCY,
+    HUCHE_REFRESH_ITEM,
+    HUCHE_REGULAR_ITEM_CHECK,
     HUCHE_SHOP_CHECK,
     OCR_HUCHE_BUY_AMOUNT,
     OCR_HUCHE_BUY_PRICE,
     OCR_HUCHE_PRICE,
+    OCR_HUCHE_REFRESH_NAME,
     OCR_HUCHE_STOCK,
 )
 from tasks.activity.calendar import active_activities
@@ -54,6 +58,76 @@ class MysticOffer:
     remaining: int
     limit: int
     sold_out: bool
+
+
+@dataclass(frozen=True)
+class DiscountItem:
+    y: int
+    name: str
+    mystic: bool
+
+
+@dataclass(frozen=True)
+class DiscountView:
+    items: tuple[DiscountItem, ...]
+    boundary: tuple[int, int, int, int] | None
+
+
+class DiscountBatchScan:
+    """Track continuous coverage from the top to a positive regular label.
+
+    Upward swipes must leave the same loaded inventory twice before the top
+    is accepted. Downward swipes keep an overlapping item; losing it means
+    coverage is unknown, not that the rotating batch has ended. Observations
+    are invalidated after every actual swipe and across unreadable frames.
+    """
+
+    def __init__(self):
+        self.previous = None
+        self.up_view = None
+        self.up_matches = 0
+        self.top = False
+        self.tail = None
+        self.scrolls = 0
+
+    def observe(self, view):
+        stable = view is not None and view == self.previous
+        self.previous = view
+        if not stable:
+            return "wait"
+        if not self.top:
+            if self.up_view is not None:
+                self.up_matches = self.up_matches + 1 if view == self.up_view else 0
+                self.up_view = None
+            # The first clock sits at the top row; a regular-only inventory
+            # instead starts with its explicit label. An unchanged viewport
+            # in the middle must not pass merely because swipes failed.
+            aligned = (bool(view.items) and 79 <= view.items[0].y <= 91
+                       or not view.items and view.boundary is not None and 150 <= view.boundary[1] <= 195)
+            if self.up_matches < 2 or not aligned:
+                return "up"
+            self.top = True
+        if self.tail is not None:
+            overlaps = [item for item in view.items
+                        if (item.name, item.mystic) == (self.tail.name, self.tail.mystic)]
+            if not overlaps:
+                return "wait"
+            if min(item.y for item in overlaps) >= self.tail.y - 20:
+                return "down"
+            self.tail = None
+        if any(item.mystic for item in view.items):
+            return "target"
+        if view.boundary is not None:
+            return "complete"
+        return "down"
+
+    def scrolled(self, view, direction):
+        if direction == "up":
+            self.up_view = view
+        else:
+            self.tail = view.items[-1]
+        self.previous = None
+        self.scrolls += 1
 
 
 class HucheShop(ResourceBarMixin, UI):
@@ -144,6 +218,60 @@ class HucheShop(ResourceBarMixin, UI):
         result = self.inspect_resource_bar_status(RESOURCE_BAR_LAYOUT_SECRET_SHOP, "HucheShop")
         return result.final["skystone"].value if result.final is not None else None
 
+    def read_discount_view(self) -> DiscountView | None:
+        """Read clock-marked rows before the first explicit regular label.
+
+        Some rotating products open a catalogue instead of a purchase popup,
+        so BUY buttons cannot enumerate this batch. The clock anchors every
+        rotating row, including those catalogue entries. Low-confidence text
+        or a gap between rows invalidates the view instead of skipping stock.
+        """
+        matches = []
+        for asset, area in ((HUCHE_REFRESH_ITEM, (545, 65, 590, 720)),
+                            (HUCHE_REGULAR_ITEM_CHECK, (625, 80, 760, 720))):
+            buttons = tuple(asset.iter_buttons())
+            searches = tuple(button.search for button in buttons)
+            try:
+                asset.load_search(area)
+                matches.append(sorted(asset.match_multi_template(self.device.image), key=lambda row: row.area[1]))
+            finally:
+                for button, search in zip(buttons, searches):
+                    button.load_search(search)
+                    button.clear_offset()
+        clocks, regular = matches
+        boundary = tuple(regular[0].area) if regular else None
+        clocks = [row for row in clocks if boundary is None or row.area[1] < boundary[1] - 100]
+        rows = []
+        for clock in clocks:
+            offset = (0, clock.area[1] - HUCHE_REFRESH_ITEM.area[1])
+            area = area_offset(OCR_HUCHE_REFRESH_NAME.area, offset)
+            if area[3] > HUCHE_ITEMS_AREA.area[3]:
+                continue
+            rows.append((clock, offset, area))
+        if not rows:
+            return DiscountView((), boundary) if boundary is not None else None
+        if any(not 140 <= right[0].area[1] - left[0].area[1] <= 151
+               for left, right in zip(rows, rows[1:])):
+            return None
+        if boundary is not None and not 215 <= boundary[1] - rows[-1][0].area[1] <= 240:
+            return None
+        items = []
+        for clock, offset, area in rows:
+            # Names may wrap onto two lines (summon selection boxes). Run
+            # text detection inside the row instead of squeezing both lines
+            # through single-line OCR, which can hide a Mystic Medal name.
+            results = Ocr(ClickButton(area, name="HucheRefreshName"),
+                          lang=resolve_ocr_lang(self.config)).detect_and_ocr(self.device.image)
+            if not results or any(result.score < 0.9 for result in results):
+                return None
+            name = "".join(result.ocr_text for result in results)
+            if len(name.strip()) < 2:
+                return None
+            mystic = ("神秘" in name or "奖牌" in name
+                      or self._match_at(HUCHE_MYSTIC_ITEM, offset, color=False))
+            items.append(DiscountItem(clock.area[1], name, mystic))
+        return DiscountView(tuple(items), boundary)
+
     def popup_selection(self, offer, balance):
         """Verify the selected item, amount, currency, quantity and total cost."""
         offset = self._locate(HUCHE_BUY_MYSTIC_CHECK, (500, 180, 950, 425))
@@ -202,6 +330,7 @@ class HucheShop(ResourceBarMixin, UI):
         confirmed = False
         cancel_requested = False
         invalid_popup_frames = 0
+        batch_scan = DiscountBatchScan()
 
         while 1:
             if skip_first_screenshot:
@@ -271,6 +400,39 @@ class HucheShop(ResourceBarMixin, UI):
                 if offers and not stable:
                     continue
                 if confirmed and pending is not None and any(item.price == pending.price for item in offers):
+                    continue
+                if (self.regular_price in checked_prices and pending is None and not confirmed
+                        and not any(item.price != self.regular_price for item in offers)):
+                    # Rotating stock is optional: a new batch may contain no
+                    # medals. Once the fixed quota is resolved, inspect only
+                    # the leading batch and stop at its explicit boundary.
+                    # A missing Mystic template by itself never completes it.
+                    view = self.read_discount_view()
+                    action = batch_scan.observe(view)
+                    if action == "complete":
+                        # OCR can cross the refresh boundary after the loop's
+                        # initial clock check. Never stamp the new batch with
+                        # the previous batch's absence observation.
+                        finished_at = aware_time()
+                        if not window.contains(finished_at) or window.refresh_start(finished_at) != refresh_at:
+                            return False
+                        mark_activity_checked(self.config, self.activity_id)
+                        logger.info("HucheShop: rotating batch inspected, no Mystic Medals this refresh")
+                        return True
+                    if action in ("up", "down") and self.interval_is_reached(HUCHE_ITEMS_AREA, interval=2):
+                        if batch_scan.scrolls >= self.SCROLL_UP_LIMIT + self.SCROLL_DOWN_LIMIT:
+                            logger.warning("HucheShop: rotating batch coverage not verified")
+                            return False
+                        left, top, right, bottom = HUCHE_ITEMS_AREA.area
+                        x = (left + right) // 2
+                        upper, lower = (x, top + 100), (x, bottom - 100)
+                        # Short downward steps retain at least one readable
+                        # row, including catalogue rows without a BUY button.
+                        start, end = (upper, lower) if action == "up" else (lower, (x, lower[1] - 280))
+                        self.device.swipe(start, end, duration=(0.3, 0.4))
+                        self.interval_reset(HUCHE_ITEMS_AREA, interval=2)
+                        batch_scan.scrolled(view, action)
+                        previous = None
                     continue
                 if stable and not confirmed:
                     candidates = [item for item in offers if item.remaining > 0 and item.price not in checked_prices]

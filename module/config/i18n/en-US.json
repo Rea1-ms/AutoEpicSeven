@@ -735,7 +735,7 @@
     },
     "BuyHucheMysticMedals": {
       "name": "Buy Huche Shop Mystic Medals",
-      "help": "Overseas Simplified Chinese only. Buy both 160- and 200-skystone Mystic Medal offers within stock and balance limits; no other items. Recheck at 11:00 and 23:00 UTC+8 during the event. Disabled by default; enabling spends skystones. Discount offer: 2 per 12 hours. Regular offer: 4 for the entire event; stop checking it once sold out."
+      "help": "Overseas Simplified Chinese only. Buy only Mystic Medals within stock and skystone balance limits. The leading stock rotates every 12 hours; medals are not guaranteed. Buy the 160-skystone offer when present, otherwise wait for the next batch after a complete scan. The 200-skystone offer has a fixed quota of 4 for the entire event; once sold out, inspect only the leading rotating batch. Recheck at 11:00 and 23:00 UTC+8. Disabled by default; enabling spends skystones."
     }
   },
   "ActivityRuntime": {
