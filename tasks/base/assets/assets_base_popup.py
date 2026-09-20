@@ -35,22 +35,13 @@ BROADCAST = ButtonWrapper(
 )
 NETWORK_ERROR_ABNORMAL = ButtonWrapper(
     name='NETWORK_ERROR_ABNORMAL',
-    cn=[
-        Button(
-            file='./assets/cn/base/popup/NETWORK_ERROR_ABNORMAL.png',
-            area=(674, 313, 711, 333),
-            search=(654, 293, 731, 353),
-            color=(98, 101, 104),
-            button=(674, 313, 711, 333),
-        ),
-        Button(
-            file='./assets/cn/base/popup/NETWORK_ERROR_ABNORMAL.2.png',
-            area=(675, 340, 713, 358),
-            search=(655, 320, 733, 378),
-            color=(100, 104, 110),
-            button=(675, 340, 713, 358),
-        ),
-    ],
+    cn=Button(
+        file='./assets/cn/base/popup/NETWORK_ERROR_ABNORMAL.png',
+        area=(674, 313, 711, 333),
+        search=(654, 293, 731, 353),
+        color=(98, 101, 104),
+        button=(674, 313, 711, 333),
+    ),
     global_cn=[
         Button(
             file='./assets/global_cn/base/popup/NETWORK_ERROR_ABNORMAL.png',
