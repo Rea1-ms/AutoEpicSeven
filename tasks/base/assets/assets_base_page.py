@@ -49,16 +49,6 @@ MAIN_ARENA_ENTRY = ButtonWrapper(
     ),
     global_en=None,
 )
-MAIN_GOTO_ACTIVITY = ButtonWrapper(
-    name='MAIN_GOTO_ACTIVITY',
-    share=Button(
-        file='./assets/share/base/page/MAIN_GOTO_ACTIVITY.png',
-        area=(49, 417, 64, 433),
-        search=(29, 397, 84, 453),
-        color=(135, 129, 136),
-        button=(49, 417, 64, 433),
-    ),
-)
 MAIN_GOTO_COMBAT = ButtonWrapper(
     name='MAIN_GOTO_COMBAT',
     cn=Button(
@@ -79,13 +69,22 @@ MAIN_GOTO_COMBAT = ButtonWrapper(
 )
 MAIN_GOTO_COMMON_ACTIVITY = ButtonWrapper(
     name='MAIN_GOTO_COMMON_ACTIVITY',
-    share=Button(
-        file='./assets/share/base/page/MAIN_GOTO_COMMON_ACTIVITY.png',
-        area=(52, 484, 63, 495),
-        search=(32, 464, 83, 515),
-        color=(172, 180, 186),
-        button=(52, 484, 63, 495),
-    ),
+    share=[
+        Button(
+            file='./assets/share/base/page/MAIN_GOTO_COMMON_ACTIVITY.png',
+            area=(52, 484, 63, 495),
+            search=(32, 464, 83, 515),
+            color=(172, 180, 186),
+            button=(52, 484, 63, 495),
+        ),
+        Button(
+            file='./assets/share/base/page/MAIN_GOTO_COMMON_ACTIVITY.2.png',
+            area=(52, 407, 64, 418),
+            search=(32, 387, 84, 438),
+            color=(157, 165, 172),
+            button=(52, 407, 64, 418),
+        ),
+    ],
 )
 MAIN_GOTO_EPISODE = ButtonWrapper(
     name='MAIN_GOTO_EPISODE',

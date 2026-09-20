@@ -13,6 +13,7 @@ from tasks.base.assets.assets_base_popup import (
 from tasks.base.main_page import MainPage
 from tasks.base.page import Page, page_main, page_menu
 from tasks.base.popup import ANNOUNCEMENT_DONOT_REMIND
+from tasks.base.route_entry import match_route_entry
 from tasks.login.assets.assets_login import (
     LOGIN_AGREEMENT_UNCHECKED,
     LOGIN_ANNOUNCEMENT_CLOSE,
@@ -31,6 +32,7 @@ class UI(MainPage):
     ui_current: Page
     ui_main_confirm_timer = Timer(0.2, count=0)
     UI_SWITCH_RETRY_SECONDS = 2
+    UI_ENTRY_MATCH_TIMEOUT_SECONDS = 8
 
     def _ui_dynamic_origin_store(self) -> dict[str, Page]:
         if not hasattr(self, "_ui_dynamic_origins"):
@@ -123,6 +125,18 @@ class UI(MainPage):
             self._ui_clear_dynamic_origin(source)
 
         self._ui_set_dynamic_origin(target, source)
+
+    def _ui_match_route_entry(self, page: Page, button: ButtonWrapper):
+        prefer_lower = None
+        if page == page_main:
+            # ui_page_confirm() can take newer screenshots. Recheck the usable
+            # main page before reading its rank or matching an entry on that frame.
+            if not self.is_in_main():
+                return None
+            level = self.read_main_account_level()
+            if level is not None:
+                prefer_lower = level.milestone_unlocked
+        return match_route_entry(button, self.device.image, prefer_lower=prefer_lower)
 
     def _ui_handoff_to_login(self, reason) -> bool:
         if self.__class__.__name__ == 'Login':
@@ -299,9 +313,13 @@ class UI(MainPage):
         pending_source = None
         pending_target = None
         switch_retry = Timer(self.UI_SWITCH_RETRY_SECONDS, count=0)
+        entry_wait_route = None
+        entry_wait = Timer(self.UI_ENTRY_MATCH_TIMEOUT_SECONDS, count=4)
         while 1:
             if skip_first_screenshot:
                 skip_first_screenshot = False
+                if not hasattr(self.device, "image") or self.device.image is None:
+                    self.device.screenshot()
             else:
                 self.device.screenshot()
 
@@ -336,7 +354,6 @@ class UI(MainPage):
                 if self.ui_page_appear(page):
                     if pending_source is not None and page != pending_target and not switch_retry.reached():
                         break
-                    logger.info(f'Page switch: {page} -> {page.parent}')
                     # Keep ui_goto deterministic: do not mix opportunistic side actions
                     # (e.g. MENU_PETS_GIFT) into route switching, otherwise navigation
                     # can be interrupted by transient popups/animations.
@@ -344,8 +361,28 @@ class UI(MainPage):
                     if self.ui_page_confirm(page):
                         logger.info(f'Page arrive confirm {page}')
                     button = self._ui_get_link_button(page, page.parent)
+                    click_button = button
+                    if page.parent in page.links_need_match:
+                        click_button = self._ui_match_route_entry(page, button)
+                        if click_button is None:
+                            route = (page, page.parent)
+                            if entry_wait_route != route:
+                                entry_wait_route = route
+                                entry_wait.reset()
+                                logger.info(f'Waiting for UI route entry: {page} -> {page.parent}, {button}')
+                            # Missing recognition must never fall through to a
+                            # default/cached click or to another overlapping page.
+                            # Repeated misses on this route do not reset its deadline.
+                            if entry_wait.reached():
+                                message = f'UI route entry not found: {page} -> {page.parent}, {button}'
+                                logger.error(message)
+                                Page.clear_connection()
+                                raise GamePageUnknownError(message)
+                            break
+                    entry_wait_route = None
+                    logger.info(f'Page switch: {page} -> {page.parent}')
                     self._ui_record_transition(page, button, page.parent)
-                    self.device.click(button)
+                    self.device.click(click_button)
                     self.ui_button_interval_reset(button)
                     pending_source = page
                     pending_target = page.parent

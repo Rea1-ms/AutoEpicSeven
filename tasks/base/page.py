@@ -187,6 +187,7 @@ class Page:
     def __init__(self, check_button, dynamic_return_button=None, dynamic_return_group=None):
         self.check_button = check_button
         self.links = {}
+        self.links_need_match = set()
         self.link_priority = []
         self.shared_toolbar = False
         self.background_repeat_check = False
@@ -208,8 +209,14 @@ class Page:
     def __str__(self):
         return self.name
 
-    def link(self, button, destination):
+    def link(self, button, destination, *, match_before_click=False):
         self.links[destination] = button
+        # Matching is an edge policy, not a property inferred from asset count.
+        # Fixed-coordinate routes and runtime overlay exits retain their behavior.
+        if match_before_click:
+            self.links_need_match.add(destination)
+        else:
+            self.links_need_match.discard(destination)
 
     def prefer_link(self, *destinations):
         for destination in destinations:
@@ -297,7 +304,7 @@ page_sanctuary.link(HEART_OF_EULERBIS, destination=page_sanctuary_heart)
 # Secret shop
 page_secret_shop = Page(SECRET_SHOP_CHECK)
 page_secret_shop.link(BACK, destination=page_main)
-page_main.link(MAIN_GOTO_SECRET_SHOP, destination=page_secret_shop)
+page_main.link(MAIN_GOTO_SECRET_SHOP, destination=page_secret_shop, match_before_click=True)
 
 # Mail
 # Mail is another toolbar overlay page. BACK should normally return to the
@@ -468,7 +475,7 @@ page_menu.link(MENU_GOTO_PETS, destination=page_pets)
 # Special Activity
 page_common_activity = Page(COMMON_ACTIVITY_CHECK)
 page_common_activity.link(BACK, destination=page_main)
-page_main.link(MAIN_GOTO_COMMON_ACTIVITY, destination=page_common_activity)
+page_main.link(MAIN_GOTO_COMMON_ACTIVITY, destination=page_common_activity, match_before_click=True)
 
 page_special_activity = Page(ACTIVITY_2026SUMMER)
 page_special_activity.link(BACK, destination=page_main)
