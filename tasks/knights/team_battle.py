@@ -1,4 +1,8 @@
+import re
+
+from module.base.button import ClickButton
 from module.base.timer import Timer
+from module.base.utils import area_offset
 from module.exception import RequestHumanTakeover
 from module.logger import logger
 from module.ocr.ocr import DigitCounter
@@ -29,12 +33,24 @@ class OcrKnightsCrest(DigitCounter):
         result = result.replace("／", "/")
         return result
 
+    def format_result(self, result):
+        # Both fields are single digits. Do not extract a plausible substring
+        # from icon noise or silently repair 31/34, 03/3, or trailing digits.
+        # Ocr._log_change retains the raw text when this returns an invalid tuple.
+        matched = re.fullmatch(r"\s*(\d)\s*/\s*(\d)\s*", result)
+        if matched is None:
+            return 0, 0, 0
+        current, total = (int(value) for value in matched.groups())
+        return current, total - current, total
+
 
 class KnightsTeamBattleMixin(KnightsTeamBattleStatusMixin):
     TEAM_BATTLE_HOME_SIMILARITY = 0.7
     TEAM_BATTLE_LOCKED_SIMILARITY = 0.8
     TEAM_BATTLE_FLOW_TIMEOUT_SECONDS = 120
     TEAM_BATTLE_ENTRY_PENDING_SECONDS = 8
+    TEAM_BATTLE_OCR_MAX_ATTEMPTS = 3
+    TEAM_BATTLE_CREST_TEXT_GAP = 6
 
     def _is_knights_home(self, interval=0) -> bool:
         return self.appear(KNIGHTS_CHECK, interval=interval)
@@ -76,11 +92,24 @@ class KnightsTeamBattleMixin(KnightsTeamBattleStatusMixin):
         return appear
 
     def _ocr_knights_crest(self) -> TeamBattleCrestStatus | None:
+        # The legacy OCR asset spans both toolbar layouts and includes the
+        # crest (and sometimes another counter). Locate the crest on this frame
+        # and read only the text to its right; a cached offset is not evidence.
+        if not KNIGHTS_CREST.match_template_luma(
+            self.device.image, similarity=self.TEAM_BATTLE_HOME_SIMILARITY
+        ):
+            logger.warning("Guild war crest not found; skip counter OCR")
+            return None
+        left, top, right, bottom = OCR_KNIGHTS_CREST.area
+        left = max(left, KNIGHTS_CREST.area[2] + self.TEAM_BATTLE_CREST_TEXT_GAP)
+        area = area_offset((left, top, right, bottom), KNIGHTS_CREST.button_offset)
+        region = ClickButton(area=area, name="OCR_KNIGHTS_CREST")
+        logger.attr("KnightsCrestArea", area)
         lang = self.config.Emulator_GameLanguage
-        if lang == "auto" or not lang:
+        if lang not in ("cn", "en", "jp", "tw"):
             lang = "cn"
-        ocr = OcrKnightsCrest(OCR_KNIGHTS_CREST, lang=lang, name="KnightsCrest")
-        current, remain, total = ocr.ocr_single_line(self.device.image)
+        ocr = OcrKnightsCrest(region, lang=lang, name="KnightsCrest")
+        current, _, total = ocr.ocr_single_line(self.device.image)
         status = TeamBattleCrestStatus(current=current, remain=current, total=total)
         if status.is_valid():
             logger.attr("KnightsCrest", f"{current}/{total}")
@@ -112,6 +141,7 @@ class KnightsTeamBattleMixin(KnightsTeamBattleStatusMixin):
         timeout = Timer(self.TEAM_BATTLE_FLOW_TIMEOUT_SECONDS, count=360).start()
         entry_pending = Timer(self.TEAM_BATTLE_ENTRY_PENDING_SECONDS, count=0)
         entry_clicked = False
+        ocr_attempts = 0
         self._reset_team_battle_status_runtime()
 
         while 1:
@@ -139,6 +169,10 @@ class KnightsTeamBattleMixin(KnightsTeamBattleStatusMixin):
             if self._is_team_battle_home(interval=1):
                 status = self._ocr_knights_crest()
                 if status is None:
+                    ocr_attempts += 1
+                    if ocr_attempts < self.TEAM_BATTLE_OCR_MAX_ATTEMPTS:
+                        logger.info(f"Retry guild war counter OCR on a new frame: {ocr_attempts}")
+                        continue
                     self._update_team_battle_dashboard_invalid()
                 else:
                     self._update_team_battle_dashboard_counter(status)
