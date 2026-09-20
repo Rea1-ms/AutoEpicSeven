@@ -732,6 +732,10 @@
     "GetKoharuRaffleReward": {
       "name": "Claim Koharu Task Rewards",
       "help": "Overseas Simplified Chinese interface only. Claim completed tasks in the Koharu raffle event. Recheck after Arena or Combat if no reward is ready; stop daily checks only when all tasks are complete."
+    },
+    "BuyHucheMysticMedals": {
+      "name": "Buy Huche Shop Mystic Medals",
+      "help": "Overseas Simplified Chinese only. Buy both 160- and 200-skystone Mystic Medal offers within stock and balance limits; no other items. Recheck at 11:00 and 23:00 UTC+8 during the event. Disabled by default; enabling spends skystones. Discount offer: 2 per 12 hours. Regular offer: 4 for the entire event; stop checking it once sold out."
     }
   },
   "ActivityRuntime": {

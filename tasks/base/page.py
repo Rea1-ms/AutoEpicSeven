@@ -306,6 +306,20 @@ page_secret_shop = Page(SECRET_SHOP_CHECK)
 page_secret_shop.link(BACK, destination=page_main)
 page_main.link(MAIN_GOTO_SECRET_SHOP, destination=page_secret_shop, match_before_click=True)
 
+# This timed shop is only verified on the overseas Chinese client. Keep its
+# page out of other clients' global page scans and require the live home entry
+# before clicking: the entry disappears when the campaign is closed.
+if server_.lang == "global_cn":
+    from tasks.base.assets.assets_base_page import BACK
+    from tasks.activity.assets.assets_activity_huche_shop_26_9_17 import (
+        HUCHE_SHOP_CHECK,
+        MAIN_GOTO_HUCHE_SHOP,
+    )
+
+    page_huche_shop = Page(HUCHE_SHOP_CHECK)
+    page_huche_shop.link(BACK, destination=page_main)
+    page_main.link(MAIN_GOTO_HUCHE_SHOP, destination=page_huche_shop, match_before_click=True)
+
 # Mail
 # Mail is another toolbar overlay page. BACK should normally return to the
 # page that opened it, not always page_main. Keep page_main as static fallback

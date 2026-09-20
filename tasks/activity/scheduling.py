@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from module.config.utils import get_server_last_update
+from module.game_info.catalog import aware_time
 from module.logger import logger
 from tasks.activity.calendar import DEFAULT_FREE_GACHA_20_ID, active_activities, next_activity_start
 
@@ -10,13 +11,21 @@ FREE_GACHA_20_CHECKED_AT = "SpecialActivity.ActivityRuntime.FreeGacha20CheckedAt
 
 def delay_next_activity_check(config) -> None:
     starts_at = next_activity_start(config)
-    if starts_at is None:
+    targets = [starts_at] if starts_at is not None else []
+    now = aware_time()
+    for event in active_activities(config, now):
+        if event.mode == "huche_shop" and not config.SpecialActivity_BuyHucheMysticMedals:
+            continue
+        refresh = event.next_refresh(now)
+        if refresh is not None:
+            targets.append(refresh)
+    if not targets:
         config.task_delay(server_update=True)
         return
     # Calendar dates are timezone-aware; the scheduler stores local naive
-    # datetimes. Wake at the earlier of the next reset and campaign launch,
-    # so a CN maintenance opening at 11:00 is not postponed until tomorrow.
-    target = starts_at.astimezone().replace(tzinfo=None)
+    # datetimes. Wake at the earliest reset, campaign launch or stock refresh,
+    # so an 11:00 opening/refresh is not postponed until tomorrow.
+    target = min(targets).astimezone().replace(tzinfo=None)
     config.task_delay(server_update=True, target=target)
 
 
@@ -58,6 +67,23 @@ def is_activity_checked_today(config, event_id: str) -> bool:
         default=config.Scheduler_ServerUpdate,
     )
     return checked_at >= get_server_last_update(server_update)
+
+
+def is_activity_checked_in_window(config, event, now=None) -> bool:
+    """Keep twice-daily shop checks separate from server-day rewards."""
+    if not event.refresh_hours:
+        return is_activity_checked_today(config, event.event_id)
+    checked_at = _free_gacha_20_checked_at(config, event.event_id)
+    if checked_at is None:
+        return False
+    now = aware_time(now)
+    return event.refresh_start(now) <= aware_time(checked_at) <= now
+
+
+def is_activity_checked_since(config, event_id: str, since, now=None) -> bool:
+    """Check an event-wide quota without resetting it at daily refreshes."""
+    checked_at = _free_gacha_20_checked_at(config, event_id)
+    return checked_at is not None and aware_time(since) <= aware_time(checked_at) <= aware_time(now)
 
 
 def mark_free_gacha_20_checked(config, event_id=DEFAULT_FREE_GACHA_20_ID) -> None:

@@ -732,6 +732,10 @@
     "GetKoharuRaffleReward": {
       "name": "Recoger recompensas de tareas de Koharu",
       "help": "Solo para la interfaz en chino simplificado del servidor internacional. Recoge las tareas completadas del evento de boletos de Koharu. Si no hay recompensas disponibles, vuelve a comprobar tras Arena o Combate; espera al reinicio diario solo cuando todas las tareas estén completadas."
+    },
+    "BuyHucheMysticMedals": {
+      "name": "Comprar medallas místicas en la tienda de Huche",
+      "help": "Solo servidor internacional en chino simplificado. Compra únicamente las ofertas de medallas místicas de 160 y 200 piedras celestiales según las existencias y el saldo. Revisa a las 11:00 y 23:00 UTC+8 durante el evento. Desactivado por defecto; al activarlo se gastan piedras celestiales. Oferta rebajada: 2 cada 12 horas. Oferta normal: 4 en todo el evento; deja de revisarla al agotarse."
     }
   },
   "ActivityRuntime": {

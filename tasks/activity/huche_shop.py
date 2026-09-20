@@ -1,0 +1,355 @@
+"""Buy only Mystic Medals from the timed Huche shop.
+
+Reuse the regular store's quantity planner and action assets, and the shared
+resource-bar reader. Unlike a refresh-farming shop, this task never refreshes
+stock itself and only records completion from same-row stock/sold-out evidence.
+"""
+
+from dataclasses import dataclass
+import re
+
+import module.config.server as server
+from module.base.button import ClickButton
+from module.base.timer import Timer
+from module.base.utils import area_offset
+from module.game_info.catalog import aware_time, load_info
+from module.logger import logger
+from module.ocr.ocr import Ocr
+from tasks.activity.assets.assets_activity_huche_shop_26_9_17 import (
+    HUCHE_BUY_CANCEL,
+    HUCHE_BUY_CURRENCY,
+    HUCHE_BUY_MYSTIC_CHECK,
+    HUCHE_BUY_POPUP_CHECK,
+    HUCHE_ITEMS_AREA,
+    HUCHE_ITEM_SOLD_OUT,
+    HUCHE_MYSTIC_BUY,
+    HUCHE_MYSTIC_ITEM,
+    HUCHE_PRICE_CURRENCY,
+    HUCHE_SHOP_CHECK,
+    OCR_HUCHE_BUY_AMOUNT,
+    OCR_HUCHE_BUY_PRICE,
+    OCR_HUCHE_PRICE,
+    OCR_HUCHE_STOCK,
+)
+from tasks.activity.calendar import active_activities
+from tasks.activity.scheduling import (
+    is_activity_checked_in_window, is_activity_checked_since, mark_activity_checked,
+)
+from tasks.base.resource_bar import RESOURCE_BAR_LAYOUT_SECRET_SHOP, ResourceBarMixin
+from tasks.base.ui import UI
+from tasks.store.assets.assets_store_actions import (
+    BUY_CONFIRM_MULTI, BUY_CONFIRM_SINGLE, BUY_MAX, BUY_MIN,
+    BUY_TIMES_MINUS, BUY_TIMES_PLUS, OCR_BUY_TIMES,
+)
+from tasks.store.purchase import (
+    PurchaseCounterPreset, ocr_purchase_counter, parse_purchase_counter_text,
+    plan_purchase_selection, resolve_ocr_lang,
+)
+
+
+@dataclass(frozen=True)
+class MysticOffer:
+    row: tuple[int, int, int, int]
+    price: int
+    remaining: int
+    limit: int
+    sold_out: bool
+
+
+class HucheShop(ResourceBarMixin, UI):
+    PURCHASE_TIMEOUT_SECONDS = 120
+    SCROLL_UP_LIMIT = 3
+    SCROLL_DOWN_LIMIT = 10
+
+    def __init__(self, config, device=None, task=None, activity_id="huche_shop_2026_09_17"):
+        super().__init__(config=config, device=device, task=task)
+        self.activity_id = activity_id
+
+    def _ocr(self, asset, offset=(0, 0)) -> str:
+        button = ClickButton(area_offset(asset.area, offset), name=asset.name)
+        return Ocr(button, lang=resolve_ocr_lang(self.config)).ocr_single_line(self.device.image)
+
+    def _number(self, asset, offset=(0, 0)) -> int | None:
+        text = self._ocr(asset, offset).strip().replace(",", "").replace("，", "")
+        return int(text) if re.fullmatch(r"[0-9]+", text) else None
+
+    def _match_at(self, asset, offset=(0, 0), color=True) -> bool:
+        # Assets are shared globals. Limit each match to this row, then restore
+        # the search/offset even on failure; another row must not inherit it.
+        buttons = tuple(asset.iter_buttons())
+        searches = tuple(button.search for button in buttons)
+        try:
+            asset.load_search(area_offset(asset.search, offset))
+            if color:
+                return self.match_template_color(asset)
+            return self.match_template_luma(asset)
+        finally:
+            for button, search in zip(buttons, searches):
+                button.load_search(search)
+                button.clear_offset()
+
+    def _locate(self, asset, area):
+        buttons = tuple(asset.iter_buttons())
+        searches = tuple(button.search for button in buttons)
+        try:
+            asset.load_search(area)
+            if self.match_template_color(asset):
+                return tuple(asset.button_offset)
+            return None
+        finally:
+            for button, search in zip(buttons, searches):
+                button.load_search(search)
+                button.clear_offset()
+
+    def handle_purchase_cancel(self) -> bool:
+        offset = self._locate(HUCHE_BUY_CANCEL, (350, 425, 580, 635))
+        if offset is not None and self.interval_is_reached(HUCHE_BUY_CANCEL, interval=2):
+            self.device.click(ClickButton(area_offset(HUCHE_BUY_CANCEL.area, offset), name="HucheBuyCancel"))
+            self.interval_reset(HUCHE_BUY_CANCEL, interval=2)
+            return True
+        return False
+
+    def find_offers(self) -> list[MysticOffer]:
+        buttons = tuple(HUCHE_MYSTIC_ITEM.iter_buttons())
+        searches = tuple(button.search for button in buttons)
+        try:
+            HUCHE_MYSTIC_ITEM.load_search(HUCHE_ITEMS_AREA.area)
+            rows = HUCHE_MYSTIC_ITEM.match_multi_template(self.device.image)
+        finally:
+            for button, search in zip(buttons, searches):
+                button.load_search(search)
+                button.clear_offset()
+        offers = []
+        for row in sorted(rows, key=lambda item: item.area[1]):
+            offset = (0, row.area[1] - HUCHE_MYSTIC_ITEM.area[1])
+            # Prices and buttons belong to the same visual row. This also
+            # distinguishes the 160/2 and 200/4 offers when both are sold out
+            # at the bottom; a different item's 0/x can never finish this one.
+            if abs(row.area[0] - HUCHE_MYSTIC_ITEM.area[0]) > 5:
+                continue
+            bounds = area_offset(OCR_HUCHE_STOCK.area, offset)
+            if bounds[1] < HUCHE_ITEMS_AREA.area[1] or bounds[3] > HUCHE_ITEMS_AREA.area[3]:
+                continue
+            price = self._number(OCR_HUCHE_PRICE, offset)
+            remaining, _, limit = parse_purchase_counter_text(self._ocr(OCR_HUCHE_STOCK, offset))
+            if price not in self.price_limits or limit != self.price_limits[price]:
+                continue
+            if not self._match_at(HUCHE_PRICE_CURRENCY, offset, color=False):
+                continue
+            sold_out = remaining == 0 and self._match_at(HUCHE_ITEM_SOLD_OUT, offset, color=False)
+            offers.append(MysticOffer(tuple(row.area), price, remaining, limit, sold_out))
+        return offers
+
+    def read_balance(self) -> int | None:
+        result = self.inspect_resource_bar_status(RESOURCE_BAR_LAYOUT_SECRET_SHOP, "HucheShop")
+        return result.final["skystone"].value if result.final is not None else None
+
+    def popup_selection(self, offer, balance):
+        """Verify the selected item, amount, currency, quantity and total cost."""
+        offset = self._locate(HUCHE_BUY_MYSTIC_CHECK, (500, 180, 950, 425))
+        if offset is None:
+            return None
+        if self._number(OCR_HUCHE_BUY_AMOUNT, offset) != self.medals_per_item:
+            return None
+        # Reuse the store's two positive popup layouts. A missing/invalid
+        # counter is never interpreted as one item; only the known single
+        # confirm layout and an observed remaining stock of one allow that.
+        if self.match_template_color(BUY_CONFIRM_MULTI):
+            confirm = BUY_CONFIRM_MULTI
+            counter = ocr_purchase_counter(self.device.image, self.config,
+                                           PurchaseCounterPreset("HucheBuyTimes", OCR_BUY_TIMES.area))
+        elif offer.remaining == 1 and self.match_template_color(BUY_CONFIRM_SINGLE):
+            confirm = BUY_CONFIRM_SINGLE
+            counter = (1, 0, 1)
+        else:
+            return None
+        price_offset = (confirm.area[0] - BUY_CONFIRM_MULTI.area[0],
+                        confirm.area[1] - BUY_CONFIRM_MULTI.area[1])
+        if not self._match_at(HUCHE_BUY_CURRENCY, price_offset):
+            return None
+        selected, _, total = counter
+        if not 1 <= selected <= total <= offer.remaining:
+            return None
+        target = min(offer.remaining, balance // offer.price, total)
+        if target <= 0:
+            return None
+        selection = plan_purchase_selection("target", counter, desired_quantity=target)
+        price = self._number(OCR_HUCHE_BUY_PRICE, price_offset)
+        if price != selected * offer.price or price > balance:
+            return None
+        return selection, confirm
+
+    def run_purchase(self, window, skip_first_screenshot=True) -> bool:
+        """Inspect both offers, purchase available medals, then verify stock.
+
+        Pages:
+            in: page_huche_shop
+            out: page_huche_shop on success; current page on timeout
+        """
+        timeout = Timer(self.PURCHASE_TIMEOUT_SECONDS, count=180).start()
+        refresh_at = window.refresh_start(aware_time())
+        regular_id = f"{self.activity_id}_regular_mystic"
+        # The normal-price offer has one fixed quota for the whole campaign.
+        # Only a verified sold-out row persists this record. Insufficient funds
+        # skip the current check but must leave the fixed quota retryable later.
+        checked_prices = ({self.regular_price} if is_activity_checked_since(
+            self.config, regular_id, window.start, now=aware_time()
+        ) else set())
+        previous = None
+        scrolls = 0
+        pending = None
+        balance = None
+        confirmed = False
+        cancel_requested = False
+        invalid_popup_frames = 0
+
+        while 1:
+            if skip_first_screenshot:
+                skip_first_screenshot = False
+            else:
+                self.device.screenshot()
+
+            shop_ready = self.match_template_color(HUCHE_SHOP_CHECK)
+            popup = self._locate(HUCHE_BUY_POPUP_CHECK, (560, 95, 750, 245)) is not None
+            now = aware_time()
+            same_period = window.contains(now) and window.refresh_start(now) == refresh_at
+            # Do not carry stock observations across a refresh or expiry. In
+            # particular, an old 0/2 must never mark the next cycle complete.
+            if shop_ready and (cancel_requested or not same_period):
+                return False
+            offers = self.find_offers() if shop_ready and not popup else []
+            signature = tuple((item.row, item.price, item.remaining, item.sold_out) for item in offers)
+            stable = bool(signature) and signature == previous
+            previous = signature
+            if stable:
+                for offer in offers:
+                    if offer.sold_out:
+                        if offer.price == self.regular_price and offer.price not in checked_prices:
+                            mark_activity_checked(self.config, regular_id)
+                        checked_prices.add(offer.price)
+                if pending is not None and confirmed:
+                    # A purchase click is not success. Wait for the relevant
+                    # stock to decrease before allowing another list click.
+                    if any(item.price == pending.price and item.remaining < pending.remaining for item in offers):
+                        pending = None
+                        confirmed = False
+                if checked_prices == set(self.price_limits):
+                    mark_activity_checked(self.config, self.activity_id)
+                    logger.info("HucheShop: both Mystic Medal offers checked for this refresh")
+                    return True
+            if timeout.reached():
+                logger.warning("HucheShop: purchase/stock verification timed out")
+                return False
+
+            if popup:
+                if not same_period or pending is None or cancel_requested:
+                    if self.handle_purchase_cancel():
+                        cancel_requested = True
+                    continue
+                selection = self.popup_selection(pending, balance)
+                if selection is not None:
+                    invalid_popup_frames = 0
+                    selection, confirm = selection
+                    actions = {"max": BUY_MAX, "min": BUY_MIN,
+                               "plus": BUY_TIMES_PLUS, "minus": BUY_TIMES_MINUS}
+                    if selection.action != "none":
+                        if self.appear_then_click(actions[selection.action], interval=2):
+                            previous = None
+                        continue
+                    if self.appear_then_click(confirm, interval=2):
+                        confirmed = True
+                        previous = None
+                    continue
+                invalid_popup_frames += 1
+                if invalid_popup_frames >= 6:
+                    logger.warning("HucheShop: item/quantity/price not verified, cancel purchase")
+                    if self.handle_purchase_cancel():
+                        cancel_requested = True
+
+            elif shop_ready:
+                invalid_popup_frames = 0
+                if offers and not stable:
+                    continue
+                if confirmed and pending is not None and any(item.price == pending.price for item in offers):
+                    continue
+                if stable and not confirmed:
+                    candidates = [item for item in offers if item.remaining > 0 and item.price not in checked_prices]
+                    if candidates:
+                        balance = self.read_balance()
+                        if balance is not None:
+                            for offer in candidates:
+                                if balance < offer.price:
+                                    logger.info(f"HucheShop: insufficient skystones for {offer.price} offer, skip this refresh")
+                                    checked_prices.add(offer.price)
+                                    continue
+                                offset = (0, offer.row[1] - HUCHE_MYSTIC_ITEM.area[1])
+                                if self._match_at(HUCHE_MYSTIC_BUY, offset) and self.interval_is_reached(HUCHE_MYSTIC_BUY, interval=2):
+                                    self.device.click(ClickButton(area_offset(HUCHE_MYSTIC_BUY.area, offset), name="HucheMysticBuy"))
+                                    self.interval_reset(HUCHE_MYSTIC_BUY, interval=2)
+                                    pending = offer
+                                    previous = None
+                                    break
+                            else:
+                                continue
+                            continue
+                # Both top and bottom matter: purchased items move to the end
+                # on the next entry. Never use a fixed second-row click.
+                if self.interval_is_reached(HUCHE_ITEMS_AREA, interval=2):
+                    if scrolls >= self.SCROLL_UP_LIMIT + self.SCROLL_DOWN_LIMIT:
+                        logger.warning("HucheShop: expected Mystic Medal stock not fully verified")
+                        return False
+                    left, top, right, bottom = HUCHE_ITEMS_AREA.area
+                    x = (left + right) // 2
+                    upper, lower = (x, top + 100), (x, bottom - 100)
+                    start, end = (upper, lower) if scrolls < self.SCROLL_UP_LIMIT else (lower, upper)
+                    self.device.swipe(start, end, duration=(0.3, 0.4))
+                    self.interval_reset(HUCHE_ITEMS_AREA, interval=2)
+                    scrolls += 1
+                    previous = None
+                    continue
+
+            if confirmed and self.handle_touch_to_close(interval=2):
+                previous = None
+                continue
+            if self.handle_network_error():
+                previous = None
+                continue
+
+    def run(self) -> bool:
+        """Buy the active overseas event's medals and leave navigation to entry.
+
+        Pages:
+            in: page_main, any
+            out: page_huche_shop when inspected; current page when skipped
+        """
+        if not server.is_oversea_server(self.config.Emulator_PackageName) or server.lang != "global_cn":
+            self.config.task_delay(server_update=True)
+            return True
+        if not self.config.SpecialActivity_BuyHucheMysticMedals:
+            self.config.task_delay(server_update=True)
+            return True
+        window = next((event for event in active_activities(self.config) if event.event_id == self.activity_id), None)
+        if window is None or is_activity_checked_in_window(self.config, window):
+            self.config.task_delay(server_update=True)
+            return True
+        values = load_info().values("huche_shop", "OVERSEA")
+        self.price_limits = {values["mystic_price"]: values["mystic_stock"],
+                             values["mystic_regular_price"]: values["mystic_regular_stock"]}
+        self.regular_price = values["mystic_regular_price"]
+        self.medals_per_item = values["mystic_quantity"]
+        if (window.refresh_hours <= 0 or len(self.price_limits) != 2
+                or type(self.medals_per_item) is not int or self.medals_per_item <= 0
+                or any(type(value) is not int or value <= 0 for pair in self.price_limits.items() for value in pair)):
+            raise ValueError("HucheShop requires a refresh cycle, two distinct prices and positive integer quantities")
+        if not self.device.app_is_running():
+            from tasks.login.login import Login
+
+            Login(self.config, device=self.device).app_start()
+        # Import the conditional page only after the server/language guard.
+        from tasks.base.page import page_huche_shop
+
+        self.ui_goto(page_huche_shop)
+        success = self.run_purchase(window)
+        if not success:
+            self.config.task_delay(success=False)
+        return success

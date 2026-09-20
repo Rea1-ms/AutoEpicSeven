@@ -259,7 +259,8 @@
     "SpecialActivity": {
       "GetFreeGacha": true,
       "GetE7wcBattleGateReward": true,
-      "GetKoharuRaffleReward": true
+      "GetKoharuRaffleReward": true,
+      "BuyHucheMysticMedals": false
     },
     "ActivityRuntime": {
       "CheckedEvents": {},

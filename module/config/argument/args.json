@@ -1094,6 +1094,10 @@
       "GetKoharuRaffleReward": {
         "type": "checkbox",
         "value": true
+      },
+      "BuyHucheMysticMedals": {
+        "type": "checkbox",
+        "value": false
       }
     },
     "ActivityRuntime": {

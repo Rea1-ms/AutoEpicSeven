@@ -1,6 +1,6 @@
 from module.logger import logger
 from tasks.activity.calendar import active_activities
-from tasks.activity.scheduling import delay_next_activity_check, is_activity_checked_today
+from tasks.activity.scheduling import delay_next_activity_check, is_activity_checked_in_window
 from tasks.base.page import page_main
 
 
@@ -11,6 +11,7 @@ class SpecialActivityEntry:
         "free_gacha_20": "SpecialActivity_GetFreeGacha",
         "e7wc_battle_gate": "SpecialActivity_GetE7wcBattleGateReward",
         "koharu_raffle": "SpecialActivity_GetKoharuRaffleReward",
+        "huche_shop": "SpecialActivity_BuyHucheMysticMedals",
     }
 
     def __init__(self, config, device=None, task=None):
@@ -34,8 +35,8 @@ class SpecialActivityEntry:
         last_activity = None
         for event in activities:
             logger.info(f"SpecialActivity: {event.event_id}, ends at {event.end}")
-            if event.mode != "legacy" and is_activity_checked_today(self.config, event.event_id):
-                logger.info("SpecialActivity: reward already checked today")
+            if event.mode != "legacy" and is_activity_checked_in_window(self.config, event):
+                logger.info("SpecialActivity: reward already checked this period")
                 continue
             option = self.COMMON_ACTIVITY_OPTIONS.get(event.mode)
             if option is not None and not getattr(self.config, option):
@@ -68,6 +69,15 @@ class SpecialActivityEntry:
                     task=self.task,
                     activity_id=event.event_id,
                 )
+            elif event.mode == "huche_shop":
+                from tasks.activity.huche_shop import HucheShop
+
+                activity = HucheShop(
+                    config=self.config,
+                    device=self.device,
+                    task=self.task,
+                    activity_id=event.event_id,
+                )
             else:
                 from tasks.activity.legacy.summer_2026_06_25.special_activity import SpecialActivity
 
@@ -82,7 +92,7 @@ class SpecialActivityEntry:
             self.device = activity.device
             if not activity.run():
                 return False
-            # Modern flows leave a verified claim page for the next tab. The
+            # Modern flows leave a verified page for the next activity. The
             # legacy flow owns its separate page and already returns to main.
             # Keep failure handling in the failing flow; never overwrite its
             # retry schedule or hide its unresolved popup by continuing.

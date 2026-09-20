@@ -147,6 +147,7 @@ class GeneratedConfig:
     SpecialActivity_GetFreeGacha = True
     SpecialActivity_GetE7wcBattleGateReward = True
     SpecialActivity_GetKoharuRaffleReward = True
+    SpecialActivity_BuyHucheMysticMedals = False
 
     # Group `ActivityRuntime`
     ActivityRuntime_CheckedEvents = {}
