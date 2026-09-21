@@ -23,6 +23,7 @@ from tasks.sanctuary.assets.assets_sanctuary_heart_of_eulerbis import (
     REWARDS_TIER_SS,
     STATE_MONTHLY_CLAIMED,
 )
+from tasks.sanctuary.monthly_deposit import match_deposit_tiers
 from tasks.sanctuary.monthly_reminder import SanctuaryMonthlyReminderMixin
 
 
@@ -299,14 +300,19 @@ class SanctuaryMonthlyMixin(SanctuaryMonthlyReminderMixin):
 
     def _is_monthly_deposit_box_full(self) -> bool | None:
         """
-        Return False for a visible free slot, or None for unknown capacity.
+        Return True for five occupied slots, False for a visible free slot.
 
-        There is no positive full-box asset yet. A missing free-slot marker
-        cannot prove fullness, even across several frames. Keep the unknown
-        result distinct from False so callers never purify on an unverified box.
+        Missing free-slot or tier markers cannot prove capacity. Keep None
+        distinct from False so callers never purify on an unverified box.
         """
         if self.appear(DEPOSIT_BOX_NOT_FULL, interval=0):
             return False
+        tiers = match_deposit_tiers(self.device.image)
+        if tiers != getattr(self, "_monthly_last_deposit_tiers", None):
+            logger.attr("MonthlyDepositTiers", f"{sum(tier is not None for tier in tiers)}/5 {tiers}")
+            self._monthly_last_deposit_tiers = tiers
+        if all(tier is not None for tier in tiers):
+            return True
         return None
 
     def _monthly_deposit_box_ready(self, missing_confirm: Timer) -> bool:
@@ -321,8 +327,8 @@ class SanctuaryMonthlyMixin(SanctuaryMonthlyReminderMixin):
         missing_confirm.start()
         if missing_confirm.reached():
             raise ScriptError(
-                "Monthly deposit capacity is unknown: free slot not detected. "
-                "Cannot confirm a full box without a dedicated full-state asset."
+                "Monthly deposit capacity is unknown: neither a free slot nor "
+                "five occupied slots were detected. A deposit tier asset may be missing."
             )
         return False
 
@@ -334,8 +340,8 @@ class SanctuaryMonthlyMixin(SanctuaryMonthlyReminderMixin):
         this mode. After canceling, purifying must stay blocked until custody
         finishes through the existing custody settle check. This prevents a
         delayed or dropped custody click from destroying the protected item on
-        the next refresh. Deposit capacity keeps using the existing last-slot
-        check.
+        the next refresh. Five recognized deposit tiers confirm a full box;
+        only the existing free-slot marker authorizes further purification.
         """
         logger.info("Monthly: smart custody loop")
         timeout = Timer(60, count=120).start()
@@ -410,6 +416,10 @@ class SanctuaryMonthlyMixin(SanctuaryMonthlyReminderMixin):
                 purify_ocr_missing_confirm.reset()
                 timeout.reset()
                 continue
+
+            if self._is_monthly_deposit_box_full() is True:
+                logger.info("Monthly deposit box full: five occupied slots; organize the box before continuing")
+                return self.MONTHLY_STATUS_FULL
 
             if custody_pending:
                 if not self._monthly_deposit_box_ready(deposit_missing_confirm):
@@ -582,6 +592,10 @@ class SanctuaryMonthlyMixin(SanctuaryMonthlyReminderMixin):
             if self._is_monthly_claimed():
                 logger.info("Monthly reward already claimed")
                 return self.MONTHLY_STATUS_CLAIMED
+
+            if self._is_monthly_deposit_box_full() is True:
+                logger.info("Monthly deposit box full: five occupied slots; organize the box before continuing")
+                return self.MONTHLY_STATUS_FULL
 
             if times_total <= 0 or times_ocr_timer.reached():
                 read_current, _, read_total, read_layout = self._ocr_purify_times(
