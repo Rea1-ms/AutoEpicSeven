@@ -76,16 +76,15 @@ class DiscountView:
 class DiscountBatchScan:
     """Track continuous coverage from the top to a positive regular label.
 
-    Upward swipes must leave the same loaded inventory twice before the top
-    is accepted. Downward swipes keep an overlapping item; losing it means
-    coverage is unknown, not that the rotating batch has ended. Observations
-    are invalidated after every actual swipe and across unreadable frames.
+    The stable first-row position identifies the entry viewport at the top.
+    Do not drag it down to probe the top: E7 overscrolls and bounces, making a
+    correct entry look unstable. Moving toward later rows keeps an overlapping
+    item; losing it means coverage is unknown, not that the batch has ended.
+    Observations are invalidated after every swipe and unreadable frame.
     """
 
     def __init__(self):
         self.previous = None
-        self.up_view = None
-        self.up_matches = 0
         self.top = False
         self.tail = None
         self.scrolls = 0
@@ -96,15 +95,12 @@ class DiscountBatchScan:
         if not stable:
             return "wait"
         if not self.top:
-            if self.up_view is not None:
-                self.up_matches = self.up_matches + 1 if view == self.up_view else 0
-                self.up_view = None
             # The first clock sits at the top row; a regular-only inventory
-            # instead starts with its explicit label. An unchanged viewport
-            # in the middle must not pass merely because swipes failed.
+            # instead starts with its explicit label. Only a viewport that
+            # does not show this entry alignment needs to return to the top.
             aligned = (bool(view.items) and 79 <= view.items[0].y <= 91
                        or not view.items and view.boundary is not None and 150 <= view.boundary[1] <= 195)
-            if self.up_matches < 2 or not aligned:
+            if not aligned:
                 return "up"
             self.top = True
         if self.tail is not None:
@@ -122,9 +118,7 @@ class DiscountBatchScan:
         return "down"
 
     def scrolled(self, view, direction):
-        if direction == "up":
-            self.up_view = view
-        else:
+        if direction == "down":
             self.tail = view.items[-1]
         self.previous = None
         self.scrolls += 1
@@ -460,6 +454,8 @@ class HucheShop(ResourceBarMixin, UI):
                         # Short downward steps retain at least one readable
                         # row, including catalogue rows without a BUY button.
                         start, end = (upper, lower) if action == "up" else (lower, (x, lower[1] - 280))
+                        logger.info("HucheShop: return to list top" if action == "up"
+                                    else "HucheShop: scan next rotating rows")
                         self.device.swipe(start, end, duration=(0.3, 0.4))
                         self.interval_reset(HUCHE_ITEMS_AREA, interval=2)
                         batch_scan.scrolled(view, action)
