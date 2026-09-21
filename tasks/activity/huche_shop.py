@@ -134,6 +134,8 @@ class HucheShop(ResourceBarMixin, UI):
     PURCHASE_TIMEOUT_SECONDS = 120
     SCROLL_UP_LIMIT = 3
     SCROLL_DOWN_LIMIT = 10
+    BATCH_NAME_MIN_SCORE = 0.70
+    BATCH_UNVERIFIED_LIMIT = 6
 
     def __init__(self, config, device=None, task=None, activity_id="huche_shop_2026_09_17"):
         super().__init__(config=config, device=device, task=task)
@@ -249,11 +251,16 @@ class HucheShop(ResourceBarMixin, UI):
                 continue
             rows.append((clock, offset, area))
         if not rows:
-            return DiscountView((), boundary) if boundary is not None else None
+            if boundary is not None:
+                return DiscountView((), boundary)
+            logger.attr("HucheBatchUnreadable", "no complete clock rows or regular-item boundary")
+            return None
         if any(not 140 <= right[0].area[1] - left[0].area[1] <= 151
                for left, right in zip(rows, rows[1:])):
+            logger.attr("HucheBatchUnreadable", f"clock row gap: {[row[0].area[1] for row in rows]}")
             return None
         if boundary is not None and not 215 <= boundary[1] - rows[-1][0].area[1] <= 240:
+            logger.attr("HucheBatchUnreadable", "last clock row does not adjoin the regular-item boundary")
             return None
         items = []
         for clock, offset, area in rows:
@@ -262,13 +269,22 @@ class HucheShop(ResourceBarMixin, UI):
             # through single-line OCR, which can hide a Mystic Medal name.
             results = Ocr(ClickButton(area, name="HucheRefreshName"),
                           lang=resolve_ocr_lang(self.config)).detect_and_ocr(self.device.image)
-            if not results or any(result.score < 0.9 for result in results):
-                return None
             name = "".join(result.ocr_text for result in results)
-            if len(name.strip()) < 2:
-                return None
             mystic = ("神秘" in name or "奖牌" in name
                       or self._match_at(HUCHE_MYSTIC_ITEM, offset, color=False))
+            # Names establish navigation/overlap, never permission to buy.
+            # The reported Leif screenshot reads the correct name at 0.785;
+            # imposing purchase-level confidence here freezes every scan on
+            # that harmless row. Keep a lower floor for navigation, but always
+            # retain a possible Mystic match regardless of its OCR score. The
+            # separate offer and popup checks still authorize every purchase.
+            scores = [(result.ocr_text, round(float(result.score), 3)) for result in results]
+            if not results or any(result.score < 0.9 for result in results):
+                logger.attr("HucheRefreshNameScores", f"y={clock.area[1]}: {scores}")
+            if not mystic and (len(name.strip()) < 2
+                               or any(result.score < self.BATCH_NAME_MIN_SCORE for result in results)):
+                logger.attr("HucheBatchUnreadable", f"name not verified at y={clock.area[1]}")
+                return None
             items.append(DiscountItem(clock.area[1], name, mystic))
         return DiscountView(tuple(items), boundary)
 
@@ -331,6 +347,7 @@ class HucheShop(ResourceBarMixin, UI):
         cancel_requested = False
         invalid_popup_frames = 0
         batch_scan = DiscountBatchScan()
+        batch_unverified_frames = 0
 
         while 1:
             if skip_first_screenshot:
@@ -409,6 +426,20 @@ class HucheShop(ResourceBarMixin, UI):
                     # A missing Mystic template by itself never completes it.
                     view = self.read_discount_view()
                     action = batch_scan.observe(view)
+                    # A broken row must not spend the full purchase timeout
+                    # rereading identical text. Retry a bounded number of new
+                    # screenshots, then leave this refresh unchecked. Valid
+                    # progress resets the budget; ordinary interval waits do
+                    # not consume it. An unverified Mystic candidate is never
+                    # reclassified as an empty batch just to make progress.
+                    if view is None or action == "target":
+                        batch_unverified_frames += 1
+                        if batch_unverified_frames >= self.BATCH_UNVERIFIED_LIMIT:
+                            reason = "unverified Mystic offer" if action == "target" else "unreadable batch rows"
+                            logger.warning(f"HucheShop: {reason} after {batch_unverified_frames} frames, retry task later")
+                            return False
+                    else:
+                        batch_unverified_frames = 0
                     if action == "complete":
                         # OCR can cross the refresh boundary after the loop's
                         # initial clock check. Never stamp the new batch with
