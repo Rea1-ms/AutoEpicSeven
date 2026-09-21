@@ -167,3 +167,6 @@ class GeneratedConfig:
 
     # Group `SanctuaryMonthly`
     SanctuaryMonthly_RewardTier = 'A'  # Smart, A, B, S, SS, MaxMinus1, MaxMinus2
+    SanctuaryMonthly_Reminder = True
+    SanctuaryMonthly_ReminderLeadDays = 3  # 1, 3, 5, 7
+    SanctuaryMonthly_ReminderLastSent = None

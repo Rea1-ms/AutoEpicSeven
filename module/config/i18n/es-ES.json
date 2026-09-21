@@ -813,6 +813,22 @@
       "SS": "SS o superior",
       "MaxMinus1": "Máx. actual -1",
       "MaxMinus2": "Máx. actual -2 (mínimo B)"
+    },
+    "Reminder": {
+      "name": "Recordatorio de recompensa mensual",
+      "help": "Activado de forma predeterminada. Recuerda reclamar manualmente antes del reinicio mensual. Requiere la tarea mensual activa, el script en ejecución y las notificaciones globales configuradas. Se detiene al confirmar la recogida; como máximo un envío correcto por día del servidor."
+    },
+    "ReminderLeadDays": {
+      "name": "Días de antelación",
+      "help": "Usa la hora de reinicio del servidor de esta tarea. Comprueba a diario durante el período de aviso para que la programación semanal no lo omita.",
+      "1": "1 días",
+      "3": "3 días",
+      "5": "5 días",
+      "7": "7 días"
+    },
+    "ReminderLastSent": {
+      "name": "Último recordatorio enviado",
+      "help": ""
     }
   },
   "Gui": {

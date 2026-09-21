@@ -1174,6 +1174,26 @@
           "MaxMinus1",
           "MaxMinus2"
         ]
+      },
+      "Reminder": {
+        "type": "checkbox",
+        "value": true
+      },
+      "ReminderLeadDays": {
+        "type": "select",
+        "value": 3,
+        "option": [
+          1,
+          3,
+          5,
+          7
+        ]
+      },
+      "ReminderLastSent": {
+        "type": "input",
+        "value": "",
+        "keepvalue": true,
+        "display": "hide"
       }
     }
   }

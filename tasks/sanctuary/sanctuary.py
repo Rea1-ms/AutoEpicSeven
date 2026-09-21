@@ -367,7 +367,9 @@ class Sanctuary(SanctuaryMonthlyMixin, UI):
         if monthly_status == self.MONTHLY_STATUS_CLAIMED:
             self.config.task_delay(target=get_server_next_month_update(self.config.Scheduler_ServerUpdate))
         elif monthly_status in (self.MONTHLY_STATUS_FULL, self.MONTHLY_STATUS_EXHAUSTED):
-            self.config.task_delay(target=get_server_next_monday_update(self.config.Scheduler_ServerUpdate))
+            target = get_server_next_monday_update(self.config.Scheduler_ServerUpdate)
+            self.config.task_delay(target=self._monthly_reminder_delay(target))
         else:
-            self.config.task_delay(target=get_server_next_update(self.config.Scheduler_ServerUpdate))
+            target = get_server_next_update(self.config.Scheduler_ServerUpdate)
+            self.config.task_delay(target=self._monthly_reminder_delay(target))
         return success

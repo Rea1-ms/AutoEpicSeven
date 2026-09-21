@@ -813,6 +813,22 @@
       "SS": "SS or higher",
       "MaxMinus1": "Current max tier -1",
       "MaxMinus2": "Current max tier -2 (floor B)"
+    },
+    "Reminder": {
+      "name": "Month-end claim reminder",
+      "help": "Enabled by default. Reminds you to claim manually before the monthly reset. Requires the monthly task, a running script, and global notifications. Stops after claiming is confirmed; at most one successful push per server day."
+    },
+    "ReminderLeadDays": {
+      "name": "Reminder lead days",
+      "help": "Uses this task's server reset time. Checks daily during the reminder window so weekly scheduling cannot skip it.",
+      "1": "1 days",
+      "3": "3 days",
+      "5": "5 days",
+      "7": "7 days"
+    },
+    "ReminderLastSent": {
+      "name": "Last successful reminder",
+      "help": ""
     }
   },
   "Gui": {

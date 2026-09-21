@@ -281,7 +281,10 @@
       "ServerUpdate": "02:00"
     },
     "SanctuaryMonthly": {
-      "RewardTier": "A"
+      "RewardTier": "A",
+      "Reminder": true,
+      "ReminderLeadDays": 3,
+      "ReminderLastSent": null
     }
   }
 }

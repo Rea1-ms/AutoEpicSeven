@@ -23,6 +23,7 @@ from tasks.sanctuary.assets.assets_sanctuary_heart_of_eulerbis import (
     REWARDS_TIER_SS,
     STATE_MONTHLY_CLAIMED,
 )
+from tasks.sanctuary.monthly_reminder import SanctuaryMonthlyReminderMixin
 
 
 class OcrPurifyTimes(DigitCounter):
@@ -66,7 +67,7 @@ class OcrRewardTier(Ocr):
         return ""
 
 
-class SanctuaryMonthlyMixin:
+class SanctuaryMonthlyMixin(SanctuaryMonthlyReminderMixin):
     """Monthly sanctuary behavior mixed into the public Sanctuary task."""
 
     MONTHLY_REWARD_TIER_SMART = "Smart"
@@ -704,6 +705,7 @@ class SanctuaryMonthlyMixin:
         if not self._enter_monthly():
             return False
 
+        self._send_monthly_reward_reminder()
         monthly_status = self._monthly_purify()
         self._monthly_status = monthly_status
         self._back_to_sanctuary()

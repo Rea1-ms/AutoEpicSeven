@@ -359,3 +359,11 @@ SanctuaryMonthly:
   RewardTier:
     value: A
     option: [ Smart, A, B, S, SS, MaxMinus1, MaxMinus2 ]
+  Reminder: true
+  ReminderLeadDays:
+    value: 3
+    option: [ 1, 3, 5, 7 ]
+  ReminderLastSent:
+    keepvalue: true
+    display: hide
+    value: ""
