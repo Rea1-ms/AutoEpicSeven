@@ -1,5 +1,6 @@
 from module.logger import logger
 from tasks.activity.calendar import active_activities
+from tasks.activity.common_activity import CommonActivityBatch
 from tasks.activity.scheduling import delay_next_activity_check, is_activity_checked_in_window
 from tasks.base.page import page_main
 
@@ -32,7 +33,7 @@ class SpecialActivityEntry:
             delay_next_activity_check(self.config)
             return True
 
-        last_activity = None
+        runnable = []
         for event in activities:
             logger.info(f"SpecialActivity: {event.event_id}, ends at {event.end}")
             if event.mode != "legacy" and is_activity_checked_in_window(self.config, event):
@@ -42,33 +43,27 @@ class SpecialActivityEntry:
             if option is not None and not getattr(self.config, option):
                 logger.info(f"SpecialActivity: {event.event_id} reward disabled")
                 continue
-            if event.mode == "free_gacha_20":
-                from tasks.activity.free_gacha_20 import FreeGacha20
+            runnable.append(event)
 
-                activity = FreeGacha20(
+        common_activities = [event for event in runnable if event.mode in CommonActivityBatch.ACTIVITIES]
+        last_activity = None
+        common_done = False
+        for event in runnable:
+            option = self.COMMON_ACTIVITY_OPTIONS.get(event.mode)
+            if event.mode in CommonActivityBatch.ACTIVITIES:
+                if common_done:
+                    continue
+                activity = CommonActivityBatch(
                     config=self.config,
                     device=self.device,
                     task=self.task,
-                    activity_id=event.event_id,
                 )
-            elif event.mode == "e7wc_battle_gate":
-                from tasks.activity.e7wc_battle_gate import E7wcBattleGate
-
-                activity = E7wcBattleGate(
-                    config=self.config,
-                    device=self.device,
-                    task=self.task,
-                    activity_id=event.event_id,
-                )
-            elif event.mode == "koharu_raffle":
-                from tasks.activity.koharu_raffle import KoharuRaffle
-
-                activity = KoharuRaffle(
-                    config=self.config,
-                    device=self.device,
-                    task=self.task,
-                    activity_id=event.event_id,
-                )
+                self.device = activity.device
+                if not activity.run(common_activities):
+                    return False
+                common_done = True
+                last_activity = activity
+                continue
             elif event.mode == "huche_shop":
                 from tasks.activity.huche_shop import HucheShop
 

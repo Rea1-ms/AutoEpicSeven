@@ -41,19 +41,26 @@ class E7wcBattleGate(ActivityNavigationMixin, UI):
         result = cv2.matchTemplate(image, template, cv2.TM_CCOEFF_NORMED)
         return cv2.minMaxLoc(result)[1] >= 0.85
 
-    def run_claim(self, skip_first_screenshot=True) -> bool:
+    def run_claim(self, skip_first_screenshot=True, *, navigate=True) -> bool:
         """Claim one icon, dismiss its popup, and verify the received checks.
 
         Pages:
-            in: page_main, any
+            in: page_main, any; selected event when navigate=False
             out: page_common_activity, both daily rewards received
         """
-        self.ui_goto(page_common_activity, skip_first_screenshot=skip_first_screenshot)
         # The final character in the sidebar is read as several different
         # glyphs by OCR. The stable prefix locates the row; the orange selected
         # template still has to confirm navigation before any reward click.
-        if not self.select_activity("激战门", E7WC_BATTLE_GATE_SELECTED):
-            return False
+        if navigate:
+            self.ui_goto(page_common_activity, skip_first_screenshot=skip_first_screenshot)
+            if not self.select_activity("激战门", E7WC_BATTLE_GATE_SELECTED):
+                return False
+        else:
+            if not skip_first_screenshot:
+                self.device.screenshot()
+                skip_first_screenshot = True
+            if not self._activity_selected(E7WC_BATTLE_GATE_SELECTED):
+                return False
 
         timeout = Timer(self.CLAIM_FLOW_TIMEOUT_SECONDS, count=60).start()
         claim_requested = False

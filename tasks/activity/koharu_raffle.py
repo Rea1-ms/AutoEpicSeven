@@ -23,16 +23,23 @@ class KoharuRaffle(ActivityNavigationMixin, UI):
         super().__init__(config=config, device=device, task=task)
         self.activity_id = activity_id
 
-    def run_claim(self, skip_first_screenshot=True) -> bool:
+    def run_claim(self, skip_first_screenshot=True, *, navigate=True) -> bool:
         """Collect the first available task until no claim remains.
 
         Pages:
-            in: page_main, any
+            in: page_main, any; selected event when navigate=False
             out: page_common_activity, Koharu task list with no available reward
         """
-        self.ui_goto(page_common_activity, skip_first_screenshot=skip_first_screenshot)
-        if not self.select_activity("收集抽奖券", CHUN_GATE_SELECTED):
-            return False
+        if navigate:
+            self.ui_goto(page_common_activity, skip_first_screenshot=skip_first_screenshot)
+            if not self.select_activity("收集抽奖券", CHUN_GATE_SELECTED):
+                return False
+        else:
+            if not skip_first_screenshot:
+                self.device.screenshot()
+                skip_first_screenshot = True
+            if not self._activity_selected(CHUN_GATE_SELECTED):
+                return False
 
         timeout = Timer(self.CLAIM_FLOW_TIMEOUT_SECONDS, count=60).start()
         scroll_to_top = True

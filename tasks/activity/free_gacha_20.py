@@ -21,19 +21,23 @@ class FreeGacha20(ActivityNavigationMixin, UI):
         super().__init__(config=config, device=device, task=task)
         self.activity_id = activity_id
 
-    def run_claim(self, skip_first_screenshot=True) -> bool:
+    def run_claim(self, skip_first_screenshot=True, *, navigate=True) -> bool:
         """Claim the reward and wait until the activity page confirms it.
 
         Pages:
-            in: page_main, any
+            in: page_main, any; selected event when navigate=False
             out: page_common_activity, FREE_20_GACHA_OBTAINED
         """
-        self.ui_goto(
-            page_common_activity,
-            skip_first_screenshot=skip_first_screenshot,
-        )
-        if not self.select_activity("INFINITY", FREE_20_GACHA_SELECTED):
-            return False
+        if navigate:
+            self.ui_goto(page_common_activity, skip_first_screenshot=skip_first_screenshot)
+            if not self.select_activity("INFINITY", FREE_20_GACHA_SELECTED):
+                return False
+        else:
+            if not skip_first_screenshot:
+                self.device.screenshot()
+                skip_first_screenshot = True
+            if not self._activity_selected(FREE_20_GACHA_SELECTED):
+                return False
 
         logger.info("SpecialActivity: claim 20 free summons")
         timeout = Timer(self.CLAIM_FLOW_TIMEOUT_SECONDS, count=60).start()
