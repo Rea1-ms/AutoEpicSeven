@@ -80,7 +80,9 @@ class DiscountBatchScan:
     Do not drag it down to probe the top: E7 overscrolls and bounces, making a
     correct entry look unstable. Moving toward later rows keeps an overlapping
     item; losing it means coverage is unknown, not that the batch has ended.
-    Observations are invalidated after every swipe and unreadable frame.
+    Observations are invalidated after every drag and unreadable frame. A lost
+    tail requests a bounded backward search; waiting on the same settled view
+    cannot restore an item that inertia has already moved off screen.
     """
 
     def __init__(self):
@@ -88,6 +90,7 @@ class DiscountBatchScan:
         self.top = False
         self.tail = None
         self.scrolls = 0
+        self.recoveries = 0
 
     def observe(self, view):
         stable = view is not None and view == self.previous
@@ -107,10 +110,11 @@ class DiscountBatchScan:
             overlaps = [item for item in view.items
                         if (item.name, item.mystic) == (self.tail.name, self.tail.mystic)]
             if not overlaps:
-                return "wait"
+                return "recover"
             if min(item.y for item in overlaps) >= self.tail.y - 20:
                 return "down"
             self.tail = None
+            self.recoveries = 0
         if any(item.mystic for item in view.items):
             return "target"
         if view.boundary is not None:
@@ -118,8 +122,14 @@ class DiscountBatchScan:
         return "down"
 
     def scrolled(self, view, direction):
-        if direction == "down":
+        # Keep the last verified tail throughout recovery and failed forward
+        # gestures. Replacing it with an unconnected viewport would silently
+        # discard unseen rows and let a visible boundary finish an incomplete
+        # scan. Reset the recovery budget only after overlap proves progress.
+        if direction == "down" and self.tail is None:
             self.tail = view.items[-1]
+        elif direction == "recover":
+            self.recoveries += 1
         self.previous = None
         self.scrolls += 1
 
@@ -130,6 +140,8 @@ class HucheShop(ResourceBarMixin, UI):
     SCROLL_DOWN_LIMIT = 10
     BATCH_NAME_MIN_SCORE = 0.70
     BATCH_UNVERIFIED_LIMIT = 6
+    BATCH_RECOVERY_LIMIT = 3
+    BATCH_DRAG_STEP = 145
 
     def __init__(self, config, device=None, task=None, activity_id="huche_shop_2026_09_17"):
         super().__init__(config=config, device=device, task=task)
@@ -444,19 +456,36 @@ class HucheShop(ResourceBarMixin, UI):
                         mark_activity_checked(self.config, self.activity_id)
                         logger.info("HucheShop: rotating batch inspected, no Mystic Medals this refresh")
                         return True
-                    if action in ("up", "down") and self.interval_is_reached(HUCHE_ITEMS_AREA, interval=2):
+                    if action == "recover" and batch_scan.recoveries >= self.BATCH_RECOVERY_LIMIT:
+                        logger.warning(f"HucheShop: overlap {batch_scan.tail.name!r} not recovered after "
+                                       f"{batch_scan.recoveries} backward drags, retry task later")
+                        return False
+                    if action in ("up", "down", "recover") and self.interval_is_reached(HUCHE_ITEMS_AREA, interval=2):
                         if batch_scan.scrolls >= self.SCROLL_UP_LIMIT + self.SCROLL_DOWN_LIMIT:
                             logger.warning("HucheShop: rotating batch coverage not verified")
                             return False
                         left, top, right, bottom = HUCHE_ITEMS_AREA.area
                         x = (left + right) // 2
                         upper, lower = (x, top + 100), (x, bottom - 100)
-                        # Short downward steps retain at least one readable
-                        # row, including catalogue rows without a BUY button.
-                        start, end = (upper, lower) if action == "up" else (lower, (x, lower[1] - 280))
-                        logger.info("HucheShop: return to list top" if action == "up"
-                                    else "HucheShop: scan next rotating rows")
-                        self.device.swipe(start, end, duration=(0.3, 0.4))
+                        # Touch backends release a swipe immediately and may
+                        # ignore its duration argument. E7 then flings several
+                        # rows past the intended endpoint. Drag holds at the
+                        # endpoint before release; one-row steps leave enough
+                        # overlap to verify coverage on two settled frames.
+                        # Recovery reverses only one row and retains the old
+                        # tail, even when the regular boundary is already seen.
+                        if action == "up":
+                            start, end = upper, lower
+                            logger.info("HucheShop: return to list top")
+                        elif action == "recover":
+                            start, end = upper, (x, upper[1] + self.BATCH_DRAG_STEP)
+                            logger.info(f"HucheShop: recover overlap {batch_scan.tail.name!r}, "
+                                        f"attempt {batch_scan.recoveries + 1}/{self.BATCH_RECOVERY_LIMIT}, "
+                                        f"visible={[item.name for item in view.items]}")
+                        else:
+                            start, end = lower, (x, lower[1] - self.BATCH_DRAG_STEP)
+                            logger.info("HucheShop: scan next rotating rows")
+                        self.device.drag(start, end)
                         self.interval_reset(HUCHE_ITEMS_AREA, interval=2)
                         batch_scan.scrolled(view, action)
                         previous = None
