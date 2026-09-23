@@ -532,11 +532,13 @@ class UrgentTasksNavigateMixin:
             out: Urgent Tasks detail page with zero remaining attempts
 
         The game-owned remaining counter is re-read after every settled mode.
-        Fast combat is capped to that counter. A gray repeat button requires
-        one foreground clear before trying fast combat, even if the button
-        stays gray afterward. If fast mode cannot be enabled, this invocation
-        finishes with foreground battles. Otherwise, a configured pet may
-        hand remaining attempts to the ordinary server-repeat implementation.
+        Fast combat is capped to that counter. If fast mode is not already on,
+        a gray repeat button requires one foreground clear before trying fast
+        combat, even if the button stays gray afterward. An already enabled
+        fast mode takes precedence because repeat may be gray without a pet.
+        If fast mode cannot be enabled, this invocation finishes with foreground
+        battles. Otherwise, a configured pet may hand remaining attempts to the
+        ordinary server-repeat implementation.
         """
         completed = 0
         first = skip_first_screenshot
@@ -573,10 +575,17 @@ class UrgentTasksNavigateMixin:
             # recorded clear time, even when fast combat has no lock icon. This
             # also applies when a restarted task still reads 5/5: dismissing the
             # initial hint in an earlier run does not establish a clear record.
-            # Only a completed foreground battle permits a later fast attempt.
+            # However, a positively recognized ON state proves fast mode is
+            # already enabled. Preserve it even before our first foreground
+            # clear: a missing pet can independently make repeat unavailable.
+            # Merely finding the times hint or no lock icon is not an ON state.
             # Do not require repeat to become enabled after that battle: without
             # a pet it can remain gray while fast combat is already usable.
-            needs_normal_clear = not normal_clear_completed and self._is_repeat_combat_unavailable()
+            needs_normal_clear = (
+                not normal_clear_completed
+                and self._is_repeat_combat_unavailable()
+                and not self._is_fast_combat_on()
+            )
             force_normal = needs_normal_clear or not fast_available
             if needs_normal_clear:
                 logger.info("UrgentTasks: repeat unavailable, clear one foreground battle before trying fast combat")
