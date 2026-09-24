@@ -40,3 +40,6 @@ Gacha:
 SpecialActivity:
   Scheduler:
     Enable: false
+DimensionalExploration:
+  Scheduler:
+    Enable: false

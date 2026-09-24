@@ -82,6 +82,10 @@
       "name": "Special Activity",
       "help": "Claim daily 20 free summons, overseas E7WC Battle Gate rewards, and Koharu task rewards during their event periods. The Summon task performs the summons."
     },
+    "DimensionalExploration": {
+      "name": "Dimensional Exploration",
+      "help": "Overseas Chinese client only. Keep the current difficulty and start with Heavy Baggage. Finish each run and stop after the configured batch."
+    },
     "CommunityAuth": {
       "name": "Community Login",
       "help": "Open the Electron community login window and refresh the CK used by Community AIO."
@@ -736,6 +740,50 @@
     "BuyHucheMysticMedals": {
       "name": "Buy Huche Shop Mystic Medals",
       "help": "Overseas Simplified Chinese only. Buy only Mystic Medals within stock and skystone balance limits. The leading stock rotates every 12 hours; medals are not guaranteed. Buy the 160-skystone offer when present, otherwise wait for the next batch after a complete scan. The 200-skystone offer has a fixed quota of 4 for the entire event; once sold out, inspect only the leading rotating batch. Recheck at 11:00 and 23:00 UTC+8. Disabled by default; enabling spends skystones."
+    }
+  },
+  "DimensionalExploration": {
+    "_info": {
+      "name": "Dimensional Exploration",
+      "help": "Overseas Chinese client only. Keep the current difficulty and start with Heavy Baggage. Finish each run and stop after the configured batch."
+    },
+    "RunCount": {
+      "name": "Runs per batch",
+      "help": "Count rewarded settlements. Interrupted batches resume; re-enabling a finished batch starts a new count."
+    },
+    "KnightPriority": {
+      "name": "Knight hero priority",
+      "help": "Enter Chinese in-game names in priority order, separated by >, commas or newlines. If no affordable preferred hero is found, choose a low-cost candidate."
+    },
+    "WarriorPriority": {
+      "name": "Warrior hero priority",
+      "help": "Enter Chinese in-game names in priority order, separated by >, commas or newlines. If no affordable preferred hero is found, choose a low-cost candidate."
+    },
+    "RangerPriority": {
+      "name": "Ranger hero priority",
+      "help": "Enter Chinese in-game names in priority order, separated by >, commas or newlines. If no affordable preferred hero is found, choose a low-cost candidate."
+    },
+    "MagePriority": {
+      "name": "Mage hero priority",
+      "help": "Enter Chinese in-game names in priority order, separated by >, commas or newlines. If no affordable preferred hero is found, choose a low-cost candidate."
+    },
+    "HealerPriority": {
+      "name": "Soul Weaver hero priority",
+      "help": "Enter Chinese in-game names in priority order, separated by >, commas or newlines. If no affordable preferred hero is found, choose a low-cost candidate."
+    },
+    "ThiefPriority": {
+      "name": "Thief hero priority",
+      "help": "Enter Chinese in-game names in priority order, separated by >, commas or newlines. If no affordable preferred hero is found, choose a low-cost candidate."
+    }
+  },
+  "DimensionalExplorationRuntime": {
+    "_info": {
+      "name": "Exploration progress",
+      "help": ""
+    },
+    "Session": {
+      "name": "Batch session",
+      "help": ""
     }
   },
   "ActivityRuntime": {

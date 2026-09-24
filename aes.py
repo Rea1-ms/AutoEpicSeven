@@ -89,6 +89,10 @@ class AutoEpicSeven(AzurLaneAutoScript):
         from tasks.dungeon.dungeon import Combat
         Combat(config=self.config, device=self.device, task="Combat").run()
 
+    def dimensional_exploration(self):
+        from tasks.dimensional_exploration.dimensional_exploration import DimensionalExploration
+        DimensionalExploration(config=self.config, device=self.device, task="DimensionalExploration").run()
+
     def special_activity(self):
         from tasks.activity.entry import SpecialActivityEntry
         SpecialActivityEntry(config=self.config, device=self.device, task="SpecialActivity").run()

@@ -149,6 +149,18 @@ class GeneratedConfig:
     SpecialActivity_GetKoharuRaffleReward = True
     SpecialActivity_BuyHucheMysticMedals = False
 
+    # Group `DimensionalExploration`
+    DimensionalExploration_RunCount = 1
+    DimensionalExploration_KnightPriority = '起源拉斯 > 亚敏'
+    DimensionalExploration_WarriorPriority = '卡瓦朱'
+    DimensionalExploration_RangerPriority = '尤贝乌斯 > 莉珈'
+    DimensionalExploration_MagePriority = '智武 > 研究者卡萝'
+    DimensionalExploration_HealerPriority = '罪戾的安洁莉卡 > 拉兹'
+    DimensionalExploration_ThiefPriority = '保健室老师律荷 > 转学生艾庭 > 可丽'
+
+    # Group `DimensionalExplorationRuntime`
+    DimensionalExplorationRuntime_Session = {}
+
     # Group `ActivityRuntime`
     ActivityRuntime_CheckedEvents = {}
     ActivityRuntime_FreeGacha20CheckedAt = datetime.datetime(2020, 1, 1, 0, 0)

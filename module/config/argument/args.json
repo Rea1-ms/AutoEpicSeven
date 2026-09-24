@@ -1116,6 +1116,71 @@
       }
     }
   },
+  "DimensionalExploration": {
+    "Scheduler": {
+      "Enable": {
+        "type": "checkbox",
+        "value": false,
+        "option": [
+          true,
+          false
+        ]
+      },
+      "NextRun": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime"
+      },
+      "Command": {
+        "type": "input",
+        "value": "DimensionalExploration",
+        "display": "hide"
+      },
+      "ServerUpdate": {
+        "type": "input",
+        "value": "02:00",
+        "display": "hide"
+      }
+    },
+    "DimensionalExploration": {
+      "RunCount": {
+        "type": "input",
+        "value": 1
+      },
+      "KnightPriority": {
+        "type": "textarea",
+        "value": "起源拉斯 > 亚敏"
+      },
+      "WarriorPriority": {
+        "type": "textarea",
+        "value": "卡瓦朱"
+      },
+      "RangerPriority": {
+        "type": "textarea",
+        "value": "尤贝乌斯 > 莉珈"
+      },
+      "MagePriority": {
+        "type": "textarea",
+        "value": "智武 > 研究者卡萝"
+      },
+      "HealerPriority": {
+        "type": "textarea",
+        "value": "罪戾的安洁莉卡 > 拉兹"
+      },
+      "ThiefPriority": {
+        "type": "textarea",
+        "value": "保健室老师律荷 > 转学生艾庭 > 可丽"
+      }
+    },
+    "DimensionalExplorationRuntime": {
+      "Session": {
+        "type": "dict",
+        "value": {},
+        "keepvalue": true,
+        "display": "hide"
+      }
+    }
+  },
   "CommunityAuth": {
     "CommunityAuth": {
       "CredentialsFile": {

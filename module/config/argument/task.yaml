@@ -68,6 +68,10 @@ Daily:
       - Scheduler
       - SpecialActivity
       - ActivityRuntime
+    DimensionalExploration:
+      - Scheduler
+      - DimensionalExploration
+      - DimensionalExplorationRuntime
 
 
 # ==================== Tool ====================

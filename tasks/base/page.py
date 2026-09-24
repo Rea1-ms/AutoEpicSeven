@@ -451,6 +451,21 @@ if server_.lang == "global_cn":
     page_urgent_tasks.link(BACK, destination=page_combat_urgent)
     page_combat_urgent.link(URGENT_TASKS, destination=page_urgent_tasks)
 
+# Dimensional exploration (overseas Chinese client)
+if server_.lang == "global_cn":
+    from tasks.dimensional_exploration.assets.assets_dimensional_exploration import (
+        LOBBY_CHECK, TITLE_CHECK, TITLE_ENTER,
+    )
+
+    # The common-tab card is located by OCR inside the task because it moves
+    # with newly added content. These stable return edges also allow other
+    # tasks to leave the exploration lobby without registering local run pages.
+    page_dimensional_exploration_title = Page(TITLE_CHECK)
+    page_dimensional_exploration_title.link(BACK, destination=page_combat_common)
+    page_dimensional_exploration_lobby = Page(LOBBY_CHECK)
+    page_dimensional_exploration_lobby.link(BACK, destination=page_dimensional_exploration_title)
+    page_dimensional_exploration_title.link(TITLE_ENTER, destination=page_dimensional_exploration_lobby)
+
 # Combat stage selection page (element / grade)
 page_combat_stage = Page((ALTER_CHECK, HUNT_CHECK))
 page_combat_stage.link(BACK, destination=page_combat_common)

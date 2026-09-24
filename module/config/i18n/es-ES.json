@@ -82,6 +82,10 @@
       "name": "Actividad especial",
       "help": "Recoge las 20 invocaciones gratuitas diarias, las recompensas de E7WC Battle Gate y las tareas de Koharu del servidor internacional durante sus eventos. La tarea Invocar realiza las invocaciones."
     },
+    "DimensionalExploration": {
+      "name": "Exploración dimensional",
+      "help": "Solo para el cliente internacional en chino. Mantiene la dificultad actual y empieza con Heavy Baggage. Se detiene tras completar el lote."
+    },
     "CommunityAuth": {
       "name": "Inicio comunidad",
       "help": "Abre la ventana de inicio de sesión de Electron y actualiza la CK usada por Community AIO."
@@ -736,6 +740,50 @@
     "BuyHucheMysticMedals": {
       "name": "Comprar medallas místicas en la tienda de Huche",
       "help": "Solo servidor internacional en chino simplificado. Compra únicamente medallas místicas según las existencias y el saldo de piedras celestiales. El primer lote cambia cada 12 horas y no siempre incluye medallas. Compra la oferta de 160 cuando aparezca; si una revisión completa no encuentra medallas, espera al próximo lote. La oferta normal de 200 tiene un cupo fijo de 4 para todo el evento; al agotarse, revisa solo el primer lote rotativo. Revisa a las 11:00 y 23:00 UTC+8. Desactivado por defecto; al activarlo se gastan piedras celestiales."
+    }
+  },
+  "DimensionalExploration": {
+    "_info": {
+      "name": "Exploración dimensional",
+      "help": "Solo para el cliente internacional en chino. Mantiene la dificultad actual y empieza con Heavy Baggage. Se detiene tras completar el lote."
+    },
+    "RunCount": {
+      "name": "Expediciones por lote",
+      "help": "Cuenta liquidaciones con recompensa. Reanuda los lotes interrumpidos; al activar uno terminado empieza un contador nuevo."
+    },
+    "KnightPriority": {
+      "name": "Caballero prioridad de héroes",
+      "help": "Escribe los nombres chinos del juego por prioridad, separados por >, comas o saltos de línea. Si no hay un héroe preferido asequible, elige uno de coste bajo."
+    },
+    "WarriorPriority": {
+      "name": "Guerrero prioridad de héroes",
+      "help": "Escribe los nombres chinos del juego por prioridad, separados por >, comas o saltos de línea. Si no hay un héroe preferido asequible, elige uno de coste bajo."
+    },
+    "RangerPriority": {
+      "name": "Tirador prioridad de héroes",
+      "help": "Escribe los nombres chinos del juego por prioridad, separados por >, comas o saltos de línea. Si no hay un héroe preferido asequible, elige uno de coste bajo."
+    },
+    "MagePriority": {
+      "name": "Mago prioridad de héroes",
+      "help": "Escribe los nombres chinos del juego por prioridad, separados por >, comas o saltos de línea. Si no hay un héroe preferido asequible, elige uno de coste bajo."
+    },
+    "HealerPriority": {
+      "name": "Tejedor de almas prioridad de héroes",
+      "help": "Escribe los nombres chinos del juego por prioridad, separados por >, comas o saltos de línea. Si no hay un héroe preferido asequible, elige uno de coste bajo."
+    },
+    "ThiefPriority": {
+      "name": "Ladrón prioridad de héroes",
+      "help": "Escribe los nombres chinos del juego por prioridad, separados por >, comas o saltos de línea. Si no hay un héroe preferido asequible, elige uno de coste bajo."
+    }
+  },
+  "DimensionalExplorationRuntime": {
+    "_info": {
+      "name": "Progreso de exploración",
+      "help": ""
+    },
+    "Session": {
+      "name": "Sesión del lote",
+      "help": ""
     }
   },
   "ActivityRuntime": {

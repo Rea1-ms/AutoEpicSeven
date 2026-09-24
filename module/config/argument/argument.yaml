@@ -290,6 +290,34 @@ SpecialActivity:
   # 花费天空石的购买项默认关闭，避免升级后自动改变用户消费。
   BuyHucheMysticMedals: false
 
+DimensionalExploration:
+  RunCount: 1
+  KnightPriority:
+    value: "起源拉斯 > 亚敏"
+    type: textarea
+  WarriorPriority:
+    value: "卡瓦朱"
+    type: textarea
+  RangerPriority:
+    value: "尤贝乌斯 > 莉珈"
+    type: textarea
+  MagePriority:
+    value: "智武 > 研究者卡萝"
+    type: textarea
+  HealerPriority:
+    value: "罪戾的安洁莉卡 > 拉兹"
+    type: textarea
+  ThiefPriority:
+    value: "保健室老师律荷 > 转学生艾庭 > 可丽"
+    type: textarea
+
+DimensionalExplorationRuntime:
+  Session:
+    keepvalue: true
+    display: hide
+    type: dict
+    value: {}
+
 ActivityRuntime:
   CheckedEvents:
     keepvalue: true

@@ -267,6 +267,26 @@
       "FreeGacha20CheckedAt": "2020-01-01 00:00:00"
     }
   },
+  "DimensionalExploration": {
+    "Scheduler": {
+      "Enable": false,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "DimensionalExploration",
+      "ServerUpdate": "02:00"
+    },
+    "DimensionalExploration": {
+      "RunCount": 1,
+      "KnightPriority": "起源拉斯 > 亚敏",
+      "WarriorPriority": "卡瓦朱",
+      "RangerPriority": "尤贝乌斯 > 莉珈",
+      "MagePriority": "智武 > 研究者卡萝",
+      "HealerPriority": "罪戾的安洁莉卡 > 拉兹",
+      "ThiefPriority": "保健室老师律荷 > 转学生艾庭 > 可丽"
+    },
+    "DimensionalExplorationRuntime": {
+      "Session": {}
+    }
+  },
   "CommunityAuth": {
     "CommunityAuth": {
       "CredentialsFile": null,
