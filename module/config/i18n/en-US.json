@@ -538,6 +538,10 @@
       "High": "High",
       "Hell": "Hell"
     },
+    "AltarBalance": {
+      "name": "Balance rune farming",
+      "help": "Global server in Simplified Chinese only. Balance five colors using 45 normal, 22 greater and 16 epic runes per five-star hero. Choose difficulty using measured mean yields and stamina costs, then recheck inventory after each batch. Samples are assumed unbuffed. Existing battle and resource limits still apply; no synthesis."
+    },
     "HuntGrade": {
       "name": "Hunt Grade",
       "help": "Difficulty used for Hunt runs.",

@@ -104,6 +104,7 @@ class GeneratedConfig:
     Combat_Domain = 'Hunt'  # Hunt, SpiritAltar, Saint37, Episode4
     Combat_Element = 'Water'  # Dark, Light, Water, Fire, Nature
     Combat_AltarGrade = 'Hell'  # Pri, Mid, High, Hell
+    Combat_AltarBalance = False
     Combat_HuntGrade = 'Hell'  # Mid, High, Hell, Dimensional
     Combat_Episode4Material = 'BREATH_OF_KARMA'  # CATALYST_RARE_BENEVOLENT, CATALYST_RARE_SECRET, CATALYST_RARE_FIGHTING_SPIRIT, CATALYST_RARE_SNIPER, HEART_OF_THE_WOODS, CATALYST_RARE_OATH, CATALYST_RARE_MYSTERIOUS, CATALYST_EPIC_OATH, BREATH_OF_KARMA, CATALYST_EPIC_SNIPER, CATALYST_EPIC_FIGHTING_SPIRIT, FROZEN_SEED, CATALYST_EPIC_BENEVOLENT, CATALYST_EPIC_MYSTERIOUS, CATALYST_EPIC_SECRET, TRACES_OF_BRILLIANCE
     Combat_FastCombat = True

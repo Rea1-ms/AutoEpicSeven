@@ -15,13 +15,17 @@ from tasks.dungeon.execute import CombatExecuteMixin
 from tasks.dungeon.plan import COMBAT_PLANS, HUNT_PLAN
 from tasks.dungeon.prepare import CombatPrepare
 from tasks.dungeon.repeat import CombatRepeatMixin
+from tasks.dungeon.rune_balance import RuneBalanceMixin
 from tasks.dungeon.runtime import CombatRuntimeMixin, is_background_repeat_combat_active
 from tasks.dungeon.side_story import SideStoryNavigateMixin
 from tasks.dungeon.urgent_tasks import UrgentTasksNavigateMixin
 from tasks.mission_reward.scheduling import should_schedule_mission_reward
+from tasks.item.rune_inventory import RuneInventoryMixin
 
 
 class Combat(
+    RuneBalanceMixin,
+    RuneInventoryMixin,
     CombatRepeatMixin,
     CombatBurnoutMixin,
     CombatRuntimeMixin,
@@ -94,6 +98,9 @@ class Combat(
         )
 
     def _combat_element(self) -> str:
+        target = getattr(self, "_rune_balance_target", None)
+        if self._rune_balance_enabled() and target is not None:
+            return target.element
         return getattr(self.config, "Combat_Element", "Water")
 
     def _combat_grade(self) -> str:
@@ -105,6 +112,9 @@ class Combat(
         if domain == "UrgentTasks":
             return self._urgent_tasks_difficulty()
         if domain == "SpiritAltar":
+            target = getattr(self, "_rune_balance_target", None)
+            if self._rune_balance_enabled() and target is not None:
+                return target.grade
             return getattr(self.config, "Combat_AltarGrade", "Hell")
         return getattr(self.config, "Combat_HuntGrade", "Hell")
 
@@ -311,6 +321,12 @@ class Combat(
         logger.hr("Combat", level=1)
         completed_sessions = 0
         normal_session_settled = False
+        settled_session = None
+
+        if self._rune_balance_enabled() and server.lang != "global_cn":
+            logger.warning("Rune balance currently supports global-server Chinese only")
+            self.config.task_delay(server_update=True)
+            return True
 
         if (
             server.is_oversea_server(self.config.Emulator_PackageName)
@@ -359,6 +375,7 @@ class Combat(
             status = self._watch_repeat_combat(skip_first_screenshot=True)
             if status == "finished":
                 completed_sessions += 1
+                settled_session = session
                 self._combat_runtime_clear()
                 if session.get("domain") == "UrgentTasks":
                     normal_session_settled = not bool(
@@ -430,6 +447,7 @@ class Combat(
             )
 
         if normal_session_settled:
+            self._rune_balance_after_settled(settled_session)
             should_schedule_reward = (
                 self._combat_should_call_mission_reward()
                 and self._should_schedule_mission_reward(
@@ -446,6 +464,8 @@ class Combat(
             return True
 
         domain = self._dungeon_domain()
+
+        self._prepare_rune_balance_target()
 
         if domain == "Episode4":
             if self._is_in_episode4_flow_context():
@@ -701,6 +721,8 @@ class Combat(
                 self._delay_running_repeat_combat()
             else:
                 self._combat_runtime_clear()
+                if completed_sessions:
+                    self._rune_balance_after_settled()
                 self._combat_delay_after_settled()
             return True
 

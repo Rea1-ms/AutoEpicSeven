@@ -836,6 +836,10 @@
           "Hell"
         ]
       },
+      "AltarBalance": {
+        "type": "checkbox",
+        "value": false
+      },
       "HuntGrade": {
         "type": "select",
         "value": "Hell",

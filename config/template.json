@@ -199,6 +199,7 @@
       "Domain": "Hunt",
       "Element": "Water",
       "AltarGrade": "Hell",
+      "AltarBalance": false,
       "HuntGrade": "Hell",
       "Episode4Material": "BREATH_OF_KARMA",
       "FastCombat": true,

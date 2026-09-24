@@ -538,6 +538,10 @@
       "High": "Alta",
       "Hell": "Infierno"
     },
+    "AltarBalance": {
+      "name": "Equilibrar farmeo de runas",
+      "help": "Solo servidor global en chino simplificado. Equilibra cinco colores según 45 runas normales, 22 superiores y 16 épicas por héroe de cinco estrellas. Elige la dificultad según rendimientos medios medidos y coste de energía; revisa el inventario tras cada lote. Se supone que las muestras no tienen bonificaciones. Conserva los límites existentes, sin síntesis."
+    },
     "HuntGrade": {
       "name": "Dificultad de cacería",
       "help": "Dificultad usada en Cacería.",

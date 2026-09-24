@@ -618,6 +618,12 @@ class ConfigUpdater:
             combat_domain = deep_get(data, f'{task_prefix}.Domain', default='Hunt')
             combat_hunt_grade = deep_get(data, f'{task_prefix}.HuntGrade', default='Hell')
 
+            if combat_domain != 'SpiritAltar':
+                yield f'{task_prefix}.AltarBalance'
+            elif deep_get(data, f'{task_prefix}.AltarBalance', default=False):
+                yield f'{task_prefix}.Element'
+                yield f'{task_prefix}.AltarGrade'
+
             if combat_domain != 'Episode4':
                 yield f'{task_prefix}.Episode4Material'
 

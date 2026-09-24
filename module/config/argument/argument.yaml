@@ -203,6 +203,7 @@ Combat:
   AltarGrade:
     value: Hell
     option: [ Pri, Mid, High, Hell ]
+  AltarBalance: false
   HuntGrade:
     value: Hell
     option: [ Mid, High, Hell, Dimensional ]
