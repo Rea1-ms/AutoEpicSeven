@@ -152,6 +152,7 @@ class GeneratedConfig:
 
     # Group `DimensionalExploration`
     DimensionalExploration_RunCount = 1
+    DimensionalExploration_EventSampling = False
     DimensionalExploration_KnightPriority = '起源拉斯 > 亚敏'
     DimensionalExploration_WarriorPriority = '卡瓦朱'
     DimensionalExploration_RangerPriority = '尤贝乌斯 > 莉珈'
@@ -161,6 +162,7 @@ class GeneratedConfig:
 
     # Group `DimensionalExplorationRuntime`
     DimensionalExplorationRuntime_Session = {}
+    DimensionalExplorationRuntime_EventHistory = {}
 
     # Group `ActivityRuntime`
     ActivityRuntime_CheckedEvents = {}

@@ -755,6 +755,10 @@
       "name": "Runs per batch",
       "help": "Count rewarded settlements. Interrupted batches resume; re-enabling a finished batch starts a new count."
     },
+    "EventSampling": {
+      "name": "Collect event samples",
+      "help": "Save before/after screenshots, option text and resource changes. Try inexpensive unlisted options, preferring untried routes at equal cost. Stop on unclear costs or exhausted life. Samples stay in the screenshots folder. Disabled by default."
+    },
     "KnightPriority": {
       "name": "Knight hero priority",
       "help": "Enter Chinese in-game names in priority order, separated by >, commas or newlines. If no affordable preferred hero is found, choose a low-cost candidate."
@@ -788,6 +792,10 @@
     "Session": {
       "name": "Batch session",
       "help": ""
+    },
+    "EventHistory": {
+      "name": "Event history",
+      "help": "Stores visited branches and confirmed rewards for this profile across batches. Use a separate profile per account."
     }
   },
   "ActivityRuntime": {

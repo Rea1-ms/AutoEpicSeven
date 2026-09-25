@@ -1,0 +1,153 @@
+{
+  "observatory": {
+    "name": "观测站投币",
+    "anchors": ["观测站", "投币口"],
+    "source": "MuMu-20260922-081528-636.png",
+    "branches": {
+      "coin": {
+        "pattern": "(?:尝试向投币口投入硬币)?消耗50个次元碎片(?:有30%的几率)?获得(?:观测站)?望远镜镜片",
+        "cost": {"fragments": 50},
+        "rewards": [{"kind": "loot", "name": "观测站望远镜镜片", "chance": 30}],
+        "priority": 10
+      },
+      "leave": {
+        "pattern": "(?:不投硬币)?直接离开",
+        "cost": {},
+        "rewards": [],
+        "priority": 100
+      }
+    }
+  },
+  "candlestick": {
+    "name": "破碎烛台",
+    "anchors": ["烛台", "烛泪"],
+    "source": "MuMu-20260923-232331-766.png",
+    "branches": {
+      "wax": {
+        "pattern": "查看烛泪流[淌消]的方向消耗1个战利品获得300点探查经验值",
+        "cost": {"loot": 1},
+        "rewards": [{"kind": "experience", "amount": 300}],
+        "priority": 10
+      },
+      "rekindle": {
+        "pattern": "重新燃起残留的火种1名随机英雄生命值降低40%获得160点探查经验值",
+        "cost": {"random_hp_percent": 40},
+        "rewards": [{"kind": "experience", "amount": 160}],
+        "priority": 20
+      },
+      "repair": {
+        "pattern": "修好烛台并将其放回原位(?:60)?",
+        "cost": {},
+        "rewards": [{"kind": "experience", "amount": 60}],
+        "priority": 100
+      }
+    }
+  },
+  "garden": {
+    "name": "萤火虫庭院",
+    "anchors": ["庭院", "萤火虫"],
+    "source": "MuMu-20260923-232358-161.png",
+    "branches": {
+      "fireflies": {
+        "pattern": "跟随发光的萤火虫有70%的几率使1名随机英雄Rank提升1阶",
+        "cost": {},
+        "rewards": [{"kind": "rank", "amount": 1, "chance": 70}],
+        "priority": 80
+      },
+      "grass": {
+        "pattern": "清理铺满地面的枯草120",
+        "cost": {},
+        "rewards": [{"kind": "experience", "amount": 120}],
+        "priority": 60
+      },
+      "heal": {
+        "pattern": "循着精灵的气息前进所有英雄生命值恢复20%",
+        "cost": {},
+        "rewards": [{"kind": "all_hp_percent", "amount": 20}],
+        "priority": 100
+      }
+    }
+  },
+  "backpack": {
+    "name": "探险家遗物",
+    "anchors": ["背包", "探险家"],
+    "source": "MuMu-20260923-233133-331.png",
+    "branches": {
+      "supplies": {
+        "pattern": "拿走补给品所有英雄生命值降低25%获得探险家指南针",
+        "cost": {"all_hp_percent": 25},
+        "rewards": [{"kind": "loot", "name": "探险家指南针"}],
+        "priority": 10
+      },
+      "remains": {
+        "pattern": "收(?:殓)?遗骸100",
+        "cost": {},
+        "rewards": [{"kind": "experience", "amount": 100}],
+        "priority": 100
+      }
+    }
+  },
+  "mimic": {
+    "name": "虚弱宝箱怪",
+    "anchors": ["宝箱怪", "箱盖"],
+    "source": "MuMu-20260923-233146-181.png",
+    "branches": {
+      "exchange": {
+        "pattern": "尝试安抚宝箱怪消耗1个战利品获得1个随机战利品",
+        "cost": {"loot": 1},
+        "rewards": [{"kind": "loot", "amount": 1}],
+        "priority": 10
+      },
+      "leave": {
+        "pattern": "径直离开",
+        "cost": {},
+        "rewards": [],
+        "priority": 100
+      }
+    }
+  },
+  "pool": {
+    "name": "清澈池塘",
+    "anchors": ["池塘", "水面"],
+    "source": "MuMu-20260923-233240-604.png",
+    "branches": {
+      "shallow": {
+        "pattern": "(?:将手伸入水中)?消耗1点生命体征获得1个随机战利品",
+        "cost": {"life": 1},
+        "rewards": [{"kind": "loot", "amount": 1}],
+        "priority": 100
+      },
+      "deep": {
+        "pattern": "(?:俯身窥探池塘深处)?消耗2点生命体征获得月亮之书",
+        "cost": {"life": 2},
+        "rewards": [{"kind": "loot", "name": "月亮之书"}],
+        "priority": 10
+      }
+    }
+  },
+  "sword": {
+    "name": "古老长剑",
+    "anchors": ["剑柄", "剑刃"],
+    "source": "MuMu-20260924-193808-685.png",
+    "branches": {
+      "fight": {
+        "pattern": "尝试拔出剑战斗后获得门卫之剑碎片",
+        "cost": {"battle": 1},
+        "rewards": [{"kind": "loot", "name": "门卫之剑碎片"}],
+        "priority": 10
+      },
+      "pay": {
+        "pattern": "行礼后撤离消耗60个次元碎片获得门卫之剑碎片",
+        "cost": {"fragments": 60},
+        "rewards": [{"kind": "loot", "name": "门卫之剑碎片"}],
+        "priority": 80
+      },
+      "touch": {
+        "pattern": "触碰寄宿在剑中的气息所有英雄生命值降低25%获得2个次元[骰般]子",
+        "cost": {"all_hp_percent": 25},
+        "rewards": [{"kind": "dice", "amount": 2}],
+        "priority": 100
+      }
+    }
+  }
+}

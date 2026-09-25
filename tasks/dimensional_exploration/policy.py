@@ -41,6 +41,7 @@ class Offer:
     name: str
     price: int | None
     sold: bool = False
+    new: bool = False
 
 
 def choose_offer(offers: list[Offer], fragments: int, life: int, max_life: int) -> Offer | None:
@@ -54,62 +55,25 @@ def choose_offer(offers: list[Offer], fragments: int, life: int, max_life: int) 
         if normalize(offer.name) == "恢复生命体征" and life < max_life:
             return offer
     loot = [o for o in available if o.index % 4 >= 2 and o.name]
-    return min(loot, key=lambda o: (o.price, o.index), default=None)
+    return min(loot, key=lambda o: (not o.new, o.price, o.index), default=None)
 
 
 @dataclass(frozen=True)
 class EventChoice:
     index: int
     text: str
+    # Historical attribute name: the magnifier is a detail-preview button,
+    # not an unrecorded-journal marker. It must not affect event priorities.
     journal: bool = False
 
 
 def choose_event(choices: list[EventChoice], *, cores: int, fragments: int,
                  life: int, loot: int | None) -> EventChoice | None:
-    """Rank understood rewards; unknown costs never imply a free option."""
-    ranked = []
-    forced = []
-    for choice in choices:
-        text = normalize(choice.text)
-        fragment_cost = re.search(r"消耗(\d+)个?次元碎片", text)
-        life_cost = re.search(r"消耗(\d+)点?生命体征", text)
-        loot_cost = re.search(r"消耗(\d+)个?战利品", text)
-        if "消耗" in text and not any((fragment_cost, life_cost, loot_cost)):
-            continue
-        if fragment_cost and int(fragment_cost[1]) + (50 if cores < 20 else 0) > fragments:
-            continue
-        if life_cost and int(life_cost[1]) > life:
-            continue
-        if loot_cost and (loot is None or int(loot_cost[1]) > loot):
-            continue
-        # Named loot and the journal magnifier take precedence over experience.
-        # Prefer keeping one life whenever the encounter offers an alternative.
-        reward = text.split("获得", 1)[-1] if "获得" in text else ""
-        if reward and ("战利品" in reward or any(
-                name in reward for name in ("月亮之书", "探险家指南针", "望远镜镜片"))):
-            score = 80
-        elif "升阶" in text or "Rank提升" in text:
-            score = 50
-        elif "恢复" in text:
-            score = 30
-        elif "经验" in text or "exp" in text.lower() or "修好烛台并将其放回原位" in text:
-            score = 20
-        elif "离开" in text:
-            score = 0
-        else:
-            continue
-        score += 100 if choice.journal else 0
-        score -= 10 if "降低" in text else 0
-        if life_cost and int(life_cost[1]) == life:
-            # Some pool encounters offer only paid choices and have no Leave
-            # button. If no nonlethal option exists, take the affordable choice
-            # and let the game's normal failed-run settlement finish the run.
-            forced.append((score, -choice.index, choice))
-        else:
-            ranked.append((score, -choice.index, choice))
-    if not ranked:
-        ranked = forced
-    return max(ranked, key=lambda item: item[:2])[2] if ranked else None
+    """Compatibility entry for callers without persisted event observations."""
+    from tasks.dimensional_exploration.event import decide_event
+
+    decision = decide_event(choices, cores=cores, fragments=fragments, life=life, loot=loot)
+    return decision.choice if decision else None
 
 
 @dataclass

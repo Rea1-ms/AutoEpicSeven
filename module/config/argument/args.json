@@ -1151,6 +1151,10 @@
         "type": "input",
         "value": 1
       },
+      "EventSampling": {
+        "type": "checkbox",
+        "value": false
+      },
       "KnightPriority": {
         "type": "textarea",
         "value": "起源拉斯 > 亚敏"
@@ -1178,6 +1182,12 @@
     },
     "DimensionalExplorationRuntime": {
       "Session": {
+        "type": "dict",
+        "value": {},
+        "keepvalue": true,
+        "display": "hide"
+      },
+      "EventHistory": {
         "type": "dict",
         "value": {},
         "keepvalue": true,

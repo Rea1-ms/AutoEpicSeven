@@ -1,5 +1,8 @@
 """Farm complete dimensional explorations, using one screenshot-driven loop."""
 
+from pathlib import Path
+from dataclasses import replace
+
 from module.base.button import ClickButton
 from module.base.timer import Timer
 import module.config.server as server
@@ -11,11 +14,19 @@ from tasks.dimensional_exploration.assets.assets_dimensional_exploration import 
     FAILED_CHECK, LOBBY_CONTINUE, LOBBY_START, LOOT_CHECK, MANUAL_TARGET, NODE_ENTER,
     REWARD_CLOSE, ROOM_DONE, ROOM_LEAVE, SETTLEMENT_EMPTY, SUPPLY_BAGGAGE, SUPPLY_CONFIRM, SUPPLY_SELECTED,
     TITLE_ENTER, VICTORY_CONTINUE, BATTLE_START,
+    OCR_ENTRY, OCR_PREVIEW_TITLE, OCR_INITIAL_RECRUITMENT, HERO_CONFIRM_ACTIVE,
+    OCR_EVENT_LOOT, OCR_BUY_NAME, OCR_BUY_PRICE, SHOP_OFFER, REST_ACTION,
+    SUPPLY_DONE_AREA, SUPPLY_LOOT, OCR_LOOT_EFFECT, LOOT_CARD, LOOT_BORDER,
+    OCR_BATTLE_REWARDS, OCR_RESUME_REWARDS, VICTORY_CONTINUE_ACTIVE,
+    RESUME_REWARDS_CONTINUE, OCR_SETTLEMENT_SCORE, CHAPTER_SELECT,
+    LEAVE_SHOP_CONFIRM, CANCEL_ABANDON, SETTLEMENT_CLOSE,
 )
 from tasks.dimensional_exploration.policy import (
-    RunProgress, choose_event, choose_offer, node_priority, normalize, parse_number,
+    RunProgress, choose_offer, node_priority, normalize, parse_number,
 )
-from tasks.dimensional_exploration.recruitment import RecruitmentMixin
+from tasks.dimensional_exploration.event import EventMemory, decide_event, match_event
+from tasks.dimensional_exploration.recruitment import HeroCosts, RecruitmentMixin
+from tasks.dimensional_exploration.sampling import EventSampler, choose_sample, sampling_balances, text_key
 from tasks.dimensional_exploration.vision import ExplorationVision, match_in
 from tasks.dungeon.assets.assets_dungeon_action import AUTO_COMBAT, AUTO_COMBAT_ENEMY_SELECT
 from tasks.dungeon.assets.assets_dungeon_state import (
@@ -29,12 +40,32 @@ class DimensionalExploration(RecruitmentMixin, UI):
         super().__init__(config, device=device, task=task)
         self._last_state = None
         self._pending_offer = None
+        self._shop_offers = None
+        self._shop_candidate = None
+        self._purchase_balance = None
+        self._purchase_confirmed = False
+        self._purchase_candidate = None
+        self._progress_state = None
+        self._progress_candidate = None
         self._loot_index = None
         self._initial_reserved = 0
+        self._initial_recruitment = False
+        self._recruit_skipped = False
         self._node_selected = False
         self._node_kind = None
         self._entry_swipes = 0
         self._unreadable = Timer(40).start()
+        self.event_memory = EventMemory.from_saved(getattr(config, "DimensionalExplorationRuntime_EventHistory", {}))
+        self.sampler = None
+        name = getattr(config, "config_name", None)
+        cost_path = Path("config") / f"dimensional_exploration_hero_costs_{text_key(str(name))}.json" if name else None
+        self.hero_costs = HeroCosts(cost_path)
+        if getattr(config, "DimensionalExploration_EventSampling", False):
+            name = str(getattr(config, "config_name", "default"))
+            profile = "".join(c if c.isalnum() or c in "_-" else "_" for c in name)[:48]
+            root = Path("screenshots/dimensional_exploration_events") / f"config_{profile}_{text_key(name)[:8]}"
+            self.sampler = EventSampler(root)
+            logger.info(f"事件自动采样目录：{root}")
         self.reset_hero_search()
 
     def action_ready(self):
@@ -102,9 +133,11 @@ class DimensionalExploration(RecruitmentMixin, UI):
                 self.device.screenshot()
             vision = ExplorationVision(self.device.image)
             state = vision.state()
+            self.observe_event(state, vision)
             if state in ("title", "lobby") and self.progress.completed >= self.target:
                 return
             self.observe_state(state)
+            self.observe_progress(state)
             if state == "settlement":
                 if not self.handle_settlement(vision) and self._unreadable.reached():
                     self.require_human("整局结算分数未能识别，尚未增加轮数。")
@@ -114,7 +147,7 @@ class DimensionalExploration(RecruitmentMixin, UI):
                 self.save_progress()
             handlers = {
                 "title": lambda v: self.click_action(TITLE_ENTER),
-                "chapter": lambda v: self.click_action(ClickButton((141, 170, 252, 261), name="SelectStarJourney")),
+                "chapter": lambda v: self.click_action(CHAPTER_SELECT),
                 "lobby": self.handle_lobby, "start_supply": self.handle_start_supply,
                 "recruitment": self.handle_recruitment, "hero": self.handle_hero,
                 "map": self.handle_map, "preview": self.handle_preview,
@@ -123,16 +156,21 @@ class DimensionalExploration(RecruitmentMixin, UI):
                 "upgrade": self.handle_rest_hero, "revive": self.handle_rest_hero,
                 "supply_room": self.handle_supply_room, "loot": self.handle_loot,
                 "victory": self.handle_victory, "battle": self.handle_battle,
+                "resume_rewards": self.handle_victory,
                 "prepare": lambda v: self.click_action(BATTLE_START),
                 "reward": lambda v: self.click_action(REWARD_CLOSE),
                 "failed": lambda v: self.click_action(FAILED_CHECK),
-                "leave_confirm": lambda v: self.click_action(ClickButton((692, 433, 810, 484), name="LeaveShopConfirm")),
-                "abandon": lambda v: self.click_action(ClickButton((472, 442, 584, 481), name="CancelAbandon")),
+                "leave_confirm": lambda v: self.click_action(LEAVE_SHOP_CONFIRM),
+                "abandon": lambda v: self.click_action(CANCEL_ABANDON),
             }
             if state in handlers:
                 if handlers[state](vision):
                     self._unreadable.reset()
-                elif self.ui_additional():
+                # Recognized roguelike pages contain X icons that resemble the
+                # global advertisement close button. Only connection recovery
+                # is relevant here; a throttled task click must not fall through
+                # to unrelated login/ad handlers on every frame.
+                elif self.handle_ui_recovery():
                     self._unreadable.reset()
                 elif state not in ("battle", "unknown") and self._unreadable.reached():
                     self.require_human(f"次元探查停留在{state}，未识别到可确认的操作。")
@@ -159,17 +197,49 @@ class DimensionalExploration(RecruitmentMixin, UI):
             self._loot_index = None
         if state in ("map", "victory"):
             self._initial_reserved = 0
+            self._initial_recruitment = False
         if state == "map":
             self._node_selected = False
             self._node_kind = None
+            self._shop_offers = None
+            self._shop_candidate = None
+            self._pending_offer = None
+            self._purchase_confirmed = False
+            self._recruit_skipped = False
         if state != "unknown":
             self._last_state = state
+
+    def record_progress(self, reason):
+        logger.attr("ExplorationProgress", reason)
+        self.device.click_record_clear()
+
+    def observe_progress(self, state):
+        # Like sanctuary purification's decreasing counter, clear old clicks
+        # only after evidence of forward progress. A preview, buy dialog, or
+        # selection click alone is not progress. Require two fresh matching
+        # frames, and do not let unknown animation frames manufacture an edge.
+        if state == "unknown":
+            self._progress_candidate = None
+            return
+        if self._progress_candidate != state:
+            self._progress_candidate = state
+            return
+        previous = self._progress_state
+        if previous == state:
+            return
+        entered = previous in ("map", "preview") and state in (
+            "event", "shop", "rest", "supply_room", "prepare", "battle")
+        finished = (previous == "battle" and state in ("victory", "failed", "resume_rewards")) or (
+            state == "settlement" and previous in ("failed", "victory", "resume_rewards", "battle"))
+        if entered or finished:
+            self.record_progress(f"{previous} -> {state}")
+        self._progress_state = state
 
     def handle_entry(self, vision):
         from tasks.base.page import page_combat_common
         if not self.ui_page_appear(page_combat_common):
             return False
-        for token in vision.tokens((22, 90, 1248, 609), name="DimensionalExplorationEntry"):
+        for token in vision.tokens(OCR_ENTRY):
             if normalize(token.ocr_text) == "次元探查":
                 return self.click_action(ClickButton(token.box, name="EnterDimensionalExploration"))
         if self._entry_swipes >= 4:
@@ -196,12 +266,13 @@ class DimensionalExploration(RecruitmentMixin, UI):
         return False
 
     def handle_recruitment(self, vision):
-        if vision.bright_text((1040, 646, 1140, 677)):
+        if vision.bright_text(HERO_CONFIRM_ACTIVE):
             return self.click_action(EXPLORE_ENTER)
-        tokens = vision.tokens((35, 413, 1218, 604), name="InitialRecruitment")
+        tokens = vision.tokens(OCR_INITIAL_RECRUITMENT)
         buttons = [t for t in tokens if normalize(t.ocr_text) == "招募英雄"]
         if buttons:
             self._initial_reserved = 2 * (len(buttons) - 1)
+            self._initial_recruitment = True
             return self.click_action(ClickButton(min(buttons, key=lambda t: t.box[0]).box, name="InitialRecruit"))
         return False
 
@@ -222,9 +293,9 @@ class DimensionalExploration(RecruitmentMixin, UI):
         # Opening a preview pans the map. Re-read arrows from the new frame;
         # coordinates from the map before the click are never reused here.
         if self._node_selected:
-            title = normalize(vision.text((942, 94, 1190, 132)))
+            title = normalize(vision.text(OCR_PREVIEW_TITLE))
             expected = {
-                "event": "事件", "shop": "商店", "supply": "补给", "rest": "休息",
+                "event": "事件", "shop": "商店", "supply": "补给", "rest": "休整",
                 "battle": "一般战斗", "elite": "精英战斗", "boss": "首领战斗",
             }[self._node_kind]
             if title == expected:
@@ -232,52 +303,170 @@ class DimensionalExploration(RecruitmentMixin, UI):
         return self.handle_map(vision)
 
     def handle_event(self, vision):
+        self.observe_event("event", vision)
         if self.appear(EVENT_NEXT):
             return self.click_action(EVENT_NEXT)
         resources = vision.resources()
         if resources is None:
             return False
-        loot = vision.number((39, 195, 88, 224))
+        loot = vision.number(OCR_EVENT_LOOT)
         choices = vision.event_choices()
         if not choices:
             return False
-        selected = choose_event([c for c, _ in choices], cores=resources.cores,
-                                fragments=resources.fragments, life=resources.life, loot=loot)
-        if selected is None:
-            self.require_human("事件选项尚未覆盖，已保存截图供补充规则。")
+        observed = [c for c, _ in choices]
+        story = vision.event_story()
+        balances = dict(cores=resources.cores, fragments=resources.fragments, life=resources.life,
+                        loot=loot, dice=vision.event_dice())
+        matched = match_event(observed, story)
+        if matched is None:
+            if self.sampler is not None:
+                if self.event_memory.pending and not self.event_memory.advanced:
+                    return False
+                return self.handle_event_sample(vision, choices, story, balances)
+            self.require_human("事件或选项代价尚未覆盖，已保存截图供补充事件表。")
+        # Multi-step encounters may expose another known option set without
+        # visiting a map. Only a fully recognized new set confirms advancement;
+        # an unknown/partially read frame must retain the pending choice.
+        if self.event_memory.pending and self.event_memory.pending not in {b.key for _, b in matched[1]}:
+            if self.event_memory.observe("event", narration=True):
+                self.save_event_history()
+        decision = decide_event(observed, **balances, story=story, memory=self.event_memory)
+        if decision is None:
+            if self.sampler is not None:
+                self.sampler.before(vision.image, story, observed, balances, None, "catalog", "没有可负担的选项")
+            self.require_human("事件没有可负担且能保留最后生命体征的选项，已保存截图。")
+        selected = decision.choice
         area = next(area for c, area in choices if c.index == selected.index)
-        logger.attr("ExplorationEvent", selected.text)
-        return self.click_action(ClickButton(area, name="ExplorationEventChoice"))
+        if not self.action_ready():
+            return False
+        logger.attr("ExplorationEvent", f"{decision.event.name}: {selected.text}")
+        logger.attr("ExplorationEventReason", "首次尝试专属奖励" if decision.first_collectible else "重复事件优先低消耗")
+        logger.attr("ExplorationEventCost", vars(decision.branch.cost))
+        if self.sampler is not None:
+            self.sampler.before(vision.image, story, observed, balances, selected, "catalog", decision.branch.key)
+        if self.click_action(ClickButton(area, name="ExplorationEventChoice")):
+            if self.sampler is not None:
+                self.sampler.clicked()
+            self.event_memory.begin(decision.branch)
+            self.save_event_history()
+            return True
+        return False
+
+    def handle_event_sample(self, vision, choices, story, balances):
+        observed = [c for c, _ in choices]
+        # Unknown events need two consistent reads, including all displayed
+        # balances, before attempting an option. Partially rendered cost text
+        # must not become a supposedly free trial on its first frame.
+        if not story or not self.sampler.stable(story, observed, balances):
+            return False
+        selected = choose_sample(observed, balances, self.sampler.visits(story), self.sampler.pending_text(story))
+        if selected is None:
+            self.sampler.before(vision.image, story, observed, balances, None, "sampling", "代价不明或资源不足")
+            self.require_human("事件采样已保存，但所有选项均存在未识别代价或资源不足，等待人工处理。")
+        if not self.action_ready():
+            return False
+        self.sampler.before(vision.image, story, observed, balances, selected.choice, "sampling", selected.reason)
+        area = next(area for choice, area in choices if choice.index == selected.choice.index)
+        logger.attr("ExplorationSampleChoice", f"{selected.choice.text}: {selected.reason}")
+        if self.click_action(ClickButton(area, name="ExplorationEventSample")):
+            self.sampler.clicked()
+            # Unlisted branches are kept in the sample receipt, not inserted
+            # into the reviewed catalogue's acquisition/visited history.
+            if self.event_memory.pending and self.event_memory.advanced:
+                self.event_memory.pending, self.event_memory.advanced = None, False
+                self.save_event_history()
+            return True
+        return False
+
+    def save_event_history(self):
+        self.config.DimensionalExplorationRuntime_EventHistory = self.event_memory.as_dict()
+
+    def observe_event(self, state, vision):
+        self.observe_event_sample(state, vision)
+        if not self.event_memory.pending:
+            return
+        narration = state == "event" and self.appear(EVENT_NEXT)
+        reward_name = vision.event_reward() if state == "reward" else ""
+        if self.event_memory.observe(state, narration=narration, reward_name=reward_name):
+            self.save_event_history()
+
+    def observe_event_sample(self, state, vision):
+        if self.sampler is None or not self.sampler.active or not self.sampler.active["clicked"]:
+            return
+        narration = state == "event" and self.appear(EVENT_NEXT)
+        if not narration and state not in self.sampler.OUTCOME_STATES:
+            return
+        frames = self.sampler.active["frames"]
+        # Combat may last minutes. Save its entry once, not every screenshot;
+        # only narration and reward cards need text to distinguish subpages.
+        if state not in ("event", "reward") and state not in self.sampler.END_STATES and any(
+                f["state"] == state for f in frames):
+            return
+        text = vision.event_story() if narration else vision.event_reward() if state == "reward" else ""
+        if state not in self.sampler.END_STATES and any(
+                f["state"] == state and normalize(f["text"]) == normalize(text) for f in frames):
+            return
+        self.sampler.observe(state, vision.image, text=text, resources=sampling_balances(vision), narration=narration)
 
     def handle_shop(self, vision):
+        if not self.action_ready():
+            return False
         resources = vision.resources()
         if resources is None:
             return False
-        offers = vision.offers()
-        if any(not o.name or (o.price is None and not o.sold) for o in offers):
-            return False
-        offer = choose_offer(offers, resources.fragments, resources.life, resources.max_life)
+        # Snapshot the complete inventory before the first purchase. Toasts
+        # obscure the upper row afterwards, so names/NEW flags must not be
+        # replaced by partial OCR. The receipt still rechecks each name/price.
+        if self._shop_offers is None:
+            offers = vision.offers()
+            if any(not o.name or (o.price is None and not o.sold) for o in offers):
+                self._shop_candidate = None
+                return False
+            if offers != self._shop_candidate:
+                self._shop_candidate = offers
+                return False
+            self._shop_offers = offers
+        if self._purchase_confirmed:
+            expected_balance = self._purchase_balance - self._pending_offer.price
+            if resources.fragments != expected_balance:
+                self._purchase_candidate = None
+                return False
+            if self._purchase_candidate != resources.fragments:
+                self._purchase_candidate = resources.fragments
+                return False
+            index = self._pending_offer.index
+            self._shop_offers = [replace(o, sold=True) if o.index == index else o for o in self._shop_offers]
+            self._purchase_confirmed = False
+            self._pending_offer = None
+            self.record_progress("商店付款已由碎片余额变化确认")
+        offer = choose_offer(self._shop_offers, resources.fragments, resources.life, resources.max_life)
         if offer is None:
             self._pending_offer = None
             return self.click_action(ROOM_LEAVE)
-        x = 407 + (offer.index % 4) * 191
-        y = 284 + (offer.index // 4) * 251
-        if self.click_action(ClickButton((x, y, x + 149, y + 40), name="ExplorationShopOffer")):
+        button = list(SHOP_OFFER.iter_buttons())[offer.index]
+        if self.click_action(ClickButton(button.area, name="ExplorationShopOffer")):
             self._pending_offer = offer
+            self._purchase_balance = resources.fragments
+            self._purchase_candidate = None
             return True
         return False
 
     def handle_buy(self, vision):
+        if not self.action_ready():
+            return False
         # A manually opened dialog has no verified offer. Cancel and re-read
         # the shop instead of reconstructing authorization from a dimmed page.
         if self._pending_offer is None:
             return self.click_action(BUY_CANCEL)
-        name = normalize(vision.text((640, 342, 955, 373)))
-        price = vision.number((676, 488, 740, 528))
+        name = normalize(vision.text(OCR_BUY_NAME))
+        price = vision.number(OCR_BUY_PRICE)
         expected = self._pending_offer
         if name != normalize(expected.name) or price != expected.price or not self.appear(BUY_CURRENCY):
             self.require_human("商店确认框与已选商品不一致，已停止购买。")
-        return self.click_action(BUY_CONFIRM)
+        if self.click_action(BUY_CONFIRM):
+            self._purchase_confirmed = True
+            return True
+        return False
 
     def handle_rest(self, vision):
         if match_in(self.device.image, ROOM_DONE, ROOM_DONE.search):
@@ -285,38 +474,46 @@ class DimensionalExploration(RecruitmentMixin, UI):
         # The room permits one action. Recover lost lives, revive a hero, then
         # heal, and only upgrade when survival actions are explicitly disabled.
         for row in (2, 1, 3, 0):
-            y = 179 + 109 * row
-            area = (930, y, 1173, y + 32)
-            if vision.bright_text(area, minimum=80):
-                return self.click_action(ClickButton(area, name="ExplorationRestAction"))
+            button = list(REST_ACTION.iter_buttons())[row]
+            if vision.bright_text(button, minimum=80):
+                return self.click_action(ClickButton(button.area, name="ExplorationRestAction"))
         return False
 
     def handle_supply_room(self, vision):
-        if match_in(self.device.image, ROOM_DONE, (1165, 265, 1220, 455)):
+        if match_in(self.device.image, ROOM_DONE, SUPPLY_DONE_AREA.area):
             return self.click_action(ROOM_LEAVE)
-        area = (932, 399, 1061, 432)
-        if vision.bright_text(area, minimum=70):
-            return self.click_action(ClickButton(area, name="SupplyLoot"))
+        if vision.bright_text(SUPPLY_LOOT, minimum=70):
+            return self.click_action(SUPPLY_LOOT)
         return False
 
     def handle_loot(self, vision):
+        selected = [i for i, border in enumerate(LOOT_BORDER.iter_buttons()) if vision.gold_border(border)]
+        # The UI selection is authoritative after a restart. Never repeatedly
+        # toggle a selected card just because its effect is not our top score.
+        if len(selected) == 1:
+            self._loot_index = selected[0]
+            return self.click_action(LOOT_CHECK)
         if self._loot_index is None:
             scores = []
-            for index in range(3):
-                x = 195 + 320 * index
-                text = "".join(t.ocr_text for t in vision.tokens((x + 20, 254, x + 236, 407)))
+            for index, region in enumerate(OCR_LOOT_EFFECT.iter_buttons()):
+                text = "".join(t.ocr_text for t in vision.tokens(region))
                 scores.append((sum(term in text for term in ("速度", "攻击力", "暴击", "伤害")), -index))
             self._loot_index = -max(scores)[1]
-        x = 195 + 320 * self._loot_index
-        if vision.gold_border((x, 100, x + 13, 232)):
-            return self.click_action(LOOT_CHECK)
-        return self.click_action(ClickButton((x + 65, 241, x + 200, 406), name="ExplorationLoot"))
+        button = list(LOOT_CARD.iter_buttons())[self._loot_index]
+        return self.click_action(ClickButton(button.area, name="ExplorationLoot"))
 
     def handle_victory(self, vision):
-        for token in vision.tokens((187, 470, 1100, 564), name="ExplorationBattleRewards"):
-            if normalize(token.ocr_text) in ("选择战利品", "招募英雄"):
+        resumed = vision.state() == "resume_rewards"
+        region = OCR_RESUME_REWARDS if resumed else OCR_BATTLE_REWARDS
+        for token in vision.tokens(region):
+            text = normalize(token.ocr_text)
+            if text == "选择战利品" or (text == "招募英雄" and not self._recruit_skipped):
+                self._initial_recruitment = False
+                self._initial_reserved = 0
                 return self.click_action(ClickButton(token.box, name="ClaimExplorationBattleReward"))
-        if self.appear(VICTORY_CONTINUE) and vision.bright_text((590, 647, 692, 675)):
+        if resumed and vision.bright_text(RESUME_REWARDS_CONTINUE):
+            return self.click_action(RESUME_REWARDS_CONTINUE)
+        if self.appear(VICTORY_CONTINUE) and vision.bright_text(VICTORY_CONTINUE_ACTIVE):
             return self.click_action(VICTORY_CONTINUE)
         return False
 
@@ -334,11 +531,11 @@ class DimensionalExploration(RecruitmentMixin, UI):
     def handle_settlement(self, vision):
         if self.appear(SETTLEMENT_EMPTY):
             self.require_human("本轮未进行探查，未计入刷取轮数。")
-        score_text = vision.text((170, 590, 472, 670))
+        score_text = vision.text(OCR_SETTLEMENT_SCORE)
         score = parse_number(score_text.replace("pt", "").strip())
         if not score:
             return False
         if self.progress.settle(rewarded=True):
             self.save_progress()
             logger.info(f"探查结算：{score}分；已完成{self.progress.completed}/{self.target}轮。")
-        return self.click_action(ClickButton((600, 683, 699, 710), name="ExplorationSettlementClose"))
+        return self.click_action(SETTLEMENT_CLOSE)

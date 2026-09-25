@@ -75,6 +75,18 @@ BUY_CURRENCY = ButtonWrapper(
     ),
     global_en=None,
 )
+CANCEL_ABANDON = ButtonWrapper(
+    name='CANCEL_ABANDON',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/CANCEL_ABANDON.png',
+        area=(472, 442, 584, 481),
+        search=(452, 422, 604, 501),
+        color=(83, 68, 51),
+        button=(472, 442, 584, 481),
+    ),
+    global_en=None,
+)
 CHAPTER_CHECK = ButtonWrapper(
     name='CHAPTER_CHECK',
     cn=None,
@@ -84,6 +96,18 @@ CHAPTER_CHECK = ButtonWrapper(
         search=(136, 279, 278, 380),
         color=(73, 67, 94),
         button=(156, 299, 258, 360),
+    ),
+    global_en=None,
+)
+CHAPTER_SELECT = ButtonWrapper(
+    name='CHAPTER_SELECT',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/CHAPTER_SELECT.png',
+        area=(141, 170, 252, 261),
+        search=(121, 150, 272, 281),
+        color=(122, 96, 110),
+        button=(141, 170, 252, 261),
     ),
     global_en=None,
 )
@@ -108,6 +132,18 @@ EVENT_CHECK = ButtonWrapper(
         search=(100, 82, 176, 151),
         color=(53, 54, 56),
         button=(120, 102, 156, 131),
+    ),
+    global_en=None,
+)
+EVENT_DETAIL_AREA = ButtonWrapper(
+    name='EVENT_DETAIL_AREA',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/EVENT_DETAIL_AREA.png',
+        area=(75, 554, 120, 602),
+        search=(55, 534, 140, 622),
+        color=(38, 36, 69),
+        button=(75, 554, 120, 602),
     ),
     global_en=None,
 )
@@ -144,6 +180,18 @@ EVENT_OPTION = ButtonWrapper(
         search=(30, 646, 1210, 698),
         color=(44, 39, 57),
         button=(75, 660, 98, 689),
+    ),
+    global_en=None,
+)
+EVENT_OPTION_CLICK = ButtonWrapper(
+    name='EVENT_OPTION_CLICK',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/EVENT_OPTION_CLICK.png',
+        area=(120, 602, 400, 678),
+        search=(100, 582, 420, 698),
+        color=(58, 54, 83),
+        button=(120, 602, 400, 678),
     ),
     global_en=None,
 )
@@ -195,6 +243,30 @@ HERO_CONFIRM = ButtonWrapper(
     ),
     global_en=None,
 )
+HERO_CONFIRM_ACTIVE = ButtonWrapper(
+    name='HERO_CONFIRM_ACTIVE',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/HERO_CONFIRM_ACTIVE.png',
+        area=(1040, 646, 1136, 677),
+        search=(1020, 626, 1156, 697),
+        color=(99, 84, 148),
+        button=(1040, 646, 1136, 677),
+    ),
+    global_en=None,
+)
+HERO_COST_ACTIVE = ButtonWrapper(
+    name='HERO_COST_ACTIVE',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/HERO_COST_ACTIVE.png',
+        area=(602, 133, 630, 159),
+        search=(582, 113, 650, 179),
+        color=(116, 138, 179),
+        button=(602, 133, 630, 159),
+    ),
+    global_en=None,
+)
 HERO_COST_ICON = ButtonWrapper(
     name='HERO_COST_ICON',
     cn=None,
@@ -237,6 +309,18 @@ HERO_PICKER_CHECK = ButtonWrapper(
     ],
     global_en=None,
 )
+HERO_ROW_CLICK = ButtonWrapper(
+    name='HERO_ROW_CLICK',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/HERO_ROW_CLICK.png',
+        area=(406, 93, 552, 154),
+        search=(386, 73, 572, 174),
+        color=(80, 77, 74),
+        button=(406, 93, 552, 154),
+    ),
+    global_en=None,
+)
 LEAVE_CONFIRM_CHECK = ButtonWrapper(
     name='LEAVE_CONFIRM_CHECK',
     cn=None,
@@ -246,6 +330,18 @@ LEAVE_CONFIRM_CHECK = ButtonWrapper(
         search=(530, 281, 753, 363),
         color=(67, 72, 79),
         button=(550, 301, 733, 343),
+    ),
+    global_en=None,
+)
+LEAVE_SHOP_CONFIRM = ButtonWrapper(
+    name='LEAVE_SHOP_CONFIRM',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/LEAVE_SHOP_CONFIRM.png',
+        area=(692, 433, 810, 484),
+        search=(672, 413, 830, 504),
+        color=(43, 70, 101),
+        button=(692, 433, 810, 484),
     ),
     global_en=None,
 )
@@ -292,6 +388,62 @@ LOBBY_START = ButtonWrapper(
         color=(104, 94, 134),
         button=(1043, 649, 1134, 673),
     ),
+    global_en=None,
+)
+LOOT_BORDER = ButtonWrapper(
+    name='LOOT_BORDER',
+    cn=None,
+    global_cn=[
+        Button(
+            file='./assets/global_cn/dimensional_exploration/LOOT_BORDER.1.png',
+            area=(190, 105, 205, 215),
+            search=(170, 85, 225, 235),
+            color=(112, 77, 67),
+            button=(190, 105, 205, 215),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/LOOT_BORDER.2.png',
+            area=(510, 105, 525, 215),
+            search=(490, 85, 545, 235),
+            color=(53, 17, 56),
+            button=(510, 105, 525, 215),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/LOOT_BORDER.3.png',
+            area=(830, 105, 845, 215),
+            search=(810, 85, 865, 235),
+            color=(55, 19, 58),
+            button=(830, 105, 845, 215),
+        ),
+    ],
+    global_en=None,
+)
+LOOT_CARD = ButtonWrapper(
+    name='LOOT_CARD',
+    cn=None,
+    global_cn=[
+        Button(
+            file='./assets/global_cn/dimensional_exploration/LOOT_CARD.1.png',
+            area=(260, 241, 395, 406),
+            search=(240, 221, 415, 426),
+            color=(129, 71, 115),
+            button=(260, 241, 395, 406),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/LOOT_CARD.2.png',
+            area=(580, 241, 715, 406),
+            search=(560, 221, 735, 426),
+            color=(117, 52, 134),
+            button=(580, 241, 715, 406),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/LOOT_CARD.3.png',
+            area=(900, 241, 1035, 406),
+            search=(880, 221, 1055, 426),
+            color=(119, 56, 136),
+            button=(900, 241, 1035, 406),
+        ),
+    ],
     global_en=None,
 )
 LOOT_CHECK = ButtonWrapper(
@@ -378,6 +530,18 @@ NODE_BOSS = ButtonWrapper(
     ),
     global_en=None,
 )
+NODE_CLICK = ButtonWrapper(
+    name='NODE_CLICK',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/NODE_CLICK.png',
+        area=(514, 173, 550, 203),
+        search=(494, 153, 570, 223),
+        color=(136, 144, 191),
+        button=(514, 173, 550, 203),
+    ),
+    global_en=None,
+)
 NODE_ELITE = ButtonWrapper(
     name='NODE_ELITE',
     cn=None,
@@ -450,6 +614,150 @@ NODE_SUPPLY = ButtonWrapper(
     ),
     global_en=None,
 )
+NODE_TYPE_AREA = ButtonWrapper(
+    name='NODE_TYPE_AREA',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/NODE_TYPE_AREA.png',
+        area=(488, 151, 576, 242),
+        search=(468, 131, 596, 262),
+        color=(85, 89, 113),
+        button=(488, 151, 576, 242),
+    ),
+    global_en=None,
+)
+OCR_BATTLE_REWARDS = ButtonWrapper(
+    name='OCR_BATTLE_REWARDS',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/OCR_BATTLE_REWARDS.png',
+        area=(187, 470, 1100, 564),
+        search=(167, 450, 1120, 584),
+        color=(24, 26, 32),
+        button=(187, 470, 1100, 564),
+    ),
+    global_en=None,
+)
+OCR_BUY_NAME = ButtonWrapper(
+    name='OCR_BUY_NAME',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/OCR_BUY_NAME.png',
+        area=(640, 342, 955, 373),
+        search=(620, 322, 975, 393),
+        color=(79, 66, 107),
+        button=(640, 342, 955, 373),
+    ),
+    global_en=None,
+)
+OCR_BUY_PRICE = ButtonWrapper(
+    name='OCR_BUY_PRICE',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/OCR_BUY_PRICE.png',
+        area=(676, 488, 740, 528),
+        search=(656, 468, 760, 548),
+        color=(47, 35, 65),
+        button=(676, 488, 740, 528),
+    ),
+    global_en=None,
+)
+OCR_CORE = ButtonWrapper(
+    name='OCR_CORE',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/OCR_CORE.png',
+        area=(852, 17, 891, 51),
+        search=(832, 0, 911, 71),
+        color=(30, 29, 35),
+        button=(852, 17, 891, 51),
+    ),
+    global_en=None,
+)
+OCR_DICE = ButtonWrapper(
+    name='OCR_DICE',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/OCR_DICE.png',
+        area=(800, 17, 825, 51),
+        search=(780, 0, 845, 71),
+        color=(33, 31, 37),
+        button=(800, 17, 825, 51),
+    ),
+    global_en=None,
+)
+OCR_ENTRY = ButtonWrapper(
+    name='OCR_ENTRY',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/OCR_ENTRY.png',
+        area=(22, 90, 1248, 609),
+        search=(2, 70, 1268, 629),
+        color=(90, 94, 80),
+        button=(22, 90, 1248, 609),
+    ),
+    global_en=None,
+)
+OCR_EVENT_LOOT = ButtonWrapper(
+    name='OCR_EVENT_LOOT',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/OCR_EVENT_LOOT.png',
+        area=(39, 195, 88, 224),
+        search=(19, 175, 108, 244),
+        color=(22, 22, 22),
+        button=(53, 207, 62, 210),
+    ),
+    global_en=None,
+)
+OCR_EVENT_OPTION = ButtonWrapper(
+    name='OCR_EVENT_OPTION',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/OCR_EVENT_OPTION.png',
+        area=(75, 554, 441, 689),
+        search=(55, 534, 461, 709),
+        color=(52, 48, 78),
+        button=(75, 554, 441, 689),
+    ),
+    global_en=None,
+)
+OCR_EVENT_REWARD = ButtonWrapper(
+    name='OCR_EVENT_REWARD',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/OCR_EVENT_REWARD.png',
+        area=(510, 288, 776, 326),
+        search=(490, 268, 796, 346),
+        color=(80, 82, 106),
+        button=(510, 288, 776, 326),
+    ),
+    global_en=None,
+)
+OCR_EVENT_STORY = ButtonWrapper(
+    name='OCR_EVENT_STORY',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/OCR_EVENT_STORY.png',
+        area=(245, 400, 1192, 545),
+        search=(225, 380, 1212, 565),
+        color=(32, 43, 44),
+        button=(245, 400, 1192, 545),
+    ),
+    global_en=None,
+)
+OCR_FRAGMENT = ButtonWrapper(
+    name='OCR_FRAGMENT',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/OCR_FRAGMENT.png',
+        area=(917, 17, 974, 51),
+        search=(897, 0, 994, 71),
+        color=(37, 36, 42),
+        button=(917, 17, 974, 51),
+    ),
+    global_en=None,
+)
 OCR_HEROES = ButtonWrapper(
     name='OCR_HEROES',
     cn=None,
@@ -460,6 +768,94 @@ OCR_HEROES = ButtonWrapper(
         color=(65, 64, 70),
         button=(345, 80, 1278, 600),
     ),
+    global_en=None,
+)
+OCR_HERO_COST = ButtonWrapper(
+    name='OCR_HERO_COST',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/OCR_HERO_COST.png',
+        area=(601, 131, 638, 160),
+        search=(581, 111, 658, 180),
+        color=(96, 116, 153),
+        button=(601, 131, 638, 160),
+    ),
+    global_en=None,
+)
+OCR_HERO_NAME = ButtonWrapper(
+    name='OCR_HERO_NAME',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/OCR_HERO_NAME.png',
+        area=(394, 87, 622, 125),
+        search=(374, 67, 642, 145),
+        color=(63, 61, 72),
+        button=(394, 87, 622, 125),
+    ),
+    global_en=None,
+)
+OCR_HERO_TITLE = ButtonWrapper(
+    name='OCR_HERO_TITLE',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/OCR_HERO_TITLE.png',
+        area=(69, 17, 345, 51),
+        search=(49, 0, 365, 71),
+        color=(67, 67, 69),
+        button=(69, 17, 345, 51),
+    ),
+    global_en=None,
+)
+OCR_INITIAL_RECRUITMENT = ButtonWrapper(
+    name='OCR_INITIAL_RECRUITMENT',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/OCR_INITIAL_RECRUITMENT.png',
+        area=(35, 413, 1218, 604),
+        search=(15, 393, 1238, 624),
+        color=(34, 40, 55),
+        button=(35, 413, 1218, 604),
+    ),
+    global_en=None,
+)
+OCR_LIFE = ButtonWrapper(
+    name='OCR_LIFE',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/OCR_LIFE.png',
+        area=(1043, 17, 1092, 51),
+        search=(1023, 0, 1112, 71),
+        color=(52, 57, 79),
+        button=(1043, 17, 1092, 51),
+    ),
+    global_en=None,
+)
+OCR_LOOT_EFFECT = ButtonWrapper(
+    name='OCR_LOOT_EFFECT',
+    cn=None,
+    global_cn=[
+        Button(
+            file='./assets/global_cn/dimensional_exploration/OCR_LOOT_EFFECT.1.png',
+            area=(215, 254, 431, 407),
+            search=(195, 234, 451, 427),
+            color=(127, 69, 116),
+            button=(215, 254, 431, 407),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/OCR_LOOT_EFFECT.2.png',
+            area=(535, 254, 751, 407),
+            search=(515, 234, 771, 427),
+            color=(117, 52, 135),
+            button=(535, 254, 751, 407),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/OCR_LOOT_EFFECT.3.png',
+            area=(855, 254, 1071, 407),
+            search=(835, 234, 1091, 427),
+            color=(119, 55, 137),
+            button=(855, 254, 1071, 407),
+        ),
+    ],
     global_en=None,
 )
 OCR_OPTIONS = ButtonWrapper(
@@ -474,6 +870,30 @@ OCR_OPTIONS = ButtonWrapper(
     ),
     global_en=None,
 )
+OCR_PREVIEW_TITLE = ButtonWrapper(
+    name='OCR_PREVIEW_TITLE',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/OCR_PREVIEW_TITLE.png',
+        area=(942, 94, 1190, 132),
+        search=(922, 74, 1210, 152),
+        color=(43, 41, 54),
+        button=(942, 94, 1190, 132),
+    ),
+    global_en=None,
+)
+OCR_QUOTA = ButtonWrapper(
+    name='OCR_QUOTA',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/OCR_QUOTA.png',
+        area=(1160, 17, 1227, 51),
+        search=(1140, 0, 1247, 71),
+        color=(57, 62, 82),
+        button=(1160, 17, 1227, 51),
+    ),
+    global_en=None,
+)
 OCR_RESOURCES = ButtonWrapper(
     name='OCR_RESOURCES',
     cn=None,
@@ -484,6 +904,243 @@ OCR_RESOURCES = ButtonWrapper(
         color=(39, 44, 56),
         button=(782, 13, 1234, 55),
     ),
+    global_en=None,
+)
+OCR_REST_HEROES = ButtonWrapper(
+    name='OCR_REST_HEROES',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/OCR_REST_HEROES.png',
+        area=(390, 86, 965, 589),
+        search=(370, 66, 985, 609),
+        color=(49, 50, 54),
+        button=(390, 86, 965, 589),
+    ),
+    global_en=None,
+)
+OCR_RESUME_REWARDS = ButtonWrapper(
+    name='OCR_RESUME_REWARDS',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/OCR_RESUME_REWARDS.png',
+        area=(380, 450, 900, 509),
+        search=(360, 430, 920, 529),
+        color=(53, 66, 93),
+        button=(380, 450, 900, 509),
+    ),
+    global_en=None,
+)
+OCR_SELECTED_HERO = ButtonWrapper(
+    name='OCR_SELECTED_HERO',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/OCR_SELECTED_HERO.png',
+        area=(50, 78, 306, 112),
+        search=(30, 58, 326, 132),
+        color=(83, 93, 140),
+        button=(50, 78, 306, 112),
+    ),
+    global_en=None,
+)
+OCR_SETTLEMENT_SCORE = ButtonWrapper(
+    name='OCR_SETTLEMENT_SCORE',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/OCR_SETTLEMENT_SCORE.png',
+        area=(170, 590, 472, 670),
+        search=(150, 570, 492, 690),
+        color=(107, 94, 134),
+        button=(170, 590, 472, 670),
+    ),
+    global_en=None,
+)
+OCR_SHOP_NAME = ButtonWrapper(
+    name='OCR_SHOP_NAME',
+    cn=None,
+    global_cn=[
+        Button(
+            file='./assets/global_cn/dimensional_exploration/OCR_SHOP_NAME.1.png',
+            area=(402, 107, 567, 148),
+            search=(382, 87, 587, 168),
+            color=(82, 62, 106),
+            button=(402, 107, 567, 148),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/OCR_SHOP_NAME.2.png',
+            area=(593, 107, 758, 148),
+            search=(573, 87, 778, 168),
+            color=(66, 54, 83),
+            button=(593, 107, 758, 148),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/OCR_SHOP_NAME.3.png',
+            area=(784, 107, 949, 148),
+            search=(764, 87, 969, 168),
+            color=(64, 52, 81),
+            button=(784, 107, 949, 148),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/OCR_SHOP_NAME.4.png',
+            area=(975, 107, 1140, 148),
+            search=(955, 87, 1160, 168),
+            color=(77, 65, 92),
+            button=(975, 107, 1140, 148),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/OCR_SHOP_NAME.5.png',
+            area=(402, 358, 567, 399),
+            search=(382, 338, 587, 419),
+            color=(84, 64, 108),
+            button=(402, 358, 567, 399),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/OCR_SHOP_NAME.6.png',
+            area=(593, 358, 758, 399),
+            search=(573, 338, 778, 419),
+            color=(77, 64, 96),
+            button=(593, 358, 758, 399),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/OCR_SHOP_NAME.7.png',
+            area=(784, 358, 949, 399),
+            search=(764, 338, 969, 419),
+            color=(67, 55, 85),
+            button=(784, 358, 949, 399),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/OCR_SHOP_NAME.8.png',
+            area=(975, 358, 1140, 399),
+            search=(955, 338, 1160, 419),
+            color=(61, 49, 78),
+            button=(975, 358, 1140, 399),
+        ),
+    ],
+    global_en=None,
+)
+OCR_SHOP_NEW = ButtonWrapper(
+    name='OCR_SHOP_NEW',
+    cn=None,
+    global_cn=[
+        Button(
+            file='./assets/global_cn/dimensional_exploration/OCR_SHOP_NEW.1.png',
+            area=(394, 93, 572, 286),
+            search=(374, 73, 592, 306),
+            color=(79, 56, 101),
+            button=(394, 93, 572, 286),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/OCR_SHOP_NEW.2.png',
+            area=(585, 93, 763, 286),
+            search=(565, 73, 783, 306),
+            color=(57, 44, 74),
+            button=(585, 93, 763, 286),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/OCR_SHOP_NEW.3.png',
+            area=(776, 93, 954, 286),
+            search=(756, 73, 974, 306),
+            color=(51, 42, 71),
+            button=(776, 93, 954, 286),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/OCR_SHOP_NEW.4.png',
+            area=(967, 93, 1145, 286),
+            search=(947, 73, 1165, 306),
+            color=(56, 43, 69),
+            button=(967, 93, 1145, 286),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/OCR_SHOP_NEW.5.png',
+            area=(394, 344, 572, 537),
+            search=(374, 324, 592, 557),
+            color=(78, 57, 100),
+            button=(394, 344, 572, 537),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/OCR_SHOP_NEW.6.png',
+            area=(585, 344, 763, 537),
+            search=(565, 324, 783, 557),
+            color=(59, 50, 82),
+            button=(585, 344, 763, 537),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/OCR_SHOP_NEW.7.png',
+            area=(776, 344, 954, 537),
+            search=(756, 324, 974, 557),
+            color=(55, 44, 72),
+            button=(776, 344, 954, 537),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/OCR_SHOP_NEW.8.png',
+            area=(967, 344, 1145, 537),
+            search=(947, 324, 1165, 557),
+            color=(51, 37, 66),
+            button=(967, 344, 1145, 537),
+        ),
+    ],
+    global_en=None,
+)
+OCR_SHOP_PRICE = ButtonWrapper(
+    name='OCR_SHOP_PRICE',
+    cn=None,
+    global_cn=[
+        Button(
+            file='./assets/global_cn/dimensional_exploration/OCR_SHOP_PRICE.1.png',
+            area=(434, 286, 557, 325),
+            search=(414, 266, 577, 345),
+            color=(61, 86, 134),
+            button=(434, 286, 557, 325),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/OCR_SHOP_PRICE.2.png',
+            area=(625, 286, 748, 325),
+            search=(605, 266, 768, 345),
+            color=(61, 86, 133),
+            button=(625, 286, 748, 325),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/OCR_SHOP_PRICE.3.png',
+            area=(816, 286, 939, 325),
+            search=(796, 266, 959, 345),
+            color=(62, 86, 132),
+            button=(816, 286, 939, 325),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/OCR_SHOP_PRICE.4.png',
+            area=(1007, 286, 1130, 325),
+            search=(987, 266, 1150, 345),
+            color=(62, 86, 132),
+            button=(1007, 286, 1130, 325),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/OCR_SHOP_PRICE.5.png',
+            area=(434, 537, 557, 576),
+            search=(414, 517, 577, 596),
+            color=(57, 82, 132),
+            button=(434, 537, 557, 576),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/OCR_SHOP_PRICE.6.png',
+            area=(625, 537, 748, 576),
+            search=(605, 517, 768, 596),
+            color=(58, 83, 132),
+            button=(625, 537, 748, 576),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/OCR_SHOP_PRICE.7.png',
+            area=(816, 537, 939, 576),
+            search=(796, 517, 959, 596),
+            color=(58, 83, 131),
+            button=(816, 537, 939, 576),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/OCR_SHOP_PRICE.8.png',
+            area=(1007, 537, 1130, 576),
+            search=(987, 517, 1150, 596),
+            color=(74, 62, 91),
+            button=(1007, 537, 1130, 576),
+        ),
+    ],
     global_en=None,
 )
 PREPARE_CHECK = ButtonWrapper(
@@ -545,6 +1202,41 @@ RECRUITMENT_CHECK = ButtonWrapper(
     ),
     global_en=None,
 )
+REST_ACTION = ButtonWrapper(
+    name='REST_ACTION',
+    cn=None,
+    global_cn=[
+        Button(
+            file='./assets/global_cn/dimensional_exploration/REST_ACTION.1.png',
+            area=(930, 179, 1173, 211),
+            search=(910, 159, 1193, 231),
+            color=(65, 62, 92),
+            button=(930, 179, 1173, 211),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/REST_ACTION.2.png',
+            area=(930, 288, 1173, 320),
+            search=(910, 268, 1193, 340),
+            color=(39, 37, 52),
+            button=(930, 288, 1173, 320),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/REST_ACTION.3.png',
+            area=(930, 397, 1173, 429),
+            search=(910, 377, 1193, 449),
+            color=(36, 33, 48),
+            button=(930, 397, 1173, 429),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/REST_ACTION.4.png',
+            area=(930, 506, 1173, 538),
+            search=(910, 486, 1193, 558),
+            color=(41, 39, 54),
+            button=(930, 506, 1173, 538),
+        ),
+    ],
+    global_en=None,
+)
 REST_CHECK = ButtonWrapper(
     name='REST_CHECK',
     cn=None,
@@ -554,6 +1246,42 @@ REST_CHECK = ButtonWrapper(
         search=(912, 388, 1073, 447),
         color=(56, 54, 64),
         button=(932, 408, 1053, 427),
+    ),
+    global_en=None,
+)
+REST_HERO_CONFIRM = ButtonWrapper(
+    name='REST_HERO_CONFIRM',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/REST_HERO_CONFIRM.png',
+        area=(1030, 648, 1140, 677),
+        search=(1010, 628, 1160, 697),
+        color=(99, 84, 146),
+        button=(1030, 648, 1140, 677),
+    ),
+    global_en=None,
+)
+RESUME_REWARDS_CHECK = ButtonWrapper(
+    name='RESUME_REWARDS_CHECK',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/RESUME_REWARDS_CHECK.png',
+        area=(600, 638, 688, 661),
+        search=(580, 618, 708, 681),
+        color=(106, 97, 134),
+        button=(600, 638, 688, 661),
+    ),
+    global_en=None,
+)
+RESUME_REWARDS_CONTINUE = ButtonWrapper(
+    name='RESUME_REWARDS_CONTINUE',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/RESUME_REWARDS_CONTINUE.png',
+        area=(600, 638, 688, 661),
+        search=(580, 618, 708, 681),
+        color=(106, 97, 134),
+        button=(600, 638, 688, 661),
     ),
     global_en=None,
 )
@@ -638,6 +1366,18 @@ SETTLEMENT_CHECK = ButtonWrapper(
     ),
     global_en=None,
 )
+SETTLEMENT_CLOSE = ButtonWrapper(
+    name='SETTLEMENT_CLOSE',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/SETTLEMENT_CLOSE.png',
+        area=(600, 683, 699, 710),
+        search=(580, 663, 719, 720),
+        color=(153, 128, 194),
+        button=(600, 683, 699, 710),
+    ),
+    global_en=None,
+)
 SETTLEMENT_EMPTY = ButtonWrapper(
     name='SETTLEMENT_EMPTY',
     cn=None,
@@ -660,6 +1400,69 @@ SHOP_CHECK = ButtonWrapper(
         color=(111, 95, 131),
         button=(439, 115, 529, 140),
     ),
+    global_en=None,
+)
+SHOP_OFFER = ButtonWrapper(
+    name='SHOP_OFFER',
+    cn=None,
+    global_cn=[
+        Button(
+            file='./assets/global_cn/dimensional_exploration/SHOP_OFFER.1.png',
+            area=(407, 284, 556, 324),
+            search=(387, 264, 576, 344),
+            color=(59, 82, 128),
+            button=(407, 284, 556, 324),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/SHOP_OFFER.2.png',
+            area=(598, 284, 747, 324),
+            search=(578, 264, 767, 344),
+            color=(57, 82, 127),
+            button=(598, 284, 747, 324),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/SHOP_OFFER.3.png',
+            area=(789, 284, 938, 324),
+            search=(769, 264, 958, 344),
+            color=(59, 82, 127),
+            button=(789, 284, 938, 324),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/SHOP_OFFER.4.png',
+            area=(980, 284, 1129, 324),
+            search=(960, 264, 1149, 344),
+            color=(58, 82, 127),
+            button=(980, 284, 1129, 324),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/SHOP_OFFER.5.png',
+            area=(407, 535, 556, 575),
+            search=(387, 515, 576, 595),
+            color=(60, 80, 125),
+            button=(407, 535, 556, 575),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/SHOP_OFFER.6.png',
+            area=(598, 535, 747, 575),
+            search=(578, 515, 767, 595),
+            color=(56, 81, 126),
+            button=(598, 535, 747, 575),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/SHOP_OFFER.7.png',
+            area=(789, 535, 938, 575),
+            search=(769, 515, 958, 595),
+            color=(57, 81, 126),
+            button=(789, 535, 938, 575),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/SHOP_OFFER.8.png',
+            area=(980, 535, 1129, 575),
+            search=(960, 515, 1149, 595),
+            color=(73, 61, 90),
+            button=(980, 535, 1129, 575),
+        ),
+    ],
     global_en=None,
 )
 SHOP_SOLD = ButtonWrapper(
@@ -707,6 +1510,30 @@ SUPPLY_CONFIRM = ButtonWrapper(
         search=(1044, 629, 1136, 693),
         color=(108, 95, 154),
         button=(1064, 649, 1116, 673),
+    ),
+    global_en=None,
+)
+SUPPLY_DONE_AREA = ButtonWrapper(
+    name='SUPPLY_DONE_AREA',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/SUPPLY_DONE_AREA.png',
+        area=(1165, 265, 1220, 455),
+        search=(1145, 245, 1240, 475),
+        color=(33, 30, 50),
+        button=(1165, 265, 1220, 455),
+    ),
+    global_en=None,
+)
+SUPPLY_LOOT = ButtonWrapper(
+    name='SUPPLY_LOOT',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/SUPPLY_LOOT.png',
+        area=(932, 399, 1061, 432),
+        search=(912, 379, 1081, 452),
+        color=(76, 72, 98),
+        button=(932, 399, 1061, 432),
     ),
     global_en=None,
 )
@@ -779,6 +1606,18 @@ VICTORY_CONTINUE = ButtonWrapper(
         search=(574, 629, 708, 693),
         color=(111, 99, 150),
         button=(594, 649, 688, 673),
+    ),
+    global_en=None,
+)
+VICTORY_CONTINUE_ACTIVE = ButtonWrapper(
+    name='VICTORY_CONTINUE_ACTIVE',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/VICTORY_CONTINUE_ACTIVE.png',
+        area=(590, 647, 692, 675),
+        search=(570, 627, 712, 695),
+        color=(104, 90, 148),
+        button=(590, 647, 692, 675),
     ),
     global_en=None,
 )

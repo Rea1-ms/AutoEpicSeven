@@ -6,6 +6,7 @@ import cv2
 import numpy as np
 
 from module.base.button import ClickButton
+from module.base.utils import area_offset, area_limit
 from module.ocr.ocr import Ocr
 from tasks.dimensional_exploration.assets.assets_dimensional_exploration import (
     ABANDON_CHECK, BUY_CHECK, CHAPTER_CHECK, CORE_ICON, EVENT_CHECK, EVENT_JOURNAL, EVENT_OPTION, EXPLORE_ENTER,
@@ -15,6 +16,11 @@ from tasks.dimensional_exploration.assets.assets_dimensional_exploration import 
     PREPARE_CHECK, RECRUITMENT_CHECK, REST_CHECK, REVIVE_CHECK, REWARD_CLOSE,
     ROOM_SUPPLY_CHECK, SETTLEMENT_CHECK, SHOP_CHECK, SUPPLY_CHECK, TITLE_CHECK,
     UPGRADE_CHECK, VICTORY_CHECK,
+    OCR_LIFE, OCR_QUOTA, OCR_CORE, OCR_FRAGMENT, OCR_DICE, OCR_EVENT_STORY,
+    OCR_EVENT_REWARD, OCR_EVENT_OPTION, EVENT_OPTION_CLICK, EVENT_DETAIL_AREA,
+    OCR_HERO_NAME, OCR_HERO_COST, HERO_COST_ACTIVE, HERO_ROW_CLICK, OCR_SELECTED_HERO,
+    OCR_SHOP_NAME, OCR_SHOP_PRICE, OCR_SHOP_NEW, RESUME_REWARDS_CHECK,
+    NODE_TYPE_AREA, NODE_CLICK, OCR_HEROES,
 )
 from tasks.dimensional_exploration.policy import EventChoice, Offer, normalize, parse_counter, parse_number
 from tasks.dungeon.assets.assets_dungeon_state import AUTO_COMBAT_EXIST
@@ -82,11 +88,18 @@ def multi_match(image, asset, area, threshold=0.87, distance=24):
     return sorted(results, key=lambda box: (box[0], box[1]))
 
 
+def relative_area(region, anchor, observed):
+    """Move a source-defined box with its detected anchor, without global offsets."""
+    reference = next(anchor.iter_buttons()).area
+    offset = (observed[0] - reference[0], observed[1] - reference[1])
+    return area_limit(area_offset(region.area, offset), (0, 0, 1280, 720))
+
+
 class ExplorationVision:
     STATES = (
         ("settlement", SETTLEMENT_CHECK), ("reward", REWARD_CLOSE), ("abandon", ABANDON_CHECK),
         ("buy", BUY_CHECK), ("leave_confirm", LEAVE_CONFIRM_CHECK),
-        ("loot", LOOT_CHECK), ("failed", FAILED_CHECK),
+        ("loot", LOOT_CHECK), ("resume_rewards", RESUME_REWARDS_CHECK), ("failed", FAILED_CHECK),
         ("upgrade", UPGRADE_CHECK), ("revive", REVIVE_CHECK),
         ("hero", HERO_PICKER_CHECK), ("prepare", PREPARE_CHECK),
         ("victory", VICTORY_CHECK), ("rest", REST_CHECK),
@@ -115,10 +128,12 @@ class ExplorationVision:
         return "unknown"
 
     def text(self, area, name="ExplorationText"):
-        return Ocr(ClickButton(area, name=name), lang="cn").ocr_single_line(self.image)
+        region = area if hasattr(area, "area") else ClickButton(area, name=name)
+        return Ocr(region, lang="cn", name=getattr(region, "name", name)).ocr_single_line(self.image)
 
     def tokens(self, area, name="ExplorationOptions"):
-        return Ocr(ClickButton(area, name=name), lang="cn").detect_and_ocr(self.image)
+        region = area if hasattr(area, "area") else ClickButton(area, name=name)
+        return Ocr(region, lang="cn", name=getattr(region, "name", name)).detect_and_ocr(self.image)
 
     def number(self, area, maximum=99999):
         return parse_number(self.text(area), maximum)
@@ -126,23 +141,25 @@ class ExplorationVision:
     def resources(self):
         core = match_in(self.image, CORE_ICON, CORE_ICON.search)
         fragment = match_in(self.image, FRAGMENT_ICON, FRAGMENT_ICON.search)
-        life = parse_counter(self.text((1043, 17, 1092, 51)), maximum=9)
+        life = parse_counter(self.text(OCR_LIFE), maximum=9)
         if core is None or fragment is None or life is None:
             return None
-        cores = self.number((core[1][2], 17, fragment[1][0] - 2, 51))
-        fragments = self.number((fragment[1][2], 17, 974, 51))
+        core_area = relative_area(OCR_CORE, CORE_ICON, core[1])
+        cores = self.number((core_area[0], core_area[1], min(core_area[2], fragment[1][0]), core_area[3]))
+        fragment_area = OCR_FRAGMENT.area
+        fragments = self.number((fragment[1][2], fragment_area[1], fragment_area[2], fragment_area[3]))
         if cores is None or fragments is None:
             return None
         return Resources(cores, fragments, *life)
 
     def quota(self):
-        return parse_counter(self.text((1160, 17, 1227, 51)), maximum=99)
+        return parse_counter(self.text(OCR_QUOTA), maximum=99)
 
     def nodes(self):
         nodes = []
         for x1, y1, x2, y2 in multi_match(self.image, NODE_AVAILABLE, NODE_AVAILABLE.search):
-            x = (x1 + x2) // 2
-            area = (max(0, x - 44), y2, min(1280, x + 44), min(600, y2 + 91))
+            rectangle = (x1, y1, x2, y2)
+            area = relative_area(NODE_TYPE_AREA, NODE_AVAILABLE, rectangle)
             candidates = []
             for kind, asset in self.NODE_ASSETS.items():
                 found = match_in(self.image, asset, area, threshold=0.58)
@@ -151,7 +168,7 @@ class ExplorationVision:
             candidates.sort(reverse=True)
             if candidates and (len(candidates) == 1 or candidates[0][0] - candidates[1][0] >= 0.045):
                 score, kind = candidates[0]
-                nodes.append(Node(kind, (x - 18, y2 + 22, x + 18, y2 + 52), score))
+                nodes.append(Node(kind, relative_area(NODE_CLICK, NODE_AVAILABLE, rectangle), score))
             else:
                 # Do not rank a partial frontier. The unreadable arrow might
                 # be the higher-priority event/shop; skipping it would silently
@@ -161,24 +178,42 @@ class ExplorationVision:
 
     def offers(self):
         offers = []
-        for index in range(8):
-            col, row = index % 4, index // 4
-            x, y = 394 + col * 191, 93 + row * 251
-            name = self.text((x + 8, y + 14, x + 173, y + 55))
-            price = self.text((x + 40, y + 193, x + 163, y + 232))
-            offers.append(Offer(index, name, parse_number(price), "购买完毕" in normalize(price)))
+        regions = zip(OCR_SHOP_NAME.iter_buttons(), OCR_SHOP_PRICE.iter_buttons(), OCR_SHOP_NEW.iter_buttons())
+        for index, (name_area, price_area, badge_area) in enumerate(regions):
+            name = self.text(name_area)
+            price = self.text(price_area)
+            badge = any(normalize(t.ocr_text).strip("*+！!").upper() == "NEW" for t in self.tokens(badge_area))
+            offers.append(Offer(index, name, parse_number(price), "购买完毕" in normalize(price), badge))
         return offers
 
     def event_choices(self):
         rectangles = multi_match(self.image, EVENT_OPTION, EVENT_OPTION.search, threshold=0.78, distance=60)
         result = []
         for index, rectangle in enumerate(rectangles):
-            x, y = rectangle[:2]
-            area = (max(0, x), 554, min(1280, x + 366), 689)
+            area = relative_area(OCR_EVENT_OPTION, EVENT_OPTION, rectangle)
             text = "".join(token.ocr_text for token in self.tokens(area))
-            journal = match_in(self.image, EVENT_JOURNAL, (x, 554, x + 45, 602), threshold=0.8)
-            result.append((EventChoice(index, text, journal is not None), area))
+            journal = match_in(self.image, EVENT_JOURNAL,
+                               relative_area(EVENT_DETAIL_AREA, EVENT_OPTION, rectangle), threshold=0.8)
+            # Keep clicks below the magnifier. Opening a detail preview is not
+            # the same action as selecting the event branch or gaining its loot.
+            click_area = relative_area(EVENT_OPTION_CLICK, EVENT_OPTION, rectangle)
+            result.append((EventChoice(index, text, journal is not None), click_area))
         return result
+
+    def event_story(self):
+        return "".join(t.ocr_text for t in self.tokens(OCR_EVENT_STORY))
+
+    def event_reward(self):
+        return self.text(OCR_EVENT_REWARD)
+
+    def event_dice(self):
+        core = match_in(self.image, CORE_ICON, CORE_ICON.search)
+        if core is None:
+            return None
+        # The wider crop also contains the die's printed number, which can be
+        # read as part of the balance (e.g. 2 -> 82). Unknown/empty OCR remains
+        # None, not a guessed zero, so a dice-cost branch cannot spend it.
+        return self.number(relative_area(OCR_DICE, CORE_ICON, core[1]))
 
     def heroes(self):
         """Read complete columns only, including cost and disabled-color state."""
@@ -186,33 +221,39 @@ class ExplorationVision:
         self.hero_signature = []
         for x, y, right, bottom in multi_match(self.image, HERO_COST_ICON, HERO_COST_ICON.search,
                                                threshold=0.8, distance=35):
-            left, top = x - 231, y - 46
-            if left < 342 or right + 36 > 1280:
+            rectangle = (x, y, right, bottom)
+            area = relative_area(OCR_HERO_NAME, HERO_COST_ICON, rectangle)
+            cost_area = relative_area(OCR_HERO_COST, HERO_COST_ICON, rectangle)
+            reference = next(HERO_COST_ICON.iter_buttons()).area
+            left, top = OCR_HEROES.area[0] + x - reference[0], area[1]
+            if left < OCR_HEROES.area[0] or cost_area[2] >= self.image.shape[1]:
                 continue
-            tokens = self.tokens((left + 43, top, right + 20, top + 38), name="HeroName")
+            tokens = self.tokens(area, name="HeroName")
             names = [t.ocr_text for t in tokens if len(t.ocr_text) >= 2]
             name = normalize(names[0]) if names else ""
-            cost = self.number((right - 1, y - 2, right + 36, bottom + 1), maximum=9)
+            cost = self.number(cost_area, maximum=9)
             # Include unaffordable rows in the scroll fingerprint. Two pages
             # with no affordable heroes are not necessarily the same page.
             self.hero_signature.append((name, cost, left, top))
-            pixels = self.image[y:bottom, right:right + 28]
+            x1, y1, x2, y2 = relative_area(HERO_COST_ACTIVE, HERO_COST_ICON, rectangle)
+            pixels = self.image[y1:y2, x1:x2]
             bright = np.count_nonzero(np.min(pixels, axis=2) > 175)
             if cost and name and bright >= 10:
-                heroes.append(Hero(name, cost, (left + 55, top + 6, x - 30, top + 67)))
+                heroes.append(Hero(name, cost, relative_area(HERO_ROW_CLICK, HERO_COST_ICON, rectangle)))
         return heroes
 
     def selected_hero(self):
-        return normalize(self.text((50, 78, 306, 112)))
+        return normalize(self.text(OCR_SELECTED_HERO))
 
     def bright_text(self, area, minimum=18):
+        area = area.area if hasattr(area, "area") else area
         x1, y1, x2, y2 = area
         return np.count_nonzero(np.min(self.image[y1:y2, x1:x2], axis=2) > 190) >= minimum
 
     def gold_border(self, area):
+        area = area.area if hasattr(area, "area") else area
         x1, y1, x2, y2 = area
         pixels = self.image[y1:y2, x1:x2].astype(int)
-        mask = ((pixels[:, :, 0] > 185) & (pixels[:, :, 1] > 140)
-                & (pixels[:, :, 0] - pixels[:, :, 2] > 30)
-                & (pixels[:, :, 1] - pixels[:, :, 2] > 15))
+        mask = ((pixels[:, :, 0] > 185) & (pixels[:, :, 1] > 160)
+                & (pixels[:, :, 1] >= pixels[:, :, 2] - 12))
         return np.count_nonzero(mask) >= 40

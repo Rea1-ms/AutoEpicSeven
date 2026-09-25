@@ -293,6 +293,7 @@ SpecialActivity:
 
 DimensionalExploration:
   RunCount: 1
+  EventSampling: false
   KnightPriority:
     value: "起源拉斯 > 亚敏"
     type: textarea
@@ -314,6 +315,11 @@ DimensionalExploration:
 
 DimensionalExplorationRuntime:
   Session:
+    keepvalue: true
+    display: hide
+    type: dict
+    value: {}
+  EventHistory:
     keepvalue: true
     display: hide
     type: dict

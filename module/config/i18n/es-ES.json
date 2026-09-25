@@ -755,6 +755,10 @@
       "name": "Expediciones por lote",
       "help": "Cuenta liquidaciones con recompensa. Reanuda los lotes interrumpidos; al activar uno terminado empieza un contador nuevo."
     },
+    "EventSampling": {
+      "name": "Recopilar eventos",
+      "help": "Guarda capturas antes y después, opciones y cambios de recursos. Prueba rutas desconocidas de bajo coste y aún no visitadas. Se detiene ante costes inciertos o pérdida de la última vida. Guarda en la carpeta de capturas. Desactivado por defecto."
+    },
     "KnightPriority": {
       "name": "Caballero prioridad de héroes",
       "help": "Escribe los nombres chinos del juego por prioridad, separados por >, comas o saltos de línea. Si no hay un héroe preferido asequible, elige uno de coste bajo."
@@ -788,6 +792,10 @@
     "Session": {
       "name": "Sesión del lote",
       "help": ""
+    },
+    "EventHistory": {
+      "name": "Historial de eventos",
+      "help": "Conserva las rutas visitadas y recompensas confirmadas de este perfil entre tandas. Usa un perfil distinto por cuenta."
     }
   },
   "ActivityRuntime": {
