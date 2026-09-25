@@ -71,10 +71,6 @@ Daily:
       - Scheduler
       - SpecialActivity
       - ActivityRuntime
-    DimensionalExploration:
-      - Scheduler
-      - DimensionalExploration
-      - DimensionalExplorationRuntime
 
 
 # ==================== Tool ====================
@@ -83,6 +79,10 @@ Tool:
   menu: 'list'
   page: 'tool'
   tasks:
+    DimensionalExploration:
+      - Scheduler
+      - DimensionalExploration
+      - DimensionalExplorationRuntime
     CommunityAuth:
       - CommunityAuth
 

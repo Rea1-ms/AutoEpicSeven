@@ -25,14 +25,14 @@
       "Gacha",
       "Pets",
       "LimitedActivity",
-      "SpecialActivity",
-      "DimensionalExploration"
+      "SpecialActivity"
     ]
   },
   "Tool": {
     "menu": "list",
     "page": "tool",
     "tasks": [
+      "DimensionalExploration",
       "CommunityAuth"
     ]
   },

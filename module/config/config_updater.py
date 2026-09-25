@@ -8,6 +8,7 @@ from module.base.timer import timer
 from module.config.deep import deep_default, deep_get, deep_iter, deep_set
 from module.config.server import VALID_SERVER
 from module.config.utils import *
+from module.config.utils import parse_value
 
 CONFIG_IMPORT = '''
 import datetime
