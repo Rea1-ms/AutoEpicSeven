@@ -1038,6 +1038,13 @@ class CurrentStore(UI):
         self._enter_free_store(skip_first_screenshot=True)
         self._goto_inheritance_stone_store(skip_first_screenshot=True)
 
+    def _inheritance_store_view_complete(self) -> bool:
+        """Check for sold-out cards while the list is still at its start."""
+        return (
+            INHERITANCE_STONE_STORE_CHECK.match_template_color(self.device.image, threshold=30)
+            and self._has_item(ITEM_IN_CD, self.device.image)
+        )
+
     def _locate_inheritance_item(self, item: ItemPurchasePlan) -> bool:
         logger.info(f'Locate {item.name} in inheritance stone store')
         timeout = Timer(12, count=30).start()
@@ -1111,14 +1118,30 @@ class CurrentStore(UI):
             logger.info('Skip inheritance stone store by config')
             return True
 
+        # Entering this tab resets the list to its start. Sold-out cards sort
+        # after purchasable cards, so a clock in that initial viewport means
+        # every purchasable item is visible. Keep the tab only in this case,
+        # and do not scroll while processing its remaining items.
+        # Recheck after every purchase, since cards may be reordered. A clock
+        # seen only after _locate_inheritance_item swipes must never enable
+        # this shortcut: that would overlook items left of the viewport.
+        view_complete = False
         for index, item in enumerate(items):
-            self._wait_purchase_cooldown_before_switch()
-            if index == 0:
-                self._goto_inheritance_stone_store(skip_first_screenshot=True)
-            else:
-                self._reset_inheritance_store_view()
+            if not view_complete:
+                self._wait_purchase_cooldown_before_switch()
+                if index == 0:
+                    self._goto_inheritance_stone_store(skip_first_screenshot=True)
+                else:
+                    self._reset_inheritance_store_view()
 
-            if not self._locate_inheritance_item(item):
+            self.device.screenshot()
+            view_complete = self._inheritance_store_view_complete()
+            if view_complete:
+                logger.info('Store: all purchasable inheritance items visible, keep current tab')
+                if not self._item_ready_for_purchase(item):
+                    logger.info(f'{item.name}: not available in current viewport')
+                    continue
+            elif not self._locate_inheritance_item(item):
                 continue
 
             result = self._purchase_item(item)
