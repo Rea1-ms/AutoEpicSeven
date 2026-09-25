@@ -250,6 +250,19 @@
       "ServerUpdate": "02:00"
     }
   },
+  "LimitedActivity": {
+    "Scheduler": {
+      "Enable": false,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "LimitedActivity",
+      "ServerUpdate": "02:00"
+    },
+    "LimitedActivity": {
+      "GetFreeGacha": true,
+      "GetE7wcBattleGateReward": true,
+      "GetKoharuRaffleReward": true
+    }
+  },
   "SpecialActivity": {
     "Scheduler": {
       "Enable": false,
@@ -258,9 +271,6 @@
       "ServerUpdate": "02:00"
     },
     "SpecialActivity": {
-      "GetFreeGacha": true,
-      "GetE7wcBattleGateReward": true,
-      "GetKoharuRaffleReward": true,
       "BuyHucheMysticMedals": false
     },
     "ActivityRuntime": {

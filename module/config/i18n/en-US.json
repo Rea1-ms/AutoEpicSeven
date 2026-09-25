@@ -78,9 +78,13 @@
       "name": "Pet Shop",
       "help": ""
     },
+    "LimitedActivity": {
+      "name": "Limited-time events",
+      "help": "Claim daily 20 summons, E7WC Battle Gate and Koharu rewards through the event entrance. Scheduled independently of Special activities; the Summon task performs summons."
+    },
     "SpecialActivity": {
-      "name": "Special Activity",
-      "help": "Claim daily 20 free summons, overseas E7WC Battle Gate rewards, and Koharu task rewards during their event periods. The Summon task performs the summons."
+      "name": "Special activities",
+      "help": "Handle timed content with separate entrances, currently the Huche shop on the main screen. Scheduled independently of Limited-time events."
     },
     "DimensionalExploration": {
       "name": "Dimensional Exploration",
@@ -724,10 +728,10 @@
       "help": "Recognizes summon result names and records them in the log. Accuracy is currently low; results are for reference only."
     }
   },
-  "SpecialActivity": {
+  "LimitedActivity": {
     "_info": {
-      "name": "Special Activity",
-      "help": "Claim daily 20 free summons, overseas E7WC Battle Gate rewards, and Koharu task rewards during their event periods. The Summon task performs the summons."
+      "name": "Limited-time events",
+      "help": "Claim daily 20 summons, E7WC Battle Gate and Koharu rewards through the event entrance. Scheduled independently of Special activities; the Summon task performs summons."
     },
     "GetFreeGacha": {
       "name": "Claim Daily 20 Free Summons",
@@ -740,6 +744,12 @@
     "GetKoharuRaffleReward": {
       "name": "Claim Koharu Task Rewards",
       "help": "Overseas Simplified Chinese interface only. Claim completed tasks in the Koharu raffle event. Recheck after Arena or Combat if no reward is ready; stop daily checks only when all tasks are complete."
+    }
+  },
+  "SpecialActivity": {
+    "_info": {
+      "name": "Special activities",
+      "help": "Handle timed content with separate entrances, currently the Huche shop on the main screen. Scheduled independently of Limited-time events."
     },
     "BuyHucheMysticMedals": {
       "name": "Buy Huche Shop Mystic Medals",

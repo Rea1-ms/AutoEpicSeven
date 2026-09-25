@@ -144,10 +144,12 @@ class GeneratedConfig:
     GachaResult_SaveScreenshot = True
     GachaResult_OcrResult = False
 
+    # Group `LimitedActivity`
+    LimitedActivity_GetFreeGacha = True
+    LimitedActivity_GetE7wcBattleGateReward = True
+    LimitedActivity_GetKoharuRaffleReward = True
+
     # Group `SpecialActivity`
-    SpecialActivity_GetFreeGacha = True
-    SpecialActivity_GetE7wcBattleGateReward = True
-    SpecialActivity_GetKoharuRaffleReward = True
     SpecialActivity_BuyHucheMysticMedals = False
 
     # Group `DimensionalExploration`

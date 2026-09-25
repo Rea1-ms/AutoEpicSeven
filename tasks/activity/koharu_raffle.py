@@ -113,7 +113,7 @@ class KoharuRaffle(ActivityNavigationMixin, UI):
             logger.info("SpecialActivity: Koharu raffle unsupported on this server/language")
             self.config.task_delay(server_update=True)
             return True
-        if not self.config.SpecialActivity_GetKoharuRaffleReward:
+        if not self.config.LimitedActivity_GetKoharuRaffleReward:
             logger.info("SpecialActivity: Koharu task reward disabled")
             self.config.task_delay(server_update=True)
             return True

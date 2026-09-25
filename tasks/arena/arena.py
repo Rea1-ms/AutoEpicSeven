@@ -1,5 +1,5 @@
 from module.logger import logger
-from tasks.activity.scheduling import should_schedule_after_battle
+from tasks.activity.scheduling import schedule_activity_after_battle
 from tasks.arena.burnout import ArenaBurnoutMixin
 from tasks.arena.dashboard import ArenaDashboardMixin
 from tasks.arena.entry import ArenaEntryMixin, is_arena_settling_period
@@ -66,8 +66,7 @@ class Arena(
                 if battle_completed:
                     if should_schedule_mission_reward(self.config):
                         self.config.task_call("MissionReward", force_call=False)
-                    if should_schedule_after_battle(self.config):
-                        self.config.task_call("SpecialActivity", force_call=False)
+                    schedule_activity_after_battle(self.config)
 
             self.config.task_call("DataUpdate", force_call=False)
             self._arena_delay_after_run()

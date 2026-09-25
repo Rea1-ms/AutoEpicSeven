@@ -64,6 +64,9 @@ Daily:
       - GachaResult
     Pets:
       - Scheduler
+    LimitedActivity:
+      - Scheduler
+      - LimitedActivity
     SpecialActivity:
       - Scheduler
       - SpecialActivity

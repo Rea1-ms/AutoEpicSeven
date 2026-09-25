@@ -1060,6 +1060,47 @@
       }
     }
   },
+  "LimitedActivity": {
+    "Scheduler": {
+      "Enable": {
+        "type": "checkbox",
+        "value": false,
+        "option": [
+          true,
+          false
+        ]
+      },
+      "NextRun": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime"
+      },
+      "Command": {
+        "type": "input",
+        "value": "LimitedActivity",
+        "display": "hide"
+      },
+      "ServerUpdate": {
+        "type": "input",
+        "value": "02:00",
+        "display": "hide"
+      }
+    },
+    "LimitedActivity": {
+      "GetFreeGacha": {
+        "type": "checkbox",
+        "value": true
+      },
+      "GetE7wcBattleGateReward": {
+        "type": "checkbox",
+        "value": true
+      },
+      "GetKoharuRaffleReward": {
+        "type": "checkbox",
+        "value": true
+      }
+    }
+  },
   "SpecialActivity": {
     "Scheduler": {
       "Enable": {
@@ -1087,18 +1128,6 @@
       }
     },
     "SpecialActivity": {
-      "GetFreeGacha": {
-        "type": "checkbox",
-        "value": true
-      },
-      "GetE7wcBattleGateReward": {
-        "type": "checkbox",
-        "value": true
-      },
-      "GetKoharuRaffleReward": {
-        "type": "checkbox",
-        "value": true
-      },
       "BuyHucheMysticMedals": {
         "type": "checkbox",
         "value": false

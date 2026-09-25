@@ -114,7 +114,7 @@ class E7wcBattleGate(ActivityNavigationMixin, UI):
             logger.info("SpecialActivity: E7WC Battle Gate unsupported on this server/language")
             self.config.task_delay(server_update=True)
             return True
-        if not self.config.SpecialActivity_GetE7wcBattleGateReward:
+        if not self.config.LimitedActivity_GetE7wcBattleGateReward:
             logger.info("SpecialActivity: E7WC Battle Gate reward disabled")
             self.config.task_delay(server_update=True)
             return True

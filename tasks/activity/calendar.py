@@ -13,6 +13,10 @@ EVENT_TIMEZONE = INFO_TIMEZONE
 CALENDAR_PATH = INFO_PATH
 DEFAULT_FREE_GACHA_20_ID = "free_gacha_20_2026_08_27"
 SUPPORTED_MODES = ("legacy", "free_gacha_20", "e7wc_battle_gate", "koharu_raffle", "huche_shop")
+ACTIVITY_TASK_MODES = {
+    "LimitedActivity": ("free_gacha_20", "e7wc_battle_gate", "koharu_raffle"),
+    "SpecialActivity": ("legacy", "huche_shop"),
+}
 
 
 @dataclass(frozen=True)
@@ -67,14 +71,16 @@ def _server_windows(config) -> tuple[ActivityWindow, ...]:
     )
 
 
-def active_activities(config, now: datetime | None = None) -> tuple[ActivityWindow, ...]:
+def active_activities(config, now: datetime | None = None, *, task=None) -> tuple[ActivityWindow, ...]:
     now = now or datetime.now(EVENT_TIMEZONE)
-    return tuple(window for window in _server_windows(config) if window.contains(now))
+    modes = SUPPORTED_MODES if task is None else ACTIVITY_TASK_MODES[task]
+    return tuple(window for window in _server_windows(config) if window.mode in modes and window.contains(now))
 
 
-def next_activity_start(config, now: datetime | None = None) -> datetime | None:
+def next_activity_start(config, now: datetime | None = None, *, task=None) -> datetime | None:
     now = now or datetime.now(EVENT_TIMEZONE)
-    return min((window.start for window in _server_windows(config) if window.start > now),
+    modes = SUPPORTED_MODES if task is None else ACTIVITY_TASK_MODES[task]
+    return min((window.start for window in _server_windows(config) if window.mode in modes and window.start > now),
                default=None)
 
 

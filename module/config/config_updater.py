@@ -477,6 +477,16 @@ class ConfigGenerator:
 class ConfigUpdater:
     # source, target, (optional)convert_func
     redirection = [
+        # Split task ownership without changing existing opt-ins or due times.
+        # Redirection only fills absent destinations, so later independent
+        # edits survive reloads. ActivityRuntime stays at its historical path.
+        ('SpecialActivity.Scheduler.Enable', 'LimitedActivity.Scheduler.Enable'),
+        ('SpecialActivity.Scheduler.NextRun', 'LimitedActivity.Scheduler.NextRun',
+         lambda value: parse_value(value, {})),
+        ('SpecialActivity.Scheduler.ServerUpdate', 'LimitedActivity.Scheduler.ServerUpdate'),
+        ('SpecialActivity.SpecialActivity.GetFreeGacha', 'LimitedActivity.LimitedActivity.GetFreeGacha'),
+        ('SpecialActivity.SpecialActivity.GetE7wcBattleGateReward', 'LimitedActivity.LimitedActivity.GetE7wcBattleGateReward'),
+        ('SpecialActivity.SpecialActivity.GetKoharuRaffleReward', 'LimitedActivity.LimitedActivity.GetKoharuRaffleReward'),
         ('Arena.Arena.BurnoutMode', 'Arena.Arena.BurnoutMode', normalize_execution_mode),
         ('Combat.Combat.BurnoutMode', 'Combat.Combat.BurnoutMode', normalize_execution_mode),
         ('CombatFarm.Combat.BurnoutMode', 'CombatFarm.Combat.BurnoutMode', normalize_execution_mode),

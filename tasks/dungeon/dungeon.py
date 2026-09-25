@@ -1,6 +1,6 @@
 import module.config.server as server
 from module.logger import logger
-from tasks.activity.scheduling import should_schedule_after_battle
+from tasks.activity.scheduling import schedule_activity_after_battle
 from tasks.base.page import (
     page_combat,
     page_episode,
@@ -458,8 +458,7 @@ class Combat(
             if should_schedule_reward:
                 if should_schedule_mission_reward(self.config):
                     self.config.task_call("MissionReward", force_call=False)
-                if should_schedule_after_battle(self.config):
-                    self.config.task_call("SpecialActivity", force_call=False)
+                schedule_activity_after_battle(self.config)
             self._combat_delay_after_settled()
             return True
 
@@ -714,8 +713,7 @@ class Combat(
             if should_schedule_reward:
                 if should_schedule_mission_reward(self.config):
                     self.config.task_call("MissionReward", force_call=False)
-                if should_schedule_after_battle(self.config):
-                    self.config.task_call("SpecialActivity", force_call=False)
+                schedule_activity_after_battle(self.config)
             if repeat_combat_started:
                 self._combat_runtime_set(self._combat_runtime_build())
                 self._delay_running_repeat_combat()
@@ -738,7 +736,6 @@ class Combat(
         if should_schedule_reward:
             if should_schedule_mission_reward(self.config):
                 self.config.task_call("MissionReward", force_call=False)
-            if should_schedule_after_battle(self.config):
-                self.config.task_call("SpecialActivity", force_call=False)
+            schedule_activity_after_battle(self.config)
         self.config.task_delay(success=False)
         return False

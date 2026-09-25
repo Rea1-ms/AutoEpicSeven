@@ -90,7 +90,7 @@ class FreeGacha20(ActivityNavigationMixin, UI):
 
             Login(self.config, device=self.device).app_start()
 
-        if not self.config.SpecialActivity_GetFreeGacha:
+        if not self.config.LimitedActivity_GetFreeGacha:
             logger.info("SpecialActivity: free-gacha reward disabled")
             self.config.task_delay(server_update=True)
             return True
