@@ -89,8 +89,37 @@ class DiscountBatchScan:
         self.previous = None
         self.top = False
         self.tail = None
+        self.anchors = ()
         self.scrolls = 0
         self.recoveries = 0
+
+    def _overlap_shift(self, view):
+        matches = [item for item in view.items
+                   if (item.name, item.mystic) == (self.tail.name, self.tail.mystic)]
+        if len(matches) == 1:
+            return matches[0].y - self.tail.y
+        # A bottom-row name can change after moving away from the viewport
+        # edge: the reported "5★神器召唤" becomes "5★神器召唤券". Never fuzzy-match
+        # product names to solve this. Two distinct adjacent exact matches,
+        # in the same order and with the same displacement, also establish
+        # continuous coverage. Reject conflicting offsets or repeated names;
+        # a mere shared word or a boundary alone cannot establish overlap.
+        shifts = []
+        for old_left, old_right in zip(self.anchors, self.anchors[1:]):
+            identities = ((old_left.name, old_left.mystic), (old_right.name, old_right.mystic))
+            if identities[0] == identities[1]:
+                continue
+            for new_left, new_right in zip(view.items, view.items[1:]):
+                if identities != ((new_left.name, new_left.mystic), (new_right.name, new_right.mystic)):
+                    continue
+                shift = new_left.y - old_left.y
+                if abs(shift - (new_right.y - old_right.y)) <= 6:
+                    shifts.append(shift)
+        if not shifts or max(shifts) - min(shifts) > 6:
+            return None
+        logger.info(f"HucheShop: overlap confirmed by adjacent rows, shift={shifts[0]}, "
+                    f"previous tail={self.tail.name!r}")
+        return shifts[0]
 
     def observe(self, view):
         stable = view is not None and view == self.previous
@@ -107,13 +136,13 @@ class DiscountBatchScan:
                 return "up"
             self.top = True
         if self.tail is not None:
-            overlaps = [item for item in view.items
-                        if (item.name, item.mystic) == (self.tail.name, self.tail.mystic)]
-            if not overlaps:
+            shift = self._overlap_shift(view)
+            if shift is None:
                 return "recover"
-            if min(item.y for item in overlaps) >= self.tail.y - 20:
+            if shift >= -20:
                 return "down"
             self.tail = None
+            self.anchors = ()
             self.recoveries = 0
         if any(item.mystic for item in view.items):
             return "target"
@@ -128,6 +157,9 @@ class DiscountBatchScan:
         # scan. Reset the recovery budget only after overlap proves progress.
         if direction == "down" and self.tail is None:
             self.tail = view.items[-1]
+            # Keep the connected viewport alongside its tail so another pair
+            # can prove overlap if the edge row's OCR changes after dragging.
+            self.anchors = view.items
         elif direction == "recover":
             self.recoveries += 1
         self.previous = None
