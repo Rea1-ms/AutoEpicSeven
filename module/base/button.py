@@ -132,7 +132,10 @@ class Button(Resource):
         """
         if not direct_match:
             image = crop(image, self.search, copy=False)
-        res = cv2.matchTemplate(self.image, image, cv2.TM_CCOEFF_NORMED)
+        # Keep the screenshot first and the asset second. OpenCV can mask a
+        # reversed call by swapping differently sized inputs, but not equal
+        # sizes: a flat loading frame then becomes the template and scores 1.0.
+        res = cv2.matchTemplate(image, self.image, cv2.TM_CCOEFF_NORMED)
         _, sim, _, point = cv2.minMaxLoc(res)
 
         self._button_offset = np.array(point) + self.search[:2] - self.area[:2]
@@ -155,7 +158,9 @@ class Button(Resource):
         if not direct_match:
             image = crop(image, self.search, copy=False)
         image = rgb2luma(image)
-        res = cv2.matchTemplate(self.image_luma, image, cv2.TM_CCOEFF_NORMED)
+        # The asset must remain the template even for an equal-sized search;
+        # reversing these inputs makes a flat screenshot a perfect match.
+        res = cv2.matchTemplate(image, self.image_luma, cv2.TM_CCOEFF_NORMED)
         _, sim, _, point = cv2.minMaxLoc(res)
 
         self._button_offset = np.array(point) + self.search[:2] - self.area[:2]
@@ -175,7 +180,9 @@ class Button(Resource):
         """
         if not direct_match:
             image = crop(image, self.search, copy=False)
-        res = cv2.matchTemplate(self.image, image, cv2.TM_CCOEFF_NORMED)
+        # Use the same image/template order as the single-match methods so
+        # equal-sized blank search regions cannot produce false detections.
+        res = cv2.matchTemplate(image, self.image, cv2.TM_CCOEFF_NORMED)
         res = cv2.inRange(res, similarity, 1.)
         try:
             points = np.array(cv2.findNonZero(res))[:, 0, :]

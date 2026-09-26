@@ -7,7 +7,7 @@ from module.exception import RequestHumanTakeover
 from module.logger import logger
 from module.ocr.ocr import DigitCounter
 from tasks.base.assets.assets_base_popup import POPUP_CONFIRM
-from tasks.base.page import page_knights
+from tasks.base.page import KNIGHTS_CREST_SIMILARITY, page_knights
 from tasks.knights.assets.assets_knights_gvg import (
     KNIGHTS_CREST,
     OCR_KNIGHTS_CREST,
@@ -45,7 +45,7 @@ class OcrKnightsCrest(DigitCounter):
 
 
 class KnightsTeamBattleMixin(KnightsTeamBattleStatusMixin):
-    TEAM_BATTLE_HOME_SIMILARITY = 0.7
+    TEAM_BATTLE_HOME_SIMILARITY = KNIGHTS_CREST_SIMILARITY
     TEAM_BATTLE_LOCKED_SIMILARITY = 0.8
     TEAM_BATTLE_FLOW_TIMEOUT_SECONDS = 120
     TEAM_BATTLE_ENTRY_PENDING_SECONDS = 8

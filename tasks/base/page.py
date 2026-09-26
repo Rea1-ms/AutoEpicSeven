@@ -95,6 +95,12 @@ from tasks.login.assets.assets_login_popup import (
 )
 
 
+# The task and navigation must agree on this animated crest. Real guild-war
+# frames can score around 0.80; using the default 0.85 only while navigating
+# strands the task immediately after it has successfully read the counter.
+KNIGHTS_CREST_SIMILARITY = 0.7
+
+
 class Page:
     # Key: str, page name like "page_main"
     # Value: Page, page instance

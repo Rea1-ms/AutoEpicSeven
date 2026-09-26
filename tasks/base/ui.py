@@ -11,9 +11,16 @@ from tasks.base.assets.assets_base_popup import (
     NEW_CHARACTER_VIDEO_PASS,
 )
 from tasks.base.main_page import MainPage
-from tasks.base.page import Page, page_main, page_menu
+from tasks.base.page import (
+    KNIGHTS_CREST_SIMILARITY,
+    Page,
+    page_knights_team_battle,
+    page_main,
+    page_menu,
+)
 from tasks.base.popup import ANNOUNCEMENT_DONOT_REMIND
 from tasks.base.route_entry import match_route_entry
+from tasks.knights.assets.assets_knights_gvg import KNIGHTS_CREST, KNIGHTS_NOT_ENOUGH_PEOPLE
 from tasks.login.assets.assets_login import (
     LOGIN_AGREEMENT_UNCHECKED,
     LOGIN_ANNOUNCEMENT_CLOSE,
@@ -211,6 +218,12 @@ class UI(MainPage):
         """
         if page == page_main:
             return self.is_in_main(interval=interval)
+        if page == page_knights_team_battle:
+            # Only the animated crest needs the task's lower threshold.
+            # Keep the insufficient-members marker at its normal threshold.
+            return self.appear(
+                KNIGHTS_CREST, interval=interval, similarity=KNIGHTS_CREST_SIMILARITY
+            ) or self.appear(KNIGHTS_NOT_ENOUGH_PEOPLE, interval=interval)
         return self._ui_process_appear(page.check_button, interval=interval)
 
     def ui_get_current_page(self, skip_first_screenshot=True):
