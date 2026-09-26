@@ -16,7 +16,6 @@ from tasks.arena.assets.assets_arena import (
     OCR_FAST_BATTLE_TIMES,
     OPPONENT,
 )
-from tasks.dungeon.runtime import is_background_repeat_combat_active
 
 
 class OcrFastBattleTimes(DigitCounter):
@@ -508,10 +507,10 @@ class ArenaNpcCombatMixin:
 
     def _run_npc_combat(self, skip_first_screenshot=True) -> bool:
         self._arena_npc_completed_rounds = 0
+        # Server-managed repeat sessions keep their runtime record active while
+        # arena fast battle remains available. Honor the user's setting here;
+        # each round checks the actual lock and remaining uses on the prepare page.
         use_fast_battle = getattr(self.config, "Arena_NPCCombatFastBattle", True)
-        if use_fast_battle and is_background_repeat_combat_active(self.config):
-            logger.info("Arena NPC: background repeat combat active, use normal battle")
-            use_fast_battle = False
         flag_status = self._stored_arena_flag_status()
         if flag_status is not None and flag_status[0] <= 0:
             logger.info("Arena NPC: arena flag is already 0, skip combat")
