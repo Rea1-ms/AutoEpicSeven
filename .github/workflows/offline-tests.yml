@@ -1,0 +1,84 @@
+name: Offline regression tests
+
+'on':
+  push:
+    branches: [master, dev]
+    paths:
+      - '.github/workflows/offline-tests.yml'
+      - 'assets/**'
+      - 'dev_tools/build_exploration_fixtures.py'
+      - 'dev_tools/build_test_inventory.py'
+      - 'dev_tools/check_offline_negative.py'
+      - 'dev_tools/run_offline_tests.py'
+      - 'module/**'
+      - 'tasks/**'
+      - 'tests/**'
+      - 'requirements-test-pinned.txt'
+      - '!**/*.md'
+  pull_request:
+    paths:
+      - '.github/workflows/offline-tests.yml'
+      - 'assets/**'
+      - 'dev_tools/build_exploration_fixtures.py'
+      - 'dev_tools/build_test_inventory.py'
+      - 'dev_tools/check_offline_negative.py'
+      - 'dev_tools/run_offline_tests.py'
+      - 'module/**'
+      - 'tasks/**'
+      - 'tests/**'
+      - 'requirements-test-pinned.txt'
+      - '!**/*.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  dimensional-exploration:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python 3.10.19
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10.19'
+      - name: Install pinned offline-test environment
+        shell: pwsh
+        run: |
+          python -m pip install --no-deps -r requirements-test-pinned.txt
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m pip check
+          exit $LASTEXITCODE
+      - name: Verify controlled failure and device isolation
+        shell: pwsh
+        run: |
+          python -B -m dev_tools.check_offline_negative
+          exit $LASTEXITCODE
+      - name: Run offline suite with coverage
+        shell: pwsh
+        run: |
+          python -B -m dev_tools.run_offline_tests --suite all --coverage --timeout-seconds 300
+          exit $LASTEXITCODE
+      - name: Publish result summary
+        if: always()
+        shell: pwsh
+        run: |
+          $reports = Get-ChildItem screenshots/offline_test_results -Filter result.json -Recurse -ErrorAction SilentlyContinue | Where-Object { $_.Directory.Name -notlike 'negative-*' }
+          if ($reports) {
+            $report = Get-Content $reports[-1].FullName -Raw | ConvertFrom-Json
+            "### Offline tests" >> $env:GITHUB_STEP_SUMMARY
+            "Passed: $($report.counts.passed); failed: $($report.counts.failed); errors: $($report.counts.error); skipped: $($report.counts.skipped)" >> $env:GITHUB_STEP_SUMMARY
+            "Duration: $($report.duration_seconds)s; fixtures: $($report.fixture_count)" >> $env:GITHUB_STEP_SUMMARY
+          } else {
+            "Offline tests did not produce result.json; inspect uploaded logs or setup output." >> $env:GITHUB_STEP_SUMMARY
+          }
+      - name: Upload report and failure attachments
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dimensional-exploration-offline-results
+          path: screenshots/offline_test_results/
+          if-no-files-found: warn
+          retention-days: 14

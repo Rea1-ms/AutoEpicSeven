@@ -6,7 +6,8 @@ import cv2
 import numpy as np
 
 from module.base.button import ClickButton
-from module.base.utils import area_offset, area_limit
+from module.base.utils import area_center, area_offset, area_limit, point_in_area
+from module.logger import logger
 from module.ocr.ocr import Ocr
 from tasks.dimensional_exploration.assets.assets_dimensional_exploration import (
     ABANDON_CHECK, BUY_CHECK, CHAPTER_CHECK, CORE_ICON, EVENT_CHECK, EVENT_JOURNAL, EVENT_OPTION, EXPLORE_ENTER,
@@ -14,7 +15,7 @@ from tasks.dimensional_exploration.assets.assets_dimensional_exploration import 
     LOBBY_CHECK, LOOT_CHECK, MAP_CHECK, NODE_AVAILABLE, NODE_BATTLE, NODE_BOSS,
     NODE_ELITE, NODE_ENTER, NODE_EVENT, NODE_REST, NODE_SHOP, NODE_SUPPLY,
     PREPARE_CHECK, RECRUITMENT_CHECK, REST_CHECK, REVIVE_CHECK, REWARD_CLOSE,
-    ROOM_SUPPLY_CHECK, SETTLEMENT_CHECK, SHOP_CHECK, SUPPLY_CHECK, TITLE_CHECK,
+    ROOM_SUPPLY_CHECK, SETTLEMENT_CHECK, SHOP_CHECK, SHOP_NEW, SUPPLY_CHECK, TITLE_CHECK,
     UPGRADE_CHECK, VICTORY_CHECK,
     OCR_LIFE, OCR_QUOTA, OCR_CORE, OCR_FRAGMENT, OCR_DICE, OCR_EVENT_STORY,
     OCR_EVENT_REWARD, OCR_EVENT_OPTION, EVENT_OPTION_CLICK, EVENT_DETAIL_AREA,
@@ -178,12 +179,18 @@ class ExplorationVision:
 
     def offers(self):
         offers = []
+        # The uncollected marker is an orange N icon, not the word NEW.
+        # Its left edge overhangs the card, so match the full shop first and
+        # bind each marker's center to a card. Cropping it to the old OCR
+        # region truncates the icon; OCR of that region only reads the name.
+        badges = [area_center(box) for box in multi_match(self.image, SHOP_NEW, SHOP_NEW.search)]
         regions = zip(OCR_SHOP_NAME.iter_buttons(), OCR_SHOP_PRICE.iter_buttons(), OCR_SHOP_NEW.iter_buttons())
         for index, (name_area, price_area, badge_area) in enumerate(regions):
             name = self.text(name_area)
             price = self.text(price_area)
-            badge = any(normalize(t.ocr_text).strip("*+！!").upper() == "NEW" for t in self.tokens(badge_area))
+            badge = any(point_in_area(center, badge_area.area, threshold=0) for center in badges)
             offers.append(Offer(index, name, parse_number(price), "购买完毕" in normalize(price), badge))
+        logger.attr("ExplorationShopNew", [(o.index + 1, o.name) for o in offers if o.new])
         return offers
 
     def event_choices(self):

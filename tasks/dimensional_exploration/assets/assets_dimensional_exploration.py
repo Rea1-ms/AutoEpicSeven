@@ -1402,6 +1402,18 @@ SHOP_CHECK = ButtonWrapper(
     ),
     global_en=None,
 )
+SHOP_NEW = ButtonWrapper(
+    name='SHOP_NEW',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/SHOP_NEW.png',
+        area=(767, 90, 794, 117),
+        search=(384, 84, 1145, 594),
+        color=(130, 64, 38),
+        button=(767, 90, 794, 117),
+    ),
+    global_en=None,
+)
 SHOP_OFFER = ButtonWrapper(
     name='SHOP_OFFER',
     cn=None,
