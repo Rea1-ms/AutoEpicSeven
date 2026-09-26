@@ -88,7 +88,7 @@
     },
     "DimensionalExploration": {
       "name": "Exploración dimensional",
-      "help": "Solo para el cliente internacional en chino. Mantiene la dificultad actual y empieza con Heavy Baggage. Se detiene tras completar el lote."
+      "help": "Solo para el cliente internacional en chino. Se inicia manualmente desde Herramientas, de forma independiente del planificador principal. Mantiene la dificultad actual y empieza con Heavy Baggage. Se detiene tras completar el lote."
     },
     "CommunityAuth": {
       "name": "Inicio comunidad",
@@ -763,7 +763,7 @@
     },
     "RunCount": {
       "name": "Expediciones por lote",
-      "help": "Cuenta liquidaciones con recompensa. Reanuda los lotes interrumpidos; al activar uno terminado empieza un contador nuevo."
+      "help": "Cuenta liquidaciones con recompensa. Reanuda los lotes interrumpidos; al pulsar Iniciar después de completar un lote empieza un contador nuevo."
     },
     "EventSampling": {
       "name": "Recopilar eventos",

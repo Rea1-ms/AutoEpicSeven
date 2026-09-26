@@ -88,7 +88,7 @@
     },
     "DimensionalExploration": {
       "name": "Dimensional Exploration",
-      "help": "Overseas Chinese client only. Keep the current difficulty and start with Heavy Baggage. Finish each run and stop after the configured batch."
+      "help": "Overseas Chinese client only. Start manually from Tools, independently of the main scheduler. Keep the current difficulty and start with Heavy Baggage. Finish each run and stop after the configured batch."
     },
     "CommunityAuth": {
       "name": "Community Login",
@@ -763,7 +763,7 @@
     },
     "RunCount": {
       "name": "Runs per batch",
-      "help": "Count rewarded settlements. Interrupted batches resume; re-enabling a finished batch starts a new count."
+      "help": "Count rewarded settlements. Interrupted batches resume; clicking Start after a finished batch starts a new count."
     },
     "EventSampling": {
       "name": "Collect event samples",

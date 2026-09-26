@@ -1150,31 +1150,6 @@
     }
   },
   "DimensionalExploration": {
-    "Scheduler": {
-      "Enable": {
-        "type": "checkbox",
-        "value": false,
-        "option": [
-          true,
-          false
-        ]
-      },
-      "NextRun": {
-        "type": "datetime",
-        "value": "2020-01-01 00:00:00",
-        "validate": "datetime"
-      },
-      "Command": {
-        "type": "input",
-        "value": "DimensionalExploration",
-        "display": "hide"
-      },
-      "ServerUpdate": {
-        "type": "input",
-        "value": "02:00",
-        "display": "hide"
-      }
-    },
     "DimensionalExploration": {
       "RunCount": {
         "type": "input",

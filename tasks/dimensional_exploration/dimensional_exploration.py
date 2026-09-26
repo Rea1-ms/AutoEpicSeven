@@ -89,7 +89,7 @@ class DimensionalExploration(RecruitmentMixin, UI):
         }
 
     def run(self):
-        """Run a configured batch and disable it after the last settlement.
+        """Run a manual batch and finish after the last settlement.
 
         Pages:
             in: main, combat common, exploration title/lobby, or an ongoing run
@@ -97,7 +97,6 @@ class DimensionalExploration(RecruitmentMixin, UI):
         """
         if not server.is_oversea_server(self.config.Emulator_PackageName) or server.lang != "global_cn":
             logger.info("次元探查目前只支持国际服中文界面。")
-            self.config.task_delay(server_update=True)
             return
         self.target = int(self.config.DimensionalExploration_RunCount)
         if not 1 <= self.target <= 999:
@@ -114,9 +113,7 @@ class DimensionalExploration(RecruitmentMixin, UI):
                 self.ui_ensure(page_combat_common)
         self.explore()
         self.ui_goto_main()
-        with self.config.multi_set():
-            self.save_progress(finished=True)
-            self.config.Scheduler_Enable = False
+        self.save_progress(finished=True)
         logger.info(f"次元探查完成：{self.progress.completed}/{self.target}轮，任务已停止。")
 
     def explore(self, skip_first_screenshot=True):

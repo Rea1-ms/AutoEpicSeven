@@ -80,7 +80,6 @@ Tool:
   page: 'tool'
   tasks:
     DimensionalExploration:
-      - Scheduler
       - DimensionalExploration
       - DimensionalExplorationRuntime
     CommunityAuth:
