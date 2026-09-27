@@ -96,11 +96,12 @@ class PlatformWindows(PlatformBase, EmulatorManager):
             # NemuPlayer.exe -m nemu-12.0-x64-default
             self.execute(f'"{exe}" -m {instance.name}')
         elif instance == Emulator.MuMuPlayer12:
-            # MuMuPlayer.exe -v 0
-            # MuMuNxMain.exe -v 0
+            # Launch through MuMuManager's backend queue. MuMuNxMain is a GUI
+            # singleton and can silently drop a concurrent instance launch
+            # while its first window is still initializing.
             if instance.MuMuPlayer12_id is None:
                 logger.warning(f'Cannot get MuMu instance index from name {instance.name}')
-            self.execute(f'"{exe}" -v {instance.MuMuPlayer12_id}')
+            self.execute(f'"{Emulator.single_to_console(exe)}" api -v {instance.MuMuPlayer12_id} launch_player')
         elif instance == Emulator.LDPlayerFamily:
             # ldconsole.exe launch --index 0
             self.execute(f'"{Emulator.single_to_console(exe)}" launch --index {instance.LDPlayer_id}')
@@ -318,9 +319,12 @@ class PlatformWindows(PlatformBase, EmulatorManager):
                 return False
             # Start
             if self._emulator_function_wrapper(self._emulator_start):
-                # Success
-                self.emulator_start_watch()
-                return True
+                if self.emulator_start_watch():
+                    return True
+                # Sending the launch command does not prove the instance
+                # booted. A timeout must retry the bounded stop/start cycle,
+                # otherwise callers proceed with an emulator still offline.
+                continue
             else:
                 # Failed to start, stop and start again
                 if self._emulator_function_wrapper(self._emulator_stop):
