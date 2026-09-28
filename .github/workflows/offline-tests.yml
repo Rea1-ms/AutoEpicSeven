@@ -35,7 +35,7 @@ permissions:
 
 jobs:
   dimensional-exploration:
-    runs-on: windows-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - name: Check out repository
@@ -45,35 +45,32 @@ jobs:
         with:
           python-version: '3.10.19'
       - name: Install pinned offline-test environment
-        shell: pwsh
         run: |
           python -m pip install --no-deps -r requirements-test-pinned.txt
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -m pip check
-          exit $LASTEXITCODE
       - name: Verify controlled failure and device isolation
-        shell: pwsh
-        run: |
-          python -B -m dev_tools.check_offline_negative
-          exit $LASTEXITCODE
+        run: python -B -m dev_tools.check_offline_negative
       - name: Run offline suite with coverage
-        shell: pwsh
-        run: |
-          python -B -m dev_tools.run_offline_tests --suite all --coverage --timeout-seconds 300
-          exit $LASTEXITCODE
+        run: python -B -m dev_tools.run_offline_tests --suite all --coverage --timeout-seconds 300
       - name: Publish result summary
         if: always()
-        shell: pwsh
         run: |
-          $reports = Get-ChildItem screenshots/offline_test_results -Filter result.json -Recurse -ErrorAction SilentlyContinue | Where-Object { $_.Directory.Name -notlike 'negative-*' }
-          if ($reports) {
-            $report = Get-Content $reports[-1].FullName -Raw | ConvertFrom-Json
-            "### Offline tests" >> $env:GITHUB_STEP_SUMMARY
-            "Passed: $($report.counts.passed); failed: $($report.counts.failed); errors: $($report.counts.error); skipped: $($report.counts.skipped)" >> $env:GITHUB_STEP_SUMMARY
-            "Duration: $($report.duration_seconds)s; fixtures: $($report.fixture_count)" >> $env:GITHUB_STEP_SUMMARY
-          } else {
-            "Offline tests did not produce result.json; inspect uploaded logs or setup output." >> $env:GITHUB_STEP_SUMMARY
-          }
+          report=$(find screenshots/offline_test_results -mindepth 2 -maxdepth 2 -name result.json ! -path '*/negative-*/*' 2>/dev/null | sort | tail -n 1 || true)
+          if [ -n "$report" ]; then
+            python - "$report" <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          import sys
+
+          with open(sys.argv[1], encoding="utf-8") as source:
+              report = json.load(source)
+          counts = report["counts"]
+          print("### Offline tests")
+          print(f"Passed: {counts['passed']}; failed: {counts['failed']}; errors: {counts['error']}; skipped: {counts['skipped']}")
+          print(f"Duration: {report['duration_seconds']}s; fixtures: {report['fixture_count']}")
+          PY
+          else
+            echo "Offline tests did not produce result.json; inspect uploaded logs or setup output." >> "$GITHUB_STEP_SUMMARY"
+          fi
       - name: Upload report and failure attachments
         if: always()
         uses: actions/upload-artifact@v4

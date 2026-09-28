@@ -1,4 +1,4 @@
-# Windows Python 3.10 offline-test environment; captured 2026-09-26.
+# Python 3.10 offline-test environment captured on Windows, with platform markers for Linux CI.
 # This is a complete installed-distribution snapshot. --no-deps avoids re-resolving pinned transitive packages.
 # Validate in a clean environment before treating this as fully reproducible.
 Deprecated==1.2.18
@@ -54,7 +54,7 @@ pydantic==2.13.3
 pydantic_core==2.46.3
 pyelftools==0.32
 pyparsing==3.3.2
-pyreadline3==3.5.4
+pyreadline3==3.5.4; sys_platform == "win32"
 python-dotenv==1.2.2
 pywebio==1.8.3
 requests==2.33.1
