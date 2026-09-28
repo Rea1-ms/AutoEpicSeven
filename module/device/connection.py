@@ -19,9 +19,10 @@ from module.config.deep import deep_get
 from module.device.connection_attr import ConnectionAttr
 from module.device.env import IS_LINUX, IS_MACINTOSH, IS_WINDOWS
 from module.device.method.pool import WORKER_POOL
+from module.device.method.remove_warning import remove_shell_warning
 from module.device.method.utils import (PackageNotInstalled, RETRY_TRIES, get_serial_pair, handle_adb_error,
                                         handle_unknown_host_service, possible_reasons, random_port, recv_all,
-                                        remove_shell_warning, retry_sleep)
+                                        retry_sleep)
 from module.exception import EmulatorNotRunningError, RequestHumanTakeover
 from module.logger import logger
 
@@ -345,10 +346,14 @@ class Connection(ConnectionAttr):
         # MuMU Pro is the Mac version of MuMu
         if not IS_MACINTOSH:
             return False
-        if not self.is_mumu_family:
-            return False
-        logger.attr('is_mumu_pro', True)
-        return True
+        if self.is_mumu_family:
+            logger.attr('is_mumu_pro', True)
+            return True
+        if self.serial.startswith('emulator-'):
+            if 'MACPRO' in self.nemud_player_engine.upper():
+                logger.attr('is_mumu_pro', True)
+                return True
+        return False
 
     @cached_property
     @retry
@@ -374,7 +379,7 @@ class Connection(ConnectionAttr):
         return res
 
     def check_mumu_app_keep_alive(self):
-        if not self.is_mumu_family:
+        if not (self.is_mumu_family or self.is_mumu_pro):
             return False
 
         res = self.nemud_app_keep_alive
@@ -409,15 +414,14 @@ class Connection(ConnectionAttr):
                 which has nemud.app_keep_alive and always be a vertical device
                 MuMu PRO on mac has the same feature
         """
+        if self.is_mumu_pro:
+            return True
         if not self.is_mumu_family:
             return False
         if self.is_mumu_over_version_400:
             return True
         if self.nemud_app_keep_alive != '':
             return True
-        if IS_MACINTOSH:
-            if 'MACPRO' in self.nemud_player_engine:
-                return True
         return False
 
     @cached_property

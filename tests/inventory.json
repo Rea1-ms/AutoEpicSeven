@@ -7127,6 +7127,300 @@
           "reason": "模拟已识别的等级、品质和界面状态，验证操作与禁止操作"
         }
       ]
+    },
+    {
+      "source": "tests/upstream/test_deploy.py",
+      "business": "上游通用框架更新",
+      "status": "已纳入",
+      "reason": "当前工作树新增正式回归",
+      "cases": [
+        {
+          "id": "tests.upstream.test_deploy.AdbReplacementTests.test_locked_binary_does_not_prevent_next_replacement",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "上游通用更新；合成数据与模拟设备，不访问实际账号或网络"
+        },
+        {
+          "id": "tests.upstream.test_deploy.AdbReplacementTests.test_failed_copy_restores_original_then_continues",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "上游通用更新；合成数据与模拟设备，不访问实际账号或网络"
+        },
+        {
+          "id": "tests.upstream.test_deploy.AdbReplacementTests.test_failed_restore_keeps_backup_and_continues",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "上游通用更新；合成数据与模拟设备，不访问实际账号或网络"
+        },
+        {
+          "id": "tests.upstream.test_deploy.DownloadTests.test_single_address_and_cached_commit",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "上游通用更新；合成数据与模拟设备，不访问实际账号或网络"
+        },
+        {
+          "id": "tests.upstream.test_deploy.DownloadTests.test_request_and_response_errors_try_next_address",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "上游通用更新；合成数据与模拟设备，不访问实际账号或网络"
+        },
+        {
+          "id": "tests.upstream.test_deploy.DownloadTests.test_all_addresses_fail_without_altering_repository",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "上游通用更新；合成数据与模拟设备，不访问实际账号或网络"
+        },
+        {
+          "id": "tests.upstream.test_deploy.DownloadTests.test_update_preserves_local_changes_policy",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "上游通用更新；合成数据与模拟设备，不访问实际账号或网络"
+        },
+        {
+          "id": "tests.upstream.test_deploy.DownloadTests.test_empty_address_is_rejected",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "上游通用更新；合成数据与模拟设备，不访问实际账号或网络"
+        },
+        {
+          "id": "tests.upstream.test_deploy.WebTypeTests.test_polluted_file_types_are_reset_without_loading_system_table",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "上游通用更新；合成数据与模拟设备，不访问实际账号或网络"
+        }
+      ]
+    },
+    {
+      "source": "tests/upstream/test_device.py",
+      "business": "上游通用框架更新",
+      "status": "已纳入",
+      "reason": "当前工作树新增正式回归",
+      "cases": [
+        {
+          "id": "tests.upstream.test_device.BenchmarkTests.test_both_candidate_lists_respect_android_boundaries",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "上游通用更新；合成数据与模拟设备，不访问实际账号或网络"
+        },
+        {
+          "id": "tests.upstream.test_device.BenchmarkTests.test_auto_fallback_selects_compatible_method",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "上游通用更新；合成数据与模拟设备，不访问实际账号或网络"
+        },
+        {
+          "id": "tests.upstream.test_device.BenchmarkTests.test_benchmark_uses_elapsed_clock",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "上游通用更新；合成数据与模拟设备，不访问实际账号或网络"
+        },
+        {
+          "id": "tests.upstream.test_device.WarningTests.test_known_headers_preserve_bytes_and_text_payload",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "上游通用更新；合成数据与模拟设备，不访问实际账号或网络"
+        },
+        {
+          "id": "tests.upstream.test_device.WarningTests.test_nonprefix_content_and_repeated_shell_warnings",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "上游通用更新；合成数据与模拟设备，不访问实际账号或网络"
+        },
+        {
+          "id": "tests.upstream.test_device.WarningTests.test_png_decoder_accepts_each_header",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "上游通用更新；合成数据与模拟设备，不访问实际账号或网络"
+        },
+        {
+          "id": "tests.upstream.test_device.WarningTests.test_raw_decoder_strips_headers_for_http_and_netcat",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "上游通用更新；合成数据与模拟设备，不访问实际账号或网络"
+        },
+        {
+          "id": "tests.upstream.test_device.WarningTests.test_prefix_suffix_aliases_and_empty_boundaries",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "上游通用更新；合成数据与模拟设备，不访问实际账号或网络"
+        },
+        {
+          "id": "tests.upstream.test_device.EmulatorTests.test_mac_emulator_serial_requires_engine_and_platform",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "上游通用更新；合成数据与模拟设备，不访问实际账号或网络"
+        },
+        {
+          "id": "tests.upstream.test_device.EmulatorTests.test_mac_pro_keepalive_and_version_detection",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "上游通用更新；合成数据与模拟设备，不访问实际账号或网络"
+        },
+        {
+          "id": "tests.upstream.test_device.EmulatorTests.test_ldplayer_versions_and_minimized_command",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "上游通用更新；合成数据与模拟设备，不访问实际账号或网络"
+        },
+        {
+          "id": "tests.upstream.test_device.EmulatorTests.test_ldplayer_shared_capture_requires_supported_type",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "上游通用更新；合成数据与模拟设备，不访问实际账号或网络"
+        }
+      ]
+    },
+    {
+      "source": "tests/upstream/test_vision.py",
+      "business": "上游通用框架更新",
+      "status": "已纳入",
+      "reason": "当前工作树新增正式回归",
+      "cases": [
+        {
+          "id": "tests.upstream.test_vision.ColorTests.test_small_and_large_color_paths_match_integer_reference",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "上游通用更新；合成数据与模拟设备，不访问实际账号或网络"
+        },
+        {
+          "id": "tests.upstream.test_vision.ColorTests.test_letter_extraction_preserves_saturation_and_rounding",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "上游通用更新；合成数据与模拟设备，不访问实际账号或网络"
+        },
+        {
+          "id": "tests.upstream.test_vision.ColorTests.test_white_extraction_preserves_intermediate_half_rounding",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "上游通用更新；合成数据与模拟设备，不访问实际账号或网络"
+        },
+        {
+          "id": "tests.upstream.test_vision.ColorTests.test_color_count_uses_inclusive_distance_and_strict_pixel_count",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "上游通用更新；合成数据与模拟设备，不访问实际账号或网络"
+        },
+        {
+          "id": "tests.upstream.test_vision.ColorTests.test_button_new_boundary_and_legacy_keyword",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "上游通用更新；合成数据与模拟设备，不访问实际账号或网络"
+        },
+        {
+          "id": "tests.upstream.test_vision.ColorTests.test_equal_sized_black_frame_does_not_match_template",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "上游通用更新；合成数据与模拟设备，不访问实际账号或网络"
+        },
+        {
+          "id": "tests.upstream.test_vision.OcrTests.test_keyword_rebinding_restores_original_text_and_box",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "上游通用更新；合成数据与模拟设备，不访问实际账号或网络"
+        },
+        {
+          "id": "tests.upstream.test_vision.OcrTests.test_batch_extension_is_used_and_filters_unmatched_results",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "上游通用更新；合成数据与模拟设备，不访问实际账号或网络"
+        },
+        {
+          "id": "tests.upstream.test_vision.OcrTests.test_local_colon_duration_formats_are_preserved",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "上游通用更新；合成数据与模拟设备，不访问实际账号或网络"
+        }
+      ]
     }
   ]
 }

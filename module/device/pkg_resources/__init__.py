@@ -36,7 +36,12 @@ def remove_suffix(s, suffix):
     Returns:
         str, bytes:
     """
-    return s[:-len(suffix)] if s.endswith(suffix) else s
+    # An empty suffix must leave the input intact: s[:-0] would erase it.
+    return s[:-len(suffix)] if suffix and s.endswith(suffix) else s
+
+
+# Retain the old name used by the package scanner and expose the upstream name.
+removesuffix = remove_suffix
 
 
 class FakeDistributionObject:

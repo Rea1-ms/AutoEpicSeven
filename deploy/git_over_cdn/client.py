@@ -52,10 +52,14 @@ class GitOverCdnClient:
     def __init__(self, url, folder, source='origin', branch='master', git='git'):
         """
         Args:
-            url: http://127.0.0.1:22251/pack/LmeSzinc_AzurLaneAutoScript_master/
+            url (str | list[str]): One pack URL or ordered mirrors of the same repository.
             folder: D:/AzurLaneAutoScript
         """
-        self.url = url.strip('/')
+        urls = [url] if isinstance(url, str) else list(url)
+        self.urls = [value.strip().rstrip('/') for value in urls]
+        if not self.urls or any(not value for value in self.urls):
+            raise ValueError('At least one non-empty pack URL is required')
+        self.url = self.urls[0]
         self.folder = folder.replace('\\', '/')
         self.source = source
         self.branch = branch
@@ -100,29 +104,32 @@ class GitOverCdnClient:
 
     @cached_property
     def latest_commit(self) -> str:
-        try:
+        for url_base in self.urls:
+            self.url = url_base
             url = self.urlpath('/latest.json')
             self.logger.info(f'Fetch url: {url}')
-            resp = self.session.get(url, timeout=3)
-        except Exception as e:
-            self.logger.error(f'Failed to get remote commit: {e}')
-            return ''
-
-        if resp.status_code == 200:
+            try:
+                resp = self.session.get(url, timeout=3)
+            except requests.RequestException as exc:
+                self.logger.error(f'Failed to get remote commit: {exc}')
+                continue
+            if resp.status_code != 200:
+                self.logger.error(f'Failed to get remote commit, status={resp.status_code}')
+                continue
             try:
                 info = json.loads(resp.text)
-                commit = info['commit']
-                self.logger.attr('LatestCommit', commit)
-                return commit
-            except json.JSONDecodeError:
-                self.logger.error(f'Failed to get remote commit, response is not a json: {resp.text}')
-                return ''
-            except KeyError:
-                self.logger.error(f'Failed to get remote commit, key "commit" is not found: {resp.text}')
-                return ''
-        else:
-            self.logger.error(f'Failed to get remote commit, status={resp.status_code}, text={resp.text}')
-            return ''
+                commit = info.get('commit') if isinstance(info, dict) else None
+                if not isinstance(commit, str) or not re.fullmatch(r'[0-9a-f]{40}', commit):
+                    raise ValueError('Response has no valid commit')
+            except (ValueError, TypeError) as exc:
+                self.logger.error(f'Failed to get remote commit: {exc}')
+                continue
+            # Keep the successful mirror selected for downloading its pack.
+            # Never replace local files or alter the keep_changes policy here.
+            self.logger.attr('LatestCommit', commit)
+            return commit
+        self.url = self.urls[0]
+        return ''
 
     def download_pack(self):
         try:
