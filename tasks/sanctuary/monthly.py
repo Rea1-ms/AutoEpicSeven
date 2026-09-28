@@ -334,7 +334,7 @@ class SanctuaryMonthlyMixin(SanctuaryMonthlyReminderMixin):
 
     def _monthly_purify_smart(self) -> str:
         """
-        Purify until the game's high-value confirmation protects a new item.
+        Store A-tier rewards at the lowest heart level, otherwise use popups.
 
         Any cancel popup is intentionally treated as the high-value signal in
         this mode. After canceling, purifying must stay blocked until custody
@@ -342,6 +342,9 @@ class SanctuaryMonthlyMixin(SanctuaryMonthlyReminderMixin):
         delayed or dropped custody click from destroying the protected item on
         the next refresh. Five recognized deposit tiers confirm a full box;
         only the existing free-slot marker authorizes further purification.
+        A level whose maximum reward is A never gets the high-value warning.
+        In that case stable level/tier observations also protect the reward,
+        and must enter the same custody-pending state before another refresh.
         """
         logger.info("Monthly: smart custody loop")
         timeout = Timer(60, count=120).start()
@@ -351,6 +354,7 @@ class SanctuaryMonthlyMixin(SanctuaryMonthlyReminderMixin):
         lang = self._ocr_lang()
         times_ocr_full = OcrPurifyTimes(OCR_PURIFY_TIMES_FULL, lang=lang, name="PurifyTimesOCRFull")
         times_ocr_not_full = OcrPurifyTimes(OCR_PURIFY_TIMES_NOT_FULL, lang=lang, name="PurifyTimesOCRNotFull")
+        level_ocr = Digit(OCR_HEART_LEVEL, lang=lang, name="HeartLevelOCR")
         tier_ocr = OcrRewardTier(ClickButton(REWARDS_TIER_A.search, name="OCR_REWARD_TIER"), lang=lang,
                                  name="RewardTierOCR")
         times_layout = None
@@ -463,15 +467,31 @@ class SanctuaryMonthlyMixin(SanctuaryMonthlyReminderMixin):
                         "Likely covered by an unhandled overlay."
                     )
                 continue
-            purify_ocr_missing_confirm.reset()
-
             # The reward's gold flash temporarily recolors or hides PURIFY,
             # while the resource/cost counter normally remains readable. A
             # single OCR frame is still not sufficient because animations can
             # produce plausible digits. Require the complete value and layout
             # to agree on fresh consecutive screenshots. Every click or overlay
             # clears this candidate so two different UI states cannot combine.
-            read_candidate = (read_current, read_total, read_layout)
+            heart_level = self._ocr_heart_level(level_ocr)
+            low_level = heart_level is not None and self._heart_level_max_tier(heart_level) == "A"
+            current_tier = self._detect_current_reward_tier(tier_ocr) if low_level else None
+            already_stored = low_level and self.appear(ALREADY_STORED, similarity=0.8)
+            custody_enabled = low_level and CUSTODY.match_color(self.device.image, threshold=10)
+            if heart_level is None or (low_level and current_tier is None and not already_stored):
+                times_ocr_candidate = None
+                times_ocr_stable_frames = 0
+                if purify_ocr_missing_confirm.reached():
+                    raise ScriptError("Heart level or low-level reward tier not detected; smart purify is blocked")
+                continue
+            purify_ocr_missing_confirm.reset()
+            # Include the current level and reward in the existing stable-frame
+            # check, not just the resource counter. A flickering A marker must
+            # neither trigger custody nor be overwritten on the next frame.
+            # Re-reading the level after every action also prevents level-up
+            # from leaving the low-level exception enabled on a higher level.
+            read_candidate = (read_current, read_total, read_layout, heart_level,
+                              current_tier, already_stored, custody_enabled)
             if read_candidate == times_ocr_candidate:
                 times_ocr_stable_frames += 1
             else:
@@ -491,6 +511,19 @@ class SanctuaryMonthlyMixin(SanctuaryMonthlyReminderMixin):
                 last_times_current = times_current
             elif times_current > last_times_current:
                 last_times_current = times_current
+
+            if low_level and not already_stored and self._tier_reached(current_tier, "A"):
+                # Protect an eligible result even if no resources remain for
+                # another purification. Once latched, only the ordinary custody
+                # confirmation releases it; missing or delayed stored markers
+                # must never send this reward back into the refresh branch.
+                if not custody_enabled:
+                    continue
+                custody_pending = True
+                times_ocr_candidate = None
+                times_ocr_stable_frames = 0
+                logger.info(f"Monthly smart custody: protect {current_tier} reward at heart level {heart_level}")
+                continue
 
             if times_current < read_total:
                 logger.info("Monthly smart purify exhausted before monthly reward is claimed")

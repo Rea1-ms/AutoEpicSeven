@@ -31,9 +31,11 @@ EXPLORATION_MODULES = (
     "tests.dimensional_exploration.test_dimensional_exploration_runtime",
 )
 RUNNER_MODULES = ("tests.test_offline_runner",)
+SANCTUARY_MODULES = ("tests.sanctuary.test_smart_custody",)
 SUITES = {
-    "all": EXPLORATION_MODULES + RUNNER_MODULES,
+    "all": EXPLORATION_MODULES + SANCTUARY_MODULES + RUNNER_MODULES,
     "dimensional_exploration": EXPLORATION_MODULES,
+    "sanctuary": SANCTUARY_MODULES,
     "runner": RUNNER_MODULES,
 }
 FIXTURE_MANIFEST = ROOT / "tests" / "fixtures" / "dimensional_exploration" / "manifest.json"
