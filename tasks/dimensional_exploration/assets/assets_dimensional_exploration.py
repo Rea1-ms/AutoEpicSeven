@@ -195,6 +195,30 @@ EVENT_OPTION_CLICK = ButtonWrapper(
     ),
     global_en=None,
 )
+EVENT_OPTION_UNAVAILABLE = ButtonWrapper(
+    name='EVENT_OPTION_UNAVAILABLE',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/EVENT_OPTION_UNAVAILABLE.png',
+        area=(829, 543, 864, 577),
+        search=(74, 530, 1204, 595),
+        color=(153, 89, 93),
+        button=(829, 543, 864, 577),
+    ),
+    global_en=None,
+)
+EXPLORATION_ENTRY = ButtonWrapper(
+    name='EXPLORATION_ENTRY',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/EXPLORATION_ENTRY.png',
+        area=(43, 184, 170, 217),
+        search=(20, 170, 1255, 235),
+        color=(77, 75, 80),
+        button=(43, 184, 170, 217),
+    ),
+    global_en=None,
+)
 EXPLORE_ENTER = ButtonWrapper(
     name='EXPLORE_ENTER',
     cn=None,
@@ -500,7 +524,7 @@ NODE_AVAILABLE = ButtonWrapper(
     global_cn=Button(
         file='./assets/global_cn/dimensional_exploration/NODE_AVAILABLE.png',
         area=(522, 133, 542, 151),
-        search=(0, 85, 1230, 565),
+        search=(0, 65, 1230, 605),
         color=(132, 137, 160),
         button=(522, 133, 542, 151),
     ),
@@ -954,6 +978,18 @@ OCR_SETTLEMENT_SCORE = ButtonWrapper(
     ),
     global_en=None,
 )
+OCR_SHOP_DISCOUNT_PRICE = ButtonWrapper(
+    name='OCR_SHOP_DISCOUNT_PRICE',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/OCR_SHOP_DISCOUNT_PRICE.png',
+        area=(1079, 540, 1126, 576),
+        search=(1059, 520, 1146, 596),
+        color=(66, 82, 121),
+        button=(1079, 540, 1126, 576),
+    ),
+    global_en=None,
+)
 OCR_SHOP_NAME = ButtonWrapper(
     name='OCR_SHOP_NAME',
     cn=None,
@@ -1318,6 +1354,42 @@ REWARD_CLOSE = ButtonWrapper(
     ],
     global_en=None,
 )
+REWARD_LEAVE_CANCEL = ButtonWrapper(
+    name='REWARD_LEAVE_CANCEL',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/REWARD_LEAVE_CANCEL.png',
+        area=(506, 446, 565, 475),
+        search=(486, 426, 585, 495),
+        color=(102, 90, 78),
+        button=(506, 446, 565, 475),
+    ),
+    global_en=None,
+)
+REWARD_LEAVE_CHECK = ButtonWrapper(
+    name='REWARD_LEAVE_CHECK',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/REWARD_LEAVE_CHECK.png',
+        area=(514, 300, 766, 345),
+        search=(494, 280, 786, 365),
+        color=(56, 63, 70),
+        button=(514, 300, 766, 345),
+    ),
+    global_en=None,
+)
+REWARD_LEAVE_CONFIRM = ButtonWrapper(
+    name='REWARD_LEAVE_CONFIRM',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/REWARD_LEAVE_CONFIRM.png',
+        area=(716, 446, 780, 475),
+        search=(696, 426, 800, 495),
+        color=(68, 87, 112),
+        button=(716, 446, 780, 475),
+    ),
+    global_en=None,
+)
 ROOM_DONE = ButtonWrapper(
     name='ROOM_DONE',
     cn=None,
@@ -1399,6 +1471,18 @@ SHOP_CHECK = ButtonWrapper(
         search=(419, 95, 549, 160),
         color=(111, 95, 131),
         button=(439, 115, 529, 140),
+    ),
+    global_en=None,
+)
+SHOP_DISCOUNT = ButtonWrapper(
+    name='SHOP_DISCOUNT',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/SHOP_DISCOUNT.png',
+        area=(1022, 516, 1084, 541),
+        search=(390, 90, 1140, 592),
+        color=(161, 126, 100),
+        button=(1022, 516, 1084, 541),
     ),
     global_en=None,
 )

@@ -460,14 +460,15 @@ if server_.lang == "global_cn":
 # Dimensional exploration (overseas Chinese client)
 if server_.lang == "global_cn":
     from tasks.dimensional_exploration.assets.assets_dimensional_exploration import (
-        LOBBY_CHECK, TITLE_CHECK, TITLE_ENTER,
+        LOBBY_CHECK, TITLE_CHECK, TITLE_ENTER, EXPLORATION_ENTRY,
     )
 
-    # The common-tab card is located by OCR inside the task because it moves
-    # with newly added content. These stable return edges also allow other
-    # tasks to leave the exploration lobby without registering local run pages.
+    # Match within the card-header strip so new activities can move this entry
+    # horizontally. The matched button offset is also the click destination.
     page_dimensional_exploration_title = Page(TITLE_CHECK)
     page_dimensional_exploration_title.link(BACK, destination=page_combat_common)
+    page_combat_common.link(EXPLORATION_ENTRY, destination=page_dimensional_exploration_title,
+                            match_before_click=True)
     page_dimensional_exploration_lobby = Page(LOBBY_CHECK)
     page_dimensional_exploration_lobby.link(BACK, destination=page_dimensional_exploration_title)
     page_dimensional_exploration_title.link(TITLE_ENTER, destination=page_dimensional_exploration_lobby)

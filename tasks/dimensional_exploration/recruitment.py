@@ -3,6 +3,7 @@
 from difflib import SequenceMatcher
 import json
 from pathlib import Path
+from uuid import uuid4
 
 from module.base.button import ClickButton
 from tasks.base.assets.assets_base_page import BACK
@@ -29,6 +30,25 @@ class HeroCosts:
     def __init__(self, path: Path | None = None):
         self.path = path
         self.values = json.loads(path.read_text(encoding="utf-8")) if path and path.exists() else {}
+
+    @classmethod
+    def from_runtime(cls, root=Path(".")):
+        """Share learned costs without exposing them as GUI account profiles.
+
+        Old per-profile files are archived only after their observations have
+        been saved. Existing shared observations win conflicts during migration;
+        a later stable game frame can still update them through learn(). Archive
+        names are unique so retries never overwrite a previous original file.
+        """
+        folder = root / "data" / "dimensional_exploration"
+        costs = cls(folder / "hero_costs_global_cn.json")
+        for source in sorted((root / "config").glob("dimensional_exploration_hero_costs_*.json")):
+            previous = cls(source)
+            costs.learn([(name, value) for name, value in previous.values.items() if name not in costs.values])
+            archive = folder / "legacy"
+            archive.mkdir(parents=True, exist_ok=True)
+            source.rename(archive / f"{source.stem}_{uuid4().hex}.json")
+        return costs
 
     def learn(self, signature):
         updates = {name: cost for name, cost, *_ in signature if name and isinstance(cost, int) and 0 < cost <= 9}
@@ -67,6 +87,7 @@ class RecruitmentMixin:
         self._hero_best = None
         self._hero_returning = False
         self._hero_selected = None
+        self._hero_selected_cost = None
         self._hero_stalls = 0
         self._hero_before_swipe = None
         self._hero_budget = None
@@ -94,6 +115,16 @@ class RecruitmentMixin:
         if not self._initial_recruitment and (budget <= 0 or (
                 not unrestricted and self.hero_costs.cannot_afford(preferred, budget))):
             return self.skip_recruitment()
+        # Selection recolors the row, which can hide its cost-icon template.
+        # The detail pane and enabled confirm button are authoritative here.
+        # Keep the last stable row cost only until quota changes or we leave
+        # this picker; reset_hero_search() invalidates both name and cost.
+        if (self._hero_selected is not None and self._hero_selected_cost is not None
+                and 0 < self._hero_selected_cost <= budget
+                and same_hero(vision.selected_hero(), self._hero_selected)):
+            if vision.bright_text(HERO_CONFIRM_ACTIVE):
+                return self.click_action(HERO_CONFIRM)
+            return False
         heroes = [hero for hero in vision.heroes() if hero.cost <= budget]
         signature = tuple(vision.hero_signature)
         if signature != self._hero_view:
@@ -112,6 +143,7 @@ class RecruitmentMixin:
 
         if unrestricted and heroes:
             self._hero_selected = heroes[0].name
+            self._hero_selected_cost = heroes[0].cost
             return self.click_action(ClickButton(heroes[0].area, name="SelectExplorationHero"))
         if not self._initial_recruitment:
             if not unrestricted and self.hero_costs.cannot_afford(preferred, budget):
@@ -129,11 +161,13 @@ class RecruitmentMixin:
                 self._hero_best = (rank(candidate), candidate.name)
             if rank(candidate)[0] == 0:
                 self._hero_selected = candidate.name
+                self._hero_selected_cost = candidate.cost
                 return self.click_action(ClickButton(candidate.area, name="SelectExplorationHero"))
         if self._hero_returning:
             matching = [h for h in heroes if same_hero(h.name, self._hero_best[1])]
             if len(matching) == 1:
                 self._hero_selected = matching[0].name
+                self._hero_selected_cost = matching[0].cost
                 return self.click_action(ClickButton(matching[0].area, name="SelectExplorationHero"))
             if self._hero_swipes >= swipe_limit * 2 + 4:
                 self.require_human("回查英雄名单时未找到已识别的候选英雄。")

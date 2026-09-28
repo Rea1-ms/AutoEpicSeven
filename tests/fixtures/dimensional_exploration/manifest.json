@@ -64,7 +64,8 @@
       "scene": "dimensional_exploration",
       "used_by": [
         "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_hero_names_costs_and_scrolled_columns",
-        "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_page_identity_and_modal_precedence"
+        "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_page_identity_and_modal_precedence",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_failure_screenshot_preserves_takeover_reason"
       ]
     },
     "20260922-081357-541": {
@@ -93,7 +94,8 @@
       "server": "global_cn",
       "scene": "dimensional_exploration",
       "used_by": [
-        "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_page_identity_and_modal_precedence"
+        "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_page_identity_and_modal_precedence",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_prepare_click_retains_battle_during_loading"
       ]
     },
     "20260922-081430-868": {
@@ -103,7 +105,8 @@
       "scene": "dimensional_exploration",
       "used_by": [
         "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_auto_combat_only_toggles_on_positive_manual_marker",
-        "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_page_identity_and_modal_precedence"
+        "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_page_identity_and_modal_precedence",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_battle_hud_and_animation_keep_context_without_toggling_auto"
       ]
     },
     "20260922-081440-084": {
@@ -112,7 +115,8 @@
       "server": "global_cn",
       "scene": "dimensional_exploration",
       "used_by": [
-        "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_auto_combat_only_toggles_on_positive_manual_marker"
+        "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_auto_combat_only_toggles_on_positive_manual_marker",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_battle_hud_and_animation_keep_context_without_toggling_auto"
       ]
     },
     "20260922-081507-280": {
@@ -130,7 +134,9 @@
       "server": "global_cn",
       "scene": "dimensional_exploration",
       "used_by": [
-        "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_page_identity_and_modal_precedence"
+        "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_page_identity_and_modal_precedence",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_battle_hud_and_animation_keep_context_without_toggling_auto",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_repeated_frames_limit_expensive_work_but_new_state_is_immediate"
       ]
     },
     "20260922-081522-090": {
@@ -157,7 +163,8 @@
         "tests.dimensional_exploration.test_dimensional_exploration_events.EventTests.test_task_click_then_reward_and_batch_reset_preserves_history",
         "tests.dimensional_exploration.test_dimensional_exploration_events.EventTests.test_unsent_click_is_not_persisted",
         "tests.dimensional_exploration.test_dimensional_exploration_sampling.SamplingTests.test_sampling_disabled_still_stops_on_unlisted_event",
-        "tests.dimensional_exploration.test_dimensional_exploration_sampling.SamplingTests.test_unlisted_screenshot_is_sampled_after_two_reads_and_outcome_is_saved"
+        "tests.dimensional_exploration.test_dimensional_exploration_sampling.SamplingTests.test_unlisted_screenshot_is_sampled_after_two_reads_and_outcome_is_saved",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_disabled_catalog_and_sampling_options_are_never_selected"
       ]
     },
     "20260922-081544-299": {
@@ -556,7 +563,8 @@
       "server": "global_cn",
       "scene": "dimensional_exploration",
       "used_by": [
-        "tests.dimensional_exploration.test_dimensional_exploration_ui.ScreenshotRegressions.test_restart_reward_overlay_claims_loot_and_can_continue"
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.ScreenshotRegressions.test_restart_reward_overlay_claims_loot_and_can_continue",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_unreadable_reward_text_cannot_authorize_discard"
       ]
     },
     "20260925-113935-872": {
@@ -600,6 +608,74 @@
         "tests.dimensional_exploration.test_dimensional_exploration_shop_new.ShopNewRegressions.test_badges_bind_to_exact_items_in_both_rows",
         "tests.dimensional_exploration.test_dimensional_exploration_shop_new.ShopNewRegressions.test_investment_and_healing_still_precede_new_loot",
         "tests.dimensional_exploration.test_dimensional_exploration_shop_new.ShopNewRegressions.test_stable_shop_clicks_new_item_and_keeps_it_through_payment"
+      ]
+    },
+    "20260926-181057-614": {
+      "path": "tests/fixtures/dimensional_exploration/MuMu-20260926-181057-614.png",
+      "sha256": "17ec2ef48c704a5cfe74c27212c4854913a79cb6e8be5ef6b1e684d94664c799",
+      "server": "global_cn",
+      "scene": "September 26 runtime regression",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_selected_hero_confirms_without_rescanning_list",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_quota_change_invalidates_selected_hero"
+      ]
+    },
+    "20260926-125324-000": {
+      "path": "tests/fixtures/dimensional_exploration/MuMu-20260926-125324-000.png",
+      "sha256": "56b9149e569d29914ee9f178d1a5bc28d8d4321a68cadcb1ea0725201c1719d5",
+      "server": "global_cn",
+      "scene": "September 26 runtime regression",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_top_map_arrows_choose_supply_and_event"
+      ]
+    },
+    "20260926-200142-567": {
+      "path": "tests/fixtures/dimensional_exploration/MuMu-20260926-200142-567.png",
+      "sha256": "6e64a88d5c9afdbaf7c6a3b7a57d48e57b97a642ec10696dbb7c82b28e0aea63",
+      "server": "global_cn",
+      "scene": "September 26 runtime regression",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_top_map_arrows_choose_supply_and_event",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_repeated_frames_limit_expensive_work_but_new_state_is_immediate"
+      ]
+    },
+    "20260926-192103-665": {
+      "path": "tests/fixtures/dimensional_exploration/MuMu-20260926-192103-665.png",
+      "sha256": "e2b5bde262de6529f1d525949851dbbcc6601ec905ce0d07b2b9ae4b0264daa4",
+      "server": "global_cn",
+      "scene": "September 26 runtime regression",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_discount_uses_payable_price_not_crossed_out_price",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_discounted_item_still_obeys_exact_budget"
+      ]
+    },
+    "20260926-201447-325": {
+      "path": "tests/fixtures/dimensional_exploration/MuMu-20260926-201447-325.png",
+      "sha256": "72ed0630e1a97cc89a5ee34a8b635effa50bd283ebdaad577d13a2631eed882e",
+      "server": "global_cn",
+      "scene": "September 26 runtime regression",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_event_disabled_option_is_not_available"
+      ]
+    },
+    "20260926-202057-530": {
+      "path": "tests/fixtures/dimensional_exploration/MuMu-20260926-202057-530.png",
+      "sha256": "529457a1de390b6f0d5b4a4a407ca4867de9141d04783df3ca61a4fa8f1d46c4",
+      "server": "global_cn",
+      "scene": "September 26 runtime regression",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_unclaimed_reward_modal_has_priority_over_victory",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_modal_restart_cancels_then_confirmed_skip_can_leave",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_unreadable_reward_text_cannot_authorize_discard"
+      ]
+    },
+    "20260921-105748-548": {
+      "path": "tests/fixtures/dimensional_exploration/MuMu-20260921-105748-548.png",
+      "sha256": "c1596e1e7408373f5a266b0fa394b16295cf98967c703b66b3310bbc263cd0bc",
+      "server": "global_cn",
+      "scene": "September 26 runtime regression",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_entry_follows_template_offset_without_ocr"
       ]
     }
   }

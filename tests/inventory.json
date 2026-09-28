@@ -6851,6 +6851,193 @@
         }
       ],
       "file_category": null
+    },
+    {
+      "source": "tests/dimensional_exploration/test_dimensional_exploration_runtime.py",
+      "business": "次元探查",
+      "status": "已纳入",
+      "reason": "2026-09-26 实机问题回归",
+      "cases": [
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_shared_costs_migrate_without_losing_originals",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-09-26 实机问题回归"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_failure_screenshot_preserves_takeover_reason",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081352-852"
+          ],
+          "status": "已纳入",
+          "reason": "2026-09-26 实机问题回归"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_selected_hero_confirms_without_rescanning_list",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260926-181057-614"
+          ],
+          "status": "已纳入",
+          "reason": "2026-09-26 实机问题回归"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_top_map_arrows_choose_supply_and_event",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260926-125324-000",
+            "20260926-200142-567"
+          ],
+          "status": "已纳入",
+          "reason": "2026-09-26 实机问题回归"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_discount_uses_payable_price_not_crossed_out_price",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260926-192103-665"
+          ],
+          "status": "已纳入",
+          "reason": "2026-09-26 实机问题回归"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_event_disabled_option_is_not_available",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260926-201447-325"
+          ],
+          "status": "已纳入",
+          "reason": "2026-09-26 实机问题回归"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_unclaimed_reward_modal_has_priority_over_victory",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260926-202057-530"
+          ],
+          "status": "已纳入",
+          "reason": "2026-09-26 实机问题回归"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_quota_change_invalidates_selected_hero",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260926-181057-614"
+          ],
+          "status": "已纳入",
+          "reason": "2026-09-26 实机问题回归"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_modal_restart_cancels_then_confirmed_skip_can_leave",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260926-202057-530"
+          ],
+          "status": "已纳入",
+          "reason": "2026-09-26 实机问题回归"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_unreadable_reward_text_cannot_authorize_discard",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260925-113540-999",
+            "20260926-202057-530"
+          ],
+          "status": "已纳入",
+          "reason": "2026-09-26 实机问题回归"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_battle_hud_and_animation_keep_context_without_toggling_auto",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081430-868",
+            "20260922-081440-084",
+            "20260922-081517-145"
+          ],
+          "status": "已纳入",
+          "reason": "2026-09-26 实机问题回归"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_prepare_click_retains_battle_during_loading",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081423-319"
+          ],
+          "status": "已纳入",
+          "reason": "2026-09-26 实机问题回归"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_repeated_frames_limit_expensive_work_but_new_state_is_immediate",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081517-145",
+            "20260926-200142-567"
+          ],
+          "status": "已纳入",
+          "reason": "2026-09-26 实机问题回归"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_entry_follows_template_offset_without_ocr",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260921-105748-548"
+          ],
+          "status": "已纳入",
+          "reason": "2026-09-26 实机问题回归"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_disabled_catalog_and_sampling_options_are_never_selected",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081528-636"
+          ],
+          "status": "已纳入",
+          "reason": "2026-09-26 实机问题回归"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_discounted_item_still_obeys_exact_budget",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260926-192103-665"
+          ],
+          "status": "已纳入",
+          "reason": "2026-09-26 实机问题回归"
+        }
+      ]
     }
   ]
 }

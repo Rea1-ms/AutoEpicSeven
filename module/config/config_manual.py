@@ -30,6 +30,9 @@ class ManualConfig:
     BUTTON_OFFSET = (20, 20)
     BUTTON_MATCH_SIMILARITY = 0.85
     WAIT_BEFORE_SAVING_SCREEN_SHOT = 1
+    SCREEN_SHOT_SAVE_INTERVAL = 1
+    SCREEN_SHOT_SAVE_FOLDER = './screenshots'
+    SCREEN_SHOT_SAVE_FOLDER_BASE = './screenshots'
 
     """
     module.device

@@ -28,6 +28,7 @@ EXPLORATION_MODULES = (
     "tests.dimensional_exploration.test_dimensional_exploration_sampling",
     "tests.dimensional_exploration.test_dimensional_exploration_shop_new",
     "tests.dimensional_exploration.test_dimensional_exploration_ui",
+    "tests.dimensional_exploration.test_dimensional_exploration_runtime",
 )
 RUNNER_MODULES = ("tests.test_offline_runner",)
 SUITES = {

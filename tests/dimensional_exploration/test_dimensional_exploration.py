@@ -187,6 +187,10 @@ for p in Page.iter_pages():
     if 'dimensional_exploration' in p.name:
         assert p.parent is not None
 list(Page.iter_check_buttons())
+if {lang!r} == 'global_cn':
+    from tasks.base.page import page_combat_common, page_dimensional_exploration_title
+    Page.init_connection(page_dimensional_exploration_title)
+    assert page_combat_common.parent is page_dimensional_exploration_title
 '''
             result = subprocess.run([sys.executable, '-c', code], capture_output=True, text=True, encoding='utf-8', errors='replace')
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)

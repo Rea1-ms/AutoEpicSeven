@@ -65,6 +65,7 @@ class EventChoice:
     # Historical attribute name: the magnifier is a detail-preview button,
     # not an unrecorded-journal marker. It must not affect event priorities.
     journal: bool = False
+    available: bool = True
 
 
 def choose_event(choices: list[EventChoice], *, cores: int, fragments: int,

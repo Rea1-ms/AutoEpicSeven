@@ -181,11 +181,13 @@ def decide_event(choices, *, cores, fragments, life, loot, dice=None, story="", 
     if memory.pending and not memory.advanced:
         for choice, branch in paired:
             if memory.pending == branch.key:
-                if branch.cost.unavailable(cores=cores, fragments=fragments, life=life, loot=loot, dice=dice):
+                if not choice.available or branch.cost.unavailable(cores=cores, fragments=fragments, life=life, loot=loot, dice=dice):
                     return None
                 return EventDecision(event, branch, choice, False)
     ranked = []
     for choice, branch in paired:
+        if not choice.available:
+            continue
         if branch.cost.unavailable(cores=cores, fragments=fragments, life=life, loot=loot, dice=dice):
             continue
         # A first attempt is only a collection opportunity, not proof of unlock.

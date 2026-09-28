@@ -1,6 +1,7 @@
 """Recognition of the supplied 1280x720 overseas Chinese exploration UI."""
 
 from dataclasses import dataclass
+from functools import cached_property
 
 import cv2
 import numpy as np
@@ -22,9 +23,11 @@ from tasks.dimensional_exploration.assets.assets_dimensional_exploration import 
     OCR_HERO_NAME, OCR_HERO_COST, HERO_COST_ACTIVE, HERO_ROW_CLICK, OCR_SELECTED_HERO,
     OCR_SHOP_NAME, OCR_SHOP_PRICE, OCR_SHOP_NEW, RESUME_REWARDS_CHECK,
     NODE_TYPE_AREA, NODE_CLICK, OCR_HEROES,
+    SHOP_DISCOUNT, OCR_SHOP_DISCOUNT_PRICE, EVENT_OPTION_UNAVAILABLE, REWARD_LEAVE_CHECK, MANUAL_TARGET,
 )
 from tasks.dimensional_exploration.policy import EventChoice, Offer, normalize, parse_counter, parse_number
 from tasks.dungeon.assets.assets_dungeon_state import AUTO_COMBAT_EXIST
+from tasks.dungeon.execute import detect_auto_combat_state
 
 
 @dataclass(frozen=True)
@@ -98,17 +101,17 @@ def relative_area(region, anchor, observed):
 
 class ExplorationVision:
     STATES = (
+        ("reward_leave", REWARD_LEAVE_CHECK),
         ("settlement", SETTLEMENT_CHECK), ("reward", REWARD_CLOSE), ("abandon", ABANDON_CHECK),
         ("buy", BUY_CHECK), ("leave_confirm", LEAVE_CONFIRM_CHECK),
-        ("loot", LOOT_CHECK), ("resume_rewards", RESUME_REWARDS_CHECK), ("failed", FAILED_CHECK),
+        ("loot", LOOT_CHECK), ("failed", FAILED_CHECK),
         ("upgrade", UPGRADE_CHECK), ("revive", REVIVE_CHECK),
         ("hero", HERO_PICKER_CHECK), ("prepare", PREPARE_CHECK),
-        ("victory", VICTORY_CHECK), ("rest", REST_CHECK),
+        ("victory", VICTORY_CHECK), ("resume_rewards", RESUME_REWARDS_CHECK), ("rest", REST_CHECK),
         ("shop", SHOP_CHECK), ("supply_room", ROOM_SUPPLY_CHECK),
         ("event", EVENT_CHECK), ("recruitment", RECRUITMENT_CHECK),
         ("start_supply", SUPPLY_CHECK), ("title", TITLE_CHECK), ("chapter", CHAPTER_CHECK),
         ("lobby", LOBBY_CHECK), ("preview", NODE_ENTER), ("map", MAP_CHECK),
-        ("battle", AUTO_COMBAT_EXIST),
     )
     NODE_ASSETS = {
         "event": NODE_EVENT, "shop": NODE_SHOP, "supply": NODE_SUPPLY,
@@ -125,8 +128,19 @@ class ExplorationVision:
                 # too; the separate Back button keeps it distinct from title.
                 if state == "recruitment" and not EXPLORE_ENTER.match_template(self.image):
                     continue
+                if state == "resume_rewards" and not RESUME_REWARDS_CHECK.match_color(self.image, threshold=30):
+                    continue
                 return state
+        if (self.auto_combat is not None or AUTO_COMBAT_EXIST.match_template(self.image)
+                or MANUAL_TARGET.match_template(self.image)):
+            return "battle"
         return "unknown"
+
+    @cached_property
+    def auto_combat(self):
+        # This object owns one immutable screenshot; a new loop frame creates
+        # a new instance, so HUD observations never survive across images.
+        return detect_auto_combat_state(lambda asset: asset.match_template(self.image))
 
     def text(self, area, name="ExplorationText"):
         region = area if hasattr(area, "area") else ClickButton(area, name=name)
@@ -184,17 +198,26 @@ class ExplorationVision:
         # bind each marker's center to a card. Cropping it to the old OCR
         # region truncates the icon; OCR of that region only reads the name.
         badges = [area_center(box) for box in multi_match(self.image, SHOP_NEW, SHOP_NEW.search)]
+        discounts = multi_match(self.image, SHOP_DISCOUNT, SHOP_DISCOUNT.search)
         regions = zip(OCR_SHOP_NAME.iter_buttons(), OCR_SHOP_PRICE.iter_buttons(), OCR_SHOP_NEW.iter_buttons())
         for index, (name_area, price_area, badge_area) in enumerate(regions):
             name = self.text(name_area)
             price = self.text(price_area)
             badge = any(point_in_area(center, badge_area.area, threshold=0) for center in badges)
+            # SALE is paired with its own card before reading the payable
+            # amount to its lower right. Parsing all digits from a struck-out
+            # price would silently turn "149 -> 108" into a different amount.
+            sale = [box for box in discounts if point_in_area(area_center(box), badge_area.area, threshold=0)]
+            if len(sale) == 1 and "购买完毕" not in normalize(price):
+                price = self.text(relative_area(OCR_SHOP_DISCOUNT_PRICE, SHOP_DISCOUNT, sale[0]))
             offers.append(Offer(index, name, parse_number(price), "购买完毕" in normalize(price), badge))
         logger.attr("ExplorationShopNew", [(o.index + 1, o.name) for o in offers if o.new])
         return offers
 
     def event_choices(self):
         rectangles = multi_match(self.image, EVENT_OPTION, EVENT_OPTION.search, threshold=0.78, distance=60)
+        disabled = [area_center(box) for box in multi_match(
+            self.image, EVENT_OPTION_UNAVAILABLE, EVENT_OPTION_UNAVAILABLE.search)]
         result = []
         for index, rectangle in enumerate(rectangles):
             area = relative_area(OCR_EVENT_OPTION, EVENT_OPTION, rectangle)
@@ -204,7 +227,8 @@ class ExplorationVision:
             # Keep clicks below the magnifier. Opening a detail preview is not
             # the same action as selecting the event branch or gaining its loot.
             click_area = relative_area(EVENT_OPTION_CLICK, EVENT_OPTION, rectangle)
-            result.append((EventChoice(index, text, journal is not None), click_area))
+            available = not any(point_in_area(center, area, threshold=20) for center in disabled)
+            result.append((EventChoice(index, text, journal is not None, available), click_area))
         return result
 
     def event_story(self):

@@ -14,12 +14,13 @@ from tasks.dimensional_exploration.assets.assets_dimensional_exploration import 
     FAILED_CHECK, LOBBY_CONTINUE, LOBBY_START, LOOT_CHECK, MANUAL_TARGET, NODE_ENTER,
     REWARD_CLOSE, ROOM_DONE, ROOM_LEAVE, SETTLEMENT_EMPTY, SUPPLY_BAGGAGE, SUPPLY_CONFIRM, SUPPLY_SELECTED,
     TITLE_ENTER, VICTORY_CONTINUE, BATTLE_START,
-    OCR_ENTRY, OCR_PREVIEW_TITLE, OCR_INITIAL_RECRUITMENT, HERO_CONFIRM_ACTIVE,
+    OCR_PREVIEW_TITLE, OCR_INITIAL_RECRUITMENT, HERO_CONFIRM_ACTIVE,
     OCR_EVENT_LOOT, OCR_BUY_NAME, OCR_BUY_PRICE, SHOP_OFFER, REST_ACTION,
     SUPPLY_DONE_AREA, SUPPLY_LOOT, OCR_LOOT_EFFECT, LOOT_CARD, LOOT_BORDER,
     OCR_BATTLE_REWARDS, OCR_RESUME_REWARDS, VICTORY_CONTINUE_ACTIVE,
     RESUME_REWARDS_CONTINUE, OCR_SETTLEMENT_SCORE, CHAPTER_SELECT,
     LEAVE_SHOP_CONFIRM, CANCEL_ABANDON, SETTLEMENT_CLOSE,
+    REWARD_LEAVE_CONFIRM, REWARD_LEAVE_CANCEL, EXPLORATION_ENTRY,
 )
 from tasks.dimensional_exploration.policy import (
     RunProgress, choose_offer, node_priority, normalize, parse_number,
@@ -28,10 +29,9 @@ from tasks.dimensional_exploration.event import EventMemory, decide_event, match
 from tasks.dimensional_exploration.recruitment import HeroCosts, RecruitmentMixin
 from tasks.dimensional_exploration.sampling import EventSampler, choose_sample, sampling_balances, text_key
 from tasks.dimensional_exploration.vision import ExplorationVision, match_in
-from tasks.dungeon.assets.assets_dungeon_action import AUTO_COMBAT, AUTO_COMBAT_ENEMY_SELECT
+from tasks.dungeon.assets.assets_dungeon_action import AUTO_COMBAT
 from tasks.dungeon.assets.assets_dungeon_state import (
-    AUTO_COMBAT_EXIST, AUTO_COMBAT_SKILL_CLOSED, AUTO_COMBAT_SKILL_OPENED,
-    COMBAT_RESULT_CLEAR, ENEMY_NUM_EXIST,
+    AUTO_COMBAT_EXIST, COMBAT_RESULT_CLEAR,
 )
 
 
@@ -39,6 +39,10 @@ class DimensionalExploration(RecruitmentMixin, UI):
     def __init__(self, config, device=None, task=None):
         super().__init__(config, device=device, task=task)
         self._last_state = None
+        self._observed_state = None
+        self._analysis_state = None
+        self._analysis_timer = Timer(1)
+        self._battle_active = False
         self._pending_offer = None
         self._shop_offers = None
         self._shop_candidate = None
@@ -51,6 +55,7 @@ class DimensionalExploration(RecruitmentMixin, UI):
         self._initial_reserved = 0
         self._initial_recruitment = False
         self._recruit_skipped = False
+        self._reward_leave_authorized = False
         self._node_selected = False
         self._node_kind = None
         self._entry_swipes = 0
@@ -58,8 +63,7 @@ class DimensionalExploration(RecruitmentMixin, UI):
         self.event_memory = EventMemory.from_saved(getattr(config, "DimensionalExplorationRuntime_EventHistory", {}))
         self.sampler = None
         name = getattr(config, "config_name", None)
-        cost_path = Path("config") / f"dimensional_exploration_hero_costs_{text_key(str(name))}.json" if name else None
-        self.hero_costs = HeroCosts(cost_path)
+        self.hero_costs = HeroCosts.from_runtime() if name else HeroCosts()
         if getattr(config, "DimensionalExploration_EventSampling", False):
             name = str(getattr(config, "config_name", "default"))
             profile = "".join(c if c.isalnum() or c in "_-" else "_" for c in name)[:48]
@@ -79,8 +83,31 @@ class DimensionalExploration(RecruitmentMixin, UI):
         return True
 
     def require_human(self, message):
+        logger.error(message)
         self.device.save_screenshot(genre="dimensional_exploration")
         raise RequestHumanTakeover(message)
+
+    def resolve_state(self, vision):
+        state = vision.state()
+        # Skill animations hide every HUD marker. Only a previously recognized
+        # fight or a clicked battle start permits retaining battle context.
+        # A positive non-battle page ends it; an arbitrary unknown startup frame
+        # must never be promoted to battle or authorize an auto-button click.
+        if state == "unknown" and self._battle_active:
+            return "battle"
+        if state != "unknown":
+            self._battle_active = state == "battle"
+        return state
+
+    def analysis_ready(self, state):
+        # Keep cheap page/exit detection active on every screenshot. Repeating
+        # expensive OCR on a stuck, unchanged page is limited to once a second;
+        # a new state is inspected immediately, without sleeping after clicks.
+        if state != self._analysis_state or self._analysis_timer.reached():
+            self._analysis_state = state
+            self._analysis_timer.reset()
+            return True
+        return False
 
     def save_progress(self, finished=False):
         self.config.DimensionalExplorationRuntime_Session = {
@@ -129,12 +156,14 @@ class DimensionalExploration(RecruitmentMixin, UI):
             else:
                 self.device.screenshot()
             vision = ExplorationVision(self.device.image)
-            state = vision.state()
-            self.observe_event(state, vision)
+            state = self.resolve_state(vision)
             if state in ("title", "lobby") and self.progress.completed >= self.target:
                 return
             self.observe_state(state)
             self.observe_progress(state)
+            if not self.analysis_ready(state):
+                continue
+            self.observe_event(state, vision)
             if state == "settlement":
                 if not self.handle_settlement(vision) and self._unreadable.reached():
                     self.require_human("整局结算分数未能识别，尚未增加轮数。")
@@ -154,7 +183,8 @@ class DimensionalExploration(RecruitmentMixin, UI):
                 "supply_room": self.handle_supply_room, "loot": self.handle_loot,
                 "victory": self.handle_victory, "battle": self.handle_battle,
                 "resume_rewards": self.handle_victory,
-                "prepare": lambda v: self.click_action(BATTLE_START),
+                "reward_leave": self.handle_reward_leave,
+                "prepare": self.handle_prepare,
                 "reward": lambda v: self.click_action(REWARD_CLOSE),
                 "failed": lambda v: self.click_action(FAILED_CHECK),
                 "leave_confirm": lambda v: self.click_action(LEAVE_SHOP_CONFIRM),
@@ -183,9 +213,11 @@ class DimensionalExploration(RecruitmentMixin, UI):
             # detection handle truly lost states, rather than time-boxing a fight.
 
     def observe_state(self, state):
+        if state != self._observed_state:
+            logger.attr("ExplorationState", state)
+            self._observed_state = state
         if state == self._last_state:
             return
-        logger.attr("ExplorationState", state)
         if state != "unknown":
             self._unreadable.reset()
         if state == "hero" and self._last_state != "unknown":
@@ -203,6 +235,7 @@ class DimensionalExploration(RecruitmentMixin, UI):
             self._pending_offer = None
             self._purchase_confirmed = False
             self._recruit_skipped = False
+            self._reward_leave_authorized = False
         if state != "unknown":
             self._last_state = state
 
@@ -236,13 +269,12 @@ class DimensionalExploration(RecruitmentMixin, UI):
         from tasks.base.page import page_combat_common
         if not self.ui_page_appear(page_combat_common):
             return False
-        for token in vision.tokens(OCR_ENTRY):
-            if normalize(token.ocr_text) == "次元探查":
-                return self.click_action(ClickButton(token.box, name="EnterDimensionalExploration"))
+        if self.appear(EXPLORATION_ENTRY):
+            return self.click_action(EXPLORATION_ENTRY)
         if self._entry_swipes >= 4:
             self.require_human("普通战斗入口中未找到次元探查，请补充入口截图。")
         if self.action_ready():
-            self.device.swipe((1020, 356), (370, 356), name="FindDimensionalExploration")
+            self.device.swipe((370, 356), (1020, 356), name="FindDimensionalExploration")
             self._entry_swipes += 1
             self.interval_reset("ExplorationAction", interval=2)
             return True
@@ -500,26 +532,49 @@ class DimensionalExploration(RecruitmentMixin, UI):
         return self.click_action(ClickButton(button.area, name="ExplorationLoot"))
 
     def handle_victory(self, vision):
+        if not self.action_ready():
+            return False
         resumed = vision.state() == "resume_rewards"
         region = OCR_RESUME_REWARDS if resumed else OCR_BATTLE_REWARDS
-        for token in vision.tokens(region):
+        tokens = vision.tokens(region)
+        for token in tokens:
             text = normalize(token.ocr_text)
             if text == "选择战利品" or (text == "招募英雄" and not self._recruit_skipped):
                 self._initial_recruitment = False
                 self._initial_reserved = 0
                 return self.click_action(ClickButton(token.box, name="ClaimExplorationBattleReward"))
+        # Empty or partly read text can open a confirmation but must never
+        # authorize discarding a reward. Only completed cards and deliberately
+        # skipped recruitment cards prove that nothing still needs claiming.
+        may_leave = bool(tokens) and all(normalize(token.ocr_text) in ("完成领取", "招募英雄") for token in tokens)
         if resumed and vision.bright_text(RESUME_REWARDS_CONTINUE):
-            return self.click_action(RESUME_REWARDS_CONTINUE)
+            if self.click_action(RESUME_REWARDS_CONTINUE):
+                self._reward_leave_authorized = may_leave
+                return True
         if self.appear(VICTORY_CONTINUE) and vision.bright_text(VICTORY_CONTINUE_ACTIVE):
-            return self.click_action(VICTORY_CONTINUE)
+            if self.click_action(VICTORY_CONTINUE):
+                self._reward_leave_authorized = may_leave
+                return True
+        return False
+
+    def handle_reward_leave(self, vision):
+        # A popup seen after restart has no trustworthy reward decision. Cancel
+        # once and inspect the unobscured cards. Confirm only after this task has
+        # checked those cards and deliberately clicked Continue; preserve that
+        # authorization through repeated modal frames until the map resets it.
+        return self.click_action(REWARD_LEAVE_CONFIRM if self._reward_leave_authorized else REWARD_LEAVE_CANCEL)
+
+    def handle_prepare(self, vision):
+        if self.click_action(BATTLE_START):
+            self._battle_active = True
+            return True
         return False
 
     def handle_battle(self, vision):
-        if any(self.appear(asset) for asset in (
-                AUTO_COMBAT_ENEMY_SELECT, AUTO_COMBAT_SKILL_CLOSED, AUTO_COMBAT_SKILL_OPENED)):
+        if vision.auto_combat is True:
             self.device.stuck_record_clear()
             return False
-        if self.appear(ENEMY_NUM_EXIST) or self.appear(MANUAL_TARGET):
+        if vision.auto_combat is False or self.appear(MANUAL_TARGET):
             return self.click_action(AUTO_COMBAT)
         if self.appear(AUTO_COMBAT_EXIST):
             self.device.stuck_record_clear()

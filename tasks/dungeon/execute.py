@@ -25,6 +25,16 @@ from tasks.dungeon.assets.assets_dungeon_state import (
 )
 
 
+def detect_auto_combat_state(appear):
+    """Recognize an actionable battle HUD; missing HUD is not manual mode."""
+    if any(appear(asset) for asset in (
+            AUTO_COMBAT_ENEMY_SELECT, AUTO_COMBAT_SKILL_CLOSED, AUTO_COMBAT_SKILL_OPENED)):
+        return True
+    if appear(ENEMY_NUM_EXIST):
+        return False
+    return None
+
+
 class CombatExecuteMixin:
     AUTO_COMBAT_ENTER_SECONDS = 2
     AUTO_COMBAT_CLICK_INTERVAL_SECONDS = 2
@@ -133,15 +143,7 @@ class CombatExecuteMixin:
         proof that auto combat is disabled.  ``False`` is only returned when
         an enemy-number target is visible during the player's actionable turn.
         """
-        if (
-            self.appear(AUTO_COMBAT_ENEMY_SELECT)
-            or self.appear(AUTO_COMBAT_SKILL_CLOSED)
-            or self.appear(AUTO_COMBAT_SKILL_OPENED)
-        ):
-            return True
-        if self.appear(ENEMY_NUM_EXIST):
-            return False
-        return None
+        return detect_auto_combat_state(self.appear)
 
     def _run_normal_combat(
         self,

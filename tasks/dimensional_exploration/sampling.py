@@ -83,6 +83,8 @@ def choose_sample(choices, balances, visits=None, pending_text=None):
     visits = visits or {}
     options = []
     for choice in choices:
+        if not choice.available:
+            continue
         option = inspect_option(choice)
         if option is None or option.cost.unavailable(**balances):
             continue
@@ -147,7 +149,7 @@ class EventSampler:
         return None
 
     def stable(self, story, choices, balances):
-        candidate = (normalize(story), tuple(normalize(c.text) for c in choices), tuple(balances.items()))
+        candidate = (normalize(story), tuple((normalize(c.text), c.available) for c in choices), tuple(balances.items()))
         same = self._candidate == candidate
         self._candidate = candidate
         return same

@@ -4,7 +4,7 @@ import json
 import os
 from pathlib import Path
 from types import SimpleNamespace
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 from uuid import uuid4
 
 import numpy as np
@@ -42,6 +42,24 @@ def record_action(action):
     if _active_test is not None:
         _diagnostics[_active_test]["actions"].append(str(action))
     return action
+
+
+class ControlledClock:
+    """Advance the production Timer clock deterministically, without sleeping."""
+
+    def __init__(self, start=100.0):
+        self.now = start
+
+    def __enter__(self):
+        self.patch = patch('module.base.timer.time', side_effect=lambda: self.now)
+        self.patch.start()
+        return self
+
+    def __exit__(self, *args):
+        self.patch.stop()
+
+    def advance(self, seconds):
+        self.now += seconds
 
 
 class ClickLog(list):
