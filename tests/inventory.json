@@ -7099,6 +7099,84 @@
           ],
           "status": "已纳入",
           "reason": "2026-09-26 实机问题回归"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_hero_ocr_stops_after_first_priority_without_reading_later_rows",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081352-852"
+          ],
+          "status": "已纳入",
+          "reason": "识别到最高优先级后停止后续行识别"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentPriorityRegressions.test_recruited_first_priority_promotes_next_without_reading_later_rows",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081352-852"
+          ],
+          "status": "已纳入",
+          "reason": "2026-09-28 招募顺位与已采集事件规则；事件文字样本见 event_observations.json"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentPriorityRegressions.test_known_unaffordable_first_priority_promotes_affordable_second",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081352-852"
+          ],
+          "status": "已纳入",
+          "reason": "2026-09-28 招募顺位与已采集事件规则；事件文字样本见 event_observations.json"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentPriorityRegressions.test_confirmation_requires_exact_stable_quota_and_survives_restart",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081352-852"
+          ],
+          "status": "已纳入",
+          "reason": "2026-09-28 招募顺位与已采集事件规则；事件文字样本见 event_observations.json"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentPriorityRegressions.test_unsent_confirmation_and_pending_receipt_cannot_advance_priorities",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081352-852"
+          ],
+          "status": "已纳入",
+          "reason": "2026-09-28 招募顺位与已采集事件规则；事件文字样本见 event_observations.json"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentPriorityRegressions.test_completed_list_skips_optional_recruitment_but_initial_can_fill",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081352-852"
+          ],
+          "status": "已纳入",
+          "reason": "2026-09-28 招募顺位与已采集事件规则；事件文字样本见 event_observations.json"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentPriorityRegressions.test_batch_progress_keeps_roster_but_new_run_clears_it",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081352-852",
+            "20260922-081522-090"
+          ],
+          "status": "已纳入",
+          "reason": "2026-09-28 招募顺位与已采集事件规则；事件文字样本见 event_observations.json"
         }
       ]
     },

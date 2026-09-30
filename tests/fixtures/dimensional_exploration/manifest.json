@@ -65,7 +65,14 @@
       "used_by": [
         "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_hero_names_costs_and_scrolled_columns",
         "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_page_identity_and_modal_precedence",
-        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_failure_screenshot_preserves_takeover_reason"
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_failure_screenshot_preserves_takeover_reason",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_hero_ocr_stops_after_first_priority_without_reading_later_rows",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentPriorityRegressions.test_recruited_first_priority_promotes_next_without_reading_later_rows",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentPriorityRegressions.test_known_unaffordable_first_priority_promotes_affordable_second",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentPriorityRegressions.test_confirmation_requires_exact_stable_quota_and_survives_restart",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentPriorityRegressions.test_unsent_confirmation_and_pending_receipt_cannot_advance_priorities",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentPriorityRegressions.test_completed_list_skips_optional_recruitment_but_initial_can_fill",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentPriorityRegressions.test_batch_progress_keeps_roster_but_new_run_clears_it"
       ]
     },
     "20260922-081357-541": {
@@ -146,7 +153,8 @@
       "scene": "map",
       "used_by": [
         "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_accessible_nodes_exclude_completed_and_gray_nodes",
-        "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_unreadable_accessible_node_does_not_change_priority"
+        "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_unreadable_accessible_node_does_not_change_priority",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentPriorityRegressions.test_batch_progress_keeps_roster_but_new_run_clears_it"
       ]
     },
     "20260922-081528-636": {

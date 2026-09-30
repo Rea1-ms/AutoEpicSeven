@@ -246,8 +246,8 @@ class ExplorationVision:
         # None, not a guessed zero, so a dice-cost branch cannot spend it.
         return self.number(relative_area(OCR_DICE, CORE_ICON, core[1]))
 
-    def heroes(self):
-        """Read complete columns only, including cost and disabled-color state."""
+    def heroes(self, stop_when=None):
+        """Read stable rows until an eligible best candidate makes later OCR unnecessary."""
         heroes = []
         self.hero_signature = []
         for x, y, right, bottom in multi_match(self.image, HERO_COST_ICON, HERO_COST_ICON.search,
@@ -270,7 +270,10 @@ class ExplorationVision:
             pixels = self.image[y1:y2, x1:x2]
             bright = np.count_nonzero(np.min(pixels, axis=2) > 175)
             if cost and name and bright >= 10:
-                heroes.append(Hero(name, cost, relative_area(HERO_ROW_CLICK, HERO_COST_ICON, rectangle)))
+                hero = Hero(name, cost, relative_area(HERO_ROW_CLICK, HERO_COST_ICON, rectangle))
+                heroes.append(hero)
+                if stop_when is not None and stop_when(hero):
+                    break
         return heroes
 
     def selected_hero(self):

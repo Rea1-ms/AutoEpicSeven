@@ -70,6 +70,7 @@ class DimensionalExploration(RecruitmentMixin, UI):
             root = Path("screenshots/dimensional_exploration_events") / f"config_{profile}_{text_key(name)[:8]}"
             self.sampler = EventSampler(root)
             logger.info(f"事件自动采样目录：{root}")
+        self.load_recruitment()
         self.reset_hero_search()
 
     def action_ready(self):
@@ -111,6 +112,7 @@ class DimensionalExploration(RecruitmentMixin, UI):
 
     def save_progress(self, finished=False):
         self.config.DimensionalExplorationRuntime_Session = {
+            **getattr(self.config, "DimensionalExplorationRuntime_Session", {}),
             "target": self.target, "completed": self.progress.completed,
             "settlement_seen": self.progress.settlement_seen, "finished": finished,
         }
@@ -164,11 +166,13 @@ class DimensionalExploration(RecruitmentMixin, UI):
             if not self.analysis_ready(state):
                 continue
             self.observe_event(state, vision)
+            self.observe_recruitment(state, vision)
             if state == "settlement":
                 if not self.handle_settlement(vision) and self._unreadable.reached():
                     self.require_human("整局结算分数未能识别，尚未增加轮数。")
                 continue
             if state in ("start_supply", "recruitment", "map") and self.progress.settlement_seen:
+                self.clear_recruitment()
                 self.progress.entered_run()
                 self.save_progress()
             handlers = {
@@ -224,6 +228,8 @@ class DimensionalExploration(RecruitmentMixin, UI):
             self.reset_hero_search()
         if state == "loot":
             self._loot_index = None
+        if state == "start_supply":
+            self.clear_recruitment()
         if state in ("map", "victory"):
             self._initial_reserved = 0
             self._initial_recruitment = False
@@ -284,7 +290,9 @@ class DimensionalExploration(RecruitmentMixin, UI):
         if self.appear(LOBBY_CONTINUE):
             return self.click_action(LOBBY_CONTINUE)
         if self.appear(LOBBY_START):
-            return self.click_action(LOBBY_START)
+            if self.click_action(LOBBY_START):
+                self.clear_recruitment()
+                return True
         return False
 
     def handle_start_supply(self, vision):

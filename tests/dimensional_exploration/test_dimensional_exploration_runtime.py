@@ -12,13 +12,23 @@ from module.config.config_manual import ManualConfig
 from module.device.screenshot import Screenshot
 from module.exception import RequestHumanTakeover
 from tasks.dimensional_exploration.recruitment import HeroCosts
-from tasks.dimensional_exploration.vision import ExplorationVision
+from tasks.dimensional_exploration.vision import ExplorationVision, Hero
 from tasks.dimensional_exploration.event import EventMemory, decide_event
 from tasks.dimensional_exploration.policy import EventChoice, RunProgress, choose_offer
 from tasks.dimensional_exploration.sampling import choose_sample
 
 
 class RuntimeRegressions(unittest.TestCase):
+    def test_hero_ocr_stops_after_first_priority_without_reading_later_rows(self):
+        full = ExplorationVision(frame('20260922-081352-852'))
+        full.tokens = Mock(wraps=full.tokens)
+        full.heroes()
+        partial = ExplorationVision(frame('20260922-081352-852'))
+        partial.tokens = Mock(wraps=partial.tokens)
+        heroes = partial.heroes(stop_when=lambda hero: hero.name == '罪戾的安洁莉卡')
+        self.assertEqual(heroes[-1].name, '罪戾的安洁莉卡')
+        self.assertLess(partial.tokens.call_count, full.tokens.call_count)
+
     def test_shared_costs_migrate_without_losing_originals(self):
         root = artifact_path()
         config = root / 'config'
@@ -203,6 +213,130 @@ class RuntimeRegressions(unittest.TestCase):
         offer = vision.offers()[7]
         self.assertIsNone(choose_offer([offer], 107, 3, 3))
         self.assertEqual(choose_offer([offer], 108, 3, 3).index, 7)
+
+
+class RecruitmentPriorityRegressions(unittest.TestCase):
+    def picker(self):
+        task, _, clicks = task_for('20260922-081352-852')
+        task.config.DimensionalExploration_HealerPriority = '英雄甲 > 英雄乙 > 英雄丙'
+        rows = [Hero('英雄甲', 3, (350, 150, 460, 180)),
+                Hero('英雄乙', 2, (350, 250, 460, 280)),
+                Hero('英雄丙', 1, (350, 350, 460, 380))]
+        vision = SimpleNamespace(quota=Mock(return_value=(0, 10)), text=lambda _: '精灵师',
+                                 selected_hero=lambda: task._hero_selected, bright_text=lambda _: True,
+                                 hero_signature=[], rows_read=[])
+
+        def heroes(stop_when=None):
+            selected = []
+            vision.hero_signature = []
+            vision.rows_read = []
+            for hero in rows:
+                vision.rows_read.append(hero.name)
+                vision.hero_signature.append((hero.name, hero.cost, *hero.area[:2]))
+                selected.append(hero)
+                if stop_when and stop_when(hero):
+                    break
+            return selected
+
+        vision.heroes = Mock(side_effect=heroes)
+        return task, vision, clicks
+
+    def test_recruited_first_priority_promotes_next_without_reading_later_rows(self):
+        task, vision, clicks = self.picker()
+        task._recruited_heroes = ['英雄甲']
+        self.assertFalse(task.handle_hero(vision))
+        self.assertTrue(task.handle_hero(vision))
+        self.assertEqual(task._hero_selected, '英雄乙')
+        self.assertEqual(vision.rows_read, ['英雄甲', '英雄乙'])
+        self.assertEqual(clicks, ['SelectExplorationHero'])
+        task.device.swipe.assert_not_called()
+
+    def test_known_unaffordable_first_priority_promotes_affordable_second(self):
+        task, vision, _ = self.picker()
+        task.hero_costs.values['英雄甲'] = 3
+        vision.quota.return_value = (8, 10)
+        task.handle_hero(vision)
+        task.handle_hero(vision)
+        self.assertEqual(task._hero_selected, '英雄乙')
+        self.assertEqual(vision.rows_read, ['英雄甲', '英雄乙'])
+        task.device.swipe.assert_not_called()
+
+    def test_confirmation_requires_exact_stable_quota_and_survives_restart(self):
+        task, vision, clicks = self.picker()
+        task.handle_hero(vision)
+        task.handle_hero(vision)
+        self.assertTrue(task.handle_hero(vision))
+        self.assertEqual(clicks[-1], 'HERO_CONFIRM')
+        self.assertEqual(task._recruited_heroes, [])
+        self.assertIsNotNone(task.config.DimensionalExplorationRuntime_Session['recruitment']['pending'])
+        restored = type(task)(task.config, task.device)
+        for state, quota in [('hero', (0, 10)), ('map', (3, 11)), ('unknown', (3, 10)), ('map', None)]:
+            vision.quota.return_value = quota
+            restored.observe_recruitment(state, vision)
+            self.assertEqual(restored._recruited_heroes, [])
+        vision.quota.return_value = (3, 10)
+        restored.observe_recruitment('recruitment', vision)
+        self.assertEqual(restored._recruited_heroes, [])
+        restored.observe_recruitment('recruitment', vision)
+        self.assertEqual(restored._recruited_heroes, ['英雄甲'])
+        restored.observe_recruitment('recruitment', vision)
+        self.assertEqual(restored._recruited_heroes, ['英雄甲'])
+        self.assertIsNone(restored._recruit_pending)
+        again = type(task)(task.config, task.device)
+        self.assertEqual(again._recruited_heroes, ['英雄甲'])
+
+    def test_unsent_confirmation_and_pending_receipt_cannot_advance_priorities(self):
+        task, vision, _ = self.picker()
+        task.handle_hero(vision)
+        task.handle_hero(vision)
+        task.click_action = Mock(return_value=False)
+        self.assertFalse(task.handle_hero(vision))
+        self.assertIsNone(task._recruit_pending)
+        task.click_action.return_value = True
+        task.handle_hero(vision)
+        task.handle_hero(vision)
+        self.assertEqual(task._recruited_heroes, [])
+        vision.quota.return_value = (3, 10)
+        vision.heroes.side_effect = AssertionError('unconfirmed receipt must not choose another hero')
+        self.assertFalse(task.handle_hero(vision))
+        self.assertEqual(task._recruit_pending['name'], '英雄甲')
+
+    def test_completed_list_skips_optional_recruitment_but_initial_can_fill(self):
+        task, vision, clicks = self.picker()
+        task._recruited_heroes = ['英雄甲', '英雄乙', '英雄丙']
+        self.assertTrue(task.handle_hero(vision))
+        self.assertEqual(clicks, ['BACK'])
+        vision.heroes.assert_not_called()
+        task._initial_recruitment = True
+        task._recruited_heroes = ['英雄甲', '英雄乙']
+        task.config.DimensionalExploration_HealerPriority = '英雄甲 > 英雄乙'
+        task.handle_hero(vision)
+        task.handle_hero(vision)
+        self.assertEqual(task._hero_best[1], '英雄丙')
+
+    def test_batch_progress_keeps_roster_but_new_run_clears_it(self):
+        task, _, _ = self.picker()
+        task._recruited_heroes = ['英雄甲']
+        task.save_recruitment()
+        task.progress, task.target = RunProgress(), 2
+        task.save_progress()
+        self.assertEqual(task.config.DimensionalExplorationRuntime_Session['recruitment']['heroes'], ['英雄甲'])
+        task.observe_state('map')
+        self.assertEqual(task._recruited_heroes, ['英雄甲'])
+        task.observe_state('start_supply')
+        self.assertEqual(task._recruited_heroes, [])
+        self.assertIsNone(task._recruit_pending)
+        self.assertEqual(task.config.DimensionalExplorationRuntime_Session['recruitment']['heroes'], [])
+        # A restart can miss the entire setup: the persisted settlement latch
+        # plus a recognized map must also clear the previous run's roster.
+        task._recruited_heroes = ['英雄甲']
+        task.progress.settlement_seen = True
+        task.device.image = frame('20260922-081522-090')
+        task.handle_map = Mock(side_effect=RuntimeError('stop after new-run observation'))
+        with self.assertRaisesRegex(RuntimeError, 'stop after new-run observation'):
+            task.explore()
+        self.assertEqual(task._recruited_heroes, [])
+        self.assertFalse(task.progress.settlement_seen)
 
 
 if __name__ == '__main__':

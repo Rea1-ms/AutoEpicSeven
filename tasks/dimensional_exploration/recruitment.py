@@ -6,6 +6,7 @@ from pathlib import Path
 from uuid import uuid4
 
 from module.base.button import ClickButton
+from module.logger import logger
 from tasks.base.assets.assets_base_page import BACK
 from tasks.dimensional_exploration.assets.assets_dimensional_exploration import (
     HERO_CONFIRM, OCR_HERO_TITLE, HERO_CONFIRM_ACTIVE, OCR_REST_HEROES, REST_HERO_CONFIRM,
@@ -81,6 +82,75 @@ class RecruitmentMixin:
         return tuple(name for key in keys for name in priorities(
             getattr(self.config, f"DimensionalExploration_{key}")))
 
+    def load_recruitment(self):
+        session = getattr(self.config, "DimensionalExplorationRuntime_Session", {})
+        saved = session.get("recruitment", {}) if not session.get("finished") else {}
+        if not isinstance(saved, dict):
+            raise ValueError("次元探查本局招募记录格式不正确。")
+        heroes, pending = saved.get("heroes", []), saved.get("pending")
+        if (not isinstance(heroes, list) or not all(isinstance(name, str) and name for name in heroes)
+                or (pending is not None and (
+                    not isinstance(pending, dict) or not isinstance(pending.get("name"), str) or not pending["name"]
+                    or type(pending.get("cost")) is not int or not 0 < pending["cost"] <= 9
+                    or not isinstance(pending.get("quota"), list) or len(pending["quota"]) != 2
+                    or not all(type(value) is int and 0 <= value <= 99 for value in pending["quota"])))):
+            raise ValueError("次元探查本局招募记录格式不正确。")
+        self._recruited_heroes = list(heroes)
+        self._recruit_pending = pending
+        self._recruit_receipt = None
+
+    def save_recruitment(self):
+        session = dict(getattr(self.config, "DimensionalExplorationRuntime_Session", {}))
+        session["recruitment"] = {"heroes": list(self._recruited_heroes), "pending": self._recruit_pending}
+        self.config.DimensionalExplorationRuntime_Session = session
+
+    def clear_recruitment(self):
+        self._recruited_heroes = []
+        self._recruit_pending = None
+        self._recruit_receipt = None
+        self.reset_hero_search()
+        self.save_recruitment()
+
+    def recruited(self, name):
+        return any(same_hero(name, previous) for previous in self._recruited_heroes)
+
+    def confirm_hero(self, quota):
+        if not self.click_action(HERO_CONFIRM):
+            return False
+        # Sending confirmation is not recruitment. Persist the intended hero
+        # and original quota so a restart cannot mistake a stale picker for a
+        # success or discard the pending receipt. Repeated clicks keep the same
+        # receipt; only two fresh exact quota increases confirm the expense.
+        pending = {"name": self._hero_selected, "cost": self._hero_selected_cost, "quota": list(quota)}
+        if self._recruit_pending != pending:
+            self._recruit_pending = pending
+            self._recruit_receipt = None
+            self.save_recruitment()
+        return True
+
+    def observe_recruitment(self, state, vision):
+        pending = self._recruit_pending
+        if not pending:
+            return
+        if state not in ("hero", "recruitment", "victory", "resume_rewards", "map", "event", "loot"):
+            self._recruit_receipt = None
+            return
+        quota = vision.quota()
+        expected = (pending["quota"][0] + pending["cost"], pending["quota"][1])
+        if quota != expected:
+            self._recruit_receipt = None
+            return
+        if self._recruit_receipt != quota:
+            self._recruit_receipt = quota
+            return
+        if not self.recruited(pending["name"]):
+            self._recruited_heroes.append(pending["name"])
+        logger.attr("ExplorationRecruited", self._recruited_heroes)
+        self._recruit_pending = None
+        self._recruit_receipt = None
+        self.reset_hero_search()
+        self.save_recruitment()
+
     def reset_hero_search(self):
         self._hero_view = None
         self._hero_swipes = 0
@@ -108,12 +178,22 @@ class RecruitmentMixin:
         title = vision.text(OCR_HERO_TITLE)
         unrestricted = "全职业" in title
         swipe_limit = 30
-        preferred = self.hero_priorities(title)
+        preferred = tuple(name for name in self.hero_priorities(title)
+                          if not self.recruited(name) and self.hero_costs.values.get(name, 0) <= budget)
+        if self._recruit_pending:
+            # Never pick another hero while a previous confirmation is awaiting
+            # its quota receipt. A repeated unchanged picker may retry only the
+            # same detail selection, including after process restart.
+            if list(quota) != self._recruit_pending["quota"]:
+                return False
         if budget != self._hero_budget:
             self.reset_hero_search()
             self._hero_budget = budget
+        if self._recruit_pending:
+            self._hero_selected = self._recruit_pending["name"]
+            self._hero_selected_cost = self._recruit_pending["cost"]
         if not self._initial_recruitment and (budget <= 0 or (
-                not unrestricted and self.hero_costs.cannot_afford(preferred, budget))):
+                not unrestricted and not preferred)):
             return self.skip_recruitment()
         # Selection recolors the row, which can hide its cost-icon template.
         # The detail pane and enabled confirm button are authoritative here.
@@ -123,9 +203,14 @@ class RecruitmentMixin:
                 and 0 < self._hero_selected_cost <= budget
                 and same_hero(vision.selected_hero(), self._hero_selected)):
             if vision.bright_text(HERO_CONFIRM_ACTIVE):
-                return self.click_action(HERO_CONFIRM)
+                return self.confirm_hero(quota)
             return False
-        heroes = [hero for hero in vision.heroes() if hero.cost <= budget]
+        def best_visible(hero):
+            return (hero.cost <= budget and not self.recruited(hero.name)
+                    and (unrestricted or bool(preferred) and same_hero(hero.name, preferred[0])))
+
+        heroes = [hero for hero in vision.heroes(stop_when=best_visible)
+                  if hero.cost <= budget and not self.recruited(hero.name)]
         signature = tuple(vision.hero_signature)
         if signature != self._hero_view:
             self._hero_view = signature
@@ -137,7 +222,8 @@ class RecruitmentMixin:
                 self.require_human("已选英雄不在当前可招募名单中，请检查招募额度或名单。")
             if same_hero(vision.selected_hero(), self._hero_selected):
                 if vision.bright_text(HERO_CONFIRM_ACTIVE):
-                    return self.click_action(HERO_CONFIRM)
+                    self._hero_selected_cost = matching[0].cost
+                    return self.confirm_hero(quota)
                 return False
             return self.click_action(ClickButton(matching[0].area, name="SelectExplorationHero"))
 
