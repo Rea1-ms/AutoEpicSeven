@@ -36,13 +36,39 @@ class EventCost:
 
 
 @dataclass(frozen=True)
+class EventCondition:
+    fragments_gte: int = 0
+    life_lte: int | None = None
+    life_below_max: bool = False
+
+    def __post_init__(self):
+        if (type(self.fragments_gte) is not int or self.fragments_gte < 0
+                or (self.life_lte is not None and (type(self.life_lte) is not int or self.life_lte < 0))
+                or type(self.life_below_max) is not bool):
+            raise ValueError("Invalid event condition")
+
+    def matches(self, *, fragments, life, max_life):
+        if fragments < self.fragments_gte or (self.life_lte is not None and life > self.life_lte):
+            return False
+        if self.life_below_max:
+            # Unknown capacity must not silently select a lower-priority branch.
+            # The live task supplies both values from the same resource frame.
+            if max_life is None:
+                return None
+            return life < max_life
+        return True
+
+
+@dataclass(frozen=True)
 class EventBranch:
     event_id: str
     branch_id: str
     pattern: str
     cost: EventCost
     rewards: tuple[dict, ...]
-    priority: int
+    priority: int | None
+    enabled: bool = True
+    when: EventCondition = field(default_factory=EventCondition)
 
     @property
     def key(self):
@@ -59,13 +85,18 @@ class EventSpec:
     name: str
     anchors: tuple[str, ...]
     branches: tuple[EventBranch, ...]
+    review: str = ""
+
+    @property
+    def decision_pending(self):
+        return any(branch.priority is None for branch in self.branches)
 
 
 @lru_cache(maxsize=1)
 def event_catalog():
     data = json.loads(Path(__file__).with_name("event_catalog.json").read_text(encoding="utf-8"))
     result = []
-    reward_kinds = {"loot", "dice", "fragments", "experience", "rank", "all_hp_percent", "life"}
+    reward_kinds = {"loot", "dice", "fragments", "experience", "rank", "all_hp_percent", "life", "max_life", "hero"}
     for event_id, item in data.items():
         branches = []
         for branch_id, entry in item["branches"].items():
@@ -78,14 +109,33 @@ def event_catalog():
             for reward in entry["rewards"]:
                 if reward["kind"] not in reward_kinds or not 0 < reward.get("chance", 100) <= 100:
                     raise ValueError(f"Invalid event reward: {event_id}.{branch_id}")
+            if entry["priority"] is not None and type(entry["priority"]) is not int:
+                raise ValueError(f"Invalid event priority: {event_id}.{branch_id}")
+            enabled = entry.get("enabled", True)
+            if type(enabled) is not bool:
+                raise ValueError(f"Invalid event enabled flag: {event_id}.{branch_id}")
+            when = EventCondition(**entry.get("when", {}))
             branches.append(EventBranch(event_id, branch_id, entry["pattern"], cost,
-                                        tuple(entry["rewards"]), entry["priority"]))
-        result.append(EventSpec(event_id, item["name"], tuple(item["anchors"]), tuple(branches)))
+                                        tuple(entry["rewards"]), entry["priority"], enabled, when))
+        result.append(EventSpec(event_id, item["name"], tuple(item["anchors"]), tuple(branches), item.get("review", "")))
     return tuple(result)
 
 
 def event_branch(key):
     return next((branch for event in event_catalog() for branch in event.branches if branch.key == key), None)
+
+
+def pending_event(story):
+    """Keep a reviewed blank strategy from falling through to automatic sampling.
+
+    A slightly different option OCR must not turn an explicitly deferred choice
+    back into an unknown-event experiment. Stable narration anchors identify
+    these holds independently of option matching; empty narration proves none.
+    """
+    if not story:
+        return None
+    return next((event for event in event_catalog() if event.decision_pending
+                 and all(anchor in normalize(story) for anchor in event.anchors)), None)
 
 
 @dataclass
@@ -172,23 +222,32 @@ def match_event(choices, story=""):
     return matches[0] if len(matches) == 1 else None
 
 
-def decide_event(choices, *, cores, fragments, life, loot, dice=None, story="", memory=None):
+def decide_event(choices, *, cores, fragments, life, loot, dice=None, max_life=None, story="", memory=None):
     matched = match_event(choices, story)
     if matched is None:
         return None
     event, paired = matched
+    if event.decision_pending or len(paired) != len(event.branches):
+        return None
     memory = memory or EventMemory()
     if memory.pending and not memory.advanced:
         for choice, branch in paired:
             if memory.pending == branch.key:
-                if not choice.available or branch.cost.unavailable(cores=cores, fragments=fragments, life=life, loot=loot, dice=dice):
+                if (not branch.enabled or not choice.available
+                        or branch.when.matches(fragments=fragments, life=life, max_life=max_life) is not True
+                        or branch.cost.unavailable(cores=cores, fragments=fragments, life=life, loot=loot, dice=dice)):
                     return None
                 return EventDecision(event, branch, choice, False)
     ranked = []
     for choice, branch in paired:
-        if not choice.available:
+        if not branch.enabled or not choice.available:
             continue
         if branch.cost.unavailable(cores=cores, fragments=fragments, life=life, loot=loot, dice=dice):
+            continue
+        eligible = branch.when.matches(fragments=fragments, life=life, max_life=max_life)
+        if eligible is None:
+            return None
+        if not eligible:
             continue
         # A first attempt is only a collection opportunity, not proof of unlock.
         # Check all routes to the same named item to avoid paying/fighting twice

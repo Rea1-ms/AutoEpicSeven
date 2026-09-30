@@ -7564,6 +7564,162 @@
       ]
     },
     {
+      "source": "tests/dimensional_exploration/test_dimensional_exploration_events.py",
+      "business": "次元探查",
+      "status": "已纳入",
+      "reason": "2026-09-28 新增事件整理回归；历史用例仍在原迁移条目登记",
+      "cases": [
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.CollectedEventTests.test_all_collected_option_sets_match_exact_catalogue_stages",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-09-28 招募顺位与已采集事件规则；事件文字样本见 event_observations.json"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.CollectedEventTests.test_new_named_rewards_use_first_attempt_then_lower_cost_routes",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-09-28 招募顺位与已采集事件规则；事件文字样本见 event_observations.json"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.CollectedEventTests.test_blank_priorities_hold_even_when_sampling_is_enabled",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260926-201447-325"
+          ],
+          "status": "已纳入",
+          "reason": "2026-09-28 招募顺位与已采集事件规则；事件文字样本见 event_observations.json"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.CollectedEventTests.test_multistage_costs_and_observed_rewards_are_not_invented",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-09-28 招募顺位与已采集事件规则；事件文字样本见 event_observations.json"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_reviewed_fixed_preferences_and_last_life_guard",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-09-30 按用户事件决定实现条件规则与新截图回放"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_life_threshold_and_capacity_control_recovery",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-09-30 按用户事件决定实现条件规则与新截图回放"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_mask_first_reward_then_paid_repeat_and_budget_fallback",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-09-30 按用户事件决定实现条件规则与新截图回放"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_sword_payment_threshold_applies_before_and_after_collection",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-09-30 按用户事件决定实现条件规则与新截图回放"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_conditions_reject_malformed_values",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-09-30 按用户事件决定实现条件规则与新截图回放"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_supplied_screenshots_have_expected_page_states",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260927-152340-604",
+            "20260929-230255-086",
+            "20260929-230259-128",
+            "20260929-230307-455",
+            "20260929-230315-796",
+            "20260929-230320-094",
+            "20260929-230325-818",
+            "20260929-230830-517",
+            "20260929-230509-019",
+            "20260929-230827-172",
+            "20260929-230947-942",
+            "20260929-230953-691"
+          ],
+          "status": "已纳入",
+          "reason": "2026-09-30 按用户事件决定实现条件规则与新截图回放"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_event_choices_and_outcomes_use_real_screenshots",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260927-152340-604",
+            "20260929-230509-019",
+            "20260929-230947-942",
+            "20260929-230953-691",
+            "20260929-230827-172",
+            "20260929-230830-517"
+          ],
+          "status": "已纳入",
+          "reason": "2026-09-30 按用户事件决定实现条件规则与新截图回放"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_narrow_passage_recruits_ranger_and_confirms_quota",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260929-230255-086",
+            "20260929-230259-128",
+            "20260929-230307-455",
+            "20260929-230315-796",
+            "20260929-230320-094",
+            "20260929-230325-818"
+          ],
+          "status": "已纳入",
+          "reason": "2026-09-30 按用户事件决定实现条件规则与新截图回放"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_partial_event_options_do_not_advance_or_choose",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260929-230509-019"
+          ],
+          "status": "已纳入",
+          "reason": "古剑选项漏读不能触发次优分支或误记已完成"
+        }
+      ]
+    },
+    {
       "source": "tests/dimensional_exploration/test_dimensional_exploration_shop_new.py",
       "business": "次元探查",
       "status": "已纳入",

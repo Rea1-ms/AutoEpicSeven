@@ -665,7 +665,8 @@
       "server": "global_cn",
       "scene": "event",
       "used_by": [
-        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_event_disabled_option_is_not_available"
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_event_disabled_option_is_not_available",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.CollectedEventTests.test_blank_priorities_hold_even_when_sampling_is_enabled"
       ]
     },
     "20260926-202057-530": {
@@ -696,6 +697,127 @@
       "used_by": [
         "tests.dimensional_exploration.test_dimensional_exploration_shop_new.ShopCoreRegressions.test_core_icon_margin_does_not_block_shop_resources",
         "tests.dimensional_exploration.test_dimensional_exploration_shop_new.ShopCoreRegressions.test_transient_map_keeps_purchase_until_debit_is_confirmed"
+      ]
+    },
+    "20260927-152340-604": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20260927-152340-604.png",
+      "sha256": "d106f8b527ea52729aa492c6bb1a6065e3891f04c30f5f523efee66aac3906f1",
+      "server": "global_cn",
+      "scene": "event",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_supplied_screenshots_have_expected_page_states",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_event_choices_and_outcomes_use_real_screenshots"
+      ]
+    },
+    "20260929-230255-086": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20260929-230255-086.png",
+      "sha256": "4d8aa92cdcb16e052864456ce2ac0855f9fe7c28be362d3f9b213711ef9208d1",
+      "server": "global_cn",
+      "scene": "event",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_supplied_screenshots_have_expected_page_states",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_narrow_passage_recruits_ranger_and_confirms_quota"
+      ]
+    },
+    "20260929-230259-128": {
+      "path": "tests/fixtures/dimensional_exploration/rewards/MuMu-20260929-230259-128.png",
+      "sha256": "9dd9962770bd9c0d5ffb305ca82d6e3149fafac5ccd48661f8d41d1d5673e1e5",
+      "server": "global_cn",
+      "scene": "resume_rewards",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_supplied_screenshots_have_expected_page_states",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_narrow_passage_recruits_ranger_and_confirms_quota"
+      ]
+    },
+    "20260929-230307-455": {
+      "path": "tests/fixtures/dimensional_exploration/recruitment/MuMu-20260929-230307-455.png",
+      "sha256": "69e28174534330c0043ba1906b58cd59162ca37a36dea034e4f5bb92e9060b3f",
+      "server": "global_cn",
+      "scene": "hero",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_supplied_screenshots_have_expected_page_states",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_narrow_passage_recruits_ranger_and_confirms_quota"
+      ]
+    },
+    "20260929-230315-796": {
+      "path": "tests/fixtures/dimensional_exploration/recruitment/MuMu-20260929-230315-796.png",
+      "sha256": "2b76a5f044208ba81b60e81baaef0ea5e13eaadefb1043ababed2d0de805dfee",
+      "server": "global_cn",
+      "scene": "hero",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_supplied_screenshots_have_expected_page_states",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_narrow_passage_recruits_ranger_and_confirms_quota"
+      ]
+    },
+    "20260929-230320-094": {
+      "path": "tests/fixtures/dimensional_exploration/rewards/MuMu-20260929-230320-094.png",
+      "sha256": "dfce3082df068532028ce88e12208dd4bf7c0f186a441ea0aa0e0f8c329a9276",
+      "server": "global_cn",
+      "scene": "reward",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_supplied_screenshots_have_expected_page_states",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_narrow_passage_recruits_ranger_and_confirms_quota"
+      ]
+    },
+    "20260929-230325-818": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20260929-230325-818.png",
+      "sha256": "800406bc9b1021dcc57fad3317cb68809bfc18e3f613bc102339019495c87f9e",
+      "server": "global_cn",
+      "scene": "event",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_supplied_screenshots_have_expected_page_states",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_narrow_passage_recruits_ranger_and_confirms_quota"
+      ]
+    },
+    "20260929-230830-517": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20260929-230830-517.png",
+      "sha256": "923dbbd80f9137284a01f560ae04cb9cb349fa552a65ef9223201f78624d8b6d",
+      "server": "global_cn",
+      "scene": "event",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_supplied_screenshots_have_expected_page_states",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_event_choices_and_outcomes_use_real_screenshots"
+      ]
+    },
+    "20260929-230509-019": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20260929-230509-019.png",
+      "sha256": "5eb7c762fa64b294b27cf259b455469ad452c695d8a4eb4bd7f798fac85cb49b",
+      "server": "global_cn",
+      "scene": "event",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_supplied_screenshots_have_expected_page_states",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_event_choices_and_outcomes_use_real_screenshots",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_partial_event_options_do_not_advance_or_choose"
+      ]
+    },
+    "20260929-230827-172": {
+      "path": "tests/fixtures/dimensional_exploration/rewards/MuMu-20260929-230827-172.png",
+      "sha256": "0ff6b251e47d2c18aafd2dc28c364b3da648ecd2301778601541683b116a8cc1",
+      "server": "global_cn",
+      "scene": "reward",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_supplied_screenshots_have_expected_page_states",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_event_choices_and_outcomes_use_real_screenshots"
+      ]
+    },
+    "20260929-230947-942": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20260929-230947-942.png",
+      "sha256": "cbc291a348331b0b6855b07d8811ef60352687d8ea1faa4b82ce836f891e58c0",
+      "server": "global_cn",
+      "scene": "event",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_supplied_screenshots_have_expected_page_states",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_event_choices_and_outcomes_use_real_screenshots"
+      ]
+    },
+    "20260929-230953-691": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20260929-230953-691.png",
+      "sha256": "491ce74a962afd1d3dc4a890e6a9547ed17da43653f976287cde12d11483a561",
+      "server": "global_cn",
+      "scene": "event",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_supplied_screenshots_have_expected_page_states",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_event_choices_and_outcomes_use_real_screenshots"
       ]
     }
   }

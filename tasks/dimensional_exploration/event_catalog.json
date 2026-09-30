@@ -1,13 +1,24 @@
 {
   "observatory": {
     "name": "观测站投币",
-    "anchors": ["观测站", "投币口"],
+    "anchors": [
+      "观测站",
+      "投币口"
+    ],
     "source": "MuMu-20260922-081528-636.png",
     "branches": {
       "coin": {
         "pattern": "(?:尝试向投币口投入硬币)?消耗50个次元碎片(?:有30%的几率)?获得(?:观测站)?望远镜镜片",
-        "cost": {"fragments": 50},
-        "rewards": [{"kind": "loot", "name": "观测站望远镜镜片", "chance": 30}],
+        "cost": {
+          "fragments": 50
+        },
+        "rewards": [
+          {
+            "kind": "loot",
+            "name": "观测站望远镜镜片",
+            "chance": 30
+          }
+        ],
         "priority": 10
       },
       "leave": {
@@ -20,83 +31,150 @@
   },
   "candlestick": {
     "name": "破碎烛台",
-    "anchors": ["烛台", "烛泪"],
+    "anchors": [
+      "烛台",
+      "烛泪"
+    ],
     "source": "MuMu-20260923-232331-766.png",
     "branches": {
       "wax": {
         "pattern": "查看烛泪流[淌消]的方向消耗1个战利品获得300点探查经验值",
-        "cost": {"loot": 1},
-        "rewards": [{"kind": "experience", "amount": 300}],
+        "cost": {
+          "loot": 1
+        },
+        "rewards": [
+          {
+            "kind": "experience",
+            "amount": 300
+          }
+        ],
         "priority": 10
       },
       "rekindle": {
         "pattern": "重新燃起残留的火种1名随机英雄生命值降低40%获得160点探查经验值",
-        "cost": {"random_hp_percent": 40},
-        "rewards": [{"kind": "experience", "amount": 160}],
+        "cost": {
+          "random_hp_percent": 40
+        },
+        "rewards": [
+          {
+            "kind": "experience",
+            "amount": 160
+          }
+        ],
         "priority": 20
       },
       "repair": {
         "pattern": "修好烛台并将其放回原位(?:60)?",
         "cost": {},
-        "rewards": [{"kind": "experience", "amount": 60}],
+        "rewards": [
+          {
+            "kind": "experience",
+            "amount": 60
+          }
+        ],
         "priority": 100
       }
     }
   },
   "garden": {
     "name": "萤火虫庭院",
-    "anchors": ["庭院", "萤火虫"],
+    "anchors": [
+      "庭院",
+      "萤火虫"
+    ],
     "source": "MuMu-20260923-232358-161.png",
     "branches": {
       "fireflies": {
         "pattern": "跟随发光的萤火虫有70%的几率使1名随机英雄Rank提升1阶",
         "cost": {},
-        "rewards": [{"kind": "rank", "amount": 1, "chance": 70}],
+        "rewards": [
+          {
+            "kind": "rank",
+            "amount": 1,
+            "chance": 70
+          }
+        ],
         "priority": 80
       },
       "grass": {
         "pattern": "清理铺满地面的枯草120",
         "cost": {},
-        "rewards": [{"kind": "experience", "amount": 120}],
+        "rewards": [
+          {
+            "kind": "experience",
+            "amount": 120
+          }
+        ],
         "priority": 60
       },
       "heal": {
         "pattern": "循着精灵的气息前进所有英雄生命值恢复20%",
         "cost": {},
-        "rewards": [{"kind": "all_hp_percent", "amount": 20}],
+        "rewards": [
+          {
+            "kind": "all_hp_percent",
+            "amount": 20
+          }
+        ],
         "priority": 100
       }
     }
   },
   "backpack": {
     "name": "探险家遗物",
-    "anchors": ["背包", "探险家"],
+    "anchors": [
+      "背包",
+      "探险家"
+    ],
     "source": "MuMu-20260923-233133-331.png",
     "branches": {
       "supplies": {
         "pattern": "拿走补给品所有英雄生命值降低25%获得探险家指南针",
-        "cost": {"all_hp_percent": 25},
-        "rewards": [{"kind": "loot", "name": "探险家指南针"}],
+        "cost": {
+          "all_hp_percent": 25
+        },
+        "rewards": [
+          {
+            "kind": "loot",
+            "name": "探险家指南针"
+          }
+        ],
         "priority": 10
       },
       "remains": {
         "pattern": "收(?:殓)?遗骸100",
         "cost": {},
-        "rewards": [{"kind": "experience", "amount": 100}],
+        "rewards": [
+          {
+            "kind": "experience",
+            "amount": 100
+          }
+        ],
         "priority": 100
       }
     }
   },
   "mimic": {
     "name": "虚弱宝箱怪",
-    "anchors": ["宝箱怪", "箱盖"],
+    "anchors": [
+      "宝箱怪",
+      "箱盖"
+    ],
     "source": "MuMu-20260923-233146-181.png",
     "branches": {
       "exchange": {
         "pattern": "尝试安抚宝箱怪消耗1个战利品获得1个随机战利品",
-        "cost": {"loot": 1},
-        "rewards": [{"kind": "loot", "amount": 1}],
-        "priority": 10
+        "cost": {
+          "loot": 1
+        },
+        "rewards": [
+          {
+            "kind": "loot",
+            "amount": 1
+          }
+        ],
+        "priority": 10,
+        "enabled": false
       },
       "leave": {
         "pattern": "径直离开",
@@ -104,50 +182,1351 @@
         "rewards": [],
         "priority": 100
       }
-    }
+    },
+    "sources": [
+      "MuMu-20260929-230947-942.png",
+      "MuMu-20260929-230953-691.png"
+    ]
   },
   "pool": {
     "name": "清澈池塘",
-    "anchors": ["池塘", "水面"],
+    "anchors": [
+      "池塘",
+      "水面"
+    ],
     "source": "MuMu-20260923-233240-604.png",
     "branches": {
       "shallow": {
         "pattern": "(?:将手伸入水中)?消耗1点生命体征获得1个随机战利品",
-        "cost": {"life": 1},
-        "rewards": [{"kind": "loot", "amount": 1}],
+        "cost": {
+          "life": 1
+        },
+        "rewards": [
+          {
+            "kind": "loot",
+            "amount": 1
+          }
+        ],
         "priority": 100
       },
       "deep": {
         "pattern": "(?:俯身窥探池塘深处)?消耗2点生命体征获得月亮之书",
-        "cost": {"life": 2},
-        "rewards": [{"kind": "loot", "name": "月亮之书"}],
+        "cost": {
+          "life": 2
+        },
+        "rewards": [
+          {
+            "kind": "loot",
+            "name": "月亮之书"
+          }
+        ],
         "priority": 10
       }
     }
   },
   "sword": {
     "name": "古老长剑",
-    "anchors": ["剑柄", "剑刃"],
+    "anchors": [
+      "剑柄",
+      "剑刃"
+    ],
     "source": "MuMu-20260924-193808-685.png",
     "branches": {
       "fight": {
         "pattern": "尝试拔出剑战斗后获得门卫之剑碎片",
-        "cost": {"battle": 1},
-        "rewards": [{"kind": "loot", "name": "门卫之剑碎片"}],
-        "priority": 10
+        "cost": {
+          "battle": 1
+        },
+        "rewards": [
+          {
+            "kind": "loot",
+            "name": "门卫之剑碎片"
+          }
+        ],
+        "priority": 80
       },
       "pay": {
         "pattern": "行礼后撤离消耗60个次元碎片获得门卫之剑碎片",
-        "cost": {"fragments": 60},
-        "rewards": [{"kind": "loot", "name": "门卫之剑碎片"}],
-        "priority": 80
+        "cost": {
+          "fragments": 60
+        },
+        "rewards": [
+          {
+            "kind": "loot",
+            "name": "门卫之剑碎片"
+          }
+        ],
+        "priority": 100,
+        "when": {
+          "fragments_gte": 2000
+        }
       },
       "touch": {
         "pattern": "触碰寄宿在剑中的气息所有英雄生命值降低25%获得2个次元[骰般]子",
-        "cost": {"all_hp_percent": 25},
-        "rewards": [{"kind": "dice", "amount": 2}],
+        "cost": {
+          "all_hp_percent": 25
+        },
+        "rewards": [
+          {
+            "kind": "dice",
+            "amount": 2
+          }
+        ],
+        "priority": 0,
+        "enabled": false
+      }
+    },
+    "notes": "按2026-09-30用户决定：首次和重复均选择战斗；持有碎片至少2000时改为支付60碎片，不选择损失全队生命值。",
+    "sources": [
+      "MuMu-20260929-230509-019.png",
+      "MuMu-20260929-230827-172.png",
+      "MuMu-20260929-230830-517.png"
+    ]
+  },
+  "blue_flame": {
+    "name": "蓝焰祭坛",
+    "anchors": [
+      "祭坛",
+      "蓝色火焰"
+    ],
+    "sources": [
+      "096fdc45ab19b311/20260925-230926-b0c02804",
+      "096fdc45ab19b311/20260926-192852-e45f874e"
+    ],
+    "branches": {
+      "touch": {
+        "text": "触碰蓝色火焰。1名随机英雄生命值降低30%，获得1个随机战利品",
+        "pattern": "触碰蓝色火焰1名随机英雄生命值降低30%获得1个随机战利品",
+        "cost": {
+          "random_hp_percent": 30
+        },
+        "rewards": [
+          {
+            "kind": "loot",
+            "amount": 1
+          }
+        ],
+        "priority": 100
+      },
+      "deep": {
+        "text": "将手伸入蓝色火焰深处。1名随机英雄生命值降低40%，获得太阳之书",
+        "pattern": "将手伸入蓝色火焰深处1名随机英雄生命值降低40%获得太阳之书",
+        "cost": {
+          "random_hp_percent": 40
+        },
+        "rewards": [
+          {
+            "kind": "loot",
+            "name": "太阳之书"
+          }
+        ],
+        "priority": 10
+      }
+    },
+    "notes": "沿用首次尝试专属奖励、重复事件减少消耗的约定；30%分支已有两次随机战利品结果。"
+  },
+  "flooded_prison": {
+    "name": "积水牢房",
+    "anchors": [
+      "牢房",
+      "钥匙"
+    ],
+    "sources": [
+      "10157706bed97023/20260926-124003-7ad5aec1",
+      "10157706bed97023/20260926-200853-044f7246",
+      "10157706bed97023/20260927-152316-1d05ddc7"
+    ],
+    "branches": {
+      "fight": {
+        "text": "用生锈的钥匙打开里面的门。战斗后，获得1个随机战利品",
+        "pattern": "用生锈的钥匙打开里面的门战斗后获得1个随机战利品",
+        "cost": {
+          "battle": 1
+        },
+        "rewards": [
+          {
+            "kind": "loot",
+            "amount": 1
+          }
+        ],
+        "priority": 0
+      },
+      "fragments": {
+        "text": "按照记录寻找崩塌墙壁的缝隙。50",
+        "pattern": "按照记录寻找崩塌墙壁的缝隙50",
+        "cost": {},
+        "rewards": [
+          {
+            "kind": "fragments",
+            "amount": 50
+          }
+        ],
+        "priority": 100
+      },
+      "heal": {
+        "text": "按照记录悄悄躲避。所有英雄生命值恢复10%",
+        "pattern": "按照记录悄悄躲避所有英雄生命值恢复10%",
+        "cost": {},
+        "rewards": [
+          {
+            "kind": "all_hp_percent",
+            "amount": 10
+          }
+        ],
+        "priority": 50
+      }
+    },
+    "notes": "逐英雄剩余生命值尚未识别，当前固定优先免费50碎片；血量条件留作待办。"
+  },
+  "bloody_refuge": {
+    "name": "血迹避难所",
+    "anchors": [
+      "避难所",
+      "血迹"
+    ],
+    "sources": [
+      "1cc50f01905f48fc/20260927-184042-e761abcb"
+    ],
+    "branches": {
+      "fight": {
+        "text": "沿着血迹前进。战斗后，英雄Rank提升1阶",
+        "pattern": "沿着血迹前进战斗后英雄Rank提升1阶",
+        "cost": {
+          "battle": 1
+        },
+        "rewards": [
+          {
+            "kind": "rank",
+            "amount": 1
+          }
+        ],
+        "priority": 20
+      },
+      "lantern": {
+        "text": "搜查血迹周围的残骸。所有英雄生命值降低25%，获得探险提灯",
+        "pattern": "搜查血迹周围的残骸所有英雄生命值降低25%获得探险提灯",
+        "cost": {
+          "all_hp_percent": 25
+        },
+        "rewards": [
+          {
+            "kind": "loot",
+            "name": "探险提灯"
+          }
+        ],
+        "priority": 10
+      },
+      "leave": {
+        "text": "将血迹留在身后，离开这里。50",
+        "pattern": "将血迹留在身后离开这里50",
+        "cost": {},
+        "rewards": [
+          {
+            "kind": "experience",
+            "amount": 50
+          }
+        ],
+        "priority": 100
+      }
+    },
+    "notes": "首次尝试提灯后走免费离开；50为经验图标，已核对原图，不是碎片。"
+  },
+  "vestment_price": {
+    "name": "祭服索求",
+    "anchors": [
+      "拿起祭服",
+      "索求"
+    ],
+    "sources": [
+      "20ca416b3b555680/20260926-124423-3a48e6c3",
+      "20ca416b3b555680/20260926-201436-5b15a44a",
+      "20ca416b3b555680/20260927-152339-8a9ece7a",
+      "MuMu-20260927-152340-604.png"
+    ],
+    "branches": {
+      "hp": {
+        "text": "染上红光。所有英雄生命值降低30%",
+        "pattern": "染上红光所有英雄生命值降低30%",
+        "cost": {
+          "all_hp_percent": 30
+        },
+        "rewards": [],
+        "priority": 50
+      },
+      "life": {
+        "text": "将陌生的气息逼出体外。消耗1点生命体征",
+        "pattern": "将陌生的气息逼出体外消耗1点生命体征",
+        "cost": {
+          "life": 1
+        },
+        "rewards": [],
+        "priority": 100
+      },
+      "loot": {
+        "text": "扔掉手中的所有东西。消耗1个战利品",
+        "pattern": "扔掉手中的所有东西(?:战利品不足)?消耗1个战利品",
+        "cost": {
+          "loot": 1
+        },
+        "rewards": [],
+        "priority": 0,
+        "enabled": false
+      }
+    },
+    "notes": "优先生命体征，不牺牲战利品；只有最后1点时改用全队30%生命值。"
+  },
+  "torn_map_first": {
+    "name": "撕裂地图第一标记",
+    "anchors": [
+      "地图碎片",
+      "皱巴巴"
+    ],
+    "sources": [
+      "264e3bb5b82e026e/20260927-153947-3cd00f43"
+    ],
+    "branches": {
+      "follow": {
+        "text": "虽然遗憾，但也没有办法消耗20个次元碎片，有50%的几率获得50点探查经验值",
+        "pattern": "虽然遗憾但也没有办法消耗20个次元碎片有50%的几率获得50点探查经验值",
+        "cost": {
+          "fragments": 20
+        },
+        "rewards": [
+          {
+            "kind": "experience",
+            "amount": 50,
+            "chance": 50
+          }
+        ],
+        "priority": 10
+      },
+      "leave": {
+        "text": "收起撕裂的地图，离开这里。",
+        "pattern": "收起撕裂的地图离开这里",
+        "cost": {},
+        "rewards": [],
+        "priority": 100
+      }
+    },
+    "notes": "没有已确认专属奖励，按重复低消耗约定免费离开；付费分支的采样尚未确认完成。"
+  },
+  "meteorite": {
+    "name": "血红陨石",
+    "anchors": [
+      "陨石",
+      "黑烟"
+    ],
+    "sources": [
+      "2ac2d418a94a5f7c/20260925-114119-d3ce3068"
+    ],
+    "branches": {
+      "edge": {
+        "text": "取下陨石边缘。有70%的几率获得1个随机战利品（失败时1名随机英雄生命值降低50%)",
+        "pattern": "取下陨石边缘有70%的几率获得1个随机战利品（失败时1名随机英雄生命值降低50%\\)",
+        "cost": {
+          "random_hp_percent": 50
+        },
+        "rewards": [
+          {
+            "kind": "loot",
+            "amount": 1,
+            "chance": 70
+          }
+        ],
+        "priority": 20
+      },
+      "core": {
+        "text": "触碰陨石核心有40%的几率获得2个随机战利品（失败时1名随机英雄死亡)",
+        "pattern": "触碰陨石核心有40%的几率获得2个随机战利品（失败时1名随机英雄死亡\\)",
+        "cost": {
+          "life": 1
+        },
+        "rewards": [
+          {
+            "kind": "loot",
+            "amount": 2,
+            "chance": 40
+          }
+        ],
+        "priority": 10
+      },
+      "leave": {
+        "text": "远离陨石。50",
+        "pattern": "远离陨石50",
+        "cost": {},
+        "rewards": [
+          {
+            "kind": "fragments",
+            "amount": 50
+          }
+        ],
+        "priority": 100
+      }
+    },
+    "notes": "默认免费离开获得50碎片。两条风险路线的代价按失败时最大损失记载，并非每次必扣；死亡按1点生命体征保守限制。"
+  },
+  "wandering_ghost": {
+    "name": "流浪幽灵",
+    "anchors": [
+      "流浪幽灵",
+      "扭曲"
+    ],
+    "sources": [
+      "3c991d14db299854/20260925-112734-fe8fba7b",
+      "3c991d14db299854/20260926-184247-63f96f40"
+    ],
+    "branches": {
+      "fragments": {
+        "text": "收起幽灵掉落的碎片。",
+        "pattern": "收起幽灵掉落的碎片",
+        "cost": {},
+        "rewards": [
+          {
+            "kind": "fragments",
+            "amount": 50
+          }
+        ],
+        "priority": 100
+      },
+      "warmth": {
+        "text": "向幽灵伸出手，与其分享温暖。所有英雄生命值降低25%，英雄Rank提升1阶",
+        "pattern": "向幽灵伸出手与其分享温暖所有英雄生命值降低25%英雄Rank提升1阶",
+        "cost": {
+          "all_hp_percent": 25
+        },
+        "rewards": [
+          {
+            "kind": "rank",
+            "amount": 1
+          }
+        ],
+        "priority": 10
+      }
+    },
+    "notes": "免费分支两次完整采样均增加50碎片。"
+  },
+  "spirit_gate": {
+    "name": "精灵之门",
+    "anchors": [
+      "精灵之门",
+      "气息"
+    ],
+    "sources": [
+      "43c37753ae7dfb15/20260926-194036-8e619342",
+      "43c37753ae7dfb15/20260927-165019-16f1a579"
+    ],
+    "branches": {
+      "memory": {
+        "text": "接受门缝中透出的气息。 120",
+        "pattern": "接受门缝中透出的气息120",
+        "cost": {},
+        "rewards": [
+          {
+            "kind": "experience",
+            "amount": 120
+          }
+        ],
+        "priority": 100
+      },
+      "thread": {
+        "text": "查看古老的纹样。1名随机英雄生命值降低30%，获得预言者丝线",
+        "pattern": "查看古老的纹样1名随机英雄生命值降低30%获得预言者丝线",
+        "cost": {
+          "random_hp_percent": 30
+        },
+        "rewards": [
+          {
+            "kind": "loot",
+            "name": "预言者丝线"
+          }
+        ],
+        "priority": 10
+      }
+    },
+    "notes": "首次尝试丝线后免费获得经验；120为经验图标，已核对原图。"
+  },
+  "quarreling_tablet": {
+    "name": "争执石板",
+    "anchors": [
+      "石板",
+      "两个人物"
+    ],
+    "sources": [
+      "43d6de5b30f2dab6/20260927-170137-a8c39e53"
+    ],
+    "branches": {
+      "warrior": {
+        "text": "击碎石板。招募1名战士英雄",
+        "pattern": "击碎石板招募1名战士英雄",
+        "cost": {},
+        "rewards": [
+          {
+            "kind": "hero",
+            "amount": 1,
+            "role": "战士"
+          }
+        ],
+        "priority": 50
+      },
+      "healer": {
+        "text": "让他们放下武器。招募1名精灵师英雄",
+        "pattern": "让他们放下武器招募1名精灵师英雄",
+        "cost": {},
+        "rewards": [
+          {
+            "kind": "hero",
+            "amount": 1,
+            "role": "精灵师"
+          }
+        ],
         "priority": 100
       }
     }
+  },
+  "eternal_torch": {
+    "name": "永燃火把",
+    "anchors": [
+      "火把",
+      "墙上"
+    ],
+    "sources": [
+      "4687cea519ba193e/20260926-200500-f480b648"
+    ],
+    "branches": {
+      "life": {
+        "text": "分装火焰。所有英雄生命值降低30%，恢复2点生命体征",
+        "pattern": "分装火焰所有英雄生命值降低30%恢复2点生命体征",
+        "cost": {
+          "all_hp_percent": 30
+        },
+        "rewards": [
+          {
+            "kind": "life",
+            "amount": 2
+          }
+        ],
+        "priority": 100,
+        "when": {
+          "life_lte": 2
+        }
+      },
+      "wall": {
+        "text": "查看火焰下方的墙壁。 80",
+        "pattern": "查看火焰下方的墙壁80",
+        "cost": {},
+        "rewards": [
+          {
+            "kind": "experience",
+            "amount": 80
+          }
+        ],
+        "priority": 50
+      }
+    }
+  },
+  "fairy_dance": {
+    "name": "精灵舞蹈",
+    "anchors": [
+      "小精灵们",
+      "光之粉末"
+    ],
+    "sources": [
+      "69cda3d200270e73/20260926-181226-b6dee315",
+      "69cda3d200270e73/20260927-183423-65d9471d"
+    ],
+    "branches": {
+      "heal": {
+        "text": "将闪亮的物品送给精灵。消耗1个战利品，所有英雄生命值恢复40%",
+        "pattern": "将闪亮的物品送给精灵消耗1个战利品所有英雄生命值恢复40%",
+        "cost": {
+          "loot": 1
+        },
+        "rewards": [
+          {
+            "kind": "all_hp_percent",
+            "amount": 40
+          }
+        ],
+        "priority": 0,
+        "enabled": false
+      },
+      "dice": {
+        "text": "为精灵的舞蹈献上生命值。所有英雄生命值降低30%，获得2个次元般子",
+        "pattern": "为精灵的舞蹈献上生命值所有英雄生命值降低30%获得2个次元[骰般殷]子",
+        "cost": {
+          "all_hp_percent": 30
+        },
+        "rewards": [
+          {
+            "kind": "dice",
+            "amount": 2
+          }
+        ],
+        "priority": 100
+      }
+    },
+    "notes": "两次记录均写选择左侧治疗，后续文字却是付出生命值且骰子增加2；选项与结果存在冲突，不能据此确认治疗分支已验证。"
+  },
+  "mask_vision": {
+    "name": "面具幻影",
+    "anchors": [
+      "面具纹样",
+      "幻影"
+    ],
+    "sources": [
+      "736264c9bc54c671/20260927-162138-c9bf93c9",
+      "736264c9bc54c671/20260927-182953-ce63b1cc"
+    ],
+    "branches": {
+      "deeper": {
+        "text": "进一步窥探幻影。消耗50个次元碎片，有60%的几率获得2个次元殷子",
+        "pattern": "进一步窥探幻影消耗50个次元碎片有60%的几率获得2个次元[骰般殷]子",
+        "cost": {
+          "fragments": 50
+        },
+        "rewards": [
+          {
+            "kind": "dice",
+            "amount": 2,
+            "chance": 60
+          }
+        ],
+        "priority": 10
+      },
+      "leave": {
+        "text": "到此为止。",
+        "pattern": "到此为止",
+        "cost": {},
+        "rewards": [],
+        "priority": 100
+      }
+    },
+    "notes": "面具的后续阶段；不把概率骰子视为必得，默认停止追加消耗。"
+  },
+  "collapsed_stairs": {
+    "name": "崩塌阶梯",
+    "anchors": [
+      "阶梯",
+      "凹槽"
+    ],
+    "sources": [
+      "75103fce55137635/20260925-230945-81499999",
+      "75103fce55137635/20260926-200824-28e2909a"
+    ],
+    "branches": {
+      "pay": {
+        "text": "将碎片嵌入凹槽。消耗80个次元碎片，有40%的几率获得1个随机战利品",
+        "pattern": "将碎片嵌入凹槽消耗80个次元碎片有40%的几率获得1个随机战利品",
+        "cost": {
+          "fragments": 80
+        },
+        "rewards": [
+          {
+            "kind": "loot",
+            "amount": 1,
+            "chance": 40
+          }
+        ],
+        "priority": 10
+      },
+      "leave": {
+        "text": "绕过崩塌的阶梯。",
+        "pattern": "绕过崩塌的阶梯",
+        "cost": {},
+        "rewards": [],
+        "priority": 100
+      }
+    }
+  },
+  "armory": {
+    "name": "老旧武器库",
+    "anchors": [
+      "武器库",
+      "左右两个区域"
+    ],
+    "sources": [
+      "7d95a49ea14ceb97/20260926-192616-209679c1",
+      "7d95a49ea14ceb97/20260927-162900-2360a820"
+    ],
+    "branches": {
+      "fight": {
+        "text": "与左侧的敌人战斗。战斗后，获得1个随机战利品",
+        "pattern": "与左侧的敌人战斗战斗后获得1个随机战利品",
+        "cost": {
+          "battle": 1
+        },
+        "rewards": [
+          {
+            "kind": "loot",
+            "amount": 1
+          }
+        ],
+        "priority": 20
+      },
+      "elite": {
+        "text": "与右侧的敌人战斗。精英战斗后，获得绘画：星辰回廊",
+        "pattern": "与右侧的敌人战斗精英战斗后获得绘画星辰回廊",
+        "cost": {
+          "battle": 1
+        },
+        "rewards": [
+          {
+            "kind": "loot",
+            "name": "绘画星辰回廊"
+          }
+        ],
+        "priority": 10
+      },
+      "leave": {
+        "text": "离开武器库。",
+        "pattern": "离开武器库",
+        "cost": {},
+        "rewards": [],
+        "priority": 100
+      }
+    },
+    "notes": "专属绘画路线需要精英战斗；沿用首次专属奖励尝试，重复则离开。"
+  },
+  "torn_vestment": {
+    "name": "地上的祭服",
+    "anchors": [
+      "祭服",
+      "铺在地上"
+    ],
+    "sources": [
+      "86e1f1a40b649980/20260926-124416-16954f13",
+      "86e1f1a40b649980/20260926-201429-dc0502ab",
+      "86e1f1a40b649980/20260927-152331-a7a147ef"
+    ],
+    "branches": {
+      "take": {
+        "text": "拿走祭服。",
+        "pattern": "拿走祭服",
+        "cost": {},
+        "rewards": [
+          {
+            "kind": "max_life",
+            "amount": 1,
+            "reported_by_user": true
+          }
+        ],
+        "priority": 100
+      },
+      "leave": {
+        "text": "将祭服留在原地。",
+        "pattern": "将祭服留在原地",
+        "cost": {},
+        "rewards": [],
+        "priority": 50
+      }
+    },
+    "notes": "与祭服索求为同一事件的两个阶段。用户确认拿取增加1点生命体征上限；后续优先消耗1点生命体征，只有最后1点时按保留最后生命体征的既有规则改用全队生命值。消耗后的结果图尚未提供。"
+  },
+  "broken_trap": {
+    "name": "损坏陷阱",
+    "anchors": [
+      "陷阱装置",
+      "发条"
+    ],
+    "sources": [
+      "875a1c561608a2f7/20260925-230959-7f7772e6",
+      "875a1c561608a2f7/20260927-183904-4295ea99"
+    ],
+    "branches": {
+      "fight": {
+        "text": "正面破解陷阱。战斗后，获得1个随机战利品",
+        "pattern": "正面破解陷阱战斗后获得1个随机战利品",
+        "cost": {
+          "battle": 1
+        },
+        "rewards": [
+          {
+            "kind": "loot",
+            "amount": 1
+          }
+        ],
+        "priority": 10
+      },
+      "leave": {
+        "text": "寻找安全的道路绕行。 60",
+        "pattern": "寻找安全的道路绕行60",
+        "cost": {},
+        "rewards": [
+          {
+            "kind": "experience",
+            "amount": 60
+          }
+        ],
+        "priority": 100
+      }
+    },
+    "notes": "60为免费经验，已核对原图。"
+  },
+  "broken_mask": {
+    "name": "破碎面具",
+    "anchors": [
+      "面具",
+      "祭坛下方"
+    ],
+    "sources": [
+      "89af007884659fff/20260927-162130-f6ca2ca5",
+      "89af007884659fff/20260927-182945-0be94e18"
+    ],
+    "branches": {
+      "offer": {
+        "text": "查看面具内侧的纹样。消耗1个战利品，获得地下苔藓",
+        "pattern": "查看面具内侧的纹样消耗1个战利品获得地下苔藓",
+        "cost": {
+          "loot": 1
+        },
+        "rewards": [
+          {
+            "kind": "loot",
+            "name": "地下苔藓"
+          }
+        ],
+        "priority": 0,
+        "enabled": false
+      },
+      "repair": {
+        "text": "拼合面具碎片。所有英雄生命值降低30%，获得地下苔藓",
+        "pattern": "拼合面具碎片所有英雄生命值降低30%获得地下苔藓",
+        "cost": {
+          "all_hp_percent": 30
+        },
+        "rewards": [
+          {
+            "kind": "loot",
+            "name": "地下苔藓"
+          }
+        ],
+        "priority": 50
+      },
+      "spice": {
+        "text": "刮下已经风干的香料。消耗50个次元碎片，获得2个次元般子",
+        "pattern": "刮下已经风干的香料消耗50个次元碎片获得2个次元[骰般殷]子",
+        "cost": {
+          "fragments": 50
+        },
+        "rewards": [
+          {
+            "kind": "dice",
+            "amount": 2
+          }
+        ],
+        "priority": 100
+      }
+    }
+  },
+  "torn_map_second": {
+    "name": "撕裂地图第二标记",
+    "anchors": [
+      "第一个标记",
+      "下一个标记"
+    ],
+    "sources": [
+      "a69854e46ce37b77/20260927-153954-418da74d"
+    ],
+    "branches": {
+      "follow": {
+        "text": "虽然遗憾，但也没有办法消耗40个次元碎片，有50%的几率获得150点探查经验值",
+        "pattern": "虽然遗憾但也没有办法消耗40个次元碎片有50%的几率获得150点探查经验值",
+        "cost": {
+          "fragments": 40
+        },
+        "rewards": [
+          {
+            "kind": "experience",
+            "amount": 150,
+            "chance": 50
+          }
+        ],
+        "priority": 10
+      },
+      "leave": {
+        "text": "收起撕裂的地图，离开这里。",
+        "pattern": "收起撕裂的地图离开这里",
+        "cost": {},
+        "rewards": [],
+        "priority": 100
+      }
+    },
+    "notes": "独立记录第二阶段的40碎片代价，不复用第一阶段20碎片规则。"
+  },
+  "ancient_mural": {
+    "name": "古代壁画",
+    "anchors": [
+      "古代壁画",
+      "红色"
+    ],
+    "sources": [
+      "ab0b6efeb8711ff8/20260926-184233-611b884f",
+      "ab0b6efeb8711ff8/20260927-153051-7bcdc074",
+      "ab0b6efeb8711ff8/20260927-184011-57db8358"
+    ],
+    "branches": {
+      "restore": {
+        "text": "复原所有被抹去的画面。所有英雄生命值降低40%，招募1名英雄",
+        "pattern": "复原所有被抹去的画面所有英雄生命值降低40%招募1名英雄",
+        "cost": {
+          "all_hp_percent": 40
+        },
+        "rewards": [
+          {
+            "kind": "hero",
+            "amount": 1
+          }
+        ],
+        "priority": 10
+      },
+      "partial": {
+        "text": "只复原部分被抹去的画面。所有英雄生命值降低30%，招募1名随机英雄",
+        "pattern": "只复原部分被抹去的画面所有英雄生命值降低30%招募1名随机英雄",
+        "cost": {
+          "all_hp_percent": 30
+        },
+        "rewards": [
+          {
+            "kind": "hero",
+            "amount": 1,
+            "random": true
+          }
+        ],
+        "priority": 20
+      },
+      "fragments": {
+        "text": "只补充少量风干的燃料。",
+        "pattern": "只补充少量风干的燃料",
+        "cost": {},
+        "rewards": [
+          {
+            "kind": "fragments",
+            "amount": 30
+          }
+        ],
+        "priority": 100
+      }
+    },
+    "notes": "免费分支三次完成采样均增加30碎片。"
+  },
+  "rusted_cage": {
+    "name": "生锈铁笼",
+    "anchors": [
+      "铁笼",
+      "锁链"
+    ],
+    "sources": [
+      "ab454b7db398f865/20260926-195426-e54591bd"
+    ],
+    "branches": {
+      "lock": {
+        "text": "触碰锁具。战斗后，获得1个随机战利品",
+        "pattern": "触碰锁具战斗后获得1个随机战利品",
+        "cost": {
+          "battle": 1
+        },
+        "rewards": [
+          {
+            "kind": "loot",
+            "amount": 1
+          }
+        ],
+        "priority": 20
+      },
+      "reach": {
+        "text": "将手伸入铁笼的缝隙。战斗后，获得80个次元碎片",
+        "pattern": "将手伸入铁笼的缝隙战斗后获得80个次元碎片",
+        "cost": {
+          "battle": 1
+        },
+        "rewards": [
+          {
+            "kind": "fragments",
+            "amount": 80
+          }
+        ],
+        "priority": 10
+      },
+      "leave": {
+        "text": "将铁笼留在身后，离开这里。",
+        "pattern": "将铁笼留在身后离开这里",
+        "cost": {},
+        "rewards": [],
+        "priority": 100
+      }
+    }
+  },
+  "ancient_stele": {
+    "name": "残破石碑",
+    "anchors": [
+      "古代文字",
+      "石碑"
+    ],
+    "sources": [
+      "b6fa806fe0eaeb44/20260925-114103-82f2cdec",
+      "b6fa806fe0eaeb44/20260926-191849-245710bf",
+      "b6fa806fe0eaeb44/20260927-155654-36ae8980",
+      "b6fa806fe0eaeb44/20260927-165003-4cf7758b"
+    ],
+    "branches": {
+      "fragments": {
+        "text": "查看石碑下方的缝隙。",
+        "pattern": "查看石碑下方的缝隙",
+        "cost": {},
+        "rewards": [
+          {
+            "kind": "fragments",
+            "amount": 50
+          }
+        ],
+        "priority": 100
+      },
+      "rubbing": {
+        "text": "拓印无名纹样。所有英雄生命值降低25%，获得1个随机战利品",
+        "pattern": "拓印无名纹样所有英雄生命值降低25%获得1个随机战利品",
+        "cost": {
+          "all_hp_percent": 25
+        },
+        "rewards": [
+          {
+            "kind": "loot",
+            "amount": 1
+          }
+        ],
+        "priority": 10
+      }
+    },
+    "notes": "原图还有右侧拓印分支，旧采样文字漏读，已据原图补入；免费分支四次采样均增加50碎片。"
+  },
+  "old_woman": {
+    "name": "断墙老妇人",
+    "anchors": [
+      "老妇人",
+      "披肩"
+    ],
+    "sources": [
+      "b7fc7c4d0c0f1ff6/20260925-114315-40a783cb"
+    ],
+    "branches": {
+      "pay": {
+        "text": "将袋中的碎片交出去。消耗100个次元碎片，获得1个随机战利品",
+        "pattern": "将袋中的碎片交出去消耗100个次元碎片获得1个随机战利品",
+        "cost": {
+          "fragments": 100
+        },
+        "rewards": [
+          {
+            "kind": "loot",
+            "amount": 1
+          }
+        ],
+        "priority": null
+      },
+      "comfort": {
+        "text": "拥抱老妇人，安慰她。1名随机英雄生命值降低40%，获得1个随机战利品",
+        "pattern": "拥抱老妇人安慰她1名随机英雄生命值降低40%获得1个随机战利品",
+        "cost": {
+          "random_hp_percent": 40
+        },
+        "rewards": [
+          {
+            "kind": "loot",
+            "amount": 1
+          }
+        ],
+        "priority": null
+      },
+      "clear": {
+        "text": "一起清理崩塌的墙壁。消耗1点生命体征，获得1个随机战利品",
+        "pattern": "一起清理崩塌的墙壁消耗1点生命体征获得1个随机战利品",
+        "cost": {
+          "life": 1
+        },
+        "rewards": [
+          {
+            "kind": "loot",
+            "amount": 1
+          }
+        ],
+        "priority": null
+      }
+    },
+    "review": "均获得随机战利品：100碎片、随机英雄40%生命值、1点生命体征的优先顺序是什么？"
+  },
+  "blue_flower": {
+    "name": "蓝色花朵",
+    "anchors": [
+      "花瓣",
+      "蓝色光芒"
+    ],
+    "sources": [
+      "cadd57b0b99df044/20260927-155728-801efb23"
+    ],
+    "branches": {
+      "rank": {
+        "text": "小心地将手伸向花朵。英雄Rank提升1阶",
+        "pattern": "小心地将手伸向花朵英雄Rank提升1阶",
+        "cost": {},
+        "rewards": [
+          {
+            "kind": "rank",
+            "amount": 1
+          }
+        ],
+        "priority": 80
+      },
+      "seeds": {
+        "text": "收集散落在花朵周围的金色种子。80",
+        "pattern": "收集散落在花朵周围的金色种子80",
+        "cost": {},
+        "rewards": [
+          {
+            "kind": "fragments",
+            "amount": 80
+          }
+        ],
+        "priority": 50
+      },
+      "rest": {
+        "text": "闻着花香休息。",
+        "pattern": "闻着花香休息",
+        "cost": {},
+        "rewards": [
+          {
+            "kind": "life",
+            "amount": 1
+          }
+        ],
+        "priority": 100,
+        "when": {
+          "life_below_max": true
+        }
+      }
+    }
+  },
+  "twisted_study": {
+    "name": "扭曲书房",
+    "anchors": [
+      "书架",
+      "书房"
+    ],
+    "sources": [
+      "dda35a2e75d61047/20260926-125129-3cf48482",
+      "dda35a2e75d61047/20260927-144556-bf9eecda"
+    ],
+    "branches": {
+      "book": {
+        "text": "抓住自行翻页的书。",
+        "pattern": "抓住自行翻页的书",
+        "cost": {},
+        "rewards": [
+          {
+            "kind": "dice",
+            "amount": 2,
+            "observed_only": true
+          }
+        ],
+        "priority": 100
+      },
+      "deep": {
+        "text": "深入书房。有40%的几率获得4个次元般子",
+        "pattern": "深入书房有40%的几率获得4个次元[骰般殷]子",
+        "cost": {},
+        "rewards": [
+          {
+            "kind": "dice",
+            "amount": 4,
+            "chance": 40
+          }
+        ],
+        "priority": 10
+      }
+    },
+    "notes": "抓书的2骰子来自一次完成采样的余额变化，尚未证实固定数量；深入分支已有一次未得奖励的记录。"
+  },
+  "prayer_tower": {
+    "name": "祈祷石塔",
+    "anchors": [
+      "石塔",
+      "祈祷文字"
+    ],
+    "sources": [
+      "de15dd28022ab56c/20260926-194131-35597094",
+      "de15dd28022ab56c/20260927-162916-70aaf26a"
+    ],
+    "branches": {
+      "stone": {
+        "text": "再堆上一块石头。1名随机英雄生命值降低40%，获得1个随机战利品",
+        "pattern": "再堆上一块石头1名随机英雄生命值降低40%获得1个随机战利品",
+        "cost": {
+          "random_hp_percent": 40
+        },
+        "rewards": [
+          {
+            "kind": "loot",
+            "amount": 1
+          }
+        ],
+        "priority": 10
+      },
+      "prayer": {
+        "text": "跟着祈祷文念诵。 100",
+        "pattern": "跟着祈祷文念诵100",
+        "cost": {},
+        "rewards": [
+          {
+            "kind": "experience",
+            "amount": 100
+          }
+        ],
+        "priority": 100
+      }
+    },
+    "notes": "100为经验图标，已核对原图。"
+  },
+  "mushroom_path": {
+    "name": "蘑菇道路",
+    "anchors": [
+      "蘑菇",
+      "孢子"
+    ],
+    "sources": [
+      "e18f525ee0448772/20260928-213325-686262d2"
+    ],
+    "branches": {
+      "rank": {
+        "text": "沿着蘑菇较少的道路前进。消耗100个次元碎片，英雄Rank提升1阶",
+        "pattern": "沿着蘑菇较少的道路前进消耗100个次元碎片英雄Rank提升1阶",
+        "cost": {
+          "fragments": 100
+        },
+        "rewards": [
+          {
+            "kind": "rank",
+            "amount": 1
+          }
+        ],
+        "priority": 50
+      },
+      "loot": {
+        "text": "沿着蘑菇之间的脚印前进。消耗100个次元碎片，获得1个随机战利品",
+        "pattern": "沿着蘑菇之间的脚印前进消耗100个次元碎片获得1个随机战利品",
+        "cost": {
+          "fragments": 100
+        },
+        "rewards": [
+          {
+            "kind": "loot",
+            "amount": 1
+          }
+        ],
+        "priority": 100
+      }
+    }
+  },
+  "faint_fire": {
+    "name": "微弱火光",
+    "anchors": [
+      "微弱的火光",
+      "黑暗"
+    ],
+    "sources": [
+      "f2c60fe0d8e19639/20260926-201413-c39c0091",
+      "f2c60fe0d8e19639/20260927-161927-c317db6d",
+      "f2c60fe0d8e19639/20260927-170427-e49eabb3"
+    ],
+    "branches": {
+      "rest": {
+        "text": "在火光旁稍作休息。所有英雄生命值恢复15%",
+        "pattern": "在火光旁稍作休息所有英雄生命值恢复15%",
+        "cost": {},
+        "rewards": [
+          {
+            "kind": "all_hp_percent",
+            "amount": 15
+          }
+        ],
+        "priority": 100
+      },
+      "dice": {
+        "text": "调查火光的源头。1名随机英雄生命值降低40%，获得2个次元殷",
+        "pattern": "调查火光的源头1名随机英雄生命值降低40%获得2个次元[骰般殷]子?",
+        "cost": {
+          "random_hp_percent": 40
+        },
+        "rewards": [
+          {
+            "kind": "dice",
+            "amount": 2
+          }
+        ],
+        "priority": 20
+      },
+      "loot": {
+        "text": "将手伸入火光之中。所有英雄消耗30%生命值，有50%的几率获得1个战利品",
+        "pattern": "将手伸入火光之中所有英雄消耗30%生命值有50%的几率获得1个战利品",
+        "cost": {
+          "all_hp_percent": 30
+        },
+        "rewards": [
+          {
+            "kind": "loot",
+            "amount": 1,
+            "chance": 50
+          }
+        ],
+        "priority": 10
+      }
+    }
+  },
+  "narrow_passage": {
+    "name": "狭窄通道",
+    "anchors": [
+      "狭窄的通道",
+      "魔力痕迹"
+    ],
+    "source": "MuMu-20260929-230255-086.png",
+    "branches": {
+      "ranger": {
+        "text": "前往狂风呼啸的道路。招募1名射手英雄",
+        "pattern": "前往狂风呼啸的道路招募1名射手英雄",
+        "cost": {},
+        "rewards": [
+          {
+            "kind": "hero",
+            "amount": 1,
+            "role": "射手"
+          }
+        ],
+        "priority": 100
+      },
+      "thief": {
+        "text": "前往传来低沉呻吟的道路。招募1名盗贼英雄",
+        "pattern": "前往传来低沉(?:呻)?吟的道路招募1名盗贼英雄",
+        "cost": {},
+        "rewards": [
+          {
+            "kind": "hero",
+            "amount": 1,
+            "role": "盗贼"
+          }
+        ],
+        "priority": 50
+      },
+      "mage": {
+        "text": "返回通道入口。招募1名魔导士英雄",
+        "pattern": "返回通道入口招募1名魔导士英雄",
+        "cost": {},
+        "rewards": [
+          {
+            "kind": "hero",
+            "amount": 1,
+            "role": "魔导士"
+          }
+        ],
+        "priority": 40
+      }
+    },
+    "notes": "按用户当前队伍偏好优先射手；仅职业券免费，实际英雄仍消耗招募额度。射手结果与招募后叙述有截图，其他两条路线结果未验证。"
   }
 }

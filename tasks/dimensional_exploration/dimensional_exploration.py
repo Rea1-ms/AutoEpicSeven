@@ -25,7 +25,7 @@ from tasks.dimensional_exploration.assets.assets_dimensional_exploration import 
 from tasks.dimensional_exploration.policy import (
     RunProgress, choose_offer, node_priority, normalize, parse_number,
 )
-from tasks.dimensional_exploration.event import EventMemory, decide_event, match_event
+from tasks.dimensional_exploration.event import EventMemory, decide_event, match_event, pending_event
 from tasks.dimensional_exploration.recruitment import HeroCosts, RecruitmentMixin
 from tasks.dimensional_exploration.sampling import EventSampler, choose_sample, sampling_balances, text_key
 from tasks.dimensional_exploration.vision import ExplorationVision, match_in
@@ -360,29 +360,43 @@ class DimensionalExploration(RecruitmentMixin, UI):
         balances = dict(cores=resources.cores, fragments=resources.fragments, life=resources.life,
                         loot=loot, dice=vision.event_dice())
         matched = match_event(observed, story)
+        deferred = pending_event(story)
+        if deferred is None and matched is not None and matched[0].decision_pending:
+            deferred = matched[0]
+        if deferred is not None:
+            reason = f"{deferred.name}的事件策略留空，等待决定：{deferred.review}"
+            if self.sampler is not None:
+                self.sampler.before(vision.image, story, observed, balances, None, "catalog", reason)
+            self.require_human(reason)
         if matched is None:
             if self.sampler is not None:
                 if self.event_memory.pending and not self.event_memory.advanced:
                     return False
                 return self.handle_event_sample(vision, choices, story, balances)
             self.require_human("事件或选项代价尚未覆盖，已保存截图供补充事件表。")
+        # A partial row can identify the event, but cannot establish the best
+        # choice or prove that a pending option disappeared into a new stage.
+        # Wait for all known options, including unavailable ones, before acting.
+        if len(matched[1]) != len(matched[0].branches):
+            return False
         # Multi-step encounters may expose another known option set without
         # visiting a map. Only a fully recognized new set confirms advancement;
         # an unknown/partially read frame must retain the pending choice.
         if self.event_memory.pending and self.event_memory.pending not in {b.key for _, b in matched[1]}:
             if self.event_memory.observe("event", narration=True):
                 self.save_event_history()
-        decision = decide_event(observed, **balances, story=story, memory=self.event_memory)
+        decision = decide_event(observed, **balances, max_life=resources.max_life,
+                                story=story, memory=self.event_memory)
         if decision is None:
             if self.sampler is not None:
                 self.sampler.before(vision.image, story, observed, balances, None, "catalog", "没有可负担的选项")
-            self.require_human("事件没有可负担且能保留最后生命体征的选项，已保存截图。")
+            self.require_human("事件没有符合策略且能保留最后生命体征的可用选项，已保存截图。")
         selected = decision.choice
         area = next(area for c, area in choices if c.index == selected.index)
         if not self.action_ready():
             return False
         logger.attr("ExplorationEvent", f"{decision.event.name}: {selected.text}")
-        logger.attr("ExplorationEventReason", "首次尝试专属奖励" if decision.first_collectible else "重复事件优先低消耗")
+        logger.attr("ExplorationEventReason", "首次尝试专属奖励" if decision.first_collectible else "按事件表条件与优先级选择")
         logger.attr("ExplorationEventCost", vars(decision.branch.cost))
         if self.sampler is not None:
             self.sampler.before(vision.image, story, observed, balances, selected, "catalog", decision.branch.key)
