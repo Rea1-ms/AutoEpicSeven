@@ -17,6 +17,8 @@ ROOT = Path(__file__).resolve().parents[1]
 TESTS = ROOT / "tests" / "dimensional_exploration"
 FIXTURES = ROOT / "tests" / "fixtures" / "dimensional_exploration"
 SUFFIX = re.compile(r"2026\d{4}-\d{6}-\d{3}")
+CATEGORIES = ("entry", "map", "recruitment", "combat", "events", "shop", "rest", "rewards", "settlement",
+              "unclassified")
 
 
 def references():
@@ -47,34 +49,50 @@ def file_hash(path):
     return digest.hexdigest()
 
 
-def run(source_root):
+def run(source_root, category="unclassified"):
+    if category not in CATEGORIES:
+        raise ValueError(f"Unknown fixture category: {category}")
     refs = references()
     if not refs:
         raise ValueError("No screenshot references found")
     FIXTURES.mkdir(parents=True, exist_ok=True)
+    destination = FIXTURES / "manifest.json"
     manifest = {}
+    if destination.exists():
+        data = json.loads(destination.read_text(encoding="utf-8"))
+        if data.get("version") != 1 or not isinstance(data.get("fixtures"), dict):
+            raise ValueError("Unsupported exploration fixture manifest")
+        manifest = data["fixtures"]
     for suffix, users in sorted(refs.items()):
+        item = manifest.get(suffix, {})
+        relative = Path(item.get("path", (FIXTURES / category / f"MuMu-{suffix}.png").relative_to(ROOT).as_posix()))
+        target = ROOT / relative
+        if (relative.is_absolute() or ".." in relative.parts or not target.resolve().is_relative_to(FIXTURES.resolve())
+                or target.name != f"MuMu-{suffix}.png"):
+            raise ValueError(f"Invalid fixture path for {suffix}")
         matches = list(source_root.rglob(f"MuMu-{suffix}.png"))
         if not matches:
             raise FileNotFoundError(f"Missing screenshot: {suffix}")
         fingerprints = {file_hash(path) for path in matches}
         if len(fingerprints) != 1:
             raise ValueError(f"Different screenshots share the same ID: {suffix}")
-        target = FIXTURES / f"MuMu-{suffix}.png"
         expected = next(iter(fingerprints))
+        if item.get("sha256", expected) != expected:
+            raise ValueError(f"Registered fixture differs from source: {suffix}")
         if target.exists():
             if file_hash(target) != expected:
                 raise ValueError(f"Existing fixture differs from source: {suffix}")
         else:
+            target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(matches[0], target)
         manifest[suffix] = {
+            **item,
             "path": target.relative_to(ROOT).as_posix(),
             "sha256": expected,
-            "server": "global_cn",
-            "scene": "dimensional_exploration",
-            "used_by": sorted(users),
+            "server": item.get("server", "global_cn"),
+            "scene": item.get("scene", category),
+            "used_by": sorted(set(item.get("used_by", [])) | users),
         }
-    destination = FIXTURES / "manifest.json"
     destination.write_text(json.dumps({"version": 1, "fixtures": manifest}, ensure_ascii=False, indent=2) + "\n",
                            encoding="utf-8", newline="\n")
     print(f"Imported {len(manifest)} unique screenshots into {FIXTURES}")
@@ -83,5 +101,7 @@ def run(source_root):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source", type=Path, required=True, help="Directory containing original MuMu screenshots")
+    parser.add_argument("--category", choices=CATEGORIES, default="unclassified",
+                        help="Scene directory for new fixtures; registered paths and metadata stay unchanged")
     args = parser.parse_args()
-    run(args.source)
+    run(args.source, args.category)

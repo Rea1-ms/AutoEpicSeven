@@ -6848,6 +6848,69 @@
           "fixtures": [],
           "status": "新增",
           "reason": ""
+        },
+        {
+          "id": "tests.test_offline_runner.FixtureMaintenanceTests.test_import_keeps_registered_paths_and_metadata",
+          "category": "资源基础",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "分场景图片引用、导入保留和预览清单契约"
+        },
+        {
+          "id": "tests.test_offline_runner.FixtureMaintenanceTests.test_import_preserves_registered_but_unreferenced_images",
+          "category": "资源基础",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "分场景图片引用、导入保留和预览清单契约"
+        },
+        {
+          "id": "tests.test_offline_runner.FixtureMaintenanceTests.test_import_adds_new_images_to_selected_category",
+          "category": "资源基础",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "分场景图片引用、导入保留和预览清单契约"
+        },
+        {
+          "id": "tests.test_offline_runner.FixtureMaintenanceTests.test_import_rejects_changed_registered_source",
+          "category": "资源基础",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "分场景图片引用、导入保留和预览清单契约"
+        },
+        {
+          "id": "tests.test_offline_runner.FixtureMaintenanceTests.test_import_rejects_paths_outside_fixture_directory",
+          "category": "资源基础",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "分场景图片引用、导入保留和预览清单契约"
+        },
+        {
+          "id": "tests.test_offline_runner.FixtureMaintenanceTests.test_contact_sheets_follow_manifest_and_allow_any_count",
+          "category": "资源基础",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "分场景图片引用、导入保留和预览清单契约"
+        },
+        {
+          "id": "tests.test_offline_runner.FixtureMaintenanceTests.test_contact_sheets_fail_on_missing_registered_image",
+          "category": "资源基础",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "分场景图片引用、导入保留和预览清单契约"
         }
       ],
       "file_category": null
