@@ -33,7 +33,7 @@ python -B -m dev_tools.run_offline_tests --suite dimensional_exploration
 python -B -m dev_tools.run_offline_tests --case tests.dimensional_exploration.test_dimensional_exploration_shop_new.ShopNewRegressions.test_badges_bind_to_exact_items_in_both_rows
 ```
 
-入口从自身位置确定当前工作树；从别的工作目录启动时，用该工作树解释器运行入口文件即可。默认运行登记的 82 项肉鸽用例、9 项圣域智能入库回放、11 项运行器及样本维护检查和 30 项上游通用框架回归；`--suite dimensional_exploration`（肉鸽测试集）运行原 59 项及新增 23 项。`--list`（列出测试）不执行用例；`--case`（指定用例）使用完整标识；`--coverage`（覆盖率）测量肉鸽非生成业务代码的行和分支，排除资产包装及第三方库。参数、依赖、样本或空集合有问题时退出 2；用例失败或超时退出 1；全部通过且零跳过退出 0。
+入口从自身位置确定当前工作树；从别的工作目录启动时，用该工作树解释器运行入口文件即可。默认运行登记的 87 项肉鸽用例、9 项圣域智能入库回放、11 项运行器及样本维护检查和 30 项上游通用框架回归；`--suite dimensional_exploration`（肉鸽测试集）运行原 59 项及新增 28 项。`--list`（列出测试）不执行用例；`--case`（指定用例）使用完整标识；`--coverage`（覆盖率）测量肉鸽非生成业务代码的行和分支，排除资产包装及第三方库。参数、依赖、样本或空集合有问题时退出 2；用例失败或超时退出 1；全部通过且零跳过退出 0。
 
 每次运行在被忽略的 screenshots/offline_test_results（离线测试产物）下创建新目录，不自动删除。`result.json`（结构化结果）包含版本、环境、统计、用例耗时和异常详情；`output.log`（运行日志）保留标准测试输出；失败时复制关联样本至 failures（失败附件）目录。没有截图的规则测试只需要文字详情。样本缺失、校验值变化、尺寸不符、中文识别模型缺失都会在执行前报错。真实设备构造被拦截为测试失败。
 
@@ -110,3 +110,5 @@ python -B -m dev_tools.run_offline_tests --case tests.dimensional_exploration.te
 本次按招募、商店、事件分三批提交；每批只纳入对应代码、样本、清单和说明，并从暂存内容生成独立副本验证。账号配置和临时产物不纳入，没有运行实机。
 
 第1批（招募）：从本批暂存内容生成独立副本，列出并运行默认全集，132项通过、0失败、0错误、0跳过，耗时64.672秒；69张样本预检通过，定向静态检查与差异格式检查通过。副本保存在 screenshots/business_commits_20260930/batch1/snapshot（本批独立验证副本），报告编号为20260930-134338-58984（本批独立报告）。
+
+第2批（商店）：从本批暂存内容生成独立副本，列出并运行默认全集，137项通过、0失败、0错误、0跳过，耗时56.859秒；70张样本预检通过，定向静态检查与差异格式检查通过。副本保存在 screenshots/business_commits_20260930/batch2/snapshot_complete_inventory（本批独立验证副本），报告编号为20260930-134931-50224（本批独立报告）。

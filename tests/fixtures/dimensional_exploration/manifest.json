@@ -154,7 +154,8 @@
       "used_by": [
         "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_accessible_nodes_exclude_completed_and_gray_nodes",
         "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_unreadable_accessible_node_does_not_change_priority",
-        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentPriorityRegressions.test_batch_progress_keeps_roster_but_new_run_clears_it"
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentPriorityRegressions.test_batch_progress_keeps_roster_but_new_run_clears_it",
+        "tests.dimensional_exploration.test_dimensional_exploration_shop_new.ShopCoreRegressions.test_next_map_node_clears_previous_shop_snapshot"
       ]
     },
     "20260922-081528-636": {
@@ -615,7 +616,8 @@
         "tests.dimensional_exploration.test_dimensional_exploration_shop_new.ShopNewRegressions.test_affordability_and_sold_flags_still_filter_new_loot",
         "tests.dimensional_exploration.test_dimensional_exploration_shop_new.ShopNewRegressions.test_badges_bind_to_exact_items_in_both_rows",
         "tests.dimensional_exploration.test_dimensional_exploration_shop_new.ShopNewRegressions.test_investment_and_healing_still_precede_new_loot",
-        "tests.dimensional_exploration.test_dimensional_exploration_shop_new.ShopNewRegressions.test_stable_shop_clicks_new_item_and_keeps_it_through_payment"
+        "tests.dimensional_exploration.test_dimensional_exploration_shop_new.ShopNewRegressions.test_stable_shop_clicks_new_item_and_keeps_it_through_payment",
+        "tests.dimensional_exploration.test_dimensional_exploration_shop_new.ShopCoreRegressions.test_new_loot_precedes_investment_only_above_twenty_cores"
       ]
     },
     "20260926-181057-614": {
@@ -684,6 +686,16 @@
       "scene": "entry",
       "used_by": [
         "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_entry_follows_template_offset_without_ocr"
+      ]
+    },
+    "20260928-214032-646": {
+      "path": "tests/fixtures/dimensional_exploration/shop/MuMu-20260928-214032-646.png",
+      "sha256": "a8deef3fdab49b033f8bad5541d9afccc2e7639ee56e1236b9384ac851aa401a",
+      "server": "global_cn",
+      "scene": "shop",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_shop_new.ShopCoreRegressions.test_core_icon_margin_does_not_block_shop_resources",
+        "tests.dimensional_exploration.test_dimensional_exploration_shop_new.ShopCoreRegressions.test_transient_map_keeps_purchase_until_debit_is_confirmed"
       ]
     }
   }

@@ -7562,6 +7562,67 @@
           "reason": "上游通用更新；合成数据与模拟设备，不访问实际账号或网络"
         }
       ]
+    },
+    {
+      "source": "tests/dimensional_exploration/test_dimensional_exploration_shop_new.py",
+      "business": "次元探查",
+      "status": "已纳入",
+      "reason": "2026-09-29 新增商店回归；历史用例仍在原迁移条目登记",
+      "cases": [
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_shop_new.ShopCoreRegressions.test_core_icon_margin_does_not_block_shop_resources",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260928-214032-646"
+          ],
+          "status": "已纳入",
+          "reason": "商店核心识别、短暂误判与超过20核时未收录战利品优先"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_shop_new.ShopCoreRegressions.test_new_loot_precedes_investment_only_above_twenty_cores",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260925-231033-887"
+          ],
+          "status": "已纳入",
+          "reason": "商店核心识别、短暂误判与超过20核时未收录战利品优先"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_shop_new.ShopCoreRegressions.test_investment_continues_without_affordable_unsold_new_loot",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "商店核心识别、短暂误判与超过20核时未收录战利品优先"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_shop_new.ShopCoreRegressions.test_transient_map_keeps_purchase_until_debit_is_confirmed",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260928-214032-646"
+          ],
+          "status": "已纳入",
+          "reason": "商店核心识别、短暂误判与超过20核时未收录战利品优先"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_shop_new.ShopCoreRegressions.test_next_map_node_clears_previous_shop_snapshot",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081522-090"
+          ],
+          "status": "已纳入",
+          "reason": "商店核心识别、短暂误判与超过20核时未收录战利品优先"
+        }
+      ]
     }
   ]
 }

@@ -44,17 +44,21 @@ class Offer:
     new: bool = False
 
 
-def choose_offer(offers: list[Offer], fragments: int, life: int, max_life: int) -> Offer | None:
+def choose_offer(offers: list[Offer], fragments: int, life: int, max_life: int, *, cores: int = 0) -> Offer | None:
     available = [o for o in offers if not o.sold and o.price is not None and 0 < o.price <= fragments]
-    # Investment is intentionally independent of held cores. Reaching 20 only
-    # changes map routing; it must not stop accumulating resonance for the owner.
+    loot = [o for o in available if o.index % 4 >= 2 and o.name]
+    # Above 20 cores, take an affordable unrecorded item before spending its
+    # budget on investment or recovery. Investment remains enabled afterwards.
+    if cores > 20:
+        new_loot = min((o for o in loot if o.new), key=lambda o: (o.price, o.index), default=None)
+        if new_loot is not None:
+            return new_loot
     for offer in available:
         if normalize(offer.name) == "未来投资":
             return offer
     for offer in available:
         if normalize(offer.name) == "恢复生命体征" and life < max_life:
             return offer
-    loot = [o for o in available if o.index % 4 >= 2 and o.name]
     return min(loot, key=lambda o: (not o.new, o.price, o.index), default=None)
 
 

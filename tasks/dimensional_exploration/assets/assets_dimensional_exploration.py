@@ -691,10 +691,10 @@ OCR_CORE = ButtonWrapper(
     cn=None,
     global_cn=Button(
         file='./assets/global_cn/dimensional_exploration/OCR_CORE.png',
-        area=(852, 17, 891, 51),
-        search=(832, 0, 911, 71),
-        color=(30, 29, 35),
-        button=(852, 17, 891, 51),
+        area=(856, 17, 891, 51),
+        search=(836, 0, 911, 71),
+        color=(39, 37, 43),
+        button=(856, 17, 891, 51),
     ),
     global_en=None,
 )

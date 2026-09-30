@@ -236,10 +236,6 @@ class DimensionalExploration(RecruitmentMixin, UI):
         if state == "map":
             self._node_selected = False
             self._node_kind = None
-            self._shop_offers = None
-            self._shop_candidate = None
-            self._pending_offer = None
-            self._purchase_confirmed = False
             self._recruit_skipped = False
             self._reward_leave_authorized = False
         if state != "unknown":
@@ -323,6 +319,15 @@ class DimensionalExploration(RecruitmentMixin, UI):
         if self.click_action(ClickButton(node.area, name=f"ExplorationNode_{node.kind}")):
             self._node_selected = True
             self._node_kind = node.kind
+            # Purchase toasts can briefly hide SHOP_CHECK and expose the map
+            # marker underneath. Keep the receipt and inventory through that
+            # false state transition; only a reachable node on the real map
+            # proves we have left the shop and may discard its snapshot.
+            self._shop_offers = None
+            self._shop_candidate = None
+            self._pending_offer = None
+            self._purchase_confirmed = False
+            self._purchase_candidate = None
             return True
         return False
 
@@ -476,7 +481,8 @@ class DimensionalExploration(RecruitmentMixin, UI):
             self._purchase_confirmed = False
             self._pending_offer = None
             self.record_progress("商店付款已由碎片余额变化确认")
-        offer = choose_offer(self._shop_offers, resources.fragments, resources.life, resources.max_life)
+        offer = choose_offer(self._shop_offers, resources.fragments, resources.life, resources.max_life,
+                             cores=resources.cores)
         if offer is None:
             self._pending_offer = None
             return self.click_action(ROOM_LEAVE)

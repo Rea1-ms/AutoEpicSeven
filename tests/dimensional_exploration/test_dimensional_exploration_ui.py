@@ -94,7 +94,7 @@ class ReceiptRegressions(unittest.TestCase):
     def test_shop_keeps_snapshot_through_toast_and_waits_for_debit(self):
         task, _, clicks = task_for()
         offers = [Offer(0, '未来投资', 50), Offer(2, '旧战利品', 120), Offer(3, '新战利品', 158, new=True)]
-        vision = SimpleNamespace(resources=Mock(return_value=Resources(22, 211, 3, 3)),
+        vision = SimpleNamespace(resources=Mock(return_value=Resources(20, 211, 3, 3)),
                                  offers=Mock(return_value=offers))
         self.assertFalse(task.handle_shop(vision))
         self.assertTrue(task.handle_shop(vision))
