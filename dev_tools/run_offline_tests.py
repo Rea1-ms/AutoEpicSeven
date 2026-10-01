@@ -31,7 +31,10 @@ EXPLORATION_MODULES = (
     "tests.dimensional_exploration.test_dimensional_exploration_runtime",
 )
 RUNNER_MODULES = ("tests.test_offline_runner",)
-SANCTUARY_MODULES = ("tests.sanctuary.test_smart_custody",)
+SANCTUARY_MODULES = (
+    "tests.sanctuary.test_smart_custody",
+    "tests.sanctuary.test_monthly_scheduling",
+)
 UPSTREAM_MODULES = (
     "tests.upstream.test_device",
     "tests.upstream.test_deploy",

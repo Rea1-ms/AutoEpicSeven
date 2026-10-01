@@ -375,7 +375,13 @@ def get_server_next_month_update(daily_trigger):
 
     diff = server_time_offset()
     server_now = datetime.now() - diff
-    server_reset = (server_now.replace(day=1) + timedelta(days=32)).replace(
+    # Before the first day's reset, the claimed marker still belongs to the
+    # previous reward month. Select the month after subtracting the reset time;
+    # using the calendar month skips the pending reset and a whole reward cycle.
+    # At the exact reset instant the new month has started, so its next reset
+    # must be in the following month rather than scheduling this instant again.
+    server_day = server_now - timedelta(hours=hour, minutes=minute)
+    server_reset = (server_day.replace(day=1) + timedelta(days=32)).replace(
         day=1,
         hour=hour,
         minute=minute,

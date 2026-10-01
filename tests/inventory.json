@@ -7779,6 +7779,104 @@
           "reason": "商店核心识别、短暂误判与超过20核时未收录战利品优先"
         }
       ]
+    },
+    {
+      "source": "tests/sanctuary/test_monthly_scheduling.py",
+      "business": "圣域月常",
+      "status": "已纳入",
+      "reason": "月初刷新前不跳过本月的月度调度回归",
+      "cases": [
+        {
+          "id": "tests.sanctuary.test_monthly_scheduling.MonthlySchedulingTests.test_month_start_before_reset_retries_current_month",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "受控时间验证服务器月初刷新边界、时差和已领取任务调度，不连接设备"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_scheduling.MonthlySchedulingTests.test_month_start_reset_boundary",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "受控时间验证服务器月初刷新边界、时差和已领取任务调度，不连接设备"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_scheduling.MonthlySchedulingTests.test_month_end_and_midmonth_use_next_month",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "受控时间验证服务器月初刷新边界、时差和已领取任务调度，不连接设备"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_scheduling.MonthlySchedulingTests.test_year_rollover_follows_server_month",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "受控时间验证服务器月初刷新边界、时差和已领取任务调度，不连接设备"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_scheduling.MonthlySchedulingTests.test_leap_february_uses_calendar_month",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "受控时间验证服务器月初刷新边界、时差和已领取任务调度，不连接设备"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_scheduling.MonthlySchedulingTests.test_reset_minutes_and_midnight",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "受控时间验证服务器月初刷新边界、时差和已领取任务调度，不连接设备"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_scheduling.MonthlySchedulingTests.test_timezone_offsets_use_server_month_in_local_result",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "受控时间验证服务器月初刷新边界、时差和已领取任务调度，不连接设备"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_scheduling.MonthlySchedulingTests.test_multiple_triggers_keep_first_configured_reset",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "受控时间验证服务器月初刷新边界、时差和已领取任务调度，不连接设备"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_scheduling.MonthlySchedulingTests.test_claimed_task_before_reset_retries_pending_refresh",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "受控时间验证服务器月初刷新边界、时差和已领取任务调度，不连接设备"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_scheduling.MonthlySchedulingTests.test_claimed_task_after_reset_delays_to_next_month",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "受控时间验证服务器月初刷新边界、时差和已领取任务调度，不连接设备"
+        }
+      ]
     }
   ]
 }
