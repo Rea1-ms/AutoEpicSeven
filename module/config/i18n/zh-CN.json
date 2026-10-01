@@ -86,6 +86,10 @@
       "name": "社区登录",
       "help": "拉起 Electron 社区登录窗口，抓取并刷新 Community AIO 使用的 CK。"
     },
+    "EquipmentReroll": {
+      "name": "装备副属性刷新",
+      "help": "先手动停留在钢铁工坊副属性选择页。速度先追 5，再按排序追其他属性；达标后才锁定，最多两条。达到目标或预算后停止，不自动制作装备。当前支持游戏简体中文。"
+    },
     "SanctuaryMonthly": {
       "name": "圣域-月常",
       "help": "独立调度的圣域月常模块。"
@@ -690,6 +694,100 @@
     "BuyMysticMedal": {
       "name": "购买神秘奖牌",
       "help": ""
+    }
+  },
+  "EquipmentReroll": {
+    "_info": {
+      "name": "目标副属性",
+      "help": "先手动停留在钢铁工坊副属性选择页。速度先追 5，再按排序追其他属性；达标后才锁定，最多两条。达到目标或预算后停止，不自动制作装备。当前支持游戏简体中文。"
+    },
+    "Stat1": {
+      "name": "第 1 优先属性",
+      "help": "四项属性不能重复。有速度要求时速度固定为 5，且始终最优先；其他属性按这里的顺序。",
+      "Speed": "速度",
+      "AttackPercent": "攻击力%",
+      "DefensePercent": "防御力%",
+      "HealthPercent": "生命值%",
+      "Effectiveness": "效果命中%",
+      "Resistance": "效果抗性%",
+      "CriticalChance": "暴击率%",
+      "CriticalDamage": "暴击伤害%",
+      "FlatAttack": "小攻击",
+      "FlatDefense": "小防御",
+      "FlatHealth": "小生命"
+    },
+    "Value1": {
+      "name": "第 1 属性目标值",
+      "help": "百分比只填数字。百分比攻击/防御/生命、命中、抗性最高 8，暴击率最高 5，暴击伤害最高 7。小攻击 44、小防御 34、小生命 201 仅为参考，可自行提高目标。"
+    },
+    "Stat2": {
+      "name": "第 2 优先属性",
+      "help": "四项属性不能重复。有速度要求时速度固定为 5，且始终最优先；其他属性按这里的顺序。",
+      "Speed": "速度",
+      "AttackPercent": "攻击力%",
+      "DefensePercent": "防御力%",
+      "HealthPercent": "生命值%",
+      "Effectiveness": "效果命中%",
+      "Resistance": "效果抗性%",
+      "CriticalChance": "暴击率%",
+      "CriticalDamage": "暴击伤害%",
+      "FlatAttack": "小攻击",
+      "FlatDefense": "小防御",
+      "FlatHealth": "小生命"
+    },
+    "Value2": {
+      "name": "第 2 属性目标值",
+      "help": "百分比只填数字。百分比攻击/防御/生命、命中、抗性最高 8，暴击率最高 5，暴击伤害最高 7。小攻击 44、小防御 34、小生命 201 仅为参考，可自行提高目标。"
+    },
+    "Stat3": {
+      "name": "第 3 优先属性",
+      "help": "四项属性不能重复。有速度要求时速度固定为 5，且始终最优先；其他属性按这里的顺序。",
+      "Speed": "速度",
+      "AttackPercent": "攻击力%",
+      "DefensePercent": "防御力%",
+      "HealthPercent": "生命值%",
+      "Effectiveness": "效果命中%",
+      "Resistance": "效果抗性%",
+      "CriticalChance": "暴击率%",
+      "CriticalDamage": "暴击伤害%",
+      "FlatAttack": "小攻击",
+      "FlatDefense": "小防御",
+      "FlatHealth": "小生命"
+    },
+    "Value3": {
+      "name": "第 3 属性目标值",
+      "help": "百分比只填数字。百分比攻击/防御/生命、命中、抗性最高 8，暴击率最高 5，暴击伤害最高 7。小攻击 44、小防御 34、小生命 201 仅为参考，可自行提高目标。"
+    },
+    "Stat4": {
+      "name": "第 4 优先属性",
+      "help": "四项属性不能重复。有速度要求时速度固定为 5，且始终最优先；其他属性按这里的顺序。",
+      "Speed": "速度",
+      "AttackPercent": "攻击力%",
+      "DefensePercent": "防御力%",
+      "HealthPercent": "生命值%",
+      "Effectiveness": "效果命中%",
+      "Resistance": "效果抗性%",
+      "CriticalChance": "暴击率%",
+      "CriticalDamage": "暴击伤害%",
+      "FlatAttack": "小攻击",
+      "FlatDefense": "小防御",
+      "FlatHealth": "小生命"
+    },
+    "Value4": {
+      "name": "第 4 属性目标值",
+      "help": "百分比只填数字。百分比攻击/防御/生命、命中、抗性最高 8，暴击率最高 5，暴击伤害最高 7。小攻击 44、小防御 34、小生命 201 仅为参考，可自行提高目标。"
+    },
+    "MaxRefresh": {
+      "name": "最大刷新次数",
+      "help": "0 表示不限制；仅统计本次运行已确认的刷新。"
+    },
+    "MaxPoints": {
+      "name": "点数预算",
+      "help": "0 表示不限制；按实际 20/60/150 点价格计算。"
+    },
+    "ReservePoints": {
+      "name": "保留点数",
+      "help": "刷新后至少保留的工坊点数，0 表示不保留。"
     }
   },
   "Gacha": {

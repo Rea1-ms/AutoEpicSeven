@@ -1,0 +1,145 @@
+{
+  "version": 1,
+  "samples": [
+    {
+      "id": "initial",
+      "path": "initial.png",
+      "sha256": "7174fcb30b99d1dfc0ba2c28b5c3a19b793dbb9795020016b057157a7622255d",
+      "server": "OVERSEA-Play",
+      "language": "global_cn",
+      "scene": "initial",
+      "used_by": [
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_screenshots",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_manifest_covers_the_selected_samples",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_overlay_and_blank_screen_do_not_enable_actions"
+      ]
+    },
+    {
+      "id": "lock_speed",
+      "path": "lock_speed.png",
+      "sha256": "a577addc30d1ea80b03a94a3d1594524f46fd24e794b587ec4a65a4577739ca5",
+      "server": "OVERSEA-Play",
+      "language": "global_cn",
+      "scene": "lock_speed",
+      "used_by": [
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_screenshots",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_manifest_covers_the_selected_samples"
+      ]
+    },
+    {
+      "id": "one_lock",
+      "path": "one_lock.png",
+      "sha256": "d7afc956a4bd6e3b7c383987672bb9b8119f75aea43c5614bb9d68055cdb4aba",
+      "server": "OVERSEA-Play",
+      "language": "global_cn",
+      "scene": "one_lock",
+      "used_by": [
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_screenshots",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_manifest_covers_the_selected_samples"
+      ]
+    },
+    {
+      "id": "two_locks",
+      "path": "two_locks.png",
+      "sha256": "765d7b669311da60d4fd35518a360b1ac49ee250f9eb7c17227fec1c1a6290f7",
+      "server": "OVERSEA-Play",
+      "language": "global_cn",
+      "scene": "two_locks",
+      "used_by": [
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_screenshots",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_manifest_covers_the_selected_samples"
+      ]
+    },
+    {
+      "id": "two_lock_roll",
+      "path": "two_lock_roll.png",
+      "sha256": "5e5046c622212c6191e22077686fe71d0010322ede1b83cc14614d5bcfd2bdf4",
+      "server": "OVERSEA-Play",
+      "language": "global_cn",
+      "scene": "two_lock_roll",
+      "used_by": [
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_screenshots",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_manifest_covers_the_selected_samples"
+      ]
+    },
+    {
+      "id": "unlocked",
+      "path": "unlocked.png",
+      "sha256": "1b58aad6133e26ed5448059bd8cd0881873b5f98787bac42454d7568528171a7",
+      "server": "OVERSEA-Play",
+      "language": "global_cn",
+      "scene": "unlocked",
+      "used_by": [
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_screenshots",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_manifest_covers_the_selected_samples"
+      ]
+    },
+    {
+      "id": "speed_four",
+      "path": "speed_four.png",
+      "sha256": "095e68b78ecc7740ad813975ceff8d6d19a3c33f89d69c5984a0d791a7458fd7",
+      "server": "OVERSEA-Play",
+      "language": "global_cn",
+      "scene": "speed_four",
+      "used_by": [
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_screenshots",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_manifest_covers_the_selected_samples"
+      ]
+    },
+    {
+      "id": "replace_confirm",
+      "path": "replace_confirm.png",
+      "sha256": "f58b01ca7a4aa63926bcdef62ac4da9f25b676205ae29a0ae9f1af7d221fdccd",
+      "server": "OVERSEA-Play",
+      "language": "global_cn",
+      "scene": "replace_confirm",
+      "used_by": [
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_replacement_dialog_reads_candidate_and_blocks_refresh",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_manifest_covers_the_selected_samples",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_screenshot_replacement_flow_confirms_applied_stats",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_dialog_does_not_reread_fixed_main"
+      ]
+    },
+    {
+      "id": "replace_applied",
+      "path": "replace_applied.png",
+      "sha256": "24e8990fdf5a2a477125623077a69bbb6834f62ee68697dae5b8c98252cd7ca2",
+      "server": "OVERSEA-Play",
+      "language": "global_cn",
+      "scene": "replace_applied",
+      "used_by": [
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_applied_single_column_reads_stats_points_and_locks",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_manifest_covers_the_selected_samples",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_overlay_and_blank_screen_do_not_enable_actions",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_screenshot_replacement_flow_confirms_applied_stats",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_contrast_verification_requires_agreement_and_original_threshold",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_real_applied_view_refreshes_into_previous_failure_screen"
+      ]
+    },
+    {
+      "id": "speed_four_current",
+      "path": "speed_four_current.png",
+      "sha256": "6ccc6d4c837968103750ca2da3c7b394c8637387d5a72ae5e8fe3c0df9fdf145",
+      "server": "OVERSEA-Play",
+      "language": "global_cn",
+      "scene": "speed_four_current",
+      "used_by": [
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_speed_four_current_no_longer_stalls",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_manifest_covers_the_selected_samples",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_real_applied_view_refreshes_into_previous_failure_screen"
+      ]
+    },
+    {
+      "id": "replace_health_percent_four",
+      "path": "replace_health_percent_four.png",
+      "sha256": "53a784956c5ea6e8cba58f9b772aea9c83efded0d5aefbd6f96e3bce28252020",
+      "server": "OVERSEA-Play",
+      "language": "global_cn",
+      "scene": "replace_health_percent_four",
+      "used_by": [
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_health_percent_four_dialog_applies_only_matching_candidate",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_manifest_covers_the_selected_samples"
+      ]
+    }
+  ]
+}

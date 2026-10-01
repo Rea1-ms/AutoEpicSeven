@@ -1130,6 +1130,133 @@
       }
     }
   },
+  "EquipmentReroll": {
+    "Scheduler": {
+      "Enable": {
+        "type": "checkbox",
+        "value": false,
+        "option": [
+          true,
+          false
+        ],
+        "display": "hide"
+      },
+      "NextRun": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime",
+        "display": "hide"
+      },
+      "Command": {
+        "type": "input",
+        "value": "EquipmentReroll",
+        "display": "hide"
+      },
+      "ServerUpdate": {
+        "type": "input",
+        "value": "02:00",
+        "display": "hide"
+      }
+    },
+    "EquipmentReroll": {
+      "Stat1": {
+        "type": "select",
+        "value": "Speed",
+        "option": [
+          "Speed",
+          "AttackPercent",
+          "DefensePercent",
+          "HealthPercent",
+          "Effectiveness",
+          "Resistance",
+          "CriticalChance",
+          "CriticalDamage",
+          "FlatAttack",
+          "FlatDefense",
+          "FlatHealth"
+        ]
+      },
+      "Value1": {
+        "type": "input",
+        "value": 5
+      },
+      "Stat2": {
+        "type": "select",
+        "value": "DefensePercent",
+        "option": [
+          "Speed",
+          "AttackPercent",
+          "DefensePercent",
+          "HealthPercent",
+          "Effectiveness",
+          "Resistance",
+          "CriticalChance",
+          "CriticalDamage",
+          "FlatAttack",
+          "FlatDefense",
+          "FlatHealth"
+        ]
+      },
+      "Value2": {
+        "type": "input",
+        "value": 8
+      },
+      "Stat3": {
+        "type": "select",
+        "value": "HealthPercent",
+        "option": [
+          "Speed",
+          "AttackPercent",
+          "DefensePercent",
+          "HealthPercent",
+          "Effectiveness",
+          "Resistance",
+          "CriticalChance",
+          "CriticalDamage",
+          "FlatAttack",
+          "FlatDefense",
+          "FlatHealth"
+        ]
+      },
+      "Value3": {
+        "type": "input",
+        "value": 8
+      },
+      "Stat4": {
+        "type": "select",
+        "value": "Resistance",
+        "option": [
+          "Speed",
+          "AttackPercent",
+          "DefensePercent",
+          "HealthPercent",
+          "Effectiveness",
+          "Resistance",
+          "CriticalChance",
+          "CriticalDamage",
+          "FlatAttack",
+          "FlatDefense",
+          "FlatHealth"
+        ]
+      },
+      "Value4": {
+        "type": "input",
+        "value": 8
+      },
+      "MaxRefresh": {
+        "type": "input",
+        "value": 0
+      },
+      "MaxPoints": {
+        "type": "input",
+        "value": 0
+      },
+      "ReservePoints": {
+        "type": "input",
+        "value": 0
+      }
+    }
+  },
   "SanctuaryMonthly": {
     "Scheduler": {
       "Enable": {

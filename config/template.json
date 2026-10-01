@@ -273,6 +273,27 @@
       "WaitTimeout": 300
     }
   },
+  "EquipmentReroll": {
+    "Scheduler": {
+      "Enable": false,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "EquipmentReroll",
+      "ServerUpdate": "02:00"
+    },
+    "EquipmentReroll": {
+      "Stat1": "Speed",
+      "Value1": 5,
+      "Stat2": "DefensePercent",
+      "Value2": 8,
+      "Stat3": "HealthPercent",
+      "Value3": 8,
+      "Stat4": "Resistance",
+      "Value4": 8,
+      "MaxRefresh": 0,
+      "MaxPoints": 0,
+      "ReservePoints": 0
+    }
+  },
   "SanctuaryMonthly": {
     "Scheduler": {
       "Enable": false,

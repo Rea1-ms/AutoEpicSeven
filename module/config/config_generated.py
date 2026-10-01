@@ -136,6 +136,19 @@ class GeneratedConfig:
     SecretShop_BuyCovenantBookmark = True
     SecretShop_BuyMysticMedal = True
 
+    # Group `EquipmentReroll`
+    EquipmentReroll_Stat1 = 'Speed'  # Speed, AttackPercent, DefensePercent, HealthPercent, Effectiveness, Resistance, CriticalChance, CriticalDamage, FlatAttack, FlatDefense, FlatHealth
+    EquipmentReroll_Value1 = 5
+    EquipmentReroll_Stat2 = 'DefensePercent'  # Speed, AttackPercent, DefensePercent, HealthPercent, Effectiveness, Resistance, CriticalChance, CriticalDamage, FlatAttack, FlatDefense, FlatHealth
+    EquipmentReroll_Value2 = 8
+    EquipmentReroll_Stat3 = 'HealthPercent'  # Speed, AttackPercent, DefensePercent, HealthPercent, Effectiveness, Resistance, CriticalChance, CriticalDamage, FlatAttack, FlatDefense, FlatHealth
+    EquipmentReroll_Value3 = 8
+    EquipmentReroll_Stat4 = 'Resistance'  # Speed, AttackPercent, DefensePercent, HealthPercent, Effectiveness, Resistance, CriticalChance, CriticalDamage, FlatAttack, FlatDefense, FlatHealth
+    EquipmentReroll_Value4 = 8
+    EquipmentReroll_MaxRefresh = 0
+    EquipmentReroll_MaxPoints = 0
+    EquipmentReroll_ReservePoints = 0
+
     # Group `Gacha`
     Gacha_CollectGoldenInheritance = True
 

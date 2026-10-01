@@ -1,0 +1,566 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "id": "tests.equipment_reroll.test_rules.RuleTests.test_budget_boundaries_include_lock_cost",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "rules",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_rules.RuleTests.test_flat_targets_can_exceed_observed_values",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "rules",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_rules.RuleTests.test_invalid_configuration_is_rejected",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "rules",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_rules.RuleTests.test_lock_only_achieved_priorities",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "rules",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_rules.RuleTests.test_lower_priority_improvement_and_ties",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "rules",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_rules.RuleTests.test_malformed_or_impossible_values_are_rejected",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "rules",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_rules.RuleTests.test_no_lock_before_speed_five",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "rules",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_rules.RuleTests.test_percentages_and_flat_values_are_distinct",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "rules",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_rules.RuleTests.test_refresh_requires_exact_payment_and_preserved_locks",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "rules",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_rules.RuleTests.test_snapshot_requires_complete_and_consistent_rows",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "rules",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_rules.RuleTests.test_speed_is_first_even_when_ranked_third",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "rules",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_rules.RuleTests.test_without_speed_uses_user_order",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "rules",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_applied_single_column_reads_stats_points_and_locks",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "recognition",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "replace_applied"
+      ]
+    },
+    {
+      "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_contrast_verification_requires_agreement_and_original_threshold",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "recognition",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "replace_applied"
+      ]
+    },
+    {
+      "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_dialog_does_not_reread_fixed_main",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "recognition",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "replace_confirm"
+      ]
+    },
+    {
+      "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_health_percent_four_dialog_applies_only_matching_candidate",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "recognition",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "replace_health_percent_four"
+      ]
+    },
+    {
+      "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_manifest_covers_the_selected_samples",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "recognition",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "initial",
+        "lock_speed",
+        "one_lock",
+        "two_locks",
+        "two_lock_roll",
+        "unlocked",
+        "speed_four",
+        "replace_confirm",
+        "replace_applied",
+        "speed_four_current",
+        "replace_health_percent_four"
+      ]
+    },
+    {
+      "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_overlay_and_blank_screen_do_not_enable_actions",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "recognition",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "initial",
+        "replace_applied"
+      ]
+    },
+    {
+      "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_real_applied_view_refreshes_into_previous_failure_screen",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "recognition",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "replace_applied",
+        "speed_four_current"
+      ]
+    },
+    {
+      "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_replacement_dialog_reads_candidate_and_blocks_refresh",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "recognition",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "replace_confirm"
+      ]
+    },
+    {
+      "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_screenshot_replacement_flow_confirms_applied_stats",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "recognition",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "replace_confirm",
+        "replace_applied"
+      ]
+    },
+    {
+      "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_screenshots",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "recognition",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "initial",
+        "lock_speed",
+        "one_lock",
+        "two_locks",
+        "two_lock_roll",
+        "unlocked",
+        "speed_four"
+      ]
+    },
+    {
+      "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_speed_four_current_no_longer_stalls",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "recognition",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "speed_four_current"
+      ]
+    },
+    {
+      "id": "tests.equipment_reroll.test_replay.ReplayTests.test_apply_retries_are_bounded_and_never_refresh",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "replay",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_replay.ReplayTests.test_apply_waits_for_actual_single_column_result",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "replay",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_replay.ReplayTests.test_budget_blocks_refresh_and_accepts_existing_improvement",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "replay",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_replay.ReplayTests.test_centered_paid_view_waits_for_candidate_to_return",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "replay",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_replay.ReplayTests.test_centered_view_locks_at_new_position_before_refresh",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "replay",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_replay.ReplayTests.test_changed_candidate_waits_for_delayed_payment",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "replay",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_replay.ReplayTests.test_complete_current_roll_has_no_actions",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "replay",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_replay.ReplayTests.test_failed_replace_retries_and_never_refreshes_old_result",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "replay",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_replay.ReplayTests.test_identical_result_still_counts_exact_payment",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "replay",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_replay.ReplayTests.test_impossible_main_stat_target_has_no_actions",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "replay",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_replay.ReplayTests.test_many_confirmed_rolls_keep_framework_protection_without_false_stuck",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "replay",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_replay.ReplayTests.test_mismatched_popup_is_not_applied",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "replay",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_replay.ReplayTests.test_speed_and_achieved_defense_are_locked_before_refresh",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "replay",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_replay.ReplayTests.test_speed_five_on_last_roll_is_replaced_before_stopping",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "replay",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_replay.ReplayTests.test_stale_locks_are_removed_before_speed_search",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "replay",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_replay.ReplayTests.test_unconfirmed_paid_click_is_never_repeated",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "replay",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_replay.ReplayTests.test_unexpected_popup_is_not_applied",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "replay",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_replay.ReplayTests.test_unlocking_can_make_an_initially_expensive_roll_affordable",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "replay",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_replay.ReplayTests.test_unreadable_popup_never_clicks_apply",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "replay",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_replay.ReplayTests.test_wrong_payment_stops_without_second_refresh",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "replay",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_infrastructure.InfrastructureTests.test_corrupt_sample_is_not_skipped",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "infrastructure",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_infrastructure.InfrastructureTests.test_generated_menu_and_config_match_the_source",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "infrastructure",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_infrastructure.InfrastructureTests.test_missing_numeric_model_fails_before_running_tests",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "infrastructure",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_infrastructure.InfrastructureTests.test_missing_sample_is_not_skipped",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "infrastructure",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_infrastructure.InfrastructureTests.test_real_account_config_is_forbidden",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "infrastructure",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_infrastructure.InfrastructureTests.test_real_device_construction_is_forbidden",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "infrastructure",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_infrastructure.InfrastructureTests.test_source_config_is_manual_only_and_translated",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "infrastructure",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_infrastructure.InfrastructureTests.test_tool_menu_entry_is_registered_and_binds_user_settings",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "infrastructure",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_infrastructure.InfrastructureTests.test_unknown_case_is_a_preparation_error",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "infrastructure",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    }
+  ]
+}

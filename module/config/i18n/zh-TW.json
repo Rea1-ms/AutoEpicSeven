@@ -86,6 +86,10 @@
       "name": "社群登入",
       "help": "拉起 Electron 社群登入視窗，抓取並刷新 Community AIO 使用的 CK。"
     },
+    "EquipmentReroll": {
+      "name": "裝備副屬性刷新",
+      "help": "請先停留在鋼鐵工坊副能力值選擇頁。先追速度 5，再按排序追其他屬性；達標後才鎖定，最多兩條。目標或預算達成後停止，不自動製作裝備。目前支援遊戲簡體中文。"
+    },
     "SanctuaryMonthly": {
       "name": "聖域-月常",
       "help": "獨立排程的聖域月常模組。"
@@ -690,6 +694,100 @@
     "BuyMysticMedal": {
       "name": "購買神秘獎牌",
       "help": ""
+    }
+  },
+  "EquipmentReroll": {
+    "_info": {
+      "name": "目標副屬性",
+      "help": "請先停留在鋼鐵工坊副能力值選擇頁。先追速度 5，再按排序追其他屬性；達標後才鎖定，最多兩條。目標或預算達成後停止，不自動製作裝備。目前支援遊戲簡體中文。"
+    },
+    "Stat1": {
+      "name": "第 1 優先屬性",
+      "help": "四項屬性不可重複。速度目標固定為 5 並始終優先；其他屬性按此排序。",
+      "Speed": "速度",
+      "AttackPercent": "攻擊力%",
+      "DefensePercent": "防禦力%",
+      "HealthPercent": "生命值%",
+      "Effectiveness": "效果命中%",
+      "Resistance": "效果抗性%",
+      "CriticalChance": "暴擊率%",
+      "CriticalDamage": "暴擊傷害%",
+      "FlatAttack": "小攻擊",
+      "FlatDefense": "小防禦",
+      "FlatHealth": "小生命"
+    },
+    "Value1": {
+      "name": "第 1 屬性目標值",
+      "help": "百分比僅填數字。攻擊/防禦/生命、命中、抗性上限 8，暴擊率 5，暴擊傷害 7。固定值參考：攻擊 44、防禦 34、生命 201，可自行提高目標。"
+    },
+    "Stat2": {
+      "name": "第 2 優先屬性",
+      "help": "四項屬性不可重複。速度目標固定為 5 並始終優先；其他屬性按此排序。",
+      "Speed": "速度",
+      "AttackPercent": "攻擊力%",
+      "DefensePercent": "防禦力%",
+      "HealthPercent": "生命值%",
+      "Effectiveness": "效果命中%",
+      "Resistance": "效果抗性%",
+      "CriticalChance": "暴擊率%",
+      "CriticalDamage": "暴擊傷害%",
+      "FlatAttack": "小攻擊",
+      "FlatDefense": "小防禦",
+      "FlatHealth": "小生命"
+    },
+    "Value2": {
+      "name": "第 2 屬性目標值",
+      "help": "百分比僅填數字。攻擊/防禦/生命、命中、抗性上限 8，暴擊率 5，暴擊傷害 7。固定值參考：攻擊 44、防禦 34、生命 201，可自行提高目標。"
+    },
+    "Stat3": {
+      "name": "第 3 優先屬性",
+      "help": "四項屬性不可重複。速度目標固定為 5 並始終優先；其他屬性按此排序。",
+      "Speed": "速度",
+      "AttackPercent": "攻擊力%",
+      "DefensePercent": "防禦力%",
+      "HealthPercent": "生命值%",
+      "Effectiveness": "效果命中%",
+      "Resistance": "效果抗性%",
+      "CriticalChance": "暴擊率%",
+      "CriticalDamage": "暴擊傷害%",
+      "FlatAttack": "小攻擊",
+      "FlatDefense": "小防禦",
+      "FlatHealth": "小生命"
+    },
+    "Value3": {
+      "name": "第 3 屬性目標值",
+      "help": "百分比僅填數字。攻擊/防禦/生命、命中、抗性上限 8，暴擊率 5，暴擊傷害 7。固定值參考：攻擊 44、防禦 34、生命 201，可自行提高目標。"
+    },
+    "Stat4": {
+      "name": "第 4 優先屬性",
+      "help": "四項屬性不可重複。速度目標固定為 5 並始終優先；其他屬性按此排序。",
+      "Speed": "速度",
+      "AttackPercent": "攻擊力%",
+      "DefensePercent": "防禦力%",
+      "HealthPercent": "生命值%",
+      "Effectiveness": "效果命中%",
+      "Resistance": "效果抗性%",
+      "CriticalChance": "暴擊率%",
+      "CriticalDamage": "暴擊傷害%",
+      "FlatAttack": "小攻擊",
+      "FlatDefense": "小防禦",
+      "FlatHealth": "小生命"
+    },
+    "Value4": {
+      "name": "第 4 屬性目標值",
+      "help": "百分比僅填數字。攻擊/防禦/生命、命中、抗性上限 8，暴擊率 5，暴擊傷害 7。固定值參考：攻擊 44、防禦 34、生命 201，可自行提高目標。"
+    },
+    "MaxRefresh": {
+      "name": "最大刷新次數",
+      "help": "0 表示不限；僅統計本次已確認的刷新。"
+    },
+    "MaxPoints": {
+      "name": "點數預算",
+      "help": "0 表示不限；按實際 20/60/150 點價格計算。"
+    },
+    "ReservePoints": {
+      "name": "保留點數",
+      "help": "刷新後至少保留的工坊點數，0 表示不保留。"
     }
   },
   "Gacha": {

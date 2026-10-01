@@ -86,6 +86,10 @@
       "name": "Inicio comunidad",
       "help": "Abre la ventana de inicio de sesión de Electron y actualiza la CK usada por Community AIO."
     },
+    "EquipmentReroll": {
+      "name": "Renovar subestadísticas de equipo",
+      "help": "Abre manualmente la selección de subestadísticas de la forja. Busca velocidad 5 primero y luego las prioridades restantes. Bloquea solo objetivos alcanzados, hasta dos. Se detiene por objetivos o presupuesto, sin fabricar el equipo automáticamente. Solo interfaz del juego en chino simplificado."
+    },
     "SanctuaryMonthly": {
       "name": "Santuario - Mensual",
       "help": "Módulo mensual de santuario con planificador independiente."
@@ -690,6 +694,100 @@
     "BuyMysticMedal": {
       "name": "Comprar Medallas Místicas",
       "help": ""
+    }
+  },
+  "EquipmentReroll": {
+    "_info": {
+      "name": "Subestadísticas objetivo",
+      "help": "Abre manualmente la selección de subestadísticas de la forja. Busca velocidad 5 primero y luego las prioridades restantes. Bloquea solo objetivos alcanzados, hasta dos. Se detiene por objetivos o presupuesto, sin fabricar el equipo automáticamente. Solo interfaz del juego en chino simplificado."
+    },
+    "Stat1": {
+      "name": "Estadística de prioridad 1",
+      "help": "Elige cuatro estadísticas distintas. Velocidad siempre busca 5 y tiene prioridad; las demás siguen este orden.",
+      "Speed": "Velocidad",
+      "AttackPercent": "Ataque %",
+      "DefensePercent": "Defensa %",
+      "HealthPercent": "Vida %",
+      "Effectiveness": "Efectividad %",
+      "Resistance": "Resistencia a efectos %",
+      "CriticalChance": "Probabilidad crítica %",
+      "CriticalDamage": "Daño crítico %",
+      "FlatAttack": "Ataque fijo",
+      "FlatDefense": "Defensa fija",
+      "FlatHealth": "Vida fija"
+    },
+    "Value1": {
+      "name": "Valor objetivo de prioridad 1",
+      "help": "Introduce porcentajes como números. Ataque/Defensa/Vida %, efectividad y resistencia: máximo 8; probabilidad crítica: 5; daño crítico: 7. Valores fijos 44/34/201 son referencias, no límites."
+    },
+    "Stat2": {
+      "name": "Estadística de prioridad 2",
+      "help": "Elige cuatro estadísticas distintas. Velocidad siempre busca 5 y tiene prioridad; las demás siguen este orden.",
+      "Speed": "Velocidad",
+      "AttackPercent": "Ataque %",
+      "DefensePercent": "Defensa %",
+      "HealthPercent": "Vida %",
+      "Effectiveness": "Efectividad %",
+      "Resistance": "Resistencia a efectos %",
+      "CriticalChance": "Probabilidad crítica %",
+      "CriticalDamage": "Daño crítico %",
+      "FlatAttack": "Ataque fijo",
+      "FlatDefense": "Defensa fija",
+      "FlatHealth": "Vida fija"
+    },
+    "Value2": {
+      "name": "Valor objetivo de prioridad 2",
+      "help": "Introduce porcentajes como números. Ataque/Defensa/Vida %, efectividad y resistencia: máximo 8; probabilidad crítica: 5; daño crítico: 7. Valores fijos 44/34/201 son referencias, no límites."
+    },
+    "Stat3": {
+      "name": "Estadística de prioridad 3",
+      "help": "Elige cuatro estadísticas distintas. Velocidad siempre busca 5 y tiene prioridad; las demás siguen este orden.",
+      "Speed": "Velocidad",
+      "AttackPercent": "Ataque %",
+      "DefensePercent": "Defensa %",
+      "HealthPercent": "Vida %",
+      "Effectiveness": "Efectividad %",
+      "Resistance": "Resistencia a efectos %",
+      "CriticalChance": "Probabilidad crítica %",
+      "CriticalDamage": "Daño crítico %",
+      "FlatAttack": "Ataque fijo",
+      "FlatDefense": "Defensa fija",
+      "FlatHealth": "Vida fija"
+    },
+    "Value3": {
+      "name": "Valor objetivo de prioridad 3",
+      "help": "Introduce porcentajes como números. Ataque/Defensa/Vida %, efectividad y resistencia: máximo 8; probabilidad crítica: 5; daño crítico: 7. Valores fijos 44/34/201 son referencias, no límites."
+    },
+    "Stat4": {
+      "name": "Estadística de prioridad 4",
+      "help": "Elige cuatro estadísticas distintas. Velocidad siempre busca 5 y tiene prioridad; las demás siguen este orden.",
+      "Speed": "Velocidad",
+      "AttackPercent": "Ataque %",
+      "DefensePercent": "Defensa %",
+      "HealthPercent": "Vida %",
+      "Effectiveness": "Efectividad %",
+      "Resistance": "Resistencia a efectos %",
+      "CriticalChance": "Probabilidad crítica %",
+      "CriticalDamage": "Daño crítico %",
+      "FlatAttack": "Ataque fijo",
+      "FlatDefense": "Defensa fija",
+      "FlatHealth": "Vida fija"
+    },
+    "Value4": {
+      "name": "Valor objetivo de prioridad 4",
+      "help": "Introduce porcentajes como números. Ataque/Defensa/Vida %, efectividad y resistencia: máximo 8; probabilidad crítica: 5; daño crítico: 7. Valores fijos 44/34/201 son referencias, no límites."
+    },
+    "MaxRefresh": {
+      "name": "Máximo de renovaciones",
+      "help": "0 significa sin límite. Solo cuenta renovaciones confirmadas de esta ejecución."
+    },
+    "MaxPoints": {
+      "name": "Presupuesto de puntos",
+      "help": "0 significa sin límite. Usa el coste real de 20/60/150 puntos."
+    },
+    "ReservePoints": {
+      "name": "Puntos reservados",
+      "help": "Mínimo de puntos restantes tras renovar; 0 no reserva puntos."
     }
   },
   "Gacha": {

@@ -27,3 +27,16 @@ DataUpdate:
       value: true
       option: [ true, ]
       option_bold: [ true, ]
+
+# Manually started tool; never include paid rerolls in the daily scheduler.
+EquipmentReroll:
+  Scheduler:
+    Enable:
+      value: false
+      display: hide
+    NextRun:
+      display: hide
+    Command:
+      display: hide
+    ServerUpdate:
+      display: hide

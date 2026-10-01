@@ -78,6 +78,9 @@ Tool:
   tasks:
     CommunityAuth:
       - CommunityAuth
+    EquipmentReroll:
+      - Scheduler
+      - EquipmentReroll
 
 # ==================== Monthly ====================
 
