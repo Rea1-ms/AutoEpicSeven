@@ -34,6 +34,9 @@ RUNNER_MODULES = ("tests.test_offline_runner",)
 SANCTUARY_MODULES = (
     "tests.sanctuary.test_smart_custody",
     "tests.sanctuary.test_monthly_scheduling",
+    "tests.sanctuary.test_monthly",
+    "tests.sanctuary.test_monthly_deposit",
+    "tests.sanctuary.test_monthly_reminder",
 )
 UPSTREAM_MODULES = (
     "tests.upstream.test_device",
@@ -48,6 +51,7 @@ SUITES = {
     "upstream": UPSTREAM_MODULES,
 }
 FIXTURE_MANIFEST = ROOT / "tests" / "fixtures" / "dimensional_exploration" / "manifest.json"
+SANCTUARY_FIXTURE_MANIFEST = ROOT / "tests" / "fixtures" / "sanctuary" / "manifest.json"
 
 
 def iter_cases(suite):
@@ -78,27 +82,37 @@ def sha256(path):
 
 
 def fixture_manifest(verify):
-    raw = json.loads(FIXTURE_MANIFEST.read_text(encoding="utf-8"))
-    fixtures = raw.get("fixtures")
-    if raw.get("version") != 1 or not isinstance(fixtures, dict) or not fixtures:
-        raise ValueError("Fixture manifest is empty or has an unsupported version")
+    fixtures = {}
     paths = set()
-    for key, item in fixtures.items():
-        relative = Path(item["path"])
-        if relative.is_absolute() or ".." in relative.parts or key != relative.stem.removeprefix("MuMu-"):
-            raise ValueError(f"Invalid fixture path for {key}")
-        if relative.as_posix() in paths:
-            raise ValueError(f"Duplicate fixture path for {key}")
-        paths.add(relative.as_posix())
-        path = ROOT / relative
-        if verify:
-            if not path.is_file():
-                raise FileNotFoundError(f"Fixture missing: {relative.as_posix()}")
-            if sha256(path) != item["sha256"]:
-                raise ValueError(f"Fixture checksum differs: {relative.as_posix()}")
-            with Image.open(path) as image:
-                if image.size != (1280, 720):
-                    raise ValueError(f"Fixture dimensions differ: {relative.as_posix()}")
+    # Explicit manifests keep historical/manual screenshots outside the test
+    # corpus. IDs share one report namespace, so collisions must fail before
+    # tests run rather than silently replacing another business's evidence.
+    for manifest in (FIXTURE_MANIFEST, SANCTUARY_FIXTURE_MANIFEST):
+        raw = json.loads(manifest.read_text(encoding="utf-8"))
+        entries = raw.get("fixtures")
+        if raw.get("version") != 1 or not isinstance(entries, dict) or not entries:
+            raise ValueError("Fixture manifest is empty or has an unsupported version")
+        for key, item in entries.items():
+            if key in fixtures:
+                raise ValueError(f"Duplicate fixture ID: {key}")
+            relative = Path(item["path"])
+            path = ROOT / relative
+            if (relative.is_absolute() or ".." in relative.parts
+                    or key != relative.stem.removeprefix("MuMu-")
+                    or not path.resolve().is_relative_to(manifest.parent.resolve())):
+                raise ValueError(f"Invalid fixture path for {key}")
+            if relative.as_posix() in paths:
+                raise ValueError(f"Duplicate fixture path for {key}")
+            paths.add(relative.as_posix())
+            if verify:
+                if not path.is_file():
+                    raise FileNotFoundError(f"Fixture missing: {relative.as_posix()}")
+                if sha256(path) != item["sha256"]:
+                    raise ValueError(f"Fixture checksum differs: {relative.as_posix()}")
+                with Image.open(path) as image:
+                    if image.size != (1280, 720):
+                        raise ValueError(f"Fixture dimensions differ: {relative.as_posix()}")
+            fixtures[key] = item
     if verify:
         import importlib.util
 
@@ -120,7 +134,7 @@ class Result(unittest.TextTestResult):
         self.started = {}
 
     def startTest(self, test):
-        from tests.support.exploration import set_active_test
+        from tests.support.offline import set_active_test
 
         set_active_test(test.id())
         self.started[test.id()] = time.monotonic()
@@ -128,7 +142,7 @@ class Result(unittest.TextTestResult):
         super().startTest(test)
 
     def stopTest(self, test):
-        from tests.support.exploration import finish_test
+        from tests.support.offline import finish_test
 
         self.records[test.id()]["diagnostics"] = finish_test(test.id())
         self.records[test.id()]["duration_seconds"] = round(time.monotonic() - self.started[test.id()], 3)

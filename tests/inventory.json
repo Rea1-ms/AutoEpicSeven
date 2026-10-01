@@ -5303,17 +5303,17 @@
     },
     {
       "source": "test/test_sanctuary.py",
-      "business": "其他业务或框架",
+      "business": "圣域实机调试",
       "status": "未纳入",
-      "reason": "首轮只迁移肉鸽；不自动导入历史脚本",
+      "reason": "手动截图、点击和运行流程工具；无自动断言，不纳入离线入口",
       "cases": [],
       "file_category": "实机调试工具"
     },
     {
       "source": "test/test_sanctuary_monthly.py",
-      "business": "其他业务或框架",
-      "status": "未纳入",
-      "reason": "首轮只迁移肉鸽；不自动导入历史脚本",
+      "business": "圣域月常",
+      "status": "已迁移",
+      "reason": "正式副本：tests/sanctuary/test_monthly.py",
       "cases": [
         {
           "id": "test.test_sanctuary_monthly.SanctuaryMonthlyLevelUpTest.test_max_minus_1_tier_moves_up_after_level_up",
@@ -5321,8 +5321,9 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly.SanctuaryMonthlyLevelUpTest.test_max_minus_1_tier_moves_up_after_level_up"
         },
         {
           "id": "test.test_sanctuary_monthly.SanctuaryMonthlyLevelUpTest.test_max_minus_2_tier_moves_up_after_level_up",
@@ -5330,8 +5331,9 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly.SanctuaryMonthlyLevelUpTest.test_max_minus_2_tier_moves_up_after_level_up"
         },
         {
           "id": "test.test_sanctuary_monthly.SanctuaryMonthlyLevelUpTest.test_fixed_tier_stays_unchanged_after_level_up",
@@ -5339,8 +5341,9 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly.SanctuaryMonthlyLevelUpTest.test_fixed_tier_stays_unchanged_after_level_up"
         },
         {
           "id": "test.test_sanctuary_monthly.SanctuaryMonthlyLevelUpTest.test_unknown_heart_level_forces_re_read",
@@ -5348,8 +5351,9 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly.SanctuaryMonthlyLevelUpTest.test_unknown_heart_level_forces_re_read"
         },
         {
           "id": "test.test_sanctuary_monthly.SanctuaryMonthlyLevelUpTest.test_heart_level_does_not_exceed_max_level",
@@ -5357,8 +5361,9 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly.SanctuaryMonthlyLevelUpTest.test_heart_level_does_not_exceed_max_level"
         },
         {
           "id": "test.test_sanctuary_monthly.SanctuaryMonthlyLevelUpTest.test_heart_level_is_max_only_at_or_above_11",
@@ -5366,8 +5371,9 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly.SanctuaryMonthlyLevelUpTest.test_heart_level_is_max_only_at_or_above_11"
         },
         {
           "id": "test.test_sanctuary_monthly.SanctuaryMonthlyLevelUpTest.test_smart_mode_dispatches_to_smart_custody",
@@ -5375,26 +5381,29 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly.SanctuaryMonthlyLevelUpTest.test_smart_mode_dispatches_to_smart_custody"
         },
         {
           "id": "test.test_sanctuary_monthly.SanctuaryMonthlyCapacityTest.test_resource_parser_accepts_balance_greater_than_cost",
-          "category": "资源基础检查",
-          "requires_device": false,
-          "has_automatic_assertion": true,
-          "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
-        },
-        {
-          "id": "test.test_sanctuary_monthly.SanctuaryMonthlyCapacityTest.test_both_counter_layouts_purify_at_their_actual_button_positions",
           "category": "规则测试",
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly.SanctuaryMonthlyCapacityTest.test_resource_parser_accepts_balance_greater_than_cost"
+        },
+        {
+          "id": "test.test_sanctuary_monthly.SanctuaryMonthlyCapacityTest.test_both_counter_layouts_purify_at_their_actual_button_positions",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly.SanctuaryMonthlyCapacityTest.test_both_counter_layouts_purify_at_their_actual_button_positions"
         },
         {
           "id": "test.test_sanctuary_monthly.SanctuaryMonthlyCapacityTest.test_layout_changes_relocate_the_next_click",
@@ -5402,53 +5411,59 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly.SanctuaryMonthlyCapacityTest.test_layout_changes_relocate_the_next_click"
         },
         {
           "id": "test.test_sanctuary_monthly.SanctuaryMonthlyCapacityTest.test_one_plausible_counter_frame_does_not_authorize_purify",
-          "category": "截图识别",
+          "category": "流程回放",
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly.SanctuaryMonthlyCapacityTest.test_one_plausible_counter_frame_does_not_authorize_purify"
         },
         {
           "id": "test.test_sanctuary_monthly.SanctuaryMonthlyCapacityTest.test_balance_below_cost_exhausts_in_both_modes",
-          "category": "规则测试",
+          "category": "流程回放",
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly.SanctuaryMonthlyCapacityTest.test_balance_below_cost_exhausts_in_both_modes"
         },
         {
           "id": "test.test_sanctuary_monthly.SanctuaryMonthlyCapacityTest.test_unknown_slot_never_becomes_full_or_schedules_next_week",
-          "category": "规则测试",
+          "category": "流程回放",
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly.SanctuaryMonthlyCapacityTest.test_unknown_slot_never_becomes_full_or_schedules_next_week"
         },
         {
           "id": "test.test_sanctuary_monthly.SanctuaryMonthlyCapacityTest.test_slot_recovers_without_a_premature_full_result",
-          "category": "规则测试",
+          "category": "流程回放",
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly.SanctuaryMonthlyCapacityTest.test_slot_recovers_without_a_premature_full_result"
         },
         {
           "id": "test.test_sanctuary_monthly.SanctuaryMonthlyCapacityTest.test_capacity_requires_positive_free_slot_even_with_readable_counter",
-          "category": "实机调试工具",
-          "requires_device": true,
+          "category": "流程回放",
+          "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly.SanctuaryMonthlyCapacityTest.test_capacity_requires_positive_free_slot_even_with_readable_counter"
         },
         {
           "id": "test.test_sanctuary_monthly.SanctuaryMonthlyCapacityTest.test_hidden_button_waits_then_relocates_before_clicking",
@@ -5456,8 +5471,9 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly.SanctuaryMonthlyCapacityTest.test_hidden_button_waits_then_relocates_before_clicking"
         },
         {
           "id": "test.test_sanctuary_monthly.SanctuaryMonthlyCapacityTest.test_permanently_hidden_button_errors_instead_of_clicking_or_exhausting",
@@ -5465,80 +5481,92 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly.SanctuaryMonthlyCapacityTest.test_permanently_hidden_button_errors_instead_of_clicking_or_exhausting"
         },
         {
           "id": "test.test_sanctuary_monthly.SanctuaryMonthlyCapacityTest.test_cancel_popup_and_custody_must_finish_before_purify",
-          "category": "规则测试",
+          "category": "流程回放",
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly.SanctuaryMonthlyCapacityTest.test_cancel_popup_and_custody_must_finish_before_purify",
+          "migration_note": "保留取消、入库、净化的完整顺序断言；补入库前两帧和入库后两帧奖励增加，净化在资源三帧稳定后才允许"
         },
         {
           "id": "test.test_sanctuary_monthly.SanctuaryMonthlyCapacityTest.test_missing_slot_before_custody_errors_without_refreshing_protected_reward",
-          "category": "规则测试",
+          "category": "流程回放",
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly.SanctuaryMonthlyCapacityTest.test_missing_slot_before_custody_errors_without_refreshing_protected_reward"
         },
         {
           "id": "test.test_sanctuary_monthly.SanctuaryMonthlyCapacityTest.test_missing_slot_after_confirmed_custody_still_errors",
-          "category": "规则测试",
+          "category": "流程回放",
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly.SanctuaryMonthlyCapacityTest.test_missing_slot_after_confirmed_custody_still_errors",
+          "migration_note": "保留异常和全部操作断言；改用两帧保管箱奖励增加确认，再回放空位缺失"
         },
         {
           "id": "test.test_sanctuary_monthly.SanctuaryMonthlyCapacityTest.test_missing_tier_marker_does_not_confirm_custody",
-          "category": "规则测试",
+          "category": "流程回放",
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly.SanctuaryMonthlyCapacityTest.test_missing_tier_marker_does_not_confirm_custody"
         },
         {
           "id": "test.test_sanctuary_monthly.SanctuaryMonthlyCapacityTest.test_failed_custody_keeps_smart_purify_blocked",
-          "category": "规则测试",
+          "category": "流程回放",
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly.SanctuaryMonthlyCapacityTest.test_failed_custody_keeps_smart_purify_blocked",
+          "migration_note": "保留全部操作和禁止净化断言；补入库前第二帧基线，后续不提供成功证据"
         },
         {
           "id": "test.test_sanctuary_monthly.SanctuaryMonthlyCapacityTest.test_fixed_tier_mode_stops_when_custody_is_unconfirmed",
-          "category": "规则测试",
+          "category": "流程回放",
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly.SanctuaryMonthlyCapacityTest.test_fixed_tier_mode_stops_when_custody_is_unconfirmed"
         },
         {
           "id": "test.test_sanctuary_monthly.SanctuaryMonthlyCapacityTest.test_invalid_counter_does_not_authorize_fixed_tier_purify",
-          "category": "规则测试",
+          "category": "流程回放",
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly.SanctuaryMonthlyCapacityTest.test_invalid_counter_does_not_authorize_fixed_tier_purify"
         },
         {
           "id": "test.test_sanctuary_monthly.SanctuaryMonthlyCapacityTest.test_claimed_reward_precedes_unknown_capacity",
-          "category": "规则测试",
+          "category": "流程回放",
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly.SanctuaryMonthlyCapacityTest.test_claimed_reward_precedes_unknown_capacity"
         },
         {
           "id": "test.test_sanctuary_monthly.SanctuaryMonthlySchedulingTest.test_claimed_delays_to_next_month_server_update",
@@ -5546,8 +5574,9 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly.SanctuaryMonthlySchedulingTest.test_claimed_delays_to_next_month_server_update"
         },
         {
           "id": "test.test_sanctuary_monthly.SanctuaryMonthlySchedulingTest.test_full_delays_to_next_monday_server_update",
@@ -5555,8 +5584,9 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly.SanctuaryMonthlySchedulingTest.test_full_delays_to_next_monday_server_update"
         },
         {
           "id": "test.test_sanctuary_monthly.SanctuaryMonthlySchedulingTest.test_exhausted_delays_to_next_monday_server_update",
@@ -5564,8 +5594,9 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly.SanctuaryMonthlySchedulingTest.test_exhausted_delays_to_next_monday_server_update"
         },
         {
           "id": "test.test_sanctuary_monthly.SanctuaryMonthlySchedulingTest.test_failed_delays_to_next_daily_server_update",
@@ -5573,53 +5604,58 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly.SanctuaryMonthlySchedulingTest.test_failed_delays_to_next_daily_server_update"
         }
       ],
       "file_category": null
     },
     {
       "source": "test/test_sanctuary_monthly_deposit.py",
-      "business": "其他业务或框架",
-      "status": "未纳入",
-      "reason": "首轮只迁移肉鸽；不自动导入历史脚本",
+      "business": "圣域月常",
+      "status": "已迁移",
+      "reason": "正式副本：tests/sanctuary/test_monthly_deposit.py",
       "cases": [
         {
           "id": "test.test_sanctuary_monthly_deposit.DepositScreenshotTests.test_five_s",
-          "category": "规则测试",
+          "category": "截图识别",
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_five_s"
         },
         {
           "id": "test.test_sanctuary_monthly_deposit.DepositScreenshotTests.test_four_s_one_b",
-          "category": "实机调试工具",
-          "requires_device": true,
+          "category": "截图识别",
+          "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_four_s_one_b"
         },
         {
           "id": "test.test_sanctuary_monthly_deposit.DepositScreenshotTests.test_four_s_one_a",
-          "category": "实机调试工具",
-          "requires_device": true,
+          "category": "截图识别",
+          "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_four_s_one_a"
         },
         {
           "id": "test.test_sanctuary_monthly_deposit.DepositScreenshotTests.test_a_again_after_animation_settled",
-          "category": "实机调试工具",
-          "requires_device": true,
+          "category": "截图识别",
+          "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_a_again_after_animation_settled"
         },
         {
           "id": "test.test_sanctuary_monthly_deposit.DepositScreenshotTests.test_shared_assets_dispatch_for_cn",
@@ -5627,17 +5663,19 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_shared_assets_dispatch_for_cn"
         },
         {
           "id": "test.test_sanctuary_monthly_deposit.DepositScreenshotTests.test_each_missing_slot_keeps_capacity_unknown",
-          "category": "规则测试",
+          "category": "截图识别",
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_each_missing_slot_keeps_capacity_unknown"
         },
         {
           "id": "test.test_sanctuary_monthly_deposit.DepositScreenshotTests.test_blank_page_is_unknown",
@@ -5645,62 +5683,69 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_blank_page_is_unknown"
         },
         {
           "id": "test.test_sanctuary_monthly_deposit.DepositScreenshotTests.test_visible_free_slot_allows_progress",
-          "category": "规则测试",
+          "category": "截图识别",
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_visible_free_slot_allows_progress"
         },
         {
           "id": "test.test_sanctuary_monthly_deposit.DepositScreenshotTests.test_left_reward_tier_is_not_part_of_the_deposit_count",
-          "category": "规则测试",
+          "category": "截图识别",
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_left_reward_tier_is_not_part_of_the_deposit_count"
         },
         {
           "id": "test.test_sanctuary_monthly_deposit.DepositScreenshotTests.test_mixed_known_tiers_in_all_positions",
-          "category": "实机调试工具",
-          "requires_device": true,
+          "category": "截图识别",
+          "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_mixed_known_tiers_in_all_positions"
         },
         {
           "id": "test.test_sanctuary_monthly_deposit.DepositScreenshotTests.test_synthetic_compound_s_labels_are_not_single_s",
-          "category": "规则测试",
+          "category": "截图识别",
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_synthetic_compound_s_labels_are_not_single_s"
         },
         {
           "id": "test.test_sanctuary_monthly_deposit.DepositScreenshotTests.test_repeated_hits_in_one_slot_do_not_count_as_five",
-          "category": "规则测试",
+          "category": "截图识别",
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_repeated_hits_in_one_slot_do_not_count_as_five"
         },
         {
           "id": "test.test_sanctuary_monthly_deposit.DepositScreenshotTests.test_conflicting_labels_in_one_slot_are_unknown",
-          "category": "规则测试",
+          "category": "截图识别",
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_conflicting_labels_in_one_slot_are_unknown"
         },
         {
           "id": "test.test_sanctuary_monthly_deposit.DepositWorkflowTests.test_full_box_stops_both_modes_without_clicks",
@@ -5708,62 +5753,69 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly_deposit.DepositWorkflowTests.test_full_box_stops_both_modes_without_clicks"
         },
         {
           "id": "test.test_sanctuary_monthly_deposit.DepositWorkflowTests.test_claimed_precedes_full_box",
-          "category": "规则测试",
+          "category": "流程回放",
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly_deposit.DepositWorkflowTests.test_claimed_precedes_full_box"
         },
         {
           "id": "test.test_sanctuary_monthly_deposit.DepositWorkflowTests.test_full_box_does_not_require_counter_ocr",
-          "category": "截图识别",
+          "category": "流程回放",
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly_deposit.DepositWorkflowTests.test_full_box_does_not_require_counter_ocr"
         },
         {
           "id": "test.test_sanctuary_monthly_deposit.DepositWorkflowTests.test_box_becomes_full_after_confirmed_custody",
-          "category": "规则测试",
+          "category": "流程回放",
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly_deposit.DepositWorkflowTests.test_box_becomes_full_after_confirmed_custody",
+          "migration_note": "保留满箱和全部操作断言；以入库前后两帧保管箱变化替代重复点击提示"
         },
         {
           "id": "test.test_sanctuary_monthly_deposit.DepositWorkflowTests.test_full_status_returns_to_sanctuary_and_schedules_next_week",
-          "category": "规则测试",
+          "category": "流程回放",
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly_deposit.DepositWorkflowTests.test_full_status_returns_to_sanctuary_and_schedules_next_week"
         },
         {
           "id": "test.test_sanctuary_monthly_deposit.DepositWorkflowTests.test_full_status_still_uses_month_end_reminder_schedule",
-          "category": "规则测试",
+          "category": "流程回放",
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly_deposit.DepositWorkflowTests.test_full_status_still_uses_month_end_reminder_schedule"
         }
       ],
       "file_category": null
     },
     {
       "source": "test/test_sanctuary_monthly_reminder.py",
-      "business": "其他业务或框架",
-      "status": "未纳入",
-      "reason": "首轮只迁移肉鸽；不自动导入历史脚本",
+      "business": "圣域月常",
+      "status": "已迁移",
+      "reason": "正式副本：tests/sanctuary/test_monthly_reminder.py",
       "cases": [
         {
           "id": "test.test_sanctuary_monthly_reminder.ReminderWindowTests.test_cn_month_end",
@@ -5771,8 +5823,9 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly_reminder.ReminderWindowTests.test_cn_month_end"
         },
         {
           "id": "test.test_sanctuary_monthly_reminder.ReminderWindowTests.test_global_reset",
@@ -5780,8 +5833,9 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly_reminder.ReminderWindowTests.test_global_reset"
         },
         {
           "id": "test.test_sanctuary_monthly_reminder.ReminderWindowTests.test_first_day_before_reset_still_previous_month",
@@ -5789,8 +5843,9 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly_reminder.ReminderWindowTests.test_first_day_before_reset_still_previous_month"
         },
         {
           "id": "test.test_sanctuary_monthly_reminder.ReminderWindowTests.test_exact_reset_starts_new_month",
@@ -5798,8 +5853,9 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly_reminder.ReminderWindowTests.test_exact_reset_starts_new_month"
         },
         {
           "id": "test.test_sanctuary_monthly_reminder.ReminderWindowTests.test_leap_february",
@@ -5807,8 +5863,9 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly_reminder.ReminderWindowTests.test_leap_february"
         },
         {
           "id": "test.test_sanctuary_monthly_reminder.ReminderWindowTests.test_non_leap_february",
@@ -5816,8 +5873,9 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly_reminder.ReminderWindowTests.test_non_leap_february"
         },
         {
           "id": "test.test_sanctuary_monthly_reminder.ReminderWindowTests.test_year_boundary",
@@ -5825,8 +5883,9 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly_reminder.ReminderWindowTests.test_year_boundary"
         },
         {
           "id": "test.test_sanctuary_monthly_reminder.ReminderWindowTests.test_local_timezone_conversion",
@@ -5834,8 +5893,9 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly_reminder.ReminderWindowTests.test_local_timezone_conversion"
         },
         {
           "id": "test.test_sanctuary_monthly_reminder.ReminderWindowTests.test_day_does_not_change_at_midnight",
@@ -5843,8 +5903,9 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly_reminder.ReminderWindowTests.test_day_does_not_change_at_midnight"
         },
         {
           "id": "test.test_sanctuary_monthly_reminder.ReminderWindowTests.test_configured_lead_days",
@@ -5852,8 +5913,9 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly_reminder.ReminderWindowTests.test_configured_lead_days"
         },
         {
           "id": "test.test_sanctuary_monthly_reminder.ReminderWorkflowTests.test_disabled",
@@ -5861,8 +5923,9 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly_reminder.ReminderWorkflowTests.test_disabled"
         },
         {
           "id": "test.test_sanctuary_monthly_reminder.ReminderWorkflowTests.test_before_window",
@@ -5870,8 +5933,9 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly_reminder.ReminderWorkflowTests.test_before_window"
         },
         {
           "id": "test.test_sanctuary_monthly_reminder.ReminderWorkflowTests.test_claimed_skips_notification",
@@ -5879,8 +5943,9 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly_reminder.ReminderWorkflowTests.test_claimed_skips_notification"
         },
         {
           "id": "test.test_sanctuary_monthly_reminder.ReminderWorkflowTests.test_sent_with_deadline_and_account",
@@ -5888,17 +5953,19 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly_reminder.ReminderWorkflowTests.test_sent_with_deadline_and_account"
         },
         {
           "id": "test.test_sanctuary_monthly_reminder.ReminderWorkflowTests.test_restart_does_not_resend_success",
-          "category": "流程回放",
+          "category": "规则测试",
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly_reminder.ReminderWorkflowTests.test_restart_does_not_resend_success"
         },
         {
           "id": "test.test_sanctuary_monthly_reminder.ReminderWorkflowTests.test_next_server_day_sends_again",
@@ -5906,8 +5973,9 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly_reminder.ReminderWorkflowTests.test_next_server_day_sends_again"
         },
         {
           "id": "test.test_sanctuary_monthly_reminder.ReminderWorkflowTests.test_failure_remains_retryable",
@@ -5915,8 +5983,9 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly_reminder.ReminderWorkflowTests.test_failure_remains_retryable"
         },
         {
           "id": "test.test_sanctuary_monthly_reminder.ReminderWorkflowTests.test_new_month_does_not_reuse_old_dedup",
@@ -5924,8 +5993,9 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly_reminder.ReminderWorkflowTests.test_new_month_does_not_reuse_old_dedup"
         },
         {
           "id": "test.test_sanctuary_monthly_reminder.ReminderWorkflowTests.test_no_reminder_for_new_period_after_reset",
@@ -5933,26 +6003,29 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly_reminder.ReminderWorkflowTests.test_no_reminder_for_new_period_after_reset"
         },
         {
           "id": "test.test_sanctuary_monthly_reminder.ReminderWorkflowTests.test_reminder_before_purification_exception",
-          "category": "规则测试",
+          "category": "流程回放",
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly_reminder.ReminderWorkflowTests.test_reminder_before_purification_exception"
         },
         {
           "id": "test.test_sanctuary_monthly_reminder.ReminderWorkflowTests.test_failed_entry_does_not_send",
-          "category": "规则测试",
+          "category": "流程回放",
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly_reminder.ReminderWorkflowTests.test_failed_entry_does_not_send"
         },
         {
           "id": "test.test_sanctuary_monthly_reminder.ReminderWorkflowTests.test_weekly_target_does_not_skip_reminder_start",
@@ -5960,8 +6033,9 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly_reminder.ReminderWorkflowTests.test_weekly_target_does_not_skip_reminder_start"
         },
         {
           "id": "test.test_sanctuary_monthly_reminder.ReminderWorkflowTests.test_daily_check_during_reminder_window",
@@ -5969,8 +6043,9 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly_reminder.ReminderWorkflowTests.test_daily_check_during_reminder_window"
         },
         {
           "id": "test.test_sanctuary_monthly_reminder.ReminderWorkflowTests.test_earlier_normal_schedule_kept",
@@ -5978,8 +6053,9 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly_reminder.ReminderWorkflowTests.test_earlier_normal_schedule_kept"
         },
         {
           "id": "test.test_sanctuary_monthly_reminder.ReminderWorkflowTests.test_disabled_schedule_unchanged",
@@ -5987,8 +6063,9 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly_reminder.ReminderWorkflowTests.test_disabled_schedule_unchanged"
         },
         {
           "id": "test.test_sanctuary_monthly_reminder.ReminderWorkflowTests.test_claimed_schedule_stays_monthly",
@@ -5996,8 +6073,9 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly_reminder.ReminderWorkflowTests.test_claimed_schedule_stays_monthly"
         },
         {
           "id": "test.test_sanctuary_monthly_reminder.ReminderWorkflowTests.test_invalid_lead_defaults_to_three_days",
@@ -6005,8 +6083,9 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "未纳入",
-          "reason": "首轮只迁移肉鸽；需核对依赖、样本与断言后再纳入"
+          "status": "已迁移",
+          "reason": "原件保留，正式副本在当前工作树运行",
+          "migrated_to": "tests.sanctuary.test_monthly_reminder.ReminderWorkflowTests.test_invalid_lead_defaults_to_three_days"
         }
       ],
       "file_category": null
@@ -6911,6 +6990,60 @@
           "fixtures": [],
           "status": "已纳入",
           "reason": "分场景图片引用、导入保留和预览清单契约"
+        },
+        {
+          "id": "tests.test_offline_runner.RunnerContractTests.test_shared_diagnostics_preserve_original_actions_and_frames",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "受控输入验证跨业务样本校验与诊断隔离"
+        },
+        {
+          "id": "tests.test_offline_runner.RunnerContractTests.test_sanctuary_and_exploration_fixtures_share_reports",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "受控输入验证跨业务样本校验与诊断隔离"
+        },
+        {
+          "id": "tests.test_offline_runner.RunnerContractTests.test_duplicate_fixture_id_across_businesses_is_rejected",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "受控输入验证跨业务样本校验与诊断隔离"
+        },
+        {
+          "id": "tests.test_offline_runner.RunnerContractTests.test_sanctuary_missing_fixture_is_not_skipped",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "受控输入验证跨业务样本校验与诊断隔离"
+        },
+        {
+          "id": "tests.test_offline_runner.RunnerContractTests.test_sanctuary_changed_fixture_is_rejected",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "受控输入验证跨业务样本校验与诊断隔离"
+        },
+        {
+          "id": "tests.test_offline_runner.RunnerContractTests.test_fixture_cannot_reference_another_business_directory",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "受控输入验证跨业务样本校验与诊断隔离"
         }
       ],
       "file_category": null
@@ -7184,7 +7317,7 @@
       "source": "tests/sanctuary/test_smart_custody.py",
       "business": "圣域月常",
       "status": "已纳入",
-      "reason": "低等级智能入库规则回归；不连接设备，不迁移其他历史圣域用例",
+      "reason": "智能入库正式回归；模拟识别结果，不连接设备或读取真实账号配置",
       "cases": [
         {
           "id": "tests.sanctuary.test_smart_custody.SmartCustodyTests.test_low_level_a_is_stored_without_high_value_popup",
@@ -7266,6 +7399,123 @@
           "fixtures": [],
           "status": "已纳入",
           "reason": "模拟已识别的等级、品质和界面状态，验证操作与禁止操作"
+        },
+        {
+          "id": "tests.sanctuary.test_smart_custody.SmartCustodyTests.test_deposit_increase_accepts_one_known_tier_in_an_empty_position",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "模拟识别结果，验证入库前后连续帧、确认信号及禁止净化"
+        },
+        {
+          "id": "tests.sanctuary.test_smart_custody.SmartCustodyTests.test_deposit_increase_rejects_missing_replaced_unchanged_or_multiple_tiers",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "模拟识别结果，验证入库前后连续帧、确认信号及禁止净化"
+        },
+        {
+          "id": "tests.sanctuary.test_smart_custody.SmartCustodyTests.test_custody_settle_accepts_two_stable_deposit_increase_frames",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "模拟识别结果，验证入库前后连续帧、确认信号及禁止净化"
+        },
+        {
+          "id": "tests.sanctuary.test_smart_custody.SmartCustodyTests.test_custody_settle_rejects_a_single_flickering_increase",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "模拟识别结果，验证入库前后连续帧、确认信号及禁止净化"
+        },
+        {
+          "id": "tests.sanctuary.test_smart_custody.SmartCustodyTests.test_custody_settle_restarts_stability_when_added_tier_changes",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "模拟识别结果，验证入库前后连续帧、确认信号及禁止净化"
+        },
+        {
+          "id": "tests.sanctuary.test_smart_custody.SmartCustodyTests.test_custody_settle_keeps_claimed_confirmation",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "模拟识别结果，验证入库前后连续帧、确认信号及禁止净化"
+        },
+        {
+          "id": "tests.sanctuary.test_smart_custody.SmartCustodyTests.test_duplicate_custody_notice_cannot_confirm_a_new_deposit",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "模拟识别结果，验证入库前后连续帧、确认信号及禁止净化"
+        },
+        {
+          "id": "tests.sanctuary.test_smart_custody.SmartCustodyTests.test_high_level_custody_increase_resumes_without_a_stored_marker",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "模拟识别结果，验证入库前后连续帧、确认信号及禁止净化"
+        },
+        {
+          "id": "tests.sanctuary.test_smart_custody.SmartCustodyTests.test_delayed_deposit_increase_recovers_after_timeout_with_a_gray_button",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "模拟识别结果，验证入库前后连续帧、确认信号及禁止净化"
+        },
+        {
+          "id": "tests.sanctuary.test_smart_custody.SmartCustodyTests.test_unconfirmed_or_failed_custody_never_resumes_purify",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "模拟识别结果，验证入库前后连续帧、确认信号及禁止净化"
+        },
+        {
+          "id": "tests.sanctuary.test_smart_custody.SmartCustodyTests.test_fixed_tier_custody_passes_the_observation_taken_before_the_click",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "模拟识别结果，验证入库前后连续帧、确认信号及禁止净化"
+        },
+        {
+          "id": "tests.sanctuary.test_smart_custody.SmartCustodyTests.test_low_level_custody_cleared_reward_resumes_without_a_notice",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "模拟识别结果，验证入库前后连续帧、确认信号及禁止净化"
+        },
+        {
+          "id": "tests.sanctuary.test_smart_custody.SmartCustodyTests.test_preclick_tier_flicker_is_stabilized_before_custody",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "模拟识别结果，验证入库前后连续帧、确认信号及禁止净化"
         }
       ]
     },
@@ -7919,6 +8169,827 @@
           "fixtures": [],
           "status": "已纳入",
           "reason": "受控时间验证服务器月初刷新边界、时差和已领取任务调度，不连接设备"
+        }
+      ]
+    },
+    {
+      "source": "tests/sanctuary/test_monthly.py",
+      "business": "圣域月常",
+      "status": "已纳入",
+      "reason": "圣域历史离线用例整理，原始脚本保留",
+      "cases": [
+        {
+          "id": "tests.sanctuary.test_monthly.SanctuaryMonthlyLevelUpTest.test_max_minus_1_tier_moves_up_after_level_up",
+          "original_id": "test.test_sanctuary_monthly.SanctuaryMonthlyLevelUpTest.test_max_minus_1_tier_moves_up_after_level_up",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly.SanctuaryMonthlyLevelUpTest.test_max_minus_2_tier_moves_up_after_level_up",
+          "original_id": "test.test_sanctuary_monthly.SanctuaryMonthlyLevelUpTest.test_max_minus_2_tier_moves_up_after_level_up",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly.SanctuaryMonthlyLevelUpTest.test_fixed_tier_stays_unchanged_after_level_up",
+          "original_id": "test.test_sanctuary_monthly.SanctuaryMonthlyLevelUpTest.test_fixed_tier_stays_unchanged_after_level_up",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly.SanctuaryMonthlyLevelUpTest.test_unknown_heart_level_forces_re_read",
+          "original_id": "test.test_sanctuary_monthly.SanctuaryMonthlyLevelUpTest.test_unknown_heart_level_forces_re_read",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly.SanctuaryMonthlyLevelUpTest.test_heart_level_does_not_exceed_max_level",
+          "original_id": "test.test_sanctuary_monthly.SanctuaryMonthlyLevelUpTest.test_heart_level_does_not_exceed_max_level",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly.SanctuaryMonthlyLevelUpTest.test_heart_level_is_max_only_at_or_above_11",
+          "original_id": "test.test_sanctuary_monthly.SanctuaryMonthlyLevelUpTest.test_heart_level_is_max_only_at_or_above_11",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly.SanctuaryMonthlyLevelUpTest.test_smart_mode_dispatches_to_smart_custody",
+          "original_id": "test.test_sanctuary_monthly.SanctuaryMonthlyLevelUpTest.test_smart_mode_dispatches_to_smart_custody",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly.SanctuaryMonthlyCapacityTest.test_resource_parser_accepts_balance_greater_than_cost",
+          "original_id": "test.test_sanctuary_monthly.SanctuaryMonthlyCapacityTest.test_resource_parser_accepts_balance_greater_than_cost",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly.SanctuaryMonthlyCapacityTest.test_both_counter_layouts_purify_at_their_actual_button_positions",
+          "original_id": "test.test_sanctuary_monthly.SanctuaryMonthlyCapacityTest.test_both_counter_layouts_purify_at_their_actual_button_positions",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly.SanctuaryMonthlyCapacityTest.test_layout_changes_relocate_the_next_click",
+          "original_id": "test.test_sanctuary_monthly.SanctuaryMonthlyCapacityTest.test_layout_changes_relocate_the_next_click",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly.SanctuaryMonthlyCapacityTest.test_one_plausible_counter_frame_does_not_authorize_purify",
+          "original_id": "test.test_sanctuary_monthly.SanctuaryMonthlyCapacityTest.test_one_plausible_counter_frame_does_not_authorize_purify",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly.SanctuaryMonthlyCapacityTest.test_balance_below_cost_exhausts_in_both_modes",
+          "original_id": "test.test_sanctuary_monthly.SanctuaryMonthlyCapacityTest.test_balance_below_cost_exhausts_in_both_modes",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly.SanctuaryMonthlyCapacityTest.test_unknown_slot_never_becomes_full_or_schedules_next_week",
+          "original_id": "test.test_sanctuary_monthly.SanctuaryMonthlyCapacityTest.test_unknown_slot_never_becomes_full_or_schedules_next_week",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly.SanctuaryMonthlyCapacityTest.test_slot_recovers_without_a_premature_full_result",
+          "original_id": "test.test_sanctuary_monthly.SanctuaryMonthlyCapacityTest.test_slot_recovers_without_a_premature_full_result",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly.SanctuaryMonthlyCapacityTest.test_capacity_requires_positive_free_slot_even_with_readable_counter",
+          "original_id": "test.test_sanctuary_monthly.SanctuaryMonthlyCapacityTest.test_capacity_requires_positive_free_slot_even_with_readable_counter",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly.SanctuaryMonthlyCapacityTest.test_hidden_button_waits_then_relocates_before_clicking",
+          "original_id": "test.test_sanctuary_monthly.SanctuaryMonthlyCapacityTest.test_hidden_button_waits_then_relocates_before_clicking",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly.SanctuaryMonthlyCapacityTest.test_permanently_hidden_button_errors_instead_of_clicking_or_exhausting",
+          "original_id": "test.test_sanctuary_monthly.SanctuaryMonthlyCapacityTest.test_permanently_hidden_button_errors_instead_of_clicking_or_exhausting",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly.SanctuaryMonthlyCapacityTest.test_cancel_popup_and_custody_must_finish_before_purify",
+          "original_id": "test.test_sanctuary_monthly.SanctuaryMonthlyCapacityTest.test_cancel_popup_and_custody_must_finish_before_purify",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知",
+          "migration_note": "保留取消、入库、净化的完整顺序断言；补入库前两帧和入库后两帧奖励增加，净化在资源三帧稳定后才允许"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly.SanctuaryMonthlyCapacityTest.test_missing_slot_before_custody_errors_without_refreshing_protected_reward",
+          "original_id": "test.test_sanctuary_monthly.SanctuaryMonthlyCapacityTest.test_missing_slot_before_custody_errors_without_refreshing_protected_reward",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly.SanctuaryMonthlyCapacityTest.test_missing_slot_after_confirmed_custody_still_errors",
+          "original_id": "test.test_sanctuary_monthly.SanctuaryMonthlyCapacityTest.test_missing_slot_after_confirmed_custody_still_errors",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知",
+          "migration_note": "保留异常和全部操作断言；改用两帧保管箱奖励增加确认，再回放空位缺失"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly.SanctuaryMonthlyCapacityTest.test_missing_tier_marker_does_not_confirm_custody",
+          "original_id": "test.test_sanctuary_monthly.SanctuaryMonthlyCapacityTest.test_missing_tier_marker_does_not_confirm_custody",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly.SanctuaryMonthlyCapacityTest.test_failed_custody_keeps_smart_purify_blocked",
+          "original_id": "test.test_sanctuary_monthly.SanctuaryMonthlyCapacityTest.test_failed_custody_keeps_smart_purify_blocked",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知",
+          "migration_note": "保留全部操作和禁止净化断言；补入库前第二帧基线，后续不提供成功证据"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly.SanctuaryMonthlyCapacityTest.test_fixed_tier_mode_stops_when_custody_is_unconfirmed",
+          "original_id": "test.test_sanctuary_monthly.SanctuaryMonthlyCapacityTest.test_fixed_tier_mode_stops_when_custody_is_unconfirmed",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly.SanctuaryMonthlyCapacityTest.test_invalid_counter_does_not_authorize_fixed_tier_purify",
+          "original_id": "test.test_sanctuary_monthly.SanctuaryMonthlyCapacityTest.test_invalid_counter_does_not_authorize_fixed_tier_purify",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly.SanctuaryMonthlyCapacityTest.test_claimed_reward_precedes_unknown_capacity",
+          "original_id": "test.test_sanctuary_monthly.SanctuaryMonthlyCapacityTest.test_claimed_reward_precedes_unknown_capacity",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly.SanctuaryMonthlySchedulingTest.test_claimed_delays_to_next_month_server_update",
+          "original_id": "test.test_sanctuary_monthly.SanctuaryMonthlySchedulingTest.test_claimed_delays_to_next_month_server_update",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly.SanctuaryMonthlySchedulingTest.test_full_delays_to_next_monday_server_update",
+          "original_id": "test.test_sanctuary_monthly.SanctuaryMonthlySchedulingTest.test_full_delays_to_next_monday_server_update",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly.SanctuaryMonthlySchedulingTest.test_exhausted_delays_to_next_monday_server_update",
+          "original_id": "test.test_sanctuary_monthly.SanctuaryMonthlySchedulingTest.test_exhausted_delays_to_next_monday_server_update",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly.SanctuaryMonthlySchedulingTest.test_failed_delays_to_next_daily_server_update",
+          "original_id": "test.test_sanctuary_monthly.SanctuaryMonthlySchedulingTest.test_failed_delays_to_next_daily_server_update",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        }
+      ]
+    },
+    {
+      "source": "tests/sanctuary/test_monthly_deposit.py",
+      "business": "圣域月常",
+      "status": "已纳入",
+      "reason": "圣域历史离线用例整理，原始脚本保留",
+      "cases": [
+        {
+          "id": "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_five_s",
+          "original_id": "test.test_sanctuary_monthly_deposit.DepositScreenshotTests.test_five_s",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "sanctuary-full-s-20260921"
+          ],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_four_s_one_b",
+          "original_id": "test.test_sanctuary_monthly_deposit.DepositScreenshotTests.test_four_s_one_b",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "sanctuary-full-s-20260921",
+            "sanctuary-full-b-20260921"
+          ],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_four_s_one_a",
+          "original_id": "test.test_sanctuary_monthly_deposit.DepositScreenshotTests.test_four_s_one_a",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "sanctuary-full-s-20260921",
+            "sanctuary-full-a-20260921"
+          ],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_a_again_after_animation_settled",
+          "original_id": "test.test_sanctuary_monthly_deposit.DepositScreenshotTests.test_a_again_after_animation_settled",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "sanctuary-full-s-20260921",
+            "sanctuary-full-a-stable-20260921"
+          ],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_shared_assets_dispatch_for_cn",
+          "original_id": "test.test_sanctuary_monthly_deposit.DepositScreenshotTests.test_shared_assets_dispatch_for_cn",
+          "category": "资源基础检查",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "sanctuary-full-s-20260921"
+          ],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_each_missing_slot_keeps_capacity_unknown",
+          "original_id": "test.test_sanctuary_monthly_deposit.DepositScreenshotTests.test_each_missing_slot_keeps_capacity_unknown",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "sanctuary-full-s-20260921"
+          ],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_blank_page_is_unknown",
+          "original_id": "test.test_sanctuary_monthly_deposit.DepositScreenshotTests.test_blank_page_is_unknown",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "sanctuary-full-s-20260921"
+          ],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_visible_free_slot_allows_progress",
+          "original_id": "test.test_sanctuary_monthly_deposit.DepositScreenshotTests.test_visible_free_slot_allows_progress",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "sanctuary-full-s-20260921"
+          ],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_left_reward_tier_is_not_part_of_the_deposit_count",
+          "original_id": "test.test_sanctuary_monthly_deposit.DepositScreenshotTests.test_left_reward_tier_is_not_part_of_the_deposit_count",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "sanctuary-full-s-20260921"
+          ],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_mixed_known_tiers_in_all_positions",
+          "original_id": "test.test_sanctuary_monthly_deposit.DepositScreenshotTests.test_mixed_known_tiers_in_all_positions",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "sanctuary-full-s-20260921",
+            "sanctuary-full-b-20260921",
+            "sanctuary-full-a-20260921"
+          ],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_synthetic_compound_s_labels_are_not_single_s",
+          "original_id": "test.test_sanctuary_monthly_deposit.DepositScreenshotTests.test_synthetic_compound_s_labels_are_not_single_s",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "sanctuary-full-s-20260921"
+          ],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_repeated_hits_in_one_slot_do_not_count_as_five",
+          "original_id": "test.test_sanctuary_monthly_deposit.DepositScreenshotTests.test_repeated_hits_in_one_slot_do_not_count_as_five",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "sanctuary-full-s-20260921"
+          ],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_conflicting_labels_in_one_slot_are_unknown",
+          "original_id": "test.test_sanctuary_monthly_deposit.DepositScreenshotTests.test_conflicting_labels_in_one_slot_are_unknown",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "sanctuary-full-s-20260921"
+          ],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_deposit.DepositWorkflowTests.test_full_box_stops_both_modes_without_clicks",
+          "original_id": "test.test_sanctuary_monthly_deposit.DepositWorkflowTests.test_full_box_stops_both_modes_without_clicks",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "sanctuary-full-s-20260921"
+          ],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_deposit.DepositWorkflowTests.test_claimed_precedes_full_box",
+          "original_id": "test.test_sanctuary_monthly_deposit.DepositWorkflowTests.test_claimed_precedes_full_box",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "sanctuary-full-s-20260921"
+          ],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_deposit.DepositWorkflowTests.test_full_box_does_not_require_counter_ocr",
+          "original_id": "test.test_sanctuary_monthly_deposit.DepositWorkflowTests.test_full_box_does_not_require_counter_ocr",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "sanctuary-full-s-20260921"
+          ],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_deposit.DepositWorkflowTests.test_box_becomes_full_after_confirmed_custody",
+          "original_id": "test.test_sanctuary_monthly_deposit.DepositWorkflowTests.test_box_becomes_full_after_confirmed_custody",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "sanctuary-full-s-20260921"
+          ],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知",
+          "migration_note": "保留满箱和全部操作断言；以入库前后两帧保管箱变化替代重复点击提示"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_deposit.DepositWorkflowTests.test_full_status_returns_to_sanctuary_and_schedules_next_week",
+          "original_id": "test.test_sanctuary_monthly_deposit.DepositWorkflowTests.test_full_status_returns_to_sanctuary_and_schedules_next_week",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "sanctuary-full-s-20260921"
+          ],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_deposit.DepositWorkflowTests.test_full_status_still_uses_month_end_reminder_schedule",
+          "original_id": "test.test_sanctuary_monthly_deposit.DepositWorkflowTests.test_full_status_still_uses_month_end_reminder_schedule",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "sanctuary-full-s-20260921"
+          ],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        }
+      ]
+    },
+    {
+      "source": "tests/sanctuary/test_monthly_reminder.py",
+      "business": "圣域月常",
+      "status": "已纳入",
+      "reason": "圣域历史离线用例整理，原始脚本保留",
+      "cases": [
+        {
+          "id": "tests.sanctuary.test_monthly_reminder.ReminderWindowTests.test_cn_month_end",
+          "original_id": "test.test_sanctuary_monthly_reminder.ReminderWindowTests.test_cn_month_end",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_reminder.ReminderWindowTests.test_global_reset",
+          "original_id": "test.test_sanctuary_monthly_reminder.ReminderWindowTests.test_global_reset",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_reminder.ReminderWindowTests.test_first_day_before_reset_still_previous_month",
+          "original_id": "test.test_sanctuary_monthly_reminder.ReminderWindowTests.test_first_day_before_reset_still_previous_month",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_reminder.ReminderWindowTests.test_exact_reset_starts_new_month",
+          "original_id": "test.test_sanctuary_monthly_reminder.ReminderWindowTests.test_exact_reset_starts_new_month",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_reminder.ReminderWindowTests.test_leap_february",
+          "original_id": "test.test_sanctuary_monthly_reminder.ReminderWindowTests.test_leap_february",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_reminder.ReminderWindowTests.test_non_leap_february",
+          "original_id": "test.test_sanctuary_monthly_reminder.ReminderWindowTests.test_non_leap_february",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_reminder.ReminderWindowTests.test_year_boundary",
+          "original_id": "test.test_sanctuary_monthly_reminder.ReminderWindowTests.test_year_boundary",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_reminder.ReminderWindowTests.test_local_timezone_conversion",
+          "original_id": "test.test_sanctuary_monthly_reminder.ReminderWindowTests.test_local_timezone_conversion",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_reminder.ReminderWindowTests.test_day_does_not_change_at_midnight",
+          "original_id": "test.test_sanctuary_monthly_reminder.ReminderWindowTests.test_day_does_not_change_at_midnight",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_reminder.ReminderWindowTests.test_configured_lead_days",
+          "original_id": "test.test_sanctuary_monthly_reminder.ReminderWindowTests.test_configured_lead_days",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_reminder.ReminderWorkflowTests.test_disabled",
+          "original_id": "test.test_sanctuary_monthly_reminder.ReminderWorkflowTests.test_disabled",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_reminder.ReminderWorkflowTests.test_before_window",
+          "original_id": "test.test_sanctuary_monthly_reminder.ReminderWorkflowTests.test_before_window",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_reminder.ReminderWorkflowTests.test_claimed_skips_notification",
+          "original_id": "test.test_sanctuary_monthly_reminder.ReminderWorkflowTests.test_claimed_skips_notification",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_reminder.ReminderWorkflowTests.test_sent_with_deadline_and_account",
+          "original_id": "test.test_sanctuary_monthly_reminder.ReminderWorkflowTests.test_sent_with_deadline_and_account",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_reminder.ReminderWorkflowTests.test_restart_does_not_resend_success",
+          "original_id": "test.test_sanctuary_monthly_reminder.ReminderWorkflowTests.test_restart_does_not_resend_success",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_reminder.ReminderWorkflowTests.test_next_server_day_sends_again",
+          "original_id": "test.test_sanctuary_monthly_reminder.ReminderWorkflowTests.test_next_server_day_sends_again",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_reminder.ReminderWorkflowTests.test_failure_remains_retryable",
+          "original_id": "test.test_sanctuary_monthly_reminder.ReminderWorkflowTests.test_failure_remains_retryable",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_reminder.ReminderWorkflowTests.test_new_month_does_not_reuse_old_dedup",
+          "original_id": "test.test_sanctuary_monthly_reminder.ReminderWorkflowTests.test_new_month_does_not_reuse_old_dedup",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_reminder.ReminderWorkflowTests.test_no_reminder_for_new_period_after_reset",
+          "original_id": "test.test_sanctuary_monthly_reminder.ReminderWorkflowTests.test_no_reminder_for_new_period_after_reset",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_reminder.ReminderWorkflowTests.test_reminder_before_purification_exception",
+          "original_id": "test.test_sanctuary_monthly_reminder.ReminderWorkflowTests.test_reminder_before_purification_exception",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_reminder.ReminderWorkflowTests.test_failed_entry_does_not_send",
+          "original_id": "test.test_sanctuary_monthly_reminder.ReminderWorkflowTests.test_failed_entry_does_not_send",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_reminder.ReminderWorkflowTests.test_weekly_target_does_not_skip_reminder_start",
+          "original_id": "test.test_sanctuary_monthly_reminder.ReminderWorkflowTests.test_weekly_target_does_not_skip_reminder_start",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_reminder.ReminderWorkflowTests.test_daily_check_during_reminder_window",
+          "original_id": "test.test_sanctuary_monthly_reminder.ReminderWorkflowTests.test_daily_check_during_reminder_window",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_reminder.ReminderWorkflowTests.test_earlier_normal_schedule_kept",
+          "original_id": "test.test_sanctuary_monthly_reminder.ReminderWorkflowTests.test_earlier_normal_schedule_kept",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_reminder.ReminderWorkflowTests.test_disabled_schedule_unchanged",
+          "original_id": "test.test_sanctuary_monthly_reminder.ReminderWorkflowTests.test_disabled_schedule_unchanged",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_reminder.ReminderWorkflowTests.test_claimed_schedule_stays_monthly",
+          "original_id": "test.test_sanctuary_monthly_reminder.ReminderWorkflowTests.test_claimed_schedule_stays_monthly",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        },
+        {
+          "id": "tests.sanctuary.test_monthly_reminder.ReminderWorkflowTests.test_invalid_lead_defaults_to_three_days",
+          "original_id": "test.test_sanctuary_monthly_reminder.ReminderWorkflowTests.test_invalid_lead_defaults_to_three_days",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
         }
       ]
     }

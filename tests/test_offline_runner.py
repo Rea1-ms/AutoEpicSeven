@@ -9,9 +9,76 @@ from dev_tools import run_offline_tests as runner
 from dev_tools import build_exploration_fixtures as fixture_importer
 from dev_tools import build_fixture_contact_sheets as contact_sheets
 from tests.support.exploration import ReplayDevice, artifact_path
+from tests.support import offline
 
 
 class RunnerContractTests(unittest.TestCase):
+    def test_shared_diagnostics_preserve_original_actions_and_frames(self):
+        action = (2, 'CUSTODY', (10, 20, 30, 40))
+        # Restore the prior state under both the custom Result and ordinary
+        # unittest entry points; neither should inherit this synthetic record.
+        with patch.object(offline, '_active_test', None), patch.object(offline, '_diagnostics', {}):
+            offline.set_active_test('shared-diagnostics-contract')
+            self.assertEqual(offline.record_action(action), action)
+            offline.record_frame('sanctuary-synthetic:2')
+            recorded = offline.finish_test('shared-diagnostics-contract')
+        self.assertEqual(recorded, {'frames_read': ['sanctuary-synthetic:2'], 'actions': [str(action)]})
+
+    def test_sanctuary_and_exploration_fixtures_share_reports(self):
+        fixtures = runner.fixture_manifest(verify=False)
+        self.assertIn('sanctuary-full-s-20260921', fixtures)
+        self.assertIn('20260925-231015-103', fixtures)
+
+    def test_duplicate_fixture_id_across_businesses_is_rejected(self):
+        original = type(runner.FIXTURE_MANIFEST).read_text
+        raw = json.loads(original(runner.FIXTURE_MANIFEST, encoding='utf-8'))
+        key, item = next(iter(raw['fixtures'].items()))
+
+        def replacement(path, *args, **kwargs):
+            if path == runner.SANCTUARY_FIXTURE_MANIFEST:
+                return json.dumps({'version': 1, 'fixtures': {key: item}})
+            return original(path, *args, **kwargs)
+
+        with patch.object(type(runner.FIXTURE_MANIFEST), 'read_text', autospec=True, side_effect=replacement):
+            with self.assertRaisesRegex(ValueError, 'Duplicate fixture ID'):
+                runner.fixture_manifest(verify=False)
+
+    def test_sanctuary_missing_fixture_is_not_skipped(self):
+        original = type(runner.FIXTURE_MANIFEST).is_file
+
+        def is_file(path):
+            if path.name == 'sanctuary-full-s-20260921.png':
+                return False
+            return original(path)
+
+        with patch.object(type(runner.FIXTURE_MANIFEST), 'is_file', autospec=True, side_effect=is_file):
+            with self.assertRaisesRegex(FileNotFoundError, 'sanctuary-full-s-20260921'):
+                runner.fixture_manifest(verify=True)
+
+    def test_sanctuary_changed_fixture_is_rejected(self):
+        original = runner.sha256
+
+        def checksum(path):
+            return 'changed' if path.name == 'sanctuary-full-s-20260921.png' else original(path)
+
+        with patch.object(runner, 'sha256', side_effect=checksum):
+            with self.assertRaisesRegex(ValueError, 'checksum differs.*sanctuary-full-s-20260921'):
+                runner.fixture_manifest(verify=True)
+
+    def test_fixture_cannot_reference_another_business_directory(self):
+        original = type(runner.FIXTURE_MANIFEST).read_text
+
+        def replacement(path, *args, **kwargs):
+            raw = json.loads(original(path, *args, **kwargs))
+            if path == runner.SANCTUARY_FIXTURE_MANIFEST:
+                key = 'sanctuary-full-s-20260921'
+                raw['fixtures'][key]['path'] = 'tests/fixtures/dimensional_exploration/' + key + '.png'
+            return json.dumps(raw)
+
+        with patch.object(type(runner.FIXTURE_MANIFEST), 'read_text', autospec=True, side_effect=replacement):
+            with self.assertRaisesRegex(ValueError, 'Invalid fixture path'):
+                runner.fixture_manifest(verify=False)
+
     def test_unknown_case_returns_preparation_status(self):
         args = SimpleNamespace(list=True, suite="dimensional_exploration", case="not.registered")
         self.assertEqual(runner.run(args), 2)

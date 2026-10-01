@@ -4,11 +4,19 @@ import json
 import os
 from pathlib import Path
 from types import SimpleNamespace
-from unittest.mock import Mock, patch
+from unittest.mock import Mock
 from uuid import uuid4
 
 import numpy as np
 from PIL import Image
+
+from tests.support.offline import (
+    ControlledClock as ControlledClock,
+    finish_test as finish_test,
+    record_action as record_action,
+    record_frame,
+    set_active_test as set_active_test,
+)
 
 from module.config import server
 
@@ -22,44 +30,6 @@ from tasks.dimensional_exploration.vision import ExplorationVision  # noqa: E402
 ROOT = Path(__file__).resolve().parents[2]
 FIXTURES = ROOT / "tests" / "fixtures" / "dimensional_exploration"
 MANIFEST = FIXTURES / "manifest.json"
-_active_test = None
-_diagnostics = {}
-
-
-def set_active_test(test_id):
-    global _active_test
-    _active_test = test_id
-    _diagnostics[test_id] = {"frames_read": [], "actions": []}
-
-
-def finish_test(test_id):
-    global _active_test
-    _active_test = None
-    return _diagnostics.pop(test_id, {"frames_read": [], "actions": []})
-
-
-def record_action(action):
-    if _active_test is not None:
-        _diagnostics[_active_test]["actions"].append(str(action))
-    return action
-
-
-class ControlledClock:
-    """Advance the production Timer clock deterministically, without sleeping."""
-
-    def __init__(self, start=100.0):
-        self.now = start
-
-    def __enter__(self):
-        self.patch = patch('module.base.timer.time', side_effect=lambda: self.now)
-        self.patch.start()
-        return self
-
-    def __exit__(self, *args):
-        self.patch.stop()
-
-    def advance(self, seconds):
-        self.now += seconds
 
 
 class ClickLog(list):
@@ -78,8 +48,7 @@ def frame(suffix):
     manifest = load_manifest()
     if suffix not in manifest:
         raise ValueError(f"Unregistered exploration screenshot: {suffix}")
-    if _active_test is not None:
-        _diagnostics[_active_test]["frames_read"].append(suffix)
+    record_frame(suffix)
     path = ROOT / manifest[suffix]["path"]
     with Image.open(path) as source:
         if source.size != (1280, 720):

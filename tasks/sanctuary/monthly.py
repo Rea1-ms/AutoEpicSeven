@@ -9,7 +9,7 @@ from module.ocr.ocr import Digit, DigitCounter, Ocr
 from tasks.base.assets.assets_base_popup import POPUP_CANCEL
 from tasks.sanctuary.assets.assets_sanctuary import HEART_OF_EULERBIS, HEART_OF_EULERBIS_CHECK
 from tasks.sanctuary.assets.assets_sanctuary_heart_of_eulerbis import (
-    ALREADY_STORED,
+    ALREADY_STORED,  # noqa: F401 - retained for historical replay asset imports
     CUSTODY,
     DEPOSIT_BOX_NOT_FULL,
     LEVEL_UP,
@@ -23,7 +23,7 @@ from tasks.sanctuary.assets.assets_sanctuary_heart_of_eulerbis import (
     REWARDS_TIER_SS,
     STATE_MONTHLY_CLAIMED,
 )
-from tasks.sanctuary.monthly_deposit import match_deposit_tiers
+from tasks.sanctuary.monthly_deposit import deposit_tiers_increased, match_deposit_tiers
 from tasks.sanctuary.monthly_reminder import SanctuaryMonthlyReminderMixin
 
 
@@ -200,15 +200,23 @@ class SanctuaryMonthlyMixin(SanctuaryMonthlyReminderMixin):
 
         return None
 
-    def _wait_monthly_custody_settle(self, tier_ocr: OcrRewardTier) -> bool:
+    def _wait_monthly_custody_settle(
+            self,
+            tier_ocr: OcrRewardTier,
+            deposit_before: tuple[str | None, ...] | None = None,
+    ) -> bool:
         """
         Wait for a positive stored state after clicking custody.
 
-        Only ALREADY_STORED or the monthly claimed state confirms success.
+        A stable new deposit or the monthly claimed state confirms success.
+        The deposit baseline must come from before the click. ALREADY_STORED
+        is a brief duplicate-click notice, not a receipt for the first click.
         A missing tier marker can be an animation or an OCR failure; treating
         it as success would release the protected reward for another purify.
         """
         timeout = Timer(5, count=15).start()
+        deposit_candidate = None
+        deposit_stable_frames = 0
         while 1:
             self.device.screenshot()
 
@@ -218,17 +226,37 @@ class SanctuaryMonthlyMixin(SanctuaryMonthlyReminderMixin):
 
             if self._is_monthly_claimed():
                 return True
-            if self.appear(ALREADY_STORED, similarity=0.8):
-                logger.info("Monthly custody settled: already-stored indicator detected")
-                return True
+            if deposit_before is not None:
+                deposit_after = match_deposit_tiers(self.device.image)
+                if deposit_tiers_increased(deposit_before, deposit_after):
+                    if deposit_after == deposit_candidate:
+                        deposit_stable_frames += 1
+                    else:
+                        deposit_candidate = deposit_after
+                        deposit_stable_frames = 1
+                    # A single new label can be a gold flash or a transient
+                    # template match. Require the exact five-slot observation
+                    # on consecutive fresh screenshots before releasing purify.
+                    if deposit_stable_frames >= 2:
+                        logger.info(f"Monthly custody settled: deposit slots {deposit_before} -> {deposit_after}")
+                        return True
+                else:
+                    deposit_candidate = None
+                    deposit_stable_frames = 0
 
             if self.handle_touch_to_close(interval=1):
+                deposit_candidate = None
+                deposit_stable_frames = 0
                 timeout.reset()
                 continue
             if self.ui_additional():
+                deposit_candidate = None
+                deposit_stable_frames = 0
                 timeout.reset()
                 continue
             if self.handle_network_error():
+                deposit_candidate = None
+                deposit_stable_frames = 0
                 timeout.reset()
                 continue
 
@@ -363,6 +391,10 @@ class SanctuaryMonthlyMixin(SanctuaryMonthlyReminderMixin):
         times_ocr_candidate = None
         times_ocr_stable_frames = 0
         custody_pending = False
+        custody_before_tiers = None
+        custody_before_candidate = None
+        custody_before_stable_frames = 0
+        custody_confirmed_current = False
 
         while 1:
             self.device.screenshot()
@@ -377,6 +409,9 @@ class SanctuaryMonthlyMixin(SanctuaryMonthlyReminderMixin):
 
             if self.handle_popup_cancel(interval=2):
                 custody_pending = True
+                custody_confirmed_current = False
+                custody_before_candidate = None
+                custody_before_stable_frames = 0
                 deposit_missing_confirm.clear()
                 purify_missing_confirm.clear()
                 times_ocr_candidate = None
@@ -392,11 +427,15 @@ class SanctuaryMonthlyMixin(SanctuaryMonthlyReminderMixin):
             # the cancel asset is actually gone; the obscured box and buttons
             # are not actionable capacity or location observations.
             if custody_pending and self.appear(POPUP_CANCEL):
+                custody_before_candidate = None
+                custody_before_stable_frames = 0
                 deposit_missing_confirm.clear()
                 purify_missing_confirm.clear()
                 continue
 
             if self.handle_touch_to_close(interval=1):
+                custody_before_candidate = None
+                custody_before_stable_frames = 0
                 deposit_missing_confirm.clear()
                 purify_missing_confirm.clear()
                 times_ocr_candidate = None
@@ -405,6 +444,8 @@ class SanctuaryMonthlyMixin(SanctuaryMonthlyReminderMixin):
                 timeout.reset()
                 continue
             if self.ui_additional():
+                custody_before_candidate = None
+                custody_before_stable_frames = 0
                 deposit_missing_confirm.clear()
                 purify_missing_confirm.clear()
                 times_ocr_candidate = None
@@ -413,6 +454,8 @@ class SanctuaryMonthlyMixin(SanctuaryMonthlyReminderMixin):
                 timeout.reset()
                 continue
             if self.handle_network_error():
+                custody_before_candidate = None
+                custody_before_stable_frames = 0
                 deposit_missing_confirm.clear()
                 purify_missing_confirm.clear()
                 times_ocr_candidate = None
@@ -426,31 +469,70 @@ class SanctuaryMonthlyMixin(SanctuaryMonthlyReminderMixin):
                 return self.MONTHLY_STATUS_FULL
 
             if custody_pending:
-                if not self._monthly_deposit_box_ready(deposit_missing_confirm):
-                    continue
+                custody_settled = False
+                # A successful custody click may clear the current reward and
+                # disable its button without ever showing ALREADY_STORED. Keep
+                # the first pre-click baseline across failed/late confirmations
+                # and examine the receipt before requiring an enabled button.
+                # Replacing this baseline on retries would lose a late deposit.
+                if custody_before_tiers is not None and deposit_tiers_increased(
+                    custody_before_tiers, match_deposit_tiers(self.device.image)
+                ):
+                    custody_settled = self._wait_monthly_custody_settle(tier_ocr, custody_before_tiers)
 
-                if CUSTODY.match_color(self.device.image, threshold=10):
-                    if self.appear_then_click(CUSTODY, interval=2):
-                        custody_settled = self._wait_monthly_custody_settle(tier_ocr)
-                        if self._is_monthly_claimed():
-                            logger.info("Monthly reward claimed after smart custody")
-                            return self.MONTHLY_STATUS_CLAIMED
-                        if not custody_settled:
-                            logger.warning("Monthly smart custody not settled, keep refresh blocked")
+                if not custody_settled:
+                    if not self._monthly_deposit_box_ready(deposit_missing_confirm):
+                        custody_before_candidate = None
+                        custody_before_stable_frames = 0
+                        continue
+                    if not CUSTODY.match_color(self.device.image, threshold=10):
+                        custody_before_candidate = None
+                        custody_before_stable_frames = 0
+                        continue
+                    deposit_before_click = match_deposit_tiers(self.device.image)
+                    if custody_before_tiers is None:
+                        # Stabilize the baseline before clicking as well: a
+                        # flickering old label must not disappear for one frame
+                        # and then return as an apparent newly stored reward.
+                        if deposit_before_click == custody_before_candidate:
+                            custody_before_stable_frames += 1
+                        else:
+                            custody_before_candidate = deposit_before_click
+                            custody_before_stable_frames = 1
+                        if custody_before_stable_frames < 2:
                             continue
-                        logger.info("Monthly smart custody stored protected item")
-                        custody_pending = False
-                        deposit_missing_confirm.clear()
-                        purify_missing_confirm.clear()
-                        # Never reuse resource readings across custody. The next
-                        # action also requires a new, independent free-slot check.
-                        times_layout = None
-                        times_ocr_candidate = None
-                        times_ocr_stable_frames = 0
-                        purify_ocr_missing_confirm.reset()
-                        timeout.reset()
+                    if self.appear_then_click(CUSTODY, interval=2):
+                        if custody_before_tiers is None:
+                            custody_before_tiers = deposit_before_click
+                        custody_settled = self._wait_monthly_custody_settle(tier_ocr, custody_before_tiers)
+                    else:
                         continue
 
+                if self._is_monthly_claimed():
+                    logger.info("Monthly reward claimed after smart custody")
+                    return self.MONTHLY_STATUS_CLAIMED
+                if not custody_settled:
+                    logger.warning("Monthly smart custody not settled, keep refresh blocked")
+                    continue
+                logger.info("Monthly smart custody stored protected item")
+                custody_pending = False
+                # The current reward can remain visible, or disappear, after
+                # storage. Remember this confirmed transaction until an action
+                # creates another reward; otherwise low-level A protection
+                # would wait forever on the now-disabled custody button.
+                custody_confirmed_current = True
+                custody_before_tiers = None
+                custody_before_candidate = None
+                custody_before_stable_frames = 0
+                deposit_missing_confirm.clear()
+                purify_missing_confirm.clear()
+                # Never reuse resource readings across custody. The next
+                # action also requires a new, independent free-slot check.
+                times_layout = None
+                times_ocr_candidate = None
+                times_ocr_stable_frames = 0
+                purify_ocr_missing_confirm.reset()
+                timeout.reset()
                 continue
 
             read_current, _, read_total, read_layout = self._ocr_purify_times(
@@ -476,7 +558,7 @@ class SanctuaryMonthlyMixin(SanctuaryMonthlyReminderMixin):
             heart_level = self._ocr_heart_level(level_ocr)
             low_level = heart_level is not None and self._heart_level_max_tier(heart_level) == "A"
             current_tier = self._detect_current_reward_tier(tier_ocr) if low_level else None
-            already_stored = low_level and self.appear(ALREADY_STORED, similarity=0.8)
+            already_stored = low_level and custody_confirmed_current
             custody_enabled = low_level and CUSTODY.match_color(self.device.image, threshold=10)
             if heart_level is None or (low_level and current_tier is None and not already_stored):
                 times_ocr_candidate = None
@@ -535,6 +617,7 @@ class SanctuaryMonthlyMixin(SanctuaryMonthlyReminderMixin):
                 continue
 
             if self.appear_then_click(LEVEL_UP, interval=2):
+                custody_confirmed_current = False
                 self._wait_monthly_level_up_settle()
                 times_ocr_candidate = None
                 times_ocr_stable_frames = 0
@@ -559,6 +642,7 @@ class SanctuaryMonthlyMixin(SanctuaryMonthlyReminderMixin):
                     interval=self.MONTHLY_PURIFY_CLICK_INTERVAL_SECONDS,
             ):
                 self.device.click(PURIFY)
+                custody_confirmed_current = False
                 self.interval_reset(
                     PURIFY,
                     interval=self.MONTHLY_PURIFY_CLICK_INTERVAL_SECONDS,
@@ -595,7 +679,8 @@ class SanctuaryMonthlyMixin(SanctuaryMonthlyReminderMixin):
         heart_level = None
         target_tier = None
         level_up_check_enabled = True
-        already_stored_clear_confirm = 0
+        custody_before_candidate = None
+        custody_before_stable_frames = 0
         times_layout = None
         times_current = 0
         times_total = 0
@@ -698,38 +783,40 @@ class SanctuaryMonthlyMixin(SanctuaryMonthlyReminderMixin):
                     level_up_check_enabled = True
                 times_ocr_timer.clear()
                 timeout.reset()
-                already_stored_clear_confirm = 0
+                custody_before_candidate = None
+                custody_before_stable_frames = 0
                 continue
 
             current_tier = self._detect_current_reward_tier(tier_ocr)
             if self._tier_reached(current_tier, target_tier):
-                if self.appear(ALREADY_STORED, similarity=0.8):
-                    already_stored_clear_confirm = 0
-                    logger.info("Monthly already-stored indicator detected, wait before custody check")
-                    timeout.reset()
-                    continue
-
-                already_stored_clear_confirm += 1
-                if already_stored_clear_confirm < 2:
-                    # ALREADY_STORED is flickery; require a short stable-missing window.
-                    continue
-
                 if self.appear(CUSTODY, interval=1):
                     if CUSTODY.match_color(self.device.image, threshold=10):
+                        deposit_before_click = match_deposit_tiers(self.device.image)
+                        if deposit_before_click == custody_before_candidate:
+                            custody_before_stable_frames += 1
+                        else:
+                            custody_before_candidate = deposit_before_click
+                            custody_before_stable_frames = 1
+                        if custody_before_stable_frames < 2:
+                            continue
                         if self.appear_then_click(CUSTODY, interval=2):
-                            if not self._wait_monthly_custody_settle(tier_ocr):
+                            if not self._wait_monthly_custody_settle(tier_ocr, deposit_before_click):
                                 raise ScriptError("Monthly custody was not confirmed; purify remains blocked")
                             if self._is_monthly_claimed():
                                 logger.info("Monthly reward claimed after custody")
                                 return self.MONTHLY_STATUS_CLAIMED
                             deposit_missing_confirm.clear()
                             timeout.reset()
-                            already_stored_clear_confirm = 0
+                            custody_before_candidate = None
+                            custody_before_stable_frames = 0
                             continue
                     else:
+                        custody_before_candidate = None
+                        custody_before_stable_frames = 0
                         logger.info("Monthly custody unavailable (already stored), continue purify")
             else:
-                already_stored_clear_confirm = 0
+                custody_before_candidate = None
+                custody_before_stable_frames = 0
 
             # The current frame already located PURIFY with luma matching and
             # verified balance / cost. Reuse that offset; a colored reward flash

@@ -8,11 +8,12 @@ from uuid import uuid4
 from dev_tools import run_offline_tests as runner
 from tests.dimensional_exploration.test_dimensional_exploration import PolicyTests
 from tests.dimensional_exploration.test_dimensional_exploration_shop_new import ShopNewRegressions
+from tests.sanctuary.test_monthly_deposit import DepositScreenshotTests
 
 
-def check(case_id, cls, method_name, replacement, expected_text, expected_attachments):
+def check(case_id, cls, method_name, replacement, expected_text, expected_attachments, suite="dimensional_exploration"):
     destination = runner.ROOT / "screenshots" / "offline_test_results" / f"negative-{uuid4().hex}"
-    args = SimpleNamespace(suite="dimensional_exploration", case=case_id, list=False,
+    args = SimpleNamespace(suite=suite, case=case_id, list=False,
                            coverage=False, out=str(destination))
     with patch.object(cls, method_name, replacement):
         exit_code = runner.run(args)
@@ -50,6 +51,9 @@ def main():
           "test_core_boundary_uses_current_count", PolicyTests,
           "test_core_boundary_uses_current_count", forbidden_device,
           "Offline suite attempted to create a real device", 0)
+
+    check("tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_five_s",
+          DepositScreenshotTests, "test_five_s", wrong_expectation, "1 != 2", 1, suite="sanctuary")
 
 
 if __name__ == "__main__":

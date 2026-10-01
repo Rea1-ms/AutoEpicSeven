@@ -1,0 +1,121 @@
+{
+  "version": 1,
+  "fixtures": {
+    "sanctuary-full-s-20260921": {
+      "path": "tests/fixtures/sanctuary/deposit/sanctuary-full-s-20260921.png",
+      "sha256": "8ec4db0ad80ed4f32c6b9851e0ee316ff3d6f09344a1042a004accd783b7e0a4",
+      "server": "global_cn",
+      "scene": "full_s",
+      "source": "historical test/screenshots/sanctuary_monthly/full_s_20260921.png",
+      "privacy_redaction": [
+        [
+          880,
+          55,
+          1280,
+          121
+        ],
+        [
+          180,
+          100,
+          611,
+          166
+        ]
+      ],
+      "used_by": [
+        "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_a_again_after_animation_settled",
+        "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_blank_page_is_unknown",
+        "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_conflicting_labels_in_one_slot_are_unknown",
+        "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_each_missing_slot_keeps_capacity_unknown",
+        "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_five_s",
+        "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_four_s_one_a",
+        "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_four_s_one_b",
+        "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_left_reward_tier_is_not_part_of_the_deposit_count",
+        "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_mixed_known_tiers_in_all_positions",
+        "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_repeated_hits_in_one_slot_do_not_count_as_five",
+        "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_shared_assets_dispatch_for_cn",
+        "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_synthetic_compound_s_labels_are_not_single_s",
+        "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_visible_free_slot_allows_progress",
+        "tests.sanctuary.test_monthly_deposit.DepositWorkflowTests.test_box_becomes_full_after_confirmed_custody",
+        "tests.sanctuary.test_monthly_deposit.DepositWorkflowTests.test_claimed_precedes_full_box",
+        "tests.sanctuary.test_monthly_deposit.DepositWorkflowTests.test_full_box_does_not_require_counter_ocr",
+        "tests.sanctuary.test_monthly_deposit.DepositWorkflowTests.test_full_box_stops_both_modes_without_clicks",
+        "tests.sanctuary.test_monthly_deposit.DepositWorkflowTests.test_full_status_returns_to_sanctuary_and_schedules_next_week",
+        "tests.sanctuary.test_monthly_deposit.DepositWorkflowTests.test_full_status_still_uses_month_end_reminder_schedule"
+      ]
+    },
+    "sanctuary-full-b-20260921": {
+      "path": "tests/fixtures/sanctuary/deposit/sanctuary-full-b-20260921.png",
+      "sha256": "972f723962bf6b711621bc6eeea4e3023e956423314f95b875e894371e2a383b",
+      "server": "global_cn",
+      "scene": "full_b",
+      "source": "historical test/screenshots/sanctuary_monthly/full_b_20260921.png",
+      "privacy_redaction": [
+        [
+          880,
+          55,
+          1280,
+          121
+        ],
+        [
+          180,
+          100,
+          611,
+          166
+        ]
+      ],
+      "used_by": [
+        "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_four_s_one_b",
+        "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_mixed_known_tiers_in_all_positions"
+      ]
+    },
+    "sanctuary-full-a-20260921": {
+      "path": "tests/fixtures/sanctuary/deposit/sanctuary-full-a-20260921.png",
+      "sha256": "4ad0d722cd5938e5267591da828e580a688ff2a6a0723fc69a17c9c509282168",
+      "server": "global_cn",
+      "scene": "full_a",
+      "source": "historical test/screenshots/sanctuary_monthly/full_a_20260921.png",
+      "privacy_redaction": [
+        [
+          880,
+          55,
+          1280,
+          121
+        ],
+        [
+          180,
+          100,
+          611,
+          166
+        ]
+      ],
+      "used_by": [
+        "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_four_s_one_a",
+        "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_mixed_known_tiers_in_all_positions"
+      ]
+    },
+    "sanctuary-full-a-stable-20260921": {
+      "path": "tests/fixtures/sanctuary/deposit/sanctuary-full-a-stable-20260921.png",
+      "sha256": "9b7c13cfded19be8be11cc179c389c461a0eb1d1c10b77023b12ca6d54a6b1a8",
+      "server": "global_cn",
+      "scene": "full_a_stable",
+      "source": "historical test/screenshots/sanctuary_monthly/full_a_stable_20260921.png",
+      "privacy_redaction": [
+        [
+          880,
+          55,
+          1280,
+          121
+        ],
+        [
+          180,
+          100,
+          611,
+          166
+        ]
+      ],
+      "used_by": [
+        "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_a_again_after_animation_settled"
+      ]
+    }
+  }
+}
