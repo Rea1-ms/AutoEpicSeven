@@ -819,6 +819,18 @@
         "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_supplied_screenshots_have_expected_page_states",
         "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_event_choices_and_outcomes_use_real_screenshots"
       ]
+    },
+    "20261001-011604-278": {
+      "path": "tests/fixtures/dimensional_exploration/shop/MuMu-20261001-011604-278.png",
+      "sha256": "e3747c9f4c0305e8e2f95ce83790fb35820cc7996a81d40efff3e5b67203b8c6",
+      "server": "global_cn",
+      "scene": "shop",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_shop_new.ShopZeroBalanceRegressions.test_zero_fragment_balance_is_read_from_shop_screenshot",
+        "tests.dimensional_exploration.test_dimensional_exploration_shop_new.ShopZeroBalanceRegressions.test_resume_at_zero_balance_leaves_without_buying",
+        "tests.dimensional_exploration.test_dimensional_exploration_shop_new.ShopZeroBalanceRegressions.test_confirmed_purchase_waits_for_two_zero_balance_frames",
+        "tests.dimensional_exploration.test_dimensional_exploration_shop_new.ShopZeroBalanceRegressions.test_unreadable_fragment_region_is_not_treated_as_zero"
+      ]
     }
   }
 }

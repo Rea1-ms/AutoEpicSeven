@@ -5,9 +5,11 @@ import unittest
 from unittest.mock import Mock
 
 from tests.support.exploration import frame, record_action, task_for
-from tasks.dimensional_exploration.assets.assets_dimensional_exploration import SHOP_OFFER
+from tasks.dimensional_exploration.assets.assets_dimensional_exploration import (
+    FRAGMENT_ICON, OCR_FRAGMENT, SHOP_OFFER,
+)
 from tasks.dimensional_exploration.policy import Offer, choose_offer, parse_number
-from tasks.dimensional_exploration.vision import ExplorationVision, Resources
+from tasks.dimensional_exploration.vision import ExplorationVision, Resources, match_in
 
 
 class ShopNewRegressions(unittest.TestCase):
@@ -147,6 +149,69 @@ class ShopCoreRegressions(unittest.TestCase):
         self.assertIsNone(task._shop_candidate)
         self.assertIsNone(task._pending_offer)
         self.assertFalse(task._purchase_confirmed)
+
+
+class ShopZeroBalanceRegressions(unittest.TestCase):
+    def test_zero_fragment_balance_is_read_from_shop_screenshot(self):
+        vision = ExplorationVision(frame('20261001-011604-278'))
+        self.assertEqual(vision.state(), 'shop')
+        self.assertEqual(vision.resources(), Resources(43, 0, 3, 3))
+
+    def test_resume_at_zero_balance_leaves_without_buying(self):
+        task, vision, clicks = task_for('20261001-011604-278')
+        self.assertFalse(task.handle_shop(vision))
+        self.assertEqual(clicks, [])
+        self.assertTrue(task.handle_shop(vision))
+        self.assertEqual(clicks, ['ROOM_LEAVE'])
+        self.assertIsNone(task._pending_offer)
+        self.assertFalse(task._purchase_confirmed)
+
+    def test_confirmed_purchase_waits_for_two_zero_balance_frames(self):
+        task, vision, clicks = task_for('20261001-011604-278')
+        # The confirmed receipt is simulated; the supplied screenshot only
+        # proves its final zero balance, not the item's original purchase price.
+        offer = Offer(2, '空虚眼瞳', 121, new=True)
+        task._shop_offers = [offer, Offer(3, '已有战利品', 85)]
+        task._pending_offer = offer
+        task._purchase_balance = offer.price
+        task._purchase_confirmed = True
+        vision.offers = Mock(side_effect=AssertionError('Keep the confirmed shop inventory'))
+        delayed = SimpleNamespace(resources=lambda: Resources(43, offer.price, 3, 3))
+        for _ in range(2):
+            self.assertFalse(task.handle_shop(delayed))
+            self.assertEqual(clicks, [])
+            self.assertEqual(task._pending_offer, offer)
+            self.assertFalse(task._shop_offers[0].sold)
+        self.assertFalse(task.handle_shop(vision))
+        self.assertEqual(clicks, [])
+        self.assertTrue(task._purchase_confirmed)
+        self.assertFalse(task._shop_offers[0].sold)
+        task.device.click_record_clear.assert_not_called()
+        self.assertTrue(task.handle_shop(vision))
+        self.assertEqual(clicks, ['ROOM_LEAVE'])
+        self.assertTrue(task._shop_offers[0].sold)
+        self.assertIsNone(task._pending_offer)
+        self.assertFalse(task._purchase_confirmed)
+        task.device.click_record_clear.assert_called_once()
+        vision.offers.assert_not_called()
+
+    def test_unreadable_fragment_region_is_not_treated_as_zero(self):
+        for background in (0, 255):
+            with self.subTest(background=background):
+                task, vision, clicks = task_for('20261001-011604-278')
+                fragment = match_in(vision.image, FRAGMENT_ICON, FRAGMENT_ICON.search)
+                self.assertIsNotNone(fragment)
+                x1, y1, x2, y2 = (fragment[1][2], OCR_FRAGMENT.area[1],
+                                  OCR_FRAGMENT.area[2], OCR_FRAGMENT.area[3])
+                vision.image = vision.image.copy()
+                vision.image[y1:y2, x1:x2] = background
+                self.assertIsNotNone(match_in(vision.image, FRAGMENT_ICON, FRAGMENT_ICON.search))
+                self.assertIsNone(vision.resources())
+                self.assertFalse(task.handle_shop(vision))
+                self.assertEqual(clicks, [])
+        for text in ('', '。', '.', '?', 'unknown'):
+            with self.subTest(text=text):
+                self.assertIsNone(parse_number(text))
 
 
 if __name__ == '__main__':

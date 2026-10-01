@@ -99,6 +99,23 @@ def relative_area(region, anchor, observed):
     return area_limit(area_offset(region.area, offset), (0, 0, 1280, 720))
 
 
+class FragmentBalanceOcr(Ocr):
+    def pre_process(self, image):
+        # A lone zero inside the full balance field is read as punctuation by
+        # the Chinese model. Bound all neutral white glyphs together, keeping
+        # their original pixels and a small margin instead of guessing that
+        # punctuation means zero. Never select just one connected component:
+        # that would drop digits from multi-digit balances. Blank or unreadable
+        # fields must still fail the strict numeric parser, not confirm payment.
+        light = image.min(axis=2) > 155
+        neutral = image.max(axis=2).astype(int) - image.min(axis=2) < 65
+        points = cv2.findNonZero((light & neutral).astype(np.uint8))
+        if points is None:
+            return image
+        x, y, width, height = cv2.boundingRect(points)
+        return image[max(0, y - 2):y + height + 2, max(0, x - 2):x + width + 2]
+
+
 class ExplorationVision:
     STATES = (
         ("reward_leave", REWARD_LEAVE_CHECK),
@@ -162,7 +179,9 @@ class ExplorationVision:
         core_area = relative_area(OCR_CORE, CORE_ICON, core[1])
         cores = self.number((core_area[0], core_area[1], min(core_area[2], fragment[1][0]), core_area[3]))
         fragment_area = OCR_FRAGMENT.area
-        fragments = self.number((fragment[1][2], fragment_area[1], fragment_area[2], fragment_area[3]))
+        fragment_region = ClickButton(
+            (fragment[1][2], fragment_area[1], fragment_area[2], fragment_area[3]), name="OCR_FRAGMENT")
+        fragments = parse_number(FragmentBalanceOcr(fragment_region, lang="cn").ocr_single_line(self.image))
         if cores is None or fragments is None:
             return None
         return Resources(cores, fragments, *life)

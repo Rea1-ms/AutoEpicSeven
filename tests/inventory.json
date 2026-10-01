@@ -7723,7 +7723,7 @@
       "source": "tests/dimensional_exploration/test_dimensional_exploration_shop_new.py",
       "business": "次元探查",
       "status": "已纳入",
-      "reason": "2026-09-29 新增商店回归；历史用例仍在原迁移条目登记",
+      "reason": "2026-09-29 及 2026-10-01 新增商店回归；历史用例仍在原迁移条目登记",
       "cases": [
         {
           "id": "tests.dimensional_exploration.test_dimensional_exploration_shop_new.ShopCoreRegressions.test_core_icon_margin_does_not_block_shop_resources",
@@ -7777,6 +7777,50 @@
           ],
           "status": "已纳入",
           "reason": "商店核心识别、短暂误判与超过20核时未收录战利品优先"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_shop_new.ShopZeroBalanceRegressions.test_zero_fragment_balance_is_read_from_shop_screenshot",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-011604-278"
+          ],
+          "status": "已纳入",
+          "reason": "商店碎片归零识别、启动后离开、连续两帧付款确认及未知余额禁止操作"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_shop_new.ShopZeroBalanceRegressions.test_resume_at_zero_balance_leaves_without_buying",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-011604-278"
+          ],
+          "status": "已纳入",
+          "reason": "商店碎片归零识别、启动后离开、连续两帧付款确认及未知余额禁止操作"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_shop_new.ShopZeroBalanceRegressions.test_confirmed_purchase_waits_for_two_zero_balance_frames",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-011604-278"
+          ],
+          "status": "已纳入",
+          "reason": "商店碎片归零识别、启动后离开、连续两帧付款确认及未知余额禁止操作"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_shop_new.ShopZeroBalanceRegressions.test_unreadable_fragment_region_is_not_treated_as_zero",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-011604-278"
+          ],
+          "status": "已纳入",
+          "reason": "商店碎片归零识别、启动后离开、连续两帧付款确认及未知余额禁止操作"
         }
       ]
     },
