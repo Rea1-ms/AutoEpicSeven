@@ -7044,6 +7044,15 @@
           "fixtures": [],
           "status": "已纳入",
           "reason": "受控输入验证跨业务样本校验与诊断隔离"
+        },
+        {
+          "id": "tests.test_offline_runner.RunnerContractTests.test_listing_uses_fixture_server_metadata",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "模拟不同来源元数据验证清单标注，不能当作对应服务器的实机证据"
         }
       ],
       "file_category": null
@@ -8540,7 +8549,9 @@
             "sanctuary-full-s-20260921"
           ],
           "status": "已纳入",
-          "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+          "reason": "以国际服中文截图核对国服共用素材分派；仅兼容性检查，不代表国服实机验证",
+          "capture_server": "global_cn",
+          "validation_scope": "asset_dispatch_only"
         },
         {
           "id": "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_each_missing_slot_keeps_capacity_unknown",
@@ -8990,6 +9001,172 @@
           "fixtures": [],
           "status": "已纳入",
           "reason": "保留历史断言，使用当前工作树业务和模拟设备、时间及通知"
+        }
+      ]
+    },
+    {
+      "source": "tests/sanctuary/test_captured_sanctuary.py",
+      "business": "圣域实机截图回归",
+      "status": "已纳入",
+      "reason": "仅国际服中文月常及精灵之森页面；精灵之森不代表日常流程覆盖",
+      "cases": [
+        {
+          "id": "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_monthly_deposit_slots_in_captured_frames",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-160533-108",
+            "20261001-160538-174",
+            "20261001-160544-910",
+            "20261001-160549-774",
+            "20261001-160552-887",
+            "20261001-160555-309",
+            "20261001-160557-977",
+            "20261001-160606-837"
+          ],
+          "capture_server": "global_cn",
+          "status": "已纳入",
+          "reason": "国际服中文实机截图像素回归；不连接设备，不代表其他服务器实机验证"
+        },
+        {
+          "id": "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_captured_s_custody_adds_one_slot",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-160538-174",
+            "20261001-160549-774"
+          ],
+          "capture_server": "global_cn",
+          "status": "已纳入",
+          "reason": "国际服中文实机截图像素回归；不连接设备，不代表其他服务器实机验证"
+        },
+        {
+          "id": "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_captured_a_custody_adds_one_slot",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-160557-977",
+            "20261001-160606-837"
+          ],
+          "capture_server": "global_cn",
+          "status": "已纳入",
+          "reason": "国际服中文实机截图像素回归；不连接设备，不代表其他服务器实机验证"
+        },
+        {
+          "id": "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_refreshes_do_not_change_the_deposit_count",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-160552-887",
+            "20261001-160555-309",
+            "20261001-160557-977"
+          ],
+          "capture_server": "global_cn",
+          "status": "已纳入",
+          "reason": "国际服中文实机截图像素回归；不连接设备，不代表其他服务器实机验证"
+        },
+        {
+          "id": "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_custody_settle_accepts_captured_s_with_gray_button",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-160538-174",
+            "20261001-160549-774"
+          ],
+          "capture_server": "global_cn",
+          "status": "已纳入",
+          "reason": "重复真实截图模拟稳定观察，调用实际等级匹配；不声明完整实机动作流程"
+        },
+        {
+          "id": "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_custody_settle_accepts_captured_a_with_gray_button",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-160557-977",
+            "20261001-160606-837"
+          ],
+          "capture_server": "global_cn",
+          "status": "已纳入",
+          "reason": "重复真实截图模拟稳定观察，调用实际等级匹配；不声明完整实机动作流程"
+        },
+        {
+          "id": "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_unchanged_capture_cannot_confirm_custody",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-160538-174"
+          ],
+          "capture_server": "global_cn",
+          "status": "已纳入",
+          "reason": "重复真实截图模拟稳定观察，调用实际等级匹配；不声明完整实机动作流程"
+        },
+        {
+          "id": "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_monthly_controls_and_popup_in_captured_frames",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-160533-108",
+            "20261001-160538-174",
+            "20261001-160544-910",
+            "20261001-160549-774",
+            "20261001-160552-887",
+            "20261001-160555-309",
+            "20261001-160557-977",
+            "20261001-160606-837"
+          ],
+          "capture_server": "global_cn",
+          "status": "已纳入",
+          "reason": "国际服中文实机截图像素回归；不连接设备，不代表其他服务器实机验证"
+        },
+        {
+          "id": "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_resource_balance_ocr_in_captured_frames",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-160533-108",
+            "20261001-160538-174",
+            "20261001-160549-774",
+            "20261001-160552-887",
+            "20261001-160555-309",
+            "20261001-160557-977",
+            "20261001-160606-837"
+          ],
+          "capture_server": "global_cn",
+          "status": "已纳入",
+          "reason": "国际服中文实机截图像素回归；不连接设备，不代表其他服务器实机验证"
+        },
+        {
+          "id": "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_capture_loader_rejects_another_server",
+          "category": "资源基础检查",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-160538-174"
+          ],
+          "capture_server": "global_cn",
+          "status": "已纳入",
+          "reason": "真实截图按来源服务器读取，不能当作国服样本；不连接设备"
+        },
+        {
+          "id": "tests.sanctuary.test_captured_sanctuary.CapturedForestTests.test_forest_page_and_three_claimable_rewards",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260517-230524-881"
+          ],
+          "capture_server": "global_cn",
+          "status": "已纳入",
+          "reason": "国际服中文实机截图像素回归；不连接设备，不代表其他服务器实机验证"
         }
       ]
     }

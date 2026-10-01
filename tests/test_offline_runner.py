@@ -1,6 +1,8 @@
 """Small contract checks for preflight and deterministic replay."""
 
 import json
+import contextlib
+import io
 import unittest
 from types import SimpleNamespace
 from unittest.mock import patch
@@ -13,6 +15,22 @@ from tests.support import offline
 
 
 class RunnerContractTests(unittest.TestCase):
+    def test_listing_uses_fixture_server_metadata(self):
+        case_id = 'tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_shared_assets_dispatch_for_cn'
+        args = SimpleNamespace(list=True, suite='sanctuary', case=case_id)
+        case = SimpleNamespace(id=lambda: case_id)
+        # Synthetic metadata verifies formatting only; it creates no evidence
+        # that a cn/global-en game capture exists in the real fixture corpus.
+        for origin in ('global_cn', 'cn', 'global_en'):
+            with self.subTest(capture_origin=origin):
+                fixtures = {'sample': {'server': origin, 'used_by': [case_id]}}
+                output = io.StringIO()
+                with patch.object(runner, 'fixture_manifest', return_value=fixtures), \
+                        patch.object(runner, 'tests_for', return_value=[case]), \
+                        contextlib.redirect_stdout(output):
+                    self.assertEqual(runner.run(args), 0)
+                self.assertIn(f'[样本来源={origin}]', output.getvalue())
+
     def test_shared_diagnostics_preserve_original_actions_and_frames(self):
         action = (2, 'CUSTODY', (10, 20, 30, 40))
         # Restore the prior state under both the custom Result and ordinary

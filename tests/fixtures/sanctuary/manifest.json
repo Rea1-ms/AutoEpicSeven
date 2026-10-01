@@ -41,7 +41,8 @@
         "tests.sanctuary.test_monthly_deposit.DepositWorkflowTests.test_full_box_stops_both_modes_without_clicks",
         "tests.sanctuary.test_monthly_deposit.DepositWorkflowTests.test_full_status_returns_to_sanctuary_and_schedules_next_week",
         "tests.sanctuary.test_monthly_deposit.DepositWorkflowTests.test_full_status_still_uses_month_end_reminder_schedule"
-      ]
+      ],
+      "capture_type": "emulator_screenshot"
     },
     "sanctuary-full-b-20260921": {
       "path": "tests/fixtures/sanctuary/deposit/sanctuary-full-b-20260921.png",
@@ -66,7 +67,8 @@
       "used_by": [
         "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_four_s_one_b",
         "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_mixed_known_tiers_in_all_positions"
-      ]
+      ],
+      "capture_type": "emulator_screenshot"
     },
     "sanctuary-full-a-20260921": {
       "path": "tests/fixtures/sanctuary/deposit/sanctuary-full-a-20260921.png",
@@ -91,7 +93,8 @@
       "used_by": [
         "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_four_s_one_a",
         "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_mixed_known_tiers_in_all_positions"
-      ]
+      ],
+      "capture_type": "emulator_screenshot"
     },
     "sanctuary-full-a-stable-20260921": {
       "path": "tests/fixtures/sanctuary/deposit/sanctuary-full-a-stable-20260921.png",
@@ -115,6 +118,311 @@
       ],
       "used_by": [
         "tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_a_again_after_animation_settled"
+      ],
+      "capture_type": "emulator_screenshot"
+    },
+    "20261001-160533-108": {
+      "path": "tests/fixtures/sanctuary/global_cn/monthly_custody/MuMu-20261001-160533-108.png",
+      "sha256": "d2a35857204e2d3d632cdd726d0295d1d55950a4f2231a34381e5f0ec25058c1",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "月常：一格S，左侧奖励已清除，保管按钮灰",
+      "source": "MuMu-20261001-160533-108.png",
+      "source_sha256": "25e98b42b42df216fa616ac3828c42611fe8983389420e21e961e07ac086f336",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          180,
+          100,
+          611,
+          166
+        ],
+        [
+          880,
+          55,
+          1280,
+          121
+        ]
+      ],
+      "used_by": [
+        "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_monthly_controls_and_popup_in_captured_frames",
+        "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_monthly_deposit_slots_in_captured_frames",
+        "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_resource_balance_ocr_in_captured_frames"
+      ]
+    },
+    "20261001-160538-174": {
+      "path": "tests/fixtures/sanctuary/global_cn/monthly_custody/MuMu-20261001-160538-174.png",
+      "sha256": "91bd9e0086cc4f85031cfb13572f93092dc01a57d49ad81bc9883bdc99d3716c",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "月常：一格S，左侧S待保管",
+      "source": "MuMu-20261001-160538-174.png",
+      "source_sha256": "866959c77629a301026f089bca9dd1617c405e2ce573009989eb9d431f6caaec",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          180,
+          100,
+          611,
+          166
+        ],
+        [
+          880,
+          55,
+          1280,
+          121
+        ]
+      ],
+      "used_by": [
+        "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_capture_loader_rejects_another_server",
+        "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_captured_s_custody_adds_one_slot",
+        "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_custody_settle_accepts_captured_s_with_gray_button",
+        "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_monthly_controls_and_popup_in_captured_frames",
+        "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_monthly_deposit_slots_in_captured_frames",
+        "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_resource_balance_ocr_in_captured_frames",
+        "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_unchanged_capture_cannot_confirm_custody"
+      ]
+    },
+    "20261001-160544-910": {
+      "path": "tests/fixtures/sanctuary/global_cn/monthly_custody/MuMu-20261001-160544-910.png",
+      "sha256": "2145600014fbf1649da2ccb4e40f63832d7e1fcb571ed8e6303f09fcd5e6ad3d",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "月常：覆盖高品质奖励的净化确认弹窗",
+      "source": "MuMu-20261001-160544-910.png",
+      "source_sha256": "fd2d0f7dd6a52b9dbd1eab4f2adb24fadf3240e67f62760aa0d797de95e1c623",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          180,
+          100,
+          611,
+          166
+        ],
+        [
+          880,
+          55,
+          1280,
+          121
+        ]
+      ],
+      "used_by": [
+        "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_monthly_controls_and_popup_in_captured_frames",
+        "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_monthly_deposit_slots_in_captured_frames"
+      ]
+    },
+    "20261001-160549-774": {
+      "path": "tests/fixtures/sanctuary/global_cn/monthly_custody/MuMu-20261001-160549-774.png",
+      "sha256": "17dfab63e5b580470c4e93ccf99c31f38b605dae178e11f5bf192d7ad89b2341",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "月常：第二格S入库，左侧奖励已清除，保管按钮灰",
+      "source": "MuMu-20261001-160549-774.png",
+      "source_sha256": "e00000ecc49d389116d90f4f42845f6795c04414c4cb891443f36f7ae6e3358d",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          180,
+          100,
+          611,
+          166
+        ],
+        [
+          880,
+          55,
+          1280,
+          121
+        ]
+      ],
+      "used_by": [
+        "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_captured_s_custody_adds_one_slot",
+        "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_custody_settle_accepts_captured_s_with_gray_button",
+        "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_monthly_controls_and_popup_in_captured_frames",
+        "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_monthly_deposit_slots_in_captured_frames",
+        "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_resource_balance_ocr_in_captured_frames"
+      ]
+    },
+    "20261001-160552-887": {
+      "path": "tests/fixtures/sanctuary/global_cn/monthly_custody/MuMu-20261001-160552-887.png",
+      "sha256": "1ec96b8f05edca282eb7e27342d001732a3f28b49fc2b3cbb3cfc1f354ab832a",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "月常：两格S，左侧B刷新结果",
+      "source": "MuMu-20261001-160552-887.png",
+      "source_sha256": "b07419009a3da5c60db42e43cb35ad7fd9857984b30363996456852917e34b87",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          180,
+          100,
+          611,
+          166
+        ],
+        [
+          880,
+          55,
+          1280,
+          121
+        ]
+      ],
+      "used_by": [
+        "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_monthly_controls_and_popup_in_captured_frames",
+        "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_monthly_deposit_slots_in_captured_frames",
+        "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_refreshes_do_not_change_the_deposit_count",
+        "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_resource_balance_ocr_in_captured_frames"
+      ]
+    },
+    "20261001-160555-309": {
+      "path": "tests/fixtures/sanctuary/global_cn/monthly_custody/MuMu-20261001-160555-309.png",
+      "sha256": "63512a6b470167a806cc5b5edbce847c103d45e1ae51697a2e7ec1772ab9365d",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "月常：两格S，左侧A刷新结果一",
+      "source": "MuMu-20261001-160555-309.png",
+      "source_sha256": "023670fc251558e6828b3ba1b7cd154aeac92095c9a8ded58c9ea5ec7d449708",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          180,
+          100,
+          611,
+          166
+        ],
+        [
+          880,
+          55,
+          1280,
+          121
+        ]
+      ],
+      "used_by": [
+        "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_monthly_controls_and_popup_in_captured_frames",
+        "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_monthly_deposit_slots_in_captured_frames",
+        "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_refreshes_do_not_change_the_deposit_count",
+        "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_resource_balance_ocr_in_captured_frames"
+      ]
+    },
+    "20261001-160557-977": {
+      "path": "tests/fixtures/sanctuary/global_cn/monthly_custody/MuMu-20261001-160557-977.png",
+      "sha256": "7584c3a0523d18b251f4070ec9cee19ee3cc5bdfb438670d6e65018fc15729bb",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "月常：两格S，左侧A刷新结果二",
+      "source": "MuMu-20261001-160557-977.png",
+      "source_sha256": "4fa99b084317a922eb1c562b389bf37f2673b12df1bb614c6a9a2f39adf2d4b5",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          180,
+          100,
+          611,
+          166
+        ],
+        [
+          880,
+          55,
+          1280,
+          121
+        ]
+      ],
+      "used_by": [
+        "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_captured_a_custody_adds_one_slot",
+        "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_custody_settle_accepts_captured_a_with_gray_button",
+        "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_monthly_controls_and_popup_in_captured_frames",
+        "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_monthly_deposit_slots_in_captured_frames",
+        "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_refreshes_do_not_change_the_deposit_count",
+        "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_resource_balance_ocr_in_captured_frames"
+      ]
+    },
+    "20261001-160606-837": {
+      "path": "tests/fixtures/sanctuary/global_cn/monthly_custody/MuMu-20261001-160606-837.png",
+      "sha256": "b91b040fe915f8566f4a1bfa1353529983acbbf995501edb898d06bd33a5a6e9",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "月常：第三格A入库，左侧奖励已清除，保管按钮灰",
+      "source": "MuMu-20261001-160606-837.png",
+      "source_sha256": "427435cf319bc0c4cf3c0bb15e38a27fb752d98169c1031304e6c7aca9922a3b",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          180,
+          100,
+          611,
+          166
+        ],
+        [
+          880,
+          55,
+          1280,
+          121
+        ]
+      ],
+      "used_by": [
+        "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_captured_a_custody_adds_one_slot",
+        "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_custody_settle_accepts_captured_a_with_gray_button",
+        "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_monthly_controls_and_popup_in_captured_frames",
+        "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_monthly_deposit_slots_in_captured_frames",
+        "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_resource_balance_ocr_in_captured_frames"
+      ]
+    },
+    "20260517-230524-881": {
+      "path": "tests/fixtures/sanctuary/global_cn/forest/MuMu-20260517-230524-881.png",
+      "sha256": "8c84a7104cdb5d7dba42fd63b95cd2adb2fb38cf1ca39fdebfeaf0172581c4ae",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "精灵之森：三个奖励均可领取，仅验证页面和标记识别",
+      "source": "MuMu-20260517-230524-881.png",
+      "source_sha256": "9c5ba650d376261ec3fe3a205accaca4b9f2ced3f4a1939acd3bde4765ca1c7b",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.sanctuary.test_captured_sanctuary.CapturedForestTests.test_forest_page_and_three_claimable_rewards"
       ]
     }
   }

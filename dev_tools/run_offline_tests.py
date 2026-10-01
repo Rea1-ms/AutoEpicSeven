@@ -37,6 +37,7 @@ SANCTUARY_MODULES = (
     "tests.sanctuary.test_monthly",
     "tests.sanctuary.test_monthly_deposit",
     "tests.sanctuary.test_monthly_reminder",
+    "tests.sanctuary.test_captured_sanctuary",
 )
 UPSTREAM_MODULES = (
     "tests.upstream.test_device",
@@ -207,7 +208,9 @@ def run(args):
         categories = {case["id"]: case["category"] for item in inventory["files"] for case in item["cases"]}
         for case in cases:
             related = sorted(key for key, item in fixtures.items() if case.id() in item.get("used_by", []))
-            print(f"{case.id()}  [{categories.get(case.id(), '未分类')}] [global_cn]  screenshots={','.join(related) or '-'}")
+            capture_servers = sorted({fixtures[key]['server'] for key in related})
+            capture_label = ','.join(capture_servers) or '无截图'
+            print(f"{case.id()}  [{categories.get(case.id(), '未分类')}] [样本来源={capture_label}]  screenshots={','.join(related) or '-'}")
         print(f"列出 {len(cases)} 项；未执行测试")
         return 0
 
@@ -277,6 +280,7 @@ def run(args):
     for record in records:
         related = [(key, item) for key, item in fixtures.items() if record["id"] in item.get("used_by", [])]
         record["fixtures"] = [item["path"] for _, item in related]
+        record["fixture_servers"] = {key: item['server'] for key, item in related}
         if record["status"] in ("failed", "error") and related:
             failure_dir = destination / "failures" / re.sub(r"[^A-Za-z0-9_.-]", "_", record["id"])
             failure_dir.mkdir(parents=True)

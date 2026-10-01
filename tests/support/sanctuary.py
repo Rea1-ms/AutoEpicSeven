@@ -1,5 +1,6 @@
-"""Sanctuary-only fixtures and synthetic monthly frame replays."""
+"""Sanctuary fixtures with explicit capture servers and offline frame replays."""
 
+import json
 from types import SimpleNamespace
 from unittest.mock import patch
 
@@ -28,7 +29,50 @@ FIXTURE_IDS = {
 
 
 def screenshot(name):
-    return fixture_image(MANIFEST, FIXTURE_IDS[name])
+    return captured_screenshot(FIXTURE_IDS[name])
+
+
+def captured_screenshot(fixture_id, *, expected_server='global_cn'):
+    """Check the capture's source server, independent of active asset dispatch."""
+    item = json.loads(MANIFEST.read_text(encoding='utf-8'))['fixtures'][fixture_id]
+    if item['server'] != expected_server:
+        raise ValueError(f"Capture server mismatch: {fixture_id} is {item['server']}, expected {expected_server}")
+    if item.get('capture_type') != 'emulator_screenshot':
+        raise ValueError(f'Fixture is not a captured emulator screenshot: {fixture_id}')
+    return fixture_image(MANIFEST, fixture_id)
+
+
+class CapturedMonthlyReplay:
+    """Replay explicit captured observations without inferring unrecorded actions."""
+
+    def __init__(self, initial_id, fixture_ids, clock):
+        self.fixture_ids = iter(fixture_ids)
+        self.clock = clock
+        self.frames_read = 0
+        self.actions = []
+        self.task = Sanctuary.__new__(Sanctuary)
+        self.task.device = SimpleNamespace(
+            image=captured_screenshot(initial_id), screenshot=self.screenshot, click=self.click,
+        )
+        self.task.appear = self.appear
+        self.task.handle_touch_to_close = lambda **kwargs: False
+        self.task.ui_additional = lambda: False
+        self.task.handle_network_error = lambda: False
+
+    def screenshot(self):
+        try:
+            fixture_id = next(self.fixture_ids)
+        except StopIteration:
+            raise AssertionError('Custody did not finish within captured observations') from None
+        self.task.device.image = captured_screenshot(fixture_id)
+        self.frames_read += 1
+        self.clock.advance(1)
+
+    def appear(self, asset, interval=0, **kwargs):
+        return asset.match_template(self.task.device.image, **kwargs)
+
+    def click(self, asset):
+        self.actions.append(record_action(asset.name))
 
 
 # Preserve the historical replay's elapsed-time contract. Explicit frame
