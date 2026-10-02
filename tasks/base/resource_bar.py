@@ -323,6 +323,7 @@ class ResourceBarMixin:
         icons: dict | None = None,
         specs: dict[str, ResourceBarSpec] | None = None,
         segment_left_paddings: dict[str, int] | None = None,
+        segment_right_limits: dict[str, int] | None = None,
     ) -> dict[str, ResourceBarValue] | None:
         parsed: dict[str, ResourceBarValue] = {}
         raw_texts: list[str] = []
@@ -347,6 +348,11 @@ class ResourceBarMixin:
                 logger.attr(f"{layout_name}ResourceBarIconMatches", matched_icons)
                 logger.attr(f"{layout_name}ResourceBarIconSegments", raw_texts)
                 return None
+
+            if segment_right_limits and key in segment_right_limits:
+                area = (area[0], area[1], min(area[2], segment_right_limits[key]), area[3])
+                if area[2] <= area[0]:
+                    return None
 
             image = self.image_crop(area, copy=False)
             text = OcrResourceBar(
@@ -390,6 +396,7 @@ class ResourceBarMixin:
         specs: dict[str, ResourceBarSpec] | None = None,
         icon_similarity: float = 0.85,
         segment_left_paddings: dict[str, int] | None = None,
+        segment_right_limits: dict[str, int] | None = None,
     ) -> ResourceBarInspectResult:
         """
         Inspect a single already-captured frame of the resource bar.
@@ -418,6 +425,7 @@ class ResourceBarMixin:
             icons=icons,
             specs=specs,
             segment_left_paddings=segment_left_paddings,
+            segment_right_limits=segment_right_limits,
         )
 
         final = parsed_by_icon

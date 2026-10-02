@@ -1,0 +1,728 @@
+{
+  "version": 1,
+  "fixtures": {
+    "20261001-174909-267": {
+      "path": "tests/fixtures/secret_shop/global_cn/MuMu-20261001-174909-267.png",
+      "sha256": "f0c1e4397991ed124d5b12e2fe26646f63e2d3bda2533d28a0aaf61999e50c10",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "blacksmith_negative",
+      "source": "MuMu-20261001-174909-267.png",
+      "source_sha256": "0396b040c00ef6a14be573c28d1fda0d5b371bdb105a868b9ee9261556b76bd8",
+      "privacy_redaction": [
+        [
+          920,
+          60,
+          1280,
+          92
+        ],
+        [
+          0,
+          704,
+          220,
+          720
+        ]
+      ],
+      "expected_balance": [
+        196528384,
+        1370
+      ],
+      "used_by": [
+        "tests.secret_shop.test_captures.CapturedShopTests.test_page_and_confirmation_states",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_available_and_sold_targets_in_both_scroll_positions"
+      ]
+    },
+    "20261002-151247-016": {
+      "path": "tests/fixtures/secret_shop/global_cn/MuMu-20261002-151247-016.png",
+      "sha256": "b932328ee1fe8b14da48f43fe0f21f4bd02980ab586f1b9bc7190d0e53d1d5e6",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "covenant_top_before",
+      "source": "MuMu-20261002-151247-016.png",
+      "source_sha256": "f000fd149b1b8d18feba007f73a6be140962039a3cb33819508eed7ea2813abe",
+      "privacy_redaction": [
+        [
+          920,
+          60,
+          1280,
+          92
+        ],
+        [
+          0,
+          704,
+          220,
+          720
+        ]
+      ],
+      "expected_balance": [
+        196528384,
+        1370
+      ],
+      "used_by": [
+        "tests.secret_shop.test_captures.CapturedShopTests.test_page_and_confirmation_states",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_visible_resource_balances",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_available_and_sold_targets_in_both_scroll_positions",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_covenant_and_mystic_debits_match_the_displayed_price",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_captured_covenant_purchase_and_sold_filter",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_captured_purchase_retries_persistent_confirmation"
+      ]
+    },
+    "20261002-151251-082": {
+      "path": "tests/fixtures/secret_shop/global_cn/MuMu-20261002-151251-082.png",
+      "sha256": "5c19acef0a7da9c5b54da65261aa3485d848dea0fbb3b68044da7f29c1a76c41",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "covenant_top_confirm",
+      "source": "MuMu-20261002-151251-082.png",
+      "source_sha256": "53a16cbf01329caae64f81e91bcdff5d4c32a4f30d3df5a897167176fc9a9edd",
+      "privacy_redaction": [
+        [
+          920,
+          60,
+          1280,
+          92
+        ],
+        [
+          0,
+          704,
+          220,
+          720
+        ]
+      ],
+      "expected_balance": [
+        196528384,
+        1370
+      ],
+      "used_by": [
+        "tests.secret_shop.test_captures.CapturedShopTests.test_page_and_confirmation_states",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_captured_covenant_purchase_and_sold_filter",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_captured_purchase_retries_persistent_confirmation"
+      ]
+    },
+    "20261002-151254-745": {
+      "path": "tests/fixtures/secret_shop/global_cn/MuMu-20261002-151254-745.png",
+      "sha256": "895baf49124c8d7d149801bdbf38c0e2a87709e3a57f02b27f81c97523b6208b",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "covenant_top_reward",
+      "source": "MuMu-20261002-151254-745.png",
+      "source_sha256": "a37e6e4a22169a407e3f2deac89bce310d3092682ab9d8748bf21ea610556ce7",
+      "privacy_redaction": [
+        [
+          920,
+          60,
+          1280,
+          92
+        ],
+        [
+          0,
+          704,
+          220,
+          720
+        ]
+      ],
+      "expected_balance": [
+        196344384,
+        1370
+      ],
+      "used_by": [
+        "tests.secret_shop.test_captures.CapturedShopTests.test_page_and_confirmation_states",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_visible_resource_balances",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_available_and_sold_targets_in_both_scroll_positions"
+      ]
+    },
+    "20261002-151257-334": {
+      "path": "tests/fixtures/secret_shop/global_cn/MuMu-20261002-151257-334.png",
+      "sha256": "de549fdb9e5a8de62fbc5d9c8eea5a5bc90e374bbe0907985dcb0035609d2363",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "covenant_top_sold",
+      "source": "MuMu-20261002-151257-334.png",
+      "source_sha256": "79160fe32d5de6c74865ea5d52fa2247b168b7e7bcf3ec68095d75eb4b60e26a",
+      "privacy_redaction": [
+        [
+          920,
+          60,
+          1280,
+          92
+        ],
+        [
+          0,
+          704,
+          220,
+          720
+        ]
+      ],
+      "expected_balance": [
+        196344384,
+        1370
+      ],
+      "used_by": [
+        "tests.secret_shop.test_captures.CapturedShopTests.test_page_and_confirmation_states",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_visible_resource_balances",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_available_and_sold_targets_in_both_scroll_positions",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_covenant_and_mystic_debits_match_the_displayed_price",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_captured_covenant_purchase_and_sold_filter",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_captured_purchase_retries_persistent_confirmation"
+      ]
+    },
+    "20261002-151259-623": {
+      "path": "tests/fixtures/secret_shop/global_cn/MuMu-20261002-151259-623.png",
+      "sha256": "faf7190efbee34f625ae84c63041e703c4c4f8953f28f4ef5a00ea67713483fd",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "covenant_sold_bottom",
+      "source": "MuMu-20261002-151259-623.png",
+      "source_sha256": "ef92fc248e86c4f2532f6682148aa5578b32d4aaf43c86b63ab40a5a43254836",
+      "privacy_redaction": [
+        [
+          920,
+          60,
+          1280,
+          92
+        ],
+        [
+          0,
+          704,
+          220,
+          720
+        ]
+      ],
+      "expected_balance": [
+        196344384,
+        1370
+      ],
+      "used_by": [
+        "tests.secret_shop.test_captures.CapturedShopTests.test_page_and_confirmation_states",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_visible_resource_balances",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_available_and_sold_targets_in_both_scroll_positions",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_first_refresh_has_exactly_one_debit",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_captured_covenant_purchase_and_sold_filter",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_captured_purchase_retries_persistent_confirmation",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_captured_refresh_confirms_exact_debit",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_captured_refresh_retries_persistent_confirmation"
+      ]
+    },
+    "20261002-151302-626": {
+      "path": "tests/fixtures/secret_shop/global_cn/MuMu-20261002-151302-626.png",
+      "sha256": "7dbea7fef8919fce6ad0afef6529d4f7cf9f771a79fd1e83f9fd40c56794923e",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "refresh_first_confirm",
+      "source": "MuMu-20261002-151302-626.png",
+      "source_sha256": "e6d5e0bb33b7ba8abad3e9357c28c30c6942e4261ef5b53682be916192901246",
+      "privacy_redaction": [
+        [
+          920,
+          60,
+          1280,
+          92
+        ],
+        [
+          0,
+          704,
+          220,
+          720
+        ]
+      ],
+      "expected_balance": [
+        196344384,
+        1370
+      ],
+      "used_by": [
+        "tests.secret_shop.test_captures.CapturedShopTests.test_page_and_confirmation_states",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_captured_refresh_confirms_exact_debit",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_captured_refresh_retries_persistent_confirmation"
+      ]
+    },
+    "20261002-151308-133": {
+      "path": "tests/fixtures/secret_shop/global_cn/MuMu-20261002-151308-133.png",
+      "sha256": "c1a1ca418f2866fa4f582056dad244c9c56dc7a0a9983d0db070f73bfd360619",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "refresh_first_complete",
+      "source": "MuMu-20261002-151308-133.png",
+      "source_sha256": "449f309fb46ce311ccfb1cc2d01d4710f9463fca3a5a5b40df590425696a5637",
+      "privacy_redaction": [
+        [
+          920,
+          60,
+          1280,
+          92
+        ],
+        [
+          0,
+          704,
+          220,
+          720
+        ]
+      ],
+      "expected_balance": [
+        196344384,
+        1367
+      ],
+      "used_by": [
+        "tests.secret_shop.test_captures.CapturedShopTests.test_page_and_confirmation_states",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_visible_resource_balances",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_available_and_sold_targets_in_both_scroll_positions",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_first_refresh_has_exactly_one_debit",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_captured_refresh_confirms_exact_debit",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_captured_refresh_retries_persistent_confirmation"
+      ]
+    },
+    "20261002-151314-999": {
+      "path": "tests/fixtures/secret_shop/global_cn/MuMu-20261002-151314-999.png",
+      "sha256": "b6a8175b64e69732502fd0ba42621fd9e87f52c2160a43d6ff521f13ee9e65c4",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "mystic_top_before",
+      "source": "MuMu-20261002-151314-999.png",
+      "source_sha256": "4449c9ba2436f16bcb267fa5dda3a78421bfaa699ea772d4c403f94a29d4dc1e",
+      "privacy_redaction": [
+        [
+          920,
+          60,
+          1280,
+          92
+        ],
+        [
+          0,
+          704,
+          220,
+          720
+        ]
+      ],
+      "expected_balance": [
+        196344384,
+        1364
+      ],
+      "used_by": [
+        "tests.secret_shop.test_captures.CapturedShopTests.test_page_and_confirmation_states",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_visible_resource_balances",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_available_and_sold_targets_in_both_scroll_positions",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_covenant_and_mystic_debits_match_the_displayed_price",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_captured_mystic_purchase_and_sold_filter"
+      ]
+    },
+    "20261002-151318-854": {
+      "path": "tests/fixtures/secret_shop/global_cn/MuMu-20261002-151318-854.png",
+      "sha256": "70a80cdfffb815f4030ee7d86ea53d01a6a97f1fc09d75be6fe029d852caa2b3",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "mystic_top_confirm",
+      "source": "MuMu-20261002-151318-854.png",
+      "source_sha256": "2ba29ffd3d9e08c7d5ce3132382043f94c15ee4b4a9a69b0cd5606e9f04a2ebc",
+      "privacy_redaction": [
+        [
+          920,
+          60,
+          1280,
+          92
+        ],
+        [
+          0,
+          704,
+          220,
+          720
+        ]
+      ],
+      "expected_balance": [
+        196344384,
+        1364
+      ],
+      "used_by": [
+        "tests.secret_shop.test_captures.CapturedShopTests.test_page_and_confirmation_states",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_captured_mystic_purchase_and_sold_filter"
+      ]
+    },
+    "20261002-151322-511": {
+      "path": "tests/fixtures/secret_shop/global_cn/MuMu-20261002-151322-511.png",
+      "sha256": "b5ee0f2ba226d7535d71dd19310befcb8e5e94b5560f692e5e145dc78d12d908",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "mystic_top_reward",
+      "source": "MuMu-20261002-151322-511.png",
+      "source_sha256": "f95af7ff504a633c344014e992e7d1cfee71e519104f1532b3fb972d4708dcb8",
+      "privacy_redaction": [
+        [
+          920,
+          60,
+          1280,
+          92
+        ],
+        [
+          0,
+          704,
+          220,
+          720
+        ]
+      ],
+      "expected_balance": [
+        196064384,
+        1364
+      ],
+      "used_by": [
+        "tests.secret_shop.test_captures.CapturedShopTests.test_page_and_confirmation_states",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_visible_resource_balances",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_available_and_sold_targets_in_both_scroll_positions"
+      ]
+    },
+    "20261002-151325-876": {
+      "path": "tests/fixtures/secret_shop/global_cn/MuMu-20261002-151325-876.png",
+      "sha256": "a7d9b5699b1c96e87fca417561ced43eb8f398035569c64d4f180e94bbf4b333",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "mystic_top_sold",
+      "source": "MuMu-20261002-151325-876.png",
+      "source_sha256": "eb12810ea0d3dd125a4061b082aab6ee4e29252bfa50c4175e7e8d59b8b843b4",
+      "privacy_redaction": [
+        [
+          920,
+          60,
+          1280,
+          92
+        ],
+        [
+          0,
+          704,
+          220,
+          720
+        ]
+      ],
+      "expected_balance": [
+        196064384,
+        1364
+      ],
+      "used_by": [
+        "tests.secret_shop.test_captures.CapturedShopTests.test_page_and_confirmation_states",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_visible_resource_balances",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_available_and_sold_targets_in_both_scroll_positions",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_covenant_and_mystic_debits_match_the_displayed_price",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_captured_mystic_purchase_and_sold_filter"
+      ]
+    },
+    "20261002-151328-156": {
+      "path": "tests/fixtures/secret_shop/global_cn/MuMu-20261002-151328-156.png",
+      "sha256": "20b2c1617391ddfaf7b9e52cd2b2cb2078316ae27881fa7fd1d4574ea29cc2ea",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "mystic_sold_bottom",
+      "source": "MuMu-20261002-151328-156.png",
+      "source_sha256": "631a35f755e8fbbb130d150fce740ea1a1f00b0ac5d4dde6ed8d0c1e9abb01f1",
+      "privacy_redaction": [
+        [
+          920,
+          60,
+          1280,
+          92
+        ],
+        [
+          0,
+          704,
+          220,
+          720
+        ]
+      ],
+      "expected_balance": [
+        196064384,
+        1364
+      ],
+      "used_by": [
+        "tests.secret_shop.test_captures.CapturedShopTests.test_page_and_confirmation_states",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_visible_resource_balances",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_available_and_sold_targets_in_both_scroll_positions",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_captured_mystic_purchase_and_sold_filter"
+      ]
+    },
+    "20261002-151345-195": {
+      "path": "tests/fixtures/secret_shop/global_cn/MuMu-20261002-151345-195.png",
+      "sha256": "1a5dc03165692d7adff8281c05b59b164bed4e804f4cef53ca24a817f5b90f8e",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "covenant_bottom_before",
+      "source": "MuMu-20261002-151345-195.png",
+      "source_sha256": "02e4dce853c92dc4f609c075d00f612bf7e85d1d9a8a16ac014bc3a4a4567ebe",
+      "privacy_redaction": [
+        [
+          920,
+          60,
+          1280,
+          92
+        ],
+        [
+          0,
+          704,
+          220,
+          720
+        ]
+      ],
+      "expected_balance": [
+        196064384,
+        1352
+      ],
+      "used_by": [
+        "tests.secret_shop.test_captures.CapturedShopTests.test_page_and_confirmation_states",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_visible_resource_balances",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_available_and_sold_targets_in_both_scroll_positions",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_covenant_and_mystic_debits_match_the_displayed_price",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_captured_bottom_purchase"
+      ]
+    },
+    "20261002-151349-222": {
+      "path": "tests/fixtures/secret_shop/global_cn/MuMu-20261002-151349-222.png",
+      "sha256": "60c71d41b5e04ea4e7e956c98274521d234484ca61c2d0dbed2895e9f02d039e",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "covenant_bottom_confirm",
+      "source": "MuMu-20261002-151349-222.png",
+      "source_sha256": "97a3eb7447b49c8a3096a42c402b17759e7aa9046879aef8d33da96bf43e41d9",
+      "privacy_redaction": [
+        [
+          920,
+          60,
+          1280,
+          92
+        ],
+        [
+          0,
+          704,
+          220,
+          720
+        ]
+      ],
+      "expected_balance": [
+        196064384,
+        1352
+      ],
+      "used_by": [
+        "tests.secret_shop.test_captures.CapturedShopTests.test_page_and_confirmation_states",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_captured_bottom_purchase"
+      ]
+    },
+    "20261002-151351-715": {
+      "path": "tests/fixtures/secret_shop/global_cn/MuMu-20261002-151351-715.png",
+      "sha256": "d0f845776eea2e03584b27dee3b29b377e5e0feb843caa8e3fc2ffcbf09c2f33",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "covenant_bottom_reward",
+      "source": "MuMu-20261002-151351-715.png",
+      "source_sha256": "c0c09b3bfc2ecf3124f8a02341cd67a5dddfcf62dc4db0d6b7d2fb108788d1a3",
+      "privacy_redaction": [
+        [
+          920,
+          60,
+          1280,
+          92
+        ],
+        [
+          0,
+          704,
+          220,
+          720
+        ]
+      ],
+      "expected_balance": [
+        195880384,
+        1352
+      ],
+      "used_by": [
+        "tests.secret_shop.test_captures.CapturedShopTests.test_page_and_confirmation_states",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_visible_resource_balances",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_available_and_sold_targets_in_both_scroll_positions",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_covenant_and_mystic_debits_match_the_displayed_price",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_gaps_between_refresh_captures_do_not_prove_one_payment",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_captured_bottom_purchase"
+      ]
+    },
+    "20261002-151359-738": {
+      "path": "tests/fixtures/secret_shop/global_cn/MuMu-20261002-151359-738.png",
+      "sha256": "916d1e59a1f0af4ec7cc6123fcd171ecb0836690d4d21e9eb97fc1765775eb19",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "refresh_gap_confirm",
+      "source": "MuMu-20261002-151359-738.png",
+      "source_sha256": "9130f4850e33e1cd3c4588524784adee614bb668493bf511e94566966d8816a5",
+      "privacy_redaction": [
+        [
+          920,
+          60,
+          1280,
+          92
+        ],
+        [
+          0,
+          704,
+          220,
+          720
+        ]
+      ],
+      "expected_balance": [
+        195880384,
+        1352
+      ],
+      "used_by": [
+        "tests.secret_shop.test_captures.CapturedShopTests.test_page_and_confirmation_states"
+      ]
+    },
+    "20261002-151441-164": {
+      "path": "tests/fixtures/secret_shop/global_cn/MuMu-20261002-151441-164.png",
+      "sha256": "062bda1711b0f82ddfa41fc2b22c7f4c372bcac19a388a132842e980a30a08f6",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "refresh_gap_top",
+      "source": "MuMu-20261002-151441-164.png",
+      "source_sha256": "3654bc768aeefd28bdd160cc72c16229899daf29de8bfaef5ffc26584517905f",
+      "privacy_redaction": [
+        [
+          920,
+          60,
+          1280,
+          92
+        ],
+        [
+          0,
+          704,
+          220,
+          720
+        ]
+      ],
+      "expected_balance": [
+        195880384,
+        1343
+      ],
+      "used_by": [
+        "tests.secret_shop.test_captures.CapturedShopTests.test_page_and_confirmation_states",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_visible_resource_balances",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_available_and_sold_targets_in_both_scroll_positions",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_gaps_between_refresh_captures_do_not_prove_one_payment"
+      ]
+    },
+    "20261002-151444-518": {
+      "path": "tests/fixtures/secret_shop/global_cn/MuMu-20261002-151444-518.png",
+      "sha256": "7e3d6bf2ccb31f9ad1c7e6a90a01dd9d646d0544bc7e1195570d05e86c2110f6",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "refresh_later_confirm",
+      "source": "MuMu-20261002-151444-518.png",
+      "source_sha256": "d90276d75c490747771c61441946e9537cfbb36595d32d0cc543f47003aeb509",
+      "privacy_redaction": [
+        [
+          920,
+          60,
+          1280,
+          92
+        ],
+        [
+          0,
+          704,
+          220,
+          720
+        ]
+      ],
+      "expected_balance": [
+        195880384,
+        1343
+      ],
+      "used_by": [
+        "tests.secret_shop.test_captures.CapturedShopTests.test_page_and_confirmation_states"
+      ]
+    },
+    "20261002-151456-902": {
+      "path": "tests/fixtures/secret_shop/global_cn/MuMu-20261002-151456-902.png",
+      "sha256": "5427e17629d0e14ce907cc9a87f07797e1ad2ba5cad8817169d68c529f95293f",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "covenant_later_before",
+      "source": "MuMu-20261002-151456-902.png",
+      "source_sha256": "efbef711cdaaba5b4db28f21e9c8101a32c82bd6338afef909d4800d47efb167",
+      "privacy_redaction": [
+        [
+          920,
+          60,
+          1280,
+          92
+        ],
+        [
+          0,
+          704,
+          220,
+          720
+        ]
+      ],
+      "expected_balance": [
+        195880384,
+        1331
+      ],
+      "used_by": [
+        "tests.secret_shop.test_captures.CapturedShopTests.test_page_and_confirmation_states",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_visible_resource_balances",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_available_and_sold_targets_in_both_scroll_positions",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_covenant_and_mystic_debits_match_the_displayed_price",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_gaps_between_refresh_captures_do_not_prove_one_payment"
+      ]
+    },
+    "20261002-151500-113": {
+      "path": "tests/fixtures/secret_shop/global_cn/MuMu-20261002-151500-113.png",
+      "sha256": "27b6952f9a8f308b5af538948108cd35167c3a4e1fe0379313ddcf414dccbe2b",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "covenant_later_confirm",
+      "source": "MuMu-20261002-151500-113.png",
+      "source_sha256": "f9ba888a3bf4998e89349ab304c99e112aff53752ad7cdd8930a8692ab4ad9be",
+      "privacy_redaction": [
+        [
+          920,
+          60,
+          1280,
+          92
+        ],
+        [
+          0,
+          704,
+          220,
+          720
+        ]
+      ],
+      "expected_balance": [
+        195880384,
+        1331
+      ],
+      "used_by": [
+        "tests.secret_shop.test_captures.CapturedShopTests.test_page_and_confirmation_states"
+      ]
+    },
+    "20261002-151504-141": {
+      "path": "tests/fixtures/secret_shop/global_cn/MuMu-20261002-151504-141.png",
+      "sha256": "718ed59b353fffbfed1567fa7cdf44f8c36b3999983107d540bb5174c55c01d7",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "covenant_later_reward",
+      "source": "MuMu-20261002-151504-141.png",
+      "source_sha256": "f5b574a4c61404415de45f204e259b296176ad6d03055280968de06fa7f1d9f7",
+      "privacy_redaction": [
+        [
+          920,
+          60,
+          1280,
+          92
+        ],
+        [
+          0,
+          704,
+          220,
+          720
+        ]
+      ],
+      "expected_balance": [
+        195696384,
+        1331
+      ],
+      "used_by": [
+        "tests.secret_shop.test_captures.CapturedShopTests.test_page_and_confirmation_states",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_visible_resource_balances",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_available_and_sold_targets_in_both_scroll_positions",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_covenant_and_mystic_debits_match_the_displayed_price"
+      ]
+    }
+  }
+}

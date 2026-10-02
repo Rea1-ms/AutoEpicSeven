@@ -10,6 +10,7 @@ from tests.dimensional_exploration.test_dimensional_exploration import PolicyTes
 from tests.dimensional_exploration.test_dimensional_exploration_shop_new import ShopNewRegressions
 from tests.sanctuary.test_monthly_deposit import DepositScreenshotTests
 from tests.captured.test_fast_combat_counter import ScreenshotCounterTests
+from tests.secret_shop.test_captures import CapturedShopTests
 
 
 def check(case_id, cls, method_name, replacement, expected_text, expected_attachments, suite="dimensional_exploration"):
@@ -59,6 +60,10 @@ def main():
     check("tests.captured.test_fast_combat_counter.ScreenshotCounterTests.test_existing_fast_combat_screenshots",
           ScreenshotCounterTests, "test_existing_fast_combat_screenshots", wrong_expectation,
           "1 != 2", 2, suite="legacy_captures")
+
+    check("tests.secret_shop.test_captures.CapturedShopTests.test_first_refresh_has_exactly_one_debit",
+          CapturedShopTests, "test_first_refresh_has_exactly_one_debit", wrong_expectation,
+          "1 != 2", 2, suite="secret_shop")
 
 
 if __name__ == "__main__":

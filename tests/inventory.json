@@ -18554,6 +18554,506 @@
       "remaining_group": "手动工具",
       "cases": [],
       "source_sha256": "be3fb9a6f838dafa80ff8036c9f9dcb8b9a2525e1130908fa2ceaecb83d2a02f"
+    },
+    {
+      "source": "tests/secret_shop/test_payment.py",
+      "business": "秘密商店",
+      "status": "已纳入",
+      "reason": "2026-10-02 新增",
+      "cases": [
+        {
+          "id": "tests.secret_shop.test_payment.PaymentReplayTests.test_disappearing_confirmation_without_debit_never_counts_purchase",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
+        },
+        {
+          "id": "tests.secret_shop.test_payment.PaymentReplayTests.test_refresh_timeout_never_permits_second_payment",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
+        },
+        {
+          "id": "tests.secret_shop.test_payment.PaymentReplayTests.test_network_error_and_delayed_balance_buy_only_once",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
+        },
+        {
+          "id": "tests.secret_shop.test_payment.PaymentReplayTests.test_mystic_network_error_with_unchanged_frames_then_exact_debit",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
+        },
+        {
+          "id": "tests.secret_shop.test_payment.PaymentReplayTests.test_refresh_delayed_debit_is_counted_once_and_enforces_limit",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
+        },
+        {
+          "id": "tests.secret_shop.test_payment.PaymentReplayTests.test_debit_waits_for_list_recovery_before_next_action",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
+        },
+        {
+          "id": "tests.secret_shop.test_payment.PaymentReplayTests.test_one_frame_false_debit_cannot_count_purchase",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
+        },
+        {
+          "id": "tests.secret_shop.test_payment.PaymentReplayTests.test_unreadable_frame_resets_payment_evidence",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
+        },
+        {
+          "id": "tests.secret_shop.test_payment.PaymentReplayTests.test_wrong_debit_or_other_currency_change_stops_without_retry",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
+        },
+        {
+          "id": "tests.secret_shop.test_payment.PaymentReplayTests.test_multiple_refresh_debit_is_not_silently_counted_as_one",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
+        },
+        {
+          "id": "tests.secret_shop.test_payment.PaymentReplayTests.test_missing_pre_payment_balance_never_clicks",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
+        },
+        {
+          "id": "tests.secret_shop.test_payment.PaymentReplayTests.test_unstable_pre_payment_balance_must_be_observed_again",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
+        },
+        {
+          "id": "tests.secret_shop.test_payment.PaymentReplayTests.test_insufficient_gold_exits_before_purchase_or_refresh",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
+        },
+        {
+          "id": "tests.secret_shop.test_payment.PaymentReplayTests.test_only_expensive_item_enabled_requires_its_full_price",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
+        },
+        {
+          "id": "tests.secret_shop.test_payment.PaymentReplayTests.test_gold_exactly_equal_to_price_can_be_spent_to_zero",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
+        },
+        {
+          "id": "tests.secret_shop.test_payment.PaymentReplayTests.test_insufficient_skystones_stops_after_scanning",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
+        },
+        {
+          "id": "tests.secret_shop.test_payment.PaymentReplayTests.test_refresh_exact_balance_can_reach_zero",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
+        },
+        {
+          "id": "tests.secret_shop.test_payment.PaymentReplayTests.test_free_only_and_zero_refresh_limit_never_open_refresh",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
+        },
+        {
+          "id": "tests.secret_shop.test_payment.PaymentReplayTests.test_all_items_disabled_never_spends",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
+        },
+        {
+          "id": "tests.secret_shop.test_payment.PaymentReplayTests.test_dialog_without_baseline_is_never_confirmed",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
+        },
+        {
+          "id": "tests.secret_shop.test_payment.PaymentReplayTests.test_balance_change_without_confirmation_is_not_our_payment",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
+        },
+        {
+          "id": "tests.secret_shop.test_payment.PaymentReplayTests.test_confirmation_click_error_preserves_unknown_payment",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
+        },
+        {
+          "id": "tests.secret_shop.test_payment.PaymentReplayTests.test_screenshot_error_after_confirmation_reaches_restart_handler",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
+        },
+        {
+          "id": "tests.secret_shop.test_payment.PaymentReplayTests.test_missed_purchase_confirmation_retries_until_debit",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
+        },
+        {
+          "id": "tests.secret_shop.test_payment.PaymentReplayTests.test_missed_refresh_confirmation_retries_without_new_refresh",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
+        },
+        {
+          "id": "tests.secret_shop.test_payment.PaymentReplayTests.test_missed_entry_click_retries_current_visible_item",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
+        },
+        {
+          "id": "tests.secret_shop.test_payment.PaymentReplayTests.test_missed_refresh_entry_retries_until_confirmation_appears",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
+        },
+        {
+          "id": "tests.secret_shop.test_payment.PaymentReplayTests.test_entry_retry_requires_same_item_and_unchanged_balance",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
+        },
+        {
+          "id": "tests.secret_shop.test_payment.PaymentReplayTests.test_persistent_confirmation_retries_do_not_postpone_restart",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
+        },
+        {
+          "id": "tests.secret_shop.test_payment.PaymentReplayTests.test_framework_click_guard_still_restarts_after_confirmation",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
+        },
+        {
+          "id": "tests.secret_shop.test_payment.PaymentReplayTests.test_refreshed_round_allows_same_item_but_never_second_refresh",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
+        }
+      ]
+    },
+    {
+      "source": "tests/secret_shop/test_captures.py",
+      "business": "秘密商店",
+      "status": "已纳入",
+      "reason": "2026-10-02 新增",
+      "cases": [
+        {
+          "id": "tests.secret_shop.test_captures.CapturedShopTests.test_page_and_confirmation_states",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-174909-267",
+            "20261002-151247-016",
+            "20261002-151251-082",
+            "20261002-151254-745",
+            "20261002-151257-334",
+            "20261002-151259-623",
+            "20261002-151302-626",
+            "20261002-151308-133",
+            "20261002-151314-999",
+            "20261002-151318-854",
+            "20261002-151322-511",
+            "20261002-151325-876",
+            "20261002-151328-156",
+            "20261002-151345-195",
+            "20261002-151349-222",
+            "20261002-151351-715",
+            "20261002-151359-738",
+            "20261002-151441-164",
+            "20261002-151444-518",
+            "20261002-151456-902",
+            "20261002-151500-113",
+            "20261002-151504-141"
+          ],
+          "status": "已纳入",
+          "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
+        },
+        {
+          "id": "tests.secret_shop.test_captures.CapturedShopTests.test_visible_resource_balances",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261002-151247-016",
+            "20261002-151254-745",
+            "20261002-151257-334",
+            "20261002-151259-623",
+            "20261002-151308-133",
+            "20261002-151314-999",
+            "20261002-151322-511",
+            "20261002-151325-876",
+            "20261002-151328-156",
+            "20261002-151345-195",
+            "20261002-151351-715",
+            "20261002-151441-164",
+            "20261002-151456-902",
+            "20261002-151504-141"
+          ],
+          "status": "已纳入",
+          "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
+        },
+        {
+          "id": "tests.secret_shop.test_captures.CapturedShopTests.test_available_and_sold_targets_in_both_scroll_positions",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-174909-267",
+            "20261002-151247-016",
+            "20261002-151254-745",
+            "20261002-151257-334",
+            "20261002-151259-623",
+            "20261002-151308-133",
+            "20261002-151314-999",
+            "20261002-151322-511",
+            "20261002-151325-876",
+            "20261002-151328-156",
+            "20261002-151345-195",
+            "20261002-151351-715",
+            "20261002-151441-164",
+            "20261002-151456-902",
+            "20261002-151504-141"
+          ],
+          "status": "已纳入",
+          "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
+        },
+        {
+          "id": "tests.secret_shop.test_captures.CapturedShopTests.test_covenant_and_mystic_debits_match_the_displayed_price",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261002-151247-016",
+            "20261002-151257-334",
+            "20261002-151314-999",
+            "20261002-151325-876",
+            "20261002-151345-195",
+            "20261002-151351-715",
+            "20261002-151456-902",
+            "20261002-151504-141"
+          ],
+          "status": "已纳入",
+          "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
+        },
+        {
+          "id": "tests.secret_shop.test_captures.CapturedShopTests.test_first_refresh_has_exactly_one_debit",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261002-151259-623",
+            "20261002-151308-133"
+          ],
+          "status": "已纳入",
+          "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
+        },
+        {
+          "id": "tests.secret_shop.test_captures.CapturedShopTests.test_gaps_between_refresh_captures_do_not_prove_one_payment",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261002-151351-715",
+            "20261002-151441-164",
+            "20261002-151456-902"
+          ],
+          "status": "已纳入",
+          "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
+        },
+        {
+          "id": "tests.secret_shop.test_captures.CapturedShopTests.test_captured_covenant_purchase_and_sold_filter",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261002-151247-016",
+            "20261002-151251-082",
+            "20261002-151257-334",
+            "20261002-151259-623"
+          ],
+          "status": "已纳入",
+          "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
+        },
+        {
+          "id": "tests.secret_shop.test_captures.CapturedShopTests.test_captured_mystic_purchase_and_sold_filter",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261002-151314-999",
+            "20261002-151318-854",
+            "20261002-151325-876",
+            "20261002-151328-156"
+          ],
+          "status": "已纳入",
+          "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
+        },
+        {
+          "id": "tests.secret_shop.test_captures.CapturedShopTests.test_captured_bottom_purchase",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261002-151345-195",
+            "20261002-151349-222",
+            "20261002-151351-715"
+          ],
+          "status": "已纳入",
+          "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
+        },
+        {
+          "id": "tests.secret_shop.test_captures.CapturedShopTests.test_captured_purchase_retries_persistent_confirmation",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261002-151247-016",
+            "20261002-151251-082",
+            "20261002-151257-334",
+            "20261002-151259-623"
+          ],
+          "status": "已纳入",
+          "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
+        },
+        {
+          "id": "tests.secret_shop.test_captures.CapturedShopTests.test_captured_refresh_confirms_exact_debit",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261002-151259-623",
+            "20261002-151302-626",
+            "20261002-151308-133"
+          ],
+          "status": "已纳入",
+          "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
+        },
+        {
+          "id": "tests.secret_shop.test_captures.CapturedShopTests.test_captured_refresh_retries_persistent_confirmation",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261002-151259-623",
+            "20261002-151302-626",
+            "20261002-151308-133"
+          ],
+          "status": "已纳入",
+          "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
+        }
+      ]
     }
   ]
 }

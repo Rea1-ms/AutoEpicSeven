@@ -68,6 +68,7 @@ COMBAT_MODULES = (
     "tests.combat.test_episode",
 )
 STORE_MODULES = ()
+SECRET_SHOP_MODULES = ("tests.secret_shop.test_payment", "tests.secret_shop.test_captures")
 HISTORICAL_REPLAY_MODULES = (
     "tests.activity.test_cn_september_update",
     "tests.core.test_september_runtime_fixes",
@@ -117,7 +118,8 @@ HISTORICAL_MANUAL_MODULES = (
 SUITES = {
     "all": EXPLORATION_MODULES + SANCTUARY_MODULES + RUNNER_MODULES + UPSTREAM_MODULES
            + CORE_MODULES + ACTIVITY_MODULES + COMBAT_MODULES + STORE_MODULES
-           + HISTORICAL_REPLAY_MODULES + HISTORICAL_CAPTURE_MODULES + HISTORICAL_MANUAL_MODULES,
+           + HISTORICAL_REPLAY_MODULES + HISTORICAL_CAPTURE_MODULES + HISTORICAL_MANUAL_MODULES
+           + SECRET_SHOP_MODULES,
     "dimensional_exploration": EXPLORATION_MODULES,
     "sanctuary": SANCTUARY_MODULES,
     "runner": RUNNER_MODULES,
@@ -125,6 +127,7 @@ SUITES = {
     "core": CORE_MODULES,
     "activity": ACTIVITY_MODULES,
     "combat": COMBAT_MODULES,
+    "secret_shop": SECRET_SHOP_MODULES,
     "store": ("tests.captured.test_store_inheritance_charms", "tests.captured.test_store_inheritance_cooldown"),
     "legacy_rules": CORE_MODULES + ACTIVITY_MODULES + COMBAT_MODULES + STORE_MODULES
                     + ("tests.upstream.test_upstream_emulator_sync",),
@@ -137,6 +140,7 @@ SUITES = {
 FIXTURE_MANIFEST = ROOT / "tests" / "fixtures" / "dimensional_exploration" / "manifest.json"
 SANCTUARY_FIXTURE_MANIFEST = ROOT / "tests" / "fixtures" / "sanctuary" / "manifest.json"
 HISTORICAL_FIXTURE_MANIFEST = ROOT / "tests" / "fixtures" / "historical" / "manifest.json"
+SECRET_SHOP_FIXTURE_MANIFEST = ROOT / "tests" / "fixtures" / "secret_shop" / "manifest.json"
 
 
 def iter_cases(suite):
@@ -172,7 +176,8 @@ def fixture_manifest(verify):
     # Explicit manifests keep historical/manual screenshots outside the test
     # corpus. IDs share one report namespace, so collisions must fail before
     # tests run rather than silently replacing another business's evidence.
-    for manifest in (FIXTURE_MANIFEST, SANCTUARY_FIXTURE_MANIFEST, HISTORICAL_FIXTURE_MANIFEST):
+    for manifest in (FIXTURE_MANIFEST, SANCTUARY_FIXTURE_MANIFEST, HISTORICAL_FIXTURE_MANIFEST,
+                     SECRET_SHOP_FIXTURE_MANIFEST):
         raw = json.loads(manifest.read_text(encoding="utf-8"))
         entries = raw.get("fixtures")
         if raw.get("version") != 1 or not isinstance(entries, dict) or not entries:
