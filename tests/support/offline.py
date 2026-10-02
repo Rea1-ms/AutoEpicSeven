@@ -1,7 +1,9 @@
 """Business-independent clocks, action diagnostics, and registered screenshots."""
 
 import json
+from contextlib import contextmanager
 from pathlib import Path
+from uuid import uuid4
 from unittest.mock import patch
 
 import numpy as np
@@ -11,6 +13,22 @@ from PIL import Image
 ROOT = Path(__file__).resolve().parents[2]
 _active_test = None
 _diagnostics = {}
+
+
+@contextmanager
+def retained_directory(label):
+    """Keep test-only output under the ignored tree; never delete user files."""
+    path = ROOT / 'screenshots' / 'offline_test_results' / f'{label}-{uuid4().hex}'
+    path.mkdir(parents=True)
+    yield str(path)
+
+
+class OfflineAssertions:
+    """Assertions for non-test replay helpers extracted from historical classes."""
+
+    @staticmethod
+    def assertEqual(actual, expected):
+        assert actual == expected, f'{actual!r} != {expected!r}'
 
 
 def set_active_test(test_id):

@@ -9,6 +9,7 @@ from dev_tools import run_offline_tests as runner
 from tests.dimensional_exploration.test_dimensional_exploration import PolicyTests
 from tests.dimensional_exploration.test_dimensional_exploration_shop_new import ShopNewRegressions
 from tests.sanctuary.test_monthly_deposit import DepositScreenshotTests
+from tests.captured.test_fast_combat_counter import ScreenshotCounterTests
 
 
 def check(case_id, cls, method_name, replacement, expected_text, expected_attachments, suite="dimensional_exploration"):
@@ -54,6 +55,10 @@ def main():
 
     check("tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_five_s",
           DepositScreenshotTests, "test_five_s", wrong_expectation, "1 != 2", 1, suite="sanctuary")
+
+    check("tests.captured.test_fast_combat_counter.ScreenshotCounterTests.test_existing_fast_combat_screenshots",
+          ScreenshotCounterTests, "test_existing_fast_combat_screenshots", wrong_expectation,
+          "1 != 2", 2, suite="legacy_captures")
 
 
 if __name__ == "__main__":

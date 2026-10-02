@@ -12,9 +12,64 @@ from dev_tools import build_exploration_fixtures as fixture_importer
 from dev_tools import build_fixture_contact_sheets as contact_sheets
 from tests.support.exploration import ReplayDevice, artifact_path
 from tests.support import offline
+from tests.support import history_fixtures
 
 
 class RunnerContractTests(unittest.TestCase):
+    def test_historical_capture_aliases_share_one_input(self):
+        aliases = ('urgent_tasks/superior-fast-on.png', 'urgent_tasks/superior-prepare-large.png')
+        self.assertEqual(*(history_fixtures.fixture_path(alias) for alias in aliases))
+        fixtures = runner.fixture_manifest(verify=False)
+        self.assertIn('legacy-urgent-tasks-superior-fast-on', fixtures)
+
+    def test_historical_loader_rejects_unregistered_and_external_inputs(self):
+        for path in (history_fixtures.input_root() / 'unregistered.png',
+                     offline.ROOT / 'config/unknown.png'):
+            with self.subTest(path=path.name), self.assertRaises(ValueError):
+                history_fixtures.read_input(path)
+
+    def test_historical_alias_target_must_be_registered(self):
+        original = type(runner.FIXTURE_MANIFEST).read_text
+
+        def replacement(path, *args, **kwargs):
+            raw = json.loads(original(path, *args, **kwargs))
+            if path == runner.HISTORICAL_FIXTURE_MANIFEST:
+                raw['aliases']['unregistered.png'] = 'missing'
+            return json.dumps(raw)
+
+        with patch.object(type(runner.FIXTURE_MANIFEST), 'read_text', autospec=True, side_effect=replacement):
+            with self.assertRaisesRegex(ValueError, 'Invalid fixture alias'):
+                runner.fixture_manifest(verify=False)
+
+    def test_historical_capture_origin_must_match_declared_source(self):
+        original = type(history_fixtures.MANIFEST).read_text
+        alias = 'urgent_tasks/superior-detail.png'
+
+        def replacement(path, *args, **kwargs):
+            raw = json.loads(original(path, *args, **kwargs))
+            if path == history_fixtures.MANIFEST:
+                raw['fixtures'][raw['aliases'][alias]]['server'] = 'cn'
+            return json.dumps(raw)
+
+        with patch.object(type(history_fixtures.MANIFEST), 'read_text', autospec=True, side_effect=replacement):
+            with self.assertRaises(ValueError):
+                history_fixtures.read_input(history_fixtures.input_root() / alias)
+            with self.assertRaises(ValueError):
+                history_fixtures.fixture_path(alias)
+
+    def test_historical_missing_and_changed_capture_fail_preflight(self):
+        filename = 'legacy-urgent-tasks-superior-detail.png'
+        original_file = type(runner.FIXTURE_MANIFEST).is_file
+        original_hash = runner.sha256
+        with patch.object(type(runner.FIXTURE_MANIFEST), 'is_file', autospec=True,
+                          side_effect=lambda path: False if path.name == filename else original_file(path)):
+            with self.assertRaisesRegex(FileNotFoundError, filename):
+                runner.fixture_manifest(verify=True)
+        with patch.object(runner, 'sha256', side_effect=lambda path:
+                          'changed' if path.name == filename else original_hash(path)):
+            with self.assertRaisesRegex(ValueError, 'checksum differs.*'+filename):
+                runner.fixture_manifest(verify=True)
+
     def test_listing_uses_fixture_server_metadata(self):
         case_id = 'tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_shared_assets_dispatch_for_cn'
         args = SimpleNamespace(list=True, suite='sanctuary', case=case_id)

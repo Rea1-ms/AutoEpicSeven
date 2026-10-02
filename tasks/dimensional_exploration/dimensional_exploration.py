@@ -69,7 +69,7 @@ class DimensionalExploration(RecruitmentMixin, UI):
             profile = "".join(c if c.isalnum() or c in "_-" else "_" for c in name)[:48]
             root = Path("screenshots/dimensional_exploration_events") / f"config_{profile}_{text_key(name)[:8]}"
             self.sampler = EventSampler(root)
-            logger.info(f"事件自动采样目录：{root}")
+            logger.info(f"Exploration event sampling directory: {root}")
         self.load_recruitment()
         self.reset_hero_search()
 
@@ -125,7 +125,7 @@ class DimensionalExploration(RecruitmentMixin, UI):
             out: main after the requested number of rewarded settlements
         """
         if not server.is_oversea_server(self.config.Emulator_PackageName) or server.lang != "global_cn":
-            logger.info("次元探查目前只支持国际服中文界面。")
+            logger.info("Dimensional exploration currently supports the global Chinese client only.")
             return
         self.target = int(self.config.DimensionalExploration_RunCount)
         if not 1 <= self.target <= 999:
@@ -143,7 +143,7 @@ class DimensionalExploration(RecruitmentMixin, UI):
         self.explore()
         self.ui_goto_main()
         self.save_progress(finished=True)
-        logger.info(f"次元探查完成：{self.progress.completed}/{self.target}轮，任务已停止。")
+        logger.info(f"Dimensional exploration completed: {self.progress.completed}/{self.target} runs; task stopped.")
 
     def explore(self, skip_first_screenshot=True):
         """Keep subpages in this loop so every action is confirmed by a new frame.
@@ -396,7 +396,7 @@ class DimensionalExploration(RecruitmentMixin, UI):
         if not self.action_ready():
             return False
         logger.attr("ExplorationEvent", f"{decision.event.name}: {selected.text}")
-        logger.attr("ExplorationEventReason", "首次尝试专属奖励" if decision.first_collectible else "按事件表条件与优先级选择")
+        logger.attr("ExplorationEventReason", "First attempt at the exclusive reward" if decision.first_collectible else "Event table conditions and priority")
         logger.attr("ExplorationEventCost", vars(decision.branch.cost))
         if self.sampler is not None:
             self.sampler.before(vision.image, story, observed, balances, selected, "catalog", decision.branch.key)
@@ -617,5 +617,5 @@ class DimensionalExploration(RecruitmentMixin, UI):
             return False
         if self.progress.settle(rewarded=True):
             self.save_progress()
-            logger.info(f"探查结算：{score}分；已完成{self.progress.completed}/{self.target}轮。")
+            logger.info(f"Exploration settlement: score={score}, completed={self.progress.completed}/{self.target} runs.")
         return self.click_action(SETTLEMENT_CLOSE)

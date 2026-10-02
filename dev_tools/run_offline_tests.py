@@ -43,16 +43,100 @@ UPSTREAM_MODULES = (
     "tests.upstream.test_device",
     "tests.upstream.test_deploy",
     "tests.upstream.test_vision",
+    "tests.upstream.test_upstream_emulator_sync",
+)
+CORE_MODULES = (
+    "tests.core.test_data_update",
+    "tests.core.test_page_route",
+    "tests.core.test_community_aio",
+    "tests.core.test_mission_reward_callbacks",
+    "tests.core.test_mail",
+    "tests.core.test_login_domain_popup",
+    "tests.game_info.test_game_info",
+    "tests.game_info.test_game_info_seasons",
+)
+ACTIVITY_MODULES = (
+    "tests.activity.test_reward_scheduling",
+    "tests.activity.test_special_activity_config",
+    "tests.activity.test_activity_task_split",
+    "tests.activity.test_activity_batch",
+    "tests.activity.test_free_gacha_20",
+)
+COMBAT_MODULES = (
+    "tests.combat.test_combat_entry_search",
+    "tests.combat.test_repeat_running_detail",
+    "tests.combat.test_episode",
+)
+STORE_MODULES = ()
+HISTORICAL_REPLAY_MODULES = (
+    "tests.activity.test_cn_september_update",
+    "tests.core.test_september_runtime_fixes",
+    "tests.combat.test_repeat_settlement_return",
+    "tests.combat.test_repeat_progress",
+    "tests.combat.test_fast_combat_counter",
+    "tests.combat.test_urgent_tasks_first_clear",
+    "tests.combat.test_urgent_tasks_hint",
+    "tests.activity.test_e7wc_battle_gate",
+    "tests.activity.test_koharu_raffle",
+    "tests.activity.test_common_activity",
+    "tests.activity.test_huche_shop",
+    "tests.activity.test_huche_discount_batch",
+    "tests.activity.test_huche_drag_recovery",
+    "tests.activity.test_huche_overlap_names",
+    "tests.combat.test_rune_balance",
+    "tests.core.test_main_navigation",
+    "tests.gacha.test_gacha_result",
+)
+HISTORICAL_CAPTURE_MODULES = (
+    "tests.captured.test_e7wc_battle_gate",
+    "tests.captured.test_koharu_raffle",
+    "tests.captured.test_huche_shop",
+    "tests.captured.test_huche_discount_batch",
+    "tests.captured.test_huche_drag_recovery",
+    "tests.captured.test_common_activity",
+    "tests.captured.test_fast_combat_counter",
+    "tests.captured.test_urgent_tasks_first_clear",
+    "tests.captured.test_urgent_tasks_hint",
+    "tests.captured.test_main_navigation",
+    "tests.captured.test_knights_crest_ocr",
+    "tests.captured.test_store_inheritance_charms",
+    "tests.captured.test_store_inheritance_cooldown",
+    "tests.captured.test_activity_selection",
+    "tests.captured.test_asset_crop",
+    "tests.captured.test_urgent_tasks",
+    "tests.captured.test_navigation_recognition",
+    "tests.captured.test_repeat_settlement_return",
+)
+HISTORICAL_MANUAL_MODULES = (
+    "tests.combat.test_fast_combat_stamina",
+    "tests.combat.test_burnout",
+    "tests.combat.test_background_repeat_wait",
+    "tests.core.test_knights_team_battle_status_legacy",
+    "tests.combat.test_repeat_combat_v2",
 )
 SUITES = {
-    "all": EXPLORATION_MODULES + SANCTUARY_MODULES + RUNNER_MODULES + UPSTREAM_MODULES,
+    "all": EXPLORATION_MODULES + SANCTUARY_MODULES + RUNNER_MODULES + UPSTREAM_MODULES
+           + CORE_MODULES + ACTIVITY_MODULES + COMBAT_MODULES + STORE_MODULES
+           + HISTORICAL_REPLAY_MODULES + HISTORICAL_CAPTURE_MODULES + HISTORICAL_MANUAL_MODULES,
     "dimensional_exploration": EXPLORATION_MODULES,
     "sanctuary": SANCTUARY_MODULES,
     "runner": RUNNER_MODULES,
     "upstream": UPSTREAM_MODULES,
+    "core": CORE_MODULES,
+    "activity": ACTIVITY_MODULES,
+    "combat": COMBAT_MODULES,
+    "store": ("tests.captured.test_store_inheritance_charms", "tests.captured.test_store_inheritance_cooldown"),
+    "legacy_rules": CORE_MODULES + ACTIVITY_MODULES + COMBAT_MODULES + STORE_MODULES
+                    + ("tests.upstream.test_upstream_emulator_sync",),
+    "legacy_replay": HISTORICAL_REPLAY_MODULES,
+    "legacy_captures": HISTORICAL_CAPTURE_MODULES,
+    "legacy_manual": HISTORICAL_MANUAL_MODULES,
+    "legacy_tail": ("tests.captured.test_urgent_tasks", "tests.captured.test_navigation_recognition",
+                    "tests.captured.test_repeat_settlement_return"),
 }
 FIXTURE_MANIFEST = ROOT / "tests" / "fixtures" / "dimensional_exploration" / "manifest.json"
 SANCTUARY_FIXTURE_MANIFEST = ROOT / "tests" / "fixtures" / "sanctuary" / "manifest.json"
+HISTORICAL_FIXTURE_MANIFEST = ROOT / "tests" / "fixtures" / "historical" / "manifest.json"
 
 
 def iter_cases(suite):
@@ -88,11 +172,19 @@ def fixture_manifest(verify):
     # Explicit manifests keep historical/manual screenshots outside the test
     # corpus. IDs share one report namespace, so collisions must fail before
     # tests run rather than silently replacing another business's evidence.
-    for manifest in (FIXTURE_MANIFEST, SANCTUARY_FIXTURE_MANIFEST):
+    for manifest in (FIXTURE_MANIFEST, SANCTUARY_FIXTURE_MANIFEST, HISTORICAL_FIXTURE_MANIFEST):
         raw = json.loads(manifest.read_text(encoding="utf-8"))
         entries = raw.get("fixtures")
         if raw.get("version") != 1 or not isinstance(entries, dict) or not entries:
             raise ValueError("Fixture manifest is empty or has an unsupported version")
+        aliases = raw.get("aliases", {})
+        if not isinstance(aliases, dict):
+            raise ValueError("Invalid fixture aliases")
+        for alias, target in aliases.items():
+            relative_alias = Path(alias)
+            if (relative_alias.is_absolute() or '..' in relative_alias.parts
+                    or target not in entries):
+                raise ValueError(f"Invalid fixture alias: {alias}")
         for key, item in entries.items():
             if key in fixtures:
                 raise ValueError(f"Duplicate fixture ID: {key}")
