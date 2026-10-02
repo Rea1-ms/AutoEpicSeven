@@ -19054,6 +19054,320 @@
           "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
         }
       ]
+    },
+    {
+      "source": "tests/core/test_missed_clicks.py",
+      "business": "跨任务交互恢复",
+      "status": "已纳入",
+      "reason": "2026-10-02 假点击回归补充",
+      "cases": [
+        {
+          "id": "tests.core.test_missed_clicks.GachaMissedClickTests.test_start_click_retries_before_result_and_does_not_start_again_after_return",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "重复观察与假点击回归；使用受控时间和模拟画面，点击不改变输入"
+        },
+        {
+          "id": "tests.core.test_missed_clicks.GachaMissedClickTests.test_start_never_takes_effect_reaches_framework_restart",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "重复观察与假点击回归；使用受控时间和模拟画面，点击不改变输入"
+        },
+        {
+          "id": "tests.core.test_missed_clicks.GachaMissedClickTests.test_result_controls_retry_on_fresh_frames_and_save_once",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "重复观察与假点击回归；使用受控时间和模拟画面，点击不改变输入"
+        },
+        {
+          "id": "tests.core.test_missed_clicks.GachaMissedClickTests.test_continue_click_retries_without_duplicate_result_or_extra_summon",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "重复观察与假点击回归；使用受控时间和模拟画面，点击不改变输入"
+        },
+        {
+          "id": "tests.core.test_missed_clicks.GachaMissedClickTests.test_result_never_closes_reaches_real_click_guard_and_restart",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "重复观察与假点击回归；使用受控时间和模拟画面，点击不改变输入"
+        },
+        {
+          "id": "tests.core.test_missed_clicks.StoreMissedClickTests.test_item_and_confirm_and_reward_close_all_retry_without_extra_purchase",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "重复观察与假点击回归；使用受控时间和模拟画面，点击不改变输入"
+        },
+        {
+          "id": "tests.core.test_missed_clicks.StoreMissedClickTests.test_multi_quantity_retry_requires_changed_counter_before_confirm",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "重复观察与假点击回归；使用受控时间和模拟画面，点击不改变输入"
+        },
+        {
+          "id": "tests.core.test_missed_clicks.StoreMissedClickTests.test_cancel_retries_when_period_target_already_reached",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "重复观察与假点击回归；使用受控时间和模拟画面，点击不改变输入"
+        },
+        {
+          "id": "tests.core.test_missed_clicks.StoreMissedClickTests.test_persistent_item_or_confirmation_cannot_report_success",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "重复观察与假点击回归；使用受控时间和模拟画面，点击不改变输入"
+        },
+        {
+          "id": "tests.core.test_missed_clicks.StoreMissedClickTests.test_persistent_cancel_reaches_recovery_without_confirm",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "重复观察与假点击回归；使用受控时间和模拟画面，点击不改变输入"
+        },
+        {
+          "id": "tests.core.test_missed_clicks.MailMissedClickTests.test_receive_click_retries_when_mail_count_is_unchanged",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "重复观察与假点击回归；使用受控时间和模拟画面，点击不改变输入"
+        },
+        {
+          "id": "tests.core.test_missed_clicks.MailMissedClickTests.test_mail_confirmation_stays_visible_until_second_click",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "重复观察与假点击回归；使用受控时间和模拟画面，点击不改变输入"
+        },
+        {
+          "id": "tests.core.test_missed_clicks.MailMissedClickTests.test_receive_never_takes_effect_reaches_restart",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "重复观察与假点击回归；使用受控时间和模拟画面，点击不改变输入"
+        },
+        {
+          "id": "tests.core.test_missed_clicks.MailMissedClickTests.test_persistent_confirmation_reaches_restart",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "重复观察与假点击回归；使用受控时间和模拟画面，点击不改变输入"
+        },
+        {
+          "id": "tests.core.test_missed_clicks.ActivityMissedClickTests.test_free_reward_claim_and_close_retry_then_schedule_once",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "重复观察与假点击回归；使用受控时间和模拟画面，点击不改变输入"
+        },
+        {
+          "id": "tests.core.test_missed_clicks.ActivityMissedClickTests.test_battle_gate_claim_and_close_retry_before_recording_receipt",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "重复观察与假点击回归；使用受控时间和模拟画面，点击不改变输入"
+        },
+        {
+          "id": "tests.core.test_missed_clicks.ActivityMissedClickTests.test_raffle_claim_and_close_retry_before_done",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "重复观察与假点击回归；使用受控时间和模拟画面，点击不改变输入"
+        },
+        {
+          "id": "tests.core.test_missed_clicks.ActivityMissedClickTests.test_persistent_activity_clicks_have_bounded_failure_without_daily_record",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "重复观察与假点击回归；使用受控时间和模拟画面，点击不改变输入"
+        },
+        {
+          "id": "tests.core.test_missed_clicks.SanctuaryMissedClickTests.test_monthly_entry_retries_until_positive_destination",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "重复观察与假点击回归；使用受控时间和模拟画面，点击不改变输入"
+        },
+        {
+          "id": "tests.core.test_missed_clicks.SanctuaryMissedClickTests.test_monthly_entry_never_opens_returns_failure",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "重复观察与假点击回归；使用受控时间和模拟画面，点击不改变输入"
+        },
+        {
+          "id": "tests.core.test_missed_clicks.SanctuaryMissedClickTests.test_level_up_popup_close_retries_until_screen_changes",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "重复观察与假点击回归；使用受控时间和模拟画面，点击不改变输入"
+        },
+        {
+          "id": "tests.core.test_missed_clicks.SanctuaryMissedClickTests.test_unknown_frame_after_level_up_click_is_not_settlement",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "重复观察与假点击回归；使用受控时间和模拟画面，点击不改变输入"
+        },
+        {
+          "id": "tests.core.test_missed_clicks.HucheMissedClickTests.test_offer_quantity_and_confirm_retry_then_wait_for_stock",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "重复观察与假点击回归；使用受控时间和模拟画面，点击不改变输入"
+        },
+        {
+          "id": "tests.core.test_missed_clicks.HucheMissedClickTests.test_wrong_popup_cancel_retries_without_buying",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "重复观察与假点击回归；使用受控时间和模拟画面，点击不改变输入"
+        },
+        {
+          "id": "tests.core.test_missed_clicks.HucheMissedClickTests.test_persistent_purchase_confirmation_reaches_framework_restart",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "重复观察与假点击回归；使用受控时间和模拟画面，点击不改变输入"
+        },
+        {
+          "id": "tests.core.test_missed_clicks.SharedRecoveryTests.test_popup_click_does_not_advance_input_or_bypass_interval",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "重复观察与假点击回归；使用受控时间和模拟画面，点击不改变输入"
+        },
+        {
+          "id": "tests.core.test_missed_clicks.SharedRecoveryTests.test_network_retry_remains_visible_then_recovers_without_reward_action",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "重复观察与假点击回归；使用受控时间和模拟画面，点击不改变输入"
+        },
+        {
+          "id": "tests.core.test_missed_clicks.SharedRecoveryTests.test_unknown_screen_uses_real_stuck_guard_and_scheduler",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "重复观察与假点击回归；使用受控时间和模拟画面，点击不改变输入"
+        },
+        {
+          "id": "tests.core.test_missed_clicks.SharedRecoveryTests.test_permanent_popup_uses_real_click_guard_and_scheduler",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "重复观察与假点击回归；使用受控时间和模拟画面，点击不改变输入"
+        },
+        {
+          "id": "tests.core.test_missed_clicks.NavigationCombatMissedClickTests.test_navigation_retries_source_and_exits_on_first_destination_frame",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "重复观察与假点击回归；使用受控时间和模拟画面，点击不改变输入"
+        },
+        {
+          "id": "tests.core.test_missed_clicks.NavigationCombatMissedClickTests.test_navigation_stuck_source_reaches_framework_restart",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "重复观察与假点击回归；使用受控时间和模拟画面，点击不改变输入"
+        },
+        {
+          "id": "tests.core.test_missed_clicks.NavigationCombatMissedClickTests.test_fast_toggle_retries_without_claiming_enabled_before_new_state",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "重复观察与假点击回归；使用受控时间和模拟画面，点击不改变输入"
+        },
+        {
+          "id": "tests.core.test_missed_clicks.NavigationCombatMissedClickTests.test_battle_start_and_result_buttons_retry_without_early_completion",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "重复观察与假点击回归；使用受控时间和模拟画面，点击不改变输入"
+        },
+        {
+          "id": "tests.core.test_missed_clicks.NavigationCombatMissedClickTests.test_persistent_battle_start_reaches_framework_restart",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "重复观察与假点击回归；使用受控时间和模拟画面，点击不改变输入"
+        }
+      ]
     }
   ]
 }

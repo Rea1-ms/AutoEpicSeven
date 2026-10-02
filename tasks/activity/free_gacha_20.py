@@ -40,6 +40,7 @@ class FreeGacha20(ActivityNavigationMixin, UI):
                 return False
 
         logger.info("SpecialActivity: claim 20 free summons")
+        # Repeated input is not progress and must not extend this deadline.
         timeout = Timer(self.CLAIM_FLOW_TIMEOUT_SECONDS, count=60).start()
         claim_requested = False
 
@@ -65,15 +66,12 @@ class FreeGacha20(ActivityNavigationMixin, UI):
 
             if self.appear_then_click(FREE_20_GACHA, interval=2):
                 claim_requested = True
-                timeout.reset()
                 continue
 
             if claim_requested and self.handle_touch_to_close(interval=2):
-                timeout.reset()
                 continue
 
             if self.handle_network_error():
-                timeout.reset()
                 continue
 
     def run(self) -> bool:

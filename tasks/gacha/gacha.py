@@ -14,6 +14,7 @@ Epic Seven 召唤模块
         等待自动传送结束 -> 保存最终整页 -> OCR 未传送卡位 -> 点击继续或返回
 """
 from module.base.timer import Timer
+from module.exception import GameStuckError
 from module.logger import logger
 from tasks.base.page import page_gacha
 from tasks.base.ui import UI
@@ -146,6 +147,10 @@ class Gacha(SummonResultRecorder, UI):
         ten_pull_collector = None
         pending_draw_count = None
         returning_to_gacha = False
+        # _start_summon only sends input; the same free button may still be
+        # visible after a missed tap. Retry it until a summon state is observed,
+        # then never interpret the final pool page as permission for another draw.
+        awaiting_first_result = True
 
         # Slow down screenshot interval during animation
         self.device.screenshot_interval_set(1.0)
@@ -155,7 +160,7 @@ class Gacha(SummonResultRecorder, UI):
 
                 if timeout.reached():
                     logger.warning("Summon flow timeout")
-                    break
+                    raise GameStuckError('Summon flow did not reach a verified return')
 
                 if returning_to_gacha and self.ui_page_appear(page_gacha):
                     break
@@ -168,6 +173,12 @@ class Gacha(SummonResultRecorder, UI):
                 )
                 back = self.appear(SUMMON_RESULT_BACK)
                 free_continue = self.appear(SUMMON_FREE_CONTINUE)
+                if new or skip or next_page or back:
+                    awaiting_first_result = False
+                if awaiting_first_result and self.ui_page_appear(page_gacha) and self.appear(EPIC_BOOKMARK):
+                    start_button = SUMMON_TEN_FREE if self._draw_count == 10 else SUMMON_ONE_FREE
+                    if self.appear_then_click(start_button, interval=2, similarity=0.9):
+                        continue
 
                 transition_completed = capture.observe_transition(
                     next_result_visible=skip or new,

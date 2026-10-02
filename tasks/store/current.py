@@ -748,15 +748,14 @@ class CurrentStore(UI):
                 if effective_desired_quantity <= 0:
                     # Once the configured period target is already satisfied, do
                     # not touch confirm again. Store purchase popups have an
-                    # explicit "do not buy" button, so after entering this state
-                    # we only send POPUP_CANCEL once and then wait for the
-                    # sub-store page to settle again.
+                    # explicit "do not buy" button. Retry it while the popup
+                    # remains visible; a sent cancel is not a closed dialog.
                     skipping_purchase = True
                     purchase_quantity = 0
                     quantity_source = 'target_reached'
                     quantity_resolved = False
                     pending_quantity_adjustment = False
-                    if not clicked_cancel and self._close_purchase_popup_without_confirm(interval=1):
+                    if self._close_purchase_popup_without_confirm(interval=1):
                         clicked_cancel = True
                         progress = True
                     if progress:
@@ -768,7 +767,7 @@ class CurrentStore(UI):
                     continue
 
             if skipping_purchase:
-                if not clicked_cancel and self._close_purchase_popup_without_confirm(interval=1):
+                if self._close_purchase_popup_without_confirm(interval=1):
                     clicked_cancel = True
                     timeout.reset()
                     continue

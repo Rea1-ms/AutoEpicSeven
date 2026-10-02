@@ -69,6 +69,7 @@ COMBAT_MODULES = (
 )
 STORE_MODULES = ()
 SECRET_SHOP_MODULES = ("tests.secret_shop.test_payment", "tests.secret_shop.test_captures")
+INTERACTION_MODULES = ("tests.core.test_missed_clicks",)
 HISTORICAL_REPLAY_MODULES = (
     "tests.activity.test_cn_september_update",
     "tests.core.test_september_runtime_fixes",
@@ -119,7 +120,7 @@ SUITES = {
     "all": EXPLORATION_MODULES + SANCTUARY_MODULES + RUNNER_MODULES + UPSTREAM_MODULES
            + CORE_MODULES + ACTIVITY_MODULES + COMBAT_MODULES + STORE_MODULES
            + HISTORICAL_REPLAY_MODULES + HISTORICAL_CAPTURE_MODULES + HISTORICAL_MANUAL_MODULES
-           + SECRET_SHOP_MODULES,
+           + SECRET_SHOP_MODULES + INTERACTION_MODULES,
     "dimensional_exploration": EXPLORATION_MODULES,
     "sanctuary": SANCTUARY_MODULES,
     "runner": RUNNER_MODULES,
@@ -128,6 +129,7 @@ SUITES = {
     "activity": ACTIVITY_MODULES,
     "combat": COMBAT_MODULES,
     "secret_shop": SECRET_SHOP_MODULES,
+    "interaction": INTERACTION_MODULES,
     "store": ("tests.captured.test_store_inheritance_charms", "tests.captured.test_store_inheritance_cooldown"),
     "legacy_rules": CORE_MODULES + ACTIVITY_MODULES + COMBAT_MODULES + STORE_MODULES
                     + ("tests.upstream.test_upstream_emulator_sync",),

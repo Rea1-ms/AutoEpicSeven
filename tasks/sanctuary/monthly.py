@@ -6,7 +6,7 @@ from module.base.timer import Timer
 from module.exception import ScriptError
 from module.logger import logger
 from module.ocr.ocr import Digit, DigitCounter, Ocr
-from tasks.base.assets.assets_base_popup import POPUP_CANCEL
+from tasks.base.assets.assets_base_popup import POPUP_CANCEL, TOUCH_TO_CLOSE
 from tasks.sanctuary.assets.assets_sanctuary import HEART_OF_EULERBIS, HEART_OF_EULERBIS_CHECK
 from tasks.sanctuary.assets.assets_sanctuary_heart_of_eulerbis import (
     ALREADY_STORED,  # noqa: F401 - retained for historical replay asset imports
@@ -261,7 +261,7 @@ class SanctuaryMonthlyMixin(SanctuaryMonthlyReminderMixin):
                 continue
 
     def _wait_monthly_level_up_settle(self) -> bool:
-        """Wait until monthly level-up popup is dismissed."""
+        """Retry dismissal until the monthly controls return on a fresh frame."""
         timeout = Timer(5, count=15).start()
         while 1:
             self.device.screenshot()
@@ -270,13 +270,15 @@ class SanctuaryMonthlyMixin(SanctuaryMonthlyReminderMixin):
                 logger.warning("Monthly level up settle timeout")
                 return False
 
-            if self.handle_touch_to_close(interval=0.5):
+            # A dismissal request may be dropped. Neither sending it nor an
+            # empty animation frame proves that the monthly page is usable.
+            if not self.appear(TOUCH_TO_CLOSE) and self.appear(PURIFY):
                 return True
+            if self.handle_touch_to_close(interval=0.5):
+                continue
             if self.ui_additional():
-                timeout.reset()
                 continue
             if self.handle_network_error():
-                timeout.reset()
                 continue
 
     def _ocr_purify_times(

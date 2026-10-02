@@ -11,6 +11,8 @@ from tests.dimensional_exploration.test_dimensional_exploration_shop_new import 
 from tests.sanctuary.test_monthly_deposit import DepositScreenshotTests
 from tests.captured.test_fast_combat_counter import ScreenshotCounterTests
 from tests.secret_shop.test_captures import CapturedShopTests
+from tests.core.test_missed_clicks import StoreMissedClickTests
+from tasks.store.current import CurrentStore
 
 
 def check(case_id, cls, method_name, replacement, expected_text, expected_attachments, suite="dimensional_exploration"):
@@ -64,6 +66,29 @@ def main():
     check("tests.secret_shop.test_captures.CapturedShopTests.test_first_refresh_has_exactly_one_debit",
           CapturedShopTests, "test_first_refresh_has_exactly_one_debit", wrong_expectation,
           "1 != 2", 2, suite="secret_shop")
+
+    # Restore the old one-shot cancellation bug in memory. The real assertion
+    # must detect missing retries; changing a constant assertion proves less.
+    case_method = "test_cancel_retries_when_period_target_already_reached"
+    original_test = getattr(StoreMissedClickTests, case_method)
+    original_cancel = CurrentStore._close_purchase_popup_without_confirm
+
+    def old_cancel_behavior(self):
+        clicked = False
+
+        def cancel_once(task, *args, **kwargs):
+            nonlocal clicked
+            if clicked:
+                return False
+            clicked = original_cancel(task, *args, **kwargs)
+            return clicked
+
+        with patch.object(CurrentStore, "_close_purchase_popup_without_confirm", cancel_once):
+            original_test(self)
+
+    check(f"tests.core.test_missed_clicks.StoreMissedClickTests.{case_method}",
+          StoreMissedClickTests, case_method, old_cancel_behavior,
+          "POPUP_CANCEL never retried", 0, suite="interaction")
 
 
 if __name__ == "__main__":

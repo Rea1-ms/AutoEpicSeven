@@ -551,19 +551,19 @@ class Mail(UI):
                     continue
 
             if link_confirm_open and goto_link_done:
-                logger.info("Mail: confirm link receive popup")
-                self.device.click(RECEIVE_CONFIRM_LINK)
-                self.interval_reset(RECEIVE_CONFIRM_LINK, interval=self.CLICK_INTERVAL_SECONDS)
-                timeout.reset()
+                if self.interval_is_reached(RECEIVE_CONFIRM_LINK, interval=self.CLICK_INTERVAL_SECONDS):
+                    logger.info("Mail: confirm link receive popup")
+                    self.device.click(RECEIVE_CONFIRM_LINK)
+                    self.interval_reset(RECEIVE_CONFIRM_LINK, interval=self.CLICK_INTERVAL_SECONDS)
                 done_confirm.reset()
                 popup_idle.reset()
                 continue
 
             if normal_confirm_open:
-                logger.info("Mail: confirm receive popup")
-                self.device.click(RECEIVE_CONFIRM)
-                self.interval_reset(RECEIVE_CONFIRM, interval=self.CLICK_INTERVAL_SECONDS)
-                timeout.reset()
+                if self.interval_is_reached(RECEIVE_CONFIRM, interval=self.CLICK_INTERVAL_SECONDS):
+                    logger.info("Mail: confirm receive popup")
+                    self.device.click(RECEIVE_CONFIRM)
+                    self.interval_reset(RECEIVE_CONFIRM, interval=self.CLICK_INTERVAL_SECONDS)
                 done_confirm.reset()
                 popup_idle.reset()
                 continue
@@ -631,8 +631,15 @@ class Mail(UI):
                     logger.info("Mail: receive reward flow settled")
                     return True
                 if result is False:
-                    logger.warning("Mail: returned to mailbox but no mail state change was detected")
-                    return False
+                    # The initial RECEIVE may have been dropped. Keep the same
+                    # pre-claim count/time and retry only on a recognized mail
+                    # page whose count and top row are still unchanged. Do not
+                    # reset the deadline or clear click history without receipt.
+                    if self._receive_available(interval=self.CLICK_INTERVAL_SECONDS):
+                        logger.info("Mail: unchanged top mail, retry receive")
+                        self.device.click(RECEIVE)
+                        done_confirm.reset()
+                    continue
 
     def _claim_top_mail(self, state: MailRemainingState, skip_first_screenshot=True) -> bool:
         logger.info("Mail: claim top mail")
