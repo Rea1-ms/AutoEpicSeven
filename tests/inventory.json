@@ -19661,6 +19661,227 @@
           "reason": "重复观察与假点击回归；使用受控时间和模拟画面，点击不改变输入"
         }
       ]
+    },
+    {
+      "source": "tests/sanctuary/test_buy_penguins.py",
+      "business": "圣域企鹅批量购买",
+      "status": "已纳入",
+      "reason": "新增工具正式离线回归",
+      "cases": [
+        {
+          "id": "tests.sanctuary.test_buy_penguins.PenguinCaptureTests.test_modal_precedence_and_clear_forest",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/sanctuary/buy_penguins/MuMu-20261001-144421-780.png",
+            "tests/fixtures/sanctuary/buy_penguins/MuMu-20261001-144425-154.png",
+            "tests/fixtures/sanctuary/buy_penguins/MuMu-20261001-144428-274.png",
+            "tests/fixtures/sanctuary/buy_penguins/MuMu-20261001-144430-043.png",
+            "tests/fixtures/sanctuary/buy_penguins/MuMu-20261001-144433-233.png"
+          ],
+          "status": "已纳入",
+          "reason": "企鹅购买截图与模拟回放；操作不推进画面，来源服务器待确认"
+        },
+        {
+          "id": "tests.sanctuary.test_buy_penguins.PenguinCaptureTests.test_captured_balance_unit_price_and_quantities",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/sanctuary/buy_penguins/MuMu-20261001-144425-154.png",
+            "tests/fixtures/sanctuary/buy_penguins/MuMu-20261001-144428-274.png",
+            "tests/fixtures/sanctuary/buy_penguins/MuMu-20261001-144430-043.png"
+          ],
+          "status": "已纳入",
+          "reason": "企鹅购买截图与模拟回放；操作不推进画面，来源服务器待确认"
+        },
+        {
+          "id": "tests.sanctuary.test_buy_penguins.PenguinCaptureTests.test_chinese_assets_dispatch_on_both_servers",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/sanctuary/buy_penguins/MuMu-20261001-144421-780.png",
+            "tests/fixtures/sanctuary/buy_penguins/MuMu-20261001-144425-154.png"
+          ],
+          "status": "已纳入",
+          "reason": "企鹅购买截图与模拟回放；操作不推进画面，来源服务器待确认"
+        },
+        {
+          "id": "tests.sanctuary.test_buy_penguins.PenguinCaptureTests.test_dim_purchase_control_does_not_hide_the_shop_balance",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/sanctuary/buy_penguins/MuMu-20261001-144425-154.png"
+          ],
+          "status": "已纳入",
+          "reason": "企鹅购买截图与模拟回放；操作不推进画面，来源服务器待确认"
+        },
+        {
+          "id": "tests.sanctuary.test_buy_penguins.PenguinRuleTests.test_strict_numeric_and_quantity_validation",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "企鹅购买截图与模拟回放；操作不推进画面，来源服务器待确认"
+        },
+        {
+          "id": "tests.sanctuary.test_buy_penguins.PenguinRuleTests.test_tool_config_defaults_dispatch_and_scheduler_disabled",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "企鹅购买截图与模拟回放；操作不推进画面，来源服务器待确认"
+        },
+        {
+          "id": "tests.sanctuary.test_buy_penguins.PenguinRuleTests.test_import_and_forest_route_in_isolated_servers",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "企鹅购买截图与模拟回放；操作不推进画面，来源服务器待确认"
+        },
+        {
+          "id": "tests.sanctuary.test_buy_penguins.PenguinRuleTests.test_unsupported_language_and_invalid_batches_do_not_access_device",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "企鹅购买截图与模拟回放；操作不推进画面，来源服务器待确认"
+        },
+        {
+          "id": "tests.sanctuary.test_buy_penguins.PenguinRuleTests.test_manual_run_reuses_known_overlay_and_navigates_other_pages",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "企鹅购买截图与模拟回放；操作不推进画面，来源服务器待确认"
+        },
+        {
+          "id": "tests.sanctuary.test_buy_penguins.PenguinReplayTests.test_full_batch_closes_overlays_and_counts_exact_debit_once",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "企鹅购买截图与模拟回放；操作不推进画面，来源服务器待确认"
+        },
+        {
+          "id": "tests.sanctuary.test_buy_penguins.PenguinReplayTests.test_entry_max_confirm_and_close_retry_persistent_frames",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "企鹅购买截图与模拟回放；操作不推进画面，来源服务器待确认"
+        },
+        {
+          "id": "tests.sanctuary.test_buy_penguins.PenguinReplayTests.test_old_shop_and_delayed_debit_never_open_another_purchase",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "企鹅购买截图与模拟回放；操作不推进画面，来源服务器待确认"
+        },
+        {
+          "id": "tests.sanctuary.test_buy_penguins.PenguinReplayTests.test_missing_reward_still_settles_from_two_exact_debit_frames",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "企鹅购买截图与模拟回放；操作不推进画面，来源服务器待确认"
+        },
+        {
+          "id": "tests.sanctuary.test_buy_penguins.PenguinReplayTests.test_two_batches_reset_quantity_and_payment_baseline",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "企鹅购买截图与模拟回放；操作不推进画面，来源服务器待确认"
+        },
+        {
+          "id": "tests.sanctuary.test_buy_penguins.PenguinReplayTests.test_insufficient_balance_stops_without_partial_batch",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "企鹅购买截图与模拟回放；操作不推进画面，来源服务器待确认"
+        },
+        {
+          "id": "tests.sanctuary.test_buy_penguins.PenguinReplayTests.test_manual_dialog_cancels_before_any_measured_purchase",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "企鹅购买截图与模拟回放；操作不推进画面，来源服务器待确认"
+        },
+        {
+          "id": "tests.sanctuary.test_buy_penguins.PenguinReplayTests.test_lower_maximum_cancels_and_stops",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "企鹅购买截图与模拟回放；操作不推进画面，来源服务器待确认"
+        },
+        {
+          "id": "tests.sanctuary.test_buy_penguins.PenguinReplayTests.test_changed_quote_cancels_and_reads_new_price",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "企鹅购买截图与模拟回放；操作不推进画面，来源服务器待确认"
+        },
+        {
+          "id": "tests.sanctuary.test_buy_penguins.PenguinReplayTests.test_network_overlay_breaks_consecutive_debit_evidence",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "企鹅购买截图与模拟回放；操作不推进画面，来源服务器待确认"
+        },
+        {
+          "id": "tests.sanctuary.test_buy_penguins.PenguinReplayTests.test_bad_ocr_wrong_debit_and_permanent_dialog_fail_without_counting",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "企鹅购买截图与模拟回放；操作不推进画面，来源服务器待确认"
+        },
+        {
+          "id": "tests.sanctuary.test_buy_penguins.PenguinReplayTests.test_timeout_is_not_extended_by_failed_click_retries",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "企鹅购买截图与模拟回放；操作不推进画面，来源服务器待确认"
+        },
+        {
+          "id": "tests.sanctuary.test_buy_penguins.PenguinRuleTests.test_gui_batch_count_save_feedback_and_reload",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "真实界面保存入口：成功提示、配置重读、空值恢复默认及非法批数不写入；使用独立合成配置"
+        }
+      ]
     }
   ]
 }

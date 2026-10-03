@@ -86,6 +86,10 @@
       "name": "Eventos especiales",
       "help": "Gestiona contenido temporal con entradas propias, actualmente la tienda de Huche en la pantalla principal. Se programa de forma independiente de Eventos temporales."
     },
+    "BuyPenguins": {
+      "name": "Compra de pingüinos por lotes",
+      "help": "Compra manual de 50 pingüinos por lote. Se detiene si no hay suficiente estigma. Solo para el juego en chino."
+    },
     "DimensionalExploration": {
       "name": "Exploración dimensional",
       "help": "Solo para el cliente internacional en chino. Se inicia manualmente desde Herramientas, de forma independiente del planificador principal. Mantiene la dificultad actual y empieza con Heavy Baggage. Se detiene tras completar el lote."
@@ -779,6 +783,16 @@
     "BuyHucheMysticMedals": {
       "name": "Comprar medallas místicas en la tienda de Huche",
       "help": "Solo servidor internacional en chino simplificado. Compra únicamente medallas místicas según las existencias y el saldo de piedras celestiales. El primer lote cambia cada 12 horas y no siempre incluye medallas. Compra la oferta de 160 cuando aparezca; si una revisión completa no encuentra medallas, espera al próximo lote. La oferta normal de 200 tiene un cupo fijo de 4 para todo el evento; al agotarse, revisa solo el primer lote rotativo. Revisa a las 11:00 y 23:00 UTC+8. Desactivado por defecto; al activarlo se gastan piedras celestiales."
+    }
+  },
+  "BuyPenguins": {
+    "_info": {
+      "name": "Compra de pingüinos por lotes",
+      "help": "Compra manual de 50 pingüinos por lote. Se detiene si no hay suficiente estigma. Solo para el juego en chino."
+    },
+    "BatchCount": {
+      "name": "Cantidad de lotes",
+      "help": "Compra 50 pingüinos por lote, 1 lote por defecto. Usa el precio de estigma mostrado. Esta herramienta no se ejecuta automáticamente."
     }
   },
   "DimensionalExploration": {

@@ -424,6 +424,72 @@
       "used_by": [
         "tests.sanctuary.test_captured_sanctuary.CapturedForestTests.test_forest_page_and_three_claimable_rewards"
       ]
+    },
+    "20261001-144421-780": {
+      "path": "tests/fixtures/sanctuary/buy_penguins/MuMu-20261001-144421-780.png",
+      "sha256": "cb7c198225e32418925ec64f33be10258634f21d2928898cf9e9db2d2e0d9844",
+      "source_filename": "MuMu-20261001-144421-780.png",
+      "source_sha256": "2f9f9e1eedbfb71594f21e7d93d9d861a291ea4daedceb92cd1a19375ec6bcfb",
+      "server": "unconfirmed",
+      "capture_type": "emulator_screenshot",
+      "scene": "buy_penguins_forest",
+      "used_by": [
+        "tests.sanctuary.test_buy_penguins.PenguinCaptureTests.test_modal_precedence_and_clear_forest",
+        "tests.sanctuary.test_buy_penguins.PenguinCaptureTests.test_chinese_assets_dispatch_on_both_servers"
+      ]
+    },
+    "20261001-144425-154": {
+      "path": "tests/fixtures/sanctuary/buy_penguins/MuMu-20261001-144425-154.png",
+      "sha256": "c1f3f30ae1a1d808ea498840fea6920ee83fa8e65405985f08e6227c5ec340d6",
+      "source_filename": "MuMu-20261001-144425-154.png",
+      "source_sha256": "7168e8564ca4468a627aa1268ad6df596f0a63dcae82baa1eb7d6118eaa3062f",
+      "server": "unconfirmed",
+      "capture_type": "emulator_screenshot",
+      "scene": "buy_penguins_shop",
+      "used_by": [
+        "tests.sanctuary.test_buy_penguins.PenguinCaptureTests.test_modal_precedence_and_clear_forest",
+        "tests.sanctuary.test_buy_penguins.PenguinCaptureTests.test_captured_balance_unit_price_and_quantities",
+        "tests.sanctuary.test_buy_penguins.PenguinCaptureTests.test_chinese_assets_dispatch_on_both_servers",
+        "tests.sanctuary.test_buy_penguins.PenguinCaptureTests.test_dim_purchase_control_does_not_hide_the_shop_balance"
+      ]
+    },
+    "20261001-144428-274": {
+      "path": "tests/fixtures/sanctuary/buy_penguins/MuMu-20261001-144428-274.png",
+      "sha256": "b3350dbee9be6b0480009ddbd6c8e395e71d740dedde1f776002c0e0c3225958",
+      "source_filename": "MuMu-20261001-144428-274.png",
+      "source_sha256": "420264112f8915648ca26084deb2b2de9eb06d3793af7206bde7ec2d24af6eb0",
+      "server": "unconfirmed",
+      "capture_type": "emulator_screenshot",
+      "scene": "buy_penguins_quantity_one",
+      "used_by": [
+        "tests.sanctuary.test_buy_penguins.PenguinCaptureTests.test_modal_precedence_and_clear_forest",
+        "tests.sanctuary.test_buy_penguins.PenguinCaptureTests.test_captured_balance_unit_price_and_quantities"
+      ]
+    },
+    "20261001-144430-043": {
+      "path": "tests/fixtures/sanctuary/buy_penguins/MuMu-20261001-144430-043.png",
+      "sha256": "603ec33589e8ef3481510a3bfa13046870fb07a47a9e4e81321a87468147c259",
+      "source_filename": "MuMu-20261001-144430-043.png",
+      "source_sha256": "fd878be2af3d2f17386b6aacacae8a26b54e888c965ae597c6a73edc765ed49c",
+      "server": "unconfirmed",
+      "capture_type": "emulator_screenshot",
+      "scene": "buy_penguins_quantity_max",
+      "used_by": [
+        "tests.sanctuary.test_buy_penguins.PenguinCaptureTests.test_modal_precedence_and_clear_forest",
+        "tests.sanctuary.test_buy_penguins.PenguinCaptureTests.test_captured_balance_unit_price_and_quantities"
+      ]
+    },
+    "20261001-144433-233": {
+      "path": "tests/fixtures/sanctuary/buy_penguins/MuMu-20261001-144433-233.png",
+      "sha256": "c43c90fb528881139226f6f3b97ed580c70e04dbfb61edc2d62e6c66ee813459",
+      "source_filename": "MuMu-20261001-144433-233.png",
+      "source_sha256": "1c1f30664179c5b669c8a15b006dd75a4cca92b253c4c3f4de4b06336a2949c5",
+      "server": "unconfirmed",
+      "capture_type": "emulator_screenshot",
+      "scene": "buy_penguins_reward",
+      "used_by": [
+        "tests.sanctuary.test_buy_penguins.PenguinCaptureTests.test_modal_precedence_and_clear_forest"
+      ]
     }
   }
 }

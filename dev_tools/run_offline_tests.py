@@ -32,6 +32,7 @@ EXPLORATION_MODULES = (
 )
 RUNNER_MODULES = ("tests.test_offline_runner",)
 SANCTUARY_MODULES = (
+    "tests.sanctuary.test_buy_penguins",
     "tests.sanctuary.test_smart_custody",
     "tests.sanctuary.test_monthly_scheduling",
     "tests.sanctuary.test_monthly",
@@ -123,6 +124,7 @@ SUITES = {
            + SECRET_SHOP_MODULES + INTERACTION_MODULES,
     "dimensional_exploration": EXPLORATION_MODULES,
     "sanctuary": SANCTUARY_MODULES,
+    "buy_penguins": ("tests.sanctuary.test_buy_penguins",),
     "runner": RUNNER_MODULES,
     "upstream": UPSTREAM_MODULES,
     "core": CORE_MODULES,

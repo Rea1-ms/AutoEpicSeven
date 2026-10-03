@@ -306,6 +306,13 @@ SpecialActivity:
   # 花费天空石的购买项默认关闭，避免升级后自动改变用户消费。
   BuyHucheMysticMedals: false
 
+BuyPenguins:
+  BatchCount:
+    value: 1
+    # Keep input text for regex validation; config loading converts it to int.
+    valuetype: str
+    validate: '^[1-9][0-9]*$'
+
 DimensionalExploration:
   RunCount: 1
   EventSampling: false

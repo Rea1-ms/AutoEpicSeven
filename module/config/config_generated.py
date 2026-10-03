@@ -158,6 +158,9 @@ class GeneratedConfig:
     # Group `SpecialActivity`
     SpecialActivity_BuyHucheMysticMedals = False
 
+    # Group `BuyPenguins`
+    BuyPenguins_BatchCount = 1
+
     # Group `DimensionalExploration`
     DimensionalExploration_RunCount = 1
     DimensionalExploration_EventSampling = False

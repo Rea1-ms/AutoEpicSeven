@@ -13,7 +13,7 @@ class ManualConfig:
     > Mail > SanctuaryDaily > SanctuaryMonthly
     > Knights > Store > Arena > PetsGift
     > SecretShop > Combat > Gacha > MissionReward > Pets > DataUpdate > CommunityAio
-    > LimitedActivity > SpecialActivity
+    > LimitedActivity > SpecialActivity > BuyPenguins
     """
 
     """

@@ -1,0 +1,73 @@
+{
+  "version": 1,
+  "source": "MuMu-20261001-144425-154.png",
+  "suite": "buy_penguins",
+  "case": "shop",
+  "items": [
+    {
+      "name": "PENGUIN_SHOP_CHECK",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "share",
+      "module": "sanctuary/buy_penguins",
+      "box": [
+        166,
+        288,
+        231,
+        358
+      ]
+    },
+    {
+      "name": "PENGUIN_BUY",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "share",
+      "module": "sanctuary/buy_penguins",
+      "box": [
+        236,
+        527,
+        274,
+        547
+      ]
+    },
+    {
+      "name": "PENGUIN_SHOP_CLOSE",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "share",
+      "module": "sanctuary/buy_penguins",
+      "box": [
+        603,
+        681,
+        700,
+        705
+      ]
+    },
+    {
+      "name": "OCR_PENGUIN_BALANCE",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "share",
+      "module": "sanctuary/buy_penguins",
+      "box": [
+        1100,
+        144,
+        1207,
+        181
+      ]
+    },
+    {
+      "name": "OCR_PENGUIN_UNIT_PRICE",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "share",
+      "module": "sanctuary/buy_penguins",
+      "box": [
+        147,
+        517,
+        190,
+        554
+      ]
+    }
+  ]
+}

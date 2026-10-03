@@ -1174,6 +1174,42 @@
       }
     }
   },
+  "BuyPenguins": {
+    "Scheduler": {
+      "Enable": {
+        "type": "checkbox",
+        "value": false,
+        "option": [
+          false
+        ],
+        "display": "hide"
+      },
+      "NextRun": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime",
+        "display": "hide"
+      },
+      "Command": {
+        "type": "input",
+        "value": "BuyPenguins",
+        "display": "hide"
+      },
+      "ServerUpdate": {
+        "type": "input",
+        "value": "02:00",
+        "display": "hide"
+      }
+    },
+    "BuyPenguins": {
+      "BatchCount": {
+        "type": "input",
+        "value": 1,
+        "valuetype": "str",
+        "validate": "^[1-9][0-9]*$"
+      }
+    }
+  },
   "DimensionalExploration": {
     "DimensionalExploration": {
       "RunCount": {
