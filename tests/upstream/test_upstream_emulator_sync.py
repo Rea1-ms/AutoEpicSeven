@@ -67,12 +67,17 @@ class SerialTests(unittest.TestCase):
                 self.assertEqual(ConnectionAttr.revise_serial(text), expected)
 
     def test_connection_and_discovery_use_the_same_extended_port_range(self):
-        for offset in (0, 2, 32, 34, 62, 64):
+        # Keep the historical case ID while following SRC's separate bounds:
+        # connection accepts offsets through 64, platform discovery through 32.
+        # Extending the platform helper changes instance matching, so verify
+        # both sides of its boundary instead of requiring equal ranges.
+        for offset in (0, 2, 31, 32, 33, 34, 62, 63, 64):
             pair = (f'127.0.0.1:{5555+offset}', f'emulator-{5554+offset}')
+            platform_pair = pair if offset <= 32 else (None, None)
             for serial in pair:
                 with self.subTest(serial=serial):
                     self.assertEqual(get_serial_pair(serial), pair)
-                    self.assertEqual(platform_serial_pair(serial), pair)
+                    self.assertEqual(platform_serial_pair(serial), platform_pair)
 
     def test_port_pair_boundaries(self):
         for serial in ('127.0.0.1:5554', '127.0.0.1:5620', 'emulator-5553', 'emulator-5619', '127.0.0.1:16384'):

@@ -12443,7 +12443,7 @@
           "has_automatic_assertion": true,
           "fixtures": [],
           "status": "已纳入",
-          "reason": "原断言迁移；模拟输入或既有资产，不代表实机截图验证",
+          "reason": "2026-10-03 按用户要求对齐上游端口边界：连接偏移范围64，平台实例匹配偏移范围32；使用模拟输入",
           "input_kind": "mock_or_rule"
         },
         {
