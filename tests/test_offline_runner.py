@@ -3,6 +3,8 @@
 import json
 import contextlib
 import io
+import subprocess
+import sys
 import unittest
 from types import SimpleNamespace
 from unittest.mock import patch
@@ -16,6 +18,47 @@ from tests.support import history_fixtures
 
 
 class RunnerContractTests(unittest.TestCase):
+    def test_all_suites_collect_without_windows_registry(self):
+        # A fresh process prevents the Windows host's cached platform modules
+        # from hiding Linux collection failures. Only the platform selector is
+        # changed; numerical libraries still use their real host binaries.
+        code = '''
+import importlib.abc
+import json
+import sys
+
+class MissingRegistry(importlib.abc.MetaPathFinder):
+    def find_spec(self, fullname, path=None, target=None):
+        if fullname == 'winreg':
+            raise ModuleNotFoundError("No module named 'winreg'", name='winreg')
+
+sys.modules.pop('winreg', None)
+sys.meta_path.insert(0, MissingRegistry())
+from module.device import env
+env.IS_WINDOWS = False
+from dev_tools.run_offline_tests import tests_for
+cases = tests_for('all')
+assert 'winreg' not in sys.modules, 'Registry stub leaked beyond test imports'
+from tests.support.windows import windows_registry_imports
+with windows_registry_imports():
+    import module.device.platform.emulator_windows as emulators
+    try:
+        emulators.winreg.OpenKey(None, 'forbidden')
+    except AssertionError as exc:
+        assert 'registry access' in str(exc)
+    else:
+        raise AssertionError('Offline registry access was not rejected')
+assert 'winreg' not in sys.modules, 'Registry stub leaked beyond test imports'
+print('COLLECTED_TEST_IDS=' + json.dumps([case.id() for case in cases]))
+'''
+        result = subprocess.run([sys.executable, '-X', 'utf8', '-B', '-c', code],
+                                cwd=runner.ROOT, capture_output=True, text=True,
+                                encoding='utf-8', timeout=60)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        line = next(line for line in result.stdout.splitlines() if line.startswith('COLLECTED_TEST_IDS='))
+        self.assertEqual(json.loads(line.split('=', 1)[1]),
+                         [case.id() for case in runner.tests_for('all')])
+
     def test_historical_capture_aliases_share_one_input(self):
         aliases = ('urgent_tasks/superior-fast-on.png', 'urgent_tasks/superior-prepare-large.png')
         self.assertEqual(*(history_fixtures.fixture_path(alias) for alias in aliases))

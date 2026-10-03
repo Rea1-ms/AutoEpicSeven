@@ -8448,6 +8448,15 @@
       "reason": "",
       "cases": [
         {
+          "id": "tests.test_offline_runner.RunnerContractTests.test_all_suites_collect_without_windows_registry",
+          "category": "资源基础检查",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "独立进程屏蔽注册表模块，核对全集收集一致、隔离不泄漏及禁止注册表访问"
+        },
+        {
           "id": "tests.test_offline_runner.RunnerContractTests.test_unknown_case_returns_preparation_status",
           "category": "资源基础检查",
           "requires_device": false,
@@ -12597,7 +12606,7 @@
           "has_automatic_assertion": true,
           "fixtures": [],
           "status": "已纳入",
-          "reason": "原断言迁移；模拟输入或既有资产，不代表实机截图验证",
+          "reason": "模拟设备分别验证两种系统策略：通用截图方式保持选择，专用截图方式仅在支持的系统保留",
           "input_kind": "mock_or_rule"
         },
         {

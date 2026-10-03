@@ -14,6 +14,7 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import Mock, call, patch
 
+from tests.support.windows import windows_registry_imports
 
 from module.device.device import Device
 from module.device.connection_attr import ConnectionAttr
@@ -23,9 +24,11 @@ from module.device.platform.emulator_base import (
     EmulatorInstanceBase,
     get_serial_pair as platform_serial_pair,
 )
-from module.device.platform.emulator_windows import EmulatorInstance
 from module.device.platform.platform_base import PlatformBase
-from module.device.platform.platform_windows import PlatformWindows
+
+with windows_registry_imports():
+    from module.device.platform.emulator_windows import EmulatorInstance
+    from module.device.platform.platform_windows import PlatformWindows
 
 
 class SerialTests(unittest.TestCase):
@@ -136,9 +139,12 @@ class InstanceTests(unittest.TestCase):
 class StartupTests(unittest.TestCase):
     def test_mumu_launch_uses_backend_manager_for_each_instance(self):
         platform = SimpleNamespace(execute=Mock())
+        # Resolve the synthetic root on the host: a drive-letter path is
+        # relative on Linux, while production command construction is absolute.
+        root = Path('D:/Apps/MuMu').resolve().as_posix()
         cases = (
-            ('D:/Apps/MuMu/shell/MuMuPlayer.exe', 'MuMuPlayer-12.0-1', 'D:/Apps/MuMu/shell/MuMuManager.exe', 1),
-            ('D:/Apps/MuMu/nx_main/MuMuNxMain.exe', 'MuMuPlayer-15.0-2', 'D:/Apps/MuMu/nx_main/MuMuManager.exe', 2),
+            (f'{root}/shell/MuMuPlayer.exe', 'MuMuPlayer-12.0-1', f'{root}/shell/MuMuManager.exe', 1),
+            (f'{root}/nx_main/MuMuNxMain.exe', 'MuMuPlayer-15.0-2', f'{root}/nx_main/MuMuManager.exe', 2),
         )
         for path, name, manager, index in cases:
             with self.subTest(name=name):
@@ -205,9 +211,14 @@ class ScreenshotTests(unittest.TestCase):
                     self.assertEqual(self.check(method, sdk), method)
 
     def test_other_screenshot_methods_keep_selection(self):
-        for method in ('ADB', 'uiautomator2', 'nemu_ipc', 'auto'):
-            with self.subTest(method=method):
-                self.assertEqual(self.check(method, 35), method)
+        # Nemu IPC remains Windows-only. Check both host policies explicitly
+        # rather than treating the developer's OS as part of the fixture.
+        for windows in (True, False):
+            with patch('module.device.device.IS_WINDOWS', windows):
+                for method in ('ADB', 'uiautomator2', 'nemu_ipc', 'auto'):
+                    with self.subTest(windows=windows, method=method):
+                        expected = 'auto' if method == 'nemu_ipc' and not windows else method
+                        self.assertEqual(self.check(method, 35), expected)
 
 
 class DllTests(unittest.TestCase):

@@ -2,7 +2,6 @@
 
 import contextlib
 import importlib
-import sys
 import unittest
 from types import SimpleNamespace
 from unittest.mock import Mock, patch
@@ -19,6 +18,7 @@ from module.device.method.remove_warning import remove_screenshot_warning, remov
 from module.device.method.utils import remove_prefix, remove_suffix, removeprefix, removesuffix
 from module.device.pkg_resources import remove_suffix as package_remove_suffix
 from module.exception import RequestHumanTakeover
+from tests.support.windows import windows_registry_imports
 
 
 def benchmark_for(sdk):
@@ -166,7 +166,7 @@ class EmulatorTests(unittest.TestCase):
     def test_ldplayer_versions_and_minimized_command(self):
         # Windows registry is not available on the Linux CI worker. The tested
         # path classifier and command builder must never read the real registry.
-        with patch.dict(sys.modules, {} if sys.platform == 'win32' else {'winreg': Mock()}):
+        with windows_registry_imports():
             emulators = importlib.import_module('module.device.platform.emulator_windows')
             windows = importlib.import_module('module.device.platform.platform_windows')
         for version in (4, 9, 14):
