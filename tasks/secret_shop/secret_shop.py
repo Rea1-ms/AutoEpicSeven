@@ -26,18 +26,21 @@ from copy import copy
 from module.base.button import ClickButton
 from module.base.timer import Timer
 from module.base.utils import color_similar, get_color
-from module.exception import GameStuckError
+from module.exception import GameStuckError, RequestHumanTakeover
 from module.logger import logger
 from module.ocr.ocr import Duration, OcrWhiteLetterOnComplexBackground
 from tasks.base.popup import PopupHandler
 from tasks.base.page import page_secret_shop
 from tasks.base.resource_bar import (
     RESOURCE_BAR_LAYOUT_SECRET_SHOP, RESOURCE_BAR_SPECS, ResourceBarMixin, ResourceBarValue,
+    get_resource_bar_segment_area,
 )
+from tasks.base.assets.assets_base_popup import NETWORK_ERROR_DISCONNECT
 from tasks.base.ui import UI
 from tasks.base.assets.assets_base_resource_bar import OCR_RESOURCE_BAR, SKYSTONE_ICON
 from tasks.dungeon.assets.assets_dungeon_repeat_common import REPEAT_COMBAT_CHECK
-from tasks.secret_shop.payment import ITEM_GOLD_COST, REFRESH_SKYSTONE_COST, ShopPayment
+from tasks.secret_shop.payment import ITEM_GOLD_COST, ShopPayment
+from tasks.secret_shop.recognition import ShopCurrencyOcr, ShopGoods, same_currency_image
 
 from tasks.secret_shop.assets.assets_secret_shop import (
     BUY_TOP,
@@ -106,13 +109,27 @@ class SecretShop(ResourceBarMixin, PopupHandler):
         self.max_refresh = getattr(config, 'SecretShop_MaxRefresh', 10)
         self.buy_covenant = getattr(config, 'SecretShop_BuyCovenantBookmark', True)
         self.buy_mystic = getattr(config, 'SecretShop_BuyMysticMedal', True)
+        # Free-only scans the current assortment according to the buy toggles.
+        # Its hidden goal remains saved for later paid runs, but must not make
+        # a zero target silently disable buying or resume a paid goal session.
+        self.completion_mode = getattr(config, 'SecretShop_CompletionMode', 'RefreshCount')
+        if self.only_free:
+            self.completion_mode = 'RefreshCount'
+        self.target_covenant = max(0, int(getattr(config, 'SecretShop_TargetCovenant', 10)))
+        self.target_mystic = max(0, int(getattr(config, 'SecretShop_TargetMystic', 10)))
         # 状态
         self._scrolled = False
         self._stable_count = 0
         self._payment: ShopPayment | None = None
         self._payment_timer = Timer(45, count=30)
-        self._balance_candidate = None
-        self._balance_count = 0
+        self._currency_candidate = None
+        self._currency_observed = None
+        self._currency_value = None
+        self._goods_before_refresh = None
+        self._goods_candidate = None
+        self._refresh_sky_image = None
+        self._refresh_fallback = Timer(3)
+        self._known_gold = None
         # 当前刷新周期内是否已购买（每次刷新最多各出现一个）
         self._covenant_purchased_this_round = False
         self._mystic_purchased_this_round = False
@@ -224,8 +241,9 @@ class SecretShop(ResourceBarMixin, PopupHandler):
         stable_asset = BUY_BOTTOM_STABLE if self._scrolled else BUY_TOP_STABLE
 
         if self.appear(stable_asset):
-            self._stable_count += 1
-            logger.info(f'[Stable] scrolled={self._scrolled}, count={self._stable_count}/{self.STABLE_THRESHOLD}')
+            if self._stable_count < self.STABLE_THRESHOLD:
+                self._stable_count += 1
+                logger.info(f'[Stable] scrolled={self._scrolled}, count={self._stable_count}/{self.STABLE_THRESHOLD}')
             if self._stable_count >= self.STABLE_THRESHOLD:
                 return True
         else:
@@ -294,7 +312,7 @@ class SecretShop(ResourceBarMixin, PopupHandler):
 
         # 查找目标物品（跳过本轮已购买的类型）
         targets = []
-        if self.buy_covenant and not self._covenant_purchased_this_round:
+        if self._needs_item('covenant') and not self._covenant_purchased_this_round:
             covenant_item = self._match_target_item(covenant_asset, 'covenant', image)
             if covenant_item:
                 logger.info(
@@ -302,7 +320,7 @@ class SecretShop(ResourceBarMixin, PopupHandler):
                     f'button={covenant_item.button}'
                 )
                 targets.append(('covenant', covenant_item))
-        if self.buy_mystic and not self._mystic_purchased_this_round:
+        if self._needs_item('mystic') and not self._mystic_purchased_this_round:
             mystic_item = self._match_target_item(mystic_asset, 'mystic', image)
             if mystic_item:
                 logger.info(
@@ -343,6 +361,7 @@ class SecretShop(ResourceBarMixin, PopupHandler):
             if not payment.submitted:
                 self._payment_timer.reset()
             payment.submitted = True
+            self._reset_currency_observation()
             self.device.click(BUY_CONFIRM)
             return True
         return False
@@ -355,10 +374,11 @@ class SecretShop(ResourceBarMixin, PopupHandler):
         if self.appear(REFRESH_CONFIRM, interval=2):
             if not payment.submitted:
                 self._payment_timer.reset()
+                self._refresh_fallback.reset()
             payment.submitted = True
             # A refresh returns the list to its top. This is a recognition
             # expectation only; bought flags/counts remain unchanged until
-            # the exact debit is confirmed, even if the old list is visible.
+            # changed goods or the exact debit confirms this refresh.
             self._scrolled = False
             self._reset_stable()
             self.device.click(REFRESH_CONFIRM)
@@ -371,65 +391,135 @@ class SecretShop(ResourceBarMixin, PopupHandler):
         return self.match_template_color(SECRET_SHOP_CHECK)
 
     def _read_shop_balance(self) -> tuple[int, int] | None:
+        values = tuple(self._read_shop_currency(key) for key in RESOURCE_BAR_LAYOUT_SECRET_SHOP)
+        return values if all(value is not None for value in values) else None
+
+    def _currency_image(self, key):
+        icons = {'gold': SECRET_SHOP_GOLD_ICON, 'skystone': SKYSTONE_ICON}
+        offsets, _ = self._match_resource_bar_icons(RESOURCE_BAR_LAYOUT_SECRET_SHOP, icons=icons)
+        if len(offsets) != 2:
+            return None
+        area = get_resource_bar_segment_area(
+            RESOURCE_BAR_LAYOUT_SECRET_SHOP, key, offsets, icons, {'gold': -3},
+        )
         # Copy the existing marker detector: broadening a global asset's search
         # would leak shop-specific geometry into the combat navigator. Its glow
         # extends left of the tiny central template, so crop before that glow,
         # rather than stripping an OCR suffix that might itself resemble digits.
         repeat_marker = copy(REPEAT_COMBAT_CHECK.matched_button)
         repeat_marker.load_search(OCR_RESOURCE_BAR.area)
-        right_limits = {}
-        if repeat_marker.match_template_luma(self.device.image):
-            right_limits['skystone'] = repeat_marker.button[0] - 36
-        inspected = self.inspect_resource_bar_status(
-            layout=RESOURCE_BAR_LAYOUT_SECRET_SHOP, layout_name='SecretShop',
-            icons={'gold': SECRET_SHOP_GOLD_ICON, 'skystone': SKYSTONE_ICON},
-            segment_left_paddings={'gold': -3},
-            segment_right_limits=right_limits,
-        )
-        if inspected.final is None:
+        if key == 'skystone' and repeat_marker.match_template_luma(self.device.image):
+            area = (area[0], area[1], min(area[2], repeat_marker.button[0] - 36), area[3])
+        if area[2] <= area[0]:
             return None
-        if any(not value.text.isdecimal() for value in inspected.final.values()):
-            logger.warning('Secret shop balance contains nonnumeric OCR text; wait for another frame')
+        return self.image_crop(area).copy()
+
+    def _read_shop_currency(self, key, image=None):
+        if image is None:
+            image = self._currency_image(key)
+        if image is None:
             return None
-        return tuple(inspected.final[key].value for key in RESOURCE_BAR_LAYOUT_SECRET_SHOP)
+        ocr = ShopCurrencyOcr(OCR_RESOURCE_BAR, lang=self._ocr_lang(), name=f'SecretShop.{key}')
+        text = ocr.ocr_single_line(image, direct_ocr=True)
+        value = ocr.parse_amount(text)
+        if value is None:
+            logger.warning(f'Secret shop rejects malformed {key} amount: {text!r}')
+        return value
+
+    def _reset_currency_observation(self):
+        self._currency_candidate = None
+        self._currency_observed = None
+        self._currency_value = None
+        self.interval_clear('secret_shop_currency', interval=1)
+
+    def _poll_currency(self, key):
+        image = self._currency_image(key)
+        stable = same_currency_image(self._currency_candidate, image)
+        self._currency_candidate = image
+        if not stable:
+            return None
+        if self._currency_value is not None and same_currency_image(self._currency_observed, image):
+            return self._currency_value
+        if not self.interval_is_reached('secret_shop_currency', interval=1):
+            return None
+        self.interval_reset('secret_shop_currency', interval=1)
+        self._currency_observed = image
+        self._currency_value = self._read_shop_currency(key, image=image)
+        return self._currency_value
+
+    def _capture_goods(self):
+        return ShopGoods.capture(self.device.image)
+
+    def _needs_item(self, kind):
+        # Buying is controlled only by the toggles. A zero or already reached
+        # target excludes no purchases while another positive goal is pending;
+        # the all-goals exit below is checked only after the current assortment
+        # has been scanned through its bottom, before opening another refresh.
+        return self.buy_covenant if kind == 'covenant' else self.buy_mystic
+
+    def _purchase_goals(self):
+        return [(bought, target) for enabled, bought, target in (
+            (self.buy_covenant, self.covenant_bought, self.target_covenant),
+            (self.buy_mystic, self.mystic_bought, self.target_mystic),
+        ) if enabled and target > 0]
+
+    def _goal_complete(self):
+        if self.completion_mode == 'PurchaseCount':
+            goals = self._purchase_goals()
+            # Zero means "not an exit goal", not "do not buy". An empty goal
+            # set is invalid, rather than vacuously complete; run() rejects it
+            # before navigation so this mode can never refresh without a goal.
+            return bool(goals) and all(bought >= target for bought, target in goals)
+        return not any(self._needs_item(kind) for kind in ITEM_GOLD_COST)
+
+    def _goal_signature(self):
+        return [self.completion_mode, self.target_covenant, self.target_mystic,
+                self.buy_covenant, self.buy_mystic, self.only_free]
+
+    def _save_progress(self):
+        if self.completion_mode == 'PurchaseCount':
+            self.config.SecretShopRuntime_Session = {
+                'goal': self._goal_signature(), 'covenant': self.covenant_bought,
+                'mystic': self.mystic_bought, 'refresh': self.refresh_count,
+            }
+
+    def handle_network_error(self, interval=5):
+        if self.appear(NETWORK_ERROR_DISCONNECT):
+            raise GameStuckError('Secret shop disconnected; restart before continuing')
+        return super().handle_network_error(interval=interval)
 
     def _store_shop_balance(self, balance):
         self.write_resource_bar_status({
             key: ResourceBarValue(RESOURCE_BAR_SPECS[key], str(value), value)
             for key, value in zip(RESOURCE_BAR_LAYOUT_SECRET_SHOP, balance)
+            if value is not None
         })
 
     def _reset_balance_evidence(self):
-        self._balance_candidate = None
-        self._balance_count = 0
-
-    def _stable_shop_balance(self):
-        balance = self._read_shop_balance()
-        if balance is None:
-            self._reset_balance_evidence()
-            return None
-        if balance == self._balance_candidate:
-            self._balance_count += 1
-        else:
-            self._balance_candidate = balance
-            self._balance_count = 1
-        return balance if self._balance_count >= 2 else None
+        self._currency_candidate = None
 
     def _begin_payment(self, kind, balance, button):
         # Capture the baseline BEFORE opening a dialog. Never replace it with
         # a later OCR value while the server may be applying this payment.
         self._payment = ShopPayment(kind, balance)
+        self._entry_currency_image = self._currency_image('skystone' if kind == 'refresh' else 'gold')
         self._payment_timer.reset()
+        self._reset_currency_observation()
+        self._goods_candidate = None
         self._reset_balance_evidence()
+        self.interval_clear('secret_shop_refresh_baseline', interval=1)
         self.interval_clear(BUY_CONFIRM)
         self.interval_clear(REFRESH_CONFIRM)
         self.interval_reset('secret_shop_payment_entry', interval=2)
         self.device.click(button)
 
-    def _handle_payment_entry(self, balance):
+    def _handle_payment_entry(self, balance=None):
         """Retry an opening click only on the unchanged, usable shop list."""
         payment = self._payment
-        if payment.submitted or balance != payment.before:
+        if payment.submitted:
+            return False
+        key = 'skystone' if payment.kind == 'refresh' else 'gold'
+        if not same_currency_image(self._entry_currency_image, self._currency_image(key)):
             return False
         if not self.interval_is_reached('secret_shop_payment_entry', interval=2):
             return False
@@ -460,10 +550,44 @@ class SecretShop(ResourceBarMixin, PopupHandler):
         else:
             self.mystic_bought += 1
             self._mystic_purchased_this_round = True
-        logger.info(f'Secret shop {payment.kind} debit confirmed: {payment.before} -> {payment.expected}')
+        logger.info(f'Secret shop {payment.kind} completed: {payment.before} -> {payment.expected}')
+        if payment.kind != 'refresh':
+            self._known_gold = payment.expected[0]
+        self._save_progress()
         self._payment = None
         self._reset_balance_evidence()
         self._reset_stable()
+        self._reset_currency_observation()
+
+    def _refresh_complete(self):
+        payment = self._payment
+        if not payment.submitted:
+            return False
+        current = self._capture_goods()
+        stable = self._goods_candidate is not None and self._goods_candidate.matches(current)
+        self._goods_candidate = current
+        if not stable:
+            return False
+        if self._goods_before_refresh is not None and not self._goods_before_refresh.matches(current):
+            logger.info('Secret shop refresh confirmed by changed item icons')
+            return True
+        if not self._refresh_fallback.reached():
+            return False
+        if payment.before[1] is None:
+            if self._refresh_sky_image is None:
+                return False
+            # The saved pre-refresh crop may be unreadable. Throttle failed
+            # baseline reads just like the live currency observation; neither
+            # failure nor retries may reset the transaction's total deadline.
+            if not self.interval_is_reached('secret_shop_refresh_baseline', interval=1):
+                return False
+            self.interval_reset('secret_shop_refresh_baseline', interval=1)
+            sky = self._read_shop_currency('skystone', image=self._refresh_sky_image)
+            if sky is None:
+                return False
+            payment.before = (None, sky)
+        sky = self._poll_currency('skystone')
+        return payment.observe((None, sky)) if sky is not None else False
 
     def _stop_uncertain_payment(self, reason):
         logger.critical(f'Secret shop payment unresolved: {reason}; payment={self._payment}')
@@ -486,18 +610,26 @@ class SecretShop(ResourceBarMixin, PopupHandler):
             # a stable old list, or a timeout cannot release a pending payment.
             if self._payment is not None:
                 ready = self._shop_is_ready() and self._is_shop_stable()
-                balance = self._read_shop_balance() if ready else None
-                if self._payment.observe(balance):
-                    self._finish_payment()
-                    timeout.reset()
-                    continue
+                if ready and self._payment.submitted:
+                    if self._payment.kind == 'refresh':
+                        complete = self._refresh_complete()
+                    else:
+                        gold = self._poll_currency('gold')
+                        complete = gold is not None and self._payment.observe((gold, None))
+                    if complete:
+                        self._finish_payment()
+                        timeout.reset()
+                        continue
+                if not ready:
+                    self._currency_candidate = None
+                    self._goods_candidate = None
                 if self._payment_timer.reached():
                     self._stop_uncertain_payment('confirmation or debit timed out')
                 if self.handle_buy_confirm() or self.handle_refresh_confirm():
                     continue
                 if self.handle_network_error():
                     continue
-                if ready and self._handle_payment_entry(balance):
+                if ready and self._handle_payment_entry():
                     continue
                 continue
 
@@ -505,7 +637,7 @@ class SecretShop(ResourceBarMixin, PopupHandler):
                 logger.warning('Secret shop observation timeout; defer without spending')
                 self.config.task_delay(minute=10)
                 return False
-            if not self.buy_covenant and not self.buy_mystic:
+            if self.completion_mode != 'PurchaseCount' and self._goal_complete():
                 return True
             if self.appear(BUY_CONFIRM) or self.appear(REFRESH_CONFIRM):
                 self._stop_uncertain_payment('dialog without a known pre-payment balance')
@@ -515,23 +647,37 @@ class SecretShop(ResourceBarMixin, PopupHandler):
                     continue
                 continue
 
-            balance = self._stable_shop_balance()
-            if balance is None:
-                continue
-            self._store_shop_balance(balance)
-            enabled_costs = [cost for kind, cost in ITEM_GOLD_COST.items()
-                             if (self.buy_covenant if kind == 'covenant' else self.buy_mystic)]
-            if balance[0] < min(enabled_costs):
+            enabled_costs = [cost for kind, cost in ITEM_GOLD_COST.items() if self._needs_item(kind)]
+            if self._known_gold is not None and self._known_gold < min(enabled_costs):
                 logger.info('Secret shop: insufficient gold for any enabled item')
                 return True
+            # Scanning an ordinary list does not require OCR. Read gold only
+            # after locating an eligible item, then use that exact baseline
+            # until its debit is confirmed. Stones are irrelevant to a buy.
             targets = [(kind, button) for kind, button in self._find_target_buy_buttons()
-                       if balance[0] >= ITEM_GOLD_COST[kind]]
+                       if self._needs_item(kind)]
             if targets:
-                kind, button = targets[0]
-                self._begin_payment(kind, balance, button)
-                continue
+                if not self.interval_is_reached('secret_shop_buy_balance', interval=1):
+                    continue
+                self.interval_reset('secret_shop_buy_balance', interval=1)
+                gold = self._read_shop_currency('gold')
+                if gold is None:
+                    continue
+                self._known_gold = gold
+                self._store_shop_balance((gold, None))
+                targets = [(kind, button) for kind, button in targets if gold >= ITEM_GOLD_COST[kind]]
+                if not targets:
+                    if gold < min(enabled_costs):
+                        return True
+                    # A costly enabled item does not prevent finding a cheaper
+                    # target in the other rows; keep scanning this assortment.
+                else:
+                    kind, button = targets[0]
+                    self._begin_payment(kind, (gold, None), button)
+                    continue
 
             if not self._scrolled:
+                self._goods_before_refresh = self._capture_goods()
                 self.device.swipe(
                     (self.SCROLL_AREA[0], self.SCROLL_AREA[1]),
                     (self.SCROLL_AREA[2], self.SCROLL_AREA[3]),
@@ -543,12 +689,22 @@ class SecretShop(ResourceBarMixin, PopupHandler):
                 timeout.reset()
                 continue
 
-            if self.only_free or self.refresh_count >= self.max_refresh:
+            # Reaching a purchase goal must not skip eligible top rows or items
+            # hidden below the fold. Exit only after a stable bottom scan finds
+            # nothing else to buy and every pending debit has been confirmed.
+            # This placement also prevents spending stones on a new assortment.
+            if self._goal_complete():
+                logger.info('Secret shop: purchase goals reached and current assortment fully scanned')
                 return True
-            if balance[1] < REFRESH_SKYSTONE_COST:
-                logger.info('Secret shop: insufficient skystones to refresh')
+            if self.only_free or (self.completion_mode == 'RefreshCount' and self.refresh_count >= self.max_refresh):
                 return True
-            self._begin_payment('refresh', balance, REFRESH)
+            if not self.match_template_color(REFRESH):
+                logger.info('Secret shop: refresh is unavailable')
+                return True
+            # Keep the stone crop, not its OCR result. Most refreshes can be
+            # proved by the new assortment without reading either currency.
+            self._refresh_sky_image = self._currency_image('skystone')
+            self._begin_payment('refresh', (None, None), REFRESH)
 
     def run(self, skip_first_screenshot=False):
         """Buy and refresh using one screenshot-first transaction loop.
@@ -557,16 +713,30 @@ class SecretShop(ResourceBarMixin, PopupHandler):
             in: page_secret_shop (navigation prepares it when necessary)
             out: page_secret_shop; stalled payment uses scheduler restart recovery
         """
+        if self.completion_mode == 'PurchaseCount' and not self._purchase_goals():
+            message = 'Secret shop: select at least one item with a positive purchase target'
+            logger.critical(message)
+            raise RequestHumanTakeover(message)
         if not self.device.app_is_running():
             from tasks.login.login import Login
             Login(self.config, device=self.device).app_start()
         UI(self.config, device=self.device).ui_goto(page_secret_shop)
+        if self.completion_mode == 'PurchaseCount':
+            session = getattr(self.config, 'SecretShopRuntime_Session', {})
+            if session.get('goal') == self._goal_signature():
+                self.covenant_bought = session.get('covenant', 0)
+                self.mystic_bought = session.get('mystic', 0)
+                self.refresh_count = session.get('refresh', 0)
+            self._save_progress()
         logger.hr('Secret Shop Bookmark Farming', level=1)
-        logger.info(f'Maximum refresh count: {self.max_refresh}; free only: {self.only_free}')
+        logger.info(f'Secret shop goal: mode={self.completion_mode}, refresh={self.max_refresh}, '
+                    f'covenant={self.target_covenant}, mystic={self.target_mystic}; free only: {self.only_free}')
         result = self._run_transactions(skip_first_screenshot)
         logger.info(f'Secret shop finished: refresh={self.refresh_count}, '
                     f'covenant={self.covenant_bought}, mystic={self.mystic_bought}')
         if result:
+            if self.completion_mode == 'PurchaseCount':
+                self.config.SecretShopRuntime_Session = {}
             self._delay_to_auto_refresh()
         return result
 

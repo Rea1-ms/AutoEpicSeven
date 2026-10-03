@@ -4,7 +4,9 @@ from types import SimpleNamespace
 from unittest.mock import Mock, patch
 
 from module.alas import AzurLaneAutoScript
-from module.exception import GameStuckError, GameTooManyClickError
+from module.exception import GameStuckError, GameTooManyClickError, RequestHumanTakeover
+from tasks.secret_shop.recognition import ShopCurrencyOcr
+from tasks.secret_shop.payment import ShopPayment
 from tests.support.offline import ControlledClock
 from tests.support.secret_shop import Frame, ShopReplay
 
@@ -89,7 +91,7 @@ class PaymentReplayTests(unittest.TestCase):
         shop, result = self.run_shop(frames, SecretShop_OnlyFree=False)
         self.assertTrue(result)
         self.assertEqual(shop.refresh_count, 1)
-        self.assertEqual(shop.device.actions[-1], (16, 'swipe'))
+        self.assertEqual(shop.device.actions[-1], (18, 'swipe'))
 
     def test_one_frame_false_debit_cannot_count_purchase(self):
         before = Frame(target='covenant')
@@ -107,8 +109,8 @@ class PaymentReplayTests(unittest.TestCase):
         self.assertEqual(shop.covenant_bought, 1)
         self.assertEqual(shop.device.actions[-1], (10, 'swipe'))
 
-    def test_wrong_debit_or_other_currency_change_stops_without_retry(self):
-        for balance in ((815999, 100), (816001, 100), (816000, 97), (632000, 100), (1100000, 100)):
+    def test_wrong_gold_debit_stops_without_retry(self):
+        for balance in ((815999, 100), (816001, 100), (632000, 100), (1100000, 100)):
             with self.subTest(balance=balance):
                 frames = [Frame(target='covenant')] * 2 + [Frame(page='buy')]
                 frames += [Frame(balance=balance)] * 75
@@ -127,7 +129,7 @@ class PaymentReplayTests(unittest.TestCase):
         self.assertEqual(shop.config.delays, [{'minute': 10}])
 
     def test_unstable_pre_payment_balance_must_be_observed_again(self):
-        frames = [Frame(target='covenant'), Frame(balance=None),
+        frames = [Frame(target='covenant'), Frame(balance=None, target='covenant'),
                   Frame(balance=(900000, 100), target='covenant'),
                   Frame(balance=(900000, 100), target='covenant'), Frame(page='buy')]
         frames += [Frame(balance=(716000, 100))] * 10
@@ -266,7 +268,7 @@ class PaymentReplayTests(unittest.TestCase):
         self.assertTrue(result)
         self.assertEqual(shop.refresh_count, 1)
         self.assertEqual(shop.device.actions, [
-            (1, 'swipe'), (3, 'REFRESH'), (4, 'REFRESH_CONFIRM'), (9, 'REFRESH_CONFIRM'), (13, 'swipe'),
+            (1, 'swipe'), (3, 'REFRESH'), (4, 'REFRESH_CONFIRM'), (9, 'REFRESH_CONFIRM'), (15, 'swipe'),
         ])
 
     def test_missed_entry_click_retries_current_visible_item(self):
@@ -281,12 +283,12 @@ class PaymentReplayTests(unittest.TestCase):
 
     def test_missed_refresh_entry_retries_until_confirmation_appears(self):
         frames = [Frame()] * 7 + [Frame(page='refresh')]
-        frames += [Frame(balance=(1000000, 97))] * 8
+        frames += [Frame(balance=(1000000, 97))] * 12
         shop, result = self.run_shop(frames, SecretShop_OnlyFree=False)
         self.assertTrue(result)
         self.assertEqual(shop.refresh_count, 1)
         self.assertEqual(shop.device.actions, [
-            (1, 'swipe'), (3, 'REFRESH'), (6, 'REFRESH'), (7, 'REFRESH_CONFIRM'), (11, 'swipe'),
+            (1, 'swipe'), (3, 'REFRESH'), (6, 'REFRESH'), (7, 'REFRESH_CONFIRM'), (14, 'swipe'),
         ])
 
     def test_entry_retry_requires_same_item_and_unchanged_balance(self):
@@ -333,10 +335,10 @@ class PaymentReplayTests(unittest.TestCase):
     def test_refreshed_round_allows_same_item_but_never_second_refresh(self):
         before = Frame(target='covenant')
         first = Frame(balance=(816000, 100), target='covenant')
-        refreshed = Frame(balance=(816000, 97), target='covenant')
+        refreshed = Frame(balance=(816000, 97), target='covenant', goods=(5, 6, 7, 8))
         second = Frame(balance=(632000, 97), target='covenant')
         frames = [before] * 2 + [Frame(page='buy')] + [first] * 6
-        frames += [Frame(page='refresh')] + [refreshed] * 4 + [Frame(page='buy')] + [second] * 8
+        frames += [Frame(page='refresh')] + [refreshed] * 6 + [Frame(page='buy')] + [second] * 8
         shop, result = self.run_shop(frames, SecretShop_OnlyFree=False)
         self.assertTrue(result)
         self.assertEqual((shop.covenant_bought, shop.refresh_count), (2, 1))
@@ -344,3 +346,266 @@ class PaymentReplayTests(unittest.TestCase):
             'covenant', 'BUY_CONFIRM', 'swipe', 'REFRESH', 'REFRESH_CONFIRM',
             'covenant', 'BUY_CONFIRM', 'swipe',
         ])
+
+    def test_successful_purchase_reads_gold_before_and_after_only(self):
+        frames = [Frame(target='covenant')] * 2 + [Frame(page='buy')]
+        frames += [Frame(balance=(816000, None))] * 8
+        shop, result = self.run_shop(frames)
+        self.assertTrue(result)
+        self.assertEqual(shop.covenant_bought, 1)
+        self.assertEqual(shop.currency_reads, [(1, 'gold'), (4, 'gold')])
+
+    def test_ordinary_scan_and_image_confirmed_refresh_do_not_read_resources(self):
+        frames = [Frame()] * 4 + [Frame(page='refresh')]
+        frames += [Frame(goods=(5, 6, 7, 8))] * 9
+        shop, result = self.run_shop(frames, SecretShop_OnlyFree=False)
+        self.assertTrue(result)
+        self.assertEqual(shop.refresh_count, 1)
+        self.assertEqual(shop.currency_reads, [])
+        self.assertEqual(shop.device.actions, [(1, 'swipe'), (3, 'REFRESH'), (4, 'REFRESH_CONFIRM'), (9, 'swipe')])
+
+    def test_unchanged_resource_pixels_do_not_repeat_ocr_while_waiting(self):
+        frames = [Frame(target='covenant')] * 2 + [Frame(page='buy')]
+        frames += [Frame(target='covenant')] * 20 + [Frame(balance=(816000, 100))] * 8
+        shop, result = self.run_shop(frames)
+        self.assertTrue(result)
+        self.assertEqual(shop.currency_reads, [(1, 'gold'), (4, 'gold'), (24, 'gold')])
+        self.assertEqual(shop.covenant_bought, 1)
+
+    def test_unchanged_goods_use_stone_fallback_without_gold_ocr(self):
+        frames = [Frame()] * 4 + [Frame(page='refresh')]
+        frames += [Frame(balance=(1000000, 97))] * 12
+        shop, result = self.run_shop(frames, SecretShop_OnlyFree=False)
+        self.assertTrue(result)
+        self.assertEqual(shop.refresh_count, 1)
+        self.assertEqual([key for _, key in shop.currency_reads], ['skystone', 'skystone'])
+
+    def test_unreadable_refresh_baseline_does_not_ocr_each_frame_or_count_success(self):
+        frames = [Frame()] * 4 + [Frame(page='refresh')]
+        frames += [Frame(seconds=0.1)] * 70 + [Frame(page='disconnect')]
+        reads = []
+        with ControlledClock() as clock, patch('tasks.secret_shop.secret_shop.UI.ui_goto'):
+            shop = ShopReplay(frames, clock, SecretShop_OnlyFree=False)
+
+            def unreadable(key, image=None):
+                reads.append((clock.now, key))
+                return None
+
+            with patch.object(shop, '_read_shop_currency', side_effect=unreadable):
+                self.assert_restart_scheduled(shop)
+        self.assertGreaterEqual(len(reads), 2)
+        self.assertLessEqual(len(reads), 5)
+        self.assertTrue(all(key == 'skystone' for _, key in reads))
+        self.assertTrue(all(later[0] - earlier[0] >= 1 for earlier, later in zip(reads, reads[1:])))
+        self.assertEqual(shop.refresh_count, 0)
+
+    def test_one_changed_goods_frame_is_not_a_refresh(self):
+        frames = [Frame()] * 4 + [Frame(page='refresh')]
+        frames += [Frame(goods=(5, 6, 7, 8))] + [Frame()] * 75
+        shop = self.assert_uncertain(frames, SecretShop_OnlyFree=False)
+        self.assertEqual(shop.refresh_count, 0)
+
+    def test_disconnect_during_purchase_reaches_restart_immediately(self):
+        frames = [Frame(target='covenant')] * 2 + [Frame(page='buy'), Frame(page='disconnect')]
+        with ControlledClock() as clock, patch('tasks.secret_shop.secret_shop.UI.ui_goto'):
+            shop = ShopReplay(frames, clock)
+            self.assert_restart_scheduled(shop)
+        self.assertEqual(shop.device.index, 3)
+        self.assertEqual(shop.covenant_bought, 0)
+
+    def test_purchase_goal_scans_the_current_round_before_exiting_without_refresh(self):
+        frames = [Frame(target='covenant')] * 2 + [Frame(page='buy')]
+        frames += [Frame(balance=(816000, 100), target='covenant')] * 8
+        shop, result = self.run_shop(frames, SecretShop_CompletionMode='PurchaseCount',
+                                     SecretShop_TargetCovenant=1, SecretShop_TargetMystic=0,
+                                     SecretShop_OnlyFree=False, SecretShop_MaxRefresh=0)
+        self.assertTrue(result)
+        self.assertEqual(shop.covenant_bought, 1)
+        self.assertEqual([name for _, name in shop.device.actions], ['covenant', 'BUY_CONFIRM', 'swipe'])
+        self.assertEqual(shop.config.SecretShopRuntime_Session, {})
+
+    def test_reached_top_goal_still_buys_an_enabled_item_hidden_at_the_bottom(self):
+        frames = [Frame(target='covenant')] * 2 + [Frame(page='buy')]
+        frames += [Frame(balance=(816000, 100))] * 4
+        frames += [Frame(balance=(816000, 100), target='mystic')] * 2 + [Frame(page='buy')]
+        frames += [Frame(balance=(536000, 100))] * 8
+        shop, result = self.run_shop(frames, SecretShop_CompletionMode='PurchaseCount',
+                                     SecretShop_TargetCovenant=1, SecretShop_TargetMystic=0,
+                                     SecretShop_OnlyFree=False)
+        self.assertTrue(result)
+        self.assertEqual((shop.covenant_bought, shop.mystic_bought, shop.refresh_count), (1, 1, 0))
+        self.assertEqual([name for _, name in shop.device.actions], [
+            'covenant', 'BUY_CONFIRM', 'swipe', 'mystic', 'BUY_CONFIRM',
+        ])
+        self.assertTrue(shop._scrolled)
+        self.assertIsNone(shop._payment)
+
+    def test_goal_reached_at_bottom_finishes_without_another_scroll_or_refresh(self):
+        frames = [Frame()] * 2 + [Frame(target='covenant')] * 2 + [Frame(page='buy')]
+        frames += [Frame(balance=(816000, 100))] * 8
+        shop, result = self.run_shop(frames, SecretShop_CompletionMode='PurchaseCount',
+                                     SecretShop_TargetCovenant=1, SecretShop_TargetMystic=0,
+                                     SecretShop_OnlyFree=False)
+        self.assertTrue(result)
+        self.assertEqual(shop.covenant_bought, 1)
+        self.assertEqual([name for _, name in shop.device.actions], ['swipe', 'covenant', 'BUY_CONFIRM'])
+
+    def test_purchase_goal_ignores_refresh_count_and_requires_each_selected_target(self):
+        before = Frame(target='covenant')
+        first = Frame(balance=(816000, 100), target='covenant')
+        refreshed = Frame(balance=(816000, 97), target='mystic', goods=(5, 6, 7, 8))
+        second = Frame(balance=(536000, 97), target='mystic', goods=(5, 6, 7, 8))
+        frames = [before] * 2 + [Frame(page='buy')] + [first] * 6
+        frames += [Frame(page='refresh')] + [refreshed] * 6 + [Frame(page='buy')] + [second] * 8
+        shop, result = self.run_shop(frames, SecretShop_CompletionMode='PurchaseCount',
+                                     SecretShop_TargetCovenant=1, SecretShop_TargetMystic=1,
+                                     SecretShop_OnlyFree=False, SecretShop_MaxRefresh=0)
+        self.assertTrue(result)
+        self.assertEqual((shop.covenant_bought, shop.mystic_bought, shop.refresh_count), (1, 1, 1))
+        self.assertEqual([name for _, name in shop.device.actions], [
+            'covenant', 'BUY_CONFIRM', 'swipe', 'REFRESH', 'REFRESH_CONFIRM', 'mystic', 'BUY_CONFIRM', 'swipe',
+        ])
+
+    def test_purchase_goal_requires_a_positive_target_on_a_selected_item(self):
+        for covenant, mystic, buy_covenant, buy_mystic in (
+            (0, 0, True, True), (0, 1, True, False), (1, 0, False, True), (1, 1, False, False),
+        ):
+            with self.subTest(targets=(covenant, mystic), selected=(buy_covenant, buy_mystic)):
+                with ControlledClock() as clock, patch('tasks.secret_shop.secret_shop.UI.ui_goto') as navigate:
+                    shop = ShopReplay([Frame()], clock, SecretShop_CompletionMode='PurchaseCount',
+                                      SecretShop_TargetCovenant=covenant, SecretShop_TargetMystic=mystic,
+                                      SecretShop_BuyCovenantBookmark=buy_covenant,
+                                      SecretShop_BuyMysticMedal=buy_mystic, SecretShop_OnlyFree=False)
+                    with patch.object(shop.device, 'app_is_running') as running:
+                        with self.assertRaisesRegex(RequestHumanTakeover, 'positive purchase target'):
+                            shop.run(skip_first_screenshot=True)
+                    running.assert_not_called()
+                    navigate.assert_not_called()
+                self.assertEqual(shop.device.actions, [])
+                self.assertEqual(shop.currency_reads, [])
+                self.assertEqual(shop.config.delays, [])
+
+    def test_zero_target_item_is_bought_while_waiting_for_the_other_goal(self):
+        frames = [Frame(target='covenant')] * 2 + [Frame(page='buy')]
+        frames += [Frame(balance=(816000, 100), target='mystic')] * 4 + [Frame(page='buy')]
+        frames += [Frame(balance=(536000, 100))] * 8
+        shop, result = self.run_shop(frames, SecretShop_CompletionMode='PurchaseCount',
+                                     SecretShop_TargetCovenant=0, SecretShop_TargetMystic=1,
+                                     SecretShop_OnlyFree=False)
+        self.assertTrue(result)
+        self.assertEqual((shop.covenant_bought, shop.mystic_bought), (1, 1))
+        self.assertEqual([name for _, name in shop.device.actions], [
+            'covenant', 'BUY_CONFIRM', 'mystic', 'BUY_CONFIRM', 'swipe',
+        ])
+
+    def test_completed_item_target_does_not_disable_buying_until_all_goals_finish(self):
+        before = Frame(balance=(2000000, 100), target='covenant')
+        first = Frame(balance=(1816000, 100))
+        refreshed = Frame(balance=(1816000, 97), target='covenant', goods=(5, 6, 7, 8))
+        second = Frame(balance=(1632000, 97), target='mystic', goods=(5, 6, 7, 8))
+        final = Frame(balance=(1352000, 97), goods=(5, 6, 7, 8))
+        frames = [before] * 2 + [Frame(page='buy')] + [first] * 6
+        frames += [Frame(page='refresh')] + [refreshed] * 5 + [Frame(page='buy')]
+        frames += [second] * 4 + [Frame(page='buy')] + [final] * 8
+        shop, result = self.run_shop(frames, SecretShop_CompletionMode='PurchaseCount',
+                                     SecretShop_TargetCovenant=1, SecretShop_TargetMystic=1,
+                                     SecretShop_OnlyFree=False)
+        self.assertTrue(result)
+        self.assertEqual((shop.covenant_bought, shop.mystic_bought, shop.refresh_count), (2, 1, 1))
+        self.assertEqual([name for _, name in shop.device.actions], [
+            'covenant', 'BUY_CONFIRM', 'swipe', 'REFRESH', 'REFRESH_CONFIRM',
+            'covenant', 'BUY_CONFIRM', 'mystic', 'BUY_CONFIRM', 'swipe',
+        ])
+
+    def test_disabled_item_positive_target_does_not_block_selected_goal(self):
+        frames = [Frame(target='covenant')] * 2 + [Frame(page='buy')]
+        frames += [Frame(balance=(816000, 100), target='mystic')] * 8
+        shop, result = self.run_shop(frames, SecretShop_CompletionMode='PurchaseCount',
+                                     SecretShop_TargetCovenant=1, SecretShop_TargetMystic=10,
+                                     SecretShop_BuyMysticMedal=False, SecretShop_OnlyFree=False)
+        self.assertTrue(result)
+        self.assertEqual((shop.covenant_bought, shop.mystic_bought), (1, 0))
+        self.assertEqual([name for _, name in shop.device.actions], ['covenant', 'BUY_CONFIRM', 'swipe'])
+
+    def test_confirmed_purchase_goal_progress_survives_restart(self):
+        frames = [Frame(target='covenant')] * 2 + [Frame(page='buy')]
+        frames += [Frame(balance=(816000, 100))] * 3 + [Frame(page='disconnect')]
+        with ControlledClock() as clock, patch('tasks.secret_shop.secret_shop.UI.ui_goto'):
+            shop = ShopReplay(frames, clock, SecretShop_CompletionMode='PurchaseCount',
+                              SecretShop_TargetCovenant=1, SecretShop_TargetMystic=1,
+                              SecretShop_OnlyFree=False)
+            self.assert_restart_scheduled(shop)
+            saved = shop.config.SecretShopRuntime_Session
+            resumed = ShopReplay([Frame(balance=(816000, 100), target='mystic')] * 2 + [Frame(page='buy')]
+                                 + [Frame(balance=(536000, 100))] * 8, clock,
+                                 SecretShop_CompletionMode='PurchaseCount', SecretShop_TargetCovenant=1,
+                                 SecretShop_TargetMystic=1, SecretShopRuntime_Session=saved,
+                                 SecretShop_OnlyFree=False)
+            self.assertTrue(resumed.run(skip_first_screenshot=True))
+        self.assertEqual((resumed.covenant_bought, resumed.mystic_bought), (1, 1))
+        self.assertEqual([name for _, name in resumed.device.actions], ['mystic', 'BUY_CONFIRM', 'swipe'])
+
+    def test_changed_purchase_goal_starts_a_new_progress_record(self):
+        stale = {'goal': ['PurchaseCount', 2, 1, True, True, False], 'covenant': 2, 'mystic': 1, 'refresh': 8}
+        shop, result = self.run_shop([Frame(balance=(1000000, 2))] * 8,
+                                     SecretShop_CompletionMode='PurchaseCount',
+                                     SecretShop_TargetCovenant=1, SecretShop_TargetMystic=0,
+                                     SecretShopRuntime_Session=stale, SecretShop_OnlyFree=False)
+        self.assertTrue(result)
+        self.assertEqual((shop.covenant_bought, shop.mystic_bought), (0, 0))
+
+    def test_free_only_ignores_hidden_purchase_targets_but_honors_buy_selection(self):
+        frames = [Frame(target='covenant')] * 2 + [Frame(page='buy')]
+        frames += [Frame(balance=(816000, 100), target='mystic')] * 8
+        shop, result = self.run_shop(frames, SecretShop_OnlyFree=True,
+                                     SecretShop_CompletionMode='PurchaseCount',
+                                     SecretShop_TargetCovenant=0, SecretShop_TargetMystic=0,
+                                     SecretShop_BuyMysticMedal=False)
+        self.assertTrue(result)
+        self.assertEqual((shop.covenant_bought, shop.mystic_bought, shop.refresh_count), (1, 0, 0))
+        self.assertEqual([name for _, name in shop.device.actions], ['covenant', 'BUY_CONFIRM', 'swipe'])
+        self.assertEqual(shop.config.SecretShop_CompletionMode, 'PurchaseCount')
+        self.assertEqual(shop.config.SecretShop_TargetCovenant, 0)
+
+    def test_currency_parser_rejects_truncated_groups_and_nondigits(self):
+        for text in ('196,389,22', '196,573,22', '1249园', '.', ''):
+            with self.subTest(text=text):
+                self.assertIsNone(ShopCurrencyOcr.parse_amount(text))
+        self.assertEqual(ShopCurrencyOcr.parse_amount('196,389,222'), 196389222)
+        self.assertEqual(ShopCurrencyOcr.parse_amount('0'), 0)
+
+    def test_missing_spent_currency_baseline_cannot_confirm_a_payment(self):
+        for kind in ('covenant', 'refresh'):
+            with self.subTest(kind=kind):
+                payment = ShopPayment(kind, (None, None), submitted=True)
+                self.assertFalse(payment.observe((816000, 97)))
+
+    def test_completion_configuration_defaults_and_visibility(self):
+        from module.config.config_updater import ConfigGenerator, ConfigUpdater
+        argument = ConfigGenerator().argument['SecretShop']
+        self.assertEqual(argument['CompletionMode']['value'], 'RefreshCount')
+        self.assertEqual(argument['CompletionMode']['option'], ['RefreshCount', 'PurchaseCount'])
+        updater = ConfigUpdater()
+        hidden = updater.get_hidden_args({'SecretShop': {'SecretShop': {
+            'OnlyFree': False, 'CompletionMode': 'PurchaseCount', 'BuyMysticMedal': False,
+        }}})
+        self.assertIn('SecretShop.SecretShop.MaxRefresh', hidden)
+        self.assertIn('SecretShop.SecretShop.TargetMystic', hidden)
+        self.assertNotIn('SecretShop.SecretShop.TargetCovenant', hidden)
+        hidden = updater.get_hidden_args({'SecretShop': {'SecretShop': {
+            'OnlyFree': False, 'CompletionMode': 'RefreshCount',
+        }}})
+        self.assertIn('SecretShop.SecretShop.TargetCovenant', hidden)
+        self.assertIn('SecretShop.SecretShop.TargetMystic', hidden)
+        self.assertNotIn('SecretShop.SecretShop.CompletionMode', hidden)
+        self.assertNotIn('SecretShop.SecretShop.MaxRefresh', hidden)
+        for mode in ('RefreshCount', 'PurchaseCount'):
+            for free_options in ({}, {'OnlyFree': True}):
+                with self.subTest(mode=mode, free_options=free_options):
+                    hidden = updater.get_hidden_args({'SecretShop': {'SecretShop': {
+                        **free_options, 'CompletionMode': mode,
+                    }}})
+                    for key in ('CompletionMode', 'MaxRefresh', 'TargetCovenant', 'TargetMystic'):
+                        self.assertIn(f'SecretShop.SecretShop.{key}', hidden)
+                    for key in ('BuyCovenantBookmark', 'BuyMysticMedal'):
+                        self.assertNotIn(f'SecretShop.SecretShop.{key}', hidden)

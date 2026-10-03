@@ -765,7 +765,23 @@
         "type": "checkbox",
         "value": true
       },
+      "CompletionMode": {
+        "type": "select",
+        "value": "RefreshCount",
+        "option": [
+          "RefreshCount",
+          "PurchaseCount"
+        ]
+      },
       "MaxRefresh": {
+        "type": "input",
+        "value": 10
+      },
+      "TargetCovenant": {
+        "type": "input",
+        "value": 10
+      },
+      "TargetMystic": {
         "type": "input",
         "value": 10
       },
@@ -776,6 +792,14 @@
       "BuyMysticMedal": {
         "type": "checkbox",
         "value": true
+      }
+    },
+    "SecretShopRuntime": {
+      "Session": {
+        "type": "dict",
+        "value": {},
+        "keepvalue": true,
+        "display": "hide"
       }
     }
   },

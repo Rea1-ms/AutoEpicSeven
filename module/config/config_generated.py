@@ -133,9 +133,15 @@ class GeneratedConfig:
 
     # Group `SecretShop`
     SecretShop_OnlyFree = True
+    SecretShop_CompletionMode = 'RefreshCount'  # RefreshCount, PurchaseCount
     SecretShop_MaxRefresh = 10
+    SecretShop_TargetCovenant = 10
+    SecretShop_TargetMystic = 10
     SecretShop_BuyCovenantBookmark = True
     SecretShop_BuyMysticMedal = True
+
+    # Group `SecretShopRuntime`
+    SecretShopRuntime_Session = {}
 
     # Group `Gacha`
     Gacha_CollectGoldenInheritance = True

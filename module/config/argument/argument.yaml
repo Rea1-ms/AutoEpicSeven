@@ -273,9 +273,21 @@ CombatRuntime:
 
 SecretShop:
   OnlyFree: true
+  CompletionMode:
+    value: RefreshCount
+    option: [ RefreshCount, PurchaseCount ]
   MaxRefresh: 10
+  TargetCovenant: 10
+  TargetMystic: 10
   BuyCovenantBookmark: true
   BuyMysticMedal: true
+
+SecretShopRuntime:
+  Session:
+    keepvalue: true
+    display: hide
+    type: dict
+    value: {}
 
 Gacha:
   CollectGoldenInheritance: true

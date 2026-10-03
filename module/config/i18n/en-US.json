@@ -692,16 +692,40 @@
       "name": "Free Only",
       "help": "No refresh, no skystones"
     },
+    "CompletionMode": {
+      "name": "Finish condition",
+      "help": "In Purchase count mode, set a positive target for at least one enabled item. When all targets are met, finish scanning and buying the current assortment, then stop without refreshing.",
+      "RefreshCount": "Refresh count",
+      "PurchaseCount": "Purchase count"
+    },
     "MaxRefresh": {
       "name": "Max Refresh",
       "help": ""
     },
+    "TargetCovenant": {
+      "name": "Covenant purchases required to finish",
+      "help": "0 excludes this item from the finish condition. Enabled items are still bought, including after their target is met."
+    },
+    "TargetMystic": {
+      "name": "Mystic purchases required to finish",
+      "help": "0 excludes this item from the finish condition. Enabled items are still bought, including after their target is met."
+    },
     "BuyCovenantBookmark": {
       "name": "Buy Covenant Bookmarks",
-      "help": ""
+      "help": "Buy whenever found until the task finishes, even after this item reaches its target."
     },
     "BuyMysticMedal": {
       "name": "Buy Mystic Medals",
+      "help": "Buy whenever found until the task finishes, even after this item reaches its target."
+    }
+  },
+  "SecretShopRuntime": {
+    "_info": {
+      "name": "Secret shop progress",
+      "help": ""
+    },
+    "Session": {
+      "name": "Confirmed purchase progress",
       "help": ""
     }
   },

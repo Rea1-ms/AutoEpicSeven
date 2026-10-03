@@ -183,9 +183,15 @@
     },
     "SecretShop": {
       "OnlyFree": true,
+      "CompletionMode": "RefreshCount",
       "MaxRefresh": 10,
+      "TargetCovenant": 10,
+      "TargetMystic": 10,
       "BuyCovenantBookmark": true,
       "BuyMysticMedal": true
+    },
+    "SecretShopRuntime": {
+      "Session": {}
     }
   },
   "Combat": {

@@ -621,7 +621,19 @@ class ConfigUpdater:
             yield 'Arena.Arena.NPCCombatCount'
         # SecretShop
         if deep_get(data, 'SecretShop.SecretShop.OnlyFree', default=True) is True:
+            yield 'SecretShop.SecretShop.CompletionMode'
             yield 'SecretShop.SecretShop.MaxRefresh'
+            yield 'SecretShop.SecretShop.TargetCovenant'
+            yield 'SecretShop.SecretShop.TargetMystic'
+        elif deep_get(data, 'SecretShop.SecretShop.CompletionMode', default='RefreshCount') == 'PurchaseCount':
+            yield 'SecretShop.SecretShop.MaxRefresh'
+        else:
+            yield 'SecretShop.SecretShop.TargetCovenant'
+            yield 'SecretShop.SecretShop.TargetMystic'
+        if not deep_get(data, 'SecretShop.SecretShop.BuyCovenantBookmark', default=True):
+            yield 'SecretShop.SecretShop.TargetCovenant'
+        if not deep_get(data, 'SecretShop.SecretShop.BuyMysticMedal', default=True):
+            yield 'SecretShop.SecretShop.TargetMystic'
         # Fast combat & repeat combat
         for task in ('Combat',):
             task_prefix = f'{task}.Combat'

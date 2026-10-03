@@ -692,16 +692,40 @@
       "name": "纯白嫖",
       "help": "不消耗钻石，不刷新"
     },
+    "CompletionMode": {
+      "name": "结束条件",
+      "help": "购买次数模式需给至少一种已勾选商品设置正数目标。全部达成后扫完当前商店再结束，不再刷新。",
+      "RefreshCount": "刷新次数",
+      "PurchaseCount": "购买次数"
+    },
     "MaxRefresh": {
       "name": "最大刷新次数",
       "help": ""
     },
+    "TargetCovenant": {
+      "name": "圣约书签结束所需购买次数",
+      "help": "0表示不作为结束条件。勾选后遇到仍会买，达标后也一样。"
+    },
+    "TargetMystic": {
+      "name": "神秘奖牌结束所需购买次数",
+      "help": "0表示不作为结束条件。勾选后遇到仍会买，达标后也一样。"
+    },
     "BuyCovenantBookmark": {
       "name": "购买圣约书签",
-      "help": ""
+      "help": "任务结束前，遇到就购买；结束目标不限制该类购买次数。"
     },
     "BuyMysticMedal": {
       "name": "购买神秘奖牌",
+      "help": "任务结束前，遇到就购买；结束目标不限制该类购买次数。"
+    }
+  },
+  "SecretShopRuntime": {
+    "_info": {
+      "name": "秘密商店运行记录",
+      "help": ""
+    },
+    "Session": {
+      "name": "已确认的购买进度",
       "help": ""
     }
   },

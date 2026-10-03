@@ -61,6 +61,7 @@
       "used_by": [
         "tests.secret_shop.test_captures.CapturedShopTests.test_page_and_confirmation_states",
         "tests.secret_shop.test_captures.CapturedShopTests.test_visible_resource_balances",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_goods_snapshot_ignores_sale_dimming_and_rejects_new_goods",
         "tests.secret_shop.test_captures.CapturedShopTests.test_available_and_sold_targets_in_both_scroll_positions",
         "tests.secret_shop.test_captures.CapturedShopTests.test_covenant_and_mystic_debits_match_the_displayed_price",
         "tests.secret_shop.test_captures.CapturedShopTests.test_captured_covenant_purchase_and_sold_filter",
@@ -128,6 +129,7 @@
       "used_by": [
         "tests.secret_shop.test_captures.CapturedShopTests.test_page_and_confirmation_states",
         "tests.secret_shop.test_captures.CapturedShopTests.test_visible_resource_balances",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_currency_image_cache_ignores_background_and_detects_last_digit_change",
         "tests.secret_shop.test_captures.CapturedShopTests.test_available_and_sold_targets_in_both_scroll_positions"
       ]
     },
@@ -160,6 +162,9 @@
       "used_by": [
         "tests.secret_shop.test_captures.CapturedShopTests.test_page_and_confirmation_states",
         "tests.secret_shop.test_captures.CapturedShopTests.test_visible_resource_balances",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_currency_image_cache_ignores_background_and_detects_last_digit_change",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_captured_visual_refresh_does_not_call_ocr",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_goods_snapshot_ignores_sale_dimming_and_rejects_new_goods",
         "tests.secret_shop.test_captures.CapturedShopTests.test_available_and_sold_targets_in_both_scroll_positions",
         "tests.secret_shop.test_captures.CapturedShopTests.test_covenant_and_mystic_debits_match_the_displayed_price",
         "tests.secret_shop.test_captures.CapturedShopTests.test_captured_covenant_purchase_and_sold_filter",
@@ -195,6 +200,9 @@
       "used_by": [
         "tests.secret_shop.test_captures.CapturedShopTests.test_page_and_confirmation_states",
         "tests.secret_shop.test_captures.CapturedShopTests.test_visible_resource_balances",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_captured_refresh_network_error_keeps_one_pending_payment",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_captured_visual_refresh_does_not_call_ocr",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_goods_snapshot_ignores_sale_dimming_and_rejects_new_goods",
         "tests.secret_shop.test_captures.CapturedShopTests.test_available_and_sold_targets_in_both_scroll_positions",
         "tests.secret_shop.test_captures.CapturedShopTests.test_first_refresh_has_exactly_one_debit",
         "tests.secret_shop.test_captures.CapturedShopTests.test_captured_covenant_purchase_and_sold_filter",
@@ -231,6 +239,8 @@
       ],
       "used_by": [
         "tests.secret_shop.test_captures.CapturedShopTests.test_page_and_confirmation_states",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_captured_refresh_network_error_keeps_one_pending_payment",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_captured_visual_refresh_does_not_call_ocr",
         "tests.secret_shop.test_captures.CapturedShopTests.test_captured_refresh_confirms_exact_debit",
         "tests.secret_shop.test_captures.CapturedShopTests.test_captured_refresh_retries_persistent_confirmation"
       ]
@@ -264,6 +274,10 @@
       "used_by": [
         "tests.secret_shop.test_captures.CapturedShopTests.test_page_and_confirmation_states",
         "tests.secret_shop.test_captures.CapturedShopTests.test_visible_resource_balances",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_captured_refresh_network_error_keeps_one_pending_payment",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_currency_image_cache_ignores_background_and_detects_last_digit_change",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_captured_visual_refresh_does_not_call_ocr",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_goods_snapshot_ignores_sale_dimming_and_rejects_new_goods",
         "tests.secret_shop.test_captures.CapturedShopTests.test_available_and_sold_targets_in_both_scroll_positions",
         "tests.secret_shop.test_captures.CapturedShopTests.test_first_refresh_has_exactly_one_debit",
         "tests.secret_shop.test_captures.CapturedShopTests.test_captured_refresh_confirms_exact_debit",
@@ -299,6 +313,7 @@
       "used_by": [
         "tests.secret_shop.test_captures.CapturedShopTests.test_page_and_confirmation_states",
         "tests.secret_shop.test_captures.CapturedShopTests.test_visible_resource_balances",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_currency_image_cache_ignores_background_and_detects_last_digit_change",
         "tests.secret_shop.test_captures.CapturedShopTests.test_available_and_sold_targets_in_both_scroll_positions",
         "tests.secret_shop.test_captures.CapturedShopTests.test_covenant_and_mystic_debits_match_the_displayed_price",
         "tests.secret_shop.test_captures.CapturedShopTests.test_captured_mystic_purchase_and_sold_filter"
@@ -722,6 +737,141 @@
         "tests.secret_shop.test_captures.CapturedShopTests.test_visible_resource_balances",
         "tests.secret_shop.test_captures.CapturedShopTests.test_available_and_sold_targets_in_both_scroll_positions",
         "tests.secret_shop.test_captures.CapturedShopTests.test_covenant_and_mystic_debits_match_the_displayed_price"
+      ]
+    },
+    "20261002-201411-848": {
+      "path": "tests/fixtures/secret_shop/global_cn/MuMu-20261002-201411-848.png",
+      "sha256": "7183073e9c0472b0f942a550a4631762675a1fbcc4fe86d44b21502e42958f7e",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "repeated_digit_top_before",
+      "source": "MuMu-20261002-201411-848.png",
+      "source_sha256": "be5ff6520342fc6c0a75e602b8df7ac1100fc03f5bae356ce2034eab155f77cc",
+      "privacy_redaction": [
+        [
+          920,
+          60,
+          1280,
+          92
+        ],
+        [
+          0,
+          704,
+          220,
+          720
+        ]
+      ],
+      "expected_balance": [
+        196573222,
+        1258
+      ],
+      "used_by": [
+        "tests.secret_shop.test_captures.CapturedShopTests.test_page_and_confirmation_states",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_visible_resource_balances",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_repeated_trailing_digit_balances",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_goods_snapshot_ignores_sale_dimming_and_rejects_new_goods",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_available_and_sold_targets_in_both_scroll_positions"
+      ]
+    },
+    "20261002-221022-016": {
+      "path": "tests/fixtures/secret_shop/global_cn/MuMu-20261002-221022-016.png",
+      "sha256": "4270065a3c498a57f830550bce21a4c10bab0fdff66d40e8b1c38057a140062a",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "repeated_digit_top_sold",
+      "source": "MuMu-20261002-221022-016.png",
+      "source_sha256": "c327e0f23c2c321f1adb4b1f568d1ae7f805dbc045e705d7f6aada06565c7705",
+      "privacy_redaction": [
+        [
+          920,
+          60,
+          1280,
+          92
+        ],
+        [
+          0,
+          704,
+          220,
+          720
+        ]
+      ],
+      "expected_balance": [
+        196389222,
+        1249
+      ],
+      "used_by": [
+        "tests.secret_shop.test_captures.CapturedShopTests.test_page_and_confirmation_states",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_visible_resource_balances",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_repeated_trailing_digit_balances",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_goods_snapshot_ignores_sale_dimming_and_rejects_new_goods",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_available_and_sold_targets_in_both_scroll_positions"
+      ]
+    },
+    "20261003-125942-495": {
+      "path": "tests/fixtures/secret_shop/global_cn/MuMu-20261003-125942-495.png",
+      "sha256": "caafebdb76b3f87b7a81241e7d517d387c2674094e02ddee16c60a4a6491f44d",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "goal_reached_top_sold",
+      "source": "MuMu-20261003-125942-495.png",
+      "source_sha256": "df8d8601485695a543069ddd0d3b43278e8b6c09bb31543d8ece4e13ab43b37c",
+      "privacy_redaction": [
+        [
+          920,
+          60,
+          1280,
+          92
+        ],
+        [
+          0,
+          704,
+          220,
+          720
+        ]
+      ],
+      "expected_balance": [
+        197787848,
+        1341
+      ],
+      "used_by": [
+        "tests.secret_shop.test_captures.CapturedShopTests.test_page_and_confirmation_states",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_visible_resource_balances",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_captured_reached_goal_top_still_requests_bottom_scan",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_network_error_popup_is_abnormal_and_blocks_the_shop",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_available_and_sold_targets_in_both_scroll_positions"
+      ]
+    },
+    "20261003-125720-050": {
+      "path": "tests/fixtures/secret_shop/global_cn/MuMu-20261003-125720-050.png",
+      "sha256": "a9ad69887e28c253c7500ed629338cdc958b195552438be4b922f1f4fa688757",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "refresh_network_abnormal",
+      "source": "MuMu-20261003-125720-050.png",
+      "source_sha256": "dd98bafbdf935130cc4afe13e72e3b05a5dbd7f4ffcb5162701f5fbea317bf41",
+      "privacy_redaction": [
+        [
+          920,
+          60,
+          1280,
+          92
+        ],
+        [
+          0,
+          704,
+          220,
+          720
+        ]
+      ],
+      "expected_balance": [
+        198251848,
+        1419
+      ],
+      "used_by": [
+        "tests.secret_shop.test_captures.CapturedShopTests.test_page_and_confirmation_states",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_network_error_popup_is_abnormal_and_blocks_the_shop",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_captured_refresh_network_error_keeps_one_pending_payment",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_available_and_sold_targets_in_both_scroll_positions"
       ]
     }
   }

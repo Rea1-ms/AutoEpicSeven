@@ -4,6 +4,8 @@ from contextlib import contextmanager
 from dataclasses import dataclass
 from types import SimpleNamespace
 
+import numpy as np
+
 from module.config import server
 
 server.set_lang('global_cn')
@@ -50,6 +52,15 @@ class Frame:
     target: str | None = None
     stable: bool = True
     seconds: float = 1
+    goods: tuple = (1, 2, 3, 4)
+
+
+@dataclass(frozen=True)
+class SyntheticGoods:
+    rows: tuple
+
+    def matches(self, other):
+        return other is not None and self.rows == other.rows
 
 
 class ReplayDevice:
@@ -90,21 +101,49 @@ class ShopReplay(SecretShop):
     def __init__(self, frames, clock, **config):
         super().__init__(Config(**config), ReplayDevice(frames, clock))
         self.written_balances = []
+        self.currency_reads = []
 
     def _read_shop_balance(self):
         return self.device.image.balance
+
+    def _currency_image(self, key):
+        balance = self.device.image.balance
+        if balance is None or balance[0 if key == 'gold' else 1] is None:
+            return None
+        value = balance[0 if key == 'gold' else 1]
+        bits = np.array([(value >> shift) & 1 for shift in range(32)], dtype=np.uint8) * 255
+        return np.repeat(np.repeat(np.repeat(bits[None, :, None], 4, axis=0), 2, axis=1), 3, axis=2)
+
+    def _read_shop_currency(self, key, image=None):
+        self.currency_reads.append((self.device.index, key))
+        if image is None:
+            image = self._currency_image(key)
+        return sum(int(bit > 0) << shift for shift, bit in enumerate(image[0, ::2, 0])) if image is not None else None
+
+    def _capture_goods(self):
+        return SyntheticGoods(self.device.image.goods)
+
+    def match_template_color(self, button, **kwargs):
+        if button.name == 'REFRESH':
+            balance = self.device.image.balance
+            return balance is not None and balance[1] is not None and balance[1] >= 3
+        return super().match_template_color(button, **kwargs)
 
     def _shop_is_ready(self):
         return self.device.image.page == 'shop'
 
     def _is_shop_stable(self):
-        return self._shop_is_ready() and self.device.image.stable
+        if not self._shop_is_ready() or not self.device.image.stable:
+            self._stable_count = 0
+            return False
+        self._stable_count += 1
+        return self._stable_count >= self.STABLE_THRESHOLD
 
     def _find_target_buy_buttons(self):
         kind = self.device.image.target
-        if kind == 'covenant' and (not self.buy_covenant or self._covenant_purchased_this_round):
+        if kind == 'covenant' and (not self._needs_item(kind) or self._covenant_purchased_this_round):
             return []
-        if kind == 'mystic' and (not self.buy_mystic or self._mystic_purchased_this_round):
+        if kind == 'mystic' and (not self._needs_item(kind) or self._mystic_purchased_this_round):
             return []
         return [(kind, ClickButton((1100, 150, 1240, 190), name=kind))] if kind else []
 
@@ -113,6 +152,7 @@ class ShopReplay(SecretShop):
             return False
         matched = self.device.image.page == {
             'BUY_CONFIRM': 'buy', 'REFRESH_CONFIRM': 'refresh', 'REFRESH': 'shop',
+            'NETWORK_ERROR_DISCONNECT': 'disconnect',
         }.get(button.name, 'not-a-page')
         if matched and interval:
             self.interval_reset(button, interval=interval)
@@ -125,6 +165,8 @@ class ShopReplay(SecretShop):
         return False
 
     def handle_network_error(self, **kwargs):
+        if self.device.image.page == 'disconnect':
+            return super().handle_network_error(**kwargs)
         if self.device.image.page == 'network':
             self.device.actions.append(record_action((self.device.index, 'network_retry')))
             return True
@@ -160,3 +202,9 @@ class CapturedReplayDevice(ReplayDevice):
             raise AssertionError('Captured secret shop replay exhausted before task exit')
         self.clock.advance(1)
         self.image = capture(self.frames[self.index])
+
+    def sleep(self, seconds):
+        # The real popup handler waits before its retry. Advance only the clock,
+        # never the supplied frames, and retain the wait in the action trace.
+        self.clock.advance(seconds)
+        self.actions.append(record_action((self.index, f'sleep({seconds})')))

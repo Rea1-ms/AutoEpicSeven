@@ -692,16 +692,40 @@
       "name": "Solo gratis",
       "help": "Sin refrescar"
     },
+    "CompletionMode": {
+      "name": "Condición de finalización",
+      "help": "En el modo de compras, establece un objetivo positivo para al menos un artículo cuya compra esté activada. Al alcanzar todos los objetivos, termina de revisar y comprar los artículos actuales y finaliza sin renovar.",
+      "RefreshCount": "Número de renovaciones",
+      "PurchaseCount": "Número de compras"
+    },
     "MaxRefresh": {
       "name": "Máx. refrescos",
       "help": ""
     },
+    "TargetCovenant": {
+      "name": "Compras de marcadores necesarias para terminar",
+      "help": "0 excluye este artículo de la condición de finalización. Si su compra está activada, se compra al encontrarlo, incluso después de alcanzar su objetivo."
+    },
+    "TargetMystic": {
+      "name": "Compras de medallas necesarias para terminar",
+      "help": "0 excluye este artículo de la condición de finalización. Si su compra está activada, se compra al encontrarlo, incluso después de alcanzar su objetivo."
+    },
     "BuyCovenantBookmark": {
       "name": "Comprar Marcadores del Pacto",
-      "help": ""
+      "help": "Compra al encontrarlo hasta que termine la tarea, incluso después de alcanzar el objetivo de este artículo."
     },
     "BuyMysticMedal": {
       "name": "Comprar Medallas Místicas",
+      "help": "Compra al encontrarlo hasta que termine la tarea, incluso después de alcanzar el objetivo de este artículo."
+    }
+  },
+  "SecretShopRuntime": {
+    "_info": {
+      "name": "Progreso de la tienda secreta",
+      "help": ""
+    },
+    "Session": {
+      "name": "Progreso de compras confirmadas",
       "help": ""
     }
   },

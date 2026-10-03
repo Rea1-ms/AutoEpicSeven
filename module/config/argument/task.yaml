@@ -53,6 +53,7 @@ Daily:
     SecretShop:
       - Scheduler
       - SecretShop
+      - SecretShopRuntime
     Combat:
       - Scheduler
       - Combat

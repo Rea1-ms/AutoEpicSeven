@@ -692,16 +692,40 @@
       "name": "僅免費",
       "help": "不刷新、不耗鑽"
     },
+    "CompletionMode": {
+      "name": "結束條件",
+      "help": "購買次數模式需為至少一種已勾選商品設定正數目標。全部達成後掃完目前商店再結束，不再刷新。",
+      "RefreshCount": "刷新次數",
+      "PurchaseCount": "購買次數"
+    },
     "MaxRefresh": {
       "name": "最大刷新次數",
       "help": ""
     },
+    "TargetCovenant": {
+      "name": "聖約書籤結束所需購買次數",
+      "help": "0表示不作為結束條件。勾選後遇到仍會買，達標後也一樣。"
+    },
+    "TargetMystic": {
+      "name": "神秘獎牌結束所需購買次數",
+      "help": "0表示不作為結束條件。勾選後遇到仍會買，達標後也一樣。"
+    },
     "BuyCovenantBookmark": {
       "name": "購買聖約書籤",
-      "help": ""
+      "help": "任務結束前，遇到就購買；結束目標不限制該類購買次數。"
     },
     "BuyMysticMedal": {
       "name": "購買神秘獎牌",
+      "help": "任務結束前，遇到就購買；結束目標不限制該類購買次數。"
+    }
+  },
+  "SecretShopRuntime": {
+    "_info": {
+      "name": "秘密商店執行記錄",
+      "help": ""
+    },
+    "Session": {
+      "name": "已確認的購買進度",
       "help": ""
     }
   },
