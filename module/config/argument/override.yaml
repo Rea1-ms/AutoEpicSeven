@@ -27,3 +27,20 @@ DataUpdate:
       value: true
       option: [ true, ]
       option_bold: [ true, ]
+
+# Manual tool: never enable recurring purchases through the scheduler.
+BuyPenguins:
+  Scheduler:
+    Enable:
+      value: false
+      display: hide
+      option: [ false, ]
+    NextRun:
+      value: 2020-01-01 00:00:00
+      display: hide
+    Command:
+      value: BuyPenguins
+      display: hide
+    ServerUpdate:
+      value: 02:00
+      display: hide

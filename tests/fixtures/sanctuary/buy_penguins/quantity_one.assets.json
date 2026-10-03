@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "source": "MuMu-20261001-144428-274.png",
+  "suite": "buy_penguins",
+  "case": "quantity_one",
+  "items": [
+    {
+      "name": "PENGUIN_PURCHASE_CHECK",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "share",
+      "module": "sanctuary/buy_penguins",
+      "box": [
+        510,
+        253,
+        594,
+        360
+      ]
+    },
+    {
+      "name": "PENGUIN_MAX",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "share",
+      "module": "sanctuary/buy_penguins",
+      "box": [
+        887,
+        461,
+        928,
+        484
+      ]
+    },
+    {
+      "name": "PENGUIN_CONFIRM",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "share",
+      "module": "sanctuary/buy_penguins",
+      "box": [
+        814,
+        577,
+        857,
+        602
+      ]
+    },
+    {
+      "name": "PENGUIN_CANCEL",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "share",
+      "module": "sanctuary/buy_penguins",
+      "box": [
+        448,
+        577,
+        490,
+        602
+      ]
+    },
+    {
+      "name": "OCR_PENGUIN_QUANTITY",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "share",
+      "module": "sanctuary/buy_penguins",
+      "box": [
+        578,
+        409,
+        702,
+        452
+      ]
+    },
+    {
+      "name": "OCR_PENGUIN_TOTAL_PRICE",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "share",
+      "module": "sanctuary/buy_penguins",
+      "box": [
+        652,
+        571,
+        731,
+        611
+      ]
+    }
+  ]
+}

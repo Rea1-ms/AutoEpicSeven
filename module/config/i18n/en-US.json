@@ -86,6 +86,10 @@
       "name": "Special activities",
       "help": "Handle timed content with separate entrances, currently the Huche shop on the main screen. Scheduled independently of Limited-time events."
     },
+    "BuyPenguins": {
+      "name": "Buy penguins in batches",
+      "help": "Manually buy 50 penguins per batch. Stop if stigma is insufficient. Chinese game clients only."
+    },
     "DimensionalExploration": {
       "name": "Dimensional Exploration",
       "help": "Overseas Chinese client only. Start manually from Tools, independently of the main scheduler. Keep the current difficulty and start with Heavy Baggage. Finish each run and stop after the configured batch."
@@ -755,6 +759,16 @@
     "BuyHucheMysticMedals": {
       "name": "Buy Huche Shop Mystic Medals",
       "help": "Overseas Simplified Chinese only. Buy only Mystic Medals within stock and skystone balance limits. The leading stock rotates every 12 hours; medals are not guaranteed. Buy the 160-skystone offer when present, otherwise wait for the next batch after a complete scan. The 200-skystone offer has a fixed quota of 4 for the entire event; once sold out, inspect only the leading rotating batch. Recheck at 11:00 and 23:00 UTC+8. Disabled by default; enabling spends skystones."
+    }
+  },
+  "BuyPenguins": {
+    "_info": {
+      "name": "Buy penguins in batches",
+      "help": "Manually buy 50 penguins per batch. Stop if stigma is insufficient. Chinese game clients only."
+    },
+    "BatchCount": {
+      "name": "Batch count",
+      "help": "Buy 50 penguins per batch, default 1 batch. Uses the displayed stigma price. This tool does not run on a schedule."
     }
   },
   "DimensionalExploration": {

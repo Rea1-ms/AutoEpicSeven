@@ -278,6 +278,17 @@
       "FreeGacha20CheckedAt": "2020-01-01 00:00:00"
     }
   },
+  "BuyPenguins": {
+    "Scheduler": {
+      "Enable": false,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "BuyPenguins",
+      "ServerUpdate": "02:00"
+    },
+    "BuyPenguins": {
+      "BatchCount": 1
+    }
+  },
   "DimensionalExploration": {
     "DimensionalExploration": {
       "RunCount": 1,
