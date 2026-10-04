@@ -15,7 +15,7 @@ from tasks.dimensional_exploration.assets.assets_dimensional_exploration import 
     REWARD_CLOSE, ROOM_DONE, ROOM_LEAVE, SETTLEMENT_EMPTY,
     TITLE_ENTER, VICTORY_CONTINUE, BATTLE_START,
     OCR_PREVIEW_TITLE, OCR_INITIAL_RECRUITMENT, HERO_CONFIRM_ACTIVE,
-    OCR_EVENT_LOOT, OCR_BUY_NAME, OCR_BUY_PRICE, SHOP_OFFER, REST_ACTION,
+    OCR_EVENT_LOOT, OCR_BUY_NAME, OCR_BUY_PRICE, SHOP_OFFER,
     SUPPLY_DONE_AREA, SUPPLY_LOOT, OCR_LOOT_EFFECT, LOOT_CARD, LOOT_BORDER,
     OCR_BATTLE_REWARDS, OCR_RESUME_REWARDS, VICTORY_CONTINUE_ACTIVE,
     RESUME_REWARDS_CONTINUE, OCR_SETTLEMENT_STARLIGHT, CHAPTER_SELECT,
@@ -27,6 +27,7 @@ from tasks.dimensional_exploration.policy import (
 )
 from tasks.dimensional_exploration.event import EventMemory, decide_event, event_branch, match_event, pending_event
 from tasks.dimensional_exploration.health import EventHealthMixin
+from tasks.dimensional_exploration.rest import RestMixin
 from tasks.dimensional_exploration.starting_strategy import StartingStrategyMixin
 from tasks.dimensional_exploration.recruitment import HeroCosts, RecruitmentMixin
 from tasks.dimensional_exploration.sampling import EventSampler, choose_sample, sampling_balances, text_key
@@ -37,7 +38,7 @@ from tasks.dungeon.assets.assets_dungeon_state import (
 )
 
 
-class DimensionalExploration(StartingStrategyMixin, EventHealthMixin, RecruitmentMixin, UI):
+class DimensionalExploration(StartingStrategyMixin, RestMixin, EventHealthMixin, RecruitmentMixin, UI):
     def __init__(self, config, device=None, task=None):
         super().__init__(config, device=device, task=task)
         self._last_state = None
@@ -75,6 +76,7 @@ class DimensionalExploration(StartingStrategyMixin, EventHealthMixin, Recruitmen
         self.load_recruitment()
         self.reset_hero_search()
         self.reset_event_health()
+        self.reset_rest_health()
 
     def action_ready(self):
         return self.interval_is_reached("ExplorationAction", interval=2)
@@ -173,6 +175,7 @@ class DimensionalExploration(StartingStrategyMixin, EventHealthMixin, Recruitmen
             if not self.analysis_ready(state):
                 continue
             self.observe_event(state, vision)
+            self.observe_rest_health(state)
             self.observe_recruitment(state, vision)
             if state == "settlement":
                 if not self.handle_settlement(vision) and self._unreadable.reached():
@@ -555,18 +558,6 @@ class DimensionalExploration(StartingStrategyMixin, EventHealthMixin, Recruitmen
             self._purchase_confirmed = True
             return True
         return False
-
-    def handle_rest(self, vision):
-        if match_in(self.device.image, ROOM_DONE, ROOM_DONE.search):
-            return self.click_action(ROOM_LEAVE)
-        # The room permits one action. Recover lost lives, revive a hero, then
-        # heal, and only upgrade when survival actions are explicitly disabled.
-        for row in (2, 1, 3, 0):
-            button = list(REST_ACTION.iter_buttons())[row]
-            if vision.bright_text(button, minimum=80):
-                return self.click_action(ClickButton(button.area, name="ExplorationRestAction"))
-        return False
-
 
     def handle_supply_room(self, vision):
         if match_in(self.device.image, ROOM_DONE, SUPPLY_DONE_AREA.area):

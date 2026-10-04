@@ -42,6 +42,8 @@ class EventHealthMixin:
             in: owned-hero roster opened from an exploration page
             out: the event or rest page that opened the roster
         """
+        if self._rest_health_requested:
+            return self.handle_rest_roster(vision)
         # After a restart the old caller is unknown. Back is reversible and
         # restores a recognizable page; recruiting/upgrading from this roster
         # would confuse owned heroes with the available recruitment list.

@@ -1354,6 +1354,18 @@ REST_HERO_CONFIRM = ButtonWrapper(
     ),
     global_en=None,
 )
+REST_HERO_ENTRY = ButtonWrapper(
+    name='REST_HERO_ENTRY',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/REST_HERO_ENTRY.png',
+        area=(397, 637, 437, 659),
+        search=(377, 617, 457, 679),
+        color=(67, 63, 67),
+        button=(325, 637, 433, 680),
+    ),
+    global_en=None,
+)
 RESUME_REWARDS_CHECK = ButtonWrapper(
     name='RESUME_REWARDS_CHECK',
     cn=None,

@@ -315,6 +315,86 @@
       "source_sha256": "f1d06021873cbcc1fcbb4f6124bf1eb4554adb4216008c5971965b7b49c6e545"
     },
     {
+      "source": "test/test_alasio_adapter.py",
+      "business": "Alasio 分支",
+      "status": "未纳入",
+      "reason": "来源属于 Alasio（另一框架）分支；本轮不借用该分支实现",
+      "cases": [],
+      "file_category": "实机调试工具",
+      "source_sha256": "86a2479e05a9c9b42f821ba5b8de5bb33783f2b649af447c8bcdf9adceca18f2",
+      "remaining_group": "另一分支"
+    },
+    {
+      "source": "test/test_alasio_card_navigation.py",
+      "business": "Alasio 分支",
+      "status": "未纳入",
+      "reason": "来源属于 Alasio（另一框架）分支；本轮不借用该分支实现",
+      "cases": [],
+      "file_category": "规则测试",
+      "source_sha256": "ccdeabb20ca2cb1b4e54dbf2f743371d33d5ece0a148baaedc6f84ea87bdcaa6",
+      "remaining_group": "另一分支"
+    },
+    {
+      "source": "test/test_alasio_device_actions.py",
+      "business": "Alasio 分支",
+      "status": "未纳入",
+      "reason": "来源属于 Alasio（另一框架）分支；本轮不借用该分支实现",
+      "cases": [],
+      "file_category": "实机调试工具",
+      "source_sha256": "9938f6a8272e4344b89a58730c85314e122ad9fb2e2cc50c53706cc41e55a223",
+      "remaining_group": "另一分支"
+    },
+    {
+      "source": "test/test_alasio_device_page.py",
+      "business": "Alasio 分支",
+      "status": "未纳入",
+      "reason": "来源属于 Alasio（另一框架）分支；本轮不借用该分支实现",
+      "cases": [],
+      "file_category": "截图识别",
+      "source_sha256": "606a1af6315f66623b98bbfdb2766f1b87edb532f1bf4285a5d1d8a08ef1f70e",
+      "remaining_group": "另一分支"
+    },
+    {
+      "source": "test/test_alasio_dynamic_visibility.py",
+      "business": "Alasio 分支",
+      "status": "未纳入",
+      "reason": "来源属于 Alasio（另一框架）分支；本轮不借用该分支实现",
+      "cases": [],
+      "file_category": "规则测试",
+      "source_sha256": "79619fd3bc5af56fc8dd1df26ebffd809f2393fdfa0ea47ee2c8d08903d0adbc",
+      "remaining_group": "另一分支"
+    },
+    {
+      "source": "test/test_alasio_index_i18n.py",
+      "business": "Alasio 分支",
+      "status": "未纳入",
+      "reason": "来源属于 Alasio（另一框架）分支；本轮不借用该分支实现",
+      "cases": [],
+      "file_category": "规则测试",
+      "source_sha256": "9f1cf8212cd1cc55560b30e82a59d907d30742a07045d5b32cd44064f6ac5912",
+      "remaining_group": "另一分支"
+    },
+    {
+      "source": "test/test_alasio_main.py",
+      "business": "Alasio 分支",
+      "status": "未纳入",
+      "reason": "来源属于 Alasio（另一框架）分支；本轮不借用该分支实现",
+      "cases": [],
+      "file_category": "规则测试",
+      "source_sha256": "7619c00bce8c71b2c26008c88d1ec9eb30526ea18111dbc63160b0193ea5e672",
+      "remaining_group": "另一分支"
+    },
+    {
+      "source": "test/test_arena.py",
+      "business": "其他业务或框架",
+      "status": "未纳入",
+      "reason": "实机或交互调试入口；依赖设备、账号配置或人工观察，不是独立离线断言",
+      "cases": [],
+      "file_category": "实机调试工具",
+      "source_sha256": "319579b57778ec108364ee8476fa54aefc22ee751b4b82b01abc94de63412a19",
+      "remaining_group": "手动工具"
+    },
+    {
       "source": "test/test_asset_crop.py",
       "business": "其他业务或框架",
       "status": "已迁移",
@@ -1368,6 +1448,16 @@
       "file_category": null,
       "migration_batch": "20261002-2",
       "source_sha256": "09a74d48b1e570b39448f1c157ba12489097be586a4c9697655df09f10c63f35"
+    },
+    {
+      "source": "test/test_combat.py",
+      "business": "其他业务或框架",
+      "status": "未纳入",
+      "reason": "实机或交互调试入口；依赖设备、账号配置或人工观察，不是独立离线断言",
+      "cases": [],
+      "file_category": "实机调试工具",
+      "source_sha256": "40fe1e350bc550af122fb5045da561e2f8411fc9462cdab5067344b569e32c78",
+      "remaining_group": "手动工具"
     },
     {
       "source": "test/test_combat_entry_search.py",
@@ -2702,6 +2792,16 @@
       "source_sha256": "03868a4ba451c18acb7f9853ea73e55ec2c8b30d6f2c46f136aeebdfa84dcaa5"
     },
     {
+      "source": "test/test_emulator_instance_detection.py",
+      "business": "其他业务或框架",
+      "status": "未纳入",
+      "reason": "来源属于 Alasio（另一框架）分支；本轮不借用该分支实现",
+      "cases": [],
+      "file_category": "规则测试",
+      "source_sha256": "f8bdca7910eff3443bdee1a26361dd0e63719108416aca90a72c1f9f8a66d3dc",
+      "remaining_group": "另一分支"
+    },
+    {
       "source": "test/test_episode.py",
       "business": "其他业务或框架",
       "status": "已迁移",
@@ -3287,6 +3387,16 @@
       "file_category": null,
       "migration_batch": "20261002-1",
       "source_sha256": "8e7e8ec2dcc7f5daeeedee63f8f97c8aa2ee03f1855d4ce87c97e4143a9a6bb8"
+    },
+    {
+      "source": "test/test_gacha.py",
+      "business": "其他业务或框架",
+      "status": "未纳入",
+      "reason": "实机或交互调试入口；依赖设备、账号配置或人工观察，不是独立离线断言",
+      "cases": [],
+      "file_category": "实机调试工具",
+      "source_sha256": "bef4adf7f94533852b57f71fcd6f672dc05e81858f9e7de5288f10b3d4a82bf1",
+      "remaining_group": "手动工具"
     },
     {
       "source": "test/test_gacha_result.py",
@@ -4425,6 +4535,16 @@
       "remaining_group": "手动工具"
     },
     {
+      "source": "test/test_knights.py",
+      "business": "其他业务或框架",
+      "status": "未纳入",
+      "reason": "实机或交互调试入口；依赖设备、账号配置或人工观察，不是独立离线断言",
+      "cases": [],
+      "file_category": "实机调试工具",
+      "source_sha256": "80297514f1befacdf9e3abb53786627cb28676203181e39a8a7906db43dee2b0",
+      "remaining_group": "手动工具"
+    },
+    {
       "source": "test/test_knights_crest_ocr.py",
       "business": "其他业务或框架",
       "status": "已迁移",
@@ -4555,6 +4675,36 @@
       "source_sha256": "afeff0e519960fc0e5ed282190368db5cf12bc9f396224eaed8c279a29ccc7de"
     },
     {
+      "source": "test/test_knights_donate.py",
+      "business": "其他业务或框架",
+      "status": "未纳入",
+      "reason": "实机或交互调试入口；依赖设备、账号配置或人工观察，不是独立离线断言",
+      "cases": [],
+      "file_category": "实机调试工具",
+      "source_sha256": "d93657ef73fdb5db15b9de862712ce75922c939d54b46eafa79d2661c039cf16",
+      "remaining_group": "手动工具"
+    },
+    {
+      "source": "test/test_knights_support.py",
+      "business": "其他业务或框架",
+      "status": "未纳入",
+      "reason": "实机或交互调试入口；依赖设备、账号配置或人工观察，不是独立离线断言",
+      "cases": [],
+      "file_category": "实机调试工具",
+      "source_sha256": "cf8e2bb5976cfddefb7480f5c3c1ed16e5d2e383ce6dbd21182b3f72906512ce",
+      "remaining_group": "手动工具"
+    },
+    {
+      "source": "test/test_knights_team_battle_status.py",
+      "business": "其他业务或框架",
+      "status": "未纳入",
+      "reason": "来源属于 Alasio（另一框架）分支；本轮不借用该分支实现",
+      "cases": [],
+      "file_category": "规则测试",
+      "source_sha256": "9fe690d6ef4ed5243301e7751a79552ce70d4c769b905b989e5ee53cb4d3aebf",
+      "remaining_group": "另一分支"
+    },
+    {
       "source": "test/test_knights_team_battle_status_legacy.py",
       "business": "其他业务或框架",
       "status": "已迁移",
@@ -4575,6 +4725,36 @@
       ],
       "file_category": "规则测试",
       "source_sha256": "8cf07c72ceaf1abc22125a678515a77974291a06ab115ef6585d26bba6369fb6"
+    },
+    {
+      "source": "test/test_knights_v2.py",
+      "business": "其他业务或框架",
+      "status": "未纳入",
+      "reason": "来源属于 Alasio（另一框架）分支；本轮不借用该分支实现",
+      "cases": [],
+      "file_category": "实机调试工具",
+      "source_sha256": "594a26c39439c0dbdc8027cdcf21140664c146767ff2dc0ec76f14e7130ecd23",
+      "remaining_group": "另一分支"
+    },
+    {
+      "source": "test/test_knights_v2_team_battle_status.py",
+      "business": "其他业务或框架",
+      "status": "未纳入",
+      "reason": "来源属于 Alasio（另一框架）分支；本轮不借用该分支实现",
+      "cases": [],
+      "file_category": "规则测试",
+      "source_sha256": "c5b283593fb256e2e2102e99d153f11e5a0aceba5f295f73cf799822c61d40c4",
+      "remaining_group": "另一分支"
+    },
+    {
+      "source": "test/test_knights_weekly_task.py",
+      "business": "其他业务或框架",
+      "status": "未纳入",
+      "reason": "实机或交互调试入口；依赖设备、账号配置或人工观察，不是独立离线断言",
+      "cases": [],
+      "file_category": "实机调试工具",
+      "source_sha256": "d7683d2a0793c76d50c4f99a19ab3d724fdc675f81d8b7df2563f9f7cbc0fc0e",
+      "remaining_group": "手动工具"
     },
     {
       "source": "test/test_koharu_raffle.py",
@@ -4858,6 +5038,16 @@
       "remaining_group": "手动工具"
     },
     {
+      "source": "test/test_login.py",
+      "business": "其他业务或框架",
+      "status": "未纳入",
+      "reason": "实机或交互调试入口；依赖设备、账号配置或人工观察，不是独立离线断言",
+      "cases": [],
+      "file_category": "实机调试工具",
+      "source_sha256": "c71603f66a8748accf767087217beea5de399aee55947691e15e798c86273844",
+      "remaining_group": "手动工具"
+    },
+    {
       "source": "test/test_login_domain_popup.py",
       "business": "其他业务或框架",
       "status": "已迁移",
@@ -4897,6 +5087,16 @@
       "file_category": null,
       "migration_batch": "20261002-1",
       "source_sha256": "03786c6d27df6f13e45c1c78d9e6f39daa6478c8dafcbec648a5a7957b552be4"
+    },
+    {
+      "source": "test/test_luma_detection.py",
+      "business": "其他业务或框架",
+      "status": "未纳入",
+      "reason": "实机或交互调试入口；依赖设备、账号配置或人工观察，不是独立离线断言",
+      "cases": [],
+      "file_category": "实机调试工具",
+      "source_sha256": "7ee06ce8a9603e4ed04ca7b0b98e7a76ece96bdf2cd047e7cc0445ea9ce0ca00",
+      "remaining_group": "手动工具"
     },
     {
       "source": "test/test_mail.py",
@@ -5221,6 +5421,16 @@
       "source_sha256": "9dd6783cdde857035046f84d598234edeb5c6a096be1af57499b5e928d262e0a"
     },
     {
+      "source": "test/test_maintenance_ocr.py",
+      "business": "其他业务或框架",
+      "status": "未纳入",
+      "reason": "实机或交互调试入口；依赖设备、账号配置或人工观察，不是独立离线断言",
+      "cases": [],
+      "file_category": "截图识别",
+      "source_sha256": "e702325364fbc82069a7f32a163b342237cc96bd0f358d49d1e0d0bae01d9ed8",
+      "remaining_group": "手动工具"
+    },
+    {
       "source": "test/test_match.py",
       "business": "其他业务或框架",
       "status": "未纳入",
@@ -5238,6 +5448,66 @@
       ],
       "file_category": null,
       "source_sha256": "48a16c14f20314adb88607873f35b542e788ddc7b6fc98857e78cf519ce595b9",
+      "remaining_group": "手动工具"
+    },
+    {
+      "source": "test/test_match_asset.py",
+      "business": "其他业务或框架",
+      "status": "未纳入",
+      "reason": "实机或交互调试入口；依赖设备、账号配置或人工观察，不是独立离线断言",
+      "cases": [],
+      "file_category": "资源基础检查",
+      "source_sha256": "8c752a82475bcd4f05f422190708ad39e621223803dce1afaa0d5f242fc0bbdc",
+      "remaining_group": "手动工具"
+    },
+    {
+      "source": "test/test_match_asset_v1.py",
+      "business": "其他业务或框架",
+      "status": "未纳入",
+      "reason": "实机或交互调试入口；依赖设备、账号配置或人工观察，不是独立离线断言",
+      "cases": [],
+      "file_category": "资源基础检查",
+      "source_sha256": "5a265e99068bed5b8aa53f1f4f6b34a485290505bfb1f61d8f8101560cf870d5",
+      "remaining_group": "手动工具"
+    },
+    {
+      "source": "test/test_match_asset_v2.py",
+      "business": "其他业务或框架",
+      "status": "未纳入",
+      "reason": "实机或交互调试入口；依赖设备、账号配置或人工观察，不是独立离线断言",
+      "cases": [],
+      "file_category": "资源基础检查",
+      "source_sha256": "476b83a583a99648e8494bc1afd371c2845f134a9971aba44a060eaa8edd7c6c",
+      "remaining_group": "手动工具"
+    },
+    {
+      "source": "test/test_match_asset_v3.py",
+      "business": "其他业务或框架",
+      "status": "未纳入",
+      "reason": "实机或交互调试入口；依赖设备、账号配置或人工观察，不是独立离线断言",
+      "cases": [],
+      "file_category": "资源基础检查",
+      "source_sha256": "00a91817fd530afa169a379c3bbb63cf35c790672dff5cd91975c156cf3e63e4",
+      "remaining_group": "手动工具"
+    },
+    {
+      "source": "test/test_match_page.py",
+      "business": "其他业务或框架",
+      "status": "未纳入",
+      "reason": "实机或交互调试入口；依赖设备、账号配置或人工观察，不是独立离线断言",
+      "cases": [],
+      "file_category": "截图识别",
+      "source_sha256": "71358cac264ee0fce2347d7897f2295505d7065c46cca239088026d6355fdea1",
+      "remaining_group": "手动工具"
+    },
+    {
+      "source": "test/test_mission_reward.py",
+      "business": "其他业务或框架",
+      "status": "未纳入",
+      "reason": "实机或交互调试入口；依赖设备、账号配置或人工观察，不是独立离线断言",
+      "cases": [],
+      "file_category": "实机调试工具",
+      "source_sha256": "efef5928f29ccbc6af7c28691d8b5160cde455b35edc1c1e245d56ba77f0aec8",
       "remaining_group": "手动工具"
     },
     {
@@ -5309,6 +5579,16 @@
       "file_category": null,
       "migration_batch": "20261002-1",
       "source_sha256": "28dc00cd8bda306853e0805e45882b62599fdff1934ab7cf8d05d341eaa31846"
+    },
+    {
+      "source": "test/test_ocr.py",
+      "business": "其他业务或框架",
+      "status": "未纳入",
+      "reason": "实机或交互调试入口；依赖设备、账号配置或人工观察，不是独立离线断言",
+      "cases": [],
+      "file_category": "截图识别",
+      "source_sha256": "05eca89a87ec96323989a72eaa858e5ae31b7dbea05ad253bdf57af2a23b2c9a",
+      "remaining_group": "手动工具"
     },
     {
       "source": "test/test_page_route.py",
@@ -5405,6 +5685,26 @@
       "file_category": "资源基础检查",
       "source_sha256": "b93412f4755f96b8aaed624d178a63fd7f8dcd95cf7f10f18d6410b483c853ff",
       "remaining_group": "旧接口"
+    },
+    {
+      "source": "test/test_pets.py",
+      "business": "其他业务或框架",
+      "status": "未纳入",
+      "reason": "实机或交互调试入口；依赖设备、账号配置或人工观察，不是独立离线断言",
+      "cases": [],
+      "file_category": "实机调试工具",
+      "source_sha256": "65d2368ab49d6a41e83d4c605229b9401d3c3a7476b4fff8aa5eb7dbd831b207",
+      "remaining_group": "手动工具"
+    },
+    {
+      "source": "test/test_pets_gift.py",
+      "business": "其他业务或框架",
+      "status": "未纳入",
+      "reason": "实机或交互调试入口；依赖设备、账号配置或人工观察，不是独立离线断言",
+      "cases": [],
+      "file_category": "实机调试工具",
+      "source_sha256": "f51e255746ac0de8f9c2f81b0be2c66d80be6042242d2402b179513cec4ecc48",
+      "remaining_group": "手动工具"
     },
     {
       "source": "test/test_repeat_combat_v2.py",
@@ -6072,6 +6372,16 @@
       "remaining_group": "旧接口"
     },
     {
+      "source": "test/test_resource_bar_debug.py",
+      "business": "其他业务或框架",
+      "status": "未纳入",
+      "reason": "实机或交互调试入口；依赖设备、账号配置或人工观察，不是独立离线断言",
+      "cases": [],
+      "file_category": "资源基础检查",
+      "source_sha256": "0cbbcb092378b92d800c3f26dceca67b4d5e8ba34f9709b6334cf3c9d4516c77",
+      "remaining_group": "手动工具"
+    },
+    {
       "source": "test/test_reward_scheduling.py",
       "business": "其他业务或框架",
       "status": "已迁移",
@@ -6433,6 +6743,16 @@
       "migration_batch": "20261002-2",
       "source_sha256": "e527c40aa03549d89398641fdc49664a0662ca66b8b1fe0c5091e210eaf1396f",
       "remaining_group": "缺原图"
+    },
+    {
+      "source": "test/test_sanctuary.py",
+      "business": "圣域实机调试",
+      "status": "未纳入",
+      "reason": "实机或交互调试入口；依赖设备、账号配置或人工观察，不是独立离线断言",
+      "cases": [],
+      "file_category": "实机调试工具",
+      "source_sha256": "942ff98667ccdc66aa8b3d6263654d60ef49e55f027dc446e84c6bb2f05cb2a8",
+      "remaining_group": "手动工具"
     },
     {
       "source": "test/test_sanctuary_monthly.py",
@@ -7307,6 +7627,26 @@
       "remaining_group": "手动工具"
     },
     {
+      "source": "test/test_secret_shop_refresh_ocr.py",
+      "business": "其他业务或框架",
+      "status": "未纳入",
+      "reason": "实机或交互调试入口；依赖设备、账号配置或人工观察，不是独立离线断言",
+      "cases": [],
+      "file_category": "截图识别",
+      "source_sha256": "acd100c4bd5f1da79b8ab4a5cd14f68aab97e01f78290e60290f17f7c91c1541",
+      "remaining_group": "手动工具"
+    },
+    {
+      "source": "test/test_secret_shop_run.py",
+      "business": "其他业务或框架",
+      "status": "未纳入",
+      "reason": "实机或交互调试入口；依赖设备、账号配置或人工观察，不是独立离线断言",
+      "cases": [],
+      "file_category": "实机调试工具",
+      "source_sha256": "1ec352856a50a9e0e9d1840ed9470e51f414e9232472cdf08ad5bb684fe9b570",
+      "remaining_group": "手动工具"
+    },
+    {
       "source": "test/test_september_runtime_fixes.py",
       "business": "其他业务或框架",
       "status": "已迁移",
@@ -7538,6 +7878,16 @@
       "source_sha256": "accab889536c6c05d65492b3109835250193394a8a84308010973fdfa0b322b4"
     },
     {
+      "source": "test/test_store.py",
+      "business": "其他业务或框架",
+      "status": "未纳入",
+      "reason": "实机或交互调试入口；依赖设备、账号配置或人工观察，不是独立离线断言",
+      "cases": [],
+      "file_category": "实机调试工具",
+      "source_sha256": "4a20d019bafc3efcfcd750bd60c4de5f8da2135a3768bff9d8b0ae27080abbfc",
+      "remaining_group": "手动工具"
+    },
+    {
       "source": "test/test_store_inheritance_charms.py",
       "business": "其他业务或框架",
       "status": "已迁移",
@@ -7695,6 +8045,16 @@
       ],
       "file_category": null,
       "source_sha256": "b0cba666dfe09f78d06854a14b26e66922222228f57e768577f393216a6675b6",
+      "remaining_group": "手动工具"
+    },
+    {
+      "source": "test/test_template.py",
+      "business": "其他业务或框架",
+      "status": "未纳入",
+      "reason": "实机或交互调试入口；依赖设备、账号配置或人工观察，不是独立离线断言",
+      "cases": [],
+      "file_category": "截图识别",
+      "source_sha256": "198d00832393a1c0cd2f6485450ad021412c807e049bd4f013f51b182c1b71dc",
       "remaining_group": "手动工具"
     },
     {
@@ -8732,6 +9092,174 @@
           "reason": "明确截图结果与模拟边界；其他开局卡片的选中边框仅作几何模拟，不宣称实机验证"
         },
         {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_healthy_team_upgrades_even_when_healing_is_available",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232305-766"
+          ],
+          "status": "已纳入",
+          "reason": "休整治疗严格按最低30%或平均60%血量，按钮可用性明确模拟，完整血条仍用已登记真实截图验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_lowest_or_average_hp_uses_strict_thresholds",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "休整治疗严格按最低30%或平均60%血量，按钮可用性明确模拟，完整血条仍用已登记真实截图验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_low_hp_chooses_healing_and_boundaries_choose_upgrade",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232305-766"
+          ],
+          "status": "已纳入",
+          "reason": "休整治疗严格按最低30%或平均60%血量，按钮可用性明确模拟，完整血条仍用已登记真实截图验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_life_recovery_and_revive_keep_priority_without_hp_inspection",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232305-766"
+          ],
+          "status": "已纳入",
+          "reason": "恢复生命体征无竞争选项、或复活可用而生命体征恢复禁用时无需额外查看血量"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_healthy_team_leaves_when_upgrade_is_disabled_without_healing",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232305-766"
+          ],
+          "status": "已纳入",
+          "reason": "休整治疗严格按最低30%或平均60%血量，按钮可用性明确模拟，完整血条仍用已登记真实截图验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_healing_option_opens_owned_roster_and_does_not_assume_click_success",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232305-766"
+          ],
+          "status": "已纳入",
+          "reason": "休整治疗严格按最低30%或平均60%血量，按钮可用性明确模拟，完整血条仍用已登记真实截图验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_two_complete_real_roster_frames_return_and_healthy_team_upgrades",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232305-766",
+            "20261001-133151-873"
+          ],
+          "status": "已纳入",
+          "reason": "休整治疗严格按最低30%或平均60%血量，按钮可用性明确模拟，完整血条仍用已登记真实截图验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_incomplete_or_changing_roster_waits_for_two_consistent_frames",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232305-766",
+            "20261001-133151-873"
+          ],
+          "status": "已纳入",
+          "reason": "休整治疗严格按最低30%或平均60%血量，按钮可用性明确模拟，完整血条仍用已登记真实截图验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_failed_entry_and_back_clicks_retry_without_authorizing_healing",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232305-766",
+            "20261001-133151-873"
+          ],
+          "status": "已纳入",
+          "reason": "休整治疗严格按最低30%或平均60%血量，按钮可用性明确模拟，完整血条仍用已登记真实截图验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_unknown_frames_keep_hp_but_positive_room_exit_clears_it",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232305-766"
+          ],
+          "status": "已纳入",
+          "reason": "休整治疗严格按最低30%或平均60%血量，按钮可用性明确模拟，完整血条仍用已登记真实截图验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_selected_action_is_pinned_until_room_done_and_clears_hp",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232305-766"
+          ],
+          "status": "已纳入",
+          "reason": "休整治疗严格按最低30%或平均60%血量，按钮可用性明确模拟，完整血条仍用已登记真实截图验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_real_rest_with_disabled_healing_upgrades_without_opening_roster",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232305-766"
+          ],
+          "status": "已纳入",
+          "reason": "休整治疗严格按最低30%或平均60%血量，按钮可用性明确模拟，完整血条仍用已登记真实截图验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_missing_hero_entry_waits_without_healing_or_upgrade",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232305-766"
+          ],
+          "status": "已纳入",
+          "reason": "休整治疗严格按最低30%或平均60%血量，按钮可用性明确模拟，完整血条仍用已登记真实截图验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_rest_inspection_does_not_reuse_event_hp",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232305-766"
+          ],
+          "status": "已纳入",
+          "reason": "休整治疗严格按最低30%或平均60%血量，按钮可用性明确模拟，完整血条仍用已登记真实截图验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_main_loop_inspects_roster_retries_then_reaches_upgrade",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232305-766",
+            "20260923-232309-289",
+            "20261001-133151-873"
+          ],
+          "status": "已纳入",
+          "reason": "休整治疗严格按最低30%或平均60%血量，按钮可用性明确模拟，完整血条仍用已登记真实截图验证"
+        },
+        {
           "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentBudgetRegressions.test_event_ticket_opens_recruitment_instead_of_discarding_reward",
           "category": "流程回放",
           "requires_device": false,
@@ -8867,6 +9395,85 @@
           ],
           "status": "已纳入",
           "reason": "剩余点数不足以招募任何名单目标时选择其他可负担英雄；实图与明确模拟的详情确认分别验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_average_thirty_boundary_preserves_normal_priority",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232305-766"
+          ],
+          "status": "已纳入",
+          "reason": "休整全队平均血量严格低于30%时按复活、治疗、恢复生命体征、升阶；低血与选项可用性明确模拟"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_competing_life_recovery_requires_hp_before_selecting_any_action",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232305-766"
+          ],
+          "status": "已纳入",
+          "reason": "休整全队平均血量严格低于30%时按复活、治疗、恢复生命体征、升阶；低血与选项可用性明确模拟"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_critical_average_heals_before_life_recovery_when_revive_unavailable",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232305-766"
+          ],
+          "status": "已纳入",
+          "reason": "休整全队平均血量严格低于30%时按复活、治疗、恢复生命体征、升阶；低血与选项可用性明确模拟"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_critical_average_revives_before_life_recovery_and_healing",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232305-766"
+          ],
+          "status": "已纳入",
+          "reason": "休整全队平均血量严格低于30%时按复活、治疗、恢复生命体征、升阶；低血与选项可用性明确模拟"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_critical_order_uses_first_available_action",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232305-766"
+          ],
+          "status": "已纳入",
+          "reason": "休整全队平均血量严格低于30%时按复活、治疗、恢复生命体征、升阶；低血与选项可用性明确模拟"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_critical_selection_keeps_pending_revive_until_room_completion",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232305-766"
+          ],
+          "status": "已纳入",
+          "reason": "休整全队平均血量严格低于30%时按复活、治疗、恢复生命体征、升阶；低血与选项可用性明确模拟"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_main_loop_reads_critical_roster_retries_then_reaches_revive",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232305-766",
+            "20260923-233115-192",
+            "20261001-133151-873"
+          ],
+          "status": "已纳入",
+          "reason": "休整全队平均血量严格低于30%时按复活、治疗、恢复生命体征、升阶；低血与选项可用性明确模拟"
         }
       ]
     },
@@ -18534,6 +19141,15 @@
           "input_kind": "registered_capture"
         }
       ]
+    },
+    {
+      "source": "test/test_dimensional_exploration_tool.py",
+      "business": "历史调试工具",
+      "status": "未纳入",
+      "reason": "实机或交互调试入口；依赖设备、账号配置或人工观察，不是独立离线断言",
+      "remaining_group": "手动工具",
+      "cases": [],
+      "source_sha256": "be3fb9a6f838dafa80ff8036c9f9dcb8b9a2525e1130908fa2ceaecb83d2a02f"
     },
     {
       "source": "tests/secret_shop/test_payment.py",

@@ -733,3 +733,314 @@ class RecruitmentBudgetRegressions(unittest.TestCase):
         self.assertFalse(task._reward_leave_authorized)
         task.handle_reward_leave(ExplorationVision(frame('20260926-202057-530')))
         self.assertEqual(clicks, ['RESUME_REWARDS_CONTINUE', 'REWARD_LEAVE_CANCEL'])
+
+
+class RestHealthRegressions(unittest.TestCase):
+    @staticmethod
+    def rest(available=(0, 3), hp=None):
+        from tasks.dimensional_exploration.assets.assets_dimensional_exploration import REST_ACTION
+        task, vision, _ = task_for('20260923-232305-766')
+        buttons = list(REST_ACTION.iter_buttons())
+        # The captured room has healing disabled. Availability is explicitly
+        # simulated to exercise both choices, not claimed as a new live frame.
+        vision.bright_text = Mock(side_effect=lambda button, **kwargs: buttons.index(button) in available)
+        task._rest_hero_hp = hp
+        actions = []
+        task.click_action = Mock(side_effect=lambda button: actions.append((str(button), button.area)) or True)
+        return task, vision, actions, buttons
+
+    def test_healthy_team_upgrades_even_when_healing_is_available(self):
+        task, vision, actions, buttons = self.rest(hp=(90, 90))
+        self.assertTrue(task.handle_rest(vision))
+        self.assertEqual(actions, [('ExplorationRestAction', buttons[0].area)])
+
+    def test_critical_average_revives_before_life_recovery_and_healing(self):
+        task, vision, actions, buttons = self.rest(available=(0, 1, 2, 3), hp=(20, 29))
+        self.assertTrue(task.handle_rest(vision))
+        self.assertEqual(actions, [('ExplorationRestAction', buttons[1].area)])
+        self.assertEqual(task._rest_action, 1)
+
+    def test_critical_average_heals_before_life_recovery_when_revive_unavailable(self):
+        task, vision, actions, buttons = self.rest(available=(0, 2, 3), hp=(20, 29))
+        self.assertTrue(task.handle_rest(vision))
+        self.assertEqual(actions, [('ExplorationRestAction', buttons[3].area)])
+
+    def test_critical_order_uses_first_available_action(self):
+        for available, row in (((0, 1, 2, 3), 1), ((0, 2, 3), 3), ((0, 2), 2),
+                               ((0,), 0), ((3,), 3), ((0, 1, 3), 1)):
+            with self.subTest(available=available):
+                task, vision, actions, buttons = self.rest(available=available, hp=(20, 29))
+                self.assertTrue(task.handle_rest(vision))
+                self.assertEqual(actions, [('ExplorationRestAction', buttons[row].area)])
+
+    def test_average_thirty_boundary_preserves_normal_priority(self):
+        for hp, row in (((0, 59), 1), ((0, 60), 2), ((29, 31), 2), ((29, 30), 1), ((30, 30), 2)):
+            with self.subTest(hp=hp):
+                task, vision, actions, buttons = self.rest(available=(0, 1, 2, 3), hp=hp)
+                self.assertTrue(task.handle_rest(vision))
+                self.assertEqual(actions, [('ExplorationRestAction', buttons[row].area)])
+
+    def test_competing_life_recovery_requires_hp_before_selecting_any_action(self):
+        for available in ((0, 1, 2, 3), (0, 1, 2), (0, 2, 3)):
+            with self.subTest(available=available):
+                task, vision, actions, _ = self.rest(available=available)
+                self.assertTrue(task.handle_rest(vision))
+                self.assertTrue(task.handle_rest(vision))
+                self.assertEqual([name for name, _ in actions], ['REST_HERO_ENTRY'] * 2)
+                self.assertTrue(task._rest_health_requested)
+                self.assertIsNone(task._rest_action)
+                self.assertIsNone(task._rest_hero_hp)
+                task.appear = Mock(return_value=False)
+                self.assertFalse(task.handle_rest(vision))
+                self.assertEqual(len(actions), 2)
+
+    def test_critical_selection_keeps_pending_revive_until_room_completion(self):
+        from tasks.dimensional_exploration.assets.assets_dimensional_exploration import ROOM_LEAVE
+        task, vision, actions, buttons = self.rest(available=(0, 1, 2, 3), hp=(20, 29))
+        task.handle_rest(vision)
+        task._rest_hero_hp = (90, 90)
+        task.handle_rest(vision)
+        self.assertEqual(actions, [('ExplorationRestAction', buttons[1].area)] * 2)
+        with patch('tasks.dimensional_exploration.rest.match_in', return_value=(1, (0, 0, 1, 1))):
+            self.assertTrue(task.handle_rest(vision))
+        self.assertEqual(actions[-1], ('ROOM_LEAVE', ROOM_LEAVE.area))
+        self.assertIsNone(task._rest_action)
+        self.assertIsNone(task._rest_hero_hp)
+
+    def test_lowest_or_average_hp_uses_strict_thresholds(self):
+        from tasks.dimensional_exploration.rest import needs_rest_healing
+        for hp, expected in (((29, 100), True), ((30, 90), False), ((30, 89), True),
+                             ((59, 60), True), ((60, 60), False), ((100, 100), False),
+                             ((0, 100), True), ((30, 30, 100, 100), False)):
+            with self.subTest(hp=hp):
+                self.assertEqual(needs_rest_healing(hp), expected)
+        self.assertIsNone(needs_rest_healing(None))
+        self.assertIsNone(needs_rest_healing(()))
+
+    def test_low_hp_chooses_healing_and_boundaries_choose_upgrade(self):
+        for hp, row in (((29, 100), 3), ((30, 89), 3), ((30, 90), 0), ((60, 60), 0)):
+            task, vision, actions, buttons = self.rest(hp=hp)
+            self.assertTrue(task.handle_rest(vision))
+            self.assertEqual(actions, [('ExplorationRestAction', buttons[row].area)])
+
+    def test_life_recovery_and_revive_keep_priority_without_hp_inspection(self):
+        # These choices cannot be reordered by HP. When life competes with
+        # revive/healing, the new critical-average cases require a roster.
+        for available, row in (((0, 2), 2), ((0, 1, 3), 1), ((0,), 0)):
+            task, vision, actions, buttons = self.rest(available=available)
+            self.assertTrue(task.handle_rest(vision))
+            self.assertEqual(actions, [('ExplorationRestAction', buttons[row].area)])
+            self.assertFalse(task._rest_health_requested)
+
+    def test_healthy_team_leaves_when_upgrade_is_disabled_without_healing(self):
+        from tasks.dimensional_exploration.assets.assets_dimensional_exploration import ROOM_LEAVE
+        task, vision, actions, _ = self.rest(available=(3,), hp=(90, 90))
+        self.assertTrue(task.handle_rest(vision))
+        self.assertEqual(actions, [('ROOM_LEAVE', ROOM_LEAVE.area)])
+
+    def test_healing_option_opens_owned_roster_and_does_not_assume_click_success(self):
+        task, vision, actions, _ = self.rest()
+        self.assertTrue(task.handle_rest(vision))
+        self.assertTrue(task.handle_rest(vision))
+        self.assertEqual([name for name, _ in actions], ['REST_HERO_ENTRY', 'REST_HERO_ENTRY'])
+        self.assertIsNone(task._rest_hero_hp)
+        self.assertTrue(task._rest_health_requested)
+        self.assertIsNone(task._rest_action)
+
+    def test_two_complete_real_roster_frames_return_and_healthy_team_upgrades(self):
+        task, rest, actions, buttons = self.rest()
+        self.assertTrue(task.handle_rest(rest))
+        roster = ExplorationVision(frame('20261001-133151-873'))
+        task.device.image = roster.image
+        self.assertFalse(task.handle_roster(roster))
+        self.assertTrue(task.handle_roster(roster))
+        self.assertEqual(len(task._rest_hero_hp), 6)
+        self.assertIsNone(task._event_hero_hp)
+        task.device.image = rest.image
+        self.assertTrue(task.handle_rest(rest))
+        self.assertEqual([name for name, _ in actions], ['REST_HERO_ENTRY', 'BACK', 'ExplorationRestAction'])
+        self.assertEqual(actions[-1][1], buttons[0].area)
+
+    def test_incomplete_or_changing_roster_waits_for_two_consistent_frames(self):
+        from tasks.dimensional_exploration.vision import HeroHealth
+        task, rest, actions, _ = self.rest()
+        task.handle_rest(rest)
+        roster = ExplorationVision(frame('20261001-133151-873'))
+        low = (HeroHealth('英雄甲', 20), HeroHealth('英雄乙', 90))
+        healthy = (HeroHealth('英雄甲', 90), HeroHealth('英雄乙', 90))
+        roster.roster_health = Mock(side_effect=[None, low, healthy, healthy])
+        task.device.image = roster.image
+        for _ in range(3):
+            self.assertFalse(task.handle_roster(roster))
+        self.assertEqual([name for name, _ in actions], ['REST_HERO_ENTRY'])
+        self.assertIsNone(task._rest_hero_hp)
+        self.assertTrue(task.handle_roster(roster))
+        self.assertEqual(task._rest_hero_hp, (90, 90))
+        self.assertEqual(actions[-1][0], 'BACK')
+
+    def test_failed_entry_and_back_clicks_retry_without_authorizing_healing(self):
+        task, rest, actions, _ = self.rest()
+        task.click_action = Mock(return_value=False)
+        self.assertFalse(task.handle_rest(rest))
+        self.assertFalse(task._rest_health_requested)
+        self.assertIsNone(task._rest_action)
+        task.click_action = Mock(side_effect=lambda button: actions.append((str(button), button.area)) or True)
+        task.handle_rest(rest)
+        roster = ExplorationVision(frame('20261001-133151-873'))
+        task.device.image = roster.image
+        self.assertFalse(task.handle_roster(roster))
+        task.click_action.return_value = False
+        task.click_action.side_effect = None
+        self.assertFalse(task.handle_roster(roster))
+        self.assertTrue(task._rest_health_requested)
+        self.assertIsNotNone(task._rest_hero_hp)
+        task.click_action.side_effect = lambda button: actions.append((str(button), button.area)) or True
+        self.assertTrue(task.handle_roster(roster))
+        self.assertEqual(actions[-1][0], 'BACK')
+
+    def test_unknown_frames_keep_hp_but_positive_room_exit_clears_it(self):
+        task, _, _, _ = self.rest(hp=(29, 100))
+        task._rest_health_requested = True
+        task._rest_action = 3
+        for state in ('unknown', 'roster', 'rest'):
+            task.observe_rest_health(state)
+            self.assertEqual(task._rest_hero_hp, (29, 100))
+            self.assertEqual(task._rest_action, 3)
+        for state in ('map', 'upgrade', 'revive', 'event', 'settlement', 'lobby'):
+            task._rest_hero_hp = (29, 100)
+            task._rest_health_requested = True
+            task._rest_action = 3
+            task.observe_rest_health(state)
+            self.assertIsNone(task._rest_hero_hp)
+            self.assertIsNone(task._rest_action)
+            self.assertFalse(task._rest_health_requested)
+
+    def test_selected_action_is_pinned_until_room_done_and_clears_hp(self):
+        from tasks.dimensional_exploration.assets.assets_dimensional_exploration import ROOM_LEAVE
+        task, vision, actions, buttons = self.rest(hp=(29, 100))
+        task.handle_rest(vision)
+        task._rest_hero_hp = (90, 90)
+        task.handle_rest(vision)
+        self.assertEqual(actions, [('ExplorationRestAction', buttons[3].area)] * 2)
+        with patch('tasks.dimensional_exploration.rest.match_in', return_value=(1, (0, 0, 1, 1))):
+            self.assertTrue(task.handle_rest(vision))
+        self.assertEqual(actions[-1], ('ROOM_LEAVE', ROOM_LEAVE.area))
+        self.assertIsNone(task._rest_hero_hp)
+        self.assertIsNone(task._rest_action)
+
+    def test_real_rest_with_disabled_healing_upgrades_without_opening_roster(self):
+        from tasks.dimensional_exploration.assets.assets_dimensional_exploration import REST_ACTION
+        task, vision, _ = task_for('20260923-232305-766')
+        actions = []
+        task.click_action = lambda button: actions.append((str(button), button.area)) or True
+        self.assertTrue(task.handle_rest(vision))
+        self.assertEqual(actions, [('ExplorationRestAction', list(REST_ACTION.iter_buttons())[0].area)])
+        self.assertFalse(task._rest_health_requested)
+
+    def test_missing_hero_entry_waits_without_healing_or_upgrade(self):
+        task, vision, actions, _ = self.rest()
+        task.appear = Mock(return_value=False)
+        self.assertFalse(task.handle_rest(vision))
+        self.assertEqual(actions, [])
+        self.assertIsNone(task._rest_hero_hp)
+
+
+    def test_rest_inspection_does_not_reuse_event_hp(self):
+        task, vision, actions, _ = self.rest()
+        task._event_hero_hp = (1, 1)
+        self.assertTrue(task.handle_rest(vision))
+        self.assertEqual([name for name, _ in actions], ['REST_HERO_ENTRY'])
+        self.assertIsNone(task._rest_hero_hp)
+        self.assertIsNone(task._rest_action)
+
+    def test_main_loop_inspects_roster_retries_then_reaches_upgrade(self):
+        from tests.support.exploration import ReplayDevice
+        from tasks.dimensional_exploration.assets.assets_dimensional_exploration import REST_ACTION
+        suffixes = ['20260923-232305-766'] * 2 + ['20261001-133151-873'] * 3 + [
+            '20260923-232305-766', '20260923-232305-766', '20260923-232309-289']
+        expected = ['REST_HERO_ENTRY', 'BACK', 'ExplorationRestAction']
+        buttons = list(REST_ACTION.iter_buttons())
+        original_bright = ExplorationVision.bright_text
+
+        def available(vision, button, **kwargs):
+            if any(button is b for b in buttons):
+                return buttons.index(button) in (0, 3)
+            return original_bright(vision, button, **kwargs)
+
+        with ControlledClock() as clock, patch.object(ExplorationVision, 'bright_text', available):
+            task, _, _ = task_for(suffixes[0])
+            device = ReplayDevice(suffixes, expected_clicks=expected)
+            task.device = device
+            task.click_action = task.__class__.click_action.__get__(task)
+            task.action_ready = task.__class__.action_ready.__get__(task)
+            task.progress, task.target = RunProgress(), 5
+            task.handle_ui_recovery = Mock(return_value=False)
+            task.handle_rest_hero = Mock(side_effect=RuntimeError('upgrade reached'))
+            screenshot = device.screenshot
+
+            def next_frame():
+                clock.advance(1.1)
+                screenshot()
+
+            device.screenshot = next_frame
+            with self.assertRaisesRegex(RuntimeError, 'upgrade reached'):
+                task.explore()
+            device.assert_actions_complete()
+            task.handle_rest_hero.assert_called_once()
+            self.assertIsNone(task._rest_hero_hp)
+            self.assertIsNone(task._rest_action)
+            self.assertFalse(task._rest_health_requested)
+            self.assertEqual(task.progress.completed, 0)
+
+    def test_main_loop_reads_critical_roster_retries_then_reaches_revive(self):
+        from tests.support.exploration import ReplayDevice
+        from tasks.dimensional_exploration.assets.assets_dimensional_exploration import REST_ACTION
+        from tasks.dimensional_exploration.vision import HeroHealth
+        suffixes = ['20260923-232305-766'] * 2 + ['20261001-133151-873'] * 3 + [
+            '20260923-232305-766'] * 3 + ['20260923-233115-192']
+        expected = ['REST_HERO_ENTRY', 'BACK', 'ExplorationRestAction', 'ExplorationRestAction']
+        buttons = list(REST_ACTION.iter_buttons())
+        original_bright = ExplorationVision.bright_text
+
+        def available(vision, button, **kwargs):
+            if any(button is b for b in buttons):
+                return True
+            return original_bright(vision, button, **kwargs)
+
+        # The real roster is a page/background fixture. Critical HP and all
+        # four enabled actions are explicit simulations, not captured states.
+        critical = tuple(HeroHealth(f'模拟英雄{index}', 25) for index in range(6))
+        with ControlledClock() as clock, patch.object(ExplorationVision, 'bright_text', available), patch.object(
+                ExplorationVision, 'roster_health', return_value=critical):
+            task, _, _ = task_for(suffixes[0])
+            device = ReplayDevice(suffixes, expected_clicks=expected)
+            task.device = device
+            task.click_action = task.__class__.click_action.__get__(task)
+            task.action_ready = task.__class__.action_ready.__get__(task)
+            task.progress, task.target = RunProgress(), 5
+            task.handle_ui_recovery = Mock(return_value=False)
+            task.handle_rest_hero = Mock(side_effect=RuntimeError('revive reached'))
+            click = device.click
+            actions = []
+
+            def clicked(button):
+                actions.append((str(button), button.area))
+                click(button)
+
+            device.click = clicked
+            screenshot = device.screenshot
+
+            def next_frame():
+                clock.advance(1.1)
+                screenshot()
+
+            device.screenshot = next_frame
+            with self.assertRaisesRegex(RuntimeError, 'revive reached'):
+                task.explore()
+            device.assert_actions_complete()
+            task.handle_rest_hero.assert_called_once()
+            self.assertEqual(actions[-2:], [('ExplorationRestAction', buttons[1].area)] * 2)
+            self.assertIsNone(task._rest_hero_hp)
+            self.assertIsNone(task._rest_action)
+            self.assertFalse(task._rest_health_requested)
+            self.assertEqual(task.progress.completed, 0)

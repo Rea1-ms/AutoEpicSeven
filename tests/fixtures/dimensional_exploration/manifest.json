@@ -334,7 +334,28 @@
       "server": "global_cn",
       "scene": "rest",
       "used_by": [
-        "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_page_identity_and_modal_precedence"
+        "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_page_identity_and_modal_precedence",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_healthy_team_upgrades_even_when_healing_is_available",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_low_hp_chooses_healing_and_boundaries_choose_upgrade",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_life_recovery_and_revive_keep_priority_without_hp_inspection",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_healthy_team_leaves_when_upgrade_is_disabled_without_healing",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_healing_option_opens_owned_roster_and_does_not_assume_click_success",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_two_complete_real_roster_frames_return_and_healthy_team_upgrades",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_incomplete_or_changing_roster_waits_for_two_consistent_frames",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_failed_entry_and_back_clicks_retry_without_authorizing_healing",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_unknown_frames_keep_hp_but_positive_room_exit_clears_it",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_selected_action_is_pinned_until_room_done_and_clears_hp",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_real_rest_with_disabled_healing_upgrades_without_opening_roster",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_missing_hero_entry_waits_without_healing_or_upgrade",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_rest_inspection_does_not_reuse_event_hp",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_main_loop_inspects_roster_retries_then_reaches_upgrade",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_average_thirty_boundary_preserves_normal_priority",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_competing_life_recovery_requires_hp_before_selecting_any_action",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_critical_average_heals_before_life_recovery_when_revive_unavailable",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_critical_average_revives_before_life_recovery_and_healing",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_critical_order_uses_first_available_action",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_critical_selection_keeps_pending_revive_until_room_completion",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_main_loop_reads_critical_roster_retries_then_reaches_revive"
       ]
     },
     "20260923-232309-289": {
@@ -344,7 +365,8 @@
       "scene": "upgrade",
       "used_by": [
         "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_page_identity_and_modal_precedence",
-        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Screenshots.test_roster_marker_does_not_match_recruitment_upgrade_or_map"
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Screenshots.test_roster_marker_does_not_match_recruitment_upgrade_or_map",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_main_loop_inspects_roster_retries_then_reaches_upgrade"
       ]
     },
     "20260923-232312-127": {
@@ -455,7 +477,8 @@
       "server": "global_cn",
       "scene": "revive",
       "used_by": [
-        "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_page_identity_and_modal_precedence"
+        "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_page_identity_and_modal_precedence",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_main_loop_reads_critical_roster_retries_then_reaches_revive"
       ]
     },
     "20260923-233117-847": {
@@ -892,7 +915,12 @@
         "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_positive_outcome_clears_hp_but_unknown_frame_keeps_it",
         "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_roster_inspection_does_not_complete_event_sampling",
         "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_roster_full_and_empty_bars_keep_zero_distinct_from_missing_pixels",
-        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_main_loop_inspects_hp_and_saves_garden_outcomes_with_missed_click_frames"
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_main_loop_inspects_hp_and_saves_garden_outcomes_with_missed_click_frames",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_two_complete_real_roster_frames_return_and_healthy_team_upgrades",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_incomplete_or_changing_roster_waits_for_two_consistent_frames",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_failed_entry_and_back_clicks_retry_without_authorizing_healing",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_main_loop_inspects_roster_retries_then_reaches_upgrade",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_main_loop_reads_critical_roster_retries_then_reaches_revive"
       ]
     },
     "20261001-133603-790": {
