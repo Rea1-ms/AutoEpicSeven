@@ -1158,7 +1158,7 @@
       },
       "StartStrategy": {
         "type": "select",
-        "value": "沉重包袱",
+        "value": "雇佣契约",
         "option": [
           "雇佣契约",
           "痛苦机械装置",

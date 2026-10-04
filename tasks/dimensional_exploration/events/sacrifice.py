@@ -6,8 +6,8 @@ from module.base.button import ClickButton
 from tasks.dimensional_exploration.assets.assets_dimensional_exploration import (
     SACRIFICE_CONFIRM, SACRIFICE_NORMAL_CORNER, SACRIFICE_REMOVE, SACRIFICE_SELECTED_MARK,
 )
-from tasks.dimensional_exploration.event import event_branch
-from tasks.dimensional_exploration.vision import match_in
+from tasks.dimensional_exploration.events.event import event_branch
+from tasks.dimensional_exploration.recognition.vision import match_in
 
 
 class SacrificeMixin:
@@ -32,7 +32,7 @@ class SacrificeMixin:
         """
         branch = event_branch(self.event_memory.pending)
         if branch is None or not branch.enabled or branch.cost.loot != 1 or self.event_memory.advanced:
-            self.require_human("献祭页面缺少未完成的单件战利品事件记录，尚未消耗战利品。")
+            self.require_human("Sacrifice page has no pending single-loot event record; no loot has been spent.")
         counter, count = vision.sacrifice_counter(), vision.sacrifice_loot_count()
         if counter not in ((0, 1), (1, 1)) or count is None or count < 1:
             return False
@@ -70,14 +70,14 @@ class SacrificeMixin:
             return False
         self._sacrifice_selected = None
         if len(special) >= count:
-            self.require_human("战利品都是特殊战利品，按策略保留，无法支付本次献祭。")
+            self.require_human("Only special loot is available; the policy preserves it and cannot pay for this sacrifice.")
         x1, y1, x2, y2 = SACRIFICE_NORMAL_CORNER.search
         signature = hashlib.sha256(vision.image[y1:y2, x1:x2].tobytes()).digest()
         if self._sacrifice_before_view is not None:
             self._sacrifice_stalls = self._sacrifice_stalls + 1 if signature == self._sacrifice_before_view else 0
             self._sacrifice_before_view = None
         if self._sacrifice_stalls >= 2 or self._sacrifice_swipes >= 30:
-            self.require_human("未找到可确认的普通战利品，保留特殊战利品并停止献祭。")
+            self.require_human("No verified ordinary loot was found; special loot is preserved and sacrifice stopped.")
         if not self.action_ready():
             return False
         x, height = (x1 + x2) // 2, y2 - y1

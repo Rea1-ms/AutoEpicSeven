@@ -29,6 +29,10 @@ from tasks.dimensional_exploration.assets.assets_dimensional_exploration import 
     OCR_SACRIFICE_COUNTER, OCR_SACRIFICE_LOOT_COUNT, OCR_EVENT_LOOT,
 )
 from tasks.dimensional_exploration.policy import EventChoice, Offer, normalize, parse_counter, parse_number
+from tasks.dimensional_exploration.recognition.hero_names import HeroNameOcr
+from tasks.dimensional_exploration.assets.assets_dimensional_exploration_navigation import (
+    PREVIEW_BATTLE, PREVIEW_BOSS, PREVIEW_ELITE, PREVIEW_EVENT, PREVIEW_REST, PREVIEW_SUPPLY,
+)
 from tasks.dungeon.assets.assets_dungeon_state import AUTO_COMBAT_EXIST
 from tasks.dungeon.execute import detect_auto_combat_state
 
@@ -172,9 +176,14 @@ class ExplorationVision:
         "event": NODE_EVENT, "shop": NODE_SHOP, "supply": NODE_SUPPLY,
         "battle": NODE_BATTLE, "elite": NODE_ELITE, "rest": NODE_REST, "boss": NODE_BOSS,
     }
+    PREVIEW_ASSETS = {
+        "battle": PREVIEW_BATTLE, "elite": PREVIEW_ELITE, "boss": PREVIEW_BOSS,
+        "event": PREVIEW_EVENT, "supply": PREVIEW_SUPPLY, "rest": PREVIEW_REST,
+    }
 
-    def __init__(self, image):
+    def __init__(self, image, hero_name_ocr=None):
         self.image = image
+        self.hero_name_ocr = hero_name_ocr if hero_name_ocr is not None else HeroNameOcr()
 
     def state(self):
         for state, asset in self.STATES:
@@ -205,6 +214,8 @@ class ExplorationVision:
 
     def tokens(self, area, name="ExplorationOptions"):
         region = area if hasattr(area, "area") else ClickButton(area, name=name)
+        if name in ("HeroName", "UpgradeName", "RosterName"):
+            return self.hero_name_ocr.read(self.image, region.area, name)
         return Ocr(region, lang="cn", name=getattr(region, "name", name)).detect_and_ocr(self.image)
 
     def number(self, area, maximum=99999):
@@ -251,6 +262,11 @@ class ExplorationVision:
                 # change the requested route. Re-read the complete next frame.
                 return []
         return nodes
+
+    def preview_kind(self):
+        matches = [kind for kind, asset in self.PREVIEW_ASSETS.items()
+                   if asset.match_template(self.image, similarity=0.9)]
+        return matches[0] if len(matches) == 1 else None
 
     def offers(self):
         offers = []
@@ -378,7 +394,7 @@ class ExplorationVision:
         return tuple(heroes)
 
     def upgrade_roster(self):
-        from tasks.dimensional_exploration.upgrade import MAX_RANK, RankedHero
+        from tasks.dimensional_exploration.heroes.upgrade import MAX_RANK, RankedHero
         if self.state() != "upgrade":
             return None
         count = self.number(OCR_ROSTER_COUNT, maximum=99)

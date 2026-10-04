@@ -7,8 +7,8 @@ import numpy as np
 from tests.support.exploration import artifact_path, frame, make_task
 from module.exception import RequestHumanTakeover
 from tasks.dimensional_exploration.policy import EventChoice
-from tasks.dimensional_exploration.sampling import EventSampler, choose_sample, inspect_option, text_key
-from tasks.dimensional_exploration.vision import ExplorationVision
+from tasks.dimensional_exploration.events.sampling import EventSampler, choose_sample, inspect_option, text_key
+from tasks.dimensional_exploration.recognition.vision import ExplorationVision
 
 
 class SamplingTests(unittest.TestCase):

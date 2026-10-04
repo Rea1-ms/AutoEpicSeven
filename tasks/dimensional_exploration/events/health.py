@@ -3,7 +3,7 @@
 from module.logger import logger
 from tasks.base.assets.assets_base_page import BACK
 from tasks.dimensional_exploration.assets.assets_dimensional_exploration import EVENT_HERO_ENTRY
-from tasks.dimensional_exploration.event import match_event
+from tasks.dimensional_exploration.events.event import match_event
 from tasks.dimensional_exploration.policy import normalize
 
 

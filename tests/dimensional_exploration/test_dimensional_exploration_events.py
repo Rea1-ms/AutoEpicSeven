@@ -7,11 +7,11 @@ from unittest.mock import Mock, patch
 
 from tests.support.exploration import ControlledClock, ROOT, ReplayDevice, frame, make_task, task_for
 from module.exception import RequestHumanTakeover
-from tasks.dimensional_exploration.event import (
+from tasks.dimensional_exploration.events.event import (
     EventCondition, EventCost, EventMemory, decide_event, event_branch, event_catalog, match_event, pending_event,
 )
 from tasks.dimensional_exploration.policy import EventChoice, RunProgress, normalize
-from tasks.dimensional_exploration.vision import ExplorationVision
+from tasks.dimensional_exploration.recognition.vision import ExplorationVision
 
 
 class EventTests(unittest.TestCase):
@@ -176,6 +176,111 @@ class GiantEyeEventTests(unittest.TestCase):
     def choices(self):
         return [EventChoice(index, text) for index, text in enumerate(self.TEXTS)]
 
+    def test_ready_introduction_taps_before_reading_option_costs(self):
+        from tasks.dimensional_exploration.assets.assets_dimensional_exploration import EVENT_NEXT
+
+        task, vision, clicks = task_for('20261004-201104-292')
+        self.assertEqual(vision.state(), 'event')
+        self.assertFalse(EVENT_NEXT.match_template(vision.image))
+        self.assertEqual(vision.event_choices(), [])
+        vision.resources = Mock(return_value=None)
+        self.assertTrue(task.handle_event(vision))
+        self.assertEqual(clicks, ['EVENT_INTRO_GIANT_EYE'])
+        vision.resources.assert_not_called()
+        self.assertEqual(task.event_memory.as_dict(), EventMemory().as_dict())
+
+    def test_introduction_never_taps_blank_options_or_result_pages(self):
+        from tasks.dimensional_exploration.assets.assets_dimensional_exploration_event_intro import EVENT_INTRO_GIANT_EYE
+
+        for suffix in ('20261004-125352-386',
+                       '20261004-125528-432', '20261004-125532-398', '20260923-233133-331'):
+            with self.subTest(suffix=suffix):
+                task, vision, clicks = task_for(suffix)
+                self.assertFalse(EVENT_INTRO_GIANT_EYE.match_template(vision.image, similarity=0.9))
+                self.assertIsNone(task.event_introduction_button(vision))
+                self.assertEqual(clicks, [])
+        # Both native introduction captures contain the same completed text.
+        # Explicitly simulate blank/partial typing by obscuring the paragraph;
+        # these derived frames are not evidence of another supplied game page.
+        task, vision, clicks = task_for('20261004-125347-490')
+        self.assertIs(task.event_introduction_button(vision), EVENT_INTRO_GIANT_EYE)
+        for top in (461, 483):
+            incomplete = vision.image.copy()
+            incomplete[top:506, 276:1010] = 0
+            task.device.image = incomplete
+            self.assertIsNone(task.event_introduction_button(ExplorationVision(incomplete)))
+        self.assertEqual(clicks, [])
+        # Even a false-positive introduction match cannot authorize a tap on
+        # a frame which already exposes payable choices.
+        task, vision, clicks = task_for('20261004-125352-386')
+        with patch.object(task, 'appear', return_value=True):
+            self.assertIsNone(task.event_introduction_button(vision))
+        self.assertEqual(clicks, [])
+
+    def test_introduction_preserves_pending_history_and_sample_across_restart(self):
+        from tests.support.exploration import artifact_path
+        from tasks.dimensional_exploration.events.sampling import EventSampler
+
+        task, vision, clicks = task_for('20261004-201104-292')
+        task.event_memory.begin(event_branch('giant_eye.attack'))
+        saved = task.event_memory.as_dict()
+        task.event_memory = EventMemory.from_saved(saved)
+        root = artifact_path()
+        task.sampler = EventSampler(root)
+        selected = self.choices()[2]
+        task.sampler.before(frame('20261004-125352-386'), self.STORY, self.choices(), {},
+                            selected, 'catalog', 'giant_eye.attack')
+        task.sampler.clicked()
+        task.sampler = EventSampler(root)
+        folder = task.sampler.active['folder']
+        for _ in range(2):
+            self.assertTrue(task.handle_event(vision))
+            self.assertEqual(task.event_memory.as_dict(), saved)
+            self.assertEqual(task.sampler.active['folder'], folder)
+            self.assertFalse(task.sampler.active['advanced'])
+            self.assertEqual(task.sampler.active['frames'], [])
+            self.assertEqual(task.sampler.visits(self.STORY), {})
+        self.assertEqual(clicks, ['EVENT_INTRO_GIANT_EYE'] * 2)
+
+    def test_main_loop_retries_introduction_then_selects_attack_and_confirms_reward(self):
+        # Both captures supply the same ready introduction with different
+        # balances. Repeated introductions represent missed taps. Combat and exit reuse the
+        # shared fixtures; choices, receipt and narrations are real eye pages.
+        suffixes = ['20261004-125347-490'] + ['20261004-201104-292'] * 3 + [
+            '20261004-125352-386', '20261004-125352-386',
+            '20261004-125352-386', '20261004-125352-386',
+            '20260922-081423-319', '20260922-081423-319',
+            '20260922-081430-868', '20260922-081440-084',
+        ] + ['20261004-125521-108'] * 3 + ['20261004-125528-432'] * 2 + [
+            '20261004-125532-398', '20261004-125532-398',
+            '20260922-081554-067', '20260922-081153-551',
+        ]
+        expected = ['EVENT_INTRO_GIANT_EYE'] * 2 + ['ExplorationEventChoice'] * 2 + [
+            'BATTLE_START', 'AUTO_COMBAT', 'REWARD_CLOSE', 'REWARD_CLOSE', 'EVENT_NEXT', 'EVENT_NEXT',
+        ]
+        with ControlledClock() as clock:
+            task, _, _ = task_for(suffixes[0])
+            device = ReplayDevice(suffixes, expected_clicks=expected)
+            task.device = device
+            task.action_ready = task.__class__.action_ready.__get__(task)
+            task.click_action = task.__class__.click_action.__get__(task)
+            task.progress, task.target = RunProgress(completed=1), 1
+            task.handle_map = Mock(return_value=False)
+            task.handle_ui_recovery = Mock(return_value=False)
+            screenshot = device.screenshot
+
+            def next_frame():
+                clock.advance(1.1)
+                screenshot()
+
+            device.screenshot = next_frame
+            task.explore()
+            device.assert_actions_complete()
+            self.assertEqual(task.event_memory.visited, {'giant_eye.attack'})
+            self.assertEqual(task.event_memory.obtained, {self.REWARD})
+            self.assertIsNone(task.event_memory.pending)
+            task.handle_map.assert_called_once()
+
     def test_supplied_pages_and_animation_readiness(self):
         from tasks.dimensional_exploration.assets.assets_dimensional_exploration import EVENT_NEXT
         expected = [('20261004-125347-490', 'event', False), ('20261004-125352-386', 'event', False),
@@ -272,8 +377,8 @@ class GiantEyeEventTests(unittest.TestCase):
             '20261004-125532-398', '20261004-125532-398',
             '20260922-081554-067', '20260922-081153-551',
         ]
-        expected = ['ExplorationEventChoice'] * 2 + ['BATTLE_START', 'REWARD_CLOSE', 'REWARD_CLOSE',
-                                                    'EVENT_NEXT', 'EVENT_NEXT']
+        expected = ['EVENT_INTRO_GIANT_EYE', 'ExplorationEventChoice', 'BATTLE_START', 'AUTO_COMBAT',
+                    'REWARD_CLOSE', 'REWARD_CLOSE', 'EVENT_NEXT', 'EVENT_NEXT']
         with ControlledClock() as clock:
             task, _, _ = task_for(suffixes[0])
             device = ReplayDevice(suffixes, expected_clicks=expected)
@@ -387,7 +492,7 @@ class CliffCoinEventTests(unittest.TestCase):
 
     def test_main_loop_retries_leave_preserves_fragments_and_samples_outcome_once(self):
         from tests.support.exploration import artifact_path
-        from tasks.dimensional_exploration.sampling import EventSampler, text_key
+        from tasks.dimensional_exploration.events.sampling import EventSampler, text_key
         # The supplied narration belongs to the 50-fragment stage. The final
         # map/lobby explicitly reuse existing fixtures; no new map was supplied.
         suffixes = ['20261004-145456-631'] * 3 + ['20261004-145530-255'] * 5 + [
@@ -480,15 +585,15 @@ class CollectedEventTests(unittest.TestCase):
         original = next(e for e in event_catalog() if e.event_id == 'vestment_price')
         deferred = replace(original, branches=(replace(original.branches[0], priority=None), *original.branches[1:]))
         catalogue = tuple(deferred if e == original else e for e in event_catalog())
-        with patch('tasks.dimensional_exploration.event.event_catalog', return_value=catalogue):
-            with self.assertRaisesRegex(RequestHumanTakeover, '策略留空'):
+        with patch('tasks.dimensional_exploration.events.event.event_catalog', return_value=catalogue):
+            with self.assertRaisesRegex(RequestHumanTakeover, 'Event policy is pending'):
                 task.handle_event(vision)
             self.assertEqual(clicks, [])
             task.sampler.before.assert_called_once()
             # Corrupted option OCR still must not bypass the explicit review hold.
             choices = vision.event_choices()
             vision.event_choices = lambda: [(replace(c, text='未识别选项'), area) for c, area in choices]
-            with self.assertRaisesRegex(RequestHumanTakeover, '策略留空'):
+            with self.assertRaisesRegex(RequestHumanTakeover, 'Event policy is pending'):
                 task.handle_event(vision)
             self.assertEqual(clicks, [])
 
@@ -522,7 +627,7 @@ class ReviewedEventTests(unittest.TestCase):
         return decide_event(self.choices(event_id), **params)
 
     def test_reviewed_fixed_preferences_and_last_life_guard(self):
-        for event_id, branch in (('flooded_prison', 'fragments'), ('torn_vestment', 'take'),
+        for event_id, branch in (('torn_vestment', 'take'),
                                  ('vestment_price', 'life'), ('quarreling_tablet', 'healer'),
                                  ('fairy_dance', 'dice'), ('mushroom_path', 'loot'), ('mimic', 'leave')):
             with self.subTest(event=event_id):
@@ -566,7 +671,9 @@ class ReviewedEventTests(unittest.TestCase):
 
     def test_conditions_reject_malformed_values(self):
         for condition in ({'life_lte': True}, {'fragments_gte': -1}, {'fragments_gte': '2000'},
-                          {'life_below_max': 'true'}):
+                          {'life_below_max': 'true'}, {'life_gte': True}, {'life_gte': -1},
+                          {'hero_hp_avg_lt': 101}, {'hero_hp_avg_lt': -1},
+                          {'hero_hp_min_lt': True}, {'hero_hp_min_lt': '25'}):
             with self.subTest(condition=condition), self.assertRaises(ValueError):
                 EventCondition(**condition)
 
@@ -664,6 +771,248 @@ class ReviewedEventTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class PrisonAndOldWomanPolicyTests(unittest.TestCase):
+    @staticmethod
+    def options(event_id):
+        data = json.loads((ROOT / 'tests/fixtures/dimensional_exploration/event_observations.json').read_text(encoding='utf-8'))
+        for sample in data['observations']:
+            choices = [EventChoice(i, text) for i, text in enumerate(sample['choices'])]
+            matched = match_event(choices, sample['story'])
+            if matched and matched[0].event_id == event_id and len(choices) == len(matched[0].branches):
+                return choices, sample['story']
+        raise AssertionError(f'Missing complete observed choices for {event_id}')
+
+    def decision(self, event_id, **overrides):
+        choices, story = self.options(event_id)
+        params = dict(cores=20, fragments=500, life=3, max_life=4, loot=5, dice=5, story=story)
+        params.update(overrides)
+        return decide_event(choices, **params)
+
+    def live_options(self, event_id):
+        # The historical prison samples preserve text, not versioned option
+        # screenshots. Explicitly simulate those option fields over an existing
+        # event entry; this does not prove their native row detection/results.
+        task, vision, clicks = task_for('20261001-132524-411')
+        choices, story = self.options(event_id)
+        areas = [area for _, area in vision.event_choices()]
+        vision.event_choices = Mock(return_value=list(zip(choices, areas)))
+        vision.event_story = Mock(return_value=story)
+        vision.resources = Mock(return_value=vision.resources())
+        vision.event_dice = Mock(return_value=3)
+        vision.number = Mock(return_value=3)
+        return task, vision, clicks
+
+    def test_prison_healing_uses_strict_average_or_minimum_and_counts_zero(self):
+        cases = [((70, 70), 'fragments'), ((69, 71), 'fragments'), ((69, 70), 'heal'),
+                 ((69, 98), 'fragments'), ((24, 98, 98, 98, 98, 98), 'heal'),
+                 ((25, 98, 98, 98, 98, 98), 'fragments'), ((0, 98), 'heal')]
+        for hp, branch in cases:
+            with self.subTest(hp=hp):
+                self.assertEqual(self.decision('flooded_prison', hero_hp=hp).branch.branch_id, branch)
+
+    def test_prison_unknown_hp_does_not_authorize_free_fragment_fallback(self):
+        for hp in (None, ()):
+            with self.subTest(hp=hp):
+                self.assertIsNone(self.decision('flooded_prison', hero_hp=hp))
+        choices, story = self.options('flooded_prison')
+        unavailable_heal = [replace(c, available=c.index != 2) for c in choices]
+        result = decide_event(unavailable_heal, cores=20, fragments=0, life=1, loot=0, story=story)
+        self.assertEqual(result.branch.key, 'flooded_prison.fragments')
+
+    def test_prison_live_choice_waits_for_complete_stable_hp_and_retries_without_reopening(self):
+        for minimum, branch in ((98, 'fragments'), (24, 'heal')):
+            with self.subTest(branch=branch):
+                task, event, clicks = self.live_options('flooded_prison')
+                self.assertTrue(task.handle_event(event))
+                self.assertEqual(clicks, ['EVENT_HERO_ENTRY'])
+                self.assertIsNone(task.event_memory.pending)
+                roster = ExplorationVision(frame('20261001-133151-873'))
+                heroes = roster.roster_health()
+                heroes = tuple(replace(hero, percent=minimum if index == 0 else 98)
+                               for index, hero in enumerate(heroes))
+                roster.roster_health = Mock(side_effect=[None, heroes, heroes])
+                task.device.image = roster.image
+                self.assertFalse(task.handle_roster(roster))
+                self.assertFalse(task.handle_roster(roster))
+                self.assertTrue(task.handle_roster(roster))
+                task.device.image = event.image
+                self.assertTrue(task.handle_event(event))
+                self.assertTrue(task.handle_event(event))
+                self.assertEqual(task.event_memory.pending, 'flooded_prison.' + branch)
+                self.assertEqual(clicks, ['EVENT_HERO_ENTRY', 'BACK'] + ['ExplorationEventChoice'] * 2)
+
+    def test_prison_main_loop_preserves_intervals_and_hp_before_both_free_routes(self):
+        choices, story = self.options('flooded_prison')
+        event = ExplorationVision(frame('20261001-132524-411'))
+        areas = [area for _, area in event.event_choices()]
+        resources = event.resources()
+        heroes = ExplorationVision(frame('20261001-133151-873')).roster_health()
+        suffixes = sum(([suffix] * 3 for suffix in ('20261001-132524-411', '20261001-133151-873',
+                                                  '20261001-132524-411')), [])
+        suffixes += ['20260922-081554-067', '20260922-081153-551']
+        expected = ['EVENT_HERO_ENTRY'] * 2 + ['BACK'] + ['ExplorationEventChoice'] * 2
+        # HP values/options and terminal frames are simulated here. Native
+        # roster pixels and production timing are reused, not new receipts.
+        for minimum, branch in ((98, 'fragments'), (24, 'heal')):
+            hp = tuple(replace(hero, percent=minimum if index == 0 else 98)
+                       for index, hero in enumerate(heroes))
+            with self.subTest(branch=branch), ControlledClock() as clock:
+                task, _, _ = task_for(suffixes[0])
+                device = ReplayDevice(suffixes, expected_clicks=expected)
+                task.device = device
+                task.action_ready = type(task).action_ready.__get__(task)
+                task.click_action = type(task).click_action.__get__(task)
+                task.progress, task.target = RunProgress(completed=1), 1
+                task.handle_map = Mock(return_value=False)
+                task.handle_ui_recovery = Mock(return_value=False)
+                screenshot = device.screenshot
+
+                def next_frame():
+                    clock.advance(1.1)
+                    screenshot()
+
+                device.screenshot = next_frame
+                with patch.object(ExplorationVision, 'event_choices', return_value=list(zip(choices, areas))), \
+                        patch.object(ExplorationVision, 'event_story', return_value=story), \
+                        patch.object(ExplorationVision, 'resources', return_value=resources), \
+                        patch.object(ExplorationVision, 'event_dice', return_value=3), \
+                        patch.object(ExplorationVision, 'number', return_value=3), \
+                        patch.object(ExplorationVision, 'roster_health', return_value=hp):
+                    task.explore()
+                device.assert_actions_complete()
+                self.assertEqual(task.event_memory.visited, {'flooded_prison.' + branch})
+                self.assertIsNone(task.event_memory.pending)
+                self.assertIsNone(task._event_hero_hp)
+
+    def test_woman_life_threshold_fragment_reserve_and_random_hp_floor(self):
+        cases = [(3, 0, 20, (0, 98), 'clear'), (2, 100, 20, (0, 98), 'pay'),
+                 (1, 100, 20, (0, 98), 'pay'), (2, 99, 20, (65, 98), 'comfort'),
+                 (2, 99, 20, (64, 98), None), (2, 149, 19, (65, 98), 'comfort'),
+                 (2, 150, 19, (0, 98), 'pay'), (1, 0, 20, (64, 98), None)]
+        for life, fragments, cores, hp, branch in cases:
+            with self.subTest(life=life, fragments=fragments, cores=cores, hp=hp):
+                decision = self.decision('old_woman', life=life, fragments=fragments, cores=cores, hero_hp=hp)
+                self.assertEqual(decision.branch.branch_id if decision else None, branch)
+        choices, story = self.options('old_woman')
+        unavailable_life = [replace(c, available=c.index != 2) for c in choices]
+        decision = decide_event(unavailable_life, cores=20, fragments=100, life=3, loot=0, story=story)
+        self.assertEqual(decision.branch.key, 'old_woman.pay')
+        self.assertIsNone(pending_event(story))
+
+    def test_woman_pending_choice_is_pinned_and_changed_costs_do_not_match(self):
+        memory = EventMemory(pending='old_woman.clear')
+        self.assertIsNone(self.decision('old_woman', memory=memory, life=2, hero_hp=(98,)))
+        memory = EventMemory(pending='old_woman.comfort')
+        self.assertIsNone(self.decision('old_woman', memory=memory, hero_hp=(64, 98)))
+        choices, story = self.options('old_woman')
+        for original, changed in (('100个', '90个'), ('40%', '30%'), ('1点生命', '2点生命')):
+            broken = [replace(c, text=c.text.replace(original, changed)) for c in choices]
+            self.assertIsNone(match_event(broken, story))
+
+    def test_woman_life_route_can_click_and_sample_two_results_without_forced_hp(self):
+        from tests.support.exploration import artifact_path
+        from tasks.dimensional_exploration.events.sampling import EventSampler
+        task, event, clicks = task_for('20261004-213353-845')
+        task.sampler = EventSampler(artifact_path())
+        task.inspect_event_health = Mock(side_effect=AssertionError('life route does not spend hero HP'))
+        click = task.click_action
+        task.click_action = Mock(return_value=False)
+        self.assertFalse(task.handle_event(event))
+        self.assertIsNone(task.event_memory.pending)
+        self.assertFalse(task.sampler.active['clicked'])
+        task.click_action = click
+        self.assertTrue(task.handle_event(event))
+        self.assertEqual(task.event_memory.pending, 'old_woman.clear')
+        self.assertTrue(task.sampler.active['clicked'])
+        folder = task.sampler.active['folder']
+        # The supplied map now completes this actual receipt. Repeated frames,
+        # including a second terminal map, must not duplicate the completion.
+        for suffix, state in (('20261004-213359-426', 'reward'), ('20261004-213403-036', 'event'),
+                              ('20261004-213406-273', 'event'), ('20261004-214924-687', 'map')):
+            result = ExplorationVision(frame(suffix))
+            task.device.image = result.image
+            task.observe_event(state, result)
+            task.observe_event(state, result)
+        saved = json.loads((task.sampler.root / folder / 'record.json').read_text(encoding='utf-8'))
+        self.assertEqual(saved['reason'], 'old_woman.clear')
+        self.assertEqual([f['state'] for f in saved['frames']], ['reward', 'event', 'event', 'map'])
+        self.assertEqual(saved['frames'][0]['text'], '次元水晶柱')
+        self.assertEqual([f['delta']['life'] for f in saved['frames']], [-1, -1, -1, -1])
+        self.assertEqual([f['delta']['loot'] for f in saved['frames'][:3]], [0, 1, 1])
+        self.assertEqual([f['delta']['fragments'] for f in saved['frames']], [0, 0, 0, 0])
+        # The event-page counter is not the map's bottom inventory counter;
+        # do not manufacture a native map loot read from the reviewed value.
+        self.assertIsNone(saved['frames'][-1]['resources']['loot'])
+        self.assertEqual(task.event_memory.visited, {'old_woman.clear'})
+        self.assertEqual(task.event_memory.obtained, set())
+        self.assertIsNone(task.event_memory.pending)
+        self.assertEqual(saved['finished'], 'map')
+        self.assertTrue(saved['advanced'])
+        self.assertIsNone(task.sampler.active)
+        self.assertEqual(list(task.sampler.visits(saved['story']).values()), [1])
+        self.assertEqual(clicks, ['ExplorationEventChoice'])
+
+    def test_woman_real_options_confirm_life_payment_and_random_reward(self):
+        from tasks.dimensional_exploration.assets.assets_dimensional_exploration import EVENT_NEXT, OCR_EVENT_LOOT
+        for suffix, state, life, loot in (('20261004-213353-845', 'event', 4, 3),
+                                           ('20261004-213359-426', 'reward', 3, 3),
+                                           ('20261004-213403-036', 'event', 3, 4),
+                                           ('20261004-213406-273', 'event', 3, 4),
+                                           ('20261004-214924-687', 'map', 3, None)):
+            with self.subTest(suffix=suffix):
+                vision = ExplorationVision(frame(suffix))
+                self.assertEqual(vision.state(), state)
+                resources = vision.resources()
+                self.assertEqual((resources.cores, resources.fragments, resources.life, resources.max_life),
+                                 (58, 407, life, 4))
+                self.assertEqual(vision.number(OCR_EVENT_LOOT), loot)
+                if state == 'reward':
+                    self.assertEqual(vision.event_reward(), '次元水晶柱')
+                elif suffix == '20261004-213353-845':
+                    choices = [c for c, _ in vision.event_choices()]
+                    self.assertEqual(len(choices), 3)
+                    self.assertEqual(match_event(choices, vision.event_story())[0].event_id, 'old_woman')
+                    selected = decide_event(choices, cores=58, fragments=407, life=4, loot=3,
+                                            dice=3, story=vision.event_story())
+                    self.assertEqual(selected.branch.key, 'old_woman.clear')
+                    self.assertEqual(selected.choice.index, 2)
+                    self.assertFalse(selected.first_collectible)
+                elif state == 'event':
+                    self.assertTrue(EVENT_NEXT.match_template(vision.image))
+                    self.assertEqual(vision.event_choices(), [])
+        self.assertIsNone(event_branch('old_woman.clear').collectible)
+
+    def test_woman_main_loop_retries_payment_and_reward_then_advances_both_narrations(self):
+        suffixes = sum(([suffix] * 3 for suffix in ('20261004-213353-845', '20261004-213359-426',
+                                                  '20261004-213403-036', '20261004-213406-273')), [])
+        # The option, receipt, both narratives and terminal map are native
+        # frames from this event. Only the final lobby is reused for exit.
+        suffixes += ['20261004-214924-687', '20260922-081153-551']
+        expected = ['ExplorationEventChoice'] * 2 + ['REWARD_CLOSE'] + ['EVENT_NEXT'] * 3
+        with ControlledClock() as clock:
+            task, _, _ = task_for(suffixes[0])
+            device = ReplayDevice(suffixes, expected_clicks=expected)
+            task.device = device
+            task.action_ready = type(task).action_ready.__get__(task)
+            task.click_action = type(task).click_action.__get__(task)
+            task.progress, task.target = RunProgress(completed=1), 1
+            task.handle_map = Mock(return_value=False)
+            task.handle_ui_recovery = Mock(return_value=False)
+            task.inspect_event_health = Mock(side_effect=AssertionError('life payment must not spend hero HP'))
+            screenshot = device.screenshot
+
+            def next_frame():
+                clock.advance(1.1)
+                screenshot()
+
+            device.screenshot = next_frame
+            task.explore()
+            device.assert_actions_complete()
+            self.assertEqual(task.event_memory.visited, {'old_woman.clear'})
+            self.assertEqual(task.event_memory.obtained, set())
+            self.assertIsNone(task.event_memory.pending)
 
 
 class SteleEventTests(unittest.TestCase):
@@ -769,7 +1118,7 @@ class SteleEventTests(unittest.TestCase):
 
     def test_sampling_records_random_reward_and_both_narrations_once(self):
         from tests.support.exploration import artifact_path
-        from tasks.dimensional_exploration.sampling import EventSampler, sampling_balances
+        from tasks.dimensional_exploration.events.sampling import EventSampler, sampling_balances
         task, vision, _ = task_for('20261004-175956-091')
         choices = [c for c, _ in vision.event_choices()]
         self.assertEqual(len(choices), 2)
@@ -853,7 +1202,7 @@ class ForkSacrificeEventTests(unittest.TestCase):
     def test_real_pages_distinguish_normal_special_hp_and_one_item_payment(self):
         import numpy as np
         from tasks.dimensional_exploration.assets.assets_dimensional_exploration import OCR_EVENT_LOOT
-        from tasks.dimensional_exploration.vision import EventLootCountOcr
+        from tasks.dimensional_exploration.recognition.vision import EventLootCountOcr
         states = {'161405-470': 'event', '161414-135': 'roster', '161432-079': 'sacrifice',
                   '161439-143': 'sacrifice', '161443-261': 'event', '161448-012': 'event', '161453-293': 'roster'}
         for suffix, expected in states.items():
@@ -966,19 +1315,19 @@ class ForkSacrificeEventTests(unittest.TestCase):
         vision.sacrifice_loot_count = Mock(return_value=1)
         special = vision.sacrifice_items()[1]
         vision.sacrifice_items = Mock(return_value=((), special))
-        with self.assertRaisesRegex(RequestHumanTakeover, '都是特殊战利品'):
+        with self.assertRaisesRegex(RequestHumanTakeover, 'Only special loot'):
             task.handle_sacrifice(vision)
         vision.sacrifice_loot_count = Mock(return_value=5)
         self.assertTrue(task.handle_sacrifice(vision))
         self.assertTrue(task.handle_sacrifice(vision))
-        with self.assertRaisesRegex(RequestHumanTakeover, '未找到可确认的普通战利品'):
+        with self.assertRaisesRegex(RequestHumanTakeover, 'No verified ordinary loot'):
             task.handle_sacrifice(vision)
         self.assertEqual(task.device.swipe.call_count, 2)
         self.assertEqual(clicks, [])
 
     def test_sampling_picker_is_not_completion_and_records_both_narrations(self):
         from tests.support.exploration import artifact_path
-        from tasks.dimensional_exploration.sampling import EventSampler, sampling_balances
+        from tasks.dimensional_exploration.events.sampling import EventSampler, sampling_balances
         task, vision, _ = task_for('20261004-161405-470')
         choices = [c for c, _ in vision.event_choices()]
         task.event_memory.begin(event_branch('forked_path.right_heal'))
@@ -1043,7 +1392,7 @@ class ForkSacrificeEventTests(unittest.TestCase):
 class Oct03EventReceipts(unittest.TestCase):
     def replay_receipt(self, before_suffix, outcome_suffixes, expected_branch):
         from tests.support.exploration import artifact_path
-        from tasks.dimensional_exploration.sampling import EventSampler, sampling_balances, text_key
+        from tasks.dimensional_exploration.events.sampling import EventSampler, sampling_balances, text_key
         task, vision, _ = task_for(before_suffix)
         choices = [choice for choice, _ in vision.event_choices()]
         matched = match_event(choices, vision.event_story())

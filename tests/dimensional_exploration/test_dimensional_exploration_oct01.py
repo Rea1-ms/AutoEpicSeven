@@ -9,10 +9,10 @@ import numpy as np
 from tests.support.exploration import ControlledClock, ReplayDevice, artifact_path, frame, task_for
 from tasks.dimensional_exploration.dimensional_exploration import DimensionalExploration
 from tasks.dimensional_exploration.assets.assets_dimensional_exploration import ROSTER_HP_BAR
-from tasks.dimensional_exploration.event import EventCost, EventMemory, decide_event, event_branch, match_event
+from tasks.dimensional_exploration.events.event import EventCost, EventMemory, decide_event, event_branch, match_event
 from tasks.dimensional_exploration.policy import EventChoice, RunProgress
-from tasks.dimensional_exploration.sampling import EventSampler, text_key
-from tasks.dimensional_exploration.vision import ExplorationVision
+from tasks.dimensional_exploration.events.sampling import EventSampler, text_key
+from tasks.dimensional_exploration.recognition.vision import ExplorationVision
 from tasks.base.assets.assets_base_popup import NETWORK_ERROR_ABNORMAL, TOUCH_TO_CLOSE
 from tasks.dimensional_exploration.assets.assets_dimensional_exploration import EVENT_NEXT
 
@@ -373,7 +373,7 @@ class FirelightHealthRegressions(unittest.TestCase):
         self.assertEqual(clicks, ['EVENT_HERO_ENTRY', 'EVENT_HERO_ENTRY'])
 
     def test_sampling_pending_damage_also_obeys_confirmed_hp_floor(self):
-        from tasks.dimensional_exploration.sampling import choose_sample
+        from tasks.dimensional_exploration.events.sampling import choose_sample
         choice = EventChoice(0, '所有英雄生命值降低30%，获得战利品')
         balances = dict(cores=20, fragments=500, life=4, loot=5, dice=3, hero_hp=(98, 54))
         self.assertIsNone(choose_sample([choice], balances, pending_text=choice.text))

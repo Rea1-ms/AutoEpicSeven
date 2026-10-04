@@ -1,0 +1,96 @@
+{
+  "version": 1,
+  "files": [
+    {
+      "original": "assets/global_cn/dimensional_exploration/LOOT_SELECTED.SEARCH.png",
+      "archived": "临时归档/次元探查/20261004/assets/global_cn/dimensional_exploration/LOOT_SELECTED.SEARCH.png",
+      "bytes": 3084,
+      "sha256": "80c9567b90434eee617e3d7cd0946cba94487e6ef167f8e793a23c179e425612",
+      "reason": "No live runtime or formal test references; retained per user request."
+    },
+    {
+      "original": "assets/global_cn/dimensional_exploration/LOOT_SELECTED.png",
+      "archived": "临时归档/次元探查/20261004/assets/global_cn/dimensional_exploration/LOOT_SELECTED.png",
+      "bytes": 5208,
+      "sha256": "33dcac991635aaac96b90c228a92681b1382a62c6e94d4ef7ee0e1672a514ae5",
+      "reason": "No live runtime or formal test references; retained per user request."
+    },
+    {
+      "original": "assets/global_cn/dimensional_exploration/OCR_ENTRY.png",
+      "archived": "临时归档/次元探查/20261004/assets/global_cn/dimensional_exploration/OCR_ENTRY.png",
+      "bytes": 779013,
+      "sha256": "4671a9f669df926e84d4b66225228850dc8b44b2e4e49fc9db2b7469835fce97",
+      "reason": "No live runtime or formal test references; retained per user request."
+    },
+    {
+      "original": "assets/global_cn/dimensional_exploration/OCR_OPTIONS.png",
+      "archived": "临时归档/次元探查/20261004/assets/global_cn/dimensional_exploration/OCR_OPTIONS.png",
+      "bytes": 73284,
+      "sha256": "54e1ad889f2d3e9b2fcb0a7a09007ff7d35a1424fd88cfbf229ef16f1949c98e",
+      "reason": "No live runtime or formal test references; retained per user request."
+    },
+    {
+      "original": "assets/global_cn/dimensional_exploration/OCR_RESOURCES.png",
+      "archived": "临时归档/次元探查/20261004/assets/global_cn/dimensional_exploration/OCR_RESOURCES.png",
+      "bytes": 31221,
+      "sha256": "a03016710716a8bb2c73801c84d575786c2848e2f6a73e914e8d573f31446038",
+      "reason": "No live runtime or formal test references; retained per user request."
+    },
+    {
+      "original": "assets/global_cn/dimensional_exploration/OCR_SETTLEMENT_SCORE.png",
+      "archived": "临时归档/次元探查/20261004/assets/global_cn/dimensional_exploration/OCR_SETTLEMENT_SCORE.png",
+      "bytes": 48482,
+      "sha256": "91dba8b7e76711b0aae8e58a22dcb56488d490c546c556d8076e70b486f5a787",
+      "reason": "No live runtime or formal test references; retained per user request."
+    },
+    {
+      "original": "assets/global_cn/dimensional_exploration/PREVIEW_CHECK.2.png",
+      "archived": "临时归档/次元探查/20261004/assets/global_cn/dimensional_exploration/PREVIEW_CHECK.2.png",
+      "bytes": 6077,
+      "sha256": "39711c1aa0daa39d9afa26c11726ee7ebfc7799d450292ff794179bafa1770cd",
+      "reason": "No live runtime or formal test references; retained per user request."
+    },
+    {
+      "original": "assets/global_cn/dimensional_exploration/PREVIEW_CHECK.3.png",
+      "archived": "临时归档/次元探查/20261004/assets/global_cn/dimensional_exploration/PREVIEW_CHECK.3.png",
+      "bytes": 4893,
+      "sha256": "a4087e8e4b295aa787112518974371d8668b48a3e1e77c0c0a5b6e7e6a176b9e",
+      "reason": "No live runtime or formal test references; retained per user request."
+    },
+    {
+      "original": "assets/global_cn/dimensional_exploration/PREVIEW_CHECK.4.png",
+      "archived": "临时归档/次元探查/20261004/assets/global_cn/dimensional_exploration/PREVIEW_CHECK.4.png",
+      "bytes": 4930,
+      "sha256": "9b5925dca20521ae9fd93be5336e6d037215a899fa5ce373e155ff424ac3d673",
+      "reason": "No live runtime or formal test references; retained per user request."
+    },
+    {
+      "original": "assets/global_cn/dimensional_exploration/PREVIEW_CHECK.png",
+      "archived": "临时归档/次元探查/20261004/assets/global_cn/dimensional_exploration/PREVIEW_CHECK.png",
+      "bytes": 6404,
+      "sha256": "47e1a15979edb53d665f7391aea2ed02e308f408977f455393a3c938dfc371d1",
+      "reason": "No live runtime or formal test references; retained per user request."
+    },
+    {
+      "original": "assets/global_cn/dimensional_exploration/SHOP_SOLD.SEARCH.png",
+      "archived": "临时归档/次元探查/20261004/assets/global_cn/dimensional_exploration/SHOP_SOLD.SEARCH.png",
+      "bytes": 3427,
+      "sha256": "9c5d16962902431d7b52f2938a02f9f8dbb5ae3e7a93de7d92fb26242f0531f7",
+      "reason": "No live runtime or formal test references; retained per user request."
+    },
+    {
+      "original": "assets/global_cn/dimensional_exploration/SHOP_SOLD.png",
+      "archived": "临时归档/次元探查/20261004/assets/global_cn/dimensional_exploration/SHOP_SOLD.png",
+      "bytes": 5515,
+      "sha256": "f23e25f83cb8dc95ae3a05fe1cbcf3d5371e85756853977b192fdd124e33da27",
+      "reason": "No live runtime or formal test references; retained per user request."
+    },
+    {
+      "original": "dev_tools/exploration_assets.py",
+      "archived": "临时归档/次元探查/20261004/dev_tools/exploration_assets.py",
+      "bytes": 12689,
+      "sha256": "052043d82c255ec086b202268aa9cf08d4e334f1e45153b351a15eaba5408f0d",
+      "reason": "No live runtime or formal test references; retained per user request."
+    }
+  ]
+}

@@ -17,9 +17,9 @@ STRATEGIES = {
 
 class StartingStrategyMixin:
     def handle_start_supply(self, vision):
-        strategy = getattr(self.config, "DimensionalExploration_StartStrategy", "沉重包袱")
+        strategy = getattr(self.config, "DimensionalExploration_StartStrategy", "雇佣契约")
         if strategy not in STRATEGIES:
-            self.require_human(f"未支持的开局策略：{strategy}。请重新选择开局策略。")
+            self.require_human(f"Unsupported starting strategy: {strategy}. Select a supported starting strategy.")
         button, offset = STRATEGIES[strategy]
         if not self.appear(button):
             return False

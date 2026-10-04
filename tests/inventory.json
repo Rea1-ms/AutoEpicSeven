@@ -9474,6 +9474,160 @@
           ],
           "status": "已纳入",
           "reason": "休整全队平均血量严格低于30%时按复活、治疗、恢复生命体征、升阶；低血与选项可用性明确模拟"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_exact_name_cache_reuses_pixels_and_moves_click_box",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "新增",
+          "reason": "目录整理、英文日志、默认开局与识别优化回归"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_name_cache_invalidates_on_any_pixel_or_shape_change_and_is_bounded",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "新增",
+          "reason": "目录整理、英文日志、默认开局与识别优化回归"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_failed_and_ambiguous_name_reads_are_not_cached",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "新增",
+          "reason": "目录整理、英文日志、默认开局与识别优化回归"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_cached_real_names_do_not_reuse_missing_rank_or_hp",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-151606-257",
+            "20261004-134045-652"
+          ],
+          "status": "新增",
+          "reason": "目录整理、英文日志、默认开局与识别优化回归"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_program_log_messages_and_takeover_reasons_use_english",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "新增",
+          "reason": "目录整理、英文日志、默认开局与识别优化回归"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.StartingAndStarlightRegressions.test_missing_start_strategy_defaults_to_contract_without_ocr",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081207-157"
+          ],
+          "status": "新增",
+          "reason": "目录整理、英文日志、默认开局与识别优化回归"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.BatchResumeRegressions.test_completed_unfinished_batch_starts_on_first_click_and_retries_lobby",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260924-091808-594",
+            "20260922-081207-157"
+          ],
+          "status": "新增",
+          "reason": "批次达标后未完成标记的启动恢复、目标调整、未达标续跑及跨重启旧结算去重；仅模拟设备与内存配置"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.BatchResumeRegressions.test_completed_reset_clears_old_recruitment_and_keeps_settlement_guard",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260924-091808-594"
+          ],
+          "status": "新增",
+          "reason": "批次达标后未完成标记的启动恢复、目标调整、未达标续跑及跨重启旧结算去重；仅模拟设备与内存配置"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.BatchResumeRegressions.test_unfinished_batch_preserves_partial_progress_and_pending_recruitment",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260924-091808-594"
+          ],
+          "status": "新增",
+          "reason": "批次达标后未完成标记的启动恢复、目标调整、未达标续跑及跨重启旧结算去重；仅模拟设备与内存配置"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.BatchResumeRegressions.test_completed_batch_resets_after_target_changes_or_missing_old_target",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260924-091808-594"
+          ],
+          "status": "新增",
+          "reason": "批次达标后未完成标记的启动恢复、目标调整、未达标续跑及跨重启旧结算去重；仅模拟设备与内存配置"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.BatchResumeRegressions.test_finished_batch_also_retains_old_settlement_deduplication",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260924-091808-594"
+          ],
+          "status": "新增",
+          "reason": "批次达标后未完成标记的启动恢复、目标调整、未达标续跑及跨重启旧结算去重；仅模拟设备与内存配置"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.BatchResumeRegressions.test_restart_while_closing_old_result_never_recounts_it",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260924-091808-594",
+            "20260923-233818-836"
+          ],
+          "status": "新增",
+          "reason": "批次达标后未完成标记的启动恢复、目标调整、未达标续跑及跨重启旧结算去重；仅模拟设备与内存配置"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.BatchResumeRegressions.test_interruption_after_last_settlement_recovers_without_second_start",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260924-091808-594",
+            "20260923-233818-836"
+          ],
+          "status": "新增",
+          "reason": "批次达标后未完成标记的启动恢复、目标调整、未达标续跑及跨重启旧结算去重；仅模拟设备与内存配置"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.BatchResumeRegressions.test_old_result_is_closed_then_new_run_counts_once_in_real_loop",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260924-091808-594",
+            "20260922-081153-551",
+            "20260922-081207-157",
+            "20260923-233811-030",
+            "20260923-233818-836"
+          ],
+          "status": "新增",
+          "reason": "批次达标后未完成标记的启动恢复、目标调整、未达标续跑及跨重启旧结算去重；仅模拟设备与内存配置"
         }
       ]
     },
@@ -10479,6 +10633,173 @@
           ],
           "status": "已纳入",
           "reason": "2026-10-04 石碑全员50%边界、普通随机战利品优先、左路免费碎片、完整选项及血量、两页结果采样和生产间隔回放；地图明确复用"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.PrisonAndOldWomanPolicyTests.test_prison_healing_uses_strict_average_or_minimum_and_counts_zero",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-10-04 牢房平均70%或单人25%的严格阈值、老妇人生命体征大于2的排序与预算；选项及新增血量明确模拟，复用名单与结果页只验证流程，不证明老妇人付款结果"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.PrisonAndOldWomanPolicyTests.test_prison_unknown_hp_does_not_authorize_free_fragment_fallback",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-10-04 牢房平均70%或单人25%的严格阈值、老妇人生命体征大于2的排序与预算；选项及新增血量明确模拟，复用名单与结果页只验证流程，不证明老妇人付款结果"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.PrisonAndOldWomanPolicyTests.test_prison_live_choice_waits_for_complete_stable_hp_and_retries_without_reopening",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-132524-411",
+            "20261001-133151-873"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 牢房平均70%或单人25%的严格阈值、老妇人生命体征大于2的排序与预算；选项及新增血量明确模拟，复用名单与结果页只验证流程，不证明老妇人付款结果"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.PrisonAndOldWomanPolicyTests.test_prison_main_loop_preserves_intervals_and_hp_before_both_free_routes",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081153-551",
+            "20260922-081554-067",
+            "20261001-132524-411",
+            "20261001-133151-873"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 牢房平均70%或单人25%的严格阈值、老妇人生命体征大于2的排序与预算；选项及新增血量明确模拟，复用名单与结果页只验证流程，不证明老妇人付款结果"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.PrisonAndOldWomanPolicyTests.test_woman_life_threshold_fragment_reserve_and_random_hp_floor",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-10-04 牢房平均70%或单人25%的严格阈值、老妇人生命体征大于2的排序与预算；选项及新增血量明确模拟，复用名单与结果页只验证流程，不证明老妇人付款结果"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.PrisonAndOldWomanPolicyTests.test_woman_pending_choice_is_pinned_and_changed_costs_do_not_match",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-10-04 牢房平均70%或单人25%的严格阈值、老妇人生命体征大于2的排序与预算；选项及新增血量明确模拟，复用名单与结果页只验证流程，不证明老妇人付款结果"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.PrisonAndOldWomanPolicyTests.test_woman_life_route_can_click_and_sample_two_results_without_forced_hp",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-213353-845",
+            "20261004-213359-426",
+            "20261004-213403-036",
+            "20261004-213406-273",
+            "20261004-214924-687"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 老妇人生命体征4/4变3/4、随机奖励次元水晶柱、战利品3变4、两页叙述及返回地图均用本次实图；保留选择失败、去重和生产间隔检查，采样返回地图后仅完成一次；主循环仅大厅复用旧图"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.PrisonAndOldWomanPolicyTests.test_woman_real_options_confirm_life_payment_and_random_reward",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "status": "已纳入",
+          "category": "截图识别",
+          "fixtures": [
+            "20261004-213353-845",
+            "20261004-213359-426",
+            "20261004-213403-036",
+            "20261004-213406-273",
+            "20261004-214924-687"
+          ],
+          "reason": "2026-10-04 老妇人生命体征4/4变3/4、随机奖励次元水晶柱、战利品3变4、两页叙述及返回地图均用本次实图；保留选择失败、去重和生产间隔检查，采样返回地图后仅完成一次；主循环仅大厅复用旧图"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.PrisonAndOldWomanPolicyTests.test_woman_main_loop_retries_payment_and_reward_then_advances_both_narrations",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "status": "已纳入",
+          "category": "流程回放",
+          "fixtures": [
+            "20260922-081153-551",
+            "20261004-213353-845",
+            "20261004-213359-426",
+            "20261004-213403-036",
+            "20261004-213406-273",
+            "20261004-214924-687"
+          ],
+          "reason": "2026-10-04 老妇人生命体征4/4变3/4、随机奖励次元水晶柱、战利品3变4、两页叙述及返回地图均用本次实图；保留选择失败、去重和生产间隔检查，采样返回地图后仅完成一次；主循环仅大厅复用旧图"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_ready_introduction_taps_before_reading_option_costs",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-201104-292"
+          ],
+          "status": "新增",
+          "reason": "完整巨眼开场先点击，不依赖继续箭头、选项或资源识别。"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_introduction_never_taps_blank_options_or_result_pages",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-125347-490",
+            "20261004-125352-386",
+            "20261004-125528-432",
+            "20261004-125532-398",
+            "20260923-233133-331"
+          ],
+          "status": "新增",
+          "reason": "两张真实完整开场均可识别；明确模拟空白和未完成文字不点击，真实选项与结果页不误点；模板误判仍由选项阻止点击。"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_introduction_preserves_pending_history_and_sample_across_restart",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-201104-292",
+            "20261004-125352-386"
+          ],
+          "status": "新增",
+          "reason": "开场点击和重复帧不确认待选分支，不采为结果；重启后仍保留待确认历史。"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_main_loop_retries_introduction_then_selects_attack_and_confirms_reward",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-125347-490",
+            "20261004-201104-292",
+            "20261004-125352-386",
+            "20260922-081423-319",
+            "20260922-081430-868",
+            "20260922-081440-084",
+            "20261004-125521-108",
+            "20261004-125528-432",
+            "20261004-125532-398",
+            "20260922-081554-067",
+            "20260922-081153-551"
+          ],
+          "status": "新增",
+          "reason": "保留生产两秒动作间隔；两张同文不同资源开场、选项、战斗、领奖与两页叙述重复帧后正面退出。"
         }
       ]
     },
@@ -21010,6 +21331,49 @@
           ],
           "status": "已纳入",
           "reason": "2026-10-04 实图复现首名英雄阶数空读；混合1、2阶识别、缺字段禁点和生产间隔重试；退出页明确模拟"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.ScreenshotRegressions.test_captured_preview_types_use_templates_without_title_ocr",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081603-149",
+            "20260922-081805-941",
+            "20260922-082932-782",
+            "20260923-233512-883",
+            "20260925-113034-953",
+            "20260925-113935-872",
+            "20260922-081725-462",
+            "20260922-081803-041"
+          ],
+          "status": "新增",
+          "reason": "目录整理、英文日志、默认开局与识别优化回归"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.ScreenshotRegressions.test_missing_wrong_or_ambiguous_preview_cannot_enter",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081413-154",
+            "20260922-081805-941",
+            "20260922-081603-149"
+          ],
+          "status": "新增",
+          "reason": "目录整理、英文日志、默认开局与识别优化回归"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.ScreenshotRegressions.test_shop_preview_ocr_is_only_used_when_no_known_template_matches",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081413-154",
+            "20260922-081805-941"
+          ],
+          "status": "新增",
+          "reason": "目录整理、英文日志、默认开局与识别优化回归"
         }
       ]
     }

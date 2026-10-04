@@ -22,13 +22,13 @@ class EventCost:
 
     def unavailable(self, *, cores, fragments, life, loot, dice=None, hero_hp=None):
         if self.life and self.life >= life:
-            return "保留最后一点生命体征"
+            return "Preserve the last life point"
         if self.fragments and self.fragments + self.reserve_fragments + (50 if cores < 20 else 0) > fragments:
-            return "碎片不足或需要保留投资额度"
+            return "Insufficient fragments or investment reserve required"
         if self.loot and (loot is None or self.loot > loot):
-            return "战利品数量不足或未识别"
+            return "Loot count is insufficient or unreadable"
         if self.dice and (dice is None or self.dice > dice):
-            return "骰子数量不足或未识别"
+            return "Dice count is insufficient or unreadable"
         # A random target is not known before clicking, so the lowest owned
         # hero HP bounds both random and all-hero costs. Every possible target
         # must retain at least 25 percentage points after the displayed cost;
@@ -38,31 +38,52 @@ class EventCost:
         # Never subtract HP costs from the run's separate death allowance.
         damage = max(self.random_hp_percent, self.all_hp_percent)
         if damage and hero_hp is not None and (not hero_hp or min(hero_hp) - damage < 25):
-            return "扣血后有英雄生命值不足25%"
+            return "A hero would have less than 25% HP after the deduction"
         return ""
 
 
 @dataclass(frozen=True)
 class EventCondition:
     fragments_gte: int = 0
+    life_gte: int = 0
     life_lte: int | None = None
     life_below_max: bool = False
+    hero_hp_avg_lt: int = 0
+    hero_hp_min_lt: int = 0
 
     def __post_init__(self):
-        if (type(self.fragments_gte) is not int or self.fragments_gte < 0
+        if (any(type(value) is not int or value < 0 for value in (self.fragments_gte, self.life_gte))
                 or (self.life_lte is not None and (type(self.life_lte) is not int or self.life_lte < 0))
-                or type(self.life_below_max) is not bool):
+                or type(self.life_below_max) is not bool
+                or any(type(value) is not int or not 0 <= value <= 100
+                       for value in (self.hero_hp_avg_lt, self.hero_hp_min_lt))):
             raise ValueError("Invalid event condition")
 
-    def matches(self, *, fragments, life, max_life):
-        if fragments < self.fragments_gte or (self.life_lte is not None and life > self.life_lte):
+    @property
+    def requires_hero_hp(self):
+        return bool(self.hero_hp_avg_lt or self.hero_hp_min_lt)
+
+    def matches(self, *, fragments, life, max_life, hero_hp=None):
+        if (fragments < self.fragments_gte or life < self.life_gte
+                or (self.life_lte is not None and life > self.life_lte)):
             return False
         if self.life_below_max:
             # Unknown capacity must not silently select a lower-priority branch.
             # The live task supplies both values from the same resource frame.
             if max_life is None:
                 return None
-            return life < max_life
+            if life >= max_life:
+                return False
+        if self.requires_hero_hp:
+            # The two healing thresholds are alternatives: either a low team
+            # average or one critical hero is enough. Compare totals directly
+            # so rounding cannot turn 69.5% into the exact 70% boundary. A dead
+            # hero's confirmed zero remains in both the minimum and denominator.
+            # Missing/partial rosters never authorize the non-healing fallback.
+            if not hero_hp:
+                return None
+            return (sum(hero_hp) < self.hero_hp_avg_lt * len(hero_hp)
+                    or min(hero_hp) < self.hero_hp_min_lt)
         return True
 
 
@@ -168,7 +189,7 @@ class EventMemory:
                 or not isinstance(value.get("visited"), list) or not isinstance(value.get("obtained"), list)
                 or not all(isinstance(v, str) for v in value["visited"] + value["obtained"])
                 or (value.get("pending") is not None and event_branch(value["pending"]) is None)):
-            raise ValueError("次元探查事件记录格式不正确，请检查本配置的事件记录。")
+            raise ValueError("Invalid exploration event history; check the event records for this profile.")
         return cls(set(value["visited"]), set(value["obtained"]), value.get("pending"),
                    bool(value.get("advanced", False)))
 
@@ -242,7 +263,8 @@ def decide_event(choices, *, cores, fragments, life, loot, dice=None, max_life=N
         for choice, branch in paired:
             if memory.pending == branch.key:
                 if (not branch.enabled or not choice.available
-                        or branch.when.matches(fragments=fragments, life=life, max_life=max_life) is not True
+                        or branch.when.matches(fragments=fragments, life=life, max_life=max_life,
+                                               hero_hp=hero_hp) is not True
                         or branch.cost.unavailable(cores=cores, fragments=fragments, life=life, loot=loot,
                                                    dice=dice, hero_hp=hero_hp)):
                     return None
@@ -253,7 +275,7 @@ def decide_event(choices, *, cores, fragments, life, loot, dice=None, max_life=N
             continue
         if branch.cost.unavailable(cores=cores, fragments=fragments, life=life, loot=loot, dice=dice, hero_hp=hero_hp):
             continue
-        eligible = branch.when.matches(fragments=fragments, life=life, max_life=max_life)
+        eligible = branch.when.matches(fragments=fragments, life=life, max_life=max_life, hero_hp=hero_hp)
         if eligible is None:
             return None
         if not eligible:

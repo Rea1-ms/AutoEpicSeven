@@ -9,7 +9,7 @@ from tasks.dimensional_exploration.assets.assets_dimensional_exploration import 
     FRAGMENT_ICON, OCR_FRAGMENT, SHOP_OFFER,
 )
 from tasks.dimensional_exploration.policy import Offer, choose_offer, parse_number
-from tasks.dimensional_exploration.vision import ExplorationVision, Resources, match_in
+from tasks.dimensional_exploration.recognition.vision import ExplorationVision, Resources, match_in
 
 
 class ShopNewRegressions(unittest.TestCase):

@@ -35,7 +35,11 @@
         "tests.dimensional_exploration.test_dimensional_exploration_events.CliffCoinEventTests.test_main_loop_retries_leave_preserves_fragments_and_samples_outcome_once",
         "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_mixed_rank_main_loop_retries_goal_hero_without_scrolling",
         "tests.dimensional_exploration.test_dimensional_exploration_events.ForkSacrificeEventTests.test_main_loop_reads_hp_pays_normal_retries_and_reaches_both_results",
-        "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_main_loop_uses_production_intervals_for_both_hp_routes"
+        "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_main_loop_uses_production_intervals_for_both_hp_routes",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.BatchResumeRegressions.test_old_result_is_closed_then_new_run_counts_once_in_real_loop",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.PrisonAndOldWomanPolicyTests.test_prison_main_loop_preserves_intervals_and_hp_before_both_free_routes",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.PrisonAndOldWomanPolicyTests.test_woman_main_loop_retries_payment_and_reward_then_advances_both_narrations",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_main_loop_retries_introduction_then_selects_attack_and_confirms_reward"
       ]
     },
     "20260922-081207-157": {
@@ -46,7 +50,10 @@
       "used_by": [
         "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_starting_supply_selection_requires_positive_gold_state",
         "tests.dimensional_exploration.test_dimensional_exploration_runtime.StartingAndStarlightRegressions.test_all_four_start_strategies_select_their_visible_card",
-        "tests.dimensional_exploration.test_dimensional_exploration_runtime.StartingAndStarlightRegressions.test_each_selected_border_uses_its_own_position"
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.StartingAndStarlightRegressions.test_each_selected_border_uses_its_own_position",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.StartingAndStarlightRegressions.test_missing_start_strategy_defaults_to_contract_without_ocr",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.BatchResumeRegressions.test_completed_unfinished_batch_starts_on_first_click_and_retries_lobby",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.BatchResumeRegressions.test_old_result_is_closed_then_new_run_counts_once_in_real_loop"
       ]
     },
     "20260922-081226-118": {
@@ -117,7 +124,9 @@
       "scene": "map",
       "used_by": [
         "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_accessible_nodes_exclude_completed_and_gray_nodes",
-        "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_page_identity_and_modal_precedence"
+        "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_page_identity_and_modal_precedence",
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.ScreenshotRegressions.test_missing_wrong_or_ambiguous_preview_cannot_enter",
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.ScreenshotRegressions.test_shop_preview_ocr_is_only_used_when_no_known_template_matches"
       ]
     },
     "20260922-081423-319": {
@@ -128,7 +137,8 @@
       "used_by": [
         "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_page_identity_and_modal_precedence",
         "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_prepare_click_retains_battle_during_loading",
-        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_main_loop_retries_attack_and_reward_then_advances_both_narrations"
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_main_loop_retries_attack_and_reward_then_advances_both_narrations",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_main_loop_retries_introduction_then_selects_attack_and_confirms_reward"
       ]
     },
     "20260922-081430-868": {
@@ -140,7 +150,8 @@
         "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_auto_combat_only_toggles_on_positive_manual_marker",
         "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_page_identity_and_modal_precedence",
         "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_battle_hud_and_animation_keep_context_without_toggling_auto",
-        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_main_loop_retries_attack_and_reward_then_advances_both_narrations"
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_main_loop_retries_attack_and_reward_then_advances_both_narrations",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_main_loop_retries_introduction_then_selects_attack_and_confirms_reward"
       ]
     },
     "20260922-081440-084": {
@@ -151,7 +162,8 @@
       "used_by": [
         "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_auto_combat_only_toggles_on_positive_manual_marker",
         "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_battle_hud_and_animation_keep_context_without_toggling_auto",
-        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_main_loop_retries_attack_and_reward_then_advances_both_narrations"
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_main_loop_retries_attack_and_reward_then_advances_both_narrations",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_main_loop_retries_introduction_then_selects_attack_and_confirms_reward"
       ]
     },
     "20260922-081507-280": {
@@ -245,7 +257,9 @@
         "tests.dimensional_exploration.test_dimensional_exploration_events.ForkSacrificeEventTests.test_sampling_picker_is_not_completion_and_records_both_narrations",
         "tests.dimensional_exploration.test_dimensional_exploration_events.ForkSacrificeEventTests.test_main_loop_reads_hp_pays_normal_retries_and_reaches_both_results",
         "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_sampling_records_random_reward_and_both_narrations_once",
-        "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_main_loop_uses_production_intervals_for_both_hp_routes"
+        "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_main_loop_uses_production_intervals_for_both_hp_routes",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.PrisonAndOldWomanPolicyTests.test_prison_main_loop_preserves_intervals_and_hp_before_both_free_routes",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_main_loop_retries_introduction_then_selects_attack_and_confirms_reward"
       ]
     },
     "20260922-081603-149": {
@@ -254,7 +268,9 @@
       "server": "global_cn",
       "scene": "preview",
       "used_by": [
-        "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_page_identity_and_modal_precedence"
+        "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_page_identity_and_modal_precedence",
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.ScreenshotRegressions.test_captured_preview_types_use_templates_without_title_ocr",
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.ScreenshotRegressions.test_missing_wrong_or_ambiguous_preview_cannot_enter"
       ]
     },
     "20260922-081721-752": {
@@ -299,7 +315,10 @@
       "server": "global_cn",
       "scene": "preview",
       "used_by": [
-        "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_node_preview_does_not_enter_a_different_type"
+        "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_node_preview_does_not_enter_a_different_type",
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.ScreenshotRegressions.test_captured_preview_types_use_templates_without_title_ocr",
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.ScreenshotRegressions.test_missing_wrong_or_ambiguous_preview_cannot_enter",
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.ScreenshotRegressions.test_shop_preview_ocr_is_only_used_when_no_known_template_matches"
       ]
     },
     "20260922-082448-905": {
@@ -337,7 +356,8 @@
       "server": "global_cn",
       "scene": "preview",
       "used_by": [
-        "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_node_preview_does_not_enter_a_different_type"
+        "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_node_preview_does_not_enter_a_different_type",
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.ScreenshotRegressions.test_captured_preview_types_use_templates_without_title_ocr"
       ]
     },
     "20260922-083127-685": {
@@ -535,7 +555,8 @@
         "tests.dimensional_exploration.test_dimensional_exploration_events.EventTests.test_all_supplied_events_have_first_and_repeat_routes",
         "tests.dimensional_exploration.test_dimensional_exploration_events.EventTests.test_magnifier_is_not_a_collection_flag_and_click_avoids_preview",
         "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Rules.test_low_hp_uses_existing_free_fallback_without_spending_life",
-        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_exact_costs_partial_rows_and_other_events_do_not_authorize_choice"
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_exact_costs_partial_rows_and_other_events_do_not_authorize_choice",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_introduction_never_taps_blank_options_or_result_pages"
       ]
     },
     "20260923-233146-181": {
@@ -565,7 +586,8 @@
       "server": "global_cn",
       "scene": "preview",
       "used_by": [
-        "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_accessible_nodes_exclude_completed_and_gray_nodes"
+        "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_accessible_nodes_exclude_completed_and_gray_nodes",
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.ScreenshotRegressions.test_captured_preview_types_use_templates_without_title_ocr"
       ]
     },
     "20260923-233811-030": {
@@ -575,7 +597,8 @@
       "scene": "failed",
       "used_by": [
         "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_page_identity_and_modal_precedence",
-        "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_settlement_repeated_frames_and_batch_exit"
+        "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_settlement_repeated_frames_and_batch_exit",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.BatchResumeRegressions.test_old_result_is_closed_then_new_run_counts_once_in_real_loop"
       ]
     },
     "20260923-233818-836": {
@@ -588,7 +611,10 @@
         "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_settlement_repeated_frames_and_batch_exit",
         "tests.dimensional_exploration.test_dimensional_exploration_runtime.StartingAndStarlightRegressions.test_starlight_reads_right_hand_reward_and_counts_once_across_restart",
         "tests.dimensional_exploration.test_dimensional_exploration_runtime.StartingAndStarlightRegressions.test_unreadable_starlight_waits_without_using_the_score",
-        "tests.dimensional_exploration.test_dimensional_exploration_runtime.StartingAndStarlightRegressions.test_zero_starlight_is_a_reading_not_missing_ocr"
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.StartingAndStarlightRegressions.test_zero_starlight_is_a_reading_not_missing_ocr",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.BatchResumeRegressions.test_restart_while_closing_old_result_never_recounts_it",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.BatchResumeRegressions.test_interruption_after_last_settlement_recovers_without_second_start",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.BatchResumeRegressions.test_old_result_is_closed_then_new_run_counts_once_in_real_loop"
       ]
     },
     "20260924-091808-594": {
@@ -598,7 +624,15 @@
       "scene": "lobby",
       "used_by": [
         "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_page_identity_and_modal_precedence",
-        "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_settlement_repeated_frames_and_batch_exit"
+        "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_settlement_repeated_frames_and_batch_exit",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.BatchResumeRegressions.test_completed_unfinished_batch_starts_on_first_click_and_retries_lobby",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.BatchResumeRegressions.test_completed_reset_clears_old_recruitment_and_keeps_settlement_guard",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.BatchResumeRegressions.test_unfinished_batch_preserves_partial_progress_and_pending_recruitment",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.BatchResumeRegressions.test_completed_batch_resets_after_target_changes_or_missing_old_target",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.BatchResumeRegressions.test_finished_batch_also_retains_old_settlement_deduplication",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.BatchResumeRegressions.test_restart_while_closing_old_result_never_recounts_it",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.BatchResumeRegressions.test_interruption_after_last_settlement_recovers_without_second_start",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.BatchResumeRegressions.test_old_result_is_closed_then_new_run_counts_once_in_real_loop"
       ]
     },
     "20260924-091811-816": {
@@ -641,7 +675,8 @@
       "server": "global_cn",
       "scene": "preview",
       "used_by": [
-        "tests.dimensional_exploration.test_dimensional_exploration_ui.ScreenshotRegressions.test_rest_preview_enters_both_new_screenshots"
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.ScreenshotRegressions.test_rest_preview_enters_both_new_screenshots",
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.ScreenshotRegressions.test_captured_preview_types_use_templates_without_title_ocr"
       ]
     },
     "20260925-113419-624": {
@@ -671,7 +706,8 @@
       "scene": "preview",
       "used_by": [
         "tests.dimensional_exploration.test_dimensional_exploration_ui.ScreenshotRegressions.test_rest_preview_enters_both_new_screenshots",
-        "tests.dimensional_exploration.test_dimensional_exploration_ui.ScreenshotRegressions.test_restart_rest_preview_reselects_then_enters"
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.ScreenshotRegressions.test_restart_rest_preview_reselects_then_enters",
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.ScreenshotRegressions.test_captured_preview_types_use_templates_without_title_ocr"
       ]
     },
     "20260925-114714-801": {
@@ -938,7 +974,9 @@
         "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_positive_outcome_clears_hp_but_unknown_frame_keeps_it",
         "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_main_loop_inspects_hp_and_saves_garden_outcomes_with_missed_click_frames",
         "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightHealthRegressions.test_new_known_event_requires_new_roster_and_partial_rows_wait",
-        "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_native_options_reward_rosters_and_two_narrations"
+        "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_native_options_reward_rosters_and_two_narrations",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.PrisonAndOldWomanPolicyTests.test_prison_live_choice_waits_for_complete_stable_hp_and_retries_without_reopening",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.PrisonAndOldWomanPolicyTests.test_prison_main_loop_preserves_intervals_and_hp_before_both_free_routes"
       ]
     },
     "20261001-133151-873": {
@@ -962,7 +1000,9 @@
         "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_incomplete_or_changing_roster_waits_for_two_consistent_frames",
         "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_failed_entry_and_back_clicks_retry_without_authorizing_healing",
         "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_main_loop_inspects_roster_retries_then_reaches_upgrade",
-        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_main_loop_reads_critical_roster_retries_then_reaches_revive"
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_main_loop_reads_critical_roster_retries_then_reaches_revive",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.PrisonAndOldWomanPolicyTests.test_prison_live_choice_waits_for_complete_stable_hp_and_retries_without_reopening",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.PrisonAndOldWomanPolicyTests.test_prison_main_loop_preserves_intervals_and_hp_before_both_free_routes"
       ]
     },
     "20261001-133603-790": {
@@ -1228,7 +1268,9 @@
       "scene": "event",
       "used_by": [
         "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_supplied_pages_and_animation_readiness",
-        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_main_loop_retries_attack_and_reward_then_advances_both_narrations"
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_main_loop_retries_attack_and_reward_then_advances_both_narrations",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_introduction_never_taps_blank_options_or_result_pages",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_main_loop_retries_introduction_then_selects_attack_and_confirms_reward"
       ]
     },
     "20261004-125352-386": {
@@ -1239,7 +1281,10 @@
       "used_by": [
         "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_supplied_pages_and_animation_readiness",
         "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_real_options_resources_and_attack_click_avoid_magnifier",
-        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_main_loop_retries_attack_and_reward_then_advances_both_narrations"
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_main_loop_retries_attack_and_reward_then_advances_both_narrations",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_introduction_never_taps_blank_options_or_result_pages",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_introduction_preserves_pending_history_and_sample_across_restart",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_main_loop_retries_introduction_then_selects_attack_and_confirms_reward"
       ]
     },
     "20261004-125521-108": {
@@ -1250,7 +1295,8 @@
       "used_by": [
         "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_supplied_pages_and_animation_readiness",
         "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_reward_requires_pending_attack_and_matching_card_across_restart",
-        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_main_loop_retries_attack_and_reward_then_advances_both_narrations"
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_main_loop_retries_attack_and_reward_then_advances_both_narrations",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_main_loop_retries_introduction_then_selects_attack_and_confirms_reward"
       ]
     },
     "20261004-125528-432": {
@@ -1261,7 +1307,9 @@
       "used_by": [
         "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_supplied_pages_and_animation_readiness",
         "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_reward_requires_pending_attack_and_matching_card_across_restart",
-        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_main_loop_retries_attack_and_reward_then_advances_both_narrations"
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_main_loop_retries_attack_and_reward_then_advances_both_narrations",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_introduction_never_taps_blank_options_or_result_pages",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_main_loop_retries_introduction_then_selects_attack_and_confirms_reward"
       ]
     },
     "20261004-125532-398": {
@@ -1272,7 +1320,9 @@
       "used_by": [
         "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_supplied_pages_and_animation_readiness",
         "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_reward_requires_pending_attack_and_matching_card_across_restart",
-        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_main_loop_retries_attack_and_reward_then_advances_both_narrations"
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_main_loop_retries_attack_and_reward_then_advances_both_narrations",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_introduction_never_taps_blank_options_or_result_pages",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_main_loop_retries_introduction_then_selects_attack_and_confirms_reward"
       ]
     },
     "20261004-134045-652": {
@@ -1284,7 +1334,8 @@
         "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightHealthRegressions.test_supplied_firelight_and_complete_roster_read_lowest_hp",
         "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightHealthRegressions.test_known_ocr_variants_keep_roster_result_without_reopening",
         "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightHealthRegressions.test_main_loop_reads_roster_once_and_retries_rest_despite_ocr_changes",
-        "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightOutcomeRegressions.test_real_rest_result_and_roster_confirm_fifteen_percent_healing"
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightOutcomeRegressions.test_real_rest_result_and_roster_confirm_fifteen_percent_healing",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_cached_real_names_do_not_reuse_missing_rank_or_hp"
       ]
     },
     "20261004-134120-334": {
@@ -1415,7 +1466,8 @@
       "used_by": [
         "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_supplied_mixed_rank_roster_reads_first_one_and_origin_two",
         "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_missing_rank_pixels_do_not_default_to_one_or_choose_a_hero",
-        "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_mixed_rank_main_loop_retries_goal_hero_without_scrolling"
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_mixed_rank_main_loop_retries_goal_hero_without_scrolling",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_cached_real_names_do_not_reuse_missing_rank_or_hp"
       ]
     },
     "20261004-161405-470": {
@@ -1563,6 +1615,90 @@
         "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_native_options_reward_rosters_and_two_narrations",
         "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_sampling_records_random_reward_and_both_narrations_once",
         "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_main_loop_uses_production_intervals_for_both_hp_routes"
+      ]
+    },
+    "20260922-081725-462": {
+      "path": "tests/fixtures/dimensional_exploration/map/MuMu-20260922-081725-462.png",
+      "sha256": "4291d814faad33216a039861ff5ab38dfb6426355e44afb797f13b4b60068856",
+      "server": "global_cn",
+      "scene": "preview",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.ScreenshotRegressions.test_captured_preview_types_use_templates_without_title_ocr"
+      ]
+    },
+    "20260922-081803-041": {
+      "path": "tests/fixtures/dimensional_exploration/map/MuMu-20260922-081803-041.png",
+      "sha256": "a1db09a684b8d00a246e63d7b9a43e32671cad1652421ae480872871c9ebe699",
+      "server": "global_cn",
+      "scene": "preview",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.ScreenshotRegressions.test_captured_preview_types_use_templates_without_title_ocr"
+      ]
+    },
+    "20261004-213353-845": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261004-213353-845.png",
+      "sha256": "7914253f9ce2b3778cc5c2c43d390f0c21d7d4629a1cbedf26fd9a6820ebc4c0",
+      "server": "global_cn",
+      "scene": "event",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.PrisonAndOldWomanPolicyTests.test_woman_life_route_can_click_and_sample_two_results_without_forced_hp",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.PrisonAndOldWomanPolicyTests.test_woman_real_options_confirm_life_payment_and_random_reward",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.PrisonAndOldWomanPolicyTests.test_woman_main_loop_retries_payment_and_reward_then_advances_both_narrations"
+      ]
+    },
+    "20261004-213359-426": {
+      "path": "tests/fixtures/dimensional_exploration/rewards/MuMu-20261004-213359-426.png",
+      "sha256": "b0c600d6a7aa7a8a28a90c773ab5a57882843037bac0c49b3236cc761f9d82d4",
+      "server": "global_cn",
+      "scene": "reward",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.PrisonAndOldWomanPolicyTests.test_woman_life_route_can_click_and_sample_two_results_without_forced_hp",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.PrisonAndOldWomanPolicyTests.test_woman_real_options_confirm_life_payment_and_random_reward",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.PrisonAndOldWomanPolicyTests.test_woman_main_loop_retries_payment_and_reward_then_advances_both_narrations"
+      ]
+    },
+    "20261004-213403-036": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261004-213403-036.png",
+      "sha256": "cdd0f3bbcd614c064d1968ed4d3efaed01c3b278d6ef91c44873ddf83398c1b8",
+      "server": "global_cn",
+      "scene": "event",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.PrisonAndOldWomanPolicyTests.test_woman_life_route_can_click_and_sample_two_results_without_forced_hp",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.PrisonAndOldWomanPolicyTests.test_woman_real_options_confirm_life_payment_and_random_reward",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.PrisonAndOldWomanPolicyTests.test_woman_main_loop_retries_payment_and_reward_then_advances_both_narrations"
+      ]
+    },
+    "20261004-213406-273": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261004-213406-273.png",
+      "sha256": "68f043d3c25639de580f97209ebd2f168c9e62600cac87f9d8a058f5f2b30634",
+      "server": "global_cn",
+      "scene": "event",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.PrisonAndOldWomanPolicyTests.test_woman_life_route_can_click_and_sample_two_results_without_forced_hp",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.PrisonAndOldWomanPolicyTests.test_woman_real_options_confirm_life_payment_and_random_reward",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.PrisonAndOldWomanPolicyTests.test_woman_main_loop_retries_payment_and_reward_then_advances_both_narrations"
+      ]
+    },
+    "20261004-214924-687": {
+      "path": "tests/fixtures/dimensional_exploration/map/MuMu-20261004-214924-687.png",
+      "sha256": "3d4e35d0b115c13be4df3c1fee81908cb53c7888966212d620e9ed7bedcb69d2",
+      "server": "global_cn",
+      "scene": "map",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.PrisonAndOldWomanPolicyTests.test_woman_life_route_can_click_and_sample_two_results_without_forced_hp",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.PrisonAndOldWomanPolicyTests.test_woman_real_options_confirm_life_payment_and_random_reward",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.PrisonAndOldWomanPolicyTests.test_woman_main_loop_retries_payment_and_reward_then_advances_both_narrations"
+      ]
+    },
+    "20261004-201104-292": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261004-201104-292.png",
+      "sha256": "9d08b4066049de817a4613e0a6c4e2dd1adff1c5ad30702f36dc8e99b6b822b2",
+      "server": "global_cn",
+      "scene": "event",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_ready_introduction_taps_before_reading_option_costs",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_introduction_preserves_pending_history_and_sample_across_restart",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_main_loop_retries_introduction_then_selects_attack_and_confirms_reward"
       ]
     }
   }

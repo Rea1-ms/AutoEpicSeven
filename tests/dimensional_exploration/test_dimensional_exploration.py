@@ -11,8 +11,8 @@ from tasks.dimensional_exploration.policy import (
     EventChoice, Offer, RunProgress, choose_event, choose_offer,
     node_priority, parse_counter, parse_number,
 )
-from tasks.dimensional_exploration.vision import ExplorationVision
-from tasks.dimensional_exploration.recruitment import same_hero
+from tasks.dimensional_exploration.recognition.vision import ExplorationVision
+from tasks.dimensional_exploration.heroes.recruitment import same_hero
 from tasks.dimensional_exploration.dimensional_exploration import DimensionalExploration
 
 logger.setLevel('ERROR')
@@ -209,6 +209,7 @@ if {lang!r} == 'global_cn':
         for suffix, expected in [('20260922-081207-157', 'SUPPLY_BAGGAGE'),
                                  ('20260922-081226-118', 'SUPPLY_CONFIRM')]:
             task, vision, clicks = self.make_task(suffix)
+            task.config.DimensionalExploration_StartStrategy = '沉重包袱'
             self.assertTrue(task.handle_start_supply(vision))
             self.assertEqual(clicks, [expected])
 

@@ -24,7 +24,7 @@ from module.config import server
 server.set_lang("global_cn")
 
 from tasks.dimensional_exploration.dimensional_exploration import DimensionalExploration  # noqa: E402
-from tasks.dimensional_exploration.vision import ExplorationVision  # noqa: E402
+from tasks.dimensional_exploration.recognition.vision import ExplorationVision  # noqa: E402
 
 
 ROOT = Path(__file__).resolve().parents[2]

@@ -10,7 +10,7 @@ from uuid import uuid4
 
 from PIL import Image
 
-from tasks.dimensional_exploration.event import EventCost
+from tasks.dimensional_exploration.events.event import EventCost
 from tasks.dimensional_exploration.policy import EventChoice, normalize
 from tasks.dimensional_exploration.assets.assets_dimensional_exploration import OCR_EVENT_LOOT
 
@@ -61,21 +61,21 @@ def inspect_option(choice):
     # or death-allowance spending just to fill a dataset. Explicit exit options
     # remain preferable to sacrifices and combat when no cheap trial exists.
     if cost.life:
-        tier, reason = 7, "消耗生命体征，保留至少1点"
+        tier, reason = 7, "Spend life while preserving at least 1 point"
     elif cost.battle:
-        tier, reason = 6, "需要战斗"
+        tier, reason = 6, "Battle required"
     elif cost.all_hp_percent:
-        tier, reason = 5, "消耗全队生命值"
+        tier, reason = 5, "Spend party HP"
     elif cost.random_hp_percent:
-        tier, reason = 4, "消耗随机英雄生命值"
+        tier, reason = 4, "Spend a random hero HP"
     elif cost.loot:
-        tier, reason = 3, "消耗战利品"
+        tier, reason = 3, "Spend loot"
     elif cost.fragments or cost.dice:
-        tier, reason = 1, "消耗可负担的局内货币"
+        tier, reason = 1, "Spend affordable exploration currency"
     elif re.search(r"离开|撤离|放弃|无视|不予理会", text):
-        tier, reason = 2, "离开以避免较大消耗"
+        tier, reason = 2, "Leave to avoid a larger cost"
     else:
-        tier, reason = 0, "未显示已知代价，尝试并记录结果"
+        tier, reason = 0, "No known cost displayed; try and record the outcome"
     return SampleOption(choice, cost, tier, reason)
 
 
@@ -120,7 +120,7 @@ class EventSampler:
         if self.active:
             folder = (self.root / self.active["folder"]).resolve()
             if not folder.is_relative_to(self.root.resolve()):
-                raise ValueError("事件采样记录路径超出采样目录。")
+                raise ValueError("Event sample record path is outside the sampling directory.")
             if self.active["finished"] is not None:
                 self._finish(self.active["finished"])
         self._candidate = None

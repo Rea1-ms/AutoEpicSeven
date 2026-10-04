@@ -7,11 +7,67 @@ from tests.support.exploration import ROOT, ControlledClock, ReplayDevice, artif
 from tasks.dimensional_exploration.dimensional_exploration import DimensionalExploration
 from tasks.dimensional_exploration.assets.assets_dimensional_exploration import LOOT_BORDER
 from tasks.dimensional_exploration.policy import Offer, RunProgress, choose_offer
-from tasks.dimensional_exploration.recruitment import HeroCosts
-from tasks.dimensional_exploration.vision import ExplorationVision, Hero, Resources
-from tasks.dimensional_exploration.upgrade import RankedHero, UpgradeTarget, choose_upgrade, parse_upgrade_priority
+from tasks.dimensional_exploration.heroes.recruitment import HeroCosts
+from tasks.dimensional_exploration.recognition.vision import ExplorationVision, Hero, Resources
+from tasks.dimensional_exploration.heroes.upgrade import RankedHero, UpgradeTarget, choose_upgrade, parse_upgrade_priority
 from module.exception import RequestHumanTakeover
 class ScreenshotRegressions(unittest.TestCase):
+    def test_captured_preview_types_use_templates_without_title_ocr(self):
+        for suffix, kind in (
+                ('20260922-081603-149', 'battle'), ('20260922-081805-941', 'elite'),
+                ('20260922-082932-782', 'boss'), ('20260923-233512-883', 'boss'),
+                ('20260925-113034-953', 'rest'), ('20260925-113935-872', 'rest'),
+                ('20260922-081725-462', 'supply'), ('20260922-081803-041', 'event')):
+            with self.subTest(suffix=suffix):
+                task, vision, clicks = task_for(suffix)
+                vision.text = Mock(side_effect=AssertionError('Captured preview titles must use templates'))
+                self.assertEqual(vision.preview_kind(), kind)
+                task._node_selected, task._node_kind = True, kind
+                self.assertTrue(task.handle_preview(vision))
+                self.assertEqual(clicks, ['NODE_ENTER'])
+
+    def test_missing_wrong_or_ambiguous_preview_cannot_enter(self):
+        for suffix in ('20260922-081413-154', '20260922-081805-941'):
+            task, vision, clicks = task_for(suffix)
+            task._node_selected, task._node_kind = True, 'event'
+            vision.text = Mock(side_effect=AssertionError('No OCR fallback for covered types'))
+            task.handle_map = Mock(return_value=False)
+            self.assertFalse(task.handle_preview(vision))
+            self.assertEqual(clicks, [])
+            task.handle_map.assert_called_once_with(vision)
+        task, vision, clicks = task_for('20260922-081413-154')
+        task._node_selected, task._node_kind = True, None
+        task.handle_map = Mock(return_value=False)
+        self.assertFalse(task.handle_preview(vision))
+        self.assertEqual(clicks, [])
+        task, vision, clicks = task_for('20260922-081603-149')
+        task._node_selected, task._node_kind = True, 'battle'
+        with patch.dict(vision.PREVIEW_ASSETS, {'other': vision.PREVIEW_ASSETS['battle']}):
+            self.assertIsNone(vision.preview_kind())
+            task.handle_map = Mock(return_value=False)
+            self.assertFalse(task.handle_preview(vision))
+        self.assertEqual(clicks, [])
+
+    def test_shop_preview_ocr_is_only_used_when_no_known_template_matches(self):
+        task, vision, clicks = task_for('20260922-081413-154')
+        task._node_selected, task._node_kind = True, 'shop'
+        task.handle_map = Mock(return_value=False)
+        vision.text = Mock(return_value='商店')
+        self.assertTrue(task.handle_preview(vision))
+        self.assertEqual(clicks, ['NODE_ENTER'])
+        # This is a simulated missing shop capture, not an asset positive.
+        clicks.clear()
+        vision.text.return_value = '未知'
+        self.assertFalse(task.handle_preview(vision))
+        self.assertEqual(clicks, [])
+        task, vision, clicks = task_for('20260922-081805-941')
+        task._node_selected, task._node_kind = True, 'shop'
+        vision.text = Mock(return_value='商店')
+        task.handle_map = Mock(return_value=False)
+        self.assertFalse(task.handle_preview(vision))
+        vision.text.assert_not_called()
+        self.assertEqual(clicks, [])
+
     def test_rest_preview_enters_both_new_screenshots(self):
         for suffix in ('20260925-113034-953', '20260925-113935-872'):
             task, vision, clicks = task_for(suffix)
@@ -156,7 +212,7 @@ class ReceiptRegressions(unittest.TestCase):
         task.handle_ui_recovery.assert_called_once()
 
     def test_task_ocr_does_not_define_literal_rectangles(self):
-        for path in (ROOT / 'tasks' / 'dimensional_exploration').glob('*.py'):
+        for path in (ROOT / 'tasks' / 'dimensional_exploration').rglob('*.py'):
             for node in ast.walk(ast.parse(path.read_text(encoding='utf-8'))):
                 if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute) and node.args:
                     if node.func.attr in ('text', 'tokens', 'number', 'bright_text', 'gold_border'):
@@ -375,7 +431,7 @@ class UpgradePriorityRegressions(unittest.TestCase):
         task.config.DimensionalExploration_UpgradePriority = '亚敏=5'
         task.device.screenshot = Mock(side_effect=AssertionError('Preflight must happen before device work'))
         task.device.save_screenshot = Mock(side_effect=AssertionError('Preflight must not save a device frame'))
-        with self.assertRaisesRegex(RequestHumanTakeover, '亚敏.*不在英雄优先名单'):
+        with self.assertRaisesRegex(RequestHumanTakeover, '亚敏.*not in the hero priority roster'):
             task.run()
         self.assertEqual(clicks, [])
         task.device.screenshot.assert_not_called()
@@ -493,7 +549,7 @@ class UpgradePriorityRegressions(unittest.TestCase):
             [SimpleNamespace(ocr_text='起源拉斯', box=(395, 94, 475, 125))],
             [SimpleNamespace(ocr_text='罪戾的安', box=(1235, 94, 1278, 125))],
         ))
-        with patch('tasks.dimensional_exploration.vision.multi_match', return_value=[
+        with patch('tasks.dimensional_exploration.recognition.vision.multi_match', return_value=[
                 (360, 136, 380, 155), (1200, 136, 1220, 155)]):
             heroes, count = vision.upgrade_roster()
         self.assertEqual(count, 2)
@@ -551,7 +607,7 @@ class UpgradePriorityRegressions(unittest.TestCase):
 
     def test_incomplete_boundary_and_search_limit_stop_without_fallback(self):
         task, vision, clicks = self.picker([self.hero('罪戾的安洁莉卡')], count=2)
-        with self.assertRaisesRegex(RequestHumanTakeover, '未读齐'):
+        with self.assertRaisesRegex(RequestHumanTakeover, 'missing heroes'):
             for _ in range(7):
                 task.handle_rest_hero(vision)
         self.assertEqual(clicks, [])
@@ -559,7 +615,7 @@ class UpgradePriorityRegressions(unittest.TestCase):
         task._upgrade_count = 2
         task._upgrade_swipes = 30
         task.handle_rest_hero(vision)
-        with self.assertRaisesRegex(RequestHumanTakeover, '达到上限'):
+        with self.assertRaisesRegex(RequestHumanTakeover, 'scan limit reached'):
             task.handle_rest_hero(vision)
         self.assertEqual(clicks, [])
 

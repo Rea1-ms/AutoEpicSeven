@@ -6,7 +6,7 @@ from tasks.base.assets.assets_base_page import BACK
 from tasks.dimensional_exploration.assets.assets_dimensional_exploration import (
     REST_ACTION, REST_HERO_ENTRY, ROOM_DONE, ROOM_LEAVE,
 )
-from tasks.dimensional_exploration.vision import match_in
+from tasks.dimensional_exploration.recognition.vision import match_in
 
 
 def needs_rest_healing(hero_hp: tuple[int, ...] | None) -> bool | None:
@@ -110,9 +110,9 @@ class RestMixin:
             # pending action: retry it on unchanged frames, and wait for the
             # done marker or an action subpage before choosing anything else.
             if self._rest_action is None:
-                name = ("英雄升阶", "复活", "恢复生命体征", "治疗")[row]
+                name = ("upgrade", "revive", "recover life", "heal")[row]
                 hp = self._rest_hero_hp
-                reason = f"最低{min(hp)}%，平均{sum(hp)/len(hp):.1f}%" if hp else "按可用选项优先级"
+                reason = f"Minimum HP {min(hp)}%, average HP {sum(hp)/len(hp):.1f}%" if hp else "Use available option priority"
                 logger.attr("ExplorationRest", f"{name}：{reason}")
             self._rest_action = row
             return True

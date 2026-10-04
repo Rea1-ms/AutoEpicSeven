@@ -10,7 +10,7 @@ from tasks.dimensional_exploration.assets.assets_dimensional_exploration import 
     REST_HERO_CONFIRM, ROSTER_RANK_ICON,
 )
 from tasks.dimensional_exploration.policy import normalize
-from tasks.dimensional_exploration.recruitment import same_hero
+from tasks.dimensional_exploration.heroes.recruitment import same_hero
 
 
 MAX_RANK = 5
@@ -36,7 +36,7 @@ def parse_upgrade_priority(text: str | None, preferred: tuple[str, ...]) -> tupl
     if text is None:
         return ()
     if not isinstance(text, str):
-        raise ValueError("升阶优先级应填写英雄名=目标阶数。")
+        raise ValueError("Upgrade priority must use hero name=target rank.")
     allowed = set(preferred)
     result = []
     seen = set()
@@ -45,12 +45,12 @@ def parse_upgrade_priority(text: str | None, preferred: tuple[str, ...]) -> tupl
             continue
         match = re.fullmatch(r"\s*([^=＝:：]+?)\s*[=＝:：]\s*([1-5])\s*", part)
         if not match:
-            raise ValueError(f"升阶优先级格式错误：{part.strip()}；请填写英雄名=目标阶数，阶数为1至5。")
+            raise ValueError(f"Invalid upgrade priority: {part.strip()}; use hero name=target rank, with rank from 1 to 5.")
         name = normalize(match[1])
         if name not in allowed:
-            raise ValueError(f"升阶优先级的英雄“{name}”不在英雄优先名单里。")
+            raise ValueError(f"Upgrade priority hero {name} is not in the hero priority roster.")
         if name in seen:
-            raise ValueError(f"升阶优先级重复填写了英雄“{name}”。")
+            raise ValueError(f"Duplicate upgrade priority hero: {name}.")
         seen.add(name)
         result.append(UpgradeTarget(name, int(match[2])))
     return tuple(result)
@@ -107,7 +107,7 @@ class UpgradeMixin:
         if not self.action_ready():
             return False
         if self._upgrade_swipes >= 30:
-            self.require_human("升阶名单扫描达到上限，尚未确认完整名单或找到目标英雄。")
+            self.require_human("Upgrade scan limit reached without a complete roster or the target hero.")
         x1, y1, x2, y2 = ROSTER_RANK_ICON.search
         width, middle = x2 - x1, (y1 + y2) // 2
         start, end = (int(x1 + width * 0.75), middle), (int(x1 + width * 0.4), middle)
@@ -148,7 +148,7 @@ class UpgradeMixin:
             else:
                 self._upgrade_inventory[known] = hero
         if len(self._upgrade_inventory) > count:
-            self.require_human("升阶名单姓名与英雄总数不一致，尚未选择英雄。")
+            self.require_human("Upgrade roster names do not match the total hero count; no hero has been selected.")
         if self._upgrade_before_view is not None:
             self._upgrade_stalls = self._upgrade_stalls + 1 if signature == self._upgrade_before_view else 0
             self._upgrade_before_view = None
@@ -163,7 +163,7 @@ class UpgradeMixin:
             self._upgrade_choice = name
         elif len(self._upgrade_inventory) != count:
             if self._upgrade_stalls >= 2:
-                self.require_human("升阶名单已到边界但英雄未读齐，不能判断优先英雄不存在。")
+                self.require_human("Upgrade roster boundary reached with missing heroes; priority hero absence cannot be confirmed.")
             return self._swipe_upgrade(signature)
         elif self._upgrade_choice is None:
             chosen = choose_upgrade(tuple(self._upgrade_inventory), targets, self.hero_priorities(""))
@@ -173,11 +173,11 @@ class UpgradeMixin:
                     return True
                 return False
             self._upgrade_choice = chosen.name
-            logger.attr("ExplorationUpgrade", f"{chosen.name}：当前{chosen.rank}阶")
+            logger.attr("ExplorationUpgrade", f"{chosen.name}: current rank {chosen.rank}")
         chosen = next((h for h in heroes if same_hero(h.name, self._upgrade_choice)), None)
         if chosen is None:
             if self._upgrade_stalls >= 2:
-                self.require_human("升阶目标在回查名单时未能确认，尚未点击其他英雄。")
+                self.require_human("Upgrade target could not be verified during the return scan; no other hero has been clicked.")
             return self._swipe_upgrade(signature, reverse=True)
         if same_hero(vision.selected_hero(), chosen.name) and vision.bright_text(REST_HERO_CONFIRM):
             if self.click_action(ClickButton(REST_HERO_CONFIRM.area, name="RestHeroConfirm")):

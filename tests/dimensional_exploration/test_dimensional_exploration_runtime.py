@@ -1,5 +1,6 @@
 """Regressions from the September 26 on-device logs, without a real device."""
 
+from copy import deepcopy
 from dataclasses import replace
 from types import SimpleNamespace
 import unittest
@@ -7,19 +8,260 @@ from unittest.mock import Mock, patch
 
 import numpy as np
 
-from tests.support.exploration import ControlledClock, artifact_path, frame, task_for
+from tests.support.exploration import ControlledClock, ReplayDevice, artifact_path, frame, task_for
 from module.config.config_manual import ManualConfig
 from module.device.screenshot import Screenshot
 from module.exception import RequestHumanTakeover
-from tasks.dimensional_exploration.recruitment import HeroCosts
+from tasks.dimensional_exploration.heroes.recruitment import HeroCosts
 from tasks.dimensional_exploration.assets.assets_dimensional_exploration import REWARD_CLOSE
-from tasks.dimensional_exploration.vision import ExplorationVision, Hero
-from tasks.dimensional_exploration.event import EventMemory, decide_event, event_branch
+from tasks.dimensional_exploration.recognition.vision import ExplorationVision, Hero
+from tasks.dimensional_exploration.events.event import EventMemory, decide_event, event_branch
 from tasks.dimensional_exploration.policy import EventChoice, RunProgress, choose_offer
-from tasks.dimensional_exploration.sampling import choose_sample
+from tasks.dimensional_exploration.events.sampling import choose_sample
+from tasks.dimensional_exploration.recognition.hero_names import HeroNameOcr
+
+
+class BatchResumeRegressions(unittest.TestCase):
+    def saved(self):
+        return dict(target=5, completed=5, settlement_seen=True, finished=False,
+                    starlight_total=401, last_starlight=201,
+                    recruitment={'heroes': ['赛珂兰特'], 'pending': None})
+
+    def task(self, session, target=5):
+        task, _, _ = task_for('20260924-091808-594')
+        task.config.Emulator_PackageName = 'com.stove.epic7.google'
+        task.config.DimensionalExploration_RunCount = target
+        task.config.DimensionalExplorationRuntime_Session = deepcopy(session)
+        task.load_recruitment()
+        task.device.screenshot = Mock()
+        task.ui_goto_main = Mock()
+        return task
+
+    def startup(self, session, target=5):
+        task = self.task(session, target)
+        # Stop at the real loop boundary, after run() has persisted its startup
+        # decision. This does not pretend a mocked explore() completed a batch.
+        task.explore = Mock(side_effect=RuntimeError('startup captured'))
+        with self.assertRaisesRegex(RuntimeError, 'startup captured'):
+            task.run()
+        task.ui_goto_main.assert_not_called()
+        return task
+
+    def replay(self, session, suffixes, expected, clock, target=5):
+        task = self.task(session, target)
+        device = ReplayDevice(suffixes, expected_clicks=expected)
+        task.device = device
+        task.click_action = task.__class__.click_action.__get__(task)
+        task.action_ready = task.__class__.action_ready.__get__(task)
+        screenshot = device.screenshot
+
+        def next_frame():
+            clock.advance(2.1)
+            screenshot()
+
+        device.screenshot = next_frame
+        return task, device
+
+    def test_completed_unfinished_batch_starts_on_first_click_and_retries_lobby(self):
+        suffixes = ['20260924-091808-594'] * 3 + ['20260922-081207-157']
+        with ControlledClock() as clock:
+            task, device = self.replay(self.saved(), suffixes, ['LOBBY_CONTINUE'] * 2, clock)
+            task.handle_start_supply = Mock(side_effect=RuntimeError('new run entered'))
+            with self.assertRaisesRegex(RuntimeError, 'new run entered'):
+                task.run()
+            device.assert_actions_complete()
+            task.ui_goto_main.assert_not_called()
+            task.handle_start_supply.assert_called_once()
+            saved = task.config.DimensionalExplorationRuntime_Session
+            self.assertEqual((saved['target'], saved['completed'], saved['starlight_total']), (5, 0, 0))
+            self.assertIsNone(saved['last_starlight'])
+            self.assertFalse(saved['settlement_seen'])
+            self.assertFalse(saved['finished'])
+
+    def test_completed_reset_clears_old_recruitment_and_keeps_settlement_guard(self):
+        session = self.saved()
+        session['recruitment']['pending'] = {'name': '亚敏', 'cost': 2, 'quota': [13, 19]}
+        task = self.startup(session)
+        self.assertEqual((task.progress.completed, task.progress.starlight_total), (0, 0))
+        self.assertIsNone(task.progress.last_starlight)
+        self.assertTrue(task.progress.settlement_seen)
+        self.assertEqual(task._recruited_heroes, [])
+        self.assertIsNone(task._recruit_pending)
+        self.assertEqual(task.config.DimensionalExplorationRuntime_Session['recruitment'],
+                         {'heroes': [], 'pending': None})
+
+    def test_unfinished_batch_preserves_partial_progress_and_pending_recruitment(self):
+        session = self.saved()
+        session['completed'] = 2
+        session['recruitment']['pending'] = {'name': '亚敏', 'cost': 2, 'quota': [13, 19]}
+        for target in (5, 7):
+            with self.subTest(target=target):
+                task = self.startup(session, target)
+                self.assertEqual((task.progress.completed, task.progress.starlight_total,
+                                  task.progress.last_starlight), (2, 401, 201))
+                self.assertTrue(task.progress.settlement_seen)
+                self.assertEqual(task._recruited_heroes, ['赛珂兰特'])
+                self.assertEqual(task._recruit_pending, session['recruitment']['pending'])
+
+    def test_completed_batch_resets_after_target_changes_or_missing_old_target(self):
+        for previous, requested, completed in ((5, 7, 5), (7, 3, 3), (None, 5, 5), (5, 5, 6)):
+            with self.subTest(previous=previous, requested=requested, completed=completed):
+                session = self.saved()
+                session['completed'] = completed
+                if previous is None:
+                    session.pop('target')
+                else:
+                    session['target'] = previous
+                task = self.startup(session, requested)
+                self.assertEqual((task.target, task.progress.completed, task.progress.starlight_total),
+                                 (requested, 0, 0))
+                self.assertTrue(task.progress.settlement_seen)
+
+    def test_finished_batch_also_retains_old_settlement_deduplication(self):
+        session = self.saved()
+        session['finished'] = True
+        task = self.startup(session)
+        self.assertEqual((task.progress.completed, task.progress.starlight_total), (0, 0))
+        self.assertTrue(task.progress.settlement_seen)
+        self.assertFalse(task.config.DimensionalExplorationRuntime_Session['finished'])
+
+    def test_restart_while_closing_old_result_never_recounts_it(self):
+        task = self.startup(self.saved())
+        # An interruption after resetting totals may leave the previous result
+        # visible again. Its guard must survive a second restart, not only the
+        # startup that first detected the completed-but-unfinished batch.
+        task = self.startup(task.config.DimensionalExplorationRuntime_Session)
+        task.device.image = frame('20260923-233818-836')
+        vision = ExplorationVision(task.device.image)
+        self.assertTrue(task.handle_settlement(vision))
+        self.assertTrue(task.handle_settlement(vision))
+        self.assertEqual((task.progress.completed, task.progress.starlight_total), (0, 0))
+        self.assertTrue(task.progress.settlement_seen)
+        task.progress.entered_run()
+        self.assertTrue(task.handle_settlement(vision))
+        self.assertEqual((task.progress.completed, task.progress.starlight_total), (1, 443))
+
+    def test_interruption_after_last_settlement_recovers_without_second_start(self):
+        session = self.saved()
+        session.update(completed=4, settlement_seen=False, starlight_total=200, last_starlight=200)
+        task = self.task(session)
+        vision = ExplorationVision(frame('20260923-233818-836'))
+        task.explore = Mock(side_effect=lambda: task.handle_settlement(vision))
+        task.ui_goto_main = Mock(side_effect=RuntimeError('interrupted before main'))
+        with self.assertRaisesRegex(RuntimeError, 'interrupted before main'):
+            task.run()
+        saved = task.config.DimensionalExplorationRuntime_Session
+        self.assertEqual((saved['completed'], saved['starlight_total']), (5, 643))
+        self.assertFalse(saved['finished'])
+        restored = self.startup(saved)
+        self.assertEqual((restored.progress.completed, restored.progress.starlight_total), (0, 0))
+        self.assertTrue(restored.progress.settlement_seen)
+
+    def test_old_result_is_closed_then_new_run_counts_once_in_real_loop(self):
+        suffixes = ['20260923-233818-836'] * 3 + ['20260922-081153-551',
+                    '20260922-081207-157', '20260923-233811-030',
+                    '20260923-233818-836', '20260923-233818-836', '20260924-091808-594']
+        expected = ['SETTLEMENT_CLOSE'] * 2 + ['LOBBY_START', 'SUPPLY_BAGGAGE', 'FAILED_CHECK'] + [
+            'SETTLEMENT_CLOSE'] * 2
+        with ControlledClock() as clock:
+            task, device = self.replay(self.saved(), suffixes, expected, clock, target=1)
+            task.config.DimensionalExploration_StartStrategy = '沉重包袱'
+            task.run()
+            device.assert_actions_complete()
+            task.ui_goto_main.assert_called_once()
+            saved = task.config.DimensionalExplorationRuntime_Session
+            self.assertEqual((saved['completed'], saved['starlight_total'], saved['last_starlight']), (1, 443, 443))
+            self.assertTrue(saved['finished'])
+            self.assertTrue(saved['settlement_seen'])
+            self.assertEqual(saved['recruitment'], {'heroes': [], 'pending': None})
 
 
 class RuntimeRegressions(unittest.TestCase):
+    def test_exact_name_cache_reuses_pixels_and_moves_click_box(self):
+        from pponnxcr.predict_system import BoxedResult
+        reader = HeroNameOcr()
+        image = np.zeros((40, 80, 3), dtype=np.uint8)
+        original = BoxedResult((2, 3, 16, 9), None, '起源拉斯', .98)
+        with patch('tasks.dimensional_exploration.recognition.hero_names.Ocr') as ocr:
+            ocr.return_value.detect_and_ocr.return_value = [original]
+            first = reader.read(image, (0, 0, 20, 10), 'HeroName')
+            moved = reader.read(image.copy(), (30, 20, 50, 30), 'UpgradeName')
+            self.assertEqual(ocr.return_value.detect_and_ocr.call_count, 1)
+            self.assertEqual((first[0].ocr_text, moved[0].ocr_text), ('起源拉斯', '起源拉斯'))
+            self.assertEqual(moved[0].box, (32, 23, 46, 29))
+            moved[0].ocr_text = 'changed'
+            self.assertEqual(reader.read(image, (0, 0, 20, 10), 'HeroName')[0].ocr_text, '起源拉斯')
+
+    def test_name_cache_invalidates_on_any_pixel_or_shape_change_and_is_bounded(self):
+        from pponnxcr.predict_system import BoxedResult
+        reader = HeroNameOcr(capacity=1)
+        image = np.zeros((20, 40, 3), dtype=np.uint8)
+        with patch('tasks.dimensional_exploration.recognition.hero_names.Ocr') as ocr:
+            ocr.return_value.detect_and_ocr.return_value = [BoxedResult((1, 1, 8, 7), None, '起源拉斯', .98)]
+            reader.read(image, (0, 0, 20, 10), 'HeroName')
+            changed = image.copy()
+            changed[9, 19, 0] = 1
+            reader.read(changed, (0, 0, 20, 10), 'HeroName')
+            reader.read(image, (0, 0, 20, 10), 'HeroName')
+            reader.read(image, (0, 0, 10, 20), 'HeroName')
+            self.assertEqual(ocr.return_value.detect_and_ocr.call_count, 4)
+            self.assertEqual(len(reader._entries), 1)
+
+    def test_failed_and_ambiguous_name_reads_are_not_cached(self):
+        from pponnxcr.predict_system import BoxedResult
+        reader = HeroNameOcr()
+        image = np.zeros((10, 20, 3), dtype=np.uint8)
+        with patch('tasks.dimensional_exploration.recognition.hero_names.Ocr') as ocr:
+            ocr.return_value.detect_and_ocr.side_effect = [[], [
+                BoxedResult((0, 0, 5, 5), None, '起源', .8),
+                BoxedResult((5, 0, 10, 5), None, '拉斯', .8),
+            ], []]
+            for _ in range(3):
+                reader.read(image, (0, 0, 20, 10), 'HeroName')
+            self.assertEqual(ocr.return_value.detect_and_ocr.call_count, 3)
+            self.assertEqual(len(reader._entries), 0)
+
+    def test_cached_real_names_do_not_reuse_missing_rank_or_hp(self):
+        from module.base.utils import area_offset
+        from tasks.dimensional_exploration.assets.assets_dimensional_exploration import (
+            OCR_UPGRADE_RANK, ROSTER_HP_BAR,
+        )
+        reader = HeroNameOcr()
+        image = frame('20261004-151606-257')
+        first = ExplorationVision(image, hero_name_ocr=reader).upgrade_roster()
+        self.assertEqual([h.name for h in first[0]], ['赛珂兰特', '罪戾的安洁莉卡', '起源拉斯', '保健室老师律荷'])
+        self.assertEqual(ExplorationVision(image.copy(), hero_name_ocr=reader).upgrade_roster(), first)
+        invalid = image.copy()
+        x1, y1, x2, y2 = area_offset(OCR_UPGRADE_RANK.area, (0, 0))
+        invalid[y1:y2, x1:x2] = 0
+        self.assertIsNone(ExplorationVision(invalid, hero_name_ocr=reader).upgrade_roster())
+        hp_image = frame('20261004-134045-652')
+        self.assertIsNotNone(ExplorationVision(hp_image, hero_name_ocr=reader).roster_health())
+        x1, y1, x2, y2 = ROSTER_HP_BAR.area
+        hp_image[y1:y2, x1:x2] = 0
+        self.assertIsNone(ExplorationVision(hp_image, hero_name_ocr=reader).roster_health())
+
+    def test_program_log_messages_and_takeover_reasons_use_english(self):
+        import ast
+        from tests.support.exploration import ROOT
+        for path in (ROOT / 'tasks/dimensional_exploration').rglob('*.py'):
+            for node in ast.walk(ast.parse(path.read_text(encoding='utf-8'))):
+                if not isinstance(node, ast.Call):
+                    continue
+                if isinstance(node.func, ast.Attribute):
+                    relevant = node.func.attr in ('require_human', 'record_progress') or (
+                        isinstance(node.func.value, ast.Name) and node.func.value.id == 'logger')
+                else:
+                    relevant = isinstance(node.func, ast.Name) and node.func.id in ('ValueError', 'RequestHumanTakeover')
+                if relevant:
+                    for arg in node.args:
+                        # Embedded OCR values may be Chinese. Only the static
+                        # program text is constrained, not read game content.
+                        literals = arg.values if isinstance(arg, ast.JoinedStr) else [arg]
+                        for literal in literals:
+                            if isinstance(literal, ast.Constant) and isinstance(literal.value, str):
+                                self.assertFalse(any('\u4e00' <= char <= '\u9fff' for char in literal.value), (path, node.lineno))
+
     def test_hero_ocr_stops_after_first_priority_without_reading_later_rows(self):
         full = ExplorationVision(frame('20260922-081352-852'))
         full.tokens = Mock(wraps=full.tokens)
@@ -369,7 +611,7 @@ class RecruitmentViewportRegressions(unittest.TestCase):
         vision.number = Mock(side_effect=AssertionError('clipped costs must not be guessed'))
         for rectangle in ((470, 133, 490, 159), (1230, 133, 1250, 159)):
             with self.subTest(rectangle=rectangle), patch(
-                    'tasks.dimensional_exploration.vision.multi_match', return_value=[rectangle]):
+                    'tasks.dimensional_exploration.recognition.vision.multi_match', return_value=[rectangle]):
                 self.assertEqual(vision.heroes(), [])
         vision.tokens.assert_not_called()
         vision.number.assert_not_called()
@@ -405,12 +647,19 @@ if __name__ == '__main__':
 
 
 class StartingAndStarlightRegressions(unittest.TestCase):
+    def test_missing_start_strategy_defaults_to_contract_without_ocr(self):
+        task, vision, clicks = task_for('20260922-081207-157')
+        self.assertFalse(hasattr(task.config, 'DimensionalExploration_StartStrategy'))
+        vision.text = Mock(side_effect=AssertionError('Starting strategy must use templates'))
+        task.handle_start_supply(vision)
+        self.assertEqual(clicks, ['SUPPLY_CONTRACT'])
+
     def test_dropdown_source_matches_four_unlocked_cards(self):
         from module.config.config_updater import ConfigGenerator
-        from tasks.dimensional_exploration.starting_strategy import STRATEGIES
+        from tasks.dimensional_exploration.rooms.starting_strategy import STRATEGIES
         option = ConfigGenerator().args['DimensionalExploration']['DimensionalExploration']['StartStrategy']
         self.assertEqual(option['type'], 'select')
-        self.assertEqual(option['value'], '沉重包袱')
+        self.assertEqual(option['value'], '雇佣契约')
         self.assertEqual(option['option'], list(STRATEGIES))
 
     def test_all_four_start_strategies_select_their_visible_card(self):
@@ -432,7 +681,7 @@ class StartingAndStarlightRegressions(unittest.TestCase):
         self.assertEqual(clicks[-1], 'SUPPLY_CONFIRM')
 
     def test_each_selected_border_uses_its_own_position(self):
-        from tasks.dimensional_exploration.starting_strategy import STRATEGIES
+        from tasks.dimensional_exploration.rooms.starting_strategy import STRATEGIES
         from tasks.dimensional_exploration.assets.assets_dimensional_exploration import SUPPLY_SELECTED
         # Synthetic border states verify geometry. Only the baggage gold state
         # is a captured screenshot; this does not claim on-device validation
@@ -451,7 +700,7 @@ class StartingAndStarlightRegressions(unittest.TestCase):
     def test_unknown_or_invisible_strategy_never_confirms_another(self):
         task, vision, clicks = task_for('20260922-081226-118')
         task.config.DimensionalExploration_StartStrategy = '未登记'
-        with self.assertRaisesRegex(RequestHumanTakeover, '未支持的开局策略'):
+        with self.assertRaisesRegex(RequestHumanTakeover, 'Unsupported starting strategy'):
             task.handle_start_supply(vision)
         self.assertEqual(clicks, [])
         task.config.DimensionalExploration_StartStrategy = '雇佣契约'
@@ -498,7 +747,7 @@ class StartingAndStarlightRegressions(unittest.TestCase):
     def test_empty_settlement_does_not_record_starlight(self):
         task, vision, clicks = task_for('20260924-091819-235')
         task.progress, task.target = RunProgress(), 1
-        with self.assertRaisesRegex(RequestHumanTakeover, '未进行探查'):
+        with self.assertRaisesRegex(RequestHumanTakeover, 'did not enter exploration'):
             task.handle_settlement(vision)
         self.assertEqual((task.progress.completed, task.progress.starlight_total), (0, 0))
         self.assertEqual(clicks, [])
@@ -801,14 +1050,14 @@ class RestHealthRegressions(unittest.TestCase):
         task._rest_hero_hp = (90, 90)
         task.handle_rest(vision)
         self.assertEqual(actions, [('ExplorationRestAction', buttons[1].area)] * 2)
-        with patch('tasks.dimensional_exploration.rest.match_in', return_value=(1, (0, 0, 1, 1))):
+        with patch('tasks.dimensional_exploration.rooms.rest.match_in', return_value=(1, (0, 0, 1, 1))):
             self.assertTrue(task.handle_rest(vision))
         self.assertEqual(actions[-1], ('ROOM_LEAVE', ROOM_LEAVE.area))
         self.assertIsNone(task._rest_action)
         self.assertIsNone(task._rest_hero_hp)
 
     def test_lowest_or_average_hp_uses_strict_thresholds(self):
-        from tasks.dimensional_exploration.rest import needs_rest_healing
+        from tasks.dimensional_exploration.rooms.rest import needs_rest_healing
         for hp, expected in (((29, 100), True), ((30, 90), False), ((30, 89), True),
                              ((59, 60), True), ((60, 60), False), ((100, 100), False),
                              ((0, 100), True), ((30, 30, 100, 100), False)):
@@ -862,7 +1111,7 @@ class RestHealthRegressions(unittest.TestCase):
         self.assertEqual(actions[-1][1], buttons[0].area)
 
     def test_incomplete_or_changing_roster_waits_for_two_consistent_frames(self):
-        from tasks.dimensional_exploration.vision import HeroHealth
+        from tasks.dimensional_exploration.recognition.vision import HeroHealth
         task, rest, actions, _ = self.rest()
         task.handle_rest(rest)
         roster = ExplorationVision(frame('20261001-133151-873'))
@@ -922,7 +1171,7 @@ class RestHealthRegressions(unittest.TestCase):
         task._rest_hero_hp = (90, 90)
         task.handle_rest(vision)
         self.assertEqual(actions, [('ExplorationRestAction', buttons[3].area)] * 2)
-        with patch('tasks.dimensional_exploration.rest.match_in', return_value=(1, (0, 0, 1, 1))):
+        with patch('tasks.dimensional_exploration.rooms.rest.match_in', return_value=(1, (0, 0, 1, 1))):
             self.assertTrue(task.handle_rest(vision))
         self.assertEqual(actions[-1], ('ROOM_LEAVE', ROOM_LEAVE.area))
         self.assertIsNone(task._rest_hero_hp)
@@ -995,7 +1244,7 @@ class RestHealthRegressions(unittest.TestCase):
     def test_main_loop_reads_critical_roster_retries_then_reaches_revive(self):
         from tests.support.exploration import ReplayDevice
         from tasks.dimensional_exploration.assets.assets_dimensional_exploration import REST_ACTION
-        from tasks.dimensional_exploration.vision import HeroHealth
+        from tasks.dimensional_exploration.recognition.vision import HeroHealth
         suffixes = ['20260923-232305-766'] * 2 + ['20261001-133151-873'] * 3 + [
             '20260923-232305-766'] * 3 + ['20260923-233115-192']
         expected = ['REST_HERO_ENTRY', 'BACK', 'ExplorationRestAction', 'ExplorationRestAction']

@@ -297,7 +297,7 @@ SpecialActivity:
 DimensionalExploration:
   RunCount: 1
   StartStrategy:
-    value: 沉重包袱
+    value: 雇佣契约
     option: [ 雇佣契约, 痛苦机械装置, 沉重包袱, 基础锻炼铁锤 ]
   EventSampling: false
   KnightPriority:

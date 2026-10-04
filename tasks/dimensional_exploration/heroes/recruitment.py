@@ -94,7 +94,7 @@ class RecruitmentMixin:
         session = getattr(self.config, "DimensionalExplorationRuntime_Session", {})
         saved = session.get("recruitment", {}) if not session.get("finished") else {}
         if not isinstance(saved, dict):
-            raise ValueError("次元探查本局招募记录格式不正确。")
+            raise ValueError("Invalid recruitment record for the current exploration run.")
         heroes, pending = saved.get("heroes", []), saved.get("pending")
         if (not isinstance(heroes, list) or not all(isinstance(name, str) and name for name in heroes)
                 or (pending is not None and (
@@ -102,7 +102,7 @@ class RecruitmentMixin:
                     or type(pending.get("cost")) is not int or not 0 < pending["cost"] <= 9
                     or not isinstance(pending.get("quota"), list) or len(pending["quota"]) != 2
                     or not all(type(value) is int and 0 <= value <= 99 for value in pending["quota"])))):
-            raise ValueError("次元探查本局招募记录格式不正确。")
+            raise ValueError("Invalid recruitment record for the current exploration run.")
         self._recruited_heroes = list(heroes)
         self._recruit_pending = pending
         self._recruit_receipt = None
@@ -247,7 +247,7 @@ class RecruitmentMixin:
         if self._hero_selected is not None:
             matching = [h for h in heroes if same_hero(h.name, self._hero_selected)]
             if len(matching) != 1:
-                self.require_human("已选英雄不在当前可招募名单中，请检查招募额度或名单。")
+                self.require_human("Selected hero is not in the eligible recruitment roster; check the budget and roster.")
             if same_hero(vision.selected_hero(), self._hero_selected):
                 if vision.bright_text(HERO_CONFIRM_ACTIVE):
                     self._hero_selected_cost = matching[0].cost
@@ -272,7 +272,7 @@ class RecruitmentMixin:
             if heroes:
                 chosen = heroes[0]
                 self._hero_selected, self._hero_selected_cost = chosen.name, chosen.cost
-                logger.info(f"招募剩余额度{budget}，名单英雄均不可负担，改选{chosen.name}（{chosen.cost}点）。")
+                logger.info(f"Recruitment budget {budget}; priority heroes are unaffordable. Choose {chosen.name} (cost {chosen.cost}).")
                 return self.click_action(ClickButton(chosen.area, name="SelectExplorationHero"))
             if self._hero_fallback_best is not None:
                 cost, name = self._hero_fallback_best
@@ -313,7 +313,7 @@ class RecruitmentMixin:
                 self._hero_selected_cost = matching[0].cost
                 return self.click_action(ClickButton(matching[0].area, name="SelectExplorationHero"))
             if self._hero_swipes >= swipe_limit * 2 + 4:
-                self.require_human("回查英雄名单时未找到已识别的候选英雄。")
+                self.require_human("The previously recognized candidate was not found during the return scan.")
             return self._swipe_heroes(signature, reverse=True)
         # Repeated stable content after a gesture is a boundary candidate, not
         # proof of a successful swipe. Allow two retries before reversing, and
@@ -336,7 +336,7 @@ class RecruitmentMixin:
                     if affordable:
                         chosen = affordable[0]
                         self._hero_selected, self._hero_selected_cost = chosen.name, chosen.cost
-                        logger.info(f"招募名单未找到可负担英雄，改选{chosen.name}（{chosen.cost}点）。")
+                        logger.info(f"No affordable priority hero was found; choose {chosen.name} (cost {chosen.cost}).")
                         return self.click_action(ClickButton(chosen.area, name="SelectExplorationHero"))
                     if self._hero_fallback_best is not None:
                         cost, name = self._hero_fallback_best
@@ -344,7 +344,7 @@ class RecruitmentMixin:
                         self._hero_returning = True
                         return False
                     return self.skip_recruitment()
-                self.require_human("未找到额度内可招募的英雄，请检查优先名单和队伍。")
+                self.require_human("No recruitable hero fits the budget; check the priority roster and party.")
             self._hero_returning = True
             return False
         return self._swipe_heroes(signature, reverse=False)

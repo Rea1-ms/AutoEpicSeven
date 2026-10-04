@@ -26,25 +26,28 @@ from tasks.dimensional_exploration.assets.assets_dimensional_exploration import 
 from tasks.dimensional_exploration.policy import (
     RunProgress, choose_offer, node_priority, normalize,
 )
-from tasks.dimensional_exploration.event import EventMemory, decide_event, event_branch, match_event, pending_event
-from tasks.dimensional_exploration.health import EventHealthMixin
-from tasks.dimensional_exploration.rest import RestMixin
-from tasks.dimensional_exploration.starting_strategy import StartingStrategyMixin
-from tasks.dimensional_exploration.recruitment import HeroCosts, RecruitmentMixin
-from tasks.dimensional_exploration.upgrade import UpgradeMixin
-from tasks.dimensional_exploration.sacrifice import SacrificeMixin
-from tasks.dimensional_exploration.sampling import EventSampler, choose_sample, sampling_balances, text_key
-from tasks.dimensional_exploration.vision import ExplorationVision, match_in
+from tasks.dimensional_exploration.events.event import EventMemory, decide_event, event_branch, match_event, pending_event
+from tasks.dimensional_exploration.events.health import EventHealthMixin
+from tasks.dimensional_exploration.events.introduction import EventIntroductionMixin
+from tasks.dimensional_exploration.rooms.rest import RestMixin
+from tasks.dimensional_exploration.rooms.starting_strategy import StartingStrategyMixin
+from tasks.dimensional_exploration.heroes.recruitment import HeroCosts, RecruitmentMixin
+from tasks.dimensional_exploration.heroes.upgrade import UpgradeMixin
+from tasks.dimensional_exploration.events.sacrifice import SacrificeMixin
+from tasks.dimensional_exploration.events.sampling import EventSampler, choose_sample, sampling_balances, text_key
+from tasks.dimensional_exploration.recognition.vision import ExplorationVision, match_in
+from tasks.dimensional_exploration.recognition.hero_names import HeroNameOcr
 from tasks.dungeon.assets.assets_dungeon_action import AUTO_COMBAT
 from tasks.dungeon.assets.assets_dungeon_state import (
     AUTO_COMBAT_EXIST, COMBAT_RESULT_CLEAR,
 )
 
 
-class DimensionalExploration(StartingStrategyMixin, RestMixin, EventHealthMixin, UpgradeMixin, SacrificeMixin, RecruitmentMixin, UI):
+class DimensionalExploration(StartingStrategyMixin, RestMixin, EventHealthMixin, EventIntroductionMixin, UpgradeMixin, SacrificeMixin, RecruitmentMixin, UI):
     def __init__(self, config, device=None, task=None):
         super().__init__(config, device=device, task=task)
         self._last_state = None
+        self._hero_name_ocr = HeroNameOcr()
         self._observed_state = None
         self._analysis_state = None
         self._analysis_timer = Timer(1)
@@ -154,14 +157,31 @@ class DimensionalExploration(StartingStrategyMixin, RestMixin, EventHealthMixin,
         self.validate_upgrade_priority()
         self.target = int(self.config.DimensionalExploration_RunCount)
         if not 1 <= self.target <= 999:
-            raise RequestHumanTakeover("探查轮数应在1至999之间。")
+            raise RequestHumanTakeover("Exploration run count must be between 1 and 999.")
         session = self.config.DimensionalExplorationRuntime_Session
-        if session.get("finished"):
-            session = {}
-        self.progress = RunProgress(
-            int(session.get("completed", 0)), bool(session.get("settlement_seen", False)),
-            int(session.get("starlight_total", 0)), session.get("last_starlight"),
-        )
+        completed = int(session.get("completed", 0))
+        previous_target = int(session.get("target", self.target))
+        # The last settlement is saved before navigating home. A stop during
+        # that return can leave a reached target with finished=False; restoring
+        # its count would immediately exit at the lobby on the first Start.
+        # Use both the saved target and the requested target so raising a new
+        # target cannot revive a completed old batch, while lowering it below
+        # the saved count cannot create another immediate no-op start.
+        if session.get("finished") or completed >= min(previous_target, self.target):
+            # Reset only batch totals. The already-counted result may still be
+            # visible, even across another restart before its close succeeds.
+            # Only the loop's positive map/setup state can re-arm settlement
+            # counting; resetting this guard here would count the old result
+            # as the new batch's first run. Old recruitment belongs to the
+            # completed batch and must not suppress the next run's choices.
+            self.progress = RunProgress(settlement_seen=bool(session.get("settlement_seen", False)))
+            self.clear_recruitment()
+            logger.info(f"Starting new exploration batch: previous={completed}/{previous_target}, target={self.target}.")
+        else:
+            self.progress = RunProgress(
+                completed, bool(session.get("settlement_seen", False)),
+                int(session.get("starlight_total", 0)), session.get("last_starlight"),
+            )
         self.save_progress()
         self.device.screenshot()
         if ExplorationVision(self.device.image).state() == "unknown":
@@ -171,7 +191,7 @@ class DimensionalExploration(StartingStrategyMixin, RestMixin, EventHealthMixin,
         self.explore()
         self.ui_goto_main()
         self.save_progress(finished=True)
-        logger.info(f"探查批次完成：{self.progress.completed}/{self.target}轮，累计星辰气息{self.progress.starlight_total}。")
+        logger.info(f"Exploration batch complete: {self.progress.completed}/{self.target} runs, total starlight {self.progress.starlight_total}.")
 
     def explore(self, skip_first_screenshot=True):
         """Keep subpages in this loop so every action is confirmed by a new frame.
@@ -187,7 +207,7 @@ class DimensionalExploration(StartingStrategyMixin, RestMixin, EventHealthMixin,
                 self.device.screenshot()
             if self.handle_network_overlay():
                 continue
-            vision = ExplorationVision(self.device.image)
+            vision = ExplorationVision(self.device.image, hero_name_ocr=self._hero_name_ocr)
             state = self.resolve_state(vision)
             if state in ("title", "lobby") and self.progress.completed >= self.target:
                 return
@@ -202,7 +222,7 @@ class DimensionalExploration(StartingStrategyMixin, RestMixin, EventHealthMixin,
             self.observe_recruitment(state, vision)
             if state == "settlement":
                 if not self.handle_settlement(vision) and self._unreadable.reached():
-                    self.require_human("整局结算分数未能识别，尚未增加轮数。")
+                    self.require_human("Settlement starlight is unreadable; run count has not been increased.")
                 continue
             if state in ("start_supply", "recruitment", "map") and self.progress.settlement_seen:
                 self.clear_recruitment()
@@ -239,7 +259,7 @@ class DimensionalExploration(StartingStrategyMixin, RestMixin, EventHealthMixin,
                 elif self.handle_ui_recovery():
                     self._unreadable.reset()
                 elif state not in ("battle", "unknown") and self._unreadable.reached():
-                    self.require_human(f"次元探查停留在{state}，未识别到可确认的操作。")
+                    self.require_human(f"Exploration stalled in {state}; no verified action is available.")
                 continue
             if self.handle_entry(vision):
                 continue
@@ -309,7 +329,7 @@ class DimensionalExploration(StartingStrategyMixin, RestMixin, EventHealthMixin,
         if self.appear(EXPLORATION_ENTRY):
             return self.click_action(EXPLORATION_ENTRY)
         if self._entry_swipes >= 4:
-            self.require_human("普通战斗入口中未找到次元探查，请补充入口截图。")
+            self.require_human("Exploration entry was not found in normal battle; an entry screenshot is required.")
         if self.action_ready():
             self.device.swipe((370, 356), (1020, 356), name="FindDimensionalExploration")
             self._entry_swipes += 1
@@ -363,12 +383,12 @@ class DimensionalExploration(StartingStrategyMixin, RestMixin, EventHealthMixin,
         # Opening a preview pans the map. Re-read arrows from the new frame;
         # coordinates from the map before the click are never reused here.
         if self._node_selected:
-            title = normalize(vision.text(OCR_PREVIEW_TITLE))
-            expected = {
-                "event": "事件", "shop": "商店", "supply": "补给", "rest": "休整",
-                "battle": "一般战斗", "elite": "精英战斗", "boss": "首领战斗",
-            }[self._node_kind]
-            if title == expected:
+            kind = vision.preview_kind()
+            # All captured titles use templates. The shop preview has no
+            # supplied source yet; preserve its verified OCR path explicitly.
+            if kind is None and self._node_kind == "shop":
+                kind = "shop" if normalize(vision.text(OCR_PREVIEW_TITLE)) == "商店" else None
+            if kind is not None and kind == self._node_kind:
                 return self.click_action(NODE_ENTER)
         return self.handle_map(vision)
 
@@ -376,6 +396,9 @@ class DimensionalExploration(StartingStrategyMixin, RestMixin, EventHealthMixin,
         self.observe_event("event", vision)
         if self.appear(EVENT_NEXT):
             return self.click_action(EVENT_NEXT)
+        introduction = self.event_introduction_button(vision)
+        if introduction is not None:
+            return self.click_action(introduction)
         resources = vision.resources()
         if resources is None:
             return False
@@ -392,7 +415,7 @@ class DimensionalExploration(StartingStrategyMixin, RestMixin, EventHealthMixin,
         if deferred is None and matched is not None and matched[0].decision_pending:
             deferred = matched[0]
         if deferred is not None:
-            reason = f"{deferred.name}的事件策略留空，等待决定：{deferred.review}"
+            reason = f"Event policy is pending: {deferred.event_id}."
             if self.sampler is not None:
                 self.sampler.before(vision.image, story, observed, balances, None, "catalog", reason)
             self.require_human(reason)
@@ -401,7 +424,7 @@ class DimensionalExploration(StartingStrategyMixin, RestMixin, EventHealthMixin,
                 if self.event_memory.pending and not self.event_memory.advanced:
                     return False
                 return self.handle_event_sample(vision, choices, story, balances)
-            self.require_human("事件或选项代价尚未覆盖，已保存截图供补充事件表。")
+            self.require_human("Event or option cost is not covered; a screenshot has been saved for the event catalog.")
         # A partial row can identify the event, but cannot establish the best
         # choice or prove that a pending option disappeared into a new stage.
         # Wait for all known options, including unavailable ones, before acting.
@@ -424,8 +447,15 @@ class DimensionalExploration(StartingStrategyMixin, RestMixin, EventHealthMixin,
                 self.save_event_history()
         decision = decide_event(observed, **balances, max_life=resources.max_life,
                                 story=story, memory=self.event_memory)
-        needs_hp = decision is not None and (decision.branch.cost.random_hp_percent or decision.branch.cost.all_hp_percent
-                                             or any(r['kind'] == 'all_hp_percent' for r in decision.branch.rewards))
+        # HP conditions can promote healing over an otherwise free fragment
+        # route. Read the roster before ranking those competing options, even
+        # when the provisional decision is None because HP is still unknown;
+        # checking only the selected branch would permanently skip healing or
+        # request manual takeover before ever opening the roster.
+        needs_hp = (any(branch.enabled and choice.available and branch.when.requires_hero_hp
+                        for choice, branch in matched[1])
+                    or decision is not None and (decision.branch.cost.random_hp_percent or decision.branch.cost.all_hp_percent
+                                                 or any(r['kind'] == 'all_hp_percent' for r in decision.branch.rewards)))
         if needs_hp:
             ready, clicked = self.inspect_event_health(vision, observed, story)
             if not ready:
@@ -435,13 +465,13 @@ class DimensionalExploration(StartingStrategyMixin, RestMixin, EventHealthMixin,
                                     story=story, memory=self.event_memory)
         if decision is None:
             if self.sampler is not None:
-                self.sampler.before(vision.image, story, observed, balances, None, "catalog", "没有可负担的选项")
-            self.require_human("事件没有符合策略且能保留最后生命体征的可用选项，已保存截图。")
+                self.sampler.before(vision.image, story, observed, balances, None, "catalog", "No affordable option")
+            self.require_human("No available event option satisfies the policy and life reserve; a screenshot has been saved.")
         selected = decision.choice
         area = next(area for c, area in choices if c.index == selected.index)
         if not self.action_ready():
             return False
-        logger.attr("ExplorationEvent", f"{decision.event.name}: {selected.text}")
+        logger.attr("ExplorationEvent", f"{decision.event.event_id}: {selected.text}")
         logger.attr("ExplorationEventReason", "First attempt at the exclusive reward" if decision.first_collectible else "Event table conditions and priority")
         logger.attr("ExplorationEventCost", vars(decision.branch.cost))
         if self.sampler is not None:
@@ -469,8 +499,8 @@ class DimensionalExploration(StartingStrategyMixin, RestMixin, EventHealthMixin,
             balances['hero_hp'] = self._event_hero_hp
             selected = choose_sample(observed, balances, self.sampler.visits(story), self.sampler.pending_text(story))
         if selected is None:
-            self.sampler.before(vision.image, story, observed, balances, None, "sampling", "代价不明或资源不足")
-            self.require_human("事件采样已保存，但所有选项均存在未识别代价或资源不足，等待人工处理。")
+            self.sampler.before(vision.image, story, observed, balances, None, "sampling", "Unknown cost or insufficient resources")
+            self.require_human("Event sample saved; every option has an unknown cost or insufficient resources. Manual action is required.")
         if not self.action_ready():
             return False
         self.sampler.before(vision.image, story, observed, balances, selected.choice, "sampling", selected.reason)
@@ -518,7 +548,7 @@ class DimensionalExploration(StartingStrategyMixin, RestMixin, EventHealthMixin,
             region = OCR_RESUME_REWARDS if state == "resume_rewards" else OCR_BATTLE_REWARDS
             text = "".join(t.ocr_text for t in vision.tokens(region))
         if state == "sacrifice":
-            text = f"选择计数：{vision.sacrifice_counter()}"
+            text = f"Selected items: {vision.sacrifice_counter()}"
         if state not in self.sampler.END_STATES and any(
                 f["state"] == state and normalize(f["text"]) == normalize(text) for f in frames):
             return
@@ -555,7 +585,7 @@ class DimensionalExploration(StartingStrategyMixin, RestMixin, EventHealthMixin,
             self._shop_offers = [replace(o, sold=True) if o.index == index else o for o in self._shop_offers]
             self._purchase_confirmed = False
             self._pending_offer = None
-            self.record_progress("商店付款已由碎片余额变化确认")
+            self.record_progress("Shop payment confirmed by the fragment balance change")
         offer = choose_offer(self._shop_offers, resources.fragments, resources.life, resources.max_life,
                              cores=resources.cores)
         if offer is None:
@@ -580,7 +610,7 @@ class DimensionalExploration(StartingStrategyMixin, RestMixin, EventHealthMixin,
         price = vision.number(OCR_BUY_PRICE)
         expected = self._pending_offer
         if name != normalize(expected.name) or price != expected.price or not self.appear(BUY_CURRENCY):
-            self.require_human("商店确认框与已选商品不一致，已停止购买。")
+            self.require_human("Shop confirmation does not match the selected offer; purchase stopped.")
         if self.click_action(BUY_CONFIRM):
             self._purchase_confirmed = True
             return True
@@ -673,12 +703,12 @@ class DimensionalExploration(StartingStrategyMixin, RestMixin, EventHealthMixin,
 
     def handle_settlement(self, vision):
         if self.appear(SETTLEMENT_EMPTY):
-            self.require_human("本轮未进行探查，未计入刷取轮数。")
+            self.require_human("This run did not enter exploration and has not been counted.")
         starlight = vision.number(OCR_SETTLEMENT_STARLIGHT)
         if starlight is None:
             return False
         if self.progress.settle(rewarded=True, starlight=starlight):
             self.save_progress()
-            logger.info(f"探查结算：星辰气息+{starlight}，本批累计{self.progress.starlight_total}，"
-                        f"已完成{self.progress.completed}/{self.target}轮。")
+            logger.info(f"Exploration settlement: starlight +{starlight}, batch total {self.progress.starlight_total}, "
+                        f"completed {self.progress.completed}/{self.target} runs.")
         return self.click_action(SETTLEMENT_CLOSE)

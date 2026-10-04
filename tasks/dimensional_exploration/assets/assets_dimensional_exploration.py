@@ -542,18 +542,6 @@ LOOT_CHECK = ButtonWrapper(
     ),
     global_en=None,
 )
-LOOT_SELECTED = ButtonWrapper(
-    name='LOOT_SELECTED',
-    cn=None,
-    global_cn=Button(
-        file='./assets/global_cn/dimensional_exploration/LOOT_SELECTED.png',
-        area=(839, 99, 848, 223),
-        search=(190, 91, 1090, 232),
-        color=(103, 87, 49),
-        button=(839, 99, 848, 223),
-    ),
-    global_en=None,
-)
 MANUAL_TARGET = ButtonWrapper(
     name='MANUAL_TARGET',
     cn=None,
@@ -770,18 +758,6 @@ OCR_DICE = ButtonWrapper(
     ),
     global_en=None,
 )
-OCR_ENTRY = ButtonWrapper(
-    name='OCR_ENTRY',
-    cn=None,
-    global_cn=Button(
-        file='./assets/global_cn/dimensional_exploration/OCR_ENTRY.png',
-        area=(22, 90, 1248, 609),
-        search=(2, 70, 1268, 629),
-        color=(90, 94, 80),
-        button=(22, 90, 1248, 609),
-    ),
-    global_en=None,
-)
 OCR_EVENT_LOOT = ButtonWrapper(
     name='OCR_EVENT_LOOT',
     cn=None,
@@ -942,18 +918,6 @@ OCR_LOOT_EFFECT = ButtonWrapper(
     ],
     global_en=None,
 )
-OCR_OPTIONS = ButtonWrapper(
-    name='OCR_OPTIONS',
-    cn=None,
-    global_cn=Button(
-        file='./assets/global_cn/dimensional_exploration/OCR_OPTIONS.png',
-        area=(74, 546, 1204, 693),
-        search=(54, 526, 1224, 713),
-        color=(48, 44, 71),
-        button=(74, 546, 1204, 693),
-    ),
-    global_en=None,
-)
 OCR_PREVIEW_TITLE = ButtonWrapper(
     name='OCR_PREVIEW_TITLE',
     cn=None,
@@ -975,18 +939,6 @@ OCR_QUOTA = ButtonWrapper(
         search=(1140, 0, 1247, 71),
         color=(57, 62, 82),
         button=(1160, 17, 1227, 51),
-    ),
-    global_en=None,
-)
-OCR_RESOURCES = ButtonWrapper(
-    name='OCR_RESOURCES',
-    cn=None,
-    global_cn=Button(
-        file='./assets/global_cn/dimensional_exploration/OCR_RESOURCES.png',
-        area=(782, 13, 1234, 55),
-        search=(762, 0, 1254, 75),
-        color=(39, 44, 56),
-        button=(782, 13, 1234, 55),
     ),
     global_en=None,
 )
@@ -1071,18 +1023,6 @@ OCR_SELECTED_HERO = ButtonWrapper(
         search=(30, 58, 326, 132),
         color=(83, 93, 140),
         button=(50, 78, 306, 112),
-    ),
-    global_en=None,
-)
-OCR_SETTLEMENT_SCORE = ButtonWrapper(
-    name='OCR_SETTLEMENT_SCORE',
-    cn=None,
-    global_cn=Button(
-        file='./assets/global_cn/dimensional_exploration/OCR_SETTLEMENT_SCORE.png',
-        area=(170, 590, 472, 670),
-        search=(150, 570, 492, 690),
-        color=(107, 94, 134),
-        button=(170, 590, 472, 670),
     ),
     global_en=None,
 )
@@ -1321,41 +1261,6 @@ PREPARE_CHECK = ButtonWrapper(
         color=(120, 130, 174),
         button=(112, 135, 253, 163),
     ),
-    global_en=None,
-)
-PREVIEW_CHECK = ButtonWrapper(
-    name='PREVIEW_CHECK',
-    cn=None,
-    global_cn=[
-        Button(
-            file='./assets/global_cn/dimensional_exploration/PREVIEW_CHECK.png',
-            area=(945, 102, 1023, 124),
-            search=(925, 82, 1043, 144),
-            color=(77, 76, 84),
-            button=(945, 102, 1023, 124),
-        ),
-        Button(
-            file='./assets/global_cn/dimensional_exploration/PREVIEW_CHECK.2.png',
-            area=(945, 102, 1023, 124),
-            search=(925, 82, 1043, 144),
-            color=(70, 68, 78),
-            button=(945, 102, 1023, 124),
-        ),
-        Button(
-            file='./assets/global_cn/dimensional_exploration/PREVIEW_CHECK.3.png',
-            area=(945, 102, 1023, 124),
-            search=(925, 82, 1043, 144),
-            color=(59, 57, 68),
-            button=(945, 102, 1023, 124),
-        ),
-        Button(
-            file='./assets/global_cn/dimensional_exploration/PREVIEW_CHECK.4.png',
-            area=(945, 102, 1000, 124),
-            search=(925, 82, 1020, 144),
-            color=(66, 64, 74),
-            button=(945, 102, 1000, 124),
-        ),
-    ],
     global_en=None,
 )
 RECRUITMENT_CHECK = ButtonWrapper(
@@ -1823,18 +1728,6 @@ SHOP_OFFER = ButtonWrapper(
             button=(980, 535, 1129, 575),
         ),
     ],
-    global_en=None,
-)
-SHOP_SOLD = ButtonWrapper(
-    name='SHOP_SOLD',
-    cn=None,
-    global_cn=Button(
-        file='./assets/global_cn/dimensional_exploration/SHOP_SOLD.png',
-        area=(1015, 544, 1091, 567),
-        search=(393, 280, 1140, 580),
-        color=(89, 77, 103),
-        button=(1015, 544, 1091, 567),
-    ),
     global_en=None,
 )
 SUPPLY_BAGGAGE = ButtonWrapper(
