@@ -12,6 +12,7 @@ from tasks.dungeon.burnout import CombatBurnoutMixin
 from tasks.dungeon.episode import EpisodeNavigateMixin
 from tasks.dungeon.entry import CombatEntryMixin
 from tasks.dungeon.execute import CombatExecuteMixin
+from tasks.dungeon.hunt import HuntNavigateMixin
 from tasks.dungeon.plan import COMBAT_PLANS, HUNT_PLAN
 from tasks.dungeon.prepare import CombatPrepare
 from tasks.dungeon.repeat import CombatRepeatMixin
@@ -31,6 +32,7 @@ class Combat(
     CombatRuntimeMixin,
     CombatExecuteMixin,
     CombatEntryMixin,
+    HuntNavigateMixin,
     EpisodeNavigateMixin,
     SideStoryNavigateMixin,
     UrgentTasksNavigateMixin,
@@ -98,6 +100,8 @@ class Combat(
         )
 
     def _combat_element(self) -> str:
+        if self._dungeon_domain() == "Hunt":
+            return self._hunt_element()
         target = getattr(self, "_rune_balance_target", None)
         if self._rune_balance_enabled() and target is not None:
             return target.element
@@ -116,6 +120,8 @@ class Combat(
             if self._rune_balance_enabled() and target is not None:
                 return target.grade
             return getattr(self.config, "Combat_AltarGrade", "Hell")
+        if domain == "Hunt" and self._hunt_boss() == "Ogre":
+            return "Dimensional"
         return getattr(self.config, "Combat_HuntGrade", "Hell")
 
     def _combat_fast_enabled(self) -> bool:
@@ -494,6 +500,8 @@ class Combat(
 
         logger.attr("CombatDomain", domain)
         logger.attr("CombatElement", self._combat_element())
+        if domain == "Hunt":
+            logger.attr("CombatHuntBoss", self._hunt_boss())
         logger.attr("CombatGrade", self._combat_grade())
         logger.attr("CombatFastCombatSupported", self._combat_supports_fast_combat())
         logger.attr("CombatFastCombatAllowed", fast_combat_allowed)
@@ -503,7 +511,7 @@ class Combat(
             logger.attr(
                 "CombatRepeatCombatLeifCount",
                 "stamina // 80"
-                if self._combat_burnout_enabled()
+                if self._combat_burnout_enabled() and self._repeat_leif_step() == 1
                 else self._repeat_combat_leif_count(),
             )
             logger.attr(

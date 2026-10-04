@@ -109,12 +109,13 @@ def plan_server_repeat_counter_action(
     current: int,
     target: int,
     maximum: int,
+    step: int = 1,
 ) -> str:
     """Choose the counter route requiring the fewest clicks."""
     costs = {
-        "adjust": abs(target - current),
-        "minimum": 1 + target - 1,
-        "maximum": 1 + maximum - target,
+        "adjust": abs(target - current) // step,
+        "minimum": 1 + (target - step) // step,
+        "maximum": 1 + (maximum - target) // step,
     }
     return min(costs, key=costs.get)
 
@@ -156,17 +157,28 @@ class CombatRepeatMixin:
     def _uses_server_repeat_combat(self) -> bool:
         return server.lang in ("cn", "global_cn")
 
+    def _repeat_leif_step(self) -> int:
+        if self._dungeon_domain() == "Hunt" and self._combat_grade() == "Dimensional":
+            return 2
+        return 1
+
     def _repeat_combat_leif_count(self) -> int:
         value = getattr(self.config, "Combat_RepeatCombatLeifCount", 1)
-        return self._sanitize_combat_count(
+        count = self._sanitize_combat_count(
             value,
             default=1,
             max_value=50,
             name="RepeatCombatLeifCount",
         )
+        step = self._repeat_leif_step()
+        # The configured value is a Leif budget, not a count of button clicks.
+        # Dimensional Hunt starts at two and each +/-1 click changes it by two.
+        # Honor the agreed minimum of two, but round larger odd budgets down
+        # so a partial run never adds an unrequested pair of Leifs.
+        return max(count, step) // step * step
 
     def _repeat_prioritize_stamina(self) -> bool:
-        if self._uses_server_repeat_combat() and self._combat_burnout_enabled():
+        if self._uses_server_repeat_combat() and self._combat_burnout_enabled() and self._repeat_leif_step() == 1:
             return True
         return bool(getattr(self.config, "Combat_RepeatCombatPrioritizeStamina", True))
 
@@ -176,16 +188,20 @@ class CombatRepeatMixin:
         return "owned stamina"
 
     def _server_repeat_target_leif_count(self, stamina: int | None) -> int:
-        if self._combat_burnout_enabled() and stamina is not None:
+        if self._combat_burnout_enabled() and self._repeat_leif_step() == 1 and stamina is not None:
             return calculate_server_repeat_leif_count(stamina)
         return self._repeat_combat_leif_count()
 
-    @staticmethod
     def _server_repeat_stamina_budget(
+        self,
         stamina: int,
         leif_count: int,
         prioritize_stamina: bool,
     ) -> tuple[int, int]:
+        # Dimensional batches consume spectral cores / Leifs. Their Leif
+        # count must never reserve ordinary stamina using the 80-point rate.
+        if self._repeat_leif_step() == 2:
+            return 0, max(int(stamina), 0)
         return calculate_server_repeat_stamina_budget(
             stamina,
             leif_count,
@@ -373,10 +389,15 @@ class CombatRepeatMixin:
 
     def _ensure_repeat_leif_count(self, requested: int) -> bool:
         current, maximum = self._ocr_repeat_leif_counter()
-        if maximum <= 0:
+        step = self._repeat_leif_step()
+        if not step <= current <= maximum <= 50 or current % step:
             return False
 
-        target = min(max(requested, 1), maximum)
+        # Clamp in Leif units, then remove an incomplete run at the upper
+        # boundary. Never accept an odd Dimensional OCR value or translate a
+        # two-Leif difference into two clicks: that would overshoot the budget.
+        maximum = maximum // step * step
+        target = min(max(requested, step), maximum) // step * step
         if current == target:
             logger.attr("RepeatCombatLeifTarget", target)
             self._repeat_combat_prepared_leif_count = target
@@ -386,7 +407,7 @@ class CombatRepeatMixin:
         # nearer part of the counter when the current value is far away from
         # the target. Re-evaluating after every screenshot keeps this retryable
         # when a shortcut click is dropped by the emulator.
-        action = plan_server_repeat_counter_action(current, target, maximum)
+        action = plan_server_repeat_counter_action(current, target, maximum, step)
         if action == "minimum":
             if self.appear_then_click(REPEAT_COMBAT_TIMES_MINIMUM, interval=1):
                 logger.info(
@@ -404,7 +425,7 @@ class CombatRepeatMixin:
         button = REPEAT_COMBAT_TIMES_PLUS if diff > 0 else REPEAT_COMBAT_TIMES_MINUS
         if self.appear(button) and self.interval_is_reached(button, interval=0.8):
             logger.info(f"Combat: adjust repeat leif count {current}->{target}")
-            self.device.multi_click(button, n=abs(diff), interval=(0.2, 0.3))
+            self.device.multi_click(button, n=abs(diff) // step, interval=(0.2, 0.3))
             self.interval_reset(button, interval=0.8)
         return False
 

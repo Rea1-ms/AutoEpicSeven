@@ -85,7 +85,6 @@ class FixedCountConfig:
     Combat_HuntGrade = "Hell"
     Combat_FastCombat = True
     Combat_FastCombatCount = 10
-    Combat_RepeatCombatCount = 10
     Combat_BurnoutMode = "Daily"
     task = SimpleNamespace(command="Combat")
 

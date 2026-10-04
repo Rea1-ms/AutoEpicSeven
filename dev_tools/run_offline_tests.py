@@ -64,6 +64,8 @@ ACTIVITY_MODULES = (
     "tests.activity.test_free_gacha_20",
 )
 COMBAT_MODULES = (
+    "tests.combat.test_hunt_boss",
+    "tests.combat.test_repeat_leif_count",
     "tests.combat.test_combat_entry_search",
     "tests.combat.test_repeat_running_detail",
     "tests.combat.test_episode",

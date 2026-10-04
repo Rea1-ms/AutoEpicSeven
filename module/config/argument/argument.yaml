@@ -201,6 +201,9 @@ Combat:
   Element:
     value: Water
     option: [ Dark, Light, Water, Fire, Nature ]
+  HuntBoss:
+    value: Wyvern
+    option: [ Wyvern, Golem, Banshee, Azimanak, Caides, Ogre ]
   AltarGrade:
     value: Hell
     option: [ Pri, Mid, High, Hell ]
@@ -233,7 +236,6 @@ Combat:
     value: Daily
     option: [ Daily, Burnout ]
   FastCombatCount: 10
-  RepeatCombatCount: 5
   RepeatCombatLeifCount: 1
   RepeatCombatPrioritizeStamina: true
   RepeatCombatGearMode:

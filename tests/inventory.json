@@ -1000,7 +1000,7 @@
           "reason": "原顶层断言改为独立用例；当前工作树与模拟输入",
           "historical_source": "test/test_burnout.py",
           "historical_line": 380,
-          "migrated_to": "tests.combat.test_burnout.ManualChecks.test_combat_burnout_hides_repeat_count"
+          "migrated_to": "tests.combat.test_burnout.ManualChecks.test_combat_burnout_removes_repeat_count"
         },
         {
           "id": "test.test_burnout.ManualChecks.test_combat_burnout_keeps_fast_count",
@@ -17886,7 +17886,7 @@
           "input_kind": "mock_or_rule"
         },
         {
-          "id": "tests.combat.test_burnout.ManualChecks.test_combat_burnout_hides_repeat_count",
+          "id": "tests.combat.test_burnout.ManualChecks.test_combat_burnout_removes_repeat_count",
           "category": "规则测试",
           "requires_device": false,
           "has_automatic_assertion": true,
@@ -19880,6 +19880,321 @@
           "fixtures": [],
           "status": "已纳入",
           "reason": "真实界面保存入口：成功提示、配置重读、空值恢复默认及非法批数不写入；使用独立合成配置"
+        }
+      ]
+    },
+    {
+      "source": "tests/combat/test_hunt_boss.py",
+      "business": "讨伐",
+      "status": "已纳入",
+      "reason": "共享属性图标冲突改为立绘识别，并支持仅异界的食人魔",
+      "cases": [
+        {
+          "id": "tests.combat.test_hunt_boss.HuntBossTests.test_shared_dark_icon_never_confirms_azimanak_from_selected_ogre",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/shared/hunt_boss/MuMu-20261003-175150-414.png"
+          ],
+          "status": "已纳入",
+          "reason": "新增讨伐立绘、同卡选中状态与食人魔异界回归"
+        },
+        {
+          "id": "tests.combat.test_hunt_boss.HuntBossTests.test_all_six_portraits_match_only_their_visible_cards",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/shared/hunt_boss/MuMu-20261003-175150-414.png",
+            "tests/fixtures/historical/shared/hunt_boss/MuMu-20261003-175236-705.png"
+          ],
+          "status": "已纳入",
+          "reason": "新增讨伐立绘、同卡选中状态与食人魔异界回归"
+        },
+        {
+          "id": "tests.combat.test_hunt_boss.HuntBossTests.test_text_changes_and_assets_languages_do_not_change_portrait_selection",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/shared/hunt_boss/MuMu-20261003-175150-414.png"
+          ],
+          "status": "已纳入",
+          "reason": "新增讨伐立绘、同卡选中状态与食人魔异界回归"
+        },
+        {
+          "id": "tests.combat.test_hunt_boss.HuntBossTests.test_selection_border_belongs_to_the_matched_card",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/shared/hunt_boss/MuMu-20261003-175150-414.png"
+          ],
+          "status": "已纳入",
+          "reason": "新增讨伐立绘、同卡选中状态与食人魔异界回归"
+        },
+        {
+          "id": "tests.combat.test_hunt_boss.HuntBossTests.test_missing_portrait_never_reuses_a_previous_selected_offset",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/shared/hunt_boss/MuMu-20261003-175150-414.png",
+            "tests/fixtures/historical/shared/hunt_boss/MuMu-20261003-175236-705.png"
+          ],
+          "status": "已纳入",
+          "reason": "新增讨伐立绘、同卡选中状态与食人魔异界回归"
+        },
+        {
+          "id": "tests.combat.test_hunt_boss.HuntBossTests.test_already_selected_target_exits_without_clicking",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/shared/hunt_boss/MuMu-20261003-175150-414.png"
+          ],
+          "status": "已纳入",
+          "reason": "新增讨伐立绘、同卡选中状态与食人魔异界回归"
+        },
+        {
+          "id": "tests.combat.test_hunt_boss.HuntBossTests.test_dropped_click_retries_correct_card_until_positive_selection",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/shared/hunt_boss/MuMu-20261003-175150-414.png"
+          ],
+          "status": "已纳入",
+          "reason": "新增讨伐立绘、同卡选中状态与食人魔异界回归"
+        },
+        {
+          "id": "tests.combat.test_hunt_boss.HuntBossTests.test_list_scrolls_back_up_to_a_target_above_current_view",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/shared/hunt_boss/MuMu-20261003-175150-414.png",
+            "tests/fixtures/historical/shared/hunt_boss/MuMu-20261003-175236-705.png"
+          ],
+          "status": "已纳入",
+          "reason": "新增讨伐立绘、同卡选中状态与食人魔异界回归"
+        },
+        {
+          "id": "tests.combat.test_hunt_boss.HuntBossTests.test_list_scrolls_down_to_ogre_below_current_view",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/shared/hunt_boss/MuMu-20261003-175150-414.png",
+            "tests/fixtures/historical/shared/hunt_boss/MuMu-20261003-175236-705.png"
+          ],
+          "status": "已纳入",
+          "reason": "新增讨伐立绘、同卡选中状态与食人魔异界回归"
+        },
+        {
+          "id": "tests.combat.test_hunt_boss.HuntBossTests.test_missing_target_stops_at_scroll_limit_without_clicking",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "新增讨伐立绘、同卡选中状态与食人魔异界回归"
+        },
+        {
+          "id": "tests.combat.test_hunt_boss.HuntBossTests.test_default_wyvern_and_named_targets_ignore_altar_element",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/shared/hunt_boss/MuMu-20261003-175150-414.png"
+          ],
+          "status": "已纳入",
+          "reason": "默认双足飞龙，讨伐目标不受祭坛属性配置影响"
+        },
+        {
+          "id": "tests.combat.test_hunt_boss.HuntBossTests.test_ogre_uses_only_dimensional_grade_and_disables_fast_combat",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/shared/hunt_boss/MuMu-20261003-175150-414.png"
+          ],
+          "status": "已纳入",
+          "reason": "新增讨伐立绘、同卡选中状态与食人魔异界回归"
+        },
+        {
+          "id": "tests.combat.test_hunt_boss.HuntBossTests.test_ogre_clicks_its_top_dimensional_entry_until_prepare_page",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/shared/hunt_boss/MuMu-20261003-175150-414.png"
+          ],
+          "status": "已纳入",
+          "reason": "新增讨伐立绘、同卡选中状态与食人魔异界回归"
+        },
+        {
+          "id": "tests.combat.test_hunt_boss.HuntBossTests.test_hunt_options_hide_altar_controls_and_ogre_inapplicable_settings",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "新增讨伐立绘、同卡选中状态与食人魔异界回归"
+        },
+        {
+          "id": "tests.combat.test_hunt_boss.HuntBossTests.test_common_search_finds_scrolled_portrait_and_clicks_shifted_position",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/shared/hunt_boss/MuMu-20261003-175150-414.png"
+          ],
+          "status": "已纳入",
+          "reason": "公共搜索区、滚动定位和立绘点击回归"
+        },
+        {
+          "id": "tests.combat.test_hunt_boss.HuntBossTests.test_portrait_outside_common_search_never_matches_or_clicks",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/shared/hunt_boss/MuMu-20261003-175150-414.png"
+          ],
+          "status": "已纳入",
+          "reason": "公共搜索区、滚动定位和立绘点击回归"
+        },
+        {
+          "id": "tests.combat.test_hunt_boss.HuntBossTests.test_selection_border_does_not_depend_on_click_rectangle",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/shared/hunt_boss/MuMu-20261003-175150-414.png"
+          ],
+          "status": "已纳入",
+          "reason": "公共搜索区、滚动定位和立绘点击回归"
+        }
+      ]
+    },
+    {
+      "source": "tests/combat/test_repeat_leif_count.py",
+      "business": "托管战斗",
+      "status": "已纳入",
+      "reason": "异界按两片生命之叶递增，数量和预算使用正确单位",
+      "cases": [
+        {
+          "id": "tests.combat.test_repeat_leif_count.RepeatLeifTests.test_supplied_counters_and_spectral_core_resource_are_read_correctly",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/shared/repeat_leif/MuMu-20261004-224702-554.png",
+            "tests/fixtures/historical/shared/repeat_leif/MuMu-20261004-224705-176.png"
+          ],
+          "status": "已纳入",
+          "reason": "异界两片递增、奇数取整、真实计数和点击确认回归"
+        },
+        {
+          "id": "tests.combat.test_repeat_leif_count.RepeatLeifTests.test_dimensional_increase_clicks_once_then_confirms_four",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/shared/repeat_leif/MuMu-20261004-224702-554.png",
+            "tests/fixtures/historical/shared/repeat_leif/MuMu-20261004-224705-176.png"
+          ],
+          "status": "已纳入",
+          "reason": "异界两片递增、奇数取整、真实计数和点击确认回归"
+        },
+        {
+          "id": "tests.combat.test_repeat_leif_count.RepeatLeifTests.test_default_and_odd_dimensional_budgets_use_reachable_even_counts",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "异界两片递增、奇数取整、真实计数和点击确认回归"
+        },
+        {
+          "id": "tests.combat.test_repeat_leif_count.RepeatLeifTests.test_two_leif_step_applies_to_all_dimensional_hunts_only",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "异界两片递增、奇数取整、真实计数和点击确认回归"
+        },
+        {
+          "id": "tests.combat.test_repeat_leif_count.RepeatLeifTests.test_odd_request_at_minimum_confirms_two_without_clicking",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/shared/repeat_leif/MuMu-20261004-224702-554.png"
+          ],
+          "status": "已纳入",
+          "reason": "异界两片递增、奇数取整、真实计数和点击确认回归"
+        },
+        {
+          "id": "tests.combat.test_repeat_leif_count.RepeatLeifTests.test_decrease_clicks_once_and_retries_only_after_interval",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/shared/repeat_leif/MuMu-20261004-224702-554.png",
+            "tests/fixtures/historical/shared/repeat_leif/MuMu-20261004-224705-176.png"
+          ],
+          "status": "已纳入",
+          "reason": "异界两片递增、奇数取整、真实计数和点击确认回归"
+        },
+        {
+          "id": "tests.combat.test_repeat_leif_count.RepeatLeifTests.test_shortcut_costs_use_clicks_rather_than_leif_difference",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "异界两片递增、奇数取整、真实计数和点击确认回归"
+        },
+        {
+          "id": "tests.combat.test_repeat_leif_count.RepeatLeifTests.test_invalid_or_unreachable_counter_never_clicks",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "异界两片递增、奇数取整、真实计数和点击确认回归"
+        },
+        {
+          "id": "tests.combat.test_repeat_leif_count.RepeatLeifTests.test_game_cap_rounds_down_before_confirming_target",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "异界两片递增、奇数取整、真实计数和点击确认回归"
+        },
+        {
+          "id": "tests.combat.test_repeat_leif_count.RepeatLeifTests.test_dimensional_ignores_stamina_burnout_budget_and_reservation",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "异界两片递增、奇数取整、真实计数和点击确认回归"
+        },
+        {
+          "id": "tests.combat.test_repeat_leif_count.RepeatLeifTests.test_normal_combat_still_increments_one_leif_per_click",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/shared/repeat_leif/MuMu-20261004-224702-554.png"
+          ],
+          "status": "已纳入",
+          "reason": "异界两片递增、奇数取整、真实计数和点击确认回归"
         }
       ]
     }

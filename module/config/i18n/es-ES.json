@@ -539,6 +539,16 @@
       "Fire": "Fuego",
       "Nature": "Naturaleza"
     },
+    "HuntBoss": {
+      "name": "Objetivo de cacería",
+      "help": "Ogre solo admite la dificultad dimensional.",
+      "Wyvern": "Wyvern",
+      "Golem": "Golem",
+      "Banshee": "Banshee",
+      "Azimanak": "Azimanak",
+      "Caides": "Caides",
+      "Ogre": "Ogre"
+    },
     "AltarGrade": {
       "name": "Dificultad del altar",
       "help": "Dificultad usada en Altar Espiritual.",
@@ -581,11 +591,11 @@
     },
     "FastCombat": {
       "name": "Usar combate rápido",
-      "help": "En el nuevo flujo global, inicia primero el combate delegado en segundo plano y usa solo la energía no reservada en combate rápido. El servidor chino mantiene el orden anterior."
+      "help": "Al activarlo, inicia primero el combate delegado en segundo plano y luego usa la energía restante no reservada para el combate rápido."
     },
     "BurnoutMode": {
       "name": "Modo de ejecución",
-      "help": "En el nuevo flujo global, Agotamiento convierte cada 80 de energía completos en una unidad delegada, fuerza la prioridad de energía disponible y deja el resto al combate rápido. Tras liquidar, programa la recuperación hasta 80. La caza Dimensional no es compatible.",
+      "help": "Agotamiento convierte cada 80 de energía en una unidad de combate delegado, da prioridad a la energía disponible y usa el resto para el combate rápido. Al terminar el combate delegado, programa la siguiente ejecución cuando la energía se recupere hasta 80. La cacería dimensional no admite Agotamiento.",
       "Daily": "Cantidad fija diaria",
       "Burnout": "Modo de agotamiento"
     },
@@ -593,13 +603,9 @@
       "name": "Cantidad de combate rapido",
       "help": "Cantidad objetivo de combate rapido."
     },
-    "RepeatCombatCount": {
-      "name": "Cantidad de combate repetido",
-      "help": "Cantidad del sistema antiguo del servidor chino. El nuevo sistema global ignora esta opción."
-    },
     "RepeatCombatLeifCount": {
       "name": "Hojas de vida a gastar",
-      "help": "Hojas de vida que puede gastar el modo diario global, de 1 a 50. Agotamiento calcula el valor desde la energía actual."
+      "help": "Cantidad de hojas de vida que se permite gastar. Agotamiento la calcula automáticamente a partir de la energía actual. La cacería dimensional consume 2 hojas por combate. Se usan al menos 2; los valores impares mayores se redondean hacia abajo al número par anterior."
     },
     "RepeatCombatPrioritizeStamina": {
       "name": "Priorizar energía / núcleos espectrales",

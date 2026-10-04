@@ -103,6 +103,7 @@ class GeneratedConfig:
     # Group `Combat`
     Combat_Domain = 'Hunt'  # Hunt, SpiritAltar, Saint37, Episode4
     Combat_Element = 'Water'  # Dark, Light, Water, Fire, Nature
+    Combat_HuntBoss = 'Wyvern'  # Wyvern, Golem, Banshee, Azimanak, Caides, Ogre
     Combat_AltarGrade = 'Hell'  # Pri, Mid, High, Hell
     Combat_AltarBalance = False
     Combat_HuntGrade = 'Hell'  # Mid, High, Hell, Dimensional
@@ -110,7 +111,6 @@ class GeneratedConfig:
     Combat_FastCombat = True
     Combat_BurnoutMode = 'Daily'  # Daily, Burnout
     Combat_FastCombatCount = 10
-    Combat_RepeatCombatCount = 5
     Combat_RepeatCombatLeifCount = 1
     Combat_RepeatCombatPrioritizeStamina = True
     Combat_RepeatCombatGearMode = 'Extract'  # Sell, Extract
