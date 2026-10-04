@@ -110,7 +110,8 @@ class EventSampler:
     """
 
     END_STATES = {"map", "failed", "settlement", "lobby", "start_supply", "recruitment"}
-    OUTCOME_STATES = END_STATES | {"reward", "loot", "prepare", "battle", "victory", "upgrade", "revive"}
+    OUTCOME_STATES = END_STATES | {"reward", "loot", "prepare", "battle", "victory", "resume_rewards", "event_options",
+                                 "upgrade", "revive"}
 
     def __init__(self, root):
         self.root = Path(root)

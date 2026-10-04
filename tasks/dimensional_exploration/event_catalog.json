@@ -10,7 +10,8 @@
       "coin": {
         "pattern": "(?:尝试向投币口投入硬币)?消耗50个次元碎片(?:有30%的几率)?获得(?:观测站)?望远镜镜片",
         "cost": {
-          "fragments": 50
+          "fragments": 50,
+          "reserve_fragments": 170
         },
         "rewards": [
           {
@@ -26,6 +27,66 @@
         "cost": {},
         "rewards": [],
         "priority": 100
+      }
+    }
+  },
+  "observatory_retry": {
+    "name": "观测站再次启动",
+    "anchors": [
+      "投入硬币后",
+      "观测装置"
+    ],
+    "source": "MuMu-20261001-140630-704.png",
+    "branches": {
+      "coin": {
+        "pattern": "投入硬币再次启动消耗70个次元碎片有60%的几率获得观测站望远镜镜片",
+        "cost": {
+          "fragments": 70,
+          "reserve_fragments": 100
+        },
+        "rewards": [
+          {
+            "kind": "loot",
+            "name": "观测站望远镜镜片",
+            "chance": 60
+          }
+        ],
+        "priority": 100
+      },
+      "leave": {
+        "pattern": "不投硬币直接离开",
+        "cost": {},
+        "rewards": [],
+        "priority": 10
+      }
+    }
+  },
+  "observatory_final": {
+    "name": "观测站观察结果",
+    "anchors": [
+      "投入硬币后",
+      "光芒变得更加强烈"
+    ],
+    "source": "MuMu-20261001-140638-153.png",
+    "branches": {
+      "coin": {
+        "pattern": "投入硬币观察结果(?:次元碎片不足)?消耗100个次元碎片有100%的几率获得观测站望远镜镜片",
+        "cost": {
+          "fragments": 100
+        },
+        "rewards": [
+          {
+            "kind": "loot",
+            "name": "观测站望远镜镜片"
+          }
+        ],
+        "priority": 100
+      },
+      "leave": {
+        "pattern": "不投硬币直接离开",
+        "cost": {},
+        "rewards": [],
+        "priority": 10
       }
     }
   },
@@ -152,7 +213,10 @@
         ],
         "priority": 100
       }
-    }
+    },
+    "sources": [
+      "MuMu-20261003-112252-000.png"
+    ]
   },
   "mimic": {
     "name": "虚弱宝箱怪",
@@ -970,7 +1034,8 @@
     ],
     "sources": [
       "89af007884659fff/20260927-162130-f6ca2ca5",
-      "89af007884659fff/20260927-182945-0be94e18"
+      "89af007884659fff/20260927-182945-0be94e18",
+      "MuMu-20261003-171834-000.png"
     ],
     "branches": {
       "offer": {
@@ -1352,7 +1417,8 @@
     ],
     "sources": [
       "de15dd28022ab56c/20260926-194131-35597094",
-      "de15dd28022ab56c/20260927-162916-70aaf26a"
+      "de15dd28022ab56c/20260927-162916-70aaf26a",
+      "MuMu-20261003-172757-000.png"
     ],
     "branches": {
       "stone": {

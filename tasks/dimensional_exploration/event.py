@@ -12,6 +12,7 @@ from tasks.dimensional_exploration.policy import EventChoice, normalize
 @dataclass(frozen=True)
 class EventCost:
     fragments: int = 0
+    reserve_fragments: int = 0
     dice: int = 0
     loot: int = 0
     life: int = 0
@@ -19,19 +20,22 @@ class EventCost:
     all_hp_percent: int = 0
     battle: int = 0
 
-    def unavailable(self, *, cores, fragments, life, loot, dice=None):
+    def unavailable(self, *, cores, fragments, life, loot, dice=None, hero_hp=None):
         if self.life and self.life >= life:
             return "保留最后一点生命体征"
-        if self.fragments and self.fragments + (50 if cores < 20 else 0) > fragments:
+        if self.fragments and self.fragments + self.reserve_fragments + (50 if cores < 20 else 0) > fragments:
             return "碎片不足或需要保留投资额度"
         if self.loot and (loot is None or self.loot > loot):
             return "战利品数量不足或未识别"
         if self.dice and (dice is None or self.dice > dice):
             return "骰子数量不足或未识别"
-        # Hero HP is a different resource from the run's death allowance. A
-        # percentage cannot be subtracted from life, or validated against it.
-        # Without individual HP readings, damage remains an explicit cost in
-        # the catalogue and low-damage repeat routes are preferred by policy.
+        # A random target is not known before clicking, so the lowest owned
+        # hero HP bounds both random and all-hero costs. The live handler reads
+        # the complete roster first; pure catalogue callers may omit HP. Never
+        # subtract a hero percentage from the run's separate death allowance.
+        damage = max(self.random_hp_percent, self.all_hp_percent)
+        if damage and hero_hp is not None and (not hero_hp or min(hero_hp) <= damage):
+            return "英雄剩余生命值不足以保留存活余量"
         return ""
 
 
@@ -179,7 +183,8 @@ class EventMemory:
         branch = event_branch(self.pending)
         if state == "reward" and branch.collectible and normalize(reward_name) == normalize(branch.collectible):
             self.obtained.add(branch.collectible)
-        if narration or state in ("reward", "loot", "prepare", "battle", "victory", "map", "failed", "settlement"):
+        if narration or state in ("reward", "loot", "prepare", "battle", "victory", "resume_rewards",
+                                  "upgrade", "revive", "map", "failed", "settlement"):
             self.visited.add(self.pending)
             self.advanced = True
         # Keep the pending branch through narration/battle: a reward may appear
@@ -222,7 +227,7 @@ def match_event(choices, story=""):
     return matches[0] if len(matches) == 1 else None
 
 
-def decide_event(choices, *, cores, fragments, life, loot, dice=None, max_life=None, story="", memory=None):
+def decide_event(choices, *, cores, fragments, life, loot, dice=None, max_life=None, hero_hp=None, story="", memory=None):
     matched = match_event(choices, story)
     if matched is None:
         return None
@@ -235,14 +240,15 @@ def decide_event(choices, *, cores, fragments, life, loot, dice=None, max_life=N
             if memory.pending == branch.key:
                 if (not branch.enabled or not choice.available
                         or branch.when.matches(fragments=fragments, life=life, max_life=max_life) is not True
-                        or branch.cost.unavailable(cores=cores, fragments=fragments, life=life, loot=loot, dice=dice)):
+                        or branch.cost.unavailable(cores=cores, fragments=fragments, life=life, loot=loot,
+                                                   dice=dice, hero_hp=hero_hp)):
                     return None
                 return EventDecision(event, branch, choice, False)
     ranked = []
     for choice, branch in paired:
         if not branch.enabled or not choice.available:
             continue
-        if branch.cost.unavailable(cores=cores, fragments=fragments, life=life, loot=loot, dice=dice):
+        if branch.cost.unavailable(cores=cores, fragments=fragments, life=life, loot=loot, dice=dice, hero_hp=hero_hp):
             continue
         eligible = branch.when.matches(fragments=fragments, life=life, max_life=max_life)
         if eligible is None:

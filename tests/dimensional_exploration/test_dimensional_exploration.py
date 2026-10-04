@@ -40,7 +40,10 @@ class PolicyTests(unittest.TestCase):
         self.assertIsNone(choose_event(pool, cores=20, fragments=0, life=1, loot=0))
         coin = [EventChoice(0, '消耗50个次元碎片，获得望远镜镜片', True), EventChoice(1, '直接离开')]
         self.assertEqual(choose_event(coin, cores=19, fragments=86, life=3, loot=0).index, 1)
-        self.assertEqual(choose_event(coin, cores=20, fragments=86, life=3, loot=0).index, 0)
+        self.assertEqual(choose_event(coin, cores=20, fragments=86, life=3, loot=0).index, 1)
+        self.assertEqual(choose_event(coin, cores=20, fragments=220, life=3, loot=0).index, 0)
+        self.assertEqual(choose_event(coin, cores=19, fragments=269, life=3, loot=0).index, 1)
+        self.assertEqual(choose_event(coin, cores=19, fragments=270, life=3, loot=0).index, 0)
         self.assertIsNone(choose_event([EventChoice(0, '消耗未知资源，获得战利品')],
                                      cores=20, fragments=999, life=3, loot=9))
 

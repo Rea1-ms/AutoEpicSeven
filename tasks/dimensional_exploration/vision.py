@@ -7,7 +7,7 @@ import cv2
 import numpy as np
 
 from module.base.button import ClickButton
-from module.base.utils import area_center, area_offset, area_limit, point_in_area
+from module.base.utils import area_center, area_offset, area_limit, point_in_area, color_bar_percentage
 from module.logger import logger
 from module.ocr.ocr import Ocr
 from tasks.dimensional_exploration.assets.assets_dimensional_exploration import (
@@ -24,6 +24,7 @@ from tasks.dimensional_exploration.assets.assets_dimensional_exploration import 
     OCR_SHOP_NAME, OCR_SHOP_PRICE, OCR_SHOP_NEW, RESUME_REWARDS_CHECK,
     NODE_TYPE_AREA, NODE_CLICK, OCR_HEROES,
     SHOP_DISCOUNT, OCR_SHOP_DISCOUNT_PRICE, EVENT_OPTION_UNAVAILABLE, REWARD_LEAVE_CHECK, MANUAL_TARGET,
+    ROSTER_CHECK, ROSTER_TITLE, ROSTER_RANK_ICON, ROSTER_HP_BAR, OCR_ROSTER_NAME, OCR_ROSTER_COUNT,
 )
 from tasks.dimensional_exploration.policy import EventChoice, Offer, normalize, parse_counter, parse_number
 from tasks.dungeon.assets.assets_dungeon_state import AUTO_COMBAT_EXIST
@@ -50,6 +51,12 @@ class Hero:
     name: str
     cost: int
     area: tuple[int, int, int, int]
+
+
+@dataclass(frozen=True)
+class HeroHealth:
+    name: str
+    percent: int
 
 
 def match_in(image, asset, area, threshold=0.85):
@@ -123,7 +130,7 @@ class ExplorationVision:
         ("buy", BUY_CHECK), ("leave_confirm", LEAVE_CONFIRM_CHECK),
         ("loot", LOOT_CHECK), ("failed", FAILED_CHECK),
         ("upgrade", UPGRADE_CHECK), ("revive", REVIVE_CHECK),
-        ("hero", HERO_PICKER_CHECK), ("prepare", PREPARE_CHECK),
+        ("hero", HERO_PICKER_CHECK), ("roster", ROSTER_CHECK), ("prepare", PREPARE_CHECK),
         ("victory", VICTORY_CHECK), ("resume_rewards", RESUME_REWARDS_CHECK), ("rest", REST_CHECK),
         ("shop", SHOP_CHECK), ("supply_room", ROOM_SUPPLY_CHECK),
         ("event", EVENT_CHECK), ("recruitment", RECRUITMENT_CHECK),
@@ -146,6 +153,8 @@ class ExplorationVision:
                 if state == "recruitment" and not EXPLORE_ENTER.match_template(self.image):
                     continue
                 if state == "resume_rewards" and not RESUME_REWARDS_CHECK.match_color(self.image, threshold=30):
+                    continue
+                if state == "roster" and not ROSTER_TITLE.match_template(self.image, similarity=0.87):
                     continue
                 return state
         if (self.auto_combat is not None or AUTO_COMBAT_EXIST.match_template(self.image)
@@ -297,6 +306,37 @@ class ExplorationVision:
 
     def selected_hero(self):
         return normalize(self.text(OCR_SELECTED_HERO))
+
+    def roster_health(self):
+        """Read owned heroes with ALAS's color-bar reader, never the death allowance."""
+        count = self.number(OCR_ROSTER_COUNT, maximum=99)
+        rectangles = multi_match(self.image, ROSTER_RANK_ICON, ROSTER_RANK_ICON.search,
+                                 threshold=0.87, distance=25)
+        if not count or len(rectangles) != count:
+            return None
+        heroes = []
+        for rectangle in rectangles:
+            tokens = self.tokens(relative_area(OCR_ROSTER_NAME, ROSTER_RANK_ICON, rectangle), name="RosterName")
+            name = normalize(tokens[0].ocr_text) if len(tokens) == 1 else ""
+            area = relative_area(ROSTER_HP_BAR, ROSTER_RANK_ICON, rectangle)
+            x1, y1, x2, y2 = area
+            pixels = self.image[y1:y2, x1:x2].astype(int)
+            green = np.max(np.abs(pixels - (139, 196, 25)), axis=2) < 45
+            # The unfilled part is translucent: portrait pixels slightly tint
+            # its dark grey. Validate that whole muted field instead of one
+            # fixed RGB triplet; black missing pixels and bright overlays fail.
+            empty = ((pixels.min(axis=2) > 15) & (pixels.max(axis=2) < 110)
+                     & (pixels.max(axis=2) - pixels.min(axis=2) < 35))
+            # A missing/occluded bar must not be interpreted as a dead hero.
+            # Require the measured field to contain the actual green/grey bar
+            # even when its green fill is zero. Incomplete rosters are retried.
+            if not name or np.mean(green | empty) < 0.85:
+                return None
+            percent = round(100 * color_bar_percentage(self.image, area, (139, 196, 25), threshold=35))
+            heroes.append(HeroHealth(name, percent))
+        if len({h.name for h in heroes}) != count:
+            return None
+        return tuple(heroes)
 
     def bright_text(self, area, minimum=18):
         area = area.area if hasattr(area, "area") else area

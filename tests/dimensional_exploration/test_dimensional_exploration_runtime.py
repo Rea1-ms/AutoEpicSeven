@@ -198,7 +198,7 @@ class RuntimeRegressions(unittest.TestCase):
     def test_disabled_catalog_and_sampling_options_are_never_selected(self):
         vision = ExplorationVision(frame('20260922-081528-636'))
         choices = [choice for choice, _ in vision.event_choices()]
-        balances = dict(cores=20, fragments=100, life=3, loot=2, dice=2)
+        balances = dict(cores=20, fragments=220, life=3, loot=2, dice=2)
         first = decide_event(choices, **balances)
         disabled = [replace(c, available=False) if c.index == first.choice.index else c for c in choices]
         self.assertNotEqual(decide_event(disabled, **balances).choice.index, first.choice.index)

@@ -26,6 +26,7 @@ from tasks.dimensional_exploration.policy import (
     RunProgress, choose_offer, node_priority, normalize, parse_number,
 )
 from tasks.dimensional_exploration.event import EventMemory, decide_event, match_event, pending_event
+from tasks.dimensional_exploration.health import EventHealthMixin
 from tasks.dimensional_exploration.recruitment import HeroCosts, RecruitmentMixin
 from tasks.dimensional_exploration.sampling import EventSampler, choose_sample, sampling_balances, text_key
 from tasks.dimensional_exploration.vision import ExplorationVision, match_in
@@ -35,7 +36,7 @@ from tasks.dungeon.assets.assets_dungeon_state import (
 )
 
 
-class DimensionalExploration(RecruitmentMixin, UI):
+class DimensionalExploration(EventHealthMixin, RecruitmentMixin, UI):
     def __init__(self, config, device=None, task=None):
         super().__init__(config, device=device, task=task)
         self._last_state = None
@@ -72,6 +73,7 @@ class DimensionalExploration(RecruitmentMixin, UI):
             logger.info(f"Exploration event sampling directory: {root}")
         self.load_recruitment()
         self.reset_hero_search()
+        self.reset_event_health()
 
     def action_ready(self):
         return self.interval_is_reached("ExplorationAction", interval=2)
@@ -180,6 +182,7 @@ class DimensionalExploration(RecruitmentMixin, UI):
                 "chapter": lambda v: self.click_action(CHAPTER_SELECT),
                 "lobby": self.handle_lobby, "start_supply": self.handle_start_supply,
                 "recruitment": self.handle_recruitment, "hero": self.handle_hero,
+                "roster": self.handle_roster,
                 "map": self.handle_map, "preview": self.handle_preview,
                 "event": self.handle_event, "shop": self.handle_shop,
                 "buy": self.handle_buy, "rest": self.handle_rest,
@@ -298,6 +301,7 @@ class DimensionalExploration(RecruitmentMixin, UI):
             return self.click_action(SUPPLY_BAGGAGE)
         return False
 
+
     def handle_recruitment(self, vision):
         if vision.bright_text(HERO_CONFIRM_ACTIVE):
             return self.click_action(EXPLORE_ENTER)
@@ -379,6 +383,15 @@ class DimensionalExploration(RecruitmentMixin, UI):
         # Wait for all known options, including unavailable ones, before acting.
         if len(matched[1]) != len(matched[0].branches):
             return False
+        # A reviewed multi-stage option set is itself the previous choice's
+        # result (e.g. a failed 30% coin reveals the 70-fragment stage). Save it
+        # before beginning the next receipt. Match branch keys, not OCR drift:
+        # a reworded old option must not complete an unconfirmed click.
+        if (self.sampler is not None and self.sampler.active and self.sampler.active['clicked']
+                and self.sampler.active['source'] == 'catalog'
+                and self.sampler.active['reason'] not in {b.key for _, b in matched[1]}):
+            self.sampler.observe('event_options', vision.image,
+                                 text="\n".join([story, *(c.text for c in observed)]), resources=balances)
         # Multi-step encounters may expose another known option set without
         # visiting a map. Only a fully recognized new set confirms advancement;
         # an unknown/partially read frame must retain the pending choice.
@@ -387,6 +400,15 @@ class DimensionalExploration(RecruitmentMixin, UI):
                 self.save_event_history()
         decision = decide_event(observed, **balances, max_life=resources.max_life,
                                 story=story, memory=self.event_memory)
+        needs_hp = decision is not None and (decision.branch.cost.random_hp_percent or decision.branch.cost.all_hp_percent
+                                             or any(r['kind'] == 'all_hp_percent' for r in decision.branch.rewards))
+        if needs_hp:
+            ready, clicked = self.inspect_event_health(vision, observed, story)
+            if not ready:
+                return clicked
+            balances['hero_hp'] = self._event_hero_hp
+            decision = decide_event(observed, **balances, max_life=resources.max_life,
+                                    story=story, memory=self.event_memory)
         if decision is None:
             if self.sampler is not None:
                 self.sampler.before(vision.image, story, observed, balances, None, "catalog", "没有可负担的选项")
@@ -416,6 +438,12 @@ class DimensionalExploration(RecruitmentMixin, UI):
         if not story or not self.sampler.stable(story, observed, balances):
             return False
         selected = choose_sample(observed, balances, self.sampler.visits(story), self.sampler.pending_text(story))
+        if selected is not None and (selected.cost.random_hp_percent or selected.cost.all_hp_percent):
+            ready, clicked = self.inspect_event_health(vision, observed, story)
+            if not ready:
+                return clicked
+            balances['hero_hp'] = self._event_hero_hp
+            selected = choose_sample(observed, balances, self.sampler.visits(story), self.sampler.pending_text(story))
         if selected is None:
             self.sampler.before(vision.image, story, observed, balances, None, "sampling", "代价不明或资源不足")
             self.require_human("事件采样已保存，但所有选项均存在未识别代价或资源不足，等待人工处理。")
@@ -439,9 +467,12 @@ class DimensionalExploration(RecruitmentMixin, UI):
 
     def observe_event(self, state, vision):
         self.observe_event_sample(state, vision)
+        narration = state == "event" and self.appear(EVENT_NEXT)
+        if narration or state in ("map", "reward", "loot", "prepare", "battle", "victory", "resume_rewards",
+                                  "upgrade", "revive", "failed", "settlement", "lobby", "start_supply", "recruitment"):
+            self.reset_event_health()
         if not self.event_memory.pending:
             return
-        narration = state == "event" and self.appear(EVENT_NEXT)
         reward_name = vision.event_reward() if state == "reward" else ""
         if self.event_memory.observe(state, narration=narration, reward_name=reward_name):
             self.save_event_history()
@@ -455,10 +486,13 @@ class DimensionalExploration(RecruitmentMixin, UI):
         frames = self.sampler.active["frames"]
         # Combat may last minutes. Save its entry once, not every screenshot;
         # only narration and reward cards need text to distinguish subpages.
-        if state not in ("event", "reward") and state not in self.sampler.END_STATES and any(
+        if state not in ("event", "reward", "resume_rewards", "victory") and state not in self.sampler.END_STATES and any(
                 f["state"] == state for f in frames):
             return
         text = vision.event_story() if narration else vision.event_reward() if state == "reward" else ""
+        if state in ("resume_rewards", "victory"):
+            region = OCR_RESUME_REWARDS if state == "resume_rewards" else OCR_BATTLE_REWARDS
+            text = "".join(t.ocr_text for t in vision.tokens(region))
         if state not in self.sampler.END_STATES and any(
                 f["state"] == state and normalize(f["text"]) == normalize(text) for f in frames):
             return
@@ -536,6 +570,7 @@ class DimensionalExploration(RecruitmentMixin, UI):
                 return self.click_action(ClickButton(button.area, name="ExplorationRestAction"))
         return False
 
+
     def handle_supply_room(self, vision):
         if match_in(self.device.image, ROOM_DONE, SUPPLY_DONE_AREA.area):
             return self.click_action(ROOM_LEAVE)
@@ -565,9 +600,13 @@ class DimensionalExploration(RecruitmentMixin, UI):
         resumed = vision.state() == "resume_rewards"
         region = OCR_RESUME_REWARDS if resumed else OCR_BATTLE_REWARDS
         tokens = vision.tokens(region)
+        # Event rank-up cards use the same reward-button row as battle cards.
+        # Claim their upgrade before Continue: skipping it opens the unclaimed
+        # reward modal, whose safe cancellation returns to this same card and
+        # otherwise creates an endless Continue -> Cancel -> Continue loop.
         for token in tokens:
             text = normalize(token.ocr_text)
-            if text == "选择战利品" or (text == "招募英雄" and not self._recruit_skipped):
+            if text in ("选择战利品", "英雄升阶") or (text == "招募英雄" and not self._recruit_skipped):
                 self._initial_recruitment = False
                 self._initial_reserved = 0
                 return self.click_action(ClickButton(token.box, name="ClaimExplorationBattleReward"))

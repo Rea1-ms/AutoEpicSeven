@@ -1,6 +1,7 @@
 """Event decisions against actual screenshots and restart/receipt regressions."""
 from dataclasses import replace
 import json
+import re
 import unittest
 from unittest.mock import Mock, patch
 
@@ -9,7 +10,7 @@ from module.exception import RequestHumanTakeover
 from tasks.dimensional_exploration.event import (
     EventCondition, EventCost, EventMemory, decide_event, event_branch, event_catalog, match_event, pending_event,
 )
-from tasks.dimensional_exploration.policy import EventChoice, RunProgress
+from tasks.dimensional_exploration.policy import EventChoice, RunProgress, normalize
 from tasks.dimensional_exploration.vision import ExplorationVision
 
 
@@ -25,7 +26,7 @@ class EventTests(unittest.TestCase):
 
     def test_all_supplied_events_have_first_and_repeat_routes(self):
         cases = [
-            ('20260922-081528-636', 'observatory.coin', 'observatory.leave'),
+            ('20260922-081528-636', 'observatory.leave', 'observatory.leave'),
             ('20260923-232331-766', 'candlestick.repair', 'candlestick.repair'),
             ('20260923-232358-161', 'garden.heal', 'garden.heal'),
             ('20260923-233133-331', 'backpack.supplies', 'backpack.remains'),
@@ -118,6 +119,9 @@ class EventTests(unittest.TestCase):
 
     def test_task_click_then_reward_and_batch_reset_preserves_history(self):
         task, vision, clicks = make_task('20260922-081528-636')
+        # The old screenshot holds only 86 fragments. Seed the explicit budget
+        # needed for this receipt test; the real 86-fragment route exits above.
+        vision.resources = Mock(return_value=replace(vision.resources(), fragments=220))
         task.action_ready = lambda: True
         self.assertTrue(task.handle_event(vision))
         self.assertFalse(task.event_memory.visited)
@@ -393,3 +397,59 @@ class ReviewedEventTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class Oct03EventReceipts(unittest.TestCase):
+    def replay_receipt(self, before_suffix, outcome_suffixes, expected_branch):
+        from tests.support.exploration import artifact_path
+        from tasks.dimensional_exploration.sampling import EventSampler, sampling_balances, text_key
+        task, vision, _ = task_for(before_suffix)
+        choices = [choice for choice, _ in vision.event_choices()]
+        matched = match_event(choices, vision.event_story())
+        self.assertIsNotNone(matched)
+        branch = event_branch(expected_branch)
+        choice = next(choice for choice in choices if re.fullmatch(branch.pattern, normalize(choice.text)))
+        task.event_memory.begin(branch)
+        task.sampler = EventSampler(artifact_path())
+        task.sampler.before(vision.image, vision.event_story(), choices, sampling_balances(vision),
+                            choice, 'catalog', branch.key)
+        task.sampler.clicked()
+        folder = task.sampler.active['folder']
+        for suffix, state in outcome_suffixes:
+            outcome = ExplorationVision(frame(suffix))
+            task.device.image = outcome.image
+            self.assertEqual(outcome.state(), state)
+            task.observe_event(state, outcome)
+            task.observe_event(state, outcome)
+        self.assertIsNone(task.sampler.active)
+        saved = json.loads((task.sampler.root / folder / 'record.json').read_text(encoding='utf-8'))
+        self.assertEqual(saved['finished'], 'map')
+        self.assertEqual(len(saved['frames']), len(outcome_suffixes))
+        self.assertIn(expected_branch, task.event_memory.visited)
+        self.assertEqual(task.sampler.visits(vision.event_story()),
+                         {text_key(choice.text): 1})
+        return task, saved
+
+    def test_backpack_loot_increase_does_not_prove_the_named_compass(self):
+        task, saved = self.replay_receipt('20261003-112252-000',
+            [('20261003-112252-001', 'event'), ('20261003-112252-002', 'map')], 'backpack.supplies')
+        self.assertEqual(saved['frames'][0]['delta']['loot'], 1)
+        self.assertEqual(saved['frames'][0]['delta']['fragments'], 0)
+        self.assertNotIn('探险家指南针', task.event_memory.obtained)
+
+    def test_mask_named_card_and_both_narration_pages_are_preserved(self):
+        task, saved = self.replay_receipt('20261003-171834-000',
+            [('20261003-171834-001', 'reward'), ('20261003-171834-002', 'event'),
+             ('20261003-171834-003', 'event'), ('20261003-171834-004', 'map')], 'broken_mask.repair')
+        self.assertIn('地下苔藓', task.event_memory.obtained)
+        self.assertEqual(saved['frames'][0]['text'], '地下苔藓')
+        self.assertEqual(saved['frames'][1]['delta']['loot'], 1)
+        self.assertNotEqual(saved['frames'][1]['text'], saved['frames'][2]['text'])
+
+    def test_prayer_is_free_experience_and_keeps_fragments(self):
+        _, saved = self.replay_receipt('20261003-172757-000',
+            [('20261003-172757-001', 'event'), ('20261003-172757-002', 'map')], 'prayer_tower.prayer')
+        branch = event_branch('prayer_tower.prayer')
+        self.assertEqual(branch.cost.fragments, 0)
+        self.assertEqual(branch.rewards, ({'kind': 'experience', 'amount': 100},))
+        self.assertTrue(all(frame['delta']['fragments'] == 0 for frame in saved['frames']))

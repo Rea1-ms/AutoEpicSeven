@@ -114,13 +114,22 @@ CHAPTER_SELECT = ButtonWrapper(
 CORE_ICON = ButtonWrapper(
     name='CORE_ICON',
     cn=None,
-    global_cn=Button(
-        file='./assets/global_cn/dimensional_exploration/CORE_ICON.png',
-        area=(828, 18, 852, 47),
-        search=(790, 10, 906, 54),
-        color=(64, 60, 68),
-        button=(828, 18, 852, 47),
-    ),
+    global_cn=[
+        Button(
+            file='./assets/global_cn/dimensional_exploration/CORE_ICON.png',
+            area=(828, 18, 852, 47),
+            search=(790, 10, 906, 54),
+            color=(64, 60, 68),
+            button=(828, 18, 852, 47),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/CORE_ICON.2.png',
+            area=(826, 18, 850, 47),
+            search=(790, 10, 906, 54),
+            color=(77, 109, 136),
+            button=(826, 18, 850, 47),
+        ),
+    ],
     global_en=None,
 )
 EVENT_CHECK = ButtonWrapper(
@@ -144,6 +153,18 @@ EVENT_DETAIL_AREA = ButtonWrapper(
         search=(55, 534, 140, 622),
         color=(38, 36, 69),
         button=(75, 554, 120, 602),
+    ),
+    global_en=None,
+)
+EVENT_HERO_ENTRY = ButtonWrapper(
+    name='EVENT_HERO_ENTRY',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/EVENT_HERO_ENTRY.png',
+        area=(42, 98, 75, 115),
+        search=(22, 78, 95, 135),
+        color=(71, 71, 71),
+        button=(7, 87, 174, 148),
     ),
     global_en=None,
 )
@@ -954,6 +975,30 @@ OCR_RESUME_REWARDS = ButtonWrapper(
     ),
     global_en=None,
 )
+OCR_ROSTER_COUNT = ButtonWrapper(
+    name='OCR_ROSTER_COUNT',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/OCR_ROSTER_COUNT.png',
+        area=(401, 663, 437, 689),
+        search=(381, 643, 457, 709),
+        color=(21, 22, 22),
+        button=(401, 663, 437, 689),
+    ),
+    global_en=None,
+)
+OCR_ROSTER_NAME = ButtonWrapper(
+    name='OCR_ROSTER_NAME',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/OCR_ROSTER_NAME.png',
+        area=(395, 94, 627, 125),
+        search=(375, 74, 647, 145),
+        color=(85, 81, 81),
+        button=(395, 94, 627, 125),
+    ),
+    global_en=None,
+)
 OCR_SELECTED_HERO = ButtonWrapper(
     name='OCR_SELECTED_HERO',
     cn=None,
@@ -1423,6 +1468,54 @@ ROOM_SUPPLY_CHECK = ButtonWrapper(
         search=(910, 275, 1069, 340),
         color=(87, 83, 107),
         button=(930, 295, 1049, 320),
+    ),
+    global_en=None,
+)
+ROSTER_CHECK = ButtonWrapper(
+    name='ROSTER_CHECK',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/ROSTER_CHECK.png',
+        area=(316, 644, 354, 678),
+        search=(296, 624, 374, 698),
+        color=(46, 46, 47),
+        button=(316, 644, 354, 678),
+    ),
+    global_en=None,
+)
+ROSTER_HP_BAR = ButtonWrapper(
+    name='ROSTER_HP_BAR',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/ROSTER_HP_BAR.png',
+        area=(430, 142, 489, 150),
+        search=(410, 122, 509, 170),
+        color=(109, 158, 37),
+        button=(430, 142, 489, 150),
+    ),
+    global_en=None,
+)
+ROSTER_RANK_ICON = ButtonWrapper(
+    name='ROSTER_RANK_ICON',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/ROSTER_RANK_ICON.png',
+        area=(360, 136, 380, 155),
+        search=(348, 85, 1278, 589),
+        color=(74, 99, 116),
+        button=(360, 136, 380, 155),
+    ),
+    global_en=None,
+)
+ROSTER_TITLE = ButtonWrapper(
+    name='ROSTER_TITLE',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/ROSTER_TITLE.png',
+        area=(66, 19, 175, 48),
+        search=(46, 0, 195, 68),
+        color=(119, 119, 120),
+        button=(66, 19, 175, 48),
     ),
     global_en=None,
 )

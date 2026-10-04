@@ -25,7 +25,8 @@
       "server": "global_cn",
       "scene": "lobby",
       "used_by": [
-        "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_page_identity_and_modal_precedence"
+        "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_page_identity_and_modal_precedence",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_main_loop_inspects_hp_and_saves_garden_outcomes_with_missed_click_frames"
       ]
     },
     "20260922-081207-157": {
@@ -72,7 +73,8 @@
         "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentPriorityRegressions.test_confirmation_requires_exact_stable_quota_and_survives_restart",
         "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentPriorityRegressions.test_unsent_confirmation_and_pending_receipt_cannot_advance_priorities",
         "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentPriorityRegressions.test_completed_list_skips_optional_recruitment_but_initial_can_fill",
-        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentPriorityRegressions.test_batch_progress_keeps_roster_but_new_run_clears_it"
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentPriorityRegressions.test_batch_progress_keeps_roster_but_new_run_clears_it",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Screenshots.test_roster_marker_does_not_match_recruitment_upgrade_or_map"
       ]
     },
     "20260922-081357-541": {
@@ -155,7 +157,8 @@
         "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_accessible_nodes_exclude_completed_and_gray_nodes",
         "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_unreadable_accessible_node_does_not_change_priority",
         "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentPriorityRegressions.test_batch_progress_keeps_roster_but_new_run_clears_it",
-        "tests.dimensional_exploration.test_dimensional_exploration_shop_new.ShopCoreRegressions.test_next_map_node_clears_previous_shop_snapshot"
+        "tests.dimensional_exploration.test_dimensional_exploration_shop_new.ShopCoreRegressions.test_next_map_node_clears_previous_shop_snapshot",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Screenshots.test_roster_marker_does_not_match_recruitment_upgrade_or_map"
       ]
     },
     "20260922-081528-636": {
@@ -173,7 +176,9 @@
         "tests.dimensional_exploration.test_dimensional_exploration_events.EventTests.test_unsent_click_is_not_persisted",
         "tests.dimensional_exploration.test_dimensional_exploration_sampling.SamplingTests.test_sampling_disabled_still_stops_on_unlisted_event",
         "tests.dimensional_exploration.test_dimensional_exploration_sampling.SamplingTests.test_unlisted_screenshot_is_sampled_after_two_reads_and_outcome_is_saved",
-        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_disabled_catalog_and_sampling_options_are_never_selected"
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_disabled_catalog_and_sampling_options_are_never_selected",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Rules.test_fragment_budget_covers_all_remaining_stages_and_investment",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Rules.test_collection_chain_spends_at_most_220_and_preserves_investment"
       ]
     },
     "20260922-081544-299": {
@@ -203,7 +208,9 @@
       "scene": "map",
       "used_by": [
         "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_accessible_nodes_exclude_completed_and_gray_nodes",
-        "tests.dimensional_exploration.test_dimensional_exploration_sampling.SamplingTests.test_unlisted_screenshot_is_sampled_after_two_reads_and_outcome_is_saved"
+        "tests.dimensional_exploration.test_dimensional_exploration_sampling.SamplingTests.test_unlisted_screenshot_is_sampled_after_two_reads_and_outcome_is_saved",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_garden_saves_two_outcome_pages_and_deduplicates_repeated_frames",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_main_loop_inspects_hp_and_saves_garden_outcomes_with_missed_click_frames"
       ]
     },
     "20260922-081603-149": {
@@ -322,7 +329,8 @@
       "server": "global_cn",
       "scene": "upgrade",
       "used_by": [
-        "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_page_identity_and_modal_precedence"
+        "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_page_identity_and_modal_precedence",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Screenshots.test_roster_marker_does_not_match_recruitment_upgrade_or_map"
       ]
     },
     "20260923-232312-127": {
@@ -452,7 +460,8 @@
       "scene": "event",
       "used_by": [
         "tests.dimensional_exploration.test_dimensional_exploration_events.EventTests.test_all_supplied_events_have_first_and_repeat_routes",
-        "tests.dimensional_exploration.test_dimensional_exploration_events.EventTests.test_magnifier_is_not_a_collection_flag_and_click_avoids_preview"
+        "tests.dimensional_exploration.test_dimensional_exploration_events.EventTests.test_magnifier_is_not_a_collection_flag_and_click_avoids_preview",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Rules.test_low_hp_uses_existing_free_fallback_without_spending_life"
       ]
     },
     "20260923-233146-181": {
@@ -831,6 +840,228 @@
         "tests.dimensional_exploration.test_dimensional_exploration_shop_new.ShopZeroBalanceRegressions.test_confirmed_purchase_waits_for_two_zero_balance_frames",
         "tests.dimensional_exploration.test_dimensional_exploration_shop_new.ShopZeroBalanceRegressions.test_unreadable_fragment_region_is_not_treated_as_zero"
       ]
+    },
+    "20261001-132524-411": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261001-132524-411.png",
+      "sha256": "82a97c83f0be7f6d71ad643570fd9d09b7487203c7682ff9876efad16c5f4544",
+      "server": "global_cn",
+      "scene": "event",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Screenshots.test_new_page_identities_and_roster_precedence",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Screenshots.test_roster_marker_does_not_match_recruitment_upgrade_or_map",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_garden_saves_two_outcome_pages_and_deduplicates_repeated_frames",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_event_checks_stable_complete_roster_before_hp_choice",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_partial_roster_waits_without_selecting_or_returning",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_positive_outcome_clears_hp_but_unknown_frame_keeps_it",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_main_loop_inspects_hp_and_saves_garden_outcomes_with_missed_click_frames"
+      ]
+    },
+    "20261001-133151-873": {
+      "path": "tests/fixtures/dimensional_exploration/recruitment/MuMu-20261001-133151-873.png",
+      "sha256": "41719c884fd408599636b246ff9090626922c961d54f9f1cf7c3ad8f8d819536",
+      "server": "global_cn",
+      "scene": "roster",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Screenshots.test_new_page_identities_and_roster_precedence",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Screenshots.test_roster_reads_all_six_names_and_native_hp_bars",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Screenshots.test_partial_roster_or_corrupt_bars_cannot_prove_hp",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_garden_saves_two_outcome_pages_and_deduplicates_repeated_frames",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_event_checks_stable_complete_roster_before_hp_choice",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_partial_roster_waits_without_selecting_or_returning",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_restart_on_roster_returns_without_recruitment_actions",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_positive_outcome_clears_hp_but_unknown_frame_keeps_it",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_roster_inspection_does_not_complete_event_sampling",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_roster_full_and_empty_bars_keep_zero_distinct_from_missing_pixels",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_main_loop_inspects_hp_and_saves_garden_outcomes_with_missed_click_frames"
+      ]
+    },
+    "20261001-133603-790": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261001-133603-790.png",
+      "sha256": "717fe8c8eb9669207977ef225b858a2bd4017cd727bf3e007958a32596846309",
+      "server": "global_cn",
+      "scene": "event",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Screenshots.test_new_page_identities_and_roster_precedence",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_garden_saves_two_outcome_pages_and_deduplicates_repeated_frames",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_positive_outcome_clears_hp_but_unknown_frame_keeps_it",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_main_loop_inspects_hp_and_saves_garden_outcomes_with_missed_click_frames"
+      ]
+    },
+    "20261001-133740-628": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261001-133740-628.png",
+      "sha256": "3d587bfe14859816a3132c84f9fb7845d857cbe5c43fcc71a2335cfb674969e7",
+      "server": "global_cn",
+      "scene": "event",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Screenshots.test_new_page_identities_and_roster_precedence",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_garden_saves_two_outcome_pages_and_deduplicates_repeated_frames",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_main_loop_inspects_hp_and_saves_garden_outcomes_with_missed_click_frames"
+      ]
+    },
+    "20261001-140630-704": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261001-140630-704.png",
+      "sha256": "c43237f027b9c4c3ff44d95a969c1d6acaa685a5aca890b0acc2468969f6bb08",
+      "server": "global_cn",
+      "scene": "event",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Screenshots.test_new_page_identities_and_roster_precedence",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Screenshots.test_observatory_followup_exact_costs_and_disabled_final_option",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Rules.test_fragment_budget_covers_all_remaining_stages_and_investment",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Rules.test_collection_chain_spends_at_most_220_and_preserves_investment",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_followup_options_complete_prior_sampling_before_next_choice"
+      ]
+    },
+    "20261001-140638-153": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261001-140638-153.png",
+      "sha256": "62a8dfbc05fe157fe76f270ed4115b0b45b0e598ecfe376a4b97170df041aa51",
+      "server": "global_cn",
+      "scene": "event",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Screenshots.test_new_page_identities_and_roster_precedence",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Screenshots.test_observatory_followup_exact_costs_and_disabled_final_option",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Rules.test_fragment_budget_covers_all_remaining_stages_and_investment",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Rules.test_collection_chain_spends_at_most_220_and_preserves_investment"
+      ]
+    },
+    "20261001-140648-336": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261001-140648-336.png",
+      "sha256": "0160340a0c2b172d6eef9fe08d2141b92ffbc7f9461e8ce4f8d115d3e6bfe3df",
+      "server": "global_cn",
+      "scene": "event",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Screenshots.test_new_page_identities_and_roster_precedence"
+      ]
+    },
+    "20261001-143340-283": {
+      "path": "tests/fixtures/dimensional_exploration/rewards/MuMu-20261001-143340-283.png",
+      "sha256": "b8c97f9cfc400a90fe2ce96fb1556398e9ed166f33f8a54469cc7156f685dce8",
+      "server": "global_cn",
+      "scene": "resume_rewards",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Screenshots.test_new_page_identities_and_roster_precedence",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_rank_reward_claim_retries_without_continuing",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_rank_reward_is_captured_and_marks_branch_visited_once"
+      ]
+    },
+    "20261001-143349-317": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261001-143349-317.png",
+      "sha256": "dde66b5e8ec32780142bccd6afa48680fa2c8e32d3311c88bb2a23842f903aa7",
+      "server": "global_cn",
+      "scene": "event",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Screenshots.test_new_page_identities_and_roster_precedence",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_rank_reward_is_captured_and_marks_branch_visited_once"
+      ]
+    },
+    "20261003-112252-000": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261003-112252-000.png",
+      "sha256": "c5b913e5a7b99ff4fd4fa74c8a7a6ff3fb2685995e0d6821708ae31c4fc9c54d",
+      "server": "global_cn",
+      "scene": "event",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.Oct03EventReceipts.test_backpack_loot_increase_does_not_prove_the_named_compass"
+      ],
+      "source_receipt": "b8d5ff5bfb8cfdbf/20261003-112252-606ef33f/before.png"
+    },
+    "20261003-112252-001": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261003-112252-001.png",
+      "sha256": "84678f3428aa30b76e111c2c784d34e3d2f3c20603c7f1e33f286f8ffca92c5e",
+      "server": "global_cn",
+      "scene": "event",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.Oct03EventReceipts.test_backpack_loot_increase_does_not_prove_the_named_compass"
+      ],
+      "source_receipt": "b8d5ff5bfb8cfdbf/20261003-112252-606ef33f/after-01-event.png"
+    },
+    "20261003-112252-002": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261003-112252-002.png",
+      "sha256": "792343904a171a48ba1c49de2f4d809fffc9d2d9c0d47c09af62fbd71154e622",
+      "server": "global_cn",
+      "scene": "map",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.Oct03EventReceipts.test_backpack_loot_increase_does_not_prove_the_named_compass"
+      ],
+      "source_receipt": "b8d5ff5bfb8cfdbf/20261003-112252-606ef33f/after-02-map.png"
+    },
+    "20261003-171834-000": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261003-171834-000.png",
+      "sha256": "f732af843adaec0338730b24bbc1ef9b258cff03221f2dfce0986c366d8c3a77",
+      "server": "global_cn",
+      "scene": "event",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.Oct03EventReceipts.test_mask_named_card_and_both_narration_pages_are_preserved"
+      ],
+      "source_receipt": "89af007884659fff/20261003-171834-33599c17/before.png"
+    },
+    "20261003-171834-001": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261003-171834-001.png",
+      "sha256": "3d0e48c1271387efe64e40df5ec77c05557e7888f387e7384f030bec477bc178",
+      "server": "global_cn",
+      "scene": "reward",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.Oct03EventReceipts.test_mask_named_card_and_both_narration_pages_are_preserved"
+      ],
+      "source_receipt": "89af007884659fff/20261003-171834-33599c17/after-01-reward.png"
+    },
+    "20261003-171834-002": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261003-171834-002.png",
+      "sha256": "5107e52429630e144de6f3d5ab8ef8ad72da7b79868795cafc36b680525cf814",
+      "server": "global_cn",
+      "scene": "event",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.Oct03EventReceipts.test_mask_named_card_and_both_narration_pages_are_preserved"
+      ],
+      "source_receipt": "89af007884659fff/20261003-171834-33599c17/after-02-event.png"
+    },
+    "20261003-171834-003": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261003-171834-003.png",
+      "sha256": "b08ceb599e328a20d5aa6061e7766a0f01008cc145228ef7959f71ac13ffd330",
+      "server": "global_cn",
+      "scene": "event",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.Oct03EventReceipts.test_mask_named_card_and_both_narration_pages_are_preserved"
+      ],
+      "source_receipt": "89af007884659fff/20261003-171834-33599c17/after-03-event.png"
+    },
+    "20261003-171834-004": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261003-171834-004.png",
+      "sha256": "045213bb95b29230e001edf48ecc5734bde7e42a160087ce8d75c722d7792b39",
+      "server": "global_cn",
+      "scene": "map",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.Oct03EventReceipts.test_mask_named_card_and_both_narration_pages_are_preserved"
+      ],
+      "source_receipt": "89af007884659fff/20261003-171834-33599c17/after-04-map.png"
+    },
+    "20261003-172757-000": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261003-172757-000.png",
+      "sha256": "7db4d4f25580514b2af93286cd14f697387203ca36be9bcd4f31da82f4b57c17",
+      "server": "global_cn",
+      "scene": "event",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.Oct03EventReceipts.test_prayer_is_free_experience_and_keeps_fragments"
+      ],
+      "source_receipt": "de15dd28022ab56c/20261003-172757-b9962b0f/before.png"
+    },
+    "20261003-172757-001": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261003-172757-001.png",
+      "sha256": "77cdd9cbe03a08d609598ab65e3331a46cfe3d721f96c2dc14cfebe87b084d4d",
+      "server": "global_cn",
+      "scene": "event",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.Oct03EventReceipts.test_prayer_is_free_experience_and_keeps_fragments"
+      ],
+      "source_receipt": "de15dd28022ab56c/20261003-172757-b9962b0f/after-01-event.png"
+    },
+    "20261003-172757-002": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261003-172757-002.png",
+      "sha256": "8297f165d06b1e8d12e5437bb83315ccc554c4765c73bb827870e9ce97101177",
+      "server": "global_cn",
+      "scene": "map",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.Oct03EventReceipts.test_prayer_is_free_experience_and_keeps_fragments"
+      ],
+      "source_receipt": "de15dd28022ab56c/20261003-172757-b9962b0f/after-02-map.png"
     }
   }
 }

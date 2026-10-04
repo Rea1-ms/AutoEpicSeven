@@ -35,6 +35,288 @@
         "尝试安抚宝箱怪。消耗1个战利品，获得1个随机战利品",
         "径直离开。"
       ]
+    },
+    {
+      "source": "MuMu-20261001-132524-411.png",
+      "story": "枯萎的庭院中还残留着小精灵的气息。废墟之间有萤火虫飞舞。",
+      "choices": [
+        "跟随发光的萤火虫。有70%的几率使1名随机英雄Rank提升1阶",
+        "清理铺满地面的枯草。120",
+        "循着精灵的气息前进。所有英雄生命值恢复20%"
+      ],
+      "selected_text": "循着精灵的气息前进。所有英雄生命值恢复20%",
+      "outcomes": [
+        {
+          "source": "MuMu-20261001-133603-790.png",
+          "state": "event",
+          "effect": "【所有英雄】生命值恢复20%",
+          "text": "循着精灵的气息前进后，出现了一处萦绕着淡淡气息的地方。稍作停留，那股气息便笼罩全身，伤口逐渐愈合。探查队充分休整了一番。"
+        },
+        {
+          "source": "MuMu-20261001-133740-628.png",
+          "state": "event",
+          "text": "徘徊在残骸间的萤火虫一只只散去，枯萎的庭院再次恢复宁静。探查队为了不惊扰残留的精灵气息，悄然退去。"
+        }
+      ]
+    },
+    {
+      "source": "MuMu-20261001-140630-704.png",
+      "story": "投入硬币后，观测装置内部有什么东西亮起了耀眼的光。",
+      "choices": [
+        "投入硬币，再次启动。消耗70个次元碎片，有60%的几率获得观测站望远镜镜片",
+        "不投硬币，直接离开。"
+      ],
+      "selected_text": "投入硬币，再次启动。消耗70个次元碎片，有60%的几率获得观测站望远镜镜片",
+      "outcomes": [
+        {
+          "source": "MuMu-20261001-140638-153.png",
+          "state": "event_options",
+          "text": "投入硬币后，装置内部的光芒变得更加强烈。",
+          "effect": "可惜未能成功。",
+          "fragments_before": 111,
+          "fragments_after": 41,
+          "next_cost": 100,
+          "next_available": false
+        }
+      ]
+    },
+    {
+      "source": "MuMu-20261001-140638-153.png",
+      "story": "投入硬币后，装置内部的光芒变得更加强烈。",
+      "choices": [
+        "投入硬币，观察结果。次元碎片不足消耗100个次元碎片，有100%的几率获得观测站望远镜镜片",
+        "不投硬币，直接离开。"
+      ],
+      "selected_text": "不投硬币，直接离开。",
+      "outcomes": [
+        {
+          "source": "MuMu-20261001-140648-336.png",
+          "state": "event",
+          "text": "没有冒险，而是从崩塌的观测站撤离。破损的观测仪器依旧指向崩塌屋顶破端的天空。探查队循着洒落的星光走出了观测站。"
+        }
+      ]
+    },
+    {
+      "source": "MuMu-20261003-112252-000.png",
+      "story": "无主的背包与破旧地图散落在地。探险家没能回来，但他的痕迹仍留在这里。",
+      "choices": [
+        "拿走补给品。所有英雄生命值降低25%，获得探险家指南针",
+        "收遗骸。 100"
+      ],
+      "selected_text": "拿走补给品。所有英雄生命值降低25%，获得探险家指南针",
+      "branch": "backpack.supplies",
+      "before": {
+        "cores": 48,
+        "fragments": 230,
+        "life": 1,
+        "loot": 2,
+        "dice": 3,
+        "hero_hp": [
+          98,
+          98,
+          98
+        ]
+      },
+      "outcomes": [
+        {
+          "source": "MuMu-20261003-112252-001.png",
+          "state": "event",
+          "text": "觉得探险家的背包里或许还有堪用的东西，于是整理了一番包内的物品。整理完毕后继续摸索背包深处，却没有找到补给品，反而摸到了一件陌生的物品。收起战利品后离开了。",
+          "resources": {
+            "cores": 48,
+            "fragments": 230,
+            "life": 1,
+            "loot": 3,
+            "dice": 3
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 0,
+            "life": 0,
+            "loot": 1,
+            "dice": 0
+          }
+        },
+        {
+          "source": "MuMu-20261003-112252-002.png",
+          "state": "map",
+          "text": "",
+          "resources": {
+            "cores": 48,
+            "fragments": 230,
+            "life": 1,
+            "loot": null,
+            "dice": 3
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 0,
+            "life": 0,
+            "dice": 0
+          }
+        }
+      ],
+      "notes": "战利品2变3；未捕获指南针具名领奖卡，不能仅凭叙述确认物品名称；扣血量仅有选项文字依据。"
+    },
+    {
+      "source": "MuMu-20261003-171834-000.png",
+      "story": "破碎的面具掉落在祭坛下方。内侧还残留着小小的纹样与已经风干的香料。",
+      "choices": [
+        "查看面具内侧的纹样。消耗1个战利品，获得地下苔藓",
+        "拼合面具碎片。所有英雄生命值降低30%，获得地下苔藓",
+        "刮下已经风干的香料。消耗50个次元碎片，获得2个次元般子"
+      ],
+      "selected_text": "拼合面具碎片。所有英雄生命值降低30%，获得地下苔藓",
+      "branch": "broken_mask.repair",
+      "before": {
+        "cores": 48,
+        "fragments": 348,
+        "life": 2,
+        "loot": 4,
+        "dice": 3,
+        "hero_hp": [
+          98,
+          69,
+          98,
+          73
+        ]
+      },
+      "outcomes": [
+        {
+          "source": "MuMu-20261003-171834-001.png",
+          "state": "reward",
+          "text": "地下苔藓",
+          "resources": {
+            "cores": 48,
+            "fragments": 348,
+            "life": 2,
+            "loot": 4,
+            "dice": 3
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 0,
+            "life": 0,
+            "loot": 0,
+            "dice": 0
+          },
+          "effect": "【所有英雄】生命值降低30%，获得地下苔藓"
+        },
+        {
+          "source": "MuMu-20261003-171834-002.png",
+          "state": "event",
+          "text": "拼合面具碎片时，锋利的碎片飞溅而出，划伤了探查队员。最后一块碎片归位后，面具上的纹样亮起光芒，祭坛内部随之开启。",
+          "resources": {
+            "cores": 48,
+            "fragments": 348,
+            "life": 2,
+            "loot": 5,
+            "dice": 3
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 0,
+            "life": 0,
+            "loot": 1,
+            "dice": 0
+          }
+        },
+        {
+          "source": "MuMu-20261003-171834-003.png",
+          "state": "event",
+          "text": "里面放着一件刻有陌生纹样的物品。探查队收起物品，将复原的面具留在祭坛上后离开了。",
+          "resources": {
+            "cores": 48,
+            "fragments": 348,
+            "life": 2,
+            "loot": 5,
+            "dice": 3
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 0,
+            "life": 0,
+            "loot": 1,
+            "dice": 0
+          }
+        },
+        {
+          "source": "MuMu-20261003-171834-004.png",
+          "state": "map",
+          "text": "",
+          "resources": {
+            "cores": 48,
+            "fragments": 348,
+            "life": 2,
+            "loot": null,
+            "dice": 3
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 0,
+            "life": 0,
+            "dice": 0
+          }
+        }
+      ],
+      "notes": "奖励卡片确认地下苔藓；后续战利品4变5，两页叙述后回地图。"
+    },
+    {
+      "source": "MuMu-20261003-172757-000.png",
+      "story": "石塔前刻着某人留下的祈祷文字。",
+      "choices": [
+        "再堆上一块石头。1名随机英雄生命值降低40%，获得1个随机战利品",
+        "跟着祈祷文念诵。 100"
+      ],
+      "selected_text": "跟着祈祷文念诵。 100",
+      "branch": "prayer_tower.prayer",
+      "before": {
+        "cores": 49,
+        "fragments": 162,
+        "life": 3,
+        "loot": 11,
+        "dice": 3
+      },
+      "outcomes": [
+        {
+          "source": "MuMu-20261003-172757-001.png",
+          "state": "event",
+          "text": "低声诵读新祷文字后，感受到了无名忏悔者留下的悔恨与决意。探查队将这份心意铭记于心。石塔上刻着的祈祷文字失去微弱的光芒，四周再次笼罩在寂静之中。探查队将无名忏悔者的愿望留在身后，继续赶路。",
+          "resources": {
+            "cores": 49,
+            "fragments": 162,
+            "life": 3,
+            "loot": 11,
+            "dice": 3
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 0,
+            "life": 0,
+            "loot": 0,
+            "dice": 0
+          }
+        },
+        {
+          "source": "MuMu-20261003-172757-002.png",
+          "state": "map",
+          "text": "",
+          "resources": {
+            "cores": 49,
+            "fragments": 162,
+            "life": 3,
+            "loot": null,
+            "dice": 3
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 0,
+            "life": 0,
+            "dice": 0
+          }
+        }
+      ],
+      "notes": "选项为100经验，碎片162不变；本组没有独立经验余额或英雄详情，不能把实际到账量宣称为已验证。"
     }
   ]
 }
