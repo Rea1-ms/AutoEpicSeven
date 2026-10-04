@@ -785,6 +785,62 @@ class ShopReplayTests(unittest.TestCase):
             self.assertEqual([a[1] for a in task.device.actions], ['PRICE', 'multi_click', 'BUY_CONFIRM_MULTI'])
             self.assertGreater(task.device.actions[-1][0], 5)
 
+    def test_transient_completed_stock_cannot_skip_an_unbought_target(self):
+        now = datetime(2026, 10, 4, 12)
+        frames = ([shop_frame(10), shop_frame(7), shop_frame(10), shop_frame(10)]
+                  + [popup_frame(3)] * 4 + [final_frame()] * 4 + [shop_frame(7)] * 4)
+        with ControlledClock() as clock, patch('tasks.knights.shop.datetime', wraps=datetime) as dates, \
+                patch('tasks.knights.shop.server_time_offset', return_value=timedelta()):
+            dates.now.return_value = now
+            task = replay_task(frames, clock)
+            task.config.Emulator_PackageName = 'OVERSEA-Play'
+            task.config.Scheduler_ServerUpdate = '02:00'
+            setattr(task.config, BLOOM.option, 3)
+            self.assertTrue(task._execute_shop([(BLOOM, 3)]))
+            self.assertEqual([action[1] for action in task.device.actions],
+                             ['PRICE', 'BUY_CONFIRM_MULTI', 'SHOP_PURCHASE_FINAL_CONFIRM'])
+            self.assertEqual(task.config.KnightsShopRuntime_Purchases[BLOOM.option]['purchased'], 3)
+            self.assertEqual(task._pending_shop_purchases(now), [])
+
+    def test_period_completion_requires_two_matching_stock_readings(self):
+        frames = [shop_frame(10), shop_frame(7), shop_frame(8), shop_frame(8), shop_frame(8)]
+        with ControlledClock() as clock:
+            task = replay_task(frames, clock)
+            saved = []
+            record = task._record_shop_purchase
+
+            def observe(item, purchased, checked_at):
+                saved.append((task.device.index, purchased))
+                record(item, purchased, checked_at)
+
+            task._record_shop_purchase = observe
+            self.assertTrue(task._execute_shop([(BLOOM, 2)]))
+            self.assertEqual(saved, [(3, 2)])
+            self.assertEqual(task.device.actions, [])
+
+    def test_interrupted_stock_observation_cannot_complete_period_record(self):
+        unloaded = shop_frame(7)
+        unloaded['content_ready'] = False
+        interruptions = {
+            'unreadable_stock': shop_frame(unknown=True),
+            'overlay': dict(kind='overlay'),
+            'network': dict(kind='network'),
+            'moving_titles': shop_frame(7, view=2),
+            'unloaded_body': unloaded,
+        }
+        for name, interruption in interruptions.items():
+            with self.subTest(interruption=name), ControlledClock() as clock:
+                view = interruption.get('view', 1)
+                frames = ([shop_frame(10), shop_frame(7), interruption, shop_frame(7, view=view)]
+                          + [shop_frame(unknown=True, view=view)] * 110)
+                task = replay_task(frames, clock)
+                task._shop_content_ready = lambda: task.device.frame.get('content_ready', True)
+                task._record_shop_purchase = Mock(side_effect=AssertionError('interrupted stock was persisted'))
+                with self.assertRaises(RequestHumanTakeover):
+                    task._execute_shop([(BLOOM, 3)])
+                task._record_shop_purchase.assert_not_called()
+                self.assertEqual(task.device.actions, [])
+
     def test_manual_and_sold_out_stock_are_recorded_for_next_run(self):
         now = datetime(2026, 10, 3, 12)
         for remaining, target in ((7, 3), (0, 10)):

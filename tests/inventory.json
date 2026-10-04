@@ -11316,6 +11316,33 @@
           "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
         },
         {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_transient_completed_stock_cannot_skip_an_unbought_target",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "单帧库存误读不得保存本期完成；恢复库存后仍按目标购买，使用明确模拟帧"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_period_completion_requires_two_matching_stock_readings",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "本期完成需要连续两帧同一库存；不同的达标读数不能互相确认，使用明确模拟帧"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_interrupted_stock_observation_cannot_complete_period_record",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "库存未知、遮罩、网络、画面移动及商品未显示会打断连续确认，使用明确模拟帧"
+        },
+        {
           "id": "tests.knights.test_shop.ShopReplayTests.test_manual_and_sold_out_stock_are_recorded_for_next_run",
           "category": "流程回放",
           "requires_device": false,

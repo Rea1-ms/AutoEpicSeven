@@ -378,6 +378,7 @@ class KnightsShopMixin:
         checked_at = datetime.now()
         attempt = None
         previous = None
+        completed_stock = {}
         scroll_origin = None
         # A fresh tab entry already starts at the list head. Drag left to
         # reveal later cards; probing right first was redundant and reversed
@@ -403,6 +404,14 @@ class KnightsShopMixin:
                 skip_first_screenshot = False
             else:
                 self.device.screenshot()
+
+            # A saved completion can suppress purchases for a whole period.
+            # Only the immediately preceding settled shop frame may confirm
+            # it. Rotate per-item observations after every fresh screenshot:
+            # unknown stock, motion, popups, recovery and purchase attempts
+            # must all break continuity, even if the next reading is equal.
+            previous_completed_stock = completed_stock
+            completed_stock = {}
 
             network = self._network_visible()
             on_shop = self._on_shop() and not network
@@ -617,6 +626,16 @@ class KnightsShopMixin:
                             card = cards[0]
                             _, quantity = resolve_period_purchase_quantity(target, item.limit, card.remaining)
                             if quantity == 0:
+                                evidence = (card.remaining, tuple(card.button.button))
+                                completed_stock[key] = evidence
+                                if previous_completed_stock.get(key) != evidence:
+                                    # Stable titles do not prove stable stock.
+                                    # Keep this target pending and visible until
+                                    # the same card's counter is read again;
+                                    # a single valid OCR error must not become
+                                    # a durable weekly/monthly completion.
+                                    unresolved = True
+                                    continue
                                 self._record_shop_purchase(item, item.limit - card.remaining, checked_at)
                                 pending.pop(key)
                                 logger.info(f'Knights shop: {key} period target already reached')
