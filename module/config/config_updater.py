@@ -640,6 +640,14 @@ class ConfigUpdater:
             is_farm_task = task == 'CombatFarm'
             combat_domain = deep_get(data, f'{task_prefix}.Domain', default='Hunt')
             combat_hunt_grade = deep_get(data, f'{task_prefix}.HuntGrade', default='Hell')
+            combat_hunt_boss = deep_get(data, f'{task_prefix}.HuntBoss', default='Wyvern')
+            if combat_domain == 'Hunt':
+                yield f'{task_prefix}.Element'
+                if combat_hunt_boss == 'Ogre':
+                    combat_hunt_grade = 'Dimensional'
+                    yield f'{task_prefix}.HuntGrade'
+            else:
+                yield f'{task_prefix}.HuntBoss'
 
             if combat_domain != 'SpiritAltar':
                 yield f'{task_prefix}.AltarBalance'
@@ -652,7 +660,6 @@ class ConfigUpdater:
 
             if is_farm_task:
                 yield f'{task_prefix}.FastCombatCount'
-                yield f'{task_prefix}.RepeatCombatCount'
             elif combat_domain == 'Saint37':
                 yield f'{task_prefix}.FastCombat'
                 yield f'{task_prefix}.FastCombatCount'
@@ -679,7 +686,6 @@ class ConfigUpdater:
                 deep_get(data, f'{task_prefix}.BurnoutMode', default=EXECUTION_MODE_DAILY)
             ) == EXECUTION_MODE_BURNOUT:
                 yield f'{task_prefix}.FastCombatCount'
-                yield f'{task_prefix}.RepeatCombatCount'
                 yield f'{task_prefix}.RepeatCombatLeifCount'
                 yield f'{task_prefix}.RepeatCombatPrioritizeStamina'
 

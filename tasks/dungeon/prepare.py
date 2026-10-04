@@ -86,12 +86,7 @@ class CombatPrepare:
         )
 
     def _combat_repeat_count(self) -> int:
-        return self._sanitize_combat_count(
-            getattr(self.config, "Combat_RepeatCombatCount", self.COMBAT_DEFAULT_REPEAT_COUNT),
-            default=self.COMBAT_DEFAULT_REPEAT_COUNT,
-            max_value=self.COMBAT_MAX_REPEAT_COUNT,
-            name="RepeatCombatCount",
-        )
+        return self.COMBAT_DEFAULT_REPEAT_COUNT
 
     @staticmethod
     def _sanitize_combat_count(value, default: int, max_value: int, name: str) -> int:

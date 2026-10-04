@@ -352,7 +352,7 @@ class ManualChecks(unittest.TestCase):
                 }
         self.assertTrue("Arena.Arena.NPCCombatCount" not in updater.get_hidden_args(arena_daily), 'arena daily shows fixed count')
 
-    def test_combat_burnout_hides_repeat_count(self):
+    def test_combat_burnout_removes_repeat_count(self):
         updater = ConfigUpdater()
         combat_burnout = {
                     "Combat": {
@@ -365,7 +365,9 @@ class ManualChecks(unittest.TestCase):
                     }
                 }
         hidden = updater.get_hidden_args(combat_burnout)
-        self.assertTrue("Combat.Combat.RepeatCombatCount" in hidden, 'combat burnout hides repeat count')
+        self.assertNotIn("RepeatCombatCount", updater.args["Combat"]["Combat"])
+        self.assertNotIn("Combat.Combat.RepeatCombatCount", hidden)
+        self.assertIn("Combat.Combat.RepeatCombatLeifCount", hidden)
 
     def historical_combat_burnout_keeps_fast_count(self):
         updater = ConfigUpdater()

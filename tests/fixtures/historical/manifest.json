@@ -795,6 +795,97 @@
       "used_by": [
         "tests.captured.test_navigation_recognition.PageTests.test_reported_error_frame_matches_team_battle"
       ]
+    },
+    "20261003-175150-414": {
+      "path": "tests/fixtures/historical/shared/hunt_boss/MuMu-20261003-175150-414.png",
+      "sha256": "537b77222025d565b2c8bff3a303cbe0dcb304b14827178f8ca97aa5585847a0",
+      "server": "unknown",
+      "scene": "hunt_boss/ogre_selected_with_azimanak_and_caides",
+      "source": "MuMu-20261003-175150-414.png",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_hunt_boss.HuntBossTests.test_shared_dark_icon_never_confirms_azimanak_from_selected_ogre",
+        "tests.combat.test_hunt_boss.HuntBossTests.test_all_six_portraits_match_only_their_visible_cards",
+        "tests.combat.test_hunt_boss.HuntBossTests.test_text_changes_and_assets_languages_do_not_change_portrait_selection",
+        "tests.combat.test_hunt_boss.HuntBossTests.test_selection_border_belongs_to_the_matched_card",
+        "tests.combat.test_hunt_boss.HuntBossTests.test_missing_portrait_never_reuses_a_previous_selected_offset",
+        "tests.combat.test_hunt_boss.HuntBossTests.test_already_selected_target_exits_without_clicking",
+        "tests.combat.test_hunt_boss.HuntBossTests.test_dropped_click_retries_correct_card_until_positive_selection",
+        "tests.combat.test_hunt_boss.HuntBossTests.test_list_scrolls_back_up_to_a_target_above_current_view",
+        "tests.combat.test_hunt_boss.HuntBossTests.test_list_scrolls_down_to_ogre_below_current_view",
+        "tests.combat.test_hunt_boss.HuntBossTests.test_default_wyvern_and_named_targets_ignore_altar_element",
+        "tests.combat.test_hunt_boss.HuntBossTests.test_ogre_uses_only_dimensional_grade_and_disables_fast_combat",
+        "tests.combat.test_hunt_boss.HuntBossTests.test_ogre_clicks_its_top_dimensional_entry_until_prepare_page",
+        "tests.combat.test_hunt_boss.HuntBossTests.test_common_search_finds_scrolled_portrait_and_clicks_shifted_position",
+        "tests.combat.test_hunt_boss.HuntBossTests.test_portrait_outside_common_search_never_matches_or_clicks",
+        "tests.combat.test_hunt_boss.HuntBossTests.test_selection_border_does_not_depend_on_click_rectangle"
+      ],
+      "assets_namespace": "share",
+      "server_confirmed": false
+    },
+    "20261003-175236-705": {
+      "path": "tests/fixtures/historical/shared/hunt_boss/MuMu-20261003-175236-705.png",
+      "sha256": "19539d71c04403d7c3011c4426442854c5c31ea9e5e25b401764eae1cd33f7af",
+      "server": "unknown",
+      "scene": "hunt_boss/wyvern_golem_banshee_sidebar",
+      "source": "MuMu-20261003-175236-705.png",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_hunt_boss.HuntBossTests.test_all_six_portraits_match_only_their_visible_cards",
+        "tests.combat.test_hunt_boss.HuntBossTests.test_missing_portrait_never_reuses_a_previous_selected_offset",
+        "tests.combat.test_hunt_boss.HuntBossTests.test_list_scrolls_back_up_to_a_target_above_current_view",
+        "tests.combat.test_hunt_boss.HuntBossTests.test_list_scrolls_down_to_ogre_below_current_view"
+      ],
+      "assets_namespace": "share",
+      "server_confirmed": false
+    },
+    "20261004-224702-554": {
+      "path": "tests/fixtures/historical/shared/repeat_leif/MuMu-20261004-224702-554.png",
+      "sha256": "1a4f0d6eb02c607a6ae2b1d50f91580b40bb48db6b930c83bfdbc79fe5ea1323",
+      "server": "unknown",
+      "assets_namespace": "share",
+      "server_confirmed": false,
+      "capture_type": "emulator_screenshot",
+      "scene": "repeat_leif/minimum_two_leifs",
+      "source": "MuMu-20261004-224702-554.png",
+      "privacy_redaction": [],
+      "used_by": [
+        "tests.combat.test_repeat_leif_count.RepeatLeifTests.test_supplied_counters_and_spectral_core_resource_are_read_correctly",
+        "tests.combat.test_repeat_leif_count.RepeatLeifTests.test_dimensional_increase_clicks_once_then_confirms_four",
+        "tests.combat.test_repeat_leif_count.RepeatLeifTests.test_odd_request_at_minimum_confirms_two_without_clicking",
+        "tests.combat.test_repeat_leif_count.RepeatLeifTests.test_decrease_clicks_once_and_retries_only_after_interval",
+        "tests.combat.test_repeat_leif_count.RepeatLeifTests.test_normal_combat_still_increments_one_leif_per_click"
+      ]
+    },
+    "20261004-224705-176": {
+      "path": "tests/fixtures/historical/shared/repeat_leif/MuMu-20261004-224705-176.png",
+      "sha256": "6c2664033cb5bea8d1863eb6c3e5a967994a3edc30ba59910da0db4599d700a7",
+      "server": "unknown",
+      "assets_namespace": "share",
+      "server_confirmed": false,
+      "capture_type": "emulator_screenshot",
+      "scene": "repeat_leif/four_leifs_after_one_increment",
+      "source": "MuMu-20261004-224705-176.png",
+      "privacy_redaction": [],
+      "used_by": [
+        "tests.combat.test_repeat_leif_count.RepeatLeifTests.test_supplied_counters_and_spectral_core_resource_are_read_correctly",
+        "tests.combat.test_repeat_leif_count.RepeatLeifTests.test_dimensional_increase_clicks_once_then_confirms_four",
+        "tests.combat.test_repeat_leif_count.RepeatLeifTests.test_decrease_clicks_once_and_retries_only_after_interval"
+      ]
     }
   },
   "aliases": {

@@ -539,6 +539,16 @@
       "Fire": "Fire",
       "Nature": "Nature"
     },
+    "HuntBoss": {
+      "name": "Hunt target",
+      "help": "Ogre supports Dimensional difficulty only.",
+      "Wyvern": "Wyvern",
+      "Golem": "Golem",
+      "Banshee": "Banshee",
+      "Azimanak": "Azimanak",
+      "Caides": "Caides",
+      "Ogre": "Ogre"
+    },
     "AltarGrade": {
       "name": "Altar Grade",
       "help": "Difficulty used for Spirit Altar runs.",
@@ -581,11 +591,11 @@
     },
     "FastCombat": {
       "name": "Use Fast Combat",
-      "help": "On the new global flow, start server-managed repeat combat first, then spend only the unreserved Energy on fast combat. The CN server keeps the legacy order."
+      "help": "When enabled, start background repeat combat first, then use the remaining unreserved Energy for fast combat."
     },
     "BurnoutMode": {
       "name": "Execution Mode",
-      "help": "On the new global flow, Burnout converts each whole 80 Energy into one server-repeat unit, forces owned Energy priority, and gives the remainder to fast combat. After settlement it schedules for 80 Energy. Dimensional Hunt is unsupported.",
+      "help": "Burnout converts each whole 80 Energy into one repeat-combat unit, prioritizes owned Energy, and uses the remainder for fast combat. After repeat combat ends, schedule the next run when Energy recovers to 80. Dimensional Hunt does not support Burnout.",
       "Daily": "Daily Fixed Count",
       "Burnout": "Burnout Mode"
     },
@@ -593,13 +603,9 @@
       "name": "Fast Combat Count",
       "help": "Target fast combat count."
     },
-    "RepeatCombatCount": {
-      "name": "Repeat Combat Count",
-      "help": "Legacy CN-server repeat count. The new global-server flow ignores this option."
-    },
     "RepeatCombatLeifCount": {
       "name": "Leifs to Spend",
-      "help": "Leifs the new global daily mode may spend, from 1 to 50. Burnout derives this value from current Energy."
+      "help": "The number of Leifs allowed to be spent. Burnout calculates it automatically from current Energy. Dimensional Hunt costs 2 Leifs per run. Use at least 2; larger odd values are rounded down to an even number."
     },
     "RepeatCombatPrioritizeStamina": {
       "name": "Prioritize Owned Energy / Spectral Cores",

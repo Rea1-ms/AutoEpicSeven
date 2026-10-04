@@ -204,6 +204,7 @@
     "Combat": {
       "Domain": "Hunt",
       "Element": "Water",
+      "HuntBoss": "Wyvern",
       "AltarGrade": "Hell",
       "AltarBalance": false,
       "HuntGrade": "Hell",
@@ -211,7 +212,6 @@
       "FastCombat": true,
       "BurnoutMode": "Daily",
       "FastCombatCount": 10,
-      "RepeatCombatCount": 5,
       "RepeatCombatLeifCount": 1,
       "RepeatCombatPrioritizeStamina": true,
       "RepeatCombatGearMode": "Extract",

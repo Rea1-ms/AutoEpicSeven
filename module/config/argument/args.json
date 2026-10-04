@@ -851,6 +851,18 @@
           "Nature"
         ]
       },
+      "HuntBoss": {
+        "type": "select",
+        "value": "Wyvern",
+        "option": [
+          "Wyvern",
+          "Golem",
+          "Banshee",
+          "Azimanak",
+          "Caides",
+          "Ogre"
+        ]
+      },
       "AltarGrade": {
         "type": "select",
         "value": "Hell",
@@ -912,10 +924,6 @@
       "FastCombatCount": {
         "type": "input",
         "value": 10
-      },
-      "RepeatCombatCount": {
-        "type": "input",
-        "value": 5
       },
       "RepeatCombatLeifCount": {
         "type": "input",

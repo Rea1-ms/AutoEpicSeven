@@ -235,11 +235,11 @@ class IntegrationTests(unittest.TestCase):
         self.assertEqual((obj.config.Combat_Element, obj.config.Combat_AltarGrade), ("Water", "Hell"))
 
     def test_disabled_or_other_domain_does_not_read_inventory(self):
-        for config in ({"Combat_AltarBalance": False}, {"Combat_Domain": "Hunt"}):
+        for config, element in (({"Combat_AltarBalance": False}, "Water"), ({"Combat_Domain": "Hunt"}, "Fire")):
             obj = combat(config)
             obj._prepare_rune_balance_target()
             obj._read_rune_inventory.assert_not_called()
-            self.assertEqual(obj._combat_element(), "Water")
+            self.assertEqual(obj._combat_element(), element)
 
     def test_session_preserves_before_snapshot_and_after_refreshes(self):
         obj = combat()
