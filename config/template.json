@@ -119,6 +119,31 @@
       "Reminder": false,
       "ReminderLeadMinutes": 60,
       "ReminderLastEnd": null
+    },
+    "KnightsShopWeekly": {
+      "MysticMedals": 0,
+      "RareCatalystChest": 0,
+      "EpicCatalystChest": 0,
+      "CatalystChest": 0,
+      "ReforgingStoneChest": 0
+    },
+    "KnightsShopMonthly": {
+      "EquipmentResetStone": 0,
+      "AccessoryResetStone": 0,
+      "Level85ManastoneChest": 0,
+      "Level88ManastoneChest": 0,
+      "ConversionGemChest": 0,
+      "GoldTransmitStone": 0,
+      "EpicSpiritBloom": 0,
+      "Molagora": 0,
+      "FireConnection": 0,
+      "NatureConnection": 0,
+      "IceConnection": 0,
+      "ReforgingStoneChest": 0,
+      "ReforgeMaterialChest": 0
+    },
+    "KnightsShopRuntime": {
+      "Purchases": {}
     }
   },
   "Arena": {

@@ -31,6 +31,7 @@ EXPLORATION_MODULES = (
     "tests.dimensional_exploration.test_dimensional_exploration_runtime",
 )
 RUNNER_MODULES = ("tests.test_offline_runner",)
+KNIGHTS_MODULES = ("tests.knights.test_shop",)
 SANCTUARY_MODULES = (
     "tests.sanctuary.test_smart_custody",
     "tests.sanctuary.test_monthly_scheduling",
@@ -45,7 +46,8 @@ UPSTREAM_MODULES = (
     "tests.upstream.test_vision",
 )
 SUITES = {
-    "all": EXPLORATION_MODULES + SANCTUARY_MODULES + RUNNER_MODULES + UPSTREAM_MODULES,
+    "all": EXPLORATION_MODULES + SANCTUARY_MODULES + KNIGHTS_MODULES + RUNNER_MODULES + UPSTREAM_MODULES,
+    "knights": KNIGHTS_MODULES,
     "dimensional_exploration": EXPLORATION_MODULES,
     "sanctuary": SANCTUARY_MODULES,
     "runner": RUNNER_MODULES,
@@ -53,6 +55,7 @@ SUITES = {
 }
 FIXTURE_MANIFEST = ROOT / "tests" / "fixtures" / "dimensional_exploration" / "manifest.json"
 SANCTUARY_FIXTURE_MANIFEST = ROOT / "tests" / "fixtures" / "sanctuary" / "manifest.json"
+KNIGHTS_FIXTURE_MANIFEST = ROOT / "tests" / "fixtures" / "knights" / "manifest.json"
 
 
 def iter_cases(suite):
@@ -88,7 +91,7 @@ def fixture_manifest(verify):
     # Explicit manifests keep historical/manual screenshots outside the test
     # corpus. IDs share one report namespace, so collisions must fail before
     # tests run rather than silently replacing another business's evidence.
-    for manifest in (FIXTURE_MANIFEST, SANCTUARY_FIXTURE_MANIFEST):
+    for manifest in (FIXTURE_MANIFEST, SANCTUARY_FIXTURE_MANIFEST, KNIGHTS_FIXTURE_MANIFEST):
         raw = json.loads(manifest.read_text(encoding="utf-8"))
         entries = raw.get("fixtures")
         if raw.get("version") != 1 or not isinstance(entries, dict) or not entries:

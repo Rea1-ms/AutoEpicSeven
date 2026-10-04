@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "source": "MuMu-20261003-110314-759.png",
+  "suite": "knights_shop_balances",
+  "case": "header_icons",
+  "items": [
+    {
+      "name": "ARMBAND_BALANCE_ICON",
+      "namespace": "share",
+      "module": "knights/shop",
+      "kind": "base",
+      "box": [
+        978,
+        80,
+        1002,
+        105
+      ]
+    },
+    {
+      "name": "ARMBAND_BALANCE_ICON",
+      "namespace": "share",
+      "module": "knights/shop",
+      "kind": "search",
+      "box": [
+        650,
+        76,
+        1210,
+        110
+      ]
+    },
+    {
+      "name": "BRAVE_CREST_BALANCE_ICON",
+      "namespace": "share",
+      "module": "knights/shop",
+      "kind": "base",
+      "box": [
+        1041,
+        81,
+        1064,
+        103
+      ]
+    },
+    {
+      "name": "BRAVE_CREST_BALANCE_ICON",
+      "namespace": "share",
+      "module": "knights/shop",
+      "kind": "search",
+      "box": [
+        650,
+        76,
+        1210,
+        110
+      ]
+    },
+    {
+      "name": "PROOF_OF_COURAGE_BALANCE_ICON",
+      "namespace": "share",
+      "module": "knights/shop",
+      "kind": "base",
+      "box": [
+        1118,
+        80,
+        1141,
+        107
+      ]
+    },
+    {
+      "name": "PROOF_OF_COURAGE_BALANCE_ICON",
+      "namespace": "share",
+      "module": "knights/shop",
+      "kind": "search",
+      "box": [
+        650,
+        76,
+        1210,
+        110
+      ]
+    }
+  ]
+}

@@ -71,6 +71,31 @@ class GeneratedConfig:
     KnightsTeamBattle_ReminderLeadMinutes = 60  # 30, 60, 120, 180
     KnightsTeamBattle_ReminderLastEnd = None
 
+    # Group `KnightsShopWeekly`
+    KnightsShopWeekly_MysticMedals = 0  # 0, 1
+    KnightsShopWeekly_RareCatalystChest = 0  # 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+    KnightsShopWeekly_EpicCatalystChest = 0  # 0, 1, 2, 3, 4, 5
+    KnightsShopWeekly_CatalystChest = 0  # 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+    KnightsShopWeekly_ReforgingStoneChest = 0  # 0, 1
+
+    # Group `KnightsShopMonthly`
+    KnightsShopMonthly_EquipmentResetStone = 0  # 0, 1
+    KnightsShopMonthly_AccessoryResetStone = 0  # 0, 1
+    KnightsShopMonthly_Level85ManastoneChest = 0  # 0, 1
+    KnightsShopMonthly_Level88ManastoneChest = 0  # 0, 1
+    KnightsShopMonthly_ConversionGemChest = 0  # 0, 1, 2
+    KnightsShopMonthly_GoldTransmitStone = 0  # 0, 1, 2
+    KnightsShopMonthly_EpicSpiritBloom = 0  # 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+    KnightsShopMonthly_Molagora = 0  # 0, 1, 2, 3, 4, 5
+    KnightsShopMonthly_FireConnection = 0  # 0, 1, 2, 3, 4, 5
+    KnightsShopMonthly_NatureConnection = 0  # 0, 1, 2, 3, 4, 5
+    KnightsShopMonthly_IceConnection = 0  # 0, 1, 2, 3, 4, 5
+    KnightsShopMonthly_ReforgingStoneChest = 0  # 0, 1, 2, 3, 4, 5
+    KnightsShopMonthly_ReforgeMaterialChest = 0  # 0, 1, 2, 3, 4
+
+    # Group `KnightsShopRuntime`
+    KnightsShopRuntime_Purchases = {}
+
     # Group `Arena`
     Arena_ClaimWeeklyRewards = True
     Arena_ClaimWeeklyBattleRewards = True

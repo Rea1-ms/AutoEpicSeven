@@ -40,6 +40,9 @@ Daily:
       - Scheduler
       - Knights
       - KnightsTeamBattle
+      - KnightsShopWeekly
+      - KnightsShopMonthly
+      - KnightsShopRuntime
     Arena:
       - Scheduler
       - Arena

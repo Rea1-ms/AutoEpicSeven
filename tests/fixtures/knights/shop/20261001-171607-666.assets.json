@@ -1,0 +1,296 @@
+{
+  "version": 1,
+  "source": "MuMu-20261001-171607-666.png",
+  "suite": "knights_shop",
+  "case": "20261001-171607-666",
+  "items": [
+    {
+      "name": "GOLD_TRANSMIT_STONE",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "base",
+      "box": [
+        603,
+        153,
+        765,
+        176
+      ]
+    },
+    {
+      "name": "GOLD_TRANSMIT_STONE",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "button",
+      "box": [
+        605,
+        344,
+        764,
+        373
+      ]
+    },
+    {
+      "name": "GOLD_TRANSMIT_STONE",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "search",
+      "box": [
+        289,
+        145,
+        1224,
+        640
+      ]
+    },
+    {
+      "name": "MYSTIC_MEDALS",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "base",
+      "box": [
+        823,
+        153,
+        985,
+        176
+      ]
+    },
+    {
+      "name": "MYSTIC_MEDALS",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "button",
+      "box": [
+        825,
+        344,
+        984,
+        373
+      ]
+    },
+    {
+      "name": "MYSTIC_MEDALS",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "search",
+      "box": [
+        289,
+        145,
+        1224,
+        640
+      ]
+    },
+    {
+      "name": "FIRE_CONNECTION",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "base",
+      "box": [
+        1043,
+        153,
+        1205,
+        176
+      ]
+    },
+    {
+      "name": "FIRE_CONNECTION",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "button",
+      "box": [
+        1045,
+        344,
+        1204,
+        373
+      ]
+    },
+    {
+      "name": "FIRE_CONNECTION",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "search",
+      "box": [
+        289,
+        145,
+        1224,
+        640
+      ]
+    },
+    {
+      "name": "EPIC_SPIRIT_BLOOM",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "base",
+      "box": [
+        383,
+        410,
+        545,
+        433
+      ]
+    },
+    {
+      "name": "EPIC_SPIRIT_BLOOM",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "button",
+      "box": [
+        385,
+        601,
+        544,
+        630
+      ]
+    },
+    {
+      "name": "EPIC_SPIRIT_BLOOM",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "search",
+      "box": [
+        289,
+        145,
+        1224,
+        640
+      ]
+    },
+    {
+      "name": "MOLAGORA",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "base",
+      "box": [
+        603,
+        410,
+        765,
+        433
+      ]
+    },
+    {
+      "name": "MOLAGORA",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "button",
+      "box": [
+        605,
+        601,
+        764,
+        630
+      ]
+    },
+    {
+      "name": "MOLAGORA",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "search",
+      "box": [
+        289,
+        145,
+        1224,
+        640
+      ]
+    },
+    {
+      "name": "NATURE_CONNECTION",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "base",
+      "box": [
+        823,
+        410,
+        985,
+        433
+      ]
+    },
+    {
+      "name": "NATURE_CONNECTION",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "button",
+      "box": [
+        825,
+        601,
+        984,
+        630
+      ]
+    },
+    {
+      "name": "NATURE_CONNECTION",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "search",
+      "box": [
+        289,
+        145,
+        1224,
+        640
+      ]
+    },
+    {
+      "name": "ICE_CONNECTION",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "base",
+      "box": [
+        1043,
+        410,
+        1205,
+        433
+      ]
+    },
+    {
+      "name": "ICE_CONNECTION",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "button",
+      "box": [
+        1045,
+        601,
+        1204,
+        630
+      ]
+    },
+    {
+      "name": "ICE_CONNECTION",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "search",
+      "box": [
+        289,
+        145,
+        1224,
+        640
+      ]
+    },
+    {
+      "name": "BRAVE_CREST_ICON",
+      "namespace": "share",
+      "module": "knights/shop",
+      "kind": "base",
+      "box": [
+        875,
+        349,
+        894,
+        369
+      ]
+    },
+    {
+      "name": "PROOF_OF_COURAGE_ICON",
+      "namespace": "share",
+      "module": "knights/shop",
+      "kind": "base",
+      "box": [
+        434,
+        604,
+        454,
+        629
+      ]
+    },
+    {
+      "name": "SHOP_PRICE_ACTIVE",
+      "namespace": "share",
+      "module": "knights/shop",
+      "kind": "base",
+      "box": [
+        391,
+        350,
+        415,
+        369
+      ]
+    }
+  ]
+}

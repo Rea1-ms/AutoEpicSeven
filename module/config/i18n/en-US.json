@@ -381,6 +381,194 @@
       "help": "Internal deduplication state for guild war reminders."
     }
   },
+  "KnightsShopWeekly": {
+    "_info": {
+      "name": "Guild shop: weekly purchases",
+      "help": "Overseas Simplified Chinese client only. Daily guild runs buy the missing period amount, including manual purchases in the target. Insufficient funds are checked again next run."
+    },
+    "MysticMedals": {
+      "name": "50 Mystic Medals",
+      "help": "Target number of purchases per game period. 0 disables buying; counts are purchase transactions.",
+      "0": "Do not buy",
+      "1": "1"
+    },
+    "RareCatalystChest": {
+      "name": "Rare Catalyst Selection Chest",
+      "help": "Target number of purchases per game period. 0 disables buying; counts are purchase transactions.",
+      "0": "Do not buy",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7",
+      "8": "8",
+      "9": "9",
+      "10": "10",
+      "11": "11",
+      "12": "12"
+    },
+    "EpicCatalystChest": {
+      "name": "Epic Catalyst Selection Chest",
+      "help": "Target number of purchases per game period. 0 disables buying; counts are purchase transactions.",
+      "0": "Do not buy",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5"
+    },
+    "CatalystChest": {
+      "name": "Catalyst Chest",
+      "help": "Target number of purchases per game period. 0 disables buying; counts are purchase transactions.",
+      "0": "Do not buy",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7",
+      "8": "8",
+      "9": "9",
+      "10": "10"
+    },
+    "ReforgingStoneChest": {
+      "name": "Equipment Conversion Gem Selection Chest",
+      "help": "Target number of purchases per game period. 0 disables buying; counts are purchase transactions.",
+      "0": "Do not buy",
+      "1": "1"
+    }
+  },
+  "KnightsShopMonthly": {
+    "_info": {
+      "name": "Guild shop: monthly purchases",
+      "help": "Overseas Simplified Chinese client only. Daily guild runs buy the missing period amount, including manual purchases in the target. Insufficient funds are checked again next run."
+    },
+    "EquipmentResetStone": {
+      "name": "Equipment Reset Stone",
+      "help": "Target number of purchases per game period. 0 disables buying; counts are purchase transactions.",
+      "0": "Do not buy",
+      "1": "1"
+    },
+    "AccessoryResetStone": {
+      "name": "Accessory Reset Stone",
+      "help": "Target number of purchases per game period. 0 disables buying; counts are purchase transactions.",
+      "0": "Do not buy",
+      "1": "1"
+    },
+    "Level85ManastoneChest": {
+      "name": "Level 85 Manastone Selection Chest",
+      "help": "Target number of purchases per game period. 0 disables buying; counts are purchase transactions.",
+      "0": "Do not buy",
+      "1": "1"
+    },
+    "Level88ManastoneChest": {
+      "name": "Level 88 Manastone Selection Chest",
+      "help": "Target number of purchases per game period. 0 disables buying; counts are purchase transactions.",
+      "0": "Do not buy",
+      "1": "1"
+    },
+    "ConversionGemChest": {
+      "name": "Epic Modification Gem Selection Chest",
+      "help": "Target number of purchases per game period. 0 disables buying; counts are purchase transactions.",
+      "0": "Do not buy",
+      "1": "1",
+      "2": "2"
+    },
+    "GoldTransmitStone": {
+      "name": "Gold Transmit Stone",
+      "help": "Target number of purchases per game period. 0 disables buying; counts are purchase transactions.",
+      "0": "Do not buy",
+      "1": "1",
+      "2": "2"
+    },
+    "EpicSpiritBloom": {
+      "name": "Epic Spirit Bloom",
+      "help": "Target number of purchases per game period. 0 disables buying; counts are purchase transactions.",
+      "0": "Do not buy",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7",
+      "8": "8",
+      "9": "9",
+      "10": "10"
+    },
+    "Molagora": {
+      "name": "MolaGora",
+      "help": "Target number of purchases per game period. 0 disables buying; counts are purchase transactions.",
+      "0": "Do not buy",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5"
+    },
+    "FireConnection": {
+      "name": "Fire Connection",
+      "help": "Target number of purchases per game period. 0 disables buying; counts are purchase transactions.",
+      "0": "Do not buy",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5"
+    },
+    "NatureConnection": {
+      "name": "Earth Connection",
+      "help": "Target number of purchases per game period. 0 disables buying; counts are purchase transactions.",
+      "0": "Do not buy",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5"
+    },
+    "IceConnection": {
+      "name": "Ice Connection",
+      "help": "Target number of purchases per game period. 0 disables buying; counts are purchase transactions.",
+      "0": "Do not buy",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5"
+    },
+    "ReforgingStoneChest": {
+      "name": "Equipment Conversion Gem Selection Chest",
+      "help": "Target number of purchases per game period. 0 disables buying; counts are purchase transactions.",
+      "0": "Do not buy",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5"
+    },
+    "ReforgeMaterialChest": {
+      "name": "Reforge Material Selection Chest",
+      "help": "Target number of purchases per game period. 0 disables buying; counts are purchase transactions.",
+      "0": "Do not buy",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4"
+    }
+  },
+  "KnightsShopRuntime": {
+    "_info": {
+      "name": "KnightsShopRuntime._info.name",
+      "help": "KnightsShopRuntime._info.help"
+    },
+    "Purchases": {
+      "name": "KnightsShopRuntime.Purchases.name",
+      "help": "KnightsShopRuntime.Purchases.help"
+    }
+  },
   "Arena": {
     "_info": {
       "name": "Arena",

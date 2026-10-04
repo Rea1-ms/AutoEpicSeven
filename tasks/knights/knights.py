@@ -6,6 +6,7 @@ from tasks.knights.assets.assets_knights_main_page import (
     WEEKLY_REWARDS,
 )
 from tasks.knights.support import KnightsSupportMixin
+from tasks.knights.shop import KnightsShopMixin
 from tasks.knights.team_battle import KnightsTeamBattleMixin
 from tasks.knights.weekly_task import KnightsWeeklyTaskMixin
 from tasks.knights.world_boss import KnightsWorldBossMixin
@@ -17,6 +18,7 @@ class Knights(
     KnightsTeamBattleMixin,
     KnightsSupportMixin,
     KnightsWeeklyTaskMixin,
+    KnightsShopMixin,
     UI,
 ):
     WEEKLY_REWARDS_COLOR_THRESHOLD = 30
@@ -119,6 +121,7 @@ class Knights(
         run_support_request = run_support
         run_team_battle = self.config.KnightsTeamBattle_TeamBattle
         run_world_boss = self.config.Knights_WorldBoss
+        run_shop = bool(self._pending_shop_purchases())
 
         if not any(
             [
@@ -128,9 +131,10 @@ class Knights(
                 run_support_request,
                 run_team_battle,
                 run_world_boss,
+                run_shop,
             ]
         ):
-            logger.warning("Knights: all sub tasks disabled")
+            logger.info("Knights: no pending sub tasks")
             self.config.task_delay(server_update=True)
             return True
 
@@ -157,10 +161,15 @@ class Knights(
                 run_donate=run_support_donate,
                 run_request=run_support_request,
             ) and success
-            if not run_weekly_task:
-                self.ui_goto(page_knights, skip_first_screenshot=True)
+        if run_shop:
+            success = self.run_shop(skip_first_screenshot=True) and success
         if run_weekly_task:
             success = self.run_weekly_task(skip_first_screenshot=True) and success
+
+        # All activity tabs share one panel. Each subtask leaves its tab open;
+        # the global page graph chooses the next tab, and only the parent task
+        # returns home after the complete support -> shop -> weekly sequence.
+        if run_support or run_shop or run_weekly_task:
             self.ui_goto(page_knights, skip_first_screenshot=True)
 
         reminder_target = self._get_team_battle_next_delay_target()

@@ -544,6 +544,20 @@ page_knights_weekly_task = Page(WEEKLY_TASK_CHECK)
 page_knights_weekly_task.link(AD_BUFF_X_CLOSE, destination=page_knights)
 page_knights_support.link(WEEKLY_TASK_ENTRY, destination=page_knights_weekly_task)
 
+# Guild shop captures currently cover the overseas Chinese member-shop layout.
+# Keep unsupported clients out of page scans rather than importing empty assets.
+if server_.is_oversea_server() and server_.lang == 'global_cn':
+    from tasks.knights.assets.assets_knights_shop import SHOP_CHECK, SHOP_ENTRY
+    from tasks.knights.assets.assets_knights_activity_entries import SUPPORT_TAB_ENTRY
+
+    page_knights_shop = Page(SHOP_CHECK)
+    page_knights_shop.link(AD_BUFF_X_CLOSE, destination=page_knights)
+    page_knights_support.link(SHOP_ENTRY, destination=page_knights_shop, match_before_click=True)
+    page_knights_weekly_task.link(SHOP_ENTRY, destination=page_knights_shop, match_before_click=True)
+    page_knights_shop.link(WEEKLY_TASK_ENTRY, destination=page_knights_weekly_task)
+    page_knights_shop.link(SUPPORT_TAB_ENTRY, destination=page_knights_support, match_before_click=True)
+    page_knights_weekly_task.link(SUPPORT_TAB_ENTRY, destination=page_knights_support, match_before_click=True)
+
 page_knights_world_boss = Page(WORLD_BOSS_CHECK)
 page_knights_world_boss.link(BACK, destination=page_knights)
 page_knights.link(WORLD_BOSS_OPENING, destination=page_knights_world_boss)
