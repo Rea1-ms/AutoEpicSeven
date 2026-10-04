@@ -25,7 +25,7 @@ from tasks.dimensional_exploration.assets.assets_dimensional_exploration import 
 from tasks.dimensional_exploration.policy import (
     RunProgress, choose_offer, node_priority, normalize, parse_number,
 )
-from tasks.dimensional_exploration.event import EventMemory, decide_event, match_event, pending_event
+from tasks.dimensional_exploration.event import EventMemory, decide_event, event_branch, match_event, pending_event
 from tasks.dimensional_exploration.health import EventHealthMixin
 from tasks.dimensional_exploration.recruitment import HeroCosts, RecruitmentMixin
 from tasks.dimensional_exploration.sampling import EventSampler, choose_sample, sampling_balances, text_key
@@ -614,6 +614,15 @@ class DimensionalExploration(EventHealthMixin, RecruitmentMixin, UI):
         # authorize discarding a reward. Only completed cards and deliberately
         # skipped recruitment cards prove that nothing still needs claiming.
         may_leave = bool(tokens) and all(normalize(token.ocr_text) in ("完成领取", "招募英雄") for token in tokens)
+        # The resumed event card also exposes story text beside its button.
+        # An explicitly skipped, single-kind hero reward is still safe to
+        # discard when quota allows nobody. Require the current persisted
+        # event branch and the positively read recruitment button; unrelated
+        # narration, a stale/restarted popup or a mixed reward proves nothing.
+        if resumed and self._recruit_skipped and any(normalize(t.ocr_text) == "招募英雄" for t in tokens):
+            branch = event_branch(self.event_memory.pending)
+            if branch and branch.rewards and all(reward['kind'] == 'hero' for reward in branch.rewards):
+                may_leave = True
         if resumed and vision.bright_text(RESUME_REWARDS_CONTINUE):
             if self.click_action(RESUME_REWARDS_CONTINUE):
                 self._reward_leave_authorized = may_leave

@@ -281,11 +281,16 @@ class ExplorationVision:
         for x, y, right, bottom in multi_match(self.image, HERO_COST_ICON, HERO_COST_ICON.search,
                                                threshold=0.8, distance=35):
             rectangle = (x, y, right, bottom)
-            area = relative_area(OCR_HERO_NAME, HERO_COST_ICON, rectangle)
-            cost_area = relative_area(OCR_HERO_COST, HERO_COST_ICON, rectangle)
             reference = next(HERO_COST_ICON.iter_buttons()).area
-            left, top = OCR_HEROES.area[0] + x - reference[0], area[1]
-            if left < OCR_HEROES.area[0] or cost_area[2] >= self.image.shape[1]:
+            offset = (x - reference[0], y - reference[1])
+            area = area_offset(OCR_HERO_NAME.area, offset)
+            cost_area = area_offset(OCR_HERO_COST.area, offset)
+            # Horizontal scrolling can clip the card's decorative left edge
+            # while leaving its name, cost and click target fully visible.
+            # Validate the actual fields against the fixed list viewport,
+            # before any screen clamping: rejecting the whole card drops an
+            # entire readable left column; clamping a cost can invent a price.
+            if area_limit(area, OCR_HEROES.area) != area or area_limit(cost_area, OCR_HEROES.area) != cost_area:
                 continue
             tokens = self.tokens(area, name="HeroName")
             names = [t.ocr_text for t in tokens if len(t.ocr_text) >= 2]
@@ -293,7 +298,7 @@ class ExplorationVision:
             cost = self.number(cost_area, maximum=9)
             # Include unaffordable rows in the scroll fingerprint. Two pages
             # with no affordable heroes are not necessarily the same page.
-            self.hero_signature.append((name, cost, left, top))
+            self.hero_signature.append((name, cost, x, y))
             x1, y1, x2, y2 = relative_area(HERO_COST_ACTIVE, HERO_COST_ICON, rectangle)
             pixels = self.image[y1:y2, x1:x2]
             bright = np.count_nonzero(np.min(pixels, axis=2) > 175)

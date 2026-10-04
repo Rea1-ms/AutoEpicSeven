@@ -2401,7 +2401,7 @@
             "20260925-114714-801"
           ],
           "status": "已迁移",
-          "reason": ""
+          "reason": "按用户新规则把真实候选塔玛林尔明确加入精灵师名单，保留原用例编号与选中、费用断言"
         },
         {
           "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.ScreenshotRegressions.test_unknown_animation_does_not_reset_selected_hero",
@@ -2419,7 +2419,7 @@
           "has_automatic_assertion": true,
           "fixtures": [],
           "status": "已迁移",
-          "reason": ""
+          "reason": "额度已满时不读取或滚动名单，直接返回；仅名单目标买不起已改为选其他英雄"
         },
         {
           "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.ScreenshotRegressions.test_initial_party_keeps_affordable_fallback",
@@ -8388,7 +8388,7 @@
             "20260926-181057-614"
           ],
           "status": "已纳入",
-          "reason": "2026-09-26 实机问题回归"
+          "reason": "额度变化清除原选中英雄；名单目标买不起时改选2点候选，禁止直接确认旧目标"
         },
         {
           "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_modal_restart_cancels_then_confirmed_skip_can_leave",
@@ -8559,6 +8559,198 @@
           ],
           "status": "已纳入",
           "reason": "2026-09-28 招募顺位与已采集事件规则；事件文字样本见 event_observations.json"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentViewportRegressions.test_scrolled_left_column_keeps_complete_names_and_costs",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261003-112531-836"
+          ],
+          "status": "已纳入",
+          "reason": "横向滚动的左列完整字段与右侧裁切反例；重复帧不确认招募"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentViewportRegressions.test_right_column_with_clipped_costs_is_not_recruited",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261003-112536-124"
+          ],
+          "status": "已纳入",
+          "reason": "横向滚动的左列完整字段与右侧裁切反例；重复帧不确认招募"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentViewportRegressions.test_name_and_cost_fields_must_fit_before_ocr_clamping",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261003-112531-836"
+          ],
+          "status": "已纳入",
+          "reason": "横向滚动的左列完整字段与右侧裁切反例；重复帧不确认招募"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentViewportRegressions.test_visible_left_priority_retries_selection_without_swiping",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261003-112531-836"
+          ],
+          "status": "已纳入",
+          "reason": "横向滚动的左列完整字段与右侧裁切反例；重复帧不确认招募"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentViewportRegressions.test_repeated_boundary_frames_end_missing_priority_search",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261003-112531-836"
+          ],
+          "status": "已纳入",
+          "reason": "两次边界手势仍未找到目标时选择已识别的可负担英雄，不放弃可用招募券"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentBudgetRegressions.test_event_ticket_opens_recruitment_instead_of_discarding_reward",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-120256-056"
+          ],
+          "status": "已纳入",
+          "reason": "剩余点数不足以招募任何名单目标时选择其他可负担英雄；实图与明确模拟的详情确认分别验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentBudgetRegressions.test_ranger_rows_exclude_disabled_prices_and_keep_two_point_choices",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-120409-871"
+          ],
+          "status": "已纳入",
+          "reason": "剩余点数不足以招募任何名单目标时选择其他可负担英雄；实图与明确模拟的详情确认分别验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentBudgetRegressions.test_two_points_choose_visible_ranger_outside_unaffordable_list",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-120409-871"
+          ],
+          "status": "已纳入",
+          "reason": "剩余点数不足以招募任何名单目标时选择其他可负担英雄；实图与明确模拟的详情确认分别验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentBudgetRegressions.test_fallback_selection_retries_and_needs_exact_quota_receipt",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-120409-871",
+            "20261004-120450-584",
+            "20261004-120454-897"
+          ],
+          "status": "已纳入",
+          "reason": "剩余点数不足以招募任何名单目标时选择其他可负担英雄；实图与明确模拟的详情确认分别验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentBudgetRegressions.test_newly_read_unaffordable_prices_keep_current_affordable_candidate",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-120409-871"
+          ],
+          "status": "已纳入",
+          "reason": "剩余点数不足以招募任何名单目标时选择其他可负担英雄；实图与明确模拟的详情确认分别验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentBudgetRegressions.test_affordable_priority_still_precedes_fallback",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-120409-871"
+          ],
+          "status": "已纳入",
+          "reason": "剩余点数不足以招募任何名单目标时选择其他可负担英雄；实图与明确模拟的详情确认分别验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentBudgetRegressions.test_recruited_fallback_is_excluded_and_failed_click_cannot_confirm",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-120409-871"
+          ],
+          "status": "已纳入",
+          "reason": "剩余点数不足以招募任何名单目标时选择其他可负担英雄；实图与明确模拟的详情确认分别验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentBudgetRegressions.test_late_expensive_price_returns_to_previously_seen_affordable_hero",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-120409-871"
+          ],
+          "status": "已纳入",
+          "reason": "剩余点数不足以招募任何名单目标时选择其他可负担英雄；实图与明确模拟的详情确认分别验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentBudgetRegressions.test_zero_quota_skips_known_hero_only_event_without_continue_cancel_loop",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-120409-871",
+            "20261004-120256-056",
+            "20260926-202057-530"
+          ],
+          "status": "已纳入",
+          "reason": "剩余点数不足以招募任何名单目标时选择其他可负担英雄；实图与明确模拟的详情确认分别验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentBudgetRegressions.test_story_text_and_skip_without_known_hero_only_branch_cannot_discard",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-120256-056",
+            "20260926-202057-530"
+          ],
+          "status": "已纳入",
+          "reason": "剩余点数不足以招募任何名单目标时选择其他可负担英雄；实图与明确模拟的详情确认分别验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentBudgetRegressions.test_unknown_missing_target_keeps_affordable_fallback_at_search_boundary",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-120409-871"
+          ],
+          "status": "已纳入",
+          "reason": "剩余点数不足以招募任何名单目标时选择其他可负担英雄；实图与明确模拟的详情确认分别验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentBudgetRegressions.test_empty_final_view_returns_to_unlisted_fallback_even_with_unknown_target_cost",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-120409-871"
+          ],
+          "status": "已纳入",
+          "reason": "剩余点数不足以招募任何名单目标时选择其他可负担英雄；实图与明确模拟的详情确认分别验证"
         }
       ]
     },
@@ -19294,6 +19486,113 @@
           ],
           "status": "已纳入",
           "reason": "真实截图与模拟点击；验证重复帧、禁止动作和资源边界"
+        }
+      ]
+    },
+    {
+      "source": "tests/dimensional_exploration/test_dimensional_exploration_ui.py",
+      "business": "次元探查",
+      "status": "已纳入",
+      "reason": "全职业招募名单搜索与末尾候选回归",
+      "cases": [
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.FullClassRecruitmentRegressions.test_first_encountered_member_of_any_class_list_precedes_other_heroes",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081352-852"
+          ],
+          "status": "已纳入",
+          "reason": "模拟名单、滚动及额度；全职业先选先遇到的名单英雄，末尾没有目标再选可负担候选"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.FullClassRecruitmentRegressions.test_one_column_swipe_waits_for_interval_and_stable_next_view",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081352-852"
+          ],
+          "status": "已纳入",
+          "reason": "模拟名单、滚动及额度；全职业先选先遇到的名单英雄，末尾没有目标再选可负担候选"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.FullClassRecruitmentRegressions.test_recruited_and_unaffordable_members_do_not_stop_scanning",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081352-852"
+          ],
+          "status": "已纳入",
+          "reason": "模拟名单、滚动及额度；全职业先选先遇到的名单英雄，末尾没有目标再选可负担候选"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.FullClassRecruitmentRegressions.test_missing_member_selects_affordable_fallback_at_end",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081352-852"
+          ],
+          "status": "已纳入",
+          "reason": "模拟名单、滚动及额度；全职业先选先遇到的名单英雄，末尾没有目标再选可负担候选"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.FullClassRecruitmentRegressions.test_empty_completed_or_unaffordable_preferences_keep_affordable_fallback",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081352-852"
+          ],
+          "status": "已纳入",
+          "reason": "全职业空名单或已招齐仍搜索至边界；已知全部目标买不起时两帧稳定后直接选其他英雄"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.FullClassRecruitmentRegressions.test_unaffordable_final_view_returns_to_remembered_affordable_fallback",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081352-852"
+          ],
+          "status": "已纳入",
+          "reason": "模拟名单、滚动及额度；全职业先选先遇到的名单英雄，末尾没有目标再选可负担候选"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.FullClassRecruitmentRegressions.test_no_affordable_hero_leaves_without_spending_beyond_quota",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081352-852"
+          ],
+          "status": "已纳入",
+          "reason": "模拟名单、滚动及额度；全职业先选先遇到的名单英雄，末尾没有目标再选可负担候选"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.FullClassRecruitmentRegressions.test_missed_selection_retries_same_member_without_confirming_or_swiping",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081352-852"
+          ],
+          "status": "已纳入",
+          "reason": "模拟名单、滚动及额度；全职业先选先遇到的名单英雄，末尾没有目标再选可负担候选"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.FullClassRecruitmentRegressions.test_restart_pending_receipt_keeps_target_even_outside_current_lists",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081352-852"
+          ],
+          "status": "已纳入",
+          "reason": "模拟名单、滚动及额度；全职业先选先遇到的名单英雄，末尾没有目标再选可负担候选"
         }
       ]
     }

@@ -74,7 +74,16 @@
         "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentPriorityRegressions.test_unsent_confirmation_and_pending_receipt_cannot_advance_priorities",
         "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentPriorityRegressions.test_completed_list_skips_optional_recruitment_but_initial_can_fill",
         "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentPriorityRegressions.test_batch_progress_keeps_roster_but_new_run_clears_it",
-        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Screenshots.test_roster_marker_does_not_match_recruitment_upgrade_or_map"
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Screenshots.test_roster_marker_does_not_match_recruitment_upgrade_or_map",
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.FullClassRecruitmentRegressions.test_first_encountered_member_of_any_class_list_precedes_other_heroes",
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.FullClassRecruitmentRegressions.test_one_column_swipe_waits_for_interval_and_stable_next_view",
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.FullClassRecruitmentRegressions.test_recruited_and_unaffordable_members_do_not_stop_scanning",
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.FullClassRecruitmentRegressions.test_missing_member_selects_affordable_fallback_at_end",
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.FullClassRecruitmentRegressions.test_empty_completed_or_unaffordable_preferences_keep_affordable_fallback",
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.FullClassRecruitmentRegressions.test_unaffordable_final_view_returns_to_remembered_affordable_fallback",
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.FullClassRecruitmentRegressions.test_no_affordable_hero_leaves_without_spending_beyond_quota",
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.FullClassRecruitmentRegressions.test_missed_selection_retries_same_member_without_confirming_or_swiping",
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.FullClassRecruitmentRegressions.test_restart_pending_receipt_keeps_target_even_outside_current_lists"
       ]
     },
     "20260922-081357-541": {
@@ -686,7 +695,9 @@
       "used_by": [
         "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_unclaimed_reward_modal_has_priority_over_victory",
         "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_modal_restart_cancels_then_confirmed_skip_can_leave",
-        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_unreadable_reward_text_cannot_authorize_discard"
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_unreadable_reward_text_cannot_authorize_discard",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentBudgetRegressions.test_zero_quota_skips_known_hero_only_event_without_continue_cancel_loop",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentBudgetRegressions.test_story_text_and_skip_without_known_hero_only_branch_cannot_discard"
       ]
     },
     "20260921-105748-548": {
@@ -953,6 +964,27 @@
         "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_rank_reward_is_captured_and_marks_branch_visited_once"
       ]
     },
+    "20261003-112531-836": {
+      "path": "tests/fixtures/dimensional_exploration/recruitment/MuMu-20261003-112531-836.png",
+      "sha256": "b54d5c2a975f947191e93c4071416634cd46157cd8ef931b74f0bc2fa170308d",
+      "server": "global_cn",
+      "scene": "hero",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentViewportRegressions.test_scrolled_left_column_keeps_complete_names_and_costs",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentViewportRegressions.test_name_and_cost_fields_must_fit_before_ocr_clamping",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentViewportRegressions.test_visible_left_priority_retries_selection_without_swiping",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentViewportRegressions.test_repeated_boundary_frames_end_missing_priority_search"
+      ]
+    },
+    "20261003-112536-124": {
+      "path": "tests/fixtures/dimensional_exploration/recruitment/MuMu-20261003-112536-124.png",
+      "sha256": "e5f552e48ef8299f51d41d4aa30093766bc7c70f559f6cffd4a2d827e6cd45c3",
+      "server": "global_cn",
+      "scene": "hero",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentViewportRegressions.test_right_column_with_clipped_costs_is_not_recruited"
+      ]
+    },
     "20261003-112252-000": {
       "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261003-112252-000.png",
       "sha256": "c5b913e5a7b99ff4fd4fa74c8a7a6ff3fb2685995e0d6821708ae31c4fc9c54d",
@@ -1062,6 +1094,53 @@
         "tests.dimensional_exploration.test_dimensional_exploration_events.Oct03EventReceipts.test_prayer_is_free_experience_and_keeps_fragments"
       ],
       "source_receipt": "de15dd28022ab56c/20261003-172757-b9962b0f/after-02-map.png"
+    },
+    "20261004-120256-056": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261004-120256-056.png",
+      "sha256": "7a0b303de470f3f6f46a4962196dc230ddefc4e092c99518f3deb5ea1f99a0f4",
+      "server": "global_cn",
+      "scene": "narrow_passage_ranger_ticket",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentBudgetRegressions.test_event_ticket_opens_recruitment_instead_of_discarding_reward",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentBudgetRegressions.test_zero_quota_skips_known_hero_only_event_without_continue_cancel_loop",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentBudgetRegressions.test_story_text_and_skip_without_known_hero_only_branch_cannot_discard"
+      ]
+    },
+    "20261004-120409-871": {
+      "path": "tests/fixtures/dimensional_exploration/recruitment/MuMu-20261004-120409-871.png",
+      "sha256": "e0464d02695e137d532505bc8ffd3e707095d947341d110874e2388a435687b7",
+      "server": "global_cn",
+      "scene": "ranger_two_points_available",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentBudgetRegressions.test_ranger_rows_exclude_disabled_prices_and_keep_two_point_choices",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentBudgetRegressions.test_two_points_choose_visible_ranger_outside_unaffordable_list",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentBudgetRegressions.test_fallback_selection_retries_and_needs_exact_quota_receipt",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentBudgetRegressions.test_newly_read_unaffordable_prices_keep_current_affordable_candidate",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentBudgetRegressions.test_affordable_priority_still_precedes_fallback",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentBudgetRegressions.test_recruited_fallback_is_excluded_and_failed_click_cannot_confirm",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentBudgetRegressions.test_late_expensive_price_returns_to_previously_seen_affordable_hero",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentBudgetRegressions.test_zero_quota_skips_known_hero_only_event_without_continue_cancel_loop",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentBudgetRegressions.test_unknown_missing_target_keeps_affordable_fallback_at_search_boundary",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentBudgetRegressions.test_empty_final_view_returns_to_unlisted_fallback_even_with_unknown_target_cost"
+      ]
+    },
+    "20261004-120450-584": {
+      "path": "tests/fixtures/dimensional_exploration/rewards/MuMu-20261004-120450-584.png",
+      "sha256": "960b980ee0b84bf21eb0a1e6fe423eb35212511dd5971e295647e7585a2f1f1d",
+      "server": "global_cn",
+      "scene": "ranger_recruited_popup_quota_full",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentBudgetRegressions.test_fallback_selection_retries_and_needs_exact_quota_receipt"
+      ]
+    },
+    "20261004-120454-897": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261004-120454-897.png",
+      "sha256": "8acbcd751b44031570ed754ca418366f44ef2456f56813213a2a095ea360cf71",
+      "server": "global_cn",
+      "scene": "narrow_passage_ranger_recruited_narration",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentBudgetRegressions.test_fallback_selection_retries_and_needs_exact_quota_receipt"
+      ]
     }
   }
 }

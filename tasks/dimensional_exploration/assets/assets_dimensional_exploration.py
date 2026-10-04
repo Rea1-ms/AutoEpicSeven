@@ -808,10 +808,10 @@ OCR_HEROES = ButtonWrapper(
     cn=None,
     global_cn=Button(
         file='./assets/global_cn/dimensional_exploration/OCR_HEROES.png',
-        area=(345, 80, 1278, 600),
-        search=(325, 60, 1280, 620),
-        color=(65, 64, 70),
-        button=(345, 80, 1278, 600),
+        area=(322, 80, 1280, 600),
+        search=(302, 60, 1280, 620),
+        color=(60, 59, 64),
+        button=(322, 80, 1280, 600),
     ),
     global_en=None,
 )

@@ -3,7 +3,7 @@
 from dataclasses import replace
 from types import SimpleNamespace
 import unittest
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 import numpy as np
 
@@ -12,8 +12,9 @@ from module.config.config_manual import ManualConfig
 from module.device.screenshot import Screenshot
 from module.exception import RequestHumanTakeover
 from tasks.dimensional_exploration.recruitment import HeroCosts
+from tasks.dimensional_exploration.assets.assets_dimensional_exploration import REWARD_CLOSE
 from tasks.dimensional_exploration.vision import ExplorationVision, Hero
-from tasks.dimensional_exploration.event import EventMemory, decide_event
+from tasks.dimensional_exploration.event import EventMemory, decide_event, event_branch
 from tasks.dimensional_exploration.policy import EventChoice, RunProgress, choose_offer
 from tasks.dimensional_exploration.sampling import choose_sample
 
@@ -37,7 +38,7 @@ class RuntimeRegressions(unittest.TestCase):
         (config / 'dimensional_exploration_hero_costs_one.json').write_text(original, encoding='utf-8')
         (config / 'account.json').write_text('{}', encoding='utf-8')
         costs = HeroCosts.from_runtime(root)
-        self.assertEqual(costs.values, {'英雄甲': 4, '英雄乙': 2})
+        self.assertEqual(costs.values, {**HeroCosts().values, '英雄甲': 4, '英雄乙': 2})
         self.assertEqual(costs.path.parent, root / 'data' / 'dimensional_exploration')
         self.assertEqual([p.name for p in config.glob('*.json')], ['account.json'])
         archives = list((costs.path.parent / 'legacy').glob('*.json'))
@@ -103,10 +104,15 @@ class RuntimeRegressions(unittest.TestCase):
         task.config.DimensionalExploration_MagePriority = '智武'
         task.hero_costs.values['智武'] = 4
         vision.quota = Mock(return_value=(18, 20))
-        vision.heroes = Mock(side_effect=AssertionError('quota already rules out this target'))
-        task.handle_hero(vision)
-        self.assertEqual(clicks, ['BACK'])
+        vision.heroes = Mock(return_value=[Hero('其他英雄', 2, (400, 90, 550, 140))])
+        vision.hero_signature = [('其他英雄', 2, 400, 90)]
+        self.assertFalse(task.handle_hero(vision))
         self.assertIsNone(task._hero_selected)
+        self.assertTrue(task.handle_hero(vision))
+        self.assertEqual(clicks, ['SelectExplorationHero'])
+        self.assertEqual(task._hero_selected, '其他英雄')
+        self.assertEqual(task._hero_selected_cost, 2)
+        self.assertIsNone(task._recruit_pending)
 
     def test_modal_restart_cancels_then_confirmed_skip_can_leave(self):
         task, modal, clicks = task_for('20260926-202057-530')
@@ -339,5 +345,268 @@ class RecruitmentPriorityRegressions(unittest.TestCase):
         self.assertFalse(task.progress.settlement_seen)
 
 
+class RecruitmentViewportRegressions(unittest.TestCase):
+    def test_scrolled_left_column_keeps_complete_names_and_costs(self):
+        vision = ExplorationVision(frame('20261003-112531-836'))
+        self.assertEqual(vision.state(), 'hero')
+        heroes = vision.heroes()
+        self.assertEqual(len(heroes), 11)
+        values = {h.name: h.cost for h in heroes}
+        for name in ('赛珂兰特', '洁若米亚', '和英', '红丸', '莱娅'):
+            self.assertEqual(values[name], 3)
+        self.assertTrue(all(h.area[0] >= 322 for h in heroes))
+
+    def test_right_column_with_clipped_costs_is_not_recruited(self):
+        vision = ExplorationVision(frame('20261003-112536-124'))
+        heroes = vision.heroes()
+        self.assertEqual(len(heroes), 10)
+        self.assertNotIn('赛珂兰特', {h.name for h in heroes})
+        self.assertEqual(next(h.cost for h in heroes if h.name == '狮心王洁若米亚'), 4)
+
+    def test_name_and_cost_fields_must_fit_before_ocr_clamping(self):
+        vision = ExplorationVision(frame('20261003-112531-836'))
+        vision.tokens = Mock(side_effect=AssertionError('clipped fields must not be read'))
+        vision.number = Mock(side_effect=AssertionError('clipped costs must not be guessed'))
+        for rectangle in ((470, 133, 490, 159), (1230, 133, 1250, 159)):
+            with self.subTest(rectangle=rectangle), patch(
+                    'tasks.dimensional_exploration.vision.multi_match', return_value=[rectangle]):
+                self.assertEqual(vision.heroes(), [])
+        vision.tokens.assert_not_called()
+        vision.number.assert_not_called()
+
+    def test_visible_left_priority_retries_selection_without_swiping(self):
+        task, vision, clicks = task_for('20261003-112531-836')
+        task.config.DimensionalExploration_WarriorPriority = '洁若米亚'
+        self.assertFalse(task.handle_hero(vision))
+        self.assertTrue(task.handle_hero(vision))
+        self.assertTrue(task.handle_hero(vision))
+        self.assertEqual(task._hero_selected, '洁若米亚')
+        self.assertEqual(task._hero_selected_cost, 3)
+        self.assertEqual(clicks, ['SelectExplorationHero'] * 2)
+        self.assertIsNone(task._recruit_pending)
+        self.assertEqual(task._recruited_heroes, [])
+        task.device.swipe.assert_not_called()
+
+    def test_repeated_boundary_frames_end_missing_priority_search(self):
+        task, vision, clicks = task_for('20261003-112531-836')
+        task.config.DimensionalExploration_WarriorPriority = '未出现的目标英雄'
+        for _ in range(6):
+            task.handle_hero(vision)
+        self.assertEqual(task.device.swipe.call_count, 2)
+        self.assertEqual(clicks, ['SelectExplorationHero'])
+        self.assertEqual(task._hero_selected, '赛珂兰特')
+        self.assertEqual(task._hero_selected_cost, 3)
+        self.assertEqual(task._recruited_heroes, [])
+        self.assertIsNone(task._recruit_pending)
+
+
 if __name__ == '__main__':
     unittest.main()
+
+
+
+
+class RecruitmentBudgetRegressions(unittest.TestCase):
+    def ranger(self):
+        task, vision, clicks = task_for('20261004-120409-871')
+        task.config.DimensionalExploration_RangerPriority = '海边的维尔萝娜 > 伊赛丽亚'
+        task.hero_costs.values.update({'海边的维尔萝娜': 3, '伊赛丽亚': 3})
+        return task, vision, clicks
+
+    def test_event_ticket_opens_recruitment_instead_of_discarding_reward(self):
+        task, vision, clicks = task_for('20261004-120256-056')
+        self.assertEqual(vision.state(), 'resume_rewards')
+        self.assertTrue(task.handle_victory(vision))
+        self.assertEqual(clicks, ['ClaimExplorationBattleReward'])
+        self.assertFalse(task._reward_leave_authorized)
+
+    def test_ranger_rows_exclude_disabled_prices_and_keep_two_point_choices(self):
+        vision = ExplorationVision(frame('20261004-120409-871'))
+        heroes = vision.heroes()
+        self.assertEqual([(h.name, h.cost) for h in heroes], [
+            ('尤贝乌斯', 2), ('贝洛妮卡', 2), ('莉珈', 2), ('尤贝乌斯', 2)])
+        prices = {name: cost for name, cost, *_ in vision.hero_signature}
+        self.assertEqual(prices['伊赛丽亚'], 3)
+        self.assertEqual(prices['兰蒂'], 3)
+        # The last column's cost crop is clipped. Preserve the same strict
+        # viewport rule instead of pretending the visible red digit is a
+        # complete OCR field or weakening recognition for this repair.
+        self.assertNotIn('海边的维尔萝娜', prices)
+        self.assertNotIn('海边的维尔萝娜', {h.name for h in heroes})
+
+    def test_two_points_choose_visible_ranger_outside_unaffordable_list(self):
+        task, vision, clicks = self.ranger()
+        self.assertEqual(vision.state(), 'hero')
+        self.assertEqual(vision.quota(), (13, 15))
+        self.assertFalse(task.handle_hero(vision))
+        self.assertTrue(task.handle_hero(vision))
+        self.assertEqual(task._hero_selected, '尤贝乌斯')
+        self.assertEqual(task._hero_selected_cost, 2)
+        self.assertEqual(clicks, ['SelectExplorationHero'])
+        self.assertFalse(task._recruit_skipped)
+        self.assertIsNone(task._recruit_pending)
+        task.device.swipe.assert_not_called()
+
+    def test_fallback_selection_retries_and_needs_exact_quota_receipt(self):
+        task, vision, clicks = self.ranger()
+        task.handle_hero(vision)
+        task.handle_hero(vision)
+        self.assertTrue(task.handle_hero(vision))
+        self.assertEqual(clicks, ['SelectExplorationHero'] * 2)
+        self.assertIsNone(task._recruit_pending)
+        vision.selected_hero = Mock(return_value='尤贝乌斯')
+        vision.bright_text = Mock(return_value=True)
+        self.assertTrue(task.handle_hero(vision))
+        self.assertEqual(clicks[-1], 'HERO_CONFIRM')
+        self.assertEqual(task._recruit_pending, {'name': '尤贝乌斯', 'cost': 2, 'quota': [13, 15]})
+        self.assertEqual(task._recruited_heroes, [])
+        task.observe_recruitment('hero', vision)
+        self.assertEqual(task._recruited_heroes, [])
+        completed = ExplorationVision(frame('20261004-120450-584'))
+        self.assertEqual(completed.state(), 'reward')
+        self.assertEqual(completed.quota(), (15, 15))
+        # The result popup alone is not an expense receipt. The two later
+        # event frames explicitly show the same exact two-point increase.
+        task.observe_recruitment('reward', completed)
+        self.assertEqual(task._recruited_heroes, [])
+        self.assertTrue(task.click_action(REWARD_CLOSE))
+        narration = ExplorationVision(frame('20261004-120454-897'))
+        self.assertEqual(narration.state(), 'event')
+        task.observe_recruitment('event', narration)
+        self.assertEqual(task._recruited_heroes, [])
+        task.observe_recruitment('event', narration)
+        task.observe_recruitment('event', narration)
+        self.assertEqual(task._recruited_heroes, ['尤贝乌斯'])
+        self.assertIsNone(task._recruit_pending)
+        self.assertEqual(clicks[-1], 'REWARD_CLOSE')
+
+    def test_newly_read_unaffordable_prices_keep_current_affordable_candidate(self):
+        task, vision, clicks = self.ranger()
+        task.config.DimensionalExploration_RangerPriority = '伊赛丽亚 > 兰蒂'
+        for name in ('伊赛丽亚', '兰蒂'):
+            task.hero_costs.values.pop(name, None)
+        task.handle_hero(vision)
+        self.assertTrue(task.handle_hero(vision))
+        self.assertEqual(task._hero_selected, '尤贝乌斯')
+        self.assertEqual(task.hero_costs.values['伊赛丽亚'], 3)
+        self.assertEqual(task.hero_costs.values['兰蒂'], 3)
+        self.assertEqual(clicks, ['SelectExplorationHero'])
+        task.device.swipe.assert_not_called()
+
+    def test_affordable_priority_still_precedes_fallback(self):
+        task, vision, clicks = self.ranger()
+        task.config.DimensionalExploration_RangerPriority = '莉珈'
+        task.hero_costs.values['莉珈'] = 2
+        task.handle_hero(vision)
+        task.handle_hero(vision)
+        self.assertEqual(task._hero_selected, '莉珈')
+        self.assertEqual(clicks, ['SelectExplorationHero'])
+        task.device.swipe.assert_not_called()
+
+    def test_recruited_fallback_is_excluded_and_failed_click_cannot_confirm(self):
+        task, vision, clicks = self.ranger()
+        task._recruited_heroes = ['尤贝乌斯']
+        task.handle_hero(vision)
+        task.click_action = Mock(return_value=False)
+        self.assertFalse(task.handle_hero(vision))
+        self.assertEqual(task._hero_selected, '贝洛妮卡')
+        self.assertIsNone(task._recruit_pending)
+        task.click_action.assert_called_once()
+        self.assertEqual(clicks, [])
+        task.click_action = lambda button: clicks.append(str(button)) or True
+        self.assertTrue(task.handle_hero(vision))
+        self.assertEqual(clicks, ['SelectExplorationHero'])
+        self.assertIsNone(task._recruit_pending)
+        task.device.swipe.assert_not_called()
+
+    def test_late_expensive_price_returns_to_previously_seen_affordable_hero(self):
+        task, _, clicks = self.ranger()
+        task.config.DimensionalExploration_RangerPriority = '未知目标英雄'
+        vision = SimpleNamespace(quota=lambda: (13, 15), text=lambda _: '射手招募券',
+                                 selected_hero=lambda: '', bright_text=lambda _: True,
+                                 hero_signature=[('其他英雄', 2, 400, 90)],
+                                 heroes=Mock(return_value=[Hero('其他英雄', 2, (400, 90, 550, 140))]))
+        task.handle_hero(vision)
+        self.assertTrue(task.handle_hero(vision))
+        self.assertEqual(clicks, [])
+        self.assertEqual(task.device.swipe.call_count, 1)
+        vision.hero_signature = [('未知目标英雄', 3, 400, 90)]
+        vision.heroes.return_value = []
+        task.handle_hero(vision)
+        self.assertTrue(task.handle_hero(vision))
+        self.assertTrue(task._hero_returning)
+        self.assertEqual(task.device.swipe.call_args.args, ((470, 355), (798, 355)))
+        vision.hero_signature = [('其他英雄', 2, 400, 90)]
+        vision.heroes.return_value = [Hero('其他英雄', 2, (400, 90, 550, 140))]
+        task.handle_hero(vision)
+        self.assertTrue(task.handle_hero(vision))
+        self.assertEqual(task._hero_selected, '其他英雄')
+        self.assertEqual(clicks, ['SelectExplorationHero'])
+
+    def test_unknown_missing_target_keeps_affordable_fallback_at_search_boundary(self):
+        task, _, clicks = self.ranger()
+        task.config.DimensionalExploration_RangerPriority = '未知目标英雄'
+        vision = SimpleNamespace(quota=lambda: (13, 15), text=lambda _: '射手招募券',
+                                 selected_hero=lambda: '', bright_text=lambda _: True,
+                                 hero_signature=[('其他英雄', 2, 400, 90)],
+                                 heroes=Mock(return_value=[Hero('其他英雄', 2, (400, 90, 550, 140))]))
+        for _ in range(5):
+            task.handle_hero(vision)
+        self.assertEqual(clicks, [])
+        self.assertEqual(task.device.swipe.call_count, 2)
+        self.assertTrue(task.handle_hero(vision))
+        self.assertEqual(clicks, ['SelectExplorationHero'])
+        self.assertEqual(task._hero_selected, '其他英雄')
+        self.assertEqual(task._hero_selected_cost, 2)
+        self.assertIsNone(task._recruit_pending)
+
+    def test_empty_final_view_returns_to_unlisted_fallback_even_with_unknown_target_cost(self):
+        task, _, clicks = self.ranger()
+        task.config.DimensionalExploration_RangerPriority = '未知目标英雄'
+        vision = SimpleNamespace(quota=lambda: (13, 15), text=lambda _: '射手招募券',
+                                 selected_hero=lambda: '', bright_text=lambda _: True,
+                                 hero_signature=[('其他英雄', 2, 400, 90)],
+                                 heroes=Mock(return_value=[Hero('其他英雄', 2, (400, 90, 550, 140))]))
+        task.handle_hero(vision)
+        task.handle_hero(vision)
+        vision.hero_signature = [('其他昂贵英雄', 3, 400, 90)]
+        vision.heroes.return_value = []
+        for _ in range(6):
+            task.handle_hero(vision)
+        self.assertTrue(task._hero_returning)
+        self.assertEqual(clicks, [])
+        self.assertTrue(task.handle_hero(vision))
+        self.assertEqual(task.device.swipe.call_args.args, ((470, 355), (798, 355)))
+        vision.hero_signature = [('其他英雄', 2, 400, 90)]
+        vision.heroes.return_value = [Hero('其他英雄', 2, (400, 90, 550, 140))]
+        self.assertFalse(task.handle_hero(vision))
+        self.assertTrue(task.handle_hero(vision))
+        self.assertEqual(task._hero_selected, '其他英雄')
+        self.assertEqual(clicks, ['SelectExplorationHero'])
+        self.assertIsNone(task._recruit_pending)
+
+    def test_zero_quota_skips_known_hero_only_event_without_continue_cancel_loop(self):
+        task, picker, clicks = self.ranger()
+        picker.quota = Mock(return_value=(15, 15))
+        task.event_memory.begin(event_branch('narrow_passage.ranger'))
+        self.assertTrue(task.handle_hero(picker))
+        self.assertEqual(clicks, ['BACK'])
+        reward = ExplorationVision(frame('20261004-120256-056'))
+        self.assertTrue(task.handle_victory(reward))
+        self.assertTrue(task._reward_leave_authorized)
+        modal = ExplorationVision(frame('20260926-202057-530'))
+        task.handle_reward_leave(modal)
+        task.handle_reward_leave(modal)
+        self.assertEqual(clicks, ['BACK', 'RESUME_REWARDS_CONTINUE', 'REWARD_LEAVE_CONFIRM',
+                                  'REWARD_LEAVE_CONFIRM'])
+        task.observe_state('map')
+        self.assertFalse(task._recruit_skipped)
+        self.assertFalse(task._reward_leave_authorized)
+
+    def test_story_text_and_skip_without_known_hero_only_branch_cannot_discard(self):
+        task, reward, clicks = task_for('20261004-120256-056')
+        task._recruit_skipped = True
+        self.assertTrue(task.handle_victory(reward))
+        self.assertFalse(task._reward_leave_authorized)
+        task.handle_reward_leave(ExplorationVision(frame('20260926-202057-530')))
+        self.assertEqual(clicks, ['RESUME_REWARDS_CONTINUE', 'REWARD_LEAVE_CANCEL'])

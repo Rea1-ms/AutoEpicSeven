@@ -30,7 +30,13 @@ class HeroCosts:
 
     def __init__(self, path: Path | None = None):
         self.path = path
-        self.values = json.loads(path.read_text(encoding="utf-8")) if path and path.exists() else {}
+        table = json.loads(Path(__file__).with_name("hero_costs.json").read_text(encoding="utf-8"))
+        self.aliases = table["ocr_aliases"]
+        self.values = dict(table["heroes"])
+        if path and path.exists():
+            observed = json.loads(path.read_text(encoding="utf-8"))
+            self.values.update({self.aliases.get(name, name): cost for name, cost in observed.items()
+                                if name and type(cost) is int and 0 < cost <= 9})
 
     @classmethod
     def from_runtime(cls, root=Path(".")):
@@ -52,7 +58,8 @@ class HeroCosts:
         return costs
 
     def learn(self, signature):
-        updates = {name: cost for name, cost, *_ in signature if name and isinstance(cost, int) and 0 < cost <= 9}
+        updates = {self.aliases.get(name, name): cost for name, cost, *_ in signature
+                   if name and type(cost) is int and 0 < cost <= 9}
         if all(self.values.get(name) == cost for name, cost in updates.items()):
             return
         self.values.update(updates)
@@ -66,7 +73,8 @@ class HeroCosts:
         # Unknown names (including OCR variants) prevent a preflight skip.
         # Stored observations only avoid a fruitless search; current UI costs
         # and quota must still authorize every actual recruitment.
-        return bool(preferred) and all(name in self.values and self.values[name] > budget for name in preferred)
+        names = [self.aliases.get(name, name) for name in preferred]
+        return bool(names) and all(name in self.values and self.values[name] > budget for name in names)
 
 
 class RecruitmentMixin:
@@ -155,6 +163,7 @@ class RecruitmentMixin:
         self._hero_view = None
         self._hero_swipes = 0
         self._hero_best = None
+        self._hero_fallback_best = None
         self._hero_returning = False
         self._hero_selected = None
         self._hero_selected_cost = None
@@ -169,6 +178,12 @@ class RecruitmentMixin:
         return False
 
     def handle_hero(self, vision):
+        """Select within quota and confirm only the positively matched detail.
+
+        Pages:
+            in: hero-list picker
+            out: selected detail, recruitment result, or source reward/setup page
+        """
         if not self.action_ready():
             return False
         quota = vision.quota()
@@ -178,8 +193,9 @@ class RecruitmentMixin:
         title = vision.text(OCR_HERO_TITLE)
         unrestricted = "全职业" in title
         swipe_limit = 30
-        preferred = tuple(name for name in self.hero_priorities(title)
-                          if not self.recruited(name) and self.hero_costs.values.get(name, 0) <= budget)
+        targets = tuple(name for name in self.hero_priorities(title) if not self.recruited(name))
+        preferred = tuple(name for name in targets if self.hero_costs.values.get(name, 0) <= budget)
+        budget_fallback = not self._initial_recruitment and self.hero_costs.cannot_afford(targets, budget)
         if self._recruit_pending:
             # Never pick another hero while a previous confirmation is awaiting
             # its quota receipt. A repeated unchanged picker may retry only the
@@ -193,7 +209,7 @@ class RecruitmentMixin:
             self._hero_selected = self._recruit_pending["name"]
             self._hero_selected_cost = self._recruit_pending["cost"]
         if not self._initial_recruitment and (budget <= 0 or (
-                not unrestricted and not preferred)):
+                not unrestricted and not targets and not self._recruit_pending)):
             return self.skip_recruitment()
         # Selection recolors the row, which can hide its cost-icon template.
         # The detail pane and enabled confirm button are authoritative here.
@@ -206,8 +222,20 @@ class RecruitmentMixin:
                 return self.confirm_hero(quota)
             return False
         def best_visible(hero):
-            return (hero.cost <= budget and not self.recruited(hero.name)
-                    and (unrestricted or bool(preferred) and same_hero(hero.name, preferred[0])))
+            if hero.cost > budget or self.recruited(hero.name):
+                return False
+            # Keep an already selected/pending hero visible in the scan until
+            # its quota receipt is confirmed. Stopping at a different listed
+            # hero can hide the pinned row and cause a false takeover on retry.
+            if self._hero_selected is not None:
+                return same_hero(hero.name, self._hero_selected)
+            if self._hero_returning and self._hero_best is not None:
+                return same_hero(hero.name, self._hero_best[1])
+            if budget_fallback:
+                return True
+            if unrestricted:
+                return any(same_hero(hero.name, name) for name in preferred)
+            return bool(preferred) and same_hero(hero.name, preferred[0])
 
         heroes = [hero for hero in vision.heroes(stop_when=best_visible)
                   if hero.cost <= budget and not self.recruited(hero.name)]
@@ -227,25 +255,54 @@ class RecruitmentMixin:
                 return False
             return self.click_action(ClickButton(matching[0].area, name="SelectExplorationHero"))
 
-        if unrestricted and heroes:
-            self._hero_selected = heroes[0].name
-            self._hero_selected_cost = heroes[0].cost
-            return self.click_action(ClickButton(heroes[0].area, name="SelectExplorationHero"))
+        # Keep unlisted affordable names even while looking for a priority.
+        # A later stable page may teach the last unknown priority's expensive
+        # cost; its only affordable fallback can be on an earlier page. Store
+        # no click coordinates here: returning must locate it in a fresh frame.
+        for hero in heroes:
+            candidate = (hero.cost, hero.name)
+            if self._hero_fallback_best is None or candidate < self._hero_fallback_best:
+                self._hero_fallback_best = candidate
+        # Recompute after learning this stable frame. Filtering before learn()
+        # loses every newly known expensive target, then mistakes an empty
+        # preferred list for a completed roster and skips a usable ticket.
+        preferred = tuple(name for name in targets if self.hero_costs.values.get(name, 0) <= budget)
+        budget_fallback = not self._initial_recruitment and self.hero_costs.cannot_afford(targets, budget)
+        if budget_fallback:
+            if heroes:
+                chosen = heroes[0]
+                self._hero_selected, self._hero_selected_cost = chosen.name, chosen.cost
+                logger.info(f"招募剩余额度{budget}，名单英雄均不可负担，改选{chosen.name}（{chosen.cost}点）。")
+                return self.click_action(ClickButton(chosen.area, name="SelectExplorationHero"))
+            if self._hero_fallback_best is not None:
+                cost, name = self._hero_fallback_best
+                self._hero_best = ((len(preferred), cost, name), name)
+                self._hero_returning = True
+
+        if unrestricted:
+            # Full-class tickets use all configured class lists, in encounter
+            # order rather than searching for the globally highest priority.
+            # When a listed target may still be affordable, unlisted rows are
+            # fallback evidence until the boundary or bounded search limit.
+            listed = [h for h in heroes if any(same_hero(h.name, name) for name in preferred)]
+            if listed:
+                self._hero_selected = listed[0].name
+                self._hero_selected_cost = listed[0].cost
+                return self.click_action(ClickButton(listed[0].area, name="SelectExplorationHero"))
+        affordable = heroes
         if not self._initial_recruitment:
-            if not unrestricted and self.hero_costs.cannot_afford(preferred, budget):
-                return self.skip_recruitment()
-            if not unrestricted:
+            if not unrestricted and not budget_fallback and not self._hero_returning:
                 heroes = [h for h in heroes if any(same_hero(h.name, name) for name in preferred)]
 
         def rank(hero):
             return (next((i for i, name in enumerate(preferred) if same_hero(hero.name, name)),
                          len(preferred)), hero.cost, hero.name)
 
-        if heroes:
+        if heroes and not self._hero_returning:
             candidate = min(heroes, key=rank)
             if self._hero_best is None or rank(candidate) < self._hero_best[0]:
                 self._hero_best = (rank(candidate), candidate.name)
-            if rank(candidate)[0] == 0:
+            if not unrestricted and rank(candidate)[0] == 0:
                 self._hero_selected = candidate.name
                 self._hero_selected_cost = candidate.cost
                 return self.click_action(ClickButton(candidate.area, name="SelectExplorationHero"))
@@ -266,8 +323,26 @@ class RecruitmentMixin:
         else:
             self._hero_stalls = 0
         if self._hero_swipes >= swipe_limit or self._hero_stalls >= 2:
+            if unrestricted and heroes:
+                self._hero_selected = heroes[0].name
+                self._hero_selected_cost = heroes[0].cost
+                return self.click_action(ClickButton(heroes[0].area, name="SelectExplorationHero"))
             if self._hero_best is None:
                 if not self._initial_recruitment:
+                    # Unknown target prices cannot justify an early fallback.
+                    # Once the bounded search found no eligible listed hero,
+                    # however, preserve a usable ticket rather than discarding
+                    # it just because the affordable row was outside the list.
+                    if affordable:
+                        chosen = affordable[0]
+                        self._hero_selected, self._hero_selected_cost = chosen.name, chosen.cost
+                        logger.info(f"招募名单未找到可负担英雄，改选{chosen.name}（{chosen.cost}点）。")
+                        return self.click_action(ClickButton(chosen.area, name="SelectExplorationHero"))
+                    if self._hero_fallback_best is not None:
+                        cost, name = self._hero_fallback_best
+                        self._hero_best = ((len(preferred), cost, name), name)
+                        self._hero_returning = True
+                        return False
                     return self.skip_recruitment()
                 self.require_human("未找到额度内可招募的英雄，请检查优先名单和队伍。")
             self._hero_returning = True
