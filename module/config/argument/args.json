@@ -1193,6 +1193,10 @@
       "ThiefPriority": {
         "type": "textarea",
         "value": "保健室老师律荷 > 转学生艾庭 > 可丽"
+      },
+      "UpgradePriority": {
+        "type": "textarea",
+        "value": ""
       }
     },
     "DimensionalExplorationRuntime": {

@@ -318,6 +318,9 @@ DimensionalExploration:
   ThiefPriority:
     value: "保健室老师律荷 > 转学生艾庭 > 可丽"
     type: textarea
+  UpgradePriority:
+    value: ""
+    type: textarea
 
 DimensionalExplorationRuntime:
   Session:

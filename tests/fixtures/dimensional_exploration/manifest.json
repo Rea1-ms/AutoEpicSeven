@@ -26,7 +26,16 @@
       "scene": "lobby",
       "used_by": [
         "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_page_identity_and_modal_precedence",
-        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_main_loop_inspects_hp_and_saves_garden_outcomes_with_missed_click_frames"
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_main_loop_inspects_hp_and_saves_garden_outcomes_with_missed_click_frames",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_main_loop_retries_attack_and_reward_then_advances_both_narrations",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightHealthRegressions.test_main_loop_reads_roster_once_and_retries_rest_despite_ocr_changes",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightOutcomeRegressions.test_main_loop_freezes_pending_event_until_network_overlay_clears",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightOutcomeRegressions.test_captured_result_roster_network_and_map_do_not_repeat_rest",
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_main_loop_retries_rank_goal_selection_then_confirms_and_exits",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.CliffCoinEventTests.test_main_loop_retries_leave_preserves_fragments_and_samples_outcome_once",
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_mixed_rank_main_loop_retries_goal_hero_without_scrolling",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ForkSacrificeEventTests.test_main_loop_reads_hp_pays_normal_retries_and_reaches_both_results",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_main_loop_uses_production_intervals_for_both_hp_routes"
       ]
     },
     "20260922-081207-157": {
@@ -118,7 +127,8 @@
       "scene": "prepare",
       "used_by": [
         "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_page_identity_and_modal_precedence",
-        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_prepare_click_retains_battle_during_loading"
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_prepare_click_retains_battle_during_loading",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_main_loop_retries_attack_and_reward_then_advances_both_narrations"
       ]
     },
     "20260922-081430-868": {
@@ -129,7 +139,8 @@
       "used_by": [
         "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_auto_combat_only_toggles_on_positive_manual_marker",
         "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_page_identity_and_modal_precedence",
-        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_battle_hud_and_animation_keep_context_without_toggling_auto"
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_battle_hud_and_animation_keep_context_without_toggling_auto",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_main_loop_retries_attack_and_reward_then_advances_both_narrations"
       ]
     },
     "20260922-081440-084": {
@@ -139,7 +150,8 @@
       "scene": "battle",
       "used_by": [
         "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_auto_combat_only_toggles_on_positive_manual_marker",
-        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_battle_hud_and_animation_keep_context_without_toggling_auto"
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_battle_hud_and_animation_keep_context_without_toggling_auto",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_main_loop_retries_attack_and_reward_then_advances_both_narrations"
       ]
     },
     "20260922-081507-280": {
@@ -224,7 +236,16 @@
         "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_accessible_nodes_exclude_completed_and_gray_nodes",
         "tests.dimensional_exploration.test_dimensional_exploration_sampling.SamplingTests.test_unlisted_screenshot_is_sampled_after_two_reads_and_outcome_is_saved",
         "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_garden_saves_two_outcome_pages_and_deduplicates_repeated_frames",
-        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_main_loop_inspects_hp_and_saves_garden_outcomes_with_missed_click_frames"
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_main_loop_inspects_hp_and_saves_garden_outcomes_with_missed_click_frames",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_main_loop_retries_attack_and_reward_then_advances_both_narrations",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightHealthRegressions.test_main_loop_reads_roster_once_and_retries_rest_despite_ocr_changes",
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_main_loop_retries_rank_goal_selection_then_confirms_and_exits",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.CliffCoinEventTests.test_main_loop_retries_leave_preserves_fragments_and_samples_outcome_once",
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_mixed_rank_main_loop_retries_goal_hero_without_scrolling",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ForkSacrificeEventTests.test_sampling_picker_is_not_completion_and_records_both_narrations",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ForkSacrificeEventTests.test_main_loop_reads_hp_pays_normal_retries_and_reaches_both_results",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_sampling_records_random_reward_and_both_narrations_once",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_main_loop_uses_production_intervals_for_both_hp_routes"
       ]
     },
     "20260922-081603-149": {
@@ -355,7 +376,8 @@
         "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_critical_average_revives_before_life_recovery_and_healing",
         "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_critical_order_uses_first_available_action",
         "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_critical_selection_keeps_pending_revive_until_room_completion",
-        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_main_loop_reads_critical_roster_retries_then_reaches_revive"
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_main_loop_reads_critical_roster_retries_then_reaches_revive",
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_all_maxed_returns_and_leaves_rest_then_new_room_clears_cache"
       ]
     },
     "20260923-232309-289": {
@@ -366,7 +388,18 @@
       "used_by": [
         "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_page_identity_and_modal_precedence",
         "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Screenshots.test_roster_marker_does_not_match_recruitment_upgrade_or_map",
-        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_main_loop_inspects_roster_retries_then_reaches_upgrade"
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_main_loop_inspects_roster_retries_then_reaches_upgrade",
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_preflight_fails_before_any_screenshot_or_click",
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_real_unselected_and_selected_pickers_read_names_and_rank_fields",
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_unreadable_rank_or_name_cannot_authorize_selection",
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_target_selection_and_confirmation_retry_without_switching_hero",
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_restart_selected_wrong_hero_selects_configured_goal_first",
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_partial_roster_scans_before_fallback_and_returns_to_best_hero",
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_goal_on_later_page_wins_over_visible_fallback",
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_incomplete_boundary_and_search_limit_stop_without_fallback",
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_all_maxed_returns_and_leaves_rest_then_new_room_clears_cache",
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_main_loop_retries_rank_goal_selection_then_confirms_and_exits",
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_clipped_name_field_cannot_count_as_a_complete_hero"
       ]
     },
     "20260923-232312-127": {
@@ -375,7 +408,9 @@
       "server": "global_cn",
       "scene": "upgrade",
       "used_by": [
-        "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_upgrade_and_revive_confirm_selected_hero"
+        "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_upgrade_and_revive_confirm_selected_hero",
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_real_unselected_and_selected_pickers_read_names_and_rank_fields",
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_main_loop_retries_rank_goal_selection_then_confirms_and_exits"
       ]
     },
     "20260923-232331-766": {
@@ -487,7 +522,8 @@
       "server": "global_cn",
       "scene": "revive",
       "used_by": [
-        "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_upgrade_and_revive_confirm_selected_hero"
+        "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_upgrade_and_revive_confirm_selected_hero",
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_real_unselected_and_selected_pickers_read_names_and_rank_fields"
       ]
     },
     "20260923-233133-331": {
@@ -498,7 +534,8 @@
       "used_by": [
         "tests.dimensional_exploration.test_dimensional_exploration_events.EventTests.test_all_supplied_events_have_first_and_repeat_routes",
         "tests.dimensional_exploration.test_dimensional_exploration_events.EventTests.test_magnifier_is_not_a_collection_flag_and_click_avoids_preview",
-        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Rules.test_low_hp_uses_existing_free_fallback_without_spending_life"
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Rules.test_low_hp_uses_existing_free_fallback_without_spending_life",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_exact_costs_partial_rows_and_other_events_do_not_authorize_choice"
       ]
     },
     "20260923-233146-181": {
@@ -594,7 +631,8 @@
         "tests.dimensional_exploration.test_dimensional_exploration_events.EventTests.test_changed_cost_or_extra_condition_never_uses_old_table",
         "tests.dimensional_exploration.test_dimensional_exploration_events.EventTests.test_dice_crop_does_not_include_die_icon_number",
         "tests.dimensional_exploration.test_dimensional_exploration_events.EventTests.test_named_reward_requires_matching_card_and_is_not_repaid_via_another_branch",
-        "tests.dimensional_exploration.test_dimensional_exploration_events.EventTests.test_pending_choice_is_pinned_until_positive_progress_and_survives_restart"
+        "tests.dimensional_exploration.test_dimensional_exploration_events.EventTests.test_pending_choice_is_pinned_until_positive_progress_and_survives_restart",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_exact_costs_partial_rows_and_other_events_do_not_authorize_choice"
       ]
     },
     "20260925-113034-953": {
@@ -758,7 +796,8 @@
       "scene": "event",
       "used_by": [
         "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_supplied_screenshots_have_expected_page_states",
-        "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_event_choices_and_outcomes_use_real_screenshots"
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_event_choices_and_outcomes_use_real_screenshots",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_native_options_reward_rosters_and_two_narrations"
       ]
     },
     "20260929-230255-086": {
@@ -859,7 +898,8 @@
       "scene": "event",
       "used_by": [
         "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_supplied_screenshots_have_expected_page_states",
-        "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_event_choices_and_outcomes_use_real_screenshots"
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_event_choices_and_outcomes_use_real_screenshots",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_native_options_reward_rosters_and_two_narrations"
       ]
     },
     "20260929-230953-691": {
@@ -896,7 +936,9 @@
         "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_event_checks_stable_complete_roster_before_hp_choice",
         "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_partial_roster_waits_without_selecting_or_returning",
         "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_positive_outcome_clears_hp_but_unknown_frame_keeps_it",
-        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_main_loop_inspects_hp_and_saves_garden_outcomes_with_missed_click_frames"
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_main_loop_inspects_hp_and_saves_garden_outcomes_with_missed_click_frames",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightHealthRegressions.test_new_known_event_requires_new_roster_and_partial_rows_wait",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_native_options_reward_rosters_and_two_narrations"
       ]
     },
     "20261001-133151-873": {
@@ -1177,6 +1219,350 @@
       "scene": "narrow_passage_ranger_recruited_narration",
       "used_by": [
         "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentBudgetRegressions.test_fallback_selection_retries_and_needs_exact_quota_receipt"
+      ]
+    },
+    "20261004-125347-490": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261004-125347-490.png",
+      "sha256": "07791007ea3be50be22d2555145292e2b7e5dca385afa263eff8d7582cabc18a",
+      "server": "global_cn",
+      "scene": "event",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_supplied_pages_and_animation_readiness",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_main_loop_retries_attack_and_reward_then_advances_both_narrations"
+      ]
+    },
+    "20261004-125352-386": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261004-125352-386.png",
+      "sha256": "71513c340ba8320830fe702719b414165bfe13178263ca4cfc8b8be2f78b9d93",
+      "server": "global_cn",
+      "scene": "event",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_supplied_pages_and_animation_readiness",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_real_options_resources_and_attack_click_avoid_magnifier",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_main_loop_retries_attack_and_reward_then_advances_both_narrations"
+      ]
+    },
+    "20261004-125521-108": {
+      "path": "tests/fixtures/dimensional_exploration/rewards/MuMu-20261004-125521-108.png",
+      "sha256": "ed094e42380d6205c6eb2adbb69f9dc3784cc9b6a9f2c2b0113ce9887664f8a3",
+      "server": "global_cn",
+      "scene": "reward",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_supplied_pages_and_animation_readiness",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_reward_requires_pending_attack_and_matching_card_across_restart",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_main_loop_retries_attack_and_reward_then_advances_both_narrations"
+      ]
+    },
+    "20261004-125528-432": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261004-125528-432.png",
+      "sha256": "964dd4abc0f7afec66f0ea20e167aacf87ecb14147896f39097f7abdeddaae59",
+      "server": "global_cn",
+      "scene": "event",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_supplied_pages_and_animation_readiness",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_reward_requires_pending_attack_and_matching_card_across_restart",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_main_loop_retries_attack_and_reward_then_advances_both_narrations"
+      ]
+    },
+    "20261004-125532-398": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261004-125532-398.png",
+      "sha256": "1f90d403c1f87489dc25952e074c89a26a6e08af5263649574cf0d79dab9ef82",
+      "server": "global_cn",
+      "scene": "event",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_supplied_pages_and_animation_readiness",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_reward_requires_pending_attack_and_matching_card_across_restart",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_main_loop_retries_attack_and_reward_then_advances_both_narrations"
+      ]
+    },
+    "20261004-134045-652": {
+      "path": "tests/fixtures/dimensional_exploration/recruitment/MuMu-20261004-134045-652.png",
+      "sha256": "5d3374761f42f122ea2e4095830a87a978bfc5d9ae270a348b9349e6fae2f033",
+      "server": "global_cn",
+      "scene": "roster",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightHealthRegressions.test_supplied_firelight_and_complete_roster_read_lowest_hp",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightHealthRegressions.test_known_ocr_variants_keep_roster_result_without_reopening",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightHealthRegressions.test_main_loop_reads_roster_once_and_retries_rest_despite_ocr_changes",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightOutcomeRegressions.test_real_rest_result_and_roster_confirm_fifteen_percent_healing"
+      ]
+    },
+    "20261004-134120-334": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261004-134120-334.png",
+      "sha256": "56e315f65eb54bf8d884652bb0e4ed0c426e2e6b4cc9c006f6c84c1dc926ac20",
+      "server": "global_cn",
+      "scene": "event",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightHealthRegressions.test_supplied_firelight_and_complete_roster_read_lowest_hp",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightHealthRegressions.test_firelight_prefers_loot_only_above_the_cost_adjusted_floor",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightHealthRegressions.test_dice_route_is_disabled_even_when_other_choices_are_unavailable",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightHealthRegressions.test_known_ocr_variants_keep_roster_result_without_reopening",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightHealthRegressions.test_reordered_known_options_keep_confirmed_hp",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightHealthRegressions.test_new_known_event_requires_new_roster_and_partial_rows_wait",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightHealthRegressions.test_main_loop_reads_roster_once_and_retries_rest_despite_ocr_changes",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightOutcomeRegressions.test_main_loop_freezes_pending_event_until_network_overlay_clears",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightOutcomeRegressions.test_captured_result_roster_network_and_map_do_not_repeat_rest",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_native_options_reward_rosters_and_two_narrations"
+      ]
+    },
+    "20261004-140207-882": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261004-140207-882.png",
+      "sha256": "1ee301d94499f1a67b8492304d8d49498a2d2ac135909216a44e3684b23e4b50",
+      "server": "global_cn",
+      "scene": "event_rest_result_toast",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightOutcomeRegressions.test_real_rest_result_and_roster_confirm_fifteen_percent_healing",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightOutcomeRegressions.test_network_markers_distinguish_countdown_retry_and_clear_pages",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightOutcomeRegressions.test_captured_result_roster_network_and_map_do_not_repeat_rest"
+      ]
+    },
+    "20261004-140210-503": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261004-140210-503.png",
+      "sha256": "7fc40a46b29c644a6c2c6d2a88f6a885690dc1e10203d0ab3cacda7299a8a927",
+      "server": "global_cn",
+      "scene": "event_rest_result",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightOutcomeRegressions.test_real_rest_result_and_roster_confirm_fifteen_percent_healing",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightOutcomeRegressions.test_network_markers_distinguish_countdown_retry_and_clear_pages",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightOutcomeRegressions.test_overlay_waits_then_retries_visible_button_at_production_interval",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightOutcomeRegressions.test_main_loop_freezes_pending_event_until_network_overlay_clears",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightOutcomeRegressions.test_captured_result_roster_network_and_map_do_not_repeat_rest"
+      ]
+    },
+    "20261004-140215-765": {
+      "path": "tests/fixtures/dimensional_exploration/recruitment/MuMu-20261004-140215-765.png",
+      "sha256": "eb253ce4c3ae3cb87adcbe3f93df9e6a7dc96ece441ae6b88e479d097566129e",
+      "server": "global_cn",
+      "scene": "roster_after_rest",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightOutcomeRegressions.test_real_rest_result_and_roster_confirm_fifteen_percent_healing",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightOutcomeRegressions.test_network_markers_distinguish_countdown_retry_and_clear_pages",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightOutcomeRegressions.test_captured_result_roster_network_and_map_do_not_repeat_rest"
+      ]
+    },
+    "20261004-140222-304": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261004-140222-304.png",
+      "sha256": "272b98bd0245a13bbbf842253f499cb2163e04329fc9b32dec75c616d86d972c",
+      "server": "global_cn",
+      "scene": "network_countdown_over_event",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightOutcomeRegressions.test_network_markers_distinguish_countdown_retry_and_clear_pages",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightOutcomeRegressions.test_overlay_waits_then_retries_visible_button_at_production_interval",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightOutcomeRegressions.test_main_loop_freezes_pending_event_until_network_overlay_clears",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightOutcomeRegressions.test_captured_result_roster_network_and_map_do_not_repeat_rest"
+      ]
+    },
+    "20261004-140225-272": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261004-140225-272.png",
+      "sha256": "196e30eff29741e8e29b74a9fb958736176732fbc765c915a07b9d904a519267",
+      "server": "global_cn",
+      "scene": "network_retry_over_event",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightOutcomeRegressions.test_network_markers_distinguish_countdown_retry_and_clear_pages",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightOutcomeRegressions.test_overlay_waits_then_retries_visible_button_at_production_interval",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightOutcomeRegressions.test_main_loop_freezes_pending_event_until_network_overlay_clears",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightOutcomeRegressions.test_captured_result_roster_network_and_map_do_not_repeat_rest"
+      ]
+    },
+    "20261004-140228-740": {
+      "path": "tests/fixtures/dimensional_exploration/map/MuMu-20261004-140228-740.png",
+      "sha256": "181e7aeff418b445132971c341ab2ded9913b0bf5bebe20ed9013d0077cde4a6",
+      "server": "global_cn",
+      "scene": "map_after_rest",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightOutcomeRegressions.test_real_rest_result_and_roster_confirm_fifteen_percent_healing",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightOutcomeRegressions.test_network_markers_distinguish_countdown_retry_and_clear_pages",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightOutcomeRegressions.test_main_loop_freezes_pending_event_until_network_overlay_clears",
+        "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightOutcomeRegressions.test_captured_result_roster_network_and_map_do_not_repeat_rest"
+      ]
+    },
+    "20261004-143741-000": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261004-143741-000.png",
+      "sha256": "8e696fd92dfde6e47c7f652f907c0802bef710324a53ad1aeb0b1d8459c39d66",
+      "server": "global_cn",
+      "scene": "event",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.CliffCoinEventTests.test_real_stages_and_leave_narration_keep_exact_resources",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.CliffCoinEventTests.test_live_catalogue_chooses_right_leave_card_without_sampling_or_hp"
+      ]
+    },
+    "20261004-145456-631": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261004-145456-631.png",
+      "sha256": "38f4f5308372cc17f18aef0b8390bd4644ae325000ec4580f332955528f0da52",
+      "server": "global_cn",
+      "scene": "event",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.CliffCoinEventTests.test_real_stages_and_leave_narration_keep_exact_resources",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.CliffCoinEventTests.test_live_catalogue_chooses_right_leave_card_without_sampling_or_hp",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.CliffCoinEventTests.test_main_loop_retries_leave_preserves_fragments_and_samples_outcome_once"
+      ]
+    },
+    "20261004-145530-255": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261004-145530-255.png",
+      "sha256": "61cc23aeab9b869d3c2fe7d0444699037bb658f24c8d89a98995ecfbbe4f189b",
+      "server": "global_cn",
+      "scene": "event",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.CliffCoinEventTests.test_real_stages_and_leave_narration_keep_exact_resources",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.CliffCoinEventTests.test_main_loop_retries_leave_preserves_fragments_and_samples_outcome_once"
+      ]
+    },
+    "20261004-151606-257": {
+      "path": "tests/fixtures/dimensional_exploration/rest/MuMu-20261004-151606-257.png",
+      "sha256": "c489d1466f5534ae388b416d35b6da843ecb68ab8caf51b2ccb4d2682cdb1725",
+      "server": "global_cn",
+      "scene": "upgrade",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_supplied_mixed_rank_roster_reads_first_one_and_origin_two",
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_missing_rank_pixels_do_not_default_to_one_or_choose_a_hero",
+        "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_mixed_rank_main_loop_retries_goal_hero_without_scrolling"
+      ]
+    },
+    "20261004-161405-470": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261004-161405-470.png",
+      "sha256": "500ffb073bf1468e39060d2128574f9477f07f0875c875e4a70d68f5307d4dff",
+      "server": "global_cn",
+      "scene": "event",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ForkSacrificeEventTests.test_real_pages_distinguish_normal_special_hp_and_one_item_payment",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ForkSacrificeEventTests.test_sampling_picker_is_not_completion_and_records_both_narrations",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ForkSacrificeEventTests.test_main_loop_reads_hp_pays_normal_retries_and_reaches_both_results"
+      ]
+    },
+    "20261004-161414-135": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261004-161414-135.png",
+      "sha256": "240798ef77f407a2228dc527c4413e5c5e00f685722df6231d4c5b29a3d813fc",
+      "server": "global_cn",
+      "scene": "roster",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ForkSacrificeEventTests.test_real_pages_distinguish_normal_special_hp_and_one_item_payment",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ForkSacrificeEventTests.test_main_loop_reads_hp_pays_normal_retries_and_reaches_both_results"
+      ]
+    },
+    "20261004-161432-079": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261004-161432-079.png",
+      "sha256": "a343fa769ea5c61f7b3c711aa94bcc5ed255c1ce8fc8aaf6e20599212185eb82",
+      "server": "global_cn",
+      "scene": "sacrifice",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ForkSacrificeEventTests.test_real_pages_distinguish_normal_special_hp_and_one_item_payment",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ForkSacrificeEventTests.test_normal_selection_and_confirm_retry_preserve_unpaid_receipt",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ForkSacrificeEventTests.test_restart_or_changed_selection_clears_before_confirm_and_requires_event",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ForkSacrificeEventTests.test_unknown_fields_special_only_and_scan_boundary_never_pay",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ForkSacrificeEventTests.test_sampling_picker_is_not_completion_and_records_both_narrations",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ForkSacrificeEventTests.test_main_loop_reads_hp_pays_normal_retries_and_reaches_both_results"
+      ]
+    },
+    "20261004-161439-143": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261004-161439-143.png",
+      "sha256": "6c6103e6bc7cf4c960f30278510559afb7063f9c91cddff08e5268dcf4eb8c96",
+      "server": "global_cn",
+      "scene": "sacrifice",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ForkSacrificeEventTests.test_real_pages_distinguish_normal_special_hp_and_one_item_payment",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ForkSacrificeEventTests.test_normal_selection_and_confirm_retry_preserve_unpaid_receipt",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ForkSacrificeEventTests.test_restart_or_changed_selection_clears_before_confirm_and_requires_event",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ForkSacrificeEventTests.test_sampling_picker_is_not_completion_and_records_both_narrations",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ForkSacrificeEventTests.test_main_loop_reads_hp_pays_normal_retries_and_reaches_both_results"
+      ]
+    },
+    "20261004-161443-261": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261004-161443-261.png",
+      "sha256": "f1541ec5a776149f225f9744ce11f7c5429644a97baf44aae2311f03f43d3f75",
+      "server": "global_cn",
+      "scene": "event",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ForkSacrificeEventTests.test_real_pages_distinguish_normal_special_hp_and_one_item_payment",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ForkSacrificeEventTests.test_sampling_picker_is_not_completion_and_records_both_narrations",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ForkSacrificeEventTests.test_main_loop_reads_hp_pays_normal_retries_and_reaches_both_results"
+      ]
+    },
+    "20261004-161448-012": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261004-161448-012.png",
+      "sha256": "0a9de9a7747e2e0f7ce9a4a3ab30b492b6bdccb5148b982e7871b444cbee702c",
+      "server": "global_cn",
+      "scene": "event",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ForkSacrificeEventTests.test_real_pages_distinguish_normal_special_hp_and_one_item_payment",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ForkSacrificeEventTests.test_sampling_picker_is_not_completion_and_records_both_narrations",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ForkSacrificeEventTests.test_main_loop_reads_hp_pays_normal_retries_and_reaches_both_results"
+      ]
+    },
+    "20261004-161453-293": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261004-161453-293.png",
+      "sha256": "2b13b45d008015e84c8c971cc1e974fbb5e58089b22d2fc79174408a22e58e78",
+      "server": "global_cn",
+      "scene": "roster",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ForkSacrificeEventTests.test_real_pages_distinguish_normal_special_hp_and_one_item_payment"
+      ]
+    },
+    "20261004-175956-091": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261004-175956-091.png",
+      "sha256": "49b5b91b417eed13409f79372b0ccbf5025606a1d597796423860e4ea40220bf",
+      "server": "global_cn",
+      "scene": "event",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_native_options_reward_rosters_and_two_narrations",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_live_selection_waits_for_hp_then_uses_loot_or_free_fragments",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_sampling_records_random_reward_and_both_narrations_once",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_main_loop_uses_production_intervals_for_both_hp_routes"
+      ]
+    },
+    "20261004-180237-343": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261004-180237-343.png",
+      "sha256": "204d5974dfe5a3faeef477bdb17bcee2d518d9b55e5cc4a03378d82cf88c549b",
+      "server": "global_cn",
+      "scene": "roster",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_native_options_reward_rosters_and_two_narrations",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_live_selection_waits_for_hp_then_uses_loot_or_free_fragments",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_sampling_records_random_reward_and_both_narrations_once",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_main_loop_uses_production_intervals_for_both_hp_routes"
+      ]
+    },
+    "20261004-180244-044": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261004-180244-044.png",
+      "sha256": "66da411b74627ea35e8b78597055f6688ffc0c3fb97896c62a6e4912a9d5d6e4",
+      "server": "global_cn",
+      "scene": "reward",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_native_options_reward_rosters_and_two_narrations",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_sampling_records_random_reward_and_both_narrations_once",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_main_loop_uses_production_intervals_for_both_hp_routes"
+      ]
+    },
+    "20261004-180247-666": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261004-180247-666.png",
+      "sha256": "d0d03ebeea9e12db8060bf4268d7cdbdcfefb14c48da5e0fe44f3e4756bfc279",
+      "server": "global_cn",
+      "scene": "event",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_native_options_reward_rosters_and_two_narrations",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_sampling_records_random_reward_and_both_narrations_once",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_main_loop_uses_production_intervals_for_both_hp_routes"
+      ]
+    },
+    "20261004-180348-232": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261004-180348-232.png",
+      "sha256": "df1e77324b87001c3dbe9ac58f5f76bbe5993c14d94cbbb1050ee855847076be",
+      "server": "global_cn",
+      "scene": "roster",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_native_options_reward_rosters_and_two_narrations",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_live_selection_waits_for_hp_then_uses_loot_or_free_fragments",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_main_loop_uses_production_intervals_for_both_hp_routes"
+      ]
+    },
+    "20261004-180354-458": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261004-180354-458.png",
+      "sha256": "cf65a99fd3595e103b7880bdab09627c2a07db0902ba40e6939a0eb8af210fb5",
+      "server": "global_cn",
+      "scene": "event",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_native_options_reward_rosters_and_two_narrations",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_sampling_records_random_reward_and_both_narrations_once",
+        "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_main_loop_uses_production_intervals_for_both_hp_routes"
       ]
     }
   }

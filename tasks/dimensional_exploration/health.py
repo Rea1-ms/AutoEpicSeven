@@ -3,6 +3,7 @@
 from module.logger import logger
 from tasks.base.assets.assets_base_page import BACK
 from tasks.dimensional_exploration.assets.assets_dimensional_exploration import EVENT_HERO_ENTRY
+from tasks.dimensional_exploration.event import match_event
 from tasks.dimensional_exploration.policy import normalize
 
 
@@ -24,7 +25,18 @@ class EventHealthMixin:
             in: event options
             out: event options with HP ready, or the owned-hero roster
         """
-        context = (normalize(story), tuple(normalize(c.text) for c in choices))
+        # Known options are already validated against exact catalogue costs.
+        # Their stable event/branch identity, not OCR spelling or row order,
+        # owns the roster result. "骰子" may alternate with "般子" or "殷"
+        # after returning from the roster; using raw text would erase HP and
+        # repeatedly reopen the roster until the two-button click guard fires.
+        # A different complete stage still invalidates HP. Unknown sampling
+        # retains its exact-text context because no reviewed identity exists.
+        matched = match_event(choices, story)
+        if matched is not None and len(matched[1]) == len(matched[0].branches):
+            context = ("catalog", matched[0].event_id, tuple(sorted(branch.key for _, branch in matched[1])))
+        else:
+            context = ("sampling", normalize(story), tuple(normalize(c.text) for c in choices))
         if context != self._event_health_context:
             self.reset_event_health()
             self._event_health_context = context

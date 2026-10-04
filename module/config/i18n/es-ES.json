@@ -801,6 +801,10 @@
     "ThiefPriority": {
       "name": "Ladrón prioridad de héroes",
       "help": "Escribe los nombres chinos del juego por prioridad, separados por >, comas o saltos de línea. Si no hay un héroe preferido asequible, elige uno de coste bajo."
+    },
+    "UpgradePriority": {
+      "name": "Prioridad de ascenso",
+      "help": "Escribe Nombre del héroe=Rango objetivo en cada línea, de 1 a 5; por ejemplo, 起源拉斯=3. Cada nombre debe figurar en una de las seis listas de reclutamiento. Cumple los objetivos en orden, después sube los héroes de las listas al rango 5 y finalmente los demás. Déjalo vacío para completar primero las listas de reclutamiento."
     }
   },
   "DimensionalExplorationRuntime": {

@@ -9,6 +9,7 @@ import module.config.server as server
 from module.exception import RequestHumanTakeover
 from module.logger import logger
 from tasks.base.ui import UI
+from tasks.base.assets.assets_base_popup import NETWORK_ERROR_ABNORMAL, TOUCH_TO_CLOSE
 from tasks.dimensional_exploration.assets.assets_dimensional_exploration import (
     BUY_CANCEL, BUY_CONFIRM, BUY_CURRENCY, EVENT_NEXT, EXPLORE_ENTER,
     FAILED_CHECK, LOBBY_CONTINUE, LOBBY_START, LOOT_CHECK, MANUAL_TARGET, NODE_ENTER,
@@ -30,6 +31,8 @@ from tasks.dimensional_exploration.health import EventHealthMixin
 from tasks.dimensional_exploration.rest import RestMixin
 from tasks.dimensional_exploration.starting_strategy import StartingStrategyMixin
 from tasks.dimensional_exploration.recruitment import HeroCosts, RecruitmentMixin
+from tasks.dimensional_exploration.upgrade import UpgradeMixin
+from tasks.dimensional_exploration.sacrifice import SacrificeMixin
 from tasks.dimensional_exploration.sampling import EventSampler, choose_sample, sampling_balances, text_key
 from tasks.dimensional_exploration.vision import ExplorationVision, match_in
 from tasks.dungeon.assets.assets_dungeon_action import AUTO_COMBAT
@@ -38,7 +41,7 @@ from tasks.dungeon.assets.assets_dungeon_state import (
 )
 
 
-class DimensionalExploration(StartingStrategyMixin, RestMixin, EventHealthMixin, RecruitmentMixin, UI):
+class DimensionalExploration(StartingStrategyMixin, RestMixin, EventHealthMixin, UpgradeMixin, SacrificeMixin, RecruitmentMixin, UI):
     def __init__(self, config, device=None, task=None):
         super().__init__(config, device=device, task=task)
         self._last_state = None
@@ -77,6 +80,8 @@ class DimensionalExploration(StartingStrategyMixin, RestMixin, EventHealthMixin,
         self.reset_hero_search()
         self.reset_event_health()
         self.reset_rest_health()
+        self.reset_upgrade_search()
+        self.reset_sacrifice()
 
     def action_ready(self):
         return self.interval_is_reached("ExplorationAction", interval=2)
@@ -86,6 +91,19 @@ class DimensionalExploration(StartingStrategyMixin, RestMixin, EventHealthMixin,
             return False
         self.device.click(button)
         self.interval_reset("ExplorationAction", interval=2)
+        return True
+
+    def handle_network_overlay(self):
+        if not self.appear(NETWORK_ERROR_ABNORMAL):
+            return False
+        # The dimmed page still matches EVENT_CHECK and EVENT_NEXT. Consume
+        # every overlay frame before page observations, otherwise a countdown
+        # can confirm the pending event receipt and authorize a hidden click.
+        # The retry marker supplies its current offset only when it is visible;
+        # do not reuse the generic sleep-and-click recovery or an old offset.
+        if self.appear(TOUCH_TO_CLOSE) and self.click_action(TOUCH_TO_CLOSE):
+            logger.warning("Exploration network abnormal, clicking visible retry")
+        self._unreadable.reset()
         return True
 
     def require_human(self, message):
@@ -133,6 +151,7 @@ class DimensionalExploration(StartingStrategyMixin, RestMixin, EventHealthMixin,
         if not server.is_oversea_server(self.config.Emulator_PackageName) or server.lang != "global_cn":
             logger.info("Dimensional exploration currently supports the global Chinese client only.")
             return
+        self.validate_upgrade_priority()
         self.target = int(self.config.DimensionalExploration_RunCount)
         if not 1 <= self.target <= 999:
             raise RequestHumanTakeover("探查轮数应在1至999之间。")
@@ -166,6 +185,8 @@ class DimensionalExploration(StartingStrategyMixin, RestMixin, EventHealthMixin,
                 skip_first_screenshot = False
             else:
                 self.device.screenshot()
+            if self.handle_network_overlay():
+                continue
             vision = ExplorationVision(self.device.image)
             state = self.resolve_state(vision)
             if state in ("title", "lobby") and self.progress.completed >= self.target:
@@ -176,6 +197,8 @@ class DimensionalExploration(StartingStrategyMixin, RestMixin, EventHealthMixin,
                 continue
             self.observe_event(state, vision)
             self.observe_rest_health(state)
+            self.observe_upgrade(state)
+            self.observe_sacrifice(state)
             self.observe_recruitment(state, vision)
             if state == "settlement":
                 if not self.handle_settlement(vision) and self._unreadable.reached():
@@ -195,6 +218,7 @@ class DimensionalExploration(StartingStrategyMixin, RestMixin, EventHealthMixin,
                 "event": self.handle_event, "shop": self.handle_shop,
                 "buy": self.handle_buy, "rest": self.handle_rest,
                 "upgrade": self.handle_rest_hero, "revive": self.handle_rest_hero,
+                "sacrifice": self.handle_sacrifice,
                 "supply_room": self.handle_supply_room, "loot": self.handle_loot,
                 "victory": self.handle_victory, "battle": self.handle_battle,
                 "resume_rewards": self.handle_victory,
@@ -486,17 +510,20 @@ class DimensionalExploration(StartingStrategyMixin, RestMixin, EventHealthMixin,
         frames = self.sampler.active["frames"]
         # Combat may last minutes. Save its entry once, not every screenshot;
         # only narration and reward cards need text to distinguish subpages.
-        if state not in ("event", "reward", "resume_rewards", "victory") and state not in self.sampler.END_STATES and any(
+        if state not in ("event", "reward", "resume_rewards", "victory", "sacrifice") and state not in self.sampler.END_STATES and any(
                 f["state"] == state for f in frames):
             return
         text = vision.event_story() if narration else vision.event_reward() if state == "reward" else ""
         if state in ("resume_rewards", "victory"):
             region = OCR_RESUME_REWARDS if state == "resume_rewards" else OCR_BATTLE_REWARDS
             text = "".join(t.ocr_text for t in vision.tokens(region))
+        if state == "sacrifice":
+            text = f"选择计数：{vision.sacrifice_counter()}"
         if state not in self.sampler.END_STATES and any(
                 f["state"] == state and normalize(f["text"]) == normalize(text) for f in frames):
             return
-        self.sampler.observe(state, vision.image, text=text, resources=sampling_balances(vision), narration=narration)
+        self.sampler.observe(state, vision.image, text=text, resources=sampling_balances(vision), narration=narration,
+                             confirmed=state != "sacrifice")
 
     def handle_shop(self, vision):
         if not self.action_ready():

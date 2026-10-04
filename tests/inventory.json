@@ -10171,6 +10171,314 @@
           ],
           "status": "已纳入",
           "reason": "明确截图结果与模拟边界；其他开局卡片的选中边框仅作几何模拟，不宣称实机验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_supplied_pages_and_animation_readiness",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-125347-490",
+            "20261004-125352-386",
+            "20261004-125521-108",
+            "20261004-125528-432",
+            "20261004-125532-398"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 巨眼事件；战斗过程复用已有通用战斗截图，选项、领奖及两页叙述使用本次实图"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_real_options_resources_and_attack_click_avoid_magnifier",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-125352-386"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 巨眼事件；战斗过程复用已有通用战斗截图，选项、领奖及两页叙述使用本次实图"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_first_repeat_and_collected_routes_still_attack_without_resource_cost",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-10-04 巨眼事件；战斗过程复用已有通用战斗截图，选项、领奖及两页叙述使用本次实图"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_exact_costs_partial_rows_and_other_events_do_not_authorize_choice",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-233133-331",
+            "20260924-193808-685"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 巨眼事件；战斗过程复用已有通用战斗截图，选项、领奖及两页叙述使用本次实图"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_reward_requires_pending_attack_and_matching_card_across_restart",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-125521-108",
+            "20261004-125528-432",
+            "20261004-125532-398"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 巨眼事件；战斗过程复用已有通用战斗截图，选项、领奖及两页叙述使用本次实图"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_main_loop_retries_attack_and_reward_then_advances_both_narrations",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081153-551",
+            "20260922-081423-319",
+            "20260922-081430-868",
+            "20260922-081440-084",
+            "20260922-081554-067",
+            "20261004-125347-490",
+            "20261004-125352-386",
+            "20261004-125521-108",
+            "20261004-125528-432",
+            "20261004-125532-398"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 巨眼事件；战斗过程复用已有通用战斗截图，选项、领奖及两页叙述使用本次实图"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.CliffCoinEventTests.test_real_stages_and_leave_narration_keep_exact_resources",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-143741-000",
+            "20261004-145456-631",
+            "20261004-145530-255"
+          ],
+          "status": "已纳入",
+          "reason": "悬崖投币30与50碎片阶段均禁用赌博，只走免费离开；实际叙述验证碎片不变，末尾地图与大厅复用既有样本"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.CliffCoinEventTests.test_first_and_repeat_never_gamble_even_with_surplus_or_no_fragments",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "悬崖投币30与50碎片阶段均禁用赌博，只走免费离开；实际叙述验证碎片不变，末尾地图与大厅复用既有样本"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.CliffCoinEventTests.test_unknown_cost_probability_partial_rows_and_other_stories_wait",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "悬崖投币30与50碎片阶段均禁用赌博，只走免费离开；实际叙述验证碎片不变，末尾地图与大厅复用既有样本"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.CliffCoinEventTests.test_live_catalogue_chooses_right_leave_card_without_sampling_or_hp",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-143741-000",
+            "20261004-145456-631"
+          ],
+          "status": "已纳入",
+          "reason": "悬崖投币30与50碎片阶段均禁用赌博，只走免费离开；实际叙述验证碎片不变，末尾地图与大厅复用既有样本"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.CliffCoinEventTests.test_main_loop_retries_leave_preserves_fragments_and_samples_outcome_once",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-145456-631",
+            "20261004-145530-255",
+            "20260922-081554-067",
+            "20260922-081153-551"
+          ],
+          "status": "已纳入",
+          "reason": "悬崖投币30与50碎片阶段均禁用赌博，只走免费离开；实际叙述验证碎片不变，末尾地图与大厅复用既有样本"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.ForkSacrificeEventTests.test_real_pages_distinguish_normal_special_hp_and_one_item_payment",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-161405-470",
+            "20261004-161414-135",
+            "20261004-161432-079",
+            "20261004-161439-143",
+            "20261004-161443-261",
+            "20261004-161448-012",
+            "20261004-161453-293"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 岔路扣血底线、只献祭普通战利品、特殊物品保护、未支付不确认结果及真实间隔回放；返回地图明确复用"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.ForkSacrificeEventTests.test_hp_floor_exact_costs_and_missing_safe_payment",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-10-04 岔路扣血底线、只献祭普通战利品、特殊物品保护、未支付不确认结果及真实间隔回放；返回地图明确复用"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.ForkSacrificeEventTests.test_normal_selection_and_confirm_retry_preserve_unpaid_receipt",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-161432-079",
+            "20261004-161439-143"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 岔路扣血底线、只献祭普通战利品、特殊物品保护、未支付不确认结果及真实间隔回放；返回地图明确复用"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.ForkSacrificeEventTests.test_restart_or_changed_selection_clears_before_confirm_and_requires_event",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-161432-079",
+            "20261004-161439-143"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 岔路扣血底线、只献祭普通战利品、特殊物品保护、未支付不确认结果及真实间隔回放；返回地图明确复用"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.ForkSacrificeEventTests.test_unknown_fields_special_only_and_scan_boundary_never_pay",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-161432-079"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 岔路扣血底线、只献祭普通战利品、特殊物品保护、未支付不确认结果及真实间隔回放；返回地图明确复用"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.ForkSacrificeEventTests.test_sampling_picker_is_not_completion_and_records_both_narrations",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081554-067",
+            "20261004-161405-470",
+            "20261004-161432-079",
+            "20261004-161439-143",
+            "20261004-161443-261",
+            "20261004-161448-012"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 岔路扣血底线、只献祭普通战利品、特殊物品保护、未支付不确认结果及真实间隔回放；返回地图明确复用"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.ForkSacrificeEventTests.test_main_loop_reads_hp_pays_normal_retries_and_reaches_both_results",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081153-551",
+            "20260922-081554-067",
+            "20261004-161405-470",
+            "20261004-161414-135",
+            "20261004-161432-079",
+            "20261004-161439-143",
+            "20261004-161443-261",
+            "20261004-161448-012"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 岔路扣血底线、只献祭普通战利品、特殊物品保护、未支付不确认结果及真实间隔回放；返回地图明确复用"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_priority_hp_floor_and_pending_choice_use_complete_options",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-10-04 石碑全员50%边界、普通随机战利品优先、左路免费碎片、完整选项及血量、两页结果采样和生产间隔回放；地图明确复用"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_native_options_reward_rosters_and_two_narrations",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260927-152340-604",
+            "20260929-230947-942",
+            "20261001-132524-411",
+            "20261004-134120-334",
+            "20261004-175956-091",
+            "20261004-180237-343",
+            "20261004-180244-044",
+            "20261004-180247-666",
+            "20261004-180348-232",
+            "20261004-180354-458"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 石碑全员50%边界、普通随机战利品优先、左路免费碎片、完整选项及血量、两页结果采样和生产间隔回放；地图明确复用"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_live_selection_waits_for_hp_then_uses_loot_or_free_fragments",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-175956-091",
+            "20261004-180237-343",
+            "20261004-180348-232"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 石碑全员50%边界、普通随机战利品优先、左路免费碎片、完整选项及血量、两页结果采样和生产间隔回放；地图明确复用"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_sampling_records_random_reward_and_both_narrations_once",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081554-067",
+            "20261004-175956-091",
+            "20261004-180237-343",
+            "20261004-180244-044",
+            "20261004-180247-666",
+            "20261004-180354-458"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 石碑全员50%边界、普通随机战利品优先、左路免费碎片、完整选项及血量、两页结果采样和生产间隔回放；地图明确复用"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_main_loop_uses_production_intervals_for_both_hp_routes",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081153-551",
+            "20260922-081554-067",
+            "20261004-175956-091",
+            "20261004-180237-343",
+            "20261004-180244-044",
+            "20261004-180247-666",
+            "20261004-180348-232",
+            "20261004-180354-458"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 石碑全员50%边界、普通随机战利品优先、左路免费碎片、完整选项及血量、两页结果采样和生产间隔回放；地图明确复用"
         }
       ]
     },
@@ -20218,6 +20526,185 @@
           ],
           "status": "已纳入",
           "reason": "真实截图与模拟点击；验证重复帧、禁止动作和资源边界"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightHealthRegressions.test_supplied_firelight_and_complete_roster_read_lowest_hp",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-134045-652",
+            "20261004-134120-334"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 火光事件血量底线与文字识别变化回归；选项及名单用实图，结束地图复用旧图，不证明治疗结果"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightHealthRegressions.test_all_and_random_damage_leave_at_least_twenty_five_percent",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-10-04 火光事件血量底线与文字识别变化回归；选项及名单用实图，结束地图复用旧图，不证明治疗结果"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightHealthRegressions.test_firelight_prefers_loot_only_above_the_cost_adjusted_floor",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-134120-334"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 火光事件血量底线与文字识别变化回归；选项及名单用实图，结束地图复用旧图，不证明治疗结果"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightHealthRegressions.test_dice_route_is_disabled_even_when_other_choices_are_unavailable",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-134120-334"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 火光事件血量底线与文字识别变化回归；选项及名单用实图，结束地图复用旧图，不证明治疗结果"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightHealthRegressions.test_known_ocr_variants_keep_roster_result_without_reopening",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-134045-652",
+            "20261004-134120-334"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 火光事件血量底线与文字识别变化回归；选项及名单用实图，结束地图复用旧图，不证明治疗结果"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightHealthRegressions.test_reordered_known_options_keep_confirmed_hp",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-134120-334"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 火光事件血量底线与文字识别变化回归；选项及名单用实图，结束地图复用旧图，不证明治疗结果"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightHealthRegressions.test_new_known_event_requires_new_roster_and_partial_rows_wait",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-132524-411",
+            "20261004-134120-334"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 火光事件血量底线与文字识别变化回归；选项及名单用实图，结束地图复用旧图，不证明治疗结果"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightHealthRegressions.test_sampling_pending_damage_also_obeys_confirmed_hp_floor",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-10-04 火光事件血量底线与文字识别变化回归；选项及名单用实图，结束地图复用旧图，不证明治疗结果"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightHealthRegressions.test_main_loop_reads_roster_once_and_retries_rest_despite_ocr_changes",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081153-551",
+            "20260922-081554-067",
+            "20261004-134045-652",
+            "20261004-134120-334"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 火光事件血量底线与文字识别变化回归；选项及名单用实图，结束地图复用旧图，不证明治疗结果"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightOutcomeRegressions.test_real_rest_result_and_roster_confirm_fifteen_percent_healing",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-134045-652",
+            "20261004-140207-882",
+            "20261004-140210-503",
+            "20261004-140215-765",
+            "20261004-140228-740"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 火光休息结果及网络异常实图；重复帧与恢复后的叙述复用明确模拟，等待按钮、动作间隔和事件记录去重保持断言"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightOutcomeRegressions.test_network_markers_distinguish_countdown_retry_and_clear_pages",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-140207-882",
+            "20261004-140210-503",
+            "20261004-140215-765",
+            "20261004-140222-304",
+            "20261004-140225-272",
+            "20261004-140228-740"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 火光休息结果及网络异常实图；重复帧与恢复后的叙述复用明确模拟，等待按钮、动作间隔和事件记录去重保持断言"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightOutcomeRegressions.test_overlay_waits_then_retries_visible_button_at_production_interval",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-140210-503",
+            "20261004-140222-304",
+            "20261004-140225-272"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 火光休息结果及网络异常实图；重复帧与恢复后的叙述复用明确模拟，等待按钮、动作间隔和事件记录去重保持断言"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightOutcomeRegressions.test_main_loop_freezes_pending_event_until_network_overlay_clears",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081153-551",
+            "20261004-134120-334",
+            "20261004-140210-503",
+            "20261004-140222-304",
+            "20261004-140225-272",
+            "20261004-140228-740"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 火光休息结果及网络异常实图；重复帧与恢复后的叙述复用明确模拟，等待按钮、动作间隔和事件记录去重保持断言"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightOutcomeRegressions.test_captured_result_roster_network_and_map_do_not_repeat_rest",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081153-551",
+            "20261004-134120-334",
+            "20261004-140207-882",
+            "20261004-140210-503",
+            "20261004-140215-765",
+            "20261004-140222-304",
+            "20261004-140225-272",
+            "20261004-140228-740"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 火光休息结果及网络异常实图；重复帧与恢复后的叙述复用明确模拟，等待按钮、动作间隔和事件记录去重保持断言"
         }
       ]
     },
@@ -20325,6 +20812,204 @@
           ],
           "status": "已纳入",
           "reason": "模拟名单、滚动及额度；全职业先选先遇到的名单英雄，末尾没有目标再选可负担候选"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_parser_preserves_order_and_rejects_invalid_names_ranks_and_duplicates",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-10-04 可配置升阶目标、启动校验、完整名单回查与满阶顺序；5阶及滚动为明确模拟，旧图验证原生阶数1和实际选择确认位置"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_preflight_fails_before_any_screenshot_or_click",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232309-289"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 可配置升阶目标、启动校验、完整名单回查与满阶顺序；5阶及滚动为明确模拟，旧图验证原生阶数1和实际选择确认位置"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_goals_finish_in_order_before_filling_priority_roster_to_five",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-10-04 可配置升阶目标、启动校验、完整名单回查与满阶顺序；5阶及滚动为明确模拟，旧图验证原生阶数1和实际选择确认位置"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_absent_goals_fill_listed_heroes_before_other_heroes_and_skip_maxed",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-10-04 可配置升阶目标、启动校验、完整名单回查与满阶顺序；5阶及滚动为明确模拟，旧图验证原生阶数1和实际选择确认位置"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_real_unselected_and_selected_pickers_read_names_and_rank_fields",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232309-289",
+            "20260923-232312-127",
+            "20260923-233117-847"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 可配置升阶目标、启动校验、完整名单回查与满阶顺序；5阶及滚动为明确模拟，旧图验证原生阶数1和实际选择确认位置"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_unreadable_rank_or_name_cannot_authorize_selection",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232309-289"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 可配置升阶目标、启动校验、完整名单回查与满阶顺序；5阶及滚动为明确模拟，旧图验证原生阶数1和实际选择确认位置"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_target_selection_and_confirmation_retry_without_switching_hero",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232309-289"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 可配置升阶目标、启动校验、完整名单回查与满阶顺序；5阶及滚动为明确模拟，旧图验证原生阶数1和实际选择确认位置"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_restart_selected_wrong_hero_selects_configured_goal_first",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232309-289"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 可配置升阶目标、启动校验、完整名单回查与满阶顺序；5阶及滚动为明确模拟，旧图验证原生阶数1和实际选择确认位置"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_partial_roster_scans_before_fallback_and_returns_to_best_hero",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232309-289"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 可配置升阶目标、启动校验、完整名单回查与满阶顺序；5阶及滚动为明确模拟，旧图验证原生阶数1和实际选择确认位置"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_goal_on_later_page_wins_over_visible_fallback",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232309-289"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 可配置升阶目标、启动校验、完整名单回查与满阶顺序；5阶及滚动为明确模拟，旧图验证原生阶数1和实际选择确认位置"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_incomplete_boundary_and_search_limit_stop_without_fallback",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232309-289"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 可配置升阶目标、启动校验、完整名单回查与满阶顺序；5阶及滚动为明确模拟，旧图验证原生阶数1和实际选择确认位置"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_all_maxed_returns_and_leaves_rest_then_new_room_clears_cache",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232305-766",
+            "20260923-232309-289"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 可配置升阶目标、启动校验、完整名单回查与满阶顺序；5阶及滚动为明确模拟，旧图验证原生阶数1和实际选择确认位置"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_gui_source_exposes_goal_input_and_all_locales_have_useful_help",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-10-04 可配置升阶目标、启动校验、完整名单回查与满阶顺序；5阶及滚动为明确模拟，旧图验证原生阶数1和实际选择确认位置"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_main_loop_retries_rank_goal_selection_then_confirms_and_exits",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081153-551",
+            "20260922-081554-067",
+            "20260923-232309-289",
+            "20260923-232312-127"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 可配置升阶目标、启动校验、完整名单回查与满阶顺序；5阶及滚动为明确模拟，旧图验证原生阶数1和实际选择确认位置"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_clipped_name_field_cannot_count_as_a_complete_hero",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232309-289"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 可配置升阶目标、启动校验、完整名单回查与满阶顺序；5阶及滚动为明确模拟，旧图验证原生阶数1和实际选择确认位置"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_supplied_mixed_rank_roster_reads_first_one_and_origin_two",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-151606-257"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 实图复现首名英雄阶数空读；混合1、2阶识别、缺字段禁点和生产间隔重试；退出页明确模拟"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_missing_rank_pixels_do_not_default_to_one_or_choose_a_hero",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-151606-257"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 实图复现首名英雄阶数空读；混合1、2阶识别、缺字段禁点和生产间隔重试；退出页明确模拟"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_mixed_rank_main_loop_retries_goal_hero_without_scrolling",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-151606-257",
+            "20260922-081554-067",
+            "20260922-081153-551"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 实图复现首名英雄阶数空读；混合1、2阶识别、缺字段禁点和生产间隔重试；退出页明确模拟"
         }
       ]
     }

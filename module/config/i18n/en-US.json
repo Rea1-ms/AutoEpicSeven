@@ -801,6 +801,10 @@
     "ThiefPriority": {
       "name": "Thief hero priority",
       "help": "Enter Chinese in-game names in priority order, separated by >, commas or newlines. If no affordable preferred hero is found, choose a low-cost candidate."
+    },
+    "UpgradePriority": {
+      "name": "Upgrade priority",
+      "help": "Enter one Hero name=Target rank per line, with targets from 1 to 5, e.g. 起源拉斯=3. Names must occur in one of the six recruitment priority lists. Reach each goal in order, then raise listed heroes to rank 5, then other heroes. Leave empty to max the recruitment list first."
     }
   },
   "DimensionalExplorationRuntime": {

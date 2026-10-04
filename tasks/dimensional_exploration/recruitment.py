@@ -361,6 +361,8 @@ class RecruitmentMixin:
         return True
 
     def handle_rest_hero(self, vision):
+        if vision.state() == "upgrade":
+            return self.handle_upgrade(vision)
         preferred = self.hero_priorities("")
         tokens = vision.tokens(OCR_REST_HEROES)
         names = [t for t in tokens if len(normalize(t.ocr_text)) >= 2

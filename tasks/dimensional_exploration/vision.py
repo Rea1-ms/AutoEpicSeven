@@ -7,7 +7,7 @@ import cv2
 import numpy as np
 
 from module.base.button import ClickButton
-from module.base.utils import area_center, area_offset, area_limit, point_in_area, color_bar_percentage
+from module.base.utils import area_center, area_offset, area_limit, point_in_area, color_bar_percentage, color_similar, get_color
 from module.logger import logger
 from module.ocr.ocr import Ocr
 from tasks.dimensional_exploration.assets.assets_dimensional_exploration import (
@@ -25,6 +25,8 @@ from tasks.dimensional_exploration.assets.assets_dimensional_exploration import 
     NODE_TYPE_AREA, NODE_CLICK, OCR_HEROES,
     SHOP_DISCOUNT, OCR_SHOP_DISCOUNT_PRICE, EVENT_OPTION_UNAVAILABLE, REWARD_LEAVE_CHECK, MANUAL_TARGET,
     ROSTER_CHECK, ROSTER_TITLE, ROSTER_RANK_ICON, ROSTER_HP_BAR, OCR_ROSTER_NAME, OCR_ROSTER_COUNT,
+    OCR_UPGRADE_RANK, SACRIFICE_CHECK, SACRIFICE_NORMAL_CORNER, SACRIFICE_SPECIAL_CORNER,
+    OCR_SACRIFICE_COUNTER, OCR_SACRIFICE_LOOT_COUNT, OCR_EVENT_LOOT,
 )
 from tasks.dimensional_exploration.policy import EventChoice, Offer, normalize, parse_counter, parse_number
 from tasks.dungeon.assets.assets_dungeon_state import AUTO_COMBAT_EXIST
@@ -77,23 +79,40 @@ def match_in(image, asset, area, threshold=0.85):
     return best
 
 
-def multi_match(image, asset, area, threshold=0.87, distance=24):
+def multi_match(image, asset, area, threshold=0.87, distance=24, button_anchor=False):
     x1, y1, x2, y2 = area
     sample = cv2.cvtColor(image[y1:y2, x1:x2], cv2.COLOR_RGB2GRAY)
     candidates = []
     for button in asset.iter_buttons():
+        # Event frames can locate a clean upper border while BUTTON stores
+        # their equivalent lower option anchor. Translate the canonical search
+        # back to the template's native location, then return the canonical
+        # anchor so existing OCR/click fields retain their meaning. Matching
+        # text inside the old lower crop invents options on unrelated events.
+        dx, dy = (button.button[0] - button.area[0], button.button[1] - button.area[1]) if button_anchor else (0, 0)
+        search = area_limit(area_offset(area, (-dx, -dy)), (0, 0, image.shape[1], image.shape[0]))
+        sx1, sy1, sx2, sy2 = search
+        local = sample if search == area else cv2.cvtColor(image[sy1:sy2, sx1:sx2], cv2.COLOR_RGB2GRAY)
         template = button.image_luma
         h, w = template.shape
-        scores = cv2.matchTemplate(sample, template, cv2.TM_CCOEFF_NORMED)
+        if local.shape[0] < h or local.shape[1] < w:
+            continue
+        scores = cv2.matchTemplate(local, template, cv2.TM_CCOEFF_NORMED)
         while True:
             _, score, _, (x, y) = cv2.minMaxLoc(scores)
             if score < threshold:
                 break
-            candidates.append((score, (x + x1, y + y1, x + x1 + w, y + y1 + h)))
+            box = (x + sx1, y + sy1, x + sx1 + w, y + sy1 + h)
+            if button_anchor:
+                box = area_offset(button.button, (box[0] - button.area[0], box[1] - button.area[1]))
+            candidates.append((bool(dx or dy), score, box))
             scores[max(0, y - distance):y + distance + 1,
                    max(0, x - distance):x + distance + 1] = 0
     results = []
-    for _, box in sorted(candidates, reverse=True):
+    # Preserve previously verified direct anchors when a translated border
+    # identifies the same option. Border variants fill missing slots rather
+    # than shifting old OCR crops by a few pixels and truncating their text.
+    for _, _, box in sorted(candidates, key=lambda item: (not item[0], item[1]), reverse=True):
         if not any(abs(box[0] - old[0]) < distance and abs(box[1] - old[1]) < distance for old in results):
             results.append(box)
     return sorted(results, key=lambda box: (box[0], box[1]))
@@ -107,6 +126,8 @@ def relative_area(region, anchor, observed):
 
 
 class FragmentBalanceOcr(Ocr):
+    padding = (2, 2)
+
     def pre_process(self, image):
         # A lone zero inside the full balance field is read as punctuation by
         # the Chinese model. Bound all neutral white glyphs together, keeping
@@ -120,11 +141,21 @@ class FragmentBalanceOcr(Ocr):
         if points is None:
             return image
         x, y, width, height = cv2.boundingRect(points)
-        return image[max(0, y - 2):y + height + 2, max(0, x - 2):x + width + 2]
+        px, py = self.padding
+        return image[max(0, y - py):y + height + py, max(0, x - px):x + width + px]
+
+
+class EventLootCountOcr(FragmentBalanceOcr):
+    # The wide owned-loot field adds spurious punctuation around a lone digit.
+    # Bound every neutral glyph together and retain enough margin for narrow
+    # 4/5 glyphs. This still preserves multiple digits and uses a strict parser;
+    # never strip arbitrary OCR punctuation or reinterpret Q as a quantity.
+    padding = (6, 4)
 
 
 class ExplorationVision:
     STATES = (
+        ("sacrifice", SACRIFICE_CHECK),
         ("reward_leave", REWARD_LEAVE_CHECK),
         ("settlement", SETTLEMENT_CHECK), ("reward", REWARD_CLOSE), ("abandon", ABANDON_CHECK),
         ("buy", BUY_CHECK), ("leave_confirm", LEAVE_CONFIRM_CHECK),
@@ -177,6 +208,8 @@ class ExplorationVision:
         return Ocr(region, lang="cn", name=getattr(region, "name", name)).detect_and_ocr(self.image)
 
     def number(self, area, maximum=99999):
+        if getattr(area, "name", None) == OCR_EVENT_LOOT.name:
+            return parse_number(EventLootCountOcr(area, lang="cn").ocr_single_line(self.image), maximum)
         return parse_number(self.text(area), maximum)
 
     def resources(self):
@@ -243,7 +276,8 @@ class ExplorationVision:
         return offers
 
     def event_choices(self):
-        rectangles = multi_match(self.image, EVENT_OPTION, EVENT_OPTION.search, threshold=0.78, distance=60)
+        rectangles = multi_match(self.image, EVENT_OPTION, EVENT_OPTION.search, threshold=0.78, distance=60,
+                                 button_anchor=True)
         disabled = [area_center(box) for box in multi_match(
             self.image, EVENT_OPTION_UNAVAILABLE, EVENT_OPTION_UNAVAILABLE.search)]
         result = []
@@ -343,10 +377,67 @@ class ExplorationVision:
             return None
         return tuple(heroes)
 
+    def upgrade_roster(self):
+        from tasks.dimensional_exploration.upgrade import MAX_RANK, RankedHero
+        if self.state() != "upgrade":
+            return None
+        count = self.number(OCR_ROSTER_COUNT, maximum=99)
+        rectangles = multi_match(self.image, ROSTER_RANK_ICON, ROSTER_RANK_ICON.search,
+                                 threshold=0.87, distance=25)
+        if not count or not rectangles or len(rectangles) > count:
+            return None
+        heroes = []
+        reference = next(ROSTER_RANK_ICON.iter_buttons()).area
+        for rectangle in rectangles:
+            offset = (rectangle[0] - reference[0], rectangle[1] - reference[1])
+            name_area = area_offset(OCR_ROSTER_NAME.area, offset)
+            rank_area = area_offset(OCR_UPGRADE_RANK.area, offset)
+            # Clamping a half-visible name can make an incomplete list appear
+            # complete and falsely declare a priority hero absent. Validate the
+            # original fields inside the viewport; omit clipped rows so the
+            # picker keeps scanning instead of ranking their partial names.
+            if (area_limit(name_area, ROSTER_RANK_ICON.search) != name_area
+                    or area_limit(rank_area, ROSTER_RANK_ICON.search) != rank_area):
+                continue
+            name_tokens = self.tokens(name_area, name="UpgradeName")
+            if len(name_tokens) != 1:
+                return None
+            name = normalize(name_tokens[0].ocr_text)
+            rank = self.number(rank_area, maximum=MAX_RANK)
+            if not name or rank is None or not 1 <= rank <= MAX_RANK:
+                return None
+            heroes.append(RankedHero(name, rank, tuple(name_tokens[0].box)))
+        if not heroes or len({h.name for h in heroes}) != len(heroes):
+            return None
+        return tuple(heroes), count
+
     def bright_text(self, area, minimum=18):
         area = area.area if hasattr(area, "area") else area
         x1, y1, x2, y2 = area
         return np.count_nonzero(np.min(self.image[y1:y2, x1:x2], axis=2) > 190) >= minimum
+
+    def sacrifice_counter(self):
+        return parse_counter(self.text(OCR_SACRIFICE_COUNTER), maximum=99)
+
+    def sacrifice_loot_count(self):
+        return self.number(OCR_SACRIFICE_LOOT_COUNT, maximum=99)
+
+    def sacrifice_items(self):
+        result = []
+        for asset in (SACRIFICE_NORMAL_CORNER, SACRIFICE_SPECIAL_CORNER):
+            reference = next(asset.iter_buttons())
+            items = []
+            for rectangle in multi_match(self.image, asset, asset.search, threshold=0.87, distance=25):
+                # The same corner shape exists on normal and special items.
+                # Locate its shape first, then require its native border color.
+                if not color_similar(get_color(self.image, rectangle), reference.color, threshold=20):
+                    continue
+                offset = (rectangle[0] - reference.area[0], rectangle[1] - reference.area[1])
+                area = area_offset(reference.button, offset)
+                if area_limit(area, asset.search) == area:
+                    items.append(area)
+            result.append(tuple(sorted(items, key=lambda area: (area[1], area[0]))))
+        return tuple(result)
 
     def gold_border(self, area):
         area = area.area if hasattr(area, "area") else area

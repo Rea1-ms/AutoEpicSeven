@@ -1,14 +1,16 @@
 """Regression coverage for the September 25 screenshots and receipts."""
 import ast
 from types import SimpleNamespace
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 import unittest
-from tests.support.exploration import ROOT, ControlledClock, artifact_path, frame, task_for
+from tests.support.exploration import ROOT, ControlledClock, ReplayDevice, artifact_path, frame, task_for
 from tasks.dimensional_exploration.dimensional_exploration import DimensionalExploration
 from tasks.dimensional_exploration.assets.assets_dimensional_exploration import LOOT_BORDER
 from tasks.dimensional_exploration.policy import Offer, RunProgress, choose_offer
 from tasks.dimensional_exploration.recruitment import HeroCosts
 from tasks.dimensional_exploration.vision import ExplorationVision, Hero, Resources
+from tasks.dimensional_exploration.upgrade import RankedHero, UpgradeTarget, choose_upgrade, parse_upgrade_priority
+from module.exception import RequestHumanTakeover
 class ScreenshotRegressions(unittest.TestCase):
     def test_rest_preview_enters_both_new_screenshots(self):
         for suffix in ('20260925-113034-953', '20260925-113935-872'):
@@ -336,6 +338,304 @@ class FullClassRecruitmentRegressions(unittest.TestCase):
         task.observe_recruitment('hero', vision)
         self.assertEqual(task._recruited_heroes, ['亚敏'])
         self.assertIsNone(task._recruit_pending)
+
+
+class UpgradePriorityRegressions(unittest.TestCase):
+    @staticmethod
+    def hero(name, rank=1, x=398, y=205):
+        return RankedHero(name, rank, (x, y, x + 80, y + 23))
+
+    @classmethod
+    def picker(cls, heroes=None, count=None):
+        task, vision, clicks = task_for('20260923-232309-289')
+        task.config.DimensionalExploration_UpgradePriority = '起源拉斯=3\n罪戾的安洁莉卡=5'
+        heroes = tuple(heroes or [cls.hero('起源拉斯'), cls.hero('罪戾的安洁莉卡', y=98)])
+        vision.upgrade_roster = Mock(return_value=(heroes, count or len(heroes)))
+        vision.selected_hero = Mock(return_value='')
+        vision.bright_text = Mock(return_value=True)
+        task.appear = Mock(return_value=True)
+        return task, vision, clicks
+
+    def test_parser_preserves_order_and_rejects_invalid_names_ranks_and_duplicates(self):
+        self.assertEqual(parse_upgrade_priority(' 起源拉斯 = 3 > 罪戾的安洁莉卡：5 ',
+                                               ('起源拉斯', '罪戾的安洁莉卡')),
+                         (UpgradeTarget('起源拉斯', 3), UpgradeTarget('罪戾的安洁莉卡', 5)))
+        self.assertEqual(parse_upgrade_priority('', ()), ())
+        for value in (0, False, [], {}):
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                parse_upgrade_priority(value, ())
+        for text in ('拉斯=3', '起源拉斯=0', '起源拉斯=6', '起源拉斯=-1', '起源拉斯=3.0',
+                     '起源拉斯', '=3', '起源拉斯=3\n起源拉斯=5', '罪戾的安洁莉加=3'):
+            with self.subTest(text=text), self.assertRaises(ValueError):
+                parse_upgrade_priority(text, ('起源拉斯', '罪戾的安洁莉卡'))
+
+    def test_preflight_fails_before_any_screenshot_or_click(self):
+        task, _, clicks = self.picker()
+        task.config.Emulator_PackageName = 'com.stove.epic7.google'
+        task.config.DimensionalExploration_UpgradePriority = '亚敏=5'
+        task.device.screenshot = Mock(side_effect=AssertionError('Preflight must happen before device work'))
+        task.device.save_screenshot = Mock(side_effect=AssertionError('Preflight must not save a device frame'))
+        with self.assertRaisesRegex(RequestHumanTakeover, '亚敏.*不在英雄优先名单'):
+            task.run()
+        self.assertEqual(clicks, [])
+        task.device.screenshot.assert_not_called()
+        task.device.save_screenshot.assert_not_called()
+
+    def test_goals_finish_in_order_before_filling_priority_roster_to_five(self):
+        targets = (UpgradeTarget('起源拉斯', 3), UpgradeTarget('罪戾的安洁莉卡', 5))
+        preferred = ('起源拉斯', '罪戾的安洁莉卡')
+        for first, second, expected in ((1, 1, '起源拉斯'), (2, 4, '起源拉斯'),
+                                        (3, 1, '罪戾的安洁莉卡'), (3, 5, '起源拉斯'),
+                                        (5, 5, '名单外英雄')):
+            heroes = (self.hero('名单外英雄'), self.hero('罪戾的安洁莉卡', second),
+                      self.hero('起源拉斯', first))
+            self.assertEqual(choose_upgrade(heroes, targets, preferred).name, expected)
+
+    def test_absent_goals_fill_listed_heroes_before_other_heroes_and_skip_maxed(self):
+        targets = (UpgradeTarget('起源拉斯', 3),)
+        heroes = (self.hero('名单外英雄'), self.hero('罪戾的安洁莉卡', 4))
+        self.assertEqual(choose_upgrade(heroes, targets, ('罪戾的安洁莉卡',)).name, '罪戾的安洁莉卡')
+        maxed = (self.hero('罪戾的安洁莉卡', 5),)
+        self.assertIsNone(choose_upgrade(maxed, targets, ('罪戾的安洁莉卡',)))
+        self.assertEqual(choose_upgrade(heroes, (), ('罪戾的安洁莉卡',)).name, '罪戾的安洁莉卡')
+
+    def test_real_unselected_and_selected_pickers_read_names_and_rank_fields(self):
+        for suffix in ('20260923-232309-289', '20260923-232312-127'):
+            vision = ExplorationVision(frame(suffix))
+            heroes, count = vision.upgrade_roster()
+            self.assertEqual(count, 5)
+            self.assertEqual([h.rank for h in heroes], [1] * 5)
+            self.assertEqual([h.name for h in heroes], ['罪戾的安洁莉卡', '起源拉斯', '转学生艾庭',
+                                                     '智武', '保健室老师律荷'])
+            self.assertEqual(heroes[1].area[:2], (398, 205))
+        self.assertIsNone(ExplorationVision(frame('20260923-233117-847')).upgrade_roster())
+
+    def test_supplied_mixed_rank_roster_reads_first_one_and_origin_two(self):
+        vision = ExplorationVision(frame('20261004-151606-257'))
+        heroes, count = vision.upgrade_roster()
+        self.assertEqual(count, 4)
+        self.assertEqual([(h.name, h.rank) for h in heroes], [
+            ('赛珂兰特', 1), ('罪戾的安洁莉卡', 1), ('起源拉斯', 2), ('保健室老师律荷', 1)])
+        chosen = choose_upgrade(heroes, (UpgradeTarget('起源拉斯', 3),), ('罪戾的安洁莉卡', '起源拉斯'))
+        self.assertEqual(chosen.name, '起源拉斯')
+
+    def test_missing_rank_pixels_do_not_default_to_one_or_choose_a_hero(self):
+        from module.base.utils import area_offset
+        from tasks.dimensional_exploration.assets.assets_dimensional_exploration import OCR_UPGRADE_RANK
+        image = frame('20261004-151606-257')
+        # Occlude only the complete numeric field, keeping its rank anchor and
+        # the entire real roster intact. A blank must never be guessed as 1.
+        for offset in ((0, 0), (0, 210)):
+            obscured = image.copy()
+            x1, y1, x2, y2 = area_offset(OCR_UPGRADE_RANK.area, offset)
+            obscured[y1:y2, x1:x2] = 0
+            task, _, clicks = task_for('20261004-151606-257')
+            task.device.image = obscured
+            vision = ExplorationVision(obscured)
+            self.assertEqual(vision.state(), 'upgrade')
+            self.assertIsNone(vision.upgrade_roster())
+            self.assertFalse(task.handle_rest_hero(vision))
+            self.assertEqual(clicks, [])
+            task.device.swipe.assert_not_called()
+
+    def test_mixed_rank_main_loop_retries_goal_hero_without_scrolling(self):
+        suffixes = ['20261004-151606-257'] * 3 + ['20260922-081554-067', '20260922-081153-551']
+        with ControlledClock() as clock:
+            task, vision, _ = task_for(suffixes[0])
+            task.config.Emulator_PackageName = 'com.stove.epic7.google'
+            task.config.DimensionalExploration_UpgradePriority = '起源拉斯=3\n罪戾的安洁莉卡=5'
+            heroes, _ = vision.upgrade_roster()
+            expected_area = next(h.area for h in heroes if h.name == '起源拉斯')
+            device = ReplayDevice(suffixes, expected_clicks=['RestHeroSelect'] * 2)
+            device.click = Mock(wraps=device.click)
+            task.device = device
+            task.action_ready = DimensionalExploration.action_ready.__get__(task)
+            task.click_action = DimensionalExploration.click_action.__get__(task)
+            task.progress, task.target = RunProgress(completed=1), 1
+            task.handle_map = Mock(return_value=False)
+            task.handle_ui_recovery = Mock(return_value=False)
+            screenshot = device.screenshot
+
+            def next_frame():
+                clock.advance(1.1)
+                screenshot()
+
+            device.screenshot = next_frame
+            # This capture proves roster recognition and repeated selection.
+            # No selected detail/result was supplied: the old map and lobby
+            # explicitly simulate a positive exit, not a completed upgrade.
+            task.explore()
+            device.assert_actions_complete()
+            self.assertEqual([call.args[0].area for call in device.click.call_args_list], [expected_area] * 2)
+            device.swipe.assert_not_called()
+            self.assertEqual(task._upgrade_inventory, [])
+            self.assertIsNone(task._upgrade_pending)
+
+    def test_unreadable_rank_or_name_cannot_authorize_selection(self):
+        vision = ExplorationVision(frame('20260923-232309-289'))
+        number = vision.number
+        for bad in (None, 0, 6):
+            vision.number = lambda area, maximum=99999, bad=bad: (
+                number(area, maximum) if hasattr(area, 'name') and area.name == 'OCR_ROSTER_COUNT' else bad)
+            self.assertIsNone(vision.upgrade_roster())
+        task, mocked, clicks = self.picker()
+        mocked.upgrade_roster.return_value = None
+        self.assertFalse(task.handle_rest_hero(mocked))
+        self.assertEqual(clicks, [])
+        task.device.swipe.assert_not_called()
+
+    def test_clipped_name_field_cannot_count_as_a_complete_hero(self):
+        vision = ExplorationVision(frame('20260923-232309-289'))
+        # The right-edge row is deliberately simulated: its full name field
+        # lies outside the list, even if OCR returns a plausible clipped name.
+        vision.number = Mock(side_effect=(2, 1, 1))
+        vision.tokens = Mock(side_effect=(
+            [SimpleNamespace(ocr_text='起源拉斯', box=(395, 94, 475, 125))],
+            [SimpleNamespace(ocr_text='罪戾的安', box=(1235, 94, 1278, 125))],
+        ))
+        with patch('tasks.dimensional_exploration.vision.multi_match', return_value=[
+                (360, 136, 380, 155), (1200, 136, 1220, 155)]):
+            heroes, count = vision.upgrade_roster()
+        self.assertEqual(count, 2)
+        self.assertEqual([h.name for h in heroes], ['起源拉斯'])
+        self.assertEqual(vision.tokens.call_count, 1)
+
+    def test_target_selection_and_confirmation_retry_without_switching_hero(self):
+        task, vision, clicks = self.picker()
+        task.handle_rest_hero(vision)
+        task.handle_rest_hero(vision)
+        self.assertEqual(clicks, ['RestHeroSelect'] * 2)
+        vision.selected_hero.return_value = '起源拉斯'
+        task.handle_rest_hero(vision)
+        task.handle_rest_hero(vision)
+        self.assertEqual(clicks[-2:], ['RestHeroConfirm'] * 2)
+        self.assertEqual(task._upgrade_pending, ('起源拉斯', 1))
+        vision.upgrade_roster.return_value = ((self.hero('起源拉斯', 2), self.hero('罪戾的安洁莉卡')), 2)
+        self.assertFalse(task.handle_rest_hero(vision))
+        self.assertEqual(len(clicks), 4)
+
+    def test_restart_selected_wrong_hero_selects_configured_goal_first(self):
+        task, vision, clicks = self.picker()
+        vision.selected_hero.return_value = '罪戾的安洁莉卡'
+        task.handle_rest_hero(vision)
+        self.assertEqual(clicks, ['RestHeroSelect'])
+        self.assertEqual(task._upgrade_choice, '起源拉斯')
+
+    def test_partial_roster_scans_before_fallback_and_returns_to_best_hero(self):
+        fallback = self.hero('罪戾的安洁莉卡')
+        task, vision, clicks = self.picker([fallback], count=3)
+        task.config.DimensionalExploration_UpgradePriority = '起源拉斯=3'
+        self.assertFalse(task.handle_rest_hero(vision))
+        self.assertTrue(task.handle_rest_hero(vision))
+        self.assertEqual(clicks, [])
+        vision.upgrade_roster.return_value = ((self.hero('名单外甲'), self.hero('名单外乙', y=308)), 3)
+        self.assertFalse(task.handle_rest_hero(vision))
+        self.assertTrue(task.handle_rest_hero(vision))
+        self.assertEqual(task._upgrade_choice, '罪戾的安洁莉卡')
+        self.assertEqual(clicks, [])
+        vision.upgrade_roster.return_value = ((fallback,), 3)
+        self.assertFalse(task.handle_rest_hero(vision))
+        self.assertTrue(task.handle_rest_hero(vision))
+        self.assertEqual(clicks, ['RestHeroSelect'])
+        self.assertEqual(task.device.swipe.call_count, 2)
+
+    def test_goal_on_later_page_wins_over_visible_fallback(self):
+        task, vision, clicks = self.picker([self.hero('罪戾的安洁莉卡')], count=2)
+        task.handle_rest_hero(vision)
+        task.handle_rest_hero(vision)
+        vision.upgrade_roster.return_value = ((self.hero('起源拉斯'),), 2)
+        task.handle_rest_hero(vision)
+        task.handle_rest_hero(vision)
+        self.assertEqual(clicks, ['RestHeroSelect'])
+        self.assertEqual(task._upgrade_choice, '起源拉斯')
+
+    def test_incomplete_boundary_and_search_limit_stop_without_fallback(self):
+        task, vision, clicks = self.picker([self.hero('罪戾的安洁莉卡')], count=2)
+        with self.assertRaisesRegex(RequestHumanTakeover, '未读齐'):
+            for _ in range(7):
+                task.handle_rest_hero(vision)
+        self.assertEqual(clicks, [])
+        task, vision, clicks = self.picker([self.hero('罪戾的安洁莉卡')], count=2)
+        task._upgrade_count = 2
+        task._upgrade_swipes = 30
+        task.handle_rest_hero(vision)
+        with self.assertRaisesRegex(RequestHumanTakeover, '达到上限'):
+            task.handle_rest_hero(vision)
+        self.assertEqual(clicks, [])
+
+    def test_all_maxed_returns_and_leaves_rest_then_new_room_clears_cache(self):
+        task, vision, clicks = self.picker([self.hero('起源拉斯', 5)])
+        self.assertTrue(task.handle_rest_hero(vision))
+        self.assertTrue(task._upgrade_exhausted)
+        self.assertEqual(clicks, ['BACK'])
+        rest = ExplorationVision(frame('20260923-232305-766'))
+        task.device.image = rest.image
+        self.assertTrue(task.handle_rest(rest))
+        self.assertEqual(clicks[-1], 'ROOM_LEAVE')
+        task.observe_upgrade('unknown')
+        self.assertTrue(task._upgrade_exhausted)
+        task.observe_upgrade('map')
+        self.assertFalse(task._upgrade_exhausted)
+        self.assertEqual(task._upgrade_inventory, [])
+
+    def test_gui_source_exposes_goal_input_and_all_locales_have_useful_help(self):
+        import json
+        from module.config.config_updater import ConfigGenerator
+        from module.config.config_generated import GeneratedConfig
+        settings = ConfigGenerator().args['DimensionalExploration']['DimensionalExploration']
+        self.assertEqual(settings['UpgradePriority']['type'], 'textarea')
+        self.assertEqual(settings['UpgradePriority']['value'], '')
+        generated = json.loads((ROOT / 'module/config/argument/args.json').read_text(encoding='utf-8'))
+        self.assertEqual(generated['DimensionalExploration']['DimensionalExploration']['UpgradePriority'],
+                         settings['UpgradePriority'])
+        template = json.loads((ROOT / 'config/template.json').read_text(encoding='utf-8'))
+        default = template['DimensionalExploration']['DimensionalExploration']['UpgradePriority']
+        self.assertEqual(default, GeneratedConfig.DimensionalExploration_UpgradePriority)
+        # The framework stores a blank input as None. Both that generated
+        # default and the GUI's raw empty string must enable list-only goals.
+        for value in (default, ''):
+            self.assertEqual(parse_upgrade_priority(value, ('起源拉斯',)), ())
+            device = Mock()
+            task = DimensionalExploration(GeneratedConfig(), device)
+            task.config.DimensionalExploration_UpgradePriority = value
+            self.assertEqual(task.validate_upgrade_priority(), ())
+            self.assertEqual(device.mock_calls, [])
+        for lang in ('zh-CN', 'zh-TW', 'en-US', 'ja-JP', 'es-ES'):
+            data = json.loads((ROOT / f'module/config/i18n/{lang}.json').read_text(encoding='utf-8'))
+            label = data['DimensionalExploration']['UpgradePriority']
+            self.assertTrue(label['name'])
+            self.assertIn('=', label['help'])
+            self.assertIn('5', label['help'])
+            self.assertNotIn('DimensionalExploration.', label['help'])
+
+    def test_main_loop_retries_rank_goal_selection_then_confirms_and_exits(self):
+        suffixes = ['20260923-232309-289'] * 3 + ['20260923-232312-127'] * 3 + [
+            '20260922-081554-067', '20260922-081153-551']
+        with ControlledClock() as clock:
+            task, _, _ = task_for(suffixes[0])
+            task.config.Emulator_PackageName = 'com.stove.epic7.google'
+            task.config.DimensionalExploration_UpgradePriority = '起源拉斯=3\n罪戾的安洁莉卡=5'
+            device = ReplayDevice(suffixes, expected_clicks=['RestHeroSelect'] * 2 + ['RestHeroConfirm'])
+            task.device = device
+            task.action_ready = DimensionalExploration.action_ready.__get__(task)
+            task.click_action = DimensionalExploration.click_action.__get__(task)
+            task.progress, task.target = RunProgress(completed=1), 1
+            task.handle_map = Mock(return_value=False)
+            task.handle_ui_recovery = Mock(return_value=False)
+            screenshot = device.screenshot
+
+            def next_frame():
+                clock.advance(1.1)
+                screenshot()
+
+            device.screenshot = next_frame
+            # No new rank-change/result capture was supplied. The old map
+            # explicitly models the positive exit, without claiming a newly
+            # captured upgrade. Missed clicks are represented by repeated frames.
+            task.explore()
+            device.assert_actions_complete()
+            self.assertEqual(task._upgrade_inventory, [])
+            self.assertIsNone(task._upgrade_pending)
 
 
 if __name__ == '__main__':

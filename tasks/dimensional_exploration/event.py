@@ -30,12 +30,15 @@ class EventCost:
         if self.dice and (dice is None or self.dice > dice):
             return "骰子数量不足或未识别"
         # A random target is not known before clicking, so the lowest owned
-        # hero HP bounds both random and all-hero costs. The live handler reads
-        # the complete roster first; pure catalogue callers may omit HP. Never
-        # subtract a hero percentage from the run's separate death allowance.
+        # hero HP bounds both random and all-hero costs. Every possible target
+        # must retain at least 25 percentage points after the displayed cost;
+        # being merely alive is insufficient for an unattended run. Equality
+        # at 25 is allowed. The live handler confirms the complete roster;
+        # callers without HP only rank a provisional choice before inspection.
+        # Never subtract HP costs from the run's separate death allowance.
         damage = max(self.random_hp_percent, self.all_hp_percent)
-        if damage and hero_hp is not None and (not hero_hp or min(hero_hp) <= damage):
-            return "英雄剩余生命值不足以保留存活余量"
+        if damage and hero_hp is not None and (not hero_hp or min(hero_hp) - damage < 25):
+            return "扣血后有英雄生命值不足25%"
         return ""
 
 

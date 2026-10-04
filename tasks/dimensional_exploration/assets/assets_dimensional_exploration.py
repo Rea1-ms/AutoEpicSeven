@@ -129,6 +129,13 @@ CORE_ICON = ButtonWrapper(
             color=(77, 109, 136),
             button=(826, 18, 850, 47),
         ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/CORE_ICON.3.png',
+            area=(826, 18, 850, 47),
+            search=(790, 10, 906, 54),
+            color=(141, 123, 124),
+            button=(826, 18, 850, 47),
+        ),
     ],
     global_en=None,
 )
@@ -195,13 +202,36 @@ EVENT_NEXT = ButtonWrapper(
 EVENT_OPTION = ButtonWrapper(
     name='EVENT_OPTION',
     cn=None,
-    global_cn=Button(
-        file='./assets/global_cn/dimensional_exploration/EVENT_OPTION.png',
-        area=(75, 660, 98, 689),
-        search=(30, 646, 1210, 698),
-        color=(44, 39, 57),
-        button=(75, 660, 98, 689),
-    ),
+    global_cn=[
+        Button(
+            file='./assets/global_cn/dimensional_exploration/EVENT_OPTION.png',
+            area=(75, 660, 98, 689),
+            search=(30, 646, 1210, 698),
+            color=(44, 39, 57),
+            button=(75, 660, 98, 689),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/EVENT_OPTION.2.png',
+            area=(75, 660, 98, 680),
+            search=(30, 646, 1210, 698),
+            color=(55, 48, 69),
+            button=(75, 660, 98, 680),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/EVENT_OPTION.3.png',
+            area=(835, 660, 858, 689),
+            search=(30, 646, 1210, 698),
+            color=(48, 43, 61),
+            button=(835, 660, 858, 689),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/EVENT_OPTION.4.png',
+            area=(645, 554, 680, 582),
+            search=(30, 646, 1210, 698),
+            color=(38, 36, 69),
+            button=(655, 660, 678, 689),
+        ),
+    ],
     global_en=None,
 )
 EVENT_OPTION_CLICK = ButtonWrapper(
@@ -267,13 +297,22 @@ FAILED_CHECK = ButtonWrapper(
 FRAGMENT_ICON = ButtonWrapper(
     name='FRAGMENT_ICON',
     cn=None,
-    global_cn=Button(
-        file='./assets/global_cn/dimensional_exploration/FRAGMENT_ICON.png',
-        area=(893, 21, 917, 46),
-        search=(866, 10, 950, 54),
-        color=(45, 67, 89),
-        button=(893, 21, 917, 46),
-    ),
+    global_cn=[
+        Button(
+            file='./assets/global_cn/dimensional_exploration/FRAGMENT_ICON.png',
+            area=(893, 21, 917, 46),
+            search=(866, 10, 950, 54),
+            color=(45, 67, 89),
+            button=(893, 21, 917, 46),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/FRAGMENT_ICON.2.png',
+            area=(893, 21, 917, 46),
+            search=(866, 10, 950, 54),
+            color=(119, 131, 148),
+            button=(893, 21, 917, 46),
+        ),
+    ],
     global_en=None,
 )
 HERO_CONFIRM = ButtonWrapper(
@@ -999,6 +1038,30 @@ OCR_ROSTER_NAME = ButtonWrapper(
     ),
     global_en=None,
 )
+OCR_SACRIFICE_COUNTER = ButtonWrapper(
+    name='OCR_SACRIFICE_COUNTER',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/OCR_SACRIFICE_COUNTER.png',
+        area=(647, 658, 681, 680),
+        search=(627, 638, 701, 700),
+        color=(60, 54, 82),
+        button=(647, 658, 681, 680),
+    ),
+    global_en=None,
+)
+OCR_SACRIFICE_LOOT_COUNT = ButtonWrapper(
+    name='OCR_SACRIFICE_LOOT_COUNT',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/OCR_SACRIFICE_LOOT_COUNT.png',
+        area=(47, 197, 68, 220),
+        search=(27, 177, 88, 240),
+        color=(19, 19, 19),
+        button=(47, 197, 68, 220),
+    ),
+    global_en=None,
+)
 OCR_SELECTED_HERO = ButtonWrapper(
     name='OCR_SELECTED_HERO',
     cn=None,
@@ -1234,6 +1297,18 @@ OCR_SHOP_PRICE = ButtonWrapper(
             button=(1007, 537, 1130, 576),
         ),
     ],
+    global_en=None,
+)
+OCR_UPGRADE_RANK = ButtonWrapper(
+    name='OCR_UPGRADE_RANK',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/OCR_UPGRADE_RANK.png',
+        area=(381, 134, 397, 156),
+        search=(361, 114, 417, 176),
+        color=(56, 64, 86),
+        button=(381, 134, 397, 156),
+    ),
     global_en=None,
 )
 PREPARE_CHECK = ButtonWrapper(
@@ -1540,6 +1615,78 @@ ROSTER_TITLE = ButtonWrapper(
         search=(46, 0, 195, 68),
         color=(119, 119, 120),
         button=(66, 19, 175, 48),
+    ),
+    global_en=None,
+)
+SACRIFICE_CHECK = ButtonWrapper(
+    name='SACRIFICE_CHECK',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/SACRIFICE_CHECK.png',
+        area=(820, 489, 974, 513),
+        search=(800, 469, 994, 533),
+        color=(125, 113, 157),
+        button=(820, 489, 974, 513),
+    ),
+    global_en=None,
+)
+SACRIFICE_CONFIRM = ButtonWrapper(
+    name='SACRIFICE_CONFIRM',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/SACRIFICE_CONFIRM.png',
+        area=(589, 655, 690, 684),
+        search=(569, 635, 710, 704),
+        color=(86, 74, 124),
+        button=(495, 638, 784, 699),
+    ),
+    global_en=None,
+)
+SACRIFICE_NORMAL_CORNER = ButtonWrapper(
+    name='SACRIFICE_NORMAL_CORNER',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/SACRIFICE_NORMAL_CORNER.png',
+        area=(662, 151, 680, 170),
+        search=(655, 146, 1145, 480),
+        color=(25, 28, 40),
+        button=(662, 150, 746, 234),
+    ),
+    global_en=None,
+)
+SACRIFICE_REMOVE = ButtonWrapper(
+    name='SACRIFICE_REMOVE',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/SACRIFICE_REMOVE.png',
+        area=(850, 510, 875, 538),
+        search=(830, 490, 895, 558),
+        color=(174, 107, 117),
+        button=(850, 510, 875, 538),
+    ),
+    global_en=None,
+)
+SACRIFICE_SELECTED_MARK = ButtonWrapper(
+    name='SACRIFICE_SELECTED_MARK',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/SACRIFICE_SELECTED_MARK.png',
+        area=(686, 177, 718, 204),
+        search=(655, 146, 1145, 480),
+        color=(47, 63, 24),
+        button=(686, 177, 718, 204),
+    ),
+    global_en=None,
+)
+SACRIFICE_SPECIAL_CORNER = ButtonWrapper(
+    name='SACRIFICE_SPECIAL_CORNER',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/SACRIFICE_SPECIAL_CORNER.png',
+        area=(950, 151, 968, 170),
+        search=(655, 146, 1145, 480),
+        color=(73, 23, 52),
+        button=(950, 150, 1034, 234),
     ),
     global_en=None,
 )

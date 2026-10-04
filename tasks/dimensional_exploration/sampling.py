@@ -111,7 +111,7 @@ class EventSampler:
 
     END_STATES = {"map", "failed", "settlement", "lobby", "start_supply", "recruitment"}
     OUTCOME_STATES = END_STATES | {"reward", "loot", "prepare", "battle", "victory", "resume_rewards", "event_options",
-                                 "upgrade", "revive"}
+                                 "upgrade", "revive", "sacrifice"}
 
     def __init__(self, root):
         self.root = Path(root)
@@ -202,7 +202,7 @@ class EventSampler:
         self.active = None
         self._save()
 
-    def observe(self, state, image, *, text="", resources=None, narration=False):
+    def observe(self, state, image, *, text="", resources=None, narration=False, confirmed=True):
         if not self.active or not self.active["clicked"]:
             return
         if state not in self.OUTCOME_STATES and not narration:
@@ -217,7 +217,11 @@ class EventSampler:
             delta = {k: value - before[k] for k, value in (resources or {}).items()
                      if isinstance(value, int) and isinstance(before.get(k), int)}
             frames.append({"state": state, "text": text, "image": name, "resources": resources, "delta": delta})
-        self.active["advanced"] = True
+        # An event's payment picker is useful evidence, but merely opening or
+        # selecting an item does not prove it was consumed. Preserve the
+        # pending branch until actual narration/rewards/exit confirms payment.
+        if confirmed:
+            self.active["advanced"] = True
         self._save()
         if state in self.END_STATES:
             self._finish(state)

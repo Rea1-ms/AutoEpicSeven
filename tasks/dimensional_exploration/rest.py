@@ -68,6 +68,8 @@ class RestMixin:
         if match_in(self.device.image, ROOM_DONE, ROOM_DONE.search):
             self.reset_rest_health()
             return self.click_action(ROOM_LEAVE)
+        if self._upgrade_exhausted:
+            return self.click_action(ROOM_LEAVE) if self.appear(ROOM_LEAVE) else False
         buttons = list(REST_ACTION.iter_buttons())
         available = [vision.bright_text(button, minimum=80) for button in buttons]
         row = self._rest_action
