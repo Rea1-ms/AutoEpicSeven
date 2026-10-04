@@ -1,0 +1,104 @@
+{
+  "version": 1,
+  "source": "MuMu-20261003-100049-079.png",
+  "suite": "knights_shop_final",
+  "case": "bulk_confirmation",
+  "items": [
+    {
+      "name": "SHOP_PURCHASE_FINAL_CHECK",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "base",
+      "box": [
+        570,
+        259,
+        715,
+        281
+      ]
+    },
+    {
+      "name": "SHOP_PURCHASE_FINAL_CONFIRM",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "base",
+      "box": [
+        810,
+        519,
+        854,
+        543
+      ]
+    },
+    {
+      "name": "SHOP_PURCHASE_FINAL_CONFIRM",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "button",
+      "box": [
+        787,
+        511,
+        881,
+        552
+      ]
+    },
+    {
+      "name": "SHOP_PURCHASE_FINAL_CANCEL",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "base",
+      "box": [
+        445,
+        519,
+        491,
+        543
+      ]
+    },
+    {
+      "name": "SHOP_PURCHASE_FINAL_CANCEL",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "button",
+      "box": [
+        398,
+        511,
+        533,
+        552
+      ]
+    },
+    {
+      "name": "OCR_SHOP_FINAL_ITEM",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "base",
+      "box": [
+        640,
+        337,
+        947,
+        401
+      ]
+    },
+    {
+      "name": "OCR_SHOP_FINAL_QUANTITY",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "base",
+      "box": [
+        572,
+        431,
+        709,
+        465
+      ]
+    },
+    {
+      "name": "OCR_SHOP_FINAL_PRICE",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "base",
+      "box": [
+        647,
+        513,
+        776,
+        552
+      ]
+    }
+  ]
+}

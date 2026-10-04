@@ -21,6 +21,7 @@ from tasks.base.page import (
 from tasks.base.popup import ANNOUNCEMENT_DONOT_REMIND
 from tasks.base.route_entry import match_route_entry
 from tasks.knights.assets.assets_knights_gvg import KNIGHTS_CREST, KNIGHTS_NOT_ENOUGH_PEOPLE
+from tasks.knights.assets.assets_knights_activity_entries import ACTIVITY_PANEL_CHECK
 from tasks.login.assets.assets_login import (
     LOGIN_AGREEMENT_UNCHECKED,
     LOGIN_ANNOUNCEMENT_CLOSE,
@@ -595,6 +596,16 @@ class UI(MainPage):
         """
         if self.handle_ui_recovery():
             return True
+
+        # The guild activity panel uses the same bottom close artwork as ads.
+        # A usable panel belongs to the page graph: generic popup handlers must
+        # not close it before ui_goto can follow a sibling-tab edge. Check color
+        # as well as the title, so a dimmed panel behind a real modal does not
+        # suppress that modal's normal recovery handlers.
+        if server_.lang == 'global_cn' and ACTIVITY_PANEL_CHECK.match_template_color(
+            self.device.image, threshold=25
+        ):
+            return False
 
         # === E7 登录弹窗处理 ===
 

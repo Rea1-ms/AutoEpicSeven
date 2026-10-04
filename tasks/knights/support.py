@@ -3,8 +3,7 @@ from dataclasses import dataclass
 from module.base.button import ButtonWrapper, ClickButton
 from module.base.timer import Timer
 from module.logger import logger
-from tasks.base.page import page_knights
-from tasks.knights.assets.assets_knights_main_page import KNIGHTS_ACTIVITY_ENTRY
+from tasks.base.page import page_knights, page_knights_support
 from tasks.knights.assets.assets_knights_activity_support_active import (
     ACTION_SEARCH,
     BEGGINER_PENGUIN,
@@ -168,36 +167,15 @@ class KnightsSupportMixin:
         return pairs
 
     def _enter_support(self, skip_first_screenshot=True) -> bool:
+        """Use the shared routes, including another open activity tab.
+
+        Pages:
+            in: a registered game page.
+            out: page_knights_support.
+        """
         logger.info("Knights: enter support")
-        timeout = Timer(self.SUPPORT_ENTRY_TIMEOUT_SECONDS, count=60).start()
-
-        while 1:
-            if skip_first_screenshot:
-                skip_first_screenshot = False
-            else:
-                self.device.screenshot()
-
-            if timeout.reached():
-                logger.warning("Knights support entry timeout")
-                return False
-
-            if self.appear(SUPPORT_CHECK, interval=1):
-                logger.info("Knights support page reached")
-                return True
-
-            if self.appear(page_knights.check_button):
-                if self.appear_then_click(KNIGHTS_ACTIVITY_ENTRY, interval=self.SUPPORT_ENTRY_CLICK_INTERVAL_SECONDS):
-                    logger.info("Knights: open activity support")
-                    timeout.reset()
-                    continue
-
-            if self.is_in_main(interval=0):
-                logger.warning("Knights support entry exited to main page unexpectedly")
-                return False
-
-            if self.handle_network_error():
-                timeout.reset()
-                continue
+        self.ui_goto(page_knights_support, skip_first_screenshot=skip_first_screenshot)
+        return True
 
     def _run_support_donate(self, skip_first_screenshot=True) -> bool:
         plans = self._enabled_plans(self._build_donate_plans())

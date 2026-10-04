@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "source": "MuMu-20261002-160823-507.png",
+  "suite": "knights_activity_navigation",
+  "case": "member_shop_tabs",
+  "items": [
+    {
+      "name": "ACTIVITY_PANEL_CHECK",
+      "namespace": "global_cn",
+      "module": "knights/activity/entries",
+      "kind": "base",
+      "box": [
+        68,
+        65,
+        244,
+        96
+      ]
+    },
+    {
+      "name": "SUPPORT_TAB_ENTRY",
+      "namespace": "global_cn",
+      "module": "knights/activity/entries",
+      "kind": "base",
+      "box": [
+        119,
+        136,
+        194,
+        159
+      ]
+    },
+    {
+      "name": "SUPPORT_TAB_ENTRY",
+      "namespace": "global_cn",
+      "module": "knights/activity/entries",
+      "kind": "button",
+      "box": [
+        111,
+        128,
+        250,
+        166
+      ]
+    }
+  ]
+}

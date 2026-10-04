@@ -31,6 +31,7 @@ EXPLORATION_MODULES = (
     "tests.dimensional_exploration.test_dimensional_exploration_runtime",
 )
 RUNNER_MODULES = ("tests.test_offline_runner",)
+KNIGHTS_MODULES = ("tests.knights.test_shop",)
 SANCTUARY_MODULES = (
     "tests.sanctuary.test_buy_penguins",
     "tests.sanctuary.test_smart_custody",
@@ -120,10 +121,11 @@ HISTORICAL_MANUAL_MODULES = (
     "tests.combat.test_repeat_combat_v2",
 )
 SUITES = {
-    "all": EXPLORATION_MODULES + SANCTUARY_MODULES + RUNNER_MODULES + UPSTREAM_MODULES
+    "all": EXPLORATION_MODULES + SANCTUARY_MODULES + KNIGHTS_MODULES + RUNNER_MODULES + UPSTREAM_MODULES
            + CORE_MODULES + ACTIVITY_MODULES + COMBAT_MODULES + STORE_MODULES
            + HISTORICAL_REPLAY_MODULES + HISTORICAL_CAPTURE_MODULES + HISTORICAL_MANUAL_MODULES
            + SECRET_SHOP_MODULES + INTERACTION_MODULES,
+    "knights": KNIGHTS_MODULES,
     "dimensional_exploration": EXPLORATION_MODULES,
     "sanctuary": SANCTUARY_MODULES,
     "buy_penguins": ("tests.sanctuary.test_buy_penguins",),
@@ -145,6 +147,7 @@ SUITES = {
 }
 FIXTURE_MANIFEST = ROOT / "tests" / "fixtures" / "dimensional_exploration" / "manifest.json"
 SANCTUARY_FIXTURE_MANIFEST = ROOT / "tests" / "fixtures" / "sanctuary" / "manifest.json"
+KNIGHTS_FIXTURE_MANIFEST = ROOT / "tests" / "fixtures" / "knights" / "manifest.json"
 HISTORICAL_FIXTURE_MANIFEST = ROOT / "tests" / "fixtures" / "historical" / "manifest.json"
 SECRET_SHOP_FIXTURE_MANIFEST = ROOT / "tests" / "fixtures" / "secret_shop" / "manifest.json"
 
@@ -182,7 +185,7 @@ def fixture_manifest(verify):
     # Explicit manifests keep historical/manual screenshots outside the test
     # corpus. IDs share one report namespace, so collisions must fail before
     # tests run rather than silently replacing another business's evidence.
-    for manifest in (FIXTURE_MANIFEST, SANCTUARY_FIXTURE_MANIFEST, HISTORICAL_FIXTURE_MANIFEST,
+    for manifest in (FIXTURE_MANIFEST, SANCTUARY_FIXTURE_MANIFEST, KNIGHTS_FIXTURE_MANIFEST, HISTORICAL_FIXTURE_MANIFEST,
                      SECRET_SHOP_FIXTURE_MANIFEST):
         raw = json.loads(manifest.read_text(encoding="utf-8"))
         entries = raw.get("fixtures")

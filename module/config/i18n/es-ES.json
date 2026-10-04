@@ -385,6 +385,194 @@
       "help": "Estado interno para evitar recordatorios duplicados."
     }
   },
+  "KnightsShopWeekly": {
+    "_info": {
+      "name": "Tienda del gremio: compras semanales",
+      "help": "Solo cliente internacional en chino simplificado. La tarea diaria completa el objetivo del período e incluye las compras manuales. Si faltan fondos, vuelve a comprobarlo en la próxima ejecución."
+    },
+    "MysticMedals": {
+      "name": "50 medallas místicas",
+      "help": "Número objetivo de compras por período del juego. 0 desactiva la compra.",
+      "0": "No comprar",
+      "1": "1"
+    },
+    "RareCatalystChest": {
+      "name": "Cofre de selección de catalizador raro",
+      "help": "Número objetivo de compras por período del juego. 0 desactiva la compra.",
+      "0": "No comprar",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7",
+      "8": "8",
+      "9": "9",
+      "10": "10",
+      "11": "11",
+      "12": "12"
+    },
+    "EpicCatalystChest": {
+      "name": "Cofre de selección de catalizador épico",
+      "help": "Número objetivo de compras por período del juego. 0 desactiva la compra.",
+      "0": "No comprar",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5"
+    },
+    "CatalystChest": {
+      "name": "Cofre de catalizadores",
+      "help": "Número objetivo de compras por período del juego. 0 desactiva la compra.",
+      "0": "No comprar",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7",
+      "8": "8",
+      "9": "9",
+      "10": "10"
+    },
+    "ReforgingStoneChest": {
+      "name": "Cofre de selección de gema de equipo",
+      "help": "Número objetivo de compras por período del juego. 0 desactiva la compra.",
+      "0": "No comprar",
+      "1": "1"
+    }
+  },
+  "KnightsShopMonthly": {
+    "_info": {
+      "name": "Tienda del gremio: compras mensuales",
+      "help": "Solo cliente internacional en chino simplificado. La tarea diaria completa el objetivo del período e incluye las compras manuales. Si faltan fondos, vuelve a comprobarlo en la próxima ejecución."
+    },
+    "EquipmentResetStone": {
+      "name": "Piedra de reinicio de equipo",
+      "help": "Número objetivo de compras por período del juego. 0 desactiva la compra.",
+      "0": "No comprar",
+      "1": "1"
+    },
+    "AccessoryResetStone": {
+      "name": "Piedra de reinicio de accesorio",
+      "help": "Número objetivo de compras por período del juego. 0 desactiva la compra.",
+      "0": "No comprar",
+      "1": "1"
+    },
+    "Level85ManastoneChest": {
+      "name": "Cofre de selección de piedra mágica de nivel 85",
+      "help": "Número objetivo de compras por período del juego. 0 desactiva la compra.",
+      "0": "No comprar",
+      "1": "1"
+    },
+    "Level88ManastoneChest": {
+      "name": "Cofre de selección de piedra mágica de nivel 88",
+      "help": "Número objetivo de compras por período del juego. 0 desactiva la compra.",
+      "0": "No comprar",
+      "1": "1"
+    },
+    "ConversionGemChest": {
+      "name": "Cofre de selección de gema de modificación épica",
+      "help": "Número objetivo de compras por período del juego. 0 desactiva la compra.",
+      "0": "No comprar",
+      "1": "1",
+      "2": "2"
+    },
+    "GoldTransmitStone": {
+      "name": "Piedra de transmisión dorada",
+      "help": "Número objetivo de compras por período del juego. 0 desactiva la compra.",
+      "0": "No comprar",
+      "1": "1",
+      "2": "2"
+    },
+    "EpicSpiritBloom": {
+      "name": "Flor espiritual épica",
+      "help": "Número objetivo de compras por período del juego. 0 desactiva la compra.",
+      "0": "No comprar",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7",
+      "8": "8",
+      "9": "9",
+      "10": "10"
+    },
+    "Molagora": {
+      "name": "MolaGora",
+      "help": "Número objetivo de compras por período del juego. 0 desactiva la compra.",
+      "0": "No comprar",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5"
+    },
+    "FireConnection": {
+      "name": "Vínculo de fuego",
+      "help": "Número objetivo de compras por período del juego. 0 desactiva la compra.",
+      "0": "No comprar",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5"
+    },
+    "NatureConnection": {
+      "name": "Vínculo de tierra",
+      "help": "Número objetivo de compras por período del juego. 0 desactiva la compra.",
+      "0": "No comprar",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5"
+    },
+    "IceConnection": {
+      "name": "Vínculo de hielo",
+      "help": "Número objetivo de compras por período del juego. 0 desactiva la compra.",
+      "0": "No comprar",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5"
+    },
+    "ReforgingStoneChest": {
+      "name": "Cofre de selección de gema de equipo",
+      "help": "Número objetivo de compras por período del juego. 0 desactiva la compra.",
+      "0": "No comprar",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5"
+    },
+    "ReforgeMaterialChest": {
+      "name": "Cofre de selección de materiales de reforja",
+      "help": "Número objetivo de compras por período del juego. 0 desactiva la compra.",
+      "0": "No comprar",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4"
+    }
+  },
+  "KnightsShopRuntime": {
+    "_info": {
+      "name": "KnightsShopRuntime._info.name",
+      "help": "KnightsShopRuntime._info.help"
+    },
+    "Purchases": {
+      "name": "KnightsShopRuntime.Purchases.name",
+      "help": "KnightsShopRuntime.Purchases.help"
+    }
+  },
   "Arena": {
     "_info": {
       "name": "Arena",

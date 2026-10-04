@@ -1,0 +1,414 @@
+{
+  "version": 1,
+  "fixtures": {
+    "20261001-171607-666": {
+      "path": "tests/fixtures/knights/shop/MuMu-20261001-171607-666.png",
+      "sha256": "f59c43016f66a3b84200403c2c2e689607a2fbbc309e247e0dd7e4b4d430589b",
+      "server": "global_cn",
+      "scene": "monthly_and_weekly",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.knights.test_shop.CapturedShopTests.test_all_eighteen_products_have_correct_stock_currency_and_price",
+        "tests.knights.test_shop.CapturedShopTests.test_horizontal_translation_moves_only_the_corresponding_price_button",
+        "tests.knights.test_shop.CapturedShopTests.test_clipped_card_is_excluded_even_when_the_title_is_visible",
+        "tests.knights.test_shop.CapturedShopTests.test_corrupt_stock_is_unknown_and_wrong_currency_cannot_supply_a_price",
+        "tests.knights.test_shop.CapturedShopTests.test_activity_panel_is_not_closed_by_the_generic_ad_handler",
+        "tests.knights.test_shop.CapturedShopTests.test_final_confirmation_is_distinct_from_selection_and_rejects_wrong_context"
+      ],
+      "source": "user-provided MuMu-20261001-171607-666.png",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          25
+        ],
+        [
+          0,
+          665,
+          580,
+          720
+        ],
+        [
+          704,
+          665,
+          1280,
+          720
+        ]
+      ]
+    },
+    "20261001-171621-454": {
+      "path": "tests/fixtures/knights/shop/MuMu-20261001-171621-454.png",
+      "sha256": "01d318dc3ede29430e96a0d8c7ac01146faea4b2619e8bb8dc7fc415f19adc22",
+      "server": "global_cn",
+      "scene": "end_available",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.knights.test_shop.CapturedShopTests.test_all_eighteen_products_have_correct_stock_currency_and_price",
+        "tests.knights.test_shop.CapturedShopTests.test_identical_reforging_titles_use_different_periods_and_currencies",
+        "tests.knights.test_shop.CapturedShopTests.test_activity_panel_is_not_closed_by_the_generic_ad_handler",
+        "tests.knights.test_shop.CapturedShopTests.test_final_confirmation_is_distinct_from_selection_and_rejects_wrong_context"
+      ],
+      "source": "user-provided MuMu-20261001-171621-454.png",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          25
+        ],
+        [
+          0,
+          665,
+          580,
+          720
+        ],
+        [
+          704,
+          665,
+          1280,
+          720
+        ]
+      ]
+    },
+    "20261001-171626-703": {
+      "path": "tests/fixtures/knights/shop/MuMu-20261001-171626-703.png",
+      "sha256": "b6866db9138e2d77f5b391808274bd2ee21d67dedce29033bfd47db8f0dff3dd",
+      "server": "global_cn",
+      "scene": "end_sold_out",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.knights.test_shop.CapturedShopTests.test_sold_out_is_observed_zero_not_ocr_failure",
+        "tests.knights.test_shop.CapturedShopTests.test_activity_panel_is_not_closed_by_the_generic_ad_handler",
+        "tests.knights.test_shop.CapturedShopTests.test_final_confirmation_is_distinct_from_selection_and_rejects_wrong_context"
+      ],
+      "source": "user-provided MuMu-20261001-171626-703.png",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          25
+        ],
+        [
+          0,
+          665,
+          580,
+          720
+        ],
+        [
+          704,
+          665,
+          1280,
+          720
+        ]
+      ]
+    },
+    "20261002-160820-406": {
+      "path": "tests/fixtures/knights/shop/MuMu-20261002-160820-406.png",
+      "sha256": "5a60af9881de669ec93df219d4c26c3fc8900eda9061d68466aa9e101150376b",
+      "server": "global_cn",
+      "scene": "support_entry_redacted",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.knights.test_shop.CapturedShopTests.test_shop_body_requires_product_images_after_tab_selection",
+        "tests.knights.test_shop.CapturedShopTests.test_support_and_dimmed_popup_are_not_a_usable_shop",
+        "tests.knights.test_shop.CapturedShopTests.test_activity_panel_is_not_closed_by_the_generic_ad_handler",
+        "tests.knights.test_shop.CapturedShopTests.test_final_confirmation_is_distinct_from_selection_and_rejects_wrong_context",
+        "tests.knights.test_shop.ShopRouteTests.test_three_server_imports_and_shop_routes_are_isolated"
+      ],
+      "source": "user-provided MuMu-20261002-160820-406.png",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          25
+        ],
+        [
+          0,
+          665,
+          580,
+          720
+        ],
+        [
+          704,
+          665,
+          1280,
+          720
+        ],
+        [
+          302,
+          130,
+          1216,
+          643
+        ]
+      ]
+    },
+    "20261002-160823-507": {
+      "path": "tests/fixtures/knights/shop/MuMu-20261002-160823-507.png",
+      "sha256": "e5986ee854d0d04593704eb3fed13d816c64434dd0c5272ec8054241a101b176",
+      "server": "global_cn",
+      "scene": "shop_left_edge",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.knights.test_shop.CapturedShopTests.test_shop_body_requires_product_images_after_tab_selection",
+        "tests.knights.test_shop.CapturedShopTests.test_all_eighteen_products_have_correct_stock_currency_and_price",
+        "tests.knights.test_shop.CapturedShopTests.test_balances_are_read_with_normalized_ocr_language",
+        "tests.knights.test_shop.CapturedShopTests.test_activity_panel_is_not_closed_by_the_generic_ad_handler",
+        "tests.knights.test_shop.CapturedShopTests.test_final_confirmation_is_distinct_from_selection_and_rejects_wrong_context",
+        "tests.knights.test_shop.CapturedShopTests.test_manastone_levels_use_images_even_when_titles_cannot_be_read",
+        "tests.knights.test_shop.CapturedShopTests.test_manastone_level_match_moves_with_the_card_and_rejects_missing_digits",
+        "tests.knights.test_shop.ShopRouteTests.test_three_server_imports_and_shop_routes_are_isolated"
+      ],
+      "source": "user-provided MuMu-20261002-160823-507.png",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          25
+        ],
+        [
+          0,
+          665,
+          580,
+          720
+        ],
+        [
+          704,
+          665,
+          1280,
+          720
+        ]
+      ]
+    },
+    "20261002-160938-463": {
+      "path": "tests/fixtures/knights/shop/MuMu-20261002-160938-463.png",
+      "sha256": "554ea9ac215898959e820b2b876c5b18120b35093abb42119d4721df17e8ebc0",
+      "server": "global_cn",
+      "scene": "purchase_multi",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.knights.test_shop.CapturedShopTests.test_support_and_dimmed_popup_are_not_a_usable_shop",
+        "tests.knights.test_shop.CapturedShopTests.test_multi_purchase_popup_uses_buttons_and_numeric_counter_without_text_ocr",
+        "tests.knights.test_shop.CapturedShopTests.test_dimmed_activity_panel_does_not_block_real_popup_handlers",
+        "tests.knights.test_shop.CapturedShopTests.test_final_confirmation_is_distinct_from_selection_and_rejects_wrong_context"
+      ],
+      "source": "user-provided MuMu-20261002-160938-463.png",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          25
+        ],
+        [
+          0,
+          665,
+          580,
+          720
+        ],
+        [
+          704,
+          665,
+          1280,
+          720
+        ]
+      ]
+    },
+    "20261003-100049-079": {
+      "path": "tests/fixtures/knights/shop/MuMu-20261003-100049-079.png",
+      "sha256": "30b459fe271bcb39e4fd0fd39d4b7bfa28f3998b249aa0732f7c17ad908d44f7",
+      "server": "global_cn",
+      "scene": "purchase_final_confirmation",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.knights.test_shop.CapturedShopTests.test_captured_final_confirmation_matches_dialog_and_button_without_ocr",
+        "tests.knights.test_shop.CapturedShopTests.test_final_confirmation_is_distinct_from_selection_and_rejects_wrong_context",
+        "tests.knights.test_shop.ShopReplayTests.test_final_confirmation_replay_uses_captured_pixels_and_real_validation"
+      ],
+      "source": "user-provided MuMu-20261003-100049-079.png",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          25
+        ],
+        [
+          0,
+          665,
+          580,
+          720
+        ],
+        [
+          704,
+          665,
+          1280,
+          720
+        ]
+      ]
+    },
+    "20261003-110305-160": {
+      "path": "tests/fixtures/knights/shop/MuMu-20261003-110305-160.png",
+      "sha256": "4d07e5e71ebfd60f136d928985475b3803b99f49fd55d4892adb9851525aa78c",
+      "server": "global_cn",
+      "scene": "partial_tail_after_manual_purchase",
+      "capture_type": "emulator_screenshot",
+      "source": "user-provided MuMu-20261003-110305-160.png",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          25
+        ],
+        [
+          0,
+          665,
+          580,
+          720
+        ],
+        [
+          704,
+          665,
+          1280,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.knights.test_shop.CapturedShopTests.test_reordered_partial_tail_is_not_a_finished_scan"
+      ]
+    },
+    "20261003-110308-852": {
+      "path": "tests/fixtures/knights/shop/MuMu-20261003-110308-852.png",
+      "sha256": "ce068f0578bfa60a291b8ce00dcb6ca751aac40e830449bfc0d644d681234c90",
+      "server": "global_cn",
+      "scene": "sold_out_monthly_reforging_box_at_tail",
+      "capture_type": "emulator_screenshot",
+      "source": "user-provided MuMu-20261003-110308-852.png",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          25
+        ],
+        [
+          0,
+          665,
+          580,
+          720
+        ],
+        [
+          704,
+          665,
+          1280,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.knights.test_shop.CapturedShopTests.test_reordered_partial_tail_is_not_a_finished_scan",
+        "tests.knights.test_shop.CapturedShopTests.test_sold_out_monthly_box_at_tail_keeps_its_own_period"
+      ]
+    },
+    "20261003-110314-759": {
+      "path": "tests/fixtures/knights/shop/MuMu-20261003-110314-759.png",
+      "sha256": "fab06bbfaac53956529a732154e16257d4f0821e1d2444b57948c37e75d148b9",
+      "server": "global_cn",
+      "scene": "mystic_and_sold_out_molagora_same_view",
+      "capture_type": "emulator_screenshot",
+      "source": "user-provided MuMu-20261003-110314-759.png",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          25
+        ],
+        [
+          0,
+          665,
+          580,
+          720
+        ],
+        [
+          704,
+          665,
+          1280,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.knights.test_shop.CapturedShopTests.test_mystic_is_recognized_beside_sold_out_molagora_by_image",
+        "tests.knights.test_shop.CapturedShopTests.test_four_digit_crest_balance_moves_the_whole_header",
+        "tests.knights.test_shop.CapturedShopTests.test_balance_icons_move_with_numbers_and_reject_missing_or_duplicate_icons",
+        "tests.knights.test_shop.ShopReplayTests.test_mystic_capture_and_real_balance_start_one_image_selected_purchase"
+      ]
+    },
+    "20261003-110323-175": {
+      "path": "tests/fixtures/knights/shop/MuMu-20261003-110323-175.png",
+      "sha256": "f8446cf89051be9ac221147469fe0ca64d4401df4560fec9631e89d6e2123c30",
+      "server": "global_cn",
+      "scene": "preceding_view_with_sold_out_molagora",
+      "capture_type": "emulator_screenshot",
+      "source": "user-provided MuMu-20261003-110323-175.png",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          25
+        ],
+        [
+          0,
+          665,
+          580,
+          720
+        ],
+        [
+          704,
+          665,
+          1280,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.knights.test_shop.CapturedShopTests.test_sold_out_monthly_box_at_tail_keeps_its_own_period"
+      ]
+    },
+    "20261003-184342-562": {
+      "path": "tests/fixtures/knights/shop/MuMu-20261003-184342-562.png",
+      "sha256": "35c5c7bd104ea61e879cc428d54304ac6b42a2a29c74cf8480484aa8b2f36041",
+      "server": "global_cn",
+      "scene": "catalyst_stock_five_of_ten_after_payment",
+      "capture_type": "emulator_screenshot",
+      "source": "user-provided MuMu-20261003-184342-562.png",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          25
+        ],
+        [
+          0,
+          665,
+          580,
+          720
+        ],
+        [
+          704,
+          665,
+          1280,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.knights.test_shop.CapturedShopTests.test_catalyst_five_stock_after_payment_is_read_without_letter_guessing",
+        "tests.knights.test_shop.ShopReplayTests.test_paid_catalyst_real_stock_completes_record_without_buying_again"
+      ]
+    }
+  }
+}

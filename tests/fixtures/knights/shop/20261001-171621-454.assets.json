@@ -1,0 +1,224 @@
+{
+  "version": 1,
+  "source": "MuMu-20261001-171621-454.png",
+  "suite": "knights_shop",
+  "case": "20261001-171621-454",
+  "items": [
+    {
+      "name": "RARE_CATALYST_CHEST",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "base",
+      "box": [
+        377,
+        153,
+        539,
+        176
+      ]
+    },
+    {
+      "name": "RARE_CATALYST_CHEST",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "button",
+      "box": [
+        379,
+        344,
+        538,
+        373
+      ]
+    },
+    {
+      "name": "RARE_CATALYST_CHEST",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "search",
+      "box": [
+        289,
+        145,
+        1224,
+        640
+      ]
+    },
+    {
+      "name": "CATALYST_CHEST",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "base",
+      "box": [
+        597,
+        153,
+        759,
+        176
+      ]
+    },
+    {
+      "name": "CATALYST_CHEST",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "button",
+      "box": [
+        599,
+        344,
+        758,
+        373
+      ]
+    },
+    {
+      "name": "CATALYST_CHEST",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "search",
+      "box": [
+        289,
+        145,
+        1224,
+        640
+      ]
+    },
+    {
+      "name": "REFORGING_STONE_CHEST",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "base",
+      "box": [
+        817,
+        153,
+        979,
+        176
+      ]
+    },
+    {
+      "name": "REFORGING_STONE_CHEST",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "button",
+      "box": [
+        819,
+        344,
+        978,
+        373
+      ]
+    },
+    {
+      "name": "REFORGING_STONE_CHEST",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "search",
+      "box": [
+        289,
+        145,
+        1224,
+        640
+      ]
+    },
+    {
+      "name": "SHOP_RIGHT_EDGE",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "base",
+      "box": [
+        1037,
+        153,
+        1199,
+        176
+      ]
+    },
+    {
+      "name": "SHOP_RIGHT_EDGE",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "button",
+      "box": [
+        1039,
+        344,
+        1198,
+        373
+      ]
+    },
+    {
+      "name": "SHOP_RIGHT_EDGE",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "search",
+      "box": [
+        289,
+        145,
+        1224,
+        640
+      ]
+    },
+    {
+      "name": "EPIC_CATALYST_CHEST",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "base",
+      "box": [
+        377,
+        410,
+        539,
+        433
+      ]
+    },
+    {
+      "name": "EPIC_CATALYST_CHEST",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "button",
+      "box": [
+        379,
+        601,
+        538,
+        630
+      ]
+    },
+    {
+      "name": "EPIC_CATALYST_CHEST",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "search",
+      "box": [
+        289,
+        145,
+        1224,
+        640
+      ]
+    },
+    {
+      "name": "REFORGE_MATERIAL_CHEST",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "base",
+      "box": [
+        817,
+        410,
+        979,
+        433
+      ]
+    },
+    {
+      "name": "REFORGE_MATERIAL_CHEST",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "button",
+      "box": [
+        819,
+        601,
+        978,
+        630
+      ]
+    },
+    {
+      "name": "REFORGE_MATERIAL_CHEST",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "search",
+      "box": [
+        289,
+        145,
+        1224,
+        640
+      ]
+    }
+  ]
+}

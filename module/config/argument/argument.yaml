@@ -148,6 +148,72 @@ KnightsTeamBattle:
     display: hide
     value: ""
 
+KnightsShopWeekly:
+  # 每期目标总量；游戏显示的已购数量（含手动购买）也计入，0 为不购买。
+  MysticMedals:
+    value: 0
+    option: [ 0, 1 ]
+  RareCatalystChest:
+    value: 0
+    option: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ]
+  EpicCatalystChest:
+    value: 0
+    option: [ 0, 1, 2, 3, 4, 5 ]
+  CatalystChest:
+    value: 0
+    option: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
+  ReforgingStoneChest:
+    value: 0
+    option: [ 0, 1 ]
+
+KnightsShopMonthly:
+  EquipmentResetStone:
+    value: 0
+    option: [ 0, 1 ]
+  AccessoryResetStone:
+    value: 0
+    option: [ 0, 1 ]
+  Level85ManastoneChest:
+    value: 0
+    option: [ 0, 1 ]
+  Level88ManastoneChest:
+    value: 0
+    option: [ 0, 1 ]
+  ConversionGemChest:
+    value: 0
+    option: [ 0, 1, 2 ]
+  GoldTransmitStone:
+    value: 0
+    option: [ 0, 1, 2 ]
+  EpicSpiritBloom:
+    value: 0
+    option: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
+  Molagora:
+    value: 0
+    option: [ 0, 1, 2, 3, 4, 5 ]
+  FireConnection:
+    value: 0
+    option: [ 0, 1, 2, 3, 4, 5 ]
+  NatureConnection:
+    value: 0
+    option: [ 0, 1, 2, 3, 4, 5 ]
+  IceConnection:
+    value: 0
+    option: [ 0, 1, 2, 3, 4, 5 ]
+  ReforgingStoneChest:
+    value: 0
+    option: [ 0, 1, 2, 3, 4, 5 ]
+  ReforgeMaterialChest:
+    value: 0
+    option: [ 0, 1, 2, 3, 4 ]
+
+KnightsShopRuntime:
+  Purchases:
+    keepvalue: true
+    display: hide
+    type: dict
+    value: {}
+
 Arena:
   ClaimWeeklyRewards: true
   ClaimWeeklyBattleRewards: true

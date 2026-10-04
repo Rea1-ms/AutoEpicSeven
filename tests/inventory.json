@@ -10780,6 +10780,992 @@
       ]
     },
     {
+      "source": "tests/knights/test_shop.py",
+      "business": "骑士团商店",
+      "status": "已纳入",
+      "reason": "每周、每月购买数量及价格区域识别",
+      "cases": [
+        {
+          "id": "tests.knights.test_shop.CapturedShopTests.test_catalyst_five_stock_after_payment_is_read_without_letter_guessing",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261003-184342-562"
+          ],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.CapturedShopTests.test_shop_body_requires_product_images_after_tab_selection",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261002-160820-406",
+            "20261002-160823-507"
+          ],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.CapturedShopTests.test_all_eighteen_products_have_correct_stock_currency_and_price",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-171607-666",
+            "20261001-171621-454",
+            "20261002-160823-507"
+          ],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.CapturedShopTests.test_identical_reforging_titles_use_different_periods_and_currencies",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-171621-454"
+          ],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.CapturedShopTests.test_sold_out_is_observed_zero_not_ocr_failure",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-171626-703"
+          ],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.CapturedShopTests.test_support_and_dimmed_popup_are_not_a_usable_shop",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261002-160820-406",
+            "20261002-160938-463"
+          ],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.CapturedShopTests.test_multi_purchase_popup_uses_buttons_and_numeric_counter_without_text_ocr",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261002-160938-463"
+          ],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.CapturedShopTests.test_balances_are_read_with_normalized_ocr_language",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261002-160823-507"
+          ],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.CapturedShopTests.test_horizontal_translation_moves_only_the_corresponding_price_button",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-171607-666"
+          ],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.CapturedShopTests.test_clipped_card_is_excluded_even_when_the_title_is_visible",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-171607-666"
+          ],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.CapturedShopTests.test_corrupt_stock_is_unknown_and_wrong_currency_cannot_supply_a_price",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-171607-666"
+          ],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.CapturedShopTests.test_small_swipes_overlap_the_previous_view_in_both_directions",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.CapturedShopTests.test_reordered_partial_tail_is_not_a_finished_scan",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261003-110305-160",
+            "20261003-110308-852"
+          ],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.CapturedShopTests.test_mystic_is_recognized_beside_sold_out_molagora_by_image",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261003-110314-759"
+          ],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.CapturedShopTests.test_four_digit_crest_balance_moves_the_whole_header",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261003-110314-759"
+          ],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.CapturedShopTests.test_balance_icons_move_with_numbers_and_reject_missing_or_duplicate_icons",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261003-110314-759"
+          ],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.CapturedShopTests.test_sold_out_monthly_box_at_tail_keeps_its_own_period",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261003-110308-852",
+            "20261003-110323-175"
+          ],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.CapturedShopTests.test_activity_panel_is_not_closed_by_the_generic_ad_handler",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-171607-666",
+            "20261001-171621-454",
+            "20261001-171626-703",
+            "20261002-160820-406",
+            "20261002-160823-507"
+          ],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.CapturedShopTests.test_dimmed_activity_panel_does_not_block_real_popup_handlers",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261002-160938-463"
+          ],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.CapturedShopTests.test_captured_final_confirmation_matches_dialog_and_button_without_ocr",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261003-100049-079"
+          ],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.CapturedShopTests.test_final_confirmation_is_distinct_from_selection_and_rejects_wrong_context",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-171607-666",
+            "20261001-171621-454",
+            "20261001-171626-703",
+            "20261002-160820-406",
+            "20261002-160823-507",
+            "20261002-160938-463",
+            "20261003-100049-079"
+          ],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.CapturedShopTests.test_manastone_levels_use_images_even_when_titles_cannot_be_read",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261002-160823-507"
+          ],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.CapturedShopTests.test_manastone_level_match_moves_with_the_card_and_rejects_missing_digits",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261002-160823-507"
+          ],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopRuleTests.test_period_records_change_at_server_week_and_month_refresh",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopRuleTests.test_cached_week_and_month_expire_independently",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopRuleTests.test_changing_same_period_target_uses_observed_purchase_count",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopRuleTests.test_invalid_future_or_other_server_records_do_not_skip",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopRuleTests.test_runtime_schema_is_hidden_bound_and_preserves_records",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopRuleTests.test_bound_config_saves_records_and_reload_keeps_profiles_separate",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopRuleTests.test_logged_molagora_counter_noise_uses_existing_store_parser",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopRuleTests.test_single_popup_requires_matched_button_and_uses_no_text_ocr",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopRuleTests.test_selection_counter_rejects_invalid_values_and_other_stock_totals",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopRuleTests.test_final_confirmation_requires_selected_context_and_visible_button",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopRuleTests.test_period_target_counts_manual_purchases_and_resets_from_game_stock",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopRuleTests.test_missing_invalid_or_disabled_options_never_enable_a_purchase",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopRuleTests.test_stock_and_amount_parsers_keep_zero_separate_from_failure",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopRuleTests.test_source_options_are_bound_disabled_and_cover_exact_period_limits",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopRuleTests.test_all_ui_languages_have_human_readable_names_and_help",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_tab_transition_with_no_product_images_never_swipes",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_unrendered_shop_times_out_without_swiping_or_recording_completion",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_recovered_tab_waits_for_product_images_and_retains_payment",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_fresh_tab_does_not_swipe_during_initial_fast_frames",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_paid_catalyst_real_stock_completes_record_without_buying_again",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261003-184342-562"
+          ],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_logged_quantity_increments_use_bounded_batches_then_fresh_confirmation",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_partial_quantity_batch_recalculates_only_remaining_difference",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_quantity_decrements_are_batched_and_rechecked",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_one_inconsistent_quantity_frame_cannot_start_a_batch",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_quantity_batch_wait_requires_elapsed_time_even_on_fast_screenshots",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_quantity_batch_evidence_is_reset_by_an_unknown_overlay",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_missing_quantity_button_or_bad_counter_cannot_submit_a_batch",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_unresponsive_quantity_batches_timeout_without_payment_or_completion",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_network_after_quantity_batch_rechecks_counter_before_payment",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_manual_and_sold_out_stock_are_recorded_for_next_run",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_records_require_verified_stock_and_partial_purchase_stays_pending",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_insufficient_currency_or_unverified_payment_cannot_complete_record",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_completed_item_record_survives_later_item_failure",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_run_spanning_refresh_does_not_mark_new_period_complete",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_completed_records_skip_shop_before_navigation",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_completed_shop_only_skips_guild_entry_but_other_subtasks_continue",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_repeated_popup_and_delayed_stock_never_repeat_payment",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_multiple_purchase_handles_second_confirmation_before_stock_proof",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_final_confirmation_replay_uses_captured_pixels_and_real_validation",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261003-100049-079"
+          ],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_repeated_final_dialog_times_out_without_repeating_either_confirmation",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_second_confirmation_still_requires_stock_reduction",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_unreadable_final_evidence_never_pays_or_uses_generic_handlers",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_one_valid_final_frame_is_insufficient_to_pay",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_final_evidence_is_reset_by_intervening_selection_frames",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_stale_final_confirmation_is_canceled_before_scanning",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_unexpected_final_dialog_cannot_bypass_selection_confirmation",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_network_recovery_retains_both_confirmation_latches",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_max_is_confirmed_by_fresh_quantity_before_payment",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_price_click_can_fail_then_retry_without_counting_a_purchase",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_unacknowledged_payment_fails_instead_of_rebuying",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_unchanged_shop_after_payment_is_not_success",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_unreadable_selection_counter_cannot_pay",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_already_reached_sold_out_and_insufficient_balance_do_not_click",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_affordable_partial_purchase_is_capped_before_dialog",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_stale_dialog_is_canceled_before_scanning",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_single_quantity_layout_requires_stock_decrease",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_single_purchase_uses_image_confirmation_and_pays_once_without_ocr",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_logged_counter_noise_adjusts_to_max_and_confirms_both_stages",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_old_scroll_frames_are_not_scanned_and_click_uses_settled_view",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_unreadable_stock_never_scrolls_past_or_buys",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_network_overlay_blocks_payment_even_while_handler_is_on_cooldown",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_missing_enabled_item_at_known_end_is_an_error",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_login_reset_relocates_pending_purchase_without_clearing_payment",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_fresh_entry_scans_forward_without_probing_left_edge",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_scroll_that_never_moves_has_a_bounded_retry",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_one_stationary_swipe_does_not_end_a_search",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_unstable_titles_time_out_without_buying_or_scrolling",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_small_step_search_can_pass_twelve_views_without_skipping_a_target",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_moving_view_has_a_bounded_scan_and_never_completes_missing_items",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_sold_out_first_item_can_move_to_tail_without_marking_left_boundary",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_purchase_reordering_relocates_stock_then_searches_shifted_items",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_mystic_capture_and_real_balance_start_one_image_selected_purchase",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261003-110314-759"
+          ],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_unsupported_server_never_navigates_or_builds_a_device",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_shop_only_knights_run_still_executes_and_delays_daily",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_activity_subtasks_share_one_knights_instance_and_close_once",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_all_activity_entry_methods_delegate_to_global_navigation",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_shop_entry_leaves_tab_open_for_following_subtasks",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopRouteTests.test_three_server_imports_and_shop_routes_are_isolated",
+          "category": "资源基础检查",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261002-160820-406",
+            "20261002-160823-507"
+          ],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        }
+      ]
+    },
+    {
       "source": "tests/core/test_resource_bar.py",
       "business": "core",
       "status": "未纳入",

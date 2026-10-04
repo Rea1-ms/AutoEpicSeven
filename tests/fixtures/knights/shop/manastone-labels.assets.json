@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "source": "MuMu-20261002-160823-507.png",
+  "suite": "knights_shop_levels",
+  "case": "manastone_labels",
+  "items": [
+    {
+      "name": "MANASTONE_LEVEL_85",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "base",
+      "box": [
+        583,
+        153,
+        608,
+        176
+      ]
+    },
+    {
+      "name": "MANASTONE_LEVEL_88",
+      "namespace": "global_cn",
+      "module": "knights/shop",
+      "kind": "base",
+      "box": [
+        583,
+        410,
+        608,
+        433
+      ]
+    }
+  ]
+}
