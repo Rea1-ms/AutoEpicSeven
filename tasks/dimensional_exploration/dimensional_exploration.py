@@ -12,21 +12,22 @@ from tasks.base.ui import UI
 from tasks.dimensional_exploration.assets.assets_dimensional_exploration import (
     BUY_CANCEL, BUY_CONFIRM, BUY_CURRENCY, EVENT_NEXT, EXPLORE_ENTER,
     FAILED_CHECK, LOBBY_CONTINUE, LOBBY_START, LOOT_CHECK, MANUAL_TARGET, NODE_ENTER,
-    REWARD_CLOSE, ROOM_DONE, ROOM_LEAVE, SETTLEMENT_EMPTY, SUPPLY_BAGGAGE, SUPPLY_CONFIRM, SUPPLY_SELECTED,
+    REWARD_CLOSE, ROOM_DONE, ROOM_LEAVE, SETTLEMENT_EMPTY,
     TITLE_ENTER, VICTORY_CONTINUE, BATTLE_START,
     OCR_PREVIEW_TITLE, OCR_INITIAL_RECRUITMENT, HERO_CONFIRM_ACTIVE,
     OCR_EVENT_LOOT, OCR_BUY_NAME, OCR_BUY_PRICE, SHOP_OFFER, REST_ACTION,
     SUPPLY_DONE_AREA, SUPPLY_LOOT, OCR_LOOT_EFFECT, LOOT_CARD, LOOT_BORDER,
     OCR_BATTLE_REWARDS, OCR_RESUME_REWARDS, VICTORY_CONTINUE_ACTIVE,
-    RESUME_REWARDS_CONTINUE, OCR_SETTLEMENT_SCORE, CHAPTER_SELECT,
+    RESUME_REWARDS_CONTINUE, OCR_SETTLEMENT_STARLIGHT, CHAPTER_SELECT,
     LEAVE_SHOP_CONFIRM, CANCEL_ABANDON, SETTLEMENT_CLOSE,
     REWARD_LEAVE_CONFIRM, REWARD_LEAVE_CANCEL, EXPLORATION_ENTRY,
 )
 from tasks.dimensional_exploration.policy import (
-    RunProgress, choose_offer, node_priority, normalize, parse_number,
+    RunProgress, choose_offer, node_priority, normalize,
 )
 from tasks.dimensional_exploration.event import EventMemory, decide_event, event_branch, match_event, pending_event
 from tasks.dimensional_exploration.health import EventHealthMixin
+from tasks.dimensional_exploration.starting_strategy import StartingStrategyMixin
 from tasks.dimensional_exploration.recruitment import HeroCosts, RecruitmentMixin
 from tasks.dimensional_exploration.sampling import EventSampler, choose_sample, sampling_balances, text_key
 from tasks.dimensional_exploration.vision import ExplorationVision, match_in
@@ -36,7 +37,7 @@ from tasks.dungeon.assets.assets_dungeon_state import (
 )
 
 
-class DimensionalExploration(EventHealthMixin, RecruitmentMixin, UI):
+class DimensionalExploration(StartingStrategyMixin, EventHealthMixin, RecruitmentMixin, UI):
     def __init__(self, config, device=None, task=None):
         super().__init__(config, device=device, task=task)
         self._last_state = None
@@ -117,6 +118,7 @@ class DimensionalExploration(EventHealthMixin, RecruitmentMixin, UI):
             **getattr(self.config, "DimensionalExplorationRuntime_Session", {}),
             "target": self.target, "completed": self.progress.completed,
             "settlement_seen": self.progress.settlement_seen, "finished": finished,
+            "starlight_total": self.progress.starlight_total, "last_starlight": self.progress.last_starlight,
         }
 
     def run(self):
@@ -135,7 +137,10 @@ class DimensionalExploration(EventHealthMixin, RecruitmentMixin, UI):
         session = self.config.DimensionalExplorationRuntime_Session
         if session.get("finished"):
             session = {}
-        self.progress = RunProgress(int(session.get("completed", 0)), bool(session.get("settlement_seen", False)))
+        self.progress = RunProgress(
+            int(session.get("completed", 0)), bool(session.get("settlement_seen", False)),
+            int(session.get("starlight_total", 0)), session.get("last_starlight"),
+        )
         self.save_progress()
         self.device.screenshot()
         if ExplorationVision(self.device.image).state() == "unknown":
@@ -145,7 +150,7 @@ class DimensionalExploration(EventHealthMixin, RecruitmentMixin, UI):
         self.explore()
         self.ui_goto_main()
         self.save_progress(finished=True)
-        logger.info(f"Dimensional exploration completed: {self.progress.completed}/{self.target} runs; task stopped.")
+        logger.info(f"探查批次完成：{self.progress.completed}/{self.target}轮，累计星辰气息{self.progress.starlight_total}。")
 
     def explore(self, skip_first_screenshot=True):
         """Keep subpages in this loop so every action is confirmed by a new frame.
@@ -293,14 +298,6 @@ class DimensionalExploration(EventHealthMixin, RecruitmentMixin, UI):
                 self.clear_recruitment()
                 return True
         return False
-
-    def handle_start_supply(self, vision):
-        if SUPPLY_SELECTED.match_color(self.device.image, threshold=25):
-            return self.click_action(SUPPLY_CONFIRM)
-        if self.appear(SUPPLY_BAGGAGE):
-            return self.click_action(SUPPLY_BAGGAGE)
-        return False
-
 
     def handle_recruitment(self, vision):
         if vision.bright_text(HERO_CONFIRM_ACTIVE):
@@ -659,11 +656,11 @@ class DimensionalExploration(EventHealthMixin, RecruitmentMixin, UI):
     def handle_settlement(self, vision):
         if self.appear(SETTLEMENT_EMPTY):
             self.require_human("本轮未进行探查，未计入刷取轮数。")
-        score_text = vision.text(OCR_SETTLEMENT_SCORE)
-        score = parse_number(score_text.replace("pt", "").strip())
-        if not score:
+        starlight = vision.number(OCR_SETTLEMENT_STARLIGHT)
+        if starlight is None:
             return False
-        if self.progress.settle(rewarded=True):
+        if self.progress.settle(rewarded=True, starlight=starlight):
             self.save_progress()
-            logger.info(f"Exploration settlement: score={score}, completed={self.progress.completed}/{self.target} runs.")
+            logger.info(f"探查结算：星辰气息+{starlight}，本批累计{self.progress.starlight_total}，"
+                        f"已完成{self.progress.completed}/{self.target}轮。")
         return self.click_action(SETTLEMENT_CLOSE)

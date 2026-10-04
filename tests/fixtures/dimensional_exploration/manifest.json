@@ -35,7 +35,9 @@
       "server": "global_cn",
       "scene": "start_supply",
       "used_by": [
-        "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_starting_supply_selection_requires_positive_gold_state"
+        "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_starting_supply_selection_requires_positive_gold_state",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.StartingAndStarlightRegressions.test_all_four_start_strategies_select_their_visible_card",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.StartingAndStarlightRegressions.test_each_selected_border_uses_its_own_position"
       ]
     },
     "20260922-081226-118": {
@@ -45,7 +47,10 @@
       "scene": "start_supply",
       "used_by": [
         "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_page_identity_and_modal_precedence",
-        "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_starting_supply_selection_requires_positive_gold_state"
+        "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_starting_supply_selection_requires_positive_gold_state",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.StartingAndStarlightRegressions.test_wrong_selected_card_retries_without_confirming",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.StartingAndStarlightRegressions.test_each_selected_border_uses_its_own_position",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.StartingAndStarlightRegressions.test_unknown_or_invisible_strategy_never_confirms_another"
       ]
     },
     "20260922-081258-807": {
@@ -520,7 +525,10 @@
       "scene": "settlement",
       "used_by": [
         "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_page_identity_and_modal_precedence",
-        "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_settlement_repeated_frames_and_batch_exit"
+        "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_settlement_repeated_frames_and_batch_exit",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.StartingAndStarlightRegressions.test_starlight_reads_right_hand_reward_and_counts_once_across_restart",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.StartingAndStarlightRegressions.test_unreadable_starlight_waits_without_using_the_score",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.StartingAndStarlightRegressions.test_zero_starlight_is_a_reading_not_missing_ocr"
       ]
     },
     "20260924-091808-594": {
@@ -549,7 +557,8 @@
       "scene": "settlement",
       "used_by": [
         "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_empty_settlement_does_not_count_as_a_run",
-        "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_page_identity_and_modal_precedence"
+        "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_page_identity_and_modal_precedence",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.StartingAndStarlightRegressions.test_empty_settlement_does_not_record_starlight"
       ]
     },
     "20260924-193808-685": {

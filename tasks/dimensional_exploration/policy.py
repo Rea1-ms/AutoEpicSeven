@@ -92,13 +92,17 @@ class RunProgress:
 
     completed: int = 0
     settlement_seen: bool = False
+    starlight_total: int = 0
+    last_starlight: int | None = None
 
-    def settle(self, rewarded: bool) -> bool:
+    def settle(self, rewarded: bool, starlight: int = 0) -> bool:
         if self.settlement_seen:
             return False
         self.settlement_seen = True
         if rewarded:
             self.completed += 1
+            self.starlight_total += starlight
+            self.last_starlight = starlight
         return True
 
     def entered_run(self):

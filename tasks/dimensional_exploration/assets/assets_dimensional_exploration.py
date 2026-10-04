@@ -1023,6 +1023,18 @@ OCR_SETTLEMENT_SCORE = ButtonWrapper(
     ),
     global_en=None,
 )
+OCR_SETTLEMENT_STARLIGHT = ButtonWrapper(
+    name='OCR_SETTLEMENT_STARLIGHT',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/OCR_SETTLEMENT_STARLIGHT.png',
+        area=(944, 590, 1072, 670),
+        search=(924, 570, 1092, 690),
+        color=(114, 101, 147),
+        button=(944, 590, 1072, 670),
+    ),
+    global_en=None,
+)
 OCR_SHOP_DISCOUNT_PRICE = ButtonWrapper(
     name='OCR_SHOP_DISCOUNT_PRICE',
     cn=None,
@@ -1702,6 +1714,18 @@ SUPPLY_CONFIRM = ButtonWrapper(
     ),
     global_en=None,
 )
+SUPPLY_CONTRACT = ButtonWrapper(
+    name='SUPPLY_CONTRACT',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/SUPPLY_CONTRACT.png',
+        area=(106, 255, 220, 286),
+        search=(86, 235, 240, 306),
+        color=(81, 87, 107),
+        button=(106, 255, 220, 286),
+    ),
+    global_en=None,
+)
 SUPPLY_DONE_AREA = ButtonWrapper(
     name='SUPPLY_DONE_AREA',
     cn=None,
@@ -1714,6 +1738,18 @@ SUPPLY_DONE_AREA = ButtonWrapper(
     ),
     global_en=None,
 )
+SUPPLY_HAMMER = ButtonWrapper(
+    name='SUPPLY_HAMMER',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/SUPPLY_HAMMER.png',
+        area=(924, 255, 1100, 286),
+        search=(904, 235, 1120, 306),
+        color=(82, 88, 109),
+        button=(924, 255, 1100, 286),
+    ),
+    global_en=None,
+)
 SUPPLY_LOOT = ButtonWrapper(
     name='SUPPLY_LOOT',
     cn=None,
@@ -1723,6 +1759,18 @@ SUPPLY_LOOT = ButtonWrapper(
         search=(912, 379, 1081, 452),
         color=(76, 72, 98),
         button=(932, 399, 1061, 432),
+    ),
+    global_en=None,
+)
+SUPPLY_MACHINE = ButtonWrapper(
+    name='SUPPLY_MACHINE',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/SUPPLY_MACHINE.png',
+        area=(363, 255, 523, 286),
+        search=(343, 235, 543, 306),
+        color=(85, 91, 112),
+        button=(363, 255, 523, 286),
     ),
     global_en=None,
 )

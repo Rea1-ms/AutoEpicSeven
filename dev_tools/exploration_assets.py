@@ -85,6 +85,10 @@ CROPS = [
 # The generator obtains regions directly from the non-black source bounds.
 # Attribute images are exceptions, not a second copy of every source crop.
 REGIONS = [
+    ("SUPPLY_CONTRACT", "20260922-081207-157", (106, 255, 220, 286)),
+    ("SUPPLY_MACHINE", "20260922-081207-157", (363, 255, 523, 286)),
+    ("SUPPLY_HAMMER", "20260922-081207-157", (924, 255, 1100, 286)),
+    ("OCR_SETTLEMENT_STARLIGHT", "20260923-233818-836", (944, 590, 1072, 670)),
     ("OCR_ENTRY", "20260921-105748-548", (22, 90, 1248, 609)),
     ("OCR_PREVIEW_TITLE", "20260925-113034-953", (942, 94, 1190, 132)),
     ("OCR_LIFE", "20260923-232839-814", (1043, 17, 1092, 51)),

@@ -404,6 +404,129 @@ if __name__ == '__main__':
     unittest.main()
 
 
+class StartingAndStarlightRegressions(unittest.TestCase):
+    def test_dropdown_source_matches_four_unlocked_cards(self):
+        from module.config.config_updater import ConfigGenerator
+        from tasks.dimensional_exploration.starting_strategy import STRATEGIES
+        option = ConfigGenerator().args['DimensionalExploration']['DimensionalExploration']['StartStrategy']
+        self.assertEqual(option['type'], 'select')
+        self.assertEqual(option['value'], '沉重包袱')
+        self.assertEqual(option['option'], list(STRATEGIES))
+
+    def test_all_four_start_strategies_select_their_visible_card(self):
+        for name, expected in (('雇佣契约', 'SUPPLY_CONTRACT'), ('痛苦机械装置', 'SUPPLY_MACHINE'),
+                               ('沉重包袱', 'SUPPLY_BAGGAGE'), ('基础锻炼铁锤', 'SUPPLY_HAMMER')):
+            task, vision, clicks = task_for('20260922-081207-157')
+            task.config.DimensionalExploration_StartStrategy = name
+            self.assertTrue(task.handle_start_supply(vision))
+            self.assertEqual(clicks, [expected])
+
+    def test_wrong_selected_card_retries_without_confirming(self):
+        task, vision, clicks = task_for('20260922-081226-118')
+        task.config.DimensionalExploration_StartStrategy = '雇佣契约'
+        self.assertTrue(task.handle_start_supply(vision))
+        self.assertTrue(task.handle_start_supply(vision))
+        self.assertEqual(clicks, ['SUPPLY_CONTRACT', 'SUPPLY_CONTRACT'])
+        task.config.DimensionalExploration_StartStrategy = '沉重包袱'
+        self.assertTrue(task.handle_start_supply(vision))
+        self.assertEqual(clicks[-1], 'SUPPLY_CONFIRM')
+
+    def test_each_selected_border_uses_its_own_position(self):
+        from tasks.dimensional_exploration.starting_strategy import STRATEGIES
+        from tasks.dimensional_exploration.assets.assets_dimensional_exploration import SUPPLY_SELECTED
+        # Synthetic border states verify geometry. Only the baggage gold state
+        # is a captured screenshot; this does not claim on-device validation
+        # of the other three selected-card layouts.
+        selected = frame('20260922-081226-118')
+        x1, y1, x2, y2 = SUPPLY_SELECTED.area
+        for name, (_, offset) in STRATEGIES.items():
+            task, _, clicks = task_for('20260922-081207-157')
+            task.config.DimensionalExploration_StartStrategy = name
+            image = task.device.image.copy()
+            image[y1:y2, x1+offset:x2+offset] = selected[y1:y2, x1:x2]
+            task.device.image = image
+            self.assertTrue(task.handle_start_supply(ExplorationVision(image)))
+            self.assertEqual(clicks, ['SUPPLY_CONFIRM'])
+
+    def test_unknown_or_invisible_strategy_never_confirms_another(self):
+        task, vision, clicks = task_for('20260922-081226-118')
+        task.config.DimensionalExploration_StartStrategy = '未登记'
+        with self.assertRaisesRegex(RequestHumanTakeover, '未支持的开局策略'):
+            task.handle_start_supply(vision)
+        self.assertEqual(clicks, [])
+        task.config.DimensionalExploration_StartStrategy = '雇佣契约'
+        task.appear = Mock(return_value=False)
+        self.assertFalse(task.handle_start_supply(vision))
+        self.assertEqual(clicks, [])
+
+    def test_starlight_reads_right_hand_reward_and_counts_once_across_restart(self):
+        task, vision, clicks = task_for('20260923-233818-836')
+        task.progress, task.target = RunProgress(), 2
+        self.assertTrue(task.handle_settlement(vision))
+        self.assertTrue(task.handle_settlement(vision))
+        saved = task.config.DimensionalExplorationRuntime_Session
+        self.assertEqual((saved['completed'], saved['starlight_total'], saved['last_starlight']), (1, 443, 443))
+        self.assertEqual(clicks, ['SETTLEMENT_CLOSE', 'SETTLEMENT_CLOSE'])
+        task.progress = RunProgress(saved['completed'], saved['settlement_seen'],
+                                    saved['starlight_total'], saved['last_starlight'])
+        task.handle_settlement(vision)
+        self.assertEqual(task.progress.starlight_total, 443)
+        task.progress.entered_run()
+        task.handle_settlement(vision)
+        self.assertEqual((task.progress.completed, task.progress.starlight_total), (2, 886))
+
+    def test_unreadable_starlight_waits_without_using_the_score(self):
+        task, vision, clicks = task_for('20260923-233818-836')
+        task.progress, task.target = RunProgress(), 1
+        from tasks.dimensional_exploration.assets.assets_dimensional_exploration import OCR_SETTLEMENT_STARLIGHT
+        image = task.device.image.copy()
+        x1, y1, x2, y2 = OCR_SETTLEMENT_STARLIGHT.area
+        image[y1:y2, x1:x2] = 0
+        task.device.image = image
+        self.assertFalse(task.handle_settlement(ExplorationVision(image)))
+        self.assertEqual((task.progress.completed, task.progress.starlight_total), (0, 0))
+        self.assertEqual(clicks, [])
+
+    def test_zero_starlight_is_a_reading_not_missing_ocr(self):
+        task, vision, clicks = task_for('20260923-233818-836')
+        task.progress, task.target = RunProgress(), 1
+        vision.number = Mock(return_value=0)
+        self.assertTrue(task.handle_settlement(vision))
+        self.assertEqual((task.progress.completed, task.progress.starlight_total, task.progress.last_starlight), (1, 0, 0))
+        self.assertEqual(clicks, ['SETTLEMENT_CLOSE'])
+
+    def test_empty_settlement_does_not_record_starlight(self):
+        task, vision, clicks = task_for('20260924-091819-235')
+        task.progress, task.target = RunProgress(), 1
+        with self.assertRaisesRegex(RequestHumanTakeover, '未进行探查'):
+            task.handle_settlement(vision)
+        self.assertEqual((task.progress.completed, task.progress.starlight_total), (0, 0))
+        self.assertEqual(clicks, [])
+
+    def test_frozen_costs_work_without_cache_and_leave_unknowns_unknown(self):
+        costs = HeroCosts()
+        self.assertEqual(len(costs.values), 22)
+        for name, cost in (('亚敏', 2), ('赛珂兰特', 3), ('一轮孤月维尔萝娜', 4),
+                           ('塔拉诺尔禁卫队员', 2), ('都市暗影小泡芙', 4), ('护卫队长克劳乌', 3)):
+            self.assertEqual(costs.values[name], cost)
+        self.assertTrue(costs.cannot_afford(('黑暗的科尔布思',), 3))
+        self.assertFalse(costs.cannot_afford(('尚未采集',), 3))
+        self.assertFalse(costs.cannot_afford(('黑暗的科尔布思', '尚未采集'), 3))
+
+    def test_local_costs_override_frozen_costs_and_verified_aliases_are_canonical(self):
+        path = artifact_path('costs.json')
+        path.parent.mkdir(parents=True)
+        path.write_text('{"亚敏": 3, "都市暗影小泡装": 4, "新英雄": 2}', encoding='utf-8')
+        costs = HeroCosts(path)
+        self.assertEqual(costs.values['亚敏'], 3)
+        self.assertEqual(costs.values['都市暗影小泡芙'], 4)
+        self.assertNotIn('都市暗影小泡装', costs.values)
+        self.assertEqual(costs.values['新英雄'], 2)
+        costs.learn([('护卫队长克劳鸟', 4), ('另一新英雄', 3)])
+        restored = HeroCosts(path)
+        self.assertEqual(restored.values['护卫队长克劳乌'], 4)
+        self.assertEqual(restored.values['另一新英雄'], 3)
+        self.assertTrue(restored.cannot_afford(('护卫队长克劳鸟',), 3))
 
 
 class RecruitmentBudgetRegressions(unittest.TestCase):

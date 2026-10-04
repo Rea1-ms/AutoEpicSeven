@@ -154,6 +154,7 @@ class GeneratedConfig:
 
     # Group `DimensionalExploration`
     DimensionalExploration_RunCount = 1
+    DimensionalExploration_StartStrategy = '沉重包袱'  # 雇佣契约, 痛苦机械装置, 沉重包袱, 基础锻炼铁锤
     DimensionalExploration_EventSampling = False
     DimensionalExploration_KnightPriority = '起源拉斯 > 亚敏'
     DimensionalExploration_WarriorPriority = '卡瓦朱'

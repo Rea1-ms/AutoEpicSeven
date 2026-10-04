@@ -281,6 +281,7 @@
   "DimensionalExploration": {
     "DimensionalExploration": {
       "RunCount": 1,
+      "StartStrategy": "沉重包袱",
       "EventSampling": false,
       "KnightPriority": "起源拉斯 > 亚敏",
       "WarriorPriority": "卡瓦朱",
