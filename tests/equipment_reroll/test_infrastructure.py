@@ -1,10 +1,13 @@
 import unittest
 import json
+from dataclasses import replace
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
 
 from dev_tools.run_offline_tests import load_tests as load_offline_suite
+from module.exception import RequestHumanTakeover
+from tests.support.equipment_reroll import ReplayClock, ReplayDevice
 from tests.support.equipment_reroll import load_sample
 
 
@@ -58,6 +61,115 @@ class InfrastructureTests(unittest.TestCase):
         self.assertEqual(policy.targets, (Target("Speed", 5), Target("DefensePercent", 8),
                                           Target("HealthPercent", 8), Target("Resistance", 8)))
         self.assertEqual((budget.max_refresh, budget.max_points, budget.reserve_points), (0, 0, 0))
+
+    def test_speed_four_startup_reports_config_reason_without_recognition_or_clicks(self):
+        from module.config.config_generated import GeneratedConfig
+        from tasks.equipment_reroll.equipment_reroll import EquipmentReroll
+
+        config = GeneratedConfig()
+        config.EquipmentReroll_Value1 = 4
+        self.device = ReplayDevice([None])
+        task = EquipmentReroll(config, self.device)
+        with patch.object(task, "execute", side_effect=AssertionError("配置无效时不能进入识别或点击")) as execute, patch(
+            "tasks.equipment_reroll.equipment_reroll.logger.critical",
+        ) as error, self.assertRaises(RequestHumanTakeover) as raised:
+            task.run()
+        execute.assert_not_called()
+        error.assert_called_once()
+        self.assertIn("Invalid target 1 (Speed 4)", error.call_args.args[0])
+        self.assertIn("Speed target must be 5", error.call_args.args[0])
+        self.assertEqual(raised.exception.args, ())
+        self.assertIsInstance(raised.exception.__cause__, ValueError)
+        self.assertEqual(config.EquipmentReroll_Value1, 4)
+        self.assertEqual(self.device.actions, [])
+
+    def test_startup_reports_invalid_goal_duplicate_stat_and_budget_reasons(self):
+        from module.config.config_generated import GeneratedConfig
+        from tasks.equipment_reroll.equipment_reroll import EquipmentReroll
+
+        cases = (
+            ("EquipmentReroll_Value3", 9, "Invalid target 3.*HealthPercent 9.*maximum of 8"),
+            ("EquipmentReroll_Stat3", "DefensePercent", "four distinct target substat types"),
+            ("EquipmentReroll_MaxPoints", -1, "nonnegative integers"),
+        )
+        for field, value, reason in cases:
+            with self.subTest(field=field):
+                config = GeneratedConfig()
+                setattr(config, field, value)
+                self.device = ReplayDevice([None])
+                task = EquipmentReroll(config, self.device)
+                with patch.object(task, "execute") as execute, patch(
+                    "tasks.equipment_reroll.equipment_reroll.logger.critical",
+                ) as error, self.assertRaises(RequestHumanTakeover) as raised:
+                    task.run()
+                execute.assert_not_called()
+                error.assert_called_once()
+                self.assertRegex(error.call_args.args[0], reason)
+                self.assertEqual(raised.exception.args, ())
+                self.assertIsInstance(raised.exception.__cause__, ValueError)
+                self.assertEqual(self.device.actions, [])
+
+    def test_unsupported_language_logs_reason_before_starting_recognition(self):
+        from module.config.config_generated import GeneratedConfig
+        from tasks.equipment_reroll.equipment_reroll import EquipmentReroll
+
+        config = GeneratedConfig()
+        config.Emulator_GameLanguage = "en"
+        self.device = ReplayDevice([None])
+        task = EquipmentReroll(config, self.device)
+        with patch.object(task, "execute") as execute, patch(
+            "tasks.equipment_reroll.equipment_reroll.logger.critical",
+        ) as error, self.assertRaises(RequestHumanTakeover) as raised:
+            task.run()
+        execute.assert_not_called()
+        error.assert_called_once()
+        self.assertIn("only Simplified Chinese is supported, configured language: en", error.call_args.args[0])
+        self.assertEqual(raised.exception.args, ())
+        self.assertEqual(self.device.actions, [])
+
+    def test_runtime_takeover_logs_stop_reason_and_preserves_exception(self):
+        from module.config.config_generated import GeneratedConfig
+        from tasks.equipment_reroll.equipment_reroll import EquipmentReroll
+        from tests.equipment_reroll.test_rules import snapshot
+
+        before = snapshot()
+        wrong_payment = replace(before, points=950)
+        clock = ReplayClock()
+        self.device = ReplayDevice([before, before, wrong_payment, wrong_payment], clock)
+        task = EquipmentReroll(GeneratedConfig(), self.device)
+        task._is_ready = lambda: True
+        task.read_snapshot = lambda: self.device.image
+        task.appear = lambda button, **kwargs: False
+        task.handle_network_error = lambda: False
+        with patch("tasks.equipment_reroll.equipment_reroll.monotonic", clock), patch(
+            "tasks.equipment_reroll.equipment_reroll.logger.critical",
+        ) as error, self.assertRaises(RequestHumanTakeover) as raised:
+            task.run()
+        error.assert_called_once()
+        self.assertIn("Refresh payment does not match the expected cost", error.call_args.args[0])
+        self.assertEqual(raised.exception.args, ())
+        self.assertIsInstance(raised.exception.__cause__, ValueError)
+        self.assertEqual(self.device.actions, ["EQUIPMENT_REROLL_REFRESH"])
+
+    def test_valid_speed_five_startup_runs_real_no_gold_frames_to_budget_stop(self):
+        from module.config.config_generated import GeneratedConfig
+        from tasks.equipment_reroll.equipment_reroll import EquipmentReroll
+
+        config = GeneratedConfig()
+        config.EquipmentReroll_MaxPoints = 19
+        self.sample_id = "critical_damage"
+        image = load_sample(self.sample_id)
+        clock = ReplayClock()
+        self.device = ReplayDevice([image, image], clock)
+        task = EquipmentReroll(config, self.device)
+        task.handle_network_error = lambda: False
+        with patch("tasks.equipment_reroll.equipment_reroll.monotonic", clock), patch(
+            "tasks.equipment_reroll.equipment_reroll.logger.critical",
+        ) as error:
+            self.assertTrue(task.run())
+        error.assert_not_called()
+        self.assertIsNotNone(task._recorded_current)
+        self.assertEqual(self.device.actions, [])
 
     def test_real_device_construction_is_forbidden(self):
         from module.device.device import Device

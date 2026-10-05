@@ -22,6 +22,12 @@ CASES = {
     "replace_applied": "MuMu-20261001-155437-773.png",
     "speed_four_current": "MuMu-20261001-161016-421.png",
     "replace_health_percent_four": "MuMu-20261001-163800-588.png",
+    "critical_damage": "MuMu-20261001-174909-267.png",
+    "speed_four_percent_health": "MuMu-20261005-175522-657.png",
+    "speed_four_unlocked_roll": "MuMu-20261005-175527-407.png",
+    "speed_five_two_locks": "MuMu-20261005-180640-096.png",
+    "speed_five_locked_roll": "MuMu-20261005-180643-216.png",
+    "speed_five_gold_animation": "MuMu-20261005-180647-949.png",
 }
 BOXES = {
     "EQUIPMENT_REROLL_CHECK": (990, 184, 1116, 216),
@@ -33,7 +39,6 @@ BOXES = {
     "OCR_EQUIPMENT_REROLL_CANDIDATE": (563, 194, 824, 363),
     "OCR_EQUIPMENT_REROLL_POINTS": (975, 102, 1085, 140),
     "OCR_EQUIPMENT_REROLL_COST": (326, 627, 369, 660),
-    "OCR_EQUIPMENT_REROLL_MAIN": (206, 134, 466, 169),
 }
 
 
@@ -62,8 +67,9 @@ def main():
                 "EQUIPMENT_REROLL_CURRENT_CHECK": (380, 505, 602, 525),
                 "EQUIPMENT_REROLL_CURRENT_UNLOCKED": (345, 230, 368, 254),
                 "OCR_EQUIPMENT_REROLL_APPLIED": (380, 227, 646, 397),
-                "OCR_EQUIPMENT_REROLL_APPLIED_MAIN": (386, 167, 646, 203),
             }
+        if case == "critical_damage":
+            boxes = {"EQUIPMENT_REROLL_STAT_CRITICAL_DAMAGE": (570, 338, 642, 361)}
         recipe = CropRecipe(
             source=str(source), suite="equipment_reroll", case=case,
             items=tuple(CropItem(name, "base", 1, "share", "equipment_reroll", box)
@@ -92,7 +98,12 @@ def main():
             raise ValueError(f"正式样本已存在：{fixture}")
         # These workshop screens contain no player name or account identifier;
         # create_output_plan also masks the standard bottom-left account area.
-        save_image(plan.image, fixture)
+        fixture_image = plan.image.copy()
+        if case.startswith(("speed_five_", "speed_four_percent_", "speed_four_unlocked_")):
+            # The resource bar is irrelevant to reroll decisions. Keep the
+            # workshop balance and all candidate/lock evidence untouched.
+            fixture_image[0:66, 440:1160] = 0
+        save_image(fixture_image, fixture)
         samples.append({
             "id": case, "path": fixture.name,
             "sha256": hashlib.sha256(fixture.read_bytes()).hexdigest(),

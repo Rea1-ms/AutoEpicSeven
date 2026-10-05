@@ -11,7 +11,12 @@
       "used_by": [
         "tests.equipment_reroll.test_recognition.RecognitionTests.test_screenshots",
         "tests.equipment_reroll.test_recognition.RecognitionTests.test_manifest_covers_the_selected_samples",
-        "tests.equipment_reroll.test_recognition.RecognitionTests.test_overlay_and_blank_screen_do_not_enable_actions"
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_overlay_and_blank_screen_do_not_enable_actions",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_verified_name_templates_recognize_full_labels_across_real_rows",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_gold_filter_respects_phase_order_and_complete_replacement_reading",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_gold_markers_match_all_real_comparison_rows",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_speed_source_template_matches_real_names_and_rejects_other_labels",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_price_templates_match_real_prices_and_reject_delayed_or_unknown_prices"
       ]
     },
     {
@@ -23,7 +28,9 @@
       "scene": "lock_speed",
       "used_by": [
         "tests.equipment_reroll.test_recognition.RecognitionTests.test_screenshots",
-        "tests.equipment_reroll.test_recognition.RecognitionTests.test_manifest_covers_the_selected_samples"
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_manifest_covers_the_selected_samples",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_gold_filter_respects_phase_order_and_complete_replacement_reading",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_gold_markers_match_all_real_comparison_rows"
       ]
     },
     {
@@ -35,7 +42,11 @@
       "scene": "one_lock",
       "used_by": [
         "tests.equipment_reroll.test_recognition.RecognitionTests.test_screenshots",
-        "tests.equipment_reroll.test_recognition.RecognitionTests.test_manifest_covers_the_selected_samples"
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_manifest_covers_the_selected_samples",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_gold_filter_respects_phase_order_and_complete_replacement_reading",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_gold_markers_match_all_real_comparison_rows",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_no_gold_reads_only_protected_rows",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_price_templates_match_real_prices_and_reject_delayed_or_unknown_prices"
       ]
     },
     {
@@ -47,7 +58,10 @@
       "scene": "two_locks",
       "used_by": [
         "tests.equipment_reroll.test_recognition.RecognitionTests.test_screenshots",
-        "tests.equipment_reroll.test_recognition.RecognitionTests.test_manifest_covers_the_selected_samples"
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_manifest_covers_the_selected_samples",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_gold_filter_respects_phase_order_and_complete_replacement_reading",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_gold_markers_match_all_real_comparison_rows",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_price_templates_match_real_prices_and_reject_delayed_or_unknown_prices"
       ]
     },
     {
@@ -59,7 +73,9 @@
       "scene": "two_lock_roll",
       "used_by": [
         "tests.equipment_reroll.test_recognition.RecognitionTests.test_screenshots",
-        "tests.equipment_reroll.test_recognition.RecognitionTests.test_manifest_covers_the_selected_samples"
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_manifest_covers_the_selected_samples",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_gold_filter_respects_phase_order_and_complete_replacement_reading",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_gold_markers_match_all_real_comparison_rows"
       ]
     },
     {
@@ -71,7 +87,9 @@
       "scene": "unlocked",
       "used_by": [
         "tests.equipment_reroll.test_recognition.RecognitionTests.test_screenshots",
-        "tests.equipment_reroll.test_recognition.RecognitionTests.test_manifest_covers_the_selected_samples"
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_manifest_covers_the_selected_samples",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_gold_filter_respects_phase_order_and_complete_replacement_reading",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_gold_markers_match_all_real_comparison_rows"
       ]
     },
     {
@@ -83,7 +101,13 @@
       "scene": "speed_four",
       "used_by": [
         "tests.equipment_reroll.test_recognition.RecognitionTests.test_screenshots",
-        "tests.equipment_reroll.test_recognition.RecognitionTests.test_manifest_covers_the_selected_samples"
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_manifest_covers_the_selected_samples",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_achieved_speed_skips_its_gold_number_but_reads_locked_rows",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_better_speed_reads_every_row_before_replacement",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_gold_filter_respects_phase_order_and_complete_replacement_reading",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_gold_markers_match_all_real_comparison_rows",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_speed_source_template_matches_real_names_and_rejects_other_labels",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_startup_mismatched_protected_value_stops_before_reusing_record"
       ]
     },
     {
@@ -97,7 +121,8 @@
         "tests.equipment_reroll.test_recognition.RecognitionTests.test_replacement_dialog_reads_candidate_and_blocks_refresh",
         "tests.equipment_reroll.test_recognition.RecognitionTests.test_manifest_covers_the_selected_samples",
         "tests.equipment_reroll.test_recognition.RecognitionTests.test_screenshot_replacement_flow_confirms_applied_stats",
-        "tests.equipment_reroll.test_recognition.RecognitionTests.test_dialog_does_not_reread_fixed_main"
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_dialog_does_not_reread_fixed_main",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_verified_name_templates_recognize_full_labels_across_real_rows"
       ]
     },
     {
@@ -113,7 +138,14 @@
         "tests.equipment_reroll.test_recognition.RecognitionTests.test_overlay_and_blank_screen_do_not_enable_actions",
         "tests.equipment_reroll.test_recognition.RecognitionTests.test_screenshot_replacement_flow_confirms_applied_stats",
         "tests.equipment_reroll.test_recognition.RecognitionTests.test_contrast_verification_requires_agreement_and_original_threshold",
-        "tests.equipment_reroll.test_recognition.RecognitionTests.test_real_applied_view_refreshes_into_previous_failure_screen"
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_real_applied_view_refreshes_into_previous_failure_screen",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_selection_ignores_unreadable_fixed_main_stat",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_verified_name_templates_recognize_full_labels_across_real_rows",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_confirmed_current_record_survives_layout_and_lighting_changes",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_replace_click_discards_the_old_record_before_confirmation",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_real_balance_glyphs_ignore_lighting_and_detect_payments",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_estimated_payment_waits_for_real_delayed_balance_without_repeating_click",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_estimated_payment_never_counts_or_retries_an_unchanged_balance"
       ]
     },
     {
@@ -126,7 +158,20 @@
       "used_by": [
         "tests.equipment_reroll.test_recognition.RecognitionTests.test_speed_four_current_no_longer_stalls",
         "tests.equipment_reroll.test_recognition.RecognitionTests.test_manifest_covers_the_selected_samples",
-        "tests.equipment_reroll.test_recognition.RecognitionTests.test_real_applied_view_refreshes_into_previous_failure_screen"
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_real_applied_view_refreshes_into_previous_failure_screen",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_selection_ignores_unreadable_fixed_main_stat",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_verified_name_templates_recognize_full_labels_across_real_rows",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_no_speed_in_candidate_skips_all_candidate_numbers",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_skipped_numbers_still_participate_in_frame_stability",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_numeric_and_resource_caches_require_identical_images",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_unseen_name_requires_ocr_before_rejecting_a_candidate",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_gold_filter_respects_phase_order_and_complete_replacement_reading",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_gold_markers_match_all_real_comparison_rows",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_unrelated_gold_reads_only_gold_names",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_confirmed_current_record_survives_layout_and_lighting_changes",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_speed_source_template_matches_real_names_and_rejects_other_labels",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_real_balance_glyphs_ignore_lighting_and_detect_payments",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_estimated_payment_waits_for_real_delayed_balance_without_repeating_click"
       ]
     },
     {
@@ -138,6 +183,103 @@
       "scene": "replace_health_percent_four",
       "used_by": [
         "tests.equipment_reroll.test_recognition.RecognitionTests.test_health_percent_four_dialog_applies_only_matching_candidate",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_manifest_covers_the_selected_samples",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_verified_name_templates_recognize_full_labels_across_real_rows"
+      ]
+    },
+    {
+      "id": "critical_damage",
+      "path": "critical_damage.png",
+      "sha256": "46f52b1cc777b5891391c9f9f8d9f27f03e950f68a1ce6a420fe1d9df7dd7bdb",
+      "server": "OVERSEA-Play",
+      "language": "global_cn",
+      "scene": "critical_damage",
+      "used_by": [
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_critical_damage_screenshot_reads_full_result_and_priority",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_manifest_covers_the_selected_samples",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_gold_markers_match_all_real_comparison_rows",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_no_gold_skips_candidate_ocr_and_keeps_budget_confirmation",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_unrecognized_icon_and_incomplete_text_do_not_count_as_no_gold",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_dark_background_changes_do_not_restart_no_gold_stability",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_no_gold_real_frames_refresh_once_and_confirm_delayed_payment",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_critical_damage_source_template_avoids_ocr_and_rejects_other_labels",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_estimated_balances_audit_every_ten_refreshes_and_at_exit",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_balance_audit_mismatch_stops_before_another_paid_action",
+        "tests.equipment_reroll.test_infrastructure.InfrastructureTests.test_valid_speed_five_startup_runs_real_no_gold_frames_to_budget_stop"
+      ]
+    },
+    {
+      "id": "speed_four_percent_health",
+      "path": "speed_four_percent_health.png",
+      "sha256": "3f975b2d76778d4e19e409543a0cf4349ab43c595ba9e832bc1a78251937ec13",
+      "server": "OVERSEA-Play",
+      "language": "global_cn",
+      "scene": "speed_four_percent_health",
+      "used_by": [
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_running_tool_reads_real_speed_five_locks_and_followup_candidates",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_manifest_covers_the_selected_samples"
+      ]
+    },
+    {
+      "id": "speed_four_unlocked_roll",
+      "path": "speed_four_unlocked_roll.png",
+      "sha256": "c99949f62925656025895d0fc516c3b80f56e56244b144287ab11bc7203b0ef2",
+      "server": "OVERSEA-Play",
+      "language": "global_cn",
+      "scene": "speed_four_unlocked_roll",
+      "used_by": [
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_running_tool_reads_real_speed_five_locks_and_followup_candidates",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_manifest_covers_the_selected_samples"
+      ]
+    },
+    {
+      "id": "speed_five_two_locks",
+      "path": "speed_five_two_locks.png",
+      "sha256": "a1f27f6ec2261b22852e6486cd132eaf306bbd6356f2fd2bddd80bf810c4a21d",
+      "server": "OVERSEA-Play",
+      "language": "global_cn",
+      "scene": "speed_five_two_locks",
+      "used_by": [
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_running_tool_reads_real_speed_five_locks_and_followup_candidates",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_manifest_covers_the_selected_samples",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_real_speed_five_paid_refresh_preserves_two_locks_and_ignores_unrelated_gold",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_cold_start_reads_real_speed_five_current_without_record",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_speed_source_template_matches_real_names_and_rejects_other_labels",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_real_cold_start_rejects_speed_lock_under_health_priority",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_recorded_gray_rows_skip_ocr_markers_and_glyph_stability",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_improved_candidate_reads_unlocked_rows_and_reuses_confirmed_locks",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_startup_mismatched_protected_value_stops_before_reusing_record",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_price_templates_match_real_prices_and_reject_delayed_or_unknown_prices",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_real_balance_glyphs_ignore_lighting_and_detect_payments"
+      ]
+    },
+    {
+      "id": "speed_five_locked_roll",
+      "path": "speed_five_locked_roll.png",
+      "sha256": "2828b45d44488249de3c22bf232a3e1ded10a360685228ff84c6a80d763ba82f",
+      "server": "OVERSEA-Play",
+      "language": "global_cn",
+      "scene": "speed_five_locked_roll",
+      "used_by": [
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_running_tool_reads_real_speed_five_locks_and_followup_candidates",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_manifest_covers_the_selected_samples",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_real_speed_five_paid_refresh_preserves_two_locks_and_ignores_unrelated_gold",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_cold_start_reads_real_speed_five_current_without_record",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_speed_source_template_matches_real_names_and_rejects_other_labels",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_improved_candidate_reads_unlocked_rows_and_reuses_confirmed_locks",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_price_templates_match_real_prices_and_reject_delayed_or_unknown_prices",
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_real_balance_glyphs_ignore_lighting_and_detect_payments"
+      ]
+    },
+    {
+      "id": "speed_five_gold_animation",
+      "path": "speed_five_gold_animation.png",
+      "sha256": "00e84989cca23cc91483f21af3227e29b1079aa1f3bed7b0e4920c613dcc289e",
+      "server": "OVERSEA-Play",
+      "language": "global_cn",
+      "scene": "speed_five_gold_animation",
+      "used_by": [
+        "tests.equipment_reroll.test_recognition.RecognitionTests.test_real_gold_animation_never_enables_actions_or_substat_ocr",
         "tests.equipment_reroll.test_recognition.RecognitionTests.test_manifest_covers_the_selected_samples"
       ]
     }

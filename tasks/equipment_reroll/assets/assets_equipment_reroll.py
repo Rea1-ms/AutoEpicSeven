@@ -13,6 +13,36 @@ EQUIPMENT_REROLL_CHECK = ButtonWrapper(
         button=(990, 184, 1116, 216),
     ),
 )
+EQUIPMENT_REROLL_COST_ONE_LOCK = ButtonWrapper(
+    name='EQUIPMENT_REROLL_COST_ONE_LOCK',
+    share=Button(
+        file='./assets/share/equipment_reroll/EQUIPMENT_REROLL_COST_ONE_LOCK.png',
+        area=(326, 627, 369, 660),
+        search=(306, 607, 389, 680),
+        color=(43, 36, 22),
+        button=(326, 627, 369, 660),
+    ),
+)
+EQUIPMENT_REROLL_COST_TWO_LOCKS = ButtonWrapper(
+    name='EQUIPMENT_REROLL_COST_TWO_LOCKS',
+    share=Button(
+        file='./assets/share/equipment_reroll/EQUIPMENT_REROLL_COST_TWO_LOCKS.png',
+        area=(326, 627, 369, 660),
+        search=(306, 607, 389, 680),
+        color=(50, 42, 24),
+        button=(326, 627, 369, 660),
+    ),
+)
+EQUIPMENT_REROLL_COST_UNLOCKED = ButtonWrapper(
+    name='EQUIPMENT_REROLL_COST_UNLOCKED',
+    share=Button(
+        file='./assets/share/equipment_reroll/EQUIPMENT_REROLL_COST_UNLOCKED.png',
+        area=(326, 627, 369, 660),
+        search=(306, 607, 389, 680),
+        color=(40, 34, 22),
+        button=(326, 627, 369, 660),
+    ),
+)
 EQUIPMENT_REROLL_CURRENT_CHECK = ButtonWrapper(
     name='EQUIPMENT_REROLL_CURRENT_CHECK',
     share=Button(
@@ -92,6 +122,55 @@ EQUIPMENT_REROLL_REPLACE_CONFIRM = ButtonWrapper(
         color=(55, 89, 54),
         button=(708, 570, 789, 614),
     ),
+)
+EQUIPMENT_REROLL_ROLL_FULL = ButtonWrapper(
+    name='EQUIPMENT_REROLL_ROLL_FULL',
+    share=Button(
+        file='./assets/share/equipment_reroll/EQUIPMENT_REROLL_ROLL_FULL.png',
+        area=(524, 244, 545, 267),
+        search=(504, 224, 565, 287),
+        color=(92, 80, 65),
+        button=(524, 244, 545, 267),
+    ),
+)
+EQUIPMENT_REROLL_ROLL_NORMAL = ButtonWrapper(
+    name='EQUIPMENT_REROLL_ROLL_NORMAL',
+    share=Button(
+        file='./assets/share/equipment_reroll/EQUIPMENT_REROLL_ROLL_NORMAL.png',
+        area=(524, 197, 545, 220),
+        search=(504, 177, 565, 240),
+        color=(89, 85, 92),
+        button=(524, 197, 545, 220),
+    ),
+)
+EQUIPMENT_REROLL_STAT_CRITICAL_DAMAGE = ButtonWrapper(
+    name='EQUIPMENT_REROLL_STAT_CRITICAL_DAMAGE',
+    share=Button(
+        file='./assets/share/equipment_reroll/EQUIPMENT_REROLL_STAT_CRITICAL_DAMAGE.png',
+        area=(570, 338, 642, 361),
+        search=(550, 318, 662, 381),
+        color=(78, 76, 83),
+        button=(570, 338, 642, 361),
+    ),
+)
+EQUIPMENT_REROLL_STAT_SPEED = ButtonWrapper(
+    name='EQUIPMENT_REROLL_STAT_SPEED',
+    share=[
+        Button(
+            file='./assets/share/equipment_reroll/EQUIPMENT_REROLL_STAT_SPEED.png',
+            area=(570, 291, 610, 315),
+            search=(550, 271, 630, 335),
+            color=(99, 97, 102),
+            button=(570, 291, 610, 315),
+        ),
+        Button(
+            file='./assets/share/equipment_reroll/EQUIPMENT_REROLL_STAT_SPEED.2.png',
+            area=(208, 338, 250, 362),
+            search=(188, 318, 270, 382),
+            color=(66, 63, 63),
+            button=(208, 338, 250, 362),
+        ),
+    ],
 )
 EQUIPMENT_REROLL_UNLOCKED = ButtonWrapper(
     name='EQUIPMENT_REROLL_UNLOCKED',

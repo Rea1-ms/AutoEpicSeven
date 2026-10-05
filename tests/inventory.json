@@ -22,6 +22,16 @@
       "samples": []
     },
     {
+      "id": "tests.equipment_reroll.test_rules.RuleTests.test_initial_locks_must_follow_configured_order_and_reach_targets",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "rules",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
       "id": "tests.equipment_reroll.test_rules.RuleTests.test_invalid_configuration_is_rejected",
       "source": "new",
       "owner": "equipment_reroll",
@@ -63,6 +73,26 @@
     },
     {
       "id": "tests.equipment_reroll.test_rules.RuleTests.test_no_lock_before_speed_five",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "rules",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_rules.RuleTests.test_partial_candidate_can_only_be_used_by_the_rejecting_policy",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "rules",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_rules.RuleTests.test_partial_candidate_must_preserve_locked_rows_for_paid_confirmation",
       "source": "new",
       "owner": "equipment_reroll",
       "category": "rules",
@@ -122,6 +152,18 @@
       "samples": []
     },
     {
+      "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_achieved_speed_skips_its_gold_number_but_reads_locked_rows",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "recognition",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "speed_four"
+      ]
+    },
+    {
       "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_applied_single_column_reads_stats_points_and_locks",
       "source": "new",
       "owner": "equipment_reroll",
@@ -131,6 +173,56 @@
       "status": "active",
       "samples": [
         "replace_applied"
+      ]
+    },
+    {
+      "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_balance_audit_mismatch_stops_before_another_paid_action",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "recognition",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "critical_damage"
+      ]
+    },
+    {
+      "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_better_speed_reads_every_row_before_replacement",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "recognition",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "speed_four"
+      ]
+    },
+    {
+      "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_cold_start_reads_real_speed_five_current_without_record",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "recognition",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "speed_five_two_locks",
+        "speed_five_locked_roll"
+      ]
+    },
+    {
+      "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_confirmed_current_record_survives_layout_and_lighting_changes",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "recognition",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "replace_applied",
+        "speed_four_current"
       ]
     },
     {
@@ -146,6 +238,42 @@
       ]
     },
     {
+      "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_critical_damage_screenshot_reads_full_result_and_priority",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "recognition",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "critical_damage"
+      ]
+    },
+    {
+      "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_critical_damage_source_template_avoids_ocr_and_rejects_other_labels",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "recognition",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "critical_damage"
+      ]
+    },
+    {
+      "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_dark_background_changes_do_not_restart_no_gold_stability",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "recognition",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "critical_damage"
+      ]
+    },
+    {
       "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_dialog_does_not_reread_fixed_main",
       "source": "new",
       "owner": "equipment_reroll",
@@ -158,6 +286,82 @@
       ]
     },
     {
+      "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_estimated_balances_audit_every_ten_refreshes_and_at_exit",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "recognition",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "critical_damage"
+      ]
+    },
+    {
+      "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_estimated_payment_never_counts_or_retries_an_unchanged_balance",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "recognition",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "replace_applied"
+      ]
+    },
+    {
+      "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_estimated_payment_waits_for_real_delayed_balance_without_repeating_click",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "recognition",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "replace_applied",
+        "speed_four_current"
+      ]
+    },
+    {
+      "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_gold_filter_respects_phase_order_and_complete_replacement_reading",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "recognition",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "initial",
+        "lock_speed",
+        "one_lock",
+        "two_locks",
+        "two_lock_roll",
+        "unlocked",
+        "speed_four",
+        "speed_four_current"
+      ]
+    },
+    {
+      "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_gold_markers_match_all_real_comparison_rows",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "recognition",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "initial",
+        "lock_speed",
+        "one_lock",
+        "two_locks",
+        "two_lock_roll",
+        "unlocked",
+        "speed_four",
+        "speed_four_current",
+        "critical_damage"
+      ]
+    },
+    {
       "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_health_percent_four_dialog_applies_only_matching_candidate",
       "source": "new",
       "owner": "equipment_reroll",
@@ -167,6 +371,19 @@
       "status": "active",
       "samples": [
         "replace_health_percent_four"
+      ]
+    },
+    {
+      "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_improved_candidate_reads_unlocked_rows_and_reuses_confirmed_locks",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "recognition",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "speed_five_two_locks",
+        "speed_five_locked_roll"
       ]
     },
     {
@@ -188,7 +405,73 @@
         "replace_confirm",
         "replace_applied",
         "speed_four_current",
-        "replace_health_percent_four"
+        "replace_health_percent_four",
+        "critical_damage",
+        "speed_four_percent_health",
+        "speed_four_unlocked_roll",
+        "speed_five_two_locks",
+        "speed_five_locked_roll",
+        "speed_five_gold_animation"
+      ]
+    },
+    {
+      "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_no_gold_reads_only_protected_rows",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "recognition",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "one_lock"
+      ]
+    },
+    {
+      "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_no_gold_real_frames_refresh_once_and_confirm_delayed_payment",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "recognition",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "critical_damage"
+      ]
+    },
+    {
+      "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_no_gold_skips_candidate_ocr_and_keeps_budget_confirmation",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "recognition",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "critical_damage"
+      ]
+    },
+    {
+      "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_no_speed_in_candidate_skips_all_candidate_numbers",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "recognition",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "speed_four_current"
+      ]
+    },
+    {
+      "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_numeric_and_resource_caches_require_identical_images",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "recognition",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "speed_four_current"
       ]
     },
     {
@@ -205,6 +488,22 @@
       ]
     },
     {
+      "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_price_templates_match_real_prices_and_reject_delayed_or_unknown_prices",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "recognition",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "initial",
+        "one_lock",
+        "two_locks",
+        "speed_five_two_locks",
+        "speed_five_locked_roll"
+      ]
+    },
+    {
       "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_real_applied_view_refreshes_into_previous_failure_screen",
       "source": "new",
       "owner": "equipment_reroll",
@@ -218,6 +517,82 @@
       ]
     },
     {
+      "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_real_balance_glyphs_ignore_lighting_and_detect_payments",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "recognition",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "replace_applied",
+        "speed_four_current",
+        "speed_five_two_locks",
+        "speed_five_locked_roll"
+      ]
+    },
+    {
+      "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_real_cold_start_rejects_speed_lock_under_health_priority",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "recognition",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "speed_five_two_locks"
+      ]
+    },
+    {
+      "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_real_gold_animation_never_enables_actions_or_substat_ocr",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "recognition",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "speed_five_gold_animation"
+      ]
+    },
+    {
+      "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_real_speed_five_paid_refresh_preserves_two_locks_and_ignores_unrelated_gold",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "recognition",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "speed_five_two_locks",
+        "speed_five_locked_roll"
+      ]
+    },
+    {
+      "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_recorded_gray_rows_skip_ocr_markers_and_glyph_stability",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "recognition",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "speed_five_two_locks"
+      ]
+    },
+    {
+      "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_replace_click_discards_the_old_record_before_confirmation",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "recognition",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "replace_applied"
+      ]
+    },
+    {
       "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_replacement_dialog_reads_candidate_and_blocks_refresh",
       "source": "new",
       "owner": "equipment_reroll",
@@ -227,6 +602,21 @@
       "status": "active",
       "samples": [
         "replace_confirm"
+      ]
+    },
+    {
+      "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_running_tool_reads_real_speed_five_locks_and_followup_candidates",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "recognition",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "speed_four_percent_health",
+        "speed_four_unlocked_roll",
+        "speed_five_two_locks",
+        "speed_five_locked_roll"
       ]
     },
     {
@@ -261,6 +651,31 @@
       ]
     },
     {
+      "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_selection_ignores_unreadable_fixed_main_stat",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "recognition",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "replace_applied",
+        "speed_four_current"
+      ]
+    },
+    {
+      "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_skipped_numbers_still_participate_in_frame_stability",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "recognition",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "speed_four_current"
+      ]
+    },
+    {
       "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_speed_four_current_no_longer_stalls",
       "source": "new",
       "owner": "equipment_reroll",
@@ -270,6 +685,87 @@
       "status": "active",
       "samples": [
         "speed_four_current"
+      ]
+    },
+    {
+      "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_speed_source_template_matches_real_names_and_rejects_other_labels",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "recognition",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "initial",
+        "speed_four",
+        "speed_four_current",
+        "speed_five_two_locks",
+        "speed_five_locked_roll"
+      ]
+    },
+    {
+      "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_startup_mismatched_protected_value_stops_before_reusing_record",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "recognition",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "speed_four",
+        "speed_five_two_locks"
+      ]
+    },
+    {
+      "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_unrecognized_icon_and_incomplete_text_do_not_count_as_no_gold",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "recognition",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "critical_damage"
+      ]
+    },
+    {
+      "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_unrelated_gold_reads_only_gold_names",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "recognition",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "speed_four_current"
+      ]
+    },
+    {
+      "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_unseen_name_requires_ocr_before_rejecting_a_candidate",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "recognition",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "speed_four_current"
+      ]
+    },
+    {
+      "id": "tests.equipment_reroll.test_recognition.RecognitionTests.test_verified_name_templates_recognize_full_labels_across_real_rows",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "recognition",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "initial",
+        "replace_confirm",
+        "replace_applied",
+        "speed_four_current",
+        "replace_health_percent_four"
       ]
     },
     {
@@ -363,7 +859,17 @@
       "samples": []
     },
     {
-      "id": "tests.equipment_reroll.test_replay.ReplayTests.test_impossible_main_stat_target_has_no_actions",
+      "id": "tests.equipment_reroll.test_replay.ReplayTests.test_improvement_after_partial_result_is_kept_on_the_last_roll",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "replay",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_replay.ReplayTests.test_initial_speed_lock_conflicts_with_health_priority_before_any_action",
       "source": "new",
       "owner": "equipment_reroll",
       "category": "replay",
@@ -384,6 +890,26 @@
     },
     {
       "id": "tests.equipment_reroll.test_replay.ReplayTests.test_mismatched_popup_is_not_applied",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "replay",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_replay.ReplayTests.test_partial_results_wait_for_stable_images_and_exact_payment",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "replay",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_replay.ReplayTests.test_preselected_main_stat_is_not_required",
       "source": "new",
       "owner": "equipment_reroll",
       "category": "replay",
@@ -533,7 +1059,37 @@
       "samples": []
     },
     {
+      "id": "tests.equipment_reroll.test_infrastructure.InfrastructureTests.test_runtime_takeover_logs_stop_reason_and_preserves_exception",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "infrastructure",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
       "id": "tests.equipment_reroll.test_infrastructure.InfrastructureTests.test_source_config_is_manual_only_and_translated",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "infrastructure",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_infrastructure.InfrastructureTests.test_speed_four_startup_reports_config_reason_without_recognition_or_clicks",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "infrastructure",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_infrastructure.InfrastructureTests.test_startup_reports_invalid_goal_duplicate_stat_and_budget_reasons",
       "source": "new",
       "owner": "equipment_reroll",
       "category": "infrastructure",
@@ -561,6 +1117,28 @@
       "automatic_assertions": true,
       "status": "active",
       "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_infrastructure.InfrastructureTests.test_unsupported_language_logs_reason_before_starting_recognition",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "infrastructure",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": []
+    },
+    {
+      "id": "tests.equipment_reroll.test_infrastructure.InfrastructureTests.test_valid_speed_five_startup_runs_real_no_gold_frames_to_budget_stop",
+      "source": "new",
+      "owner": "equipment_reroll",
+      "category": "infrastructure",
+      "requires_device": false,
+      "automatic_assertions": true,
+      "status": "active",
+      "samples": [
+        "critical_damage"
+      ]
     }
   ]
 }

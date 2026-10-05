@@ -5,13 +5,13 @@ from unittest.mock import patch
 
 from module.exception import RequestHumanTakeover
 from tasks.equipment_reroll.equipment_reroll import EquipmentReroll
-from tasks.equipment_reroll.rules import RefreshBudget
+from tasks.equipment_reroll.rules import RefreshBudget, RejectedCandidate, RerollPolicy, Target, UnreadSubstat
 from tests.equipment_reroll.test_rules import policy, snapshot, stats
 from tests.support.equipment_reroll import ReplayClock, ReplayDevice
 
 
 class ReplayTests(unittest.TestCase):
-    def replay(self, frames, budget=None):
+    def replay(self, frames, budget=None, selected=None):
         self.clock = ReplayClock()
         self.device = ReplayDevice(frames, self.clock)
         task = EquipmentReroll(SimpleNamespace(), self.device)
@@ -30,7 +30,7 @@ class ReplayTests(unittest.TestCase):
         task.read_replacement = read_replacement
         task.handle_network_error = lambda: False
         with patch("tasks.equipment_reroll.equipment_reroll.monotonic", self.clock):
-            return task.execute(policy(), budget or RefreshBudget(0, 0, 0))
+            return task.execute(selected or policy(), budget or RefreshBudget(0, 0, 0))
 
     def test_speed_five_on_last_roll_is_replaced_before_stopping(self):
         before = snapshot(points=20)
@@ -38,7 +38,7 @@ class ReplayTests(unittest.TestCase):
         accepted = replace(result, current=result.candidate)
         b = RefreshBudget(1, 20, 0)
         reason = self.replay([before, before, before, before, result, result, accepted, accepted], b)
-        self.assertEqual(reason, "达到最大刷新次数")
+        self.assertEqual(reason, "Refresh limit reached")
         self.assertEqual(self.device.actions, ["EQUIPMENT_REROLL_REFRESH", "EQUIPMENT_REROLL_REPLACE"])
         self.assertEqual((b.refreshes, b.spent), (1, 20))
 
@@ -61,8 +61,12 @@ class ReplayTests(unittest.TestCase):
 
     def test_unconfirmed_paid_click_is_never_repeated(self):
         before = snapshot()
-        with self.assertRaises(RequestHumanTakeover):
+        with patch("tasks.equipment_reroll.equipment_reroll.logger.critical") as critical, \
+                self.assertRaises(RequestHumanTakeover) as raised:
             self.replay([before] * 24)
+        critical.assert_called_once()
+        self.assertIn("refresh action could not be confirmed", critical.call_args.args[0])
+        self.assertEqual(raised.exception.args, ())
         self.assertEqual(self.device.actions, ["EQUIPMENT_REROLL_REFRESH"])
         self.assertEqual(self.device.click_history_clears, 0)
         self.assertEqual(self.device.stuck_history_clears, 0)
@@ -80,6 +84,34 @@ class ReplayTests(unittest.TestCase):
         self.assertEqual(self.device.click_history_clears, 25)
         self.assertEqual(self.device.stuck_history_clears, 25)
 
+    def test_partial_results_wait_for_stable_images_and_exact_payment(self):
+        rows = tuple(UnreadSubstat(name) for name in ("攻击力", "生命值", "防御力", "暴击率"))
+        rejected = RejectedCandidate(rows, policy().targets, b"old")
+        before = snapshot(candidate=rejected, points=100)
+        changing = replace(before, candidate=replace(rejected, image_signature=b"animation"))
+        stable = replace(changing, candidate=replace(rejected, image_signature=b"new"))
+        paid = replace(stable, points=80)
+        budget = RefreshBudget(1, 0, 0)
+        reason = self.replay([before, before, changing, stable, stable, paid, paid], budget)
+        self.assertEqual(reason, "Refresh limit reached")
+        self.assertEqual(self.device.actions, ["EQUIPMENT_REROLL_REFRESH"])
+        self.assertEqual((budget.refreshes, budget.spent), (1, 20))
+        self.assertEqual(self.device.click_history_clears, 1)
+
+    def test_improvement_after_partial_result_is_kept_on_the_last_roll(self):
+        rows = tuple(UnreadSubstat(name) for name in ("攻击力", "生命值", "防御力", "暴击率"))
+        rejected = RejectedCandidate(rows, policy().targets, b"old")
+        before = snapshot(candidate=rejected, points=20)
+        result = replace(before, candidate=stats(5), points=0)
+        popup = {"stats": result.candidate}
+        accepted = replace(result, current=result.candidate, candidate=())
+        budget = RefreshBudget(1, 20, 0)
+        reason = self.replay([before, before, result, result, popup, popup, accepted, accepted], budget)
+        self.assertEqual(reason, "Refresh limit reached")
+        self.assertEqual(self.device.actions, ["EQUIPMENT_REROLL_REFRESH", "EQUIPMENT_REROLL_REPLACE",
+                                              "EQUIPMENT_REROLL_REPLACE_CONFIRM"])
+        self.assertEqual((budget.refreshes, budget.spent), (1, 20))
+
     def test_failed_replace_retries_and_never_refreshes_old_result(self):
         before = snapshot(candidate=stats(5), points=0)
         accepted = replace(before, current=before.candidate)
@@ -88,18 +120,20 @@ class ReplayTests(unittest.TestCase):
 
     def test_stale_locks_are_removed_before_speed_search(self):
         before = snapshot(locked=(False, True, False, False), points=60)
-        unlocked = replace(before, locked=(False,) * 4, cost=20)
-        paid = replace(unlocked, points=40)
-        self.replay([before, before, before, unlocked, unlocked, paid, paid],
-                    RefreshBudget(1, 0, 0))
-        self.assertEqual(self.device.actions, ["EQUIPMENT_REROLL_LOCK_1", "EQUIPMENT_REROLL_REFRESH"])
+        with patch("tasks.equipment_reroll.equipment_reroll.logger.critical") as error, \
+                self.assertRaises(RequestHumanTakeover) as raised:
+            self.replay([before, before], RefreshBudget(1, 0, 0))
+        error.assert_called_once()
+        self.assertIn("Initial locked substats conflict", error.call_args.args[0])
+        self.assertIn("row 2: DefensePercent 6", error.call_args.args[0])
+        self.assertEqual(raised.exception.args, ())
+        self.assertEqual(self.device.actions, [])
 
     def test_unlocking_can_make_an_initially_expensive_roll_affordable(self):
         before = snapshot(locked=(False, True, False, False), points=20)
-        unlocked = replace(before, locked=(False,) * 4, cost=20)
-        paid = replace(unlocked, points=0)
-        self.replay([before, before, unlocked, unlocked, paid, paid], RefreshBudget(1, 20, 0))
-        self.assertEqual(self.device.actions, ["EQUIPMENT_REROLL_LOCK_1", "EQUIPMENT_REROLL_REFRESH"])
+        with self.assertRaises(RequestHumanTakeover):
+            self.replay([before, before], RefreshBudget(1, 20, 0))
+        self.assertEqual(self.device.actions, [])
 
     def test_speed_and_achieved_defense_are_locked_before_refresh(self):
         before = snapshot(current=stats(5, 8), candidate=stats(5, 8), points=150)
@@ -112,7 +146,7 @@ class ReplayTests(unittest.TestCase):
 
     def test_complete_current_roll_has_no_actions(self):
         complete = snapshot(current=stats(5, 8, 8, 8))
-        self.assertEqual(self.replay([complete, complete]), "四条副属性均已达标")
+        self.assertEqual(self.replay([complete, complete]), "All four substat targets reached")
         self.assertEqual(self.device.actions, [])
 
     def test_budget_blocks_refresh_and_accepts_existing_improvement(self):
@@ -120,10 +154,9 @@ class ReplayTests(unittest.TestCase):
         self.replay([before, before], RefreshBudget(0, 19, 0))
         self.assertEqual(self.device.actions, [])
 
-    def test_impossible_main_stat_target_has_no_actions(self):
-        before = replace(snapshot(), main=stats()[1])
-        with self.assertRaises(RequestHumanTakeover):
-            self.replay([before, before])
+    def test_preselected_main_stat_is_not_required(self):
+        before = snapshot(current=stats(5, 8, 8, 8))
+        self.assertEqual(self.replay([before, before]), "All four substat targets reached")
         self.assertEqual(self.device.actions, [])
 
     def test_wrong_payment_stops_without_second_refresh(self):
@@ -133,9 +166,23 @@ class ReplayTests(unittest.TestCase):
             self.replay([before, before, wrong, wrong])
         self.assertEqual(self.device.actions, ["EQUIPMENT_REROLL_REFRESH"])
 
+    def test_initial_speed_lock_conflicts_with_health_priority_before_any_action(self):
+        selected = RerollPolicy((Target("HealthPercent", 8), Target("DefensePercent", 8),
+                                 Target("Resistance", 8), Target("Speed", 5)))
+        before = snapshot(current=stats(5, 8, 6, 8), candidate=stats(5, 8, 8, 8),
+                          locked=(True, False, False, False))
+        with patch("tasks.equipment_reroll.equipment_reroll.logger.critical") as error, \
+                self.assertRaises(RequestHumanTakeover) as raised:
+            self.replay([before, before], selected=selected)
+        error.assert_called_once()
+        self.assertIn("HealthPercent 8 > DefensePercent 8", error.call_args.args[0])
+        self.assertIn("row 1: Speed 5", error.call_args.args[0])
+        self.assertEqual(raised.exception.args, ())
+        self.assertEqual(self.device.actions, [])
+
     def test_apply_waits_for_actual_single_column_result(self):
         before = snapshot(candidate=stats(5), points=0)
-        popup = {"main": before.main, "stats": before.candidate}
+        popup = {"stats": before.candidate}
         accepted = replace(before, current=before.candidate, candidate=())
         self.replay([before, before, popup, popup, None, None, accepted, accepted])
         self.assertEqual(self.device.actions, ["EQUIPMENT_REROLL_REPLACE", "EQUIPMENT_REROLL_REPLACE_CONFIRM"])
@@ -143,18 +190,27 @@ class ReplayTests(unittest.TestCase):
 
     def test_mismatched_popup_is_not_applied(self):
         before = snapshot(candidate=stats(5), points=0)
-        popup = {"main": before.main, "stats": stats(4)}
-        with self.assertRaisesRegex(RequestHumanTakeover, "不一致"):
+        popup = {"stats": stats(4)}
+        with patch("tasks.equipment_reroll.equipment_reroll.logger.critical") as critical, \
+                self.assertRaises(RequestHumanTakeover) as raised:
             self.replay([before, before, popup])
+        critical.assert_called_once()
+        self.assertIn("dialog substats do not match the selected candidate", critical.call_args.args[0])
+        self.assertEqual(raised.exception.args, ())
         self.assertEqual(self.device.actions, ["EQUIPMENT_REROLL_REPLACE"])
 
     def test_unexpected_popup_is_not_applied(self):
         before = snapshot()
-        popup = {"main": before.main, "stats": before.candidate}
+        popup = {"stats": before.candidate}
         for frames in ([popup], [before, before, popup]):
-            with self.subTest(frames=frames), self.assertRaisesRegex(RequestHumanTakeover, "未由本次工具"):
-                self.replay(frames)
-            self.assertNotIn("EQUIPMENT_REROLL_REPLACE_CONFIRM", self.device.actions)
+            with self.subTest(frames=frames):
+                with patch("tasks.equipment_reroll.equipment_reroll.logger.critical") as critical, \
+                        self.assertRaises(RequestHumanTakeover) as raised:
+                    self.replay(frames)
+                critical.assert_called_once()
+                self.assertIn("replacement dialog was not initiated by this tool", critical.call_args.args[0])
+                self.assertEqual(raised.exception.args, ())
+                self.assertNotIn("EQUIPMENT_REROLL_REPLACE_CONFIRM", self.device.actions)
 
     def test_unreadable_popup_never_clicks_apply(self):
         before = snapshot(candidate=stats(5), points=0)
@@ -164,7 +220,7 @@ class ReplayTests(unittest.TestCase):
 
     def test_apply_retries_are_bounded_and_never_refresh(self):
         before = snapshot(candidate=stats(5), points=0)
-        popup = {"main": before.main, "stats": before.candidate}
+        popup = {"stats": before.candidate}
         with self.assertRaises(RequestHumanTakeover):
             self.replay([before, before] + [popup] * 21)
         self.assertEqual(self.device.actions, ["EQUIPMENT_REROLL_REPLACE"]

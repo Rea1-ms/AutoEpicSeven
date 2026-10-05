@@ -2,6 +2,8 @@ import hashlib
 import json
 from pathlib import Path
 
+import cv2
+
 from module.base.utils import load_image
 
 
@@ -23,6 +25,16 @@ def load_sample(sample_id):
     if image.shape != (720, 1280, 3):
         raise ValueError(f"样本尺寸错误：{sample_id}")
     return image
+
+
+def with_point_balance(image, points):
+    """Synthetic balance glyphs only; source workshop controls stay unchanged."""
+    result = image.copy()
+    result[102:140, 975:1085] = (25, 22, 28)
+    region = result[102:140, 975:1085]
+    cv2.putText(region, f"{points:,}", (1, 27), cv2.FONT_HERSHEY_SIMPLEX, 0.6,
+                (235, 190, 60), 1, cv2.LINE_AA)
+    return result
 
 
 class ReplayDevice:

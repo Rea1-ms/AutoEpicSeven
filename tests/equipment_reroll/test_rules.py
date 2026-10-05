@@ -2,11 +2,8 @@ import unittest
 from dataclasses import replace
 
 from tasks.equipment_reroll.rules import (
-    RefreshBudget, RerollPolicy, Snapshot, Substat, Target, parse_points, parse_substat,
+    RefreshBudget, RejectedCandidate, RerollPolicy, Snapshot, Substat, Target, UnreadSubstat, parse_points, parse_substat,
 )
-
-
-MAIN = Substat("Effectiveness", 12)
 
 
 def stats(speed=3, defense=6, health=6, resistance=7):
@@ -16,17 +13,18 @@ def stats(speed=3, defense=6, health=6, resistance=7):
 
 def snapshot(current=None, candidate=None, points=1000, locked=(False,) * 4):
     return Snapshot(stats() if current is None else current, stats() if candidate is None else candidate, locked, points,
-                    (20, 60, 150)[sum(locked)], MAIN)
+                    (20, 60, 150)[sum(locked)])
 
 
 def policy():
-    return RerollPolicy((Target("DefensePercent", 8), Target("Resistance", 8),
-                         Target("Speed", 5), Target("HealthPercent", 8)))
+    return RerollPolicy((Target("Speed", 5), Target("DefensePercent", 8),
+                         Target("Resistance", 8), Target("HealthPercent", 8)))
 
 
 class RuleTests(unittest.TestCase):
     def test_speed_is_first_even_when_ranked_third(self):
-        p = policy()
+        p = RerollPolicy((Target("DefensePercent", 8), Target("Resistance", 8),
+                          Target("Speed", 5), Target("HealthPercent", 8)))
         self.assertEqual(p.targets[0], Target("Speed", 5))
         self.assertTrue(p.should_replace(snapshot(stats(4, 8, 8, 8), stats(5, 4, 4, 4))))
         self.assertFalse(p.should_replace(snapshot(stats(5, 4, 4, 4), stats(4, 8, 8, 8))))
@@ -105,3 +103,35 @@ class RuleTests(unittest.TestCase):
             replace(snapshot(), cost=60)
         with self.assertRaises(ValueError):
             replace(snapshot(), current=(Substat("Speed", 3),) * 4)
+
+    def test_partial_candidate_can_only_be_used_by_the_rejecting_policy(self):
+        candidate = RejectedCandidate((UnreadSubstat("攻击力"), UnreadSubstat("生命值"),
+                                       UnreadSubstat("防御力"), UnreadSubstat("暴击率")), policy().targets, b"frame")
+        self.assertFalse(policy().should_replace(snapshot(candidate=candidate)))
+        other = RerollPolicy((Target("CriticalChance", 5), Target("HealthPercent", 8),
+                              Target("DefensePercent", 8), Target("FlatAttack", 44)))
+        with self.assertRaisesRegex(ValueError, "current targets"):
+            other.should_replace(snapshot(candidate=candidate))
+
+    def test_partial_candidate_must_preserve_locked_rows_for_paid_confirmation(self):
+        before = snapshot(current=stats(5), locked=(True, False, False, False))
+        rows = (before.current[0], UnreadSubstat("防御力"), UnreadSubstat("生命值"), UnreadSubstat("攻击力"))
+        candidate = RejectedCandidate(rows, policy().targets, b"paid")
+        self.assertTrue(RefreshBudget(0, 0, 0).confirm_refresh(before, replace(before, candidate=candidate, points=940)))
+        wrong = replace(candidate, rows=(UnreadSubstat("速度"), *rows[1:]))
+        with self.assertRaisesRegex(ValueError, "preserve locked substat"):
+            RefreshBudget(0, 0, 0).confirm_refresh(before, replace(before, candidate=wrong, points=940))
+
+    def test_initial_locks_must_follow_configured_order_and_reach_targets(self):
+        selected = RerollPolicy((Target("HealthPercent", 8), Target("DefensePercent", 8),
+                                 Target("Resistance", 8), Target("Speed", 5)))
+        current = stats(5, 8, 6, 8)
+        with self.assertRaisesRegex(ValueError, "Initial locked substats conflict.*Speed 5"):
+            selected.validate_initial_locks(snapshot(current=current, locked=(True, False, False, False)))
+        for locks in ((False,) * 4, (False, False, True, False), (False, True, True, False)):
+            selected.validate_initial_locks(snapshot(current=stats(5, 8, 8, 8), locked=locks))
+        for current, locks in ((stats(5, 8, 6, 8), (False, False, True, False)),
+                               (stats(5, 6, 8, 8), (False, True, False, False)),
+                               (stats(5, 8, 8, 8), (False, False, False, True))):
+            with self.assertRaises(ValueError):
+                selected.validate_initial_locks(snapshot(current=current, locked=locks))
