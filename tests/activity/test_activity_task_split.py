@@ -143,10 +143,13 @@ class SchedulingTests(unittest.TestCase):
         with patch.object(calendar, 'load_calendar', return_value=(*self.events, future)), patch.object(
                 scheduling, 'aware_time', return_value=NOW), patch.object(self.config, 'task_delay') as delay:
             scheduling.delay_next_activity_check(self.config, task='LimitedActivity')
-            delay.assert_called_with(server_update=True, target=launch.replace(tzinfo=None), task='LimitedActivity')
+            # Calendar dates are +08:00; scheduler targets use the host's local
+            # naive time, which is UTC on CI and +08:00 on the Windows host.
+            delay.assert_called_with(server_update=True, target=launch.astimezone().replace(tzinfo=None), task='LimitedActivity')
             self.config.init_task('SpecialActivity')
             scheduling.delay_next_activity_check(self.config, task='SpecialActivity')
-            delay.assert_called_with(server_update=True, target=NOW.replace(hour=23, tzinfo=None), task='SpecialActivity')
+            delay.assert_called_with(server_update=True,
+                                     target=NOW.replace(hour=23).astimezone().replace(tzinfo=None), task='SpecialActivity')
 
     def test_receipt_uses_limited_daily_reset_and_fixed_stock_is_preserved(self):
         deep_set(self.config.data, 'LimitedActivity.Scheduler.ServerUpdate', '02:00')

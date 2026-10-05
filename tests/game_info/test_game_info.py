@@ -171,18 +171,27 @@ class ConsumerTests(unittest.TestCase):
 
     def test_season_change_or_cap_change_rechecks_full_progress(self):
         from tasks.arena import rewards
-        rank = SimpleNamespace(value=38, total=38, time=NOW.replace(tzinfo=None) - timedelta(hours=1))
+        # Stored observations use scheduler-local naive time. Dropping the
+        # calendar timezone directly moves the observation past the CN season
+        # boundary on UTC hosts and prevents the expected immediate recheck.
+        local_now = NOW.astimezone().replace(tzinfo=None)
+        rank = SimpleNamespace(value=38, total=38, time=local_now - timedelta(hours=1))
         config = SimpleNamespace(Emulator_PackageName="com.zlongame.cn.epicseven",
                                  Arena_ClaimBattlePassRewards=True, stored=SimpleNamespace(ArenaRank=rank))
         subject = rewards.ArenaRewardsMixin()
         subject.config = config
         info = parse(document(values={"max_level": 38}))
-        with patch.object(rewards, "load_info", return_value=info), patch.object(rewards, "datetime", wraps=datetime) as clock:
-            clock.now.return_value = NOW.replace(tzinfo=None)
+        with patch.object(rewards, "load_info", return_value=info), \
+                patch.object(rewards, "datetime", wraps=datetime) as clock, \
+                patch.object(catalog, "datetime", wraps=datetime) as facts_clock:
+            # Both the reward guard and the facts lookup must observe the same
+            # instant; freezing only the guard leaves level_cap date-dependent.
+            clock.now.return_value = local_now
+            facts_clock.now.return_value = NOW
             with patch.object(rewards, "Timer", side_effect=RuntimeError("entered flow")):
                 with self.assertRaisesRegex(RuntimeError, "entered flow"):
                     rewards.ArenaRewardsMixin._claim_battle_pass_rewards(subject)
-            rank.time = NOW.replace(tzinfo=None)
+            rank.time = local_now
             self.assertFalse(rewards.ArenaRewardsMixin._claim_battle_pass_rewards(subject))
             with patch.object(info.__class__, "level_cap", return_value=40), patch.object(rewards, "Timer", side_effect=RuntimeError("entered flow")):
                 with self.assertRaisesRegex(RuntimeError, "entered flow"):

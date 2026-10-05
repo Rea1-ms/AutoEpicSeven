@@ -246,7 +246,9 @@ class ScheduleTests(unittest.TestCase):
 
     def test_record_never_skips_next_half_day_or_another_server(self):
         key=scheduling._checked_path(self.config,EVENT_ID)
-        self.config.values[key]="2026-09-20 12:00:00"
+        # Receipts are persisted in scheduler-local time. Keep this observation
+        # at 12:00 Beijing time even when the host's local timezone is UTC.
+        self.config.values[key]=NOW.replace(hour=12,minute=0).astimezone().replace(tzinfo=None).isoformat(sep=" ")
         self.assertTrue(scheduling.is_activity_checked_in_window(self.config,WINDOW,NOW))
         self.assertFalse(scheduling.is_activity_checked_in_window(self.config,WINDOW,NOW.replace(hour=23)))
         self.config.Emulator_PackageName="com.zlongame.cn.epicseven"
@@ -262,7 +264,7 @@ class ScheduleTests(unittest.TestCase):
                 scheduling.delay_next_activity_check(self.config)
             expected={"server_update":True,"task":"SpecialActivity"}
             if enabled:
-                expected["target"]=NOW.replace(hour=23,minute=0,second=0,tzinfo=None)
+                expected["target"]=NOW.replace(hour=23,minute=0,second=0).astimezone().replace(tzinfo=None)
             self.assertEqual(self.config.delays,[expected])
 
     def test_bad_refresh_hours_rejected(self):

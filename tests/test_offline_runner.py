@@ -18,6 +18,62 @@ from tests.support import history_fixtures
 
 
 class RunnerContractTests(unittest.TestCase):
+    def test_inventory_has_one_record_per_registered_case(self):
+        inventory = json.loads((runner.ROOT / 'tests/inventory.json').read_text(encoding='utf-8'))
+        sources = [item['source'] for item in inventory['files']]
+        self.assertEqual(len(sources), len(set(sources)), 'Duplicate inventory source files')
+        records = [case for item in inventory['files'] for case in item['cases']]
+        ids = [case.get('migrated_to') or case['id'] for case in records]
+        self.assertEqual(len(ids), len(set(ids)), 'Duplicate inventory case or migration target')
+        registered = {case.id() for case in runner.tests_for('all')}
+        included = {case.get('migrated_to') or case['id'] for case in records if case['status'] != '未纳入'}
+        self.assertEqual(included, registered, 'Inventory differs from the registered offline suite')
+
+    def test_time_rules_across_scheduler_timezones(self):
+        # Windows lacks time.tzset. An isolated process substitutes only the
+        # implicit local datetime zone; aware calendar instants keep their zone.
+        # This reproduces the Linux UTC failures without changing the OS clock
+        # or allowing imported datetime aliases to leak into other tests.
+        code = '''
+import datetime as datetime_module
+import sys
+import unittest
+from datetime import datetime as RealDatetime, timedelta, timezone
+from unittest.mock import patch
+
+local_timezone = timezone(timedelta(hours=int(sys.argv[1])))
+class SchedulerDatetime(RealDatetime):
+    def astimezone(self, tz=None):
+        value = self if self.tzinfo is not None else self.replace(tzinfo=local_timezone)
+        return RealDatetime.astimezone(value, tz or local_timezone)
+
+    @classmethod
+    def now(cls, tz=None):
+        value = cls.fromtimestamp(RealDatetime.now(timezone.utc).timestamp(), tz or local_timezone)
+        return value if tz is not None else value.replace(tzinfo=None)
+
+ids = {
+    'tests.game_info.test_game_info.ConsumerTests.test_season_change_or_cap_change_rechecks_full_progress',
+    'tests.activity.test_activity_task_split.SchedulingTests.test_opening_and_refresh_are_scoped_to_own_task',
+    'tests.activity.test_huche_shop.ScheduleTests.test_next_run_includes_refresh_only_when_enabled',
+    'tests.activity.test_huche_shop.ScheduleTests.test_record_never_skips_next_half_day_or_another_server',
+}
+with patch.object(datetime_module, 'datetime', SchedulerDatetime):
+    from dev_tools.run_offline_tests import tests_for
+    cases = [case for case in tests_for('all') if case.id() in ids]
+    assert len(cases) == len(ids), 'Timezone regression cases were not collected'
+    import module.game_info.catalog as catalog
+    catalog.datetime = SchedulerDatetime
+    result = unittest.TextTestRunner(verbosity=2).run(unittest.TestSuite(cases))
+    assert result.wasSuccessful() and not result.skipped, 'Timezone regression failed'
+'''
+        for offset in (0, 8):
+            with self.subTest(local_offset_hours=offset):
+                result = subprocess.run([sys.executable, '-X', 'utf8', '-B', '-c', code, str(offset)],
+                                        cwd=runner.ROOT, capture_output=True, text=True,
+                                        encoding='utf-8', timeout=60)
+                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
     def test_all_suites_collect_without_windows_registry(self):
         # A fresh process prevents the Windows host's cached platform modules
         # from hiding Linux collection failures. Only the platform selector is
