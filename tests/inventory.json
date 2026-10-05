@@ -3,6 +3,326 @@
   "source_root": "ignored test/ in main checkout",
   "files": [
     {
+      "source": "tests/store/test_friendship_gift.py",
+      "business": "普通商店",
+      "status": "新增",
+      "reason": "国际服简体中文单件涨价商品",
+      "cases": [
+        {
+          "id": "tests.store.test_friendship_gift.GiftIntegrationTests.test_failed_sequence_keeps_previously_verified_purchase_count",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "连续购买中途失败时，统计保留此前已核实的购买数量"
+        },
+        {
+          "id": "tests.store.test_friendship_gift.GiftIntegrationTests.test_generated_target_defaults_locales_and_existing_selection",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "生成配置默认关闭，五种语言无占位文案，内存配置升级保留已选目标"
+        },
+        {
+          "id": "tests.store.test_friendship_gift.GiftIntegrationTests.test_translation_source_does_not_leak_into_runtime_arguments",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "配置源仅定义默认值和选项，沿用现有生成器与翻译文件"
+        },
+        {
+          "id": "tests.store.test_friendship_gift.CapturedGiftTests.test_real_shelves_prove_two_debits_and_rising_prices",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/global_cn/friendship_gift/gift-shelf-10.png",
+            "tests/fixtures/historical/global_cn/friendship_gift/gift-shelf-9.png",
+            "tests/fixtures/historical/global_cn/friendship_gift/gift-shelf-8.png"
+          ],
+          "status": "已纳入",
+          "reason": "亲密度献礼选择箱逐件涨价、动态资源栏和原商店入口回归"
+        },
+        {
+          "id": "tests.store.test_friendship_gift.CapturedGiftTests.test_real_single_popup_has_eight_remaining_and_costs_eight_hundred",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/global_cn/friendship_gift/gift-popup-8.png"
+          ],
+          "status": "已纳入",
+          "reason": "亲密度献礼选择箱逐件涨价、动态资源栏和原商店入口回归"
+        },
+        {
+          "id": "tests.store.test_friendship_gift.CapturedGiftTests.test_price_information_overlay_is_not_purchase_evidence",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/global_cn/friendship_gift/gift-price-info.png"
+          ],
+          "status": "已纳入",
+          "reason": "亲密度献礼选择箱逐件涨价、动态资源栏和原商店入口回归"
+        },
+        {
+          "id": "tests.store.test_friendship_gift.CapturedGiftTests.test_friendship_resource_bar_tracks_horizontal_position",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/global_cn/friendship_gift/gift-shelf-10.png"
+          ],
+          "status": "已纳入",
+          "reason": "亲密度献礼选择箱逐件涨价、动态资源栏和原商店入口回归"
+        },
+        {
+          "id": "tests.store.test_friendship_gift.CapturedGiftTests.test_missing_boundary_icon_does_not_read_a_fixed_friendship_box",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/global_cn/friendship_gift/gift-shelf-10.png"
+          ],
+          "status": "已纳入",
+          "reason": "亲密度献礼选择箱逐件涨价、动态资源栏和原商店入口回归"
+        },
+        {
+          "id": "tests.store.test_friendship_gift.CapturedGiftTests.test_item_fields_clipped_by_the_viewport_are_not_accepted",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/global_cn/friendship_gift/gift-shelf-10.png"
+          ],
+          "status": "已纳入",
+          "reason": "亲密度献礼选择箱逐件涨价、动态资源栏和原商店入口回归"
+        },
+        {
+          "id": "tests.store.test_friendship_gift.GiftReplayTests.test_two_single_purchases_use_new_price_after_verified_debit",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "亲密度献礼选择箱逐件涨价、动态资源栏和原商店入口回归"
+        },
+        {
+          "id": "tests.store.test_friendship_gift.GiftReplayTests.test_manual_purchases_count_toward_weekly_target",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "亲密度献礼选择箱逐件涨价、动态资源栏和原商店入口回归"
+        },
+        {
+          "id": "tests.store.test_friendship_gift.GiftReplayTests.test_verified_target_exits_on_current_screenshot",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "当前截图正面确认周目标已达到即可退出，不重复等待同一读数"
+        },
+        {
+          "id": "tests.store.test_friendship_gift.GiftReplayTests.test_price_plateau_still_requires_each_stock_reduction",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "亲密度献礼选择箱逐件涨价、动态资源栏和原商店入口回归"
+        },
+        {
+          "id": "tests.store.test_friendship_gift.GiftReplayTests.test_stock_and_balance_updates_must_agree_before_another_payment",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "亲密度献礼选择箱逐件涨价、动态资源栏和原商店入口回归"
+        },
+        {
+          "id": "tests.store.test_friendship_gift.GiftReplayTests.test_balance_shortfall_after_first_purchase_leaves_remaining_target",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "亲密度献礼选择箱逐件涨价、动态资源栏和原商店入口回归"
+        },
+        {
+          "id": "tests.store.test_friendship_gift.GiftReplayTests.test_insufficient_balance_never_opens_a_purchase",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "亲密度献礼选择箱逐件涨价、动态资源栏和原商店入口回归"
+        },
+        {
+          "id": "tests.store.test_friendship_gift.GiftReplayTests.test_dialog_rechecks_balance_before_payment",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "亲密度献礼选择箱逐件涨价、动态资源栏和原商店入口回归"
+        },
+        {
+          "id": "tests.store.test_friendship_gift.GiftReplayTests.test_popup_price_or_stock_mismatch_cancels_and_reports_failure",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "亲密度献礼选择箱逐件涨价、动态资源栏和原商店入口回归"
+        },
+        {
+          "id": "tests.store.test_friendship_gift.GiftReplayTests.test_unexpected_live_card_price_is_not_paid",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "亲密度献礼选择箱逐件涨价、动态资源栏和原商店入口回归"
+        },
+        {
+          "id": "tests.store.test_friendship_gift.GiftReplayTests.test_dropped_card_click_retries_with_production_interval",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "亲密度献礼选择箱逐件涨价、动态资源栏和原商店入口回归"
+        },
+        {
+          "id": "tests.store.test_friendship_gift.GiftReplayTests.test_unresolved_confirm_does_not_pay_again_or_claim_completion",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "亲密度献礼选择箱逐件涨价、动态资源栏和原商店入口回归"
+        },
+        {
+          "id": "tests.store.test_friendship_gift.GiftReplayTests.test_stale_popup_is_cancelled_before_a_fresh_card_is_selected",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "亲密度献礼选择箱逐件涨价、动态资源栏和原商店入口回归"
+        },
+        {
+          "id": "tests.store.test_friendship_gift.GiftReplayTests.test_network_overlay_keeps_payment_intent_and_breaks_stability",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "亲密度献礼选择箱逐件涨价、动态资源栏和原商店入口回归"
+        },
+        {
+          "id": "tests.store.test_friendship_gift.GiftReplayTests.test_last_gift_is_confirmed_only_by_zero_stock_and_exact_debit",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "亲密度献礼选择箱逐件涨价、动态资源栏和原商店入口回归"
+        },
+        {
+          "id": "tests.store.test_friendship_gift.GiftReplayTests.test_missing_target_search_is_bounded_and_never_confirms",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "亲密度献礼选择箱逐件涨价、动态资源栏和原商店入口回归"
+        },
+        {
+          "id": "tests.store.test_friendship_gift.GiftIntegrationTests.test_gift_uses_existing_free_store_plan_and_target_limit",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "亲密度献礼选择箱逐件涨价、动态资源栏和原商店入口回归"
+        },
+        {
+          "id": "tests.store.test_friendship_gift.GiftIntegrationTests.test_existing_page_runner_reuses_entry_statistics_and_settle",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "亲密度献礼选择箱逐件涨价、动态资源栏和原商店入口回归"
+        },
+        {
+          "id": "tests.store.test_friendship_gift.GiftIntegrationTests.test_failed_payment_stops_the_existing_page_runner",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "亲密度献礼选择箱逐件涨价、动态资源栏和原商店入口回归"
+        },
+        {
+          "id": "tests.store.test_friendship_gift.GiftIntegrationTests.test_price_schedule_and_strict_amounts",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "亲密度献礼选择箱逐件涨价、动态资源栏和原商店入口回归"
+        },
+        {
+          "id": "tests.store.test_friendship_gift.GiftIntegrationTests.test_unsupported_servers_import_and_keep_gift_disabled",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "亲密度献礼选择箱逐件涨价、动态资源栏和原商店入口回归"
+        },
+        {
+          "id": "tests.store.test_friendship_gift.GiftReplayTests.test_dimmed_store_does_not_finish_or_click_the_background",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "页签被遮罩变暗时不退出、不点击背景商品"
+        },
+        {
+          "id": "tests.store.test_friendship_gift.GiftReplayTests.test_visible_unreadable_card_does_not_scroll_or_pay",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可见商品的字段不完整时不滑动、不付款"
+        },
+        {
+          "id": "tests.store.test_friendship_gift.GiftReplayTests.test_unknown_payment_result_never_scrolls_or_opens_another_gift",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "付款尚未确认且字段缺失时不滑动、不重复付款，保留失败证据"
+        }
+      ],
+      "file_category": null
+    },
+    {
       "source": "test/test_activity_batch.py",
       "business": "其他业务或框架",
       "status": "已迁移",

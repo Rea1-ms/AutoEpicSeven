@@ -71,7 +71,7 @@ COMBAT_MODULES = (
     "tests.combat.test_repeat_running_detail",
     "tests.combat.test_episode",
 )
-STORE_MODULES = ()
+STORE_MODULES = ("tests.store.test_friendship_gift",)
 SECRET_SHOP_MODULES = ("tests.secret_shop.test_payment", "tests.secret_shop.test_captures")
 INTERACTION_MODULES = ("tests.core.test_missed_clicks",)
 HISTORICAL_REPLAY_MODULES = (
@@ -136,7 +136,8 @@ SUITES = {
     "combat": COMBAT_MODULES,
     "secret_shop": SECRET_SHOP_MODULES,
     "interaction": INTERACTION_MODULES,
-    "store": ("tests.captured.test_store_inheritance_charms", "tests.captured.test_store_inheritance_cooldown"),
+    "store": STORE_MODULES + ("tests.captured.test_store_inheritance_charms",
+                              "tests.captured.test_store_inheritance_cooldown"),
     "legacy_rules": CORE_MODULES + ACTIVITY_MODULES + COMBAT_MODULES + STORE_MODULES
                     + ("tests.upstream.test_upstream_emulator_sync",),
     "legacy_replay": HISTORICAL_REPLAY_MODULES,

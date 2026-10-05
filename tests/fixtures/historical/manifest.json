@@ -1,6 +1,139 @@
 {
   "version": 1,
   "fixtures": {
+    "gift-shelf-10": {
+      "path": "tests/fixtures/historical/global_cn/friendship_gift/gift-shelf-10.png",
+      "sha256": "3b45e8a0d52ddfff45ffe1e0278dbe43f651c0983f1504d25bcd6b01ffbedf35",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "gift-shelf-10",
+      "source": "MuMu-20261005-171506-918.png",
+      "source_sha256": "dc58b899de0c84aed83c3bb2bd10bd81c8db281cb377d21ad3a71acea01e0318",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          900,
+          63,
+          1280,
+          93
+        ]
+      ],
+      "used_by": [
+        "tests.store.test_friendship_gift.CapturedGiftTests.test_real_shelves_prove_two_debits_and_rising_prices",
+        "tests.store.test_friendship_gift.CapturedGiftTests.test_friendship_resource_bar_tracks_horizontal_position",
+        "tests.store.test_friendship_gift.CapturedGiftTests.test_missing_boundary_icon_does_not_read_a_fixed_friendship_box",
+        "tests.store.test_friendship_gift.CapturedGiftTests.test_item_fields_clipped_by_the_viewport_are_not_accepted"
+      ]
+    },
+    "gift-shelf-9": {
+      "path": "tests/fixtures/historical/global_cn/friendship_gift/gift-shelf-9.png",
+      "sha256": "0a6a89fc6d4d2e484af839671a302a41fbd21b28adf3edbea0a0104e82567ae5",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "gift-shelf-9",
+      "source": "MuMu-20261005-171511-147.png",
+      "source_sha256": "0865ebeb39999876a74776b1e7de860b2d37b1ca63a2ce80f36e707a8c30014c",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          900,
+          63,
+          1280,
+          93
+        ]
+      ],
+      "used_by": [
+        "tests.store.test_friendship_gift.CapturedGiftTests.test_real_shelves_prove_two_debits_and_rising_prices"
+      ]
+    },
+    "gift-shelf-8": {
+      "path": "tests/fixtures/historical/global_cn/friendship_gift/gift-shelf-8.png",
+      "sha256": "3eb80b0aa2a9410c5c4fab9ecd642a8b474644d825dc4e58b6fc1693612dac67",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "gift-shelf-8",
+      "source": "MuMu-20261005-171519-345.png",
+      "source_sha256": "1c97f91bb67bcb2a1840c5de662e05d6c54b680dcbce5c641d8e848d3e15e2ff",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          900,
+          63,
+          1280,
+          93
+        ]
+      ],
+      "used_by": [
+        "tests.store.test_friendship_gift.CapturedGiftTests.test_real_shelves_prove_two_debits_and_rising_prices"
+      ]
+    },
+    "gift-popup-8": {
+      "path": "tests/fixtures/historical/global_cn/friendship_gift/gift-popup-8.png",
+      "sha256": "7f01001e3927ceed7a53c11b5004caaa8b42df2c7c9f04b5bdcfb74db3ac343b",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "gift-popup-8",
+      "source": "MuMu-20261005-172638-280.png",
+      "source_sha256": "f58cd2cdfa50f52b50c93ce10dc2b8e3012ae232ceda872c14f686deee26a118",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          900,
+          63,
+          1280,
+          93
+        ]
+      ],
+      "used_by": [
+        "tests.store.test_friendship_gift.CapturedGiftTests.test_real_single_popup_has_eight_remaining_and_costs_eight_hundred"
+      ]
+    },
+    "gift-price-info": {
+      "path": "tests/fixtures/historical/global_cn/friendship_gift/gift-price-info.png",
+      "sha256": "12a4e4c1f02d990f6340533461cedaf958218ab599c3f27b73b9c55f34b498f4",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "gift-price-info",
+      "source": "MuMu-20261005-172643-895.png",
+      "source_sha256": "03ad1558d3c3a63f58bf50964dbfb9c7c1bd840143dad569d9e764eb4533bc13",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          900,
+          63,
+          1280,
+          93
+        ]
+      ],
+      "used_by": [
+        "tests.store.test_friendship_gift.CapturedGiftTests.test_price_information_overlay_is_not_purchase_evidence"
+      ]
+    },
     "legacy-activity-navigation-infinity-selected-oversea": {
       "path": "tests/fixtures/historical/global_cn/activity_navigation/legacy-activity-navigation-infinity-selected-oversea.png",
       "sha256": "9169953df01e05d39c9b8881edad9930bd8cc3c2a72532920acbc2565127881c",

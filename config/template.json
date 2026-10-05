@@ -178,6 +178,7 @@
     },
     "StoreWeekly": {
       "BuyConquestMorogora": false,
+      "BuyFriendshipGiftSelectionChest": 0,
       "BuyFriendshipArtifactEnhancementStone": 0,
       "BuyInheritanceMorogora": 0,
       "BuyInheritancePotentialFragments": 0,

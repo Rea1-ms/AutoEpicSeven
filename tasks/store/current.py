@@ -5,6 +5,7 @@ from typing import Literal
 from module.base.button import ButtonWrapper, ClickButton
 from module.base.timer import Timer
 from module.base.utils import save_image
+from module.config import server
 from module.exception import RequestHumanTakeover
 from module.logger import logger
 from tasks.base.assets.assets_base_popup import (
@@ -14,6 +15,8 @@ from tasks.base.assets.assets_base_popup import (
 )
 from tasks.base.page import page_store
 from tasks.base.ui import UI
+from tasks.store.friendship_gift import FriendshipGiftMixin
+from tasks.store.assets.assets_store_friendship_gift import FRIENDSHIP_GIFT_ITEM
 from tasks.store.purchase import (
     ItemPurchasePlan,
     PurchaseCounterPreset,
@@ -67,7 +70,7 @@ from tasks.store.assets.assets_store_entries import (
 PurchasePopupLayout = Literal['unknown', 'single', 'multi']
 
 
-class CurrentStore(UI):
+class CurrentStore(FriendshipGiftMixin, UI):
     CONFIRM_SIMILARITY = 0.85
     INHERITANCE_SCROLL_START = (1060, 392)
     INHERITANCE_SCROLL_END = (720, 392)
@@ -134,6 +137,19 @@ class CurrentStore(UI):
                     name='StoreFreeLesserArtifactCharmRemainingTimes',
                     area=self.REMAINING_BUY_TIMES_AREA,
                 ),
+            ),
+            ItemPurchasePlan(
+                name='friendship_gift_selection_chest',
+                asset=FRIENDSHIP_GIFT_ITEM,
+                desired_quantity=(normalize_config_purchase_quantity(
+                    self.config.StoreWeekly_BuyFriendshipGiftSelectionChest, maximum=10)
+                    if server.is_oversea_server(self.config.Emulator_PackageName)
+                    and server.lang == 'global_cn'
+                    else 0),
+                quantity_strategy='target',
+                purchase_limit=10,
+                direct_click=True,
+                single_purchase=True,
             ),
         ]
 
@@ -567,7 +583,9 @@ class CurrentStore(UI):
         return 0, (0, 0, 0), 'pending'
 
     def _record_purchase_result(self, item: ItemPurchasePlan, result: PurchaseResult) -> None:
-        if not result.success:
+        # A sequence of single payments can fail after earlier purchases were
+        # verified. Keep those purchases in the summary even when it stops.
+        if not result.success and result.quantity <= 0:
             return
 
         self.purchase_stats[item.name] = self.purchase_stats.get(item.name, 0) + result.quantity
@@ -580,6 +598,8 @@ class CurrentStore(UI):
 
     def _purchase_item(self, item: ItemPurchasePlan) -> PurchaseResult:
         logger.info(f'Purchase {item.name}')
+        if item.single_purchase:
+            return self._purchase_friendship_gift(item)
         timeout = Timer(12, count=30).start()
         clicked_target = False
         clicked_confirm = False
@@ -1098,12 +1118,12 @@ class CurrentStore(UI):
 
         for item in items:
             self.device.screenshot()
-            if not self._item_ready_for_purchase(item):
+            if not item.single_purchase and not self._item_ready_for_purchase(item):
                 logger.info(f'{item.name}: not available in current viewport')
                 continue
             result = self._purchase_item(item)
+            self._record_purchase_result(item, result)
             if result.success:
-                self._record_purchase_result(item, result)
                 self._record_purchase_time()
                 if not self._wait_store_ready_after_purchase():
                     return False

@@ -30,6 +30,8 @@ class ItemPurchasePlan:
     purchase_limit: int = 1
     remaining_counter_preset: PurchaseCounterPreset | None = None
     requires_reward_popup: bool = False
+    # Rising-price gifts fulfill the period target through separate payments.
+    single_purchase: bool = False
 
 
 @dataclass(frozen=True)
