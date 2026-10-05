@@ -1338,10 +1338,6 @@
         "type": "checkbox",
         "value": true
       },
-      "GetE7wcBattleGateReward": {
-        "type": "checkbox",
-        "value": true
-      },
       "GetKoharuRaffleReward": {
         "type": "checkbox",
         "value": true

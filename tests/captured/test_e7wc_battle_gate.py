@@ -14,7 +14,7 @@ WORKTREE = Path(__file__).resolve().parents[2]
 
 import module.config.server as server
 from tasks.activity.assets.assets_activity_common import COMMON_ACTIVITY_LIST
-from tasks.activity.e7wc_battle_gate import (
+from tasks.activity.legacy.e7wc_battle_gate_2026_09_12.e7wc_battle_gate import (
     E7wcBattleGate, E7WC_BATTLE_GATE_CHECK, E7WC_BATTLE_GATE_SELECTED,
     E7WC_LEFT_REWARD_AVAILABLE, E7WC_RIGHT_REWARD_AVAILABLE,
 )

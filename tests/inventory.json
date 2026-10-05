@@ -9319,9 +9319,29 @@
       "source": "tests/activity/test_e7wc_battle_gate.py",
       "business": "activity",
       "status": "已纳入",
-      "reason": "第二批：显式模拟回放，辅助不再来自测试类实例",
+      "reason": "归档领奖实现继续验证；当前停用、配置升级和历史日期分别断言",
       "migration_batch": "20261002-2",
       "cases": [
+        {
+          "id": "tests.activity.test_e7wc_battle_gate.CalendarTests.test_future_dates_do_not_reactivate_archived_flow",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "追加同类活动日期不能恢复已归档玩法或触发下次检查",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.activity.test_e7wc_battle_gate.CalendarTests.test_production_imports_do_not_load_archived_flow",
+          "category": "资源基础检查",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "三种素材语言分别在独立子进程检查生产入口不加载归档实现或素材",
+          "input_kind": "mock_or_rule"
+        },
         {
           "id": "tests.activity.test_e7wc_battle_gate.ClaimTests.test_already_received_skips_click_and_popup",
           "original_id": "test.test_e7wc_battle_gate.ClaimTests.test_already_received_skips_click_and_popup",

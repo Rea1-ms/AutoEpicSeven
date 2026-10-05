@@ -14,7 +14,7 @@ from tasks.base.ui import UI, Page  # noqa: E402
 from tasks.base.popup import PopupHandler  # noqa: E402
 from tasks.dungeon.dungeon import Combat  # noqa: E402
 from tasks.activity.free_gacha_20 import FreeGacha20  # noqa: E402
-from tasks.activity.e7wc_battle_gate import E7wcBattleGate  # noqa: E402
+from tasks.activity.legacy.e7wc_battle_gate_2026_09_12.e7wc_battle_gate import E7wcBattleGate  # noqa: E402
 from tasks.activity.koharu_raffle import KoharuRaffle  # noqa: E402
 from tasks.gacha.gacha import Gacha  # noqa: E402
 from tasks.mail.mail import Mail  # noqa: E402

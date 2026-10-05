@@ -12,9 +12,9 @@ from module.game_info.timeline import render_timeline as render_game_timeline
 EVENT_TIMEZONE = INFO_TIMEZONE
 CALENDAR_PATH = INFO_PATH
 DEFAULT_FREE_GACHA_20_ID = "free_gacha_20_2026_08_27"
-SUPPORTED_MODES = ("legacy", "free_gacha_20", "e7wc_battle_gate", "koharu_raffle", "huche_shop")
+SUPPORTED_MODES = ("legacy", "free_gacha_20", "koharu_raffle", "huche_shop")
 ACTIVITY_TASK_MODES = {
-    "LimitedActivity": ("free_gacha_20", "e7wc_battle_gate", "koharu_raffle"),
+    "LimitedActivity": ("free_gacha_20", "koharu_raffle"),
     "SpecialActivity": ("legacy", "huche_shop"),
 }
 
@@ -66,7 +66,7 @@ def _server_windows(config) -> tuple[ActivityWindow, ...]:
     return tuple(
         window for window in load_calendar()
         if window.server_family == family
-        and (window.mode not in ("e7wc_battle_gate", "koharu_raffle", "huche_shop")
+        and (window.mode not in ("koharu_raffle", "huche_shop")
              or family == server.SERVER_FAMILY_OVERSEA)
     )
 

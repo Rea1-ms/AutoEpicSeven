@@ -16,6 +16,7 @@ import module.config.server as server
 from tasks.activity.common_activity import CommonActivityBatch
 from tests.support.history_cn_september_update import Claim as FreeClaim
 from tests.support.history_e7wc_battle_gate import Claim as GateClaim
+from tests.support.history_e7wc_battle_gate import HISTORICAL_ACTIVITIES
 from tests.support.history_koharu_raffle import Claim as KoharuClaim
 
 F, G, K = 'free_gacha_20', 'e7wc_battle_gate', 'koharu_raffle'
@@ -24,13 +25,15 @@ MODES = (F, G, K)
 
 def frame(selected=None, rows=(), **kwargs):
     return dict(selected=selected, rows=[
-        SimpleNamespace(ocr_text=CommonActivityBatch.ACTIVITIES[name][0] if name in MODES else name,
+        SimpleNamespace(ocr_text=HISTORICAL_ACTIVITIES[name][0] if name in MODES else name,
                         box=(25, y, 235, y + 20), score=1)
         for name, y in rows
     ], **kwargs)
 
 
 class Batch(CommonActivityBatch):
+    ACTIVITIES = HISTORICAL_ACTIVITIES
+
     def __init__(self, frames):
         self.config = SimpleNamespace(Emulator_GameLanguage='auto')
         self.frames = frames

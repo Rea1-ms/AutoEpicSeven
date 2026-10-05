@@ -290,7 +290,6 @@
     },
     "LimitedActivity": {
       "GetFreeGacha": true,
-      "GetE7wcBattleGateReward": true,
       "GetKoharuRaffleReward": true
     }
   },

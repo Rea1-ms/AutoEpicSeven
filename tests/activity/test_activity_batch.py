@@ -20,10 +20,11 @@ from tasks.activity.limited_activity import LimitedActivityEntry
 from tasks.activity.entry import SpecialActivityEntry
 from tasks.activity.common_activity import CommonActivityBatch
 from tasks.activity.free_gacha_20 import FreeGacha20
-from tasks.activity.e7wc_battle_gate import E7wcBattleGate
+from tasks.activity.legacy.e7wc_battle_gate_2026_09_12.e7wc_battle_gate import E7wcBattleGate
 from tasks.activity.koharu_raffle import KoharuRaffle
+from tests.support.history_e7wc_battle_gate import HISTORICAL_ACTIVITIES
 
-MODES = ('free_gacha_20', 'e7wc_battle_gate', 'koharu_raffle')
+MODES = ('free_gacha_20', 'koharu_raffle')
 CLASSES = (FreeGacha20, E7wcBattleGate, KoharuRaffle)
 
 
@@ -87,6 +88,11 @@ class BatchTests(unittest.TestCase):
                 return True
 
         with ExitStack() as stack:
+            if 'e7wc_battle_gate' in modes:
+                # Keep the original three-tab assertion using explicit historical
+                # input; the production registry and dispatcher stay unchanged.
+                stack.enter_context(patch.object(CommonActivityBatch, 'ACTIVITIES', HISTORICAL_ACTIVITIES))
+                stack.enter_context(patch.object(LimitedActivityEntry, 'ACTIVITY_MODES', modes))
             stack.enter_context(patch('module.base.base.Device', Device))
             stack.enter_context(patch('tasks.activity.entry.active_activities', return_value=events))
             stack.enter_context(patch('tasks.activity.entry.is_activity_checked_in_window',
@@ -103,10 +109,11 @@ class BatchTests(unittest.TestCase):
                                devices=devices, config=config, next_check=next_check)
 
     def test_three_claims_stay_on_event_page_then_return_main_once(self):
-        run = self.run_batch()
+        modes = ('free_gacha_20', 'e7wc_battle_gate', 'koharu_raffle')
+        run = self.run_batch(modes=modes)
         self.assertTrue(run.result)
         self.assertEqual(run.routes, [(page_main, page_common_activity), (page_common_activity, page_main)])
-        self.assertEqual([value for action, value in run.actions if action == 'claim'], list(MODES))
+        self.assertEqual([value for action, value in run.actions if action == 'claim'], list(modes))
         self.assertEqual(run.actions[-1], ('route', page_main))
         self.assertEqual(sum(value is page_main for action, value in run.actions if action == 'route'), 1)
         run.next_check.assert_called_once_with(run.config, task="LimitedActivity")
@@ -145,14 +152,16 @@ class BatchTests(unittest.TestCase):
         run.next_check.assert_called_once()
 
     def test_skipped_tail_does_not_lose_final_return(self):
-        run = self.run_batch(checked=(MODES[1],), disabled=(MODES[2],))
+        modes = ('free_gacha_20', 'e7wc_battle_gate', 'koharu_raffle')
+        run = self.run_batch(modes=modes, checked=(modes[1],), disabled=(modes[2],))
         self.assertEqual([value for action, value in run.actions if action == 'claim'], [MODES[0]])
         self.assertEqual(run.routes, [(page_main, page_common_activity), (page_common_activity, page_main)])
 
     def test_middle_failure_stops_remaining_claims_and_keeps_retry(self):
-        run = self.run_batch(failed=MODES[1])
+        modes = ('free_gacha_20', 'e7wc_battle_gate', 'koharu_raffle')
+        run = self.run_batch(modes=modes, failed=modes[1])
         self.assertFalse(run.result)
-        self.assertEqual([value for action, value in run.actions if action == 'claim'], list(MODES[:2]))
+        self.assertEqual([value for action, value in run.actions if action == 'claim'], list(modes[:2]))
         self.assertEqual(run.routes, [(page_main, page_common_activity)])
         self.assertEqual(run.config.delays[-1], {'success': False})
         run.next_check.assert_not_called()

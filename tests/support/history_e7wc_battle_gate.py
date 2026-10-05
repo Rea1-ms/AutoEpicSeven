@@ -11,9 +11,18 @@ from types import SimpleNamespace
 WORKTREE = Path(__file__).resolve().parents[2]
 PROJECT_ROOT = WORKTREE
 
-from tasks.activity.e7wc_battle_gate import (
+from tasks.activity.legacy.e7wc_battle_gate_2026_09_12.e7wc_battle_gate import (
     E7wcBattleGate, E7WC_BATTLE_GATE_CHECK, E7WC_LEFT_REWARD_AVAILABLE, E7WC_RIGHT_REWARD_AVAILABLE,
 )
+from tasks.activity.assets.assets_activity_special_26_9_12 import E7WC_BATTLE_GATE_SELECTED
+from tasks.activity.common_activity import CommonActivityBatch
+
+# Preserve the three-event sidebar contract only in historical replay inputs.
+# Production must never regain the retired event through this fixture table.
+HISTORICAL_ACTIVITIES = {
+    **CommonActivityBatch.ACTIVITIES,
+    "e7wc_battle_gate": ("激战门", E7WC_BATTLE_GATE_SELECTED, E7wcBattleGate),
+}
 
 SCREENSHOTS = Path(__file__).parent / "screenshots/e7wc_battle_gate"
 KOHARU = Path("C:/Users/rea1m/Documents/MuMu共享文件夹/Screenshots/MuMu-20260917-173824-447.png")

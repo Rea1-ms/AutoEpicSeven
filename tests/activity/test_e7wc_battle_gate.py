@@ -5,6 +5,8 @@ _test_server.set_lang("global_cn")
 
 """Offline screenshots, single-click claiming, and overseas calendar regressions."""
 import json
+import subprocess
+import sys
 import unittest
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -17,7 +19,7 @@ PROJECT_ROOT = WORKTREE
 import module.config.server as server
 from module.game_info.catalog import load_info
 from tasks.activity import calendar, scheduling
-from tasks.activity.e7wc_battle_gate import (
+from tasks.activity.legacy.e7wc_battle_gate_2026_09_12.e7wc_battle_gate import (
     E7wcBattleGate, E7WC_BATTLE_GATE_CHECK, E7WC_LEFT_REWARD_AVAILABLE, E7WC_RIGHT_REWARD_AVAILABLE,
 )
 from tasks.activity.limited_activity import LimitedActivityEntry
@@ -134,7 +136,7 @@ class ClaimTests(unittest.TestCase):
         for frames in (["left", "left"], ["available", "popup", "other"],
                        ["other"], ["available", "received"],
                        ["available", "available", "available"]):
-            with self.subTest(frames=frames), patch("tasks.activity.e7wc_battle_gate.Timer") as timer:
+            with self.subTest(frames=frames), patch("tasks.activity.legacy.e7wc_battle_gate_2026_09_12.e7wc_battle_gate.Timer") as timer:
                 timer.return_value.start.return_value.reached.side_effect = [False] * (len(frames) - 1) + [True]
                 claim = Claim(frames)
                 self.assertFalse(claim.run_claim())
@@ -206,10 +208,15 @@ class CalendarTests(unittest.TestCase):
     def test_start_inclusive_end_exclusive_with_koharu(self):
         gate = load_info().current("e7wc_battle_gate", "OVERSEA", NOW)
         ids = lambda at: {e.event_id for e in calendar.active_activities(self.config, at)}  # noqa: E731
+        # Historical facts retain their original boundaries; automation no
+        # longer includes this category even during the archived event window.
+        self.assertFalse(gate.contains(gate.start - timedelta(seconds=1)))
+        self.assertTrue(gate.contains(gate.start))
+        self.assertFalse(gate.contains(gate.end))
         self.assertNotIn(EVENT_ID, ids(gate.start - timedelta(seconds=1)))
-        self.assertIn(EVENT_ID, ids(gate.start))
+        self.assertNotIn(EVENT_ID, ids(gate.start))
         self.assertNotIn(EVENT_ID, ids(gate.end))
-        self.assertEqual(ids(NOW), {EVENT_ID, calendar.DEFAULT_FREE_GACHA_20_ID, "koharu_raffle_2026_09_17", "huche_shop_2026_09_17"})
+        self.assertEqual(ids(NOW), {calendar.DEFAULT_FREE_GACHA_20_ID, "koharu_raffle_2026_09_17", "huche_shop_2026_09_17"})
         server.set_lang("cn")
         self.config.Emulator_PackageName = "com.zlongame.cn.epicseven"
         self.assertEqual(ids(NOW), {calendar.DEFAULT_FREE_GACHA_20_ID})
@@ -232,7 +239,9 @@ class CalendarTests(unittest.TestCase):
         self.assertFalse(scheduling.is_activity_checked_today(self.config, EVENT_ID))
 
     def test_dispatch_and_daily_skip(self):
-        activities = calendar.active_activities(self.config, NOW)
+        gate = calendar.ActivityWindow(EVENT_ID, "Gate", "e7wc_battle_gate", "OVERSEA", NOW,
+                                       NOW + timedelta(days=1))
+        activities = (*calendar.active_activities(self.config, NOW), gate)
         scheduling.mark_activity_checked(self.config, "koharu_raffle_2026_09_17")
         scheduling.mark_free_gacha_20_checked(self.config)
         with patch("tasks.activity.entry.active_activities", return_value=activities), patch(
@@ -241,7 +250,7 @@ class CalendarTests(unittest.TestCase):
             task.ACTIVITIES = {'e7wc_battle_gate': None}
             task.return_value.run.return_value = True
             self.assertTrue(LimitedActivityEntry(self.config).run())
-            self.assertEqual(task.return_value.run.call_args.args[0][0].event_id, EVENT_ID)
+            task.assert_not_called()
             free.assert_not_called()
             scheduling.mark_activity_checked(self.config, EVENT_ID)
             task.reset_mock()
@@ -250,11 +259,55 @@ class CalendarTests(unittest.TestCase):
 
     def test_config_upgrade_preserves_disabled_switch_and_translations_exist(self):
         from module.config.config_updater import ConfigUpdater
-        old = {"SpecialActivity": {"SpecialActivity": {"GetE7wcBattleGateReward": False}}}
-        config = ConfigUpdater().config_update(old)
-        self.assertFalse(config["LimitedActivity"]["LimitedActivity"]["GetE7wcBattleGateReward"])
+        records = {EVENT_ID: {"OVERSEA": "2026-09-26 12:00:00"}}
+        for task, enabled in (("SpecialActivity", False), ("SpecialActivity", True),
+                              ("LimitedActivity", False), ("LimitedActivity", True)):
+            old = {"SpecialActivity": {"ActivityRuntime": {"CheckedEvents": records}}}
+            old.setdefault(task, {})[task] = {"GetE7wcBattleGateReward": enabled}
+            config = ConfigUpdater().config_update(old)
+            self.assertNotIn("GetE7wcBattleGateReward", config["LimitedActivity"]["LimitedActivity"])
+            self.assertNotIn("GetE7wcBattleGateReward", config["SpecialActivity"]["SpecialActivity"])
+            self.assertEqual(config["SpecialActivity"]["ActivityRuntime"]["CheckedEvents"], records)
+            self.assertEqual(ConfigUpdater().config_update(config), config)
+        archive = WORKTREE / "tasks/activity/legacy/e7wc_battle_gate_2026_09_12/i18n.json"
+        original = json.loads(archive.read_text(encoding="utf-8"))
         for path in Path("module/config/i18n").glob("*.json"):
-            texts = json.loads(path.read_text(encoding="utf-8"))["LimitedActivity"]["GetE7wcBattleGateReward"]
+            self.assertNotIn("GetE7wcBattleGateReward",
+                             json.loads(path.read_text(encoding="utf-8"))["LimitedActivity"])
+            texts = original[path.stem]
             self.assertTrue(texts["name"])
             self.assertTrue(texts["help"])
             self.assertNotIn("SpecialActivity.", texts["name"])
+
+    def test_future_dates_do_not_reactivate_archived_flow(self):
+        from dataclasses import replace
+
+        info = load_info()
+        start = NOW + timedelta(days=30)
+        period = replace(info.current("e7wc_battle_gate", "OVERSEA", NOW),
+                         start=start, end=start + timedelta(days=7))
+        with patch.object(calendar, "load_info", return_value=SimpleNamespace(periods=(period,))):
+            self.assertEqual(calendar.load_calendar(), ())
+            self.assertEqual(calendar.active_activities(self.config, start), ())
+            self.assertIsNone(calendar.next_activity_start(self.config, NOW))
+
+    def test_production_imports_do_not_load_archived_flow(self):
+        code = """
+import sys
+from module.config import server
+server.set_lang(sys.argv[1])
+from tasks.activity.limited_activity import LimitedActivityEntry
+from tasks.activity.common_activity import CommonActivityBatch
+from tasks.activity.calendar import SUPPORTED_MODES
+assert 'e7wc_battle_gate' not in SUPPORTED_MODES
+assert 'e7wc_battle_gate' not in LimitedActivityEntry.ACTIVITY_MODES
+assert 'e7wc_battle_gate' not in LimitedActivityEntry.COMMON_ACTIVITY_OPTIONS
+assert 'e7wc_battle_gate' not in CommonActivityBatch.ACTIVITIES
+assert not any('e7wc_battle_gate' in name for name in sys.modules)
+assert 'tasks.activity.assets.assets_activity_special_26_9_12' not in sys.modules
+"""
+        for lang in ("cn", "global_cn", "global_en"):
+            with self.subTest(lang=lang):
+                result = subprocess.run([sys.executable, "-B", "-c", code, lang], cwd=WORKTREE,
+                                        capture_output=True, text=True, timeout=30)
+                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)

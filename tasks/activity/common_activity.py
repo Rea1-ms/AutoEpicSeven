@@ -3,9 +3,7 @@ from module.logger import logger
 from module.ocr.ocr import Ocr, OcrResultButton
 from tasks.activity.assets.assets_activity_common import COMMON_ACTIVITY_LIST
 from tasks.activity.assets.assets_activity_special_26_8_27 import FREE_20_GACHA_SELECTED
-from tasks.activity.assets.assets_activity_special_26_9_12 import E7WC_BATTLE_GATE_SELECTED
 from tasks.activity.assets.assets_activity_special_26_9_17 import CHUN_GATE_SELECTED
-from tasks.activity.e7wc_battle_gate import E7wcBattleGate
 from tasks.activity.free_gacha_20 import FreeGacha20
 from tasks.activity.koharu_raffle import KoharuRaffle
 from tasks.activity.navigation import ActivityNavigationMixin
@@ -18,7 +16,6 @@ class CommonActivityBatch(ActivityNavigationMixin, UI):
 
     ACTIVITIES = {
         "free_gacha_20": ("INFINITY", FREE_20_GACHA_SELECTED, FreeGacha20),
-        "e7wc_battle_gate": ("激战门", E7WC_BATTLE_GATE_SELECTED, E7wcBattleGate),
         "koharu_raffle": ("收集抽奖券", CHUN_GATE_SELECTED, KoharuRaffle),
     }
 

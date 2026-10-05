@@ -81,7 +81,7 @@ class MigrationTests(unittest.TestCase):
                     self.assertEqual(result[task]['Scheduler']['ServerUpdate'], '02:00')
                     self.assertEqual(result[task]['Scheduler']['Command'], task)
                 self.assertEqual(result['LimitedActivity']['LimitedActivity'], {
-                    'GetFreeGacha': True, 'GetE7wcBattleGateReward': False, 'GetKoharuRaffleReward': True})
+                    'GetFreeGacha': True, 'GetKoharuRaffleReward': True})
                 self.assertEqual(result['SpecialActivity']['SpecialActivity'], {'BuyHucheMysticMedals': True})
                 self.assertEqual(result['SpecialActivity']['ActivityRuntime']['CheckedEvents'],
                                  old['SpecialActivity']['ActivityRuntime']['CheckedEvents'])
@@ -98,7 +98,7 @@ class MigrationTests(unittest.TestCase):
         self.assertEqual(result['Scheduler']['NextRun'], datetime(2026, 9, 24, 3))
         # ServerUpdate is hidden and follows the existing schema/server override.
         self.assertEqual(result['Scheduler']['ServerUpdate'], '02:00')
-        self.assertEqual(result['LimitedActivity'], old['LimitedActivity']['LimitedActivity'])
+        self.assertEqual(result['LimitedActivity'], {'GetFreeGacha': False, 'GetKoharuRaffleReward': False})
 
     def test_fresh_profile_does_not_enable_tasks_or_spending(self):
         result = ConfigUpdater().config_update({})
@@ -132,7 +132,7 @@ class SchedulingTests(unittest.TestCase):
     def test_each_task_only_sees_its_entrances(self):
         limited = calendar.active_activities(self.config, NOW, task='LimitedActivity')
         special = calendar.active_activities(self.config, NOW, task='SpecialActivity')
-        self.assertEqual({e.mode for e in limited}, {'free_gacha_20', 'e7wc_battle_gate', 'koharu_raffle'})
+        self.assertEqual({e.mode for e in limited}, {'free_gacha_20', 'koharu_raffle'})
         self.assertEqual({e.mode for e in special}, {'huche_shop'})
         self.assertEqual(set(limited) | set(special), set(self.events))
 

@@ -486,7 +486,6 @@ class ConfigUpdater:
          lambda value: parse_value(value, {})),
         ('SpecialActivity.Scheduler.ServerUpdate', 'LimitedActivity.Scheduler.ServerUpdate'),
         ('SpecialActivity.SpecialActivity.GetFreeGacha', 'LimitedActivity.LimitedActivity.GetFreeGacha'),
-        ('SpecialActivity.SpecialActivity.GetE7wcBattleGateReward', 'LimitedActivity.LimitedActivity.GetE7wcBattleGateReward'),
         ('SpecialActivity.SpecialActivity.GetKoharuRaffleReward', 'LimitedActivity.LimitedActivity.GetKoharuRaffleReward'),
         ('Arena.Arena.BurnoutMode', 'Arena.Arena.BurnoutMode', normalize_execution_mode),
         ('Combat.Combat.BurnoutMode', 'Combat.Combat.BurnoutMode', normalize_execution_mode),

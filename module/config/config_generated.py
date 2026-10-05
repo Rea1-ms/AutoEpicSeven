@@ -177,7 +177,6 @@ class GeneratedConfig:
 
     # Group `LimitedActivity`
     LimitedActivity_GetFreeGacha = True
-    LimitedActivity_GetE7wcBattleGateReward = True
     LimitedActivity_GetKoharuRaffleReward = True
 
     # Group `SpecialActivity`

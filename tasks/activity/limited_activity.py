@@ -9,6 +9,5 @@ class LimitedActivityEntry(SpecialActivityEntry):
     ACTIVITY_MODES = ACTIVITY_TASK_MODES[SCHEDULER_TASK]
     COMMON_ACTIVITY_OPTIONS = {
         "free_gacha_20": "LimitedActivity_GetFreeGacha",
-        "e7wc_battle_gate": "LimitedActivity_GetE7wcBattleGateReward",
         "koharu_raffle": "LimitedActivity_GetKoharuRaffleReward",
     }
