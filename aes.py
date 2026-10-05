@@ -128,6 +128,10 @@ class AutoEpicSeven(AzurLaneAutoScript):
         from module.daemon.benchmark import run_benchmark
         run_benchmark(config=self.config)
 
+    def equipment_reroll(self):
+        from tasks.equipment_reroll.equipment_reroll import EquipmentReroll
+        EquipmentReroll(config=self.config, device=self.device, task="EquipmentReroll").run()
+
 
 if __name__ == '__main__':
     app = AutoEpicSeven('alas')

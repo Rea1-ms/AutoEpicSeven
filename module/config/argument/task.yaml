@@ -91,6 +91,9 @@ Tool:
       - DimensionalExplorationRuntime
     CommunityAuth:
       - CommunityAuth
+    EquipmentReroll:
+      - Scheduler
+      - EquipmentReroll
 
 # ==================== Monthly ====================
 

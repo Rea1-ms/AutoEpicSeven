@@ -43,3 +43,6 @@ LimitedActivity:
 SpecialActivity:
   Scheduler:
     Enable: false
+EquipmentReroll:
+  Scheduler:
+    Enable: false

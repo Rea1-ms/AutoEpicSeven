@@ -34,7 +34,8 @@
     "tasks": [
       "BuyPenguins",
       "DimensionalExploration",
-      "CommunityAuth"
+      "CommunityAuth",
+      "EquipmentReroll"
     ]
   },
   "Monthly": {

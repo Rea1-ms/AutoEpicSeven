@@ -44,3 +44,16 @@ BuyPenguins:
     ServerUpdate:
       value: 02:00
       display: hide
+
+# Manually started tool; never include paid rerolls in the daily scheduler.
+EquipmentReroll:
+  Scheduler:
+    Enable:
+      value: false
+      display: hide
+    NextRun:
+      display: hide
+    Command:
+      display: hide
+    ServerUpdate:
+      display: hide

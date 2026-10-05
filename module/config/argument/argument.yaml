@@ -2,7 +2,7 @@
 # Define arguments.
 # --------------------
 
-# ==================== Alas ====================
+# ==================== Alas =============
 
 Scheduler:
   Enable:
@@ -91,7 +91,7 @@ Optimization:
     value: goto_main
     option: [ stay_there, goto_main, close_game, close_emulator ]
 
-# ==================== Daily ====================
+# ==================== Daily =============
 
 MissionReward:
   ClaimDailyRewards: true
@@ -360,6 +360,27 @@ SecretShopRuntime:
     type: dict
     value: {}
 
+EquipmentReroll:
+  Stat1:
+    value: Speed
+    option: [ Speed, AttackPercent, DefensePercent, HealthPercent, Effectiveness, Resistance, CriticalChance, CriticalDamage, FlatAttack, FlatDefense, FlatHealth ]
+  Value1: 5
+  Stat2:
+    value: DefensePercent
+    option: [ Speed, AttackPercent, DefensePercent, HealthPercent, Effectiveness, Resistance, CriticalChance, CriticalDamage, FlatAttack, FlatDefense, FlatHealth ]
+  Value2: 8
+  Stat3:
+    value: HealthPercent
+    option: [ Speed, AttackPercent, DefensePercent, HealthPercent, Effectiveness, Resistance, CriticalChance, CriticalDamage, FlatAttack, FlatDefense, FlatHealth ]
+  Value3: 8
+  Stat4:
+    value: Resistance
+    option: [ Speed, AttackPercent, DefensePercent, HealthPercent, Effectiveness, Resistance, CriticalChance, CriticalDamage, FlatAttack, FlatDefense, FlatHealth ]
+  Value4: 8
+  MaxRefresh: 0
+  MaxPoints: 0
+  ReservePoints: 0
+
 Gacha:
   CollectGoldenInheritance: true
 
@@ -480,7 +501,7 @@ Dashboard:
     color: "#d85f7c"
     display: display
 
-# ==================== Monthly ====================
+# ==================== Monthly =============
 
 SanctuaryMonthly:
   RewardTier:

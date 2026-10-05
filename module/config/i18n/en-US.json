@@ -98,6 +98,10 @@
       "name": "Community Login",
       "help": "Open the Electron community login window and refresh the CK used by Community AIO."
     },
+    "EquipmentReroll": {
+      "name": "Equipment Substat Reroll",
+      "help": "Open the steel workshop substat selection screen manually. Obtain speed 5 first, then pursue the remaining priorities. Lock only achieved targets, at most two. Stop at the goals or budget; equipment is not finalized automatically. Simplified Chinese game UI only."
+    },
     "SanctuaryMonthly": {
       "name": "Sanctuary Monthly",
       "help": "Sanctuary monthly module with independent scheduler."
@@ -940,6 +944,100 @@
     "Session": {
       "name": "Confirmed purchase progress",
       "help": ""
+    }
+  },
+  "EquipmentReroll": {
+    "_info": {
+      "name": "Target substats",
+      "help": "Open the steel workshop substat selection screen manually. Obtain speed 5 first, then pursue the remaining priorities. Lock only achieved targets, at most two. Stop at the goals or budget; equipment is not finalized automatically. Simplified Chinese game UI only."
+    },
+    "Stat1": {
+      "name": "Priority 1 stat",
+      "help": "Choose four distinct substats. Speed always targets 5 and takes precedence; other stats follow this order.",
+      "Speed": "Speed",
+      "AttackPercent": "Attack %",
+      "DefensePercent": "Defense %",
+      "HealthPercent": "Health %",
+      "Effectiveness": "Effectiveness %",
+      "Resistance": "Effect Resistance %",
+      "CriticalChance": "Critical Chance %",
+      "CriticalDamage": "Critical Damage %",
+      "FlatAttack": "Flat Attack",
+      "FlatDefense": "Flat Defense",
+      "FlatHealth": "Flat Health"
+    },
+    "Value1": {
+      "name": "Priority 1 target value",
+      "help": "Enter percentages as numbers. Attack/Defense/Health %, Effectiveness and Resistance cap at 8; Critical Chance at 5; Critical Damage at 7. Observed flat values 44/34/201 are references, not hard caps."
+    },
+    "Stat2": {
+      "name": "Priority 2 stat",
+      "help": "Choose four distinct substats. Speed always targets 5 and takes precedence; other stats follow this order.",
+      "Speed": "Speed",
+      "AttackPercent": "Attack %",
+      "DefensePercent": "Defense %",
+      "HealthPercent": "Health %",
+      "Effectiveness": "Effectiveness %",
+      "Resistance": "Effect Resistance %",
+      "CriticalChance": "Critical Chance %",
+      "CriticalDamage": "Critical Damage %",
+      "FlatAttack": "Flat Attack",
+      "FlatDefense": "Flat Defense",
+      "FlatHealth": "Flat Health"
+    },
+    "Value2": {
+      "name": "Priority 2 target value",
+      "help": "Enter percentages as numbers. Attack/Defense/Health %, Effectiveness and Resistance cap at 8; Critical Chance at 5; Critical Damage at 7. Observed flat values 44/34/201 are references, not hard caps."
+    },
+    "Stat3": {
+      "name": "Priority 3 stat",
+      "help": "Choose four distinct substats. Speed always targets 5 and takes precedence; other stats follow this order.",
+      "Speed": "Speed",
+      "AttackPercent": "Attack %",
+      "DefensePercent": "Defense %",
+      "HealthPercent": "Health %",
+      "Effectiveness": "Effectiveness %",
+      "Resistance": "Effect Resistance %",
+      "CriticalChance": "Critical Chance %",
+      "CriticalDamage": "Critical Damage %",
+      "FlatAttack": "Flat Attack",
+      "FlatDefense": "Flat Defense",
+      "FlatHealth": "Flat Health"
+    },
+    "Value3": {
+      "name": "Priority 3 target value",
+      "help": "Enter percentages as numbers. Attack/Defense/Health %, Effectiveness and Resistance cap at 8; Critical Chance at 5; Critical Damage at 7. Observed flat values 44/34/201 are references, not hard caps."
+    },
+    "Stat4": {
+      "name": "Priority 4 stat",
+      "help": "Choose four distinct substats. Speed always targets 5 and takes precedence; other stats follow this order.",
+      "Speed": "Speed",
+      "AttackPercent": "Attack %",
+      "DefensePercent": "Defense %",
+      "HealthPercent": "Health %",
+      "Effectiveness": "Effectiveness %",
+      "Resistance": "Effect Resistance %",
+      "CriticalChance": "Critical Chance %",
+      "CriticalDamage": "Critical Damage %",
+      "FlatAttack": "Flat Attack",
+      "FlatDefense": "Flat Defense",
+      "FlatHealth": "Flat Health"
+    },
+    "Value4": {
+      "name": "Priority 4 target value",
+      "help": "Enter percentages as numbers. Attack/Defense/Health %, Effectiveness and Resistance cap at 8; Critical Chance at 5; Critical Damage at 7. Observed flat values 44/34/201 are references, not hard caps."
+    },
+    "MaxRefresh": {
+      "name": "Maximum rerolls",
+      "help": "0 means unlimited. Counts confirmed rerolls in this run only."
+    },
+    "MaxPoints": {
+      "name": "Point budget",
+      "help": "0 means unlimited. Uses the actual 20/60/150 point price."
+    },
+    "ReservePoints": {
+      "name": "Points to reserve",
+      "help": "Minimum workshop points left after a reroll; 0 reserves none."
     }
   },
   "Gacha": {

@@ -72,6 +72,12 @@ COMBAT_MODULES = (
     "tests.combat.test_episode",
 )
 STORE_MODULES = ("tests.store.test_friendship_gift",)
+EQUIPMENT_REROLL_MODULES = (
+    "tests.equipment_reroll.test_rules",
+    "tests.equipment_reroll.test_recognition",
+    "tests.equipment_reroll.test_replay",
+    "tests.equipment_reroll.test_infrastructure",
+)
 SECRET_SHOP_MODULES = ("tests.secret_shop.test_payment", "tests.secret_shop.test_captures")
 INTERACTION_MODULES = ("tests.core.test_missed_clicks",)
 HISTORICAL_REPLAY_MODULES = (
@@ -124,7 +130,8 @@ SUITES = {
     "all": EXPLORATION_MODULES + SANCTUARY_MODULES + KNIGHTS_MODULES + RUNNER_MODULES + UPSTREAM_MODULES
            + CORE_MODULES + ACTIVITY_MODULES + COMBAT_MODULES + STORE_MODULES
            + HISTORICAL_REPLAY_MODULES + HISTORICAL_CAPTURE_MODULES + HISTORICAL_MANUAL_MODULES
-           + SECRET_SHOP_MODULES + INTERACTION_MODULES,
+           + SECRET_SHOP_MODULES + INTERACTION_MODULES + EQUIPMENT_REROLL_MODULES,
+    "equipment_reroll": EQUIPMENT_REROLL_MODULES,
     "knights": KNIGHTS_MODULES,
     "dimensional_exploration": EXPLORATION_MODULES,
     "sanctuary": SANCTUARY_MODULES,
@@ -180,6 +187,40 @@ def sha256(path):
     return digest.hexdigest()
 
 
+def equipment_reroll_fixtures(verify):
+    from tests.support.equipment_reroll import FIXTURES, load_sample
+
+    raw = json.loads((FIXTURES / "manifest.json").read_text(encoding="utf-8"))
+    samples = raw.get("samples")
+    if raw.get("version") != 1 or not isinstance(samples, list) or not samples:
+        raise ValueError("Equipment reroll fixture manifest is empty or unsupported")
+    fixtures = {}
+    paths = set()
+    for sample in samples:
+        key = "equipment-reroll-" + sample["id"]
+        relative = Path(sample["path"])
+        if (key in fixtures or relative.as_posix() in paths
+                or relative.is_absolute() or ".." in relative.parts
+                or not (FIXTURES / relative).resolve().is_relative_to(FIXTURES.resolve())
+                or sample["id"] != relative.stem):
+            raise ValueError(f"Invalid or duplicate equipment reroll fixture: {key}")
+        if verify:
+            load_sample(sample["id"])
+        fixtures[key] = {**sample, "path": (FIXTURES / relative).relative_to(ROOT).as_posix()}
+        paths.add(relative.as_posix())
+    return fixtures
+
+
+def prepare_equipment_reroll_models():
+    from module.ocr.models import OCR_MODEL
+
+    # Workshop names use Chinese recognition, while short numeric labels use
+    # the English model. Both must be available before the first case runs;
+    # checking only the existing Chinese fixture contract misses that dependency.
+    for lang in ("cn", "en"):
+        OCR_MODEL.get_by_lang(lang)
+
+
 def fixture_manifest(verify):
     fixtures = {}
     paths = set()
@@ -232,6 +273,11 @@ def fixture_manifest(verify):
                      "ch_ppocr_mobile_v2.0_cls_infer.onnx", "ppocr_keys_v1.txt"):
             if not (model / name).is_file():
                 raise FileNotFoundError(f"Chinese OCR model is missing: {name}")
+        prepare_equipment_reroll_models()
+    equipment_fixtures = equipment_reroll_fixtures(verify)
+    if fixtures.keys() & equipment_fixtures.keys():
+        raise ValueError("Duplicate fixture ID across equipment reroll and existing businesses")
+    fixtures.update(equipment_fixtures)
     return fixtures
 
 
@@ -259,12 +305,28 @@ class Result(unittest.TextTestResult):
     def addFailure(self, test, err):
         self.records[test.id()]["status"] = "failed"
         self.records[test.id()]["details"].append("".join(traceback.format_exception(*err)))
+        self.capture_failure_frame(test)
         super().addFailure(test, err)
 
     def addError(self, test, err):
         self.records[test.id()]["status"] = "error"
         self.records[test.id()]["details"].append("".join(traceback.format_exception(*err)))
+        self.capture_failure_frame(test)
         super().addError(test, err)
+
+    def capture_failure_frame(self, test):
+        frame = getattr(getattr(test, "device", None), "image", None)
+        if hasattr(frame, "shape"):
+            import numpy as np
+
+            destination = Path(os.environ["AES_TEST_ARTIFACT_DIR"])
+            destination.mkdir(parents=True, exist_ok=True)
+            name = re.sub(r"[^A-Za-z0-9_.-]", "_", test.id()) + "-last-frame.png"
+            path = destination / name
+            Image.fromarray(np.asarray(frame)).save(path)
+            self.records[test.id()]["last_frame"] = str(path)
+        elif frame is not None:
+            self.records[test.id()]["last_frame"] = repr(frame)
 
     def addSkip(self, test, reason):
         self.records[test.id()]["status"] = "skipped"
@@ -276,6 +338,7 @@ class Result(unittest.TextTestResult):
             record = self.records[test.id()]
             record["status"] = "failed" if issubclass(err[0], AssertionError) else "error"
             record["details"].append(str(subtest) + "\n" + "".join(traceback.format_exception(*err)))
+            self.capture_failure_frame(test)
         super().addSubTest(test, subtest, err)
 
 
@@ -360,9 +423,13 @@ def run(args):
     from adbutils import AdbClient
     from module.device.connection import Connection
     from module.device.device import Device
+    from module.config.config import AzurLaneConfig
 
     def reject_device(*_args, **_kwargs):
-        raise AssertionError("Offline suite attempted to create a real device")
+        raise AssertionError("Offline suite attempted to create a real device（真实设备）")
+
+    def reject_account(*_args, **_kwargs):
+        raise AssertionError("Offline suite attempted to read account config（账号配置）")
 
     started = time.monotonic()
     with (destination / "output.log").open("w", encoding="utf-8", newline="\n") as logfile:
@@ -373,6 +440,12 @@ def run(args):
             guards.enter_context(patch.object(AdbClient, "connect", reject_device))
             guards.enter_context(patch.object(AdbClient, "device", reject_device))
             guards.enter_context(patch.object(uiautomator2, "connect", reject_device))
+            # Guard account I/O rather than construction. Persistence regressions
+            # replace both methods with an explicit in-memory store and still
+            # need the real binding/save path; unmocked profiles must fail before
+            # any file is opened or written.
+            guards.enter_context(patch.object(AzurLaneConfig, "read_file", reject_account))
+            guards.enter_context(patch.object(AzurLaneConfig, "write_file", reject_account))
             runner = unittest.TextTestRunner(stream=output, verbosity=2, resultclass=Result)
             result = runner.run(unittest.TestSuite(cases))
     elapsed = round(time.monotonic() - started, 3)
