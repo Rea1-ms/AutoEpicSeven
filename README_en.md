@@ -2,23 +2,24 @@
 
 # AutoEpicSeven
 
-Epic Seven automation script, based on the next-generation Alas framework and adapted from [StarRailCopilot](https://github.com/LmeSzinc/StarRailCopilot).
+Epic Seven automation script, based on the second-generation Alas framework and adapted from [StarRailCopilot](https://github.com/LmeSzinc/StarRailCopilot).
 
-![gui](https://raw.githubusercontent.com/wiki/LmeSzinc/StarRailCopilot/README.assets/gui_cn.png)
+![gui](https://raw.githubusercontent.com/Rea1-ms/AutoEpicSeven/refs/heads/master/README.assets/gui_cn.png)
 
-![setting](https://raw.githubusercontent.com/wiki/LmeSzinc/StarRailCopilot/README.assets/setting_cn.png)
+![setting](https://raw.githubusercontent.com/Rea1-ms/AutoEpicSeven/refs/heads/master/README.assets/setting_cn.png)
 
 ## Features
 
-- **Farming**: Daily hunts, Spirit Altar, Episode 4 catalysts and Adin Specialty Change materials, and Episode side story 3-7.
-- **Rewards**: Complete daily missions, collect daily and monthly Sanctuary resources, and claim Arena pass rewards, expiring mail, and pet gifts.
-- **Summoning**: Use daily free summons and free Pet House opportunities automatically.
-- **AFK Farming**: Refresh the shop and farm stages.
+- **Farming**: Hunts, Spirit Altar, Episode 4 catalysts and Adin Specialty Change materials, the "Holy Maiden" side story 3-7, and urgent missions.
+- **Rewards**: Complete daily missions, collect daily and monthly Sanctuary resources with smart storage, and claim Arena pass rewards, expiring mail, and pet gifts.
+- **Summoning**: Use daily free summons and free Pet House opportunities automatically. ~~(Screenshot capture and recognition of summon results are still unreliable)~~.
 - **Arena**: Farm Arena NPC opponents and claim weekly battle rewards.
-- **Shop**: Buy daily and weekly items automatically.
-- **Guild**: Automate World Boss, detect and remind about Guild War attacks, donate blooms and penguins, and claim weekly rewards.
+- **Shop**: Buy daily and weekly items and Inheritance Shop items automatically.
+- **Secret Shop**: Automatically refresh the shop to buy Covenant Bookmarks and Mystic Medals.
+- **Guild**: Automate World Boss, detect and remind about Guild War attacks, donate blooms and penguins, claim weekly rewards, and buy weekly and monthly Guild Shop items.
 - **Background Automation**: Start the emulator and game automatically, run stamina and daily tasks in the background, and view resources from the dashboard.
-- **Major Events**: Participate in major version events and claim rewards. Updates are provided as available.
+- **Events**: Updated as time allows.
+- **Tools**: Helpers for Dimensional Exploration farming, buying penguins, equipment substat rerolls, and more. Updated as time allows.
 
 ## Installation
 
