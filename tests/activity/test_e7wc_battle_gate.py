@@ -308,6 +308,6 @@ assert 'tasks.activity.assets.assets_activity_special_26_9_12' not in sys.module
 """
         for lang in ("cn", "global_cn", "global_en"):
             with self.subTest(lang=lang):
-                result = subprocess.run([sys.executable, "-B", "-c", code, lang], cwd=WORKTREE,
-                                        capture_output=True, text=True, timeout=30)
+                result = subprocess.run([sys.executable, "-X", "utf8", "-B", "-c", code, lang], cwd=WORKTREE,
+                                        capture_output=True, text=True, encoding="utf-8", timeout=30)
                 self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
