@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "source": "../../../tests/fixtures/dimensional_exploration/events/MuMu-20261006-214829-360.png",
+  "suite": "dimensional_exploration",
+  "case": "event_recruitment_limit_20261006",
+  "items": [
+    {
+      "name": "EVENT_RECRUITMENT_LIMIT_CHECK",
+      "namespace": "global_cn",
+      "module": "dimensional_exploration/event_recruitment",
+      "box": [391, 337, 890, 359]
+    },
+    {
+      "name": "EVENT_RECRUITMENT_LIMIT_CONFIRM",
+      "namespace": "global_cn",
+      "module": "dimensional_exploration/event_recruitment",
+      "box": [726, 484, 769, 506]
+    },
+    {
+      "name": "EVENT_RECRUITMENT_LIMIT_CONFIRM",
+      "namespace": "global_cn",
+      "module": "dimensional_exploration/event_recruitment",
+      "kind": "button",
+      "box": [685, 480, 810, 513]
+    },
+    {
+      "name": "EVENT_RECRUITMENT_LIMIT_CANCEL",
+      "namespace": "global_cn",
+      "module": "dimensional_exploration/event_recruitment",
+      "box": [513, 484, 555, 506]
+    },
+    {
+      "name": "EVENT_RECRUITMENT_LIMIT_CANCEL",
+      "namespace": "global_cn",
+      "module": "dimensional_exploration/event_recruitment",
+      "kind": "button",
+      "box": [470, 480, 595, 513]
+    }
+  ]
+}

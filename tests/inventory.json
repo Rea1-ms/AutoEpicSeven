@@ -9628,6 +9628,75 @@
           ],
           "status": "新增",
           "reason": "批次达标后未完成标记的启动恢复、目标调整、未达标续跑及跨重启旧结算去重；仅模拟设备与内存配置"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.EventRecruitmentLimitRegressions.test_quota_warning_precedes_dimmed_event_and_other_modals_remain_distinct",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261006-214829-360",
+            "20261006-214929-415",
+            "20261006-214941-942",
+            "20261006-214945-513",
+            "20261006-215003-689",
+            "20260929-230255-086",
+            "20260929-230307-455"
+          ],
+          "status": "新增",
+          "reason": "2026-10-06 招募额度不足弹窗、纯招募奖励跳过、重启与生产间隔重试；终止页明确模拟"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.EventRecruitmentLimitRegressions.test_confirmed_limit_skips_only_after_click_without_recording_a_recruit",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261006-214829-360"
+          ],
+          "status": "新增",
+          "reason": "2026-10-06 招募额度不足弹窗、纯招募奖励跳过、重启与生产间隔重试；终止页明确模拟"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.EventRecruitmentLimitRegressions.test_restart_without_event_receipt_cancels_then_reconstructs_the_choice",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261006-214829-360",
+            "20260929-230255-086"
+          ],
+          "status": "新增",
+          "reason": "2026-10-06 招募额度不足弹窗、纯招募奖励跳过、重启与生产间隔重试；终止页明确模拟"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.EventRecruitmentLimitRegressions.test_other_rewards_cannot_use_the_recruitment_skip_permission",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261006-214829-360",
+            "20261006-214929-415",
+            "20261006-214941-942"
+          ],
+          "status": "新增",
+          "reason": "2026-10-06 招募额度不足弹窗、纯招募奖励跳过、重启与生产间隔重试；终止页明确模拟"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.EventRecruitmentLimitRegressions.test_main_loop_retries_quota_warning_then_discards_ticket_and_returns_to_map",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261006-214829-360",
+            "20261006-214929-415",
+            "20261006-214941-942",
+            "20261006-214945-513",
+            "20261006-215003-689",
+            "20260922-081153-551"
+          ],
+          "status": "新增",
+          "reason": "2026-10-06 招募额度不足弹窗、纯招募奖励跳过、重启与生产间隔重试；终止页明确模拟"
         }
       ]
     },

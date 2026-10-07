@@ -984,6 +984,113 @@ class RecruitmentBudgetRegressions(unittest.TestCase):
         self.assertEqual(clicks, ['RESUME_REWARDS_CONTINUE', 'REWARD_LEAVE_CANCEL'])
 
 
+class EventRecruitmentLimitRegressions(unittest.TestCase):
+    WARNING = '20261006-214829-360'
+    TICKET = '20261006-214929-415'
+    LEAVE = '20261006-214941-942'
+    NARRATION = '20261006-214945-513'
+    MAP = '20261006-215003-689'
+
+    def test_quota_warning_precedes_dimmed_event_and_other_modals_remain_distinct(self):
+        for suffix, expected in ((self.WARNING, 'event_recruitment_limit'),
+                                 (self.TICKET, 'resume_rewards'), (self.LEAVE, 'reward_leave'),
+                                 (self.NARRATION, 'event'), (self.MAP, 'map'),
+                                 ('20260929-230255-086', 'event'), ('20260929-230307-455', 'hero')):
+            with self.subTest(suffix=suffix):
+                self.assertEqual(ExplorationVision(frame(suffix)).state(), expected)
+
+    def test_confirmed_limit_skips_only_after_click_without_recording_a_recruit(self):
+        task, vision, clicks = task_for(self.WARNING)
+        task.event_memory.begin(event_branch('narrow_passage.ranger'))
+        task.save_event_history()
+        with patch.object(task, 'click_action', return_value=False):
+            self.assertFalse(task.handle_event_recruitment_limit(vision))
+        self.assertFalse(task._recruit_skipped)
+        self.assertFalse(task._reward_leave_authorized)
+        for _ in range(2):
+            self.assertTrue(task.handle_event_recruitment_limit(vision))
+            task.observe_event('event_recruitment_limit', vision)
+        self.assertEqual(clicks, ['EVENT_RECRUITMENT_LIMIT_CONFIRM'] * 2)
+        self.assertTrue(task._recruit_skipped)
+        self.assertFalse(task._reward_leave_authorized)
+        self.assertEqual(task.event_memory.pending, 'narrow_passage.ranger')
+        self.assertFalse(task.event_memory.visited)
+        self.assertFalse(task._recruited_heroes)
+        self.assertIsNone(task._recruit_pending)
+
+    def test_restart_without_event_receipt_cancels_then_reconstructs_the_choice(self):
+        task, vision, clicks = task_for(self.WARNING)
+        self.assertTrue(task.handle_event_recruitment_limit(vision))
+        self.assertEqual(clicks, ['EVENT_RECRUITMENT_LIMIT_CANCEL'])
+        self.assertFalse(task._recruit_skipped)
+        self.assertIsNone(task.event_memory.pending)
+        task.device.image = frame('20260929-230255-086')
+        self.assertTrue(task.handle_event(ExplorationVision(task.device.image)))
+        saved = task.config.DimensionalExplorationRuntime_EventHistory
+        restarted, modal, restarted_clicks = task_for(self.WARNING)
+        restarted.event_memory = EventMemory.from_saved(saved)
+        self.assertTrue(restarted.handle_event_recruitment_limit(modal))
+        self.assertEqual(restarted_clicks, ['EVENT_RECRUITMENT_LIMIT_CONFIRM'])
+        self.assertTrue(restarted._recruit_skipped)
+        self.assertEqual(restarted.event_memory.pending, 'narrow_passage.ranger')
+
+    def test_other_rewards_cannot_use_the_recruitment_skip_permission(self):
+        task, vision, clicks = task_for(self.WARNING)
+        task.event_memory.begin(event_branch('backpack.supplies'))
+        with self.assertRaises(RequestHumanTakeover):
+            task.handle_event_recruitment_limit(vision)
+        self.assertEqual(clicks, [])
+        self.assertFalse(task._recruit_skipped)
+        self.assertFalse(task._reward_leave_authorized)
+        reward = ExplorationVision(frame(self.TICKET))
+        task._recruit_skipped = True
+        self.assertTrue(task.handle_victory(reward))
+        self.assertFalse(task._reward_leave_authorized)
+        self.assertTrue(task.handle_reward_leave(ExplorationVision(frame(self.LEAVE))))
+        self.assertEqual(clicks, ['RESUME_REWARDS_CONTINUE', 'REWARD_LEAVE_CANCEL'])
+
+    def test_main_loop_retries_quota_warning_then_discards_ticket_and_returns_to_map(self):
+        # The popup, ticket, leave warning, narration and map are supplied
+        # screenshots. The final lobby only terminates this local replay;
+        # it does not stand in for a complete run or a settlement receipt.
+        suffixes = [self.WARNING] * 3 + [self.TICKET] * 3 + [self.LEAVE] * 3 + [self.NARRATION] * 3 + [
+            self.MAP, self.MAP, '20260922-081153-551',
+        ]
+        expected = ['EVENT_RECRUITMENT_LIMIT_CONFIRM'] * 2 + ['RESUME_REWARDS_CONTINUE'] + [
+            'REWARD_LEAVE_CONFIRM', 'REWARD_LEAVE_CONFIRM', 'EVENT_NEXT',
+        ]
+        with ControlledClock() as clock:
+            task, _, _ = task_for(self.WARNING)
+            task.event_memory.begin(event_branch('narrow_passage.ranger'))
+            task.save_event_history()
+            device = ReplayDevice(suffixes, expected_clicks=expected)
+            task.device = device
+            task.action_ready = task.__class__.action_ready.__get__(task)
+            task.click_action = task.__class__.click_action.__get__(task)
+            task.progress, task.target = RunProgress(completed=1), 1
+            task.handle_map = Mock(return_value=False)
+            task.handle_ui_recovery = Mock(return_value=False)
+            screenshot = device.screenshot
+
+            def next_frame():
+                clock.advance(1.1)
+                screenshot()
+
+            device.screenshot = next_frame
+            task.explore()
+            device.assert_actions_complete()
+        self.assertEqual(task._last_state, 'map')
+        self.assertIsNone(task.event_memory.pending)
+        self.assertEqual(task.event_memory.visited, {'narrow_passage.ranger'})
+        self.assertFalse(task.event_memory.obtained)
+        self.assertFalse(task._recruited_heroes)
+        self.assertIsNone(task._recruit_pending)
+        self.assertFalse(task._recruit_skipped)
+        self.assertFalse(task._reward_leave_authorized)
+        self.assertTrue(all(ExplorationVision(frame(suffix)).quota() == (19, 20)
+                            for suffix in (self.TICKET, self.NARRATION, self.MAP)))
+
+
 class RestHealthRegressions(unittest.TestCase):
     @staticmethod
     def rest(available=(0, 3), hp=None):

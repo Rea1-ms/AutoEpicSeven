@@ -33,6 +33,9 @@ from tasks.dimensional_exploration.recognition.hero_names import HeroNameOcr
 from tasks.dimensional_exploration.assets.assets_dimensional_exploration_navigation import (
     PREVIEW_BATTLE, PREVIEW_BOSS, PREVIEW_ELITE, PREVIEW_EVENT, PREVIEW_REST, PREVIEW_SUPPLY,
 )
+from tasks.dimensional_exploration.assets.assets_dimensional_exploration_event_recruitment import (
+    EVENT_RECRUITMENT_LIMIT_CHECK,
+)
 from tasks.dungeon.assets.assets_dungeon_state import AUTO_COMBAT_EXIST
 from tasks.dungeon.execute import detect_auto_combat_state
 
@@ -159,6 +162,7 @@ class EventLootCountOcr(FragmentBalanceOcr):
 
 class ExplorationVision:
     STATES = (
+        ("event_recruitment_limit", EVENT_RECRUITMENT_LIMIT_CHECK),
         ("sacrifice", SACRIFICE_CHECK),
         ("reward_leave", REWARD_LEAVE_CHECK),
         ("settlement", SETTLEMENT_CHECK), ("reward", REWARD_CLOSE), ("abandon", ABANDON_CHECK),

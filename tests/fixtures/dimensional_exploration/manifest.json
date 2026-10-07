@@ -40,6 +40,7 @@
         "tests.dimensional_exploration.test_dimensional_exploration_events.PrisonAndOldWomanPolicyTests.test_prison_main_loop_preserves_intervals_and_hp_before_both_free_routes",
         "tests.dimensional_exploration.test_dimensional_exploration_events.PrisonAndOldWomanPolicyTests.test_woman_main_loop_retries_payment_and_reward_then_advances_both_narrations",
         "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_main_loop_retries_introduction_then_selects_attack_and_confirms_reward",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.EventRecruitmentLimitRegressions.test_main_loop_retries_quota_warning_then_discards_ticket_and_returns_to_map",
         "tests.dimensional_exploration.test_dimensional_exploration_events.Oct07CollectedEventTests.test_main_loop_failed_attempt_retries_exit_then_samples_real_return_once"
       ]
     },
@@ -844,7 +845,9 @@
       "scene": "event",
       "used_by": [
         "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_supplied_screenshots_have_expected_page_states",
-        "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_narrow_passage_recruits_ranger_and_confirms_quota"
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_narrow_passage_recruits_ranger_and_confirms_quota",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.EventRecruitmentLimitRegressions.test_quota_warning_precedes_dimmed_event_and_other_modals_remain_distinct",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.EventRecruitmentLimitRegressions.test_restart_without_event_receipt_cancels_then_reconstructs_the_choice"
       ]
     },
     "20260929-230259-128": {
@@ -864,7 +867,8 @@
       "scene": "hero",
       "used_by": [
         "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_supplied_screenshots_have_expected_page_states",
-        "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_narrow_passage_recruits_ranger_and_confirms_quota"
+        "tests.dimensional_exploration.test_dimensional_exploration_events.ReviewedEventTests.test_narrow_passage_recruits_ranger_and_confirms_quota",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.EventRecruitmentLimitRegressions.test_quota_warning_precedes_dimmed_event_and_other_modals_remain_distinct"
       ]
     },
     "20260929-230315-796": {
@@ -1700,6 +1704,61 @@
         "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_ready_introduction_taps_before_reading_option_costs",
         "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_introduction_preserves_pending_history_and_sample_across_restart",
         "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_main_loop_retries_introduction_then_selects_attack_and_confirms_reward"
+      ]
+    },
+    "20261006-214829-360": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261006-214829-360.png",
+      "sha256": "e194305e93445660c55dd922b7b16b53b9490197eb48a7f8c9b839ed1d1d8822",
+      "server": "global_cn",
+      "scene": "event_recruitment_limit",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.EventRecruitmentLimitRegressions.test_quota_warning_precedes_dimmed_event_and_other_modals_remain_distinct",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.EventRecruitmentLimitRegressions.test_confirmed_limit_skips_only_after_click_without_recording_a_recruit",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.EventRecruitmentLimitRegressions.test_restart_without_event_receipt_cancels_then_reconstructs_the_choice",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.EventRecruitmentLimitRegressions.test_other_rewards_cannot_use_the_recruitment_skip_permission",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.EventRecruitmentLimitRegressions.test_main_loop_retries_quota_warning_then_discards_ticket_and_returns_to_map"
+      ]
+    },
+    "20261006-214929-415": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261006-214929-415.png",
+      "sha256": "aec3095a4b7ec77a835da33ab1fab8dec55576a81b3d40c423afcf00f2ada436",
+      "server": "global_cn",
+      "scene": "resume_rewards",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.EventRecruitmentLimitRegressions.test_quota_warning_precedes_dimmed_event_and_other_modals_remain_distinct",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.EventRecruitmentLimitRegressions.test_other_rewards_cannot_use_the_recruitment_skip_permission",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.EventRecruitmentLimitRegressions.test_main_loop_retries_quota_warning_then_discards_ticket_and_returns_to_map"
+      ]
+    },
+    "20261006-214941-942": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261006-214941-942.png",
+      "sha256": "a7eb7bf51f3231395a6120898288ed5fccc5d8157d5734b7531ba0ac25d8b9ca",
+      "server": "global_cn",
+      "scene": "reward_leave",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.EventRecruitmentLimitRegressions.test_quota_warning_precedes_dimmed_event_and_other_modals_remain_distinct",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.EventRecruitmentLimitRegressions.test_other_rewards_cannot_use_the_recruitment_skip_permission",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.EventRecruitmentLimitRegressions.test_main_loop_retries_quota_warning_then_discards_ticket_and_returns_to_map"
+      ]
+    },
+    "20261006-214945-513": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261006-214945-513.png",
+      "sha256": "e375baf987b9d8dfce0707f9db28bc19d2355e8e0c27663b5cf35254b8fafab2",
+      "server": "global_cn",
+      "scene": "event",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.EventRecruitmentLimitRegressions.test_quota_warning_precedes_dimmed_event_and_other_modals_remain_distinct",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.EventRecruitmentLimitRegressions.test_main_loop_retries_quota_warning_then_discards_ticket_and_returns_to_map"
+      ]
+    },
+    "20261006-215003-689": {
+      "path": "tests/fixtures/dimensional_exploration/events/MuMu-20261006-215003-689.png",
+      "sha256": "a4d213bd510faccbe6fda201ae377fe4d74fae11d5650332a8bb2dd761418f0d",
+      "server": "global_cn",
+      "scene": "map",
+      "used_by": [
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.EventRecruitmentLimitRegressions.test_quota_warning_precedes_dimmed_event_and_other_modals_remain_distinct",
+        "tests.dimensional_exploration.test_dimensional_exploration_runtime.EventRecruitmentLimitRegressions.test_main_loop_retries_quota_warning_then_discards_ticket_and_returns_to_map"
       ]
     },
     "sample-20261004-114223-25b08ac6-before": {

@@ -29,6 +29,7 @@ from tasks.dimensional_exploration.policy import (
 from tasks.dimensional_exploration.events.event import EventMemory, decide_event, event_branch, match_event, pending_event
 from tasks.dimensional_exploration.events.health import EventHealthMixin
 from tasks.dimensional_exploration.events.introduction import EventIntroductionMixin
+from tasks.dimensional_exploration.events.recruitment_limit import EventRecruitmentLimitMixin
 from tasks.dimensional_exploration.rooms.rest import RestMixin
 from tasks.dimensional_exploration.rooms.starting_strategy import StartingStrategyMixin
 from tasks.dimensional_exploration.heroes.recruitment import HeroCosts, RecruitmentMixin
@@ -43,7 +44,7 @@ from tasks.dungeon.assets.assets_dungeon_state import (
 )
 
 
-class DimensionalExploration(StartingStrategyMixin, RestMixin, EventHealthMixin, EventIntroductionMixin, UpgradeMixin, SacrificeMixin, RecruitmentMixin, UI):
+class DimensionalExploration(StartingStrategyMixin, RestMixin, EventHealthMixin, EventIntroductionMixin, EventRecruitmentLimitMixin, UpgradeMixin, SacrificeMixin, RecruitmentMixin, UI):
     def __init__(self, config, device=None, task=None):
         super().__init__(config, device=device, task=task)
         self._last_state = None
@@ -236,6 +237,7 @@ class DimensionalExploration(StartingStrategyMixin, RestMixin, EventHealthMixin,
                 "roster": self.handle_roster,
                 "map": self.handle_map, "preview": self.handle_preview,
                 "event": self.handle_event, "shop": self.handle_shop,
+                "event_recruitment_limit": self.handle_event_recruitment_limit,
                 "buy": self.handle_buy, "rest": self.handle_rest,
                 "upgrade": self.handle_rest_hero, "revive": self.handle_rest_hero,
                 "sacrifice": self.handle_sacrifice,
