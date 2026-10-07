@@ -7,25 +7,13 @@
     {
       "name": "SHOP_ENTRY",
       "namespace": "global_cn",
-      "module": "knights/shop",
+      "module": "knights/shop/entries",
       "kind": "base",
       "box": [
-        119,
-        207,
-        197,
-        230
-      ]
-    },
-    {
-      "name": "SHOP_ENTRY",
-      "namespace": "global_cn",
-      "module": "knights/shop",
-      "kind": "button",
-      "box": [
-        110,
-        199,
-        252,
-        239
+        70,
+        203,
+        103,
+        232
       ]
     }
   ]

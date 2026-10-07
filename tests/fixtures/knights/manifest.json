@@ -1,6 +1,40 @@
 {
   "version": 1,
   "fixtures": {
+    "20261007-134422-578": {
+      "path": "tests/fixtures/knights/shop/MuMu-20261007-134422-578.png",
+      "sha256": "51587ad07a949e4542e7fdd8566f62e29c60b548d9cf3ee192b4f97014e11c26",
+      "server": "global_cn",
+      "scene": "current_mystic_card_and_three_digit_crest_balance",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.knights.test_shop.ShopReplayTests.test_mystic_capture_and_real_balance_start_one_image_selected_purchase"
+      ],
+      "source": "user-provided MuMu-20261007-134422-578.png",
+      "privacy_redaction": [
+        [0, 0, 1280, 25],
+        [0, 665, 580, 720],
+        [704, 665, 1280, 720]
+      ]
+    },
+    "20261007-133412-362": {
+      "path": "tests/fixtures/knights/shop/MuMu-20261007-133412-362.png",
+      "sha256": "0aa33e72396d6b6611d6169e2b35841d66c56c71aa1a7db1b081941c0fda29bb",
+      "server": "global_cn",
+      "scene": "current_shop_three_digit_crest_balance",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.knights.test_shop.CapturedShopTests.test_balances_are_read_with_normalized_ocr_language",
+        "tests.knights.test_shop.CapturedShopTests.test_balance_icons_move_with_numbers_and_reject_missing_or_duplicate_icons",
+        "tests.knights.test_shop.CapturedShopTests.test_shared_balance_search_restores_all_frames_after_success_and_error"
+      ],
+      "source": "user-provided MuMu-20261007-133412-362.png",
+      "privacy_redaction": [
+        [0, 0, 1280, 25],
+        [0, 665, 580, 720],
+        [704, 665, 1280, 720]
+      ]
+    },
     "20261001-171607-666": {
       "path": "tests/fixtures/knights/shop/MuMu-20261001-171607-666.png",
       "sha256": "f59c43016f66a3b84200403c2c2e689607a2fbbc309e247e0dd7e4b4d430589b",
@@ -13,7 +47,9 @@
         "tests.knights.test_shop.CapturedShopTests.test_clipped_card_is_excluded_even_when_the_title_is_visible",
         "tests.knights.test_shop.CapturedShopTests.test_corrupt_stock_is_unknown_and_wrong_currency_cannot_supply_a_price",
         "tests.knights.test_shop.CapturedShopTests.test_activity_panel_is_not_closed_by_the_generic_ad_handler",
-        "tests.knights.test_shop.CapturedShopTests.test_final_confirmation_is_distinct_from_selection_and_rejects_wrong_context"
+        "tests.knights.test_shop.CapturedShopTests.test_final_confirmation_is_distinct_from_selection_and_rejects_wrong_context",
+        "tests.knights.test_shop.CapturedShopTests.test_shared_product_search_rejects_images_outside_the_viewport",
+        "tests.knights.test_shop.CapturedShopTests.test_product_search_restores_bounds_after_matching_and_exceptions"
       ],
       "source": "user-provided MuMu-20261001-171607-666.png",
       "privacy_redaction": [
@@ -154,7 +190,6 @@
       "used_by": [
         "tests.knights.test_shop.CapturedShopTests.test_shop_body_requires_product_images_after_tab_selection",
         "tests.knights.test_shop.CapturedShopTests.test_all_eighteen_products_have_correct_stock_currency_and_price",
-        "tests.knights.test_shop.CapturedShopTests.test_balances_are_read_with_normalized_ocr_language",
         "tests.knights.test_shop.CapturedShopTests.test_activity_panel_is_not_closed_by_the_generic_ad_handler",
         "tests.knights.test_shop.CapturedShopTests.test_final_confirmation_is_distinct_from_selection_and_rejects_wrong_context",
         "tests.knights.test_shop.CapturedShopTests.test_manastone_levels_use_images_even_when_titles_cannot_be_read",
@@ -342,9 +377,7 @@
       ],
       "used_by": [
         "tests.knights.test_shop.CapturedShopTests.test_mystic_is_recognized_beside_sold_out_molagora_by_image",
-        "tests.knights.test_shop.CapturedShopTests.test_four_digit_crest_balance_moves_the_whole_header",
-        "tests.knights.test_shop.CapturedShopTests.test_balance_icons_move_with_numbers_and_reject_missing_or_duplicate_icons",
-        "tests.knights.test_shop.ShopReplayTests.test_mystic_capture_and_real_balance_start_one_image_selected_purchase"
+        "tests.knights.test_shop.CapturedShopTests.test_four_digit_crest_balance_moves_the_whole_header"
       ]
     },
     "20261003-110323-175": {

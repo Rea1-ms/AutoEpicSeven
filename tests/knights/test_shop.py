@@ -20,14 +20,14 @@ server.set_lang('global_cn')
 from module.base.button import ClickButton  # noqa: E402
 from module.exception import RequestHumanTakeover  # noqa: E402
 from tasks.knights.shop import (  # noqa: E402
-    ITEMS, KnightsShop, PurchaseAttempt, ShopCard, BUY_CONFIRM_MULTI,
+    ITEMS, KnightsShop, PurchaseAttempt, ShopCard, BUY_CONFIRM_MULTI, BALANCE_ICONS,
     BUY_CONFIRM_SINGLE, enabled_purchases, parse_amount, parse_stock, shop_period,
     BUY_MIN, BUY_MAX, BUY_TIMES_PLUS, BUY_TIMES_MINUS,
 )
 from tasks.store.purchase import resolve_period_purchase_quantity  # noqa: E402
 from tasks.base.ui import UI  # noqa: E402
 from tasks.knights.assets.assets_knights_activity_entries import ACTIVITY_PANEL_CHECK  # noqa: E402
-from tasks.knights.assets.assets_knights_shop import (  # noqa: E402
+from tasks.knights.assets.assets_knights_shop_actions import (  # noqa: E402
     SHOP_PURCHASE_FINAL_CHECK, SHOP_PURCHASE_FINAL_CONFIRM, SHOP_PURCHASE_FINAL_CANCEL,
 )
 
@@ -42,6 +42,8 @@ FINAL_CAPTURE = '20261003-100049-079'
 REORDERED_CAPTURES = ('20261003-110305-160', '20261003-110308-852',
                       '20261003-110314-759', '20261003-110323-175')
 PAID_CATALYST_CAPTURE = '20261003-184342-562'
+CURRENT_BALANCE_CAPTURE = '20261007-133412-362'
+CURRENT_MYSTIC_CAPTURE = '20261007-134422-578'
 CATALYST = next(item for item in ITEMS if item.option.endswith('_CatalystChest'))
 
 
@@ -130,8 +132,8 @@ class CapturedShopTests(unittest.TestCase):
         self.assertIsNone(task._popup_evidence(PurchaseAttempt(BLOOM, 9, 1), *task._popup()))
 
     def test_balances_are_read_with_normalized_ocr_language(self):
-        task = captured_task(CAPTURES[4])
-        for currency, expected in (('armband', 275), ('crest', 900), ('proof', 70542)):
+        task = captured_task(CURRENT_BALANCE_CAPTURE)
+        for currency, expected in (('armband', 275), ('crest', 335), ('proof', 69417)):
             item = next(item for item in ITEMS if item.currency == currency)
             self.assertEqual(task._balance(item), expected)
 
@@ -143,6 +145,40 @@ class CapturedShopTests(unittest.TestCase):
         card = task._cards(BLOOM)[0]
         self.assertEqual(card.button.button, (505, 601, 664, 630))
         self.assertEqual(card.price, 600)
+
+    def test_shared_product_search_rejects_images_outside_the_viewport(self):
+        task = captured_task(CAPTURES[0])
+        matches = task._shop_item_matches(BLOOM.asset)
+        self.assertEqual(len(matches), 1)
+        self.assertEqual(matches[0].button, (385, 601, 544, 630))
+        x1, y1, x2, y2 = matches[0].area
+        title = task.device.image[y1:y2, x1:x2].copy()
+        task.device.image[145:640, 289:1224] = 0
+        task.device.image[110:110 + y2 - y1, x1:x2] = title
+        self.assertEqual(task._shop_item_matches(BLOOM.asset), [])
+        self.assertFalse(task._shop_content_ready())
+
+    def test_product_search_restores_bounds_after_matching_and_exceptions(self):
+        task = captured_task(CAPTURES[0])
+        asset = BLOOM.asset
+        buttons = tuple(asset.iter_buttons())
+        searches = tuple(button.search for button in buttons)
+        original_match = asset.match_multi_template
+        for failed in (False, True):
+            with self.subTest(failed=failed):
+                def match(image, **kwargs):
+                    self.assertTrue(all(button.search == (302, 143, 1225, 645) for button in buttons))
+                    if failed:
+                        raise RuntimeError('controlled template failure')
+                    return original_match(image, **kwargs)
+
+                with patch.object(asset, 'match_multi_template', side_effect=match):
+                    if failed:
+                        with self.assertRaisesRegex(RuntimeError, 'controlled template failure'):
+                            task._shop_item_matches(asset)
+                    else:
+                        self.assertEqual(len(task._shop_item_matches(asset)), 1)
+                self.assertEqual(tuple(button.search for button in buttons), searches)
 
     def test_clipped_card_is_excluded_even_when_the_title_is_visible(self):
         task = captured_task(CAPTURES[0])
@@ -201,19 +237,42 @@ class CapturedShopTests(unittest.TestCase):
             self.assertEqual(task._balance(item), expected, currency)
 
     def test_balance_icons_move_with_numbers_and_reject_missing_or_duplicate_icons(self):
-        task = captured_task(REORDERED_CAPTURES[2])
+        task = captured_task(CURRENT_BALANCE_CAPTURE)
         original = task.device.image.copy()
         task.device.image[76:110, 650:1210] = 0
         task.device.image[76:110, 650:1150] = original[76:110, 710:1210]
-        for currency, expected in (('armband', 275), ('crest', 1010), ('proof', 70177)):
+        for currency, expected in (('armband', 275), ('crest', 335), ('proof', 69417)):
             item = next(item for item in ITEMS if item.currency == currency)
             self.assertEqual(task._balance(item), expected, currency)
-        task = captured_task(REORDERED_CAPTURES[2])
-        task.device.image[81:103, 1041:1064] = 0
+        task = captured_task(CURRENT_BALANCE_CAPTURE)
+        task.device.image[81:103, 1056:1079] = 0
         self.assertIsNone(task._balance(ITEMS[0]))
-        task = captured_task(REORDERED_CAPTURES[2])
-        task.device.image[81:103, 900:923] = task.device.image[81:103, 1041:1064]
+        task = captured_task(CURRENT_BALANCE_CAPTURE)
+        task.device.image[81:103, 900:923] = task.device.image[81:103, 1056:1079]
         self.assertIsNone(task._balance(ITEMS[0]))
+
+    def test_shared_balance_search_restores_all_frames_after_success_and_error(self):
+        task = captured_task(CURRENT_BALANCE_CAPTURE)
+        asset = BALANCE_ICONS['armband']
+        buttons = tuple(asset.iter_buttons())
+        searches = tuple(button.search for button in buttons)
+        self.assertEqual(len(buttons), 1)
+        original_match = asset.match_multi_template
+        for failed in (False, True):
+            with self.subTest(failed=failed):
+                def match(image, **kwargs):
+                    self.assertTrue(all(button.search == (650, 76, 1210, 110) for button in buttons))
+                    if failed:
+                        raise RuntimeError('controlled balance template failure')
+                    return original_match(image, **kwargs)
+
+                with patch.object(asset, 'match_multi_template', side_effect=match):
+                    if failed:
+                        with self.assertRaisesRegex(RuntimeError, 'controlled balance template failure'):
+                            task._balance(BLOOM)
+                    else:
+                        self.assertEqual(task._balance(BLOOM), 69417)
+                self.assertEqual(tuple(button.search for button in buttons), searches)
 
     def test_sold_out_monthly_box_at_tail_keeps_its_own_period(self):
         task = captured_task(REORDERED_CAPTURES[1])
@@ -979,7 +1038,7 @@ class ShopReplayTests(unittest.TestCase):
         actions = self.run_frames(frames, target=5, item=MOLAGORA_ITEM)
         self.assertEqual([a[1] for a in actions],
                          ['PRICE', 'BUY_MAX', 'BUY_CONFIRM_MULTI', 'SHOP_PURCHASE_FINAL_CONFIRM'])
-        self.assertEqual(actions[-1][2], (787, 511, 881, 552))
+        self.assertEqual(actions[-1][2], (810, 519, 854, 543))
 
     def test_final_confirmation_replay_uses_captured_pixels_and_real_validation(self):
         frames = ([shop_frame(5, price=250)] * 2 + [popup_frame(1, 5)] * 3
@@ -1252,9 +1311,9 @@ class ShopReplayTests(unittest.TestCase):
                   + [shop_frame(0, active=False)] * 4)
         with ControlledClock() as clock:
             task = replay_task(frames, clock)
-            task.device.image = fixture_image(MANIFEST, REORDERED_CAPTURES[2])
+            task.device.image = fixture_image(MANIFEST, CURRENT_MYSTIC_CAPTURE)
             synthetic_cards = task._cards
-            # The initial card, its translated price button and the shifted
+            # The initial card, its translated price button and the current
             # balance header come from real pixels. The single popup layout
             # and following zero stock are explicit simulated inputs only.
             task._cards = lambda item: (KnightsShop._cards(task, item) if task.device.index < 2
@@ -1263,7 +1322,7 @@ class ShopReplayTests(unittest.TestCase):
             self.assertTrue(task._execute_shop([(ITEMS[0], 1)]))
             self.assertEqual([a[1] for a in task.device.actions],
                              ['MYSTIC_MEDALS_result0', 'BUY_CONFIRM_SINGLE'])
-            self.assertEqual(task.device.actions[0][2], (718, 344, 877, 373))
+            self.assertEqual(task.device.actions[0][2], (591, 601, 750, 630))
 
     def test_unsupported_server_never_navigates_or_builds_a_device(self):
         task = KnightsShop.__new__(KnightsShop)

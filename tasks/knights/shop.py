@@ -16,18 +16,26 @@ from module.logger import logger
 from module.ocr.ocr import Ocr
 from tasks.base.assets.assets_base_popup import NETWORK_ERROR_ABNORMAL, NETWORK_ERROR_DISCONNECT
 from tasks.base.ui import UI
-from tasks.knights.assets.assets_knights_shop import (
-    ACCESSORY_RESET_STONE, ARMBAND_ICON, ARMBAND_BALANCE_ICON,
-    BRAVE_CREST_ICON, BRAVE_CREST_BALANCE_ICON, CATALYST_CHEST,
+from tasks.knights.assets.assets_knights_shop_actions import (
+    SHOP_PURCHASE_CANCEL, SHOP_PURCHASE_FINAL_CHECK,
+    SHOP_PURCHASE_FINAL_CONFIRM, SHOP_PURCHASE_FINAL_CANCEL,
+)
+from tasks.knights.assets.assets_knights_shop_currencies import (
+    ARMBAND_ICON, ARMBAND_BALANCE_ICON,
+    BRAVE_CREST_ICON, BRAVE_CREST_BALANCE_ICON,
+    PROOF_OF_COURAGE_ICON, PROOF_OF_COURAGE_BALANCE_ICON,
+    SHOP_PRICE_ACTIVE, SHOP_BALANCE_SEARCH,
+)
+from tasks.knights.assets.assets_knights_shop_entries import SHOP_CHECK, SHOP_SELECTED
+from tasks.knights.assets.assets_knights_shop_items import (
+    ACCESSORY_RESET_STONE, CATALYST_CHEST,
     CONVERSION_GEM_CHEST, EPIC_CATALYST_CHEST, EPIC_SPIRIT_BLOOM,
     EQUIPMENT_RESET_STONE, FIRE_CONNECTION, GOLD_TRANSMIT_STONE, ICE_CONNECTION,
     LEVEL_85_MANASTONE_CHEST, LEVEL_88_MANASTONE_CHEST, MOLAGORA, MYSTIC_MEDALS,
-    NATURE_CONNECTION, PROOF_OF_COURAGE_ICON, PROOF_OF_COURAGE_BALANCE_ICON,
+    NATURE_CONNECTION,
     MANASTONE_LEVEL_85, MANASTONE_LEVEL_88,
     RARE_CATALYST_CHEST, REFORGE_MATERIAL_CHEST, REFORGING_STONE_CHEST,
-    SHOP_CHECK, SHOP_PRICE_ACTIVE, SHOP_PURCHASE_CANCEL,
-    SHOP_SELECTED,
-    SHOP_PURCHASE_FINAL_CHECK, SHOP_PURCHASE_FINAL_CONFIRM, SHOP_PURCHASE_FINAL_CANCEL,
+    SHOP_ITEM_SEARCH,
 )
 from tasks.store.assets.assets_store_actions import (
     BUY_CONFIRM_MULTI, BUY_CONFIRM_SINGLE, BUY_MAX, BUY_MIN,
@@ -206,6 +214,20 @@ class KnightsShopMixin:
     def _on_shop(self):
         return self.appear(SHOP_CHECK) and SHOP_SELECTED.match_color(self.device.image, threshold=25)
 
+    def _shop_item_matches(self, asset):
+        return self._shop_matches(asset, SHOP_ITEM_SEARCH.area)
+
+    def _shop_matches(self, asset, search):
+        """Use a shared search area without changing template defaults."""
+        buttons = tuple(asset.iter_buttons())
+        searches = tuple(button.search for button in buttons)
+        try:
+            asset.load_search(search)
+            return asset.match_multi_template(self.device.image, similarity=0.88)
+        finally:
+            for button, search in zip(buttons, searches):
+                button.load_search(search)
+
     def _shop_content_ready(self):
         """Require an actual product image, beyond the early tab highlight."""
         if not self._on_shop():
@@ -215,7 +237,7 @@ class KnightsShopMixin:
             if item.asset in seen:
                 continue
             seen.add(item.asset)
-            for match in item.asset.match_multi_template(self.device.image, similarity=0.88):
+            for match in self._shop_item_matches(item.asset):
                 x, y, _, _ = match.area
                 if x - 18 >= 289 and x + 180 <= 1225 and min(abs(y - 153), abs(y - 410)) <= 3:
                     return True
@@ -225,7 +247,7 @@ class KnightsShopMixin:
         if not self._on_shop():
             return []
         cards = []
-        for match in item.asset.match_multi_template(self.device.image, similarity=0.88):
+        for match in self._shop_item_matches(item.asset):
             x, y, _, _ = match.area
             # A title can match while its card is clipped by the scroll viewport.
             # Stock and price must belong to the same fully visible card; in
@@ -278,7 +300,7 @@ class KnightsShopMixin:
         # each number by its own matched icon and the next currency's icon.
         positions = []
         for currency, icon in BALANCE_ICONS.items():
-            hits = icon.match_multi_template(self.device.image, similarity=0.88)
+            hits = self._shop_matches(icon, SHOP_BALANCE_SEARCH.area)
             if len(hits) != 1:
                 return None
             positions.append((currency, hits[0].area))

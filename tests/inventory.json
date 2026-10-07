@@ -5292,7 +5292,7 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [
-            "20261002-160823-507"
+            "20261007-133412-362"
           ],
           "status": "已纳入",
           "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
@@ -5371,7 +5371,7 @@
             "20261003-110314-759"
           ],
           "status": "已纳入",
-          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+          "reason": "保留四位余额断言；旧样本无法匹配当前单帧素材，用户当前余额不足四位，暂缺当前版本样本，不要求专门积攒"
         },
         {
           "id": "tests.knights.test_shop.CapturedShopTests.test_balance_icons_move_with_numbers_and_reject_missing_or_duplicate_icons",
@@ -5379,7 +5379,7 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [
-            "20261003-110314-759"
+            "20261007-133412-362"
           ],
           "status": "已纳入",
           "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
@@ -6148,10 +6148,10 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [
-            "20261003-110314-759"
+            "20261007-134422-578"
           ],
           "status": "已纳入",
-          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+          "reason": "当前截图验证神秘奖牌图像、库存、价格、余额和点击位置；后续弹窗和库存仍为明确模拟帧，不连接设备或读取账号配置"
         },
         {
           "id": "tests.knights.test_shop.ShopReplayTests.test_unsupported_server_never_navigates_or_builds_a_device",
@@ -6206,6 +6206,39 @@
           "fixtures": [
             "20261002-160820-406",
             "20261002-160823-507"
+          ],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.CapturedShopTests.test_shared_product_search_rejects_images_outside_the_viewport",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-171607-666"
+          ],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.CapturedShopTests.test_product_search_restores_bounds_after_matching_and_exceptions",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-171607-666"
+          ],
+          "status": "已纳入",
+          "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.CapturedShopTests.test_shared_balance_search_restores_all_frames_after_success_and_error",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261007-133412-362"
           ],
           "status": "已纳入",
           "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
@@ -12876,6 +12909,66 @@
           "reason": "保留原识别和动作断言；截图来源与资产分派范围分开记录",
           "input_kind": "registered_capture",
           "original_source": "test/test_asset_crop.py"
+        },
+        {
+          "id": "tests.captured.test_asset_crop.AssetArchiveTest.test_preview_records_hash_without_moving_or_creating_archive",
+          "category": "资源基础检查",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "素材暂存工具回归；仅使用忽略目录内的模拟文件，不移动实际素材",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.captured.test_asset_crop.AssetArchiveTest.test_move_preserves_bytes_paths_and_verifiable_manifest",
+          "category": "资源基础检查",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "素材暂存工具回归；仅使用忽略目录内的模拟文件，不移动实际素材",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.captured.test_asset_crop.AssetArchiveTest.test_destination_collision_keeps_entire_batch_in_place",
+          "category": "资源基础检查",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "素材暂存工具回归；仅使用忽略目录内的模拟文件，不移动实际素材",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.captured.test_asset_crop.AssetArchiveTest.test_changed_source_and_paths_outside_workspace_are_rejected",
+          "category": "资源基础检查",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "素材暂存工具回归；仅使用忽略目录内的模拟文件，不移动实际素材",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.captured.test_asset_crop.AssetArchiveTest.test_verification_detects_changes_and_accepts_prior_manifest_format",
+          "category": "资源基础检查",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "素材暂存工具回归；仅使用忽略目录内的模拟文件，不移动实际素材",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.captured.test_asset_crop.AssetArchiveTest.test_interrupted_move_keeps_progress_and_remaining_sources",
+          "category": "资源基础检查",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "素材暂存工具回归；仅使用忽略目录内的模拟文件，不移动实际素材",
+          "input_kind": "mock_or_rule"
         }
       ]
     },

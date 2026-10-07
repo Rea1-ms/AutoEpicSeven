@@ -547,7 +547,7 @@ page_knights_support.link(WEEKLY_TASK_ENTRY, destination=page_knights_weekly_tas
 # Guild shop captures currently cover the overseas Chinese member-shop layout.
 # Keep unsupported clients out of page scans rather than importing empty assets.
 if server_.is_oversea_server() and server_.lang == 'global_cn':
-    from tasks.knights.assets.assets_knights_shop import SHOP_CHECK, SHOP_ENTRY
+    from tasks.knights.assets.assets_knights_shop_entries import SHOP_CHECK, SHOP_ENTRY
     from tasks.knights.assets.assets_knights_activity_entries import SUPPORT_TAB_ENTRY
 
     page_knights_shop = Page(SHOP_CHECK)

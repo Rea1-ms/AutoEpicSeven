@@ -7,7 +7,7 @@
     {
       "name": "MANASTONE_LEVEL_85",
       "namespace": "global_cn",
-      "module": "knights/shop",
+      "module": "knights/shop/items",
       "kind": "base",
       "box": [
         583,
@@ -19,7 +19,7 @@
     {
       "name": "MANASTONE_LEVEL_88",
       "namespace": "global_cn",
-      "module": "knights/shop",
+      "module": "knights/shop/items",
       "kind": "base",
       "box": [
         583,

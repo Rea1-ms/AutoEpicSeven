@@ -5,51 +5,15 @@
   "case": "20261002-160938-463",
   "items": [
     {
-      "name": "SHOP_PURCHASE_CHECK",
-      "namespace": "global_cn",
-      "module": "knights/shop",
-      "kind": "base",
-      "box": [
-        580,
-        112,
-        701,
-        141
-      ]
-    },
-    {
       "name": "SHOP_PURCHASE_CANCEL",
       "namespace": "global_cn",
-      "module": "knights/shop",
+      "module": "knights/shop/actions",
       "kind": "base",
       "box": [
         446,
         578,
         491,
         602
-      ]
-    },
-    {
-      "name": "SHOP_PURCHASE_CANCEL",
-      "namespace": "global_cn",
-      "module": "knights/shop",
-      "kind": "button",
-      "box": [
-        407,
-        572,
-        531,
-        607
-      ]
-    },
-    {
-      "name": "OCR_SHOP_POPUP_ITEM",
-      "namespace": "global_cn",
-      "module": "knights/shop",
-      "kind": "base",
-      "box": [
-        641,
-        211,
-        938,
-        365
       ]
     }
   ]

@@ -7,7 +7,7 @@
     {
       "name": "EQUIPMENT_RESET_STONE",
       "namespace": "global_cn",
-      "module": "knights/shop",
+      "module": "knights/shop/items",
       "kind": "base",
       "box": [
         321,
@@ -19,7 +19,7 @@
     {
       "name": "EQUIPMENT_RESET_STONE",
       "namespace": "global_cn",
-      "module": "knights/shop",
+      "module": "knights/shop/items",
       "kind": "button",
       "box": [
         323,
@@ -29,21 +29,9 @@
       ]
     },
     {
-      "name": "EQUIPMENT_RESET_STONE",
-      "namespace": "global_cn",
-      "module": "knights/shop",
-      "kind": "search",
-      "box": [
-        289,
-        145,
-        1224,
-        640
-      ]
-    },
-    {
       "name": "ACCESSORY_RESET_STONE",
       "namespace": "global_cn",
-      "module": "knights/shop",
+      "module": "knights/shop/items",
       "kind": "base",
       "box": [
         321,
@@ -55,7 +43,7 @@
     {
       "name": "ACCESSORY_RESET_STONE",
       "namespace": "global_cn",
-      "module": "knights/shop",
+      "module": "knights/shop/items",
       "kind": "button",
       "box": [
         323,
@@ -65,21 +53,9 @@
       ]
     },
     {
-      "name": "ACCESSORY_RESET_STONE",
-      "namespace": "global_cn",
-      "module": "knights/shop",
-      "kind": "search",
-      "box": [
-        289,
-        145,
-        1224,
-        640
-      ]
-    },
-    {
       "name": "LEVEL_85_MANASTONE_CHEST",
       "namespace": "global_cn",
-      "module": "knights/shop",
+      "module": "knights/shop/items",
       "kind": "base",
       "box": [
         541,
@@ -91,7 +67,7 @@
     {
       "name": "LEVEL_85_MANASTONE_CHEST",
       "namespace": "global_cn",
-      "module": "knights/shop",
+      "module": "knights/shop/items",
       "kind": "button",
       "box": [
         543,
@@ -101,21 +77,9 @@
       ]
     },
     {
-      "name": "LEVEL_85_MANASTONE_CHEST",
-      "namespace": "global_cn",
-      "module": "knights/shop",
-      "kind": "search",
-      "box": [
-        289,
-        145,
-        1224,
-        640
-      ]
-    },
-    {
       "name": "LEVEL_88_MANASTONE_CHEST",
       "namespace": "global_cn",
-      "module": "knights/shop",
+      "module": "knights/shop/items",
       "kind": "base",
       "box": [
         541,
@@ -127,31 +91,19 @@
     {
       "name": "LEVEL_88_MANASTONE_CHEST",
       "namespace": "global_cn",
-      "module": "knights/shop",
+      "module": "knights/shop/items",
       "kind": "button",
       "box": [
         543,
         601,
         702,
         630
-      ]
-    },
-    {
-      "name": "LEVEL_88_MANASTONE_CHEST",
-      "namespace": "global_cn",
-      "module": "knights/shop",
-      "kind": "search",
-      "box": [
-        289,
-        145,
-        1224,
-        640
       ]
     },
     {
       "name": "CONVERSION_GEM_CHEST",
       "namespace": "global_cn",
-      "module": "knights/shop",
+      "module": "knights/shop/items",
       "kind": "base",
       "box": [
         761,
@@ -163,7 +115,7 @@
     {
       "name": "CONVERSION_GEM_CHEST",
       "namespace": "global_cn",
-      "module": "knights/shop",
+      "module": "knights/shop/items",
       "kind": "button",
       "box": [
         763,
@@ -173,21 +125,9 @@
       ]
     },
     {
-      "name": "CONVERSION_GEM_CHEST",
-      "namespace": "global_cn",
-      "module": "knights/shop",
-      "kind": "search",
-      "box": [
-        289,
-        145,
-        1224,
-        640
-      ]
-    },
-    {
       "name": "SHOP_CHECK",
       "namespace": "global_cn",
-      "module": "knights/shop",
+      "module": "knights/shop/entries",
       "kind": "base",
       "box": [
         316,
@@ -199,7 +139,7 @@
     {
       "name": "SHOP_SELECTED",
       "namespace": "global_cn",
-      "module": "knights/shop",
+      "module": "knights/shop/entries",
       "kind": "base",
       "box": [
         268,
@@ -209,45 +149,9 @@
       ]
     },
     {
-      "name": "OCR_ARMBAND_BALANCE",
-      "namespace": "global_cn",
-      "module": "knights/shop",
-      "kind": "base",
-      "box": [
-        1016,
-        80,
-        1054,
-        107
-      ]
-    },
-    {
-      "name": "OCR_BRAVE_CREST_BALANCE",
-      "namespace": "global_cn",
-      "module": "knights/shop",
-      "kind": "base",
-      "box": [
-        1080,
-        80,
-        1118,
-        107
-      ]
-    },
-    {
-      "name": "OCR_PROOF_OF_COURAGE_BALANCE",
-      "namespace": "global_cn",
-      "module": "knights/shop",
-      "kind": "base",
-      "box": [
-        1140,
-        80,
-        1210,
-        107
-      ]
-    },
-    {
       "name": "ARMBAND_ICON",
       "namespace": "share",
-      "module": "knights/shop",
+      "module": "knights/shop/currencies",
       "kind": "base",
       "box": [
         371,

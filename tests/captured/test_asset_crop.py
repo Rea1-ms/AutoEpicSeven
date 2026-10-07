@@ -6,11 +6,13 @@ from tests.support.history_fixtures import fixture_path
 """Offline checks for the asset capture and crop developer tool."""
 
 import io
+import hashlib
 import json
 import unittest
 from contextlib import redirect_stdout
 from pathlib import Path
 from unittest.mock import patch
+from uuid import uuid4
 
 import cv2
 import numpy as np
@@ -21,6 +23,7 @@ ORIGINAL_REPO = Path(__import__("subprocess").check_output(["git","rev-parse","-
 SCREENSHOT = fixture_path('urgent_tasks/superior-detail.png')
 
 from dev_tools import button_extract  # noqa: E402
+from dev_tools import asset_archive  # noqa: E402
 from dev_tools.asset_crop import (  # noqa: E402
     AssetCropError,
     CropItem,
@@ -202,3 +205,103 @@ class AssetCropTest(unittest.TestCase):
         self.assertFalse(Path(result["test_image"]).exists())
         self.assertFalse(Path(result["recipe"]).exists())
         self.assertFalse(Path(result["assets"][0]["path"]).exists())
+
+
+class AssetArchiveTest(unittest.TestCase):
+    def setUp(self):
+        # Keep synthetic files in the ignored workspace cache. Do not delete
+        # them in cleanup: this repository preserves temporary artifacts.
+        self.root = WORKTREE / '.cache' / 'asset-archive-tests' / uuid4().hex
+        self.source = self.root / 'assets/global_cn/probe/SAMPLE.png'
+        self.source.parent.mkdir(parents=True)
+        self.source.write_bytes(b'synthetic asset bytes')
+        self.payload = self.source.read_bytes()
+        self.pattern = 'assets/global_cn/probe/*.png'
+
+    def plan(self):
+        return asset_archive.create_archive_plan([self.pattern], root=self.root)
+
+    def test_preview_records_hash_without_moving_or_creating_archive(self):
+        output = io.StringIO()
+        with patch.object(asset_archive, 'ROOT', self.root), redirect_stdout(output):
+            self.assertEqual(asset_archive.main(['move', self.pattern, self.pattern]), 0)
+        plan = json.loads(output.getvalue())
+        self.assertEqual(plan['status'], 'preview')
+        self.assertEqual(len(plan['files']), 1)
+        self.assertEqual(plan['files'][0]['sha256'], hashlib.sha256(self.payload).hexdigest())
+        self.assertEqual(self.source.read_bytes(), self.payload)
+        self.assertFalse((self.root / asset_archive.ARCHIVE).exists())
+
+    def test_move_preserves_bytes_paths_and_verifiable_manifest(self):
+        plan = asset_archive.write_archive(self.plan(), root=self.root)
+        record = plan['files'][0]
+        self.assertEqual(record['original_path'], 'assets/global_cn/probe/SAMPLE.png')
+        self.assertEqual(record['archived_path'], '.cache/unused-assets/global_cn/probe/SAMPLE.png')
+        self.assertEqual((self.root / record['archived_path']).read_bytes(), self.payload)
+        self.assertFalse(self.source.exists())
+        self.assertTrue(record['moved'])
+        stored = json.loads((self.root / plan['manifest']).read_text(encoding='utf-8'))
+        self.assertEqual(stored, plan)
+        output = io.StringIO()
+        with patch.object(asset_archive, 'ROOT', self.root), redirect_stdout(output):
+            self.assertEqual(asset_archive.main(['verify', plan['manifest']]), 0)
+        self.assertEqual(json.loads(output.getvalue())['status'], 'verified')
+
+    def test_destination_collision_keeps_entire_batch_in_place(self):
+        other = self.source.with_name('SECOND.png')
+        other.write_bytes(b'another asset')
+        plan = self.plan()
+        target = self.root / plan['files'][-1]['archived_path']
+        target.parent.mkdir(parents=True)
+        target.write_bytes(b'existing archive')
+        with self.assertRaises(FileExistsError):
+            asset_archive.write_archive(plan, root=self.root)
+        self.assertEqual(self.source.read_bytes(), self.payload)
+        self.assertEqual(other.read_bytes(), b'another asset')
+        self.assertEqual(target.read_bytes(), b'existing archive')
+        self.assertFalse((self.root / plan['manifest']).exists())
+
+    def test_changed_source_and_paths_outside_workspace_are_rejected(self):
+        plan = self.plan()
+        self.source.write_bytes(b'changed asset')
+        with self.assertRaisesRegex(ValueError, 'changed since preview'):
+            asset_archive.write_archive(plan, root=self.root)
+        self.assertTrue(self.source.exists())
+        self.assertFalse((self.root / asset_archive.ARCHIVE).exists())
+        for pattern in ('../assets/*.png', 'tests/*.png', str(self.source)):
+            with self.subTest(pattern=pattern), self.assertRaises(ValueError):
+                asset_archive.create_archive_plan([pattern], root=self.root)
+        plan = self.plan()
+        plan['files'][0]['archived_path'] = '../outside.png'
+        with self.assertRaisesRegex(ValueError, 'Path outside'):
+            asset_archive.write_archive(plan, root=self.root)
+        self.assertTrue(self.source.exists())
+
+    def test_verification_detects_changes_and_accepts_prior_manifest_format(self):
+        plan = asset_archive.write_archive(self.plan(), root=self.root)
+        legacy = {'version': 1, 'files': [{key: value for key, value in plan['files'][0].items()
+                                        if key != 'moved'}]}
+        self.assertEqual(asset_archive.verify_archive(legacy, root=self.root)['count'], 1)
+        (self.root / legacy['files'][0]['archived_path']).write_bytes(b'corrupt archive')
+        with self.assertRaisesRegex(ValueError, 'missing or changed'):
+            asset_archive.verify_archive(legacy, root=self.root)
+
+    def test_interrupted_move_keeps_progress_and_remaining_sources(self):
+        other = self.source.with_name('SECOND.png')
+        other.write_bytes(b'another asset')
+        plan = self.plan()
+        original_rename = Path.rename
+
+        def fail_second(source, target):
+            if source == other:
+                raise OSError('controlled interruption')
+            return original_rename(source, target)
+
+        with patch.object(Path, 'rename', autospec=True, side_effect=fail_second):
+            with self.assertRaisesRegex(OSError, 'controlled interruption'):
+                asset_archive.write_archive(plan, root=self.root)
+        stored = json.loads((self.root / plan['manifest']).read_text(encoding='utf-8'))
+        self.assertEqual(stored['status'], 'failed')
+        self.assertEqual([record['moved'] for record in stored['files']], [True, False])
+        self.assertEqual((self.root / stored['files'][0]['archived_path']).read_bytes(), self.payload)
+        self.assertEqual(other.read_bytes(), b'another asset')
