@@ -1,0 +1,2366 @@
+{
+  "version": 1,
+  "review_date": "2026-10-07",
+  "observations": [
+    {
+      "event_id": "bone_throne",
+      "preferred": "fragments",
+      "source": "3c899ee9e3c7dcb7/20261004-114223-25b08ac6",
+      "raw_record": {
+        "version": 1,
+        "folder": "3c899ee9e3c7dcb7/20261004-114223-25b08ac6",
+        "event": "3c899ee9e3c7dcb7",
+        "story": "由麟与骸骨砌成的王座孤雾零地摆放在房间中央。红光从骸骨之间渗出，古老的权威沉重地压迫着四周。",
+        "choices": [
+          "坐上王座。1名随机英雄死亡，招募1名英雄",
+          "收起王座下方的碎片。",
+          "向王座献上碎片并行礼。消耗50个次元碎片，英雄Rank提升1阶"
+        ],
+        "before": {
+          "cores": 50,
+          "fragments": 284,
+          "life": 4,
+          "loot": 3,
+          "dice": 3
+        },
+        "selected_text": "收起王座下方的碎片。",
+        "selected_index": 1,
+        "source": "sampling",
+        "reason": "未显示已知代价，尝试并记录结果",
+        "clicked": true,
+        "advanced": true,
+        "frames": [
+          {
+            "state": "event",
+            "text": "查看王座下方后，发现骸骨之间散落着碎片。探查队收起碎片后，警惕着骸骨之间掠过的动静，远离了王座。房间中央的王座依旧保持着古老的权威，沉重地陷入沉默。",
+            "image": "after-01-event.png",
+            "resources": {
+              "cores": 50,
+              "fragments": 334,
+              "life": 4,
+              "loot": 3,
+              "dice": 3
+            },
+            "delta": {
+              "cores": 0,
+              "fragments": 50,
+              "life": 0,
+              "loot": 0,
+              "dice": 0
+            }
+          },
+          {
+            "state": "map",
+            "text": "",
+            "image": "after-02-map.png",
+            "resources": {
+              "cores": 50,
+              "fragments": 334,
+              "life": 4,
+              "loot": null,
+              "dice": 3
+            },
+            "delta": {
+              "cores": 0,
+              "fragments": 50,
+              "life": 0,
+              "dice": 0
+            }
+          }
+        ],
+        "finished": "map"
+      },
+      "fixture": "sample-20261004-114223-25b08ac6-before",
+      "outcomes": [
+        {
+          "fixture": "sample-20261004-114223-25b08ac6-after-01-event",
+          "state": "event",
+          "text": "查看王座下方后，发现骸骨之间散落着碎片。探查队收起碎片后，警惕着骸骨之间掠过的动静，远离了王座。房间中央的王座依旧保持着古老的权威，沉重地陷入沉默。",
+          "image": "after-01-event.png",
+          "resources": {
+            "cores": 50,
+            "fragments": 334,
+            "life": 4,
+            "loot": 3,
+            "dice": 3
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 50,
+            "life": 0,
+            "loot": 0,
+            "dice": 0
+          }
+        },
+        {
+          "fixture": "sample-20261004-114223-25b08ac6-after-02-map",
+          "state": "map",
+          "text": "",
+          "image": "after-02-map.png",
+          "resources": {
+            "cores": 50,
+            "fragments": 334,
+            "life": 4,
+            "loot": null,
+            "dice": 3
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 50,
+            "life": 0,
+            "dice": 0
+          }
+        }
+      ]
+    },
+    {
+      "event_id": "bone_throne",
+      "preferred": "fragments",
+      "source": "3c899ee9e3c7dcb7/20261006-220702-25919c11",
+      "raw_record": {
+        "version": 1,
+        "folder": "3c899ee9e3c7dcb7/20261006-220702-25919c11",
+        "event": "3c899ee9e3c7dcb7",
+        "story": "由麟与骸骨砌成的王座孤雾零地摆放在房间中央。红光从骸骨之间渗出，古老的权威沉重地压迫着四周。",
+        "choices": [
+          "坐上王座。1名随机英雄死亡，招募1名英雄",
+          "收起王座下方的碎片。",
+          "向王座献上碎片并行礼。消耗50个次元碎片，英雄Rank提升1阶"
+        ],
+        "before": {
+          "cores": 59,
+          "fragments": 341,
+          "life": 4,
+          "loot": 4,
+          "dice": 5
+        },
+        "selected_text": "收起王座下方的碎片。",
+        "selected_index": 1,
+        "source": "sampling",
+        "reason": "No known cost displayed; try and record the outcome",
+        "clicked": true,
+        "advanced": true,
+        "frames": [
+          {
+            "state": "event",
+            "text": "查看王座下方后，发现骸骨之间散落着碎片。探查队收起碎片后，警惕着骸骨之间掠过的动静，远离了王座。房间中央的王座依旧保持着古老的权威，沉重地陷入沉默。",
+            "image": "after-01-event.png",
+            "resources": {
+              "cores": 59,
+              "fragments": 391,
+              "life": 4,
+              "loot": 4,
+              "dice": 5
+            },
+            "delta": {
+              "cores": 0,
+              "fragments": 50,
+              "life": 0,
+              "loot": 0,
+              "dice": 0
+            }
+          },
+          {
+            "state": "map",
+            "text": "",
+            "image": "after-02-map.png",
+            "resources": {
+              "cores": 59,
+              "fragments": 391,
+              "life": 4,
+              "loot": null,
+              "dice": 5
+            },
+            "delta": {
+              "cores": 0,
+              "fragments": 50,
+              "life": 0,
+              "dice": 0
+            }
+          }
+        ],
+        "finished": "map"
+      },
+      "fixture": "sample-20261006-220702-25919c11-before",
+      "outcomes": [
+        {
+          "fixture": "sample-20261006-220702-25919c11-after-01-event",
+          "state": "event",
+          "text": "查看王座下方后，发现骸骨之间散落着碎片。探查队收起碎片后，警惕着骸骨之间掠过的动静，远离了王座。房间中央的王座依旧保持着古老的权威，沉重地陷入沉默。",
+          "image": "after-01-event.png",
+          "resources": {
+            "cores": 59,
+            "fragments": 391,
+            "life": 4,
+            "loot": 4,
+            "dice": 5
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 50,
+            "life": 0,
+            "loot": 0,
+            "dice": 0
+          }
+        },
+        {
+          "fixture": "sample-20261006-220702-25919c11-after-02-map",
+          "state": "map",
+          "text": "",
+          "image": "after-02-map.png",
+          "resources": {
+            "cores": 59,
+            "fragments": 391,
+            "life": 4,
+            "loot": null,
+            "dice": 5
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 50,
+            "life": 0,
+            "dice": 0
+          }
+        }
+      ]
+    },
+    {
+      "event_id": "sharp_teeth",
+      "preferred": "leave",
+      "source": "be11f4d3ca9cfae5/20261004-132658-fb9c8b99",
+      "raw_record": {
+        "version": 1,
+        "folder": "be11f4d3ca9cfae5/20261004-132658-fb9c8b99",
+        "event": "be11f4d3ca9cfae5",
+        "story": "周围突然陷入一片黑暗。出现在眼前的锋利牙齿说道：“如果你是清白的，就把右手交出来。",
+        "choices": [
+          "伸出右手。消耗1个战利品，获得200个次元碎片",
+          "远离锋利的牙齿。"
+        ],
+        "before": {
+          "cores": 52,
+          "fragments": 378,
+          "life": 4,
+          "loot": 5,
+          "dice": 3
+        },
+        "selected_text": "远离锋利的牙齿。",
+        "selected_index": 1,
+        "source": "sampling",
+        "reason": "未显示已知代价，尝试并记录结果",
+        "clicked": true,
+        "advanced": true,
+        "frames": [
+          {
+            "state": "event",
+            "text": "没有冒险，而是从锋利的牙齿前撤离。锋利的牙齿消失在黑暗中后，原本陷入漆黑的四周也逐渐恢复原貌。探查队电去指尖残留的冰冷触感，加快了脚步。",
+            "image": "after-01-event.png",
+            "resources": {
+              "cores": 52,
+              "fragments": 378,
+              "life": 4,
+              "loot": 5,
+              "dice": 3
+            },
+            "delta": {
+              "cores": 0,
+              "fragments": 0,
+              "life": 0,
+              "loot": 0,
+              "dice": 0
+            }
+          },
+          {
+            "state": "map",
+            "text": "",
+            "image": "after-02-map.png",
+            "resources": {
+              "cores": 52,
+              "fragments": 378,
+              "life": 4,
+              "loot": null,
+              "dice": 3
+            },
+            "delta": {
+              "cores": 0,
+              "fragments": 0,
+              "life": 0,
+              "dice": 0
+            }
+          }
+        ],
+        "finished": "map"
+      },
+      "fixture": "sample-20261004-132658-fb9c8b99-before",
+      "outcomes": [
+        {
+          "fixture": "sample-20261004-132658-fb9c8b99-after-01-event",
+          "state": "event",
+          "text": "没有冒险，而是从锋利的牙齿前撤离。锋利的牙齿消失在黑暗中后，原本陷入漆黑的四周也逐渐恢复原貌。探查队电去指尖残留的冰冷触感，加快了脚步。",
+          "image": "after-01-event.png",
+          "resources": {
+            "cores": 52,
+            "fragments": 378,
+            "life": 4,
+            "loot": 5,
+            "dice": 3
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 0,
+            "life": 0,
+            "loot": 0,
+            "dice": 0
+          }
+        },
+        {
+          "fixture": "sample-20261004-132658-fb9c8b99-after-02-map",
+          "state": "map",
+          "text": "",
+          "image": "after-02-map.png",
+          "resources": {
+            "cores": 52,
+            "fragments": 378,
+            "life": 4,
+            "loot": null,
+            "dice": 3
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 0,
+            "life": 0,
+            "dice": 0
+          }
+        }
+      ]
+    },
+    {
+      "event_id": "sealed_altar",
+      "preferred": "seal",
+      "source": "6415bf05ca6a6d42/20261004-142337-95345fac",
+      "raw_record": {
+        "version": 1,
+        "folder": "6415bf05ca6a6d42/20261004-142337-95345fac",
+        "event": "6415bf05ca6a6d42",
+        "story": "这里是【露娜利思】之光无法照及的边界。在被封印的裂隙前，你将做出怎样的选择？将文字全部读完后，整座祭坛低沉地震动起来，光明与黑暗同时摇电，仿佛在催促着做出选择。",
+        "choices": [
+          "献上光明。1名随机英雄生命值降低99%，获得黯月圣杯",
+          "接纳黑暗。1名随机英雄生命值降低99%，获得黑暗月蚀碎片",
+          "维持封印。"
+        ],
+        "before": {
+          "cores": 52,
+          "fragments": 540,
+          "life": 4,
+          "loot": 8,
+          "dice": 3
+        },
+        "selected_text": "维持封印。",
+        "selected_index": 2,
+        "source": "sampling",
+        "reason": "未显示已知代价，尝试并记录结果",
+        "clicked": true,
+        "advanced": true,
+        "frames": [
+          {
+            "state": "event",
+            "text": "既不选择光明，也不选择黑暗，而是重新封闭祭坛的裂缝。祭坛随之沉入深深的寂静遥远的天空中，另一颗星辰的视线短暂停留后消失了。",
+            "image": "after-01-event.png",
+            "resources": {
+              "cores": 52,
+              "fragments": 540,
+              "life": 4,
+              "loot": 8,
+              "dice": 3
+            },
+            "delta": {
+              "cores": 0,
+              "fragments": 0,
+              "life": 0,
+              "loot": 0,
+              "dice": 0
+            }
+          },
+          {
+            "state": "map",
+            "text": "",
+            "image": "after-02-map.png",
+            "resources": {
+              "cores": 52,
+              "fragments": 540,
+              "life": 4,
+              "loot": null,
+              "dice": 3
+            },
+            "delta": {
+              "cores": 0,
+              "fragments": 0,
+              "life": 0,
+              "dice": 0
+            }
+          }
+        ],
+        "finished": "map"
+      },
+      "fixture": "sample-20261004-142337-95345fac-before",
+      "outcomes": [
+        {
+          "fixture": "sample-20261004-142337-95345fac-after-01-event",
+          "state": "event",
+          "text": "既不选择光明，也不选择黑暗，而是重新封闭祭坛的裂缝。祭坛随之沉入深深的寂静遥远的天空中，另一颗星辰的视线短暂停留后消失了。",
+          "image": "after-01-event.png",
+          "resources": {
+            "cores": 52,
+            "fragments": 540,
+            "life": 4,
+            "loot": 8,
+            "dice": 3
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 0,
+            "life": 0,
+            "loot": 0,
+            "dice": 0
+          }
+        },
+        {
+          "fixture": "sample-20261004-142337-95345fac-after-02-map",
+          "state": "map",
+          "text": "",
+          "image": "after-02-map.png",
+          "resources": {
+            "cores": 52,
+            "fragments": 540,
+            "life": 4,
+            "loot": null,
+            "dice": 3
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 0,
+            "life": 0,
+            "dice": 0
+          }
+        }
+      ]
+    },
+    {
+      "event_id": "unknown_footprints",
+      "preferred": "leave",
+      "source": "37bab20a4a60d4cb/20261004-163255-fe35b495",
+      "raw_record": {
+        "version": 1,
+        "folder": "37bab20a4a60d4cb/20261004-163255-fe35b495",
+        "event": "37bab20a4a60d4cb",
+        "story": "湿润的泥土上留着身份不明的脚印。方向虽然一致，步距却诡异地错乱。",
+        "choices": [
+          "追踪小脚印。战斗后，招募1名随机英雄",
+          "追踪大脚印。精英战斗后，招募1名英雄",
+          "抹去痕迹并离开。50"
+        ],
+        "before": {
+          "cores": 53,
+          "fragments": 404,
+          "life": 4,
+          "loot": 5,
+          "dice": 3
+        },
+        "selected_text": "抹去痕迹并离开。50",
+        "selected_index": 2,
+        "source": "sampling",
+        "reason": "离开以避免较大消耗",
+        "clicked": true,
+        "advanced": true,
+        "frames": [
+          {
+            "state": "event",
+            "text": "探查队将湿润的泥土铺平，又用落叶与残骸掩去诡异的脚印。确认没有留下痕迹后为了避免与身份不明的存在相遇，改变方向离开了。",
+            "image": "after-01-event.png",
+            "resources": {
+              "cores": 53,
+              "fragments": 404,
+              "life": 4,
+              "loot": 5,
+              "dice": 3
+            },
+            "delta": {
+              "cores": 0,
+              "fragments": 0,
+              "life": 0,
+              "loot": 0,
+              "dice": 0
+            }
+          },
+          {
+            "state": "map",
+            "text": "",
+            "image": "after-02-map.png",
+            "resources": {
+              "cores": 53,
+              "fragments": 404,
+              "life": 4,
+              "loot": null,
+              "dice": 3
+            },
+            "delta": {
+              "cores": 0,
+              "fragments": 0,
+              "life": 0,
+              "dice": 0
+            }
+          }
+        ],
+        "finished": "map"
+      },
+      "fixture": "sample-20261004-163255-fe35b495-before",
+      "outcomes": [
+        {
+          "fixture": "sample-20261004-163255-fe35b495-after-01-event",
+          "state": "event",
+          "text": "探查队将湿润的泥土铺平，又用落叶与残骸掩去诡异的脚印。确认没有留下痕迹后为了避免与身份不明的存在相遇，改变方向离开了。",
+          "image": "after-01-event.png",
+          "resources": {
+            "cores": 53,
+            "fragments": 404,
+            "life": 4,
+            "loot": 5,
+            "dice": 3
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 0,
+            "life": 0,
+            "loot": 0,
+            "dice": 0
+          }
+        },
+        {
+          "fixture": "sample-20261004-163255-fe35b495-after-02-map",
+          "state": "map",
+          "text": "",
+          "image": "after-02-map.png",
+          "resources": {
+            "cores": 53,
+            "fragments": 404,
+            "life": 4,
+            "loot": null,
+            "dice": 3
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 0,
+            "life": 0,
+            "dice": 0
+          }
+        }
+      ]
+    },
+    {
+      "event_id": "prayer_room",
+      "preferred": "pray",
+      "source": "95fc0946dd4c14f4/20261004-163946-6284416c",
+      "raw_record": {
+        "version": 1,
+        "folder": "95fc0946dd4c14f4/20261004-163946-6284416c",
+        "event": "95fc0946dd4c14f4",
+        "story": "风仿佛被困在祈祷室中不断盘旋。散落的纸片上都写着同一句话的片段。",
+        "choices": [
+          "顺着风的流向前进。消耗2个战利品，获得空药瓶",
+          "进行简短的祈祷。 80"
+        ],
+        "before": {
+          "cores": 53,
+          "fragments": 683,
+          "life": 4,
+          "loot": 8,
+          "dice": 3
+        },
+        "selected_text": "进行简短的祈祷。 80",
+        "selected_index": 1,
+        "source": "sampling",
+        "reason": "未显示已知代价，尝试并记录结果",
+        "clicked": true,
+        "advanced": true,
+        "frames": [
+          {
+            "state": "event",
+            "text": "面向祭坛进行了简短的祈祷。风没有回应，只是在祈祷室中盘旋。意识到没有继续停留的理由后，探查队安静地离开了",
+            "image": "after-01-event.png",
+            "resources": {
+              "cores": 53,
+              "fragments": 683,
+              "life": 4,
+              "loot": 8,
+              "dice": 3
+            },
+            "delta": {
+              "cores": 0,
+              "fragments": 0,
+              "life": 0,
+              "loot": 0,
+              "dice": 0
+            }
+          },
+          {
+            "state": "map",
+            "text": "",
+            "image": "after-02-map.png",
+            "resources": {
+              "cores": 53,
+              "fragments": 683,
+              "life": 4,
+              "loot": null,
+              "dice": 3
+            },
+            "delta": {
+              "cores": 0,
+              "fragments": 0,
+              "life": 0,
+              "dice": 0
+            }
+          }
+        ],
+        "finished": "map"
+      },
+      "fixture": "sample-20261004-163946-6284416c-before",
+      "outcomes": [
+        {
+          "fixture": "sample-20261004-163946-6284416c-after-01-event",
+          "state": "event",
+          "text": "面向祭坛进行了简短的祈祷。风没有回应，只是在祈祷室中盘旋。意识到没有继续停留的理由后，探查队安静地离开了",
+          "image": "after-01-event.png",
+          "resources": {
+            "cores": 53,
+            "fragments": 683,
+            "life": 4,
+            "loot": 8,
+            "dice": 3
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 0,
+            "life": 0,
+            "loot": 0,
+            "dice": 0
+          }
+        },
+        {
+          "fixture": "sample-20261004-163946-6284416c-after-02-map",
+          "state": "map",
+          "text": "",
+          "image": "after-02-map.png",
+          "resources": {
+            "cores": 53,
+            "fragments": 683,
+            "life": 4,
+            "loot": null,
+            "dice": 3
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 0,
+            "life": 0,
+            "dice": 0
+          }
+        }
+      ]
+    },
+    {
+      "event_id": "angry_inscription",
+      "preferred": "fragments",
+      "source": "58df4d85dcce919f/20261004-170645-95c2667e",
+      "raw_record": {
+        "version": 1,
+        "folder": "58df4d85dcce919f/20261004-170645-95c2667e",
+        "event": "58df4d85dcce919f",
+        "story": "粗糙雕刻的文字与红色痕迹映入眼帘。建造这里的人们所留下的愤怒，似乎至今仍残留在空气中。",
+        "choices": [
+          "与愤怒的幸存者们交战。战斗后，招募额度提升1",
+          "收起遗留的碎片并撤离。40"
+        ],
+        "before": {
+          "cores": 54,
+          "fragments": 110,
+          "life": 4,
+          "loot": null,
+          "dice": 5
+        },
+        "selected_text": "收起遗留的碎片并撤离。40",
+        "selected_index": 1,
+        "source": "sampling",
+        "reason": "离开以避免较大消耗",
+        "clicked": true,
+        "advanced": true,
+        "frames": [
+          {
+            "state": "event",
+            "text": "环顾四周后，发现了散落的碎片。空气中残留的愤怒久久没有平息，但鲜红的痕迹已不再蔓延。探查队将刻着草文字的墙壁留在了身后。",
+            "image": "after-01-event.png",
+            "resources": {
+              "cores": 54,
+              "fragments": 150,
+              "life": 4,
+              "loot": null,
+              "dice": 5
+            },
+            "delta": {
+              "cores": 0,
+              "fragments": 40,
+              "life": 0,
+              "dice": 0
+            }
+          },
+          {
+            "state": "map",
+            "text": "",
+            "image": "after-02-map.png",
+            "resources": {
+              "cores": 54,
+              "fragments": 150,
+              "life": 4,
+              "loot": null,
+              "dice": 5
+            },
+            "delta": {
+              "cores": 0,
+              "fragments": 40,
+              "life": 0,
+              "dice": 0
+            }
+          }
+        ],
+        "finished": "map"
+      },
+      "fixture": "sample-20261004-170645-95c2667e-before",
+      "outcomes": [
+        {
+          "fixture": "sample-20261004-170645-95c2667e-after-01-event",
+          "state": "event",
+          "text": "环顾四周后，发现了散落的碎片。空气中残留的愤怒久久没有平息，但鲜红的痕迹已不再蔓延。探查队将刻着草文字的墙壁留在了身后。",
+          "image": "after-01-event.png",
+          "resources": {
+            "cores": 54,
+            "fragments": 150,
+            "life": 4,
+            "loot": null,
+            "dice": 5
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 40,
+            "life": 0,
+            "dice": 0
+          }
+        },
+        {
+          "fixture": "sample-20261004-170645-95c2667e-after-02-map",
+          "state": "map",
+          "text": "",
+          "image": "after-02-map.png",
+          "resources": {
+            "cores": 54,
+            "fragments": 150,
+            "life": 4,
+            "loot": null,
+            "dice": 5
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 40,
+            "life": 0,
+            "dice": 0
+          }
+        }
+      ]
+    },
+    {
+      "event_id": "angry_inscription",
+      "preferred": "fragments",
+      "source": "58df4d85dcce919f/20261004-175315-bfe09e3a",
+      "raw_record": {
+        "version": 1,
+        "folder": "58df4d85dcce919f/20261004-175315-bfe09e3a",
+        "event": "58df4d85dcce919f",
+        "story": "粗糙雕刻的文字与红色痕迹映入眼帘。建造这里的人们所留下的愤怒，似乎至今仍残留在空气中。",
+        "choices": [
+          "与愤怒的幸存者们交战。战斗后，招募额度提升1",
+          "收起遗留的碎片并撤离。40"
+        ],
+        "before": {
+          "cores": 56,
+          "fragments": 110,
+          "life": 4,
+          "loot": null,
+          "dice": 3
+        },
+        "selected_text": "收起遗留的碎片并撤离。40",
+        "selected_index": 1,
+        "source": "sampling",
+        "reason": "离开以避免较大消耗",
+        "clicked": true,
+        "advanced": true,
+        "frames": [
+          {
+            "state": "event",
+            "text": "环顾四周后，发现了散落的碎片。空气中残留的愤怒久久没有平息，但鲜红的痕迹已不再蔓延。探查队将刻着草文字的墙壁留在了身后。",
+            "image": "after-01-event.png",
+            "resources": {
+              "cores": 56,
+              "fragments": 150,
+              "life": 4,
+              "loot": null,
+              "dice": 3
+            },
+            "delta": {
+              "cores": 0,
+              "fragments": 40,
+              "life": 0,
+              "dice": 0
+            }
+          },
+          {
+            "state": "map",
+            "text": "",
+            "image": "after-02-map.png",
+            "resources": {
+              "cores": 56,
+              "fragments": 150,
+              "life": 4,
+              "loot": null,
+              "dice": 3
+            },
+            "delta": {
+              "cores": 0,
+              "fragments": 40,
+              "life": 0,
+              "dice": 0
+            }
+          }
+        ],
+        "finished": "map"
+      },
+      "fixture": "sample-20261004-175315-bfe09e3a-before",
+      "outcomes": [
+        {
+          "fixture": "sample-20261004-175315-bfe09e3a-after-01-event",
+          "state": "event",
+          "text": "环顾四周后，发现了散落的碎片。空气中残留的愤怒久久没有平息，但鲜红的痕迹已不再蔓延。探查队将刻着草文字的墙壁留在了身后。",
+          "image": "after-01-event.png",
+          "resources": {
+            "cores": 56,
+            "fragments": 150,
+            "life": 4,
+            "loot": null,
+            "dice": 3
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 40,
+            "life": 0,
+            "dice": 0
+          }
+        },
+        {
+          "fixture": "sample-20261004-175315-bfe09e3a-after-02-map",
+          "state": "map",
+          "text": "",
+          "image": "after-02-map.png",
+          "resources": {
+            "cores": 56,
+            "fragments": 150,
+            "life": 4,
+            "loot": null,
+            "dice": 3
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 40,
+            "life": 0,
+            "dice": 0
+          }
+        }
+      ]
+    },
+    {
+      "event_id": "angry_inscription",
+      "preferred": "fragments",
+      "source": "58df4d85dcce919f/20261004-195213-651053fc",
+      "raw_record": {
+        "version": 1,
+        "folder": "58df4d85dcce919f/20261004-195213-651053fc",
+        "event": "58df4d85dcce919f",
+        "story": "粗糙雕刻的文字与红色痕迹映入眼帘。建造这里的人们所留下的愤怒，似乎至今仍残留在空气中。",
+        "choices": [
+          "与愤怒的幸存者们交战。战斗后，招募额度提升1",
+          "收起遗留的碎片并撤离。40"
+        ],
+        "before": {
+          "cores": 58,
+          "fragments": 160,
+          "life": 4,
+          "loot": null,
+          "dice": 3
+        },
+        "selected_text": "收起遗留的碎片并撤离。40",
+        "selected_index": 1,
+        "source": "sampling",
+        "reason": "离开以避免较大消耗",
+        "clicked": true,
+        "advanced": true,
+        "frames": [
+          {
+            "state": "event",
+            "text": "环顾四周后，发现了散落的碎片。空气中残留的愤怒久久没有平息，但鲜红的痕迹已不再蔓延。探查队将刻着草文字的墙壁留在了身后。",
+            "image": "after-01-event.png",
+            "resources": {
+              "cores": 58,
+              "fragments": 200,
+              "life": 4,
+              "loot": null,
+              "dice": 3
+            },
+            "delta": {
+              "cores": 0,
+              "fragments": 40,
+              "life": 0,
+              "dice": 0
+            }
+          },
+          {
+            "state": "map",
+            "text": "",
+            "image": "after-02-map.png",
+            "resources": {
+              "cores": 58,
+              "fragments": 200,
+              "life": 4,
+              "loot": null,
+              "dice": 3
+            },
+            "delta": {
+              "cores": 0,
+              "fragments": 40,
+              "life": 0,
+              "dice": 0
+            }
+          }
+        ],
+        "finished": "map"
+      },
+      "fixture": "sample-20261004-195213-651053fc-before",
+      "outcomes": [
+        {
+          "fixture": "sample-20261004-195213-651053fc-after-01-event",
+          "state": "event",
+          "text": "环顾四周后，发现了散落的碎片。空气中残留的愤怒久久没有平息，但鲜红的痕迹已不再蔓延。探查队将刻着草文字的墙壁留在了身后。",
+          "image": "after-01-event.png",
+          "resources": {
+            "cores": 58,
+            "fragments": 200,
+            "life": 4,
+            "loot": null,
+            "dice": 3
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 40,
+            "life": 0,
+            "dice": 0
+          }
+        },
+        {
+          "fixture": "sample-20261004-195213-651053fc-after-02-map",
+          "state": "map",
+          "text": "",
+          "image": "after-02-map.png",
+          "resources": {
+            "cores": 58,
+            "fragments": 200,
+            "life": 4,
+            "loot": null,
+            "dice": 3
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 40,
+            "life": 0,
+            "dice": 0
+          }
+        }
+      ]
+    },
+    {
+      "event_id": "angry_inscription",
+      "preferred": "fragments",
+      "source": "58df4d85dcce919f/20261005-171748-6ab3fed8",
+      "raw_record": {
+        "version": 1,
+        "folder": "58df4d85dcce919f/20261005-171748-6ab3fed8",
+        "event": "58df4d85dcce919f",
+        "story": "粗糙雕刻的文字与红色痕迹映入眼帘。建造这里的人们所留下的愤怒，似乎至今仍残留在空气中。",
+        "choices": [
+          "与愤怒的幸存者们交战。战斗后，招募额度提升1",
+          "收起遗留的碎片并撤离。40"
+        ],
+        "before": {
+          "cores": 58,
+          "fragments": 119,
+          "life": 4,
+          "loot": null,
+          "dice": 3
+        },
+        "selected_text": "收起遗留的碎片并撤离。40",
+        "selected_index": 1,
+        "source": "sampling",
+        "reason": "Leave to avoid a larger cost",
+        "clicked": true,
+        "advanced": true,
+        "frames": [
+          {
+            "state": "event",
+            "text": "环顾四周后，发现了散落的碎片。空气中残留的愤怒久久没有平息，但鲜红的痕迹已不再蔓延。探查队将刻着草文字的墙壁留在了身后。",
+            "image": "after-01-event.png",
+            "resources": {
+              "cores": 58,
+              "fragments": 159,
+              "life": 4,
+              "loot": null,
+              "dice": 3
+            },
+            "delta": {
+              "cores": 0,
+              "fragments": 40,
+              "life": 0,
+              "dice": 0
+            }
+          },
+          {
+            "state": "map",
+            "text": "",
+            "image": "after-02-map.png",
+            "resources": {
+              "cores": 58,
+              "fragments": 159,
+              "life": 4,
+              "loot": null,
+              "dice": 3
+            },
+            "delta": {
+              "cores": 0,
+              "fragments": 40,
+              "life": 0,
+              "dice": 0
+            }
+          }
+        ],
+        "finished": "map"
+      },
+      "fixture": "sample-20261005-171748-6ab3fed8-before",
+      "outcomes": [
+        {
+          "fixture": "sample-20261005-171748-6ab3fed8-after-01-event",
+          "state": "event",
+          "text": "环顾四周后，发现了散落的碎片。空气中残留的愤怒久久没有平息，但鲜红的痕迹已不再蔓延。探查队将刻着草文字的墙壁留在了身后。",
+          "image": "after-01-event.png",
+          "resources": {
+            "cores": 58,
+            "fragments": 159,
+            "life": 4,
+            "loot": null,
+            "dice": 3
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 40,
+            "life": 0,
+            "dice": 0
+          }
+        },
+        {
+          "fixture": "sample-20261005-171748-6ab3fed8-after-02-map",
+          "state": "map",
+          "text": "",
+          "image": "after-02-map.png",
+          "resources": {
+            "cores": 58,
+            "fragments": 159,
+            "life": 4,
+            "loot": null,
+            "dice": 3
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 40,
+            "life": 0,
+            "dice": 0
+          }
+        }
+      ]
+    },
+    {
+      "event_id": "ancient_corridor",
+      "preferred": "capacity",
+      "source": "a4893342201dd975/20261004-174149-ddf76863",
+      "raw_record": {
+        "version": 1,
+        "folder": "a4893342201dd975/20261004-174149-ddf76863",
+        "event": "a4893342201dd975",
+        "story": "灰尘弥漫的回廊中，古老的柱子整齐排列。柱子后方隐约显露了出一片宽阔的空间回廊尽头透入的光线彼端似乎什么人的动静。",
+        "choices": [
+          "清理柱子周围的灰尘和残骸。招募额度提升1",
+          "查看光线彼端的动静。招募1名随机英雄"
+        ],
+        "before": {
+          "cores": 55,
+          "fragments": 110,
+          "life": 4,
+          "loot": null,
+          "dice": 3
+        },
+        "selected_text": "清理柱子周围的灰尘和残骸。招募额度提升1",
+        "selected_index": 0,
+        "source": "sampling",
+        "reason": "未显示已知代价，尝试并记录结果",
+        "clicked": true,
+        "advanced": true,
+        "frames": [
+          {
+            "state": "event",
+            "text": "清理掉柱子周围的灰尘和残骸后，显露出了通往回廊后方的一片宽阔空间。如果将这里整理一番，似乎可以容纳比现在更多的人。探查队记录下空间的位置后离开了古老的回廊。",
+            "image": "after-01-event.png",
+            "resources": {
+              "cores": 55,
+              "fragments": 110,
+              "life": 4,
+              "loot": null,
+              "dice": 3
+            },
+            "delta": {
+              "cores": 0,
+              "fragments": 0,
+              "life": 0,
+              "dice": 0
+            }
+          },
+          {
+            "state": "map",
+            "text": "",
+            "image": "after-02-map.png",
+            "resources": {
+              "cores": 55,
+              "fragments": 110,
+              "life": 4,
+              "loot": null,
+              "dice": 3
+            },
+            "delta": {
+              "cores": 0,
+              "fragments": 0,
+              "life": 0,
+              "dice": 0
+            }
+          }
+        ],
+        "finished": "map"
+      },
+      "fixture": "sample-20261004-174149-ddf76863-before",
+      "outcomes": [
+        {
+          "fixture": "sample-20261004-174149-ddf76863-after-01-event",
+          "state": "event",
+          "text": "清理掉柱子周围的灰尘和残骸后，显露出了通往回廊后方的一片宽阔空间。如果将这里整理一番，似乎可以容纳比现在更多的人。探查队记录下空间的位置后离开了古老的回廊。",
+          "image": "after-01-event.png",
+          "resources": {
+            "cores": 55,
+            "fragments": 110,
+            "life": 4,
+            "loot": null,
+            "dice": 3
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 0,
+            "life": 0,
+            "dice": 0
+          }
+        },
+        {
+          "fixture": "sample-20261004-174149-ddf76863-after-02-map",
+          "state": "map",
+          "text": "",
+          "image": "after-02-map.png",
+          "resources": {
+            "cores": 55,
+            "fragments": 110,
+            "life": 4,
+            "loot": null,
+            "dice": 3
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 0,
+            "life": 0,
+            "dice": 0
+          }
+        }
+      ]
+    },
+    {
+      "event_id": "ancient_corridor",
+      "preferred": "capacity",
+      "source": "a4893342201dd975/20261004-181002-d240f890",
+      "raw_record": {
+        "version": 1,
+        "folder": "a4893342201dd975/20261004-181002-d240f890",
+        "event": "a4893342201dd975",
+        "story": "灰尘弥漫的回廊中，古老的柱子整齐排列。柱子后方隐约显露了出一片宽阔的空间回廊尽头透入的光线彼端似乎什么人的动静。",
+        "choices": [
+          "清理柱子周围的灰尘和残骸。招募额度提升1",
+          "查看光线彼端的动静。招募1名随机英雄"
+        ],
+        "before": {
+          "cores": 57,
+          "fragments": 142,
+          "life": 4,
+          "loot": 9,
+          "dice": 3
+        },
+        "selected_text": "查看光线彼端的动静。招募1名随机英雄",
+        "selected_index": 1,
+        "source": "sampling",
+        "reason": "未显示已知代价，尝试并记录结果",
+        "clicked": true,
+        "advanced": true,
+        "frames": [
+          {
+            "state": "resume_rewards",
+            "text": "回廊中，古老的招募英雄显露了出一片回廊尽",
+            "image": "after-01-resume_rewards.png",
+            "resources": {
+              "cores": 57,
+              "fragments": 142,
+              "life": 4,
+              "loot": 9,
+              "dice": 3
+            },
+            "delta": {
+              "cores": 0,
+              "fragments": 0,
+              "life": 0,
+              "loot": 0,
+              "dice": 0
+            }
+          },
+          {
+            "state": "reward",
+            "text": "",
+            "image": "after-02-reward.png",
+            "resources": {
+              "cores": 57,
+              "fragments": 142,
+              "life": 4,
+              "loot": 9,
+              "dice": 3
+            },
+            "delta": {
+              "cores": 0,
+              "fragments": 0,
+              "life": 0,
+              "loot": 0,
+              "dice": 0
+            }
+          },
+          {
+            "state": "reward",
+            "text": "业",
+            "image": "after-03-reward.png",
+            "resources": {
+              "cores": 57,
+              "fragments": 142,
+              "life": 4,
+              "loot": 9,
+              "dice": 3
+            },
+            "delta": {
+              "cores": 0,
+              "fragments": 0,
+              "life": 0,
+              "loot": 0,
+              "dice": 0
+            }
+          },
+          {
+            "state": "event",
+            "text": "循着回廊尽头的光芒前进后，在崩塌的阶梯下发现了一名独自躲藏的冒险家。探查队清理残骸为他打开道路后，冒险家表示感谢，并决定与探查队同行。迎来新伙伴的探查队赶在光芒消失前离开了古老的回廊。",
+            "image": "after-04-event.png",
+            "resources": {
+              "cores": 57,
+              "fragments": 142,
+              "life": 4,
+              "loot": 9,
+              "dice": 3
+            },
+            "delta": {
+              "cores": 0,
+              "fragments": 0,
+              "life": 0,
+              "loot": 0,
+              "dice": 0
+            }
+          },
+          {
+            "state": "map",
+            "text": "",
+            "image": "after-05-map.png",
+            "resources": {
+              "cores": 57,
+              "fragments": 142,
+              "life": 4,
+              "loot": null,
+              "dice": 3
+            },
+            "delta": {
+              "cores": 0,
+              "fragments": 0,
+              "life": 0,
+              "dice": 0
+            }
+          }
+        ],
+        "finished": "map"
+      },
+      "fixture": "sample-20261004-181002-d240f890-before",
+      "outcomes": [
+        {
+          "fixture": "sample-20261004-181002-d240f890-after-01-resume_rewards",
+          "state": "resume_rewards",
+          "text": "回廊中，古老的招募英雄显露了出一片回廊尽",
+          "image": "after-01-resume_rewards.png",
+          "resources": {
+            "cores": 57,
+            "fragments": 142,
+            "life": 4,
+            "loot": 9,
+            "dice": 3
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 0,
+            "life": 0,
+            "loot": 0,
+            "dice": 0
+          }
+        },
+        {
+          "fixture": "sample-20261004-181002-d240f890-after-02-reward",
+          "state": "reward",
+          "text": "",
+          "image": "after-02-reward.png",
+          "resources": {
+            "cores": 57,
+            "fragments": 142,
+            "life": 4,
+            "loot": 9,
+            "dice": 3
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 0,
+            "life": 0,
+            "loot": 0,
+            "dice": 0
+          }
+        },
+        {
+          "fixture": "sample-20261004-181002-d240f890-after-03-reward",
+          "state": "reward",
+          "text": "业",
+          "image": "after-03-reward.png",
+          "resources": {
+            "cores": 57,
+            "fragments": 142,
+            "life": 4,
+            "loot": 9,
+            "dice": 3
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 0,
+            "life": 0,
+            "loot": 0,
+            "dice": 0
+          }
+        },
+        {
+          "fixture": "sample-20261004-181002-d240f890-after-04-event",
+          "state": "event",
+          "text": "循着回廊尽头的光芒前进后，在崩塌的阶梯下发现了一名独自躲藏的冒险家。探查队清理残骸为他打开道路后，冒险家表示感谢，并决定与探查队同行。迎来新伙伴的探查队赶在光芒消失前离开了古老的回廊。",
+          "image": "after-04-event.png",
+          "resources": {
+            "cores": 57,
+            "fragments": 142,
+            "life": 4,
+            "loot": 9,
+            "dice": 3
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 0,
+            "life": 0,
+            "loot": 0,
+            "dice": 0
+          }
+        },
+        {
+          "fixture": "sample-20261004-181002-d240f890-after-05-map",
+          "state": "map",
+          "text": "",
+          "image": "after-05-map.png",
+          "resources": {
+            "cores": 57,
+            "fragments": 142,
+            "life": 4,
+            "loot": null,
+            "dice": 3
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 0,
+            "life": 0,
+            "dice": 0
+          }
+        }
+      ]
+    },
+    {
+      "event_id": "ancient_corridor",
+      "preferred": "capacity",
+      "source": "a4893342201dd975/20261004-195956-7d30c8de",
+      "raw_record": {
+        "version": 1,
+        "folder": "a4893342201dd975/20261004-195956-7d30c8de",
+        "event": "a4893342201dd975",
+        "story": "灰尘弥漫的回廊中，古老的柱子整齐排列。柱子后方隐约显露了出一片宽阔的空间回廊尽头透入的光线彼端似乎什么人的动静。",
+        "choices": [
+          "清理柱子周围的灰尘和残骸。招募额度提升1",
+          "查看光线彼端的动静。招募1名随机英雄"
+        ],
+        "before": {
+          "cores": 58,
+          "fragments": 110,
+          "life": 4,
+          "loot": null,
+          "dice": 3
+        },
+        "selected_text": "清理柱子周围的灰尘和残骸。招募额度提升1",
+        "selected_index": 0,
+        "source": "sampling",
+        "reason": "未显示已知代价，尝试并记录结果",
+        "clicked": true,
+        "advanced": true,
+        "frames": [
+          {
+            "state": "event",
+            "text": "清理掉柱子周围的灰尘和残骸后，显露出了通往回廊后方的一片宽阔空间。如果将这里整理一番，似乎可以容纳比现在更多的人。探查队记录下空间的位置后离开了古老的回廊。",
+            "image": "after-01-event.png",
+            "resources": {
+              "cores": 58,
+              "fragments": 110,
+              "life": 4,
+              "loot": null,
+              "dice": 3
+            },
+            "delta": {
+              "cores": 0,
+              "fragments": 0,
+              "life": 0,
+              "dice": 0
+            }
+          },
+          {
+            "state": "map",
+            "text": "",
+            "image": "after-02-map.png",
+            "resources": {
+              "cores": 58,
+              "fragments": 110,
+              "life": 4,
+              "loot": null,
+              "dice": 3
+            },
+            "delta": {
+              "cores": 0,
+              "fragments": 0,
+              "life": 0,
+              "dice": 0
+            }
+          }
+        ],
+        "finished": "map"
+      },
+      "fixture": "sample-20261004-195956-7d30c8de-before",
+      "outcomes": [
+        {
+          "fixture": "sample-20261004-195956-7d30c8de-after-01-event",
+          "state": "event",
+          "text": "清理掉柱子周围的灰尘和残骸后，显露出了通往回廊后方的一片宽阔空间。如果将这里整理一番，似乎可以容纳比现在更多的人。探查队记录下空间的位置后离开了古老的回廊。",
+          "image": "after-01-event.png",
+          "resources": {
+            "cores": 58,
+            "fragments": 110,
+            "life": 4,
+            "loot": null,
+            "dice": 3
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 0,
+            "life": 0,
+            "dice": 0
+          }
+        },
+        {
+          "fixture": "sample-20261004-195956-7d30c8de-after-02-map",
+          "state": "map",
+          "text": "",
+          "image": "after-02-map.png",
+          "resources": {
+            "cores": 58,
+            "fragments": 110,
+            "life": 4,
+            "loot": null,
+            "dice": 3
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 0,
+            "life": 0,
+            "dice": 0
+          }
+        }
+      ]
+    },
+    {
+      "event_id": "ancient_corridor",
+      "preferred": "capacity",
+      "source": "a4893342201dd975/20261005-171810-ce73998a",
+      "raw_record": {
+        "version": 1,
+        "folder": "a4893342201dd975/20261005-171810-ce73998a",
+        "event": "a4893342201dd975",
+        "story": "灰尘弥漫的回廊中，古老的柱子整齐排列。柱子后方隐约显露了出一片宽阔的空间回廊尽头透入的光线彼端似乎什么人的动静。",
+        "choices": [
+          "清理柱子周围的灰尘和残骸。招募额度提升1",
+          "查看光线彼端的动静。招募1名随机英雄"
+        ],
+        "before": {
+          "cores": 58,
+          "fragments": 159,
+          "life": 4,
+          "loot": null,
+          "dice": 3
+        },
+        "selected_text": "查看光线彼端的动静。招募1名随机英雄",
+        "selected_index": 1,
+        "source": "sampling",
+        "reason": "No known cost displayed; try and record the outcome",
+        "clicked": true,
+        "advanced": true,
+        "frames": [
+          {
+            "state": "resume_rewards",
+            "text": "回廊中，古老的柱子整齐排列。柱子后方隐约显露了出一片回廊尽头透入的光线彼端似乎什么人的动静。",
+            "image": "after-01-resume_rewards.png",
+            "resources": {
+              "cores": 58,
+              "fragments": 159,
+              "life": 4,
+              "loot": null,
+              "dice": 3
+            },
+            "delta": {
+              "cores": 0,
+              "fragments": 0,
+              "life": 0,
+              "dice": 0
+            }
+          },
+          {
+            "state": "resume_rewards",
+            "text": "回廊中，古老的招募英雄显露了出一片回廊尽",
+            "image": "after-02-resume_rewards.png",
+            "resources": {
+              "cores": 58,
+              "fragments": 159,
+              "life": 4,
+              "loot": null,
+              "dice": 3
+            },
+            "delta": {
+              "cores": 0,
+              "fragments": 0,
+              "life": 0,
+              "dice": 0
+            }
+          },
+          {
+            "state": "reward",
+            "text": "",
+            "image": "after-03-reward.png",
+            "resources": {
+              "cores": 58,
+              "fragments": 159,
+              "life": 4,
+              "loot": null,
+              "dice": 3
+            },
+            "delta": {
+              "cores": 0,
+              "fragments": 0,
+              "life": 0,
+              "dice": 0
+            }
+          },
+          {
+            "state": "event",
+            "text": "循着回廊尽头的光芒前进后，在崩塌的阶梯下发现了一名独自躲藏的冒险家。探查队清理残骸为他打开道路后，冒险家表示感谢，并决定与探查队同行。迎来新伙伴的探查队赶在光芒消失前离开了古老的回廊。",
+            "image": "after-04-event.png",
+            "resources": {
+              "cores": 58,
+              "fragments": 159,
+              "life": 4,
+              "loot": null,
+              "dice": 3
+            },
+            "delta": {
+              "cores": 0,
+              "fragments": 0,
+              "life": 0,
+              "dice": 0
+            }
+          },
+          {
+            "state": "map",
+            "text": "",
+            "image": "after-05-map.png",
+            "resources": {
+              "cores": 58,
+              "fragments": 159,
+              "life": 4,
+              "loot": null,
+              "dice": 3
+            },
+            "delta": {
+              "cores": 0,
+              "fragments": 0,
+              "life": 0,
+              "dice": 0
+            }
+          }
+        ],
+        "finished": "map"
+      },
+      "fixture": "sample-20261005-171810-ce73998a-before",
+      "outcomes": [
+        {
+          "fixture": "sample-20261005-171810-ce73998a-after-01-resume_rewards",
+          "state": "resume_rewards",
+          "text": "回廊中，古老的柱子整齐排列。柱子后方隐约显露了出一片回廊尽头透入的光线彼端似乎什么人的动静。",
+          "image": "after-01-resume_rewards.png",
+          "resources": {
+            "cores": 58,
+            "fragments": 159,
+            "life": 4,
+            "loot": null,
+            "dice": 3
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 0,
+            "life": 0,
+            "dice": 0
+          }
+        },
+        {
+          "fixture": "sample-20261005-171810-ce73998a-after-02-resume_rewards",
+          "state": "resume_rewards",
+          "text": "回廊中，古老的招募英雄显露了出一片回廊尽",
+          "image": "after-02-resume_rewards.png",
+          "resources": {
+            "cores": 58,
+            "fragments": 159,
+            "life": 4,
+            "loot": null,
+            "dice": 3
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 0,
+            "life": 0,
+            "dice": 0
+          }
+        },
+        {
+          "fixture": "sample-20261005-171810-ce73998a-after-03-reward",
+          "state": "reward",
+          "text": "",
+          "image": "after-03-reward.png",
+          "resources": {
+            "cores": 58,
+            "fragments": 159,
+            "life": 4,
+            "loot": null,
+            "dice": 3
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 0,
+            "life": 0,
+            "dice": 0
+          }
+        },
+        {
+          "fixture": "sample-20261005-171810-ce73998a-after-04-event",
+          "state": "event",
+          "text": "循着回廊尽头的光芒前进后，在崩塌的阶梯下发现了一名独自躲藏的冒险家。探查队清理残骸为他打开道路后，冒险家表示感谢，并决定与探查队同行。迎来新伙伴的探查队赶在光芒消失前离开了古老的回廊。",
+          "image": "after-04-event.png",
+          "resources": {
+            "cores": 58,
+            "fragments": 159,
+            "life": 4,
+            "loot": null,
+            "dice": 3
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 0,
+            "life": 0,
+            "dice": 0
+          }
+        },
+        {
+          "fixture": "sample-20261005-171810-ce73998a-after-05-map",
+          "state": "map",
+          "text": "",
+          "image": "after-05-map.png",
+          "resources": {
+            "cores": 58,
+            "fragments": 159,
+            "life": 4,
+            "loot": null,
+            "dice": 3
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 0,
+            "life": 0,
+            "dice": 0
+          }
+        }
+      ]
+    },
+    {
+      "event_id": "warning_sign",
+      "preferred": "leave",
+      "source": "b434e46bc165a2a3/20261004-180911-3d6c716f",
+      "raw_record": {
+        "version": 1,
+        "folder": "b434e46bc165a2a3/20261004-180911-3d6c716f",
+        "event": "b434e46bc165a2a3",
+        "story": "老旧的警告标牌歪斜地立着。文字虽然已经模糊，但禁止标记依旧清晰",
+        "choices": [
+          "无视警告，查看周围。消耗1点生命体征，有25%的几率获得1个随机战利品 (失败时获得50个次元碎片）",
+          "深入警告标牌后方。消耗2点生命体征，有50%的几率获得1个随机战利品(失败时获得50个次元碎片）",
+          "遵循警告，转身离开。"
+        ],
+        "before": {
+          "cores": 57,
+          "fragments": 142,
+          "life": 4,
+          "loot": 9,
+          "dice": 3
+        },
+        "selected_text": "遵循警告，转身离开。",
+        "selected_index": 2,
+        "source": "sampling",
+        "reason": "离开以避免较大消耗",
+        "clicked": true,
+        "advanced": true,
+        "frames": [
+          {
+            "state": "event",
+            "text": "遵循警告转身离开。模糊的文字最终还是无法辨认，唯有禁止标记清晰得人不安。探查队牢记这份警告的含义，远离了告示牌。",
+            "image": "after-01-event.png",
+            "resources": {
+              "cores": 57,
+              "fragments": 142,
+              "life": 4,
+              "loot": 9,
+              "dice": 3
+            },
+            "delta": {
+              "cores": 0,
+              "fragments": 0,
+              "life": 0,
+              "loot": 0,
+              "dice": 0
+            }
+          },
+          {
+            "state": "map",
+            "text": "",
+            "image": "after-02-map.png",
+            "resources": {
+              "cores": 57,
+              "fragments": 142,
+              "life": 4,
+              "loot": null,
+              "dice": 3
+            },
+            "delta": {
+              "cores": 0,
+              "fragments": 0,
+              "life": 0,
+              "dice": 0
+            }
+          }
+        ],
+        "finished": "map"
+      },
+      "fixture": "sample-20261004-180911-3d6c716f-before",
+      "outcomes": [
+        {
+          "fixture": "sample-20261004-180911-3d6c716f-after-01-event",
+          "state": "event",
+          "text": "遵循警告转身离开。模糊的文字最终还是无法辨认，唯有禁止标记清晰得人不安。探查队牢记这份警告的含义，远离了告示牌。",
+          "image": "after-01-event.png",
+          "resources": {
+            "cores": 57,
+            "fragments": 142,
+            "life": 4,
+            "loot": 9,
+            "dice": 3
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 0,
+            "life": 0,
+            "loot": 0,
+            "dice": 0
+          }
+        },
+        {
+          "fixture": "sample-20261004-180911-3d6c716f-after-02-map",
+          "state": "map",
+          "text": "",
+          "image": "after-02-map.png",
+          "resources": {
+            "cores": 57,
+            "fragments": 142,
+            "life": 4,
+            "loot": null,
+            "dice": 3
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 0,
+            "life": 0,
+            "dice": 0
+          }
+        }
+      ]
+    },
+    {
+      "event_id": "warning_sign",
+      "preferred": "leave",
+      "source": "b434e46bc165a2a3/20261006-221623-e095a172",
+      "raw_record": {
+        "version": 1,
+        "folder": "b434e46bc165a2a3/20261006-221623-e095a172",
+        "event": "b434e46bc165a2a3",
+        "story": "老旧的警告标牌歪斜地立着。文字虽然已经模糊，但禁止标记依旧清晰",
+        "choices": [
+          "无视警告，查看周围。消耗1点生命体征，有25%的几率获得1个随机战利品 (失败时获得50个次元碎片）",
+          "深入警告标牌后方。消耗2点生命体征，有50%的几率获得1个随机战利品(失败时获得50个次元碎片）",
+          "遵循警告，转身离开。"
+        ],
+        "before": {
+          "cores": 60,
+          "fragments": 253,
+          "life": 4,
+          "loot": 9,
+          "dice": 5
+        },
+        "selected_text": "遵循警告，转身离开。",
+        "selected_index": 2,
+        "source": "sampling",
+        "reason": "Leave to avoid a larger cost",
+        "clicked": true,
+        "advanced": true,
+        "frames": [
+          {
+            "state": "event",
+            "text": "遵循警告转身离开。模糊的文字最终还是无法辨认，唯有禁止标记清晰得人不安。探查队牢记这份警告的含义，远离了告示牌。",
+            "image": "after-01-event.png",
+            "resources": {
+              "cores": 60,
+              "fragments": 253,
+              "life": 4,
+              "loot": 9,
+              "dice": 5
+            },
+            "delta": {
+              "cores": 0,
+              "fragments": 0,
+              "life": 0,
+              "loot": 0,
+              "dice": 0
+            }
+          },
+          {
+            "state": "map",
+            "text": "",
+            "image": "after-02-map.png",
+            "resources": {
+              "cores": 60,
+              "fragments": 253,
+              "life": 4,
+              "loot": null,
+              "dice": 5
+            },
+            "delta": {
+              "cores": 0,
+              "fragments": 0,
+              "life": 0,
+              "dice": 0
+            }
+          }
+        ],
+        "finished": "map"
+      },
+      "fixture": "sample-20261006-221623-e095a172-before",
+      "outcomes": [
+        {
+          "fixture": "sample-20261006-221623-e095a172-after-01-event",
+          "state": "event",
+          "text": "遵循警告转身离开。模糊的文字最终还是无法辨认，唯有禁止标记清晰得人不安。探查队牢记这份警告的含义，远离了告示牌。",
+          "image": "after-01-event.png",
+          "resources": {
+            "cores": 60,
+            "fragments": 253,
+            "life": 4,
+            "loot": 9,
+            "dice": 5
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 0,
+            "life": 0,
+            "loot": 0,
+            "dice": 0
+          }
+        },
+        {
+          "fixture": "sample-20261006-221623-e095a172-after-02-map",
+          "state": "map",
+          "text": "",
+          "image": "after-02-map.png",
+          "resources": {
+            "cores": 60,
+            "fragments": 253,
+            "life": 4,
+            "loot": null,
+            "dice": 5
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 0,
+            "life": 0,
+            "dice": 0
+          }
+        }
+      ]
+    },
+    {
+      "event_id": "armory_followup",
+      "preferred": "leave",
+      "source": "5efe68cf3a1837db/20261004-200837-5d9ab035",
+      "raw_record": {
+        "version": 1,
+        "folder": "5efe68cf3a1837db/20261004-200837-5d9ab035",
+        "event": "5efe68cf3a1837db",
+        "story": "清理右侧区域并收起战利品期间，左侧区域又传来了其他动静。看来现在还能继续查看剩余的区域。",
+        "choices": [
+          "与左侧的敌人战斗。战斗后，获得1个随机战利品",
+          "离开武器库。"
+        ],
+        "before": {
+          "cores": 58,
+          "fragments": 358,
+          "life": 4,
+          "loot": 5,
+          "dice": 3
+        },
+        "selected_text": "离开武器库。",
+        "selected_index": 1,
+        "source": "sampling",
+        "reason": "离开以避免较大消耗",
+        "clicked": true,
+        "advanced": true,
+        "frames": [
+          {
+            "state": "event",
+            "text": "侧区域的骚动平息后，探查队决定不再继续深入。警惕着残余敌人的动静，离开了武器库。",
+            "image": "after-01-event.png",
+            "resources": {
+              "cores": 58,
+              "fragments": 358,
+              "life": 4,
+              "loot": 5,
+              "dice": 3
+            },
+            "delta": {
+              "cores": 0,
+              "fragments": 0,
+              "life": 0,
+              "loot": 0,
+              "dice": 0
+            }
+          },
+          {
+            "state": "map",
+            "text": "",
+            "image": "after-02-map.png",
+            "resources": {
+              "cores": 58,
+              "fragments": 358,
+              "life": 4,
+              "loot": null,
+              "dice": 3
+            },
+            "delta": {
+              "cores": 0,
+              "fragments": 0,
+              "life": 0,
+              "dice": 0
+            }
+          }
+        ],
+        "finished": "map"
+      },
+      "fixture": "sample-20261004-200837-5d9ab035-before",
+      "outcomes": [
+        {
+          "fixture": "sample-20261004-200837-5d9ab035-after-01-event",
+          "state": "event",
+          "text": "侧区域的骚动平息后，探查队决定不再继续深入。警惕着残余敌人的动静，离开了武器库。",
+          "image": "after-01-event.png",
+          "resources": {
+            "cores": 58,
+            "fragments": 358,
+            "life": 4,
+            "loot": 5,
+            "dice": 3
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 0,
+            "life": 0,
+            "loot": 0,
+            "dice": 0
+          }
+        },
+        {
+          "fixture": "sample-20261004-200837-5d9ab035-after-02-map",
+          "state": "map",
+          "text": "",
+          "image": "after-02-map.png",
+          "resources": {
+            "cores": 58,
+            "fragments": 358,
+            "life": 4,
+            "loot": null,
+            "dice": 3
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 0,
+            "life": 0,
+            "dice": 0
+          }
+        }
+      ]
+    },
+    {
+      "event_id": "faint_fire_success",
+      "preferred": "leave",
+      "source": "a1527001bc379964/20261006-221008-fff5b37b",
+      "raw_record": {
+        "version": 1,
+        "folder": "a1527001bc379964/20261006-221008-fff5b37b",
+        "event": "a1527001bc379964",
+        "story": "靠近火光后，暖意顺着指尖蔓延而上。隐约能看到里面有什么东西正在闪烁。",
+        "choices": [
+          "将手伸向更深处。所有英雄生命值降低30%，有50%的几率获得1个随机战利品",
+          "只带上目前获得的东西并撤离。"
+        ],
+        "before": {
+          "cores": 59,
+          "fragments": 470,
+          "life": 4,
+          "loot": 5,
+          "dice": 5
+        },
+        "selected_text": "只带上目前获得的东西并撤离。",
+        "selected_index": 1,
+        "source": "sampling",
+        "reason": "Leave to avoid a larger cost",
+        "clicked": true,
+        "advanced": true,
+        "frames": [
+          {
+            "state": "event",
+            "text": "那道始终不灭的火光久久映照着探查队被拉长的影子。探查队将黑暗中残留的小小火焰留在身后，前往下一条通道。",
+            "image": "after-01-event.png",
+            "resources": {
+              "cores": 59,
+              "fragments": 470,
+              "life": 4,
+              "loot": 5,
+              "dice": 5
+            },
+            "delta": {
+              "cores": 0,
+              "fragments": 0,
+              "life": 0,
+              "loot": 0,
+              "dice": 0
+            }
+          },
+          {
+            "state": "map",
+            "text": "",
+            "image": "after-02-map.png",
+            "resources": {
+              "cores": 59,
+              "fragments": 470,
+              "life": 4,
+              "loot": null,
+              "dice": 5
+            },
+            "delta": {
+              "cores": 0,
+              "fragments": 0,
+              "life": 0,
+              "dice": 0
+            }
+          }
+        ],
+        "finished": "map"
+      },
+      "fixture": "sample-20261006-221008-fff5b37b-before",
+      "outcomes": [
+        {
+          "fixture": "sample-20261006-221008-fff5b37b-after-01-event",
+          "state": "event",
+          "text": "那道始终不灭的火光久久映照着探查队被拉长的影子。探查队将黑暗中残留的小小火焰留在身后，前往下一条通道。",
+          "image": "after-01-event.png",
+          "resources": {
+            "cores": 59,
+            "fragments": 470,
+            "life": 4,
+            "loot": 5,
+            "dice": 5
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 0,
+            "life": 0,
+            "loot": 0,
+            "dice": 0
+          }
+        },
+        {
+          "fixture": "sample-20261006-221008-fff5b37b-after-02-map",
+          "state": "map",
+          "text": "",
+          "image": "after-02-map.png",
+          "resources": {
+            "cores": 59,
+            "fragments": 470,
+            "life": 4,
+            "loot": null,
+            "dice": 5
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 0,
+            "life": 0,
+            "dice": 0
+          }
+        }
+      ]
+    }
+  ],
+  "fire": {
+    "initial_failure": {
+      "source": "f2c60fe0d8e19639/20261006-224551-d6a022b4",
+      "raw_record": {
+        "version": 1,
+        "folder": "f2c60fe0d8e19639/20261006-224551-d6a022b4",
+        "event": "f2c60fe0d8e19639",
+        "story": "微弱的火光没有熄灭，只是缓缓摇电着。火焰微弱，要照亮这里的黑暗似乎还差一些",
+        "choices": [
+          "在火光旁稍作休息。所有英雄生命值恢复15%",
+          "调查火光的源头。1名随机英雄生命值降低40%，获得2个次元殷",
+          "将手伸入火光之中。所有英雄消耗30%生命值，有50%的几率获得1个战利品"
+        ],
+        "before": {
+          "cores": 62,
+          "fragments": 289,
+          "life": 4,
+          "loot": 4,
+          "dice": 5,
+          "hero_hp": [
+            92,
+            88,
+            98,
+            98,
+            98
+          ]
+        },
+        "selected_text": "将手伸入火光之中。所有英雄消耗30%生命值，有50%的几率获得1个战利品",
+        "selected_index": 2,
+        "source": "catalog",
+        "reason": "faint_fire.loot",
+        "clicked": true,
+        "advanced": false,
+        "frames": [],
+        "finished": null
+      },
+      "fixture": "sample-20261006-224551-d6a022b4-before",
+      "outcomes": []
+    },
+    "initial_success": {
+      "source": "f2c60fe0d8e19639/20261006-220951-e14a5f9a",
+      "raw_record": {
+        "version": 1,
+        "folder": "f2c60fe0d8e19639/20261006-220951-e14a5f9a",
+        "event": "f2c60fe0d8e19639",
+        "story": "微弱的火光没有熄灭，只是缓缓摇电着。火焰微弱，要照亮这里的黑暗似乎还差一些",
+        "choices": [
+          "在火光旁稍作休息。所有英雄生命值恢复15%",
+          "调查火光的源头。1名随机英雄生命值降低40%，获得2个次元殷",
+          "将手伸入火光之中。所有英雄消耗30%生命值，有50%的几率获得1个战利品"
+        ],
+        "before": {
+          "cores": 59,
+          "fragments": 470,
+          "life": 4,
+          "loot": 4,
+          "dice": 5,
+          "hero_hp": [
+            98,
+            98,
+            98,
+            98
+          ]
+        },
+        "selected_text": "将手伸入火光之中。所有英雄消耗30%生命值，有50%的几率获得1个战利品",
+        "selected_index": 2,
+        "source": "catalog",
+        "reason": "faint_fire.loot",
+        "clicked": true,
+        "advanced": true,
+        "frames": [
+          {
+            "state": "reward",
+            "text": "",
+            "image": "after-01-reward.png",
+            "resources": {
+              "cores": 59,
+              "fragments": 470,
+              "life": 4,
+              "loot": 4,
+              "dice": 5
+            },
+            "delta": {
+              "cores": 0,
+              "fragments": 0,
+              "life": 0,
+              "loot": 0,
+              "dice": 0
+            }
+          },
+          {
+            "state": "reward",
+            "text": "地下怪兽鳞片",
+            "image": "after-02-reward.png",
+            "resources": {
+              "cores": 59,
+              "fragments": 470,
+              "life": 4,
+              "loot": 4,
+              "dice": 5
+            },
+            "delta": {
+              "cores": 0,
+              "fragments": 0,
+              "life": 0,
+              "loot": 0,
+              "dice": 0
+            }
+          }
+        ],
+        "finished": "next_options"
+      },
+      "fixture": "sample-20261006-220951-e14a5f9a-before",
+      "outcomes": [
+        {
+          "fixture": "sample-20261006-220951-e14a5f9a-after-01-reward",
+          "state": "reward",
+          "text": "",
+          "image": "after-01-reward.png",
+          "resources": {
+            "cores": 59,
+            "fragments": 470,
+            "life": 4,
+            "loot": 4,
+            "dice": 5
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 0,
+            "life": 0,
+            "loot": 0,
+            "dice": 0
+          }
+        },
+        {
+          "fixture": "sample-20261006-220951-e14a5f9a-after-02-reward",
+          "state": "reward",
+          "text": "地下怪兽鳞片",
+          "image": "after-02-reward.png",
+          "resources": {
+            "cores": 59,
+            "fragments": 470,
+            "life": 4,
+            "loot": 4,
+            "dice": 5
+          },
+          "delta": {
+            "cores": 0,
+            "fragments": 0,
+            "life": 0,
+            "loot": 0,
+            "dice": 0
+          }
+        }
+      ]
+    },
+    "failure_options": "20261006-225005-148",
+    "failure_narration": "20261007-014334-776",
+    "failure_map": "20261007-014348-592"
+  }
+}

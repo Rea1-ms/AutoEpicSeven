@@ -1189,6 +1189,202 @@ class SteleEventTests(unittest.TestCase):
                 self.assertIsNone(task._event_hero_hp)
 
 
+class Oct07CollectedEventTests(unittest.TestCase):
+    @staticmethod
+    def data():
+        return json.loads((ROOT / 'tests/fixtures/dimensional_exploration/collected_events_oct07.json').read_text(encoding='utf-8'))
+
+    def test_all_new_option_pages_match_complete_stages(self):
+        latest = {entry['event_id']: entry for entry in self.data()['observations']}
+        cases = [(entry['fixture'], event_id) for event_id, entry in latest.items()]
+        cases.append((self.data()['fire']['failure_options'], 'faint_fire_failure'))
+        for fixture, event_id in cases:
+            with self.subTest(event=event_id):
+                vision = ExplorationVision(frame(fixture))
+                self.assertEqual(vision.state(), 'event')
+                choices = [choice for choice, _ in vision.event_choices()]
+                matched = match_event(choices, vision.event_story())
+                self.assertIsNotNone(matched, (fixture, choices))
+                self.assertEqual(matched[0].event_id, event_id)
+                self.assertEqual(len(choices), len(matched[0].branches))
+
+    def test_raw_receipts_and_confirmed_outcomes_remain_traceable(self):
+        for entry in self.data()['observations']:
+            with self.subTest(source=entry['source']):
+                raw = entry['raw_record']
+                choices = [EventChoice(index, text) for index, text in enumerate(raw['choices'])]
+                matched = match_event(choices, raw['story'])
+                self.assertIsNotNone(matched)
+                self.assertEqual(matched[0].event_id, entry['event_id'])
+                self.assertEqual(len(choices), len(matched[0].branches))
+                self.assertEqual(raw['finished'], 'map')
+                self.assertEqual([outcome['image'] for outcome in entry['outcomes']],
+                                 [outcome['image'] for outcome in raw['frames']])
+                self.assertEqual(entry['outcomes'][-1]['state'], 'map')
+                for outcome in entry['outcomes']:
+                    self.assertEqual(frame(outcome['fixture']).shape, (720, 1280, 3))
+        throne = next(entry for entry in self.data()['observations'] if entry['event_id'] == 'bone_throne')
+        self.assertEqual(throne['outcomes'][0]['delta']['fragments'], 50)
+        inscription = next(entry for entry in self.data()['observations'] if entry['event_id'] == 'angry_inscription')
+        self.assertEqual(inscription['outcomes'][0]['delta']['fragments'], 40)
+        # Experience is established by the option's icon, not a fragment delta.
+        self.assertEqual(event_branch('unknown_footprints.leave').rewards, ({'kind': 'experience', 'amount': 50},))
+        self.assertEqual(event_branch('prayer_room.pray').rewards, ({'kind': 'experience', 'amount': 80},))
+        self.assertEqual(event_branch('ancient_corridor.capacity').rewards,
+                         ({'kind': 'recruit_capacity', 'amount': 1},))
+
+    def test_preferences_preserve_resources_for_first_repeat_and_restart(self):
+        for entry in self.data()['observations']:
+            raw = entry['raw_record']
+            choices = [EventChoice(index, text) for index, text in enumerate(raw['choices'])]
+            params = dict(cores=20, fragments=9999, life=4, loot=99, dice=99, hero_hp=[100] * 4, story=raw['story'])
+            key = entry['event_id'] + '.' + entry['preferred']
+            for memory in (EventMemory(), EventMemory(visited={key}), EventMemory(pending=key)):
+                with self.subTest(event=entry['event_id'], history=memory.as_dict()):
+                    decision = decide_event(choices, memory=memory, **params)
+                    self.assertEqual(decision.branch.key, key)
+                    self.assertFalse(decision.first_collectible)
+                    self.assertEqual(decision.branch.cost, EventCost())
+                    self.assertEqual(decide_event(choices, memory=memory,
+                                                 **{**params, 'fragments': 0, 'life': 1, 'loot': 0, 'hero_hp': [0]}).branch.key, key)
+        self.assertEqual(event_branch('bone_throne.sit').cost.random_deaths, 1)
+        self.assertTrue(event_branch('bone_throne.sit').cost.unavailable(
+            cores=20, fragments=999, life=4, loot=4, hero_hp=[100]))
+        for key in ('bone_throne.sit', 'sharp_teeth.offer', 'sealed_altar.light', 'sealed_altar.dark',
+                    'prayer_room.offer', 'warning_sign.near', 'warning_sign.deep',
+                    'faint_fire_success.deeper', 'faint_fire_failure.retry'):
+            self.assertFalse(event_branch(key).enabled, key)
+
+    def test_fire_success_receipt_and_manual_failure_evidence_stay_separate(self):
+        data = self.data()['fire']
+        for name in ('initial_success', 'initial_failure'):
+            entry = data[name]
+            vision = ExplorationVision(frame(entry['fixture']))
+            self.assertEqual(vision.state(), 'event')
+            choices = [choice for choice, _ in vision.event_choices()]
+            raw = entry['raw_record']
+            decision = decide_event(choices, **raw['before'], story=vision.event_story())
+            self.assertEqual(decision.branch.key, 'faint_fire.loot')
+            self.assertEqual(decision.branch.rewards, ({'kind': 'loot', 'amount': 1, 'chance': 50},))
+        succeeded = data['initial_success']
+        self.assertEqual([outcome['state'] for outcome in succeeded['outcomes']], ['reward', 'reward'])
+        for outcome in succeeded['outcomes']:
+            vision = ExplorationVision(frame(outcome['fixture']))
+            self.assertEqual(vision.state(), 'reward')
+        self.assertEqual(vision.event_reward(), '地下怪兽鳞片')
+        success_followup = next(entry for entry in self.data()['observations'] if entry['event_id'] == 'faint_fire_success')
+        self.assertEqual(success_followup['raw_record']['before']['loot'], 5)
+        self.assertEqual(succeeded['raw_record']['before']['loot'], 4)
+        self.assertEqual(data['initial_failure']['outcomes'], [])
+        self.assertIsNone(data['initial_failure']['raw_record']['finished'])
+        for fixture, state in ((data['failure_options'], 'event'), (data['failure_narration'], 'event'),
+                               (data['failure_map'], 'map')):
+            vision = ExplorationVision(frame(fixture))
+            self.assertEqual(vision.state(), state)
+            self.assertEqual(vision.resources().fragments, 289)
+        # The native map shows loot=4, but the event-only loot counter cannot
+        # read it there. Do not replace a missing machine reading with a guess.
+
+    def test_followup_exact_costs_probabilities_and_partial_options_are_guarded(self):
+        cases = [('faint_fire_success', 30, 'deeper'), ('faint_fire_failure', 40, 'retry')]
+        for event_id, hp, branch_id in cases:
+            entry = next((e for e in self.data()['observations'] if e['event_id'] == event_id), None)
+            vision = ExplorationVision(frame(entry['fixture'] if entry else self.data()['fire']['failure_options']))
+            choices = [choice for choice, _ in vision.event_choices()]
+            story = vision.event_story()
+            params = dict(cores=20, fragments=999, life=4, loot=4, hero_hp=[100], story=story)
+            self.assertEqual(event_branch(event_id + '.' + branch_id).cost.all_hp_percent, hp)
+            self.assertEqual(event_branch(event_id + '.' + branch_id).rewards,
+                             ({'kind': 'loot', 'amount': 1, 'chance': 50},))
+            for altered in (str(hp + 10) + '%', '99%'):
+                changed = [replace(c, text=c.text.replace(str(hp) + '%', altered)) for c in choices]
+                self.assertIsNone(match_event(changed, story))
+            changed = [replace(c, text=c.text.replace('50%', '60%')) for c in choices]
+            self.assertIsNone(match_event(changed, story))
+            self.assertIsNone(decide_event(choices[:1], **params))
+            self.assertIsNone(decide_event(choices[1:], **params))
+            self.assertIsNone(match_event(choices, '这是另一个不同的事件'))
+            self.assertIsNone(decide_event(choices, memory=EventMemory(pending=event_id + '.' + branch_id), **params))
+
+    def test_fire_followups_choose_right_leave_without_hp_or_unknown_sampling(self):
+        success = next(entry for entry in self.data()['observations'] if entry['event_id'] == 'faint_fire_success')
+        for fixture, event_id in ((success['fixture'], 'faint_fire_success'),
+                                  (self.data()['fire']['failure_options'], 'faint_fire_failure')):
+            task, vision, clicks = task_for(fixture)
+            task.event_memory = EventMemory.from_saved(EventMemory(pending='faint_fire.loot').as_dict())
+            task.sampler = Mock(active=None)
+            task.handle_event_sample = Mock(side_effect=AssertionError('reviewed followup must not experiment'))
+            task.inspect_event_health = Mock(side_effect=AssertionError('free exit needs no HP inspection'))
+            for _ in range(2):
+                self.assertTrue(task.handle_event(vision))
+                selected = task.sampler.before.call_args.args[4]
+                self.assertEqual(selected.index, 1)
+                self.assertEqual(task.event_memory.pending, event_id + '.leave')
+                self.assertEqual(task.event_memory.visited, {'faint_fire.loot'})
+                self.assertFalse(task.event_memory.obtained)
+            self.assertEqual(clicks, ['ExplorationEventChoice'] * 2)
+            task.inspect_event_health.assert_not_called()
+            task.handle_event_sample.assert_not_called()
+
+    def test_main_loop_failed_attempt_retries_exit_then_samples_real_return_once(self):
+        from tests.support.exploration import artifact_path
+        from tasks.dimensional_exploration.events.sampling import EventSampler, text_key
+
+        data = self.data()['fire']
+        options, narration, returned = (data['failure_options'], data['failure_narration'], data['failure_map'])
+        suffixes = [options] * 3 + [narration] * 5 + [returned, '20260922-081153-551']
+        expected = ['ExplorationEventChoice'] * 2 + ['EVENT_NEXT'] * 2
+        with ControlledClock() as clock:
+            task, _, _ = task_for(options)
+            task.sampler = EventSampler(artifact_path('fire_failure'))
+            initial = data['initial_failure']
+            raw = initial['raw_record']
+            choices = [EventChoice(index, text) for index, text in enumerate(raw['choices'])]
+            task.sampler.before(frame(initial['fixture']), raw['story'], choices, raw['before'], choices[2],
+                                'catalog', 'faint_fire.loot')
+            task.sampler.clicked()
+            task.sampler = EventSampler(task.sampler.root)
+            task.event_memory = EventMemory.from_saved(EventMemory(pending='faint_fire.loot').as_dict())
+            task.progress, task.target = RunProgress(completed=1), 1
+            task.handle_map = Mock(return_value=False)
+            task.handle_ui_recovery = Mock(return_value=False)
+            task.inspect_event_health = Mock(side_effect=AssertionError('no repeated damage or HP inspection'))
+            task.handle_event_sample = Mock(side_effect=AssertionError('no unknown-event sampling'))
+            task.device = ReplayDevice(suffixes, expected_clicks=expected)
+            task.action_ready = type(task).action_ready.__get__(task)
+            task.click_action = type(task).click_action.__get__(task)
+            screenshot = task.device.screenshot
+
+            def next_frame():
+                clock.advance(1.1)
+                screenshot()
+
+            task.device.screenshot = next_frame
+            task.explore()
+            task.device.assert_actions_complete()
+            self.assertEqual(task.event_memory.visited, {'faint_fire.loot', 'faint_fire_failure.leave'})
+            self.assertIsNone(task.event_memory.pending)
+            self.assertFalse(task.event_memory.obtained)
+            self.assertIsNone(task.sampler.active)
+            records = [json.loads(path.read_text(encoding='utf-8')) for path in task.sampler.root.glob('*/*/record.json')]
+            self.assertEqual(len(records), 2)
+            attempted = next(r for r in records if r['reason'] == 'faint_fire.loot')
+            exited = next(r for r in records if r['reason'] == 'faint_fire_failure.leave')
+            self.assertEqual(attempted['finished'], 'next_options')
+            self.assertEqual([f['state'] for f in attempted['frames']], ['event_options'])
+            self.assertEqual(exited['selected_index'], 1)
+            self.assertEqual(exited['finished'], 'map')
+            self.assertEqual([f['state'] for f in exited['frames']], ['event', 'map'])
+            self.assertEqual(exited['frames'][0]['delta']['fragments'], 0)
+            self.assertEqual(exited['frames'][0]['delta']['loot'], 0)
+            self.assertEqual(task.sampler.visits(raw['story']), {text_key(choices[2].text): 1})
+            for _ in range(2):
+                task.observe_event('map', ExplorationVision(frame(returned)))
+            self.assertEqual(EventSampler(task.sampler.root).index, task.sampler.index)
+            task.inspect_event_health.assert_not_called()
+            task.handle_event_sample.assert_not_called()
+
+
 class ForkSacrificeEventTests(unittest.TestCase):
     CHOICES = [EventChoice(0, '前往左侧岔路。1名随机英雄生命值降低50%，获得1个随机战利品'),
                EventChoice(1, '前往右侧岔路。消耗1个战利品，所有英雄生命值恢复100%')]

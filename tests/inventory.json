@@ -21376,6 +21376,190 @@
           "reason": "目录整理、英文日志、默认开局与识别优化回归"
         }
       ]
+    },
+    {
+      "source": "tests/dimensional_exploration/test_dimensional_exploration_events.py",
+      "business": "次元探查",
+      "status": "已纳入",
+      "reason": "2026年10月7日新事件采样整理与火光停止冒险回归",
+      "cases": [
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.Oct07CollectedEventTests.test_all_new_option_pages_match_complete_stages",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261006-225005-148",
+            "sample-20261004-132658-fb9c8b99-before",
+            "sample-20261004-142337-95345fac-before",
+            "sample-20261004-163255-fe35b495-before",
+            "sample-20261004-163946-6284416c-before",
+            "sample-20261004-200837-5d9ab035-before",
+            "sample-20261005-171748-6ab3fed8-before",
+            "sample-20261005-171810-ce73998a-before",
+            "sample-20261006-220702-25919c11-before",
+            "sample-20261006-221008-fff5b37b-before",
+            "sample-20261006-221623-e095a172-before"
+          ],
+          "status": "已纳入",
+          "reason": "新增事件完整选项、代价与结果证据；火光失败后免费撤离、重启恢复和真实动作间隔去重"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.Oct07CollectedEventTests.test_raw_receipts_and_confirmed_outcomes_remain_traceable",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "sample-20261004-114223-25b08ac6-after-01-event",
+            "sample-20261004-114223-25b08ac6-after-02-map",
+            "sample-20261004-114223-25b08ac6-before",
+            "sample-20261004-132658-fb9c8b99-after-01-event",
+            "sample-20261004-132658-fb9c8b99-after-02-map",
+            "sample-20261004-132658-fb9c8b99-before",
+            "sample-20261004-142337-95345fac-after-01-event",
+            "sample-20261004-142337-95345fac-after-02-map",
+            "sample-20261004-142337-95345fac-before",
+            "sample-20261004-163255-fe35b495-after-01-event",
+            "sample-20261004-163255-fe35b495-after-02-map",
+            "sample-20261004-163255-fe35b495-before",
+            "sample-20261004-163946-6284416c-after-01-event",
+            "sample-20261004-163946-6284416c-after-02-map",
+            "sample-20261004-163946-6284416c-before",
+            "sample-20261004-170645-95c2667e-after-01-event",
+            "sample-20261004-170645-95c2667e-after-02-map",
+            "sample-20261004-170645-95c2667e-before",
+            "sample-20261004-174149-ddf76863-after-01-event",
+            "sample-20261004-174149-ddf76863-after-02-map",
+            "sample-20261004-174149-ddf76863-before",
+            "sample-20261004-175315-bfe09e3a-after-01-event",
+            "sample-20261004-175315-bfe09e3a-after-02-map",
+            "sample-20261004-175315-bfe09e3a-before",
+            "sample-20261004-180911-3d6c716f-after-01-event",
+            "sample-20261004-180911-3d6c716f-after-02-map",
+            "sample-20261004-180911-3d6c716f-before",
+            "sample-20261004-181002-d240f890-after-01-resume_rewards",
+            "sample-20261004-181002-d240f890-after-02-reward",
+            "sample-20261004-181002-d240f890-after-03-reward",
+            "sample-20261004-181002-d240f890-after-04-event",
+            "sample-20261004-181002-d240f890-after-05-map",
+            "sample-20261004-181002-d240f890-before",
+            "sample-20261004-195213-651053fc-after-01-event",
+            "sample-20261004-195213-651053fc-after-02-map",
+            "sample-20261004-195213-651053fc-before",
+            "sample-20261004-195956-7d30c8de-after-01-event",
+            "sample-20261004-195956-7d30c8de-after-02-map",
+            "sample-20261004-195956-7d30c8de-before",
+            "sample-20261004-200837-5d9ab035-after-01-event",
+            "sample-20261004-200837-5d9ab035-after-02-map",
+            "sample-20261004-200837-5d9ab035-before",
+            "sample-20261005-171748-6ab3fed8-after-01-event",
+            "sample-20261005-171748-6ab3fed8-after-02-map",
+            "sample-20261005-171748-6ab3fed8-before",
+            "sample-20261005-171810-ce73998a-after-01-resume_rewards",
+            "sample-20261005-171810-ce73998a-after-02-resume_rewards",
+            "sample-20261005-171810-ce73998a-after-03-reward",
+            "sample-20261005-171810-ce73998a-after-04-event",
+            "sample-20261005-171810-ce73998a-after-05-map",
+            "sample-20261005-171810-ce73998a-before",
+            "sample-20261006-220702-25919c11-after-01-event",
+            "sample-20261006-220702-25919c11-after-02-map",
+            "sample-20261006-220702-25919c11-before",
+            "sample-20261006-221008-fff5b37b-after-01-event",
+            "sample-20261006-221008-fff5b37b-after-02-map",
+            "sample-20261006-221008-fff5b37b-before",
+            "sample-20261006-221623-e095a172-after-01-event",
+            "sample-20261006-221623-e095a172-after-02-map",
+            "sample-20261006-221623-e095a172-before"
+          ],
+          "status": "已纳入",
+          "reason": "新增事件完整选项、代价与结果证据；火光失败后免费撤离、重启恢复和真实动作间隔去重"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.Oct07CollectedEventTests.test_preferences_preserve_resources_for_first_repeat_and_restart",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "sample-20261004-114223-25b08ac6-before",
+            "sample-20261004-132658-fb9c8b99-before",
+            "sample-20261004-142337-95345fac-before",
+            "sample-20261004-163255-fe35b495-before",
+            "sample-20261004-163946-6284416c-before",
+            "sample-20261004-170645-95c2667e-before",
+            "sample-20261004-174149-ddf76863-before",
+            "sample-20261004-175315-bfe09e3a-before",
+            "sample-20261004-180911-3d6c716f-before",
+            "sample-20261004-181002-d240f890-before",
+            "sample-20261004-195213-651053fc-before",
+            "sample-20261004-195956-7d30c8de-before",
+            "sample-20261004-200837-5d9ab035-before",
+            "sample-20261005-171748-6ab3fed8-before",
+            "sample-20261005-171810-ce73998a-before",
+            "sample-20261006-220702-25919c11-before",
+            "sample-20261006-221008-fff5b37b-before",
+            "sample-20261006-221623-e095a172-before"
+          ],
+          "status": "已纳入",
+          "reason": "新增事件完整选项、代价与结果证据；火光失败后免费撤离、重启恢复和真实动作间隔去重"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.Oct07CollectedEventTests.test_fire_success_receipt_and_manual_failure_evidence_stay_separate",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261006-225005-148",
+            "20261007-014334-776",
+            "20261007-014348-592",
+            "sample-20261006-220951-e14a5f9a-after-01-reward",
+            "sample-20261006-220951-e14a5f9a-after-02-reward",
+            "sample-20261006-220951-e14a5f9a-before",
+            "sample-20261006-221008-fff5b37b-before",
+            "sample-20261006-224551-d6a022b4-before"
+          ],
+          "status": "已纳入",
+          "reason": "新增事件完整选项、代价与结果证据；火光失败后免费撤离、重启恢复和真实动作间隔去重"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.Oct07CollectedEventTests.test_followup_exact_costs_probabilities_and_partial_options_are_guarded",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261006-225005-148",
+            "sample-20261006-221008-fff5b37b-before"
+          ],
+          "status": "已纳入",
+          "reason": "新增事件完整选项、代价与结果证据；火光失败后免费撤离、重启恢复和真实动作间隔去重"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.Oct07CollectedEventTests.test_fire_followups_choose_right_leave_without_hp_or_unknown_sampling",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261006-225005-148",
+            "sample-20261006-221008-fff5b37b-before"
+          ],
+          "status": "已纳入",
+          "reason": "新增事件完整选项、代价与结果证据；火光失败后免费撤离、重启恢复和真实动作间隔去重"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.Oct07CollectedEventTests.test_main_loop_failed_attempt_retries_exit_then_samples_real_return_once",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081153-551",
+            "20261006-225005-148",
+            "20261007-014334-776",
+            "20261007-014348-592",
+            "sample-20261006-224551-d6a022b4-before"
+          ],
+          "status": "已纳入",
+          "reason": "新增事件完整选项、代价与结果证据；火光失败后免费撤离、重启恢复和真实动作间隔去重"
+        }
+      ]
     }
   ]
 }

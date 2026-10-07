@@ -18,9 +18,12 @@ class EventCost:
     life: int = 0
     random_hp_percent: int = 0
     all_hp_percent: int = 0
+    random_deaths: int = 0
     battle: int = 0
 
     def unavailable(self, *, cores, fragments, life, loot, dice=None, hero_hp=None):
+        if self.random_deaths:
+            return "A random hero death is not permitted"
         if self.life and self.life >= life:
             return "Preserve the last life point"
         if self.fragments and self.fragments + self.reserve_fragments + (50 if cores < 20 else 0) > fragments:
@@ -124,7 +127,8 @@ class EventSpec:
 def event_catalog():
     data = json.loads(Path(__file__).with_name("event_catalog.json").read_text(encoding="utf-8"))
     result = []
-    reward_kinds = {"loot", "dice", "fragments", "experience", "rank", "all_hp_percent", "life", "max_life", "hero"}
+    reward_kinds = {"loot", "dice", "fragments", "experience", "rank", "all_hp_percent", "life", "max_life", "hero",
+                    "recruit_capacity"}
     for event_id, item in data.items():
         branches = []
         for branch_id, entry in item["branches"].items():
