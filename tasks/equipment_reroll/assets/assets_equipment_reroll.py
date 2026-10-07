@@ -192,16 +192,6 @@ OCR_EQUIPMENT_REROLL_APPLIED = ButtonWrapper(
         button=(380, 227, 646, 397),
     ),
 )
-OCR_EQUIPMENT_REROLL_APPLIED_MAIN = ButtonWrapper(
-    name='OCR_EQUIPMENT_REROLL_APPLIED_MAIN',
-    share=Button(
-        file='./assets/share/equipment_reroll/OCR_EQUIPMENT_REROLL_APPLIED_MAIN.png',
-        area=(386, 167, 646, 203),
-        search=(366, 147, 666, 223),
-        color=(72, 69, 76),
-        button=(386, 167, 646, 203),
-    ),
-)
 OCR_EQUIPMENT_REROLL_CANDIDATE = ButtonWrapper(
     name='OCR_EQUIPMENT_REROLL_CANDIDATE',
     share=Button(
@@ -232,16 +222,6 @@ OCR_EQUIPMENT_REROLL_CURRENT = ButtonWrapper(
         button=(201, 194, 466, 363),
     ),
 )
-OCR_EQUIPMENT_REROLL_MAIN = ButtonWrapper(
-    name='OCR_EQUIPMENT_REROLL_MAIN',
-    share=Button(
-        file='./assets/share/equipment_reroll/OCR_EQUIPMENT_REROLL_MAIN.png',
-        area=(206, 134, 466, 169),
-        search=(186, 114, 486, 189),
-        color=(68, 62, 66),
-        button=(206, 134, 466, 169),
-    ),
-)
 OCR_EQUIPMENT_REROLL_POINTS = ButtonWrapper(
     name='OCR_EQUIPMENT_REROLL_POINTS',
     share=Button(
@@ -250,16 +230,6 @@ OCR_EQUIPMENT_REROLL_POINTS = ButtonWrapper(
         search=(955, 82, 1105, 160),
         color=(50, 48, 31),
         button=(975, 102, 1085, 140),
-    ),
-)
-OCR_EQUIPMENT_REROLL_REPLACE_MAIN = ButtonWrapper(
-    name='OCR_EQUIPMENT_REROLL_REPLACE_MAIN',
-    share=Button(
-        file='./assets/share/equipment_reroll/OCR_EQUIPMENT_REROLL_REPLACE_MAIN.png',
-        area=(531, 260, 790, 295),
-        search=(511, 240, 810, 315),
-        color=(58, 77, 96),
-        button=(531, 260, 790, 295),
     ),
 )
 OCR_EQUIPMENT_REROLL_REPLACE_STATS = ButtonWrapper(
