@@ -20,79 +20,9 @@ import module.config.server as server
 from tasks.activity import calendar, scheduling
 from tasks.activity.limited_activity import LimitedActivityEntry
 from tasks.activity.entry import SpecialActivityEntry
-from tasks.activity.free_gacha_20 import FreeGacha20
 
 
-class Config:
-    SpecialActivity_BuyHucheMysticMedals = False
-    Emulator_PackageName = "com.zlongame.cn.epicseven"
-    Emulator_GameLanguage = "auto"
-    Scheduler_ServerUpdate = "03:00"
-    LimitedActivity_GetFreeGacha = True
-    SpecialActivity_GetTaskReward = True
-    SpecialActivity_GetDailyReward = True
-
-    def __init__(self):
-        self.values = {}
-        self.delays = []
-        self.calls = []
-
-    def cross_get(self, path, default=None):
-        return self.values.get(path, default)
-
-    def cross_set(self, path, value):
-        self.values[path] = value
-
-    def task_delay(self, **kwargs):
-        self.delays.append(kwargs)
-
-    def task_call(self, task, **kwargs):
-        self.calls.append((task, kwargs))
-
-    def is_task_enabled(self, task):
-        return True
-
-
-class Claim(FreeGacha20):
-    def __init__(self, frames):
-        self.config = Config()
-        self.activity_id = "test_campaign"
-        self.frames = frames
-        self.frame = -1
-        self.clicks = 0
-        self.popups = 0
-        self.device = SimpleNamespace(screenshot=self.screenshot)
-        self.device.screenshot()
-
-    def screenshot(self):
-        self.frame += 1
-        if self.frame >= len(self.frames):
-            raise AssertionError("Claim did not terminate on the supplied frames")
-
-    def select_activity(self, *args, **kwargs):
-        return True
-
-    def ui_goto(self, *args, **kwargs):
-        pass
-
-    def appear(self, button, **kwargs):
-        return button.name == "FREE_20_GACHA_OBTAINED" and self.frames[self.frame] == "obtained"
-
-    def appear_then_click(self, button, **kwargs):
-        if button.name == "FREE_20_GACHA" and self.frames[self.frame] == "claim":
-            self.clicks += 1
-            return True
-        return False
-
-    def handle_touch_to_close(self, **kwargs):
-        if self.frames[self.frame] == "popup":
-            self.popups += 1
-            return True
-        return False
-
-    def handle_network_error(self):
-        return False
-
+from tests.support.history_cn_september_update import Config, Claim
 
 class CalendarTests(unittest.TestCase):
     def setUp(self):

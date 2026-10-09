@@ -39,41 +39,8 @@ from tasks.dungeon.assets.assets_dungeon_state import (
 
 from tasks.dungeon.dungeon import Combat
 
-class OfflineDevice:
-    def __init__(self, image):
-        self.image = image
 
-    @staticmethod
-    def stuck_record_add(*args, **kwargs):
-        pass
-
-class OfflineConfig(SimpleNamespace):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.cross_values = {}
-
-    def cross_get(self, path, default=None):
-        return self.cross_values.get(path, default)
-
-    def cross_set(self, path, value):
-        self.cross_values[path] = value
-
-class ExchangeDevice:
-    def __init__(self, currency: int):
-        self.currency = currency
-        self.batches = []
-        self.screenshots = 0
-        self.click_record_clears = 0
-
-    def screenshot(self):
-        self.screenshots += 1
-
-    def multi_click(self, button, n, interval):
-        self.batches.append((button.name, n, interval))
-        self.currency = max(self.currency - n * 100, 0)
-
-    def click_record_clear(self):
-        self.click_record_clears += 1
+from tests.support.history_urgent_tasks import OfflineDevice, OfflineConfig, ExchangeDevice
 
 def build_combat(image_name: str, difficulty: str) -> Combat:
     combat = Combat.__new__(Combat)

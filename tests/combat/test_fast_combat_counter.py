@@ -11,37 +11,20 @@ from unittest.mock import patch
 WORKTREE = Path(__file__).resolve().parents[2]
 PROJECT_ROOT = WORKTREE
 
-from tests.support.history_september_runtime_fixes import Frames, timers
-from tasks.dungeon.prepare import CombatPrepare, CombatPrepareCounter
+from tests.support.history_september_runtime_fixes import timers
+from tasks.dungeon.prepare import CombatPrepareCounter
 from tasks.dungeon.assets.assets_dungeon_fast_combat import (
     FAST_COMBAT_TIMES_MINUS,
     FAST_COMBAT_TIMES_PLUS,
 )
 
 
+from tests.support.history_fast_combat_counter import CountPrepare
+
 def parse_frame(ocr, image):
     # Substitute recognition only; exercise the actual counter postprocessor,
     # format parser and fast-combat range validation for every raw OCR value.
     return ocr.format_result(ocr.after_process(image["raw"]))
-
-
-class CountPrepare(Frames, CombatPrepare):
-    def __init__(self, frames):
-        super().__init__(frames)
-        self.actions = []
-        self.device.multi_click = self.multi_click
-
-    def _ocr_lang(self):
-        return "cn"
-
-    def _handle_dungeon_additional(self):
-        return self.frame.get("popup", False)
-
-    def appear(self, button):
-        return self.frame.get("buttons", True)
-
-    def multi_click(self, button, n, interval):
-        self.actions.append((self.index, button.name, n))
 
 
 def make_frames(*raws, **extra):
