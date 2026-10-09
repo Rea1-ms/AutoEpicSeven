@@ -23,7 +23,6 @@ from tasks.dungeon.rune_balance import (
     RUNE_ELEMENTS, RuneStock, choose_rune_target, rune_sample_yields,
 )
 
-SCREENSHOT = Path(r"C:\Users\rea1m\Documents\MuMu共享文件夹\Screenshots\MuMu-20260922-233430-724.png")
 EXPECTED = {
     "Dark": RuneStock(117, 267, 4),
     "Light": RuneStock(105, 169, 10),

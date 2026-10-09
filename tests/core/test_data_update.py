@@ -107,8 +107,3 @@ class LegacyRuleTests(unittest.TestCase):
 
     def test_parse_e7_counter_text(self):
         test_parse_e7_counter_text()
-
-
-
-# Historical assertions retained verbatim for migration review; not executable evidence.
-HISTORICAL_CONTRACTS = 'def test_data_update_run_skips_main_resource_stage(self):\n        test_data_update_run_skips_main_resource_stage()\n\ndef test_e7_dashboard_generated_stored_entries_visible(self):\n        test_e7_dashboard_generated_stored_entries_visible()'

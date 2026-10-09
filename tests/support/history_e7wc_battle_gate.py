@@ -25,7 +25,6 @@ HISTORICAL_ACTIVITIES = {
 }
 
 SCREENSHOTS = Path(__file__).parent / "screenshots/e7wc_battle_gate"
-KOHARU = Path("C:/Users/rea1m/Documents/MuMu共享文件夹/Screenshots/MuMu-20260917-173824-447.png")
 EVENT_ID = "e7wc_battle_gate_2026_09_10"
 NOW = datetime.fromisoformat("2026-09-18T12:00:00+08:00")
 
@@ -100,11 +99,6 @@ class Claim(E7wcBattleGate):
 
     def handle_network_error(self):
         return False
-
-
-
-
-
 
 
 __all__ = ['Claim']

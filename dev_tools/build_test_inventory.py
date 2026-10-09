@@ -1,4 +1,4 @@
-"""Record the ignored historical test tree without importing any of its scripts."""
+"""Build the first migration inventory in a new file, never overwrite maintained records."""
 
 import argparse
 import ast
@@ -26,7 +26,10 @@ def category(name, source):
     return "规则测试"
 
 
-def build(source_root):
+def build(source_root, destination=DESTINATION):
+    destination = Path(destination)
+    if destination.exists():
+        raise FileExistsError(f"Inventory already exists; choose a new --out path: {destination}")
     manifest = json.loads((ROOT / "tests" / "fixtures" / "dimensional_exploration" / "manifest.json").read_text(encoding="utf-8"))["fixtures"]
     records = []
     for source in sorted(source_root.glob("test_*.py")):
@@ -79,12 +82,17 @@ def build(source_root):
         for method in cls.body if isinstance(method, ast.FunctionDef) and method.name.startswith("test_")]
     records.append({"source": "tests/test_offline_runner.py", "business": "测试基础设施",
                     "status": "新增", "reason": "", "cases": contract_cases, "file_category": None})
-    DESTINATION.write_text(json.dumps({"schema_version": 1, "source_root": "ignored test/ in main checkout",
-                                       "files": records}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    # Exclusive creation also protects against another writer after the check.
+    with destination.open("x", encoding="utf-8", newline="\n") as stream:
+        stream.write(json.dumps({"schema_version": 1, "source_root": "ignored test/ in main checkout",
+                                 "files": records}, ensure_ascii=False, indent=2) + "\n")
     print(f"Recorded 100 historical scripts, 59 migrated cases and {len(contract_cases)} new cases")
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source", type=Path, required=True)
-    build(parser.parse_args().source)
+    parser.add_argument("--out", type=Path, default=DESTINATION,
+                        help="New first-migration inventory; existing files are rejected")
+    args = parser.parse_args()
+    build(args.source, args.out)

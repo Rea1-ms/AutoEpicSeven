@@ -1,0 +1,157 @@
+def test_oversea_and_cn_dispatch_stay_independent(self):
+        config = SimpleNamespace(Emulator_PackageName="com.stove.epic7.google")
+        server_.lang = "global_cn"
+        entry = SpecialActivityEntry(config)
+        self.assertEqual(entry._event_mode(), entry.FREE_GACHA_20_ACTIVITY)
+        self.assertEqual(
+            entry._event_end_time(),
+            datetime(2026, 10, 29, 2, tzinfo=entry.EVENT_TIMEZONE),
+        )
+
+        config.Emulator_PackageName = "com.zlongame.cn.epicseven"
+        server_.lang = "cn"
+        self.assertEqual(entry._event_mode(), entry.LEGACY_ACTIVITY)
+        self.assertEqual(
+            entry._event_end_time(),
+            datetime(2026, 9, 17, 11, tzinfo=entry.EVENT_TIMEZONE),
+        )
+
+def test_already_obtained_returns_without_clicking(self):
+        activity = object.__new__(FreeGacha20)
+        activity.config = MagicMock()
+        activity.device = FakeDevice()
+        activity.ui_goto = MagicMock()
+        activity.appear = MagicMock(
+            side_effect=lambda button: button == FREE_20_GACHA_OBTAINED
+        )
+        activity.appear_then_click = MagicMock()
+        activity.handle_touch_to_close = MagicMock()
+        activity.handle_network_error = MagicMock()
+
+        self.assertTrue(activity.run_claim())
+        activity.ui_goto.assert_called_once_with(
+            page_common_activity,
+            skip_first_screenshot=True,
+        )
+        activity.appear_then_click.assert_not_called()
+        activity.config.cross_set.assert_called_once()
+        activity.config.task_call.assert_not_called()
+        self.assertEqual(
+            activity.config.cross_set.call_args.args[0],
+            FREE_GACHA_20_CHECKED_AT,
+        )
+
+def test_claim_closes_reward_and_waits_for_obtained_marker(self):
+        activity = object.__new__(FreeGacha20)
+        activity.config = MagicMock()
+        activity.device = FakeDevice()
+        activity.ui_goto = MagicMock()
+
+        frame = {"value": 0}
+
+        def appear(button):
+            return button == FREE_20_GACHA_OBTAINED and frame["value"] >= 2
+
+        def click(button, interval=0):
+            if button == FREE_20_GACHA and frame["value"] == 0:
+                frame["value"] = 1
+                return True
+            return False
+
+        def close(interval=0):
+            if frame["value"] == 1:
+                frame["value"] = 2
+                return True
+            return False
+
+        activity.appear = appear
+        activity.appear_then_click = click
+        activity.handle_touch_to_close = close
+        activity.handle_network_error = MagicMock(return_value=False)
+
+        self.assertTrue(activity.run_claim())
+        self.assertEqual(frame["value"], 2)
+        self.assertEqual(activity.device.screenshot_count, 2)
+        activity.config.task_call.assert_called_once_with(
+            "Gacha",
+            force_call=False,
+        )
+
+def test_oversea_post_login_claim_is_skipped(self):
+        server_.lang = "global_cn"
+        config = MagicMock(
+            Emulator_PackageName="com.stove.epic7.google",
+        )
+        config.is_task_enabled.return_value = True
+        entry = SpecialActivityEntry(config, device=FakeDevice())
+        entry._event_end_time = MagicMock(
+            return_value=datetime.max.replace(tzinfo=entry.EVENT_TIMEZONE)
+        )
+
+        self.assertTrue(entry.run_login_daily_reward())
+        self.assertEqual(entry.device.screenshot_count, 0)
+
+def test_cn_post_login_daily_reward_is_unchanged(self):
+        server_.lang = "cn"
+        config = MagicMock(
+            Emulator_PackageName="com.zlongame.cn.epicseven",
+            SpecialActivity_GetDailyReward=True,
+        )
+        config.is_task_enabled.return_value = True
+        activity = MagicMock()
+        activity.run_get_daily_reward.return_value = True
+        entry = SpecialActivityEntry(config, device=FakeDevice())
+        entry._event_end_time = MagicMock(
+            return_value=datetime.max.replace(tzinfo=entry.EVENT_TIMEZONE)
+        )
+
+        with patch(
+            "tasks.activity.special_activity.SpecialActivity",
+            return_value=activity,
+        ):
+            self.assertTrue(entry.run_login_daily_reward())
+
+        activity.run_get_daily_reward.assert_called_once_with(
+            skip_first_screenshot=True
+        )
+        activity.ui_goto.assert_called_once_with(
+            page_main,
+            skip_first_screenshot=True,
+        )
+
+def test_checked_state_expires_at_server_update(self):
+        checked_at = datetime(2026, 9, 3, 10)
+        config = SimpleNamespace(
+            Scheduler_ServerUpdate="02:00",
+            cross_get=lambda key, default=None: (
+                checked_at if key == FREE_GACHA_20_CHECKED_AT else default
+            ),
+        )
+
+        with patch(
+            "tasks.activity.scheduling.get_server_last_update",
+            return_value=checked_at - timedelta(hours=8),
+        ):
+            self.assertTrue(is_free_gacha_20_checked_today(config))
+
+        with patch(
+            "tasks.activity.scheduling.get_server_last_update",
+            return_value=checked_at + timedelta(hours=16),
+        ):
+            self.assertFalse(is_free_gacha_20_checked_today(config))
+
+def test_after_battle_rescheduling_is_cn_only(self):
+        overseas = SimpleNamespace(Emulator_PackageName="com.stove.epic7.google")
+        self.assertFalse(should_schedule_after_battle(overseas))
+
+        cn = SimpleNamespace(
+            Emulator_PackageName="com.zlongame.cn.epicseven",
+            SpecialActivity_GetTaskReward=True,
+            Scheduler_ServerUpdate="03:00",
+            cross_get=MagicMock(return_value=None),
+        )
+        with patch(
+            "tasks.activity.scheduling.get_server_last_update",
+            return_value=datetime(2026, 8, 29, 3),
+        ):
+            self.assertTrue(should_schedule_after_battle(cn))

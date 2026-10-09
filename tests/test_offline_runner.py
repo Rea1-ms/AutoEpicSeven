@@ -12,12 +12,21 @@ from unittest.mock import patch
 from dev_tools import run_offline_tests as runner
 from dev_tools import build_exploration_fixtures as fixture_importer
 from dev_tools import build_fixture_contact_sheets as contact_sheets
+from dev_tools import build_test_inventory as inventory_builder
 from tests.support.exploration import ReplayDevice, artifact_path
 from tests.support import offline
 from tests.support import history_fixtures
 
 
 class RunnerContractTests(unittest.TestCase):
+    def test_inventory_builder_refuses_existing_output(self):
+        destination = runner.ROOT / "tests/inventory.json"
+        original = destination.read_bytes()
+        for kwargs in ({}, {"destination": destination}):
+            with self.subTest(explicit_output=bool(kwargs)), self.assertRaises(FileExistsError):
+                inventory_builder.build(runner.ROOT / "test", **kwargs)
+        self.assertEqual(destination.read_bytes(), original)
+
     def test_inventory_has_one_record_per_registered_case(self):
         inventory = json.loads((runner.ROOT / 'tests/inventory.json').read_text(encoding='utf-8'))
         sources = [item['source'] for item in inventory['files']]

@@ -1,0 +1,20 @@
+def test_upgrade_removes_retired_controls_and_preserves_user_preferences(self):
+        old = {
+            "SpecialActivity": {
+                "Scheduler": {"Enable": False},
+                "SpecialActivity": {
+                    "GetDailyReward": True,
+                    "GetTaskReward": True,
+                    "GetFreeGacha": False,
+                    "GetEnergyDrink": True,
+                },
+                "GachaResult": {"SaveScreenshot": True, "OcrResult": False},
+            },
+            "Gacha": {"GachaResult": {"SaveScreenshot": False, "OcrResult": True}},
+        }
+        upgraded = self.updater.config_update(old)
+        event = upgraded["SpecialActivity"]
+        self.assertEqual(event["SpecialActivity"], {"GetFreeGacha": False, "GetE7wcBattleGateReward": True, "GetKoharuRaffleReward": True, "BuyHucheMysticMedals": False})
+        self.assertFalse(event["Scheduler"]["Enable"])
+        self.assertNotIn("GachaResult", event)
+        self.assertEqual(upgraded["Gacha"]["GachaResult"], old["Gacha"]["GachaResult"])

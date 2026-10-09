@@ -76,9 +76,3 @@ def test_should_mid_run_resource_sync():
 
     shop._refreshes_since_resource_sync = 10
     assert shop._should_mid_run_resource_sync() is True
-
-
-
-
-# Historical assertions retained verbatim for migration review; not executable evidence.
-HISTORICAL_CONTRACTS = 'def test_only_free_entry_gold_requirement(self):\n        test_only_free_entry_gold_requirement()\n\ndef test_minimum_affordable_gold_requirement(self):\n        test_minimum_affordable_gold_requirement()\n\ndef test_apply_local_resource_spend(self):\n        test_apply_local_resource_spend()\n\ndef test_should_mid_run_resource_sync(self):\n        test_should_mid_run_resource_sync()\n\nclass LegacyRuleTests(unittest.TestCase):\n    def test_only_free_entry_gold_requirement(self):\n        test_only_free_entry_gold_requirement()\n\n    def test_minimum_affordable_gold_requirement(self):\n        test_minimum_affordable_gold_requirement()\n\n    def test_apply_local_resource_spend(self):\n        test_apply_local_resource_spend()\n\n    def test_should_mid_run_resource_sync(self):\n        test_should_mid_run_resource_sync()'

@@ -3007,6 +3007,15 @@
           "fixtures": [],
           "status": "已纳入",
           "reason": "在独立子进程模拟零时区与北京时间，复现并防止时间断言回归"
+        },
+        {
+          "id": "tests.test_offline_runner.RunnerContractTests.test_inventory_builder_refuses_existing_output",
+          "category": "资源基础检查",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "新增",
+          "reason": ""
         }
       ],
       "file_category": null

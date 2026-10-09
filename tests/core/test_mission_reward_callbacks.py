@@ -33,7 +33,3 @@ class MissionRewardCallbackRuleTest(unittest.TestCase):
         self.assertFalse(Combat._should_schedule_mission_reward(0, runtime_active=False))
         self.assertFalse(Combat._should_schedule_mission_reward(1, runtime_active=True))
         self.assertTrue(Combat._should_schedule_mission_reward(1, runtime_active=False))
-
-
-# Historical assertions retained verbatim for migration review; not executable evidence.
-HISTORICAL_CONTRACTS = 'def test_combat_success_runtime_state_matches_mode(self):\n        self.assertTrue(Combat._runtime_active_after_success(event_mode=True, use_fast_combat=True))\n        self.assertTrue(Combat._runtime_active_after_success(event_mode=False, use_fast_combat=False))\n        self.assertFalse(Combat._runtime_active_after_success(event_mode=False, use_fast_combat=True))'

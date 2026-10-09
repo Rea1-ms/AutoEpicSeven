@@ -39,16 +39,10 @@ def test_next_midnight_returns_datetime():
     assert isinstance(target, datetime)
 
 
-
-
 import unittest
 
 class LegacyRuleTests(unittest.TestCase):
 
 
-
     def test_next_midnight_returns_datetime(self):
         test_next_midnight_returns_datetime()
-
-# Historical assertions retained verbatim for migration review; not executable evidence.
-HISTORICAL_CONTRACTS = 'def test_script_path_points_to_community_aio(self):\n        test_script_path_points_to_community_aio()\n\ndef test_build_command_without_credentials_file(self):\n        test_build_command_without_credentials_file()\n\ndef test_build_command_with_credentials_file(self):\n        test_build_command_with_credentials_file()'
