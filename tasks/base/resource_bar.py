@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from module.base.timer import Timer
 from module.base.utils import area_offset
 from module.logger import logger
+from module.ocr.language import resolve_ocr_lang
 from module.ocr.ocr import OcrWhiteLetterOnComplexBackground
 from tasks.base.assets.assets_base_resource_bar import (
     ARENA_FLAG_ICON,
@@ -251,16 +252,7 @@ class ResourceBarMixin:
     RESOURCE_BAR_TIMEOUT_COUNT = 8
 
     def _ocr_lang(self) -> str:
-        lang = getattr(self.config, "Emulator_GameLanguage", "cn")
-        if lang in ("auto", "", None, "cn", "global_cn", "zh", "zh_cn"):
-            return "cn"
-        if lang in ("en", "global_en", "en_us"):
-            return "en"
-        if lang in ("jp", "ja", "ja_jp"):
-            return "jp"
-        if lang in ("tw", "zh_tw"):
-            return "tw"
-        return "cn"
+        return resolve_ocr_lang(self.config)
 
     def _match_resource_bar_icons(
         self,

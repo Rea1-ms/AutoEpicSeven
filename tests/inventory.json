@@ -6414,6 +6414,24 @@
           "status": "未纳入",
           "reason": "资源采集流程和旧 E7 仪表盘字段已经替换，原规则不适用于当前版本",
           "validation_scope": "obsolete_contract"
+        },
+        {
+          "id": "tests.core.test_data_update.SharedEntryTests.test_recognition_languages_share_normalization_without_changing_assets",
+          "category": "资源基础检查",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "新增",
+          "reason": ""
+        },
+        {
+          "id": "tests.core.test_data_update.SharedEntryTests.test_fixed_task_entries_preserve_constructor_arguments",
+          "category": "资源基础检查",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "新增",
+          "reason": ""
         }
       ]
     },

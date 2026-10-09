@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from typing import Literal
 
 from module.base.button import ButtonWrapper, ClickButton
+from module.ocr.language import resolve_ocr_lang as resolve_ocr_lang
 from module.ocr.ocr import Digit, DigitCounter
 
 PurchaseQuantityStrategy = Literal["once", "target", "max"]
@@ -85,8 +86,6 @@ def parse_purchase_counter_text(result: str) -> tuple[int, int, int]:
     return current, total - current, total
 
 
-
-
 def counter_to_text(counter: tuple[int, int, int]) -> str:
     current, _, total = counter
     return f"{current}/{total}"
@@ -118,19 +117,6 @@ def normalize_config_purchase_quantity(value, maximum: int = 1) -> int:
     if maximum > 0:
         value = min(value, maximum)
     return value
-
-
-def resolve_ocr_lang(config) -> str:
-    lang = getattr(config, "Emulator_GameLanguage", "cn")
-    if lang in ("auto", "", None, "cn", "global_cn", "zh", "zh_cn"):
-        return "cn"
-    if lang in ("en", "global_en", "en_us"):
-        return "en"
-    if lang in ("jp", "ja", "ja_jp"):
-        return "jp"
-    if lang in ("tw", "zh_tw"):
-        return "tw"
-    return "cn"
 
 
 def ocr_purchase_counter(image, config, preset: PurchaseCounterPreset) -> tuple[int, int, int]:

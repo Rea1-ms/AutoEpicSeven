@@ -16,6 +16,7 @@ import module.config.server as server
 from module.base.timer import Timer
 from module.exception import ScriptError
 from module.logger import logger
+from module.ocr.language import resolve_ocr_lang
 from module.ocr.ocr import OcrWhiteLetterOnComplexBackground
 from tasks.base.page import page_mail, page_main
 from tasks.base.ui import UI
@@ -134,16 +135,7 @@ class Mail(UI):
         self.device.click_record_clear()
 
     def _ocr_lang(self) -> str:
-        lang = getattr(self.config, "Emulator_GameLanguage", "cn")
-        if lang in ("auto", "", None, "cn", "global_cn", "zh", "zh_cn"):
-            return "cn"
-        if lang in ("en", "global_en", "en_us"):
-            return "en"
-        if lang in ("jp", "ja", "ja_jp"):
-            return "jp"
-        if lang in ("tw", "zh_tw"):
-            return "tw"
-        return "cn"
+        return resolve_ocr_lang(self.config)
 
     def _mail_threshold(self) -> str:
         return getattr(self.config, "Mail_CollectWithin", "1h")
