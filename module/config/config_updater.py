@@ -634,86 +634,73 @@ class ConfigUpdater:
         if not deep_get(data, 'SecretShop.SecretShop.BuyMysticMedal', default=True):
             yield 'SecretShop.SecretShop.TargetMystic'
         # Fast combat & repeat combat
-        for task in ('Combat',):
-            task_prefix = f'{task}.Combat'
-            is_farm_task = task == 'CombatFarm'
-            combat_domain = deep_get(data, f'{task_prefix}.Domain', default='Hunt')
-            combat_hunt_grade = deep_get(data, f'{task_prefix}.HuntGrade', default='Hell')
-            combat_hunt_boss = deep_get(data, f'{task_prefix}.HuntBoss', default='Wyvern')
-            if combat_domain == 'Hunt':
-                yield f'{task_prefix}.Element'
-                if combat_hunt_boss == 'Ogre':
-                    combat_hunt_grade = 'Dimensional'
-                    yield f'{task_prefix}.HuntGrade'
-            else:
-                yield f'{task_prefix}.HuntBoss'
-
-            if combat_domain != 'SpiritAltar':
-                yield f'{task_prefix}.AltarBalance'
-            elif deep_get(data, f'{task_prefix}.AltarBalance', default=False):
-                yield f'{task_prefix}.Element'
-                yield f'{task_prefix}.AltarGrade'
-
-            if combat_domain != 'Episode4':
-                yield f'{task_prefix}.Episode4Material'
-
-            if is_farm_task:
-                yield f'{task_prefix}.FastCombatCount'
-            elif combat_domain == 'Saint37':
-                yield f'{task_prefix}.FastCombat'
-                yield f'{task_prefix}.FastCombatCount'
-            elif combat_domain == 'Hunt' and combat_hunt_grade == 'Dimensional':
-                yield f'{task_prefix}.FastCombat'
-                yield f'{task_prefix}.FastCombatCount'
-            elif deep_get(data, f'{task_prefix}.FastCombat', default=True) is False:
-                yield f'{task_prefix}.FastCombatCount'
-
-            if deep_get(
-                data,
-                f'{task_prefix}.RepeatCombatHeroSpeedFilter',
-                default=True,
-            ) is False:
-                yield f'{task_prefix}.RepeatCombatHeroSpeed'
-            if deep_get(
-                data,
-                f'{task_prefix}.RepeatCombatLegendarySpeedFilter',
-                default=True,
-            ) is False:
-                yield f'{task_prefix}.RepeatCombatLegendarySpeed'
-
-            if not is_farm_task and normalize_execution_mode(
-                deep_get(data, f'{task_prefix}.BurnoutMode', default=EXECUTION_MODE_DAILY)
-            ) == EXECUTION_MODE_BURNOUT:
-                yield f'{task_prefix}.FastCombatCount'
-                yield f'{task_prefix}.RepeatCombatLeifCount'
-                yield f'{task_prefix}.RepeatCombatPrioritizeStamina'
-
-            if is_farm_task and (
-                combat_domain == 'Saint37'
-                or (combat_domain == 'Hunt' and combat_hunt_grade == 'Dimensional')
-            ):
-                yield f'{task_prefix}.FastCombat'
-
-            if combat_domain != 'Saint37':
-                yield f'{task_prefix}.Saint37AutoRecycle'
-
-            # Burnout mode schedules by stamina regeneration. Dimensional hunt
-            # consumes its own resource, so it remains outside this mode.
-            if (
-                is_farm_task
-                or (combat_domain == 'Hunt' and combat_hunt_grade == 'Dimensional')
-            ):
-                yield f'{task_prefix}.BurnoutMode'
-
-            if combat_domain in ('Saint37', 'Episode4'):
-                yield f'{task_prefix}.Element'
-                yield f'{task_prefix}.AltarGrade'
+        task_prefix = 'Combat.Combat'
+        combat_domain = deep_get(data, f'{task_prefix}.Domain', default='Hunt')
+        combat_hunt_grade = deep_get(data, f'{task_prefix}.HuntGrade', default='Hell')
+        combat_hunt_boss = deep_get(data, f'{task_prefix}.HuntBoss', default='Wyvern')
+        if combat_domain == 'Hunt':
+            yield f'{task_prefix}.Element'
+            if combat_hunt_boss == 'Ogre':
+                combat_hunt_grade = 'Dimensional'
                 yield f'{task_prefix}.HuntGrade'
-            else:
-                if combat_domain != 'SpiritAltar':
-                    yield f'{task_prefix}.AltarGrade'
-                if combat_domain != 'Hunt':
-                    yield f'{task_prefix}.HuntGrade'
+        else:
+            yield f'{task_prefix}.HuntBoss'
+
+        if combat_domain != 'SpiritAltar':
+            yield f'{task_prefix}.AltarBalance'
+        elif deep_get(data, f'{task_prefix}.AltarBalance', default=False):
+            yield f'{task_prefix}.Element'
+            yield f'{task_prefix}.AltarGrade'
+
+        if combat_domain != 'Episode4':
+            yield f'{task_prefix}.Episode4Material'
+
+        if combat_domain == 'Saint37':
+            yield f'{task_prefix}.FastCombat'
+            yield f'{task_prefix}.FastCombatCount'
+        elif combat_domain == 'Hunt' and combat_hunt_grade == 'Dimensional':
+            yield f'{task_prefix}.FastCombat'
+            yield f'{task_prefix}.FastCombatCount'
+        elif deep_get(data, f'{task_prefix}.FastCombat', default=True) is False:
+            yield f'{task_prefix}.FastCombatCount'
+
+        if deep_get(
+            data,
+            f'{task_prefix}.RepeatCombatHeroSpeedFilter',
+            default=True,
+        ) is False:
+            yield f'{task_prefix}.RepeatCombatHeroSpeed'
+        if deep_get(
+            data,
+            f'{task_prefix}.RepeatCombatLegendarySpeedFilter',
+            default=True,
+        ) is False:
+            yield f'{task_prefix}.RepeatCombatLegendarySpeed'
+
+        if normalize_execution_mode(
+            deep_get(data, f'{task_prefix}.BurnoutMode', default=EXECUTION_MODE_DAILY)
+        ) == EXECUTION_MODE_BURNOUT:
+            yield f'{task_prefix}.FastCombatCount'
+            yield f'{task_prefix}.RepeatCombatLeifCount'
+            yield f'{task_prefix}.RepeatCombatPrioritizeStamina'
+
+        if combat_domain != 'Saint37':
+            yield f'{task_prefix}.Saint37AutoRecycle'
+
+        # Burnout mode schedules by stamina regeneration. Dimensional hunt
+        # consumes its own resource, so it remains outside this mode.
+        if combat_domain == 'Hunt' and combat_hunt_grade == 'Dimensional':
+            yield f'{task_prefix}.BurnoutMode'
+
+        if combat_domain in ('Saint37', 'Episode4'):
+            yield f'{task_prefix}.Element'
+            yield f'{task_prefix}.AltarGrade'
+            yield f'{task_prefix}.HuntGrade'
+        else:
+            if combat_domain != 'SpiritAltar':
+                yield f'{task_prefix}.AltarGrade'
+            if combat_domain != 'Hunt':
+                yield f'{task_prefix}.HuntGrade'
 
         if deep_get(data, 'Combat.UrgentTasks.Enable', default=True) is False:
             yield 'Combat.UrgentTasks.Difficulty'
