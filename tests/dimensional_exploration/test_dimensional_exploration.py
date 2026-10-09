@@ -8,12 +8,13 @@ import numpy as np
 from module.logger import logger
 from tests.support.exploration import frame, record_action, make_task as make_exploration_task
 from tasks.dimensional_exploration.policy import (
-    EventChoice, Offer, RunProgress, choose_event, choose_offer,
+    EventChoice, Offer, RunProgress, choose_offer,
     node_priority, parse_counter, parse_number,
 )
 from tasks.dimensional_exploration.vision import ExplorationVision
 from tasks.dimensional_exploration.recruitment import same_hero
 from tasks.dimensional_exploration.dimensional_exploration import DimensionalExploration
+from tasks.dimensional_exploration.event import decide_event
 
 logger.setLevel('ERROR')
 
@@ -35,13 +36,13 @@ class PolicyTests(unittest.TestCase):
     def test_event_keeps_last_life_and_reserves_investment(self):
         pool = [EventChoice(0, '消耗1点生命体征，获得1个随机战利品'),
                 EventChoice(1, '消耗2点生命体征，获得月亮之书', True)]
-        self.assertEqual(choose_event(pool, cores=20, fragments=0, life=3, loot=0).index, 1)
-        self.assertEqual(choose_event(pool, cores=20, fragments=0, life=2, loot=0).index, 0)
-        self.assertIsNone(choose_event(pool, cores=20, fragments=0, life=1, loot=0))
+        self.assertEqual(decide_event(pool, cores=20, fragments=0, life=3, loot=0).choice.index, 1)
+        self.assertEqual(decide_event(pool, cores=20, fragments=0, life=2, loot=0).choice.index, 0)
+        self.assertIsNone(decide_event(pool, cores=20, fragments=0, life=1, loot=0))
         coin = [EventChoice(0, '消耗50个次元碎片，获得望远镜镜片', True), EventChoice(1, '直接离开')]
-        self.assertEqual(choose_event(coin, cores=19, fragments=86, life=3, loot=0).index, 1)
-        self.assertEqual(choose_event(coin, cores=20, fragments=86, life=3, loot=0).index, 0)
-        self.assertIsNone(choose_event([EventChoice(0, '消耗未知资源，获得战利品')],
+        self.assertEqual(decide_event(coin, cores=19, fragments=86, life=3, loot=0).choice.index, 1)
+        self.assertEqual(decide_event(coin, cores=20, fragments=86, life=3, loot=0).choice.index, 0)
+        self.assertIsNone(decide_event([EventChoice(0, '消耗未知资源，获得战利品')],
                                      cores=20, fragments=999, life=3, loot=9))
 
     def test_settlement_latch_survives_repeated_frames_and_restart(self):
@@ -270,7 +271,6 @@ if {lang!r} == 'global_cn':
             task.handle_settlement(vision)
         self.assertEqual(task.progress.completed, 0)
         self.assertEqual(clicks, [])
-
 
 
     def test_unreadable_accessible_node_does_not_change_priority(self):

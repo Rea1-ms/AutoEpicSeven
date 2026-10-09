@@ -259,18 +259,6 @@ class Gacha(SummonResultRecorder, UI):
         finally:
             self.device.screenshot_interval_set()
 
-    def _wait_return_to_gacha(self):
-        timeout = Timer(10, count=20).start()
-        while 1:
-            self.device.screenshot()
-            if timeout.reached():
-                break
-            if self.ui_page_appear(page_gacha):
-                break
-            if self.ui_additional():
-                continue
-            if self.handle_network_error():
-                continue
 
     def _collect_golden_inheritance_full(self, skip_first_screenshot=True) -> bool:
         if not getattr(self.config, "Gacha_CollectGoldenInheritance", True):

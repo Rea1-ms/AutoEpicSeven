@@ -90,28 +90,6 @@ class CombatRuntimeMixin:
         self._combat_runtime_set(session)
         return True
 
-    def _handle_repeat_combat_finish_return(self) -> bool:
-        """
-        Unwind local dungeon pages back to main after consuming a result.
-
-        This path only matters for the "adopt existing result" startup case:
-        - an old background repeat combat finishes
-        - user manually stays on a combat-local page
-        - a new Combat task starts and detects `state=result`
-        - result cleanup succeeds, but we are still sitting somewhere inside
-          the dungeon flow instead of already being on main
-
-        Without this extra unwind step, the watch loop would keep waiting for
-        `is_in_main()` to become true on its own and eventually time out.
-        """
-        if not self._is_in_dungeon_context():
-            return False
-
-        if self.appear_then_click(BACK, interval=1):
-            logger.info("Combat: return to main after repeat combat result")
-            return True
-
-        return False
 
     def _leave_to_main(self, skip_first_screenshot=True) -> bool:
         """

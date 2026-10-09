@@ -21,29 +21,6 @@ def calculate_fast_combat_target(
     return min(configured, remaining, stamina // stamina_cost)
 
 
-def calculate_repeat_combat_target(
-    configured: int,
-    game_maximum: int,
-    affordable: int,
-    use_max: bool,
-    completed: int = 0,
-) -> int:
-    """Return the pet-repeat counter for the requested actual run count.
-
-    The counter excludes the first combat launched from the prepare page. A
-    counter of four therefore produces five actual runs. Keep configured,
-    completed, and affordable in actual-run units, and convert only at this
-    final UI boundary.
-    """
-    if game_maximum <= 0 or affordable <= 0:
-        return 0
-    affordable_repeats = affordable - 1
-    desired_repeats = game_maximum if use_max else configured - max(completed, 0) - 1
-    if desired_repeats <= 0 or affordable_repeats <= 0:
-        return 0
-    return min(desired_repeats, game_maximum, affordable_repeats)
-
-
 class CombatPrepareDigit(Digit):
     def after_process(self, result):
         result = result.replace("O", "0").replace("o", "0")

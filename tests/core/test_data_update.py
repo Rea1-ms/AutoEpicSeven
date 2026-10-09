@@ -6,8 +6,10 @@ _test_server.set_lang("global_cn")
 import json
 from pathlib import Path
 
-from tasks.item.data_update import normalize_e7_counter_text, parse_e7_counter_text
+from tasks.item.data_update import E7DigitCounter, normalize_e7_counter_text
 from tasks.item.data_update import DataUpdate
+from types import SimpleNamespace
+from unittest.mock import patch
 
 
 def test_normalize_e7_counter_text():
@@ -17,10 +19,22 @@ def test_normalize_e7_counter_text():
 
 
 def test_parse_e7_counter_text():
-    assert parse_e7_counter_text("1026/1000") == (1026, 1000)
-    assert parse_e7_counter_text("806/1000") == (806, 1000)
-    assert parse_e7_counter_text("250/500") == (250, 500)
-    assert parse_e7_counter_text("invalid") is None
+    # Preserve the migration ID, but exercise the inventory reader and the
+    # actual counter postprocessor/parser rather than a parallel text helper.
+    updater = DataUpdate.__new__(DataUpdate)
+    updater.config = SimpleNamespace(Emulator_GameLanguage="auto")
+    updater.device = SimpleNamespace(image=object())
+    for raw, expected in (
+        ("1026/1000", (1026, -26, 1000)),
+        ("806/1000", (806, 194, 1000)),
+        ("250/500", (250, 250, 500)),
+        (" 1,026 ／ 1,000 ", (1026, -26, 1000)),
+        ("8O6/1OOO", (806, 194, 1000)),
+        ("invalid", (0, 0, 0)),
+    ):
+        with patch.object(E7DigitCounter, "ocr_single_line", autospec=True,
+                          side_effect=lambda reader, image: reader.format_result(reader.after_process(raw))):
+            assert updater._ocr_equipment_inventory_count() == expected
 
 
 class _DummyDevice:

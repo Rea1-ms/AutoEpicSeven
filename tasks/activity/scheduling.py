@@ -55,10 +55,6 @@ def _checked_path(config, event_id: str) -> str:
     return f"SpecialActivity.ActivityRuntime.CheckedEvents.{event_id}.{family}"
 
 
-def is_free_gacha_20_checked_today(config, event_id=DEFAULT_FREE_GACHA_20_ID) -> bool:
-    return is_activity_checked_today(config, event_id)
-
-
 def is_activity_checked_today(config, event_id: str, *, task="LimitedActivity") -> bool:
     """Return whether this campaign's reward was checked this server day."""
     checked_at = _free_gacha_20_checked_at(config, event_id)

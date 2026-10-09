@@ -8,7 +8,7 @@ import unittest
 from fractions import Fraction
 from pathlib import Path
 from types import SimpleNamespace
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 WORKTREE = Path(__file__).resolve().parents[2]
 PROJECT_ROOT = WORKTREE
@@ -20,7 +20,7 @@ server.set_lang("global_cn")
 from module.config.config_updater import ConfigUpdater
 from tasks.dungeon.dungeon import Combat
 from tasks.dungeon.rune_balance import (
-    RUNE_ELEMENTS, RuneStock, choose_rune_target, rune_sample_yields,
+    RUNE_DROP_SAMPLES, RUNE_ELEMENTS, RuneStock, choose_rune_target,
 )
 
 EXPECTED = {
@@ -115,24 +115,38 @@ class BalanceTests(unittest.TestCase):
             choose_rune_target({"Dark": RuneStock(0, 0, 0)})
 
     def test_sample_is_average_quantity(self):
-        self.assertEqual(
-            rune_sample_yields(
-                RuneStock(45, 22, 16), RuneStock(45, 100, 22),
-                grade="Hell", completed_runs=50,
-            ),
-            (Fraction(0), Fraction(78, 50), Fraction(6, 50)),
-        )
+        # Use measured quantities and completed runs at the real planner input.
+        # Six epic runes per fifty runs require fifty Hell runs for six missing
+        # epic runes; treating six as a per-run yield would choose one run.
+        samples = dict(RUNE_DROP_SAMPLES, Hell=(50, RuneStock(0, 78, 6)))
+        stocks = {key: RuneStock(4500, 2200, 1600) for key in RUNE_ELEMENTS}
+        stocks["Dark"] = RuneStock(45, 0, 10)
+        target = choose_rune_target(stocks, samples=samples)
+        self.assertEqual(target.expected_runs, {"Hell": 50.0})
+        self.assertEqual(target.estimated_stamina, 600.0)
+
+        obj = combat()
+        obj._read_rune_inventory.return_value = dict(EXPECTED, Dark=RuneStock(45, 100, 22))
+        with patch("module.logger.logger.info") as info:
+            obj._rune_balance_after_settled({"rune_balance_before": {"Dark": [45, 22, 16]}})
+        info.assert_any_call("Rune balance Dark: net inventory change=(0, 78, 6)")
 
     def test_sample_rejects_consumption_wrong_tier_and_unfinished_count(self):
-        for after, grade, count in [
-            (RuneStock(44, 22, 16), "Hell", 50),
-            (RuneStock(46, 22, 16), "Hell", 50),
-            (RuneStock(45, 22, 16), "Hell", 0),
-            (RuneStock(45, 22, 16), "unknown", 50),
-        ]:
-            with self.assertRaises(ValueError):
-                rune_sample_yields(RuneStock(45, 22, 16), after, grade=grade, completed_runs=count)
-
+        # Historical sample validation now covers the planner's actual inputs.
+        with self.assertRaises(ValueError):
+            RuneStock(-1, 0, 0)
+        for grade, count, drops in (
+            ("Hell", 50, RuneStock(1, 78, 6)),
+            ("Hell", 0, RuneStock(0, 78, 6)),
+            ("Hell", True, RuneStock(0, 78, 6)),
+            ("unknown", 50, RuneStock(0, 78, 6)),
+        ):
+            with self.subTest(grade=grade, count=count), self.assertRaises(ValueError):
+                samples = dict(RUNE_DROP_SAMPLES)
+                if grade == "unknown":
+                    samples.pop("Hell")
+                samples[grade] = (count, drops)
+                choose_rune_target(EXPECTED, samples=samples)
 
 
 class MeasuredYieldTests(unittest.TestCase):
@@ -219,8 +233,6 @@ class MeasuredYieldTests(unittest.TestCase):
             costs["Hell"] = value
             with self.assertRaises(ValueError):
                 choose_rune_target(self.stocks((0, 0, 0)), stamina_costs=costs)
-
-
 
 
 class IntegrationTests(unittest.TestCase):

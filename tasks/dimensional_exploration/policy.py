@@ -72,15 +72,6 @@ class EventChoice:
     available: bool = True
 
 
-def choose_event(choices: list[EventChoice], *, cores: int, fragments: int,
-                 life: int, loot: int | None, max_life: int | None = None) -> EventChoice | None:
-    """Compatibility entry for callers without persisted event observations."""
-    from tasks.dimensional_exploration.event import decide_event
-
-    decision = decide_event(choices, cores=cores, fragments=fragments, life=life, loot=loot, max_life=max_life)
-    return decision.choice if decision else None
-
-
 @dataclass
 class RunProgress:
     """Count a result only once and persist its latch through restarts.

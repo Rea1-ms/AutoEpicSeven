@@ -105,19 +105,19 @@ class CalendarTests(unittest.TestCase):
 
     def test_daily_record_campaign_and_server_isolation(self):
         scheduling.mark_free_gacha_20_checked(self.config, "first")
-        self.assertTrue(scheduling.is_free_gacha_20_checked_today(self.config, "first"))
-        self.assertFalse(scheduling.is_free_gacha_20_checked_today(self.config, "second"))
+        self.assertTrue(scheduling.is_activity_checked_today(self.config, "first"))
+        self.assertFalse(scheduling.is_activity_checked_today(self.config, "second"))
         self.config.Emulator_PackageName = "com.stove.epic7.google"
-        self.assertFalse(scheduling.is_free_gacha_20_checked_today(self.config, "first"))
+        self.assertFalse(scheduling.is_activity_checked_today(self.config, "first"))
 
     def test_expired_daily_record(self):
         self.config.values[scheduling._checked_path(self.config, "first")] = datetime.now() - timedelta(days=2)
-        self.assertFalse(scheduling.is_free_gacha_20_checked_today(self.config, "first"))
+        self.assertFalse(scheduling.is_activity_checked_today(self.config, "first"))
 
     def test_legacy_timestamp_migrates_only_original_campaign(self):
         self.config.values[scheduling.FREE_GACHA_20_CHECKED_AT] = datetime.now()
-        self.assertTrue(scheduling.is_free_gacha_20_checked_today(self.config))
-        self.assertFalse(scheduling.is_free_gacha_20_checked_today(self.config, "second"))
+        self.assertTrue(scheduling.is_activity_checked_today(self.config, calendar.DEFAULT_FREE_GACHA_20_ID))
+        self.assertFalse(scheduling.is_activity_checked_today(self.config, "second"))
 
     def test_checked_campaign_is_not_dispatched_again(self):
         scheduling.mark_free_gacha_20_checked(self.config)
@@ -131,7 +131,7 @@ class CalendarTests(unittest.TestCase):
         self.assertEqual(claim.clicks, 2)
         self.assertEqual(claim.popups, 1)
         self.assertEqual(len(claim.config.calls), 1)
-        self.assertTrue(scheduling.is_free_gacha_20_checked_today(claim.config, "test_campaign"))
+        self.assertTrue(scheduling.is_activity_checked_today(claim.config, "test_campaign"))
 
     def test_already_obtained_does_not_call_gacha(self):
         claim = Claim(["obtained"])

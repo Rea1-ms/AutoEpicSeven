@@ -5,8 +5,6 @@ from module.config import server as _test_server
 _test_server.set_lang("global_cn")
 
 
-
-
 from types import SimpleNamespace
 
 
@@ -14,10 +12,20 @@ from tasks.dungeon.prepare import (
     CombatPrepare,
     CombatPrepareDigit,
     calculate_fast_combat_target,
-    calculate_repeat_combat_target,
 )
 
 from tasks.dungeon.dungeon import Combat
+
+
+def repeat_budget(stamina, *, mode="Daily", leif_count=1):
+    combat = Combat.__new__(Combat)
+    combat.config = SimpleNamespace(
+        task=SimpleNamespace(command="Combat"), Combat_Domain="Hunt",
+        Combat_HuntGrade="Hell", Combat_BurnoutMode=mode,
+        Combat_RepeatCombatLeifCount=leif_count,
+    )
+    target = combat._server_repeat_target_leif_count(stamina)
+    return target, combat._server_repeat_stamina_budget(stamina, target, True)
 
 class FastSupportProbe:
     def __init__(self, domain: str, grade: str = "Hell"):
@@ -171,13 +179,16 @@ class ManualChecks(unittest.TestCase):
         self.assertTrue(calculate_fast_combat_target(10, 20, 400, 20) == 10, '20 stored fast combats still cap one batch at 10')
 
     def test_daily_repeat_counter_excludes_the_first_actual_run(self):
-        self.assertTrue(calculate_repeat_combat_target(5, 10, 5, use_max=False) == 4, 'daily repeat counter excludes the first actual run')
+        # Retain the migration ID; current repeat settings budget Leif units,
+        # so they must reserve 80 stamina without subtracting a first run.
+        self.assertEqual(repeat_budget(100), (1, (80, 20)))
 
     def test_daily_repeat_count_is_clamped_by_remaining_stamina(self):
-        self.assertTrue(calculate_repeat_combat_target(5, 10, 3, use_max=False) == 2, 'daily repeat count is clamped by remaining stamina')
+        self.assertEqual(repeat_budget(60), (1, (60, 0)))
 
     def test_burnout_repeat_counter_excludes_the_first_actual_run(self):
-        self.assertTrue(calculate_repeat_combat_target(5, 10, 3, use_max=True) == 2, 'burnout repeat counter excludes the first actual run')
+        self.assertEqual(repeat_budget(240, mode="Burnout"), (3, (240, 0)))
+        self.assertEqual(repeat_budget(79, mode="Burnout"), (0, (0, 79)))
 
     def test_240_stamina_prepares_10_fast_combats(self):
         fast_target = calculate_fast_combat_target(10, 10, 240, 20)
@@ -186,14 +197,9 @@ class ManualChecks(unittest.TestCase):
     def test_fixed_10_run_mode_ends_after_10_fast_combats(self):
         fast_target = calculate_fast_combat_target(10, 10, 240, 20)
         remaining_stamina = 240 - fast_target * 20
-        self.assertTrue(calculate_repeat_combat_target(
-                        configured=10,
-                        game_maximum=10,
-                        affordable=remaining_stamina // 20,
-                        use_max=False,
-                        completed=fast_target,
-                    )
-                    == 0, 'fixed 10-run mode ends after 10 fast combats')
+        # The retired fixed-run helper is replaced by post-fast-combat resource
+        # budgeting: a 40-stamina remainder cannot form a burnout repeat unit.
+        self.assertEqual(repeat_budget(remaining_stamina, mode="Burnout"), (0, (0, 40)))
 
     def test_stamina_thousands_separator_is_normalized(self):
         self.assertTrue(CombatPrepareDigit.__new__(CombatPrepareDigit).after_process("17,940") == "17940", 'stamina thousands separator is normalized')

@@ -387,9 +387,6 @@ class KnightsSupportMixin:
                 logger.info("Knights support request returned to support page")
                 return True
 
-    def _back_to_knights_from_support(self, skip_first_screenshot=True) -> bool:
-        self.ui_goto(page_knights, skip_first_screenshot=skip_first_screenshot)
-        return True
 
     def run_support(self, skip_first_screenshot=True, run_donate=True, run_request=True) -> bool:
         logger.hr("Knights Support", level=2)

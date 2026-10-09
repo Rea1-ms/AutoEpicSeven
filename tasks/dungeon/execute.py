@@ -92,19 +92,6 @@ class CombatExecuteMixin:
             return "running"
         return None
 
-    def _is_background_repeat_combat_running(self) -> bool:
-        """
-        Detect whether a previous dungeon session is still running in background.
-
-        The signal is intentionally conservative:
-        - if the finish prompt is already visible, the background run is no
-          longer considered "running"
-        - if the result window is already visible, the background run is no
-          longer considered "running"
-        - otherwise, the top-right repeat marker means the old session is still
-          alive and should be adopted before launching a new dungeon flow
-        """
-        return self._detect_background_repeat_combat_state() == "running"
 
     def _ensure_fast_combat_state(self, enabled: bool) -> bool:
         if not self._combat_supports_fast_combat():

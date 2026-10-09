@@ -1,5 +1,3 @@
-import re
-
 from module.game_info.context import level_cap
 from module.logger import logger
 from module.ocr.ocr import Digit, DigitCounter
@@ -33,14 +31,6 @@ def normalize_e7_counter_text(result: str) -> str:
     result = result.replace(",", "").replace("，", "")
     result = result.replace("／", "/")
     return result
-
-
-def parse_e7_counter_text(result: str) -> tuple[int, int] | None:
-    result = normalize_e7_counter_text(result)
-    matched = re.search(r"(\d+)\s*/\s*(\d+)", result)
-    if matched is None:
-        return None
-    return int(matched.group(1)), int(matched.group(2))
 
 
 class E7DigitCounter(DigitCounter):

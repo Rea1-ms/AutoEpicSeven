@@ -154,27 +154,6 @@ def choose_rune_target(
     )
 
 
-def rune_sample_yields(
-    before: RuneStock, after: RuneStock, *, grade: str, completed_runs: int
-) -> tuple[Fraction, Fraction, Fraction]:
-    """Return observed items per run, including pets and event bonuses.
-
-    Aggregate inventory differences cannot recover drop-event probabilities.
-    Callers must keep pet/event conditions fixed and avoid consuming, claiming,
-    or synthesizing runes between these two snapshots.
-    """
-    if grade not in ALTAR_DROPS:
-        raise ValueError(f"Unknown altar grade: {grade}")
-    if type(completed_runs) is not int or completed_runs <= 0:
-        raise ValueError("The actual completed run count must be positive")
-    delta = tuple(end - start for start, end in zip(before.counts, after.counts))
-    if any(count < 0 for count in delta):
-        raise ValueError("Rune consumption or inconsistent readings invalidate this sample")
-    if any(count and not drops for count, drops in zip(delta, ALTAR_DROPS[grade])):
-        raise ValueError("The sample contains a tier this difficulty cannot drop")
-    return tuple(Fraction(count, completed_runs) for count in delta)
-
-
 class RuneBalanceMixin:
     def _rune_balance_enabled(self) -> bool:
         return self._dungeon_domain() == "SpiritAltar" and bool(

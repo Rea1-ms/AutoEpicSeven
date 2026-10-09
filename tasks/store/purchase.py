@@ -85,12 +85,6 @@ def parse_purchase_counter_text(result: str) -> tuple[int, int, int]:
     return current, total - current, total
 
 
-def parse_remaining_buy_times_text(result: str) -> int:
-    result = normalize_purchase_counter_text(result)
-    matched = re.search(r"(\d+)", result)
-    if matched is None:
-        return 0
-    return int(matched.group(1))
 
 
 def counter_to_text(counter: tuple[int, int, int]) -> str:
