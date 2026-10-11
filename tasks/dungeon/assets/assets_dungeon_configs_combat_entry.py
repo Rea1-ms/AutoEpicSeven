@@ -140,10 +140,10 @@ URGENT_ENTRY = ButtonWrapper(
     cn=None,
     global_cn=Button(
         file='./assets/global_cn/dungeon/configs/combat/entry/URGENT_ENTRY.png',
-        area=(459, 108, 527, 132),
-        search=(439, 88, 547, 152),
-        color=(63, 81, 86),
-        button=(459, 108, 527, 132),
+        area=(460, 107, 524, 133),
+        search=(440, 87, 544, 153),
+        color=(61, 80, 84),
+        button=(460, 107, 524, 133),
     ),
     global_en=None,
 )
