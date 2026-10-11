@@ -151,7 +151,8 @@
         "tests.knights.test_shop.CapturedShopTests.test_support_and_dimmed_popup_are_not_a_usable_shop",
         "tests.knights.test_shop.CapturedShopTests.test_activity_panel_is_not_closed_by_the_generic_ad_handler",
         "tests.knights.test_shop.CapturedShopTests.test_final_confirmation_is_distinct_from_selection_and_rejects_wrong_context",
-        "tests.knights.test_shop.ShopRouteTests.test_three_server_imports_and_shop_routes_are_isolated"
+        "tests.knights.test_shop.ShopRouteTests.test_three_server_imports_and_shop_routes_are_isolated",
+        "tests.knights.test_weekly_task.KnightsWeeklyPageTests.test_weekly_identity_uses_point_icons_and_rejects_sibling_tabs"
       ],
       "source": "user-provided MuMu-20261002-160820-406.png",
       "privacy_redaction": [
@@ -194,7 +195,8 @@
         "tests.knights.test_shop.CapturedShopTests.test_final_confirmation_is_distinct_from_selection_and_rejects_wrong_context",
         "tests.knights.test_shop.CapturedShopTests.test_manastone_levels_use_images_even_when_titles_cannot_be_read",
         "tests.knights.test_shop.CapturedShopTests.test_manastone_level_match_moves_with_the_card_and_rejects_missing_digits",
-        "tests.knights.test_shop.ShopRouteTests.test_three_server_imports_and_shop_routes_are_isolated"
+        "tests.knights.test_shop.ShopRouteTests.test_three_server_imports_and_shop_routes_are_isolated",
+        "tests.knights.test_weekly_task.KnightsWeeklyPageTests.test_weekly_identity_uses_point_icons_and_rejects_sibling_tabs"
       ],
       "source": "user-provided MuMu-20261002-160823-507.png",
       "privacy_redaction": [
@@ -441,6 +443,68 @@
       "used_by": [
         "tests.knights.test_shop.CapturedShopTests.test_catalyst_five_stock_after_payment_is_read_without_letter_guessing",
         "tests.knights.test_shop.ShopReplayTests.test_paid_catalyst_real_stock_completes_record_without_buying_again"
+      ]
+    },
+    "20261011-120648-865249": {
+      "path": "tests/fixtures/knights/weekly_task/MuMu-20261011-120648-865249.png",
+      "sha256": "4dfc1b6d5a492f52934fbba571bd7d827719a7b39bbf9e58e990a248580c0c70",
+      "server": "global_cn",
+      "scene": "weekly_task_rewards_claimed_navigation_stuck",
+      "used_by": [
+        "tests.knights.test_weekly_task.KnightsWeeklyPageTests.test_weekly_identity_uses_point_icons_and_rejects_sibling_tabs",
+        "tests.knights.test_weekly_task.KnightsWeeklyPageTests.test_weekly_return_retries_visible_close_until_home_arrives"
+      ],
+      "source": "local error capture at 2026-10-11 12:06:48",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          25
+        ],
+        [
+          0,
+          665,
+          580,
+          720
+        ],
+        [
+          704,
+          665,
+          1280,
+          720
+        ]
+      ]
+    },
+    "20261011-120834-058": {
+      "path": "tests/fixtures/knights/weekly_task/MuMu-20261011-120834-058.png",
+      "sha256": "b60befa335341d0830c1ed8b82aeff91be7d7a79b83901d7c7b5ea3d527c3da8",
+      "server": "global_cn",
+      "scene": "weekly_task_rewards_claimed_navigation_stuck",
+      "used_by": [
+        "tests.knights.test_weekly_task.KnightsWeeklyPageTests.test_weekly_identity_uses_point_icons_and_rejects_sibling_tabs",
+        "tests.knights.test_weekly_task.KnightsWeeklyPageTests.test_weekly_identity_rejects_missing_icon_after_second_frame_match"
+      ],
+      "source": "user-provided MuMu-20261011-120834-058.png",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          25
+        ],
+        [
+          0,
+          665,
+          580,
+          720
+        ],
+        [
+          704,
+          665,
+          1280,
+          720
+        ]
       ]
     }
   }

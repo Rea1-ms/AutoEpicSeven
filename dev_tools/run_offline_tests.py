@@ -31,7 +31,10 @@ EXPLORATION_MODULES = (
     "tests.dimensional_exploration.test_dimensional_exploration_runtime",
 )
 RUNNER_MODULES = ("tests.test_offline_runner",)
-KNIGHTS_MODULES = ("tests.knights.test_shop",)
+KNIGHTS_MODULES = (
+    "tests.knights.test_shop",
+    "tests.knights.test_weekly_task",
+)
 SANCTUARY_MODULES = (
     "tests.sanctuary.test_buy_penguins",
     "tests.sanctuary.test_smart_custody",
@@ -49,6 +52,7 @@ UPSTREAM_MODULES = (
 )
 CORE_MODULES = (
     "tests.core.test_data_update",
+    "tests.core.test_task_entries",
     "tests.core.test_page_route",
     "tests.core.test_community_aio",
     "tests.core.test_mission_reward_callbacks",

@@ -1,4 +1,10 @@
 # ruff: noqa: E402
+"""Historical accounting contracts for a retired secret-shop implementation.
+
+Every case is marked obsolete in tests/inventory.json. This file is retained
+as a reference and is intentionally absent from the offline runner whitelist.
+"""
+
 from module.config import server as _test_server
 
 _test_server.set_lang("global_cn")

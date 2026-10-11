@@ -1,9 +1,6 @@
 # ruff: noqa: E402
-from module.config import server as _test_server
+"""Offline account-rank and UI-route regressions with controlled page labels."""
 
-_test_server.set_lang("global_cn")
-
-"""Offline rank and actual UI-route regressions. Never connects to an emulator."""
 import subprocess
 import sys
 import unittest
@@ -11,12 +8,11 @@ from pathlib import Path
 from unittest.mock import patch
 
 import numpy as np
-from PIL import Image
 
-WORKTREE = Path(__file__).resolve().parents[2]
-PROJECT_ROOT = WORKTREE
-import module.config.server as server
+from module.config import server
+
 server.set_lang('cn')
+
 from module.base.button import ClickButton
 from module.exception import GamePageUnknownError
 from tasks.base.account_level import AccountLevel, parse_account_level
@@ -24,25 +20,10 @@ from tasks.base.assets.assets_base_main_page import OCR_ACCOUNT_LEVEL
 from tasks.base.assets.assets_base_page import MAIN_GOTO_COMMON_ACTIVITY, MAIN_GOTO_SECRET_SHOP
 from tasks.base.page import Page, page_main, page_common_activity, page_secret_shop, page_sanctuary, page_inventory
 from tasks.base.route_entry import match_route_entry
-
-SAMPLE = Path(__file__).parent / 'screenshots' / 'main_navigation' / 'srank20_20260919.png'
-
-
-from tests.support.history_main_navigation import Route
-
-def image_from_asset(asset, offset=(0, 0)):
-    image = np.zeros((720, 1280, 3), dtype=np.uint8)
-    x1, y1, x2, y2 = asset.area
-    dx, dy = offset
-    original = np.array(Image.open(WORKTREE / asset.file).convert('RGB'))
-    image[y1+dy:y2+dy, x1+dx:x2+dx] = original[y1:y2, x1:x2]
-    return image
+from tests.support.history_main_navigation import Route, frame, image_from_asset
 
 
-def frame(at, image=None, pages=None, rank='Rank.69', **extra):
-    if image is None:
-        image = np.zeros((720, 1280, 3), dtype=np.uint8)
-    return dict(at=at, image=image, pages=[page_main] if pages is None else pages, rank=rank, **extra)
+WORKTREE = Path(__file__).resolve().parents[2]
 
 
 class RankTests(unittest.TestCase):
@@ -56,10 +37,12 @@ class RankTests(unittest.TestCase):
             with self.subTest(text=text):
                 result = parse_account_level(text)
                 self.assertEqual((result.kind, result.value, result.milestone_unlocked), (kind, value, unlocked))
+
     def test_invalid_or_prefixless_ocr_is_unknown(self):
         for text in ('', '20', '69', 'Rank.0', 'Rank.71', 'Rank.100', 'S.Rank.0', 'S.Rank.21', 'xRank.70', 'Rank.69junk'):
             with self.subTest(text=text):
                 self.assertIsNone(parse_account_level(text))
+
     def test_non_main_does_not_read_and_clears_previous_hint(self):
         ui = Route([frame(0, pages=[page_secret_shop])])
         ui.account_level = AccountLevel('srank', 20)
@@ -67,11 +50,13 @@ class RankTests(unittest.TestCase):
             self.assertIsNone(ui.read_main_account_level())
             reader.assert_not_called()
             self.assertIsNone(ui.account_level)
+
     def test_overlay_does_not_read_rank(self):
         ui = Route([frame(0, overlay=True)])
         with patch('tasks.base.account_level.Ocr') as reader:
             self.assertIsNone(ui.read_main_account_level())
             reader.assert_not_called()
+
     def test_unknown_rank_clears_previous_hint_and_normalizes_language(self):
         ui = Route([frame(0)])
         ui.account_level = AccountLevel('srank', 20)
@@ -80,6 +65,7 @@ class RankTests(unittest.TestCase):
             self.assertIsNone(ui.read_main_account_level())
             reader.assert_called_once_with(OCR_ACCOUNT_LEVEL, lang='cn', name='AccountLevel')
             self.assertIsNone(ui.account_level)
+
     def test_current_account_does_not_inherit_another_instance(self):
         first, second = Route([frame(0)]), Route([frame(0)])
         first.account_level = AccountLevel('srank', 20)
@@ -90,6 +76,7 @@ class MatchingTests(unittest.TestCase):
     def tearDown(self):
         server.set_lang('cn')
         Page.clear_connection()
+
     def test_priority_is_geometry_based_for_each_server_and_rank(self):
         for lang in ('cn', 'global_cn'):
             server.set_lang(lang)
@@ -101,6 +88,7 @@ class MatchingTests(unittest.TestCase):
                             click = match_route_entry(wrapper, np.zeros((720, 1280, 3), dtype=np.uint8), lower)
                         detect.assert_called_once()
                         self.assertEqual(click.button, expected.button)
+
     def test_click_snapshot_ignores_wrapper_cache_and_later_offsets(self):
         wrapper = MAIN_GOTO_COMMON_ACTIVITY
         upper, lower = sorted(wrapper.buttons, key=lambda asset: asset.area[1])
@@ -117,6 +105,7 @@ class NavigationTests(unittest.TestCase):
     def tearDown(self):
         server.set_lang('cn')
         Page.clear_connection()
+
     def test_both_servers_both_layouts_go_through_actual_ui_goto(self):
         for lang in ('cn', 'global_cn'):
             server.set_lang(lang)
@@ -130,6 +119,7 @@ class NavigationTests(unittest.TestCase):
                         self.assertEqual(nav.clicks[0][2], asset._button)
                         self.assertIsInstance(nav.clicks[0][1], ClickButton)
                         self.assertEqual(nav.index, 1)
+
     def test_wrong_or_unknown_rank_still_tries_other_layout(self):
         upper = min(MAIN_GOTO_COMMON_ACTIVITY.buttons, key=lambda asset: asset.area[1])
         for rank in ('S.Rank.20', 'nonsense'):
@@ -137,6 +127,7 @@ class NavigationTests(unittest.TestCase):
                 nav = Route([frame(0, image_from_asset(upper), rank=rank), frame(.2, pages=[page_common_activity])])
                 nav.run_route(page_common_activity)
                 self.assertEqual(nav.clicks[0][2], upper._button)
+
     def test_no_match_times_out_without_default_or_stale_click(self):
         wrapper = MAIN_GOTO_COMMON_ACTIVITY
         self.assertTrue(wrapper.match_template_luma(image_from_asset(wrapper.buttons[0])))
@@ -145,11 +136,13 @@ class NavigationTests(unittest.TestCase):
             nav.run_route(page_common_activity)
         self.assertEqual(nav.clicks, [])
         self.assertTrue(all(page.parent is None for page in Page.iter_pages()))
+
     def test_temporary_miss_retries_on_fresh_frame(self):
         asset = MAIN_GOTO_COMMON_ACTIVITY.buttons[1]
         nav = Route([frame(0), frame(.3, image_from_asset(asset)), frame(.5, pages=[page_common_activity])])
         nav.run_route(page_common_activity)
         self.assertEqual([(at, box) for at, _, box in nav.clicks], [(.3, asset._button)])
+
     def test_layout_change_after_failed_click_relocates(self):
         lower, upper = MAIN_GOTO_COMMON_ACTIVITY.buttons
         nav = Route([
@@ -161,18 +154,21 @@ class NavigationTests(unittest.TestCase):
         nav.run_route(page_common_activity)
         self.assertEqual([(at, box) for at, _, box in nav.clicks], [(0, lower._button), (2.1, upper._button)])
         self.assertEqual(nav.reader.ocr_single_line.call_count, 2)
+
     def test_destination_exit_does_not_wait_for_click_interval(self):
         asset = MAIN_GOTO_COMMON_ACTIVITY.buttons[0]
         nav = Route([frame(0, image_from_asset(asset)), frame(.1), frame(.2, pages=[page_common_activity])])
         nav.run_route(page_common_activity)
         self.assertEqual(len(nav.clicks), 1)
         self.assertEqual(nav.index, 2)
+
     def test_empty_initial_image_is_captured(self):
         asset = MAIN_GOTO_COMMON_ACTIVITY.buttons[0]
         nav = Route([frame(0, image_from_asset(asset)), frame(.2, pages=[page_common_activity])], initial_image=False)
         nav.run_route(page_common_activity)
         self.assertEqual(len(nav.clicks), 1)
         self.assertEqual(nav.index, 1)
+
     def test_confirmation_new_frame_with_overlay_blocks_click(self):
         asset = MAIN_GOTO_COMMON_ACTIVITY.buttons[0]
         nav = Route([
@@ -183,6 +179,7 @@ class NavigationTests(unittest.TestCase):
         nav.run_route(page_common_activity)
         self.assertEqual([at for at, _, _ in nav.clicks], [.4])
         self.assertEqual(nav.reader.ocr_single_line.call_count, 1)
+
     def test_fixed_route_needs_neither_rank_nor_entry_matching(self):
         nav = Route([frame(0), frame(.2, pages=[page_sanctuary])])
         with patch.object(nav, '_ui_match_route_entry') as matcher:
@@ -190,11 +187,13 @@ class NavigationTests(unittest.TestCase):
             matcher.assert_not_called()
         self.assertEqual(len(nav.clicks), 1)
         nav.reader.ocr_single_line.assert_not_called()
+
     def test_network_recovery_precedes_target_exit(self):
         nav = Route([frame(0, pages=[page_common_activity], recovery=True), frame(.5, pages=[page_common_activity])])
         nav.run_route(page_common_activity)
         self.assertEqual(nav.index, 1)
         self.assertEqual(nav.clicks, [])
+
     def test_server_import_and_graph_routes_in_fresh_processes(self):
         code = """
 import module.config.server as server

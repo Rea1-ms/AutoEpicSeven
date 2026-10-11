@@ -5,13 +5,22 @@ from module.base.button import Button, ButtonWrapper
 
 WEEKLY_TASK_CHECK = ButtonWrapper(
     name='WEEKLY_TASK_CHECK',
-    share=Button(
-        file='./assets/share/knights/activity/weekly_task/entry/WEEKLY_TASK_CHECK.png',
-        area=(348, 192, 374, 216),
-        search=(328, 172, 394, 236),
-        color=(136, 142, 158),
-        button=(348, 192, 374, 216),
-    ),
+    share=[
+        Button(
+            file='./assets/share/knights/activity/weekly_task/entry/WEEKLY_TASK_CHECK.png',
+            area=(348, 192, 374, 216),
+            search=(328, 172, 394, 236),
+            color=(136, 142, 158),
+            button=(348, 192, 374, 216),
+        ),
+        Button(
+            file='./assets/share/knights/activity/weekly_task/entry/WEEKLY_TASK_CHECK.2.png',
+            area=(340, 192, 366, 216),
+            search=(320, 172, 386, 236),
+            color=(135, 142, 157),
+            button=(340, 192, 366, 216),
+        ),
+    ],
 )
 WEEKLY_TASK_ENTRY = ButtonWrapper(
     name='WEEKLY_TASK_ENTRY',
