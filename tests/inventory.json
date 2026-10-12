@@ -9488,6 +9488,46 @@
           "original_source": "test/test_urgent_tasks_first_clear.py"
         },
         {
+          "id": "tests.combat.test_urgent_tasks_first_clear.DailyTests.test_first_enable_failure_rechecks_fast_on_after_normal_clear",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "首次开启失败后完成普通战斗，重新识别已开启的快速战斗并处理剩余四次；禁止第二次普通战斗",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.combat.test_urgent_tasks_first_clear.DailyTests.test_first_enable_failure_retries_off_toggle_after_normal_clear",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "首次开启失败后确认普通战斗完成，即使开关仍关闭也允许重新准备快速战斗",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.combat.test_urgent_tasks_first_clear.DailyTests.test_second_enable_failure_does_not_repeat_retry_after_every_clear",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "首场完成后仍开启失败时保持普通战斗，不在每场重新尝试或改用重复战斗",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.combat.test_urgent_tasks_first_clear.DailyTests.test_first_enable_failure_does_not_retry_after_failed_normal_clear",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "普通战斗失败不得恢复快速战斗资格、增加完成次数或标记当日检查完成",
+          "input_kind": "mock_or_rule"
+        },
+        {
           "id": "tests.combat.test_urgent_tasks_first_clear.EnableTests.test_disabled_off_toggle_has_bounded_retries",
           "original_id": "test.test_urgent_tasks_first_clear.EnableTests.test_disabled_off_toggle_has_bounded_retries",
           "category": "规则测试",

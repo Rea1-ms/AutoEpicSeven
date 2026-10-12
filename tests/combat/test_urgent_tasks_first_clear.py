@@ -104,6 +104,46 @@ class DailyTests(unittest.TestCase):
         self.assertEqual(daily.normal_clears, 5)
         self.assertEqual(len(daily.fast_calls), 1)
 
+    def test_first_enable_failure_rechecks_fast_on_after_normal_clear(self):
+        daily = Daily(gray=False, pet=False, fast_status='fallback')
+        daily.fast_status_after_normal = 'ready'
+        daily.fast_on_after_normal = True
+
+        self.assertEqual(daily._run_urgent_tasks_daily(), (True, 5))
+        self.assertEqual(daily.steps, ['fast_prepare', 'normal', 'fast_prepare', 'fast'])
+        self.assertEqual(daily.normal_clears, 1)
+        self.assertEqual([call['stamina'] for call in daily.fast_calls], [150, 120])
+        self.assertEqual(daily.checked, 1)
+
+    def test_first_enable_failure_retries_off_toggle_after_normal_clear(self):
+        daily = Daily(gray=False, pet=False, fast_status='fallback')
+        daily.fast_status_after_normal = 'ready'
+
+        self.assertEqual(daily._run_urgent_tasks_daily(), (True, 5))
+        self.assertEqual(daily.steps, ['fast_prepare', 'normal', 'fast_prepare', 'fast'])
+        self.assertEqual(daily.normal_clears, 1)
+        self.assertEqual(len(daily.fast_calls), 2)
+
+    def test_second_enable_failure_does_not_repeat_retry_after_every_clear(self):
+        daily = Daily(gray=False, fast_status='fallback')
+
+        self.assertEqual(daily._run_urgent_tasks_daily(), (True, 5))
+        self.assertEqual(daily.steps, ['fast_prepare', 'normal', 'fast_prepare'] + ['normal'] * 4)
+        self.assertEqual(daily.normal_clears, 5)
+        self.assertEqual(len(daily.fast_calls), 2)
+        self.assertNotIn('repeat_prepare', daily.steps)
+        self.assertEqual(daily.checked, 1)
+
+    def test_first_enable_failure_does_not_retry_after_failed_normal_clear(self):
+        daily = Daily(gray=False, fast_status='fallback', normal_success=False)
+        daily.fast_status_after_normal = 'ready'
+        daily.fast_on_after_normal = True
+
+        self.assertEqual(daily._run_urgent_tasks_daily(), (False, 0))
+        self.assertEqual(daily.steps, ['fast_prepare', 'normal'])
+        self.assertEqual(daily.normal_clears, 0)
+        self.assertEqual(daily.checked, 0)
+
 
 class EnableTests(unittest.TestCase):
     def prepare(self, frames, fallback=True):

@@ -29,6 +29,8 @@ class Daily(UrgentTasksNavigateMixin):
         self.unlock_after_normal = False
         self.fast_enabled = True
         self.fast_on = False
+        self.fast_status_after_normal = None
+        self.fast_on_after_normal = None
         self.device = SimpleNamespace(screenshot=lambda: None)
         self.device.screenshot()
     def _navigate_urgent_tasks(self, **kwargs):
@@ -79,6 +81,10 @@ class Daily(UrgentTasksNavigateMixin):
         self.remaining -= 1
         if self.unlock_after_normal:
             self.gray = False
+        if self.fast_status_after_normal is not None:
+            self.fast_status = self.fast_status_after_normal
+        if self.fast_on_after_normal is not None:
+            self.fast_on = self.fast_on_after_normal
         return True
 
 

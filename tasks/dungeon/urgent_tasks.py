@@ -536,9 +536,10 @@ class UrgentTasksNavigateMixin:
         a gray repeat button requires one foreground clear before trying fast
         combat, even if the button stays gray afterward. An already enabled
         fast mode takes precedence because repeat may be gray without a pet.
-        If fast mode cannot be enabled, this invocation finishes with foreground
-        battles. Otherwise, a configured pet may hand remaining attempts to the
-        ordinary server-repeat implementation.
+        A failed enable before the first foreground clear is rechecked after
+        that clear settles. A later enable failure or exhausted fast count uses
+        foreground battles for the rest of this invocation. Otherwise, a
+        configured pet may hand remaining attempts to ordinary server repeat.
         """
         completed = 0
         first = skip_first_screenshot
@@ -613,12 +614,28 @@ class UrgentTasksNavigateMixin:
                         first = True
                         continue
                 elif fast_prepare == "fallback":
-                    # Do not spend another toggle retry window after every
-                    # foreground clear. This is only a decision for this run;
-                    # the next scheduled run checks the game again.
-                    fast_available = False
+                    # Eligibility belongs to the next prepare visit, while
+                    # force_normal keeps this attempt in foreground mode. The
+                    # first settled foreground clear can establish the clear
+                    # time required by fast combat, invalidating an earlier
+                    # enable failure. The loop reaches that next visit only
+                    # after _run_normal_combat positively confirms completion.
+                    # Once normal_clear_completed is set, a second fallback
+                    # stays disabled so every battle cannot restart the retry
+                    # window. An ON state with fallback means fast attempts
+                    # were exhausted, not that the toggle needs a clear record;
+                    # retain that decision even before the first normal clear.
+                    fast_available = (
+                        not normal_clear_completed and not self._is_fast_combat_on()
+                    )
                     force_normal = True
-                    logger.info("UrgentTasks: fast combat unavailable, use foreground combat for this run")
+                    if fast_available:
+                        logger.info(
+                            "UrgentTasks: fast combat not enabled, use one foreground "
+                            "battle and recheck after completion"
+                        )
+                    else:
+                        logger.info("UrgentTasks: fast combat unavailable, use foreground combat for this run")
                 elif fast_prepare != "no_stamina":
                     return False, completed
 
