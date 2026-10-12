@@ -44,6 +44,7 @@ REORDERED_CAPTURES = ('20261003-110305-160', '20261003-110308-852',
 PAID_CATALYST_CAPTURE = '20261003-184342-562'
 CURRENT_BALANCE_CAPTURE = '20261007-133412-362'
 CURRENT_MYSTIC_CAPTURE = '20261007-134422-578'
+STALLED_MYSTIC_CAPTURE = '20261012-125244-428'
 CATALYST = next(item for item in ITEMS if item.option.endswith('_CatalystChest'))
 
 
@@ -136,6 +137,26 @@ class CapturedShopTests(unittest.TestCase):
         for currency, expected in (('armband', 275), ('crest', 335), ('proof', 69417)):
             item = next(item for item in ITEMS if item.currency == currency)
             self.assertEqual(task._balance(item), expected)
+
+    def test_current_armband_variant_reads_balances_and_rejects_missing_or_duplicate_icons(self):
+        task = captured_task(STALLED_MYSTIC_CAPTURE)
+        for currency, expected in (('armband', 455), ('crest', 450), ('proof', 70712)):
+            item = next(item for item in ITEMS if item.currency == currency)
+            self.assertEqual(task._balance(item), expected, currency)
+        card = task._cards(ITEMS[0])[0]
+        self.assertEqual((card.remaining, card.active, card.price), (1, True, 200))
+        self.assertEqual(card.button.button, (851, 601, 1010, 630))
+        for duplicate in (False, True):
+            with self.subTest(duplicate=duplicate):
+                task = captured_task(STALLED_MYSTIC_CAPTURE)
+                if duplicate:
+                    task.device.image[80:105, 900:924] = task.device.image[80:105, 991:1015]
+                else:
+                    task.device.image[80:105, 991:1015] = 0
+                task._text = Mock(side_effect=AssertionError('unknown header must not reach numeric OCR'))
+                for currency in BALANCE_ICONS:
+                    item = next(item for item in ITEMS if item.currency == currency)
+                    self.assertIsNone(task._balance(item), currency)
 
     def test_horizontal_translation_moves_only_the_corresponding_price_button(self):
         task = captured_task(CAPTURES[0])
@@ -256,7 +277,7 @@ class CapturedShopTests(unittest.TestCase):
         asset = BALANCE_ICONS['armband']
         buttons = tuple(asset.iter_buttons())
         searches = tuple(button.search for button in buttons)
-        self.assertEqual(len(buttons), 1)
+        self.assertEqual(len(buttons), 2)
         original_match = asset.match_multi_template
         for failed in (False, True):
             with self.subTest(failed=failed):
@@ -1309,20 +1330,23 @@ class ShopReplayTests(unittest.TestCase):
     def test_mystic_capture_and_real_balance_start_one_image_selected_purchase(self):
         frames = ([shop_frame(1, price=200)] * 2 + [popup_frame(1, 1, multi=False)] * 4
                   + [shop_frame(0, active=False)] * 4)
-        with ControlledClock() as clock:
-            task = replay_task(frames, clock)
-            task.device.image = fixture_image(MANIFEST, CURRENT_MYSTIC_CAPTURE)
-            synthetic_cards = task._cards
-            # The initial card, its translated price button and the current
-            # balance header come from real pixels. The single popup layout
-            # and following zero stock are explicit simulated inputs only.
-            task._cards = lambda item: (KnightsShop._cards(task, item) if task.device.index < 2
-                                        else synthetic_cards(item))
-            del task._balance
-            self.assertTrue(task._execute_shop([(ITEMS[0], 1)]))
-            self.assertEqual([a[1] for a in task.device.actions],
-                             ['MYSTIC_MEDALS_result0', 'BUY_CONFIRM_SINGLE'])
-            self.assertEqual(task.device.actions[0][2], (591, 601, 750, 630))
+        captures = ((CURRENT_MYSTIC_CAPTURE, (591, 601, 750, 630)),
+                    (STALLED_MYSTIC_CAPTURE, (851, 601, 1010, 630)))
+        for fixture, price_button in captures:
+            with self.subTest(fixture=fixture), ControlledClock() as clock:
+                task = replay_task(frames, clock)
+                task.device.image = fixture_image(MANIFEST, fixture)
+                synthetic_cards = task._cards
+                # The initial card, its translated price button and the current
+                # balance header come from real pixels. The single popup layout
+                # and following zero stock are explicit simulated inputs only.
+                task._cards = lambda item: (KnightsShop._cards(task, item) if task.device.index < 2
+                                            else synthetic_cards(item))
+                del task._balance
+                self.assertTrue(task._execute_shop([(ITEMS[0], 1)]))
+                self.assertEqual([a[1] for a in task.device.actions],
+                                 ['MYSTIC_MEDALS_result0', 'BUY_CONFIRM_SINGLE'])
+                self.assertEqual(task.device.actions[0][2], price_button)
 
     def test_unsupported_server_never_navigates_or_builds_a_device(self):
         task = KnightsShop.__new__(KnightsShop)

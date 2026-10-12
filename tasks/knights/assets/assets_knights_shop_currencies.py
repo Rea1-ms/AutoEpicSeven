@@ -5,13 +5,22 @@ from module.base.button import Button, ButtonWrapper
 
 ARMBAND_BALANCE_ICON = ButtonWrapper(
     name='ARMBAND_BALANCE_ICON',
-    share=Button(
-        file='./assets/share/knights/shop/currencies/ARMBAND_BALANCE_ICON.png',
-        area=(993, 80, 1017, 105),
-        search=(973, 60, 1037, 125),
-        color=(67, 52, 53),
-        button=(993, 80, 1017, 105),
-    ),
+    share=[
+        Button(
+            file='./assets/share/knights/shop/currencies/ARMBAND_BALANCE_ICON.png',
+            area=(993, 80, 1017, 105),
+            search=(973, 60, 1037, 125),
+            color=(67, 52, 53),
+            button=(993, 80, 1017, 105),
+        ),
+        Button(
+            file='./assets/share/knights/shop/currencies/ARMBAND_BALANCE_ICON.2.png',
+            area=(991, 80, 1015, 105),
+            search=(971, 60, 1035, 125),
+            color=(67, 52, 53),
+            button=(991, 80, 1015, 105),
+        ),
+    ],
 )
 ARMBAND_ICON = ButtonWrapper(
     name='ARMBAND_ICON',

@@ -1,6 +1,38 @@
 {
   "version": 1,
   "fixtures": {
+    "20261012-125244-428": {
+      "path": "tests/fixtures/knights/shop/MuMu-20261012-125244-428.png",
+      "sha256": "70e74583af03e7c9a1a76240d8671698aedcab8dd8a9b6e7c689f111e9ab42e5",
+      "server": "global_cn",
+      "scene": "current_armband_variant_with_mystic_card_and_three_balances",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.knights.test_shop.CapturedShopTests.test_current_armband_variant_reads_balances_and_rejects_missing_or_duplicate_icons",
+        "tests.knights.test_shop.ShopReplayTests.test_mystic_capture_and_real_balance_start_one_image_selected_purchase"
+      ],
+      "source": "user-provided MuMu-20261012-125244-428.png",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          25
+        ],
+        [
+          0,
+          665,
+          580,
+          720
+        ],
+        [
+          704,
+          665,
+          1280,
+          720
+        ]
+      ]
+    },
     "20261007-134422-578": {
       "path": "tests/fixtures/knights/shop/MuMu-20261007-134422-578.png",
       "sha256": "51587ad07a949e4542e7fdd8566f62e29c60b548d9cf3ee192b4f97014e11c26",

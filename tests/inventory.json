@@ -5296,6 +5296,18 @@
           "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
         },
         {
+          "id": "tests.knights.test_shop.CapturedShopTests.test_current_armband_variant_reads_balances_and_rejects_missing_or_duplicate_icons",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261012-125244-428"
+          ],
+          "capture_server": "global_cn",
+          "status": "已纳入",
+          "reason": "当前截图的臂章变体、三种余额及神秘奖牌卡片实图回归；缺失或重复图标时禁止读取数字，不连接设备"
+        },
+        {
           "id": "tests.knights.test_shop.CapturedShopTests.test_balances_are_read_with_normalized_ocr_language",
           "category": "截图识别",
           "requires_device": false,
@@ -6157,7 +6169,8 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [
-            "20261007-134422-578"
+            "20261007-134422-578",
+            "20261012-125244-428"
           ],
           "status": "已纳入",
           "reason": "当前截图验证神秘奖牌图像、库存、价格、余额和点击位置；后续弹窗和库存仍为明确模拟帧，不连接设备或读取账号配置"
