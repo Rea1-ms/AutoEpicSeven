@@ -1,0 +1,2786 @@
+{
+  "version": 1,
+  "fixtures": {
+    "brawl-lobby": {
+      "path": "tests/fixtures/brawl/brawl-lobby.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "lobby",
+      "source": "MuMu-20261011-153250-195.png",
+      "source_sha256": "f3dc31f26504e29cf73bbdbae47c1528df507845d97e8b86d25f5278bbdcb84d",
+      "sha256": "3c5f3569fa19f910290710192340063d7662a507c052218299f98e1409912635",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          480,
+          0,
+          1280,
+          66
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_bench.BenchRecognitionTests.test_low_confidence_unknown_names_and_overlays_do_not_create_entries",
+        "tests.brawl.test_combat.SpeedControlTests.test_overlays_and_results_leave_speed_control_without_clicking",
+        "tests.brawl.test_cursor.BenchCursorTests.test_non_preparation_frames_never_inherit_a_previous_cursor",
+        "tests.brawl.test_heroes.HeroRecognitionTests.test_unknown_low_confidence_names_and_unrelated_frames_remain_unknown",
+        "tests.brawl.test_vision.VisionTests.test_overlay_scene_priority_does_not_read_underlying_balances"
+      ]
+    },
+    "brawl-give-up": {
+      "path": "tests/fixtures/brawl/brawl-give-up.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "give-up",
+      "source": "MuMu-20261011-153258-429.png",
+      "source_sha256": "00bd3d33c9e34c0ff9e4aa40ec6bdd4b023a39b96e77e6d995fce9be6b8cc925",
+      "sha256": "cbc6737d8756e840f3e4889bfca3e11d3099320c269364444e6fe145f6082393",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_combat.SpeedControlTests.test_overlays_and_results_leave_speed_control_without_clicking",
+        "tests.brawl.test_upgrade.UpgradeReadingTests.test_hidden_price_or_wrong_scene_cannot_create_a_quote",
+        "tests.brawl.test_vision.VisionTests.test_overlay_scene_priority_does_not_read_underlying_balances"
+      ]
+    },
+    "brawl-prepare-level4": {
+      "path": "tests/fixtures/brawl/brawl-prepare-level4.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "prepare-level4",
+      "source": "MuMu-20261011-153302-857.png",
+      "source_sha256": "fcbdf3bf3073d02b2af30859cac0664474b726f488ef29ddfe5684a8e95081fb",
+      "sha256": "2ca6d5dead65e350dd1c4afb511170f1f509c836277c5e77b10486d74519adf0",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_vision.VisionTests.test_real_preparation_fields_across_levels_and_currencies",
+        "tests.brawl.test_vision.VisionTests.test_currency_positions_shift_and_missing_icons_never_reuse_previous_match",
+        "tests.brawl.test_vision.VisionTests.test_blank_dimmed_and_wrong_resolution_inputs_are_not_preparation",
+        "tests.brawl.test_brawl.AnalysisTests.test_real_screenshot_reaches_report_and_manual_lineup",
+        "tests.brawl.test_vision.VisionTests.test_model_errors_are_not_downgraded_to_unknown_readings",
+        "tests.brawl.test_heroes.HeroRecognitionTests.test_unknown_low_confidence_names_and_unrelated_frames_remain_unknown",
+        "tests.brawl.test_bench.BenchRecognitionTests.test_selected_cards_read_names_imprints_and_current_plus",
+        "tests.brawl.test_bench.BenchRecognitionTests.test_occluded_and_bottom_clipped_rows_are_not_complete_entries"
+      ]
+    },
+    "brawl-formation": {
+      "path": "tests/fixtures/brawl/brawl-formation.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "formation",
+      "source": "MuMu-20261011-153309-512.png",
+      "source_sha256": "e5a7a91819ebd26a381f3a8ca4d9fb8c7bb109a050338ed7f17a3fbbe46593e7",
+      "sha256": "2e3e4cb409b94abf42b18145ff49911c2274faeefdc472635c2704b1cc282bd4",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_vision.VisionTests.test_overlay_scene_priority_does_not_read_underlying_balances",
+        "tests.brawl.test_combat.SpeedControlTests.test_overlays_and_results_leave_speed_control_without_clicking",
+        "tests.brawl.test_board.BoardRecognitionTests.test_non_grid_scenes_and_deployment_animation_have_no_targets"
+      ]
+    },
+    "brawl-upgrade": {
+      "path": "tests/fixtures/brawl/brawl-upgrade.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "upgrade",
+      "source": "MuMu-20261011-153321-003.png",
+      "source_sha256": "1a782e0f6041d758457fff3a4270c08c6df13c78847ee6bced3b092ccb028b7e",
+      "sha256": "218f0cbc385f53044c305f3fc9c76d168ce2efb8e159792ceacdeb18b53bb9f9",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_combat.SpeedControlTests.test_overlays_and_results_leave_speed_control_without_clicking",
+        "tests.brawl.test_field.FieldRecognitionTests.test_overlays_and_formation_controls_do_not_authorize_field_identity",
+        "tests.brawl.test_upgrade.UpgradeReadingTests.test_real_quote_checks_price_capacity_header_and_button",
+        "tests.brawl.test_vision.VisionTests.test_overlay_scene_priority_does_not_read_underlying_balances",
+        "tests.brawl.test_vision.VisionTests.test_upgrade_animation_waits_then_reads_new_level_and_capacity",
+        "tests.brawl.test_field.FieldTraitRecognitionTests.test_overlays_and_bench_only_frames_do_not_supply_headers",
+        "tests.brawl.test_brawl.AnalysisTests.test_idle_motion_traits_report_identity_without_inventing_a_click_position"
+      ]
+    },
+    "brawl-combat": {
+      "path": "tests/fixtures/brawl/brawl-combat.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "combat",
+      "source": "MuMu-20261011-153425-857.png",
+      "source_sha256": "6cca812a093725387c6c98c3fc00ee5e7ca5fef7dcc4e531da0da60e2b1b723c",
+      "sha256": "0b3db37bbbdead5d2f8fc95835bca6eaac1fd2001c2ecde7c3604a7dae87fe4d",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_cursor.BenchCursorTests.test_missing_portraits_or_selection_context_cannot_confirm_a_transition",
+        "tests.brawl.test_cursor.BenchCursorTests.test_non_preparation_frames_never_inherit_a_previous_cursor",
+        "tests.brawl.test_cursor.BenchCursorTests.test_obscured_visible_queue_does_not_authorize_reusing_a_click",
+        "tests.brawl.test_field.FieldRecognitionTests.test_overlays_and_formation_controls_do_not_authorize_field_identity",
+        "tests.brawl.test_placement.PlacementTests.test_capture_rejects_unsupported_hero_full_field_and_nonpreparation",
+        "tests.brawl.test_upgrade.UpgradeReadingTests.test_capture_enforces_reserve_funds_maximum_and_preparation",
+        "tests.brawl.test_vision.VisionTests.test_overlay_scene_priority_does_not_read_underlying_balances",
+        "tests.brawl.test_field.FieldTraitRecognitionTests.test_overlays_and_bench_only_frames_do_not_supply_headers"
+      ]
+    },
+    "brawl-upgrade-animation": {
+      "path": "tests/fixtures/brawl/brawl-upgrade-animation.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "upgrade-animation",
+      "source": "MuMu-20261011-153442-776.png",
+      "source_sha256": "b32c21425e5551f8f3be2183ff3f2c27c6bd3486207a973d3808dad211d4aee4",
+      "sha256": "4478f4e5a2950aaf96e2715a9d05449ae630443275a82087e5d84975e0cfd9d2",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_upgrade.UpgradeReadingTests.test_capture_enforces_reserve_funds_maximum_and_preparation",
+        "tests.brawl.test_upgrade.UpgradeReplayTests.test_real_sequence_confirms_level_capacity_and_exact_debit_once",
+        "tests.brawl.test_vision.VisionTests.test_upgrade_animation_waits_then_reads_new_level_and_capacity"
+      ]
+    },
+    "brawl-prepare-level5": {
+      "path": "tests/fixtures/brawl/brawl-prepare-level5.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "prepare-level5",
+      "source": "MuMu-20261011-153444-486.png",
+      "source_sha256": "04080268c3686ccb176815d6bc62a2edf8eba287442d91a690fa2e550409363f",
+      "sha256": "ac4660206b62b5b33a653fffe3d436f84969abac2a14db0eef4eaab3e23b57db",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_upgrade.UpgradeReadingTests.test_hidden_price_or_wrong_scene_cannot_create_a_quote",
+        "tests.brawl.test_upgrade.UpgradeReplayTests.test_real_sequence_confirms_level_capacity_and_exact_debit_once",
+        "tests.brawl.test_vision.VisionTests.test_real_preparation_fields_across_levels_and_currencies",
+        "tests.brawl.test_vision.VisionTests.test_upgrade_animation_waits_then_reads_new_level_and_capacity"
+      ]
+    },
+    "brawl-hero-result": {
+      "path": "tests/fixtures/brawl/brawl-hero-result.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "hero-result",
+      "source": "MuMu-20261011-153600-350.png",
+      "source_sha256": "12f3a83c8c382866b09b571805fc3fd01771803a322f8deffa5c9007e2d4647e",
+      "sha256": "68851b161600b25720f05e2940f9fb531fabfb1ea968bb07e965a7423a24e533",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_combat.SpeedControlTests.test_overlays_and_results_leave_speed_control_without_clicking",
+        "tests.brawl.test_upgrade.UpgradeReadingTests.test_hidden_price_or_wrong_scene_cannot_create_a_quote",
+        "tests.brawl.test_vision.VisionTests.test_overlay_scene_priority_does_not_read_underlying_balances"
+      ]
+    },
+    "brawl-transmit": {
+      "path": "tests/fixtures/brawl/brawl-transmit.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "transmit",
+      "source": "MuMu-20261011-153620-072.png",
+      "source_sha256": "1327e39efa1031d406adbc56d122708e125d416c070ac5dc3390f68ad37100a3",
+      "sha256": "f78cdaf08a186245a6a4d94733ae090adbc1c453c02d7429cfa147506a9096d1",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_bench.BenchRecognitionTests.test_occluded_and_bottom_clipped_rows_are_not_complete_entries",
+        "tests.brawl.test_bench.BenchRecognitionTests.test_selected_cards_read_names_imprints_and_current_plus",
+        "tests.brawl.test_board.BoardRecognitionTests.test_non_grid_scenes_and_deployment_animation_have_no_targets",
+        "tests.brawl.test_brawl.AnalysisTests.test_transmit_quote_and_return_do_not_claim_an_offline_sale",
+        "tests.brawl.test_combat.SpeedControlTests.test_overlays_and_results_leave_speed_control_without_clicking",
+        "tests.brawl.test_cursor.BenchCursorTests.test_non_preparation_frames_never_inherit_a_previous_cursor",
+        "tests.brawl.test_transmit.TransmitConfirmationTests.test_empty_selection_or_other_scene_never_gets_confirmed",
+        "tests.brawl.test_transmit.TransmitReadingTests.test_empty_and_selected_quotes_do_not_claim_a_completed_sale",
+        "tests.brawl.test_vision.VisionTests.test_overlay_scene_priority_does_not_read_underlying_balances"
+      ]
+    },
+    "brawl-prepare-level6": {
+      "path": "tests/fixtures/brawl/brawl-prepare-level6.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "prepare-level6",
+      "source": "MuMu-20261011-153827-841.png",
+      "source_sha256": "cce525094633a32c2e8f0a2583f9c10608c4ae7efe754937513ddaa6f9f23980",
+      "sha256": "dbd0e3048cff04582df261e7774d88479baffb137ffc9083a7dd016b01e5a34b",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_vision.VisionTests.test_real_preparation_fields_across_levels_and_currencies"
+      ]
+    },
+    "brawl-prepare-level7": {
+      "path": "tests/fixtures/brawl/brawl-prepare-level7.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "prepare-level7",
+      "source": "MuMu-20261011-153858-233.png",
+      "source_sha256": "f0f54edb977a6524ede9cfc0174cae2771210849372b22965a717780c6fab360",
+      "sha256": "2b153f8ec0be18b7cd37b30598366e04dc6ca5f4f28cf435bf6d89b25952cab9",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_vision.VisionTests.test_real_preparation_fields_across_levels_and_currencies"
+      ]
+    },
+    "brawl-round-clear": {
+      "path": "tests/fixtures/brawl/brawl-round-clear.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "round-clear",
+      "source": "MuMu-20261011-153929-669.png",
+      "source_sha256": "c8d3a3073b8e2347fc00775da8d510cfe2381fb632dd1582a5e2a3c38d0498f8",
+      "sha256": "3596c774acc7ae97772b4d434bba0edb0f942fdaa63ba9de2c5716a42162d085",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_vision.VisionTests.test_overlay_scene_priority_does_not_read_underlying_balances",
+        "tests.brawl.test_brawl.AnalysisTests.test_real_screenshot_reaches_report_and_manual_lineup",
+        "tests.brawl.test_heroes.HeroRecognitionTests.test_unknown_low_confidence_names_and_unrelated_frames_remain_unknown",
+        "tests.brawl.test_brawl.AnalysisTests.test_round_animations_can_be_missed_without_inventing_completion",
+        "tests.brawl.test_combat.SpeedControlTests.test_overlays_and_results_leave_speed_control_without_clicking",
+        "tests.brawl.test_combat.SpeedControlTests.test_page_change_after_click_does_not_claim_speed_success",
+        "tests.brawl.test_transmit.TransmitConfirmationTests.test_empty_selection_or_other_scene_never_gets_confirmed",
+        "tests.brawl.test_bench.BenchRecognitionTests.test_low_confidence_unknown_names_and_overlays_do_not_create_entries"
+      ]
+    },
+    "brawl-prepare-level8": {
+      "path": "tests/fixtures/brawl/brawl-prepare-level8.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "prepare-level8",
+      "source": "MuMu-20261011-154056-474.png",
+      "source_sha256": "1f22e6a982050a815d3284a636d4c403a559d6b30d5de07044fc3565501aef7b",
+      "sha256": "ae7e66c774d78b5acc2d53ff7d83145cad05a54be36107686404df3adac3f4de",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_upgrade.UpgradeReadingTests.test_capture_enforces_reserve_funds_maximum_and_preparation",
+        "tests.brawl.test_vision.VisionTests.test_real_preparation_fields_across_levels_and_currencies"
+      ]
+    },
+    "brawl-coin-tooltip": {
+      "path": "tests/fixtures/brawl/brawl-coin-tooltip.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "coin-tooltip",
+      "source": "MuMu-20261011-161923-705.png",
+      "source_sha256": "81227b786b4148c7fc0785a9545b82d64196d1ab2f8f5ccc7d603b59dc68892f",
+      "sha256": "fee5a037375feb123672cefc4de733ef1014cb1f0b18bee20a5228ad44330e0b",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_vision.VisionTests.test_overlay_scene_priority_does_not_read_underlying_balances",
+        "tests.brawl.test_combat.SpeedControlTests.test_unknown_scene_waits_for_positive_double_speed",
+        "tests.brawl.test_transmit.TransmitReadingTests.test_wrong_scenes_and_obscured_quotes_are_rejected"
+      ]
+    },
+    "brawl-token-tooltip": {
+      "path": "tests/fixtures/brawl/brawl-token-tooltip.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "token-tooltip",
+      "source": "MuMu-20261011-161925-110.png",
+      "source_sha256": "c3fa41c970335a337b72d464ee9f79e16b30977549266a0b0c556d69ed170540",
+      "sha256": "38742c2a2c5e3ea16f5ee4692f808d7d24cc281abd3cefc5e92c58239caf034d",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_vision.VisionTests.test_overlay_scene_priority_does_not_read_underlying_balances",
+        "tests.brawl.test_combat.SpeedControlTests.test_unknown_scene_waits_for_positive_double_speed"
+      ]
+    },
+    "brawl-income-tooltip": {
+      "path": "tests/fixtures/brawl/brawl-income-tooltip.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "income-tooltip",
+      "source": "MuMu-20261011-164221-438.png",
+      "source_sha256": "63b57e4137a4cfbb23d293c0ebc3d4109bd9a185725e9f1baabf8bbdddd40ce0",
+      "sha256": "c1caffad2771506543fffa20e0dcdd21890f76403bb55e72ec1155bd7d2c4bda",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_board.BoardRecognitionTests.test_non_grid_scenes_and_deployment_animation_have_no_targets",
+        "tests.brawl.test_combat.SpeedControlTests.test_unknown_scene_waits_for_positive_double_speed",
+        "tests.brawl.test_field.FieldRecognitionTests.test_overlays_and_formation_controls_do_not_authorize_field_identity",
+        "tests.brawl.test_vision.VisionTests.test_overlay_scene_priority_does_not_read_underlying_balances",
+        "tests.brawl.test_field.FieldTraitRecognitionTests.test_overlays_and_bench_only_frames_do_not_supply_headers"
+      ]
+    },
+    "brawl-probabilities": {
+      "path": "tests/fixtures/brawl/brawl-probabilities.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "probabilities",
+      "source": "MuMu-20261011-164359-485.png",
+      "source_sha256": "6a7cadab1b22b1378b60ce59680ab9f07ded0d464871f763ea9e25d40550ed8f",
+      "sha256": "a6b18f2d11c1ed0e607c3b3435d6c07d78a43d2c29d9ac856ff07ae16fb3556b",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_vision.VisionTests.test_overlay_scene_priority_does_not_read_underlying_balances",
+        "tests.brawl.test_combat.SpeedControlTests.test_overlays_and_results_leave_speed_control_without_clicking",
+        "tests.brawl.test_bench.BenchRecognitionTests.test_low_confidence_unknown_names_and_overlays_do_not_create_entries"
+      ]
+    },
+    "brawl-prepare-max-spare": {
+      "path": "tests/fixtures/brawl/brawl-prepare-max-spare.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "prepare-max-spare",
+      "source": "MuMu-20261011-165354-355.png",
+      "source_sha256": "614efab5215f9604eecae1cf107c4d092d978b76c7b4f6b465c67cc4bb951705",
+      "sha256": "d61dc1c0e642e0f0e2969628807cc35818f481d3f35f69c4e5a039444817e3cb",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_vision.VisionTests.test_real_preparation_fields_across_levels_and_currencies"
+      ]
+    },
+    "brawl-prepare-one-coin": {
+      "path": "tests/fixtures/brawl/brawl-prepare-one-coin.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "prepare-one-coin",
+      "source": "MuMu-20261011-170224-022.png",
+      "source_sha256": "623135f3190ddf5284b075dda8bd79f8c51608635c098233d57b0394b2831b07",
+      "sha256": "a79f1ddd95ec6aa06a77062bc117839d0bc7f93e1e18d2568c0082b013c9eece",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_vision.VisionTests.test_real_preparation_fields_across_levels_and_currencies"
+      ]
+    },
+    "brawl-prepare-transfer-return": {
+      "path": "tests/fixtures/brawl/brawl-prepare-transfer-return.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "prepare-transfer-return",
+      "source": "MuMu-20261011-170244-641.png",
+      "source_sha256": "0c0833c595eba489c0a2e1e5ff2c6537f25ad0bcdaa82030a8213c51cd613458",
+      "sha256": "037883dd11ed977ab5a573c05ef7c28007e6e4fab4a2b4b0998c4ad47513935e",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_vision.VisionTests.test_real_preparation_fields_across_levels_and_currencies"
+      ]
+    },
+    "brawl-prepare-max": {
+      "path": "tests/fixtures/brawl/brawl-prepare-max.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "prepare-max",
+      "source": "MuMu-20261011-170535-283.png",
+      "source_sha256": "90ef560fdb93b982d428048137472acdfcd5be627778d57dcb2b11ca08b7ad68",
+      "sha256": "17c3390b8c1d2d844cf80678d273d949f79b2944b8003aa73ee975f28b513861",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_bench.BenchRecognitionTests.test_occluded_and_bottom_clipped_rows_are_not_complete_entries",
+        "tests.brawl.test_bench.BenchRecognitionTests.test_selected_cards_read_names_imprints_and_current_plus",
+        "tests.brawl.test_upgrade.UpgradeReadingTests.test_capture_enforces_reserve_funds_maximum_and_preparation",
+        "tests.brawl.test_vision.VisionTests.test_currency_positions_shift_and_missing_icons_never_reuse_previous_match",
+        "tests.brawl.test_vision.VisionTests.test_real_preparation_fields_across_levels_and_currencies"
+      ]
+    },
+    "brawl-hero-imprint": {
+      "path": "tests/fixtures/brawl/brawl-hero-imprint.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "hero-imprint",
+      "source": "MuMu-20261011-170540-669.png",
+      "source_sha256": "eebb346c44904542b901c67f90eb7820ab5ccbccfad80f68a363701eb56ab37d",
+      "sha256": "ecc29f9885c87f75918d346f5f335622889b3814cdf1fd61a4234863f8ee9a64",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_vision.VisionTests.test_overlay_scene_priority_does_not_read_underlying_balances"
+      ]
+    },
+    "brawl-rank-up15": {
+      "path": "tests/fixtures/brawl/brawl-rank-up15.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "rank-up15",
+      "source": "MuMu-20261011-172519-578.png",
+      "source_sha256": "d74c4c404a7823e508de7a24dce672d91e502f3be800932dc4de1cc0a8ee736e",
+      "sha256": "c0cf2f6f859e35bb6494d4ebd2ea995152d87e875d1dad041025a2520b732341",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_vision.VisionTests.test_rank_and_unlock_overlays_are_not_summons_or_completion",
+        "tests.brawl.test_vision.VisionTests.test_speed_requires_stable_scene_and_unambiguous_visible_control",
+        "tests.brawl.test_brawl.AnalysisTests.test_final_results_and_intermediate_overlays_have_distinct_reports",
+        "tests.brawl.test_combat.SpeedControlTests.test_overlays_and_results_leave_speed_control_without_clicking"
+      ]
+    },
+    "brawl-hero-unlock": {
+      "path": "tests/fixtures/brawl/brawl-hero-unlock.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "hero-unlock",
+      "source": "MuMu-20261011-172521-606.png",
+      "source_sha256": "d7a425f472d7f62732b48b4b3e93ed39c1e84714baab92a26430dec1f9a71ac2",
+      "sha256": "9bab75ba0d99eb74e6167d7baf48b94b9f2501c8a8e1b34d0a2b6c87507d9d30",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_vision.VisionTests.test_rank_and_unlock_overlays_are_not_summons_or_completion",
+        "tests.brawl.test_vision.VisionTests.test_speed_requires_stable_scene_and_unambiguous_visible_control",
+        "tests.brawl.test_brawl.AnalysisTests.test_final_results_and_intermediate_overlays_have_distinct_reports",
+        "tests.brawl.test_combat.SpeedControlTests.test_overlays_and_results_leave_speed_control_without_clicking"
+      ]
+    },
+    "brawl-normal-victory15": {
+      "path": "tests/fixtures/brawl/brawl-normal-victory15.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "normal-victory15",
+      "source": "MuMu-20261011-172523-913.png",
+      "source_sha256": "ac43dc76b1b79c3490573df41839ebdc434ac9a354743cec1c1a747f6a1b35da",
+      "sha256": "84e5fa02bda6cf69c7257caf8d3c1e6e703dedc533a5e964f6de47e8c9e1ffcf",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_board.BoardRecognitionTests.test_non_grid_scenes_and_deployment_animation_have_no_targets",
+        "tests.brawl.test_brawl.AnalysisTests.test_final_results_and_intermediate_overlays_have_distinct_reports",
+        "tests.brawl.test_combat.SpeedControlTests.test_overlays_and_results_leave_speed_control_without_clicking",
+        "tests.brawl.test_field.FieldRecognitionTests.test_overlays_and_formation_controls_do_not_authorize_field_identity",
+        "tests.brawl.test_vision.VisionTests.test_final_result_requires_both_message_and_return_control",
+        "tests.brawl.test_vision.VisionTests.test_new_modes_openings_and_final_results",
+        "tests.brawl.test_vision.VisionTests.test_speed_requires_stable_scene_and_unambiguous_visible_control"
+      ]
+    },
+    "brawl-normal-lobby-empty": {
+      "path": "tests/fixtures/brawl/brawl-normal-lobby-empty.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "normal-lobby-empty",
+      "source": "MuMu-20261011-172527-519.png",
+      "source_sha256": "644ff0206246ec0dbb509fbfd72a0e1f37b7897b700b7e6c5e2d7cc4c732184b",
+      "sha256": "d7e9c7b53c15e262eee003506033cf8b89e6a9cfdac59688207059e7e481c7fb",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          480,
+          0,
+          1280,
+          66
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_vision.VisionTests.test_new_modes_openings_and_final_results"
+      ]
+    },
+    "brawl-challenge-lobby-empty": {
+      "path": "tests/fixtures/brawl/brawl-challenge-lobby-empty.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "challenge-lobby-empty",
+      "source": "MuMu-20261011-172531-878.png",
+      "source_sha256": "9fe75ce8e553b047a6294bc95ad042b225a6bf4b06207f8d66871b8c3363ad53",
+      "sha256": "59144ae95c6429e91c75383869b3c55176a6b2aaf28433de4db704ac90756ab1",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          480,
+          0,
+          1280,
+          66
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_vision.VisionTests.test_new_modes_openings_and_final_results"
+      ]
+    },
+    "brawl-challenge-opening": {
+      "path": "tests/fixtures/brawl/brawl-challenge-opening.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "challenge-opening",
+      "source": "MuMu-20261011-172535-493.png",
+      "source_sha256": "1b4e045da6ded65f0ea3aa06cf865b32868dc9061e5f8bfb28997f00e841673a",
+      "sha256": "1dab7dcb8ead651719789c976dbdfcfd792621ec6ca0b139d3547c55f7d587ae",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_vision.VisionTests.test_new_modes_openings_and_final_results"
+      ]
+    },
+    "brawl-challenge-prepared": {
+      "path": "tests/fixtures/brawl/brawl-challenge-prepared.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "challenge-prepared",
+      "source": "MuMu-20261011-172554-379.png",
+      "source_sha256": "e0d9e548096fa1ef5a131f9ddd45bd2461d804c86183f71bfb4e8b2844d802a7",
+      "sha256": "b7211bb6f8f432062a8a78227ae71d445011b747eb48026850ee703fc82b311a",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_vision.VisionTests.test_new_modes_openings_and_final_results"
+      ]
+    },
+    "brawl-challenge-combat": {
+      "path": "tests/fixtures/brawl/brawl-challenge-combat.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "challenge-combat",
+      "source": "MuMu-20261011-172625-873.png",
+      "source_sha256": "8b274846cfb59872b452d9a9c5c59ccced93aeb06a4a3368255f13482c845918",
+      "sha256": "39c06c0d62b26a6e7d7b1ef2c97062bf9dbc8fffd3e607ae7bb193dc297d1c91",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_vision.VisionTests.test_new_modes_openings_and_final_results"
+      ]
+    },
+    "brawl-challenge-defeat": {
+      "path": "tests/fixtures/brawl/brawl-challenge-defeat.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "challenge-defeat",
+      "source": "MuMu-20261011-172817-764.png",
+      "source_sha256": "1610760014beec901c5dca32ea911a301a5c5ddb7925761684f6f08dc89b5956",
+      "sha256": "7579a67d1020fc6b47205e62c3cecf923877351d82cd6cfc40e97342919ea718",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_vision.VisionTests.test_new_modes_openings_and_final_results",
+        "tests.brawl.test_vision.VisionTests.test_final_result_requires_both_message_and_return_control",
+        "tests.brawl.test_brawl.AnalysisTests.test_final_results_and_intermediate_overlays_have_distinct_reports",
+        "tests.brawl.test_combat.SpeedControlTests.test_overlays_and_results_leave_speed_control_without_clicking"
+      ]
+    },
+    "brawl-rank-up16": {
+      "path": "tests/fixtures/brawl/brawl-rank-up16.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "rank-up16",
+      "source": "MuMu-20261011-174939-606.png",
+      "source_sha256": "4207d5ae1fa8017bcba8fbfd4935d4fa9962c24289512973ef67ab00e342f1c0",
+      "sha256": "a295180350f69f3f8a4de387a0db932faf9c30e2448637ea26868ebd57fb6794",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_vision.VisionTests.test_rank_and_unlock_overlays_are_not_summons_or_completion",
+        "tests.brawl.test_brawl.AnalysisTests.test_final_results_and_intermediate_overlays_have_distinct_reports"
+      ]
+    },
+    "brawl-normal-victory16": {
+      "path": "tests/fixtures/brawl/brawl-normal-victory16.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "normal-victory16",
+      "source": "MuMu-20261011-174942-376.png",
+      "source_sha256": "a611ea1fdaec225d7c4c04d4706390d9b6b97673b20a211b7a76a9f2c776c9f5",
+      "sha256": "e4a4f25d855663505b299fe0a321782b6f7b70eb6f2938e438f93a42e185869b",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_vision.VisionTests.test_new_modes_openings_and_final_results",
+        "tests.brawl.test_brawl.AnalysisTests.test_final_results_and_intermediate_overlays_have_distinct_reports"
+      ]
+    },
+    "brawl-normal-opening": {
+      "path": "tests/fixtures/brawl/brawl-normal-opening.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "normal-opening",
+      "source": "MuMu-20261011-225957-884.png",
+      "source_sha256": "abe1d664a229c8858b97d1a33de2bb9358bdedf588d5e540efabcfd85ac0d4bf",
+      "sha256": "ee49de816c00d9882cf7d1fef6a0b08ddb7ccad1044f91e559ab839063ba056e",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_vision.VisionTests.test_new_modes_openings_and_final_results",
+        "tests.brawl.test_vision.VisionTests.test_speed_requires_stable_scene_and_unambiguous_visible_control",
+        "tests.brawl.test_combat.SpeedControlTests.test_already_double_speed_exits_without_click",
+        "tests.brawl.test_board.BoardRecognitionTests.test_non_grid_scenes_and_deployment_animation_have_no_targets",
+        "tests.brawl.test_transmit.TransmitReadingTests.test_wrong_scenes_and_obscured_quotes_are_rejected",
+        "tests.brawl.test_transmit.TransmitConfirmationTests.test_empty_selection_or_other_scene_never_gets_confirmed"
+      ]
+    },
+    "brawl-normal-first-summon": {
+      "path": "tests/fixtures/brawl/brawl-normal-first-summon.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "normal-first-summon",
+      "source": "MuMu-20261011-230008-179.png",
+      "source_sha256": "cd153e8a58994706abf7f06a3f168d92957acd89d4f8940918db47ee275b28c0",
+      "sha256": "59424135766267b7e53f0f5df4d9101b5ebaf94651e69a66fac94df655221b1d",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_vision.VisionTests.test_new_modes_openings_and_final_results"
+      ]
+    },
+    "brawl-formation-place": {
+      "path": "tests/fixtures/brawl/brawl-formation-place.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "formation-place",
+      "source": "MuMu-20261011-230013-483.png",
+      "source_sha256": "6732433e62a9f93e9f7e47d2690033b9d2fa185e59d80019a716de51008d8d6e",
+      "sha256": "9e88f6482c6ddc512829c2333c5278bd5322629408de0ebb34665fb81cb06a2b",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_bench.BenchRecognitionTests.test_occluded_and_bottom_clipped_rows_are_not_complete_entries",
+        "tests.brawl.test_bench.BenchRecognitionTests.test_selected_cards_read_names_imprints_and_current_plus",
+        "tests.brawl.test_board.BoardRecognitionTests.test_invalid_image_and_unsupported_server_are_rejected",
+        "tests.brawl.test_board.BoardRecognitionTests.test_occluded_grid_cannot_publish_unverified_destinations",
+        "tests.brawl.test_board.BoardRecognitionTests.test_placement_grid_preserves_seven_staggered_screen_rows",
+        "tests.brawl.test_brawl.AnalysisTests.test_final_results_and_intermediate_overlays_have_distinct_reports",
+        "tests.brawl.test_brawl.AnalysisTests.test_visible_bench_and_grid_do_not_become_a_complete_roster",
+        "tests.brawl.test_cursor.BenchCursorTests.test_non_preparation_frames_never_inherit_a_previous_cursor",
+        "tests.brawl.test_vision.VisionTests.test_grid_selection_blocks_preparation_readings",
+        "tests.brawl.test_vision.VisionTests.test_speed_requires_stable_scene_and_unambiguous_visible_control"
+      ]
+    },
+    "brawl-normal-deployed": {
+      "path": "tests/fixtures/brawl/brawl-normal-deployed.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "normal-deployed",
+      "source": "MuMu-20261011-230016-304.png",
+      "source_sha256": "361dcac2e4bf58ed4074ef35a23d4cd4a2e12cfd375ccae54af828d42fedd3db",
+      "sha256": "aa46eee8ac231cf62332be65c597e38d43ccc5ee21a6556b8daed128eeba94cf",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_bench.BenchRecognitionTests.test_low_confidence_unknown_names_and_overlays_do_not_create_entries",
+        "tests.brawl.test_bench.BenchRecognitionTests.test_model_failures_and_unsupported_inputs_are_explicit",
+        "tests.brawl.test_bench.BenchRecognitionTests.test_reuses_supplied_scene_observation_but_still_validates_the_image",
+        "tests.brawl.test_bench.BenchRecognitionTests.test_selected_cards_read_names_imprints_and_current_plus",
+        "tests.brawl.test_bench.BenchRecognitionTests.test_unread_imprint_and_hidden_plus_never_reuse_previous_frame",
+        "tests.brawl.test_board.BoardRecognitionTests.test_non_grid_scenes_and_deployment_animation_have_no_targets",
+        "tests.brawl.test_brawl.AnalysisTests.test_visible_bench_and_grid_do_not_become_a_complete_roster",
+        "tests.brawl.test_field.FieldRecognitionTests.test_unmodeled_hero_and_deployment_animation_stay_unread",
+        "tests.brawl.test_vision.VisionTests.test_new_modes_openings_and_final_results"
+      ]
+    },
+    "brawl-formation-move": {
+      "path": "tests/fixtures/brawl/brawl-formation-move.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "formation-move",
+      "source": "MuMu-20261011-230018-032.png",
+      "source_sha256": "6a8bf89d5928c7dd8d918742079be9e72293ec4cd976f384e5c33361e6f415be",
+      "sha256": "ca9bc1e636d2b8f1d6f7f2a03ea6188498668af39590ef2710937db72a9438c1",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_vision.VisionTests.test_grid_selection_blocks_preparation_readings",
+        "tests.brawl.test_brawl.AnalysisTests.test_final_results_and_intermediate_overlays_have_distinct_reports",
+        "tests.brawl.test_board.BoardRecognitionTests.test_move_grid_locates_the_selected_source_cell",
+        "tests.brawl.test_board.BoardRecognitionTests.test_missing_or_duplicate_move_markers_do_not_invent_a_source",
+        "tests.brawl.test_board.BoardRecognitionTests.test_prior_asset_offsets_do_not_move_this_frames_grid",
+        "tests.brawl.test_brawl.AnalysisTests.test_visible_bench_and_grid_do_not_become_a_complete_roster"
+      ]
+    },
+    "brawl-normal-round2": {
+      "path": "tests/fixtures/brawl/brawl-normal-round2.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "normal-round2",
+      "source": "MuMu-20261011-230058-753.png",
+      "source_sha256": "91c28f2328849ea6392c2390b19a85123304aa06fc75f31cb6ad794283a5e871",
+      "sha256": "01dd496ba3b4731a5da57845ad6b06ee4aa6d1bf5f1179168878dcdd6b5f3bf7",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_vision.VisionTests.test_new_modes_openings_and_final_results",
+        "tests.brawl.test_brawl.AnalysisTests.test_round_animations_can_be_missed_without_inventing_completion"
+      ]
+    },
+    "brawl-round-failed": {
+      "path": "tests/fixtures/brawl/brawl-round-failed.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "round-failed",
+      "source": "MuMu-20261011-230114-190.png",
+      "source_sha256": "919c52735370159df8b8c123c4b3f09dec4e2b6a2a05f96e85fb8a6ae6d18f10",
+      "sha256": "e671c556e18dee8d6d14702fa34c0f0d1186779fe7c2b162f08c8d530ed56e96",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_vision.VisionTests.test_round_failures_are_automatic_transitions",
+        "tests.brawl.test_vision.VisionTests.test_speed_requires_stable_scene_and_unambiguous_visible_control",
+        "tests.brawl.test_brawl.AnalysisTests.test_round_animations_can_be_missed_without_inventing_completion",
+        "tests.brawl.test_combat.SpeedControlTests.test_overlays_and_results_leave_speed_control_without_clicking"
+      ]
+    },
+    "brawl-normal-after-loss": {
+      "path": "tests/fixtures/brawl/brawl-normal-after-loss.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "normal-after-loss",
+      "source": "MuMu-20261011-230117-857.png",
+      "source_sha256": "51b25dd9d1238a4b7d4b9cd210ae62394b484586c72a7d20946cee50dce7bedc",
+      "sha256": "7ed0e4a183fc6b54aa209213d4d0b3d0934e2b7cd4e9d8f6584f718a10f823c7",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_vision.VisionTests.test_new_modes_openings_and_final_results",
+        "tests.brawl.test_brawl.AnalysisTests.test_round_animations_can_be_missed_without_inventing_completion"
+      ]
+    },
+    "brawl-normal-combat": {
+      "path": "tests/fixtures/brawl/brawl-normal-combat.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "normal-combat",
+      "source": "MuMu-20261011-230121-863.png",
+      "source_sha256": "5dcb45707eb655d7b64df3a103ba373556a4c9547ac287a6b5f457c2854dc24a",
+      "sha256": "362faf41cdb23841c1bd1c64a64b87f2754bd7431409d4edd81a56eb34da6188",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_vision.VisionTests.test_new_modes_openings_and_final_results",
+        "tests.brawl.test_board.BoardRecognitionTests.test_non_grid_scenes_and_deployment_animation_have_no_targets"
+      ]
+    },
+    "brawl-last-round-failed": {
+      "path": "tests/fixtures/brawl/brawl-last-round-failed.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "last-round-failed",
+      "source": "MuMu-20261011-230137-499.png",
+      "source_sha256": "5d62a62cf91bcf1b18cb675d38b605cb20c0477431fc47b5b4e5345694a7027f",
+      "sha256": "8bd850c5ffe2d801f7c055ebe19c0d13247ad38a884c3f0f77dd30d451ecfea0",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_vision.VisionTests.test_round_failures_are_automatic_transitions",
+        "tests.brawl.test_brawl.AnalysisTests.test_round_animations_can_be_missed_without_inventing_completion"
+      ]
+    },
+    "brawl-normal-defeat": {
+      "path": "tests/fixtures/brawl/brawl-normal-defeat.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "normal-defeat",
+      "source": "MuMu-20261011-230139-049.png",
+      "source_sha256": "5c72d86f6a81c43a7e060a7439ec8b342bbf03f1d62adf5c504f980be6b70073",
+      "sha256": "4cf9127faac6d8d4a232b21aadb1a1f81b87e2facc3b9e987715e9c63699531f",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_vision.VisionTests.test_new_modes_openings_and_final_results",
+        "tests.brawl.test_brawl.AnalysisTests.test_final_results_and_intermediate_overlays_have_distinct_reports"
+      ]
+    },
+    "brawl-hero-new-01": {
+      "path": "tests/fixtures/brawl/brawl-hero-new-01.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "hero-new-01",
+      "source": "MuMu-20261011-172305-276.png",
+      "source_sha256": "f7fadb0965897e25e96ee324e523caa1dc2a3caf721d9aca0433e4367f19dce5",
+      "sha256": "bf17ab138845469096d2caa01d8cdeff921cc4883384a1408d75c3e4837f12f8",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_heroes.HeroRecognitionTests.test_real_result_names_and_imprint_transitions"
+      ]
+    },
+    "brawl-hero-new-02": {
+      "path": "tests/fixtures/brawl/brawl-hero-new-02.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "hero-new-02",
+      "source": "MuMu-20261011-172307-449.png",
+      "source_sha256": "f3d456dbd429b91de70c8646788f2bd328fc590857f8384c0936d400097e98d2",
+      "sha256": "a49ecdc9ed425093ccf4d21c76a16e5c1208bf4c4f0444c977c976ad2c613b2b",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_heroes.HeroRecognitionTests.test_real_result_names_and_imprint_transitions"
+      ]
+    },
+    "brawl-hero-new-05": {
+      "path": "tests/fixtures/brawl/brawl-hero-new-05.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "hero-new-05",
+      "source": "MuMu-20261011-172310-578.png",
+      "source_sha256": "78dd0a7f5aa0d7d37c9dab2aa8c79bc8b3b065446be7cb59d7d1f6756a5eec6e",
+      "sha256": "f74bed6b3f40261b6070f88100f912ff8fe9054ef0ee730c9853a0f5d091d737",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_heroes.HeroRecognitionTests.test_single_and_wrapped_names_preserve_explicit_no_imprint",
+        "tests.brawl.test_heroes.HeroRecognitionTests.test_unknown_low_confidence_names_and_unrelated_frames_remain_unknown",
+        "tests.brawl.test_heroes.HeroRecognitionTests.test_model_failures_propagate_and_unsupported_inputs_fail",
+        "tests.brawl.test_bench.BenchRecognitionTests.test_low_confidence_unknown_names_and_overlays_do_not_create_entries"
+      ]
+    },
+    "brawl-hero-new-07": {
+      "path": "tests/fixtures/brawl/brawl-hero-new-07.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "hero-new-07",
+      "source": "MuMu-20261011-172321-342.png",
+      "source_sha256": "406d5e3d2678b23b32030749e8c011f8f4935301b2380d6a6403c2ae7eccb975",
+      "sha256": "dbfd646e23c23a4fdba09cdf03d4c8e6dfa056943841b67ed03c0c159efe0f72",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_heroes.HeroRecognitionTests.test_real_result_names_and_imprint_transitions"
+      ]
+    },
+    "brawl-hero-new-08": {
+      "path": "tests/fixtures/brawl/brawl-hero-new-08.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "hero-new-08",
+      "source": "MuMu-20261011-172325-138.png",
+      "source_sha256": "d9e3333d1b4db20b9e71d83352cc121462c69ec3629dccec620ca4cc09b46abc",
+      "sha256": "8029a6bdfad4c98829b1e62dcf91b90ff1e0e694301301fec1e5bb585b04d84b",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_heroes.HeroRecognitionTests.test_overflow_keeps_retained_hero_at_maximum_imprint",
+        "tests.brawl.test_summon.SynergySummonReplayTests.test_overflow_result_is_preserved_without_guessing_its_refund"
+      ]
+    },
+    "brawl-hero-new-09": {
+      "path": "tests/fixtures/brawl/brawl-hero-new-09.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "hero-new-09",
+      "source": "MuMu-20261011-172331-719.png",
+      "source_sha256": "17254e820196fb12747d8e96f6b6f716d9e725713a2b75cf162fe745402bd8d6",
+      "sha256": "3c0fdbf1af97e52f8854be6dfbbe2ce09e50a3f997f55fc61b655dc002db0b91",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_heroes.HeroRecognitionTests.test_single_and_wrapped_names_preserve_explicit_no_imprint"
+      ]
+    },
+    "brawl-hero-new-10": {
+      "path": "tests/fixtures/brawl/brawl-hero-new-10.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "hero-new-10",
+      "source": "MuMu-20261011-172335-544.png",
+      "source_sha256": "7546153986774bb2a1495c2ddfa96bf77abbc338eac40cd10d2dea316d8902e4",
+      "sha256": "36217613d281088d137d9f6fad670cdc05e87184664fa9c1d8fcd271c92fbdd8",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_heroes.HeroRecognitionTests.test_single_and_wrapped_names_preserve_explicit_no_imprint"
+      ]
+    },
+    "brawl-hero-new-12": {
+      "path": "tests/fixtures/brawl/brawl-hero-new-12.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "hero-new-12",
+      "source": "MuMu-20261011-172344-947.png",
+      "source_sha256": "daa15a4414f93bedd0f85383b8824b3e3e7b315c9c49f6ca0157d4b96413f054",
+      "sha256": "a68d5123391bb4397a31ebdf6b120aa1ed9032ae1926fe760abae75d69beed17",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_heroes.HeroRecognitionTests.test_real_result_names_and_imprint_transitions",
+        "tests.brawl.test_heroes.HeroRecognitionTests.test_incomplete_badge_or_arrow_never_reports_old_imprint_as_new",
+        "tests.brawl.test_brawl.AnalysisTests.test_single_hero_result_is_serializable_without_inventing_a_roster"
+      ]
+    },
+    "brawl-hero-new-14": {
+      "path": "tests/fixtures/brawl/brawl-hero-new-14.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "hero-new-14",
+      "source": "MuMu-20261011-172357-018.png",
+      "source_sha256": "5ddd9265f87b6d4f92a247a03e02be8f87f1b9fdcac12c947ab287af274a25bf",
+      "sha256": "cab5cdaadbf930a62a2940672dbea1966881bf76fc568348ea753dec1f81feb9",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_heroes.HeroRecognitionTests.test_single_and_wrapped_names_preserve_explicit_no_imprint"
+      ]
+    },
+    "brawl-hero-new-15": {
+      "path": "tests/fixtures/brawl/brawl-hero-new-15.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "hero-new-15",
+      "source": "MuMu-20261011-172403-652.png",
+      "source_sha256": "ee4d01de541b1f39ba812fe660096160820558eea2f785337f9198c0c5d048a8",
+      "sha256": "c7b82c39a48e83e6e1184075a0f403ae3bad25fa63526991a1709e6b81acaa38",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_heroes.HeroRecognitionTests.test_real_result_names_and_imprint_transitions"
+      ]
+    },
+    "brawl-hero-new-16": {
+      "path": "tests/fixtures/brawl/brawl-hero-new-16.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "hero-new-16",
+      "source": "MuMu-20261011-172421-356.png",
+      "source_sha256": "a39246a82e2729da4ec1b2f71214227df0295b1829b52ec36e3248582053b07a",
+      "sha256": "55bac95d6ccf5e58c88ea5ae2c739a502a8ba4996f3b190737c5d469e70d43ed",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_heroes.HeroRecognitionTests.test_real_result_names_and_imprint_transitions"
+      ]
+    },
+    "brawl-hero-new-19": {
+      "path": "tests/fixtures/brawl/brawl-hero-new-19.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "hero-new-19",
+      "source": "MuMu-20261011-172437-817.png",
+      "source_sha256": "ea53d2e5dfd488ed6a3cf93a1da0bd2d421dcd8a7fa77e308bbc1574b4cb68d8",
+      "sha256": "1aeb4b1a5c7ee1e3710cb23e6060fba3028c7ab23ac0a43c9457594f5ef13ec3",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_heroes.HeroRecognitionTests.test_real_result_names_and_imprint_transitions"
+      ]
+    },
+    "brawl-hero-new-27": {
+      "path": "tests/fixtures/brawl/brawl-hero-new-27.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "hero-new-27",
+      "source": "MuMu-20261011-172612-623.png",
+      "source_sha256": "6c53e3d0f779e7e017761129f84e3d5490ca2ea87f0395f82d02eb24273604b6",
+      "sha256": "2d5f9b8a2600328d3413ef2c4f92961a50ba1b0749bf130462a3abefb0f2b685",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_heroes.HeroRecognitionTests.test_real_result_names_and_imprint_transitions"
+      ]
+    },
+    "brawl-hero-new-28": {
+      "path": "tests/fixtures/brawl/brawl-hero-new-28.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "hero-new-28",
+      "source": "MuMu-20261011-172615-444.png",
+      "source_sha256": "55413dde3306cba04c8fa813635bac42e07cc8bd0cfa65f317a302b2622b6846",
+      "sha256": "e036c2a54f13bee0a24e180ef0b9ae0863a2957e5522d855ad782b0106c21766",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_heroes.HeroRecognitionTests.test_single_and_wrapped_names_preserve_explicit_no_imprint"
+      ]
+    },
+    "brawl-hero-start-03": {
+      "path": "tests/fixtures/brawl/brawl-hero-start-03.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "hero-start-03",
+      "source": "MuMu-20261011-230007-249.png",
+      "source_sha256": "4d0651786bf0230cbd42d59635fbea2de7e0da83cc53cca23937995cca8830cb",
+      "sha256": "e9e34f9f06afb02db59439fc2dd47b7713c1a87e3dce769f9cda5148be1ccc3e",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_heroes.HeroRecognitionTests.test_single_and_wrapped_names_preserve_explicit_no_imprint",
+        "tests.brawl.test_brawl.AnalysisTests.test_single_hero_result_is_serializable_without_inventing_a_roster"
+      ]
+    },
+    "brawl-hero-start-10": {
+      "path": "tests/fixtures/brawl/brawl-hero-start-10.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "hero-start-10",
+      "source": "MuMu-20261011-230056-667.png",
+      "source_sha256": "1908bc13a98392691d8af1c1be18d0f1b6df0758f03e8296cc897c6c92508368",
+      "sha256": "9792def772a0cc083b7bf8b53758dc32f0fe9a892a4dfb392f77d590754947a4",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_heroes.HeroRecognitionTests.test_single_and_wrapped_names_preserve_explicit_no_imprint"
+      ]
+    },
+    "brawl-combat-speed-one": {
+      "path": "tests/fixtures/brawl/brawl-combat-speed-one.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "combat-speed-one",
+      "source": "MuMu-20261011-153425-857.png",
+      "source_sha256": "6cca812a093725387c6c98c3fc00ee5e7ca5fef7dcc4e531da0da60e2b1b723c",
+      "sha256": "0b3db37bbbdead5d2f8fc95835bca6eaac1fd2001c2ecde7c3604a7dae87fe4d",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_vision.VisionTests.test_speed_requires_stable_scene_and_unambiguous_visible_control",
+        "tests.brawl.test_combat.SpeedControlTests.test_single_speed_retries_after_interval_and_waits_for_confirmation",
+        "tests.brawl.test_combat.SpeedControlTests.test_click_without_visual_confirmation_times_out",
+        "tests.brawl.test_combat.SpeedControlTests.test_unknown_speed_never_clicks_or_reports_success",
+        "tests.brawl.test_combat.SpeedControlTests.test_handler_returns_true_only_for_click_and_keeps_interval",
+        "tests.brawl.test_combat.SpeedControlTests.test_fresh_first_screenshot_ignores_stale_single_speed",
+        "tests.brawl.test_combat.SpeedControlTests.test_page_change_after_click_does_not_claim_speed_success",
+        "tests.brawl.test_combat.SpeedControlTests.test_slow_double_speed_frame_confirms_before_local_timeout"
+      ]
+    },
+    "brawl-combat-speed-two": {
+      "path": "tests/fixtures/brawl/brawl-combat-speed-two.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "combat-speed-two",
+      "source": "MuMu-20261011-153419-896.png",
+      "source_sha256": "8673e87b273af8896448f90ca0edc4e9da029d83888910b5778242ca713a925b",
+      "sha256": "8c8132305d12537e90f5de7af1b46bcb1dd5e4b2c32bf1860369a06286242e98",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_vision.VisionTests.test_speed_requires_stable_scene_and_unambiguous_visible_control",
+        "tests.brawl.test_combat.SpeedControlTests.test_already_double_speed_exits_without_click",
+        "tests.brawl.test_combat.SpeedControlTests.test_single_speed_retries_after_interval_and_waits_for_confirmation",
+        "tests.brawl.test_combat.SpeedControlTests.test_unknown_scene_waits_for_positive_double_speed",
+        "tests.brawl.test_combat.SpeedControlTests.test_handler_returns_true_only_for_click_and_keeps_interval",
+        "tests.brawl.test_combat.SpeedControlTests.test_fresh_first_screenshot_ignores_stale_single_speed",
+        "tests.brawl.test_combat.SpeedControlTests.test_slow_double_speed_frame_confirms_before_local_timeout"
+      ]
+    },
+    "brawl-formation-deploy-animation": {
+      "path": "tests/fixtures/brawl/brawl-formation-deploy-animation.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "formation-deploy-animation",
+      "source": "MuMu-20261011-230015-777.png",
+      "source_sha256": "5f4e130402884ad5f2d2608d18814d89cb66d9490b9702350de8b8677f395c9f",
+      "sha256": "1277f1ddb29fdfe26634aa0f4ff714d13a4072bc3ba5acdd2bd72bcd5692ec8e",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_board.BoardRecognitionTests.test_non_grid_scenes_and_deployment_animation_have_no_targets",
+        "tests.brawl.test_field.FieldRecognitionTests.test_unmodeled_hero_and_deployment_animation_stay_unread"
+      ]
+    },
+    "brawl-transmit-selected": {
+      "path": "tests/fixtures/brawl/brawl-transmit-selected.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "transmit-selected",
+      "source": "MuMu-20261011-153621-616.png",
+      "source_sha256": "55779381a0707130c4f3b0d327a99caf27c639e29a7d1075fffc0729965e6c76",
+      "sha256": "55b4a959fda997b923347768ac18f3efe7295477fab1cd50fd838cdbe0e8fea0",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_brawl.AnalysisTests.test_transmit_quote_and_return_do_not_claim_an_offline_sale",
+        "tests.brawl.test_brawl.AnalysisTests.test_unread_transmit_quote_stays_unknown_but_model_errors_propagate",
+        "tests.brawl.test_swap.WithdrawTests.test_red_minus_pairs_with_green_source_on_new_and_independent_old_grids",
+        "tests.brawl.test_transmit.TransmitConfirmationTests.test_changed_portrait_anywhere_in_tray_prevents_confirmation",
+        "tests.brawl.test_transmit.TransmitConfirmationTests.test_changed_quote_aborts_before_clicking",
+        "tests.brawl.test_transmit.TransmitConfirmationTests.test_changed_round_level_or_deployment_cannot_confirm_a_sale",
+        "tests.brawl.test_transmit.TransmitConfirmationTests.test_clicks_without_a_verified_return_time_out",
+        "tests.brawl.test_transmit.TransmitConfirmationTests.test_closed_tray_without_proceeds_times_out_without_reopening",
+        "tests.brawl.test_transmit.TransmitConfirmationTests.test_disappeared_tray_waits_for_balance_without_clicking_again",
+        "tests.brawl.test_transmit.TransmitConfirmationTests.test_empty_selection_or_other_scene_never_gets_confirmed",
+        "tests.brawl.test_transmit.TransmitConfirmationTests.test_fresh_first_frame_rejects_stale_selection_without_clicking",
+        "tests.brawl.test_transmit.TransmitConfirmationTests.test_reappearing_tray_after_preparation_is_not_a_second_sale",
+        "tests.brawl.test_transmit.TransmitConfirmationTests.test_repeated_selected_frames_retry_then_verify_exact_proceeds",
+        "tests.brawl.test_transmit.TransmitConfirmationTests.test_slow_return_still_confirms_positive_exit_before_timeout",
+        "tests.brawl.test_transmit.TransmitConfirmationTests.test_unexpected_balances_are_not_accepted_as_transmit_proceeds",
+        "tests.brawl.test_transmit.TransmitConfirmationTests.test_unknown_frames_wait_without_clicks_until_selection_is_known",
+        "tests.brawl.test_transmit.TransmitConfirmationTests.test_unread_return_balances_wait_but_never_allow_a_second_sale",
+        "tests.brawl.test_transmit.TransmitReadingTests.test_empty_and_selected_quotes_do_not_claim_a_completed_sale",
+        "tests.brawl.test_transmit.TransmitReadingTests.test_quote_model_failures_propagate",
+        "tests.brawl.test_transmit.TransmitReadingTests.test_wrong_scenes_and_obscured_quotes_are_rejected"
+      ]
+    },
+    "brawl-transmit-return": {
+      "path": "tests/fixtures/brawl/brawl-transmit-return.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "transmit-return",
+      "source": "MuMu-20261011-153625-624.png",
+      "source_sha256": "2ad4176a3a9b1fe8cefb28ded88d7251732c8c9cd0912496db8e80534941a27d",
+      "sha256": "303c2c7cd251a39e8744be2aa2cc8078b74370264c9d1560ef1cf8c4777e2e68",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_transmit.TransmitReadingTests.test_wrong_scenes_and_obscured_quotes_are_rejected",
+        "tests.brawl.test_transmit.TransmitConfirmationTests.test_repeated_selected_frames_retry_then_verify_exact_proceeds",
+        "tests.brawl.test_transmit.TransmitConfirmationTests.test_disappeared_tray_waits_for_balance_without_clicking_again",
+        "tests.brawl.test_transmit.TransmitConfirmationTests.test_unread_return_balances_wait_but_never_allow_a_second_sale",
+        "tests.brawl.test_transmit.TransmitConfirmationTests.test_unexpected_balances_are_not_accepted_as_transmit_proceeds",
+        "tests.brawl.test_transmit.TransmitConfirmationTests.test_changed_round_level_or_deployment_cannot_confirm_a_sale",
+        "tests.brawl.test_transmit.TransmitConfirmationTests.test_closed_tray_without_proceeds_times_out_without_reopening",
+        "tests.brawl.test_transmit.TransmitConfirmationTests.test_empty_selection_or_other_scene_never_gets_confirmed",
+        "tests.brawl.test_transmit.TransmitConfirmationTests.test_unknown_frames_wait_without_clicks_until_selection_is_known",
+        "tests.brawl.test_transmit.TransmitConfirmationTests.test_reappearing_tray_after_preparation_is_not_a_second_sale",
+        "tests.brawl.test_transmit.TransmitConfirmationTests.test_fresh_first_frame_rejects_stale_selection_without_clicking",
+        "tests.brawl.test_transmit.TransmitConfirmationTests.test_slow_return_still_confirms_positive_exit_before_timeout",
+        "tests.brawl.test_brawl.AnalysisTests.test_transmit_quote_and_return_do_not_claim_an_offline_sale"
+      ]
+    },
+    "brawl-queue-top": {
+      "path": "tests/fixtures/brawl/brawl-queue-top.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "queue-top",
+      "source": "MuMu-20261012-190637-171.png",
+      "source_directory": "brawl-5level-oneshot",
+      "source_sha256": "f1b9274a655a6e7958e523e10c5beb664857fe6521fa79bab187f7697a8e549d",
+      "sha256": "8d42e893e279dda4377848d1991b816f6b1d96e74f88fce19c22b22e296408a7",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_bench.BenchRecognitionTests.test_complete_christy_name_template_requires_the_missing_final_glyph",
+        "tests.brawl.test_brawl.AnalysisTests.test_cursor_endpoints_do_not_make_a_single_frame_a_complete_roster",
+        "tests.brawl.test_cursor.BenchCursorTests.test_captured_adjacent_portraits_confirm_each_forward_selection",
+        "tests.brawl.test_cursor.BenchCursorTests.test_captured_selected_cards_have_positive_endpoints_and_adjacent_targets",
+        "tests.brawl.test_cursor.BenchCursorTests.test_changed_name_alone_cannot_confirm_a_skipped_or_wrong_card",
+        "tests.brawl.test_cursor.BenchCursorTests.test_erased_endpoint_backgrounds_and_unread_selected_names_stay_unknown",
+        "tests.brawl.test_cursor.BenchCursorTests.test_identical_captured_visible_queues_agree_without_claiming_hidden_inventory",
+        "tests.brawl.test_cursor.BenchCursorTests.test_non_preparation_frames_never_inherit_a_previous_cursor",
+        "tests.brawl.test_cursor.BenchCursorTests.test_obscured_visible_queue_does_not_authorize_reusing_a_click",
+        "tests.brawl.test_cursor.BenchCursorTests.test_same_selected_hero_with_changed_visible_neighbor_does_not_agree",
+        "tests.brawl.test_cursor.BenchCursorTests.test_supplied_observation_still_validates_image_and_model_errors_propagate",
+        "tests.brawl.test_field.FieldRecognitionTests.test_empty_field_does_not_reuse_a_prior_identity",
+        "tests.brawl.test_placement.PlacementTests.test_capture_rejects_unsupported_hero_full_field_and_nonpreparation",
+        "tests.brawl.test_scanner.BenchScannerTests.test_captured_reverse_order_simulates_a_complete_forward_scan",
+        "tests.brawl.test_field.FieldTraitRecognitionTests.test_overlays_and_bench_only_frames_do_not_supply_headers"
+      ]
+    },
+    "brawl-queue-second": {
+      "path": "tests/fixtures/brawl/brawl-queue-second.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "queue-second",
+      "source": "MuMu-20261012-190628-616.png",
+      "source_directory": "brawl-5level-oneshot",
+      "source_sha256": "909b7d7c3e63f5e6130bd36cafc04b298a41affdcb19592d5fd28acb72b2c734",
+      "sha256": "565a8f7bffe576566b1b06841c328d734bdf7f68a6595c174a1eb7a62f112452",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_bench.BenchRecognitionTests.test_complete_christy_name_template_requires_the_missing_final_glyph",
+        "tests.brawl.test_cursor.BenchCursorTests.test_captured_adjacent_portraits_confirm_each_forward_selection",
+        "tests.brawl.test_cursor.BenchCursorTests.test_captured_selected_cards_have_positive_endpoints_and_adjacent_targets",
+        "tests.brawl.test_cursor.BenchCursorTests.test_identical_captured_visible_queues_agree_without_claiming_hidden_inventory",
+        "tests.brawl.test_scanner.BenchScannerTests.test_captured_reverse_order_simulates_a_complete_forward_scan"
+      ]
+    },
+    "brawl-queue-middle": {
+      "path": "tests/fixtures/brawl/brawl-queue-middle.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "queue-middle",
+      "source": "MuMu-20261012-190612-211.png",
+      "source_directory": "brawl-5level-oneshot",
+      "source_sha256": "a73a7e803000c7348f7768e6c68bd8df0958e87267476106a79ec8436ccf719a",
+      "sha256": "d4a29051ea0f9ef140232b2d874b4a2a2faee9950c853b93688e07c810023634",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_cursor.BenchCursorTests.test_captured_adjacent_portraits_confirm_each_forward_selection",
+        "tests.brawl.test_cursor.BenchCursorTests.test_captured_selected_cards_have_positive_endpoints_and_adjacent_targets",
+        "tests.brawl.test_cursor.BenchCursorTests.test_changed_name_alone_cannot_confirm_a_skipped_or_wrong_card",
+        "tests.brawl.test_cursor.BenchCursorTests.test_identical_captured_visible_queues_agree_without_claiming_hidden_inventory",
+        "tests.brawl.test_cursor.BenchCursorTests.test_same_selected_hero_with_changed_visible_neighbor_does_not_agree",
+        "tests.brawl.test_scanner.BenchScannerTests.test_captured_reverse_order_simulates_a_complete_forward_scan"
+      ]
+    },
+    "brawl-queue-karin": {
+      "path": "tests/fixtures/brawl/brawl-queue-karin.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "queue-karin",
+      "source": "MuMu-20261012-190600-792.png",
+      "source_directory": "brawl-5level-oneshot",
+      "source_sha256": "e3b51cb80f55e95d10913d65f6c9c11591f3924ecfb7c91d52e51126a9961bec",
+      "sha256": "29d15eeb78fcbe8374e0aad3591e5ba3c61e02b7a36de4c04408bc433c4e28d2",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_cursor.BenchCursorTests.test_captured_adjacent_portraits_confirm_each_forward_selection",
+        "tests.brawl.test_cursor.BenchCursorTests.test_captured_selected_cards_have_positive_endpoints_and_adjacent_targets",
+        "tests.brawl.test_cursor.BenchCursorTests.test_changed_name_alone_cannot_confirm_a_skipped_or_wrong_card",
+        "tests.brawl.test_cursor.BenchCursorTests.test_identical_captured_visible_queues_agree_without_claiming_hidden_inventory",
+        "tests.brawl.test_cursor.BenchCursorTests.test_missing_portraits_or_selection_context_cannot_confirm_a_transition",
+        "tests.brawl.test_cursor.BenchCursorTests.test_same_selected_hero_with_changed_visible_neighbor_does_not_agree",
+        "tests.brawl.test_scanner.BenchScannerTests.test_captured_reverse_order_simulates_a_complete_forward_scan"
+      ]
+    },
+    "brawl-queue-glen": {
+      "path": "tests/fixtures/brawl/brawl-queue-glen.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "queue-glen",
+      "source": "MuMu-20261012-190551-352.png",
+      "source_directory": "brawl-5level-oneshot",
+      "source_sha256": "d223133f5d8835067b6a5fc99318bbf4c558b7bb0e17a2ec573fae6f50a93317",
+      "sha256": "9b21e76306d33fab10eac930bc1796754f336746bd44704c3857788c843873be",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_cursor.BenchCursorTests.test_captured_adjacent_portraits_confirm_each_forward_selection",
+        "tests.brawl.test_cursor.BenchCursorTests.test_captured_selected_cards_have_positive_endpoints_and_adjacent_targets",
+        "tests.brawl.test_cursor.BenchCursorTests.test_changed_name_alone_cannot_confirm_a_skipped_or_wrong_card",
+        "tests.brawl.test_cursor.BenchCursorTests.test_identical_captured_visible_queues_agree_without_claiming_hidden_inventory",
+        "tests.brawl.test_cursor.BenchCursorTests.test_missing_portraits_or_selection_context_cannot_confirm_a_transition",
+        "tests.brawl.test_scanner.BenchScannerTests.test_captured_reverse_order_simulates_a_complete_forward_scan"
+      ]
+    },
+    "brawl-queue-bottom": {
+      "path": "tests/fixtures/brawl/brawl-queue-bottom.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "queue-bottom",
+      "source": "MuMu-20261012-190543-283.png",
+      "source_directory": "brawl-5level-oneshot",
+      "source_sha256": "f9717bf4dc77012abb406efa14242a17166bb9c4fa31c9a0f25e610070edcb9c",
+      "sha256": "255650d63b4338b91e2be17cb8c9473356abb086096db37184c52ab4c3d1270b",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_brawl.AnalysisTests.test_cursor_endpoints_do_not_make_a_single_frame_a_complete_roster",
+        "tests.brawl.test_cursor.BenchCursorTests.test_captured_adjacent_portraits_confirm_each_forward_selection",
+        "tests.brawl.test_cursor.BenchCursorTests.test_captured_selected_cards_have_positive_endpoints_and_adjacent_targets",
+        "tests.brawl.test_cursor.BenchCursorTests.test_changed_name_alone_cannot_confirm_a_skipped_or_wrong_card",
+        "tests.brawl.test_cursor.BenchCursorTests.test_erased_endpoint_backgrounds_and_unread_selected_names_stay_unknown",
+        "tests.brawl.test_cursor.BenchCursorTests.test_identical_captured_visible_queues_agree_without_claiming_hidden_inventory",
+        "tests.brawl.test_cursor.BenchCursorTests.test_missing_portraits_or_selection_context_cannot_confirm_a_transition",
+        "tests.brawl.test_scanner.BenchScannerTests.test_captured_reverse_order_simulates_a_complete_forward_scan"
+      ]
+    },
+    "brawl-queue-empty": {
+      "path": "tests/fixtures/brawl/brawl-queue-empty.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "queue-empty",
+      "source": "MuMu-20261012-185928-313.png",
+      "source_directory": "brawl-5level-oneshot",
+      "source_sha256": "53ea4a8a193697213a6f30a55d5e9096d0b6ff803bc2716dae343e998d134304",
+      "sha256": "b3a9ad8bd34070adaee4f83c6d44f5b981258bbfa6c132a319e10fa86a201089",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_brawl.AnalysisTests.test_cursor_endpoints_do_not_make_a_single_frame_a_complete_roster",
+        "tests.brawl.test_cursor.BenchCursorTests.test_captured_empty_bench_does_not_describe_deployed_heroes",
+        "tests.brawl.test_cursor.BenchCursorTests.test_erased_endpoint_backgrounds_and_unread_selected_names_stay_unknown",
+        "tests.brawl.test_cursor.BenchCursorTests.test_obscured_visible_queue_does_not_authorize_reusing_a_click",
+        "tests.brawl.test_field.FieldRecognitionTests.test_independent_captures_locate_three_supported_heroes",
+        "tests.brawl.test_field.FieldTraitRecognitionTests.test_different_profession_is_read_as_its_own_combination",
+        "tests.brawl.test_scanner.BenchScannerTests.test_captured_empty_bench_needs_no_swipe_or_click",
+        "tests.brawl.test_swap.WithdrawTests.test_empty_bench_requires_positive_empty_pixels_in_preparation_and_grid"
+      ]
+    },
+    "brawl-swap-two": {
+      "path": "tests/fixtures/brawl/brawl-swap-two.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "swap-two",
+      "source": "MuMu-20261012-185921-707.png",
+      "source_directory": "brawl-5level-oneshot",
+      "source_sha256": "de12aef7fd81ae3941e89fcb468b956e038924ed90711a220e4c0f8d005d3c0f",
+      "sha256": "52a3e3034532e04c231fb151099b8eb29196f8586fe6a5e2a20c5d666f86271a",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_board.BoardRecognitionTests.test_multiple_blue_controls_are_occupied_swap_targets"
+      ]
+    },
+    "brawl-swap-three": {
+      "path": "tests/fixtures/brawl/brawl-swap-three.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "swap-three",
+      "source": "MuMu-20261012-190050-103.png",
+      "source_directory": "brawl-5level-oneshot",
+      "source_sha256": "f0a9cd5824b962d3f7d56ea93ac261235933a5e9444a3d77a44e36cbb2b976da",
+      "sha256": "152ab692d093bfc515146edde22d09640e09aafd9eaa3be934c974c6ba2b6374",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_board.BoardRecognitionTests.test_occluded_three_hero_grid_is_not_completed_from_neighbors"
+      ]
+    },
+    "brawl-swap-four": {
+      "path": "tests/fixtures/brawl/brawl-swap-four.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "swap-four",
+      "source": "MuMu-20261012-190356-235.png",
+      "source_directory": "brawl-5level-oneshot",
+      "source_sha256": "112ddafe978c5bf07e4a491d737ffce88c5108f837d32d04da6f1c88aea13659",
+      "sha256": "3700dbb43793216afd712c6eb68c24526c219cd21f2aef6b931b8b2ea7d4f215",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_board.BoardRecognitionTests.test_multiple_blue_controls_are_occupied_swap_targets"
+      ]
+    },
+    "brawl-move-source": {
+      "path": "tests/fixtures/brawl/brawl-move-source.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "move-source",
+      "source": "MuMu-20261012-190532-632.png",
+      "source_directory": "brawl-5level-oneshot",
+      "source_sha256": "bce671856180207a65442fef6e71678e4f8d89f98add77cc002a9af0aaf96d8a",
+      "sha256": "1308b2740d09d6065d92bf3a957005ef968b7c6dbfa9fb531584c4eb6206e9e6",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_board.BoardRecognitionTests.test_green_control_identifies_source_separately_from_swap_target",
+        "tests.brawl.test_field.FieldRecognitionTests.test_overlays_and_formation_controls_do_not_authorize_field_identity",
+        "tests.brawl.test_swap.FullSwapReadingTests.test_missing_anchor_or_occupied_control_keeps_the_set_unknown",
+        "tests.brawl.test_swap.WithdrawTests.test_red_minus_pairs_with_green_source_on_new_and_independent_old_grids"
+      ]
+    },
+    "brawl-deploy-glen-ready": {
+      "path": "tests/fixtures/brawl/brawl-deploy-glen-ready.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "deploy-glen-ready",
+      "source": "MuMu-20261012-185644-678.png",
+      "source_directory": "brawl-5level-oneshot",
+      "source_sha256": "1ebded11d8efdde41a6682d2f1c1ea685cab41c2a0c88097dda6860c171ed65d",
+      "sha256": "b98a7cbd0a67bcfaaead03e32c008067bf64170f5f6330b0b8a55be66669aa1b",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_placement.PlacementTests.test_capture_rejects_unsupported_hero_full_field_and_nonpreparation",
+        "tests.brawl.test_placement.PlacementTests.test_captured_glen_deployment_confirms_identity_and_destination"
+      ]
+    },
+    "brawl-deploy-glen-grid": {
+      "path": "tests/fixtures/brawl/brawl-deploy-glen-grid.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "deploy-glen-grid",
+      "source": "MuMu-20261012-185658-354.png",
+      "source_directory": "brawl-5level-oneshot",
+      "source_sha256": "7a31cd10d8a4f2f46d8224ae080774b06f2bc99d8e0757453d381282275ac0da",
+      "sha256": "816f311f78c9eb896ee3344ef27d51532fc8bd06ce199200855c02cb5c5cdf9d",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_placement.PlacementTests.test_capture_rejects_unsupported_hero_full_field_and_nonpreparation",
+        "tests.brawl.test_placement.PlacementTests.test_captured_glen_deployment_confirms_identity_and_destination"
+      ]
+    },
+    "brawl-field-glen": {
+      "path": "tests/fixtures/brawl/brawl-field-glen.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "field-glen",
+      "source": "MuMu-20261012-185704-304.png",
+      "source_directory": "brawl-5level-oneshot",
+      "source_sha256": "5e12cd03893d9f8f5fe1f3dd782fe278aa345353f0122dd05a07c665f9732386",
+      "sha256": "92a5c396be4751379ed76dc8d767c3314bda05fda5546a9ac6f61ad8f390a468",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_brawl.AnalysisTests.test_field_identity_without_imprint_does_not_create_a_complete_roster",
+        "tests.brawl.test_field.FieldRecognitionTests.test_duplicate_sprite_positions_are_ambiguous",
+        "tests.brawl.test_field.FieldRecognitionTests.test_empty_field_does_not_reuse_a_prior_identity",
+        "tests.brawl.test_field.FieldRecognitionTests.test_invalid_image_or_unsupported_server_is_rejected",
+        "tests.brawl.test_field.FieldRecognitionTests.test_mismatched_deployed_count_does_not_publish_a_complete_field",
+        "tests.brawl.test_field.FieldRecognitionTests.test_obscured_identity_patch_is_not_completed_from_the_prior_frame",
+        "tests.brawl.test_field.FieldRecognitionTests.test_source_imprint_is_not_carried_into_current_hero",
+        "tests.brawl.test_field.FieldRecognitionTests.test_translated_sprite_updates_its_pixel_anchor_without_cached_offsets",
+        "tests.brawl.test_placement.PlacementTests.test_captured_glen_deployment_confirms_identity_and_destination",
+        "tests.brawl.test_field.FieldTraitRecognitionTests.test_nonadjacent_symbols_are_not_combined",
+        "tests.brawl.test_field.FieldTraitRecognitionTests.test_header_count_contradiction_rejects_complete_identity",
+        "tests.brawl.test_field.FieldTraitRecognitionTests.test_translated_headers_report_only_current_symbol_location",
+        "tests.brawl.test_field.FieldTraitRecognitionTests.test_darkened_header_is_not_accepted_by_shape_alone",
+        "tests.brawl.test_field.FieldTraitRecognitionTests.test_invalid_images_and_unsupported_servers_are_rejected",
+        "tests.brawl.test_field.FieldTraitRecognitionTests.test_duplicate_unique_headers_are_unknown_even_with_enough_deployed_slots"
+      ]
+    },
+    "brawl-field-five": {
+      "path": "tests/fixtures/brawl/brawl-field-five.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "field-five",
+      "source": "MuMu-20261012-190405-410.png",
+      "source_directory": "brawl-5level-oneshot",
+      "source_sha256": "65d40d945215b4a6f6ccd2bf368d96f29ebef714936588f4298c8e894c218baa",
+      "sha256": "be1c0c1a7b0c81864898c89f671fd6e9c90b423e2d18f9a8f49d3f5599736e42",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_field.FieldRecognitionTests.test_source_imprint_is_not_carried_into_current_hero"
+      ]
+    },
+    "brawl-field-five-next": {
+      "path": "tests/fixtures/brawl/brawl-field-five-next.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "field-five-next",
+      "source": "MuMu-20261012-190432-379.png",
+      "source_directory": "brawl-5level-oneshot",
+      "source_sha256": "dc2822d0ebc1e838502b77ccc11363a26d1434cc5b5aff08a29f2ece79bc1a58",
+      "sha256": "1fb09f0861484eab04b67c626dd7728e88e7f0a57710a0de9eba8418be2940eb",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_field.FieldRecognitionTests.test_independent_captures_locate_three_supported_heroes",
+        "tests.brawl.test_field.FieldTraitRecognitionTests.test_independent_headers_identify_glen_and_maya",
+        "tests.brawl.test_field.FieldTraitRecognitionTests.test_shared_combinations_keep_both_candidates"
+      ]
+    },
+    "brawl-field-four": {
+      "path": "tests/fixtures/brawl/brawl-field-four.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "field-four",
+      "source": "MuMu-20261012-190056-073.png",
+      "source_directory": "brawl-5level-oneshot",
+      "source_sha256": "5cab09b2a16dfcd9e2e0edc543e6e796c6312d84caab010a4cd4408d507b9f5d",
+      "sha256": "c1eb1392c7f354d385d44665549402ccce2daad5fbba4009f988652089432af2",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_field.FieldRecognitionTests.test_independent_captures_locate_three_supported_heroes"
+      ]
+    },
+    "brawl-field-five-bench": {
+      "path": "tests/fixtures/brawl/brawl-field-five-bench.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "field-five-bench",
+      "source": "MuMu-20261012-190446-915.png",
+      "source_directory": "brawl-5level-oneshot",
+      "source_sha256": "054b0966a4c0990c5f225e187e3f60020375ae06df05078b40dd7e42ac9d4437",
+      "sha256": "11732859206eb6e5dd1dc51a7d79334e780b824cafbd7e0a20595d63f86e7351",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_field.FieldRecognitionTests.test_partial_formation_never_uses_bench_names_or_guesses_other_sprites",
+        "tests.brawl.test_placement.PlacementTests.test_capture_rejects_unsupported_hero_full_field_and_nonpreparation"
+      ]
+    },
+    "brawl-upgrade-before": {
+      "path": "tests/fixtures/brawl/brawl-upgrade-before.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "upgrade-before",
+      "source": "MuMu-20261011-153437-418.png",
+      "source_directory": "brawl",
+      "source_sha256": "1d5b954c50873869bbce9a9e2d1356b1246f034df3e77c8b30f4fa016ee192dd",
+      "sha256": "6f7d8623fdd3348bc3cd3a4841af43ce8ee6b32dc51dbe60428fa91aaf443e1c",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_upgrade.UpgradeReadingTests.test_capture_enforces_reserve_funds_maximum_and_preparation",
+        "tests.brawl.test_upgrade.UpgradeReadingTests.test_hidden_price_or_wrong_scene_cannot_create_a_quote",
+        "tests.brawl.test_upgrade.UpgradeReplayTests.test_real_sequence_confirms_level_capacity_and_exact_debit_once"
+      ]
+    },
+    "brawl-upgrade-dialog": {
+      "path": "tests/fixtures/brawl/brawl-upgrade-dialog.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "upgrade-dialog",
+      "source": "MuMu-20261011-153439-741.png",
+      "source_directory": "brawl",
+      "source_sha256": "3750c0ac3ad6f5383462d93d21bcb6ef6a2af47a60bb528f7f1f726016f7e787",
+      "sha256": "b2eb9be9e33081a4829e417893d81e02e94c52a8f8d4359acbac8736f77ee533",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_upgrade.UpgradeReadingTests.test_analysis_reports_quote_without_claiming_payment",
+        "tests.brawl.test_upgrade.UpgradeReadingTests.test_capture_enforces_reserve_funds_maximum_and_preparation",
+        "tests.brawl.test_upgrade.UpgradeReadingTests.test_hidden_price_or_wrong_scene_cannot_create_a_quote",
+        "tests.brawl.test_upgrade.UpgradeReadingTests.test_real_quote_checks_price_capacity_header_and_button",
+        "tests.brawl.test_upgrade.UpgradeReadingTests.test_wrong_header_price_and_model_failures_are_not_hidden",
+        "tests.brawl.test_upgrade.UpgradeReplayTests.test_real_sequence_confirms_level_capacity_and_exact_debit_once"
+      ]
+    },
+    "brawl-full-bench-initial": {
+      "path": "tests/fixtures/brawl/brawl-full-bench-initial.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "full-bench-initial",
+      "source": "MuMu-20261013-224325-887.png",
+      "source_directory": "",
+      "source_sha256": "19d9b6e7783f009400f034145d144ef8f34557b8bd050bf70374cbe8276e7d2a",
+      "sha256": "1ff78ca4e7197caf0e6b8d044242b904856dc4f152a98cc8514a61cbd7a1bfb3",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_full_bench.FullBenchFocusTests.test_initial_and_repeated_focus_do_not_prove_another_obtained_hero",
+        "tests.brawl.test_full_bench.FullBenchFocusTests.test_real_click_focus_keeps_full_deployment_and_resources",
+        "tests.brawl.test_full_bench.FullBenchFocusTests.test_real_nonadjacent_jumps_cannot_complete_a_forward_scan"
+      ]
+    },
+    "brawl-full-bench-repeat": {
+      "path": "tests/fixtures/brawl/brawl-full-bench-repeat.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "full-bench-repeat",
+      "source": "MuMu-20261013-224328-332.png",
+      "source_directory": "",
+      "source_sha256": "c97c2cdd486681c360e757f9ab045d1b2e7c320923039e8e4d75e08405b2ff91",
+      "sha256": "ce7e18220494c05e2e4c0ffed3f62833a763f3eb4cde7a95a2fee02c0c4bef0a",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_full_bench.FullBenchFocusTests.test_initial_and_repeated_focus_do_not_prove_another_obtained_hero",
+        "tests.brawl.test_full_bench.FullBenchFocusTests.test_real_click_focus_keeps_full_deployment_and_resources",
+        "tests.brawl.test_full_bench.FullBenchFocusTests.test_real_nonadjacent_jumps_cannot_complete_a_forward_scan",
+        "tests.brawl.test_swap.FullSwapReadingTests.test_new_field_identities_have_independent_captured_checks",
+        "tests.brawl.test_field.FieldTraitRecognitionTests.test_independent_headers_identify_glen_and_maya",
+        "tests.brawl.test_field.FieldTraitRecognitionTests.test_transparent_shield_spaces_ignore_changed_background_colors",
+        "tests.brawl.test_field.FieldTraitRecognitionTests.test_removed_shield_ink_and_flat_blocks_never_identify_maya",
+        "tests.brawl.test_field.FieldTraitRecognitionTests.test_different_profession_is_read_as_its_own_combination"
+      ]
+    },
+    "brawl-focus-xiaochun": {
+      "path": "tests/fixtures/brawl/brawl-focus-xiaochun.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "focus-xiaochun",
+      "source": "MuMu-20261013-224342-014.png",
+      "source_directory": "",
+      "source_sha256": "3c34b1f8b23ed6072428b338725848e83ebe2bad84ccf1bdf783cfbe883beb41",
+      "sha256": "14f2ee6556edcfbff3d80dba98661154f2256a200fd38b9f435398aa7803a6d0",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_full_bench.FullBenchFocusTests.test_real_click_focus_keeps_full_deployment_and_resources",
+        "tests.brawl.test_full_bench.FullBenchFocusTests.test_real_nonadjacent_jumps_cannot_complete_a_forward_scan"
+      ]
+    },
+    "brawl-focus-specimen-sez": {
+      "path": "tests/fixtures/brawl/brawl-focus-specimen-sez.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "focus-specimen-sez",
+      "source": "MuMu-20261013-224343-948.png",
+      "source_directory": "",
+      "source_sha256": "b1d2b669bc49d16ceed1b4e1db83b11d548a677e0a1c3ef2229cbac6a5750745",
+      "sha256": "cf2ea9aba59f655a0577612d1bf521cc576e676fbc894861d2b8be1c5a569667",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_full_bench.FullBenchFocusTests.test_real_click_focus_keeps_full_deployment_and_resources",
+        "tests.brawl.test_full_bench.FullBenchFocusTests.test_real_nonadjacent_jumps_cannot_complete_a_forward_scan"
+      ]
+    },
+    "brawl-focus-rin": {
+      "path": "tests/fixtures/brawl/brawl-focus-rin.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "focus-rin",
+      "source": "MuMu-20261013-224348-555.png",
+      "source_directory": "",
+      "source_sha256": "12d7b6daaead5a54248c9ebdcf73b381fa15f0b61adcd12dd2b2100620422875",
+      "sha256": "dc2a610f5612ada41ecd3dde77bc6dd4dda8229fb2558124a94027c520ee1739",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_full_bench.FullBenchFocusTests.test_real_click_focus_keeps_full_deployment_and_resources",
+        "tests.brawl.test_full_bench.FullBenchFocusTests.test_real_nonadjacent_jumps_cannot_complete_a_forward_scan",
+        "tests.brawl.test_swap.FullSwapReplayTests.test_source_or_selected_card_changes_abort_before_clicking"
+      ]
+    },
+    "brawl-focus-xiaochun-return": {
+      "path": "tests/fixtures/brawl/brawl-focus-xiaochun-return.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "focus-xiaochun-return",
+      "source": "MuMu-20261013-224350-459.png",
+      "source_directory": "",
+      "source_sha256": "de6291a9a5b5a8f44c465274a510295d04e9e0ce920b750e725eb7b922c22155",
+      "sha256": "920323cc35e2cc728ffb8889a9fa7012af8924b7844188f8d958153220308308",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_full_bench.FullBenchFocusTests.test_real_click_focus_keeps_full_deployment_and_resources",
+        "tests.brawl.test_full_bench.FullBenchFocusTests.test_real_nonadjacent_jumps_cannot_complete_a_forward_scan"
+      ]
+    },
+    "brawl-focus-mercedes": {
+      "path": "tests/fixtures/brawl/brawl-focus-mercedes.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "focus-mercedes",
+      "source": "MuMu-20261013-224351-813.png",
+      "source_directory": "",
+      "source_sha256": "b1bca594dea0a6773c79441bca4b14ffbb455324903d4680f1e999c5725e49ae",
+      "sha256": "2db0600328457658a5b268683c4e3d7a97521f013cecf269100aaa541ffe85b9",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_full_bench.FullBenchFocusTests.test_real_click_focus_keeps_full_deployment_and_resources",
+        "tests.brawl.test_full_bench.FullBenchFocusTests.test_real_nonadjacent_jumps_cannot_complete_a_forward_scan"
+      ]
+    },
+    "brawl-focus-christy-return": {
+      "path": "tests/fixtures/brawl/brawl-focus-christy-return.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "focus-christy-return",
+      "source": "MuMu-20261013-224353-806.png",
+      "source_directory": "",
+      "source_sha256": "a0b96292458e027660b9c9d3906b23b74fb9ecfd6925c1debba48a68c3a4fbdd",
+      "sha256": "b7931d61289f0bebe9e6c39c5ed447e81019956aa2363d90a0f770a6b7d270c1",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_full_bench.FullBenchFocusTests.test_real_click_focus_keeps_full_deployment_and_resources",
+        "tests.brawl.test_full_bench.FullBenchFocusTests.test_real_nonadjacent_jumps_cannot_complete_a_forward_scan"
+      ]
+    },
+    "brawl-full-swap-before": {
+      "path": "tests/fixtures/brawl/brawl-full-swap-before.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "full-swap-before",
+      "source": "MuMu-20261013-224455-015.png",
+      "source_directory": "",
+      "source_sha256": "1668bf8f62a2d1d8c9e2e4087be9027c2260380c141fb21953ba0151a43a4495",
+      "sha256": "4844a0c63f2e16aef6b20791689c2977310e5c44a3143a4d606c4dc8030f55c6",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_full_bench.FullBenchFocusTests.test_visible_plus_at_ten_of_ten_does_not_authorize_empty_placement",
+        "tests.brawl.test_swap.FullSwapReadingTests.test_missing_anchor_or_occupied_control_keeps_the_set_unknown",
+        "tests.brawl.test_swap.FullSwapReadingTests.test_swap_request_uses_incoming_card_and_separate_outgoing_sprite",
+        "tests.brawl.test_swap.FullSwapReplayTests.test_changed_header_or_missing_targets_prevent_a_destination_click",
+        "tests.brawl.test_swap.FullSwapReplayTests.test_closed_grid_and_reappearing_grid_cannot_reuse_an_old_request",
+        "tests.brawl.test_swap.FullSwapReplayTests.test_real_full_field_swap_confirms_position_without_using_new_focus",
+        "tests.brawl.test_swap.FullSwapReplayTests.test_slow_positive_return_wins_before_timeout",
+        "tests.brawl.test_swap.FullSwapReplayTests.test_source_or_selected_card_changes_abort_before_clicking",
+        "tests.brawl.test_swap.FullSwapReplayTests.test_unchanged_deployed_count_and_missing_sprite_do_not_confirm",
+        "tests.brawl.test_swap.FullSwapReplayTests.test_unknown_pose_then_real_swap_frame_confirms_without_reclicking",
+        "tests.brawl.test_swap.FullSwapReplayTests.test_unknown_post_swap_pose_waits_for_independent_known_pose",
+        "tests.brawl.test_swap.IdentificationSwapTests.test_full_bench_identification_uses_scan_difference_not_automatic_focus",
+        "tests.brawl.test_swap.IdentificationSwapTests.test_unknown_outgoing_pose_does_not_prevent_explicit_identification_swap",
+        "tests.brawl.test_swap.IdentificationSwapTests.test_identification_rejects_incomplete_invalid_or_stale_bench_before_opening",
+        "tests.brawl.test_swap.IdentificationSwapTests.test_stale_visible_bench_or_known_field_conflict_forbids_reopening",
+        "tests.brawl.test_swap.IdentificationSwapTests.test_unknown_target_requires_positive_occupied_control",
+        "tests.brawl.test_swap.IdentificationSwapTests.test_missing_incoming_pose_never_confirms_or_repeats_the_exchange",
+        "tests.brawl.test_swap.IdentificationSwapTests.test_scan_difference_requires_one_exchange_with_unchanged_imprints_and_context"
+      ]
+    },
+    "brawl-full-swap-grid": {
+      "path": "tests/fixtures/brawl/brawl-full-swap-grid.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "full-swap-grid",
+      "source": "MuMu-20261013-224458-509.png",
+      "source_directory": "",
+      "source_sha256": "e20ac015d851a9dc8dfee175ac430beb355ec7ca0d06355a56e2129d79502aa6",
+      "sha256": "be53f92e46221b7357ea5bbee6f021ea0ea84f96389dca65cdf7788affb4ecb3",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_field.FieldTraitRecognitionTests.test_overlays_and_bench_only_frames_do_not_supply_headers",
+        "tests.brawl.test_summon.SynergySummonReadingTests.test_budget_reserve_disabled_buttons_and_wrong_scenes_are_rejected",
+        "tests.brawl.test_swap.FullSwapReadingTests.test_full_field_grid_has_ten_occupied_targets_and_no_empty_claim",
+        "tests.brawl.test_swap.FullSwapReadingTests.test_missing_anchor_or_occupied_control_keeps_the_set_unknown",
+        "tests.brawl.test_swap.FullSwapReplayTests.test_changed_header_or_missing_targets_prevent_a_destination_click",
+        "tests.brawl.test_swap.FullSwapReplayTests.test_closed_grid_and_reappearing_grid_cannot_reuse_an_old_request",
+        "tests.brawl.test_swap.FullSwapReplayTests.test_real_full_field_swap_confirms_position_without_using_new_focus",
+        "tests.brawl.test_swap.FullSwapReplayTests.test_slow_positive_return_wins_before_timeout",
+        "tests.brawl.test_swap.FullSwapReplayTests.test_source_or_selected_card_changes_abort_before_clicking",
+        "tests.brawl.test_swap.FullSwapReplayTests.test_unchanged_deployed_count_and_missing_sprite_do_not_confirm",
+        "tests.brawl.test_swap.FullSwapReplayTests.test_unknown_pose_then_real_swap_frame_confirms_without_reclicking",
+        "tests.brawl.test_swap.FullSwapReplayTests.test_unknown_post_swap_pose_waits_for_independent_known_pose",
+        "tests.brawl.test_swap.IdentificationSwapTests.test_full_bench_identification_uses_scan_difference_not_automatic_focus",
+        "tests.brawl.test_swap.IdentificationSwapTests.test_missing_incoming_pose_never_confirms_or_repeats_the_exchange",
+        "tests.brawl.test_swap.IdentificationSwapTests.test_unknown_outgoing_pose_does_not_prevent_explicit_identification_swap",
+        "tests.brawl.test_swap.IdentificationSwapTests.test_unknown_target_requires_positive_occupied_control",
+        "tests.brawl.test_swap.WithdrawTests.test_red_minus_pairs_with_green_source_on_new_and_independent_old_grids"
+      ]
+    },
+    "brawl-full-swap-after": {
+      "path": "tests/fixtures/brawl/brawl-full-swap-after.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "full-swap-after",
+      "source": "MuMu-20261013-224504-796.png",
+      "source_directory": "",
+      "source_sha256": "acb469f71af9638b432527645525ad526cdd5b1ee594b09f996c12c5ba2f8662",
+      "sha256": "ff0f9dab90a60eea0de35f026186dd4710140aac1e5ee3a8363f079575870496",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_swap.FullSwapReadingTests.test_missing_anchor_or_occupied_control_keeps_the_set_unknown",
+        "tests.brawl.test_swap.FullSwapReadingTests.test_swap_request_uses_incoming_card_and_separate_outgoing_sprite",
+        "tests.brawl.test_swap.FullSwapReplayTests.test_changed_header_or_missing_targets_prevent_a_destination_click",
+        "tests.brawl.test_swap.FullSwapReplayTests.test_closed_grid_and_reappearing_grid_cannot_reuse_an_old_request",
+        "tests.brawl.test_swap.FullSwapReplayTests.test_real_full_field_swap_confirms_position_without_using_new_focus",
+        "tests.brawl.test_swap.FullSwapReplayTests.test_slow_positive_return_wins_before_timeout",
+        "tests.brawl.test_swap.FullSwapReplayTests.test_source_or_selected_card_changes_abort_before_clicking",
+        "tests.brawl.test_swap.FullSwapReplayTests.test_unchanged_deployed_count_and_missing_sprite_do_not_confirm",
+        "tests.brawl.test_swap.FullSwapReplayTests.test_unknown_pose_then_real_swap_frame_confirms_without_reclicking",
+        "tests.brawl.test_swap.FullSwapReplayTests.test_unknown_post_swap_pose_waits_for_independent_known_pose",
+        "tests.brawl.test_swap.IdentificationSwapTests.test_full_bench_identification_uses_scan_difference_not_automatic_focus",
+        "tests.brawl.test_swap.IdentificationSwapTests.test_unknown_outgoing_pose_does_not_prevent_explicit_identification_swap",
+        "tests.brawl.test_swap.IdentificationSwapTests.test_missing_incoming_pose_never_confirms_or_repeats_the_exchange"
+      ]
+    },
+    "brawl-full-swap-stable": {
+      "path": "tests/fixtures/brawl/brawl-full-swap-stable.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "full-swap-stable",
+      "source": "MuMu-20261013-224507-817.png",
+      "source_directory": "",
+      "source_sha256": "8a7763e4df258db5c8526e53e0fae7cc813455b129a34ac26f10b75ec631802a",
+      "sha256": "13338e820353a0ee40fbfe27ef36df6551e20df7a3fb40a6260c98acd1040d0e",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_swap.FullSwapReadingTests.test_unmatched_idle_pose_remains_unknown_without_lowering_confidence",
+        "tests.brawl.test_swap.FullSwapReplayTests.test_unknown_pose_then_real_swap_frame_confirms_without_reclicking",
+        "tests.brawl.test_swap.FullSwapReplayTests.test_unknown_post_swap_pose_waits_for_independent_known_pose",
+        "tests.brawl.test_field.FieldTraitRecognitionTests.test_xiaochun_headers_survive_independent_idle_poses",
+        "tests.brawl.test_field.FieldTraitRecognitionTests.test_missing_or_redacted_symbol_does_not_reuse_prior_identity",
+        "tests.brawl.test_brawl.AnalysisTests.test_idle_motion_traits_report_identity_without_inventing_a_click_position"
+      ]
+    },
+    "brawl-multi-transmit-before": {
+      "path": "tests/fixtures/brawl/brawl-multi-transmit-before.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "multi-transmit-before",
+      "source": "MuMu-20261013-224521-576.png",
+      "source_directory": "",
+      "source_sha256": "deef20cc2857ff8d2250dc0cf6782fe5f5d83c31ec7351821fee381ef16c153f",
+      "sha256": "8d9d4b332a7f7c223e2de9a73c1c579cdc0b93953714ba02ed3a2eebea1e4789",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_multi_transmit.MultiTransmitReadingTests.test_actual_return_and_toast_both_show_exact_batch_proceeds",
+        "tests.brawl.test_multi_transmit.MultiTransmitReadingTests.test_real_batch_quotes_do_not_change_balances_before_confirmation"
+      ]
+    },
+    "brawl-multi-transmit-empty": {
+      "path": "tests/fixtures/brawl/brawl-multi-transmit-empty.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "multi-transmit-empty",
+      "source": "MuMu-20261013-224545-562.png",
+      "source_directory": "",
+      "source_sha256": "1f704c8140629273d8342723953cff5dbedd5a4951d6c9ae9529589441ec686a",
+      "sha256": "61ca847597b81ef25abef7adf7045682dd7ef5d1a570a88786a75442b8dff988",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_multi_transmit.MultiTransmitReadingTests.test_real_batch_quotes_do_not_change_balances_before_confirmation",
+        "tests.brawl.test_multi_transmit.MultiTransmitReplayTests.test_bench_scanner_never_clicks_a_card_in_the_transmit_scene",
+        "tests.brawl.test_swap.FullSwapReadingTests.test_missing_anchor_or_occupied_control_keeps_the_set_unknown"
+      ]
+    },
+    "brawl-multi-transmit-one": {
+      "path": "tests/fixtures/brawl/brawl-multi-transmit-one.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "multi-transmit-one",
+      "source": "MuMu-20261013-224547-622.png",
+      "source_directory": "",
+      "source_sha256": "96bdbf90152f7ab33384551de69e5b5591c3c76da692a62c4ec93f117892506a",
+      "sha256": "2424277208e0797ebcef2d6fe30d63cdc4007a8bbb990eca2126b1b11a6887b3",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_multi_transmit.MultiTransmitReadingTests.test_real_batch_quotes_do_not_change_balances_before_confirmation"
+      ]
+    },
+    "brawl-multi-transmit-two": {
+      "path": "tests/fixtures/brawl/brawl-multi-transmit-two.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "multi-transmit-two",
+      "source": "MuMu-20261013-224550-525.png",
+      "source_directory": "",
+      "source_sha256": "4f1a06db278e139b3ce95149965529c82c464b82d4bd65814fb551a9a54d74b4",
+      "sha256": "58ce058caa7556e4e225975894bde8e5defe6267659e50dffc14b44542258568",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_multi_transmit.MultiTransmitReadingTests.test_real_batch_quotes_do_not_change_balances_before_confirmation",
+        "tests.brawl.test_multi_transmit.MultiTransmitReplayTests.test_changed_batch_or_third_portrait_aborts_before_confirming"
+      ]
+    },
+    "brawl-multi-transmit-three": {
+      "path": "tests/fixtures/brawl/brawl-multi-transmit-three.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "multi-transmit-three",
+      "source": "MuMu-20261013-224558-787.png",
+      "source_directory": "",
+      "source_sha256": "edd25175b7df920e767122493ba20fa183875ab584a3f61660a547b065df8631",
+      "sha256": "9333fd7f045f21b2a161b567ee5333a6624b07841478ee14e83cd6806e86e713",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_multi_transmit.MultiTransmitReadingTests.test_multi_digit_quote_requires_current_unique_icons",
+        "tests.brawl.test_multi_transmit.MultiTransmitReadingTests.test_previous_matches_never_shift_the_new_two_digit_quote",
+        "tests.brawl.test_multi_transmit.MultiTransmitReadingTests.test_real_batch_quotes_do_not_change_balances_before_confirmation",
+        "tests.brawl.test_multi_transmit.MultiTransmitReplayTests.test_bench_scanner_never_clicks_a_card_in_the_transmit_scene",
+        "tests.brawl.test_multi_transmit.MultiTransmitReplayTests.test_captured_three_hero_batch_verifies_both_currencies",
+        "tests.brawl.test_multi_transmit.MultiTransmitReplayTests.test_changed_batch_or_third_portrait_aborts_before_confirming",
+        "tests.brawl.test_multi_transmit.MultiTransmitReplayTests.test_paid_summon_result_is_not_a_captured_free_transmit_reward",
+        "tests.brawl.test_multi_transmit.MultiTransmitReplayTests.test_unknown_frame_does_not_reuse_a_selected_batch",
+        "tests.brawl.test_multi_transmit.MultiTransmitReplayTests.test_unread_quote_waits_without_selecting_any_bench_hero",
+        "tests.brawl.test_swap.IdentificationSwapTests.test_full_bench_identification_uses_scan_difference_not_automatic_focus"
+      ]
+    },
+    "brawl-multi-transmit-proceeds": {
+      "path": "tests/fixtures/brawl/brawl-multi-transmit-proceeds.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "multi-transmit-proceeds",
+      "source": "MuMu-20261013-224642-784.png",
+      "source_directory": "",
+      "source_sha256": "1ddbc12ceeb7675f17e33b79e08eae1a01e146362c8d31718e6bf0a4fafff620",
+      "sha256": "2afa632a6e11d79fcd7a34cd0779953aad0a2158106e878a6f443a9e9c25644e",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_multi_transmit.MultiTransmitReadingTests.test_actual_return_and_toast_both_show_exact_batch_proceeds",
+        "tests.brawl.test_multi_transmit.MultiTransmitReplayTests.test_captured_three_hero_batch_verifies_both_currencies"
+      ]
+    },
+    "brawl-multi-transmit-return": {
+      "path": "tests/fixtures/brawl/brawl-multi-transmit-return.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "multi-transmit-return",
+      "source": "MuMu-20261013-224644-412.png",
+      "source_directory": "",
+      "source_sha256": "fb5b160c52b342562e4c2d382f86ece6804b590462f2218a72a3885c7d1dc2cd",
+      "sha256": "47b7152b680cbcc9a2eec17a932d0dcca7829d144f41761a0bb30ecd1a6de706",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_multi_transmit.MultiTransmitReadingTests.test_actual_return_and_toast_both_show_exact_batch_proceeds",
+        "tests.brawl.test_multi_transmit.MultiTransmitReplayTests.test_unknown_frame_does_not_reuse_a_selected_batch",
+        "tests.brawl.test_multi_transmit.MultiTransmitReplayTests.test_unread_quote_waits_without_selecting_any_bench_hero",
+        "tests.brawl.test_summon.SynergySummonReadingTests.test_budget_reserve_disabled_buttons_and_wrong_scenes_are_rejected",
+        "tests.brawl.test_summon.SynergySummonReadingTests.test_unseen_actions_between_transmit_and_summons_are_not_one_balance_chain",
+        "tests.brawl.test_swap.IdentificationSwapTests.test_full_bench_identification_uses_scan_difference_not_automatic_focus"
+      ]
+    },
+    "brawl-transmit-gift-result": {
+      "path": "tests/fixtures/brawl/brawl-transmit-gift-result.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "transmit-gift-result",
+      "source": "MuMu-20261013-224714-254.png",
+      "source_directory": "",
+      "source_sha256": "5129a8edc1b5c54cbee4692771668099f8752f68e3ce0b3c3e4b461e08b367d8",
+      "sha256": "6447bfbcded2c8c90a4bf84d82a217bbf1b540eac668b3afeb68c293de58118a",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_heroes.HeroRecognitionTests.test_transmit_gift_result_and_later_preparation_keep_their_evidence_separate"
+      ]
+    },
+    "brawl-synergy-summon-before": {
+      "path": "tests/fixtures/brawl/brawl-synergy-summon-before.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "synergy-summon-before",
+      "source": "MuMu-20261013-224750-556.png",
+      "source_directory": "",
+      "source_sha256": "10fdafc83419c5ecef0594d2b8b20cefcf94516626b2c1dce686704691d692ab",
+      "sha256": "5ea62f2a17ee004b8f3038ee3e052400f53acc753fac770bc761419ba541673e",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_heroes.HeroRecognitionTests.test_transmit_gift_result_and_later_preparation_keep_their_evidence_separate",
+        "tests.brawl.test_summon.SynergySummonReadingTests.test_budget_reserve_disabled_buttons_and_wrong_scenes_are_rejected",
+        "tests.brawl.test_summon.SynergySummonReadingTests.test_two_real_results_keep_new_hero_and_existing_imprint_upgrade_distinct",
+        "tests.brawl.test_summon.SynergySummonReadingTests.test_unseen_actions_between_transmit_and_summons_are_not_one_balance_chain",
+        "tests.brawl.test_summon.SynergySummonReplayTests.test_additional_different_result_stops_without_guessing_a_buff",
+        "tests.brawl.test_summon.SynergySummonReplayTests.test_changed_deployment_cannot_confirm_a_paid_draw",
+        "tests.brawl.test_summon.SynergySummonReplayTests.test_changed_request_context_aborts_without_paying",
+        "tests.brawl.test_summon.SynergySummonReplayTests.test_exact_debit_without_a_read_result_does_not_confirm_a_draw",
+        "tests.brawl.test_summon.SynergySummonReplayTests.test_lower_then_upper_draws_verify_exact_debits_and_each_result",
+        "tests.brawl.test_summon.SynergySummonReplayTests.test_old_result_balance_does_not_authorize_a_dismissal",
+        "tests.brawl.test_summon.SynergySummonReplayTests.test_overflow_result_is_preserved_without_guessing_its_refund",
+        "tests.brawl.test_summon.SynergySummonReplayTests.test_preparation_boundary_prevents_dismissing_a_later_hero",
+        "tests.brawl.test_summon.SynergySummonReplayTests.test_previous_action_interval_is_honored_before_a_new_payment",
+        "tests.brawl.test_summon.SynergySummonReplayTests.test_repeat_preparation_never_triggers_a_second_payment",
+        "tests.brawl.test_summon.SynergySummonReplayTests.test_result_at_entry_has_no_payment_provenance_and_is_not_dismissed",
+        "tests.brawl.test_summon.SynergySummonReplayTests.test_slow_exact_return_confirms_before_timeout",
+        "tests.brawl.test_summon.SynergySummonReplayTests.test_unknown_frames_and_hidden_result_balances_wait_without_extra_payment",
+        "tests.brawl.test_summon.SynergySummonReplayTests.test_wrong_debit_or_coin_change_prevents_result_dismissal"
+      ]
+    },
+    "brawl-lower-summon-result": {
+      "path": "tests/fixtures/brawl/brawl-lower-summon-result.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "lower-summon-result",
+      "source": "MuMu-20261013-224753-236.png",
+      "source_directory": "",
+      "source_sha256": "6b8ab84c4461365f73f94671ea016316ed5b645a57992a5cd18f71c9273d5e6a",
+      "sha256": "ccdcd41b6d4b88819bd61d6a9fc2316b8b44fe59dfe56f9c21fa955d0ed647ce",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_multi_transmit.MultiTransmitReplayTests.test_paid_summon_result_is_not_a_captured_free_transmit_reward",
+        "tests.brawl.test_summon.SynergySummonReadingTests.test_budget_reserve_disabled_buttons_and_wrong_scenes_are_rejected",
+        "tests.brawl.test_summon.SynergySummonReadingTests.test_two_real_results_keep_new_hero_and_existing_imprint_upgrade_distinct",
+        "tests.brawl.test_summon.SynergySummonReplayTests.test_additional_different_result_stops_without_guessing_a_buff",
+        "tests.brawl.test_summon.SynergySummonReplayTests.test_changed_deployment_cannot_confirm_a_paid_draw",
+        "tests.brawl.test_summon.SynergySummonReplayTests.test_lower_then_upper_draws_verify_exact_debits_and_each_result",
+        "tests.brawl.test_summon.SynergySummonReplayTests.test_old_result_balance_does_not_authorize_a_dismissal",
+        "tests.brawl.test_summon.SynergySummonReplayTests.test_preparation_boundary_prevents_dismissing_a_later_hero",
+        "tests.brawl.test_summon.SynergySummonReplayTests.test_previous_action_interval_is_honored_before_a_new_payment",
+        "tests.brawl.test_summon.SynergySummonReplayTests.test_result_at_entry_has_no_payment_provenance_and_is_not_dismissed",
+        "tests.brawl.test_summon.SynergySummonReplayTests.test_slow_exact_return_confirms_before_timeout",
+        "tests.brawl.test_summon.SynergySummonReplayTests.test_unknown_frames_and_hidden_result_balances_wait_without_extra_payment",
+        "tests.brawl.test_summon.SynergySummonReplayTests.test_wrong_debit_or_coin_change_prevents_result_dismissal"
+      ]
+    },
+    "brawl-lower-summon-return": {
+      "path": "tests/fixtures/brawl/brawl-lower-summon-return.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "lower-summon-return",
+      "source": "MuMu-20261013-224754-790.png",
+      "source_directory": "",
+      "source_sha256": "044263f1c296fdf8ea830c657634ac09ea5d023e409eb795c0ed08d75ac9c066",
+      "sha256": "cae9f8bb23eed043df3152f627d806758d1ff37bffbedbceec7a145690d7f062",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_summon.SynergySummonReadingTests.test_two_real_results_keep_new_hero_and_existing_imprint_upgrade_distinct",
+        "tests.brawl.test_summon.SynergySummonReplayTests.test_changed_deployment_cannot_confirm_a_paid_draw",
+        "tests.brawl.test_summon.SynergySummonReplayTests.test_changed_request_context_aborts_without_paying",
+        "tests.brawl.test_summon.SynergySummonReplayTests.test_exact_debit_without_a_read_result_does_not_confirm_a_draw",
+        "tests.brawl.test_summon.SynergySummonReplayTests.test_lower_then_upper_draws_verify_exact_debits_and_each_result",
+        "tests.brawl.test_summon.SynergySummonReplayTests.test_preparation_boundary_prevents_dismissing_a_later_hero",
+        "tests.brawl.test_summon.SynergySummonReplayTests.test_previous_action_interval_is_honored_before_a_new_payment",
+        "tests.brawl.test_summon.SynergySummonReplayTests.test_slow_exact_return_confirms_before_timeout",
+        "tests.brawl.test_summon.SynergySummonReplayTests.test_unknown_frames_and_hidden_result_balances_wait_without_extra_payment",
+        "tests.brawl.test_swap.FullSwapReadingTests.test_new_field_identities_have_independent_captured_checks",
+        "tests.brawl.test_swap.FullSwapReplayTests.test_unknown_post_swap_pose_waits_for_independent_known_pose"
+      ]
+    },
+    "brawl-upper-summon-result": {
+      "path": "tests/fixtures/brawl/brawl-upper-summon-result.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "upper-summon-result",
+      "source": "MuMu-20261013-224758-699.png",
+      "source_directory": "",
+      "source_sha256": "959b838ff89f00072d7dd2570f3b18adb751ef29bd1c7f63f0dba8aa7637e23b",
+      "sha256": "04f62112f316c1251f6c50055e95e469d82e3795fbd431d2d71697de6c86a808",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_summon.SynergySummonReadingTests.test_two_real_results_keep_new_hero_and_existing_imprint_upgrade_distinct",
+        "tests.brawl.test_summon.SynergySummonReplayTests.test_additional_different_result_stops_without_guessing_a_buff",
+        "tests.brawl.test_summon.SynergySummonReplayTests.test_lower_then_upper_draws_verify_exact_debits_and_each_result",
+        "tests.brawl.test_heroes.HeroRecognitionTests.test_transmit_gift_result_and_later_preparation_keep_their_evidence_separate"
+      ]
+    },
+    "brawl-upper-summon-return": {
+      "path": "tests/fixtures/brawl/brawl-upper-summon-return.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "upper-summon-return",
+      "source": "MuMu-20261013-224800-981.png",
+      "source_directory": "",
+      "source_sha256": "2354b10ba15bdbf4d9a7f5a7df57ad65eed7fd8b058e2fc183fff5e9a6372276",
+      "sha256": "b992cee4f60be38e542a2421b38d62042ed0823a341661da5931a8f9cdead3a3",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_summon.SynergySummonReadingTests.test_budget_reserve_disabled_buttons_and_wrong_scenes_are_rejected",
+        "tests.brawl.test_summon.SynergySummonReplayTests.test_lower_then_upper_draws_verify_exact_debits_and_each_result",
+        "tests.brawl.test_field.FieldTraitRecognitionTests.test_xiaochun_headers_survive_independent_idle_poses"
+      ]
+    },
+    "brawl-upper-summon-stable": {
+      "path": "tests/fixtures/brawl/brawl-upper-summon-stable.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "upper-summon-stable",
+      "source": "MuMu-20261013-224802-311.png",
+      "source_directory": "",
+      "source_sha256": "121b45a87863225611b176345ef25bff6449e3bc7bc45458fb3cd4a69bfae0fb",
+      "sha256": "83d306833833afee6d9f6391e1f6913684fe6ff3739f100ab2ed6b716ebb8db9",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_summon.SynergySummonReadingTests.test_budget_reserve_disabled_buttons_and_wrong_scenes_are_rejected",
+        "tests.brawl.test_field.FieldTraitRecognitionTests.test_xiaochun_headers_survive_independent_idle_poses",
+        "tests.brawl.test_brawl.AnalysisTests.test_idle_motion_traits_report_identity_without_inventing_a_click_position"
+      ]
+    },
+    "brawl-withdraw-before": {
+      "path": "tests/fixtures/brawl/brawl-withdraw-before.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "withdraw-before",
+      "source": "MuMu-20261014-101909-868.png",
+      "source_directory": "",
+      "source_sha256": "cdae3b779a6917778d3ca82be2dc440ab0047b0a462faed649f465abd5e726e9",
+      "sha256": "43a6c3dcf9cd14c1cc1a574715360d5dc22ad47abd50237f9d95b92594a9fa02",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_swap.WithdrawTests.test_action_interval_survives_an_already_selected_reentry_and_late_success",
+        "tests.brawl.test_swap.WithdrawTests.test_already_selected_source_does_not_click_the_hero_again",
+        "tests.brawl.test_swap.WithdrawTests.test_changed_source_and_grid_reentry_cannot_remove_another_hero",
+        "tests.brawl.test_swap.WithdrawTests.test_click_without_selection_or_without_minus_never_retries",
+        "tests.brawl.test_swap.WithdrawTests.test_deployed_count_or_card_without_the_other_does_not_confirm",
+        "tests.brawl.test_swap.WithdrawTests.test_empty_bench_requires_positive_empty_pixels_in_preparation_and_grid",
+        "tests.brawl.test_swap.WithdrawTests.test_extra_new_or_changed_old_cards_do_not_confirm_a_single_withdrawal",
+        "tests.brawl.test_swap.WithdrawTests.test_missing_duplicate_or_unpaired_controls_and_dim_button_stay_unknown",
+        "tests.brawl.test_swap.WithdrawTests.test_old_full_bench_cannot_be_reused_after_a_successful_removal",
+        "tests.brawl.test_swap.WithdrawTests.test_partial_full_invalid_and_stale_bench_cannot_authorize_withdrawal",
+        "tests.brawl.test_swap.WithdrawTests.test_red_minus_pairs_with_green_source_on_new_and_independent_old_grids",
+        "tests.brawl.test_swap.WithdrawTests.test_stale_bench_before_click_and_changed_context_after_click_abort",
+        "tests.brawl.test_swap.WithdrawTests.test_unknown_idle_pose_can_be_selected_then_named_by_new_bench_card"
+      ]
+    },
+    "brawl-withdraw-grid": {
+      "path": "tests/fixtures/brawl/brawl-withdraw-grid.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "withdraw-grid",
+      "source": "MuMu-20261014-101913-662.png",
+      "source_directory": "",
+      "source_sha256": "14db1e533771c63a991ac111058be96cdaaf5698eb43e0456b4d5e8dead833c6",
+      "sha256": "34c7737424bd20aac34f334a658974a47a4616c402ba29e4eac49ac21b22ecbd",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_brawl.AnalysisTests.test_withdraw_control_reports_selected_cell_without_claiming_bench_space_or_completion",
+        "tests.brawl.test_swap.WithdrawTests.test_action_interval_survives_an_already_selected_reentry_and_late_success",
+        "tests.brawl.test_swap.WithdrawTests.test_already_selected_source_does_not_click_the_hero_again",
+        "tests.brawl.test_swap.WithdrawTests.test_changed_source_and_grid_reentry_cannot_remove_another_hero",
+        "tests.brawl.test_swap.WithdrawTests.test_click_without_selection_or_without_minus_never_retries",
+        "tests.brawl.test_swap.WithdrawTests.test_deployed_count_or_card_without_the_other_does_not_confirm",
+        "tests.brawl.test_swap.WithdrawTests.test_empty_bench_requires_positive_empty_pixels_in_preparation_and_grid",
+        "tests.brawl.test_swap.WithdrawTests.test_extra_new_or_changed_old_cards_do_not_confirm_a_single_withdrawal",
+        "tests.brawl.test_swap.WithdrawTests.test_missing_duplicate_or_unpaired_controls_and_dim_button_stay_unknown",
+        "tests.brawl.test_swap.WithdrawTests.test_old_full_bench_cannot_be_reused_after_a_successful_removal",
+        "tests.brawl.test_swap.WithdrawTests.test_partial_full_invalid_and_stale_bench_cannot_authorize_withdrawal",
+        "tests.brawl.test_swap.WithdrawTests.test_red_minus_pairs_with_green_source_on_new_and_independent_old_grids",
+        "tests.brawl.test_swap.WithdrawTests.test_stale_bench_before_click_and_changed_context_after_click_abort",
+        "tests.brawl.test_swap.WithdrawTests.test_unknown_idle_pose_can_be_selected_then_named_by_new_bench_card"
+      ]
+    },
+    "brawl-withdraw-after": {
+      "path": "tests/fixtures/brawl/brawl-withdraw-after.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "withdraw-after",
+      "source": "MuMu-20261014-101917-348.png",
+      "source_directory": "",
+      "source_sha256": "9d7c64bf5b03f26943d271069254720f810c3222b1040b2dc29372f75c6f6566",
+      "sha256": "6d6cdb44f1673862ce86022658c508407be5eb0a065b7cbf268d64a9b8a3ed36",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.brawl.test_brawl.AnalysisTests.test_withdraw_control_reports_selected_cell_without_claiming_bench_space_or_completion",
+        "tests.brawl.test_swap.WithdrawTests.test_action_interval_survives_an_already_selected_reentry_and_late_success",
+        "tests.brawl.test_swap.WithdrawTests.test_already_selected_source_does_not_click_the_hero_again",
+        "tests.brawl.test_swap.WithdrawTests.test_changed_source_and_grid_reentry_cannot_remove_another_hero",
+        "tests.brawl.test_swap.WithdrawTests.test_click_without_selection_or_without_minus_never_retries",
+        "tests.brawl.test_swap.WithdrawTests.test_deployed_count_or_card_without_the_other_does_not_confirm",
+        "tests.brawl.test_swap.WithdrawTests.test_empty_bench_requires_positive_empty_pixels_in_preparation_and_grid",
+        "tests.brawl.test_swap.WithdrawTests.test_extra_new_or_changed_old_cards_do_not_confirm_a_single_withdrawal",
+        "tests.brawl.test_swap.WithdrawTests.test_missing_duplicate_or_unpaired_controls_and_dim_button_stay_unknown",
+        "tests.brawl.test_swap.WithdrawTests.test_old_full_bench_cannot_be_reused_after_a_successful_removal",
+        "tests.brawl.test_swap.WithdrawTests.test_partial_full_invalid_and_stale_bench_cannot_authorize_withdrawal",
+        "tests.brawl.test_swap.WithdrawTests.test_red_minus_pairs_with_green_source_on_new_and_independent_old_grids",
+        "tests.brawl.test_swap.WithdrawTests.test_stale_bench_before_click_and_changed_context_after_click_abort",
+        "tests.brawl.test_swap.WithdrawTests.test_unknown_idle_pose_can_be_selected_then_named_by_new_bench_card"
+      ]
+    }
+  }
+}

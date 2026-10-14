@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "source": "../brawl-field-five-next.png",
+  "suite": "brawl_field",
+  "case": "field_karin",
+  "items": [
+    {
+      "name": "FIELD_KARIN",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/field",
+      "box": [
+        773,
+        371,
+        822,
+        431
+      ]
+    },
+    {
+      "name": "FIELD_KARIN",
+      "kind": "search",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/field",
+      "box": [
+        280,
+        110,
+        900,
+        605
+      ]
+    }
+  ]
+}

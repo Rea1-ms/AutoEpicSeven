@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "source": "../brawl-queue-top.png",
+  "suite": "brawl",
+  "case": "cursor-queue-top",
+  "items": [
+    {
+      "name": "QUEUE_TOP_CHECK",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        1030,
+        186,
+        1150,
+        231
+      ]
+    },
+    {
+      "name": "QUEUE_TOP_CHECK",
+      "kind": "search",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        1030,
+        186,
+        1150,
+        231
+      ]
+    },
+    {
+      "name": "QUEUE_NEXT_CHECK",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        1006,
+        341,
+        1027,
+        374
+      ]
+    },
+    {
+      "name": "QUEUE_NEXT_CHECK",
+      "kind": "search",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        1006,
+        341,
+        1027,
+        374
+      ]
+    }
+  ]
+}

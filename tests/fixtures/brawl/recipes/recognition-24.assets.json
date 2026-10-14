@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "../brawl-round-clear.png",
+  "suite": "brawl",
+  "case": "recognition-24",
+  "items": [
+    {
+      "name": "ROUND_CLEAR_CHECK",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        531,
+        398,
+        760,
+        438
+      ]
+    }
+  ]
+}

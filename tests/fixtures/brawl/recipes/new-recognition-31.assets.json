@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "../brawl-challenge-defeat.png",
+  "suite": "brawl",
+  "case": "new-recognition-31",
+  "items": [
+    {
+      "name": "RUN_DEFEAT_CHECK",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        495,
+        242,
+        787,
+        271
+      ]
+    }
+  ]
+}

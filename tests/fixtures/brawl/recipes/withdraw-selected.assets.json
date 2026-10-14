@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "source": "../brawl-withdraw-grid.png",
+  "suite": "brawl_withdraw",
+  "case": "selected-minus",
+  "items": [
+    {
+      "name": "FIELD_WITHDRAW",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/withdraw",
+      "box": [
+        740,
+        536,
+        778,
+        573
+      ]
+    },
+    {
+      "name": "FIELD_WITHDRAW",
+      "kind": "search",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/withdraw",
+      "box": [
+        280,
+        180,
+        870,
+        625
+      ]
+    },
+    {
+      "name": "FIELD_WITHDRAW",
+      "kind": "button",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/withdraw",
+      "box": [
+        750,
+        545,
+        767,
+        562
+      ]
+    }
+  ]
+}

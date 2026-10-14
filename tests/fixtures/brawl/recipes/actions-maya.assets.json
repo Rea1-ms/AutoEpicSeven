@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "source": "../brawl-full-swap-before.png",
+  "suite": "brawl_actions",
+  "case": "maya",
+  "items": [
+    {
+      "name": "FIELD_BATTLE_MAYA",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/field",
+      "box": [
+        781,
+        486,
+        813,
+        543
+      ]
+    },
+    {
+      "name": "FIELD_BATTLE_MAYA",
+      "kind": "search",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/field",
+      "box": [
+        290,
+        190,
+        865,
+        600
+      ]
+    }
+  ]
+}

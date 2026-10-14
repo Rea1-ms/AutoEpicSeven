@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "../brawl-hero-new-01.png",
+  "suite": "brawl",
+  "case": "hero-obtain",
+  "items": [
+    {
+      "name": "HERO_OBTAIN_CHECK",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        42,
+        642,
+        69,
+        671
+      ]
+    }
+  ]
+}

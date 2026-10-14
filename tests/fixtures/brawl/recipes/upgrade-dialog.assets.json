@@ -1,0 +1,99 @@
+{
+  "version": 1,
+  "source": "../brawl-upgrade.png",
+  "suite": "brawl_upgrade",
+  "case": "dialog",
+  "items": [
+    {
+      "name": "UPGRADE_CONFIRM",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/upgrade",
+      "box": [
+        791,
+        506,
+        838,
+        533
+      ]
+    },
+    {
+      "name": "UPGRADE_CONFIRM",
+      "kind": "button",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/upgrade",
+      "box": [
+        767,
+        494,
+        873,
+        545
+      ]
+    },
+    {
+      "name": "OCR_UPGRADE_CURRENT_LEVEL",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/upgrade",
+      "box": [
+        446,
+        351,
+        531,
+        383
+      ]
+    },
+    {
+      "name": "OCR_UPGRADE_NEXT_LEVEL",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/upgrade",
+      "box": [
+        680,
+        351,
+        786,
+        383
+      ]
+    },
+    {
+      "name": "OCR_UPGRADE_CURRENT_CAPACITY",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/upgrade",
+      "box": [
+        583,
+        386,
+        610,
+        410
+      ]
+    },
+    {
+      "name": "OCR_UPGRADE_NEXT_CAPACITY",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/upgrade",
+      "box": [
+        817,
+        386,
+        844,
+        410
+      ]
+    },
+    {
+      "name": "OCR_UPGRADE_COST",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/upgrade",
+      "box": [
+        677,
+        504,
+        730,
+        533
+      ]
+    }
+  ]
+}

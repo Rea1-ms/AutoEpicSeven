@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "source": "../brawl-field-glen.png",
+  "suite": "brawl_traits",
+  "case": "glen",
+  "items": [
+    {
+      "name": "FACTION_CLASS_CHANGE",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/traits",
+      "box": [
+        719,
+        251,
+        745,
+        280
+      ]
+    },
+    {
+      "name": "FACTION_CLASS_CHANGE",
+      "kind": "search",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/traits",
+      "box": [
+        290,
+        95,
+        880,
+        600
+      ]
+    },
+    {
+      "name": "PROFESSION_RANGER",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/traits",
+      "box": [
+        747,
+        251,
+        773,
+        280
+      ]
+    },
+    {
+      "name": "PROFESSION_RANGER",
+      "kind": "search",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/traits",
+      "box": [
+        290,
+        95,
+        880,
+        600
+      ]
+    }
+  ]
+}

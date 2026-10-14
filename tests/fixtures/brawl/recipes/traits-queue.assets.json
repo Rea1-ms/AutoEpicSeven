@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "source": "../brawl-queue-empty.png",
+  "suite": "brawl_traits",
+  "case": "queue",
+  "items": [
+    {
+      "name": "PROFESSION_MAGE",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/traits",
+      "box": [
+        810,
+        214,
+        835,
+        241
+      ]
+    },
+    {
+      "name": "PROFESSION_MAGE",
+      "kind": "search",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/traits",
+      "box": [
+        290,
+        95,
+        880,
+        600
+      ]
+    },
+    {
+      "name": "FACTION_SUMMER",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/traits",
+      "box": [
+        781,
+        335,
+        807,
+        361
+      ]
+    },
+    {
+      "name": "FACTION_SUMMER",
+      "kind": "search",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/traits",
+      "box": [
+        290,
+        95,
+        880,
+        600
+      ]
+    },
+    {
+      "name": "PROFESSION_THIEF",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/traits",
+      "box": [
+        810,
+        335,
+        835,
+        361
+      ]
+    },
+    {
+      "name": "PROFESSION_THIEF",
+      "kind": "search",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/traits",
+      "box": [
+        290,
+        95,
+        880,
+        600
+      ]
+    }
+  ]
+}

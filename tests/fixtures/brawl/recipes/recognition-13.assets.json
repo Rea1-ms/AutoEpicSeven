@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "../brawl-hero-result.png",
+  "suite": "brawl",
+  "case": "recognition-13",
+  "items": [
+    {
+      "name": "HERO_RESULT_CHECK",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        590,
+        646,
+        695,
+        671
+      ]
+    }
+  ]
+}

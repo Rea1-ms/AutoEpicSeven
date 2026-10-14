@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "../brawl-formation-place.png",
+  "suite": "brawl",
+  "case": "transition-formation-place",
+  "items": [
+    {
+      "name": "FORMATION_GRID_CHECK",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        350,
+        196,
+        485,
+        250
+      ]
+    }
+  ]
+}

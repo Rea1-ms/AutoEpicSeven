@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "../brawl-multi-transmit-three.png",
+  "suite": "brawl_bench",
+  "case": "small_imprint_a",
+  "items": [
+    {
+      "name": "BENCH_SMALL_IMPRINT_A",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        1050,
+        409,
+        1068,
+        431
+      ]
+    }
+  ]
+}

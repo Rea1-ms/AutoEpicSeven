@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "source": "../brawl-transmit.png",
+  "suite": "brawl",
+  "case": "roster-mumu-20261011-153620-072",
+  "items": [
+    {
+      "name": "BENCH_IMPRINT_NONE",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        999,
+        298,
+        1024,
+        310
+      ]
+    },
+    {
+      "name": "TRANSMIT_EMPTY_CHECK",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        86,
+        327,
+        193,
+        350
+      ]
+    }
+  ]
+}

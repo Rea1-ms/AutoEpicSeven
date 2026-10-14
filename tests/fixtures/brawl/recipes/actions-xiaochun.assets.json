@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "source": "../brawl-full-swap-after.png",
+  "suite": "brawl_actions",
+  "case": "xiaochun",
+  "items": [
+    {
+      "name": "FIELD_XIAOCHUN",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/field",
+      "box": [
+        777,
+        470,
+        810,
+        529
+      ]
+    },
+    {
+      "name": "FIELD_XIAOCHUN",
+      "kind": "search",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/field",
+      "box": [
+        290,
+        190,
+        865,
+        600
+      ]
+    }
+  ]
+}

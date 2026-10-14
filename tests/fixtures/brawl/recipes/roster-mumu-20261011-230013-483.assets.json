@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "../brawl-formation-place.png",
+  "suite": "brawl",
+  "case": "roster-mumu-20261011-230013-483",
+  "items": [
+    {
+      "name": "BENCH_IMPRINT_C",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        1001,
+        292,
+        1022,
+        315
+      ]
+    }
+  ]
+}

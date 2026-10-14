@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "source": "../brawl-queue-bottom.png",
+  "suite": "brawl",
+  "case": "cursor-queue-bottom",
+  "items": [
+    {
+      "name": "QUEUE_BOTTOM_CHECK",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        1040,
+        337,
+        1150,
+        380
+      ]
+    },
+    {
+      "name": "QUEUE_BOTTOM_CHECK",
+      "kind": "search",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        1040,
+        337,
+        1150,
+        380
+      ]
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "../brawl-lobby.png",
+  "suite": "brawl",
+  "case": "recognition-00",
+  "items": [
+    {
+      "name": "LOBBY_CHECK",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        1027,
+        352,
+        1138,
+        377
+      ]
+    }
+  ]
+}

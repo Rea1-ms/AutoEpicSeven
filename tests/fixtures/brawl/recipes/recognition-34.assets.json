@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "../brawl-coin-tooltip.png",
+  "suite": "brawl",
+  "case": "recognition-34",
+  "items": [
+    {
+      "name": "CURRENCY_TOOLTIP_CHECK",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        888,
+        108,
+        972,
+        127
+      ]
+    }
+  ]
+}

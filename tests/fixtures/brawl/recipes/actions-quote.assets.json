@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "source": "../brawl-multi-transmit-three.png",
+  "suite": "brawl_actions",
+  "case": "quote",
+  "items": [
+    {
+      "name": "TRANSMIT_COIN_ICON",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/actions",
+      "box": [
+        99,
+        574,
+        124,
+        599
+      ]
+    },
+    {
+      "name": "TRANSMIT_COIN_ICON",
+      "kind": "search",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/actions",
+      "box": [
+        85,
+        570,
+        210,
+        604
+      ]
+    },
+    {
+      "name": "TRANSMIT_TOKEN_ICON",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/actions",
+      "box": [
+        173,
+        574,
+        197,
+        599
+      ]
+    },
+    {
+      "name": "TRANSMIT_TOKEN_ICON",
+      "kind": "search",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/actions",
+      "box": [
+        85,
+        570,
+        210,
+        604
+      ]
+    }
+  ]
+}

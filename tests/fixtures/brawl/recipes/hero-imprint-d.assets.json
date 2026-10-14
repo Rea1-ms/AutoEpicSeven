@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "../brawl-hero-start-03.png",
+  "suite": "brawl",
+  "case": "hero-imprint-d",
+  "items": [
+    {
+      "name": "IMPRINT_D",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        776,
+        386,
+        801,
+        418
+      ]
+    }
+  ]
+}

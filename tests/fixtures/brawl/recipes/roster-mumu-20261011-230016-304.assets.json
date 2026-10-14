@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "source": "../brawl-normal-deployed.png",
+  "suite": "brawl",
+  "case": "roster-mumu-20261011-230016-304",
+  "items": [
+    {
+      "name": "OCR_BENCH",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        980,
+        175,
+        1280,
+        550
+      ]
+    },
+    {
+      "name": "BENCH_PLUS",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        943,
+        268,
+        977,
+        303
+      ]
+    },
+    {
+      "name": "BENCH_IMPRINT_D",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        1001,
+        292,
+        1022,
+        315
+      ]
+    }
+  ]
+}

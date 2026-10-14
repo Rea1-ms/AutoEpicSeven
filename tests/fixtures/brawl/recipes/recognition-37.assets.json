@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "../brawl-probabilities.png",
+  "suite": "brawl",
+  "case": "recognition-37",
+  "items": [
+    {
+      "name": "PROBABILITY_CHECK",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        56,
+        177,
+        226,
+        211
+      ]
+    }
+  ]
+}

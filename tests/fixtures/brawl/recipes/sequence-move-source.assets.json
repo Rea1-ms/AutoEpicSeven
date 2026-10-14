@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "source": "../brawl-move-source.png",
+  "suite": "brawl",
+  "case": "sequence-move-source",
+  "items": [
+    {
+      "name": "FORMATION_MOVE_SOURCE",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        740,
+        361,
+        789,
+        411
+      ]
+    },
+    {
+      "name": "FORMATION_MOVE_SOURCE",
+      "kind": "search",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        290,
+        185,
+        864,
+        612
+      ]
+    }
+  ]
+}

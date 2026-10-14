@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "../brawl-hero-new-28.png",
+  "suite": "brawl",
+  "case": "hero-recognition-28",
+  "items": [
+    {
+      "name": "OCR_HERO_NAME",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        768,
+        157,
+        1045,
+        243
+      ]
+    }
+  ]
+}

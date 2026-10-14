@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "../brawl-hero-new-08.png",
+  "suite": "brawl",
+  "case": "hero-recognition-08",
+  "items": [
+    {
+      "name": "HERO_OVERFLOW_CHECK",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        820,
+        448,
+        1041,
+        489
+      ]
+    }
+  ]
+}

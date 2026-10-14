@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "source": "../brawl-full-swap-after.png",
+  "suite": "brawl_traits",
+  "case": "xiaochun",
+  "items": [
+    {
+      "name": "FACTION_CHAOS",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/traits",
+      "box": [
+        781,
+        426,
+        807,
+        451
+      ]
+    },
+    {
+      "name": "FACTION_CHAOS",
+      "kind": "search",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/traits",
+      "box": [
+        290,
+        95,
+        880,
+        600
+      ]
+    },
+    {
+      "name": "PROFESSION_WARRIOR",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/traits",
+      "box": [
+        810,
+        426,
+        835,
+        451
+      ]
+    },
+    {
+      "name": "PROFESSION_WARRIOR",
+      "kind": "search",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/traits",
+      "box": [
+        290,
+        95,
+        880,
+        600
+      ]
+    }
+  ]
+}

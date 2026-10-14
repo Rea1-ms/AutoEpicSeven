@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "../brawl-hero-imprint.png",
+  "suite": "brawl",
+  "case": "hero-imprint-result",
+  "items": [
+    {
+      "name": "HERO_RESULT_CHECK",
+      "kind": "base",
+      "frame": 2,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        590,
+        646,
+        695,
+        671
+      ]
+    }
+  ]
+}

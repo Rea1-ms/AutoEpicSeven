@@ -1,0 +1,255 @@
+import unittest
+from dataclasses import replace
+from types import SimpleNamespace
+from unittest.mock import patch
+
+import numpy as np
+
+from module.config import server
+
+server.set_lang("global_cn")
+
+from tasks.brawl.brawl import analyze
+from tasks.brawl.upgrade import (
+    BrawlUpgrade,
+    UpgradeDialog,
+    UpgradeOutcome,
+    UpgradeRequest,
+    capture_upgrade,
+    parse_upgrade_fields,
+    read_upgrade_dialog,
+)
+from tasks.brawl.vision import (
+    BrawlMode,
+    BrawlObservation,
+    BrawlScreen,
+    ObservationError,
+    PreparationPanel,
+)
+from tests.support.brawl import BrawlReplay, frame
+from tests.support.offline import ControlledClock
+
+PANEL = PreparationPanel(8, 4, 5, 5, 205, 0)
+REQUEST = UpgradeRequest(PANEL, BrawlMode.NORMAL)
+DIALOG = UpgradeDialog(PANEL, BrawlMode.NORMAL, 5, 6, 100, True)
+AFTER = replace(PANEL, level=5, capacity=6, coins=105)
+
+
+def step(state=BrawlScreen.PREPARATION, *, panel=PANEL, mode=BrawlMode.NORMAL,
+         dialog=DIALOG, entry=True):
+    return SimpleNamespace(observation=BrawlObservation(state, panel, game_mode=mode),
+                           dialog=dialog, entry=entry)
+
+
+READY = step()
+QUOTE = step(BrawlScreen.LEVEL_UP, panel=None)
+DONE = step(panel=AFTER)
+UNKNOWN = step(BrawlScreen.UNKNOWN, panel=None, mode=None)
+
+
+class UpgradeReadingTests(unittest.TestCase):
+    def setUp(self):
+        server.set_lang("global_cn")
+
+    def test_real_quote_checks_price_capacity_header_and_button(self):
+        self.frame = frame("upgrade-dialog")
+        self.assertEqual(read_upgrade_dialog(self.frame), DIALOG)
+        self.frame = frame("upgrade")
+        self.assertEqual(read_upgrade_dialog(self.frame), replace(DIALOG, header=replace(PANEL, round_number=7, coins=145)))
+
+    def test_capture_enforces_reserve_funds_maximum_and_preparation(self):
+        self.frame = frame("upgrade-before")
+        self.assertEqual(capture_upgrade(self.frame, 105), replace(REQUEST, reserve_coins=105))
+        with self.assertRaises(ObservationError):
+            capture_upgrade(self.frame, 106)
+        for reserve in (-1, True, 1.5):
+            with self.assertRaises(ValueError):
+                capture_upgrade(self.frame, reserve)
+        for name in ("prepare-max", "prepare-level8", "upgrade-dialog", "combat", "upgrade-animation"):
+            with self.subTest(sample=name):
+                self.frame = frame(name)
+                with self.assertRaises(ObservationError):
+                    capture_upgrade(self.frame)
+
+    def test_hidden_price_or_wrong_scene_cannot_create_a_quote(self):
+        for name in ("upgrade-before", "prepare-level5", "hero-result", "give-up"):
+            with self.subTest(sample=name):
+                self.frame = frame(name)
+                with self.assertRaises(ObservationError):
+                    read_upgrade_dialog(self.frame)
+        self.frame = frame("upgrade-dialog").copy()
+        self.frame[504:533, 677:730] = 0
+        with self.assertRaises(ObservationError):
+            read_upgrade_dialog(self.frame)
+
+    def test_fields_validate_all_levels_prices_capacities_and_confidence(self):
+        valid = [("Lv.4", .99), ("Lv.5", .99), ("5", .99), ("6", .99), ("100", .99)]
+        self.assertEqual(parse_upgrade_fields(valid), (4, 5, 5, 6, 100))
+        self.assertEqual(parse_upgrade_fields([(text, .99) for text in ("Lv.8", "Lv.MAX", "9", "10", "250")]),
+                         (8, 9, 9, 10, 250))
+        for index, text in ((0, "Lv.MAX"), (1, "Lv.6"), (2, "4"), (3, "5"), (4, "10"), (4, "100x")):
+            values = valid.copy()
+            values[index] = (text, .99)
+            with self.subTest(index=index, text=text), self.assertRaises(ObservationError):
+                parse_upgrade_fields(values)
+        for score in (.79, float("nan"), float("inf")):
+            values = valid.copy()
+            values[4] = ("100", score)
+            with self.assertRaises(ObservationError):
+                parse_upgrade_fields(values)
+        with self.assertRaises(ObservationError):
+            parse_upgrade_fields(valid[:-1])
+
+    def test_wrong_header_price_and_model_failures_are_not_hidden(self):
+        self.frame = frame("upgrade-dialog")
+        with patch("tasks.brawl.upgrade.BrawlVision.preparation_panel", return_value=replace(PANEL, level=3, capacity=4)), \
+                self.assertRaises(ObservationError):
+            read_upgrade_dialog(self.frame)
+        with patch("tasks.brawl.upgrade.Ocr.ocr_multi_lines", side_effect=RuntimeError("model failed")), \
+                self.assertRaisesRegex(RuntimeError, "model failed"):
+            read_upgrade_dialog(self.frame)
+
+    def test_analysis_reports_quote_without_claiming_payment(self):
+        self.frame = frame("upgrade-dialog")
+        report = analyze(self.frame)
+        self.assertEqual(report["upgrade"]["cost"], 100)
+        self.assertEqual(report["upgrade"]["next_level"], 5)
+        self.assertTrue(report["upgrade"]["affordable"])
+        self.assertFalse(report["upgrade"]["confirmed"])
+        self.assertIsNone(report["economy"])
+
+
+class UpgradeReplayTests(unittest.TestCase):
+    def setUp(self):
+        server.set_lang("global_cn")
+        self.clock = ControlledClock()
+        self.clock.__enter__()
+        self.addCleanup(self.clock.__exit__, None, None, None)
+
+    def replay(self, steps, *, seconds=.5):
+        images = []
+        for index in range(len(steps)):
+            image = np.zeros((720, 1280, 3), np.uint8)
+            image[0, 0, 0] = index
+            images.append(image)
+        replay = BrawlReplay(BrawlUpgrade, images, self.clock, seconds)
+
+        def current(image):
+            return steps[int(image[0, 0, 0])]
+
+        def read_dialog(image):
+            dialog = current(image).dialog
+            if isinstance(dialog, Exception):
+                raise dialog
+            return dialog
+
+        patches = (
+            patch("tasks.brawl.upgrade.BrawlVision", side_effect=lambda image: SimpleNamespace(
+                observe=lambda: current(image).observation, matches=lambda button: current(image).entry)),
+            patch("tasks.brawl.upgrade.read_upgrade_dialog", side_effect=read_dialog),
+        )
+        for item in patches:
+            item.start()
+            self.addCleanup(item.stop)
+        self.frame = replay.image
+        return replay
+
+    def assert_actions(self, replay, names):
+        self.assertEqual([action[1] for action in replay.actions], names)
+
+    def test_real_sequence_confirms_level_capacity_and_exact_debit_once(self):
+        self.frame = frame("upgrade-before")
+        request = capture_upgrade(self.frame)
+        self.assertEqual(request, REQUEST)
+        replay = BrawlReplay(BrawlUpgrade,
+                             ["upgrade-before"] * 2 + ["upgrade-dialog"] * 7
+                             + ["upgrade-animation"] * 2 + ["prepare-level5"], self.clock)
+        self.assertEqual(replay.task.upgrade_once(request), UpgradeOutcome.CONFIRMED)
+        self.assertEqual(replay.actions, [(0, "UPGRADE_ENTRY", (248, 649, 292, 695)),
+                                          (7, "UPGRADE_CONFIRM", (767, 494, 873, 545))])
+
+    def test_delayed_digits_and_unknown_frames_never_repeat_payment(self):
+        unread = step(panel=None)
+        old_balance = step(panel=replace(AFTER, coins=PANEL.coins))
+        replay = self.replay([READY] + [QUOTE] * 7 + [UNKNOWN, unread, old_balance, old_balance, DONE])
+        self.assertEqual(replay.task.upgrade_once(REQUEST), UpgradeOutcome.CONFIRMED)
+        self.assert_actions(replay, ["UPGRADE_ENTRY", "UPGRADE_CONFIRM"])
+
+    def test_repeated_dialog_without_a_result_times_out_after_one_payment(self):
+        replay = self.replay([READY] + [QUOTE] * 42)
+        self.assertEqual(replay.task.upgrade_once(REQUEST), UpgradeOutcome.TIMEOUT)
+        self.assert_actions(replay, ["UPGRADE_ENTRY", "UPGRADE_CONFIRM"])
+
+    def test_no_response_retries_only_opening_at_three_second_intervals(self):
+        replay = self.replay([READY] * 27)
+        self.assertEqual(replay.task.upgrade_once(REQUEST), UpgradeOutcome.TIMEOUT)
+        self.assertEqual([action[0] for action in replay.actions], [0, 7, 14, 21])
+        self.assert_actions(replay, ["UPGRADE_ENTRY"] * 4)
+
+    def test_changed_request_or_dialog_context_prevents_payment(self):
+        for panel in (replace(PANEL, round_number=9), replace(PANEL, coins=204), replace(PANEL, deployed=4),
+                      replace(PANEL, synergy_tokens=1)):
+            with self.subTest(panel=panel):
+                replay = self.replay([step(panel=panel)])
+                self.assertEqual(replay.task.upgrade_once(REQUEST), UpgradeOutcome.CONTEXT_CHANGED)
+                self.assert_actions(replay, [])
+                replay = self.replay([READY, step(BrawlScreen.LEVEL_UP, panel=None, dialog=replace(DIALOG, header=panel))])
+                self.assertEqual(replay.task.upgrade_once(REQUEST), UpgradeOutcome.CONTEXT_CHANGED)
+                self.assert_actions(replay, ["UPGRADE_ENTRY"])
+
+    def test_disabled_or_unread_quote_never_authorizes_confirmation(self):
+        for dialog in (replace(DIALOG, ready=False), ObservationError("Unrecognized price")):
+            with self.subTest(dialog=dialog):
+                replay = self.replay([READY] + [step(BrawlScreen.LEVEL_UP, panel=None, dialog=dialog)] * 27)
+                self.assertEqual(replay.task.upgrade_once(REQUEST), UpgradeOutcome.TIMEOUT)
+                self.assert_actions(replay, ["UPGRADE_ENTRY"])
+
+    def test_unexpected_balance_or_level_cannot_confirm_an_upgrade(self):
+        for panel, outcome in ((replace(AFTER, coins=104), UpgradeOutcome.BALANCE_MISMATCH),
+                               (replace(AFTER, coins=206), UpgradeOutcome.BALANCE_MISMATCH),
+                               (replace(AFTER, level=6, capacity=7), UpgradeOutcome.CONTEXT_CHANGED),
+                               (replace(AFTER, synergy_tokens=1), UpgradeOutcome.CONTEXT_CHANGED),
+                               (replace(AFTER, round_number=9), UpgradeOutcome.CONTEXT_CHANGED),
+                               (replace(AFTER, deployed=6), UpgradeOutcome.CONTEXT_CHANGED)):
+            with self.subTest(panel=panel):
+                replay = self.replay([READY] + [QUOTE] * 7 + [step(panel=panel)])
+                self.assertEqual(replay.task.upgrade_once(REQUEST), outcome)
+                self.assert_actions(replay, ["UPGRADE_ENTRY", "UPGRADE_CONFIRM"])
+
+    def test_existing_or_reopened_dialog_is_not_another_purchase(self):
+        replay = self.replay([QUOTE])
+        self.assertEqual(replay.task.upgrade_once(REQUEST), UpgradeOutcome.SCENE_CHANGED)
+        self.assert_actions(replay, [])
+        replay = self.replay([READY] + [QUOTE] * 7 + [step(panel=None), QUOTE])
+        self.assertEqual(replay.task.upgrade_once(REQUEST), UpgradeOutcome.SCENE_CHANGED)
+        self.assert_actions(replay, ["UPGRADE_ENTRY", "UPGRADE_CONFIRM"])
+        replay = self.replay([READY, QUOTE, step(panel=None)])
+        self.assertEqual(replay.task.upgrade_once(REQUEST), UpgradeOutcome.SCENE_CHANGED)
+        self.assert_actions(replay, ["UPGRADE_ENTRY"])
+
+    def test_missing_opening_control_and_unknown_scenes_never_click(self):
+        for value in (step(entry=False), UNKNOWN):
+            with self.subTest(scene=value.observation):
+                replay = self.replay([value] * 27)
+                self.assertEqual(replay.task.upgrade_once(REQUEST), UpgradeOutcome.TIMEOUT)
+                self.assert_actions(replay, [])
+
+    def test_slow_dialog_cannot_reset_an_expired_opening_deadline(self):
+        replay = self.replay([READY, QUOTE], seconds=13)
+        self.assertEqual(replay.task.upgrade_once(REQUEST), UpgradeOutcome.TIMEOUT)
+        self.assert_actions(replay, ["UPGRADE_ENTRY"])
+
+    def test_slow_verified_result_takes_priority_over_local_timeout(self):
+        replay = self.replay([READY, QUOTE, QUOTE, DONE], seconds=6)
+        self.assertEqual(replay.task.upgrade_once(REQUEST), UpgradeOutcome.CONFIRMED)
+        self.assert_actions(replay, ["UPGRADE_ENTRY", "UPGRADE_CONFIRM"])
+
+    def test_mode_change_interruption_and_fresh_first_frame_prevent_spending(self):
+        replay = self.replay([step(mode=BrawlMode.CHALLENGE)])
+        self.assertEqual(replay.task.upgrade_once(REQUEST), UpgradeOutcome.CONTEXT_CHANGED)
+        self.assert_actions(replay, [])
+        replay = self.replay([READY, step(BrawlScreen.COMBAT, panel=None)])
+        self.assertEqual(replay.task.upgrade_once(REQUEST, skip_first_screenshot=False), UpgradeOutcome.SCENE_CHANGED)
+        self.assert_actions(replay, [])
+        with self.assertRaises(ValueError):
+            replay.task.upgrade_once(replace(REQUEST, reserve_coins=106))

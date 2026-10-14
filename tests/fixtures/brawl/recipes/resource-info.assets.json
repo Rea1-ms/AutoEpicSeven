@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "../brawl-prepare-level4.png",
+  "suite": "brawl",
+  "case": "resource-info",
+  "items": [
+    {
+      "name": "RESOURCE_INFO_CHECK",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        1217,
+        76,
+        1253,
+        107
+      ]
+    }
+  ]
+}

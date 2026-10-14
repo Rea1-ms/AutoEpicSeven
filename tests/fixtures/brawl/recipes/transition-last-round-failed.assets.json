@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "../brawl-last-round-failed.png",
+  "suite": "brawl",
+  "case": "transition-last-round-failed",
+  "items": [
+    {
+      "name": "ROUND_FAILED_CHECK",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        510,
+        391,
+        774,
+        446
+      ]
+    }
+  ]
+}

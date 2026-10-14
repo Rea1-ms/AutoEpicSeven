@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "source": "../brawl-queue-second.png",
+  "suite": "brawl",
+  "case": "selected-christy",
+  "items": [
+    {
+      "name": "BENCH_NAME_CHRISTY",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        1001,
+        253,
+        1090,
+        279
+      ]
+    },
+    {
+      "name": "BENCH_NAME_CHRISTY",
+      "kind": "search",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        1001,
+        253,
+        1090,
+        279
+      ]
+    }
+  ]
+}

@@ -17154,6 +17154,3383 @@
           "reason": "第二帧图标匹配后遮盖点数图标，当前帧不再识别为每周任务，禁止沿用上帧结果"
         }
       ]
+    },
+    {
+      "source": "tests/brawl/test_rules.py",
+      "business": "大乱斗",
+      "status": "新增",
+      "reason": "攻略规则与用户提供的真实截图，严格区分未知状态和整局结束",
+      "cases": [
+        {
+          "id": "tests.brawl.test_rules.CatalogueTests.test_all_34_heroes_have_the_guide_rarities_and_traits",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_rules.CatalogueTests.test_range_exceptions_and_explicit_spelling_alias",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_rules.CatalogueTests.test_total_rank_unlocks_at_each_boundary",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_rules.CatalogueTests.test_unknown_names_and_unread_fields_are_rejected",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_rules.TraitResolutionTests.test_unique_pairs_identify_twenty_one_heroes",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "完整阵营和职业的21组唯一组合分别确定对应英雄"
+        },
+        {
+          "id": "tests.brawl.test_rules.TraitResolutionTests.test_six_shared_pairs_keep_all_thirteen_candidates",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "6组共用羁绊组合保留全部13名候选，不擅自选择身份"
+        },
+        {
+          "id": "tests.brawl.test_rules.TraitResolutionTests.test_invalid_or_missing_traits_cannot_supply_an_identity",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "缺失、非法和错位的羁绊字段拒绝解析，合法但无英雄的组合返回空候选"
+        },
+        {
+          "id": "tests.brawl.test_rules.EconomyTests.test_level_costs_and_capacity_include_talent_start_and_cap",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_rules.EconomyTests.test_summon_prices_use_distinct_currencies",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_rules.EconomyTests.test_known_normal_odds_and_missing_levels",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_rules.EconomyTests.test_fate_odds_are_constant_but_invalid_observed_levels_fail",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_rules.ImprintTests.test_initial_ownership_and_first_duplicate_follow_each_rarity",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_rules.ImprintTests.test_progression_and_overflow_stop_at_sss",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_rules.ImprintTests.test_impossible_rarity_imprints_are_not_accepted",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_rules.ImprintTests.test_imprint_history_requires_strict_count_and_ownership",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_rules.ImprintTests.test_identical_current_imprints_do_not_imply_identical_transfer_value",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_rules.ImprintTests.test_manual_transfer_examples_and_acquisition_multipliers",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_rules.ImprintTests.test_overflow_is_one_white_copy_and_cannot_be_sold_twice",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_rules.ImprintTests.test_skill_thresholds_and_unrecorded_low_rarity_skills",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_rules.SynergyTests.test_full_threshold_table_matches_the_guide",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_rules.SynergyTests.test_profession_talent_adds_one_without_inventing_faction_members",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_rules.SynergyTests.test_chaos_and_divine_use_their_special_thresholds",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_rules.SynergyTests.test_only_highest_active_tier_is_returned",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_rules.SynergyTests.test_duplicate_names_aliases_unknown_talents_and_partial_inputs_fail",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        }
+      ]
+    },
+    {
+      "source": "tests/brawl/test_strategy.py",
+      "business": "大乱斗",
+      "status": "新增",
+      "reason": "攻略规则与用户提供的真实截图，严格区分未知状态和整局结束",
+      "cases": [
+        {
+          "id": "tests.brawl.test_strategy.StrategyTests.test_pair_threshold_beats_disconnected_individual_rarity",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_strategy.StrategyTests.test_new_hero_can_complete_four_member_trait",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_strategy.StrategyTests.test_talent_threshold_changes_whole_team_score",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_strategy.StrategyTests.test_higher_imprint_and_skill_unlock_improve_preference",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_strategy.StrategyTests.test_incomplete_state_unknown_imprint_and_duplicates_are_rejected",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_strategy.StrategyTests.test_level_two_start_allows_three_and_never_fabricates_missing_members",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_strategy.StrategyTests.test_order_of_input_does_not_change_recommendation",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_strategy.StrategyTests.test_range_exceptions_determine_logical_front_and_back_rows",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_strategy.StrategyTests.test_ten_melee_heroes_use_unique_cells_and_second_front_row",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_strategy.StrategyTests.test_large_pool_search_returns_ten_distinct_owned_heroes",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_strategy.StrategyTests.test_full_roster_limit_tracks_level_and_ten_bench_slots",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        }
+      ]
+    },
+    {
+      "source": "tests/brawl/test_vision.py",
+      "business": "大乱斗",
+      "status": "新增",
+      "reason": "攻略规则与用户提供的真实截图，严格区分未知状态和整局结束",
+      "cases": [
+        {
+          "id": "tests.brawl.test_vision.VisionTests.test_real_preparation_fields_across_levels_and_currencies",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-prepare-level4.png",
+            "tests/fixtures/brawl/brawl-prepare-level5.png",
+            "tests/fixtures/brawl/brawl-prepare-level6.png",
+            "tests/fixtures/brawl/brawl-prepare-level7.png",
+            "tests/fixtures/brawl/brawl-prepare-level8.png",
+            "tests/fixtures/brawl/brawl-prepare-max-spare.png",
+            "tests/fixtures/brawl/brawl-prepare-max.png",
+            "tests/fixtures/brawl/brawl-prepare-one-coin.png",
+            "tests/fixtures/brawl/brawl-prepare-transfer-return.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_vision.VisionTests.test_overlay_scene_priority_does_not_read_underlying_balances",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-coin-tooltip.png",
+            "tests/fixtures/brawl/brawl-combat.png",
+            "tests/fixtures/brawl/brawl-formation.png",
+            "tests/fixtures/brawl/brawl-give-up.png",
+            "tests/fixtures/brawl/brawl-hero-imprint.png",
+            "tests/fixtures/brawl/brawl-hero-result.png",
+            "tests/fixtures/brawl/brawl-income-tooltip.png",
+            "tests/fixtures/brawl/brawl-lobby.png",
+            "tests/fixtures/brawl/brawl-probabilities.png",
+            "tests/fixtures/brawl/brawl-round-clear.png",
+            "tests/fixtures/brawl/brawl-token-tooltip.png",
+            "tests/fixtures/brawl/brawl-transmit.png",
+            "tests/fixtures/brawl/brawl-upgrade.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_vision.VisionTests.test_upgrade_animation_waits_then_reads_new_level_and_capacity",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-prepare-level5.png",
+            "tests/fixtures/brawl/brawl-upgrade-animation.png",
+            "tests/fixtures/brawl/brawl-upgrade.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_vision.VisionTests.test_currency_positions_shift_and_missing_icons_never_reuse_previous_match",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-prepare-level4.png",
+            "tests/fixtures/brawl/brawl-prepare-max.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_vision.VisionTests.test_blank_dimmed_and_wrong_resolution_inputs_are_not_preparation",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-prepare-level4.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_vision.VisionTests.test_parser_rejects_low_confidence_and_contradictory_fields",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_vision.VisionTests.test_model_errors_are_not_downgraded_to_unknown_readings",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-prepare-level4.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_vision.VisionTests.test_new_modes_openings_and_final_results",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-challenge-combat.png",
+            "tests/fixtures/brawl/brawl-challenge-defeat.png",
+            "tests/fixtures/brawl/brawl-challenge-lobby-empty.png",
+            "tests/fixtures/brawl/brawl-challenge-opening.png",
+            "tests/fixtures/brawl/brawl-challenge-prepared.png",
+            "tests/fixtures/brawl/brawl-normal-after-loss.png",
+            "tests/fixtures/brawl/brawl-normal-combat.png",
+            "tests/fixtures/brawl/brawl-normal-defeat.png",
+            "tests/fixtures/brawl/brawl-normal-deployed.png",
+            "tests/fixtures/brawl/brawl-normal-first-summon.png",
+            "tests/fixtures/brawl/brawl-normal-lobby-empty.png",
+            "tests/fixtures/brawl/brawl-normal-opening.png",
+            "tests/fixtures/brawl/brawl-normal-round2.png",
+            "tests/fixtures/brawl/brawl-normal-victory15.png",
+            "tests/fixtures/brawl/brawl-normal-victory16.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_vision.VisionTests.test_rank_and_unlock_overlays_are_not_summons_or_completion",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-hero-unlock.png",
+            "tests/fixtures/brawl/brawl-rank-up15.png",
+            "tests/fixtures/brawl/brawl-rank-up16.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_vision.VisionTests.test_grid_selection_blocks_preparation_readings",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-formation-move.png",
+            "tests/fixtures/brawl/brawl-formation-place.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_vision.VisionTests.test_round_failures_are_automatic_transitions",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-last-round-failed.png",
+            "tests/fixtures/brawl/brawl-round-failed.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_vision.VisionTests.test_final_result_requires_both_message_and_return_control",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-challenge-defeat.png",
+            "tests/fixtures/brawl/brawl-normal-victory15.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_vision.VisionTests.test_speed_requires_stable_scene_and_unambiguous_visible_control",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-combat-speed-one.png",
+            "tests/fixtures/brawl/brawl-combat-speed-two.png",
+            "tests/fixtures/brawl/brawl-formation-place.png",
+            "tests/fixtures/brawl/brawl-hero-unlock.png",
+            "tests/fixtures/brawl/brawl-normal-opening.png",
+            "tests/fixtures/brawl/brawl-normal-victory15.png",
+            "tests/fixtures/brawl/brawl-rank-up15.png",
+            "tests/fixtures/brawl/brawl-round-failed.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        }
+      ]
+    },
+    {
+      "source": "tests/brawl/test_brawl.py",
+      "business": "大乱斗",
+      "status": "新增",
+      "reason": "攻略规则与用户提供的真实截图，严格区分未知状态和整局结束",
+      "cases": [
+        {
+          "id": "tests.brawl.test_brawl.AnalysisTests.test_full_level_and_distinct_currency_affordability",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_brawl.AnalysisTests.test_missing_low_level_odds_and_roster_remain_unknown",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_brawl.AnalysisTests.test_round_clear_and_overlay_never_become_complete_or_spendable",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_brawl.AnalysisTests.test_manual_roster_produces_serializable_explicit_imprints",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_brawl.AnalysisTests.test_incomplete_stale_and_missing_imprint_inputs_fail",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_brawl.AnalysisTests.test_other_servers_do_not_load_recognition_or_change_language",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_brawl.AnalysisTests.test_real_screenshot_reaches_report_and_manual_lineup",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-prepare-level4.png",
+            "tests/fixtures/brawl/brawl-round-clear.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_brawl.AnalysisTests.test_cli_preserves_existing_reports_and_fails_on_missing_source",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_brawl.AnalysisTests.test_final_results_and_intermediate_overlays_have_distinct_reports",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-challenge-defeat.png",
+            "tests/fixtures/brawl/brawl-formation-move.png",
+            "tests/fixtures/brawl/brawl-formation-place.png",
+            "tests/fixtures/brawl/brawl-hero-unlock.png",
+            "tests/fixtures/brawl/brawl-normal-defeat.png",
+            "tests/fixtures/brawl/brawl-normal-victory15.png",
+            "tests/fixtures/brawl/brawl-normal-victory16.png",
+            "tests/fixtures/brawl/brawl-rank-up15.png",
+            "tests/fixtures/brawl/brawl-rank-up16.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_brawl.AnalysisTests.test_round_animations_can_be_missed_without_inventing_completion",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-last-round-failed.png",
+            "tests/fixtures/brawl/brawl-normal-after-loss.png",
+            "tests/fixtures/brawl/brawl-normal-round2.png",
+            "tests/fixtures/brawl/brawl-round-clear.png",
+            "tests/fixtures/brawl/brawl-round-failed.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_brawl.AnalysisTests.test_single_hero_result_is_serializable_without_inventing_a_roster",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-hero-new-12.png",
+            "tests/fixtures/brawl/brawl-hero-start-03.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_brawl.AnalysisTests.test_visible_bench_and_grid_do_not_become_a_complete_roster",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-formation-move.png",
+            "tests/fixtures/brawl/brawl-formation-place.png",
+            "tests/fixtures/brawl/brawl-normal-deployed.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_brawl.AnalysisTests.test_transmit_quote_and_return_do_not_claim_an_offline_sale",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-transmit-return.png",
+            "tests/fixtures/brawl/brawl-transmit-selected.png",
+            "tests/fixtures/brawl/brawl-transmit.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_brawl.AnalysisTests.test_cursor_endpoints_do_not_make_a_single_frame_a_complete_roster",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-queue-bottom.png",
+            "tests/fixtures/brawl/brawl-queue-empty.png",
+            "tests/fixtures/brawl/brawl-queue-top.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_brawl.AnalysisTests.test_field_identity_without_imprint_does_not_create_a_complete_roster",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-field-glen.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_brawl.AnalysisTests.test_unread_transmit_quote_stays_unknown_but_model_errors_propagate",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-transmit-selected.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_brawl.RosterInputTests.test_complete_roster_limit_uses_current_deployed_count_not_field_capacity",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_brawl.RosterInputTests.test_duplicate_fields_cannot_hide_conflicting_roster_values",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_brawl.RosterInputTests.test_unread_fields_cannot_be_turned_into_defaults",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_brawl.AnalysisTests.test_idle_motion_traits_report_identity_without_inventing_a_click_position",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-full-swap-stable.png",
+            "tests/fixtures/brawl/brawl-upgrade.png",
+            "tests/fixtures/brawl/brawl-upper-summon-stable.png"
+          ],
+          "status": "已纳入",
+          "reason": "分析报告使用羁绊识别摇动人物，但不把头顶图标位置当作人物点击位置"
+        },
+        {
+          "id": "tests.brawl.test_brawl.AnalysisTests.test_withdraw_control_reports_selected_cell_without_claiming_bench_space_or_completion",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-withdraw-after.png",
+            "tests/fixtures/brawl/brawl-withdraw-grid.png"
+          ],
+          "status": "已纳入",
+          "reason": "单次下场与正面选格、完整候补容量和具名返回验证；扫描输入与时间为明确模拟"
+        }
+      ]
+    },
+    {
+      "source": "tests/brawl/test_heroes.py",
+      "business": "大乱斗",
+      "status": "新增",
+      "reason": "攻略规则与用户提供的真实截图，严格区分未知状态和整局结束",
+      "cases": [
+        {
+          "id": "tests.brawl.test_heroes.HeroRecognitionTests.test_real_result_names_and_imprint_transitions",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-hero-new-01.png",
+            "tests/fixtures/brawl/brawl-hero-new-02.png",
+            "tests/fixtures/brawl/brawl-hero-new-07.png",
+            "tests/fixtures/brawl/brawl-hero-new-12.png",
+            "tests/fixtures/brawl/brawl-hero-new-15.png",
+            "tests/fixtures/brawl/brawl-hero-new-16.png",
+            "tests/fixtures/brawl/brawl-hero-new-19.png",
+            "tests/fixtures/brawl/brawl-hero-new-27.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_heroes.HeroRecognitionTests.test_single_and_wrapped_names_preserve_explicit_no_imprint",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-hero-new-05.png",
+            "tests/fixtures/brawl/brawl-hero-new-09.png",
+            "tests/fixtures/brawl/brawl-hero-new-10.png",
+            "tests/fixtures/brawl/brawl-hero-new-14.png",
+            "tests/fixtures/brawl/brawl-hero-new-28.png",
+            "tests/fixtures/brawl/brawl-hero-start-03.png",
+            "tests/fixtures/brawl/brawl-hero-start-10.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_heroes.HeroRecognitionTests.test_overflow_keeps_retained_hero_at_maximum_imprint",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-hero-new-08.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_heroes.HeroRecognitionTests.test_transmit_gift_result_and_later_preparation_keep_their_evidence_separate",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-synergy-summon-before.png",
+            "tests/fixtures/brawl/brawl-transmit-gift-result.png",
+            "tests/fixtures/brawl/brawl-upper-summon-result.png"
+          ],
+          "status": "已纳入",
+          "reason": "用户确认传送增益赠送黎洁特的升印结果与稍后准备页独立识别，不推断来源标志、中间总收益或赠送次数"
+        },
+        {
+          "id": "tests.brawl.test_heroes.HeroRecognitionTests.test_incomplete_badge_or_arrow_never_reports_old_imprint_as_new",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-hero-new-12.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_heroes.HeroRecognitionTests.test_unknown_low_confidence_names_and_unrelated_frames_remain_unknown",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-hero-new-05.png",
+            "tests/fixtures/brawl/brawl-lobby.png",
+            "tests/fixtures/brawl/brawl-prepare-level4.png",
+            "tests/fixtures/brawl/brawl-round-clear.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_heroes.HeroRecognitionTests.test_model_failures_propagate_and_unsupported_inputs_fail",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-hero-new-05.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        }
+      ]
+    },
+    {
+      "source": "tests/brawl/test_combat.py",
+      "business": "大乱斗",
+      "status": "新增",
+      "reason": "攻略规则与用户提供的真实截图，严格区分未知状态和整局结束",
+      "cases": [
+        {
+          "id": "tests.brawl.test_combat.SpeedControlTests.test_already_double_speed_exits_without_click",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-combat-speed-two.png",
+            "tests/fixtures/brawl/brawl-normal-opening.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_combat.SpeedControlTests.test_single_speed_retries_after_interval_and_waits_for_confirmation",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-combat-speed-one.png",
+            "tests/fixtures/brawl/brawl-combat-speed-two.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_combat.SpeedControlTests.test_click_without_visual_confirmation_times_out",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-combat-speed-one.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_combat.SpeedControlTests.test_unknown_speed_never_clicks_or_reports_success",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-combat-speed-one.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_combat.SpeedControlTests.test_unknown_scene_waits_for_positive_double_speed",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-coin-tooltip.png",
+            "tests/fixtures/brawl/brawl-combat-speed-two.png",
+            "tests/fixtures/brawl/brawl-income-tooltip.png",
+            "tests/fixtures/brawl/brawl-token-tooltip.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_combat.SpeedControlTests.test_slow_double_speed_frame_confirms_before_local_timeout",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-combat-speed-one.png",
+            "tests/fixtures/brawl/brawl-combat-speed-two.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_combat.SpeedControlTests.test_overlays_and_results_leave_speed_control_without_clicking",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-challenge-defeat.png",
+            "tests/fixtures/brawl/brawl-formation.png",
+            "tests/fixtures/brawl/brawl-give-up.png",
+            "tests/fixtures/brawl/brawl-hero-result.png",
+            "tests/fixtures/brawl/brawl-hero-unlock.png",
+            "tests/fixtures/brawl/brawl-lobby.png",
+            "tests/fixtures/brawl/brawl-normal-victory15.png",
+            "tests/fixtures/brawl/brawl-probabilities.png",
+            "tests/fixtures/brawl/brawl-rank-up15.png",
+            "tests/fixtures/brawl/brawl-round-clear.png",
+            "tests/fixtures/brawl/brawl-round-failed.png",
+            "tests/fixtures/brawl/brawl-transmit.png",
+            "tests/fixtures/brawl/brawl-upgrade.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_combat.SpeedControlTests.test_handler_returns_true_only_for_click_and_keeps_interval",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-combat-speed-one.png",
+            "tests/fixtures/brawl/brawl-combat-speed-two.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_combat.SpeedControlTests.test_fresh_first_screenshot_ignores_stale_single_speed",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-combat-speed-one.png",
+            "tests/fixtures/brawl/brawl-combat-speed-two.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_combat.SpeedControlTests.test_page_change_after_click_does_not_claim_speed_success",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-combat-speed-one.png",
+            "tests/fixtures/brawl/brawl-round-clear.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        }
+      ]
+    },
+    {
+      "source": "tests/brawl/test_board.py",
+      "business": "大乱斗",
+      "status": "新增",
+      "reason": "攻略规则与用户提供的真实截图，严格区分未知状态和整局结束",
+      "cases": [
+        {
+          "id": "tests.brawl.test_board.BoardRecognitionTests.test_placement_grid_preserves_seven_staggered_screen_rows",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-formation-place.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_board.BoardRecognitionTests.test_move_grid_locates_the_selected_source_cell",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-formation-move.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_board.BoardRecognitionTests.test_multiple_blue_controls_are_occupied_swap_targets",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-swap-four.png",
+            "tests/fixtures/brawl/brawl-swap-two.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_board.BoardRecognitionTests.test_green_control_identifies_source_separately_from_swap_target",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-move-source.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_board.BoardRecognitionTests.test_occluded_three_hero_grid_is_not_completed_from_neighbors",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-swap-three.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_board.BoardRecognitionTests.test_non_grid_scenes_and_deployment_animation_have_no_targets",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-formation-deploy-animation.png",
+            "tests/fixtures/brawl/brawl-formation.png",
+            "tests/fixtures/brawl/brawl-income-tooltip.png",
+            "tests/fixtures/brawl/brawl-normal-combat.png",
+            "tests/fixtures/brawl/brawl-normal-deployed.png",
+            "tests/fixtures/brawl/brawl-normal-opening.png",
+            "tests/fixtures/brawl/brawl-normal-victory15.png",
+            "tests/fixtures/brawl/brawl-transmit.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_board.BoardRecognitionTests.test_occluded_grid_cannot_publish_unverified_destinations",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-formation-place.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_board.BoardRecognitionTests.test_missing_or_duplicate_move_markers_do_not_invent_a_source",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-formation-move.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_board.BoardRecognitionTests.test_prior_asset_offsets_do_not_move_this_frames_grid",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-formation-move.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_board.BoardRecognitionTests.test_invalid_image_and_unsupported_server_are_rejected",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-formation-place.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        }
+      ]
+    },
+    {
+      "source": "tests/brawl/test_bench.py",
+      "business": "大乱斗",
+      "status": "新增",
+      "reason": "攻略规则与用户提供的真实截图，严格区分未知状态和整局结束",
+      "cases": [
+        {
+          "id": "tests.brawl.test_bench.BenchRecognitionTests.test_selected_cards_read_names_imprints_and_current_plus",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-formation-place.png",
+            "tests/fixtures/brawl/brawl-normal-deployed.png",
+            "tests/fixtures/brawl/brawl-prepare-level4.png",
+            "tests/fixtures/brawl/brawl-prepare-max.png",
+            "tests/fixtures/brawl/brawl-transmit.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_bench.BenchRecognitionTests.test_reuses_supplied_scene_observation_but_still_validates_the_image",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-normal-deployed.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_bench.BenchRecognitionTests.test_complete_christy_name_template_requires_the_missing_final_glyph",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-queue-second.png",
+            "tests/fixtures/brawl/brawl-queue-top.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_bench.BenchRecognitionTests.test_occluded_and_bottom_clipped_rows_are_not_complete_entries",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-formation-place.png",
+            "tests/fixtures/brawl/brawl-prepare-level4.png",
+            "tests/fixtures/brawl/brawl-prepare-max.png",
+            "tests/fixtures/brawl/brawl-transmit.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_bench.BenchRecognitionTests.test_unread_imprint_and_hidden_plus_never_reuse_previous_frame",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-normal-deployed.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_bench.BenchRecognitionTests.test_low_confidence_unknown_names_and_overlays_do_not_create_entries",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-hero-new-05.png",
+            "tests/fixtures/brawl/brawl-lobby.png",
+            "tests/fixtures/brawl/brawl-normal-deployed.png",
+            "tests/fixtures/brawl/brawl-probabilities.png",
+            "tests/fixtures/brawl/brawl-round-clear.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_bench.BenchRecognitionTests.test_model_failures_and_unsupported_inputs_are_explicit",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-normal-deployed.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_bench.BenchMergeTests.test_overlapping_views_cannot_grow_past_ten_bench_seats",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_bench.BenchMergeTests.test_overlapping_reads_merge_in_both_directions_without_coordinates",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_bench.BenchMergeTests.test_repeated_subset_frames_and_unknown_imprints_never_prove_completion",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_bench.BenchMergeTests.test_same_round_with_any_changed_preparation_field_is_rejected",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_bench.BenchMergeTests.test_contradictory_or_disconnected_views_cannot_be_silently_joined",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        }
+      ]
+    },
+    {
+      "source": "tests/brawl/test_transmit.py",
+      "business": "大乱斗",
+      "status": "新增",
+      "reason": "攻略规则与用户提供的真实截图，严格区分未知状态和整局结束",
+      "cases": [
+        {
+          "id": "tests.brawl.test_transmit.TransmitReadingTests.test_empty_and_selected_quotes_do_not_claim_a_completed_sale",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-transmit-selected.png",
+            "tests/fixtures/brawl/brawl-transmit.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_transmit.TransmitReadingTests.test_wrong_scenes_and_obscured_quotes_are_rejected",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-coin-tooltip.png",
+            "tests/fixtures/brawl/brawl-normal-opening.png",
+            "tests/fixtures/brawl/brawl-transmit-return.png",
+            "tests/fixtures/brawl/brawl-transmit-selected.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_transmit.TransmitReadingTests.test_quote_requires_two_confident_nonnegative_integers",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_transmit.TransmitReadingTests.test_quote_model_failures_propagate",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-transmit-selected.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_transmit.TransmitConfirmationTests.test_repeated_selected_frames_retry_then_verify_exact_proceeds",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-transmit-return.png",
+            "tests/fixtures/brawl/brawl-transmit-selected.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_transmit.TransmitConfirmationTests.test_disappeared_tray_waits_for_balance_without_clicking_again",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-transmit-return.png",
+            "tests/fixtures/brawl/brawl-transmit-selected.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_transmit.TransmitConfirmationTests.test_unread_return_balances_wait_but_never_allow_a_second_sale",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-transmit-return.png",
+            "tests/fixtures/brawl/brawl-transmit-selected.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_transmit.TransmitConfirmationTests.test_unexpected_balances_are_not_accepted_as_transmit_proceeds",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-transmit-return.png",
+            "tests/fixtures/brawl/brawl-transmit-selected.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_transmit.TransmitConfirmationTests.test_changed_round_level_or_deployment_cannot_confirm_a_sale",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-transmit-return.png",
+            "tests/fixtures/brawl/brawl-transmit-selected.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_transmit.TransmitConfirmationTests.test_closed_tray_without_proceeds_times_out_without_reopening",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-transmit-return.png",
+            "tests/fixtures/brawl/brawl-transmit-selected.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_transmit.TransmitConfirmationTests.test_clicks_without_a_verified_return_time_out",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-transmit-selected.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_transmit.TransmitConfirmationTests.test_changed_portrait_anywhere_in_tray_prevents_confirmation",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-transmit-selected.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_transmit.TransmitConfirmationTests.test_changed_quote_aborts_before_clicking",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-transmit-selected.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_transmit.TransmitConfirmationTests.test_empty_selection_or_other_scene_never_gets_confirmed",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-normal-opening.png",
+            "tests/fixtures/brawl/brawl-round-clear.png",
+            "tests/fixtures/brawl/brawl-transmit-return.png",
+            "tests/fixtures/brawl/brawl-transmit-selected.png",
+            "tests/fixtures/brawl/brawl-transmit.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_transmit.TransmitConfirmationTests.test_unknown_frames_wait_without_clicks_until_selection_is_known",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-transmit-return.png",
+            "tests/fixtures/brawl/brawl-transmit-selected.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_transmit.TransmitConfirmationTests.test_reappearing_tray_after_preparation_is_not_a_second_sale",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-transmit-return.png",
+            "tests/fixtures/brawl/brawl-transmit-selected.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_transmit.TransmitConfirmationTests.test_fresh_first_frame_rejects_stale_selection_without_clicking",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-transmit-return.png",
+            "tests/fixtures/brawl/brawl-transmit-selected.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_transmit.TransmitConfirmationTests.test_slow_return_still_confirms_positive_exit_before_timeout",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-transmit-return.png",
+            "tests/fixtures/brawl/brawl-transmit-selected.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        }
+      ]
+    },
+    {
+      "source": "tests/brawl/test_cursor.py",
+      "business": "大乱斗",
+      "status": "新增",
+      "reason": "攻略规则与用户提供的真实截图，严格区分未知状态和整局结束",
+      "cases": [
+        {
+          "id": "tests.brawl.test_cursor.BenchCursorTests.test_captured_selected_cards_have_positive_endpoints_and_adjacent_targets",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-queue-bottom.png",
+            "tests/fixtures/brawl/brawl-queue-glen.png",
+            "tests/fixtures/brawl/brawl-queue-karin.png",
+            "tests/fixtures/brawl/brawl-queue-middle.png",
+            "tests/fixtures/brawl/brawl-queue-second.png",
+            "tests/fixtures/brawl/brawl-queue-top.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_cursor.BenchCursorTests.test_captured_empty_bench_does_not_describe_deployed_heroes",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-queue-empty.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_cursor.BenchCursorTests.test_non_preparation_frames_never_inherit_a_previous_cursor",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-combat.png",
+            "tests/fixtures/brawl/brawl-formation-place.png",
+            "tests/fixtures/brawl/brawl-lobby.png",
+            "tests/fixtures/brawl/brawl-queue-top.png",
+            "tests/fixtures/brawl/brawl-transmit.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_cursor.BenchCursorTests.test_erased_endpoint_backgrounds_and_unread_selected_names_stay_unknown",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-queue-bottom.png",
+            "tests/fixtures/brawl/brawl-queue-empty.png",
+            "tests/fixtures/brawl/brawl-queue-top.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_cursor.BenchCursorTests.test_captured_adjacent_portraits_confirm_each_forward_selection",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-queue-bottom.png",
+            "tests/fixtures/brawl/brawl-queue-glen.png",
+            "tests/fixtures/brawl/brawl-queue-karin.png",
+            "tests/fixtures/brawl/brawl-queue-middle.png",
+            "tests/fixtures/brawl/brawl-queue-second.png",
+            "tests/fixtures/brawl/brawl-queue-top.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_cursor.BenchCursorTests.test_changed_name_alone_cannot_confirm_a_skipped_or_wrong_card",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-queue-bottom.png",
+            "tests/fixtures/brawl/brawl-queue-glen.png",
+            "tests/fixtures/brawl/brawl-queue-karin.png",
+            "tests/fixtures/brawl/brawl-queue-middle.png",
+            "tests/fixtures/brawl/brawl-queue-top.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_cursor.BenchCursorTests.test_missing_portraits_or_selection_context_cannot_confirm_a_transition",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-combat.png",
+            "tests/fixtures/brawl/brawl-queue-bottom.png",
+            "tests/fixtures/brawl/brawl-queue-glen.png",
+            "tests/fixtures/brawl/brawl-queue-karin.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_cursor.BenchCursorTests.test_identical_captured_visible_queues_agree_without_claiming_hidden_inventory",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-queue-bottom.png",
+            "tests/fixtures/brawl/brawl-queue-glen.png",
+            "tests/fixtures/brawl/brawl-queue-karin.png",
+            "tests/fixtures/brawl/brawl-queue-middle.png",
+            "tests/fixtures/brawl/brawl-queue-second.png",
+            "tests/fixtures/brawl/brawl-queue-top.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_cursor.BenchCursorTests.test_same_selected_hero_with_changed_visible_neighbor_does_not_agree",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-queue-karin.png",
+            "tests/fixtures/brawl/brawl-queue-middle.png",
+            "tests/fixtures/brawl/brawl-queue-top.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_cursor.BenchCursorTests.test_obscured_visible_queue_does_not_authorize_reusing_a_click",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-combat.png",
+            "tests/fixtures/brawl/brawl-queue-empty.png",
+            "tests/fixtures/brawl/brawl-queue-top.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_cursor.BenchCursorTests.test_supplied_observation_still_validates_image_and_model_errors_propagate",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-queue-top.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        }
+      ]
+    },
+    {
+      "source": "tests/brawl/test_scanner.py",
+      "business": "大乱斗",
+      "status": "新增",
+      "reason": "攻略规则与用户提供的真实截图，严格区分未知状态和整局结束",
+      "cases": [
+        {
+          "id": "tests.brawl.test_scanner.BenchScannerTests.test_captured_reverse_order_simulates_a_complete_forward_scan",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-queue-bottom.png",
+            "tests/fixtures/brawl/brawl-queue-glen.png",
+            "tests/fixtures/brawl/brawl-queue-karin.png",
+            "tests/fixtures/brawl/brawl-queue-middle.png",
+            "tests/fixtures/brawl/brawl-queue-second.png",
+            "tests/fixtures/brawl/brawl-queue-top.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_scanner.BenchScannerTests.test_captured_empty_bench_needs_no_swipe_or_click",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-queue-empty.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_scanner.BenchScannerTests.test_return_to_top_retries_only_with_interval_then_walks_forward",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_scanner.BenchScannerTests.test_repeated_middle_frames_never_prove_top_or_complete",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_scanner.BenchScannerTests.test_unconfirmed_next_click_is_not_repeated_or_counted",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_scanner.BenchScannerTests.test_unread_imprint_waits_without_skipping_the_card",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_scanner.BenchScannerTests.test_unknown_frames_do_not_click_or_erase_pending_identity",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_scanner.BenchScannerTests.test_wrong_selected_portrait_cannot_finish_at_a_visible_bottom",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_scanner.BenchScannerTests.test_unknown_portrait_confirmation_waits_and_times_out_incomplete",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_scanner.BenchScannerTests.test_preparation_panel_or_mode_change_invalidates_the_scan",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_scanner.BenchScannerTests.test_overlay_or_combat_interrupts_before_any_further_action",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_scanner.BenchScannerTests.test_complete_bench_with_deployed_heroes_is_not_a_complete_roster",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_scanner.BenchScannerTests.test_positive_last_frame_exits_before_timeout_or_action_limit",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_scanner.BenchScannerTests.test_action_budget_is_not_treated_as_inventory_capacity",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_scanner.BenchScannerTests.test_ten_verified_selections_still_require_a_positive_bottom",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_scanner.BenchScannerTests.test_tenth_selection_with_another_card_stops_without_an_eleventh_click",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_scanner.BenchScannerTests.test_action_budget_still_waits_for_the_last_pending_click",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_scanner.BenchScannerTests.test_duplicate_selected_identity_rejects_a_cycle",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_scanner.BenchScannerTests.test_changed_imprint_invalidates_the_existing_inventory",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_scanner.BenchScannerTests.test_changed_imprint_on_an_earlier_hero_is_not_a_duplicate_cycle",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_scanner.BenchScannerTests.test_visible_queue_change_during_the_interval_prevents_the_next_click",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_scanner.BenchScannerTests.test_occluded_queue_during_the_interval_does_not_authorize_a_click",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_scanner.BenchScannerTests.test_malformed_next_target_never_clicks_the_formation_plus",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_scanner.BenchScannerTests.test_first_screenshot_can_replace_a_stale_page_without_acting",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        }
+      ]
+    },
+    {
+      "source": "tests/brawl/test_field.py",
+      "business": "大乱斗",
+      "status": "新增",
+      "reason": "攻略规则与用户提供的真实截图，严格区分未知状态和整局结束",
+      "cases": [
+        {
+          "id": "tests.brawl.test_field.FieldRecognitionTests.test_independent_captures_locate_three_supported_heroes",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-field-five-next.png",
+            "tests/fixtures/brawl/brawl-field-four.png",
+            "tests/fixtures/brawl/brawl-queue-empty.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_field.FieldRecognitionTests.test_partial_formation_never_uses_bench_names_or_guesses_other_sprites",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-field-five-bench.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_field.FieldRecognitionTests.test_source_imprint_is_not_carried_into_current_hero",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-field-five.png",
+            "tests/fixtures/brawl/brawl-field-glen.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_field.FieldRecognitionTests.test_unmodeled_hero_and_deployment_animation_stay_unread",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-formation-deploy-animation.png",
+            "tests/fixtures/brawl/brawl-normal-deployed.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_field.FieldRecognitionTests.test_empty_field_does_not_reuse_a_prior_identity",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-field-glen.png",
+            "tests/fixtures/brawl/brawl-queue-top.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_field.FieldRecognitionTests.test_obscured_identity_patch_is_not_completed_from_the_prior_frame",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-field-glen.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_field.FieldRecognitionTests.test_duplicate_sprite_positions_are_ambiguous",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-field-glen.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_field.FieldRecognitionTests.test_mismatched_deployed_count_does_not_publish_a_complete_field",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-field-glen.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_field.FieldRecognitionTests.test_overlays_and_formation_controls_do_not_authorize_field_identity",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-combat.png",
+            "tests/fixtures/brawl/brawl-income-tooltip.png",
+            "tests/fixtures/brawl/brawl-move-source.png",
+            "tests/fixtures/brawl/brawl-normal-victory15.png",
+            "tests/fixtures/brawl/brawl-upgrade.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_field.FieldRecognitionTests.test_translated_sprite_updates_its_pixel_anchor_without_cached_offsets",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-field-glen.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_field.FieldRecognitionTests.test_invalid_image_or_unsupported_server_is_rejected",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-field-glen.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_field.FieldTraitRecognitionTests.test_xiaochun_headers_survive_independent_idle_poses",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-full-swap-stable.png",
+            "tests/fixtures/brawl/brawl-upper-summon-return.png",
+            "tests/fixtures/brawl/brawl-upper-summon-stable.png"
+          ],
+          "status": "已纳入",
+          "reason": "不同摇动姿态仍可通过头顶完整羁绊组合识别小春，身份结果不提供点击位置"
+        },
+        {
+          "id": "tests.brawl.test_field.FieldTraitRecognitionTests.test_independent_headers_identify_glen_and_maya",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-field-five-next.png",
+            "tests/fixtures/brawl/brawl-full-bench-repeat.png"
+          ],
+          "status": "已纳入",
+          "reason": "独立截图识别格伦和战斗型玛雅的头顶羁绊组合"
+        },
+        {
+          "id": "tests.brawl.test_field.FieldTraitRecognitionTests.test_shared_combinations_keep_both_candidates",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-field-five-next.png"
+          ],
+          "status": "已纳入",
+          "reason": "共享羁绊组合保留全部候选，不能据此认定唯一身份或完整阵容"
+        },
+        {
+          "id": "tests.brawl.test_field.FieldTraitRecognitionTests.test_missing_or_redacted_symbol_does_not_reuse_prior_identity",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-full-swap-stable.png"
+          ],
+          "status": "已纳入",
+          "reason": "羁绊图标缺失或被遮挡时不复用上一帧身份"
+        },
+        {
+          "id": "tests.brawl.test_field.FieldTraitRecognitionTests.test_nonadjacent_symbols_are_not_combined",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-field-glen.png"
+          ],
+          "status": "已纳入",
+          "reason": "阵营与职业必须满足同一人物头顶的相邻关系"
+        },
+        {
+          "id": "tests.brawl.test_field.FieldTraitRecognitionTests.test_overlays_and_bench_only_frames_do_not_supply_headers",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-combat.png",
+            "tests/fixtures/brawl/brawl-full-swap-grid.png",
+            "tests/fixtures/brawl/brawl-income-tooltip.png",
+            "tests/fixtures/brawl/brawl-queue-top.png",
+            "tests/fixtures/brawl/brawl-upgrade.png"
+          ],
+          "status": "已纳入",
+          "reason": "覆盖层不授权场上身份，空场不能使用候补信息补足人物"
+        },
+        {
+          "id": "tests.brawl.test_field.FieldTraitRecognitionTests.test_header_count_contradiction_rejects_complete_identity",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-field-glen.png"
+          ],
+          "status": "已纳入",
+          "reason": "识别到的头顶组合数量超过实际部署人数时拒绝输出完整身份"
+        },
+        {
+          "id": "tests.brawl.test_field.FieldTraitRecognitionTests.test_translated_headers_report_only_current_symbol_location",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-field-glen.png"
+          ],
+          "status": "已纳入",
+          "reason": "图标平移后更新当前头顶位置，不伪造人物脚下坐标或刻印"
+        },
+        {
+          "id": "tests.brawl.test_field.FieldTraitRecognitionTests.test_darkened_header_is_not_accepted_by_shape_alone",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-field-glen.png"
+          ],
+          "status": "已纳入",
+          "reason": "变暗头顶图标不能仅凭轮廓相似通过"
+        },
+        {
+          "id": "tests.brawl.test_field.FieldTraitRecognitionTests.test_invalid_images_and_unsupported_servers_are_rejected",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-field-glen.png"
+          ],
+          "status": "已纳入",
+          "reason": "错误图片格式和未支持服务器必须显式拒绝"
+        },
+        {
+          "id": "tests.brawl.test_field.FieldTraitRecognitionTests.test_transparent_shield_spaces_ignore_changed_background_colors",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-full-bench-repeat.png"
+          ],
+          "status": "已纳入",
+          "reason": "盾牌内部透明区域更换明暗和彩色背景后仍保留独立实图身份"
+        },
+        {
+          "id": "tests.brawl.test_field.FieldTraitRecognitionTests.test_removed_shield_ink_and_flat_blocks_never_identify_maya",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-full-bench-repeat.png"
+          ],
+          "status": "已纳入",
+          "reason": "图标纯色覆盖或真实白色笔画缺失时不能识别战斗型玛雅"
+        },
+        {
+          "id": "tests.brawl.test_field.FieldTraitRecognitionTests.test_different_profession_is_read_as_its_own_combination",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-full-bench-repeat.png",
+            "tests/fixtures/brawl/brawl-queue-empty.png"
+          ],
+          "status": "已纳入",
+          "reason": "用独立截图中的魔导士图标替换骑士后读取其真实歧义组合，不沿用旧身份"
+        },
+        {
+          "id": "tests.brawl.test_field.FieldTraitRecognitionTests.test_duplicate_unique_headers_are_unknown_even_with_enough_deployed_slots",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-field-glen.png"
+          ],
+          "status": "已纳入",
+          "reason": "部署人数足够也不接受同一唯一英雄出现多个头顶位置"
+        }
+      ]
+    },
+    {
+      "source": "tests/brawl/test_placement.py",
+      "business": "大乱斗",
+      "status": "新增",
+      "reason": "攻略规则与用户提供的真实截图，严格区分未知状态和整局结束",
+      "cases": [
+        {
+          "id": "tests.brawl.test_placement.PlacementTests.test_captured_glen_deployment_confirms_identity_and_destination",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-deploy-glen-grid.png",
+            "tests/fixtures/brawl/brawl-deploy-glen-ready.png",
+            "tests/fixtures/brawl/brawl-field-glen.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_placement.PlacementTests.test_capture_rejects_unsupported_hero_full_field_and_nonpreparation",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-combat.png",
+            "tests/fixtures/brawl/brawl-deploy-glen-grid.png",
+            "tests/fixtures/brawl/brawl-deploy-glen-ready.png",
+            "tests/fixtures/brawl/brawl-field-five-bench.png",
+            "tests/fixtures/brawl/brawl-queue-top.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_placement.PlacementTests.test_plus_retries_only_until_grid_and_destination_click_is_not_repeated",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_placement.PlacementTests.test_count_change_alone_or_wrong_hero_position_cannot_confirm",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_placement.PlacementTests.test_unknown_frames_and_delayed_count_keep_the_single_pending_destination",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_placement.PlacementTests.test_late_positive_destination_exits_before_timeout",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_placement.PlacementTests.test_other_pages_and_changed_preparation_scope_stop_before_more_actions",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_placement.PlacementTests.test_occupied_source_or_unverified_yellow_target_never_gets_clicked",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_placement.PlacementTests.test_missing_grid_or_selection_waits_without_blind_target_click",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_placement.PlacementTests.test_grid_reopening_after_unread_preparation_does_not_repeat_placement",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_placement.PlacementTests.test_unknown_first_frame_and_stale_grid_never_authorize_a_target_click",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_placement.PlacementTests.test_fresh_first_frame_rejects_a_changed_selected_hero",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        }
+      ]
+    },
+    {
+      "source": "tests/brawl/test_upgrade.py",
+      "business": "大乱斗",
+      "status": "新增",
+      "reason": "单次升级报价、资源预留与动作确认",
+      "cases": [
+        {
+          "id": "tests.brawl.test_upgrade.UpgradeReadingTests.test_real_quote_checks_price_capacity_header_and_button",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-upgrade-dialog.png",
+            "tests/fixtures/brawl/brawl-upgrade.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文单次升级；核对等级、人数上限与实际扣款，模拟设备禁止重复付款"
+        },
+        {
+          "id": "tests.brawl.test_upgrade.UpgradeReadingTests.test_capture_enforces_reserve_funds_maximum_and_preparation",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-combat.png",
+            "tests/fixtures/brawl/brawl-prepare-level8.png",
+            "tests/fixtures/brawl/brawl-prepare-max.png",
+            "tests/fixtures/brawl/brawl-upgrade-animation.png",
+            "tests/fixtures/brawl/brawl-upgrade-before.png",
+            "tests/fixtures/brawl/brawl-upgrade-dialog.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文单次升级；核对等级、人数上限与实际扣款，模拟设备禁止重复付款"
+        },
+        {
+          "id": "tests.brawl.test_upgrade.UpgradeReadingTests.test_hidden_price_or_wrong_scene_cannot_create_a_quote",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-give-up.png",
+            "tests/fixtures/brawl/brawl-hero-result.png",
+            "tests/fixtures/brawl/brawl-prepare-level5.png",
+            "tests/fixtures/brawl/brawl-upgrade-before.png",
+            "tests/fixtures/brawl/brawl-upgrade-dialog.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文单次升级；核对等级、人数上限与实际扣款，模拟设备禁止重复付款"
+        },
+        {
+          "id": "tests.brawl.test_upgrade.UpgradeReadingTests.test_fields_validate_all_levels_prices_capacities_and_confidence",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文单次升级；核对等级、人数上限与实际扣款，模拟设备禁止重复付款"
+        },
+        {
+          "id": "tests.brawl.test_upgrade.UpgradeReadingTests.test_wrong_header_price_and_model_failures_are_not_hidden",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-upgrade-dialog.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文单次升级；核对等级、人数上限与实际扣款，模拟设备禁止重复付款"
+        },
+        {
+          "id": "tests.brawl.test_upgrade.UpgradeReadingTests.test_analysis_reports_quote_without_claiming_payment",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-upgrade-dialog.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文单次升级；核对等级、人数上限与实际扣款，模拟设备禁止重复付款"
+        },
+        {
+          "id": "tests.brawl.test_upgrade.UpgradeReplayTests.test_real_sequence_confirms_level_capacity_and_exact_debit_once",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-prepare-level5.png",
+            "tests/fixtures/brawl/brawl-upgrade-animation.png",
+            "tests/fixtures/brawl/brawl-upgrade-before.png",
+            "tests/fixtures/brawl/brawl-upgrade-dialog.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文单次升级；核对等级、人数上限与实际扣款，模拟设备禁止重复付款"
+        },
+        {
+          "id": "tests.brawl.test_upgrade.UpgradeReplayTests.test_delayed_digits_and_unknown_frames_never_repeat_payment",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文单次升级；核对等级、人数上限与实际扣款，模拟设备禁止重复付款"
+        },
+        {
+          "id": "tests.brawl.test_upgrade.UpgradeReplayTests.test_repeated_dialog_without_a_result_times_out_after_one_payment",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文单次升级；核对等级、人数上限与实际扣款，模拟设备禁止重复付款"
+        },
+        {
+          "id": "tests.brawl.test_upgrade.UpgradeReplayTests.test_no_response_retries_only_opening_at_three_second_intervals",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文单次升级；核对等级、人数上限与实际扣款，模拟设备禁止重复付款"
+        },
+        {
+          "id": "tests.brawl.test_upgrade.UpgradeReplayTests.test_changed_request_or_dialog_context_prevents_payment",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文单次升级；核对等级、人数上限与实际扣款，模拟设备禁止重复付款"
+        },
+        {
+          "id": "tests.brawl.test_upgrade.UpgradeReplayTests.test_disabled_or_unread_quote_never_authorizes_confirmation",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文单次升级；核对等级、人数上限与实际扣款，模拟设备禁止重复付款"
+        },
+        {
+          "id": "tests.brawl.test_upgrade.UpgradeReplayTests.test_unexpected_balance_or_level_cannot_confirm_an_upgrade",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文单次升级；核对等级、人数上限与实际扣款，模拟设备禁止重复付款"
+        },
+        {
+          "id": "tests.brawl.test_upgrade.UpgradeReplayTests.test_existing_or_reopened_dialog_is_not_another_purchase",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文单次升级；核对等级、人数上限与实际扣款，模拟设备禁止重复付款"
+        },
+        {
+          "id": "tests.brawl.test_upgrade.UpgradeReplayTests.test_missing_opening_control_and_unknown_scenes_never_click",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文单次升级；核对等级、人数上限与实际扣款，模拟设备禁止重复付款"
+        },
+        {
+          "id": "tests.brawl.test_upgrade.UpgradeReplayTests.test_slow_dialog_cannot_reset_an_expired_opening_deadline",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文单次升级；核对等级、人数上限与实际扣款，模拟设备禁止重复付款"
+        },
+        {
+          "id": "tests.brawl.test_upgrade.UpgradeReplayTests.test_slow_verified_result_takes_priority_over_local_timeout",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文单次升级；核对等级、人数上限与实际扣款，模拟设备禁止重复付款"
+        },
+        {
+          "id": "tests.brawl.test_upgrade.UpgradeReplayTests.test_mode_change_interruption_and_fresh_first_frame_prevent_spending",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文单次升级；核对等级、人数上限与实际扣款，模拟设备禁止重复付款"
+        }
+      ]
+    },
+    {
+      "source": "tests/brawl/test_full_bench.py",
+      "business": "大乱斗",
+      "status": "新增",
+      "reason": "用户新补25张连续图与单次动作验证",
+      "cases": [
+        {
+          "id": "tests.brawl.test_full_bench.FullBenchFocusTests.test_real_click_focus_keeps_full_deployment_and_resources",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-focus-christy-return.png",
+            "tests/fixtures/brawl/brawl-focus-mercedes.png",
+            "tests/fixtures/brawl/brawl-focus-rin.png",
+            "tests/fixtures/brawl/brawl-focus-specimen-sez.png",
+            "tests/fixtures/brawl/brawl-focus-xiaochun.png",
+            "tests/fixtures/brawl/brawl-focus-xiaochun-return.png",
+            "tests/fixtures/brawl/brawl-full-bench-initial.png",
+            "tests/fixtures/brawl/brawl-full-bench-repeat.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实连续图核对焦点、满员交换、三人传送及缘分召唤；时间和设备动作是明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_full_bench.FullBenchFocusTests.test_initial_and_repeated_focus_do_not_prove_another_obtained_hero",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-full-bench-initial.png",
+            "tests/fixtures/brawl/brawl-full-bench-repeat.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实连续图核对焦点、满员交换、三人传送及缘分召唤；时间和设备动作是明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_full_bench.FullBenchFocusTests.test_real_nonadjacent_jumps_cannot_complete_a_forward_scan",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-focus-christy-return.png",
+            "tests/fixtures/brawl/brawl-focus-mercedes.png",
+            "tests/fixtures/brawl/brawl-focus-rin.png",
+            "tests/fixtures/brawl/brawl-focus-specimen-sez.png",
+            "tests/fixtures/brawl/brawl-focus-xiaochun.png",
+            "tests/fixtures/brawl/brawl-focus-xiaochun-return.png",
+            "tests/fixtures/brawl/brawl-full-bench-initial.png",
+            "tests/fixtures/brawl/brawl-full-bench-repeat.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实连续图核对焦点、满员交换、三人传送及缘分召唤；时间和设备动作是明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_full_bench.FullBenchFocusTests.test_visible_plus_at_ten_of_ten_does_not_authorize_empty_placement",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-full-swap-before.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实连续图核对焦点、满员交换、三人传送及缘分召唤；时间和设备动作是明确模拟"
+        }
+      ]
+    },
+    {
+      "source": "tests/brawl/test_multi_transmit.py",
+      "business": "大乱斗",
+      "status": "新增",
+      "reason": "用户新补25张连续图与单次动作验证",
+      "cases": [
+        {
+          "id": "tests.brawl.test_multi_transmit.MultiTransmitReadingTests.test_real_batch_quotes_do_not_change_balances_before_confirmation",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-multi-transmit-before.png",
+            "tests/fixtures/brawl/brawl-multi-transmit-empty.png",
+            "tests/fixtures/brawl/brawl-multi-transmit-one.png",
+            "tests/fixtures/brawl/brawl-multi-transmit-three.png",
+            "tests/fixtures/brawl/brawl-multi-transmit-two.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实连续图核对焦点、满员交换、三人传送及缘分召唤；时间和设备动作是明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_multi_transmit.MultiTransmitReadingTests.test_multi_digit_quote_requires_current_unique_icons",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-multi-transmit-three.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实连续图核对焦点、满员交换、三人传送及缘分召唤；时间和设备动作是明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_multi_transmit.MultiTransmitReadingTests.test_previous_matches_never_shift_the_new_two_digit_quote",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-multi-transmit-three.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实连续图核对焦点、满员交换、三人传送及缘分召唤；时间和设备动作是明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_multi_transmit.MultiTransmitReadingTests.test_actual_return_and_toast_both_show_exact_batch_proceeds",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-multi-transmit-before.png",
+            "tests/fixtures/brawl/brawl-multi-transmit-proceeds.png",
+            "tests/fixtures/brawl/brawl-multi-transmit-return.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实连续图核对焦点、满员交换、三人传送及缘分召唤；时间和设备动作是明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_multi_transmit.MultiTransmitReplayTests.test_captured_three_hero_batch_verifies_both_currencies",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-multi-transmit-proceeds.png",
+            "tests/fixtures/brawl/brawl-multi-transmit-three.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实连续图核对焦点、满员交换、三人传送及缘分召唤；时间和设备动作是明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_multi_transmit.MultiTransmitReplayTests.test_changed_batch_or_third_portrait_aborts_before_confirming",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-multi-transmit-three.png",
+            "tests/fixtures/brawl/brawl-multi-transmit-two.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实连续图核对焦点、满员交换、三人传送及缘分召唤；时间和设备动作是明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_multi_transmit.MultiTransmitReplayTests.test_paid_summon_result_is_not_a_captured_free_transmit_reward",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-lower-summon-result.png",
+            "tests/fixtures/brawl/brawl-multi-transmit-three.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实连续图核对焦点、满员交换、三人传送及缘分召唤；时间和设备动作是明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_multi_transmit.MultiTransmitReplayTests.test_bench_scanner_never_clicks_a_card_in_the_transmit_scene",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-multi-transmit-empty.png",
+            "tests/fixtures/brawl/brawl-multi-transmit-three.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实连续图核对焦点、满员交换、三人传送及缘分召唤；时间和设备动作是明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_multi_transmit.MultiTransmitReplayTests.test_unread_quote_waits_without_selecting_any_bench_hero",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-multi-transmit-return.png",
+            "tests/fixtures/brawl/brawl-multi-transmit-three.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实连续图核对焦点、满员交换、三人传送及缘分召唤；时间和设备动作是明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_multi_transmit.MultiTransmitReplayTests.test_unknown_frame_does_not_reuse_a_selected_batch",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-multi-transmit-return.png",
+            "tests/fixtures/brawl/brawl-multi-transmit-three.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实连续图核对焦点、满员交换、三人传送及缘分召唤；时间和设备动作是明确模拟"
+        }
+      ]
+    },
+    {
+      "source": "tests/brawl/test_swap.py",
+      "business": "大乱斗",
+      "status": "新增",
+      "reason": "用户新补25张连续图与单次动作验证",
+      "cases": [
+        {
+          "id": "tests.brawl.test_swap.FullSwapReadingTests.test_full_field_grid_has_ten_occupied_targets_and_no_empty_claim",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-full-swap-grid.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实连续图核对焦点、满员交换、三人传送及缘分召唤；时间和设备动作是明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_swap.FullSwapReadingTests.test_missing_anchor_or_occupied_control_keeps_the_set_unknown",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-full-swap-after.png",
+            "tests/fixtures/brawl/brawl-full-swap-before.png",
+            "tests/fixtures/brawl/brawl-full-swap-grid.png",
+            "tests/fixtures/brawl/brawl-move-source.png",
+            "tests/fixtures/brawl/brawl-multi-transmit-empty.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实连续图核对焦点、满员交换、三人传送及缘分召唤；时间和设备动作是明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_swap.FullSwapReadingTests.test_new_field_identities_have_independent_captured_checks",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-full-bench-repeat.png",
+            "tests/fixtures/brawl/brawl-lower-summon-return.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实连续图核对焦点、满员交换、三人传送及缘分召唤；时间和设备动作是明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_swap.FullSwapReadingTests.test_swap_request_uses_incoming_card_and_separate_outgoing_sprite",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-full-swap-after.png",
+            "tests/fixtures/brawl/brawl-full-swap-before.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实连续图核对焦点、满员交换、三人传送及缘分召唤；时间和设备动作是明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_swap.FullSwapReadingTests.test_unmatched_idle_pose_remains_unknown_without_lowering_confidence",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-full-swap-stable.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实连续图核对焦点、满员交换、三人传送及缘分召唤；时间和设备动作是明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_swap.FullSwapReplayTests.test_real_full_field_swap_confirms_position_without_using_new_focus",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-full-swap-after.png",
+            "tests/fixtures/brawl/brawl-full-swap-before.png",
+            "tests/fixtures/brawl/brawl-full-swap-grid.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实连续图核对焦点、满员交换、三人传送及缘分召唤；时间和设备动作是明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_swap.FullSwapReplayTests.test_unknown_post_swap_pose_waits_for_independent_known_pose",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-full-swap-after.png",
+            "tests/fixtures/brawl/brawl-full-swap-before.png",
+            "tests/fixtures/brawl/brawl-full-swap-grid.png",
+            "tests/fixtures/brawl/brawl-full-swap-stable.png",
+            "tests/fixtures/brawl/brawl-lower-summon-return.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实连续图核对焦点、满员交换、三人传送及缘分召唤；时间和设备动作是明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_swap.FullSwapReplayTests.test_unknown_pose_then_real_swap_frame_confirms_without_reclicking",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-full-swap-after.png",
+            "tests/fixtures/brawl/brawl-full-swap-before.png",
+            "tests/fixtures/brawl/brawl-full-swap-grid.png",
+            "tests/fixtures/brawl/brawl-full-swap-stable.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实连续图核对焦点、满员交换、三人传送及缘分召唤；时间和设备动作是明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_swap.FullSwapReplayTests.test_unchanged_deployed_count_and_missing_sprite_do_not_confirm",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-full-swap-after.png",
+            "tests/fixtures/brawl/brawl-full-swap-before.png",
+            "tests/fixtures/brawl/brawl-full-swap-grid.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实连续图核对焦点、满员交换、三人传送及缘分召唤；时间和设备动作是明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_swap.FullSwapReplayTests.test_source_or_selected_card_changes_abort_before_clicking",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-focus-rin.png",
+            "tests/fixtures/brawl/brawl-full-swap-after.png",
+            "tests/fixtures/brawl/brawl-full-swap-before.png",
+            "tests/fixtures/brawl/brawl-full-swap-grid.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实连续图核对焦点、满员交换、三人传送及缘分召唤；时间和设备动作是明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_swap.FullSwapReplayTests.test_closed_grid_and_reappearing_grid_cannot_reuse_an_old_request",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-full-swap-after.png",
+            "tests/fixtures/brawl/brawl-full-swap-before.png",
+            "tests/fixtures/brawl/brawl-full-swap-grid.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实连续图核对焦点、满员交换、三人传送及缘分召唤；时间和设备动作是明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_swap.FullSwapReplayTests.test_changed_header_or_missing_targets_prevent_a_destination_click",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-full-swap-after.png",
+            "tests/fixtures/brawl/brawl-full-swap-before.png",
+            "tests/fixtures/brawl/brawl-full-swap-grid.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实连续图核对焦点、满员交换、三人传送及缘分召唤；时间和设备动作是明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_swap.FullSwapReplayTests.test_slow_positive_return_wins_before_timeout",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-full-swap-after.png",
+            "tests/fixtures/brawl/brawl-full-swap-before.png",
+            "tests/fixtures/brawl/brawl-full-swap-grid.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实连续图核对焦点、满员交换、三人传送及缘分召唤；时间和设备动作是明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_swap.IdentificationSwapTests.test_full_bench_identification_uses_scan_difference_not_automatic_focus",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-full-swap-after.png",
+            "tests/fixtures/brawl/brawl-full-swap-before.png",
+            "tests/fixtures/brawl/brawl-full-swap-grid.png",
+            "tests/fixtures/brawl/brawl-multi-transmit-return.png",
+            "tests/fixtures/brawl/brawl-multi-transmit-three.png"
+          ],
+          "status": "已纳入",
+          "reason": "满候补换人后以完整扫描差异识别下场人物，自动焦点不作为身份依据；完整扫描输入为明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_swap.IdentificationSwapTests.test_unknown_outgoing_pose_does_not_prevent_explicit_identification_swap",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-full-swap-after.png",
+            "tests/fixtures/brawl/brawl-full-swap-before.png",
+            "tests/fixtures/brawl/brawl-full-swap-grid.png"
+          ],
+          "status": "已纳入",
+          "reason": "待识别人物姿态未知仍可执行显式指定的换人，由正面目标控件及换后位置确认"
+        },
+        {
+          "id": "tests.brawl.test_swap.IdentificationSwapTests.test_identification_rejects_incomplete_invalid_or_stale_bench_before_opening",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-full-swap-before.png"
+          ],
+          "status": "已纳入",
+          "reason": "换人前拒绝不完整、过期、重名、缺刻印和未知姓名的候补扫描"
+        },
+        {
+          "id": "tests.brawl.test_swap.IdentificationSwapTests.test_stale_visible_bench_or_known_field_conflict_forbids_reopening",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-full-swap-before.png"
+          ],
+          "status": "已纳入",
+          "reason": "当前可见候补或已知场上人物与扫描冲突时禁止打开换人"
+        },
+        {
+          "id": "tests.brawl.test_swap.IdentificationSwapTests.test_unknown_target_requires_positive_occupied_control",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-full-swap-before.png",
+            "tests/fixtures/brawl/brawl-full-swap-grid.png"
+          ],
+          "status": "已纳入",
+          "reason": "未知目标必须有已占用格子的正面控件，缺失时不点击目的地"
+        },
+        {
+          "id": "tests.brawl.test_swap.IdentificationSwapTests.test_missing_incoming_pose_never_confirms_or_repeats_the_exchange",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-full-swap-after.png",
+            "tests/fixtures/brawl/brawl-full-swap-before.png",
+            "tests/fixtures/brawl/brawl-full-swap-grid.png"
+          ],
+          "status": "已纳入",
+          "reason": "换后缺少入场人物位置证据时超时，不确认身份也不重复交换"
+        },
+        {
+          "id": "tests.brawl.test_swap.IdentificationSwapTests.test_scan_difference_requires_one_exchange_with_unchanged_imprints_and_context",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-full-swap-before.png"
+          ],
+          "status": "已纳入",
+          "reason": "完整扫描必须只增减各一名且保留其他刻印和上下文，单纯排序变化不影响识别"
+        },
+        {
+          "id": "tests.brawl.test_swap.WithdrawTests.test_red_minus_pairs_with_green_source_on_new_and_independent_old_grids",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-full-swap-grid.png",
+            "tests/fixtures/brawl/brawl-move-source.png",
+            "tests/fixtures/brawl/brawl-transmit-selected.png",
+            "tests/fixtures/brawl/brawl-withdraw-after.png",
+            "tests/fixtures/brawl/brawl-withdraw-before.png",
+            "tests/fixtures/brawl/brawl-withdraw-grid.png"
+          ],
+          "status": "已纳入",
+          "reason": "单次下场与正面选格、完整候补容量和具名返回验证；扫描输入与时间为明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_swap.WithdrawTests.test_missing_duplicate_or_unpaired_controls_and_dim_button_stay_unknown",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-withdraw-after.png",
+            "tests/fixtures/brawl/brawl-withdraw-before.png",
+            "tests/fixtures/brawl/brawl-withdraw-grid.png"
+          ],
+          "status": "已纳入",
+          "reason": "单次下场与正面选格、完整候补容量和具名返回验证；扫描输入与时间为明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_swap.WithdrawTests.test_partial_full_invalid_and_stale_bench_cannot_authorize_withdrawal",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-withdraw-after.png",
+            "tests/fixtures/brawl/brawl-withdraw-before.png",
+            "tests/fixtures/brawl/brawl-withdraw-grid.png"
+          ],
+          "status": "已纳入",
+          "reason": "单次下场与正面选格、完整候补容量和具名返回验证；扫描输入与时间为明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_swap.WithdrawTests.test_unknown_idle_pose_can_be_selected_then_named_by_new_bench_card",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-withdraw-after.png",
+            "tests/fixtures/brawl/brawl-withdraw-before.png",
+            "tests/fixtures/brawl/brawl-withdraw-grid.png"
+          ],
+          "status": "已纳入",
+          "reason": "单次下场与正面选格、完整候补容量和具名返回验证；扫描输入与时间为明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_swap.WithdrawTests.test_already_selected_source_does_not_click_the_hero_again",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-withdraw-after.png",
+            "tests/fixtures/brawl/brawl-withdraw-before.png",
+            "tests/fixtures/brawl/brawl-withdraw-grid.png"
+          ],
+          "status": "已纳入",
+          "reason": "单次下场与正面选格、完整候补容量和具名返回验证；扫描输入与时间为明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_swap.WithdrawTests.test_click_without_selection_or_without_minus_never_retries",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-withdraw-after.png",
+            "tests/fixtures/brawl/brawl-withdraw-before.png",
+            "tests/fixtures/brawl/brawl-withdraw-grid.png"
+          ],
+          "status": "已纳入",
+          "reason": "单次下场与正面选格、完整候补容量和具名返回验证；扫描输入与时间为明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_swap.WithdrawTests.test_deployed_count_or_card_without_the_other_does_not_confirm",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-withdraw-after.png",
+            "tests/fixtures/brawl/brawl-withdraw-before.png",
+            "tests/fixtures/brawl/brawl-withdraw-grid.png"
+          ],
+          "status": "已纳入",
+          "reason": "单次下场与正面选格、完整候补容量和具名返回验证；扫描输入与时间为明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_swap.WithdrawTests.test_stale_bench_before_click_and_changed_context_after_click_abort",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-withdraw-after.png",
+            "tests/fixtures/brawl/brawl-withdraw-before.png",
+            "tests/fixtures/brawl/brawl-withdraw-grid.png"
+          ],
+          "status": "已纳入",
+          "reason": "单次下场与正面选格、完整候补容量和具名返回验证；扫描输入与时间为明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_swap.WithdrawTests.test_changed_source_and_grid_reentry_cannot_remove_another_hero",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-withdraw-after.png",
+            "tests/fixtures/brawl/brawl-withdraw-before.png",
+            "tests/fixtures/brawl/brawl-withdraw-grid.png"
+          ],
+          "status": "已纳入",
+          "reason": "单次下场与正面选格、完整候补容量和具名返回验证；扫描输入与时间为明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_swap.WithdrawTests.test_extra_new_or_changed_old_cards_do_not_confirm_a_single_withdrawal",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-withdraw-after.png",
+            "tests/fixtures/brawl/brawl-withdraw-before.png",
+            "tests/fixtures/brawl/brawl-withdraw-grid.png"
+          ],
+          "status": "已纳入",
+          "reason": "单次下场与正面选格、完整候补容量和具名返回验证；扫描输入与时间为明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_swap.WithdrawTests.test_old_full_bench_cannot_be_reused_after_a_successful_removal",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-withdraw-after.png",
+            "tests/fixtures/brawl/brawl-withdraw-before.png",
+            "tests/fixtures/brawl/brawl-withdraw-grid.png"
+          ],
+          "status": "已纳入",
+          "reason": "单次下场与正面选格、完整候补容量和具名返回验证；扫描输入与时间为明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_swap.WithdrawTests.test_action_interval_survives_an_already_selected_reentry_and_late_success",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-withdraw-after.png",
+            "tests/fixtures/brawl/brawl-withdraw-before.png",
+            "tests/fixtures/brawl/brawl-withdraw-grid.png"
+          ],
+          "status": "已纳入",
+          "reason": "单次下场与正面选格、完整候补容量和具名返回验证；扫描输入与时间为明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_swap.WithdrawTests.test_empty_bench_requires_positive_empty_pixels_in_preparation_and_grid",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-queue-empty.png",
+            "tests/fixtures/brawl/brawl-withdraw-after.png",
+            "tests/fixtures/brawl/brawl-withdraw-before.png",
+            "tests/fixtures/brawl/brawl-withdraw-grid.png"
+          ],
+          "status": "已纳入",
+          "reason": "单次下场与正面选格、完整候补容量和具名返回验证；扫描输入与时间为明确模拟"
+        }
+      ]
+    },
+    {
+      "source": "tests/brawl/test_summon.py",
+      "business": "大乱斗",
+      "status": "新增",
+      "reason": "用户新补25张连续图与单次动作验证",
+      "cases": [
+        {
+          "id": "tests.brawl.test_summon.SynergySummonReadingTests.test_two_real_results_keep_new_hero_and_existing_imprint_upgrade_distinct",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-lower-summon-result.png",
+            "tests/fixtures/brawl/brawl-lower-summon-return.png",
+            "tests/fixtures/brawl/brawl-synergy-summon-before.png",
+            "tests/fixtures/brawl/brawl-upper-summon-result.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实连续图核对焦点、满员交换、三人传送及缘分召唤；时间和设备动作是明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_summon.SynergySummonReadingTests.test_budget_reserve_disabled_buttons_and_wrong_scenes_are_rejected",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-full-swap-grid.png",
+            "tests/fixtures/brawl/brawl-lower-summon-result.png",
+            "tests/fixtures/brawl/brawl-multi-transmit-return.png",
+            "tests/fixtures/brawl/brawl-synergy-summon-before.png",
+            "tests/fixtures/brawl/brawl-upper-summon-return.png",
+            "tests/fixtures/brawl/brawl-upper-summon-stable.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实连续图核对焦点、满员交换、三人传送及缘分召唤；时间和设备动作是明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_summon.SynergySummonReadingTests.test_unseen_actions_between_transmit_and_summons_are_not_one_balance_chain",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-multi-transmit-return.png",
+            "tests/fixtures/brawl/brawl-synergy-summon-before.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实连续图核对焦点、满员交换、三人传送及缘分召唤；时间和设备动作是明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_summon.SynergySummonReplayTests.test_lower_then_upper_draws_verify_exact_debits_and_each_result",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-lower-summon-result.png",
+            "tests/fixtures/brawl/brawl-lower-summon-return.png",
+            "tests/fixtures/brawl/brawl-synergy-summon-before.png",
+            "tests/fixtures/brawl/brawl-upper-summon-result.png",
+            "tests/fixtures/brawl/brawl-upper-summon-return.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实连续图核对焦点、满员交换、三人传送及缘分召唤；时间和设备动作是明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_summon.SynergySummonReplayTests.test_repeat_preparation_never_triggers_a_second_payment",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-synergy-summon-before.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实连续图核对焦点、满员交换、三人传送及缘分召唤；时间和设备动作是明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_summon.SynergySummonReplayTests.test_exact_debit_without_a_read_result_does_not_confirm_a_draw",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-lower-summon-return.png",
+            "tests/fixtures/brawl/brawl-synergy-summon-before.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实连续图核对焦点、满员交换、三人传送及缘分召唤；时间和设备动作是明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_summon.SynergySummonReplayTests.test_result_at_entry_has_no_payment_provenance_and_is_not_dismissed",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-lower-summon-result.png",
+            "tests/fixtures/brawl/brawl-synergy-summon-before.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实连续图核对焦点、满员交换、三人传送及缘分召唤；时间和设备动作是明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_summon.SynergySummonReplayTests.test_unknown_frames_and_hidden_result_balances_wait_without_extra_payment",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-lower-summon-result.png",
+            "tests/fixtures/brawl/brawl-lower-summon-return.png",
+            "tests/fixtures/brawl/brawl-synergy-summon-before.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实连续图核对焦点、满员交换、三人传送及缘分召唤；时间和设备动作是明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_summon.SynergySummonReplayTests.test_wrong_debit_or_coin_change_prevents_result_dismissal",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-lower-summon-result.png",
+            "tests/fixtures/brawl/brawl-synergy-summon-before.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实连续图核对焦点、满员交换、三人传送及缘分召唤；时间和设备动作是明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_summon.SynergySummonReplayTests.test_old_result_balance_does_not_authorize_a_dismissal",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-lower-summon-result.png",
+            "tests/fixtures/brawl/brawl-synergy-summon-before.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实连续图核对焦点、满员交换、三人传送及缘分召唤；时间和设备动作是明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_summon.SynergySummonReplayTests.test_additional_different_result_stops_without_guessing_a_buff",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-lower-summon-result.png",
+            "tests/fixtures/brawl/brawl-synergy-summon-before.png",
+            "tests/fixtures/brawl/brawl-upper-summon-result.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实连续图核对焦点、满员交换、三人传送及缘分召唤；时间和设备动作是明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_summon.SynergySummonReplayTests.test_preparation_boundary_prevents_dismissing_a_later_hero",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-lower-summon-result.png",
+            "tests/fixtures/brawl/brawl-lower-summon-return.png",
+            "tests/fixtures/brawl/brawl-synergy-summon-before.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实连续图核对焦点、满员交换、三人传送及缘分召唤；时间和设备动作是明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_summon.SynergySummonReplayTests.test_changed_request_context_aborts_without_paying",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-lower-summon-return.png",
+            "tests/fixtures/brawl/brawl-synergy-summon-before.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实连续图核对焦点、满员交换、三人传送及缘分召唤；时间和设备动作是明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_summon.SynergySummonReplayTests.test_changed_deployment_cannot_confirm_a_paid_draw",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-lower-summon-result.png",
+            "tests/fixtures/brawl/brawl-lower-summon-return.png",
+            "tests/fixtures/brawl/brawl-synergy-summon-before.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实连续图核对焦点、满员交换、三人传送及缘分召唤；时间和设备动作是明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_summon.SynergySummonReplayTests.test_slow_exact_return_confirms_before_timeout",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-lower-summon-result.png",
+            "tests/fixtures/brawl/brawl-lower-summon-return.png",
+            "tests/fixtures/brawl/brawl-synergy-summon-before.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实连续图核对焦点、满员交换、三人传送及缘分召唤；时间和设备动作是明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_summon.SynergySummonReplayTests.test_overflow_result_is_preserved_without_guessing_its_refund",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-hero-new-08.png",
+            "tests/fixtures/brawl/brawl-synergy-summon-before.png"
+          ],
+          "status": "已纳入",
+          "reason": "保留溢出结果并遵守跨调用的3秒动作间隔；结果中断与时间是明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_summon.SynergySummonReplayTests.test_previous_action_interval_is_honored_before_a_new_payment",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-lower-summon-result.png",
+            "tests/fixtures/brawl/brawl-lower-summon-return.png",
+            "tests/fixtures/brawl/brawl-synergy-summon-before.png"
+          ],
+          "status": "已纳入",
+          "reason": "保留溢出结果并遵守跨调用的3秒动作间隔；结果中断与时间是明确模拟"
+        }
+      ]
     }
   ]
 }

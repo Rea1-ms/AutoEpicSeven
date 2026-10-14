@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "../brawl-token-tooltip.png",
+  "suite": "brawl",
+  "case": "token-tooltip",
+  "items": [
+    {
+      "name": "CURRENCY_TOOLTIP_CHECK",
+      "kind": "base",
+      "frame": 2,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        888,
+        108,
+        980,
+        129
+      ]
+    }
+  ]
+}

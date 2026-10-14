@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "source": "../brawl-field-glen.png",
+  "suite": "brawl_field",
+  "case": "field_glen",
+  "items": [
+    {
+      "name": "FIELD_GLEN",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/field",
+      "box": [
+        714,
+        287,
+        752,
+        350
+      ]
+    },
+    {
+      "name": "FIELD_GLEN",
+      "kind": "search",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/field",
+      "box": [
+        280,
+        110,
+        900,
+        605
+      ]
+    }
+  ]
+}

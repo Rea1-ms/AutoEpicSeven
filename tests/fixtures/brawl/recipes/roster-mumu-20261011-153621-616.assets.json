@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "source": "../brawl-transmit-selected.png",
+  "suite": "brawl",
+  "case": "roster-mumu-20261011-153621-616",
+  "items": [
+    {
+      "name": "TRANSMIT_CONFIRM",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        62,
+        639,
+        140,
+        666
+      ]
+    },
+    {
+      "name": "TRANSMIT_CONFIRM",
+      "kind": "button",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        22,
+        624,
+        179,
+        685
+      ]
+    },
+    {
+      "name": "OCR_TRANSMIT_COINS",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        141,
+        569,
+        169,
+        605
+      ]
+    },
+    {
+      "name": "OCR_TRANSMIT_TOKENS",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        202,
+        574,
+        239,
+        600
+      ]
+    }
+  ]
+}

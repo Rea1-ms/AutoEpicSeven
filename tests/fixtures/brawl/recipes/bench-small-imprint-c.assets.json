@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "source": "../brawl-prepare-level4.png",
+  "suite": "brawl",
+  "case": "bench-small-imprint-c",
+  "items": [
+    {
+      "name": "BENCH_SMALL_IMPRINT_C",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        1051,
+        409,
+        1068,
+        431
+      ]
+    },
+    {
+      "name": "BENCH_SMALL_IMPRINT_C",
+      "kind": "base",
+      "frame": 2,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        1076,
+        469,
+        1091,
+        488
+      ]
+    }
+  ]
+}

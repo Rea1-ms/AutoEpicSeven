@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "../brawl-income-tooltip.png",
+  "suite": "brawl",
+  "case": "recognition-36",
+  "items": [
+    {
+      "name": "INCOME_TOOLTIP_CHECK",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        998,
+        133,
+        1178,
+        158
+      ]
+    }
+  ]
+}

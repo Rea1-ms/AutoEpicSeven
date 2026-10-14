@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "source": "../brawl-formation-move.png",
+  "suite": "brawl",
+  "case": "roster-mumu-20261011-230018-032",
+  "items": [
+    {
+      "name": "FORMATION_SOURCE_SELECTED",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        706,
+        362,
+        756,
+        410
+      ]
+    },
+    {
+      "name": "FORMATION_SOURCE_SELECTED",
+      "kind": "search",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        290,
+        185,
+        864,
+        612
+      ]
+    }
+  ]
+}

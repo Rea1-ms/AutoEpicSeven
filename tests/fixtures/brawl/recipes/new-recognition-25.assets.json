@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "../brawl-challenge-opening.png",
+  "suite": "brawl",
+  "case": "new-recognition-25",
+  "items": [
+    {
+      "name": "BRAWL_CHALLENGE_CHECK",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        54,
+        17,
+        209,
+        48
+      ]
+    }
+  ]
+}

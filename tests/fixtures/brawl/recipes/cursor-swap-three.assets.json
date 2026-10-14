@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "../brawl-swap-three.png",
+  "suite": "brawl",
+  "case": "cursor-swap-three",
+  "items": [
+    {
+      "name": "FORMATION_SOURCE_SELECTED",
+      "kind": "base",
+      "frame": 2,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        768,
+        306,
+        818,
+        354
+      ]
+    }
+  ]
+}

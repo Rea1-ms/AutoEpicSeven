@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "source": "../brawl-queue-empty.png",
+  "suite": "brawl",
+  "case": "cursor-queue-empty",
+  "items": [
+    {
+      "name": "QUEUE_EMPTY_CHECK",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        1080,
+        310,
+        1210,
+        372
+      ]
+    },
+    {
+      "name": "QUEUE_EMPTY_CHECK",
+      "kind": "search",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        1080,
+        310,
+        1210,
+        372
+      ]
+    }
+  ]
+}

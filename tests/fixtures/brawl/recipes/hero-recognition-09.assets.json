@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "../brawl-hero-new-09.png",
+  "suite": "brawl",
+  "case": "hero-recognition-09",
+  "items": [
+    {
+      "name": "IMPRINT_C",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        776,
+        386,
+        801,
+        418
+      ]
+    }
+  ]
+}

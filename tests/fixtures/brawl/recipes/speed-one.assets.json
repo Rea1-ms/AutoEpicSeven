@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "../brawl-combat-speed-one.png",
+  "suite": "brawl",
+  "case": "speed-one",
+  "items": [
+    {
+      "name": "SPEED_ONE_CHECK",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        1111,
+        14,
+        1151,
+        53
+      ]
+    }
+  ]
+}

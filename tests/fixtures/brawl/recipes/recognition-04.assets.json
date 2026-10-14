@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "../brawl-upgrade.png",
+  "suite": "brawl",
+  "case": "recognition-04",
+  "items": [
+    {
+      "name": "LEVEL_UP_CHECK",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        607,
+        162,
+        674,
+        202
+      ]
+    }
+  ]
+}

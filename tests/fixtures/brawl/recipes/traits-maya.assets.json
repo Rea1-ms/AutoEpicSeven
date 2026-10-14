@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "source": "../brawl-full-swap-before.png",
+  "suite": "brawl_traits",
+  "case": "maya",
+  "items": [
+    {
+      "name": "FACTION_ARTIFICIAL",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/traits",
+      "box": [
+        781,
+        445,
+        807,
+        472
+      ]
+    },
+    {
+      "name": "FACTION_ARTIFICIAL",
+      "kind": "search",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/traits",
+      "box": [
+        290,
+        95,
+        880,
+        600
+      ]
+    },
+    {
+      "name": "PROFESSION_KNIGHT",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/traits",
+      "box": [
+        810,
+        445,
+        835,
+        472
+      ]
+    },
+    {
+      "name": "PROFESSION_KNIGHT",
+      "kind": "search",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/traits",
+      "box": [
+        290,
+        95,
+        880,
+        600
+      ]
+    }
+  ]
+}

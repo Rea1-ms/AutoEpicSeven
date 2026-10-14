@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "../brawl-challenge-opening.png",
+  "suite": "brawl",
+  "case": "challenge-round",
+  "items": [
+    {
+      "name": "ROUND_CHECK",
+      "kind": "base",
+      "frame": 2,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        603,
+        9,
+        677,
+        36
+      ]
+    }
+  ]
+}

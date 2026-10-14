@@ -82,6 +82,26 @@ EQUIPMENT_REROLL_MODULES = (
     "tests.equipment_reroll.test_replay",
     "tests.equipment_reroll.test_infrastructure",
 )
+BRAWL_MODULES = (
+    "tests.brawl.test_rules",
+    "tests.brawl.test_strategy",
+    "tests.brawl.test_vision",
+    "tests.brawl.test_brawl",
+    "tests.brawl.test_heroes",
+    "tests.brawl.test_combat",
+    "tests.brawl.test_board",
+    "tests.brawl.test_bench",
+    "tests.brawl.test_transmit",
+    "tests.brawl.test_cursor",
+    "tests.brawl.test_scanner",
+    "tests.brawl.test_field",
+    "tests.brawl.test_placement",
+    "tests.brawl.test_upgrade",
+    "tests.brawl.test_full_bench",
+    "tests.brawl.test_multi_transmit",
+    "tests.brawl.test_swap",
+    "tests.brawl.test_summon",
+)
 SECRET_SHOP_MODULES = ("tests.secret_shop.test_payment", "tests.secret_shop.test_captures")
 INTERACTION_MODULES = ("tests.core.test_missed_clicks",)
 HISTORICAL_REPLAY_MODULES = (
@@ -134,7 +154,8 @@ SUITES = {
     "all": EXPLORATION_MODULES + SANCTUARY_MODULES + KNIGHTS_MODULES + RUNNER_MODULES + UPSTREAM_MODULES
            + CORE_MODULES + ACTIVITY_MODULES + COMBAT_MODULES + STORE_MODULES
            + HISTORICAL_REPLAY_MODULES + HISTORICAL_CAPTURE_MODULES + HISTORICAL_MANUAL_MODULES
-           + SECRET_SHOP_MODULES + INTERACTION_MODULES + EQUIPMENT_REROLL_MODULES,
+           + SECRET_SHOP_MODULES + INTERACTION_MODULES + EQUIPMENT_REROLL_MODULES + BRAWL_MODULES,
+    "brawl": BRAWL_MODULES,
     "equipment_reroll": EQUIPMENT_REROLL_MODULES,
     "knights": KNIGHTS_MODULES,
     "dimensional_exploration": EXPLORATION_MODULES,
@@ -162,6 +183,7 @@ SANCTUARY_FIXTURE_MANIFEST = ROOT / "tests" / "fixtures" / "sanctuary" / "manife
 KNIGHTS_FIXTURE_MANIFEST = ROOT / "tests" / "fixtures" / "knights" / "manifest.json"
 HISTORICAL_FIXTURE_MANIFEST = ROOT / "tests" / "fixtures" / "historical" / "manifest.json"
 SECRET_SHOP_FIXTURE_MANIFEST = ROOT / "tests" / "fixtures" / "secret_shop" / "manifest.json"
+BRAWL_FIXTURE_MANIFEST = ROOT / "tests" / "fixtures" / "brawl" / "manifest.json"
 
 
 def iter_cases(suite):
@@ -232,7 +254,7 @@ def fixture_manifest(verify):
     # corpus. IDs share one report namespace, so collisions must fail before
     # tests run rather than silently replacing another business's evidence.
     for manifest in (FIXTURE_MANIFEST, SANCTUARY_FIXTURE_MANIFEST, KNIGHTS_FIXTURE_MANIFEST, HISTORICAL_FIXTURE_MANIFEST,
-                     SECRET_SHOP_FIXTURE_MANIFEST):
+                     SECRET_SHOP_FIXTURE_MANIFEST, BRAWL_FIXTURE_MANIFEST):
         raw = json.loads(manifest.read_text(encoding="utf-8"))
         entries = raw.get("fixtures")
         if raw.get("version") != 1 or not isinstance(entries, dict) or not entries:

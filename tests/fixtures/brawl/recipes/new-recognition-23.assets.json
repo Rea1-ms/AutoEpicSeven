@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "../brawl-normal-lobby-empty.png",
+  "suite": "brawl",
+  "case": "new-recognition-23",
+  "items": [
+    {
+      "name": "LOBBY_EMPTY_CHECK",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        999,
+        416,
+        1196,
+        442
+      ]
+    }
+  ]
+}

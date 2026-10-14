@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "../brawl-combat.png",
+  "suite": "brawl",
+  "case": "recognition-06",
+  "items": [
+    {
+      "name": "COMBAT_CHECK",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        1161,
+        121,
+        1262,
+        146
+      ]
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "source": "../brawl-synergy-summon-before.png",
+  "suite": "brawl_actions",
+  "case": "summon",
+  "items": [
+    {
+      "name": "SUMMON_LOWER",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/actions",
+      "box": [
+        620,
+        647,
+        745,
+        699
+      ]
+    },
+    {
+      "name": "SUMMON_UPPER",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/actions",
+      "box": [
+        754,
+        647,
+        876,
+        699
+      ]
+    }
+  ]
+}

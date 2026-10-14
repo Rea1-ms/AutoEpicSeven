@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "../brawl-transmit-gift-result.png",
+  "suite": "brawl_gift",
+  "case": "imprint-a-purple-background",
+  "items": [
+    {
+      "name": "IMPRINT_A",
+      "kind": "base",
+      "frame": 2,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        775,
+        386,
+        802,
+        418
+      ]
+    }
+  ]
+}

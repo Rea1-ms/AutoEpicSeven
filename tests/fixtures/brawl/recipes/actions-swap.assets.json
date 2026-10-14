@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "source": "../brawl-full-swap-grid.png",
+  "suite": "brawl_actions",
+  "case": "swap",
+  "items": [
+    {
+      "name": "SWAP_GRID_ANCHOR",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/actions",
+      "box": [
+        829,
+        251,
+        857,
+        266
+      ]
+    },
+    {
+      "name": "SWAP_GRID_ANCHOR",
+      "kind": "search",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/actions",
+      "box": [
+        819,
+        241,
+        867,
+        276
+      ]
+    }
+  ]
+}

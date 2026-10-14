@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "source": "../brawl-field-five.png",
+  "suite": "brawl_field",
+  "case": "field_auxiliary_lots",
+  "items": [
+    {
+      "name": "FIELD_AUXILIARY_LOTS",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/field",
+      "box": [
+        775,
+        248,
+        827,
+        330
+      ]
+    },
+    {
+      "name": "FIELD_AUXILIARY_LOTS",
+      "kind": "search",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/field",
+      "box": [
+        280,
+        110,
+        900,
+        605
+      ]
+    }
+  ]
+}

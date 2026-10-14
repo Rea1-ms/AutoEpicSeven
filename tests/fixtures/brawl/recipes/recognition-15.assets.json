@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "../brawl-transmit.png",
+  "suite": "brawl",
+  "case": "recognition-15",
+  "items": [
+    {
+      "name": "TRANSMIT_CHECK",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        205,
+        637,
+        243,
+        674
+      ]
+    }
+  ]
+}

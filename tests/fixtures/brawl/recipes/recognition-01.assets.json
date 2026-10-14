@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "../brawl-give-up.png",
+  "suite": "brawl",
+  "case": "recognition-01",
+  "items": [
+    {
+      "name": "GIVE_UP_CHECK",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        574,
+        192,
+        705,
+        229
+      ]
+    }
+  ]
+}

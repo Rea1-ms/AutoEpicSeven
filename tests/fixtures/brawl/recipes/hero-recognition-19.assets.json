@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "source": "../brawl-hero-new-19.png",
+  "suite": "brawl",
+  "case": "hero-recognition-19",
+  "items": [
+    {
+      "name": "IMPRINT_B",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        776,
+        386,
+        801,
+        418
+      ]
+    },
+    {
+      "name": "IMPRINT_A",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        982,
+        386,
+        1009,
+        418
+      ]
+    },
+    {
+      "name": "IMPRINT_ARROW",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        895,
+        392,
+        907,
+        412
+      ]
+    }
+  ]
+}

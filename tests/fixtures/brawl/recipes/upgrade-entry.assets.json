@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "../brawl-prepare-level4.png",
+  "suite": "brawl_upgrade",
+  "case": "entry",
+  "items": [
+    {
+      "name": "UPGRADE_ENTRY",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl/upgrade",
+      "box": [
+        248,
+        649,
+        292,
+        695
+      ]
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "source": "../brawl-normal-victory15.png",
+  "suite": "brawl",
+  "case": "new-recognition-22",
+  "items": [
+    {
+      "name": "RUN_VICTORY_CHECK",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        423,
+        242,
+        857,
+        271
+      ]
+    },
+    {
+      "name": "RUN_RETURN_CHECK",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        615,
+        628,
+        668,
+        658
+      ]
+    }
+  ]
+}

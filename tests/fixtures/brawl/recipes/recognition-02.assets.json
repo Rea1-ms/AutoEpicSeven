@@ -1,0 +1,125 @@
+{
+  "version": 1,
+  "source": "../brawl-prepare-level4.png",
+  "suite": "brawl",
+  "case": "recognition-02",
+  "items": [
+    {
+      "name": "BRAWL_CHECK",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        54,
+        17,
+        209,
+        48
+      ]
+    },
+    {
+      "name": "ROUND_CHECK",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        603,
+        9,
+        677,
+        36
+      ]
+    },
+    {
+      "name": "PREPARATION_CHECK",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        1088,
+        652,
+        1205,
+        689
+      ]
+    },
+    {
+      "name": "LEVEL_STABLE_CHECK",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        309,
+        645,
+        339,
+        670
+      ]
+    },
+    {
+      "name": "COIN_ICON",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        1060,
+        76,
+        1089,
+        104
+      ]
+    },
+    {
+      "name": "TOKEN_ICON",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        1152,
+        76,
+        1178,
+        104
+      ]
+    },
+    {
+      "name": "OCR_ROUND",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        606,
+        48,
+        676,
+        94
+      ]
+    },
+    {
+      "name": "OCR_LEVEL",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        307,
+        640,
+        416,
+        674
+      ]
+    },
+    {
+      "name": "OCR_DEPLOYMENT",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [
+        311,
+        674,
+        405,
+        702
+      ]
+    }
+  ]
+}
