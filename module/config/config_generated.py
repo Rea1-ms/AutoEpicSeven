@@ -191,7 +191,7 @@ class GeneratedConfig:
 
     # Group `LimitedActivity`
     LimitedActivity_GetFreeGacha = True
-    LimitedActivity_GetKoharuRaffleReward = True
+    LimitedActivity_GetMeirinReward = True
 
     # Group `SpecialActivity`
     SpecialActivity_BuyHucheMysticMedals = False

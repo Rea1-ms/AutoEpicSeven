@@ -14,7 +14,7 @@ WORKTREE = Path(__file__).resolve().parents[2]
 import module.config.server as server
 from module.ocr.ocr import Ocr
 from tasks.activity.assets.assets_activity_common import COMMON_ACTIVITY_LIST
-from tasks.activity.koharu_raffle import (
+from tasks.activity.legacy.koharu_raffle_2026_09_17.koharu_raffle import (
     KoharuRaffle, CHUN_ALL_TASK_DONE, CHUN_GATE_CHECK, CHUN_GATE_SELECTED,
     CHUN_TASK_REWARD_NONE, CHUN_TASK_REWARD_PENDING,
 )

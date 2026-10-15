@@ -1081,6 +1081,207 @@
         "tests.store.test_friendship_gift.CapturedGiftTests.test_partial_price_retains_independently_recognized_stock_and_balance",
         "tests.store.test_friendship_gift.GiftReplayTests.test_partial_captured_card_verifies_pending_purchase_and_completed_target"
       ]
+    },
+    "meirin-reward-home": {
+      "path": "tests/fixtures/historical/global_cn/meirin_reward/meirin-reward-home.png",
+      "sha256": "cbabef187b6ba13c80ed1b093d36557b8a7d58b1ef87d4819000feb2efb59d37",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "Homepage before entering the event menu",
+      "source": "MuMu-20261015-172657-760.png",
+      "source_sha256": "628bf962242c45c735119a8c210345e3e9070f5406e06090e266f2eb7fa847f0",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          275,
+          105
+        ],
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_meirin_reward.AssetTests.test_real_frames_distinguish_pending_empty_and_scrolled_rows"
+      ]
+    },
+    "meirin-reward-sidebar-top": {
+      "path": "tests/fixtures/historical/global_cn/meirin_reward/meirin-reward-sidebar-top.png",
+      "sha256": "c4f7198680e6d3512009c8b211659afa14cf7158ae4bfd0866a08ea3c22c06d5",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "Anniversary page with Meirin event visible near the sidebar top",
+      "source": "MuMu-20261015-172704-364.png",
+      "source_sha256": "de8d773125e9c359bd2cc42361015e3a0d00e072cd4a4af7c2cb3b7d35eef257",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_meirin_reward.AssetTests.test_real_frames_distinguish_pending_empty_and_scrolled_rows",
+        "tests.activity.test_meirin_reward.AssetTests.test_shifted_selected_sidebar_rejects_other_tabs_and_unselected_label"
+      ]
+    },
+    "meirin-reward-sidebar-visible": {
+      "path": "tests/fixtures/historical/global_cn/meirin_reward/meirin-reward-sidebar-visible.png",
+      "sha256": "c9c0206210c04139cd578494329b1783cd105388a6e35f1f3bf2fedb858e73fe",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "Anniversary page after scrolling sidebar; Meirin event unselected",
+      "source": "MuMu-20261015-172707-234.png",
+      "source_sha256": "208bb071be87ae27ddf88284420cf4e0745969ace4ed70dc806ecd2a68a247a9",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_meirin_reward.AssetTests.test_real_frames_distinguish_pending_empty_and_scrolled_rows",
+        "tests.activity.test_meirin_reward.AssetTests.test_real_sidebar_selects_meirin_after_stable_text",
+        "tests.activity.test_meirin_reward.AssetTests.test_shifted_selected_sidebar_rejects_other_tabs_and_unselected_label",
+        "tests.activity.test_meirin_reward.ClaimTests.test_wrong_selected_tab_never_claims"
+      ]
+    },
+    "meirin-reward-available": {
+      "path": "tests/fixtures/historical/global_cn/meirin_reward/meirin-reward-available.png",
+      "sha256": "330a7b6f1c9d8482478202b85aeba380ea1eb564402734be1b11fd3af032bd94",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "Meirin task list with claimable Arena reward in the first row",
+      "source": "MuMu-20261015-172710-687.png",
+      "source_sha256": "8416c77f025c37be1376754b499df6bdcf5c0c2154be0a78d107a2825b1ee68d",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_meirin_reward.AssetTests.test_real_frames_distinguish_pending_empty_and_scrolled_rows",
+        "tests.activity.test_meirin_reward.AssetTests.test_real_sidebar_selects_meirin_after_stable_text",
+        "tests.activity.test_meirin_reward.AssetTests.test_shifted_selected_sidebar_rejects_other_tabs_and_unselected_label",
+        "tests.activity.test_meirin_reward.ClaimTests.test_completion_before_popup_waits_for_reward_confirmation",
+        "tests.activity.test_meirin_reward.ClaimTests.test_dropped_claim_and_close_retry_only_after_production_intervals",
+        "tests.activity.test_meirin_reward.ClaimTests.test_list_update_before_reward_popup_never_finishes_early",
+        "tests.activity.test_meirin_reward.ClaimTests.test_missing_reward_popup_fails_locally_without_completion",
+        "tests.activity.test_meirin_reward.ClaimTests.test_network_repeated_frames_do_not_replace_reward_confirmation",
+        "tests.activity.test_meirin_reward.ClaimTests.test_real_claim_popup_and_empty_queue_stay_recheckable"
+      ]
+    },
+    "meirin-reward-loading": {
+      "path": "tests/fixtures/historical/global_cn/meirin_reward/meirin-reward-loading.png",
+      "sha256": "30b4be9d6121d4a9281350085f42dc8566d98a262c8de3480aab1f9ec1df8464",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "Dimmed Meirin task list during reward request loading",
+      "source": "MuMu-20261015-172717-437.png",
+      "source_sha256": "02ac4646fd30d030966fbb5251034bddfbc46ea7a672f0999a1245b6d2362e74",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_meirin_reward.AssetTests.test_real_frames_distinguish_pending_empty_and_scrolled_rows",
+        "tests.activity.test_meirin_reward.ClaimTests.test_real_claim_popup_and_empty_queue_stay_recheckable"
+      ]
+    },
+    "meirin-reward-popup": {
+      "path": "tests/fixtures/historical/global_cn/meirin_reward/meirin-reward-popup.png",
+      "sha256": "1d94f2e486b8fd5e80a2d216bae7411a2c86b83b98283cd7aa0a35b36faed7da",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "Shared reward popup after collecting the Arena reward",
+      "source": "MuMu-20261015-172719-705.png",
+      "source_sha256": "31c7adf2e914dac9713554f7eb48c3d0e66ee448cf98f290241dc9aaae612d51",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_meirin_reward.AssetTests.test_real_frames_distinguish_pending_empty_and_scrolled_rows",
+        "tests.activity.test_meirin_reward.AssetTests.test_real_sidebar_selects_meirin_after_stable_text",
+        "tests.activity.test_meirin_reward.ClaimTests.test_already_selected_shifted_sidebar_claims_without_clicking_the_tab",
+        "tests.activity.test_meirin_reward.ClaimTests.test_completion_before_popup_waits_for_reward_confirmation",
+        "tests.activity.test_meirin_reward.ClaimTests.test_dropped_claim_and_close_retry_only_after_production_intervals",
+        "tests.activity.test_meirin_reward.ClaimTests.test_list_update_before_reward_popup_never_finishes_early",
+        "tests.activity.test_meirin_reward.ClaimTests.test_network_repeated_frames_do_not_replace_reward_confirmation",
+        "tests.activity.test_meirin_reward.ClaimTests.test_real_claim_popup_and_empty_queue_stay_recheckable"
+      ]
+    },
+    "meirin-reward-unavailable": {
+      "path": "tests/fixtures/historical/global_cn/meirin_reward/meirin-reward-unavailable.png",
+      "sha256": "ad4e9c6f3c1bd12aefc38ad62df68c1728e2ea0b2b64b3ea018f7bcdf020578f",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "First task offers Go now; claimed Arena task moved to the fifth row",
+      "source": "MuMu-20261015-172722-309.png",
+      "source_sha256": "66fecd540003819602f9505dfbd47bab5b2f68443bfba574d0f3ee7acfbd7b02",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_meirin_reward.AssetTests.test_only_explicit_synthetic_first_row_check_proves_all_done",
+        "tests.activity.test_meirin_reward.AssetTests.test_real_frames_distinguish_pending_empty_and_scrolled_rows",
+        "tests.activity.test_meirin_reward.AssetTests.test_real_sidebar_selects_meirin_after_stable_text",
+        "tests.activity.test_meirin_reward.AssetTests.test_shifted_selected_sidebar_rejects_other_tabs_and_unselected_label",
+        "tests.activity.test_meirin_reward.ClaimTests.test_already_selected_shifted_sidebar_claims_without_clicking_the_tab",
+        "tests.activity.test_meirin_reward.ClaimTests.test_bottom_claimed_row_does_not_mark_today_complete",
+        "tests.activity.test_meirin_reward.ClaimTests.test_completion_before_popup_waits_for_reward_confirmation",
+        "tests.activity.test_meirin_reward.ClaimTests.test_dropped_claim_and_close_retry_only_after_production_intervals",
+        "tests.activity.test_meirin_reward.ClaimTests.test_list_update_before_reward_popup_never_finishes_early",
+        "tests.activity.test_meirin_reward.ClaimTests.test_missing_reward_popup_fails_locally_without_completion",
+        "tests.activity.test_meirin_reward.ClaimTests.test_network_repeated_frames_do_not_replace_reward_confirmation",
+        "tests.activity.test_meirin_reward.ClaimTests.test_real_claim_popup_and_empty_queue_stay_recheckable",
+        "tests.activity.test_meirin_reward.ClaimTests.test_synthetic_first_row_completion_records_only_meirin",
+        "tests.activity.test_meirin_reward.SchedulingTests.test_empty_queue_is_scheduled_again_after_battle"
+      ]
+    },
+    "meirin-reward-available-shifted": {
+      "path": "tests/fixtures/historical/global_cn/meirin_reward/meirin-reward-available-shifted.png",
+      "sha256": "1d47d7f282d3bf0ccb02f1b5004e88b37c8db0bd10a6d4522aa1db4d69434ee1",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "Meirin event already selected after sidebar shifts upward; first-row stamina reward is claimable",
+      "source": "MuMu-20261015-181110-831.png",
+      "source_sha256": "885cc5744afc6ee1897a986b1cf60c3cb257be99105e38e3caab37cca8ce53e7",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_meirin_reward.AssetTests.test_real_frames_distinguish_pending_empty_and_scrolled_rows",
+        "tests.activity.test_meirin_reward.AssetTests.test_shifted_selected_sidebar_rejects_other_tabs_and_unselected_label",
+        "tests.activity.test_meirin_reward.ClaimTests.test_already_selected_shifted_sidebar_claims_without_clicking_the_tab"
+      ]
     }
   },
   "aliases": {

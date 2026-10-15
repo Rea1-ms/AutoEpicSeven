@@ -80,7 +80,7 @@
     },
     "LimitedActivity": {
       "name": "Limited-time events",
-      "help": "Claim daily 20 summons and Koharu rewards through the event entrance. Scheduled independently of Special activities; the Summon task performs summons."
+      "help": "Claim daily 20 summons and Meirin task rewards through the event entrance. Scheduled independently of Special activities; the Summon task performs summons."
     },
     "SpecialActivity": {
       "name": "Special activities",
@@ -1067,15 +1067,15 @@
   "LimitedActivity": {
     "_info": {
       "name": "Limited-time events",
-      "help": "Claim daily 20 summons and Koharu rewards through the event entrance. Scheduled independently of Special activities; the Summon task performs summons."
+      "help": "Claim daily 20 summons and Meirin task rewards through the event entrance. Scheduled independently of Special activities; the Summon task performs summons."
     },
     "GetFreeGacha": {
       "name": "Claim Daily 20 Free Summons",
       "help": "Claim the current event's daily 20 free summons. The Summon task performs the summons."
     },
-    "GetKoharuRaffleReward": {
-      "name": "Claim Koharu Task Rewards",
-      "help": "Overseas Simplified Chinese interface only. Claim completed tasks in the Koharu raffle event. Recheck after Arena or Combat if no reward is ready; stop daily checks only when all tasks are complete."
+    "GetMeirinReward": {
+      "name": "Claim Meirin Task Rewards",
+      "help": "Overseas Simplified Chinese interface only. Claim completed task rewards in the Together with Meirin event. Recheck after Arena or Combat if no reward is ready; stop daily checks only when all tasks are complete."
     }
   },
   "SpecialActivity": {

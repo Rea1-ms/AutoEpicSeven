@@ -486,7 +486,12 @@ class ConfigUpdater:
          lambda value: parse_value(value, {})),
         ('SpecialActivity.Scheduler.ServerUpdate', 'LimitedActivity.Scheduler.ServerUpdate'),
         ('SpecialActivity.SpecialActivity.GetFreeGacha', 'LimitedActivity.LimitedActivity.GetFreeGacha'),
-        ('SpecialActivity.SpecialActivity.GetKoharuRaffleReward', 'LimitedActivity.LimitedActivity.GetKoharuRaffleReward'),
+        # Carry the user's reward opt-in into the successor event. Apply the
+        # pre-split setting first so a later LimitedActivity setting takes
+        # precedence when both historical paths remain. Existing Meirin values
+        # are never replaced, and event completion records are not redirected.
+        ('SpecialActivity.SpecialActivity.GetKoharuRaffleReward', 'LimitedActivity.LimitedActivity.GetMeirinReward'),
+        ('LimitedActivity.LimitedActivity.GetKoharuRaffleReward', 'LimitedActivity.LimitedActivity.GetMeirinReward'),
         ('Arena.Arena.BurnoutMode', 'Arena.Arena.BurnoutMode', normalize_execution_mode),
         ('Combat.Combat.BurnoutMode', 'Combat.Combat.BurnoutMode', normalize_execution_mode),
         ('CombatFarm.Combat.BurnoutMode', 'CombatFarm.Combat.BurnoutMode', normalize_execution_mode),

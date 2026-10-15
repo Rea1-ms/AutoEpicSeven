@@ -291,7 +291,7 @@
     },
     "LimitedActivity": {
       "GetFreeGacha": true,
-      "GetKoharuRaffleReward": true
+      "GetMeirinReward": true
     }
   },
   "SpecialActivity": {

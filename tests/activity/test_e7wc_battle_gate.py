@@ -140,7 +140,8 @@ class CalendarTests(unittest.TestCase):
         self.assertNotIn(EVENT_ID, ids(gate.start - timedelta(seconds=1)))
         self.assertNotIn(EVENT_ID, ids(gate.start))
         self.assertNotIn(EVENT_ID, ids(gate.end))
-        self.assertEqual(ids(NOW), {calendar.DEFAULT_FREE_GACHA_20_ID, "koharu_raffle_2026_09_17", "huche_shop_2026_09_17"})
+        self.assertEqual(ids(NOW), {calendar.DEFAULT_FREE_GACHA_20_ID, "huche_shop_2026_09_17"})
+        self.assertNotIn("koharu_raffle_2026_09_17", ids(NOW))
         server.set_lang("cn")
         self.config.Emulator_PackageName = "com.zlongame.cn.epicseven"
         self.assertEqual(ids(NOW), {calendar.DEFAULT_FREE_GACHA_20_ID})

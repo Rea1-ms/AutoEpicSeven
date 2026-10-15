@@ -21,11 +21,17 @@ from tasks.activity.entry import SpecialActivityEntry
 from tasks.activity.common_activity import CommonActivityBatch
 from tasks.activity.free_gacha_20 import FreeGacha20
 from tasks.activity.legacy.e7wc_battle_gate_2026_09_12.e7wc_battle_gate import E7wcBattleGate
-from tasks.activity.koharu_raffle import KoharuRaffle
+from tasks.activity.legacy.koharu_raffle_2026_09_17.koharu_raffle import KoharuRaffle
+from tasks.activity.meirin_reward import MeirinReward
 from tests.support.history_e7wc_battle_gate import HISTORICAL_ACTIVITIES
 
-MODES = ('free_gacha_20', 'koharu_raffle')
-CLASSES = (FreeGacha20, E7wcBattleGate, KoharuRaffle)
+MODES = ('free_gacha_20', 'meirin_reward')
+CLASSES = (FreeGacha20, E7wcBattleGate, KoharuRaffle, MeirinReward)
+HISTORICAL_OPTIONS = {
+    'free_gacha_20': 'LimitedActivity_GetFreeGacha',
+    'e7wc_battle_gate': 'LimitedActivity_GetE7wcBattleGateReward',
+    'koharu_raffle': 'LimitedActivity_GetKoharuRaffleReward',
+}
 
 
 class Config:
@@ -34,6 +40,7 @@ class Config:
     LimitedActivity_GetFreeGacha = True
     LimitedActivity_GetE7wcBattleGateReward = True
     LimitedActivity_GetKoharuRaffleReward = True
+    LimitedActivity_GetMeirinReward = True
 
     def __init__(self):
         self.delays = []
@@ -58,8 +65,10 @@ class BatchTests(unittest.TestCase):
         server.set_lang('global_cn')
         Device.instances = []
         config = Config()
+        historical = any(mode in modes for mode in ('e7wc_battle_gate', 'koharu_raffle'))
+        options = HISTORICAL_OPTIONS if historical else LimitedActivityEntry.COMMON_ACTIVITY_OPTIONS
         for mode in disabled:
-            setattr(config, LimitedActivityEntry.COMMON_ACTIVITY_OPTIONS[mode], False)
+            setattr(config, options[mode], False)
         events = [SimpleNamespace(mode=mode, event_id=mode, end='offline') for mode in modes]
         actions, routes, devices = [], [], []
 
@@ -88,11 +97,12 @@ class BatchTests(unittest.TestCase):
                 return True
 
         with ExitStack() as stack:
-            if 'e7wc_battle_gate' in modes:
+            if historical:
                 # Keep the original three-tab assertion using explicit historical
                 # input; the production registry and dispatcher stay unchanged.
                 stack.enter_context(patch.object(CommonActivityBatch, 'ACTIVITIES', HISTORICAL_ACTIVITIES))
                 stack.enter_context(patch.object(LimitedActivityEntry, 'ACTIVITY_MODES', modes))
+                stack.enter_context(patch.object(LimitedActivityEntry, 'COMMON_ACTIVITY_OPTIONS', options))
             stack.enter_context(patch('module.base.base.Device', Device))
             stack.enter_context(patch('tasks.activity.entry.active_activities', return_value=events))
             stack.enter_context(patch('tasks.activity.entry.is_activity_checked_in_window',

@@ -73,6 +73,7 @@ ACTIVITY_MODULES = (
     "tests.activity.test_activity_task_split",
     "tests.activity.test_activity_batch",
     "tests.activity.test_free_gacha_20",
+    "tests.activity.test_meirin_reward",
 )
 COMBAT_MODULES = (
     "tests.combat.test_hunt_boss",

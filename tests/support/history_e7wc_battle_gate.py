@@ -16,12 +16,16 @@ from tasks.activity.legacy.e7wc_battle_gate_2026_09_12.e7wc_battle_gate import (
 )
 from tasks.activity.assets.assets_activity_special_26_9_12 import E7WC_BATTLE_GATE_SELECTED
 from tasks.activity.common_activity import CommonActivityBatch
+from tasks.activity.legacy.koharu_raffle_2026_09_17.koharu_raffle import (
+    CHUN_GATE_SELECTED, KoharuRaffle,
+)
 
 # Preserve the three-event sidebar contract only in historical replay inputs.
 # Production must never regain the retired event through this fixture table.
 HISTORICAL_ACTIVITIES = {
-    **CommonActivityBatch.ACTIVITIES,
+    "free_gacha_20": CommonActivityBatch.ACTIVITIES["free_gacha_20"],
     "e7wc_battle_gate": ("激战门", E7WC_BATTLE_GATE_SELECTED, E7wcBattleGate),
+    "koharu_raffle": ("收集抽奖券", CHUN_GATE_SELECTED, KoharuRaffle),
 }
 
 SCREENSHOTS = Path(__file__).parent / "screenshots/e7wc_battle_gate"

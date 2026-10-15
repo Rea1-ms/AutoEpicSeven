@@ -10316,7 +10316,7 @@
           "has_automatic_assertion": true,
           "fixtures": [],
           "status": "已纳入",
-          "reason": "历史模拟回放或资产输入；不宣称实机动作链路",
+          "reason": "保留历史用例编号，现验证小春归档后不可唤醒及旧记录与配置迁移",
           "input_kind": "mock_or_rule",
           "original_source": "test/test_koharu_raffle.py"
         },
@@ -10328,7 +10328,7 @@
           "has_automatic_assertion": true,
           "fixtures": [],
           "status": "已纳入",
-          "reason": "历史模拟回放或资产输入；不宣称实机动作链路",
+          "reason": "保留历史用例编号，现验证小春归档后不可唤醒及旧记录与配置迁移",
           "input_kind": "mock_or_rule",
           "original_source": "test/test_koharu_raffle.py"
         },
@@ -10340,7 +10340,7 @@
           "has_automatic_assertion": true,
           "fixtures": [],
           "status": "已纳入",
-          "reason": "历史模拟回放或资产输入；不宣称实机动作链路",
+          "reason": "保留历史用例编号，现验证小春归档后不可唤醒及旧记录与配置迁移",
           "input_kind": "mock_or_rule",
           "original_source": "test/test_koharu_raffle.py"
         },
@@ -10364,7 +10364,7 @@
           "has_automatic_assertion": true,
           "fixtures": [],
           "status": "已纳入",
-          "reason": "历史模拟回放或资产输入；不宣称实机动作链路",
+          "reason": "保留历史用例编号，现验证小春归档后不可唤醒及旧记录与配置迁移",
           "input_kind": "mock_or_rule",
           "original_source": "test/test_koharu_raffle.py"
         },
@@ -10388,7 +10388,7 @@
           "has_automatic_assertion": true,
           "fixtures": [],
           "status": "已纳入",
-          "reason": "历史模拟回放或资产输入；不宣称实机动作链路",
+          "reason": "保留历史用例编号，现验证小春归档后不可唤醒及旧记录与配置迁移",
           "input_kind": "mock_or_rule",
           "original_source": "test/test_koharu_raffle.py"
         },
@@ -10400,9 +10400,27 @@
           "has_automatic_assertion": true,
           "fixtures": [],
           "status": "已纳入",
-          "reason": "历史模拟回放或资产输入；不宣称实机动作链路",
+          "reason": "保留历史用例编号，现验证小春归档后不可唤醒及旧记录与配置迁移",
           "input_kind": "mock_or_rule",
           "original_source": "test/test_koharu_raffle.py"
+        },
+        {
+          "id": "tests.activity.test_koharu_raffle.SchedulingTests.test_future_dates_do_not_reactivate_archived_flow",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "小春归档后即使周期变成未来仍不可唤醒，生产入口不加载旧实现或素材"
+        },
+        {
+          "id": "tests.activity.test_koharu_raffle.SchedulingTests.test_production_imports_do_not_load_archived_flow",
+          "category": "资源基础检查",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "小春归档后即使周期变成未来仍不可唤醒，生产入口不加载旧实现或素材"
         }
       ]
     },
@@ -17742,6 +17760,252 @@
           ],
           "status": "已纳入",
           "reason": "竞技场状态、入口与结算回归；真实截图和模拟观察分别登记"
+        }
+      ]
+    },
+    {
+      "source": "tests/activity/test_meirin_reward.py",
+      "business": "梅铃活动领奖",
+      "status": "新增",
+      "reason": "接替已归档小春活动，八张真实样本与可推进时钟验证领奖及侧栏选中态",
+      "cases": [
+        {
+          "id": "tests.activity.test_meirin_reward.AssetTests.test_real_frames_distinguish_pending_empty_and_scrolled_rows",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "meirin-reward-home",
+            "meirin-reward-sidebar-top",
+            "meirin-reward-sidebar-visible",
+            "meirin-reward-available",
+            "meirin-reward-available-shifted",
+            "meirin-reward-loading",
+            "meirin-reward-popup",
+            "meirin-reward-unavailable"
+          ],
+          "status": "已纳入",
+          "reason": "梅铃领奖识别、真实动作间隔与独立完成记录；首行完成和网络异常为显式合成状态"
+        },
+        {
+          "id": "tests.activity.test_meirin_reward.AssetTests.test_only_explicit_synthetic_first_row_check_proves_all_done",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "meirin-reward-unavailable"
+          ],
+          "status": "已纳入",
+          "reason": "梅铃领奖识别、真实动作间隔与独立完成记录；首行完成和网络异常为显式合成状态"
+        },
+        {
+          "id": "tests.activity.test_meirin_reward.AssetTests.test_real_sidebar_selects_meirin_after_stable_text",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "meirin-reward-sidebar-visible",
+            "meirin-reward-available",
+            "meirin-reward-popup",
+            "meirin-reward-unavailable"
+          ],
+          "status": "已纳入",
+          "reason": "梅铃领奖识别、真实动作间隔与独立完成记录；首行完成和网络异常为显式合成状态"
+        },
+        {
+          "id": "tests.activity.test_meirin_reward.ClaimTests.test_real_claim_popup_and_empty_queue_stay_recheckable",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "meirin-reward-available",
+            "meirin-reward-loading",
+            "meirin-reward-popup",
+            "meirin-reward-unavailable"
+          ],
+          "status": "已纳入",
+          "reason": "梅铃领奖识别、真实动作间隔与独立完成记录；首行完成和网络异常为显式合成状态"
+        },
+        {
+          "id": "tests.activity.test_meirin_reward.ClaimTests.test_dropped_claim_and_close_retry_only_after_production_intervals",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "meirin-reward-available",
+            "meirin-reward-popup",
+            "meirin-reward-unavailable"
+          ],
+          "status": "已纳入",
+          "reason": "梅铃领奖识别、真实动作间隔与独立完成记录；首行完成和网络异常为显式合成状态"
+        },
+        {
+          "id": "tests.activity.test_meirin_reward.ClaimTests.test_list_update_before_reward_popup_never_finishes_early",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "meirin-reward-available",
+            "meirin-reward-unavailable",
+            "meirin-reward-popup"
+          ],
+          "status": "已纳入",
+          "reason": "梅铃领奖识别、真实动作间隔与独立完成记录；首行完成和网络异常为显式合成状态"
+        },
+        {
+          "id": "tests.activity.test_meirin_reward.ClaimTests.test_network_repeated_frames_do_not_replace_reward_confirmation",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "meirin-reward-available",
+            "meirin-reward-unavailable",
+            "meirin-reward-popup"
+          ],
+          "status": "已纳入",
+          "reason": "梅铃领奖识别、真实动作间隔与独立完成记录；首行完成和网络异常为显式合成状态"
+        },
+        {
+          "id": "tests.activity.test_meirin_reward.ClaimTests.test_bottom_claimed_row_does_not_mark_today_complete",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "meirin-reward-unavailable"
+          ],
+          "status": "已纳入",
+          "reason": "梅铃领奖识别、真实动作间隔与独立完成记录；首行完成和网络异常为显式合成状态"
+        },
+        {
+          "id": "tests.activity.test_meirin_reward.ClaimTests.test_synthetic_first_row_completion_records_only_meirin",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "meirin-reward-unavailable"
+          ],
+          "status": "已纳入",
+          "reason": "梅铃领奖识别、真实动作间隔与独立完成记录；首行完成和网络异常为显式合成状态"
+        },
+        {
+          "id": "tests.activity.test_meirin_reward.ClaimTests.test_completion_before_popup_waits_for_reward_confirmation",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "meirin-reward-available",
+            "meirin-reward-unavailable",
+            "meirin-reward-popup"
+          ],
+          "status": "已纳入",
+          "reason": "梅铃领奖识别、真实动作间隔与独立完成记录；首行完成和网络异常为显式合成状态"
+        },
+        {
+          "id": "tests.activity.test_meirin_reward.ClaimTests.test_missing_reward_popup_fails_locally_without_completion",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "meirin-reward-available",
+            "meirin-reward-unavailable"
+          ],
+          "status": "已纳入",
+          "reason": "梅铃领奖识别、真实动作间隔与独立完成记录；首行完成和网络异常为显式合成状态"
+        },
+        {
+          "id": "tests.activity.test_meirin_reward.ClaimTests.test_wrong_selected_tab_never_claims",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "meirin-reward-sidebar-visible"
+          ],
+          "status": "已纳入",
+          "reason": "梅铃领奖识别、真实动作间隔与独立完成记录；首行完成和网络异常为显式合成状态"
+        },
+        {
+          "id": "tests.activity.test_meirin_reward.ClaimTests.test_disabled_or_unsupported_server_does_not_touch_device",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "梅铃领奖识别、真实动作间隔与独立完成记录；首行完成和网络异常为显式合成状态"
+        },
+        {
+          "id": "tests.activity.test_meirin_reward.SchedulingTests.test_empty_queue_is_scheduled_again_after_battle",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "meirin-reward-unavailable"
+          ],
+          "status": "已纳入",
+          "reason": "梅铃领奖识别、真实动作间隔与独立完成记录；首行完成和网络异常为显式合成状态"
+        },
+        {
+          "id": "tests.activity.test_meirin_reward.SchedulingTests.test_old_event_or_other_server_record_does_not_suppress_meirin",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "梅铃领奖识别、真实动作间隔与独立完成记录；首行完成和网络异常为显式合成状态"
+        },
+        {
+          "id": "tests.activity.test_meirin_reward.SchedulingTests.test_disabled_saved_option_or_task_never_schedules",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "梅铃领奖识别、真实动作间隔与独立完成记录；首行完成和网络异常为显式合成状态"
+        },
+        {
+          "id": "tests.activity.test_meirin_reward.SchedulingTests.test_current_calendar_activates_meirin_and_retires_koharu",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "梅铃领奖识别、真实动作间隔与独立完成记录；首行完成和网络异常为显式合成状态"
+        },
+        {
+          "id": "tests.activity.test_meirin_reward.SchedulingTests.test_entry_rechecks_empty_queue_but_skips_event_after_completion",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "梅铃领奖识别、真实动作间隔与独立完成记录；首行完成和网络异常为显式合成状态"
+        },
+        {
+          "id": "tests.activity.test_meirin_reward.AssetTests.test_shifted_selected_sidebar_rejects_other_tabs_and_unselected_label",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "meirin-reward-available-shifted",
+            "meirin-reward-available",
+            "meirin-reward-unavailable",
+            "meirin-reward-sidebar-visible",
+            "meirin-reward-sidebar-top"
+          ],
+          "status": "已纳入",
+          "reason": "新实图复现已选中页签被反复点击；确认选中态、其他页签反例和实际领奖动作"
+        },
+        {
+          "id": "tests.activity.test_meirin_reward.ClaimTests.test_already_selected_shifted_sidebar_claims_without_clicking_the_tab",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "meirin-reward-available-shifted",
+            "meirin-reward-popup",
+            "meirin-reward-unavailable"
+          ],
+          "status": "已纳入",
+          "reason": "新实图复现已选中页签被反复点击；确认选中态、其他页签反例和实际领奖动作"
         }
       ]
     }

@@ -11,7 +11,7 @@ from types import SimpleNamespace
 WORKTREE = Path(__file__).resolve().parents[2]
 PROJECT_ROOT = WORKTREE
 
-from tasks.activity.koharu_raffle import (
+from tasks.activity.legacy.koharu_raffle_2026_09_17.koharu_raffle import (
     KoharuRaffle, CHUN_ALL_TASK_DONE, CHUN_GATE_CHECK, CHUN_GATE_SELECTED,
     CHUN_TASK_REWARD_NONE, CHUN_TASK_REWARD_PENDING,
 )

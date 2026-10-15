@@ -1355,7 +1355,7 @@
         "type": "checkbox",
         "value": true
       },
-      "GetKoharuRaffleReward": {
+      "GetMeirinReward": {
         "type": "checkbox",
         "value": true
       }

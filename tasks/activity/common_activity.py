@@ -3,9 +3,9 @@ from module.logger import logger
 from module.ocr.ocr import Ocr, OcrResultButton
 from tasks.activity.assets.assets_activity_common import COMMON_ACTIVITY_LIST
 from tasks.activity.assets.assets_activity_special_26_8_27 import FREE_20_GACHA_SELECTED
-from tasks.activity.assets.assets_activity_special_26_9_17 import CHUN_GATE_SELECTED
+from tasks.activity.assets.assets_activity_special_26_10_15 import MEIRIN_GATE_SELECTED
 from tasks.activity.free_gacha_20 import FreeGacha20
-from tasks.activity.koharu_raffle import KoharuRaffle
+from tasks.activity.meirin_reward import MeirinReward
 from tasks.activity.navigation import ActivityNavigationMixin
 from tasks.base.page import page_common_activity
 from tasks.base.ui import UI
@@ -16,7 +16,7 @@ class CommonActivityBatch(ActivityNavigationMixin, UI):
 
     ACTIVITIES = {
         "free_gacha_20": ("INFINITY", FREE_20_GACHA_SELECTED, FreeGacha20),
-        "koharu_raffle": ("收集抽奖券", CHUN_GATE_SELECTED, KoharuRaffle),
+        "meirin_reward": ("与梅铃一起吧", MEIRIN_GATE_SELECTED, MeirinReward),
     }
 
     def run(self, activities) -> bool:
@@ -77,7 +77,7 @@ class CommonActivityBatch(ActivityNavigationMixin, UI):
                     # sidebar: the parent retains the sweep direction and budget.
                     if not pending[event_id][2].run_claim(navigate=False):
                         return False
-                    # Local completion is separate from the daily record. Koharu
+                    # Local completion is separate from the daily record. Meirin
                     # with no available reward must leave this batch once, while
                     # remaining eligible for another check after later battles.
                     del pending[event_id]

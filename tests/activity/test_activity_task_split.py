@@ -81,7 +81,7 @@ class MigrationTests(unittest.TestCase):
                     self.assertEqual(result[task]['Scheduler']['ServerUpdate'], '02:00')
                     self.assertEqual(result[task]['Scheduler']['Command'], task)
                 self.assertEqual(result['LimitedActivity']['LimitedActivity'], {
-                    'GetFreeGacha': True, 'GetKoharuRaffleReward': True})
+                    'GetFreeGacha': True, 'GetMeirinReward': True})
                 self.assertEqual(result['SpecialActivity']['SpecialActivity'], {'BuyHucheMysticMedals': True})
                 self.assertEqual(result['SpecialActivity']['ActivityRuntime']['CheckedEvents'],
                                  old['SpecialActivity']['ActivityRuntime']['CheckedEvents'])
@@ -92,13 +92,13 @@ class MigrationTests(unittest.TestCase):
         old['LimitedActivity'] = {
             'Scheduler': {'Enable': False, 'NextRun': '2026-09-24 03:00:00', 'ServerUpdate': '03:00'},
             'LimitedActivity': {'GetFreeGacha': False, 'GetE7wcBattleGateReward': True,
-                                'GetKoharuRaffleReward': False}}
+                                'GetKoharuRaffleReward': False, 'GetMeirinReward': False}}
         result = ConfigUpdater().config_update(old)['LimitedActivity']
         self.assertFalse(result['Scheduler']['Enable'])
         self.assertEqual(result['Scheduler']['NextRun'], datetime(2026, 9, 24, 3))
         # ServerUpdate is hidden and follows the existing schema/server override.
         self.assertEqual(result['Scheduler']['ServerUpdate'], '02:00')
-        self.assertEqual(result['LimitedActivity'], {'GetFreeGacha': False, 'GetKoharuRaffleReward': False})
+        self.assertEqual(result['LimitedActivity'], {'GetFreeGacha': False, 'GetMeirinReward': False})
 
     def test_fresh_profile_does_not_enable_tasks_or_spending(self):
         result = ConfigUpdater().config_update({})
@@ -132,7 +132,7 @@ class SchedulingTests(unittest.TestCase):
     def test_each_task_only_sees_its_entrances(self):
         limited = calendar.active_activities(self.config, NOW, task='LimitedActivity')
         special = calendar.active_activities(self.config, NOW, task='SpecialActivity')
-        self.assertEqual({e.mode for e in limited}, {'free_gacha_20', 'koharu_raffle'})
+        self.assertEqual({e.mode for e in limited}, {'free_gacha_20'})
         self.assertEqual({e.mode for e in special}, {'huche_shop'})
         self.assertEqual(set(limited) | set(special), set(self.events))
 
@@ -166,15 +166,22 @@ class SchedulingTests(unittest.TestCase):
 
     def test_after_battle_only_wakes_enabled_unfinished_limited_task(self):
         self.config.init_task('Combat')
-        with patch.object(self.config, 'task_call') as call:
+        # Keep the original task split/stock dates above as historical facts.
+        # Battle wakeups must use the current campaign instead of reactivating
+        # Koharu merely to satisfy a past scheduling expectation.
+        current = datetime(2026, 10, 15, 18, tzinfo=calendar.EVENT_TIMEZONE)
+        with patch.object(self.config, 'task_call') as call, patch.object(
+            calendar, 'datetime', wraps=datetime
+        ) as clock:
+            clock.now.return_value = current
             scheduling.schedule_activity_after_battle(self.config)
             call.assert_called_once_with('LimitedActivity', force_call=False)
             call.reset_mock()
-            deep_set(self.config.data, 'LimitedActivity.LimitedActivity.GetKoharuRaffleReward', False)
-            self.assertTrue(self.config.LimitedActivity_GetKoharuRaffleReward)
+            deep_set(self.config.data, 'LimitedActivity.LimitedActivity.GetMeirinReward', False)
+            self.assertTrue(self.config.LimitedActivity_GetMeirinReward)
             scheduling.schedule_activity_after_battle(self.config)
             call.assert_not_called()
-            deep_set(self.config.data, 'LimitedActivity.LimitedActivity.GetKoharuRaffleReward', True)
+            deep_set(self.config.data, 'LimitedActivity.LimitedActivity.GetMeirinReward', True)
             deep_set(self.config.data, 'LimitedActivity.Scheduler.Enable', False)
             scheduling.schedule_activity_after_battle(self.config)
             call.assert_not_called()
