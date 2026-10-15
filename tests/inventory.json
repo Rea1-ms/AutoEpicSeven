@@ -650,9 +650,9 @@
     },
     {
       "source": "test/test_arena.py",
-      "business": "其他业务或框架",
+      "business": "竞技场",
       "status": "未纳入",
-      "reason": "实机或交互调试入口；依赖设备、账号配置或人工观察，不是独立离线断言",
+      "reason": "旧实机入口和过期素材打印工具保留；入口、周奖与结算自动断言在 tests/arena/test_entry.py 维护，不导入旧手动脚本",
       "cases": [],
       "file_category": "实机调试工具",
       "source_sha256": "319579b57778ec108364ee8476fa54aefc22ee751b4b82b01abc94de63412a19",
@@ -17423,6 +17423,325 @@
           ],
           "status": "已纳入",
           "reason": "第二帧图标匹配后遮盖点数图标，当前帧不再识别为每周任务，禁止沿用上帧结果"
+        }
+      ]
+    },
+    {
+      "source": "tests/arena/test_npc_combat.py",
+      "business": "竞技场",
+      "status": "新增",
+      "reason": "快速战斗挑战按钮残留回归与旧手动检查整理",
+      "cases": [
+        {
+          "id": "tests.arena.test_npc_combat.NpcCombatReplayTests.test_captured_fast_round_survives_start_timeout_and_repeated_result",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165556-841.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165601-001.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165606-908.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165612-396.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165612-968.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165613-439.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165615-527.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165616-798.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165618-643.png"
+          ],
+          "status": "已纳入",
+          "reason": "竞技场状态、入口与结算回归；真实截图和模拟观察分别登记"
+        },
+        {
+          "id": "tests.arena.test_npc_combat.NpcCombatReplayTests.test_start_retry_keeps_result_handling_when_challenge_appears_next",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "竞技场状态、入口与结算回归；真实截图和模拟观察分别登记"
+        },
+        {
+          "id": "tests.arena.test_npc_combat.NpcCombatReplayTests.test_background_npc_and_challenge_never_select_another_opponent",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "竞技场状态、入口与结算回归；真实截图和模拟观察分别登记"
+        },
+        {
+          "id": "tests.arena.test_npc_combat.NpcCombatReplayTests.test_start_click_retries_only_after_pending_interval",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "竞技场状态、入口与结算回归；真实截图和模拟观察分别登记"
+        },
+        {
+          "id": "tests.arena.test_npc_combat.NpcCombatReplayTests.test_result_retries_until_home_without_starting_again",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "竞技场状态、入口与结算回归；真实截图和模拟观察分别登记"
+        },
+        {
+          "id": "tests.arena.test_npc_combat.NpcCombatReplayTests.test_return_home_can_complete_when_result_frame_was_missed",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "竞技场状态、入口与结算回归；真实截图和模拟观察分别登记"
+        },
+        {
+          "id": "tests.arena.test_npc_combat.NpcCombatReplayTests.test_normal_battle_auto_toggle_and_result_keep_round_state",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "竞技场状态、入口与结算回归；真实截图和模拟观察分别登记"
+        },
+        {
+          "id": "tests.arena.test_npc_combat.NpcCombatReplayTests.test_fast_lock_and_zero_remaining_fall_back_to_normal",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "竞技场状态、入口与结算回归；真实截图和模拟观察分别登记"
+        },
+        {
+          "id": "tests.arena.test_npc_combat.NpcCombatReplayTests.test_repeated_result_counts_and_consumes_one_round",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "竞技场状态、入口与结算回归；真实截图和模拟观察分别登记"
+        }
+      ]
+    },
+    {
+      "source": "tests/arena/test_entry.py",
+      "business": "竞技场",
+      "status": "新增",
+      "reason": "快速战斗挑战按钮残留回归与旧手动检查整理",
+      "cases": [
+        {
+          "id": "tests.arena.test_entry.ArenaEntryTests.test_entry_surface_preserves_open_arena_and_hub",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "竞技场状态、入口与结算回归；真实截图和模拟观察分别登记"
+        },
+        {
+          "id": "tests.arena.test_entry.ArenaEntryTests.test_unknown_entry_surface_routes_to_hub_with_existing_frame",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "竞技场状态、入口与结算回归；真实截图和模拟观察分别登记"
+        },
+        {
+          "id": "tests.arena.test_entry.ArenaEntryTests.test_common_entry_retries_then_handles_weekly_reward_before_exit",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "竞技场状态、入口与结算回归；真实截图和模拟观察分别登记"
+        },
+        {
+          "id": "tests.arena.test_entry.ArenaEntryTests.test_selected_weekly_reward_ignores_disabled_claim",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "竞技场状态、入口与结算回归；真实截图和模拟观察分别登记"
+        },
+        {
+          "id": "tests.arena.test_entry.ArenaEntryTests.test_weekly_popup_handler_reports_only_actions_and_respects_interval",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "竞技场状态、入口与结算回归；真实截图和模拟观察分别登记"
+        },
+        {
+          "id": "tests.arena.test_entry.ArenaEntryTests.test_settlement_entry_waits_for_enabled_icon_after_weekly_claim",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "竞技场状态、入口与结算回归；真实截图和模拟观察分别登记"
+        },
+        {
+          "id": "tests.arena.test_entry.ArenaEntryTests.test_settlement_entry_preserves_ready_npc_page",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "竞技场状态、入口与结算回归；真实截图和模拟观察分别登记"
+        },
+        {
+          "id": "tests.arena.test_entry.ArenaEntryTests.test_arena_goto_selects_current_settlement_route",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "竞技场状态、入口与结算回归；真实截图和模拟观察分别登记"
+        }
+      ]
+    },
+    {
+      "source": "tests/arena/test_rules.py",
+      "business": "竞技场",
+      "status": "新增",
+      "reason": "快速战斗挑战按钮残留回归与旧手动检查整理",
+      "cases": [
+        {
+          "id": "tests.arena.test_rules.ArenaRuleTests.test_settlement_window_includes_start_and_excludes_end",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "竞技场状态、入口与结算回归；真实截图和模拟观察分别登记"
+        },
+        {
+          "id": "tests.arena.test_rules.ArenaRuleTests.test_settlement_window_uses_china_time_for_offsets_and_naive_values",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "竞技场状态、入口与结算回归；真实截图和模拟观察分别登记"
+        }
+      ]
+    },
+    {
+      "source": "tests/arena/test_captures.py",
+      "business": "竞技场",
+      "status": "新增",
+      "reason": "快速战斗挑战按钮残留回归与旧手动检查整理",
+      "cases": [
+        {
+          "id": "tests.arena.test_captures.CapturedArenaTests.test_challenge_ready_requires_bright_list_button",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165556-841.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165601-001.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165606-908.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165612-396.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165612-968.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165613-439.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165615-527.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165616-798.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165618-643.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165622-212.png"
+          ],
+          "status": "已纳入",
+          "reason": "竞技场状态、入口与结算回归；真实截图和模拟观察分别登记"
+        },
+        {
+          "id": "tests.arena.test_captures.CapturedArenaTests.test_fast_battle_animation_keeps_challenge_visible_under_overlay",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165601-001.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165606-908.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165612-968.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165613-439.png"
+          ],
+          "status": "已纳入",
+          "reason": "竞技场状态、入口与结算回归；真实截图和模拟观察分别登记"
+        },
+        {
+          "id": "tests.arena.test_captures.CapturedArenaTests.test_fast_prepare_controls_are_separate_from_list_and_result",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165556-841.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165601-001.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165606-908.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165612-396.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165612-968.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165613-439.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165615-527.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165616-798.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165618-643.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165622-212.png"
+          ],
+          "status": "已纳入",
+          "reason": "竞技场状态、入口与结算回归；真实截图和模拟观察分别登记"
+        },
+        {
+          "id": "tests.arena.test_captures.CapturedArenaTests.test_shifted_fast_result_confirm_matches_and_clicks_current_position",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165556-841.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165601-001.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165606-908.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165612-396.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165612-968.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165613-439.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165615-527.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165616-798.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165618-643.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165622-212.png"
+          ],
+          "status": "已纳入",
+          "reason": "竞技场状态、入口与结算回归；真实截图和模拟观察分别登记"
+        },
+        {
+          "id": "tests.arena.test_captures.CapturedArenaTests.test_arena_home_rejects_fast_animation_and_accepts_return_highlight",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165556-841.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165601-001.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165606-908.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165612-396.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165612-968.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165613-439.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165615-527.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165616-798.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165618-643.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165622-212.png"
+          ],
+          "status": "已纳入",
+          "reason": "竞技场状态、入口与结算回归；真实截图和模拟观察分别登记"
+        },
+        {
+          "id": "tests.arena.test_captures.CapturedArenaTests.test_fast_battle_counter_reads_remaining_before_start",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165606-908.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165612-396.png"
+          ],
+          "status": "已纳入",
+          "reason": "竞技场状态、入口与结算回归；真实截图和模拟观察分别登记"
         }
       ]
     }

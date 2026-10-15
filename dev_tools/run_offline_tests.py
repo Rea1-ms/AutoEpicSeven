@@ -31,6 +31,12 @@ EXPLORATION_MODULES = (
     "tests.dimensional_exploration.test_dimensional_exploration_runtime",
 )
 RUNNER_MODULES = ("tests.test_offline_runner",)
+ARENA_MODULES = (
+    "tests.arena.test_npc_combat",
+    "tests.arena.test_entry",
+    "tests.arena.test_rules",
+    "tests.arena.test_captures",
+)
 KNIGHTS_MODULES = (
     "tests.knights.test_shop",
     "tests.knights.test_weekly_task",
@@ -134,7 +140,8 @@ SUITES = {
     "all": EXPLORATION_MODULES + SANCTUARY_MODULES + KNIGHTS_MODULES + RUNNER_MODULES + UPSTREAM_MODULES
            + CORE_MODULES + ACTIVITY_MODULES + COMBAT_MODULES + STORE_MODULES
            + HISTORICAL_REPLAY_MODULES + HISTORICAL_CAPTURE_MODULES + HISTORICAL_MANUAL_MODULES
-           + SECRET_SHOP_MODULES + INTERACTION_MODULES + EQUIPMENT_REROLL_MODULES,
+           + SECRET_SHOP_MODULES + INTERACTION_MODULES + EQUIPMENT_REROLL_MODULES + ARENA_MODULES,
+    "arena": ARENA_MODULES,
     "equipment_reroll": EQUIPMENT_REROLL_MODULES,
     "knights": KNIGHTS_MODULES,
     "dimensional_exploration": EXPLORATION_MODULES,
@@ -162,6 +169,7 @@ SANCTUARY_FIXTURE_MANIFEST = ROOT / "tests" / "fixtures" / "sanctuary" / "manife
 KNIGHTS_FIXTURE_MANIFEST = ROOT / "tests" / "fixtures" / "knights" / "manifest.json"
 HISTORICAL_FIXTURE_MANIFEST = ROOT / "tests" / "fixtures" / "historical" / "manifest.json"
 SECRET_SHOP_FIXTURE_MANIFEST = ROOT / "tests" / "fixtures" / "secret_shop" / "manifest.json"
+ARENA_FIXTURE_MANIFEST = ROOT / "tests" / "fixtures" / "arena" / "manifest.json"
 
 
 def iter_cases(suite):
@@ -232,7 +240,7 @@ def fixture_manifest(verify):
     # corpus. IDs share one report namespace, so collisions must fail before
     # tests run rather than silently replacing another business's evidence.
     for manifest in (FIXTURE_MANIFEST, SANCTUARY_FIXTURE_MANIFEST, KNIGHTS_FIXTURE_MANIFEST, HISTORICAL_FIXTURE_MANIFEST,
-                     SECRET_SHOP_FIXTURE_MANIFEST):
+                     SECRET_SHOP_FIXTURE_MANIFEST, ARENA_FIXTURE_MANIFEST):
         raw = json.loads(manifest.read_text(encoding="utf-8"))
         entries = raw.get("fixtures")
         if raw.get("version") != 1 or not isinstance(entries, dict) or not entries:

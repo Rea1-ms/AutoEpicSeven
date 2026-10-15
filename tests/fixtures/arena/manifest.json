@@ -1,0 +1,230 @@
+{
+  "version": 1,
+  "fixtures": {
+    "20261015-165556-841": {
+      "path": "tests/fixtures/arena/global_cn/MuMu-20261015-165556-841.png",
+      "sha256": "1c13f893d61f2e1887ac37f61f5106db012e89fbbf600a835c4c60995e48fb33",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "npc_list_unselected",
+      "source": "MuMu-20261015-165556-841.png",
+      "source_sha256": "3ec39d9ba9cd6ef92d37618982efd3cf842f4bd173afbde8fa93b2af82a4808e",
+      "privacy_redaction": [],
+      "used_by": [
+        "tests.arena.test_captures.CapturedArenaTests.test_challenge_ready_requires_bright_list_button",
+        "tests.arena.test_captures.CapturedArenaTests.test_fast_prepare_controls_are_separate_from_list_and_result",
+        "tests.arena.test_captures.CapturedArenaTests.test_shifted_fast_result_confirm_matches_and_clicks_current_position",
+        "tests.arena.test_captures.CapturedArenaTests.test_arena_home_rejects_fast_animation_and_accepts_return_highlight",
+        "tests.arena.test_npc_combat.NpcCombatReplayTests.test_captured_fast_round_survives_start_timeout_and_repeated_result"
+      ]
+    },
+    "20261015-165601-001": {
+      "path": "tests/fixtures/arena/global_cn/MuMu-20261015-165601-001.png",
+      "sha256": "001b81adb03e873dc9dd37f0dc46fb81e8f763921ad132c520cb60943f51972d",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "npc_list_challenge_ready",
+      "source": "MuMu-20261015-165601-001.png",
+      "source_sha256": "6af24a306380ad3feae098363f2309858ca4d507ecf6c8864e17a217c80af025",
+      "privacy_redaction": [],
+      "used_by": [
+        "tests.arena.test_captures.CapturedArenaTests.test_challenge_ready_requires_bright_list_button",
+        "tests.arena.test_captures.CapturedArenaTests.test_fast_battle_animation_keeps_challenge_visible_under_overlay",
+        "tests.arena.test_captures.CapturedArenaTests.test_fast_prepare_controls_are_separate_from_list_and_result",
+        "tests.arena.test_captures.CapturedArenaTests.test_shifted_fast_result_confirm_matches_and_clicks_current_position",
+        "tests.arena.test_captures.CapturedArenaTests.test_arena_home_rejects_fast_animation_and_accepts_return_highlight",
+        "tests.arena.test_npc_combat.NpcCombatReplayTests.test_captured_fast_round_survives_start_timeout_and_repeated_result"
+      ]
+    },
+    "20261015-165606-908": {
+      "path": "tests/fixtures/arena/global_cn/MuMu-20261015-165606-908.png",
+      "sha256": "cc145c6b2c1d2a669b9d4fe557fc62ab5ff2354d270efffaf5a03f5395774973",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "fast_battle_prepare",
+      "source": "MuMu-20261015-165606-908.png",
+      "source_sha256": "64d926a58f765be69a3cad16bf1117b846a5e5961a3e9d053b2747544fac748d",
+      "privacy_redaction": [
+        [
+          168,
+          537,
+          300,
+          566
+        ]
+      ],
+      "used_by": [
+        "tests.arena.test_captures.CapturedArenaTests.test_challenge_ready_requires_bright_list_button",
+        "tests.arena.test_captures.CapturedArenaTests.test_fast_battle_animation_keeps_challenge_visible_under_overlay",
+        "tests.arena.test_captures.CapturedArenaTests.test_fast_prepare_controls_are_separate_from_list_and_result",
+        "tests.arena.test_captures.CapturedArenaTests.test_shifted_fast_result_confirm_matches_and_clicks_current_position",
+        "tests.arena.test_captures.CapturedArenaTests.test_arena_home_rejects_fast_animation_and_accepts_return_highlight",
+        "tests.arena.test_captures.CapturedArenaTests.test_fast_battle_counter_reads_remaining_before_start",
+        "tests.arena.test_npc_combat.NpcCombatReplayTests.test_captured_fast_round_survives_start_timeout_and_repeated_result"
+      ],
+      "expected_fast_times": [
+        9,
+        1,
+        10
+      ]
+    },
+    "20261015-165612-396": {
+      "path": "tests/fixtures/arena/global_cn/MuMu-20261015-165612-396.png",
+      "sha256": "a8d8473665fbc19e1b371836ce6203cd5c62d72d466507f87b4d4065958a9b26",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "fast_battle_prepare_delayed",
+      "source": "MuMu-20261015-165612-396.png",
+      "source_sha256": "497dede637afc1e309c86f919235c55e32fa1896feb05218de35f47130d971e3",
+      "privacy_redaction": [
+        [
+          168,
+          537,
+          300,
+          566
+        ]
+      ],
+      "used_by": [
+        "tests.arena.test_captures.CapturedArenaTests.test_challenge_ready_requires_bright_list_button",
+        "tests.arena.test_captures.CapturedArenaTests.test_fast_prepare_controls_are_separate_from_list_and_result",
+        "tests.arena.test_captures.CapturedArenaTests.test_shifted_fast_result_confirm_matches_and_clicks_current_position",
+        "tests.arena.test_captures.CapturedArenaTests.test_arena_home_rejects_fast_animation_and_accepts_return_highlight",
+        "tests.arena.test_captures.CapturedArenaTests.test_fast_battle_counter_reads_remaining_before_start",
+        "tests.arena.test_npc_combat.NpcCombatReplayTests.test_captured_fast_round_survives_start_timeout_and_repeated_result"
+      ],
+      "expected_fast_times": [
+        9,
+        1,
+        10
+      ]
+    },
+    "20261015-165612-968": {
+      "path": "tests/fixtures/arena/global_cn/MuMu-20261015-165612-968.png",
+      "sha256": "c289c032cc3aee6fe387d83d42886be0f294ed71d1db5caa4d1d1f943922deae",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "fast_battle_animation_start",
+      "source": "MuMu-20261015-165612-968.png",
+      "source_sha256": "7571af8d8cc1c7ad0fb4492e3a6c40f33088bb22272baca1e9e4611c499b8b1e",
+      "privacy_redaction": [],
+      "used_by": [
+        "tests.arena.test_captures.CapturedArenaTests.test_challenge_ready_requires_bright_list_button",
+        "tests.arena.test_captures.CapturedArenaTests.test_fast_battle_animation_keeps_challenge_visible_under_overlay",
+        "tests.arena.test_captures.CapturedArenaTests.test_fast_prepare_controls_are_separate_from_list_and_result",
+        "tests.arena.test_captures.CapturedArenaTests.test_shifted_fast_result_confirm_matches_and_clicks_current_position",
+        "tests.arena.test_captures.CapturedArenaTests.test_arena_home_rejects_fast_animation_and_accepts_return_highlight",
+        "tests.arena.test_npc_combat.NpcCombatReplayTests.test_captured_fast_round_survives_start_timeout_and_repeated_result"
+      ]
+    },
+    "20261015-165613-439": {
+      "path": "tests/fixtures/arena/global_cn/MuMu-20261015-165613-439.png",
+      "sha256": "4739bf36068e71aeb1c3c98379c2f45146c87201b80602930f9988ea5f1945a0",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "fast_battle_animation_flash",
+      "source": "MuMu-20261015-165613-439.png",
+      "source_sha256": "3eae384b470eae5579afa174f22cffac7e29dd4e7d6d576a0b1780e8e0960237",
+      "privacy_redaction": [],
+      "used_by": [
+        "tests.arena.test_captures.CapturedArenaTests.test_challenge_ready_requires_bright_list_button",
+        "tests.arena.test_captures.CapturedArenaTests.test_fast_battle_animation_keeps_challenge_visible_under_overlay",
+        "tests.arena.test_captures.CapturedArenaTests.test_fast_prepare_controls_are_separate_from_list_and_result",
+        "tests.arena.test_captures.CapturedArenaTests.test_shifted_fast_result_confirm_matches_and_clicks_current_position",
+        "tests.arena.test_captures.CapturedArenaTests.test_arena_home_rejects_fast_animation_and_accepts_return_highlight",
+        "tests.arena.test_npc_combat.NpcCombatReplayTests.test_captured_fast_round_survives_start_timeout_and_repeated_result"
+      ]
+    },
+    "20261015-165615-527": {
+      "path": "tests/fixtures/arena/global_cn/MuMu-20261015-165615-527.png",
+      "sha256": "75a647ccf0306cd6798c42d260fa3ae547d79e25c8fcde98f0373f43fc464315",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "fast_battle_result",
+      "source": "MuMu-20261015-165615-527.png",
+      "source_sha256": "489947a3d011998d06bf455199e0dad590e64b5d21eeac314e0acbcf7dbd8032",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          200,
+          85
+        ],
+        [
+          395,
+          332,
+          540,
+          367
+        ]
+      ],
+      "used_by": [
+        "tests.arena.test_captures.CapturedArenaTests.test_challenge_ready_requires_bright_list_button",
+        "tests.arena.test_captures.CapturedArenaTests.test_fast_prepare_controls_are_separate_from_list_and_result",
+        "tests.arena.test_captures.CapturedArenaTests.test_shifted_fast_result_confirm_matches_and_clicks_current_position",
+        "tests.arena.test_captures.CapturedArenaTests.test_arena_home_rejects_fast_animation_and_accepts_return_highlight",
+        "tests.arena.test_npc_combat.NpcCombatReplayTests.test_captured_fast_round_survives_start_timeout_and_repeated_result"
+      ]
+    },
+    "20261015-165616-798": {
+      "path": "tests/fixtures/arena/global_cn/MuMu-20261015-165616-798.png",
+      "sha256": "1b93ac5f4b598bfc28eea1d3c87452c3956292d37b93fb6690a5d010b0f0f276",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "fast_battle_result_repeated",
+      "source": "MuMu-20261015-165616-798.png",
+      "source_sha256": "2608e01004fdff13c043b6e0a8e96e43e59bac2ccf84b2ebf14c9f806ecf5401",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          200,
+          85
+        ],
+        [
+          395,
+          332,
+          540,
+          367
+        ]
+      ],
+      "used_by": [
+        "tests.arena.test_captures.CapturedArenaTests.test_challenge_ready_requires_bright_list_button",
+        "tests.arena.test_captures.CapturedArenaTests.test_fast_prepare_controls_are_separate_from_list_and_result",
+        "tests.arena.test_captures.CapturedArenaTests.test_shifted_fast_result_confirm_matches_and_clicks_current_position",
+        "tests.arena.test_captures.CapturedArenaTests.test_arena_home_rejects_fast_animation_and_accepts_return_highlight",
+        "tests.arena.test_npc_combat.NpcCombatReplayTests.test_captured_fast_round_survives_start_timeout_and_repeated_result"
+      ]
+    },
+    "20261015-165618-643": {
+      "path": "tests/fixtures/arena/global_cn/MuMu-20261015-165618-643.png",
+      "sha256": "6dcaddb6dd0b4257f54d89dc0b7a6bef13a9369ec84e048d2612bc46fdb2a7e0",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "npc_list_return_highlight",
+      "source": "MuMu-20261015-165618-643.png",
+      "source_sha256": "33144c04ab6ab3bcd9d5ebef6c0611d223c6f96e7140b8edfe0f88bb65078659",
+      "privacy_redaction": [],
+      "used_by": [
+        "tests.arena.test_captures.CapturedArenaTests.test_challenge_ready_requires_bright_list_button",
+        "tests.arena.test_captures.CapturedArenaTests.test_fast_prepare_controls_are_separate_from_list_and_result",
+        "tests.arena.test_captures.CapturedArenaTests.test_shifted_fast_result_confirm_matches_and_clicks_current_position",
+        "tests.arena.test_captures.CapturedArenaTests.test_arena_home_rejects_fast_animation_and_accepts_return_highlight",
+        "tests.arena.test_npc_combat.NpcCombatReplayTests.test_captured_fast_round_survives_start_timeout_and_repeated_result"
+      ]
+    },
+    "20261015-165622-212": {
+      "path": "tests/fixtures/arena/global_cn/MuMu-20261015-165622-212.png",
+      "sha256": "8e01c8fd3334d5791057470322f913f7dd088dc346cb4a1ff1039851d0756f80",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "npc_list_next_challenge_ready",
+      "source": "MuMu-20261015-165622-212.png",
+      "source_sha256": "18d542eb00ab043b32c9396c98dc0d24d5873f74c1f41b8d709a3d792cceeece",
+      "privacy_redaction": [],
+      "used_by": [
+        "tests.arena.test_captures.CapturedArenaTests.test_challenge_ready_requires_bright_list_button",
+        "tests.arena.test_captures.CapturedArenaTests.test_fast_prepare_controls_are_separate_from_list_and_result",
+        "tests.arena.test_captures.CapturedArenaTests.test_shifted_fast_result_confirm_matches_and_clicks_current_position",
+        "tests.arena.test_captures.CapturedArenaTests.test_arena_home_rejects_fast_animation_and_accepts_return_highlight"
+      ]
+    }
+  }
+}

@@ -143,6 +143,10 @@ class ArenaNpcCombatMixin:
         self, use_fast_battle: bool, skip_first_screenshot=True
     ) -> str:
         """
+        Pages:
+            in: arena opponent list or battle preparation
+            out: actionable arena home after one round, or an exhausted/failed state
+
         Returns:
             str: completed / exhausted / failed
         """
@@ -470,18 +474,23 @@ class ArenaNpcCombatMixin:
                             timeout.reset()
                             continue
 
+                # A start click may still be in flight when the last prepare
+                # frame outlives the retry timer. Keep BATTLE pending while
+                # retrying the visible start control: the very next frame can
+                # be a fast-battle animation over the NPC list, with CHALLENGE
+                # still detectable underneath. Returning to PREPARE/SELECT
+                # here would discard result handling and strand the round.
+                # Only the positive home check above completes this round;
+                # after a result has been seen, never start another battle.
                 if (
-                    battle_start_grace_timer.reached()
+                    not battle_result_seen
+                    and battle_start_grace_timer.reached()
                     and battle_start_pending_timer.reached()
                     and self._is_battle_prepare_page()
+                    and self.appear_then_click(BATTLE_START, interval=1)
                 ):
                     logger.info("Arena NPC: battle start pending timeout, retry start")
-                    stage = self.ARENA_NPC_STAGE_PREPARE
-                    timeout.reset()
-                    continue
-
-                if self.appear(NPC_OPPONENT) and self.appear(CHALLENGE):
-                    stage = self.ARENA_NPC_STAGE_SELECT
+                    battle_start_pending_timer.reset()
                     timeout.reset()
                     continue
 
