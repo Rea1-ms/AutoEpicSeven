@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "source": "gift-shelf-7-20261015.png",
+  "suite": "friendship_gift_price_20261015",
+  "case": "four_digit_price",
+  "items": [
+    {
+      "name": "OCR_FRIENDSHIP_GIFT_CARD_PRICE",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "store/friendship_gift",
+      "box": [789, 343, 866, 376]
+    }
+  ]
+}

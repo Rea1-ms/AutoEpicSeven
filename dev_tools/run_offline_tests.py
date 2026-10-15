@@ -75,7 +75,7 @@ COMBAT_MODULES = (
     "tests.combat.test_repeat_running_detail",
     "tests.combat.test_episode",
 )
-STORE_MODULES = ("tests.store.test_friendship_gift",)
+STORE_MODULES = ("tests.store.test_friendship_gift", "tests.store.test_purchase")
 EQUIPMENT_REROLL_MODULES = (
     "tests.equipment_reroll.test_rules",
     "tests.equipment_reroll.test_recognition",

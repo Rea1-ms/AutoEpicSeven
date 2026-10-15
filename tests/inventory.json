@@ -3,6 +3,164 @@
   "source_root": "ignored test/ in main checkout",
   "files": [
     {
+      "source": "tests/store/test_purchase.py",
+      "business": "普通商店",
+      "status": "新增",
+      "reason": "免费商品领奖状态确认与局部超时",
+      "cases": [
+        {
+          "id": "tests.store.test_purchase.PurchaseReplayTests.test_closed_reward_waits_for_store_after_loading",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "免费商品直接领奖、关闭重试、确认兼容与无进展局部退出"
+        },
+        {
+          "id": "tests.store.test_purchase.PurchaseReplayTests.test_closed_reward_without_return_to_store_fails_locally",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "免费商品直接领奖、关闭重试、确认兼容与无进展局部退出"
+        },
+        {
+          "id": "tests.store.test_purchase.PurchaseReplayTests.test_confirm_path_waits_through_store_frames_for_delayed_reward",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "免费商品直接领奖、关闭重试、确认兼容与无进展局部退出"
+        },
+        {
+          "id": "tests.store.test_purchase.PurchaseReplayTests.test_inheritance_store_captures_still_require_active_colors",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/global_cn/store/legacy-store-inheritance-charms.png",
+            "tests/fixtures/historical/global_cn/store/legacy-store-inheritance-cooldown-20260925.png"
+          ],
+          "status": "已纳入",
+          "reason": "免费商品总等待上限、连续重试与共用商店明暗识别"
+        },
+        {
+          "id": "tests.store.test_purchase.PurchaseReplayTests.test_network_close_is_not_reward_evidence",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "免费商品直接领奖、关闭重试、确认兼容与无进展局部退出"
+        },
+        {
+          "id": "tests.store.test_purchase.PurchaseReplayTests.test_persistent_available_item_cannot_extend_total_claim_timeout",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "免费商品总等待上限、连续重试与共用商店明暗识别"
+        },
+        {
+          "id": "tests.store.test_purchase.PurchaseReplayTests.test_persistent_confirmation_fails_locally_before_click_guard",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "免费商品总等待上限、连续重试与共用商店明暗识别"
+        },
+        {
+          "id": "tests.store.test_purchase.PurchaseReplayTests.test_persistent_reward_cannot_extend_total_claim_timeout",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "免费商品总等待上限、连续重试与共用商店明暗识别"
+        },
+        {
+          "id": "tests.store.test_purchase.PurchaseReplayTests.test_real_captures_distinguish_available_reward_and_claimed_store",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/global_cn/store/store-daily-free-available-20261014.png",
+            "tests/fixtures/historical/global_cn/store/store-daily-free-reward-20261014.png",
+            "tests/fixtures/historical/global_cn/store/store-daily-free-claimed-20261014.png"
+          ],
+          "status": "已纳入",
+          "reason": "免费商品直接领奖、关闭重试、确认兼容与无进展局部退出"
+        },
+        {
+          "id": "tests.store.test_purchase.PurchaseReplayTests.test_real_direct_reward_retries_close_without_confirm_or_reopening_item",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/global_cn/store/store-daily-free-available-20261014.png",
+            "tests/fixtures/historical/global_cn/store/store-daily-free-reward-20261014.png",
+            "tests/fixtures/historical/global_cn/store/store-daily-free-claimed-20261014.png"
+          ],
+          "status": "已纳入",
+          "reason": "免费商品直接领奖、关闭重试、确认兼容与无进展局部退出"
+        },
+        {
+          "id": "tests.store.test_purchase.PurchaseReplayTests.test_reward_seen_blocks_late_confirm_and_item_clicks",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "免费商品直接领奖、关闭重试、确认兼容与无进展局部退出"
+        },
+        {
+          "id": "tests.store.test_purchase.PurchaseReplayTests.test_simulated_close_artwork_disappearing_does_not_accept_dimmed_store",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/global_cn/store/store-daily-free-available-20261014.png",
+            "tests/fixtures/historical/global_cn/store/store-daily-free-reward-20261014.png",
+            "tests/fixtures/historical/global_cn/store/store-daily-free-claimed-20261014.png"
+          ],
+          "status": "已纳入",
+          "reason": "免费商品直接领奖、关闭重试、确认兼容与无进展局部退出"
+        },
+        {
+          "id": "tests.store.test_purchase.PurchaseReplayTests.test_slow_network_frames_cannot_extend_total_claim_timeout",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "免费商品总等待上限、连续重试与共用商店明暗识别"
+        },
+        {
+          "id": "tests.store.test_purchase.PurchaseReplayTests.test_store_return_without_reward_is_not_success",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "免费商品直接领奖、关闭重试、确认兼容与无进展局部退出"
+        },
+        {
+          "id": "tests.store.test_purchase.PurchaseReplayTests.test_unknown_observation_after_item_click_fails_before_device_restart",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "免费商品直接领奖、关闭重试、确认兼容与无进展局部退出"
+        }
+      ]
+    },
+    {
       "source": "tests/store/test_friendship_gift.py",
       "business": "普通商店",
       "status": "新增",
@@ -318,6 +476,66 @@
           "fixtures": [],
           "status": "已纳入",
           "reason": "付款尚未确认且字段缺失时不滑动、不重复付款，保留失败证据"
+        },
+        {
+          "id": "tests.store.test_friendship_gift.CapturedGiftTests.test_real_four_digit_price_preserves_leading_digit_and_full_card",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/global_cn/friendship_gift/gift-shelf-7-20261015.png"
+          ],
+          "status": "已纳入",
+          "reason": "四位价格完整读取，部分卡片保留库存扣款证据并等待可靠价格"
+        },
+        {
+          "id": "tests.store.test_friendship_gift.CapturedGiftTests.test_partial_price_retains_independently_recognized_stock_and_balance",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/global_cn/friendship_gift/gift-shelf-7-20261015.png"
+          ],
+          "status": "已纳入",
+          "reason": "四位价格完整读取，部分卡片保留库存扣款证据并等待可靠价格"
+        },
+        {
+          "id": "tests.store.test_friendship_gift.GiftReplayTests.test_partial_captured_card_verifies_pending_purchase_and_completed_target",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/global_cn/friendship_gift/gift-shelf-7-20261015.png"
+          ],
+          "status": "已纳入",
+          "reason": "四位价格完整读取，部分卡片保留库存扣款证据并等待可靠价格"
+        },
+        {
+          "id": "tests.store.test_friendship_gift.GiftReplayTests.test_partial_card_waits_for_new_price_before_opening_next_purchase",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "四位价格完整读取，部分卡片保留库存扣款证据并等待可靠价格"
+        },
+        {
+          "id": "tests.store.test_friendship_gift.GiftReplayTests.test_persistent_unknown_next_price_times_out_without_losing_verified_count",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "四位价格完整读取，部分卡片保留库存扣款证据并等待可靠价格"
+        },
+        {
+          "id": "tests.store.test_friendship_gift.GiftReplayTests.test_partial_card_still_requires_matching_debit_before_completion",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "四位价格完整读取，部分卡片保留库存扣款证据并等待可靠价格"
         }
       ],
       "file_category": null

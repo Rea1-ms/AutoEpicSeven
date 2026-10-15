@@ -751,7 +751,8 @@
         "tests.captured.test_store_inheritance_cooldown.StoreInheritanceCooldownTest.test_clock_seen_after_search_does_not_skip_reset",
         "tests.captured.test_store_inheritance_cooldown.StoreInheritanceCooldownTest.test_next_tab_entry_can_enable_shortcut_after_purchase",
         "tests.captured.test_store_inheritance_cooldown.StoreInheritanceCooldownTest.test_user_screenshot_has_four_cooldown_clocks",
-        "tests.captured.test_store_inheritance_cooldown.StoreInheritanceCooldownTest.test_view_is_rechecked_after_purchase"
+        "tests.captured.test_store_inheritance_cooldown.StoreInheritanceCooldownTest.test_view_is_rechecked_after_purchase",
+        "tests.store.test_purchase.PurchaseReplayTests.test_inheritance_store_captures_still_require_active_colors"
       ]
     },
     "legacy-store-inheritance-cooldown-20260925": {
@@ -780,7 +781,8 @@
         "tests.captured.test_store_inheritance_cooldown.StoreInheritanceCooldownTest.test_sold_out_items_do_not_trigger_purchase_or_tab_reset",
         "tests.captured.test_store_inheritance_cooldown.StoreInheritanceCooldownTest.test_target_already_reached_does_not_block_next_item",
         "tests.captured.test_store_inheritance_cooldown.StoreInheritanceCooldownTest.test_user_screenshot_has_four_cooldown_clocks",
-        "tests.captured.test_store_inheritance_cooldown.StoreInheritanceCooldownTest.test_view_is_rechecked_after_purchase"
+        "tests.captured.test_store_inheritance_cooldown.StoreInheritanceCooldownTest.test_view_is_rechecked_after_purchase",
+        "tests.store.test_purchase.PurchaseReplayTests.test_inheritance_store_captures_still_require_active_colors"
       ]
     },
     "legacy-urgent-tasks-battle-manual-target": {
@@ -1018,6 +1020,66 @@
         "tests.combat.test_repeat_leif_count.RepeatLeifTests.test_supplied_counters_and_spectral_core_resource_are_read_correctly",
         "tests.combat.test_repeat_leif_count.RepeatLeifTests.test_dimensional_increase_clicks_once_then_confirms_four",
         "tests.combat.test_repeat_leif_count.RepeatLeifTests.test_decrease_clicks_once_and_retries_only_after_interval"
+      ]
+    },
+    "store-daily-free-available-20261014": {
+      "path": "tests/fixtures/historical/global_cn/store/store-daily-free-available-20261014.png",
+      "sha256": "b08ac696e8dbae9778978f4ff3e225afa5d8f47fbb7a650aaf1fdd29d0869cb2",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "daily_free_available",
+      "source": "MuMu-20261014-102047-871.png",
+      "source_sha256": "b08ac696e8dbae9778978f4ff3e225afa5d8f47fbb7a650aaf1fdd29d0869cb2",
+      "privacy_redaction": [],
+      "used_by": [
+        "tests.store.test_purchase.PurchaseReplayTests.test_real_captures_distinguish_available_reward_and_claimed_store",
+        "tests.store.test_purchase.PurchaseReplayTests.test_real_direct_reward_retries_close_without_confirm_or_reopening_item",
+        "tests.store.test_purchase.PurchaseReplayTests.test_simulated_close_artwork_disappearing_does_not_accept_dimmed_store"
+      ]
+    },
+    "store-daily-free-reward-20261014": {
+      "path": "tests/fixtures/historical/global_cn/store/store-daily-free-reward-20261014.png",
+      "sha256": "b50a4099be8f64bfe9997fbef70169e6fe0bb616183b7b2fbded42c9975bbbf1",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "daily_free_reward",
+      "source": "MuMu-20261014-102054-215.png",
+      "source_sha256": "b50a4099be8f64bfe9997fbef70169e6fe0bb616183b7b2fbded42c9975bbbf1",
+      "privacy_redaction": [],
+      "used_by": [
+        "tests.store.test_purchase.PurchaseReplayTests.test_real_captures_distinguish_available_reward_and_claimed_store",
+        "tests.store.test_purchase.PurchaseReplayTests.test_real_direct_reward_retries_close_without_confirm_or_reopening_item",
+        "tests.store.test_purchase.PurchaseReplayTests.test_simulated_close_artwork_disappearing_does_not_accept_dimmed_store"
+      ]
+    },
+    "store-daily-free-claimed-20261014": {
+      "path": "tests/fixtures/historical/global_cn/store/store-daily-free-claimed-20261014.png",
+      "sha256": "97677c6c42f7aa437cca94ddf18003894550b6ca6cf8583e26e73b20e70ae624",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "daily_free_claimed",
+      "source": "MuMu-20261014-102056-774.png",
+      "source_sha256": "97677c6c42f7aa437cca94ddf18003894550b6ca6cf8583e26e73b20e70ae624",
+      "privacy_redaction": [],
+      "used_by": [
+        "tests.store.test_purchase.PurchaseReplayTests.test_real_captures_distinguish_available_reward_and_claimed_store",
+        "tests.store.test_purchase.PurchaseReplayTests.test_real_direct_reward_retries_close_without_confirm_or_reopening_item",
+        "tests.store.test_purchase.PurchaseReplayTests.test_simulated_close_artwork_disappearing_does_not_accept_dimmed_store"
+      ]
+    },
+    "gift-shelf-7-20261015": {
+      "path": "tests/fixtures/historical/global_cn/friendship_gift/gift-shelf-7-20261015.png",
+      "sha256": "76a0daeaf357949b3f0af37c5a44927c91a08336f0aeb1f9e19e8e5131dae2f3",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "friendship_gift_shelf_7_four_digit_price",
+      "source": "MuMu-20261015-143523-919.png",
+      "source_sha256": "76a0daeaf357949b3f0af37c5a44927c91a08336f0aeb1f9e19e8e5131dae2f3",
+      "privacy_redaction": [],
+      "used_by": [
+        "tests.store.test_friendship_gift.CapturedGiftTests.test_real_four_digit_price_preserves_leading_digit_and_full_card",
+        "tests.store.test_friendship_gift.CapturedGiftTests.test_partial_price_retains_independently_recognized_stock_and_balance",
+        "tests.store.test_friendship_gift.GiftReplayTests.test_partial_captured_card_verifies_pending_purchase_and_completed_target"
       ]
     }
   },

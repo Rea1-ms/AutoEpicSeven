@@ -55,6 +55,22 @@ def captured(fixture):
     return task
 
 
+def captured_with_partial_price():
+    task = captured('gift-shelf-7-20261015')
+    real_ocr = task._ocr
+    # Explicitly injected OCR damage keeps the real stock, currency and balance
+    # recognition. A dangling separator must stay unknown, never become 600.
+    task._ocr = lambda asset, offset=(0, 0): (
+        ',600' if asset.name == 'OCR_FRIENDSHIP_GIFT_CARD_PRICE' else real_ocr(asset, offset)
+    )
+    return task
+
+
+def unpriced_shelf(remaining, balance):
+    return scene('FREE_STORE_CHECK', 'FRIENDSHIP_GIFT_STORE_SELECTED',
+                 card=GiftCard(remaining, None, balance), item_visible=True)
+
+
 class CapturedGiftTests(unittest.TestCase):
     def setUp(self):
         server.set_lang('global_cn')
@@ -82,6 +98,19 @@ class CapturedGiftTests(unittest.TestCase):
         self.assertFalse(task._shop_ready())
         self.assertEqual(task._read_popup(), GiftPopup(8, 800, 91882))
         self.assertTrue(task.match_template_color(task_gift_confirm()))
+
+    def test_real_four_digit_price_preserves_leading_digit_and_full_card(self):
+        task = captured('gift-shelf-7-20261015')
+        self.assertTrue(task._shop_ready())
+        self.assertFalse(task._popup_ready())
+        self.assertEqual(len(FRIENDSHIP_GIFT_ITEM.match_multi_template(task.device.image, threshold=30)), 1)
+        self.assertEqual(task._read_card(), GiftCard(7, 1600, 87542))
+        self.assertIsNone(task._read_popup())
+
+    def test_partial_price_retains_independently_recognized_stock_and_balance(self):
+        task = captured_with_partial_price()
+        self.assertIsNone(parse_amount(',600'))
+        self.assertEqual(task._read_card(), GiftCard(7, None, 87542))
 
     def test_price_information_overlay_is_not_purchase_evidence(self):
         task = captured('gift-price-info')
@@ -177,6 +206,54 @@ class GiftReplayTests(unittest.TestCase):
         result = r.task._purchase_item(gift_plan(1))
         self.assertEqual((result.success, result.quantity), (True, 1))
         self.assertEqual(len(r.clicks('FRIENDSHIP_GIFT_ITEM')), 1)
+        self.assert_payments(r, 1)
+
+    def test_partial_captured_card_verifies_pending_purchase_and_completed_target(self):
+        # The production reader must retain stock/debit evidence when this next
+        # price is unreadable; replacing it with a fabricated GiftCard would
+        # miss the original all-or-nothing reader regression.
+        observed = captured_with_partial_price()._read_card()
+        partial = scene('FREE_STORE_CHECK', 'FRIENDSHIP_GIFT_STORE_SELECTED',
+                        card=observed, item_visible=True)
+        r = self.replay([shelf(8, 88342)] * 2 + [popup(8, 88342)] * 3 + [partial] * 145, guards=False)
+        result = r.task._purchase_item(gift_plan(3))
+        self.assertEqual((result.success, result.quantity), (True, 1))
+        self.assertEqual(r.index, 5)
+        self.assertEqual(r.clicks('FRIENDSHIP_GIFT_ITEM'), [0])
+        self.assertFalse(r.clicks('swipe'))
+        self.assert_payments(r, 1)
+
+    def test_partial_card_waits_for_new_price_before_opening_next_purchase(self):
+        r = self.replay([shelf(8, 88342)] * 2 + [popup(8, 88342)] * 3
+                        + [unpriced_shelf(7, 87542)] * 6 + [shelf(7, 87542)] * 3
+                        + [popup(7, 87542)] * 3 + [shelf(6, 85942)] * 2)
+        result = r.task._purchase_item(gift_plan(4))
+        self.assertEqual((result.success, result.quantity), (True, 2))
+        self.assertEqual(r.index, 17)
+        self.assertEqual(r.clicks('FRIENDSHIP_GIFT_ITEM'), [0, 11])
+        self.assertFalse(r.clicks('swipe'))
+        self.assert_payments(r, 2)
+
+    def test_persistent_unknown_next_price_times_out_without_losing_verified_count(self):
+        r = self.replay([shelf(8, 88342)] * 2 + [popup(8, 88342)] * 3
+                        + [unpriced_shelf(7, 87542)] * 145, guards=False)
+        started = self.clock.now
+        result = r.task._purchase_item(gift_plan(4))
+        self.assertEqual((result.success, result.quantity), (False, 1))
+        self.assertGreaterEqual(self.clock.now - started, r.task.TIMEOUT_SECONDS)
+        self.assertLessEqual(self.clock.now - started, r.task.TIMEOUT_SECONDS + 5)
+        self.assertEqual(r.clicks('FRIENDSHIP_GIFT_ITEM'), [0])
+        self.assertFalse(r.clicks('swipe'))
+        self.assert_payments(r, 1)
+
+    def test_partial_card_still_requires_matching_debit_before_completion(self):
+        r = self.replay([shelf(8, 88342)] * 2 + [popup(8, 88342)] * 3
+                        + [unpriced_shelf(7, 88342)] * 6 + [unpriced_shelf(7, 87542)])
+        result = r.task._purchase_item(gift_plan(3))
+        self.assertEqual((result.success, result.quantity), (True, 1))
+        self.assertEqual(r.index, 11)
+        self.assertEqual(r.clicks('FRIENDSHIP_GIFT_ITEM'), [0])
+        self.assertFalse(r.clicks('swipe'))
         self.assert_payments(r, 1)
 
     def test_balance_shortfall_after_first_purchase_leaves_remaining_target(self):
@@ -330,7 +407,7 @@ class GiftIntegrationTests(unittest.TestCase):
         self.assertIsNone(price_for_remaining(0))
         self.assertIsNone(price_for_remaining(11))
         self.assertEqual(parse_amount('6,400'), 6400)
-        for value in ('6,40', '6400金币', '6O0', '', '-200'):
+        for value in ('6,40', ',600', '6400金币', '6O0', '', '-200'):
             self.assertIsNone(parse_amount(value))
 
     def test_translation_source_does_not_leak_into_runtime_arguments(self):

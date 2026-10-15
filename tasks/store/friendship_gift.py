@@ -125,8 +125,10 @@ class FriendshipGiftMixin(ResourceBarMixin):
             if not self._match_at(FRIENDSHIP_GIFT_CARD_CURRENCY, offset):
                 return None
             price = parse_amount(self._ocr(OCR_FRIENDSHIP_GIFT_CARD_PRICE, offset))
-            if price is None:
-                return None
+            # This is the NEXT gift's price after a purchase. A damaged price
+            # must not discard independently read stock and balance, which can
+            # still prove the pending debit. Keep the price unknown; the action
+            # gate below requires a complete new price before another purchase.
         return GiftCard(remaining, price, balance)
 
     def _read_popup(self):
@@ -194,10 +196,16 @@ class FriendshipGiftMixin(ResourceBarMixin):
                     if resolve_period_purchase_quantity(
                             item.desired_quantity, item.purchase_limit, card.remaining)[1] == 0:
                         return PurchaseResult(True, bought, quantity_source='remaining_counter')
-                    if card.price != price_for_remaining(card.remaining):
+                    if card.price is None:
+                        # Receipt and the weekly target were checked above.
+                        # Unknown next-price text forbids another click, but is
+                        # not progress: fall through to the existing timeout
+                        # without renewing it or losing verified purchases.
+                        card = None
+                    elif card.price != price_for_remaining(card.remaining):
                         logger.warning(f'FriendshipGift: unexpected price={card.price}, remaining={card.remaining}')
                         return PurchaseResult(False, bought, quantity_source='remaining_counter')
-                    if card.balance < card.price:
+                    elif card.balance < card.price:
                         logger.info('FriendshipGift: insufficient friendship points')
                         return PurchaseResult(True, bought, quantity_source='remaining_counter')
 

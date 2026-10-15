@@ -396,7 +396,9 @@ class CurrentStore(FriendshipGiftMixin, UI):
             COMMON_STORE_CHECK,
             STORE_CHECK,
         ):
-            if self.appear(check_button, interval=0):
+            # Store anchors remain visible behind the reward overlay. Require
+            # their active color before using the background as a return state.
+            if self.match_template_color(check_button, interval=0):
                 return True
         return False
 
@@ -604,8 +606,12 @@ class CurrentStore(FriendshipGiftMixin, UI):
         clicked_target = False
         clicked_confirm = False
         clicked_cancel = False
+        reward_seen = False
         reward_closed = False
-        reward_timeout = Timer(20, count=60)
+        # This bounds the whole free claim from its first item click. Neither
+        # retries nor network recovery may restart it. A frame-count minimum
+        # would let slow screenshots extend this short flow indefinitely.
+        reward_timeout = Timer(20, count=0)
         layout: PurchasePopupLayout = 'unknown'
         needs_target_resolution = self._needs_remaining_target_resolution(item)
         effective_desired_quantity = item.desired_quantity
@@ -620,7 +626,7 @@ class CurrentStore(FriendshipGiftMixin, UI):
         purchase_quantity = 1
         quantity_source = 'default'
         skipping_purchase = False
-        target_retry = Timer(0.8, count=2).start()
+        target_retry = Timer(2 if item.requires_reward_popup else 0.8, count=2).start()
 
         while 1:
             self.device.screenshot()
@@ -630,7 +636,7 @@ class CurrentStore(FriendshipGiftMixin, UI):
                 self._log_purchase_debug(item.name, item.asset, 'timeout')
                 return PurchaseResult(success=False)
 
-            if clicked_confirm and item.requires_reward_popup and reward_timeout.reached():
+            if clicked_target and item.requires_reward_popup and reward_timeout.reached():
                 logger.warning(f'{item.name}: reward popup did not settle')
                 return PurchaseResult(success=False)
 
@@ -642,19 +648,44 @@ class CurrentStore(FriendshipGiftMixin, UI):
                     timeout.reset()
                 continue
 
-            # Daily free goods open a reward popup after the purchase dialog
-            # disappears. A briefly visible store is not completion. Never let
-            # a generic handler consume this popup without recording it, and
-            # never mistake a network-error TOUCH_TO_CLOSE for a reward.
-            if clicked_confirm and item.requires_reward_popup:
+            # Daily free goods can go straight from the item to the reward,
+            # without a purchase confirmation. Observe that reward after the
+            # first item click, before generic popup handlers can consume it.
+            # Once seen, it owns the remaining flow: only retry its close and
+            # wait for the active store, never reopen the item or confirm again.
+            # A close click is not proof that the overlay actually disappeared.
+            # Network dialogs above take priority even while their retry is on
+            # cooldown, because they share the same TOUCH_TO_CLOSE artwork.
+            if clicked_target and item.requires_reward_popup:
                 if self.appear(TOUCH_TO_CLOSE):
-                    if self.handle_touch_to_close(interval=1):
+                    if not reward_seen:
+                        reward_seen = True
+                        timeout.reset()
+                        logger.info(f'{item.name}: reward popup observed')
+                    if self.handle_touch_to_close(interval=2):
                         reward_closed = True
                     continue
-                if not reward_closed:
+                if reward_seen:
+                    if (
+                        reward_closed
+                        and self._is_on_any_store_page()
+                        and self._detect_purchase_popup_layout() == 'unknown'
+                    ):
+                        logger.info(f'{item.name}: reward closed, returned to store')
+                        return PurchaseResult(
+                            success=True,
+                            quantity=purchase_quantity,
+                            counter=purchase_counter,
+                            quantity_source=quantity_source,
+                        )
+                    continue
+                # A briefly visible store after confirmation is not evidence
+                # of receipt. Keep waiting for the delayed reward, including
+                # retrying a confirmation whose previous click did not land.
+                if clicked_confirm:
                     current_layout = self._detect_purchase_popup_layout()
                     if current_layout != 'unknown':
-                        self._click_purchase_confirm(current_layout, interval=1)
+                        self._click_purchase_confirm(current_layout, interval=2)
                     continue
 
             if self.ui_additional():
@@ -698,6 +729,8 @@ class CurrentStore(FriendshipGiftMixin, UI):
 
                 if self._click_purchase_target(item):
                     clicked_target = True
+                    if item.requires_reward_popup:
+                        reward_timeout.start()
                     layout = 'unknown'
                     pending_target_resolution = needs_target_resolution
                     effective_desired_quantity = item.desired_quantity
@@ -730,7 +763,8 @@ class CurrentStore(FriendshipGiftMixin, UI):
                         target_retry.reset()
                         timeout.reset()
                         continue
-                timeout.reset()
+                # An unrecognized frame is not progress. Only a real action or
+                # newly observed state above may renew the local timeout.
                 continue
 
             if pending_target_resolution:
@@ -826,7 +860,9 @@ class CurrentStore(FriendshipGiftMixin, UI):
                     timeout.reset()
                     continue
 
-            if quantity_resolved and self._click_purchase_confirm(layout, interval=1):
+            if quantity_resolved and self._click_purchase_confirm(
+                layout, interval=2 if item.requires_reward_popup else 1,
+            ):
                 if not clicked_confirm:
                     reward_timeout.start()
                 clicked_confirm = True

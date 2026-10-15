@@ -116,10 +116,10 @@ OCR_FRIENDSHIP_GIFT_CARD_PRICE = ButtonWrapper(
     cn=None,
     global_cn=Button(
         file='./assets/global_cn/store/friendship_gift/OCR_FRIENDSHIP_GIFT_CARD_PRICE.png',
-        area=(799, 343, 866, 376),
-        search=(779, 323, 886, 396),
-        color=(54, 92, 56),
-        button=(799, 343, 866, 376),
+        area=(789, 343, 866, 376),
+        search=(769, 323, 886, 396),
+        color=(56, 93, 58),
+        button=(789, 343, 866, 376),
     ),
     global_en=None,
 )
