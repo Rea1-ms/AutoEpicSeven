@@ -11,6 +11,7 @@
     "build:renderer": "cd ./packages/renderer && vite build",
     "compile": "cross-env MODE=production bun run build && electron-builder build --config .electron-builder.config.js --dir",
     "test": "bun run test:main && bun run test:preload && bun run test:renderer && bun run test:e2e",
+    "test:runtime": "node --experimental-strip-types --test tests/runtimeBridge.test.mjs tests/runtimeNotificationIdentity.test.mjs",
     "test:e2e": "bun run build && vitest run",
     "test:main": "vitest run -r packages/main --passWithNoTests",
     "test:preload": "vitest run -r packages/preload --passWithNoTests",

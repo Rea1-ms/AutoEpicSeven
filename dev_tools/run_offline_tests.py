@@ -56,6 +56,11 @@ UPSTREAM_MODULES = (
     "tests.upstream.test_vision",
     "tests.upstream.test_upstream_emulator_sync",
 )
+RUNTIME_MODULES = (
+    "tests.core.test_runtime_events",
+    "tests.core.test_execution_progress",
+    "tests.core.test_runtime_ui",
+)
 CORE_MODULES = (
     "tests.core.test_data_update",
     "tests.core.test_task_entries",
@@ -141,7 +146,7 @@ SUITES = {
     "all": EXPLORATION_MODULES + SANCTUARY_MODULES + KNIGHTS_MODULES + RUNNER_MODULES + UPSTREAM_MODULES
            + CORE_MODULES + ACTIVITY_MODULES + COMBAT_MODULES + STORE_MODULES
            + HISTORICAL_REPLAY_MODULES + HISTORICAL_CAPTURE_MODULES + HISTORICAL_MANUAL_MODULES
-           + SECRET_SHOP_MODULES + INTERACTION_MODULES + EQUIPMENT_REROLL_MODULES + ARENA_MODULES,
+           + SECRET_SHOP_MODULES + INTERACTION_MODULES + EQUIPMENT_REROLL_MODULES + ARENA_MODULES + RUNTIME_MODULES,
     "arena": ARENA_MODULES,
     "equipment_reroll": EQUIPMENT_REROLL_MODULES,
     "knights": KNIGHTS_MODULES,
@@ -150,6 +155,7 @@ SUITES = {
     "buy_penguins": ("tests.sanctuary.test_buy_penguins",),
     "runner": RUNNER_MODULES,
     "upstream": UPSTREAM_MODULES,
+    "runtime": RUNTIME_MODULES,
     "core": CORE_MODULES,
     "activity": ACTIVITY_MODULES,
     "combat": COMBAT_MODULES,
@@ -459,6 +465,12 @@ def run(args):
             # any file is opened or written.
             guards.enter_context(patch.object(AzurLaneConfig, "read_file", reject_account))
             guards.enter_context(patch.object(AzurLaneConfig, "write_file", reject_account))
+            # Offline replay must never publish to an open real interface.
+            # Bridge tests explicitly construct their own retained stores.
+            from module.runtime_events import runtime_events
+
+            guards.enter_context(patch.object(runtime_events, "publish_progress", return_value=True))
+            guards.enter_context(patch.object(runtime_events, "notify", return_value=False))
             runner = unittest.TextTestRunner(stream=output, verbosity=2, resultclass=Result)
             result = runner.run(unittest.TestSuite(cases))
     elapsed = round(time.monotonic() - started, 3)

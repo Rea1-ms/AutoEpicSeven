@@ -10,6 +10,7 @@ if (process.env.VITE_APP_VERSION === undefined) {
  * @see https://www.electron.build/configuration/configuration
  */
 const config = {
+  appId: 'com.electron.aes',
   directories: {
     output: 'dist',
     buildResources: 'buildResources',

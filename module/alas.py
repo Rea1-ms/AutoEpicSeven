@@ -1,3 +1,4 @@
+import sys
 import threading
 import time
 from datetime import datetime, timedelta
@@ -9,6 +10,7 @@ from module.base.decorator import del_cached_property
 from module.config.config import AzurLaneConfig, TaskEnd
 from module.config.deep import deep_get, deep_set
 from module.exception import *
+from module.execution_progress import ExecutionProgress
 from module.logger import logger, save_error_log
 from module.notify import handle_notify
 
@@ -24,6 +26,8 @@ class AzurLaneAutoScript:
         # Failure count of tasks
         # Key: str, task name, value: int, failure count
         self.failure_record = {}
+        self.execution_progress = ExecutionProgress(config_name)
+        self._scheduler_active = False
 
     @cached_property
     def config(self):
@@ -73,12 +77,22 @@ class AzurLaneAutoScript:
         raise NotImplemented
 
     def run(self, command):
+        progress = getattr(self, 'execution_progress', None)
+        standalone = progress is not None and not getattr(self, '_scheduler_active', False)
+        success = False
+        if standalone:
+            # A direct command is one work unit; scheduler helper actions during
+            # idle handling must not start independent batches or notifications.
+            self.execution_progress = progress = ExecutionProgress(self.config_name)
+            progress.start_task(inflection.camelize(command))
         try:
             self.device.screenshot()
             self.device.screenshot_tracking.clear()
             self.__getattribute__(command)()
+            success = True
             return True
         except TaskEnd:
+            success = True
             return True
         except GameNotRunningError as e:
             logger.warning(e)
@@ -148,6 +162,15 @@ class AzurLaneAutoScript:
                 content=f"<{self.config_name}> Exception occured",
             )
             exit(1)
+        finally:
+            if standalone:
+                progress.finish_task(inflection.camelize(command), success)
+                error = sys.exc_info()[1]
+                stopped = isinstance(error, KeyboardInterrupt) or (
+                    isinstance(error, SystemExit) and error.code in (None, 0)
+                )
+                state = 'stopped' if stopped else ('completed' if success else 'error')
+                progress.stop(state)
 
     def save_error_log(self):
         """
@@ -195,6 +218,18 @@ class AzurLaneAutoScript:
         """
         while 1:
             task = self.config.get_next()
+            batch_completed = self.execution_progress.update_pending(
+                [pending.command for pending in self.config.pending_task],
+                skip_restart=self.is_first_task,
+            )
+            if batch_completed:
+                from module.notify.notify import is_system_provider
+                if is_system_provider(self.config.Error_OnePushConfig):
+                    handle_notify(
+                        self.config.Error_OnePushConfig,
+                        title=f'AES <{self.config_name}> 本轮执行结束',
+                        content='本轮到期任务已处理，正在等待下一轮任务。',
+                    )
             self.config.task = task
             self.config.bind(task)
 
@@ -287,70 +322,87 @@ class AzurLaneAutoScript:
         logger.set_file_logger(self.config_name)
         logger.info(f'Start scheduler loop: {self.config_name}')
 
-        while 1:
-            # Check update event from GUI
-            if self.stop_event is not None:
-                if self.stop_event.is_set():
-                    logger.info("Update event detected")
-                    logger.info(f"[{self.config_name}] exited.")
-                    break
-            # Check game server maintenance
-            self.checker.wait_until_available()
-            if self.checker.is_recovered():
-                # There is an accidental bug hard to reproduce
-                # Sometimes, config won't be updated due to blocking
-                # even though it has been changed
-                # So update it once recovered
-                del_cached_property(self, 'config')
-                logger.info('Server or network is recovered. Restart game client')
-                self.config.task_call('Restart')
-            # Get task
-            task = self.get_next_task()
-            # Init device and change server
-            _ = self.device
-            self.device.config = self.config
-            # Skip first restart
-            if self.is_first_task and task == 'Restart':
-                logger.info('Skip task `Restart` at scheduler start')
-                self.config.task_delay(server_update=True)
-                del_cached_property(self, 'config')
-                continue
+        self._scheduler_active = True
+        self.execution_progress = ExecutionProgress(self.config_name)
+        self.execution_progress.waiting()
+        final_state = 'stopped'
+        try:
+            while 1:
+                # Check update event from GUI
+                if self.stop_event is not None:
+                    if self.stop_event.is_set():
+                        logger.info("Update event detected")
+                        logger.info(f"[{self.config_name}] exited.")
+                        break
+                # Check game server maintenance
+                self.checker.wait_until_available()
+                if self.checker.is_recovered():
+                    # There is an accidental bug hard to reproduce
+                    # Sometimes, config won't be updated due to blocking
+                    # even though it has been changed
+                    # So update it once recovered
+                    del_cached_property(self, 'config')
+                    logger.info('Server or network is recovered. Restart game client')
+                    self.config.task_call('Restart')
+                # Get task
+                task = self.get_next_task()
+                # Init device and change server
+                _ = self.device
+                self.device.config = self.config
+                # Skip first restart
+                if self.is_first_task and task == 'Restart':
+                    logger.info('Skip task `Restart` at scheduler start')
+                    self.config.task_delay(server_update=True)
+                    del_cached_property(self, 'config')
+                    continue
 
-            # Run
-            logger.info(f'Scheduler: Start task `{task}`')
-            self.device.stuck_record_clear()
-            self.device.click_record_clear()
-            logger.hr(task, level=0)
-            success = self.run(inflection.underscore(task))
-            logger.info(f'Scheduler: End task `{task}`')
-            self.is_first_task = False
+                # Run
+                logger.info(f'Scheduler: Start task `{task}`')
+                self.device.stuck_record_clear()
+                self.device.click_record_clear()
+                logger.hr(task, level=0)
+                self.execution_progress.start_task(task)
+                success = self.run(inflection.underscore(task))
+                self.execution_progress.finish_task(task, success)
+                logger.info(f'Scheduler: End task `{task}`')
+                self.is_first_task = False
 
-            # Check failures
-            failed = deep_get(self.failure_record, keys=task, default=0)
-            failed = 0 if success else failed + 1
-            deep_set(self.failure_record, keys=task, value=failed)
-            if failed >= 3:
-                logger.critical(f"Task `{task}` failed 3 or more times.")
-                logger.critical("Possible reason #1: You haven't used it correctly. "
-                                "Please read the help text of the options.")
-                logger.critical("Possible reason #2: There is a problem with this task. "
-                                "Please contact developers or try to fix it yourself.")
-                logger.critical('Request human takeover')
-                handle_notify(
-                    self.config.Error_OnePushConfig,
-                    title=f"AES <{self.config_name}> crashed",
-                    content=f"<{self.config_name}> RequestHumanTakeover\nTask `{task}` failed 3 or more times.",
-                )
-                exit(1)
+                # Check failures
+                failed = deep_get(self.failure_record, keys=task, default=0)
+                failed = 0 if success else failed + 1
+                deep_set(self.failure_record, keys=task, value=failed)
+                if failed >= 3:
+                    logger.critical(f"Task `{task}` failed 3 or more times.")
+                    logger.critical("Possible reason #1: You haven't used it correctly. "
+                                    "Please read the help text of the options.")
+                    logger.critical("Possible reason #2: There is a problem with this task. "
+                                    "Please contact developers or try to fix it yourself.")
+                    logger.critical('Request human takeover')
+                    handle_notify(
+                        self.config.Error_OnePushConfig,
+                        title=f"AES <{self.config_name}> crashed",
+                        content=f"<{self.config_name}> RequestHumanTakeover\nTask `{task}` failed 3 or more times.",
+                    )
+                    exit(1)
 
-            if success:
-                del_cached_property(self, 'config')
-                continue
-            else:
-                # self.config.task_delay(success=False)
-                del_cached_property(self, 'config')
-                self.checker.check_now()
-                continue
+                if success:
+                    del_cached_property(self, 'config')
+                    continue
+                else:
+                    # self.config.task_delay(success=False)
+                    del_cached_property(self, 'config')
+                    self.checker.check_now()
+                    continue
+
+        except BaseException as error:
+            if not isinstance(error, KeyboardInterrupt) and not (
+                isinstance(error, SystemExit) and error.code in (None, 0)
+            ):
+                final_state = 'error'
+            raise
+        finally:
+            self._scheduler_active = False
+            self.execution_progress.stop(final_state)
 
 
 if __name__ == '__main__':

@@ -7,8 +7,21 @@ from onepush.providers.custom import Custom
 from requests import Response
 
 from module.logger import logger
+from module.runtime_events import runtime_events
 
 onepush.core.log = logger
+
+
+def is_system_provider(_config: str) -> bool:
+    """Check the local channel without sending completion to remote providers."""
+    try:
+        config = {}
+        for item in yaml.safe_load_all(_config):
+            config.update(item)
+        return str(config.get('provider', '')).strip().lower() in {'system', '系统'}
+    except Exception:  # noqa: BLE001
+        # Optional channel selection must never interrupt task scheduling.
+        return False
 
 
 def handle_notify(_config: str, **kwargs) -> bool:
@@ -24,6 +37,17 @@ def handle_notify(_config: str, **kwargs) -> bool:
         if provider_name is None:
             logger.info("No provider specified, skip sending")
             return False
+        if str(provider_name).strip().lower() in {'system', '系统'}:
+            config.update(kwargs)
+            queued = runtime_events.notify(
+                title=config.get('title', 'AutoEpicSeven'),
+                content=config.get('content', ''),
+            )
+            if queued:
+                logger.info('System notification queued for an active interface')
+            else:
+                logger.info('No active system notification interface; skip sending')
+            return queued
         notifier: Provider = get_notifier(provider_name)
         required: list[str] = notifier.params["required"]
         config.update(kwargs)

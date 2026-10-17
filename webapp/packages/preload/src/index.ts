@@ -8,6 +8,12 @@ setupWebuiIpcBridge();
 
 export {sha256sum} from './nodeCrypto';
 export {versions} from './versions';
+export {
+  runtimeSetProgress,
+  runtimeClearProgress,
+  runtimeNotify,
+  runtimeCapabilities,
+} from './runtimeApi';
 export {ipcRendererSend, ipcRendererOn, ipcRendererInvoke} from './electronApi';
 export {getAlasConfig, checkIsNeedInstall, getAlasConfigDirFiles} from './alasConfig';
 export {copyFilesToDir} from '@common/utils/copyFilesToDir';
