@@ -18008,6 +18008,272 @@
           "reason": "新实图复现已选中页签被反复点击；确认选中态、其他页签反例和实际领奖动作"
         }
       ]
+    },
+    {
+      "source": "tests/knights/test_donate.py",
+      "business": "骑士团捐赠",
+      "status": "新增",
+      "reason": "按当前库存尽力捐赠企鹅与花",
+      "cases": [
+        {
+          "id": "tests.knights.test_donate.DonationCaptureTests.test_all_visible_rows_read_stock_and_exact_button_quantity",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/knights/donate/MuMu-20261018-141840-024.png",
+            "tests/fixtures/knights/donate/MuMu-20261018-142106-068.png",
+            "tests/fixtures/knights/donate/MuMu-20261018-142110-919.png",
+            "tests/fixtures/knights/donate/MuMu-20261018-142114-942.png"
+          ],
+          "status": "已纳入",
+          "reason": "库存与单次支援数量校验、独立开关、重复帧及实际扣减确认；花的捐赠动作采用模拟输入"
+        },
+        {
+          "id": "tests.knights.test_donate.DonationCaptureTests.test_own_flower_inventory_is_read_but_not_paired_with_other_items",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/knights/donate/MuMu-20261018-142106-068.png",
+            "tests/fixtures/knights/donate/MuMu-20261018-142118-971.png"
+          ],
+          "status": "已纳入",
+          "reason": "库存与单次支援数量校验、独立开关、重复帧及实际扣减确认；花的捐赠动作采用模拟输入"
+        },
+        {
+          "id": "tests.knights.test_donate.DonationCaptureTests.test_reward_overlay_cannot_be_used_as_a_ready_list",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/knights/donate/MuMu-20261018-142109-419.png",
+            "tests/fixtures/knights/donate/MuMu-20261018-184103-792.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实企鹅与花的支援成功遮罩都不能当作可操作列表"
+        },
+        {
+          "id": "tests.knights.test_donate.DonationCaptureTests.test_cut_stock_field_is_unknown_without_ocr",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/knights/donate/MuMu-20261018-142106-068.png"
+          ],
+          "status": "已纳入",
+          "reason": "库存与单次支援数量校验、独立开关、重复帧及实际扣减确认；花的捐赠动作采用模拟输入"
+        },
+        {
+          "id": "tests.knights.test_donate.DonationRuleTests.test_strict_text_parsing_distinguishes_zero_from_unknown",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "库存与单次支援数量校验、独立开关、重复帧及实际扣减确认；花的捐赠动作采用模拟输入"
+        },
+        {
+          "id": "tests.knights.test_donate.DonationRuleTests.test_disabled_switches_never_read_inventory_or_click",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "库存与单次支援数量校验、独立开关、重复帧及实际扣减确认；花的捐赠动作采用模拟输入"
+        },
+        {
+          "id": "tests.knights.test_donate.DonationRuleTests.test_translations_describe_inventory_bounded_switches",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "库存与单次支援数量校验、独立开关、重复帧及实际扣减确认；花的捐赠动作采用模拟输入"
+        },
+        {
+          "id": "tests.knights.test_donate.DonationReplayTests.test_insufficient_inventory_scans_without_donating",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "库存与单次支援数量校验、独立开关、重复帧及实际扣减确认；花的捐赠动作采用模拟输入"
+        },
+        {
+          "id": "tests.knights.test_donate.DonationReplayTests.test_one_unaffordable_request_does_not_hide_a_smaller_request",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "库存与单次支援数量校验、独立开关、重复帧及实际扣减确认；花的捐赠动作采用模拟输入"
+        },
+        {
+          "id": "tests.knights.test_donate.DonationReplayTests.test_flower_and_penguin_switches_are_independent",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "库存与单次支援数量校验、独立开关、重复帧及实际扣减确认；花的捐赠动作采用模拟输入"
+        },
+        {
+          "id": "tests.knights.test_donate.DonationReplayTests.test_no_effect_click_retries_only_same_recipient_with_production_interval",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "库存与单次支援数量校验、独立开关、重复帧及实际扣减确认；花的捐赠动作采用模拟输入"
+        },
+        {
+          "id": "tests.knights.test_donate.DonationReplayTests.test_reward_and_old_list_do_not_release_another_donation",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "库存与单次支援数量校验、独立开关、重复帧及实际扣减确认；花的捐赠动作采用模拟输入"
+        },
+        {
+          "id": "tests.knights.test_donate.DonationReplayTests.test_changed_recipient_or_quantity_never_retries_pending_click",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "库存与单次支援数量校验、独立开关、重复帧及实际扣减确认；花的捐赠动作采用模拟输入"
+        },
+        {
+          "id": "tests.knights.test_donate.DonationReplayTests.test_network_and_wrong_debit_do_not_count_as_success",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "库存与单次支援数量校验、独立开关、重复帧及实际扣减确认；花的捐赠动作采用模拟输入"
+        },
+        {
+          "id": "tests.knights.test_donate.DonationReplayTests.test_confirmed_debit_does_not_repay_a_late_disabled_request",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "库存与单次支援数量校验、独立开关、重复帧及实际扣减确认；花的捐赠动作采用模拟输入"
+        },
+        {
+          "id": "tests.knights.test_donate.DonationReplayTests.test_unreadable_old_request_after_reward_still_blocks_scroll_and_payment",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "库存与单次支援数量校验、独立开关、重复帧及实际扣减确认；花的捐赠动作采用模拟输入"
+        },
+        {
+          "id": "tests.knights.test_donate.DonationReplayTests.test_success_popup_and_changed_list_allow_inventory_hidden_by_reordering",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "库存与单次支援数量校验、独立开关、重复帧及实际扣减确认；花的捐赠动作采用模拟输入"
+        },
+        {
+          "id": "tests.knights.test_donate.DonationReplayTests.test_completed_rows_do_not_stop_search_before_later_affordable_items",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "库存与单次支援数量校验、独立开关、重复帧及实际扣减确认；花的捐赠动作采用模拟输入"
+        },
+        {
+          "id": "tests.knights.test_donate.DonationReplayTests.test_unknown_quote_skips_payment_and_reports_unverified_scan",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "库存与单次支援数量校验、独立开关、重复帧及实际扣减确认；花的捐赠动作采用模拟输入"
+        },
+        {
+          "id": "tests.knights.test_donate.DonationReplayTests.test_captured_three_donations_confirm_inventory_even_without_reward_frames",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/knights/donate/MuMu-20261018-142106-068.png",
+            "tests/fixtures/knights/donate/MuMu-20261018-142110-919.png",
+            "tests/fixtures/knights/donate/MuMu-20261018-142114-942.png",
+            "tests/fixtures/knights/donate/MuMu-20261018-142118-971.png"
+          ],
+          "status": "已纳入",
+          "reason": "库存与单次支援数量校验、独立开关、重复帧及实际扣减确认；花的捐赠动作采用模拟输入"
+        },
+        {
+          "id": "tests.knights.test_donate.DonationCaptureTests.test_recipient_change_is_list_movement_but_portrait_glow_is_not",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/knights/donate/MuMu-20261018-142106-068.png"
+          ],
+          "status": "已纳入",
+          "reason": "裁切请求滚动后重新读取；相同物品不同请求者不能误判为滚动终点，头像光效不干扰判定"
+        },
+        {
+          "id": "tests.knights.test_donate.DonationReplayTests.test_clipped_request_is_revisited_when_its_fields_become_visible",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "裁切请求滚动后重新读取；相同物品不同请求者不能误判为滚动终点，头像光效不干扰判定"
+        },
+        {
+          "id": "tests.knights.test_donate.DonationCaptureTests.test_captured_flower_quantity_debit_and_completed_request",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/knights/donate/MuMu-20261018-184049-280.png",
+            "tests/fixtures/knights/donate/MuMu-20261018-184105-118.png",
+            "tests/fixtures/knights/donate/MuMu-20261018-184107-923.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实花截图验证单次支援1个、8474至8473扣减与完成请求；重复帧和延迟刷新为显式回放安排"
+        },
+        {
+          "id": "tests.knights.test_donate.DonationReplayTests.test_captured_flower_donation_waits_through_reward_and_delayed_list",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/knights/donate/MuMu-20261018-184049-280.png",
+            "tests/fixtures/knights/donate/MuMu-20261018-184103-792.png",
+            "tests/fixtures/knights/donate/MuMu-20261018-184105-118.png",
+            "tests/fixtures/knights/donate/MuMu-20261018-184107-923.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实花截图验证单次支援1个、8474至8473扣减与完成请求；重复帧和延迟刷新为显式回放安排"
+        },
+        {
+          "id": "tests.knights.test_donate.DonationReplayTests.test_captured_flower_debit_confirms_when_reward_frame_is_missed",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/knights/donate/MuMu-20261018-184049-280.png",
+            "tests/fixtures/knights/donate/MuMu-20261018-184105-118.png",
+            "tests/fixtures/knights/donate/MuMu-20261018-184107-923.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实花截图验证单次支援1个、8474至8473扣减与完成请求；重复帧和延迟刷新为显式回放安排"
+        }
+      ]
     }
   ]
 }

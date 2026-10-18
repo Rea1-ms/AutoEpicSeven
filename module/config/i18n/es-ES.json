@@ -341,12 +341,12 @@
       "help": "Entra en apoyo de gremio y ejecuta donaciones/solicitudes según la configuración."
     },
     "SupportLowerLevelFairyFlower": {
-      "name": "Donar Flor Feérica Inferior",
-      "help": "Donar Flor Feérica Inferior a solicitudes del gremio en apoyo."
+      "name": "Donar flores feéricas inferiores disponibles",
+      "help": "Dona todo lo que permita el inventario actual. Omite solicitudes que requieran más de lo que tienes. Desactiva para no donar este objeto."
     },
     "SupportBeginnerPenguin": {
-      "name": "Donar Pingüino Básico",
-      "help": "Donar Pingüino Básico a solicitudes del gremio en apoyo."
+      "name": "Donar pingüinos básicos disponibles",
+      "help": "Dona todo lo que permita el inventario actual. Omite solicitudes que requieran más de lo que tienes. Desactiva para no donar este objeto."
     },
     "RequestItem": {
       "name": "Material de Solicitud",

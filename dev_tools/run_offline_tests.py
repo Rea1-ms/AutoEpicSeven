@@ -40,6 +40,7 @@ ARENA_MODULES = (
 KNIGHTS_MODULES = (
     "tests.knights.test_shop",
     "tests.knights.test_weekly_task",
+    "tests.knights.test_donate",
 )
 SANCTUARY_MODULES = (
     "tests.sanctuary.test_buy_penguins",

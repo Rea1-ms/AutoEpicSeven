@@ -3,14 +3,13 @@ from dataclasses import dataclass
 from module.base.button import ButtonWrapper, ClickButton
 from module.base.timer import Timer
 from module.logger import logger
-from tasks.base.page import page_knights, page_knights_support
+from tasks.base.page import page_knights_support
 from tasks.knights.assets.assets_knights_activity_support_active import (
     ACTION_SEARCH,
     BEGGINER_PENGUIN,
-    HIT_BOTTOM,
     ITEM_SEARCH,
-    SUPPORT_ACTION,
     LOWER_LEVEL_FAIRY_FLOWER,
+    SUPPORT_ACTION,
     SUPPORT_COMPLETE,
 )
 from tasks.knights.assets.assets_knights_activity_support_entry import SUPPORT_CHECK
@@ -22,6 +21,7 @@ from tasks.knights.assets.assets_knights_activity_support_passive import (
     REQUEST_LOWER_LEVEL_FAIRY_FLOWER,
     REQUEST_LOWER_LEVEL_FAIRY_FLOWER_SELECTED,
 )
+from tasks.knights.donate import KnightsDonateMixin
 
 
 @dataclass(frozen=True)
@@ -32,16 +32,10 @@ class SupportPlan:
     selected_asset: ButtonWrapper | None = None
 
 
-class KnightsSupportMixin:
+class KnightsSupportMixin(KnightsDonateMixin):
     SUPPORT_ENTRY_TIMEOUT_SECONDS = 20
     SUPPORT_ENTRY_CLICK_INTERVAL_SECONDS = 1.2
     SUPPORT_ACTION_Y_TOLERANCE = 80
-    SUPPORT_DONATE_TIMEOUT_SECONDS = 30
-    SUPPORT_DONATE_SCROLL_INTERVAL_SECONDS = 0.8
-    SUPPORT_DONATE_ACTION_INTERVAL_SECONDS = 0.8
-    SUPPORT_DONATE_WAIT_TOUCH_TIMEOUT_SECONDS = 2
-    SUPPORT_DONATE_EMPTY_CONFIRM_SECONDS = 1
-    SUPPORT_DONATE_COMPLETE_COUNT = 4
     SUPPORT_REQUEST_TIMEOUT_SECONDS = 15
     SUPPORT_SCROLL_START = (640, 620)
     SUPPORT_SCROLL_END = (640, 320)
@@ -147,21 +141,17 @@ class KnightsSupportMixin:
                 continue
             item_buttons = sorted(item_buttons, key=self._button_center_y)
 
-            best_action_index = -1
-            best_distance = 9999.0
             for item_button in item_buttons:
                 item_y = self._button_center_y(item_button)
-                for idx, action_button in enumerate(action_buttons):
-                    if idx in used_action_index:
-                        continue
-                    distance = abs(self._button_center_y(action_button) - item_y)
-                    if distance < best_distance:
-                        best_distance = distance
-                        best_action_index = idx
-
-            if best_action_index >= 0 and best_distance <= self.SUPPORT_ACTION_Y_TOLERANCE:
-                used_action_index.add(best_action_index)
-                pairs.append((plan.name, action_buttons[best_action_index]))
+                candidates = [(abs(self._button_center_y(action) - item_y), idx)
+                              for idx, action in enumerate(action_buttons)
+                              if idx not in used_action_index]
+                if not candidates:
+                    continue
+                distance, idx = min(candidates)
+                if distance <= self.SUPPORT_ACTION_Y_TOLERANCE:
+                    used_action_index.add(idx)
+                    pairs.append((plan.name, action_buttons[idx]))
 
         pairs.sort(key=lambda row: row[1].area[1])
         return pairs
@@ -176,128 +166,6 @@ class KnightsSupportMixin:
         logger.info("Knights: enter support")
         self.ui_goto(page_knights_support, skip_first_screenshot=skip_first_screenshot)
         return True
-
-    def _run_support_donate(self, skip_first_screenshot=True) -> bool:
-        plans = self._enabled_plans(self._build_donate_plans())
-        if not plans:
-            logger.info("Knights support donate disabled by config")
-            return True
-
-        logger.info("Knights support: donate")
-        timeout = Timer(self.SUPPORT_DONATE_TIMEOUT_SECONDS, count=90).start()
-        scroll_timer = Timer(self.SUPPORT_DONATE_SCROLL_INTERVAL_SECONDS, count=0).start()
-        wait_touch_timeout = Timer(self.SUPPORT_DONATE_WAIT_TOUCH_TIMEOUT_SECONDS, count=6)
-        empty_list_confirm = Timer(self.SUPPORT_DONATE_EMPTY_CONFIRM_SECONDS, count=4).clear()
-        hit_bottom_confirm = 0
-        skip_hit_bottom_once = False
-        wait_touch_close = False
-
-        self.interval_clear(SUPPORT_ACTION, interval=self.SUPPORT_DONATE_ACTION_INTERVAL_SECONDS)
-        self.device.click_record_clear()
-
-        while 1:
-            if skip_first_screenshot:
-                skip_first_screenshot = False
-            else:
-                self.device.screenshot()
-
-            if timeout.reached():
-                logger.warning("Knights support donate timeout, stop scanning")
-                return True
-
-            if not self.appear(SUPPORT_CHECK):
-                if self.appear(page_knights.check_button):
-                    logger.warning("Knights support donate exited to knights page unexpectedly")
-                    return False
-                if self.is_in_main(interval=0):
-                    logger.warning("Knights support donate exited to main page unexpectedly")
-                    return False
-                if self.handle_touch_to_close(interval=0.5):
-                    timeout.reset()
-                    continue
-                if self.handle_network_error():
-                    timeout.reset()
-                    continue
-                continue
-
-            if wait_touch_close:
-                if self.handle_touch_to_close(interval=0.5):
-                    wait_touch_close = False
-                    self.device.click_record_clear()
-                    empty_list_confirm.clear()
-                    timeout.reset()
-                    continue
-                if self.handle_network_error():
-                    empty_list_confirm.clear()
-                    timeout.reset()
-                    continue
-                if wait_touch_timeout.reached():
-                    wait_touch_close = False
-                else:
-                    continue
-
-            if self.handle_touch_to_close(interval=0.5):
-                empty_list_confirm.clear()
-                timeout.reset()
-                continue
-            if self.handle_network_error():
-                empty_list_confirm.clear()
-                timeout.reset()
-                continue
-
-            action_buttons = SUPPORT_ACTION.match_multi_template(self.device.image, threshold=40)
-            complete_buttons = SUPPORT_COMPLETE.match_multi_template(self.device.image, threshold=40)
-
-            if action_buttons or complete_buttons:
-                empty_list_confirm.clear()
-            else:
-                if not empty_list_confirm.started():
-                    logger.info("Knights support donate: no visible entries, confirm empty list")
-                    empty_list_confirm.start()
-                elif empty_list_confirm.reached():
-                    logger.info("Knights support donate list is empty, skip scan")
-                    return True
-                continue
-
-            pairs = self._find_donate_action_pairs(plans, action_buttons=action_buttons)
-            if pairs:
-                if not self.interval_is_reached(SUPPORT_ACTION, interval=self.SUPPORT_DONATE_ACTION_INTERVAL_SECONDS):
-                    continue
-                plan_name, action_button = pairs[0]
-                logger.info(f"Knights support donate: {plan_name} -> {action_button}")
-                self.device.click(action_button)
-                self.interval_reset(SUPPORT_ACTION, interval=self.SUPPORT_DONATE_ACTION_INTERVAL_SECONDS)
-                wait_touch_close = True
-                wait_touch_timeout.reset()
-                empty_list_confirm.clear()
-                hit_bottom_confirm = 0
-                timeout.reset()
-                continue
-
-            complete_count = len(complete_buttons)
-            if complete_count >= self.SUPPORT_DONATE_COMPLETE_COUNT:
-                logger.info(f"Knights support donate completed on current page: {complete_count}")
-                return True
-
-            if skip_hit_bottom_once:
-                skip_hit_bottom_once = False
-                hit_bottom_confirm = 0
-            else:
-                if self.appear(HIT_BOTTOM):
-                    hit_bottom_confirm += 1
-                    if hit_bottom_confirm >= 2:
-                        logger.info("Knights support donate reached bottom")
-                        return True
-                else:
-                    hit_bottom_confirm = 0
-
-            if scroll_timer.reached():
-                self.device.swipe(self.SUPPORT_SCROLL_START, self.SUPPORT_SCROLL_END, duration=(0.2, 0.3))
-                scroll_timer.reset()
-                empty_list_confirm.clear()
-                skip_hit_bottom_once = True
-                timeout.reset()
-                continue
 
     def _run_support_request(self, skip_first_screenshot=True) -> bool:
         plan = self._resolve_request_plan()
