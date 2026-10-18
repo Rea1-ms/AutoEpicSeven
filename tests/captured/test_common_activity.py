@@ -35,7 +35,7 @@ class RealScreenshotBatchTests(unittest.TestCase):
         server.set_lang('global_cn')
         fixtures = input_root()
         screenshots = {
-            F: fixtures / 'activity_navigation/infinity_selected_oversea.png',
+            F: fixtures / 'activity_navigation/infinity_page_selected.png',
             G: fixtures / 'e7wc_battle_gate/battle_gate_available.png',
             K: fixtures / 'koharu_raffle/available.png',
         }
@@ -46,10 +46,6 @@ class RealScreenshotBatchTests(unittest.TestCase):
                 batch.config = SimpleNamespace(Emulator_GameLanguage='auto')
                 batch.interval_timer = {}
                 batch.device = SimpleNamespace(image=load_image(str(path)), stuck_record_add=lambda button: None)
-                if expected == F:
-                    # This fixture retains only the real sidebar; the header and
-                    # reward panel are masked out, so page detection is not under test.
-                    batch.ui_page_appear = lambda page: True
                 workers = {mode: SimpleNamespace(run_claim=Mock(return_value=False)) for mode in MODES}
                 pending = {mode: (keyword, button, workers[mode])
                            for mode, (keyword, button, _) in batch.ACTIVITIES.items()}

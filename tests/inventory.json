@@ -12406,13 +12406,13 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [
-            "legacy-activity-navigation-infinity-selected-oversea",
+            "infinity-page-selected-20261018",
             "legacy-e7wc-battle-gate-battle-gate-available",
             "legacy-koharu-raffle-available"
           ],
           "status": "已纳入",
           "capture_server": "global_cn",
-          "reason": "保留原识别和动作断言；截图来源与资产分派范围分开记录",
+          "reason": "用完整20抽页面和其他活动实图验证唯一待办，禁止仅凭侧栏选中确认20抽",
           "input_kind": "registered_capture",
           "original_source": "test/test_common_activity.py"
         }
@@ -12973,7 +12973,7 @@
       "source": "tests/captured/test_activity_selection.py",
       "business": "历史截图回归",
       "status": "已纳入",
-      "reason": "第三批：已查看并脱敏的国际服中文截图",
+      "reason": "国际服20抽改用页内元素；旧侧栏截图保留为不足以确认到页的反例",
       "migration_batch": "20261002-3",
       "cases": [
         {
@@ -12983,58 +12983,59 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [
+            "infinity-page-selected-20261018",
             "legacy-activity-navigation-infinity-selected-oversea"
           ],
           "status": "已纳入",
           "capture_server": "global_cn",
-          "reason": "保留原识别和动作断言；截图来源与资产分派范围分开记录",
+          "reason": "页内确认与侧栏独立滚动；国服维持原选中态；重试回放保留生产两秒间隔",
           "input_kind": "registered_capture",
           "original_source": "test/test_activity_selection.py"
         },
         {
           "id": "tests.captured.test_activity_selection.ActivitySelectionTests.test_already_selected_returns_before_ocr_or_click",
           "original_id": "test.test_activity_selection.ActivitySelectionTests.test_already_selected_returns_before_ocr_or_click",
-          "category": "截图识别",
+          "category": "流程回放",
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [
-            "legacy-activity-navigation-infinity-selected-oversea"
+            "infinity-page-selected-20261018"
           ],
           "status": "已纳入",
           "capture_server": "global_cn",
-          "reason": "保留原识别和动作断言；截图来源与资产分派范围分开记录",
+          "reason": "页内确认与侧栏独立滚动；国服维持原选中态；重试回放保留生产两秒间隔",
           "input_kind": "registered_capture",
           "original_source": "test/test_activity_selection.py"
         },
         {
           "id": "tests.captured.test_activity_selection.ActivitySelectionTests.test_click_stops_as_soon_as_selected_state_arrives",
           "original_id": "test.test_activity_selection.ActivitySelectionTests.test_click_stops_as_soon_as_selected_state_arrives",
-          "category": "截图识别",
+          "category": "流程回放",
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [
-            "legacy-activity-navigation-infinity-selected-oversea",
+            "infinity-page-selected-20261018",
             "legacy-e7wc-battle-gate-battle-gate-available"
           ],
           "status": "已纳入",
           "capture_server": "global_cn",
-          "reason": "保留原识别和动作断言；截图来源与资产分派范围分开记录",
+          "reason": "页内确认与侧栏独立滚动；国服维持原选中态；重试回放保留生产两秒间隔",
           "input_kind": "registered_capture",
           "original_source": "test/test_activity_selection.py"
         },
         {
           "id": "tests.captured.test_activity_selection.ActivitySelectionTests.test_dropped_click_still_retries_before_real_selection",
           "original_id": "test.test_activity_selection.ActivitySelectionTests.test_dropped_click_still_retries_before_real_selection",
-          "category": "截图识别",
+          "category": "流程回放",
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [
-            "legacy-activity-navigation-infinity-selected-oversea",
+            "infinity-page-selected-20261018",
             "legacy-e7wc-battle-gate-battle-gate-available"
           ],
           "status": "已纳入",
           "capture_server": "global_cn",
-          "reason": "保留原识别和动作断言；截图来源与资产分派范围分开记录",
+          "reason": "页内确认与侧栏独立滚动；国服维持原选中态；重试回放保留生产两秒间隔",
           "input_kind": "registered_capture",
           "original_source": "test/test_activity_selection.py"
         },
@@ -13045,11 +13046,11 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [
-            "legacy-activity-navigation-infinity-selected-oversea"
+            "infinity-page-selected-20261018"
           ],
           "status": "已纳入",
           "capture_server": "global_cn",
-          "reason": "保留原识别和动作断言；截图来源与资产分派范围分开记录",
+          "reason": "页内确认与侧栏独立滚动；国服维持原选中态；重试回放保留生产两秒间隔",
           "input_kind": "registered_capture",
           "original_source": "test/test_activity_selection.py"
         },
@@ -13065,7 +13066,7 @@
           ],
           "status": "已纳入",
           "capture_server": "global_cn",
-          "reason": "保留原识别和动作断言；截图来源与资产分派范围分开记录",
+          "reason": "页内确认与侧栏独立滚动；国服维持原选中态；重试回放保留生产两秒间隔",
           "input_kind": "registered_capture",
           "original_source": "test/test_activity_selection.py"
         },
@@ -13076,11 +13077,11 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [
-            "legacy-activity-navigation-infinity-selected-oversea"
+            "infinity-page-selected-20261018"
           ],
           "status": "已纳入",
           "capture_server": "global_cn",
-          "reason": "保留原识别和动作断言；截图来源与资产分派范围分开记录",
+          "reason": "页内确认与侧栏独立滚动；国服维持原选中态；重试回放保留生产两秒间隔",
           "input_kind": "registered_capture",
           "original_source": "test/test_activity_selection.py"
         },
@@ -13092,9 +13093,62 @@
           "has_automatic_assertion": true,
           "fixtures": [],
           "status": "已纳入",
-          "reason": "保留原识别和动作断言；截图来源与资产分派范围分开记录",
+          "reason": "页内确认与侧栏独立滚动；国服维持原选中态；重试回放保留生产两秒间隔",
           "input_kind": "mock_or_rule",
           "original_source": "test/test_activity_selection.py"
+        },
+        {
+          "id": "tests.captured.test_activity_selection.ActivitySelectionTests.test_missing_page_anchor_rejects_orange_selected_sidebar",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "infinity-page-selected-20261018"
+          ],
+          "status": "已纳入",
+          "capture_server": "global_cn",
+          "reason": "页内锚点缺失时，即使侧栏橙色选中也不能确认到页",
+          "input_kind": "registered_capture"
+        },
+        {
+          "id": "tests.captured.test_activity_selection.ActivitySelectionTests.test_page_anchor_is_not_accepted_in_sidebar",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "infinity-page-selected-20261018"
+          ],
+          "status": "已纳入",
+          "capture_server": "global_cn",
+          "reason": "页内锚点只允许在页内搜索范围出现，禁止在侧栏误匹配",
+          "input_kind": "registered_capture"
+        },
+        {
+          "id": "tests.captured.test_activity_selection.ActivitySelectionTests.test_dimmed_page_is_not_selected",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "infinity-page-selected-20261018"
+          ],
+          "status": "已纳入",
+          "capture_server": "global_cn",
+          "reason": "页面遮罩变暗不能作为可操作活动页",
+          "input_kind": "registered_capture"
+        },
+        {
+          "id": "tests.captured.test_activity_selection.ActivitySelectionTests.test_existing_complete_captures_confirm_page_with_hidden_tab",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "meirin-reward-sidebar-visible",
+            "meirin-reward-sidebar-top"
+          ],
+          "status": "已纳入",
+          "capture_server": "global_cn",
+          "reason": "另外两张完整截图确认页内锚点；侧栏滚动后无需重新选中",
+          "input_kind": "registered_capture"
         }
       ]
     },

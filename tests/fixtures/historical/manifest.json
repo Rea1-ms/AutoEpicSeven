@@ -151,13 +151,7 @@
         ]
       ],
       "used_by": [
-        "tests.captured.test_activity_selection.ActivitySelectionTests.test_already_selected_returns_before_ocr_or_click",
-        "tests.captured.test_activity_selection.ActivitySelectionTests.test_click_stops_as_soon_as_selected_state_arrives",
-        "tests.captured.test_activity_selection.ActivitySelectionTests.test_dropped_click_still_retries_before_real_selection",
-        "tests.captured.test_activity_selection.ActivitySelectionTests.test_reproduces_old_template_failure_on_already_selected_sidebar",
-        "tests.captured.test_activity_selection.ActivitySelectionTests.test_scroll_position_uses_common_search_and_restores_wrapper",
-        "tests.captured.test_activity_selection.ActivitySelectionTests.test_text_without_selected_color_is_not_accepted",
-        "tests.captured.test_common_activity.RealScreenshotBatchTests.test_all_pending_templates_choose_only_the_actual_selected_event"
+        "tests.captured.test_activity_selection.ActivitySelectionTests.test_reproduces_old_template_failure_on_already_selected_sidebar"
       ]
     },
     "legacy-e7wc-battle-gate-battle-gate-available": {
@@ -183,16 +177,16 @@
         ]
       ],
       "used_by": [
-        "tests.captured.test_activity_selection.ActivitySelectionTests.test_click_stops_as_soon_as_selected_state_arrives",
-        "tests.captured.test_activity_selection.ActivitySelectionTests.test_dropped_click_still_retries_before_real_selection",
-        "tests.captured.test_activity_selection.ActivitySelectionTests.test_other_selected_event_does_not_match_free_summons",
-        "tests.captured.test_common_activity.RealScreenshotBatchTests.test_all_pending_templates_choose_only_the_actual_selected_event",
         "tests.captured.test_e7wc_battle_gate.ScreenshotTests.test_common_sidebar_search_restores_bounds_after_success_and_exception",
         "tests.captured.test_e7wc_battle_gate.ScreenshotTests.test_leaf_template_matches_available",
         "tests.captured.test_e7wc_battle_gate.ScreenshotTests.test_page_and_selected_templates_reject_other_event",
         "tests.captured.test_e7wc_battle_gate.ScreenshotTests.test_real_ocr_stable_prefix_finds_event",
         "tests.captured.test_e7wc_battle_gate.ScreenshotTests.test_single_green_template_matches_both_items_only_when_claimed",
-        "tests.captured.test_koharu_raffle.ScreenshotTests.test_other_event_cannot_be_claimed"
+        "tests.captured.test_koharu_raffle.ScreenshotTests.test_other_event_cannot_be_claimed",
+        "tests.captured.test_activity_selection.ActivitySelectionTests.test_click_stops_as_soon_as_selected_state_arrives",
+        "tests.captured.test_activity_selection.ActivitySelectionTests.test_dropped_click_still_retries_before_real_selection",
+        "tests.captured.test_activity_selection.ActivitySelectionTests.test_other_selected_event_does_not_match_free_summons",
+        "tests.captured.test_common_activity.RealScreenshotBatchTests.test_all_pending_templates_choose_only_the_actual_selected_event"
       ]
     },
     "legacy-e7wc-battle-gate-battle-gate-received": {
@@ -240,13 +234,13 @@
         ]
       ],
       "used_by": [
-        "tests.captured.test_activity_selection.ActivitySelectionTests.test_other_selected_event_does_not_match_free_summons",
-        "tests.captured.test_common_activity.RealScreenshotBatchTests.test_all_pending_templates_choose_only_the_actual_selected_event",
         "tests.captured.test_e7wc_battle_gate.ScreenshotTests.test_page_and_selected_templates_reject_other_event",
         "tests.captured.test_e7wc_battle_gate.ScreenshotTests.test_real_ocr_stable_prefix_finds_event",
         "tests.captured.test_e7wc_battle_gate.ScreenshotTests.test_single_green_template_matches_both_items_only_when_claimed",
         "tests.captured.test_koharu_raffle.ScreenshotTests.test_available_screenshot_confirms_page_sidebar_and_only_claim_state",
-        "tests.captured.test_koharu_raffle.ScreenshotTests.test_real_sidebar_ocr_finds_raffle"
+        "tests.captured.test_koharu_raffle.ScreenshotTests.test_real_sidebar_ocr_finds_raffle",
+        "tests.captured.test_activity_selection.ActivitySelectionTests.test_other_selected_event_does_not_match_free_summons",
+        "tests.captured.test_common_activity.RealScreenshotBatchTests.test_all_pending_templates_choose_only_the_actual_selected_event"
       ]
     },
     "legacy-koharu-raffle-scrolled-claimed-row": {
@@ -1126,7 +1120,8 @@
       ],
       "used_by": [
         "tests.activity.test_meirin_reward.AssetTests.test_real_frames_distinguish_pending_empty_and_scrolled_rows",
-        "tests.activity.test_meirin_reward.AssetTests.test_shifted_selected_sidebar_rejects_other_tabs_and_unselected_label"
+        "tests.activity.test_meirin_reward.AssetTests.test_shifted_selected_sidebar_rejects_other_tabs_and_unselected_label",
+        "tests.captured.test_activity_selection.ActivitySelectionTests.test_existing_complete_captures_confirm_page_with_hidden_tab"
       ]
     },
     "meirin-reward-sidebar-visible": {
@@ -1149,7 +1144,8 @@
         "tests.activity.test_meirin_reward.AssetTests.test_real_frames_distinguish_pending_empty_and_scrolled_rows",
         "tests.activity.test_meirin_reward.AssetTests.test_real_sidebar_selects_meirin_after_stable_text",
         "tests.activity.test_meirin_reward.AssetTests.test_shifted_selected_sidebar_rejects_other_tabs_and_unselected_label",
-        "tests.activity.test_meirin_reward.ClaimTests.test_wrong_selected_tab_never_claims"
+        "tests.activity.test_meirin_reward.ClaimTests.test_wrong_selected_tab_never_claims",
+        "tests.captured.test_activity_selection.ActivitySelectionTests.test_existing_complete_captures_confirm_page_with_hidden_tab"
       ]
     },
     "meirin-reward-available": {
@@ -1282,6 +1278,35 @@
         "tests.activity.test_meirin_reward.AssetTests.test_shifted_selected_sidebar_rejects_other_tabs_and_unselected_label",
         "tests.activity.test_meirin_reward.ClaimTests.test_already_selected_shifted_sidebar_claims_without_clicking_the_tab"
       ]
+    },
+    "infinity-page-selected-20261018": {
+      "path": "tests/fixtures/historical/global_cn/activity_navigation/infinity-page-selected-20261018.png",
+      "sha256": "ec0edf89db9fb19b1bd44a409aa968730599689904ace5a29d0f51fa0cab83ef",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "20抽已领取页面，页内装饰确认，侧栏可独立滚动",
+      "source": "MuMu-20261018-162059-974.png",
+      "source_sha256": "2cbcfcada2acefb914063f19a2b6f565558a0a559c5292a42eb90e1cb8843be7",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.captured.test_activity_selection.ActivitySelectionTests.test_already_selected_returns_before_ocr_or_click",
+        "tests.captured.test_activity_selection.ActivitySelectionTests.test_click_stops_as_soon_as_selected_state_arrives",
+        "tests.captured.test_activity_selection.ActivitySelectionTests.test_dimmed_page_is_not_selected",
+        "tests.captured.test_activity_selection.ActivitySelectionTests.test_dropped_click_still_retries_before_real_selection",
+        "tests.captured.test_activity_selection.ActivitySelectionTests.test_missing_page_anchor_rejects_orange_selected_sidebar",
+        "tests.captured.test_activity_selection.ActivitySelectionTests.test_page_anchor_is_not_accepted_in_sidebar",
+        "tests.captured.test_activity_selection.ActivitySelectionTests.test_reproduces_old_template_failure_on_already_selected_sidebar",
+        "tests.captured.test_activity_selection.ActivitySelectionTests.test_scroll_position_uses_common_search_and_restores_wrapper",
+        "tests.captured.test_activity_selection.ActivitySelectionTests.test_text_without_selected_color_is_not_accepted",
+        "tests.captured.test_common_activity.RealScreenshotBatchTests.test_all_pending_templates_choose_only_the_actual_selected_event"
+      ]
     }
   },
   "aliases": {
@@ -1317,6 +1342,7 @@
     "urgent_tasks/battle-leave.png": "legacy-urgent-tasks-battle-leave",
     "navigation_recognition/black.png": "legacy-navigation-recognition-black",
     "navigation_recognition/war.png": "legacy-navigation-recognition-war",
-    "navigation_recognition/error.png": "legacy-navigation-recognition-error"
+    "navigation_recognition/error.png": "legacy-navigation-recognition-error",
+    "activity_navigation/infinity_page_selected.png": "infinity-page-selected-20261018"
   }
 }

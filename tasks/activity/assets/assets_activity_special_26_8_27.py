@@ -34,10 +34,10 @@ FREE_20_GACHA_SELECTED = ButtonWrapper(
     ),
     global_cn=Button(
         file='./assets/global_cn/activity/special/26_8_27/FREE_20_GACHA_SELECTED.png',
-        area=(113, 391, 135, 401),
-        search=(0, 66, 260, 719),
-        color=(217, 166, 136),
-        button=(113, 391, 135, 401),
+        area=(1075, 423, 1099, 433),
+        search=(1055, 403, 1119, 453),
+        color=(212, 174, 132),
+        button=(1075, 423, 1099, 433),
     ),
     global_en=None,
 )

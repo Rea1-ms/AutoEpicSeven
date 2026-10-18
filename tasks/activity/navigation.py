@@ -1,7 +1,9 @@
 from module.base.timer import Timer
+from module.config import server
 from module.logger import logger
 from module.ocr.ocr import Ocr, OcrResultButton
 from tasks.activity.assets.assets_activity_common import COMMON_ACTIVITY_LIST
+from tasks.activity.assets.assets_activity_special_26_8_27 import FREE_20_GACHA_SELECTED
 from tasks.base.page import page_common_activity
 
 
@@ -24,12 +26,15 @@ class ActivityNavigationMixin:
         )
 
     def _activity_selected(self, selected_button) -> bool:
-        # Every event shares the scrollable sidebar. Keep the per-frame search
-        # bounds intact: wrappers are global objects reused by later tasks.
+        # Overseas free summons is confirmed by a fixed page ornament, even
+        # when its sidebar tab is offscreen. Do not replace that asset's search
+        # with the sidebar bounds. Other events and CN still use selected tabs.
+        # Restore every frame's bounds and offsets: wrappers are shared objects.
         buttons = tuple(selected_button.iter_buttons())
         searches = tuple(button.search for button in buttons)
         try:
-            selected_button.load_search(COMMON_ACTIVITY_LIST.area)
+            if not (server.lang == "global_cn" and selected_button is FREE_20_GACHA_SELECTED):
+                selected_button.load_search(COMMON_ACTIVITY_LIST.area)
             return self.match_template_color(selected_button)
         finally:
             for button, search in zip(buttons, searches):
@@ -74,12 +79,11 @@ class ActivityNavigationMixin:
             else:
                 self.device.screenshot()
 
-            # OCR identifies the clickable text, not the selected state. The
-            # orange template must match at its current position before the
-            # caller can claim anything. A successful click alone is never
-            # evidence of navigation, and must remain retryable.
+            # OCR identifies the clickable text, not the selected page. Its
+            # confirmation template must match before the caller can claim.
+            # A click alone never proves navigation and must remain retryable.
             if self._activity_selected(selected_button):
-                logger.info(f"SpecialActivity: selected sidebar event {selected_button.name}")
+                logger.info(f"SpecialActivity: selected event {selected_button.name}")
                 return True
             if timeout.reached():
                 logger.warning(f"SpecialActivity: sidebar navigation timeout for {selected_button.name}")
