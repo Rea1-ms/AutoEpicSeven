@@ -122,6 +122,7 @@ class AzurLaneAutoScript:
                 self.save_error_log()
                 handle_notify(
                     self.config.Error_OnePushConfig,
+                    system_notification=getattr(self.config, 'Error_SystemNotification', None),
                     title=f"AES <{self.config_name}> crashed",
                     content=f"<{self.config_name}> GamePageUnknownError",
                 )
@@ -139,6 +140,7 @@ class AzurLaneAutoScript:
             self.save_error_log()
             handle_notify(
                 self.config.Error_OnePushConfig,
+                system_notification=getattr(self.config, 'Error_SystemNotification', None),
                 title=f"AES <{self.config_name}> crashed",
                 content=f"<{self.config_name}> ScriptError",
             )
@@ -148,6 +150,7 @@ class AzurLaneAutoScript:
             self.error_postprocess()
             handle_notify(
                 self.config.Error_OnePushConfig,
+                system_notification=getattr(self.config, 'Error_SystemNotification', None),
                 title=f"AES <{self.config_name}> crashed",
                 content=f"<{self.config_name}> RequestHumanTakeover",
             )
@@ -158,6 +161,7 @@ class AzurLaneAutoScript:
             self.save_error_log()
             handle_notify(
                 self.config.Error_OnePushConfig,
+                system_notification=getattr(self.config, 'Error_SystemNotification', None),
                 title=f"AES <{self.config_name}> crashed",
                 content=f"<{self.config_name}> Exception occured",
             )
@@ -218,18 +222,10 @@ class AzurLaneAutoScript:
         """
         while 1:
             task = self.config.get_next()
-            batch_completed = self.execution_progress.update_pending(
+            self.execution_progress.update_pending(
                 [pending.command for pending in self.config.pending_task],
                 skip_restart=self.is_first_task,
             )
-            if batch_completed:
-                from module.notify.notify import is_system_provider
-                if is_system_provider(self.config.Error_OnePushConfig):
-                    handle_notify(
-                        self.config.Error_OnePushConfig,
-                        title=f'AES <{self.config_name}> 本轮执行结束',
-                        content='本轮到期任务已处理，正在等待下一轮任务。',
-                    )
             self.config.task = task
             self.config.bind(task)
 
@@ -380,6 +376,7 @@ class AzurLaneAutoScript:
                     logger.critical('Request human takeover')
                     handle_notify(
                         self.config.Error_OnePushConfig,
+                        system_notification=getattr(self.config, 'Error_SystemNotification', None),
                         title=f"AES <{self.config_name}> crashed",
                         content=f"<{self.config_name}> RequestHumanTakeover\nTask `{task}` failed 3 or more times.",
                     )

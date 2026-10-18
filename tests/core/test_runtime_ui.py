@@ -6,7 +6,7 @@ from unittest.mock import Mock, patch
 
 from pywebio.exceptions import SessionClosedException
 
-from module.webui.runtime_ui import RuntimeUI
+from module.webui.runtime_ui import RuntimeUI, put_system_notification_settings
 
 
 class RuntimeUITests(unittest.TestCase):
@@ -106,6 +106,17 @@ class RuntimeUITests(unittest.TestCase):
         progress = self.run_script.call_args.kwargs["progress"]
         self.assertEqual(progress["state"], "stopped")
         self.assertIsNone(progress["total"])
+
+    def test_system_settings_never_overwrite_remote_config_or_select_a_provider(self):
+        self.gui._save_config = Mock()
+        with patch('module.webui.runtime_ui.put_text') as text, \
+                patch('module.webui.runtime_ui.put_html'), \
+                patch('module.webui.runtime_ui.put_button') as button:
+            put_system_notification_settings(self.gui, 'Alas')
+        self.gui._save_config.assert_not_called()
+        self.assertIn('同时启用', text.call_args.args[0])
+        self.assertEqual(button.call_count, 1)
+        self.assertEqual(button.call_args.args[0], '发送测试通知')
 
 
 if __name__ == "__main__":

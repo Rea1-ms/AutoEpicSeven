@@ -5,7 +5,6 @@ from uuid import uuid4
 
 from pywebio.exceptions import SessionClosedException, SessionNotFoundException
 from pywebio.output import put_button, put_html, put_text, toast
-from pywebio.pin import pin
 from pywebio.session import defer_call, eval_js, run_js
 
 from module.logger import logger
@@ -21,19 +20,10 @@ def runtime_text(zh, en):
 def put_system_notification_settings(gui, task):
     """Reuse the existing config save path; never request permission server-side."""
     put_text(runtime_text(
-        "系统通知使用 provider: system（系统渠道）。桌面版可直接通知；浏览器需在下方授权，并保持网页打开。",
-        "Use provider: system for system notifications. Desktop notifications work directly; "
+        "系统通知可与远程推送同时启用。桌面版可直接通知；浏览器需在下方授权，并保持网页打开。",
+        "System notifications can be enabled alongside remote delivery. Desktop notifications work directly; "
         "enable browser notifications below and keep this page open.",
     )).style("font-size: .85rem; opacity: .8")
-
-    def select_system():
-        key = f"{task}.Error.OnePushConfig"
-        value = "provider: system"
-        pin[key.replace(".", "_")] = value
-        gui._save_config({key: value}, gui.alas_name, gui.alas_config)
-
-    put_button(runtime_text("使用系统通知渠道", "Use system notification channel"),
-               onclick=select_system, color="secondary")
     put_html('<div data-aes-notification-control></div>')
     put_button(runtime_text('发送测试通知', 'Send test notification'),
                onclick=lambda: gui.runtime_ui.send_test_notification(), color='secondary')

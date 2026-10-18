@@ -124,7 +124,8 @@ class SchedulerProgressIntegrationTests(unittest.TestCase):
         runner = object.__new__(AzurLaneAutoScript)
         runner.config_name = 'offline-test'
         runner.config = SimpleNamespace(
-            Error_OnePushConfig='provider: system',
+            Error_OnePushConfig='provider: telegram',
+            Error_SystemNotification=True,
             Optimization_WhenTaskQueueEmpty='stay_there',
             task_call=Mock(), task_delay=Mock(), bind=Mock(),
             cross_get=Mock(return_value=False), pending_task=[], get_next=Mock(),
@@ -183,6 +184,7 @@ class SchedulerProgressIntegrationTests(unittest.TestCase):
                 if state == 'error':
                     self.assertEqual(error.exception.code, 1)
                     self.notify.assert_called_once()
+                    self.assertTrue(self.notify.call_args.kwargs['system_notification'])
                     runner.save_error_log.assert_called_once_with()
                 else:
                     self.notify.assert_not_called()
@@ -223,9 +225,7 @@ class SchedulerProgressIntegrationTests(unittest.TestCase):
         self.assertEqual(runner.failure_record, {'Mail': 0})
         self.assertFalse(runner._scheduler_active)
         self.assertFalse(runner.is_first_task)
-        self.notify.assert_called_once()
-        self.assertEqual(self.notify.call_args.args[0], 'provider: system')
-        self.assertIn('本轮执行结束', self.notify.call_args.kwargs['title'])
+        self.notify.assert_not_called()
         runner.wait_until.assert_called_once_with(future_mail.next_run)
         calls = self.events.publish_progress.call_args_list
         self.assertTrue(all(kwargs['task'] != 'Restart' for _, kwargs in calls))
@@ -236,3 +236,18 @@ class SchedulerProgressIntegrationTests(unittest.TestCase):
         self.events.publish_progress.assert_called_with(
             'offline-test', 'stopped', completed=0, total=None, task='',
         )
+
+    def test_completed_batch_with_system_switch_off_does_not_send_remote_completion(self):
+        runner = self.runner()
+        runner.config.Error_SystemNotification = False
+        runner.execution_progress.update_pending(['Mail'])
+        runner.execution_progress.start_task('Mail')
+        runner.execution_progress.finish_task('Mail', True)
+        now = datetime(2026, 10, 18, tzinfo=timezone.utc)
+        scheduler_clock = self.stack.enter_context(patch('module.alas.datetime'))
+        scheduler_clock.now.return_value = now
+        runner.config.get_next.return_value = SimpleNamespace(
+            command='Mail', next_run=now - timedelta(days=1),
+        )
+        runner.get_next_task()
+        self.notify.assert_not_called()

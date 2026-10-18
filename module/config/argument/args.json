@@ -113,6 +113,10 @@
         "type": "input",
         "value": 1
       },
+      "SystemNotification": {
+        "type": "checkbox",
+        "value": false
+      },
       "OnePushConfig": {
         "type": "textarea",
         "value": "provider: null",

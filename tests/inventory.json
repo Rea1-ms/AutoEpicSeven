@@ -18077,6 +18077,132 @@
           "fixtures": [],
           "status": "已纳入",
           "reason": "任务调度计数、进程状态与通知隔离；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_runtime_events.NotificationRoutingTests.test_independent_switch_sends_locally_before_remote_without_forwarding_it",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "系统通知独立开关、多渠道失败隔离与旧配置兼容；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_runtime_events.NotificationRoutingTests.test_local_failure_or_exception_does_not_prevent_remote_delivery",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "系统通知独立开关、多渠道失败隔离与旧配置兼容；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_runtime_events.NotificationRoutingTests.test_remote_failure_or_invalid_config_does_not_undo_local_acceptance",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "系统通知独立开关、多渠道失败隔离与旧配置兼容；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_runtime_events.NotificationRoutingTests.test_explicit_disable_overrides_legacy_local_provider",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "系统通知独立开关、多渠道失败隔离与旧配置兼容；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_runtime_events.NotificationRoutingTests.test_channel_list_continues_after_success_failure_and_invalid_entries",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "系统通知独立开关、多渠道失败隔离与旧配置兼容；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_runtime_events.NotificationRoutingTests.test_all_failed_destinations_remain_retryable",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "系统通知独立开关、多渠道失败隔离与旧配置兼容；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_runtime_events.NotificationRoutingTests.test_legacy_yaml_documents_keep_merging_provider_and_options",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "系统通知独立开关、多渠道失败隔离与旧配置兼容；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_runtime_events.NotificationRoutingTests.test_multiple_legacy_system_entries_only_queue_once",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "系统通知独立开关、多渠道失败隔离与旧配置兼容；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_runtime_events.NotificationRoutingTests.test_invalid_legacy_settings_do_not_enable_system_notifications",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "系统通知独立开关、多渠道失败隔离与旧配置兼容；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_runtime_events.NotificationConfigMigrationTests.test_legacy_local_opt_in_is_migrated_without_changing_remote_settings",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "系统通知独立开关、多渠道失败隔离与旧配置兼容；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_runtime_events.NotificationConfigMigrationTests.test_saved_switch_wins_over_legacy_provider_on_repeated_reload",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "系统通知独立开关、多渠道失败隔离与旧配置兼容；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_runtime_events.NotificationConfigMigrationTests.test_switch_source_defaults_off_and_all_languages_have_real_labels",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "系统通知独立开关、多渠道失败隔离与旧配置兼容；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_runtime_events.NotificationRoutingTests.test_custom_channel_builds_message_data_when_no_data_mapping_is_configured",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "自定义远程渠道与团战提醒独立开关、去重回归；模拟配置和通知，无真实设备"
+        },
+        {
+          "id": "tests.core.test_runtime_events.NotificationRoutingTests.test_team_battle_reminder_passes_independent_switch_and_only_deduplicates_acceptance",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "自定义远程渠道与团战提醒独立开关、去重回归；模拟配置和通知，无真实设备"
         }
       ]
     },
@@ -18165,7 +18291,16 @@
           "has_automatic_assertion": true,
           "fixtures": [],
           "status": "已纳入",
-          "reason": "任务调度计数、进程状态与通知隔离；不连接设备或发送真实通知"
+          "reason": "跳过首次重启、失败重试和完成计数；系统通知开启时任务结束也不发送通知"
+        },
+        {
+          "id": "tests.core.test_execution_progress.SchedulerProgressIntegrationTests.test_completed_batch_with_system_switch_off_does_not_send_remote_completion",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "系统通知关闭时任务结束不发送本地或远程通知；不连接设备或发送真实通知"
         }
       ]
     },
@@ -18255,6 +18390,15 @@
           "fixtures": [],
           "status": "已纳入",
           "reason": "任务调度计数、进程状态与通知隔离；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_runtime_ui.RuntimeUITests.test_system_settings_never_overwrite_remote_config_or_select_a_provider",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "系统通知独立开关、多渠道失败隔离与旧配置兼容；不连接设备或发送真实通知"
         }
       ]
     }

@@ -80,6 +80,7 @@ Error:
     option: [ game, game_emulator ]
   SaveError: true
   ScreenshotLength: 1
+  SystemNotification: false
   OnePushConfig:
     type: textarea
     mode: yaml

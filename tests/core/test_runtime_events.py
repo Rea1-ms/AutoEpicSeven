@@ -2,16 +2,25 @@
 
 import unittest
 from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime, timezone
 from pathlib import Path
 from threading import Barrier
 from types import SimpleNamespace
 from unittest.mock import Mock, patch
 
 import psutil
+import yaml
+from onepush.providers.custom import Custom
 from requests import Response
 
+from module.config.config_updater import ConfigUpdater
+from module.notify.config import has_system_provider
 from module.notify.notify import handle_notify, is_system_provider
 from module.runtime_events import RuntimeEvents
+from tasks.knights.team_battle_status import (
+    KnightsTeamBattleStatusMixin,
+    TeamBattleCrestStatus,
+)
 from tests.support.offline import ControlledClock, retained_directory
 
 
@@ -118,6 +127,145 @@ class RuntimeEventsTests(unittest.TestCase):
 
 
 class NotificationRoutingTests(unittest.TestCase):
+    def test_independent_switch_sends_locally_before_remote_without_forwarding_it(self):
+        response = Response()
+        response.status_code = 200
+        order = []
+        notifier = SimpleNamespace(params={'required': []}, name='offline', notify=Mock(
+            side_effect=lambda **kwargs: order.append('remote') or response,
+        ))
+        with patch('module.notify.notify.runtime_events') as events, \
+                patch('module.notify.notify.get_notifier', return_value=notifier):
+            events.notify.side_effect = lambda **kwargs: order.append('system') or True
+            self.assertTrue(handle_notify('provider: telegram', system_notification=True,
+                                          title='Title', content='Body'))
+            self.assertEqual(order, ['system', 'remote'])
+            events.notify.assert_called_once_with(title='Title', content='Body')
+            notifier.notify.assert_called_once_with(title='Title', content='Body')
+
+    def test_local_failure_or_exception_does_not_prevent_remote_delivery(self):
+        response = Response()
+        response.status_code = 200
+        for result in (False, RuntimeError('offline queue failure')):
+            notifier = SimpleNamespace(params={'required': []}, name='offline',
+                                       notify=Mock(return_value=response))
+            with self.subTest(result=result), \
+                    patch('module.notify.notify.runtime_events') as events, \
+                    patch('module.notify.notify.get_notifier', return_value=notifier):
+                if isinstance(result, Exception):
+                    events.notify.side_effect = result
+                else:
+                    events.notify.return_value = result
+                self.assertTrue(handle_notify('provider: telegram', system_notification=True,
+                                              title='Title', content='Body'))
+                events.notify.assert_called_once()
+                notifier.notify.assert_called_once()
+
+    def test_remote_failure_or_invalid_config_does_not_undo_local_acceptance(self):
+        for config in ('invalid: [', 'provider: offline'):
+            with self.subTest(config=config), \
+                    patch('module.notify.notify.runtime_events') as events, \
+                    patch('module.notify.notify.get_notifier', side_effect=RuntimeError('offline')):
+                events.notify.return_value = True
+                self.assertTrue(handle_notify(config, system_notification=True,
+                                              title='Title', content='Body'))
+                events.notify.assert_called_once_with(title='Title', content='Body')
+
+    def test_explicit_disable_overrides_legacy_local_provider(self):
+        with patch('module.notify.notify.runtime_events') as events, \
+                patch('module.notify.notify.get_notifier') as network:
+            self.assertFalse(handle_notify('provider: system', system_notification=False))
+            events.notify.assert_not_called()
+            network.assert_not_called()
+
+    def test_channel_list_continues_after_success_failure_and_invalid_entries(self):
+        success = Response()
+        success.status_code = 200
+        failure = Response()
+        failure.status_code = 503
+        for first in (success, failure, RuntimeError('offline transport failure')):
+            one = Mock()
+            one.side_effect = first if isinstance(first, Exception) else None
+            one.return_value = first
+            two = Mock(return_value=success)
+            notifiers = {
+                'first': SimpleNamespace(params={'required': []}, name='first', notify=one),
+                'second': SimpleNamespace(params={'required': []}, name='second', notify=two),
+            }
+            config = '- provider: first\n- not-a-mapping\n- provider: second\n'
+            with self.subTest(first=first), \
+                    patch('module.notify.notify.get_notifier', side_effect=notifiers.__getitem__), \
+                    patch('module.notify.notify.runtime_events') as events:
+                self.assertTrue(handle_notify(config, system_notification=False, title='Title'))
+                one.assert_called_once_with(title='Title')
+                two.assert_called_once_with(title='Title')
+                events.notify.assert_not_called()
+
+    def test_all_failed_destinations_remain_retryable(self):
+        notifier = SimpleNamespace(params={'required': []}, name='offline', notify=Mock(return_value=None))
+        with patch('module.notify.notify.get_notifier', return_value=notifier), \
+                patch('module.notify.notify.runtime_events') as events:
+            events.notify.return_value = False
+            self.assertFalse(handle_notify('- provider: first\n- provider: second',
+                                           system_notification=True, title='Title'))
+            self.assertEqual(notifier.notify.call_count, 2)
+            events.notify.assert_called_once()
+
+    def test_legacy_yaml_documents_keep_merging_provider_and_options(self):
+        response = Response()
+        response.status_code = 200
+        notifier = SimpleNamespace(params={'required': []}, name='offline', notify=Mock(return_value=response))
+        with patch('module.notify.notify.get_notifier', return_value=notifier):
+            self.assertTrue(handle_notify('provider: telegram\n---\nchat_id: offline\n', title='Title'))
+            notifier.notify.assert_called_once_with(chat_id='offline', title='Title')
+
+    def test_custom_channel_builds_message_data_when_no_data_mapping_is_configured(self):
+        response = Response()
+        response.status_code = 200
+        notifier = Mock(spec=Custom)
+        notifier.params = {'required': []}
+        notifier.name = 'offline-custom'
+        notifier.notify.return_value = response
+        with patch('module.notify.notify.get_notifier', return_value=notifier):
+            self.assertTrue(handle_notify('provider: custom', title='Title', content='Body'))
+        notifier.notify.assert_called_once_with(
+            title='Title', content='Body', datatype='json', data={'title': 'Title', 'content': 'Body'},
+        )
+
+    def test_team_battle_reminder_passes_independent_switch_and_only_deduplicates_acceptance(self):
+        now = datetime(2026, 10, 20, 10, 30, tzinfo=timezone.utc)
+        for enabled in (False, True):
+            for accepted in (False, True):
+                task = KnightsTeamBattleStatusMixin()
+                task.config = SimpleNamespace(
+                    KnightsTeamBattle_Reminder=True, KnightsTeamBattle_ReminderLeadMinutes=60,
+                    KnightsTeamBattle_ReminderLastEnd='', Error_OnePushConfig='provider: telegram',
+                    Error_SystemNotification=enabled, config_name='offline-test',
+                )
+                with self.subTest(enabled=enabled, accepted=accepted), \
+                        patch('tasks.knights.team_battle_status.datetime') as clock, \
+                        patch('tasks.knights.team_battle_status.handle_notify', return_value=accepted) as notify:
+                    clock.now.return_value = now
+                    status = TeamBattleCrestStatus(current=3, remain=3, total=3)
+                    task._send_or_schedule_team_battle_reminder(status)
+                    self.assertEqual(notify.call_args.args[0], 'provider: telegram')
+                    self.assertIs(notify.call_args.kwargs['system_notification'], enabled)
+                    self.assertEqual(task.config.KnightsTeamBattle_ReminderLastEnd,
+                                     '2026-10-20 11:00:00' if accepted else '')
+                    task._send_or_schedule_team_battle_reminder(status)
+                    self.assertEqual(notify.call_count, 1 if accepted else 2)
+
+    def test_multiple_legacy_system_entries_only_queue_once(self):
+        with patch('module.notify.notify.runtime_events') as events:
+            events.notify.return_value = True
+            self.assertTrue(handle_notify('- provider: system\n- provider: 系统', title='Title'))
+            events.notify.assert_called_once_with(title='Title', content='')
+
+    def test_invalid_legacy_settings_do_not_enable_system_notifications(self):
+        for value in ('invalid: [', 'not-a-mapping', None, '- 1', '', '---\n---\n'):
+            with self.subTest(value=value):
+                self.assertFalse(has_system_provider(value))
+
     def test_system_provider_uses_local_queue_and_reports_acceptance(self):
         events = Mock(spec=RuntimeEvents)
         with patch('module.notify.notify.runtime_events', events), \
@@ -163,3 +311,41 @@ class NotificationRoutingTests(unittest.TestCase):
                 )
                 notifier.notify.assert_called_once_with(title='Title', content='Body')
                 events.notify.assert_not_called()
+
+
+class NotificationConfigMigrationTests(unittest.TestCase):
+    def test_legacy_local_opt_in_is_migrated_without_changing_remote_settings(self):
+        updater = ConfigUpdater()
+        for provider, expected in (('system', True), ('系统', True), ('telegram', False)):
+            with self.subTest(provider=provider):
+                old = {'Alas': {'Error': {'OnePushConfig': f'provider: {provider}'}}}
+                updated = updater.config_update(old)
+                self.assertIs(updated['Alas']['Error']['SystemNotification'], expected)
+                self.assertEqual(updated['Alas']['Error']['OnePushConfig'], f'provider: {provider}')
+
+    def test_saved_switch_wins_over_legacy_provider_on_repeated_reload(self):
+        for enabled in (False, True):
+            with self.subTest(enabled=enabled):
+                old = {'Alas': {'Error': {'OnePushConfig': 'provider: system',
+                                          'SystemNotification': enabled}}}
+                result = ConfigUpdater().config_update(old)
+                self.assertIs(result['Alas']['Error']['SystemNotification'], enabled)
+                self.assertEqual(result, ConfigUpdater().config_update(result))
+
+    def test_switch_source_defaults_off_and_all_languages_have_real_labels(self):
+        import json
+
+        root = Path(__file__).resolve().parents[2]
+        argument = yaml.safe_load((root / 'module/config/argument/argument.yaml').read_text(encoding='utf-8'))
+        self.assertIs(argument['Error']['SystemNotification'], False)
+        generated = json.loads((root / 'module/config/argument/args.json').read_text(encoding='utf-8'))
+        self.assertEqual(generated['Alas']['Error']['SystemNotification'], {'type': 'checkbox', 'value': False})
+        template = json.loads((root / 'config/template.json').read_text(encoding='utf-8'))
+        self.assertIs(template['Alas']['Error']['SystemNotification'], False)
+        for language in ('zh-CN', 'zh-TW', 'en-US', 'ja-JP', 'es-ES'):
+            with self.subTest(language=language):
+                data = json.loads((root / 'module/config/i18n' / f'{language}.json').read_text(encoding='utf-8'))
+                label = data['Error']['SystemNotification']
+                self.assertTrue(label['name'])
+                self.assertTrue(label['help'])
+                self.assertNotIn('SystemNotification.', label['name'])

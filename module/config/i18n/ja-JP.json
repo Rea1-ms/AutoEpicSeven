@@ -238,9 +238,13 @@
       "name": "エラー時に保持する直前スクリーンショット枚数",
       "help": "エラー保存時に保持する直前スクリーンショットの枚数です。"
     },
+    "SystemNotification": {
+      "name": "システム通知",
+      "help": "リモート通知とは独立して有効にできます。処理できないエラーや業務上のリマインダーのみ通知し、タスクの実行終了時は通知しません。"
+    },
     "OnePushConfig": {
-      "name": "エラー通知設定",
-      "help": "処理不能な例外が発生した後、OnePush でエラー通知を送信します。設定方法はドキュメントを参照してください: https://github.com/LmeSzinc/AzurLaneAutoScript/wiki/Onepush-configuration-%5BCN%5D"
+      "name": "リモート通知設定",
+      "help": "処理できないエラーやタスクのリマインダーを通知します。単一チャネルの設定、または複数チャネルの設定リストを使用できます。システム通知は別のスイッチで設定します。設定方法：https://github.com/LmeSzinc/AzurLaneAutoScript/wiki/Onepush-configuration-%5BEN%5D"
     }
   },
   "Optimization": {

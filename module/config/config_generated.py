@@ -33,6 +33,7 @@ class GeneratedConfig:
     Error_Restart = 'game'  # game, game_emulator
     Error_SaveError = True
     Error_ScreenshotLength = 1
+    Error_SystemNotification = False
     Error_OnePushConfig = 'provider: null'
 
     # Group `Optimization`
