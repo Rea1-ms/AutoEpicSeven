@@ -9,6 +9,7 @@ from module.config.deep import deep_default, deep_get, deep_iter, deep_set
 from module.config.server import VALID_SERVER
 from module.config.utils import *
 from module.config.utils import parse_value
+from module.notify.config import has_system_provider
 
 CONFIG_IMPORT = '''
 import datetime
@@ -478,6 +479,9 @@ class ConfigGenerator:
 class ConfigUpdater:
     # source, target, (optional)convert_func
     redirection = [
+        # Preserve an existing local opt-in once. An explicitly saved False
+        # must win on every later reload even if the legacy provider remains.
+        ('Alas.Error.OnePushConfig', 'Alas.Error.SystemNotification', has_system_provider),
         # Split task ownership without changing existing opt-ins or due times.
         # Redirection only fills absent destinations, so later independent
         # edits survive reloads. ActivityRuntime stays at its historical path.

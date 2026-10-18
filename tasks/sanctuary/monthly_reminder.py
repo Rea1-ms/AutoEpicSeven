@@ -77,11 +77,13 @@ class SanctuaryMonthlyReminderMixin:
         )
         if handle_notify(
             self.config.Error_OnePushConfig,
+            system_notification=getattr(self.config, 'Error_SystemNotification', None),
             title=f"AES <{config_name}> 圣域月常领取提醒",
             content=content,
         ):
-            # Persist only confirmed delivery. Restarting the script must not
-            # resend today's reminder, while a failed push must remain retryable.
+            # Any accepted destination completes this reminder; a local result
+            # means queued, not confirmed display. Retry only when all enabled
+            # destinations failed, otherwise one broken channel causes spam.
             self.config.SanctuaryMonthly_ReminderLastSent = window.day_key
             logger.info("Monthly reward reminder sent")
         else:

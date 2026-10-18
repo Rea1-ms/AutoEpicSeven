@@ -130,7 +130,12 @@ class KnightsTeamBattleStatusMixin:
             f"当前团战刀数 {status.to_counter()}，仍有 {status.remain} 刀未出。\n"
             f"本轮团战将在 {end_text} 结束，请尽快处理。"
         )
-        if handle_notify(self.config.Error_OnePushConfig, title=title, content=content):
+        if handle_notify(
+            self.config.Error_OnePushConfig,
+            system_notification=getattr(self.config, 'Error_SystemNotification', None),
+            title=title,
+            content=content,
+        ):
             logger.info("Team battle reminder sent")
             self.config.KnightsTeamBattle_ReminderLastEnd = end_text
         else:

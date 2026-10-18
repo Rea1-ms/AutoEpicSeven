@@ -18017,6 +18017,399 @@
           "reason": "新实图复现已选中页签被反复点击；确认选中态、其他页签反例和实际领奖动作"
         }
       ]
+    },
+    {
+      "source": "tests/core/test_runtime_events.py",
+      "business": "运行进度与系统通知",
+      "status": "新增",
+      "reason": "本机事件传递、重复调度及通知渠道回归",
+      "cases": [
+        {
+          "id": "tests.core.test_runtime_events.RuntimeEventsTests.test_progress_is_shared_by_instances_and_isolated_by_configuration",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "任务调度计数、进程状态与通知隔离；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_runtime_events.RuntimeEventsTests.test_desktop_priority_and_concurrent_consumption_deliver_exactly_once",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "任务调度计数、进程状态与通知隔离；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_runtime_events.RuntimeEventsTests.test_expired_clients_and_messages_are_not_replayed_on_reconnect",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "任务调度计数、进程状态与通知隔离；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_runtime_events.RuntimeEventsTests.test_unregister_discards_old_delivery_and_falls_back_to_open_browser",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "任务调度计数、进程状态与通知隔离；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_runtime_events.RuntimeEventsTests.test_dead_or_reused_worker_cannot_leave_running_progress",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "任务调度计数、进程状态与通知隔离；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_runtime_events.NotificationRoutingTests.test_system_provider_uses_local_queue_and_reports_acceptance",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "任务调度计数、进程状态与通知隔离；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_runtime_events.NotificationRoutingTests.test_network_providers_preserve_real_response_success_semantics",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "任务调度计数、进程状态与通知隔离；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_runtime_events.NotificationRoutingTests.test_independent_switch_sends_locally_before_remote_without_forwarding_it",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "系统通知独立开关、多渠道失败隔离与旧配置兼容；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_runtime_events.NotificationRoutingTests.test_local_failure_or_exception_does_not_prevent_remote_delivery",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "系统通知独立开关、多渠道失败隔离与旧配置兼容；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_runtime_events.NotificationRoutingTests.test_remote_failure_or_invalid_config_does_not_undo_local_acceptance",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "系统通知独立开关、多渠道失败隔离与旧配置兼容；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_runtime_events.NotificationRoutingTests.test_explicit_disable_overrides_legacy_local_provider",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "系统通知独立开关、多渠道失败隔离与旧配置兼容；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_runtime_events.NotificationRoutingTests.test_channel_list_continues_after_success_failure_and_invalid_entries",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "系统通知独立开关、多渠道失败隔离与旧配置兼容；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_runtime_events.NotificationRoutingTests.test_all_failed_destinations_remain_retryable",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "系统通知独立开关、多渠道失败隔离与旧配置兼容；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_runtime_events.NotificationRoutingTests.test_legacy_yaml_documents_keep_merging_provider_and_options",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "系统通知独立开关、多渠道失败隔离与旧配置兼容；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_runtime_events.NotificationRoutingTests.test_multiple_legacy_system_entries_only_queue_once",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "系统通知独立开关、多渠道失败隔离与旧配置兼容；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_runtime_events.NotificationRoutingTests.test_invalid_legacy_settings_do_not_enable_system_notifications",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "系统通知独立开关、多渠道失败隔离与旧配置兼容；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_runtime_events.NotificationConfigMigrationTests.test_legacy_local_opt_in_is_migrated_without_changing_remote_settings",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "系统通知独立开关、多渠道失败隔离与旧配置兼容；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_runtime_events.NotificationConfigMigrationTests.test_saved_switch_wins_over_legacy_provider_on_repeated_reload",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "系统通知独立开关、多渠道失败隔离与旧配置兼容；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_runtime_events.NotificationConfigMigrationTests.test_switch_source_defaults_off_and_all_languages_have_real_labels",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "系统通知独立开关、多渠道失败隔离与旧配置兼容；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_runtime_events.NotificationRoutingTests.test_custom_channel_builds_message_data_when_no_data_mapping_is_configured",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "自定义远程渠道与团战提醒独立开关、去重回归；模拟配置和通知，无真实设备"
+        },
+        {
+          "id": "tests.core.test_runtime_events.NotificationRoutingTests.test_team_battle_reminder_passes_independent_switch_and_only_deduplicates_acceptance",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "自定义远程渠道与团战提醒独立开关、去重回归；模拟配置和通知，无真实设备"
+        }
+      ]
+    },
+    {
+      "source": "tests/core/test_execution_progress.py",
+      "business": "运行进度与系统通知",
+      "status": "新增",
+      "reason": "本机事件传递、重复调度及通知渠道回归",
+      "cases": [
+        {
+          "id": "tests.core.test_execution_progress.ExecutionProgressTests.test_failed_attempts_and_duplicate_success_do_not_inflate_completion",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "任务调度计数、进程状态与通知隔离；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_execution_progress.ExecutionProgressTests.test_tasks_added_mid_batch_expand_total_without_losing_completed_work",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "任务调度计数、进程状态与通知隔离；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_execution_progress.ExecutionProgressTests.test_initial_restart_skip_does_not_count_phantom_work",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "任务调度计数、进程状态与通知隔离；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_execution_progress.ExecutionProgressTests.test_disabled_pending_task_cannot_turn_partial_success_into_batch_completion",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "任务调度计数、进程状态与通知隔离；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_execution_progress.ExecutionProgressTests.test_waiting_and_stop_report_explicit_state_without_claiming_success",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "任务调度计数、进程状态与通知隔离；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_execution_progress.ExecutionProgressTests.test_requeued_successful_task_requires_a_new_success_before_batch_completion",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "任务调度计数、进程状态与通知隔离；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_execution_progress.SchedulerProgressIntegrationTests.test_standalone_success_and_taskend_publish_completed",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "任务调度计数、进程状态与通知隔离；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_execution_progress.SchedulerProgressIntegrationTests.test_standalone_fatal_error_and_keyboard_interrupt_do_not_claim_completion",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "任务调度计数、进程状态与通知隔离；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_execution_progress.SchedulerProgressIntegrationTests.test_scheduler_skips_initial_restart_retries_then_announces_completed_batch",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "跳过首次重启、失败重试和完成计数；系统通知开启时任务结束也不发送通知"
+        },
+        {
+          "id": "tests.core.test_execution_progress.SchedulerProgressIntegrationTests.test_completed_batch_with_system_switch_off_does_not_send_remote_completion",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "系统通知关闭时任务结束不发送本地或远程通知；不连接设备或发送真实通知"
+        }
+      ]
+    },
+    {
+      "source": "tests/core/test_runtime_ui.py",
+      "business": "运行进度与系统通知",
+      "status": "新增",
+      "reason": "本机事件传递、重复调度及通知渠道回归",
+      "cases": [
+        {
+          "id": "tests.core.test_runtime_ui.RuntimeUITests.test_poll_registers_live_receiver_and_delivers_progress_and_notifications",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "任务调度计数、进程状态与通知隔离；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_runtime_ui.RuntimeUITests.test_revoked_permission_unregisters_and_does_not_consume_notifications",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "任务调度计数、进程状态与通知隔离；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_runtime_ui.RuntimeUITests.test_home_page_preserves_selected_config_but_explicit_instance_switch_updates_it",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "任务调度计数、进程状态与通知隔离；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_runtime_ui.RuntimeUITests.test_disconnect_releases_receiver_and_subsequent_polls_are_inactive",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "任务调度计数、进程状态与通知隔离；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_runtime_ui.RuntimeUITests.test_runtime_task_is_not_removed_by_page_navigation",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "任务调度计数、进程状态与通知隔离；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_runtime_ui.RuntimeUITests.test_test_notification_refreshes_permission_and_only_reports_queueing",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "任务调度计数、进程状态与通知隔离；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_runtime_ui.RuntimeUITests.test_test_notification_without_permission_does_not_queue_or_request_permission",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "任务调度计数、进程状态与通知隔离；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_runtime_ui.RuntimeUITests.test_test_notification_queue_failure_does_not_claim_success",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "任务调度计数、进程状态与通知隔离；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_runtime_ui.RuntimeUITests.test_missing_progress_clears_previous_runtime_display",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "任务调度计数、进程状态与通知隔离；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_runtime_ui.RuntimeUITests.test_system_settings_never_overwrite_remote_config_or_select_a_provider",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "系统通知独立开关、多渠道失败隔离与旧配置兼容；不连接设备或发送真实通知"
+        }
+      ]
     }
   ]
 }

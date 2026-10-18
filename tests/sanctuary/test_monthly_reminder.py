@@ -84,6 +84,7 @@ class ReminderWorkflowTests(unittest.TestCase):
             SanctuaryMonthly_ReminderLastSent="",
             Scheduler_ServerUpdate="03:00",
             Error_OnePushConfig="provider: mock",
+            Error_SystemNotification=True,
             config_name="test-account",
             task_delay=Mock(),
         )
@@ -125,6 +126,7 @@ class ReminderWorkflowTests(unittest.TestCase):
     def test_sent_with_deadline_and_account(self):
         self.task._send_monthly_reward_reminder()
         kwargs = self.notify.call_args.kwargs
+        self.assertTrue(kwargs['system_notification'])
         self.assertIn("2026-10-01 03:00", kwargs["content"])
         self.assertIn("test-account", kwargs["title"])
         self.assertEqual(self.config.SanctuaryMonthly_ReminderLastSent, "2026-10|2026-09-28")

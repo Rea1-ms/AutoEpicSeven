@@ -238,9 +238,13 @@
       "name": "出錯時，保留最後 X 張截圖",
       "help": ""
     },
+    "SystemNotification": {
+      "name": "系統通知",
+      "help": "獨立傳送系統通知，可與遠端推播同時啟用；僅在無法處理的異常或業務提醒時通知，任務執行結束不提醒。"
+    },
     "OnePushConfig": {
-      "name": "錯誤推送設定",
-      "help": "發生無法處理的異常後，使用 Onepush 推送错误消息。設定參考文檔：https://github.com/LmeSzinc/AzurLaneAutoScript/wiki/Onepush-configuration-%5BCN%5D"
+      "name": "遠端推播設定",
+      "help": "發生無法處理的例外或需要業務提醒時，傳送遠端通知。相容單一管道寫法，也可使用清單設定多個管道；系統通知由獨立開關控制。設定方法：https://github.com/LmeSzinc/AzurLaneAutoScript/wiki/Onepush-configuration-%5BCN%5D"
     }
   },
   "Optimization": {

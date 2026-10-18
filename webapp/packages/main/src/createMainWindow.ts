@@ -3,6 +3,7 @@ import {join} from 'node:path';
 import {URL} from 'node:url';
 import {ThemeObj} from '@common/constant/theme';
 import logger from '/@/logger';
+import {installRuntimeIpc} from './runtimeIpc';
 
 export const createMainWindow = async () => {
   nativeTheme.themeSource = ThemeObj['light'];
@@ -14,6 +15,8 @@ export const createMainWindow = async () => {
     icon: join(__dirname, './icon.png'),
     webPreferences: {
       nodeIntegration: false,
+      // Progress and notifications must keep updating while minimized or hidden in the tray.
+      backgroundThrottling: false,
       contextIsolation: true,
       sandbox: false, // Sandbox disabled because the demo of preload script depend on the Node.js api
       webviewTag: false, // The webview tag is not recommended. Consider alternatives like an iframe or Electron's BrowserView. @see https://www.electronjs.org/docs/latest/api/webview-tag#warning
@@ -88,6 +91,7 @@ export const createMainWindow = async () => {
     import.meta.env.DEV && import.meta.env.VITE_DEV_SERVER_URL !== undefined
       ? import.meta.env.VITE_DEV_SERVER_URL
       : new URL('../renderer/dist/index.html', 'file://' + __dirname).toString();
+  installRuntimeIpc(browserWindow, pageUrl);
   await browserWindow.loadURL(pageUrl);
 
   return browserWindow;

@@ -18,6 +18,7 @@
       "Restart": "game",
       "SaveError": true,
       "ScreenshotLength": 1,
+      "SystemNotification": false,
       "OnePushConfig": "provider: null"
     },
     "Optimization": {
