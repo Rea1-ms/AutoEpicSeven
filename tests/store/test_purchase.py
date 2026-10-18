@@ -65,9 +65,8 @@ class PurchaseReplayTests(unittest.TestCase):
         self.assertEqual((result.success, result.quantity), (True, 1))
         self.assertEqual(r.index, 14)
         self.assert_no_confirm(r)
-        r.assert_retried(self, 'DAILY_FREE_ITEM', 2)
         r.assert_retried(self, 'TOUCH_TO_CLOSE', 2)
-        self.assertTrue(all(index < 8 for index in r.clicks('DAILY_FREE_ITEM')), r.actions)
+        self.assertEqual(r.clicks('DAILY_FREE_ITEM'), [1], r.actions)
         self.assertTrue(all(8 <= index < 14 for index in r.clicks('TOUCH_TO_CLOSE')), r.actions)
 
     def test_inheritance_store_captures_still_require_active_colors(self):
@@ -92,16 +91,25 @@ class PurchaseReplayTests(unittest.TestCase):
         self.assertEqual(r.clicks('DAILY_FREE_ITEM'), [1])
         self.assertTrue(all(index < 7 for index in r.clicks('TOUCH_TO_CLOSE')), r.actions)
 
-    def test_confirm_path_waits_through_store_frames_for_delayed_reward(self):
-        r = self.replay([shelf(available=True)] * 2 + [scene('BUY_CONFIRM_SINGLE')] * 4
-                        + [shelf()] * 6 + [scene('TOUCH_TO_CLOSE')] * 6 + [shelf()])
+    def test_store_frame_before_direct_reward_does_not_reopen_item(self):
+        r = self.replay([shelf(available=True)] * 2 + [shelf()] * 6
+                        + [scene('TOUCH_TO_CLOSE')] * 6 + [shelf()])
         result = r.task._purchase_item(free_plan())
         self.assertEqual((result.success, result.quantity), (True, 1))
-        self.assertEqual(r.index, 18)
-        self.assertEqual(r.clicks('DAILY_FREE_ITEM'), [1])
-        self.assertTrue(r.clicks('BUY_CONFIRM_SINGLE'), r.actions)
-        self.assertTrue(all(2 <= index < 6 for index in r.clicks('BUY_CONFIRM_SINGLE')), r.actions)
+        self.assertEqual(r.index, 14)
+        self.assertEqual(r.clicks('DAILY_FREE_ITEM'), [1], r.actions)
+        self.assert_no_confirm(r)
         r.assert_retried(self, 'TOUCH_TO_CLOSE', 2)
+
+    def test_unexpected_confirmation_before_reward_is_ignored(self):
+        r = self.replay([shelf(available=True)] * 2
+                        + [scene('BUY_CONFIRM_SINGLE', 'DAILY_FREE_ITEM')] * 8
+                        + [scene('TOUCH_TO_CLOSE')] * 6 + [shelf()])
+        result = r.task._purchase_item(free_plan())
+        self.assertEqual((result.success, result.quantity), (True, 1))
+        self.assertEqual(r.clicks('DAILY_FREE_ITEM'), [1], r.actions)
+        self.assert_no_confirm(r)
+        self.assertTrue(r.clicks('TOUCH_TO_CLOSE'), r.actions)
 
     def test_reward_seen_blocks_late_confirm_and_item_clicks(self):
         r = self.replay([shelf(available=True)] * 2 + [scene('TOUCH_TO_CLOSE')] * 5
@@ -139,10 +147,9 @@ class PurchaseReplayTests(unittest.TestCase):
         self.assertEqual(r.clicks('DAILY_FREE_ITEM'), [1])
 
     def test_store_return_without_reward_is_not_success(self):
-        r = self.replay([shelf(available=True)] * 2 + [scene('BUY_CONFIRM_SINGLE')] * 4
-                        + [shelf()] * 160)
+        r = self.replay([shelf(available=True)] * 2 + [shelf()] * 160)
         self.assert_local_failure(r)
-        self.assertTrue(r.clicks('BUY_CONFIRM_SINGLE'), r.actions)
+        self.assert_no_confirm(r)
         self.assertFalse(r.clicks('TOUCH_TO_CLOSE'), r.actions)
         self.assertEqual(r.clicks('DAILY_FREE_ITEM'), [1])
 
@@ -158,7 +165,7 @@ class PurchaseReplayTests(unittest.TestCase):
         started = self.clock.now
         self.assert_local_failure(r)
         self.assertLessEqual(self.clock.now - started, 21)
-        r.assert_retried(self, 'DAILY_FREE_ITEM', 2)
+        self.assertEqual(r.clicks('DAILY_FREE_ITEM'), [1], r.actions)
         self.assert_no_confirm(r)
         self.assertFalse(r.clicks('TOUCH_TO_CLOSE'), r.actions)
 
@@ -171,15 +178,15 @@ class PurchaseReplayTests(unittest.TestCase):
         self.assert_no_confirm(r)
         self.assertEqual(r.clicks('DAILY_FREE_ITEM'), [1])
 
-    def test_persistent_confirmation_fails_locally_before_click_guard(self):
-        r = self.replay([shelf(available=True)] * 2 + [scene('BUY_CONFIRM_SINGLE')] * 160)
+    def test_persistent_confirmation_is_not_clicked_or_counted_as_reward(self):
+        r = self.replay([shelf(available=True)] * 2
+                        + [scene('BUY_CONFIRM_SINGLE', 'DAILY_FREE_ITEM')] * 160)
         started = self.clock.now
         self.assert_local_failure(r)
         self.assertLessEqual(self.clock.now - started, 21)
-        r.assert_retried(self, 'BUY_CONFIRM_SINGLE', 2)
-        self.assertLess(len(r.clicks('BUY_CONFIRM_SINGLE')), 12)
+        self.assertEqual(r.clicks('DAILY_FREE_ITEM'), [1], r.actions)
+        self.assert_no_confirm(r)
         self.assertFalse(r.clicks('TOUCH_TO_CLOSE'), r.actions)
-        self.assertEqual(r.clicks('DAILY_FREE_ITEM'), [1])
 
     def test_slow_network_frames_cannot_extend_total_claim_timeout(self):
         r = self.replay([shelf(available=True)] * 2

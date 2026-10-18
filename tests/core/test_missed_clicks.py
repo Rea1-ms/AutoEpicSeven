@@ -130,18 +130,17 @@ class StoreMissedClickTests(MissedClickTests):
         r.task._ocr_purchase_counter = lambda _: r.frame.get('counter', (1, 2, 3))
         return r
 
-    def test_item_and_confirm_and_reward_close_all_retry_without_extra_purchase(self):
+    def test_direct_free_claim_waits_for_reward_without_clicking_again(self):
         r = self.store([scene('DAILY_FREE_ITEM', page='store')] * 6
-                       + [scene('BUY_CONFIRM_SINGLE')] * 6 + [scene('TOUCH_TO_CLOSE')] * 6
-                       + [scene(page='store')])
+                       + [scene('TOUCH_TO_CLOSE')] * 6 + [scene(page='store')])
         result = r.task._purchase_item(ItemPurchasePlan('free', DAILY_FREE_ITEM, direct_click=True,
                                                        requires_reward_popup=True))
         self.assertTrue(result.success)
-        for button in ('DAILY_FREE_ITEM', 'BUY_CONFIRM_SINGLE', 'TOUCH_TO_CLOSE'):
-            r.assert_retried(self, button, 0.8 if button == 'DAILY_FREE_ITEM' else 1)
-        self.assertTrue(all(i < 6 for i in r.clicks('DAILY_FREE_ITEM')))
+        self.assertEqual(r.clicks('DAILY_FREE_ITEM'), [0], r.actions)
+        self.assertFalse(r.clicks('BUY_CONFIRM_SINGLE'), r.actions)
+        r.assert_retried(self, 'TOUCH_TO_CLOSE', 1)
         self.assertEqual(result.quantity, 1)
-        self.assertEqual(r.index, 18)
+        self.assertEqual(r.index, 12)
 
     def test_multi_quantity_retry_requires_changed_counter_before_confirm(self):
         r = self.store([scene('DAILY_FREE_ITEM', page='store')]

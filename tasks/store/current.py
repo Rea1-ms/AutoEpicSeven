@@ -626,7 +626,7 @@ class CurrentStore(FriendshipGiftMixin, UI):
         purchase_quantity = 1
         quantity_source = 'default'
         skipping_purchase = False
-        target_retry = Timer(2 if item.requires_reward_popup else 0.8, count=2).start()
+        target_retry = Timer(0.8, count=2).start()
 
         while 1:
             self.device.screenshot()
@@ -648,19 +648,25 @@ class CurrentStore(FriendshipGiftMixin, UI):
                     timeout.reset()
                 continue
 
-            # Daily free goods can go straight from the item to the reward,
-            # without a purchase confirmation. Observe that reward after the
-            # first item click, before generic popup handlers can consume it.
-            # Once seen, it owns the remaining flow: only retry its close and
-            # wait for the active store, never reopen the item or confirm again.
-            # A close click is not proof that the overlay actually disappeared.
+            # The current free-goods flow claims on the first item click and
+            # opens the reward directly; it no longer displays a purchase
+            # confirmation. Once that click is sent, this branch owns the
+            # remaining flow: wait for the reward, retry only its close, then
+            # wait for an active store. Never click the item or a confirmation
+            # again. A delayed reward or loading frame is not permission to
+            # repeat a claim that may already have reached the server.
+            # A close click is not proof that the overlay disappeared.
             # Network dialogs above take priority even while their retry is on
             # cooldown, because they share the same TOUCH_TO_CLOSE artwork.
             if clicked_target and item.requires_reward_popup:
+                # The reward timer, not the ordinary purchase timer, bounds
+                # this phase. Reset the latter only inside this branch; that
+                # preserves the 20-second total cap while preventing a normal
+                # loading delay from being reported as an unrecognized frame.
+                timeout.reset()
                 if self.appear(TOUCH_TO_CLOSE):
                     if not reward_seen:
                         reward_seen = True
-                        timeout.reset()
                         logger.info(f'{item.name}: reward popup observed')
                     if self.handle_touch_to_close(interval=2):
                         reward_closed = True
@@ -679,14 +685,12 @@ class CurrentStore(FriendshipGiftMixin, UI):
                             quantity_source=quantity_source,
                         )
                     continue
-                # A briefly visible store after confirmation is not evidence
-                # of receipt. Keep waiting for the delayed reward, including
-                # retrying a confirmation whose previous click did not land.
-                if clicked_confirm:
-                    current_layout = self._detect_purchase_popup_layout()
-                    if current_layout != 'unknown':
-                        self._click_purchase_confirm(current_layout, interval=2)
-                    continue
+                # Handle unrelated popups while the reward is in flight, but
+                # stay out of the ordinary purchase path. In particular, do
+                # not reinterpret a stale confirmation as a valid claim step.
+                if self.ui_additional():
+                    timeout.reset()
+                continue
 
             if self.ui_additional():
                 timeout.reset()

@@ -15,7 +15,7 @@
           "has_automatic_assertion": true,
           "fixtures": [],
           "status": "已纳入",
-          "reason": "免费商品直接领奖、关闭重试、确认兼容与无进展局部退出"
+          "reason": "免费商品单击直接领奖；奖励等待、关闭重试与无进展局部退出"
         },
         {
           "id": "tests.store.test_purchase.PurchaseReplayTests.test_closed_reward_without_return_to_store_fails_locally",
@@ -24,16 +24,16 @@
           "has_automatic_assertion": true,
           "fixtures": [],
           "status": "已纳入",
-          "reason": "免费商品直接领奖、关闭重试、确认兼容与无进展局部退出"
+          "reason": "免费商品单击直接领奖；奖励等待、关闭重试与无进展局部退出"
         },
         {
-          "id": "tests.store.test_purchase.PurchaseReplayTests.test_confirm_path_waits_through_store_frames_for_delayed_reward",
+          "id": "tests.store.test_purchase.PurchaseReplayTests.test_store_frame_before_direct_reward_does_not_reopen_item",
           "category": "流程回放",
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
           "status": "已纳入",
-          "reason": "免费商品直接领奖、关闭重试、确认兼容与无进展局部退出"
+          "reason": "免费商品单击直接领奖；奖励等待、关闭重试与无进展局部退出"
         },
         {
           "id": "tests.store.test_purchase.PurchaseReplayTests.test_inheritance_store_captures_still_require_active_colors",
@@ -54,7 +54,7 @@
           "has_automatic_assertion": true,
           "fixtures": [],
           "status": "已纳入",
-          "reason": "免费商品直接领奖、关闭重试、确认兼容与无进展局部退出"
+          "reason": "免费商品单击直接领奖；奖励等待、关闭重试与无进展局部退出"
         },
         {
           "id": "tests.store.test_purchase.PurchaseReplayTests.test_persistent_available_item_cannot_extend_total_claim_timeout",
@@ -66,7 +66,7 @@
           "reason": "免费商品总等待上限、连续重试与共用商店明暗识别"
         },
         {
-          "id": "tests.store.test_purchase.PurchaseReplayTests.test_persistent_confirmation_fails_locally_before_click_guard",
+          "id": "tests.store.test_purchase.PurchaseReplayTests.test_persistent_confirmation_is_not_clicked_or_counted_as_reward",
           "category": "流程回放",
           "requires_device": false,
           "has_automatic_assertion": true,
@@ -94,7 +94,7 @@
             "tests/fixtures/historical/global_cn/store/store-daily-free-claimed-20261014.png"
           ],
           "status": "已纳入",
-          "reason": "免费商品直接领奖、关闭重试、确认兼容与无进展局部退出"
+          "reason": "免费商品单击直接领奖；奖励等待、关闭重试与无进展局部退出"
         },
         {
           "id": "tests.store.test_purchase.PurchaseReplayTests.test_real_direct_reward_retries_close_without_confirm_or_reopening_item",
@@ -107,7 +107,7 @@
             "tests/fixtures/historical/global_cn/store/store-daily-free-claimed-20261014.png"
           ],
           "status": "已纳入",
-          "reason": "免费商品直接领奖、关闭重试、确认兼容与无进展局部退出"
+          "reason": "免费商品单击直接领奖；奖励等待、关闭重试与无进展局部退出"
         },
         {
           "id": "tests.store.test_purchase.PurchaseReplayTests.test_reward_seen_blocks_late_confirm_and_item_clicks",
@@ -116,7 +116,16 @@
           "has_automatic_assertion": true,
           "fixtures": [],
           "status": "已纳入",
-          "reason": "免费商品直接领奖、关闭重试、确认兼容与无进展局部退出"
+          "reason": "免费商品单击直接领奖；奖励等待、关闭重试与无进展局部退出"
+        },
+        {
+          "id": "tests.store.test_purchase.PurchaseReplayTests.test_unexpected_confirmation_before_reward_is_ignored",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "免费商品奖励到达前不点击购买确认，仍按奖励与商店返回确认完成"
         },
         {
           "id": "tests.store.test_purchase.PurchaseReplayTests.test_simulated_close_artwork_disappearing_does_not_accept_dimmed_store",
@@ -129,7 +138,7 @@
             "tests/fixtures/historical/global_cn/store/store-daily-free-claimed-20261014.png"
           ],
           "status": "已纳入",
-          "reason": "免费商品直接领奖、关闭重试、确认兼容与无进展局部退出"
+          "reason": "免费商品单击直接领奖；奖励等待、关闭重试与无进展局部退出"
         },
         {
           "id": "tests.store.test_purchase.PurchaseReplayTests.test_slow_network_frames_cannot_extend_total_claim_timeout",
@@ -147,7 +156,7 @@
           "has_automatic_assertion": true,
           "fixtures": [],
           "status": "已纳入",
-          "reason": "免费商品直接领奖、关闭重试、确认兼容与无进展局部退出"
+          "reason": "免费商品单击直接领奖；奖励等待、关闭重试与无进展局部退出"
         },
         {
           "id": "tests.store.test_purchase.PurchaseReplayTests.test_unknown_observation_after_item_click_fails_before_device_restart",
@@ -156,7 +165,7 @@
           "has_automatic_assertion": true,
           "fixtures": [],
           "status": "已纳入",
-          "reason": "免费商品直接领奖、关闭重试、确认兼容与无进展局部退出"
+          "reason": "免费商品单击直接领奖；奖励等待、关闭重试与无进展局部退出"
         }
       ]
     },
@@ -15503,7 +15512,7 @@
           "reason": "重复观察与假点击回归；使用受控时间和模拟画面，点击不改变输入"
         },
         {
-          "id": "tests.core.test_missed_clicks.StoreMissedClickTests.test_item_and_confirm_and_reward_close_all_retry_without_extra_purchase",
+          "id": "tests.core.test_missed_clicks.StoreMissedClickTests.test_direct_free_claim_waits_for_reward_without_clicking_again",
           "category": "流程回放",
           "requires_device": false,
           "has_automatic_assertion": true,
