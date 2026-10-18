@@ -42,6 +42,9 @@ class GeneratedConfig:
 
     # Group `MissionReward`
     MissionReward_ClaimDailyRewards = True
+    MissionReward_DailyPriority = True
+    MissionReward_DailyPlan = {}
+    MissionReward_DailyBudget = {}
 
     # Group `Mail`
     Mail_CollectWithin = '1d'  # 1h, 1d

@@ -42,7 +42,10 @@
       "ServerUpdate": "02:00"
     },
     "MissionReward": {
-      "ClaimDailyRewards": true
+      "ClaimDailyRewards": true,
+      "DailyPriority": true,
+      "DailyPlan": {},
+      "DailyBudget": {}
     }
   },
   "Mail": {

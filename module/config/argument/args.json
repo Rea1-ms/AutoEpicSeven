@@ -201,6 +201,22 @@
       "ClaimDailyRewards": {
         "type": "checkbox",
         "value": true
+      },
+      "DailyPriority": {
+        "type": "checkbox",
+        "value": true
+      },
+      "DailyPlan": {
+        "type": "dict",
+        "value": {},
+        "keepvalue": true,
+        "display": "hide"
+      },
+      "DailyBudget": {
+        "type": "dict",
+        "value": {},
+        "keepvalue": true,
+        "display": "hide"
       }
     }
   },

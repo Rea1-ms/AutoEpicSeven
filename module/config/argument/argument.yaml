@@ -95,6 +95,17 @@ Optimization:
 
 MissionReward:
   ClaimDailyRewards: true
+  DailyPriority: true
+  DailyPlan:
+    keepvalue: true
+    display: hide
+    type: dict
+    value: {}
+  DailyBudget:
+    keepvalue: true
+    display: hide
+    type: dict
+    value: {}
 
 Mail:
   CollectWithin:

@@ -372,7 +372,7 @@ class ArenaNpcCombatMixin:
                     timeout.reset()
                     continue
 
-                if self.appear_then_click(BATTLE_START, interval=1):
+                if self._npc_click_battle_start():
                     stage = self.ARENA_NPC_STAGE_BATTLE
                     gray_retry = 0
                     auto_fight_clicks = 0
@@ -487,7 +487,7 @@ class ArenaNpcCombatMixin:
                     and battle_start_grace_timer.reached()
                     and battle_start_pending_timer.reached()
                     and self._is_battle_prepare_page()
-                    and self.appear_then_click(BATTLE_START, interval=1)
+                    and self._npc_click_battle_start()
                 ):
                     logger.info("Arena NPC: battle start pending timeout, retry start")
                     battle_start_pending_timer.reset()
@@ -514,13 +514,46 @@ class ArenaNpcCombatMixin:
             timeout.reset()
             continue
 
+    def _npc_click_battle_start(self) -> bool:
+        budget = getattr(self, "_arena_daily_budget", None)
+        if budget is None or not budget.active:
+            return self.appear_then_click(BATTLE_START, interval=1)
+        if not self.appear(BATTLE_START, interval=1):
+            return False
+        # Reserve immediately before the first consuming click. Retry clicks
+        # belong to the same pending round and must never charge it twice.
+        if not self._arena_daily_round_reserved:
+            flags = self._stored_arena_flag_status()
+            decision = budget.choose("arena", affordable=flags[0] if flags is not None else 0)
+            if decision.reason != "run":
+                return False
+            budget.reserve("arena", 1, extra=decision.extra)
+            self._arena_daily_round_reserved = True
+        self.device.click(BATTLE_START)
+        return True
+
     def _run_npc_combat(self, skip_first_screenshot=True) -> bool:
+        from tasks.mission_reward.planning import DailyBudget
+
         self._arena_npc_completed_rounds = 0
+        self._arena_daily_stop_reason = None
+        self._arena_daily_budget = DailyBudget(
+            self.config, "Arena", {"arena": getattr(self.config, "Arena_NPCCombatCount", 5)}
+        )
         # Server-managed repeat sessions keep their runtime record active while
         # arena fast battle remains available. Honor the user's setting here;
         # each round checks the actual lock and remaining uses on the prepare page.
         use_fast_battle = getattr(self.config, "Arena_NPCCombatFastBattle", True)
         flag_status = self._stored_arena_flag_status()
+        if self._arena_daily_budget.active:
+            decision = self._arena_daily_budget.choose(
+                "arena", affordable=flag_status[0] if flag_status is not None else 0
+            )
+            if decision.reason != "run":
+                self._arena_daily_stop_reason = decision.reason
+                logger.info(f"Arena daily batch: {decision.reason}")
+                return True
+            daily_target = decision.count
         if flag_status is not None and flag_status[0] <= 0:
             logger.info("Arena NPC: arena flag is already 0, skip combat")
             return True
@@ -546,6 +579,9 @@ class ArenaNpcCombatMixin:
                 logger.info("Arena NPC: target count <= 0, skip")
                 return True
 
+        if self._arena_daily_budget.active:
+            target_count = daily_target
+
         logger.info(
             f"Arena NPC: target={target_count or 'until exhausted'}, fast_battle={use_fast_battle}"
         )
@@ -553,6 +589,7 @@ class ArenaNpcCombatMixin:
         while target_count is None or completed < target_count:
             # Avoid stale click history across rounds triggering false-positive too-many-click.
             self.device.click_record_clear()
+            self._arena_daily_round_reserved = False
             status = self._npc_combat_once(
                 use_fast_battle=use_fast_battle,
                 skip_first_screenshot=skip_first_screenshot,
@@ -560,6 +597,7 @@ class ArenaNpcCombatMixin:
             skip_first_screenshot = True
 
             if status == "completed":
+                self._arena_daily_budget.confirm()
                 completed += 1
                 self._arena_npc_completed_rounds = completed
                 self._consume_stored_arena_flags(1)

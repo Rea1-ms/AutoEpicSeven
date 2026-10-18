@@ -223,6 +223,7 @@ class CombatPrepare:
         fallback_on_enable_timeout=False,
         prepare_check=None,
         additional_handler=None,
+        count_limit: int | None = None,
     ) -> tuple[str, int]:
         """Prepare a stamina-safe fast-combat count.
 
@@ -233,6 +234,7 @@ class CombatPrepare:
             prepare_check: Optional side-effect-free check for unobstructed
                 prepare controls, also used while adjusting the counter.
             additional_handler: Optional popup handler for this prepare flow.
+            count_limit: Explicit batch cap; does not change the configured total.
 
         Returns:
             tuple[str, int]: Status and prepared count. Count is zero unless
@@ -322,6 +324,8 @@ class CombatPrepare:
                 return "failed", 0
 
             configured = self.COMBAT_MAX_FAST_COUNT if use_max else self._combat_fast_count()
+            if count_limit is not None:
+                configured = min(self.COMBAT_MAX_FAST_COUNT, max(0, count_limit))
             target = calculate_fast_combat_target(
                 configured=configured,
                 remaining=remaining,

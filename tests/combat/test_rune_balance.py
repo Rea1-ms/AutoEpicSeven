@@ -59,6 +59,7 @@ def combat(config=None):
         Combat_AltarGrade="Hell",
         Combat_HuntGrade="Hell",
         Emulator_PackageName="com.stove.epic7.google",
+        cross_get=lambda key, default=None: default,
         task_delay=Mock(),
     )
     if config:

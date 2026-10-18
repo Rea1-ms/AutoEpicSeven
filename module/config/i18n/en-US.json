@@ -273,6 +273,18 @@
     "ClaimDailyRewards": {
       "name": "Claim Daily Rewards",
       "help": "Claim the daily mission reward chest when available."
+    },
+    "DailyPriority": {
+      "name": "Prioritize daily missions",
+      "help": "Below 100 activity, prioritize enabled tasks that are due, run smaller batches and check rewards. Use remaining fixed allowances first. Once exhausted, wait if other tasks scheduled today can fill the gap; otherwise add only the necessary runs using owned resources, without increasing the Leif allowance."
+    },
+    "DailyPlan": {
+      "name": "Daily mission record",
+      "help": ""
+    },
+    "DailyBudget": {
+      "name": "Daily execution allowance record",
+      "help": ""
     }
   },
   "Mail": {
@@ -604,13 +616,13 @@
     },
     "BurnoutMode": {
       "name": "Execution Mode",
-      "help": "Daily fixed count challenges the configured number of NPCs. Burnout mode spends every available flag, then runs again when flags naturally refill (1 per hour, cap 5). Requires \"Farm NPC\" to be enabled.",
+      "help": "Daily fixed count challenges the configured number of NPCs. Burnout mode spends every available flag, then runs again when flags naturally refill (1 per hour, cap 5). Requires \"Farm NPC\" to be enabled. Daily priority splits runs at mission milestones, then resumes the remaining fixed allowance. If that allowance is exhausted below 100 activity, wait when other tasks today can fill the gap; otherwise add necessary runs using owned resources only.",
       "Daily": "Daily Fixed Count",
       "Burnout": "Burnout Mode"
     },
     "NPCCombatCount": {
       "name": "NPC Battle Count",
-      "help": "Maximum number of NPC battles in this run."
+      "help": "Daily priority splits runs at mission milestones, then resumes the remaining fixed allowance. If that allowance is exhausted below 100 activity, wait when other tasks today can fill the gap; otherwise add necessary runs using owned resources only."
     }
   },
   "StoreDaily": {
@@ -798,21 +810,21 @@
     },
     "FastCombat": {
       "name": "Use Fast Combat",
-      "help": "When enabled, start background repeat combat first, then use the remaining unreserved Energy for fast combat."
+      "help": "With daily priority, fast combat may run first, followed by a daily check before resuming repeat combat and remaining fast runs. Other modes start repeat combat first and use unreserved stamina for fast combat."
     },
     "BurnoutMode": {
       "name": "Execution Mode",
-      "help": "Burnout converts each whole 80 Energy into one repeat-combat unit, prioritizes owned Energy, and uses the remainder for fast combat. After repeat combat ends, schedule the next run when Energy recovers to 80. Dimensional Hunt does not support Burnout.",
+      "help": "Burnout converts each whole 80 Energy into one repeat-combat unit, prioritizes owned Energy, and uses the remainder for fast combat. After repeat combat ends, schedule the next run when Energy recovers to 80. Dimensional Hunt does not support Burnout. Daily priority splits runs at mission milestones, then resumes the remaining fixed allowance. If that allowance is exhausted below 100 activity, wait when other tasks today can fill the gap; otherwise add necessary runs using owned resources only.",
       "Daily": "Daily Fixed Count",
       "Burnout": "Burnout Mode"
     },
     "FastCombatCount": {
       "name": "Fast Combat Count",
-      "help": "Target fast combat count."
+      "help": "Daily priority splits runs at mission milestones, then resumes the remaining fixed allowance. If that allowance is exhausted below 100 activity, wait when other tasks today can fill the gap; otherwise add necessary runs using owned resources only."
     },
     "RepeatCombatLeifCount": {
       "name": "Leifs to Spend",
-      "help": "The number of Leifs allowed to be spent. Burnout calculates it automatically from current Energy. Dimensional Hunt costs 2 Leifs per run. Use at least 2; larger odd values are rounded down to an even number."
+      "help": "The number of Leifs allowed to be spent. Burnout calculates it automatically from current Energy. Dimensional Hunt costs 2 Leifs per run. Use at least 2; larger odd values are rounded down to an even number. Repeat units and fast runs keep separate remaining allowances. Additional daily repeat units use owned stamina only and never increase this Leif allowance."
     },
     "RepeatCombatPrioritizeStamina": {
       "name": "Prioritize Owned Energy / Spectral Cores",

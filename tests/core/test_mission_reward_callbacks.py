@@ -29,7 +29,8 @@ class MissionRewardCallbackRuleTest(unittest.TestCase):
         self.assertFalse(Gacha._should_schedule_mission_reward_after_free_summon(False))
         self.assertTrue(Gacha._should_schedule_mission_reward_after_free_summon(True))
 
-    def test_combat_requires_finished_session_and_no_background_runtime(self):
+    def test_combat_requires_settled_work_even_with_background_runtime(self):
         self.assertFalse(Combat._should_schedule_mission_reward(0, runtime_active=False))
-        self.assertFalse(Combat._should_schedule_mission_reward(1, runtime_active=True))
+        self.assertFalse(Combat._should_schedule_mission_reward(0, runtime_active=True))
+        self.assertTrue(Combat._should_schedule_mission_reward(1, runtime_active=True))
         self.assertTrue(Combat._should_schedule_mission_reward(1, runtime_active=False))

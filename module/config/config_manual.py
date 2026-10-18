@@ -8,13 +8,15 @@ class ManualConfig:
     def LANG(self):
         return server.lang
 
+    # Keep task order here for both normal runs and daily mission reviews.
+    # Daily budgets decide how much a task does, never reorder the due queue.
+    # Manual tools use their own entry points and do not belong in this table.
     SCHEDULER_PRIORITY = """
-    Restart
-    > Mail > SanctuaryDaily > SanctuaryMonthly
-    > Knights > Store > Arena > PetsGift
-    > SecretShop > Combat > Gacha > MissionReward > Pets > DataUpdate > CommunityAio
-    > LimitedActivity > SpecialActivity > BuyPenguins
-    > EquipmentReroll
+    Restart > MissionReward > Gacha > SanctuaryDaily > Arena > Combat
+    > Mail > SanctuaryMonthly
+    > Knights > Store > PetsGift
+    > SecretShop > Pets > DataUpdate > CommunityAio
+    > LimitedActivity > SpecialActivity
     """
 
     """

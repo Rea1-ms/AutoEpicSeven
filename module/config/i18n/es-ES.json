@@ -273,6 +273,18 @@
     "ClaimDailyRewards": {
       "name": "Reclamar recompensas diarias",
       "help": "Reclama el cofre de recompensas diarias cuando esté disponible."
+    },
+    "DailyPriority": {
+      "name": "Priorizar misiones diarias",
+      "help": "Por debajo de 100 de actividad, prioriza las tareas activadas cuyo horario ya haya llegado, ejecuta tandas pequeñas y comprueba las recompensas. Usa primero las cantidades fijas restantes. Al agotarlas, espera si las demás tareas de hoy pueden cubrir lo que falta; si no, añade solo las partidas necesarias con recursos disponibles, sin aumentar el límite de hojas de Leif."
+    },
+    "DailyPlan": {
+      "name": "Registro de misiones diarias",
+      "help": ""
+    },
+    "DailyBudget": {
+      "name": "Registro de cantidades diarias",
+      "help": ""
     }
   },
   "Mail": {
@@ -604,13 +616,13 @@
     },
     "BurnoutMode": {
       "name": "Modo de ejecución",
-      "help": "La cantidad fija diaria desafía al número configurado de PNJ. El modo de agotamiento gasta todas las banderas disponibles y vuelve a ejecutarse cuando se regeneran al máximo (1 por hora, límite 5). Requiere activar \"Farmear NPC\".",
+      "help": "La cantidad fija diaria desafía al número configurado de PNJ. El modo de agotamiento gasta todas las banderas disponibles y vuelve a ejecutarse cuando se regeneran al máximo (1 por hora, límite 5). Requiere activar \"Farmear NPC\". La prioridad diaria divide las partidas según los objetivos y después completa la cantidad fija restante. Si se agota antes de llegar a 100 de actividad, espera si otras tareas de hoy pueden cubrir la diferencia; de lo contrario, añade las partidas necesarias solo con recursos disponibles.",
       "Daily": "Cantidad fija diaria",
       "Burnout": "Modo de agotamiento"
     },
     "NPCCombatCount": {
       "name": "Cantidad de combates NPC",
-      "help": "Número máximo de combates NPC en esta ejecución."
+      "help": "La prioridad diaria divide las partidas según los objetivos y después completa la cantidad fija restante. Si se agota antes de llegar a 100 de actividad, espera si otras tareas de hoy pueden cubrir la diferencia; de lo contrario, añade las partidas necesarias solo con recursos disponibles."
     }
   },
   "StoreDaily": {
@@ -798,21 +810,21 @@
     },
     "FastCombat": {
       "name": "Usar combate rápido",
-      "help": "Al activarlo, inicia primero el combate delegado en segundo plano y luego usa la energía restante no reservada para el combate rápido."
+      "help": "Con prioridad diaria, el combate rápido puede ejecutarse primero. Después de comprobar las misiones diarias, continúa el combate repetido y las partidas rápidas restantes. Los demás modos inician primero el combate repetido y usan la energía no reservada para el combate rápido."
     },
     "BurnoutMode": {
       "name": "Modo de ejecución",
-      "help": "Agotamiento convierte cada 80 de energía en una unidad de combate delegado, da prioridad a la energía disponible y usa el resto para el combate rápido. Al terminar el combate delegado, programa la siguiente ejecución cuando la energía se recupere hasta 80. La cacería dimensional no admite Agotamiento.",
+      "help": "Agotamiento convierte cada 80 de energía en una unidad de combate delegado, da prioridad a la energía disponible y usa el resto para el combate rápido. Al terminar el combate delegado, programa la siguiente ejecución cuando la energía se recupere hasta 80. La cacería dimensional no admite Agotamiento. La prioridad diaria divide las partidas según los objetivos y después completa la cantidad fija restante. Si se agota antes de llegar a 100 de actividad, espera si otras tareas de hoy pueden cubrir la diferencia; de lo contrario, añade las partidas necesarias solo con recursos disponibles.",
       "Daily": "Cantidad fija diaria",
       "Burnout": "Modo de agotamiento"
     },
     "FastCombatCount": {
       "name": "Cantidad de combate rapido",
-      "help": "Cantidad objetivo de combate rapido."
+      "help": "La prioridad diaria divide las partidas según los objetivos y después completa la cantidad fija restante. Si se agota antes de llegar a 100 de actividad, espera si otras tareas de hoy pueden cubrir la diferencia; de lo contrario, añade las partidas necesarias solo con recursos disponibles."
     },
     "RepeatCombatLeifCount": {
       "name": "Hojas de vida a gastar",
-      "help": "Cantidad de hojas de vida que se permite gastar. Agotamiento la calcula automáticamente a partir de la energía actual. La cacería dimensional consume 2 hojas por combate. Se usan al menos 2; los valores impares mayores se redondean hacia abajo al número par anterior."
+      "help": "Cantidad de hojas de vida que se permite gastar. Agotamiento la calcula automáticamente a partir de la energía actual. La cacería dimensional consume 2 hojas por combate. Se usan al menos 2; los valores impares mayores se redondean hacia abajo al número par anterior. Las unidades de repetición y las partidas rápidas conservan cantidades restantes separadas. Las repeticiones diarias adicionales solo usan energía disponible y nunca aumentan este límite de hojas de Leif."
     },
     "RepeatCombatPrioritizeStamina": {
       "name": "Priorizar energía / núcleos espectrales",

@@ -9,6 +9,7 @@ from tasks.base.page import (
 from tasks.base.resource_bar import ResourceBarMixin
 from tasks.base.ui import UI
 from tasks.dungeon.burnout import CombatBurnoutMixin
+from tasks.dungeon.daily import DailyCombatMixin
 from tasks.dungeon.episode import EpisodeNavigateMixin
 from tasks.dungeon.entry import CombatEntryMixin
 from tasks.dungeon.execute import CombatExecuteMixin
@@ -25,6 +26,7 @@ from tasks.item.rune_inventory import RuneInventoryMixin
 
 
 class Combat(
+    DailyCombatMixin,
     RuneBalanceMixin,
     RuneInventoryMixin,
     CombatRepeatMixin,
@@ -70,11 +72,15 @@ class Combat(
         completed_sessions: int, runtime_active: bool
     ) -> bool:
         """
-        Only leave combat to claim mission rewards after at least one combat
-        session has fully settled and no background repeat-combat session is
-        still running.
+        Review rewards after at least one combat session has fully settled.
+
+        completed_sessions excludes merely starting a server repeat session:
+        that session credits daily stamina only after its settlement. However,
+        a fast batch can settle while runtime_active describes a separate
+        background repeat. That active repeat must not suppress the fast
+        batch's review, nor may requesting review settle the repeat itself.
         """
-        return completed_sessions > 0 and not runtime_active
+        return completed_sessions > 0
 
     def _configured_dungeon_domain(self) -> str:
         domain = getattr(self.config, "Combat_Domain", "Hunt")
@@ -153,6 +159,10 @@ class Combat(
         return self._combat_fast_enabled()
 
     def _combat_delay_after_settled(self) -> None:
+        budget = getattr(self, "_daily_combat_budget", None)
+        if budget is not None and budget.active:
+            self._daily_combat_delay(budget)
+            return
         if self._combat_is_farm_task():
             self.config.task_delay(minute=self.COMBAT_BACKGROUND_CHECK_MINUTES)
             return
@@ -350,6 +360,8 @@ class Combat(
 
             Login(self.config, device=self.device).app_start()
 
+        self._daily_combat_budget = self._new_daily_combat_budget()
+
         if not hasattr(self.device, "image") or self.device.image is None:
             self.device.screenshot()
 
@@ -382,6 +394,7 @@ class Combat(
             if status == "finished":
                 completed_sessions += 1
                 settled_session = session
+                self._settle_daily_repeat_budget(session)
                 self._combat_runtime_clear()
                 if session.get("domain") == "UrgentTasks":
                     normal_session_settled = not bool(
@@ -586,6 +599,12 @@ class Combat(
                         success = fast_prepare == "ready"
 
         if success and self._uses_server_repeat_combat():
+            if self._daily_combat_budget.active:
+                leif = prepare_resources.get("leif")
+                return self._run_daily_combat_batch(
+                    self._daily_combat_budget, current_stamina or 0,
+                    leif=leif.value if leif is not None else 0,
+                )
             target_leif_count = self._server_repeat_target_leif_count(current_stamina)
             logger.attr("CombatRepeatTargetLeifCount", target_leif_count)
             fast_stamina = current_stamina or 0
