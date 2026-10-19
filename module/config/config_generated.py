@@ -99,6 +99,7 @@ class GeneratedConfig:
 
     # Group `Arena`
     Arena_ClaimWeeklyRewards = True
+    Arena_WeeklyReward = 'Skystone'  # Skystone, MysticMedals
     Arena_ClaimWeeklyBattleRewards = True
     Arena_ClaimBattlePassRewards = True
     Arena_NPCCombat = True

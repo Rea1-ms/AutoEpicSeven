@@ -590,6 +590,12 @@
       "name": "Reclamar recompensas semanales",
       "help": "Reclama automáticamente las recompensas semanales cuando aparece el popup al entrar en arena."
     },
+    "WeeklyReward": {
+      "name": "Recompensa de clasificación semanal",
+      "help": "Elige Piedras del cielo o Medallas místicas al entrar en la Arena. Por defecto: Piedras del cielo.",
+      "Skystone": "Piedras del cielo",
+      "MysticMedals": "Medallas místicas"
+    },
     "ClaimWeeklyBattleRewards": {
       "name": "Reclamar recompensas semanales de combate",
       "help": "Tras farmear NPC en arena, reclama recompensas semanales de combate antes de salir."

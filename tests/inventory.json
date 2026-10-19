@@ -17683,6 +17683,51 @@
           "fixtures": [],
           "status": "已纳入",
           "reason": "竞技场状态、入口与结算回归；真实截图和模拟观察分别登记"
+        },
+        {
+          "id": "tests.arena.test_entry.ArenaEntryTests.test_weekly_reward_defaults_to_skystone_for_existing_configs",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "竞技场每周奖励二选一，确认目标选中后领取与重试间隔"
+        },
+        {
+          "id": "tests.arena.test_entry.ArenaEntryTests.test_weekly_reward_switch_waits_for_target_border_and_retries",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "竞技场每周奖励二选一，确认目标选中后领取与重试间隔"
+        },
+        {
+          "id": "tests.arena.test_entry.ArenaEntryTests.test_weekly_reward_never_claims_from_bright_button_without_selected_border",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "竞技场每周奖励二选一，确认目标选中后领取与重试间隔"
+        },
+        {
+          "id": "tests.arena.test_entry.ArenaEntryTests.test_weekly_reward_ignores_unrelated_frame_and_disabled_mystic_claim",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "竞技场每周奖励二选一，确认目标选中后领取与重试间隔"
+        },
+        {
+          "id": "tests.arena.test_entry.ArenaEntryTests.test_settlement_entry_claims_configured_mystic_reward",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "竞技场每周奖励二选一，确认目标选中后领取与重试间隔"
         }
       ]
     },
@@ -17709,6 +17754,15 @@
           "fixtures": [],
           "status": "已纳入",
           "reason": "竞技场状态、入口与结算回归；真实截图和模拟观察分别登记"
+        },
+        {
+          "id": "tests.arena.test_rules.ArenaRuleTests.test_weekly_reward_dropdown_defaults_to_skystone",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "竞技场每周奖励二选一，确认目标选中后领取与重试间隔"
         }
       ]
     },
@@ -17733,7 +17787,12 @@
             "tests/fixtures/arena/global_cn/MuMu-20261015-165615-527.png",
             "tests/fixtures/arena/global_cn/MuMu-20261015-165616-798.png",
             "tests/fixtures/arena/global_cn/MuMu-20261015-165618-643.png",
-            "tests/fixtures/arena/global_cn/MuMu-20261015-165622-212.png"
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165622-212.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261019-201526-416.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261019-201529-443.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261019-201532-705.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261019-201534-380.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261019-201536-225.png"
           ],
           "status": "已纳入",
           "reason": "竞技场状态、入口与结算回归；真实截图和模拟观察分别登记"
@@ -17767,7 +17826,12 @@
             "tests/fixtures/arena/global_cn/MuMu-20261015-165615-527.png",
             "tests/fixtures/arena/global_cn/MuMu-20261015-165616-798.png",
             "tests/fixtures/arena/global_cn/MuMu-20261015-165618-643.png",
-            "tests/fixtures/arena/global_cn/MuMu-20261015-165622-212.png"
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165622-212.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261019-201526-416.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261019-201529-443.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261019-201532-705.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261019-201534-380.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261019-201536-225.png"
           ],
           "status": "已纳入",
           "reason": "竞技场状态、入口与结算回归；真实截图和模拟观察分别登记"
@@ -17787,7 +17851,12 @@
             "tests/fixtures/arena/global_cn/MuMu-20261015-165615-527.png",
             "tests/fixtures/arena/global_cn/MuMu-20261015-165616-798.png",
             "tests/fixtures/arena/global_cn/MuMu-20261015-165618-643.png",
-            "tests/fixtures/arena/global_cn/MuMu-20261015-165622-212.png"
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165622-212.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261019-201526-416.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261019-201529-443.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261019-201532-705.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261019-201534-380.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261019-201536-225.png"
           ],
           "status": "已纳入",
           "reason": "竞技场状态、入口与结算回归；真实截图和模拟观察分别登记"
@@ -17807,7 +17876,12 @@
             "tests/fixtures/arena/global_cn/MuMu-20261015-165615-527.png",
             "tests/fixtures/arena/global_cn/MuMu-20261015-165616-798.png",
             "tests/fixtures/arena/global_cn/MuMu-20261015-165618-643.png",
-            "tests/fixtures/arena/global_cn/MuMu-20261015-165622-212.png"
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165622-212.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261019-201526-416.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261019-201529-443.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261019-201532-705.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261019-201534-380.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261019-201536-225.png"
           ],
           "status": "已纳入",
           "reason": "竞技场状态、入口与结算回归；真实截图和模拟观察分别登记"
@@ -17823,6 +17897,48 @@
           ],
           "status": "已纳入",
           "reason": "竞技场状态、入口与结算回归；真实截图和模拟观察分别登记"
+        },
+        {
+          "id": "tests.arena.test_captures.CapturedWeeklyRewardTests.test_reward_captures_distinguish_selection_and_claim_availability",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/arena/global_cn/MuMu-20261019-201526-416.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261019-201529-443.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261019-201532-705.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261019-201534-380.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261019-201536-225.png"
+          ],
+          "status": "已纳入",
+          "reason": "竞技场每周奖励二选一，确认目标选中后领取与重试间隔"
+        },
+        {
+          "id": "tests.arena.test_captures.CapturedWeeklyRewardTests.test_captured_reward_switch_claims_only_after_configured_selection",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/arena/global_cn/MuMu-20261015-165622-212.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261019-201529-443.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261019-201532-705.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261019-201534-380.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261019-201536-225.png"
+          ],
+          "status": "已纳入",
+          "reason": "竞技场每周奖励二选一，确认目标选中后领取与重试间隔"
+        },
+        {
+          "id": "tests.arena.test_captures.CapturedWeeklyRewardTests.test_mystic_selection_uses_only_outer_right_border",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/arena/global_cn/MuMu-20261019-201534-380.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261019-201536-225.png"
+          ],
+          "status": "已纳入",
+          "reason": "神秘奖牌只识别外侧右边框，左侧遮盖仍可识别，右侧缺失和天空石选中禁止领取"
         }
       ]
     },

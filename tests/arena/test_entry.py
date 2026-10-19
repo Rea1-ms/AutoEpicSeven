@@ -40,33 +40,33 @@ class ArenaEntryTests(unittest.TestCase):
     def test_common_entry_retries_then_handles_weekly_reward_before_exit(self):
         hub = scene('ARENA_COMMON_ENTRY', page='page_arena_hub')
         unselected = scene(
-            'ARENA_CHECK', 'WEEKLY_REWARDS_CHECK', 'WEEKLY_REWARDS_CLAIM',
+            'ARENA_CHECK', 'WEEKLY_REWARDS_SKYSTONE', 'WEEKLY_REWARDS_CLAIM',
             disabled=('ARENA_CHECK', 'WEEKLY_REWARDS_CLAIM'),
         )
         selected_disabled = scene(
-            'ARENA_CHECK', 'WEEKLY_REWARDS_CHECK', 'WEEKLY_REWARDS_SELECTED', 'WEEKLY_REWARDS_CLAIM',
+            'ARENA_CHECK', 'WEEKLY_REWARDS_SKYSTONE', 'WEEKLY_REWARDS_SKYSTONE_SELECTED', 'WEEKLY_REWARDS_CLAIM',
             disabled=('ARENA_CHECK', 'WEEKLY_REWARDS_CLAIM'),
         )
         selected_ready = scene(
-            'ARENA_CHECK', 'WEEKLY_REWARDS_CHECK', 'WEEKLY_REWARDS_SELECTED', 'WEEKLY_REWARDS_CLAIM',
+            'ARENA_CHECK', 'WEEKLY_REWARDS_SKYSTONE', 'WEEKLY_REWARDS_SKYSTONE_SELECTED', 'WEEKLY_REWARDS_CLAIM',
             disabled=('ARENA_CHECK',),
         )
         frames = [hub] * 5 + [unselected] * 5 + [selected_disabled] * 2
         frames += [selected_ready] * 4 + [scene()] * 2 + [scene('ARENA_CHECK')]
         with entry_replay(frames, self.clock) as replay:
             self.assertEqual(replay.task._enter_arena(), 'entered')
-            for name in ('ARENA_COMMON_ENTRY', 'WEEKLY_REWARDS_CHECK', 'WEEKLY_REWARDS_CLAIM'):
+            for name in ('ARENA_COMMON_ENTRY', 'WEEKLY_REWARDS_SKYSTONE', 'WEEKLY_REWARDS_CLAIM'):
                 replay.assert_retried(self, name, 1)
             self.assertTrue(all(index < 5 for index in replay.clicks('ARENA_COMMON_ENTRY')))
-            self.assertTrue(all(5 <= index < 10 for index in replay.clicks('WEEKLY_REWARDS_CHECK')))
+            self.assertTrue(all(5 <= index < 10 for index in replay.clicks('WEEKLY_REWARDS_SKYSTONE')))
             self.assertTrue(all(12 <= index < 16 for index in replay.clicks('WEEKLY_REWARDS_CLAIM')))
-            self.assertEqual(replay.clicks('WEEKLY_REWARDS_SELECTED'), [])
+            self.assertEqual(replay.clicks('WEEKLY_REWARDS_SKYSTONE_SELECTED'), [])
             self.assertEqual(replay.index, len(frames) - 1)
             replay.task.ui_goto.assert_not_called()
 
     def test_selected_weekly_reward_ignores_disabled_claim(self):
         frame = scene(
-            'WEEKLY_REWARDS_CHECK', 'WEEKLY_REWARDS_SELECTED', 'WEEKLY_REWARDS_CLAIM',
+            'WEEKLY_REWARDS_SKYSTONE', 'WEEKLY_REWARDS_SKYSTONE_SELECTED', 'WEEKLY_REWARDS_CLAIM',
             disabled=('WEEKLY_REWARDS_CLAIM',),
         )
         with entry_replay([frame], self.clock) as replay:
@@ -74,7 +74,7 @@ class ArenaEntryTests(unittest.TestCase):
             self.assertEqual(replay.actions, [])
 
     def test_weekly_popup_handler_reports_only_actions_and_respects_interval(self):
-        frame = scene('WEEKLY_REWARDS_CHECK', 'WEEKLY_REWARDS_SELECTED', 'WEEKLY_REWARDS_CLAIM')
+        frame = scene('WEEKLY_REWARDS_SKYSTONE', 'WEEKLY_REWARDS_SKYSTONE_SELECTED', 'WEEKLY_REWARDS_CLAIM')
         with entry_replay([frame], self.clock) as replay:
             self.assertTrue(replay.task._handle_weekly_rewards_popup())
             self.assertFalse(replay.task._handle_weekly_rewards_popup())
@@ -84,26 +84,95 @@ class ArenaEntryTests(unittest.TestCase):
             self.assertEqual(replay.actions, [(0, 'WEEKLY_REWARDS_CLAIM')] * 2)
             self.assertEqual(replay.index, 0)
 
+    def test_weekly_reward_defaults_to_skystone_for_existing_configs(self):
+        with entry_replay([scene('WEEKLY_REWARDS_SKYSTONE', 'WEEKLY_REWARDS_MYSTIC')], self.clock) as replay:
+            self.assertFalse(hasattr(replay.task.config, 'Arena_WeeklyReward'))
+            self.assertTrue(replay.task._handle_weekly_rewards_popup())
+            self.assertEqual(replay.actions, [(0, 'WEEKLY_REWARDS_SKYSTONE')])
+
+    def test_weekly_reward_switch_waits_for_target_border_and_retries(self):
+        for reward, target, selected, other in (
+            ('Skystone', 'WEEKLY_REWARDS_SKYSTONE', 'WEEKLY_REWARDS_SKYSTONE_SELECTED', 'WEEKLY_REWARDS_MYSTIC_SELECTED'),
+            ('MysticMedals', 'WEEKLY_REWARDS_MYSTIC', 'WEEKLY_REWARDS_MYSTIC_SELECTED', 'WEEKLY_REWARDS_SKYSTONE_SELECTED'),
+        ):
+            wrong = scene('ARENA_CHECK', 'WEEKLY_REWARDS_SKYSTONE', 'WEEKLY_REWARDS_MYSTIC',
+                          'WEEKLY_REWARDS_CLAIM', other, disabled=('ARENA_CHECK',))
+            pending = scene('ARENA_CHECK', 'WEEKLY_REWARDS_SKYSTONE', 'WEEKLY_REWARDS_MYSTIC',
+                            'WEEKLY_REWARDS_CLAIM', disabled=('ARENA_CHECK',))
+            ready = scene('ARENA_CHECK', 'WEEKLY_REWARDS_SKYSTONE', selected,
+                          'WEEKLY_REWARDS_CLAIM', disabled=('ARENA_CHECK',))
+            frames = [wrong] * 5 + [scene()] * 2 + [pending] * 4
+            frames += [ready] * 4 + [scene()] * 2 + [scene('ARENA_CHECK')]
+            with self.subTest(reward=reward), entry_replay(frames, self.clock) as replay:
+                replay.task.config.Arena_WeeklyReward = reward
+                self.assertEqual(replay.task._enter_arena(), 'entered')
+                replay.assert_retried(self, target, 1)
+                replay.assert_retried(self, 'WEEKLY_REWARDS_CLAIM', 1)
+                self.assertTrue(all(index < 11 for index in replay.clicks(target)))
+                self.assertTrue(all(11 <= index < 15 for index in replay.clicks('WEEKLY_REWARDS_CLAIM')))
+                self.assertEqual(replay.clicks(selected), [])
+                self.assertEqual(replay.clicks(other), [])
+                if reward == 'MysticMedals':
+                    self.assertEqual(replay.clicks('WEEKLY_REWARDS_SKYSTONE'), [])
+                else:
+                    self.assertEqual(replay.clicks('WEEKLY_REWARDS_MYSTIC'), [])
+                self.assertEqual(replay.index, len(frames) - 1)
+
+    def test_weekly_reward_never_claims_from_bright_button_without_selected_border(self):
+        for reward in ('Skystone', 'MysticMedals'):
+            frame = scene('WEEKLY_REWARDS_SKYSTONE', 'WEEKLY_REWARDS_MYSTIC', 'WEEKLY_REWARDS_CLAIM')
+            with self.subTest(reward=reward), entry_replay([frame], self.clock) as replay:
+                replay.task.config.Arena_WeeklyReward = reward
+                self.assertTrue(replay.task._handle_weekly_rewards_popup())
+                self.assertFalse(replay.task._handle_weekly_rewards_popup())
+                self.assertEqual(replay.clicks('WEEKLY_REWARDS_CLAIM'), [])
+
+    def test_weekly_reward_ignores_unrelated_frame_and_disabled_mystic_claim(self):
+        for frame in (
+            scene('WEEKLY_REWARDS_MYSTIC_SELECTED', 'WEEKLY_REWARDS_CLAIM'),
+            scene('WEEKLY_REWARDS_SKYSTONE', 'WEEKLY_REWARDS_MYSTIC_SELECTED',
+                  'WEEKLY_REWARDS_CLAIM', disabled=('WEEKLY_REWARDS_CLAIM',)),
+        ):
+            with self.subTest(frame=frame), entry_replay([frame], self.clock) as replay:
+                replay.task.config.Arena_WeeklyReward = 'MysticMedals'
+                self.assertFalse(replay.task._handle_weekly_rewards_popup())
+                self.assertEqual(replay.actions, [])
+
+    def test_settlement_entry_claims_configured_mystic_reward(self):
+        wrong = scene('SETTLING_INFO_ICON', 'WEEKLY_REWARDS_SKYSTONE', 'WEEKLY_REWARDS_MYSTIC',
+                      'WEEKLY_REWARDS_SKYSTONE_SELECTED', 'WEEKLY_REWARDS_CLAIM', disabled=('SETTLING_INFO_ICON',))
+        ready = scene('SETTLING_INFO_ICON', 'WEEKLY_REWARDS_SKYSTONE', 'WEEKLY_REWARDS_MYSTIC_SELECTED',
+                      'WEEKLY_REWARDS_CLAIM', disabled=('SETTLING_INFO_ICON',))
+        frames = [wrong] * 4 + [ready] * 4 + [scene('SETTLING_INFO_ICON')]
+        with entry_replay(frames, self.clock) as replay:
+            replay.task.config.Arena_WeeklyReward = 'MysticMedals'
+            self.assertEqual(replay.task._enter_settling_arena(), 'settling_npc')
+            replay.assert_retried(self, 'WEEKLY_REWARDS_MYSTIC', 1)
+            self.assertTrue(all(index < 4 for index in replay.clicks('WEEKLY_REWARDS_MYSTIC')))
+            self.assertTrue(all(4 <= index < 8 for index in replay.clicks('WEEKLY_REWARDS_CLAIM')))
+            self.assertEqual(replay.clicks('WEEKLY_REWARDS_SKYSTONE'), [])
+            self.assertEqual(replay.index, len(frames) - 1)
+
     def test_settlement_entry_waits_for_enabled_icon_after_weekly_claim(self):
         hub = scene('ARENA_COMMON_ENTRY', page='page_arena_hub')
         unselected = scene(
-            'SETTLING_INFO_ICON', 'WEEKLY_REWARDS_CHECK', 'WEEKLY_REWARDS_CLAIM',
+            'SETTLING_INFO_ICON', 'WEEKLY_REWARDS_SKYSTONE', 'WEEKLY_REWARDS_CLAIM',
             disabled=('SETTLING_INFO_ICON', 'WEEKLY_REWARDS_CLAIM'),
         )
         selected = scene(
-            'SETTLING_INFO_ICON', 'WEEKLY_REWARDS_CHECK', 'WEEKLY_REWARDS_SELECTED', 'WEEKLY_REWARDS_CLAIM',
+            'SETTLING_INFO_ICON', 'WEEKLY_REWARDS_SKYSTONE', 'WEEKLY_REWARDS_SKYSTONE_SELECTED', 'WEEKLY_REWARDS_CLAIM',
             disabled=('SETTLING_INFO_ICON',),
         )
         frames = [hub] * 4 + [unselected] * 4 + [selected] * 4 + [scene()] + [scene('SETTLING_INFO_ICON')]
         with entry_replay(frames, self.clock) as replay:
             self.assertEqual(replay.task._enter_settling_arena(), 'settling_npc')
             replay.task.ui_goto.assert_called_once_with(page_arena_hub, skip_first_screenshot=True)
-            for name in ('ARENA_COMMON_ENTRY', 'WEEKLY_REWARDS_CHECK', 'WEEKLY_REWARDS_CLAIM'):
+            for name in ('ARENA_COMMON_ENTRY', 'WEEKLY_REWARDS_SKYSTONE', 'WEEKLY_REWARDS_CLAIM'):
                 replay.assert_retried(self, name, 1)
             self.assertTrue(all(index < 4 for index in replay.clicks('ARENA_COMMON_ENTRY')))
-            self.assertTrue(all(4 <= index < 8 for index in replay.clicks('WEEKLY_REWARDS_CHECK')))
+            self.assertTrue(all(4 <= index < 8 for index in replay.clicks('WEEKLY_REWARDS_SKYSTONE')))
             self.assertTrue(all(8 <= index < 12 for index in replay.clicks('WEEKLY_REWARDS_CLAIM')))
-            self.assertEqual(replay.clicks('WEEKLY_REWARDS_SELECTED'), [])
+            self.assertEqual(replay.clicks('WEEKLY_REWARDS_SKYSTONE_SELECTED'), [])
             self.assertEqual(replay.index, len(frames) - 1)
 
     def test_settlement_entry_preserves_ready_npc_page(self):

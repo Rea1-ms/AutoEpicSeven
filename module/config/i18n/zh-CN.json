@@ -590,6 +590,12 @@
       "name": "领取每周奖励",
       "help": "在进入竞技场时遇到每周奖励弹窗时自动领取。"
     },
+    "WeeklyReward": {
+      "name": "每周排名奖励",
+      "help": "进入竞技场时，选择领取天空石或神秘奖牌，默认天空石。",
+      "Skystone": "天空石",
+      "MysticMedals": "神秘奖牌"
+    },
     "ClaimWeeklyBattleRewards": {
       "name": "自动领取每周对战奖励",
       "help": "刷完竞技场 NPC 后，在离开竞技场前自动领取每周对战奖励。"

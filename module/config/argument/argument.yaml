@@ -217,6 +217,9 @@ KnightsShopRuntime:
 
 Arena:
   ClaimWeeklyRewards: true
+  WeeklyReward:
+    value: Skystone
+    option: [ Skystone, MysticMedals ]
   ClaimWeeklyBattleRewards: true
   ClaimBattlePassRewards: true
   NPCCombat: true

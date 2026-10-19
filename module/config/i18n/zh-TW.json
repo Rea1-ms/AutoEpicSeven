@@ -590,6 +590,12 @@
       "name": "領取每週獎勵",
       "help": "進入競技場時若出現每週獎勵彈窗，則自動領取。"
     },
+    "WeeklyReward": {
+      "name": "每週排名獎勵",
+      "help": "進入競技場時，選擇領取天空石或神秘獎牌，預設天空石。",
+      "Skystone": "天空石",
+      "MysticMedals": "神秘獎牌"
+    },
     "ClaimWeeklyBattleRewards": {
       "name": "自動領取每週對戰獎勵",
       "help": "刷完競技場 NPC 後，在離開競技場前自動領取每週對戰獎勵。"

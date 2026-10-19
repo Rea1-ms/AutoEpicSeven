@@ -590,6 +590,12 @@
       "name": "Claim Weekly Rewards",
       "help": "Automatically claim weekly rewards when the popup appears during arena entry."
     },
+    "WeeklyReward": {
+      "name": "Weekly Ranking Reward",
+      "help": "Choose Skystone or Mystic Medals when entering Arena. Defaults to Skystone.",
+      "Skystone": "Skystone",
+      "MysticMedals": "Mystic Medals"
+    },
     "ClaimWeeklyBattleRewards": {
       "name": "Claim Weekly Battle Rewards",
       "help": "After NPC arena farming, claim weekly battle rewards before leaving arena."

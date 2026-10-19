@@ -223,7 +223,140 @@
         "tests.arena.test_captures.CapturedArenaTests.test_challenge_ready_requires_bright_list_button",
         "tests.arena.test_captures.CapturedArenaTests.test_fast_prepare_controls_are_separate_from_list_and_result",
         "tests.arena.test_captures.CapturedArenaTests.test_shifted_fast_result_confirm_matches_and_clicks_current_position",
-        "tests.arena.test_captures.CapturedArenaTests.test_arena_home_rejects_fast_animation_and_accepts_return_highlight"
+        "tests.arena.test_captures.CapturedArenaTests.test_arena_home_rejects_fast_animation_and_accepts_return_highlight",
+        "tests.arena.test_captures.CapturedWeeklyRewardTests.test_captured_reward_switch_claims_only_after_configured_selection"
+      ]
+    },
+    "20261019-201526-416": {
+      "path": "tests/fixtures/arena/global_cn/MuMu-20261019-201526-416.png",
+      "sha256": "678d4af2255618be0d207b2d0ab7bd07adfece4047323b4eac4f91da536cb02f",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "weekly_reward_negative_main",
+      "source": "MuMu-20261019-201526-416.png",
+      "source_sha256": "da375f92fc0e5a9ff778b4bf334ba97f51c5a2215e03f5a7ce5655f916afe7b1",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          0,
+          0,
+          250,
+          140
+        ]
+      ],
+      "used_by": [
+        "tests.arena.test_captures.CapturedArenaTests.test_challenge_ready_requires_bright_list_button",
+        "tests.arena.test_captures.CapturedArenaTests.test_fast_prepare_controls_are_separate_from_list_and_result",
+        "tests.arena.test_captures.CapturedArenaTests.test_shifted_fast_result_confirm_matches_and_clicks_current_position",
+        "tests.arena.test_captures.CapturedArenaTests.test_arena_home_rejects_fast_animation_and_accepts_return_highlight",
+        "tests.arena.test_captures.CapturedWeeklyRewardTests.test_reward_captures_distinguish_selection_and_claim_availability"
+      ]
+    },
+    "20261019-201529-443": {
+      "path": "tests/fixtures/arena/global_cn/MuMu-20261019-201529-443.png",
+      "sha256": "52e231180f1f2d265e58dfd917b604648072850be3364c95ed063f2ada15c7e8",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "weekly_reward_negative_hub",
+      "source": "MuMu-20261019-201529-443.png",
+      "source_sha256": "3c3251f8850b2eca211a4baaf6090d1a6b451c73855e261b4b5254d644c00a30",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.arena.test_captures.CapturedArenaTests.test_challenge_ready_requires_bright_list_button",
+        "tests.arena.test_captures.CapturedArenaTests.test_fast_prepare_controls_are_separate_from_list_and_result",
+        "tests.arena.test_captures.CapturedArenaTests.test_shifted_fast_result_confirm_matches_and_clicks_current_position",
+        "tests.arena.test_captures.CapturedArenaTests.test_arena_home_rejects_fast_animation_and_accepts_return_highlight",
+        "tests.arena.test_captures.CapturedWeeklyRewardTests.test_reward_captures_distinguish_selection_and_claim_availability",
+        "tests.arena.test_captures.CapturedWeeklyRewardTests.test_captured_reward_switch_claims_only_after_configured_selection"
+      ]
+    },
+    "20261019-201532-705": {
+      "path": "tests/fixtures/arena/global_cn/MuMu-20261019-201532-705.png",
+      "sha256": "896762837a2ecc1e638f1874bcf1e4a6556840483d700ea0d0d2a9e68cbbe3b3",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "weekly_reward_unselected",
+      "source": "MuMu-20261019-201532-705.png",
+      "source_sha256": "c2c4fb3fbdcfc19cf7bfa2af8b340fb2915ebf1099b7026774f8dbb9af0120ea",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.arena.test_captures.CapturedArenaTests.test_challenge_ready_requires_bright_list_button",
+        "tests.arena.test_captures.CapturedArenaTests.test_fast_prepare_controls_are_separate_from_list_and_result",
+        "tests.arena.test_captures.CapturedArenaTests.test_shifted_fast_result_confirm_matches_and_clicks_current_position",
+        "tests.arena.test_captures.CapturedArenaTests.test_arena_home_rejects_fast_animation_and_accepts_return_highlight",
+        "tests.arena.test_captures.CapturedWeeklyRewardTests.test_reward_captures_distinguish_selection_and_claim_availability",
+        "tests.arena.test_captures.CapturedWeeklyRewardTests.test_captured_reward_switch_claims_only_after_configured_selection"
+      ]
+    },
+    "20261019-201534-380": {
+      "path": "tests/fixtures/arena/global_cn/MuMu-20261019-201534-380.png",
+      "sha256": "4ee1eceedd87b8df22c4b2ce1aeba2cc97869f87da8b43e82e5f6f7f65f21981",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "weekly_reward_mystic_selected",
+      "source": "MuMu-20261019-201534-380.png",
+      "source_sha256": "2fe21152caa80985503d559dce6e33f40fbb5b5b7cf416c66e9d07f898825252",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.arena.test_captures.CapturedArenaTests.test_challenge_ready_requires_bright_list_button",
+        "tests.arena.test_captures.CapturedArenaTests.test_fast_prepare_controls_are_separate_from_list_and_result",
+        "tests.arena.test_captures.CapturedArenaTests.test_shifted_fast_result_confirm_matches_and_clicks_current_position",
+        "tests.arena.test_captures.CapturedArenaTests.test_arena_home_rejects_fast_animation_and_accepts_return_highlight",
+        "tests.arena.test_captures.CapturedWeeklyRewardTests.test_reward_captures_distinguish_selection_and_claim_availability",
+        "tests.arena.test_captures.CapturedWeeklyRewardTests.test_captured_reward_switch_claims_only_after_configured_selection",
+        "tests.arena.test_captures.CapturedWeeklyRewardTests.test_mystic_selection_uses_only_outer_right_border"
+      ]
+    },
+    "20261019-201536-225": {
+      "path": "tests/fixtures/arena/global_cn/MuMu-20261019-201536-225.png",
+      "sha256": "2530d2b0e1177a6b2d2b8eba0ae338b0081aec4671f25a76d286cf418eb76878",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "weekly_reward_skystone_selected",
+      "source": "MuMu-20261019-201536-225.png",
+      "source_sha256": "ff7832578d9d552a8ad0836c8d7ca9e6261dfa6530196f6dca53db4eada103c7",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.arena.test_captures.CapturedArenaTests.test_challenge_ready_requires_bright_list_button",
+        "tests.arena.test_captures.CapturedArenaTests.test_fast_prepare_controls_are_separate_from_list_and_result",
+        "tests.arena.test_captures.CapturedArenaTests.test_shifted_fast_result_confirm_matches_and_clicks_current_position",
+        "tests.arena.test_captures.CapturedArenaTests.test_arena_home_rejects_fast_animation_and_accepts_return_highlight",
+        "tests.arena.test_captures.CapturedWeeklyRewardTests.test_reward_captures_distinguish_selection_and_claim_availability",
+        "tests.arena.test_captures.CapturedWeeklyRewardTests.test_captured_reward_switch_claims_only_after_configured_selection",
+        "tests.arena.test_captures.CapturedWeeklyRewardTests.test_mystic_selection_uses_only_outer_right_border"
       ]
     }
   }

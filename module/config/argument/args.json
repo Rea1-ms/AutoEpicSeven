@@ -769,6 +769,14 @@
         "type": "checkbox",
         "value": true
       },
+      "WeeklyReward": {
+        "type": "select",
+        "value": "Skystone",
+        "option": [
+          "Skystone",
+          "MysticMedals"
+        ]
+      },
       "ClaimWeeklyBattleRewards": {
         "type": "checkbox",
         "value": true

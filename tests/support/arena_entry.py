@@ -13,6 +13,20 @@ from tasks.arena.assets.assets_arena import (
     ARENA_CHECK,
     SETTLING_INFO_ICON,
 )
+from tests.support.arena import ArenaReplay
+
+
+class WeeklyRewardsReplay(ArenaReplay):
+    """Replay captured rewards with production matching and entry loops."""
+
+    def __init__(self, frames, clock):
+        super().__init__(frames, clock)
+        self.task.config.Emulator_PackageName = 'OVERSEA-Play'
+        self.task.match_template_color = lambda button, **kwargs: Arena.match_template_color(
+            self.task, button, **kwargs,
+        )
+        self.task.ui_goto = Mock()
+        self.task.handle_touch_to_close = Mock(return_value=False)
 
 
 class ArenaEntryReplay(InteractionReplay):

@@ -156,6 +156,7 @@
     },
     "Arena": {
       "ClaimWeeklyRewards": true,
+      "WeeklyReward": "Skystone",
       "ClaimWeeklyBattleRewards": true,
       "ClaimBattlePassRewards": true,
       "NPCCombat": true,

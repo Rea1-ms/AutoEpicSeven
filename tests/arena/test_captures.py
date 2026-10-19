@@ -18,7 +18,15 @@ from tasks.arena.assets.assets_arena import (
     FAST_BATTLE_RESULT_CONFIRM,
     NPC_OPPONENT,
 )
+from tasks.arena.assets.assets_arena_weekly_rewards import (
+    WEEKLY_REWARDS_CLAIM,
+    WEEKLY_REWARDS_MYSTIC,
+    WEEKLY_REWARDS_MYSTIC_SELECTED,
+    WEEKLY_REWARDS_SKYSTONE,
+    WEEKLY_REWARDS_SKYSTONE_SELECTED,
+)
 from tests.support.arena import MANIFEST, ArenaReplay
+from tests.support.arena_entry import WeeklyRewardsReplay
 from tests.support.interaction import scene
 from tests.support.offline import ControlledClock
 
@@ -137,3 +145,75 @@ class CapturedArenaTests(unittest.TestCase):
                 self.device = replay
                 self.assertTrue(replay.task._is_battle_prepare_page())
                 self.assertEqual(replay.task._ocr_fast_battle_times(), (9, 1, 10))
+
+
+class CapturedWeeklyRewardTests(unittest.TestCase):
+    def test_mystic_selection_uses_only_outer_right_border(self):
+        for fixture, hidden_area, selected in (
+            ('20261019-201534-380', (625, 307, 679, 497), True),
+            ('20261019-201534-380', (759, 307, 814, 497), False),
+            ('20261019-201536-225', None, False),
+        ):
+            with self.subTest(fixture=fixture, hidden=hidden_area), ControlledClock() as clock:
+                replay = WeeklyRewardsReplay([scene(fixture=fixture)], clock)
+                self.device = replay
+                replay.task.config.Arena_WeeklyReward = 'MysticMedals'
+                if hidden_area:
+                    left, top, right, bottom = hidden_area
+                    replay.image[top:bottom, left:right] = 0
+                self.assertEqual(replay.task.appear(WEEKLY_REWARDS_MYSTIC_SELECTED), selected)
+                self.assertTrue(replay.task._handle_weekly_rewards_popup())
+                action = 'WEEKLY_REWARDS_CLAIM' if selected else 'WEEKLY_REWARDS_MYSTIC'
+                self.assertEqual(replay.actions, [(0, action)])
+
+    def test_reward_captures_distinguish_selection_and_claim_availability(self):
+        for fixture, popup, skystone, mystic in (
+            ('20261019-201526-416', False, False, False),
+            ('20261019-201529-443', False, False, False),
+            ('20261019-201532-705', True, False, False),
+            ('20261019-201534-380', True, False, True),
+            ('20261019-201536-225', True, True, False),
+        ):
+            with self.subTest(fixture=fixture), ControlledClock() as clock:
+                replay = WeeklyRewardsReplay([scene(fixture=fixture)], clock)
+                self.device = replay
+                self.assertEqual(replay.task.appear(WEEKLY_REWARDS_SKYSTONE), popup)
+                self.assertEqual(replay.task.appear(WEEKLY_REWARDS_MYSTIC), popup)
+                self.assertEqual(replay.task.appear(WEEKLY_REWARDS_SKYSTONE_SELECTED), skystone)
+                self.assertEqual(replay.task.appear(WEEKLY_REWARDS_MYSTIC_SELECTED), mystic)
+                self.assertEqual(replay.task.match_template_color(
+                    WEEKLY_REWARDS_CLAIM, similarity=0.85, threshold=30,
+                ), skystone or mystic)
+
+    def test_captured_reward_switch_claims_only_after_configured_selection(self):
+        for reward, wrong, ready, target in (
+            ('Skystone', '20261019-201534-380', '20261019-201536-225', 'WEEKLY_REWARDS_SKYSTONE'),
+            ('MysticMedals', '20261019-201536-225', '20261019-201534-380', 'WEEKLY_REWARDS_MYSTIC'),
+        ):
+            frames = [scene(fixture='20261019-201529-443')] * 4
+            frames += [scene(fixture='20261019-201532-705')] * 4
+            frames += [scene(fixture=wrong)] * 4 + [scene(fixture=ready)] * 4
+            frames += [scene(fixture='20261015-165622-212')]
+            with self.subTest(reward=reward), ControlledClock() as clock:
+                replay = WeeklyRewardsReplay(frames, clock)
+                self.device = replay
+                replay.task.config.Arena_WeeklyReward = reward
+                clicked_areas = []
+                original_click = replay.click
+
+                def click(button, clicked_areas=clicked_areas, original_click=original_click):
+                    clicked_areas.append((button.name, tuple(button.button)))
+                    original_click(button)
+
+                with patch.object(replay, 'click', side_effect=click):
+                    self.assertEqual(replay.task._enter_arena(), 'entered')
+                replay.assert_retried(self, target, 1)
+                replay.assert_retried(self, 'WEEKLY_REWARDS_CLAIM', 1)
+                self.assertTrue(all(index < 4 for index in replay.clicks('ARENA_COMMON_ENTRY')))
+                self.assertTrue(all(4 <= index < 12 for index in replay.clicks(target)))
+                self.assertTrue(all(12 <= index < 16 for index in replay.clicks('WEEKLY_REWARDS_CLAIM')))
+                opposite = 'WEEKLY_REWARDS_MYSTIC' if reward == 'Skystone' else 'WEEKLY_REWARDS_SKYSTONE'
+                self.assertEqual(replay.clicks(opposite), [])
+                self.assertEqual(replay.index, len(frames) - 1)
+                expected_area = (539, 355, 577, 411) if reward == 'Skystone' else (700, 355, 738, 411)
+                self.assertTrue(all(area == expected_area for name, area in clicked_areas if name == target))
