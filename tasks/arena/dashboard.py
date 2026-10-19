@@ -98,5 +98,8 @@ class ArenaDashboardMixin(ResourceBarMixin):
             return False
 
         stored.set(value, total)
+        from tasks.base.resource_scheduling import ResourceCoordinator
+
+        ResourceCoordinator(self.config).invalidate("arena_flag")
         logger.attr("ArenaFlagEstimated", f"{value}/{total}")
         return True

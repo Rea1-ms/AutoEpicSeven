@@ -6633,7 +6633,7 @@
       "source": "tests/core/test_data_update.py",
       "business": "core",
       "status": "部分迁移",
-      "reason": "有效用例直接由测试类执行；过期接口保留原编号、历史来源和排除原因",
+      "reason": "资源观察与调度联动、额度和待确认动作的离线回归",
       "migration_batch": "20261002-1",
       "cases": [
         {
@@ -6681,6 +6681,258 @@
           "status": "未纳入",
           "reason": "资源采集流程和旧 E7 仪表盘字段已经替换，原规则不适用于当前版本",
           "validation_scope": "obsolete_contract"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_store_five_flags_wake_arena_once_and_restore_full_scan",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_partial_flags_shorten_recovery_without_starting_immediately",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_stamina_below_server_batch_only_shortens_wait",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_failed_read_keeps_request_and_original_consumer_time",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_partial_observation_clears_only_corresponding_request",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_empty_pet_reward_does_not_create_arena_or_combat_runs",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_disabled_consumer_is_not_enabled_by_resources",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_failure_or_user_time_edit_invalidates_old_resource_wait",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_route_edit_invalidates_resource_wait",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_task_begin_prevents_self_rescheduling",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_fixed_quota_without_resource_wait_is_not_reopened",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_active_background_repeat_keeps_settlement_schedule",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_pending_payment_on_same_server_blocks_replacement",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_data_update_disabled_does_not_block_local_resource_sync",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_failure_cooldown_survives_further_gifts_and_full_due_is_kept",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_language_and_server_changes_do_not_reuse_resource_evidence",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_local_estimate_invalidates_evidence_without_faking_a_read_time",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_zero_overflow_and_repeat_observation_revision_are_preserved",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_lightweight_data_update_skips_inventory_and_arena_detours",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_full_scan_due_is_not_replaced_by_lightweight_mode",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_common_resource_write_updates_evidence_and_consumer_time",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_home_refresh_requires_fresh_unobscured_page",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_language_change_is_persisted_before_switching_back",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_pending_pet_gift_is_saved_before_click_without_daily_progress",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_mail_marks_refresh_before_receive_click",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_partial_store_failure_keeps_pending_refresh",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_server_repeat_keeps_full_unit_when_natural_cap_is_too_low",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "资源门槛保留完整托管单位，固定次数用尽不重开"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_login_sync_does_not_turn_lightweight_refresh_into_full_scan",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "登录途中完成资源补读后仍保留轻量意图，不触发多余完整巡查"
         }
       ]
     },
@@ -18743,7 +18995,7 @@
       "source": "tests/core/test_daily_planning.py",
       "business": "每日任务预算",
       "status": "新增",
-      "reason": "每日优先固定额度分批",
+      "reason": "资源观察与调度联动、额度和待确认动作的离线回归",
       "cases": [
         {
           "id": "tests.core.test_daily_planning.DailyPlanningTests.test_cn_and_overseas_chinese_share_conditional_addition_policy",
@@ -18897,6 +19149,60 @@
           "fixtures": [],
           "status": "已纳入",
           "reason": "每日分批、固定余量、条件追加和未决动作恢复；明确模拟输入"
+        },
+        {
+          "id": "tests.core.test_daily_planning.DailyPlanningTests.test_burnout_without_resources_before_reset_cannot_complete_daily",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_daily_planning.DailyPlanningTests.test_fast_and_repeat_allocate_one_shared_stamina_balance",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_daily_planning.DailyPlanningTests.test_refill_revision_invalidates_previous_zero_capacity",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_daily_planning.DailyPlanningTests.test_unknown_and_expired_resources_cannot_be_inferred_from_gifts_or_store",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_daily_planning.DailyPlanningTests.test_settings_edit_invalidates_capacity_without_inventing_leaf_balance",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_daily_planning.DailyPlanningTests.test_natural_recovery_is_limited_by_time_and_recovery_cap",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
         }
       ]
     },
@@ -19084,6 +19390,24 @@
           "fixtures": [],
           "status": "已纳入",
           "reason": "每日分批、固定余量、条件追加和未决动作恢复；明确模拟输入"
+        },
+        {
+          "id": "tests.combat.test_daily_batch.CombatDailyBatchTests.test_exhausted_fast_quota_does_not_lower_repeat_resource_gate",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "资源门槛保留完整托管单位，固定次数用尽不重开"
+        },
+        {
+          "id": "tests.combat.test_daily_batch.CombatDailyBatchTests.test_claimed_goal_and_exhausted_quotas_do_not_record_resource_wait",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "资源门槛保留完整托管单位，固定次数用尽不重开"
         }
       ]
     }

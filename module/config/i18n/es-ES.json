@@ -1176,6 +1176,16 @@
       "help": "Conserva los registros diarios guardados por versiones anteriores."
     }
   },
+  "ResourceRuntime": {
+    "_info": {
+      "name": "Estado de recursos",
+      "help": "Guarda los recursos observados y las condiciones de espera."
+    },
+    "State": {
+      "name": "Registro interno",
+      "help": "Guarda saldos, actualizaciones pendientes y esperas sin modificar directamente el progreso diario."
+    }
+  },
   "Dashboard": {
     "_info": {
       "name": "Panel",

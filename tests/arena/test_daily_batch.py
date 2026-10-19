@@ -5,11 +5,13 @@ from types import SimpleNamespace
 from unittest.mock import Mock
 
 from tasks.arena.arena import Arena
+from tasks.base.resource_scheduling import ResourceCoordinator
 from tasks.mission_reward.planning import DailyBudget, acknowledge_daily_review
 from tests.support.arena import ArenaReplay
 from tests.support.daily_planning import DailyPlanningCase
 from tests.support.interaction import scene
 from tests.support.offline import ControlledClock
+from tests.support.resources import resource_values
 
 
 class ArenaDailyBatchTests(DailyPlanningCase, unittest.TestCase):
@@ -64,6 +66,9 @@ class ArenaDailyBatchTests(DailyPlanningCase, unittest.TestCase):
         self.assertEqual(task._npc_combat_once.call_count, 5)
         self.snapshot(points=85, arena=5)
         acknowledge_daily_review(self.config)
+        # The task double does not navigate home or read its post-battle HUD.
+        # Publish that observation explicitly before planning another route.
+        ResourceCoordinator(self.config).observe(resource_values(arena_flag=(15, 5)), "test-home")
         other = DailyBudget(self.config, "Combat", {"fast": 0, "repeat": 0})
         self.assertEqual(other.choose("fast", 5, 20).reason, "wait")
         self.snapshot(points=100, arena=5)

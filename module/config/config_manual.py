@@ -12,10 +12,9 @@ class ManualConfig:
     # Daily budgets decide how much a task does, never reorder the due queue.
     # Manual tools use their own entry points and do not belong in this table.
     SCHEDULER_PRIORITY = """
-    Restart > MissionReward > Gacha > SanctuaryDaily > Arena > Combat
-    > Mail > SanctuaryMonthly
-    > Knights > Store > PetsGift
-    > SecretShop > Pets > DataUpdate > CommunityAio
+    Restart > MissionReward > Gacha > SanctuaryDaily > Mail > Store > PetsGift
+    > DataUpdate > Arena > Combat > SanctuaryMonthly > Knights
+    > SecretShop > Pets > CommunityAio
     > LimitedActivity > SpecialActivity
     """
 

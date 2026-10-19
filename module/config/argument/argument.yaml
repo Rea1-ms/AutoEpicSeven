@@ -460,6 +460,13 @@ ActivityRuntime:
     display: hide
     value: 2020-01-01 00:00:00
 
+ResourceRuntime:
+  State:
+    keepvalue: true
+    display: hide
+    type: dict
+    value: {}
+
 Dashboard:
   Gold:
     stored: StoredInt

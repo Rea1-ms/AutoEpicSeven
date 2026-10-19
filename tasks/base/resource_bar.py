@@ -14,7 +14,7 @@ from tasks.base.assets.assets_base_resource_bar import (
     SKYSTONE_ICON,
     STAMINA_ICON,
 )
-
+from tasks.base.resource_scheduling import ResourceCoordinator
 
 RESOURCE_KIND_INT = "int"
 RESOURCE_KIND_COUNTER = "counter"
@@ -474,6 +474,7 @@ class ResourceBarMixin:
             )
             parsed = inspected.final
             if parsed is not None:
+                self._resource_bar_source = layout_name
                 return parsed
 
             if timeout.reached():
@@ -483,7 +484,9 @@ class ResourceBarMixin:
                 )
                 return None
 
-    def write_resource_bar_status(self, parsed: dict[str, ResourceBarValue] | None) -> bool:
+    def write_resource_bar_status(
+        self, parsed: dict[str, ResourceBarValue] | None, *, source=None
+    ) -> bool:
         if not parsed:
             return False
 
@@ -501,4 +504,30 @@ class ResourceBarMixin:
                     stored.value = value.value
                 updated = True
 
+            ResourceCoordinator(self.config).observe(
+                parsed, source or getattr(self, "_resource_bar_source", "resource_bar"),
+            )
+
         return updated
+
+    def sync_pending_resources(self) -> bool:
+        """Read pending currencies only on a freshly confirmed home frame.
+
+        Pages:
+            in: main
+            out: unchanged
+        """
+        coordinator = ResourceCoordinator(self.config)
+        if not coordinator.pending:
+            return True
+        for _ in range(3):
+            self.device.screenshot()
+            if not self.is_in_main(interval=0):
+                return False
+            inspected = self.inspect_resource_bar_status(
+                layout=RESOURCE_BAR_LAYOUT_MAIN, layout_name="Main", log_result=True,
+            )
+            if inspected.final is not None:
+                self.write_resource_bar_status(inspected.final, source="Main")
+                return not ResourceCoordinator(self.config).pending
+        return False

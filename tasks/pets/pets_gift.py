@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 from module.base.timer import Timer
 from module.logger import logger
-from tasks.base.page import page_menu
+from tasks.base.page import page_main, page_menu
 from tasks.base.ui import UI
 
 
@@ -130,6 +130,7 @@ class PetsGift(UI):
         claimed = self._claim_menu_pets_gift(skip_first_screenshot=True)
 
         if claimed:
+            self.ui_goto(page_main, skip_first_screenshot=True)
             self._schedule_after_claim(datetime.now().replace(microsecond=0))
         else:
             self._schedule_after_miss()

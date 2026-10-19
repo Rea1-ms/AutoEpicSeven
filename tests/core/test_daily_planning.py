@@ -2,15 +2,79 @@
 
 import unittest
 from datetime import timedelta
+from unittest.mock import patch
 
+from tasks.base.resource_scheduling import RESOURCE_STATE_PATH, ResourceCoordinator
 from tasks.mission_reward.planning import (
     DailyBudget,
     acknowledge_daily_review,
 )
 from tests.support.daily_planning import DailyPlanningCase
+from tests.support.resources import resource_values
 
 
 class DailyPlanningTests(DailyPlanningCase, unittest.TestCase):
+    def consumption(self, *, burnout=False, fast=5, repeat=1):
+        budget = self.arena()
+        root, _ = budget._load()
+        state = root["contexts"][budget._key]["executors"].get("Combat", {})
+        return budget._future_consumption("Combat", state, {"fast": fast, "repeat": repeat}, burnout)
+
+    def observe(self, **values):
+        ResourceCoordinator(self.config).observe(resource_values(**values), "test-refill")
+
+    def test_burnout_without_resources_before_reset_cannot_complete_daily(self):
+        self.set("Combat.Combat.BurnoutMode", "Burnout")
+        self.observe(stamina=(0, 336))
+        with patch("tasks.mission_reward.planning.get_server_next_update",
+                   return_value=self.day + timedelta(hours=1, seconds=30)):
+            self.assertEqual(self.consumption(burnout=True), 0)
+            budget = self.arena()
+            self.spend(budget, "arena", 5)
+            self.snapshot(points=85, arena=5)
+            self.assertTrue(budget.choose("arena", 5).extra)
+
+    def test_fast_and_repeat_allocate_one_shared_stamina_balance(self):
+        self.set("Combat.Combat.RepeatCombatPrioritizeStamina", True)
+        self.observe(stamina=100, leif=0)
+        self.assertEqual(self.consumption(fast=5, repeat=1), 100)
+        self.assertEqual(self.consumption(burnout=True), 100)
+
+    def test_refill_revision_invalidates_previous_zero_capacity(self):
+        self.observe(stamina=0, leif=0)
+        combat = DailyBudget(self.config, "Combat", {"fast": 5, "repeat": 0})
+        combat.choose("fast", 0, 20)
+        self.assertEqual(self.consumption(repeat=0), 0)
+        self.observe(stamina=100)
+        self.assertEqual(self.consumption(repeat=0), 100)
+
+    def test_unknown_and_expired_resources_cannot_be_inferred_from_gifts_or_store(self):
+        self.set("Store.Store.ArenaFlag", 5)
+        self.set("PetsGift.Scheduler.Enable", True)
+        self.set(RESOURCE_STATE_PATH, {})
+        self.assertEqual(self.consumption(burnout=True), 0)
+        self.observe(stamina=300)
+        with patch("tasks.base.resource_scheduling.local_now",
+                   return_value=self.day + timedelta(hours=1, seconds=301)):
+            self.assertEqual(self.consumption(burnout=True), 0)
+
+    def test_settings_edit_invalidates_capacity_without_inventing_leaf_balance(self):
+        self.observe(stamina=100)
+        ResourceCoordinator(self.config).invalidate("leif")
+        combat = DailyBudget(self.config, "Combat", {"fast": 5, "repeat": 1})
+        combat.observe_capacity("fast", 0)
+        self.assertEqual(self.consumption(), 0)
+        self.set("Combat.Combat.HuntGrade", "High")
+        self.assertEqual(self.consumption(), 90)
+
+    def test_natural_recovery_is_limited_by_time_and_recovery_cap(self):
+        self.set("Combat.Combat.RepeatCombatPrioritizeStamina", True)
+        self.observe(stamina=(0, 100), leif=0)
+        with patch("tasks.mission_reward.planning.get_server_next_update",
+                   return_value=self.day + timedelta(hours=1, minutes=40)):
+            self.assertEqual(self.consumption(burnout=True), 0)
+        self.assertEqual(self.consumption(burnout=True), 100)
+
     def test_cn_and_overseas_chinese_share_conditional_addition_policy(self):
         self.set("Combat.Scheduler.Enable", False)
         for package in ("com.zlongame.cn.epicseven", "com.stove.epic7.google"):

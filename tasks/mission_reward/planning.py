@@ -7,6 +7,13 @@ from math import ceil
 
 from module.config import server
 from module.config.utils import get_server_last_update, get_server_next_update
+from tasks.base.resource_scheduling import (
+    RESOURCE_OBSERVATION_SECONDS,
+    RESOURCE_RECOVERY_SECONDS,
+    ResourceCoordinator,
+    config_value,
+    local_now,
+)
 from tasks.mission_reward.scheduling import (
     ARENA_MISSIONS,
     CORE_MISSIONS,
@@ -233,6 +240,14 @@ class DailyBudget:
             return
         root, state = self._load()
         state.setdefault("capacity", {})[kind] = _number(affordable)
+        coordinator = ResourceCoordinator(self.config)
+        resource = "arena_flag" if kind == "arena" else "stamina"
+        observed = coordinator.observation(resource)
+        state.setdefault("capacity_meta", {})[kind] = {
+            "at": local_now().isoformat(),
+            "revision": observed["revision"] if observed else None,
+            "settings": deepcopy(config_value(self.config, f"{self.executor}.{self.executor}", {})),
+        }
         self._save(root)
 
     def reserve(self, kind: str, count: int, extra: bool = False):
@@ -255,6 +270,8 @@ class DailyBudget:
         state["pending"] = {"kind": kind, "count": count, "extra": extra,
                             "reserved_at": datetime.now(timezone.utc).isoformat()}
         self._save(root)
+        keys = ("arena_flag",) if kind == "arena" else ("stamina", "leif")
+        ResourceCoordinator(self.config).invalidate(*keys)
         self._decision = None
 
     def confirm(self):
@@ -315,9 +332,6 @@ class DailyBudget:
                 # reserved resources yielded no progress. Do not speculate.
                 return True
             burnout = self.config.cross_get(f"{task}.{task}.BurnoutMode", default="Daily")
-            if burnout is True or burnout == "Burnout":
-                potential += sum(mission["points"] for mission in missing)
-                continue
             if task == "Arena":
                 defaults = {"arena": _number(self.config.cross_get("Arena.Arena.NPCCombatCount", default=5))}
             else:
@@ -330,40 +344,75 @@ class DailyBudget:
                 }
             limits = self.limits if task == self.executor else defaults
             progress = max(missions[key]["current"] for key in keys)
-            unknown = False
-            for kind, limit in limits.items():
-                remaining = max(0, limit - _number(state.get("used", {}).get(kind)))
-                cost = 1 if kind == "arena" else _number(state.get("stamina_per_unit", {}).get(kind))
-                if kind == "repeat":
-                    cost = 80
-                elif kind == "fast" and not cost:
-                    from tasks.dungeon.burnout import (
-                        ALTAR_STAMINA_COST,
-                        HUNT_STAMINA_COST,
-                    )
-
-                    domain = self.config.cross_get("Combat.Combat.Domain", default="Hunt")
-                    if domain == "SpiritAltar":
-                        grade = self.config.cross_get("Combat.Combat.AltarGrade", default="Hell")
-                        cost = ALTAR_STAMINA_COST.get(grade, 0)
-                    elif domain == "Episode4":
-                        cost = 20
-                    elif domain == "Saint37":
-                        cost = 8
-                    else:
-                        grade = self.config.cross_get("Combat.Combat.HuntGrade", default="Hell")
-                        cost = HUNT_STAMINA_COST.get(grade, 0)
-                capacity = state.get("capacity", {}).get(kind)
-                if type(capacity) is int:
-                    remaining = min(remaining, max(0, capacity))
-                if remaining and not cost:
-                    unknown = True
-                progress += remaining * cost
-            # Unknown costs can cover at most this route's remaining rewards.
-            # Waiting is justified only if even that upper bound could finish.
+            progress += self._future_consumption(task, state, limits, burnout in (True, "Burnout"))
             potential += sum(mission["points"] for mission in missing
-                             if unknown or progress >= mission["total"])
+                             if progress >= mission["total"])
         return potential >= 100
+
+    def _future_consumption(self, task, state, limits, burnout):
+        coordinator = ResourceCoordinator(self.config)
+        key = "arena_flag" if task == "Arena" else "stamina"
+        observed = coordinator.observation(key)
+        if observed is None:
+            return 0
+        now = local_now()
+        horizon = max(0, (get_server_next_update(_update(self.config)) - now).total_seconds())
+        amount = observed["value"]
+        cap = observed["total"]
+        if cap > 0:
+            amount = max(amount, min(cap, amount + int(horizon // RESOURCE_RECOVERY_SECONDS[key])))
+
+        def remaining(kind):
+            result = amount if burnout else max(0, limits.get(kind, 0) - _number(state.get("used", {}).get(kind)))
+            meta = state.get("capacity_meta", {}).get(kind, {})
+            try:
+                age = (now - datetime.fromisoformat(meta.get("at", ""))).total_seconds()
+            except ValueError:
+                age = -1
+            # A capacity observed before a refill or settings edit says nothing
+            # about this balance. Legacy entries without evidence are ignored.
+            if (0 <= age <= RESOURCE_OBSERVATION_SECONDS
+                    and meta.get("revision") == observed["revision"]
+                    and meta.get("settings") == config_value(self.config, f"{task}.{task}", {})):
+                result = min(result, _number(state.get("capacity", {}).get(kind)))
+            return result
+
+        if task == "Arena":
+            if burnout and amount < 5:
+                return 0
+            return min(amount, remaining("arena"))
+
+        from tasks.dungeon.burnout import ALTAR_STAMINA_COST, HUNT_STAMINA_COST
+
+        domain = config_value(self.config, "Combat.Combat.Domain", "Hunt")
+        if domain == "SpiritAltar":
+            cost = ALTAR_STAMINA_COST.get(config_value(self.config, "Combat.Combat.AltarGrade", "Hell"), 0)
+        elif domain in ("Episode4", "Saint37"):
+            cost = 20 if domain == "Episode4" else 8
+        else:
+            cost = HUNT_STAMINA_COST.get(config_value(self.config, "Combat.Combat.HuntGrade", "Hell"), 0)
+        if not cost or (burnout and amount < 80):
+            return 0
+        fast = config_value(self.config, "Combat.Combat.FastCombat", True) and domain != "Saint37"
+        owned_first = burnout or config_value(self.config, "Combat.Combat.RepeatCombatPrioritizeStamina", True)
+        leaf = coordinator.observation("leif")
+        leaves = leaf["value"] if leaf else 0
+        spent = 0
+        # Fixed daily batches use fast combat first; burnout starts whole repeat
+        # units first. Both allocate from one shared stamina balance.
+        for kind in (("repeat", "fast") if burnout else ("fast", "repeat")):
+            if kind == "fast":
+                count = min(remaining(kind), amount // cost) if fast else 0
+                amount -= count * cost
+                spent += count * cost
+            else:
+                count = remaining(kind)
+                owned = min(count, amount // 80) if owned_first else 0
+                paid_leaves = min(max(0, count - owned), leaves) if not burnout else 0
+                amount -= owned * 80
+                leaves -= paid_leaves
+                spent += (owned + paid_leaves) * 80
+        return spent
 
 
 def acknowledge_daily_review(config):

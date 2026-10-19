@@ -91,6 +91,9 @@
       "ConquestPoint": {},
       "ShadowCommission": {},
       "TeamBattle": {}
+    },
+    "ResourceRuntime": {
+      "State": {}
     }
   },
   "SanctuaryDaily": {

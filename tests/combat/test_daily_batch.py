@@ -6,12 +6,38 @@ from types import SimpleNamespace
 from unittest.mock import Mock
 
 from module.config.deep import deep_get
+from tasks.base.resource_scheduling import RESOURCE_STATE_PATH
 from tasks.dungeon.dungeon import Combat
 from tasks.mission_reward.planning import DailyBudget, acknowledge_daily_review
 from tests.support.daily_planning import DailyPlanningCase
 
 
 class CombatDailyBatchTests(DailyPlanningCase, unittest.TestCase):
+    def test_exhausted_fast_quota_does_not_lower_repeat_resource_gate(self):
+        self.snapshot(points=100)
+        self.config.Combat_RepeatCombatPrioritizeStamina = True
+        task = self.task(fast=0, repeat=1)
+
+        def delay(**kwargs):
+            from datetime import timedelta
+
+            self.set("Combat.Scheduler.NextRun", self.day + timedelta(hours=2))
+
+        self.config.task_delay.side_effect = delay
+        self.assertTrue(task._run_daily_combat_batch(task._daily_combat_budget, 0))
+        waits = deep_get(self.data, RESOURCE_STATE_PATH)["servers"]["CN-Official"]["waits"]
+        self.assertEqual(waits["Combat"]["need"], 80)
+        task._run_fast_combat.assert_not_called()
+        task._run_repeat_combat.assert_not_called()
+
+    def test_claimed_goal_and_exhausted_quotas_do_not_record_resource_wait(self):
+        self.snapshot(points=100)
+        task = self.task(fast=0, repeat=0)
+        self.assertTrue(task._run_daily_combat_batch(task._daily_combat_budget, 0))
+        self.config.task_delay.assert_called_once_with(server_update=True)
+        state = deep_get(self.data, RESOURCE_STATE_PATH)["servers"]["CN-Official"]
+        self.assertNotIn("Combat", state["waits"])
+
     def test_real_fast_prepare_uses_explicit_batch_cap_without_rewriting_total(self):
         task = self.task()
         task._handle_dungeon_additional = lambda: False

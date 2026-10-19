@@ -1176,6 +1176,16 @@
       "help": "Preserve daily check records from earlier versions."
     }
   },
+  "ResourceRuntime": {
+    "_info": {
+      "name": "Resource runtime",
+      "help": "Stores observed resources and resource wait evidence."
+    },
+    "State": {
+      "name": "Runtime state",
+      "help": "Internal balances, pending refreshes and task waits; daily progress stays independently observed."
+    }
+  },
   "Dashboard": {
     "_info": {
       "name": "Dashboard",

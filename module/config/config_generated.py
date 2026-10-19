@@ -220,6 +220,9 @@ class GeneratedConfig:
     ActivityRuntime_CheckedEvents = {}
     ActivityRuntime_FreeGacha20CheckedAt = datetime.datetime(2020, 1, 1, 0, 0)
 
+    # Group `ResourceRuntime`
+    ResourceRuntime_State = {}
+
     # Group `Dashboard`
     Dashboard_Gold = {}
     Dashboard_Skystone = {}

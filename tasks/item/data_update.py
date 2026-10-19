@@ -11,6 +11,7 @@ from tasks.base.page import (
 from tasks.base.resource_bar import (
     RESOURCE_BAR_LAYOUT_COMBAT,
 )
+from tasks.base.resource_scheduling import ResourceCoordinator
 from tasks.base.ui import UI
 from tasks.dungeon.assets.assets_dungeon_configs_combat_entry import OCR_SEASON_CHECK
 from tasks.item.assets.assets_item_inventory import OCR_EQUIPMENT_COUNT
@@ -109,6 +110,11 @@ class DataUpdate(ArenaEntryMixin, ArenaDashboardMixin, UI):
 
     def run(self):
         logger.hr("Data Update", level=1)
+        coordinator = ResourceCoordinator(self.config)
+        # Login can reach home and satisfy the pending read itself. Preserve
+        # why this invocation was queued before login clears that evidence;
+        # otherwise a cheap refresh unexpectedly becomes a full page tour.
+        lightweight = coordinator.lightweight_refresh()
 
         if not self.device.app_is_running():
             from tasks.login.login import Login
@@ -117,6 +123,11 @@ class DataUpdate(ArenaEntryMixin, ArenaDashboardMixin, UI):
 
         if not hasattr(self.device, "image") or self.device.image is None:
             self.device.screenshot()
+
+        if lightweight:
+            self.ui_goto(page_main, skip_first_screenshot=False)
+            coordinator.finish_refresh()
+            return not coordinator.pending
 
         updated_any = False
 
@@ -128,7 +139,9 @@ class DataUpdate(ArenaEntryMixin, ArenaDashboardMixin, UI):
 
         if updated_any:
             self.config.task_delay(server_update=True)
+            coordinator.finish_refresh(full=True)
             return True
 
         self.config.task_delay(success=False)
+        coordinator.finish_refresh(full=True)
         return False

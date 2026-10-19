@@ -159,10 +159,13 @@ class DailySchedulingTest(unittest.TestCase):
         plan = copy.deepcopy(self.plan("gacha", points=25, claimed=True))
         budget = {"version": 1, "contexts": {"server-day": {"executors": {"Arena": {"used": {"arena": 3}}}}}}
         deep_set(self.data, "MissionReward.MissionReward.DailyBudget", budget)
+        resources = {"version": 1, "servers": {"CN-Official": {"pending": {"stamina": {"source": "Mail"}}}}}
+        deep_set(self.data, "DataUpdate.ResourceRuntime.State", resources)
         deep_set(self.data, "MissionReward.MissionReward.DailyPriority", False)
         updated = ConfigUpdater().config_update(copy.deepcopy(self.data))
         self.assertEqual(deep_get(updated, DAILY_PLAN_PATH), plan)
         self.assertEqual(deep_get(updated, "MissionReward.MissionReward.DailyBudget"), budget)
+        self.assertEqual(deep_get(updated, "DataUpdate.ResourceRuntime.State"), resources)
         self.assertIs(deep_get(updated, "MissionReward.MissionReward.DailyPriority"), False)
 
     def test_missing_plan_does_not_trust_full_dashboard_counter(self):
@@ -254,9 +257,9 @@ class SchedulerPriorityTest(unittest.TestCase):
 
     def test_original_table_places_daily_tasks_first_and_keeps_other_relative_order(self):
         expected = [
-            "Restart", "MissionReward", "Gacha", "SanctuaryDaily", "Arena", "Combat",
-            "Mail", "SanctuaryMonthly", "Knights", "Store", "PetsGift", "SecretShop",
-            "Pets", "DataUpdate", "CommunityAio", "LimitedActivity", "SpecialActivity",
+            "Restart", "MissionReward", "Gacha", "SanctuaryDaily", "Mail", "Store", "PetsGift",
+            "DataUpdate", "Arena", "Combat", "SanctuaryMonthly", "Knights", "SecretShop",
+            "Pets", "CommunityAio", "LimitedActivity", "SpecialActivity",
         ]
         # Even stale enabled entries must not put manual tools in the queue.
         config = self.config("BuyPenguins", *reversed(expected), "EquipmentReroll")
@@ -285,7 +288,7 @@ class SchedulerPriorityTest(unittest.TestCase):
                     self.assertEqual(self.order(config), expected)
 
     def test_snapshot_and_reward_state_do_not_change_original_table_order(self):
-        expected = ["Restart", "MissionReward", "Gacha", "SanctuaryDaily", "Arena", "Combat", "Mail"]
+        expected = ["Restart", "MissionReward", "Gacha", "SanctuaryDaily", "Mail", "Arena", "Combat"]
         config = self.config(*reversed(expected))
         day = datetime.fromisoformat("2026-10-15T03:00:00")
         for points, claimed, offset in ((25, False, 0), (100, False, 0), (100, True, 0), (100, True, -1)):
@@ -329,7 +332,7 @@ class SchedulerPriorityTest(unittest.TestCase):
         self.assertEqual([task.command for task in config.waiting_task], ["Mail", "Arena", "Gacha", "MissionReward"])
 
     def test_daily_switch_and_language_do_not_select_another_priority_order(self):
-        expected = ["Restart", "MissionReward", "Gacha", "SanctuaryDaily", "Arena", "Combat", "Mail"]
+        expected = ["Restart", "MissionReward", "Gacha", "SanctuaryDaily", "Mail", "Arena", "Combat"]
         config = self.config(*reversed(expected))
         for package, language in (
             ("com.zlongame.cn.epicseven", "cn"),

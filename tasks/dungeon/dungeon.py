@@ -6,7 +6,7 @@ from tasks.base.page import (
     page_episode,
     page_side_story,
 )
-from tasks.base.resource_bar import ResourceBarMixin
+from tasks.base.resource_scheduling import ResourceCoordinator
 from tasks.base.ui import UI
 from tasks.dungeon.burnout import CombatBurnoutMixin
 from tasks.dungeon.daily import DailyCombatMixin
@@ -39,7 +39,6 @@ class Combat(
     SideStoryNavigateMixin,
     UrgentTasksNavigateMixin,
     CombatPrepare,
-    ResourceBarMixin,
     UI,
 ):
     COMBAT_RESOURCE_BAR_TIMEOUT_SECONDS = 1
@@ -361,6 +360,9 @@ class Combat(
             Login(self.config, device=self.device).app_start()
 
         self._daily_combat_budget = self._new_daily_combat_budget()
+        if not self._combat_is_farm_task():
+            ResourceCoordinator(self.config).begin("Combat")
+        ResourceCoordinator(self.config).invalidate("stamina")
 
         if not hasattr(self.device, "image") or self.device.image is None:
             self.device.screenshot()
@@ -605,6 +607,7 @@ class Combat(
                     self._daily_combat_budget, current_stamina or 0,
                     leif=leif.value if leif is not None else 0,
                 )
+            ResourceCoordinator(self.config).invalidate("stamina", "leif")
             target_leif_count = self._server_repeat_target_leif_count(current_stamina)
             logger.attr("CombatRepeatTargetLeifCount", target_leif_count)
             fast_stamina = current_stamina or 0
@@ -651,6 +654,7 @@ class Combat(
                     success = False
 
         elif success:
+            ResourceCoordinator(self.config).invalidate("stamina", "leif")
             if fast_combat_selected:
                 success = self._run_fast_combat(skip_first_screenshot=True)
                 if success:
@@ -724,6 +728,8 @@ class Combat(
                             )
                             repeat_combat_started = success
 
+        if completed_sessions:
+            ResourceCoordinator(self.config).request("Combat", keys=("stamina",))
         if success and (not repeat_combat_started or self._uses_server_repeat_combat()):
             success = self._leave_to_main(skip_first_screenshot=True)
 

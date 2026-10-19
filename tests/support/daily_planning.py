@@ -7,8 +7,10 @@ from unittest.mock import Mock, patch
 
 from module.config import server
 from module.config.deep import deep_get, deep_set
+from tasks.base.resource_scheduling import ResourceCoordinator
 from tasks.mission_reward.scheduling import DAILY_PLAN_PATH, daily_snapshot_context
 from tests.support.daily_missions import EXPECTED
+from tests.support.resources import resource_values
 
 DAY = datetime.fromisoformat("2026-10-17T03:00:00")
 
@@ -21,6 +23,10 @@ class DailyPlanningCase:
         self.addCleanup(server.set_lang, previous)
         server.set_lang("cn")
         self.day = DAY
+        for module in ("tasks.mission_reward.planning", "tasks.base.resource_scheduling"):
+            self.stack.enter_context(patch(
+                f"{module}.local_now", side_effect=lambda: self.day + timedelta(hours=1),
+            ))
         for module in ("planning", "scheduling"):
             self.stack.enter_context(patch(
                 f"tasks.mission_reward.{module}.get_server_last_update",
@@ -50,6 +56,10 @@ class DailyPlanningCase:
             self.set(f"{task}.Scheduler.NextRun", DAY + timedelta(hours=1))
         self.set("Arena.Arena.NPCCombatCount", 5)
         self.set("Combat.Combat.FastCombatCount", 5)
+        self.set("Combat.Combat.RepeatCombatPrioritizeStamina", False)
+        ResourceCoordinator(self.config).observe(resource_values(
+            stamina=(300, 336), arena_flag=(5, 5), leif=2,
+        ), "explicit-test-observation")
         self.snapshot()
 
     def set(self, path, value):

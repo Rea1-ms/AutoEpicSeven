@@ -539,6 +539,9 @@ class CombatRepeatMixin:
             if self._is_repeat_menu_open():
                 parsed = self._ocr_server_repeat_resources()
                 if parsed is not None:
+                    from tasks.base.resource_scheduling import ResourceCoordinator
+
+                    ResourceCoordinator(self.config).observe(parsed, "server_repeat")
                     # Resource OCR and repeat settings share this window. Keep
                     # it open so the next state loop can continue directly on
                     # the battle-settings tab instead of closing and reopening

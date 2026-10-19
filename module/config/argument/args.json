@@ -420,6 +420,14 @@
         "order": 10,
         "color": "#d85f7c"
       }
+    },
+    "ResourceRuntime": {
+      "State": {
+        "type": "dict",
+        "value": {},
+        "keepvalue": true,
+        "display": "hide"
+      }
     }
   },
   "SanctuaryDaily": {

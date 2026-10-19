@@ -39,7 +39,7 @@ from tasks.activity.calendar import active_activities
 from tasks.activity.scheduling import (
     is_activity_checked_in_window, is_activity_checked_since, mark_activity_checked,
 )
-from tasks.base.resource_bar import RESOURCE_BAR_LAYOUT_SECRET_SHOP, ResourceBarMixin
+from tasks.base.resource_bar import RESOURCE_BAR_LAYOUT_SECRET_SHOP
 from tasks.base.ui import UI
 from tasks.store.assets.assets_store_actions import (
     BUY_CONFIRM_MULTI, BUY_CONFIRM_SINGLE, BUY_MAX, BUY_MIN,
@@ -166,7 +166,7 @@ class DiscountBatchScan:
         self.scrolls += 1
 
 
-class HucheShop(ResourceBarMixin, UI):
+class HucheShop(UI):
     PURCHASE_TIMEOUT_SECONDS = 120
     SCROLL_UP_LIMIT = 3
     SCROLL_DOWN_LIMIT = 10

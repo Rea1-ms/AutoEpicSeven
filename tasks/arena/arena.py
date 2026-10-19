@@ -5,6 +5,7 @@ from tasks.arena.dashboard import ArenaDashboardMixin
 from tasks.arena.entry import ArenaEntryMixin, is_arena_settling_period
 from tasks.arena.npc_combat import ArenaNpcCombatMixin, OcrFastBattleTimes
 from tasks.arena.rewards import ArenaRewardsMixin, next_battle_pass_recheck
+from tasks.base.resource_scheduling import ResourceCoordinator
 from tasks.base.ui import UI
 from tasks.mission_reward.scheduling import should_schedule_mission_reward
 
@@ -27,6 +28,7 @@ class Arena(
 
     def run(self) -> bool:
         logger.hr("Arena", level=1)
+        ResourceCoordinator(self.config).begin("Arena")
 
         if not self.device.app_is_running():
             from tasks.login.login import Login
@@ -76,14 +78,18 @@ class Arena(
                     if budget.pending is not None:
                         logger.warning("Arena: unresolved daily round; do not repeat consumption")
                     if budget.needs_daily or budget.has_remaining or budget.pending is not None:
-                        self.config.task_call("DataUpdate", force_call=False)
+                        ResourceCoordinator(self.config).request("Arena", keys=("arena_flag",))
                         self.config.task_delay(minute=budget.retry_minutes)
+                        flags = self._stored_arena_flag_status()
+                        if (reason == "wait" and flags is not None and flags[0] == 0
+                                and budget.pending is None and success):
+                            ResourceCoordinator(self.config).wait("Arena", "arena_flag", 1)
                         return success
                 if not success:
                     self.config.task_delay(success=False)
                     return False
 
-            self.config.task_call("DataUpdate", force_call=False)
+            ResourceCoordinator(self.config).request("Arena", keys=("arena_flag",))
             self._arena_delay_after_run()
             return True
 
