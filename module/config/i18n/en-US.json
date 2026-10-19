@@ -1080,6 +1080,10 @@
     "GetMeirinReward": {
       "name": "Claim Meirin Task Rewards",
       "help": "Overseas Simplified Chinese interface only. Claim completed task rewards in the Together with Meirin event. Recheck after Arena or Combat if no reward is ready; stop daily checks only when all tasks are complete."
+    },
+    "GetSupportReward": {
+      "name": "Claim support ticket task rewards",
+      "help": "Overseas Chinese UI: claim 500 support tickets for 10 daily Arena matches and available weekly holding rewards. Recheck after Arena only; resets at 03:00 UTC. Does not spend stamina or tickets."
     }
   },
   "SpecialActivity": {

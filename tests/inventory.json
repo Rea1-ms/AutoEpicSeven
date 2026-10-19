@@ -18464,6 +18464,255 @@
           "reason": "系统通知独立开关、多渠道失败隔离与旧配置兼容；不连接设备或发送真实通知"
         }
       ]
+    },
+    {
+      "source": "tests/activity/test_support_reward.py",
+      "business": "应援券获取",
+      "status": "新增",
+      "reason": "竞技场触发、每周持券领奖与北京时间11点刷新",
+      "cases": [
+        {
+          "id": "tests.activity.test_support_reward.SupportRewardTests.test_real_assets_reject_other_pages_popup_and_moved_daily_row",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "support-reward-received",
+            "support-reward-home",
+            "support-reward-incomplete",
+            "support-reward-home-after",
+            "support-reward-available",
+            "support-reward-popup",
+            "support-reward-weekly"
+          ],
+          "status": "已纳入",
+          "reason": "真实截图与模拟设备；保留生产计时、弹窗确认和禁止跳转断言"
+        },
+        {
+          "id": "tests.activity.test_support_reward.SupportRewardTests.test_claim_popup_then_scan_weekly_and_daily_receipt",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "support-reward-received",
+            "support-reward-home",
+            "support-reward-incomplete",
+            "support-reward-home-after",
+            "support-reward-available",
+            "support-reward-popup",
+            "support-reward-weekly"
+          ],
+          "status": "已纳入",
+          "reason": "真实截图与模拟设备；保留生产计时、弹窗确认和禁止跳转断言"
+        },
+        {
+          "id": "tests.activity.test_support_reward.SupportRewardTests.test_incomplete_daily_stays_eligible_and_never_clicks_go",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "support-reward-received",
+            "support-reward-home",
+            "support-reward-incomplete",
+            "support-reward-home-after",
+            "support-reward-available",
+            "support-reward-popup",
+            "support-reward-weekly"
+          ],
+          "status": "已纳入",
+          "reason": "真实截图与模拟设备；保留生产计时、弹窗确认和禁止跳转断言"
+        },
+        {
+          "id": "tests.activity.test_support_reward.SupportRewardTests.test_receipt_before_popup_does_not_complete_claim",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "support-reward-received",
+            "support-reward-home",
+            "support-reward-incomplete",
+            "support-reward-home-after",
+            "support-reward-available",
+            "support-reward-popup",
+            "support-reward-weekly"
+          ],
+          "status": "已纳入",
+          "reason": "真实截图与模拟设备；保留生产计时、弹窗确认和禁止跳转断言"
+        },
+        {
+          "id": "tests.activity.test_support_reward.SupportRewardTests.test_missing_popup_times_out_without_recording_completion",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "support-reward-received",
+            "support-reward-home",
+            "support-reward-incomplete",
+            "support-reward-home-after",
+            "support-reward-available",
+            "support-reward-popup",
+            "support-reward-weekly"
+          ],
+          "status": "已纳入",
+          "reason": "真实截图与模拟设备；保留生产计时、弹窗确认和禁止跳转断言"
+        },
+        {
+          "id": "tests.activity.test_support_reward.SupportRewardTests.test_dropped_claim_and_close_obey_production_intervals",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "support-reward-received",
+            "support-reward-home",
+            "support-reward-incomplete",
+            "support-reward-home-after",
+            "support-reward-available",
+            "support-reward-popup",
+            "support-reward-weekly"
+          ],
+          "status": "已纳入",
+          "reason": "真实截图与模拟设备；保留生产计时、弹窗确认和禁止跳转断言"
+        },
+        {
+          "id": "tests.activity.test_support_reward.SupportRewardTests.test_network_dialog_cannot_replace_reward_popup",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "support-reward-received",
+            "support-reward-home",
+            "support-reward-incomplete",
+            "support-reward-home-after",
+            "support-reward-available",
+            "support-reward-popup",
+            "support-reward-weekly"
+          ],
+          "status": "已纳入",
+          "reason": "真实截图与模拟设备；保留生产计时、弹窗确认和禁止跳转断言"
+        },
+        {
+          "id": "tests.activity.test_support_reward.SupportRewardTests.test_wrong_tab_rejects_claim_without_actions",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "support-reward-received",
+            "support-reward-home",
+            "support-reward-incomplete",
+            "support-reward-home-after",
+            "support-reward-available",
+            "support-reward-popup",
+            "support-reward-weekly"
+          ],
+          "status": "已纳入",
+          "reason": "真实截图与模拟设备；保留生产计时、弹窗确认和禁止跳转断言"
+        },
+        {
+          "id": "tests.activity.test_support_reward.SupportRewardTests.test_weekly_checkmark_cannot_complete_unfinished_daily",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "support-reward-received",
+            "support-reward-home",
+            "support-reward-incomplete",
+            "support-reward-home-after",
+            "support-reward-available",
+            "support-reward-popup",
+            "support-reward-weekly"
+          ],
+          "status": "已纳入",
+          "reason": "真实截图与模拟设备；保留生产计时、弹窗确认和禁止跳转断言"
+        },
+        {
+          "id": "tests.activity.test_support_reward.SupportRewardTests.test_arena_only_scheduling_uses_saved_switch_and_independent_receipt",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "support-reward-received",
+            "support-reward-home",
+            "support-reward-incomplete",
+            "support-reward-home-after",
+            "support-reward-available",
+            "support-reward-popup",
+            "support-reward-weekly"
+          ],
+          "status": "已纳入",
+          "reason": "真实截图与模拟设备；保留生产计时、弹窗确认和禁止跳转断言"
+        },
+        {
+          "id": "tests.activity.test_support_reward.SupportRewardTests.test_calendar_boundaries_and_reset_ignore_scheduler_02",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "support-reward-received",
+            "support-reward-home",
+            "support-reward-incomplete",
+            "support-reward-home-after",
+            "support-reward-available",
+            "support-reward-popup",
+            "support-reward-weekly"
+          ],
+          "status": "已纳入",
+          "reason": "真实截图与模拟设备；保留生产计时、弹窗确认和禁止跳转断言"
+        },
+        {
+          "id": "tests.activity.test_support_reward.SupportRewardTests.test_entry_batches_support_and_skips_disabled_or_checked",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "support-reward-received",
+            "support-reward-home",
+            "support-reward-incomplete",
+            "support-reward-home-after",
+            "support-reward-available",
+            "support-reward-popup",
+            "support-reward-weekly"
+          ],
+          "status": "已纳入",
+          "reason": "真实截图与模拟设备；保留生产计时、弹窗确认和禁止跳转断言"
+        },
+        {
+          "id": "tests.activity.test_support_reward.SupportRewardTests.test_synthetic_weekly_reward_is_claimed_before_daily_scan_finishes",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "support-reward-weekly",
+            "support-reward-available",
+            "support-reward-popup",
+            "support-reward-received"
+          ],
+          "status": "已纳入",
+          "reason": "刷新时刻边界与明确合成的每周领奖回放"
+        },
+        {
+          "id": "tests.activity.test_support_reward.SupportRewardTests.test_bad_refresh_hour_is_rejected_before_scheduling",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "刷新时刻边界与明确合成的每周领奖回放"
+        },
+        {
+          "id": "tests.activity.test_support_reward.SupportRewardTests.test_new_weekly_claim_waits_until_previous_popup_is_closed",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "support-reward-weekly",
+            "support-reward-available",
+            "support-reward-popup",
+            "support-reward-received"
+          ],
+          "status": "已纳入",
+          "reason": "奖励弹窗前禁止领取其他任务"
+        }
+      ]
     }
   ]
 }

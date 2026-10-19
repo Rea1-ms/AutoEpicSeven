@@ -393,6 +393,7 @@ LimitedActivity:
   # 按资料中的活动时间领取奖励；20抽的实际抽取由 Gacha（召唤任务）执行。
   GetFreeGacha: true
   GetMeirinReward: true
+  GetSupportReward: true
 
 SpecialActivity:
   # 花费天空石的购买项默认关闭，避免升级后自动改变用户消费。

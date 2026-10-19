@@ -1307,6 +1307,249 @@
         "tests.captured.test_activity_selection.ActivitySelectionTests.test_text_without_selected_color_is_not_accepted",
         "tests.captured.test_common_activity.RealScreenshotBatchTests.test_all_pending_templates_choose_only_the_actual_selected_event"
       ]
+    },
+    "support-reward-received": {
+      "path": "tests/fixtures/historical/global_cn/support_reward/support-reward-received.png",
+      "sha256": "8a5f706b707950b3581b7fc1e14e869b308aa57ef6b5bc50abc63cd26bc2f505",
+      "server": "global_cn",
+      "capture_type": "user_screenshot",
+      "scene": "Support ticket event: received; captured 2026-10-19 evening",
+      "source": "codex-clipboard-5827dc6c-e687-40da-8438-a38812117f07.png",
+      "source_sha256": "3aad33cd5e0de4fbfab1a025b65eedbdd42ddc4cec87bffc893fe558ed1b3922",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_support_reward.SupportRewardTests.test_real_assets_reject_other_pages_popup_and_moved_daily_row",
+        "tests.activity.test_support_reward.SupportRewardTests.test_claim_popup_then_scan_weekly_and_daily_receipt",
+        "tests.activity.test_support_reward.SupportRewardTests.test_incomplete_daily_stays_eligible_and_never_clicks_go",
+        "tests.activity.test_support_reward.SupportRewardTests.test_receipt_before_popup_does_not_complete_claim",
+        "tests.activity.test_support_reward.SupportRewardTests.test_missing_popup_times_out_without_recording_completion",
+        "tests.activity.test_support_reward.SupportRewardTests.test_dropped_claim_and_close_obey_production_intervals",
+        "tests.activity.test_support_reward.SupportRewardTests.test_network_dialog_cannot_replace_reward_popup",
+        "tests.activity.test_support_reward.SupportRewardTests.test_synthetic_weekly_reward_is_claimed_before_daily_scan_finishes",
+        "tests.activity.test_support_reward.SupportRewardTests.test_new_weekly_claim_waits_until_previous_popup_is_closed",
+        "tests.activity.test_support_reward.SupportRewardTests.test_wrong_tab_rejects_claim_without_actions",
+        "tests.activity.test_support_reward.SupportRewardTests.test_weekly_checkmark_cannot_complete_unfinished_daily",
+        "tests.activity.test_support_reward.SupportRewardTests.test_arena_only_scheduling_uses_saved_switch_and_independent_receipt",
+        "tests.activity.test_support_reward.SupportRewardTests.test_calendar_boundaries_and_reset_ignore_scheduler_02",
+        "tests.activity.test_support_reward.SupportRewardTests.test_entry_batches_support_and_skips_disabled_or_checked"
+      ]
+    },
+    "support-reward-home": {
+      "path": "tests/fixtures/historical/global_cn/support_reward/support-reward-home.png",
+      "sha256": "2cdd814c8c65c82f72bab72e2a93030bdd87a59220f87a4c7f289cd314053dde",
+      "server": "global_cn",
+      "capture_type": "user_screenshot",
+      "scene": "Support ticket event: home; captured 2026-10-19 evening",
+      "source": "codex-clipboard-4cbfbc43-5a4f-4bc7-a438-821e923f3e59.png",
+      "source_sha256": "ff7a90c898a4c9a4be70cd823a637f44c3a5524c035618adc6f2198e28bdcbcc",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          0,
+          0,
+          320,
+          120
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_support_reward.SupportRewardTests.test_real_assets_reject_other_pages_popup_and_moved_daily_row",
+        "tests.activity.test_support_reward.SupportRewardTests.test_claim_popup_then_scan_weekly_and_daily_receipt",
+        "tests.activity.test_support_reward.SupportRewardTests.test_incomplete_daily_stays_eligible_and_never_clicks_go",
+        "tests.activity.test_support_reward.SupportRewardTests.test_receipt_before_popup_does_not_complete_claim",
+        "tests.activity.test_support_reward.SupportRewardTests.test_missing_popup_times_out_without_recording_completion",
+        "tests.activity.test_support_reward.SupportRewardTests.test_dropped_claim_and_close_obey_production_intervals",
+        "tests.activity.test_support_reward.SupportRewardTests.test_network_dialog_cannot_replace_reward_popup",
+        "tests.activity.test_support_reward.SupportRewardTests.test_synthetic_weekly_reward_is_claimed_before_daily_scan_finishes",
+        "tests.activity.test_support_reward.SupportRewardTests.test_new_weekly_claim_waits_until_previous_popup_is_closed",
+        "tests.activity.test_support_reward.SupportRewardTests.test_wrong_tab_rejects_claim_without_actions",
+        "tests.activity.test_support_reward.SupportRewardTests.test_weekly_checkmark_cannot_complete_unfinished_daily",
+        "tests.activity.test_support_reward.SupportRewardTests.test_arena_only_scheduling_uses_saved_switch_and_independent_receipt",
+        "tests.activity.test_support_reward.SupportRewardTests.test_calendar_boundaries_and_reset_ignore_scheduler_02",
+        "tests.activity.test_support_reward.SupportRewardTests.test_entry_batches_support_and_skips_disabled_or_checked"
+      ]
+    },
+    "support-reward-incomplete": {
+      "path": "tests/fixtures/historical/global_cn/support_reward/support-reward-incomplete.png",
+      "sha256": "0226193c56a57e17a38bdebea22c5c870e29a8cc3c98a2ceb07a2f52b638cb00",
+      "server": "global_cn",
+      "capture_type": "user_screenshot",
+      "scene": "Support ticket event: incomplete; captured 2026-10-19 evening",
+      "source": "codex-clipboard-c0d99b65-ef4a-4b42-a39f-fd740a6947ea.png",
+      "source_sha256": "a83bb4e2148170a8dd00708a6111d57f07ee15f3fe6a8557499586116ff8460d",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_support_reward.SupportRewardTests.test_real_assets_reject_other_pages_popup_and_moved_daily_row",
+        "tests.activity.test_support_reward.SupportRewardTests.test_claim_popup_then_scan_weekly_and_daily_receipt",
+        "tests.activity.test_support_reward.SupportRewardTests.test_incomplete_daily_stays_eligible_and_never_clicks_go",
+        "tests.activity.test_support_reward.SupportRewardTests.test_receipt_before_popup_does_not_complete_claim",
+        "tests.activity.test_support_reward.SupportRewardTests.test_missing_popup_times_out_without_recording_completion",
+        "tests.activity.test_support_reward.SupportRewardTests.test_dropped_claim_and_close_obey_production_intervals",
+        "tests.activity.test_support_reward.SupportRewardTests.test_network_dialog_cannot_replace_reward_popup",
+        "tests.activity.test_support_reward.SupportRewardTests.test_synthetic_weekly_reward_is_claimed_before_daily_scan_finishes",
+        "tests.activity.test_support_reward.SupportRewardTests.test_new_weekly_claim_waits_until_previous_popup_is_closed",
+        "tests.activity.test_support_reward.SupportRewardTests.test_wrong_tab_rejects_claim_without_actions",
+        "tests.activity.test_support_reward.SupportRewardTests.test_weekly_checkmark_cannot_complete_unfinished_daily",
+        "tests.activity.test_support_reward.SupportRewardTests.test_arena_only_scheduling_uses_saved_switch_and_independent_receipt",
+        "tests.activity.test_support_reward.SupportRewardTests.test_calendar_boundaries_and_reset_ignore_scheduler_02",
+        "tests.activity.test_support_reward.SupportRewardTests.test_entry_batches_support_and_skips_disabled_or_checked"
+      ]
+    },
+    "support-reward-home-after": {
+      "path": "tests/fixtures/historical/global_cn/support_reward/support-reward-home-after.png",
+      "sha256": "31488c7aacec21bbb380fac86c34b99ab89a75579ff8d5e4f7d462686a12c9aa",
+      "server": "global_cn",
+      "capture_type": "user_screenshot",
+      "scene": "Support ticket event: home-after; captured 2026-10-19 evening",
+      "source": "codex-clipboard-74510b26-0df5-4089-af60-e9850ee9de11.png",
+      "source_sha256": "a143a58e02dc94d8f0c8a61050ae546ae39d544d5c9edc8553480904fcf6d774",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          0,
+          0,
+          320,
+          120
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_support_reward.SupportRewardTests.test_real_assets_reject_other_pages_popup_and_moved_daily_row",
+        "tests.activity.test_support_reward.SupportRewardTests.test_claim_popup_then_scan_weekly_and_daily_receipt",
+        "tests.activity.test_support_reward.SupportRewardTests.test_incomplete_daily_stays_eligible_and_never_clicks_go",
+        "tests.activity.test_support_reward.SupportRewardTests.test_receipt_before_popup_does_not_complete_claim",
+        "tests.activity.test_support_reward.SupportRewardTests.test_missing_popup_times_out_without_recording_completion",
+        "tests.activity.test_support_reward.SupportRewardTests.test_dropped_claim_and_close_obey_production_intervals",
+        "tests.activity.test_support_reward.SupportRewardTests.test_network_dialog_cannot_replace_reward_popup",
+        "tests.activity.test_support_reward.SupportRewardTests.test_synthetic_weekly_reward_is_claimed_before_daily_scan_finishes",
+        "tests.activity.test_support_reward.SupportRewardTests.test_new_weekly_claim_waits_until_previous_popup_is_closed",
+        "tests.activity.test_support_reward.SupportRewardTests.test_wrong_tab_rejects_claim_without_actions",
+        "tests.activity.test_support_reward.SupportRewardTests.test_weekly_checkmark_cannot_complete_unfinished_daily",
+        "tests.activity.test_support_reward.SupportRewardTests.test_arena_only_scheduling_uses_saved_switch_and_independent_receipt",
+        "tests.activity.test_support_reward.SupportRewardTests.test_calendar_boundaries_and_reset_ignore_scheduler_02",
+        "tests.activity.test_support_reward.SupportRewardTests.test_entry_batches_support_and_skips_disabled_or_checked"
+      ]
+    },
+    "support-reward-available": {
+      "path": "tests/fixtures/historical/global_cn/support_reward/support-reward-available.png",
+      "sha256": "1e4385dcffc8c196e983e70f77d3f5ee82bd13e630d533755083b9527e080424",
+      "server": "global_cn",
+      "capture_type": "user_screenshot",
+      "scene": "Support ticket event: available; captured 2026-10-19 evening",
+      "source": "codex-clipboard-c5cab356-1d92-4883-9df0-c2858395c9a9.png",
+      "source_sha256": "15f13e3710aa88ae0f18684822a3329148e6f079bbb831dd8e093994827e97e6",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_support_reward.SupportRewardTests.test_real_assets_reject_other_pages_popup_and_moved_daily_row",
+        "tests.activity.test_support_reward.SupportRewardTests.test_claim_popup_then_scan_weekly_and_daily_receipt",
+        "tests.activity.test_support_reward.SupportRewardTests.test_incomplete_daily_stays_eligible_and_never_clicks_go",
+        "tests.activity.test_support_reward.SupportRewardTests.test_receipt_before_popup_does_not_complete_claim",
+        "tests.activity.test_support_reward.SupportRewardTests.test_missing_popup_times_out_without_recording_completion",
+        "tests.activity.test_support_reward.SupportRewardTests.test_dropped_claim_and_close_obey_production_intervals",
+        "tests.activity.test_support_reward.SupportRewardTests.test_network_dialog_cannot_replace_reward_popup",
+        "tests.activity.test_support_reward.SupportRewardTests.test_synthetic_weekly_reward_is_claimed_before_daily_scan_finishes",
+        "tests.activity.test_support_reward.SupportRewardTests.test_new_weekly_claim_waits_until_previous_popup_is_closed",
+        "tests.activity.test_support_reward.SupportRewardTests.test_wrong_tab_rejects_claim_without_actions",
+        "tests.activity.test_support_reward.SupportRewardTests.test_weekly_checkmark_cannot_complete_unfinished_daily",
+        "tests.activity.test_support_reward.SupportRewardTests.test_arena_only_scheduling_uses_saved_switch_and_independent_receipt",
+        "tests.activity.test_support_reward.SupportRewardTests.test_calendar_boundaries_and_reset_ignore_scheduler_02",
+        "tests.activity.test_support_reward.SupportRewardTests.test_entry_batches_support_and_skips_disabled_or_checked"
+      ]
+    },
+    "support-reward-popup": {
+      "path": "tests/fixtures/historical/global_cn/support_reward/support-reward-popup.png",
+      "sha256": "a1ca493797c069a8e6c9cc0913fc10bbb0032a75e9f3438595866ad3c6a26df0",
+      "server": "global_cn",
+      "capture_type": "user_screenshot",
+      "scene": "Support ticket event: popup; captured 2026-10-19 evening",
+      "source": "codex-clipboard-9a1ddfb9-6be5-419d-961d-ec37224204d7.png",
+      "source_sha256": "dbac1010b212ce9c673f3eac0afeaa6b64977c3268ae5a96ae8e65f521daf9a7",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_support_reward.SupportRewardTests.test_real_assets_reject_other_pages_popup_and_moved_daily_row",
+        "tests.activity.test_support_reward.SupportRewardTests.test_claim_popup_then_scan_weekly_and_daily_receipt",
+        "tests.activity.test_support_reward.SupportRewardTests.test_incomplete_daily_stays_eligible_and_never_clicks_go",
+        "tests.activity.test_support_reward.SupportRewardTests.test_receipt_before_popup_does_not_complete_claim",
+        "tests.activity.test_support_reward.SupportRewardTests.test_missing_popup_times_out_without_recording_completion",
+        "tests.activity.test_support_reward.SupportRewardTests.test_dropped_claim_and_close_obey_production_intervals",
+        "tests.activity.test_support_reward.SupportRewardTests.test_network_dialog_cannot_replace_reward_popup",
+        "tests.activity.test_support_reward.SupportRewardTests.test_synthetic_weekly_reward_is_claimed_before_daily_scan_finishes",
+        "tests.activity.test_support_reward.SupportRewardTests.test_new_weekly_claim_waits_until_previous_popup_is_closed",
+        "tests.activity.test_support_reward.SupportRewardTests.test_wrong_tab_rejects_claim_without_actions",
+        "tests.activity.test_support_reward.SupportRewardTests.test_weekly_checkmark_cannot_complete_unfinished_daily",
+        "tests.activity.test_support_reward.SupportRewardTests.test_arena_only_scheduling_uses_saved_switch_and_independent_receipt",
+        "tests.activity.test_support_reward.SupportRewardTests.test_calendar_boundaries_and_reset_ignore_scheduler_02",
+        "tests.activity.test_support_reward.SupportRewardTests.test_entry_batches_support_and_skips_disabled_or_checked"
+      ]
+    },
+    "support-reward-weekly": {
+      "path": "tests/fixtures/historical/global_cn/support_reward/support-reward-weekly.png",
+      "sha256": "d90a751b4ad8e679a676e912b073b4ce721eca3babaf66f4a811b69e68862ae2",
+      "server": "global_cn",
+      "capture_type": "user_screenshot",
+      "scene": "Support ticket event: weekly; captured 2026-10-19 evening",
+      "source": "codex-clipboard-a661e569-0982-4718-a11f-76d054910dd9.png",
+      "source_sha256": "c91f018366857d567660333758f897b3a386bc3e711eea128047cedd14e288f0",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_support_reward.SupportRewardTests.test_real_assets_reject_other_pages_popup_and_moved_daily_row",
+        "tests.activity.test_support_reward.SupportRewardTests.test_claim_popup_then_scan_weekly_and_daily_receipt",
+        "tests.activity.test_support_reward.SupportRewardTests.test_incomplete_daily_stays_eligible_and_never_clicks_go",
+        "tests.activity.test_support_reward.SupportRewardTests.test_receipt_before_popup_does_not_complete_claim",
+        "tests.activity.test_support_reward.SupportRewardTests.test_missing_popup_times_out_without_recording_completion",
+        "tests.activity.test_support_reward.SupportRewardTests.test_dropped_claim_and_close_obey_production_intervals",
+        "tests.activity.test_support_reward.SupportRewardTests.test_network_dialog_cannot_replace_reward_popup",
+        "tests.activity.test_support_reward.SupportRewardTests.test_synthetic_weekly_reward_is_claimed_before_daily_scan_finishes",
+        "tests.activity.test_support_reward.SupportRewardTests.test_new_weekly_claim_waits_until_previous_popup_is_closed",
+        "tests.activity.test_support_reward.SupportRewardTests.test_wrong_tab_rejects_claim_without_actions",
+        "tests.activity.test_support_reward.SupportRewardTests.test_weekly_checkmark_cannot_complete_unfinished_daily",
+        "tests.activity.test_support_reward.SupportRewardTests.test_arena_only_scheduling_uses_saved_switch_and_independent_receipt",
+        "tests.activity.test_support_reward.SupportRewardTests.test_calendar_boundaries_and_reset_ignore_scheduler_02",
+        "tests.activity.test_support_reward.SupportRewardTests.test_entry_batches_support_and_skips_disabled_or_checked"
+      ]
     }
   },
   "aliases": {

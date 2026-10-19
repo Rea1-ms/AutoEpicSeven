@@ -66,7 +66,7 @@ class Arena(
                 if battle_completed:
                     if should_schedule_mission_reward(self.config):
                         self.config.task_call("MissionReward", force_call=False)
-                    schedule_activity_after_battle(self.config)
+                    schedule_activity_after_battle(self.config, arena=True)
 
             self.config.task_call("DataUpdate", force_call=False)
             self._arena_delay_after_run()

@@ -119,6 +119,8 @@ def _values(value):
             raise ValueError(f"Game-info values must be strings, integers or booleans: {key}")
         if key in ("max_level", "cycle_days", "refresh_hours") and (type(item) is not int or item <= 0):
             raise ValueError(f"{key} must be a positive integer")
+    if "refresh_hour" in value and (type(value["refresh_hour"]) is not int or not 0 <= value["refresh_hour"] <= 23):
+        raise ValueError("refresh_hour must be an integer between 0 and 23")
     return MappingProxyType(dict(value))
 
 

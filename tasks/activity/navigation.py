@@ -4,6 +4,7 @@ from module.logger import logger
 from module.ocr.ocr import Ocr, OcrResultButton
 from tasks.activity.assets.assets_activity_common import COMMON_ACTIVITY_LIST
 from tasks.activity.assets.assets_activity_special_26_8_27 import FREE_20_GACHA_SELECTED
+from tasks.activity.assets.assets_activity_special_26_10_19 import SUPPORT_GATE_CHECK
 from tasks.base.page import page_common_activity
 
 
@@ -26,14 +27,17 @@ class ActivityNavigationMixin:
         )
 
     def _activity_selected(self, selected_button) -> bool:
-        # Overseas free summons is confirmed by a fixed page ornament, even
-        # when its sidebar tab is offscreen. Do not replace that asset's search
-        # with the sidebar bounds. Other events and CN still use selected tabs.
+        # Overseas free summons and support tasks use fixed page content, even
+        # when their sidebar tabs are offscreen. Keep those page search bounds;
+        # other events and CN still confirm the selected sidebar tab.
         # Restore every frame's bounds and offsets: wrappers are shared objects.
         buttons = tuple(selected_button.iter_buttons())
         searches = tuple(button.search for button in buttons)
         try:
-            if not (server.lang == "global_cn" and selected_button is FREE_20_GACHA_SELECTED):
+            if not (
+                server.lang == "global_cn"
+                and selected_button in (FREE_20_GACHA_SELECTED, SUPPORT_GATE_CHECK)
+            ):
                 selected_button.load_search(COMMON_ACTIVITY_LIST.area)
             return self.match_template_color(selected_button)
         finally:
@@ -56,7 +60,7 @@ class ActivityNavigationMixin:
         )
 
     def select_activity(self, keyword, selected_button, skip_first_screenshot=True) -> bool:
-        """Select an event by sidebar text and confirm its selected template.
+        """Select an event by sidebar text and confirm its page marker.
 
         Pages:
             in: page_common_activity, any event tab

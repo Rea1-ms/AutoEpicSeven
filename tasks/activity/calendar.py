@@ -12,9 +12,9 @@ from module.game_info.timeline import render_timeline as render_game_timeline
 EVENT_TIMEZONE = INFO_TIMEZONE
 CALENDAR_PATH = INFO_PATH
 DEFAULT_FREE_GACHA_20_ID = "free_gacha_20_2026_08_27"
-SUPPORTED_MODES = ("legacy", "free_gacha_20", "meirin_reward", "huche_shop")
+SUPPORTED_MODES = ("legacy", "free_gacha_20", "meirin_reward", "support_reward", "huche_shop")
 ACTIVITY_TASK_MODES = {
-    "LimitedActivity": ("free_gacha_20", "meirin_reward"),
+    "LimitedActivity": ("free_gacha_20", "meirin_reward", "support_reward"),
     "SpecialActivity": ("legacy", "huche_shop"),
 }
 
@@ -28,6 +28,7 @@ class ActivityWindow:
     start: datetime
     end: datetime
     refresh_hours: int = 0
+    refresh_hour: int | None = None
 
     def contains(self, now: datetime) -> bool:
         return self.start <= now < self.end
@@ -37,7 +38,10 @@ class ActivityWindow:
         if not self.refresh_hours:
             return self.start
         interval = timedelta(hours=self.refresh_hours)
-        return self.start + max(0, (now - self.start) // interval) * interval
+        anchor = self.start if self.refresh_hour is None else self.start.replace(
+            hour=self.refresh_hour, minute=0, second=0, microsecond=0,
+        )
+        return anchor + max(0, (now - anchor) // interval) * interval
 
     def next_refresh(self, now: datetime) -> datetime | None:
         if not self.refresh_hours or not self.contains(now):
@@ -50,7 +54,7 @@ def load_calendar(path: Path = CALENDAR_PATH) -> tuple[ActivityWindow, ...]:
     # Catalog categories may exist before automation supports them. Only this
     # adapter owns the supported-flow list; adding facts never executes code.
     return tuple(ActivityWindow(p.event_id, p.name, p.kind, p.server_family, p.start, p.end,
-                                p.values.get("refresh_hours", 0))
+                                p.values.get("refresh_hours", 0), p.values.get("refresh_hour"))
                  for p in load_info(path).periods if p.kind in SUPPORTED_MODES)
 
 
@@ -66,7 +70,7 @@ def _server_windows(config) -> tuple[ActivityWindow, ...]:
     return tuple(
         window for window in load_calendar()
         if window.server_family == family
-        and (window.mode not in ("meirin_reward", "huche_shop")
+        and (window.mode not in ("meirin_reward", "support_reward", "huche_shop")
              or family == server.SERVER_FAMILY_OVERSEA)
     )
 

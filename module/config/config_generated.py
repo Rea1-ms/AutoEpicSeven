@@ -193,6 +193,7 @@ class GeneratedConfig:
     # Group `LimitedActivity`
     LimitedActivity_GetFreeGacha = True
     LimitedActivity_GetMeirinReward = True
+    LimitedActivity_GetSupportReward = True
 
     # Group `SpecialActivity`
     SpecialActivity_BuyHucheMysticMedals = False

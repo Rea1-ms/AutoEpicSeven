@@ -96,7 +96,7 @@ def mark_activity_checked(config, event_id: str) -> None:
     logger.info(f"SpecialActivity: {event_id} reward checked at {checked_at}")
 
 
-def should_schedule_after_battle(config, *, task="LimitedActivity") -> bool:
+def should_schedule_after_battle(config, *, task="LimitedActivity", arena=False) -> bool:
     if not config.is_task_enabled(task):
         return False
 
@@ -115,6 +115,13 @@ def should_schedule_after_battle(config, *, task="LimitedActivity") -> bool:
             )
             if enabled and not is_activity_checked_today(config, event.event_id, task=task):
                 return True
+        elif event.mode == "support_reward" and arena:
+            enabled = config.cross_get(
+                "LimitedActivity.LimitedActivity.GetSupportReward",
+                default=config.LimitedActivity_GetSupportReward,
+            )
+            if enabled and not is_activity_checked_in_window(config, event):
+                return True
         elif event.mode == "legacy":
             from tasks.activity.legacy.summer_2026_06_25.scheduling import (
                 should_schedule_after_battle as legacy_schedule,
@@ -125,8 +132,8 @@ def should_schedule_after_battle(config, *, task="LimitedActivity") -> bool:
     return False
 
 
-def schedule_activity_after_battle(config) -> None:
+def schedule_activity_after_battle(config, *, arena=False) -> None:
     """Wake only the enabled task that owns an unfinished battle reward."""
     for task in ACTIVITY_TASK_MODES:
-        if should_schedule_after_battle(config, task=task):
+        if should_schedule_after_battle(config, task=task, arena=arena):
             config.task_call(task, force_call=False)

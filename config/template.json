@@ -292,7 +292,8 @@
     },
     "LimitedActivity": {
       "GetFreeGacha": true,
-      "GetMeirinReward": true
+      "GetMeirinReward": true,
+      "GetSupportReward": true
     }
   },
   "SpecialActivity": {

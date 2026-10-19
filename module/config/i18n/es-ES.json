@@ -1080,6 +1080,10 @@
     "GetMeirinReward": {
       "name": "Recoger recompensas de tareas de Meirin",
       "help": "Solo para la interfaz en chino simplificado del servidor internacional. Recoge las recompensas de tareas completadas del evento ¡Junto a Meirin! Si no hay recompensas disponibles, vuelve a comprobar tras Arena o Combate; espera al reinicio diario solo cuando todas las tareas estén completadas."
+    },
+    "GetSupportReward": {
+      "name": "Recoger recompensas de boletos de apoyo",
+      "help": "Solo interfaz china del servidor internacional: recoge 500 boletos por 10 combates diarios de Arena y las recompensas semanales disponibles. Revisa solo tras Arena; reinicio diario a las 03:00 UTC. No gasta energía ni boletos."
     }
   },
   "SpecialActivity": {

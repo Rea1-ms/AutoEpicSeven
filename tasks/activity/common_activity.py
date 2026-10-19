@@ -4,9 +4,11 @@ from module.ocr.ocr import Ocr, OcrResultButton
 from tasks.activity.assets.assets_activity_common import COMMON_ACTIVITY_LIST
 from tasks.activity.assets.assets_activity_special_26_8_27 import FREE_20_GACHA_SELECTED
 from tasks.activity.assets.assets_activity_special_26_10_15 import MEIRIN_GATE_SELECTED
+from tasks.activity.assets.assets_activity_special_26_10_19 import SUPPORT_GATE_CHECK
 from tasks.activity.free_gacha_20 import FreeGacha20
 from tasks.activity.meirin_reward import MeirinReward
 from tasks.activity.navigation import ActivityNavigationMixin
+from tasks.activity.support_reward import SupportReward
 from tasks.base.page import page_common_activity
 from tasks.base.ui import UI
 
@@ -17,6 +19,7 @@ class CommonActivityBatch(ActivityNavigationMixin, UI):
     ACTIVITIES = {
         "free_gacha_20": ("INFINITY", FREE_20_GACHA_SELECTED, FreeGacha20),
         "meirin_reward": ("与梅铃一起吧", MEIRIN_GATE_SELECTED, MeirinReward),
+        "support_reward": ("应援任务", SUPPORT_GATE_CHECK, SupportReward),
     }
 
     def run(self, activities) -> bool:

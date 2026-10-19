@@ -1362,6 +1362,10 @@
       "GetMeirinReward": {
         "type": "checkbox",
         "value": true
+      },
+      "GetSupportReward": {
+        "type": "checkbox",
+        "value": true
       }
     }
   },
