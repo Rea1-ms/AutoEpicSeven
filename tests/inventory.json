@@ -18179,7 +18179,7 @@
           "has_automatic_assertion": true,
           "fixtures": [],
           "status": "已纳入",
-          "reason": "库存与单次支援数量校验、独立开关、重复帧及实际扣减确认；花的捐赠动作采用模拟输入"
+          "reason": "支援弹窗由通用点击关闭处理，不读取文字；重复弹窗按两秒间隔关闭，旧请求仍阻止重复捐赠，请求消失后允许库存因重排不可见"
         },
         {
           "id": "tests.knights.test_donate.DonationReplayTests.test_completed_rows_do_not_stop_search_before_later_affordable_items",
@@ -18272,6 +18272,108 @@
           ],
           "status": "已纳入",
           "reason": "真实花截图验证单次支援1个、8474至8473扣减与完成请求；重复帧和延迟刷新为显式回放安排"
+        },
+        {
+          "id": "tests.knights.test_donate.DonationReplayTests.test_entry_scans_top_without_swiping_before_donation",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保持进场直接识别、白色对勾终点与仅本人请求退出；库存识别不改变扫描规则"
+        },
+        {
+          "id": "tests.knights.test_donate.DonationReplayTests.test_white_bottom_check_finishes_without_another_swipe",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保持进场直接识别、白色对勾终点与仅本人请求退出；库存识别不改变扫描规则"
+        },
+        {
+          "id": "tests.knights.test_donate.DonationReplayTests.test_unchanged_swipes_wait_for_white_bottom_check",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "滑动未生效不能当作到底；保留原有白色对勾结束依据"
+        },
+        {
+          "id": "tests.knights.test_donate.DonationReplayTests.test_own_request_only_exits_without_ocr_or_swiping",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保持进场直接识别、白色对勾终点与仅本人请求退出；库存识别不改变扫描规则"
+        },
+        {
+          "id": "tests.knights.test_donate.DonationReplayTests.test_four_complete_rows_finish_without_swiping",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保持进场直接识别、白色对勾终点与仅本人请求退出；库存识别不改变扫描规则"
+        },
+        {
+          "id": "tests.knights.test_donate.DonationReplayTests.test_visible_affordable_request_is_processed_before_bottom_check",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保持进场直接识别、白色对勾终点与仅本人请求退出；库存识别不改变扫描规则"
+        },
+        {
+          "id": "tests.knights.test_donate.DonationServerCaptureTests.test_cn_own_request_capture_exits_without_ocr_or_swiping",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/knights/donate/MuMu-20261020-211036-975.png"
+          ],
+          "status": "已纳入",
+          "reason": "用户确认服务器的真实截图；独立进程验证单人退出、完成白勾和赛季弹窗关闭，重复帧与页面转换为显式输入"
+        },
+        {
+          "id": "tests.knights.test_donate.DonationServerCaptureTests.test_global_completed_captures_scroll_then_exit_without_donating",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/knights/donate/MuMu-20261020-211920-535.png",
+            "tests/fixtures/knights/donate/MuMu-20261020-211923-116.png"
+          ],
+          "status": "已纳入",
+          "reason": "用户确认服务器的真实截图；独立进程验证单人退出、完成白勾和赛季弹窗关闭，重复帧与页面转换为显式输入"
+        },
+        {
+          "id": "tests.knights.test_donate.DonationServerCaptureTests.test_cn_season_popups_close_before_own_request_exit",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/knights/popups/MuMu-20261020-211027-988.png",
+            "tests/fixtures/knights/popups/MuMu-20261020-211031-757.png",
+            "tests/fixtures/knights/donate/MuMu-20261020-211036-975.png"
+          ],
+          "status": "已纳入",
+          "reason": "用户确认服务器的真实截图；独立进程验证单人退出、完成白勾和赛季弹窗关闭，重复帧与页面转换为显式输入"
+        },
+        {
+          "id": "tests.knights.test_donate.DonationServerCaptureTests.test_global_champion_popup_closes_before_completed_request_exit",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/knights/popups/MuMu-20261020-211849-489.png",
+            "tests/fixtures/knights/donate/MuMu-20261020-211923-116.png"
+          ],
+          "status": "已纳入",
+          "reason": "用户确认服务器的真实截图；独立进程验证单人退出、完成白勾和赛季弹窗关闭，重复帧与页面转换为显式输入"
         }
       ]
     }

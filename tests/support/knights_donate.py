@@ -5,10 +5,8 @@ from unittest.mock import Mock
 
 import numpy as np
 
-from module.config import server
-
-server.set_lang('global_cn')
-
+# The caller selects its server before importing business modules. In
+# particular, isolated CN capture checks must not silently use global assets.
 from module.base.button import ClickButton
 from tasks.base.assets.assets_base_popup import TOUCH_TO_CLOSE
 from tasks.base.ui import UI
@@ -38,9 +36,10 @@ def pixel_task(capture):
     return task
 
 
-def listing(*rows, view=0, stocks=None, seconds=0.5):
-    """Rows are item, stock, required quantity, recipient, and action center Y."""
-    return scene('SUPPORT_CHECK', rows=rows, view=view, stocks=stocks, seconds=seconds)
+def listing(*rows, view=0, stocks=None, seconds=0.5, completed=1, bottom=False):
+    """Rows are item, stock, quantity, recipient and action Y; one completed row is visible by default."""
+    buttons = ('SUPPORT_CHECK', 'HIT_BOTTOM') if bottom else ('SUPPORT_CHECK',)
+    return scene(*buttons, rows=rows, view=view, stocks=stocks, seconds=seconds, completed=completed)
 
 
 def quote(row):
@@ -62,6 +61,7 @@ class DonationReplay(InteractionReplay):
             TOUCH_TO_CLOSE, interval=interval)
         self.task._donation_page_ready = self.page_ready
         self.task._donation_view = self.view
+        self.task._donation_list_entries = self.entries
         self.task._find_donate_action_pairs = self.pairs
         self.task._donation_quote = self.read_quote
         self.task._donation_identity = self.identity
@@ -93,9 +93,17 @@ class DonationReplay(InteractionReplay):
             return KnightsSupportMixin._donation_view(self.task)
         return str(self.frame['view']).encode(), np.array([self.frame['view'] * 10], dtype=np.int16)
 
-    def pairs(self, plans):
+    def entries(self):
         if isinstance(self.image, np.ndarray):
-            return KnightsSupportMixin._find_donate_action_pairs(self.task, plans)
+            return KnightsSupportMixin._donation_list_entries(self.task)
+        actions = [quote(row).button for row in self.frame['rows']]
+        completed = [ClickButton((1112, 180 + i * 130, 1138, 198 + i * 130))
+                     for i in range(self.frame['completed'])]
+        return actions, completed
+
+    def pairs(self, plans, action_buttons=None):
+        if isinstance(self.image, np.ndarray):
+            return KnightsSupportMixin._find_donate_action_pairs(self.task, plans, action_buttons=action_buttons)
         enabled = {plan.name for plan in plans}
         return [(row[0], quote(row).button) for row in self.frame['rows'] if row[0] in enabled]
 

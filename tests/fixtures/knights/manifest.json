@@ -892,6 +892,126 @@
           645
         ]
       ]
+    },
+    "20261020-211027-988": {
+      "path": "tests/fixtures/knights/popups/MuMu-20261020-211027-988.png",
+      "sha256": "c0f1eba016ecb2fb06650e81d5a79409bf89a256fa80a9fbd8dbc7d84baa870b",
+      "server": "cn",
+      "scene": "Guild hall of fame season notification",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.knights.test_donate.DonationServerCaptureTests.test_cn_season_popups_close_before_own_request_exit"
+      ],
+      "source": "user-provided MuMu-20261020-211027-988.png; server confirmed by user",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          110
+        ]
+      ]
+    },
+    "20261020-211031-757": {
+      "path": "tests/fixtures/knights/popups/MuMu-20261020-211031-757.png",
+      "sha256": "65e5fabb3148d8c7c17f97eccd570a81ac5c0a45099a17bf60dc16ce3d5b0c32",
+      "server": "cn",
+      "scene": "Guild war champion notification",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.knights.test_donate.DonationServerCaptureTests.test_cn_season_popups_close_before_own_request_exit"
+      ],
+      "source": "user-provided MuMu-20261020-211031-757.png; server confirmed by user",
+      "privacy_redaction": []
+    },
+    "20261020-211036-975": {
+      "path": "tests/fixtures/knights/donate/MuMu-20261020-211036-975.png",
+      "sha256": "6b46182366fe06b7b349bae63e71fef059ea883eeb487500c47e331c4e21b1f6",
+      "server": "cn",
+      "scene": "Only own flower request, stock 6694, no support actions or checks",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.knights.test_donate.DonationServerCaptureTests.test_cn_own_request_capture_exits_without_ocr_or_swiping",
+        "tests.knights.test_donate.DonationServerCaptureTests.test_cn_season_popups_close_before_own_request_exit"
+      ],
+      "source": "user-provided MuMu-20261020-211036-975.png; server confirmed by user",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          25
+        ],
+        [
+          842,
+          133,
+          1018,
+          645
+        ]
+      ]
+    },
+    "20261020-211849-489": {
+      "path": "tests/fixtures/knights/popups/MuMu-20261020-211849-489.png",
+      "sha256": "6292c49296de6ff60f1ef919b6cc7e95347a57bef8ac0e376e6fd58ab8807b44",
+      "server": "global_cn",
+      "scene": "Guild war champion notification",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.knights.test_donate.DonationServerCaptureTests.test_global_champion_popup_closes_before_completed_request_exit"
+      ],
+      "source": "user-provided MuMu-20261020-211849-489.png; server confirmed by user",
+      "privacy_redaction": []
+    },
+    "20261020-211920-535": {
+      "path": "tests/fixtures/knights/donate/MuMu-20261020-211920-535.png",
+      "sha256": "7b79fe15ff1e36e6fe9ad765a8180b976e617862066073d76eec51fa5ccda813",
+      "server": "global_cn",
+      "scene": "Scrolled support list with one rune action and three completed penguin rows",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.knights.test_donate.DonationServerCaptureTests.test_global_completed_captures_scroll_then_exit_without_donating"
+      ],
+      "source": "user-provided MuMu-20261020-211920-535.png; server confirmed by user",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          25
+        ],
+        [
+          842,
+          133,
+          1018,
+          645
+        ]
+      ]
+    },
+    "20261020-211923-116": {
+      "path": "tests/fixtures/knights/donate/MuMu-20261020-211923-116.png",
+      "sha256": "894c86432828f560b15ad7c36210c0afa5f172ed004d026aa79dd7b95fda1f65",
+      "server": "global_cn",
+      "scene": "Scrolled support list with four completed rows, including rune and catalyst",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.knights.test_donate.DonationServerCaptureTests.test_global_completed_captures_scroll_then_exit_without_donating",
+        "tests.knights.test_donate.DonationServerCaptureTests.test_global_champion_popup_closes_before_completed_request_exit"
+      ],
+      "source": "user-provided MuMu-20261020-211923-116.png; server confirmed by user",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          25
+        ],
+        [
+          842,
+          133,
+          1018,
+          645
+        ]
+      ]
     }
   }
 }
