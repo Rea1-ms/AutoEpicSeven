@@ -16,7 +16,6 @@ from tasks.arena.assets.assets_arena import (
     OCR_FAST_BATTLE_TIMES,
     OPPONENT,
 )
-from tasks.dungeon.runtime import is_background_repeat_combat_active
 
 
 class OcrFastBattleTimes(DigitCounter):
@@ -141,9 +140,13 @@ class ArenaNpcCombatMixin:
         return current, remain, total
 
     def _npc_combat_once(
-        self, use_fast_battle: bool, skip_first_screenshot=True
+        self, use_fast_battle: bool, skip_first_screenshot=True, check_flags=False
     ) -> str:
         """
+        Pages:
+            in: arena opponent list or battle preparation
+            out: actionable arena home after one round, or an exhausted/failed state
+
         Returns:
             str: completed / exhausted / failed
         """
@@ -348,6 +351,19 @@ class ArenaNpcCombatMixin:
                         continue
                     continue
 
+                if check_flags:
+                    flag_status = self._ocr_arena_flag_status()
+                    if flag_status is None:
+                        logger.warning("Arena NPC: first preparation flag check failed")
+                        return "failed"
+                    if flag_status[0] <= 0:
+                        logger.info("Arena NPC: no flags on first battle preparation")
+                        return "exhausted"
+                    # Only the first preparation of this task refreshes flags.
+                    # Keep the verified snapshot through toggle/start retries;
+                    # later rounds use the existing confirmed-battle deduction.
+                    check_flags = False
+
                 if fast_battle_effective and self.appear(FAST_BATTLE_LOCKED):
                     logger.info(
                         "Arena NPC: fast battle locked, fallback to normal battle"
@@ -369,7 +385,7 @@ class ArenaNpcCombatMixin:
                     timeout.reset()
                     continue
 
-                if self.appear_then_click(BATTLE_START, interval=1):
+                if self._npc_click_battle_start():
                     stage = self.ARENA_NPC_STAGE_BATTLE
                     gray_retry = 0
                     auto_fight_clicks = 0
@@ -471,18 +487,23 @@ class ArenaNpcCombatMixin:
                             timeout.reset()
                             continue
 
+                # A start click may still be in flight when the last prepare
+                # frame outlives the retry timer. Keep BATTLE pending while
+                # retrying the visible start control: the very next frame can
+                # be a fast-battle animation over the NPC list, with CHALLENGE
+                # still detectable underneath. Returning to PREPARE/SELECT
+                # here would discard result handling and strand the round.
+                # Only the positive home check above completes this round;
+                # after a result has been seen, never start another battle.
                 if (
-                    battle_start_grace_timer.reached()
+                    not battle_result_seen
+                    and battle_start_grace_timer.reached()
                     and battle_start_pending_timer.reached()
                     and self._is_battle_prepare_page()
+                    and self._npc_click_battle_start()
                 ):
                     logger.info("Arena NPC: battle start pending timeout, retry start")
-                    stage = self.ARENA_NPC_STAGE_PREPARE
-                    timeout.reset()
-                    continue
-
-                if self.appear(NPC_OPPONENT) and self.appear(CHALLENGE):
-                    stage = self.ARENA_NPC_STAGE_SELECT
+                    battle_start_pending_timer.reset()
                     timeout.reset()
                     continue
 
@@ -506,23 +527,68 @@ class ArenaNpcCombatMixin:
             timeout.reset()
             continue
 
+    def _npc_click_battle_start(self) -> bool:
+        budget = getattr(self, "_arena_daily_budget", None)
+        if budget is None or not budget.active:
+            return self.appear_then_click(BATTLE_START, interval=1)
+        if not self.appear(BATTLE_START, interval=1):
+            return False
+        # Reserve immediately before the first consuming click. Retry clicks
+        # belong to the same pending round and must never charge it twice.
+        if not self._arena_daily_round_reserved:
+            flags = self._stored_arena_flag_status()
+            decision = budget.choose("arena", affordable=flags[0] if flags is not None else 0)
+            if decision.reason != "run":
+                return False
+            budget.reserve("arena", 1, extra=decision.extra)
+            self._arena_daily_round_reserved = True
+        self.device.click(BATTLE_START)
+        return True
+
     def _run_npc_combat(self, skip_first_screenshot=True) -> bool:
+        from tasks.mission_reward.planning import DailyBudget
+
         self._arena_npc_completed_rounds = 0
+        self._arena_daily_stop_reason = None
+        self._arena_daily_budget = DailyBudget(
+            self.config, "Arena", {"arena": getattr(self.config, "Arena_NPCCombatCount", 5)}
+        )
+        # Server-managed repeat sessions keep their runtime record active while
+        # arena fast battle remains available. Honor the user's setting here;
+        # each round checks the actual lock and remaining uses on the prepare page.
         use_fast_battle = getattr(self.config, "Arena_NPCCombatFastBattle", True)
-        if use_fast_battle and is_background_repeat_combat_active(self.config):
-            logger.info("Arena NPC: background repeat combat active, use normal battle")
-            use_fast_battle = False
-        flag_status = self._stored_arena_flag_status()
-        if flag_status is not None and flag_status[0] <= 0:
+        # Manual play can invalidate either a positive or zero cached balance.
+        # A task starts with a live reading; an unreadable counter cannot make
+        # the old estimate current again. The first prepare page checks once
+        # more before any start click, then normal per-round deduction resumes.
+        flag_status = self._ocr_arena_flag_status(
+            skip_first_screenshot=skip_first_screenshot,
+        )
+        skip_first_screenshot = True
+        if flag_status is None:
+            logger.warning("Arena NPC: initial flag check failed")
+            return False
+        # Daily allowances must use the same live balance as the combat loop;
+        # a stale zero must not suppress a refilled batch, and a stale positive
+        # must not reserve a round after manual consumption exhausted the flags.
+        if self._arena_daily_budget.active:
+            decision = self._arena_daily_budget.choose(
+                "arena", affordable=flag_status[0] if flag_status is not None else 0
+            )
+            if decision.reason != "run":
+                self._arena_daily_stop_reason = decision.reason
+                logger.info(f"Arena daily batch: {decision.reason}")
+                return True
+            daily_target = decision.count
+        if flag_status[0] <= 0:
             logger.info("Arena NPC: arena flag is already 0, skip combat")
             return True
 
         if self._arena_burnout_enabled():
-            # Burnout mode is resource-bounded, not batch-bounded. The fresh
-            # dashboard snapshot normally gives an exact target, including
-            # stockpiled flags above the natural recovery cap. If OCR was not
-            # available, keep running until the game reports no usable flag.
-            target_count = flag_status[0] if flag_status is not None else None
+            # The initial live reading includes stockpiled flags above the
+            # natural recovery cap. Preparation may lower this budget; the
+            # existing stored deduction stops the batch when it is exhausted.
+            target_count = flag_status[0]
             logger.info(
                 f"Arena NPC: burnout target={target_count or 'until exhausted'}"
             )
@@ -538,6 +604,9 @@ class ArenaNpcCombatMixin:
                 logger.info("Arena NPC: target count <= 0, skip")
                 return True
 
+        if self._arena_daily_budget.active:
+            target_count = daily_target
+
         logger.info(
             f"Arena NPC: target={target_count or 'until exhausted'}, fast_battle={use_fast_battle}"
         )
@@ -545,13 +614,16 @@ class ArenaNpcCombatMixin:
         while target_count is None or completed < target_count:
             # Avoid stale click history across rounds triggering false-positive too-many-click.
             self.device.click_record_clear()
+            self._arena_daily_round_reserved = False
             status = self._npc_combat_once(
                 use_fast_battle=use_fast_battle,
                 skip_first_screenshot=skip_first_screenshot,
+                check_flags=completed == 0,
             )
             skip_first_screenshot = True
 
             if status == "completed":
+                self._arena_daily_budget.confirm()
                 completed += 1
                 self._arena_npc_completed_rounds = completed
                 self._consume_stored_arena_flags(1)

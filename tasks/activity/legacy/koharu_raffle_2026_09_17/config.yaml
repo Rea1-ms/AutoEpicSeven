@@ -1,0 +1,16 @@
+# 小春活动原配置备份，不参与当前配置生成。
+argument:
+  LimitedActivity:
+    GetKoharuRaffleReward: true
+
+task:
+  LimitedActivity:
+    - Scheduler
+    - LimitedActivity
+
+activity:
+  id: koharu_raffle_2026_09_17
+  kind: koharu_raffle
+  sidebar_keyword: 收集抽奖券
+  oversea_start: '2026-09-17T11:00:00+08:00'
+  oversea_end: '2026-10-08T11:00:00+08:00'

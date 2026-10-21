@@ -1,0 +1,81 @@
+name: Offline regression tests
+
+'on':
+  push:
+    branches: [master, dev]
+    paths:
+      - '.github/workflows/offline-tests.yml'
+      - 'assets/**'
+      - 'dev_tools/build_exploration_fixtures.py'
+      - 'dev_tools/build_test_inventory.py'
+      - 'dev_tools/check_offline_negative.py'
+      - 'dev_tools/run_offline_tests.py'
+      - 'module/**'
+      - 'tasks/**'
+      - 'tests/**'
+      - 'requirements-test-pinned.txt'
+      - '!**/*.md'
+  pull_request:
+    paths:
+      - '.github/workflows/offline-tests.yml'
+      - 'assets/**'
+      - 'dev_tools/build_exploration_fixtures.py'
+      - 'dev_tools/build_test_inventory.py'
+      - 'dev_tools/check_offline_negative.py'
+      - 'dev_tools/run_offline_tests.py'
+      - 'module/**'
+      - 'tasks/**'
+      - 'tests/**'
+      - 'requirements-test-pinned.txt'
+      - '!**/*.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  dimensional-exploration:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python 3.10.19
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10.19'
+      - name: Install pinned offline-test environment
+        run: |
+          python -m pip install --no-deps -r requirements-test-pinned.txt
+          python -m pip check
+      - name: Verify controlled failure and device isolation
+        run: python -B -m dev_tools.check_offline_negative
+      - name: Run offline suite with coverage
+        run: python -B -m dev_tools.run_offline_tests --suite all --coverage --timeout-seconds 300
+      - name: Publish result summary
+        if: always()
+        run: |
+          report=$(find screenshots/offline_test_results -mindepth 2 -maxdepth 2 -name result.json ! -path '*/negative-*/*' 2>/dev/null | sort | tail -n 1 || true)
+          if [ -n "$report" ]; then
+            python - "$report" <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          import sys
+
+          with open(sys.argv[1], encoding="utf-8") as source:
+              report = json.load(source)
+          counts = report["counts"]
+          print("### Offline tests")
+          print(f"Passed: {counts['passed']}; failed: {counts['failed']}; errors: {counts['error']}; skipped: {counts['skipped']}")
+          print(f"Duration: {report['duration_seconds']}s; fixtures: {report['fixture_count']}")
+          PY
+          else
+            echo "Offline tests did not produce result.json; inspect uploaded logs or setup output." >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Upload report and failure attachments
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dimensional-exploration-offline-results
+          path: screenshots/offline_test_results/
+          if-no-files-found: warn
+          retention-days: 14

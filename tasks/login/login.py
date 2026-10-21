@@ -19,6 +19,7 @@ Epic Seven 登录模块
       - GAME_UPGRADE_AVAILABLE → 跳转 Google Play → 更新 → 重启
       - PATCH_APPLY → 等待热更新完成
       - LOGIN_LOADING → 等待加载中
+      - LOGIN_AGREEMENT_UNCHECKED → 国服首次启动勾选协议
       - LOGIN_CONFIRM → 点击进入
       - ui_additional() → 签到/新角色/buff/礼包等弹窗
       - handle_login_popup() → special activity popups
@@ -41,6 +42,7 @@ from tasks.base.ui import UI
 from tasks.base.assets.assets_base_popup import TOUCH_TO_CLOSE
 from tasks.login.assets.assets_login import (
     GAME_UPGRADE_AVAILABLE,
+    LOGIN_AGREEMENT_UNCHECKED,
     LOGIN_ANNOUNCEMENT_CLOSE,
     LOGGED_OUT,
     LOGIN_ERROR,
@@ -109,6 +111,10 @@ class Login(UI):
             or self.appear(LOGGED_OUT, interval=0)
             or self.appear(LOGIN_ERROR, interval=0)
             or self.appear(LOGIN_CONFIRM, interval=0)
+            or (
+                server_.is_cn_server(self.config.Emulator_PackageName)
+                and self.appear(LOGIN_AGREEMENT_UNCHECKED, interval=0)
+            )
             or self.appear(LOGIN_LOADING, interval=0, similarity=0.75)
             or self.appear(VERIFYING, interval=0)
             or self.appear(PATCH_APPLY, interval=0)
@@ -360,6 +366,20 @@ class Login(UI):
             # 进入游戏
             # ==========================================
 
+            # CN first launch requires consent. Only the empty box is clickable
+            # here; verify the green check on a fresh screenshot before entering.
+            # Leave the total timeout running so repeated failed checkbox clicks
+            # cannot keep login alive indefinitely.
+            if server_.is_cn_server(self.config.Emulator_PackageName) and self.appear_then_click(
+                LOGIN_AGREEMENT_UNCHECKED, interval=2
+            ):
+                logger.info('Selecting CN login agreement')
+                network_error_count = 0
+                main_confirm.reset()
+                continue
+
+            # CN LOGIN_CONFIRM recognizes the green check, but its BUTTON asset
+            # still targets empty space: clicking the check would revoke consent.
             if self.appear_then_click(LOGIN_CONFIRM, interval=2):
                 logger.info('Clicking to enter game')
                 login_success = True

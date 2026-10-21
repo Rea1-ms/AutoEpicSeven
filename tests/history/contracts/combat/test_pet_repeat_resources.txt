@@ -1,0 +1,85 @@
+# ruff: noqa: E402
+"""Historical manual assertions adapted to the account-free offline runner."""
+import unittest
+from module.config import server as _test_server
+_test_server.set_lang("global_cn")
+
+from tasks.dungeon.stamina_status import CombatStaminaStatusMixin, PET_REPEAT_RESOURCE_LAYOUT
+
+class FakeDevice:
+    image = object()
+
+    def screenshot(self):
+        return self.image
+
+class SnapshotProbe(CombatStaminaStatusMixin):
+    COMBAT_PREPARE_TIMEOUT_SECONDS = 1
+    RESOURCE_BAR_TIMEOUT_SECONDS = 1
+    RESOURCE_BAR_TIMEOUT_COUNT = 10
+
+    def __init__(self):
+        self.device = FakeDevice()
+        self.stage = "prepare"
+        self.events = []
+        self.parsed = {
+            key: SimpleNamespace(value=index + 1)
+            for index, key in enumerate(PET_REPEAT_RESOURCE_LAYOUT)
+        }
+
+    def _is_prepare_page(self):
+        return self.stage == "prepare"
+
+    def _ensure_fast_combat_state(self, enabled):
+        self.events.append(("fast_combat", enabled))
+        return not enabled
+
+    def appear(self, button):
+        return self.stage == "panel"
+
+    def appear_then_click(self, button, interval=0):
+        if self.stage == "prepare":
+            self.events.append("open")
+            self.stage = "panel"
+            return True
+        if self.stage == "panel":
+            self.events.append("close")
+            self.stage = "prepare"
+            return True
+        return False
+
+    def _ocr_pet_repeat_resources(self):
+        self.events.append("inspect")
+        return SimpleNamespace(values=self.parsed, icon_matches=[])
+
+    def _handle_repeat_count_overlay_additional(self):
+        return False
+
+class FailedSnapshotProbe(SnapshotProbe):
+    RESOURCE_BAR_TIMEOUT_SECONDS = 0
+    RESOURCE_BAR_TIMEOUT_COUNT = 0
+
+    def _ocr_pet_repeat_resources(self):
+        self.events.append("inspect")
+        return SimpleNamespace(values=None, icon_matches=["stamina=miss"])
+
+from types import SimpleNamespace
+
+
+
+class ManualChecks(unittest.TestCase):
+    def test_snapshot_success(self):
+        probe = SnapshotProbe()
+        parsed = probe._update_prepare_resource_snapshot()
+        expected_events = [("fast_combat", False), "open", "inspect", "close"]
+        if parsed is not probe.parsed or probe.events != expected_events:
+                    raise AssertionError(f"unexpected snapshot flow: parsed={parsed}, events={probe.events}")
+
+    def test_failed_snapshot_closes_panel(self):
+        failed_probe = FailedSnapshotProbe()
+        parsed = failed_probe._update_prepare_resource_snapshot()
+        if parsed is not None or failed_probe.stage != "prepare" or failed_probe.events[-1] != "close":
+                    raise AssertionError(
+                        f"failed snapshot did not close cleanly: parsed={parsed}, "
+                        f"stage={failed_probe.stage}, events={failed_probe.events}"
+                    )
+

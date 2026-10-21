@@ -1,10 +1,11 @@
 from module.logger import logger
-from tasks.activity.scheduling import should_schedule_after_battle
+from tasks.activity.scheduling import schedule_activity_after_battle
 from tasks.arena.burnout import ArenaBurnoutMixin
 from tasks.arena.dashboard import ArenaDashboardMixin
 from tasks.arena.entry import ArenaEntryMixin, is_arena_settling_period
 from tasks.arena.npc_combat import ArenaNpcCombatMixin, OcrFastBattleTimes
 from tasks.arena.rewards import ArenaRewardsMixin, next_battle_pass_recheck
+from tasks.base.resource_scheduling import ResourceCoordinator
 from tasks.base.ui import UI
 from tasks.mission_reward.scheduling import should_schedule_mission_reward
 
@@ -27,6 +28,7 @@ class Arena(
 
     def run(self) -> bool:
         logger.hr("Arena", level=1)
+        ResourceCoordinator(self.config).begin("Arena")
 
         if not self.device.app_is_running():
             from tasks.login.login import Login
@@ -52,11 +54,9 @@ class Arena(
         if status in {"entered", "settling_npc"}:
             self._update_arena_dashboard_snapshot(skip_first_screenshot=True)
             if getattr(self.config, "Arena_NPCCombat", False):
-                if not self._run_npc_combat(skip_first_screenshot=True):
-                    self.config.task_delay(success=False)
-                    return False
+                success = self._run_npc_combat(skip_first_screenshot=True)
 
-                if status == "entered":
+                if success and status == "entered":
                     self._claim_weekly_battle_rewards(skip_first_screenshot=True)
                     self._claim_battle_pass_rewards(skip_first_screenshot=True)
 
@@ -64,12 +64,32 @@ class Arena(
                     getattr(self, "_arena_npc_completed_rounds", 0)
                 )
                 if battle_completed:
+                    budget = getattr(self, "_arena_daily_budget", None)
+                    if budget is not None and budget.needs_daily:
+                        budget.request_review()
                     if should_schedule_mission_reward(self.config):
                         self.config.task_call("MissionReward", force_call=False)
-                    if should_schedule_after_battle(self.config):
-                        self.config.task_call("SpecialActivity", force_call=False)
+                    schedule_activity_after_battle(self.config, arena=True)
+                budget = getattr(self, "_arena_daily_budget", None)
+                if budget is not None and budget.active:
+                    reason = getattr(self, "_arena_daily_stop_reason", None)
+                    if reason == "review":
+                        self.config.task_call("MissionReward", force_call=False)
+                    if budget.pending is not None:
+                        logger.warning("Arena: unresolved daily round; do not repeat consumption")
+                    if budget.needs_daily or budget.has_remaining or budget.pending is not None:
+                        ResourceCoordinator(self.config).request("Arena", keys=("arena_flag",))
+                        self.config.task_delay(minute=budget.retry_minutes)
+                        flags = self._stored_arena_flag_status()
+                        if (reason == "wait" and flags is not None and flags[0] == 0
+                                and budget.pending is None and success):
+                            ResourceCoordinator(self.config).wait("Arena", "arena_flag", 1)
+                        return success
+                if not success:
+                    self.config.task_delay(success=False)
+                    return False
 
-            self.config.task_call("DataUpdate", force_call=False)
+            ResourceCoordinator(self.config).request("Arena", keys=("arena_flag",))
             self._arena_delay_after_run()
             return True
 

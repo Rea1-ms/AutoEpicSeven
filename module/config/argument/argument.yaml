@@ -2,7 +2,7 @@
 # Define arguments.
 # --------------------
 
-# ==================== Alas ====================
+# ==================== Alas =============
 
 Scheduler:
   Enable:
@@ -62,6 +62,7 @@ EmulatorInfo:
       LDPlayer3,
       LDPlayer4,
       LDPlayer9,
+      LDPlayer14,
       MuMuPlayer,
       MuMuPlayerX,
       MuMuPlayer12,
@@ -79,6 +80,7 @@ Error:
     option: [ game, game_emulator ]
   SaveError: true
   ScreenshotLength: 1
+  SystemNotification: false
   OnePushConfig:
     type: textarea
     mode: yaml
@@ -90,10 +92,21 @@ Optimization:
     value: goto_main
     option: [ stay_there, goto_main, close_game, close_emulator ]
 
-# ==================== Daily ====================
+# ==================== Daily =============
 
 MissionReward:
   ClaimDailyRewards: true
+  DailyPriority: true
+  DailyPlan:
+    keepvalue: true
+    display: hide
+    type: dict
+    value: {}
+  DailyBudget:
+    keepvalue: true
+    display: hide
+    type: dict
+    value: {}
 
 Mail:
   CollectWithin:
@@ -147,8 +160,77 @@ KnightsTeamBattle:
     display: hide
     value: ""
 
+KnightsShopWeekly:
+  # 每期目标总量；游戏显示的已购数量（含手动购买）也计入，0 为不购买。
+  MysticMedals:
+    value: 0
+    option: [ 0, 1 ]
+  RareCatalystChest:
+    value: 0
+    option: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ]
+  EpicCatalystChest:
+    value: 0
+    option: [ 0, 1, 2, 3, 4, 5 ]
+  CatalystChest:
+    value: 0
+    option: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
+  ReforgingStoneChest:
+    value: 0
+    option: [ 0, 1 ]
+
+KnightsShopMonthly:
+  EquipmentResetStone:
+    value: 0
+    option: [ 0, 1 ]
+  AccessoryResetStone:
+    value: 0
+    option: [ 0, 1 ]
+  Level85ManastoneChest:
+    value: 0
+    option: [ 0, 1 ]
+  Level88ManastoneChest:
+    value: 0
+    option: [ 0, 1 ]
+  ConversionGemChest:
+    value: 0
+    option: [ 0, 1, 2 ]
+  GoldTransmitStone:
+    value: 0
+    option: [ 0, 1, 2 ]
+  EpicSpiritBloom:
+    value: 0
+    option: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
+  Molagora:
+    value: 0
+    option: [ 0, 1, 2, 3, 4, 5 ]
+  FireConnection:
+    value: 0
+    option: [ 0, 1, 2, 3, 4, 5 ]
+  NatureConnection:
+    value: 0
+    option: [ 0, 1, 2, 3, 4, 5 ]
+  IceConnection:
+    value: 0
+    option: [ 0, 1, 2, 3, 4, 5 ]
+  ReforgingStoneChest:
+    value: 0
+    option: [ 0, 1, 2, 3, 4, 5 ]
+  ReforgeMaterialChest:
+    value: 0
+    option: [ 0, 1, 2, 3, 4 ]
+
+KnightsShopRuntime:
+  Purchases:
+    keepvalue: true
+    display: hide
+    type: dict
+    value: {}
+
 Arena:
   ClaimWeeklyRewards: true
+  WeeklyReward:
+    value: Skystone
+    option: [ Skystone, MysticMedals ]
   ClaimWeeklyBattleRewards: true
   ClaimBattlePassRewards: true
   NPCCombat: true
@@ -168,6 +250,9 @@ StoreDaily:
 
 StoreWeekly:
   BuyConquestMorogora: false
+  BuyFriendshipGiftSelectionChest:
+    value: 0
+    option: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
   BuyFriendshipArtifactEnhancementStone:
     value: 0
     option: [ 0, 1, 2, 3 ]
@@ -200,9 +285,13 @@ Combat:
   Element:
     value: Water
     option: [ Dark, Light, Water, Fire, Nature ]
+  HuntBoss:
+    value: Wyvern
+    option: [ Wyvern, Golem, Banshee, Azimanak, Caides, Ogre ]
   AltarGrade:
     value: Hell
     option: [ Pri, Mid, High, Hell ]
+  AltarBalance: false
   HuntGrade:
     value: Hell
     option: [ Mid, High, Hell, Dimensional ]
@@ -231,7 +320,6 @@ Combat:
     value: Daily
     option: [ Daily, Burnout ]
   FastCombatCount: 10
-  RepeatCombatCount: 5
   RepeatCombatLeifCount: 1
   RepeatCombatPrioritizeStamina: true
   RepeatCombatGearMode:
@@ -271,9 +359,42 @@ CombatRuntime:
 
 SecretShop:
   OnlyFree: true
+  CompletionMode:
+    value: RefreshCount
+    option: [ RefreshCount, PurchaseCount ]
   MaxRefresh: 10
+  TargetCovenant: 10
+  TargetMystic: 10
   BuyCovenantBookmark: true
   BuyMysticMedal: true
+
+SecretShopRuntime:
+  Session:
+    keepvalue: true
+    display: hide
+    type: dict
+    value: {}
+
+EquipmentReroll:
+  Stat1:
+    value: Speed
+    option: [ Speed, AttackPercent, DefensePercent, HealthPercent, Effectiveness, Resistance, CriticalChance, CriticalDamage, FlatAttack, FlatDefense, FlatHealth ]
+  Value1: 5
+  Stat2:
+    value: DefensePercent
+    option: [ Speed, AttackPercent, DefensePercent, HealthPercent, Effectiveness, Resistance, CriticalChance, CriticalDamage, FlatAttack, FlatDefense, FlatHealth ]
+  Value2: 8
+  Stat3:
+    value: HealthPercent
+    option: [ Speed, AttackPercent, DefensePercent, HealthPercent, Effectiveness, Resistance, CriticalChance, CriticalDamage, FlatAttack, FlatDefense, FlatHealth ]
+  Value3: 8
+  Stat4:
+    value: Resistance
+    option: [ Speed, AttackPercent, DefensePercent, HealthPercent, Effectiveness, Resistance, CriticalChance, CriticalDamage, FlatAttack, FlatDefense, FlatHealth ]
+  Value4: 8
+  MaxRefresh: 0
+  MaxPoints: 0
+  ReservePoints: 0
 
 Gacha:
   CollectGoldenInheritance: true
@@ -282,11 +403,74 @@ GachaResult:
   SaveScreenshot: true
   OcrResult: false
 
-SpecialActivity:
-  GetDailyReward: true
-  GetTaskReward: true
+LimitedActivity:
+  # 按资料中的活动时间领取奖励；20抽的实际抽取由 Gacha（召唤任务）执行。
   GetFreeGacha: true
-  GetEnergyDrink: true
+  GetMeirinReward: true
+  GetSupportReward: true
+
+SpecialActivity:
+  # 花费天空石的购买项默认关闭，避免升级后自动改变用户消费。
+  BuyHucheMysticMedals: false
+
+BuyPenguins:
+  BatchCount:
+    value: 1
+    # Keep input text for regex validation; config loading converts it to int.
+    valuetype: str
+    validate: '^[1-9][0-9]*$'
+
+DimensionalExploration:
+  RunCount: 1
+  EventSampling: false
+  KnightPriority:
+    value: "起源拉斯 > 亚敏"
+    type: textarea
+  WarriorPriority:
+    value: "卡瓦朱"
+    type: textarea
+  RangerPriority:
+    value: "尤贝乌斯 > 莉珈"
+    type: textarea
+  MagePriority:
+    value: "智武 > 研究者卡萝"
+    type: textarea
+  HealerPriority:
+    value: "罪戾的安洁莉卡 > 拉兹"
+    type: textarea
+  ThiefPriority:
+    value: "保健室老师律荷 > 转学生艾庭 > 可丽"
+    type: textarea
+
+DimensionalExplorationRuntime:
+  Session:
+    keepvalue: true
+    display: hide
+    type: dict
+    value: {}
+  EventHistory:
+    keepvalue: true
+    display: hide
+    type: dict
+    value: {}
+
+ActivityRuntime:
+  CheckedEvents:
+    keepvalue: true
+    display: hide
+    type: dict
+    value: {}
+  FreeGacha20CheckedAt:
+    keepvalue: true
+    display: hide
+    value: 2020-01-01 00:00:00
+
+ResourceRuntime:
+  State:
+    keepvalue: true
+    display: hide
+    type: dict
+    value: {}
 
 Dashboard:
   Gold:
@@ -340,9 +524,17 @@ Dashboard:
     color: "#d85f7c"
     display: display
 
-# ==================== Monthly ====================
+# ==================== Monthly =============
 
 SanctuaryMonthly:
   RewardTier:
     value: A
     option: [ Smart, A, B, S, SS, MaxMinus1, MaxMinus2 ]
+  Reminder: true
+  ReminderLeadDays:
+    value: 3
+    option: [ 1, 3, 5, 7 ]
+  ReminderLastSent:
+    keepvalue: true
+    display: hide
+    value: ""

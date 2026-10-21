@@ -1,24 +1,68 @@
 import onepush.core
-import yaml
 from onepush import get_notifier
 from onepush.core import Provider
 from onepush.exceptions import OnePushException
 from onepush.providers.custom import Custom
 from requests import Response
+from yaml import YAMLError
 
 from module.logger import logger
+from module.notify.config import has_system_provider, parse_notification_channels
+from module.runtime_events import runtime_events
 
 onepush.core.log = logger
 
 
-def handle_notify(_config: str, **kwargs) -> bool:
+def is_system_provider(_config: str) -> bool:
+    """Keep compatibility with callers checking the legacy local channel."""
+    return has_system_provider(_config)
+
+
+def handle_notify(_config: str, *, system_notification: bool | None = None, **kwargs) -> bool:
+    """Try each enabled destination; success means at least one accepted it."""
     try:
-        config = {}
-        for item in yaml.safe_load_all(_config):
-            config.update(item)
-    except Exception:
-        logger.error("Fail to load onepush config, skip sending")
-        return False
+        channels = parse_notification_channels(_config)
+    except (TypeError, ValueError, YAMLError):
+        logger.error('Fail to load remote notification config, skip remote sending')
+        channels = []
+
+    # The explicit switch is authoritative, including False. Only callers that
+    # have not adopted it may infer an opt-in from the legacy system provider.
+    # Send locally before network I/O: a slow or broken remote channel must not
+    # prevent a ready desktop from receiving the same event.
+    legacy = next((channel for channel in channels if isinstance(channel, dict)
+                   and str(channel.get('provider', '')).strip().lower() in {'system', '系统'}), {})
+    if system_notification is None:
+        system_notification = bool(legacy)
+    accepted = False
+    if system_notification:
+        try:
+            message = {**legacy, **kwargs}
+            accepted = bool(runtime_events.notify(
+                title=message.get('title', 'AutoEpicSeven'),
+                content=message.get('content', ''),
+            ))
+            logger.info('System notification queued for an active interface' if accepted
+                        else 'No active system notification interface; skip sending')
+        except Exception:  # noqa: BLE001 - A local failure must not cancel remote delivery.
+            logger.error('System notification queue unavailable; remote sending will continue')
+
+    for index, channel in enumerate(channels, 1):
+        if not isinstance(channel, dict):
+            logger.error(f'Invalid remote notification entry {index}, skip this channel')
+            continue
+        provider = channel.get('provider')
+        if provider is None or str(provider).strip().lower() in {'system', '系统'}:
+            continue
+        # Do not short-circuit after an accepted destination. Every configured
+        # channel must be tried even when another destination already succeeded.
+        remote_accepted = _send_remote_notification(dict(channel), **kwargs)
+        logger.info(f'Remote notification channel {index}: {"accepted" if remote_accepted else "failed"}')
+        accepted = remote_accepted or accepted
+    return accepted
+
+
+def _send_remote_notification(config: dict, **kwargs) -> bool:
     try:
         provider_name: str = config.pop("provider", None)
         if provider_name is None:
@@ -38,7 +82,7 @@ def handle_notify(_config: str, **kwargs) -> bool:
         if isinstance(notifier, Custom):
             if "method" not in config or config["method"] == "post":
                 config["datatype"] = "json"
-            if not ("data" in config or isinstance(config["data"], dict)):
+            if not isinstance(config.get("data"), dict):
                 config["data"] = {}
             if "title" in kwargs:
                 config["data"]["title"] = kwargs["title"]
@@ -77,9 +121,9 @@ def handle_notify(_config: str, **kwargs) -> bool:
     except OnePushException:
         logger.error("Push notify failed")
         return False
-    except Exception as e:
-        # don't show any exceptions because exceptions contain variable traceback
-        logger.error(e)
+    except Exception as e:  # noqa: BLE001 - Provider failures must not cancel other destinations.
+        # Exception messages can contain destination URLs and credentials.
+        logger.error(f'Push notify failed: {type(e).__name__}')
         return False
 
     logger.info("Push notify success")

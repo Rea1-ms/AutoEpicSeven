@@ -78,13 +78,29 @@
       "name": "Pet Shop",
       "help": ""
     },
+    "LimitedActivity": {
+      "name": "Limited-time events",
+      "help": "Claim daily 20 summons and Meirin task rewards through the event entrance. Scheduled independently of Special activities; the Summon task performs summons."
+    },
     "SpecialActivity": {
-      "name": "Special Activity",
-      "help": "Claim available rewards from limited-time activities."
+      "name": "Special activities",
+      "help": "Handle timed content with separate entrances, currently the Huche shop on the main screen. Scheduled independently of Limited-time events."
+    },
+    "BuyPenguins": {
+      "name": "Buy penguins in batches",
+      "help": "Manually buy 50 penguins per batch. Stop if stigma is insufficient. Chinese game clients only."
+    },
+    "DimensionalExploration": {
+      "name": "Dimensional Exploration",
+      "help": "Overseas Chinese client only. Start manually from Tools, independently of the main scheduler. Keep the current difficulty and start with Heavy Baggage. Finish each run and stop after the configured batch."
     },
     "CommunityAuth": {
       "name": "Community Login",
       "help": "Open the Electron community login window and refresh the CK used by Community AIO."
+    },
+    "EquipmentReroll": {
+      "name": "Equipment Substat Reroll",
+      "help": "Open the steel workshop substat selection screen manually. Obtain speed 5 first, then pursue the remaining priorities. Lock only achieved targets, at most two. Stop at the goals or budget; equipment is not finalized automatically. Simplified Chinese game UI only."
     },
     "SanctuaryMonthly": {
       "name": "Sanctuary Monthly",
@@ -188,6 +204,7 @@
       "LDPlayer3": "LD Player 3",
       "LDPlayer4": "LD Player 4",
       "LDPlayer9": "LD Player 9",
+      "LDPlayer14": "LD Player 14",
       "MuMuPlayer": "MuMu Player",
       "MuMuPlayerX": "MuMu Player X",
       "MuMuPlayer12": "MuMu Player 12",
@@ -221,9 +238,13 @@
       "name": "Record Screenshot(s)",
       "help": "Number of screenshots saved when exception occurs"
     },
+    "SystemNotification": {
+      "name": "System Notifications",
+      "help": "Enable system notifications independently of remote delivery. Notify only for unhandled errors or task-specific reminders, without a notification when tasks finish."
+    },
     "OnePushConfig": {
-      "name": "Error notify config",
-      "help": "When AES cannot handle exception, send a message through Onepush. Configuration document: \nhttps://github.com/LmeSzinc/AzurLaneAutoScript/wiki/Onepush-configuration-%5BEN%5D"
+      "name": "Remote Notification Configuration",
+      "help": "Send remote notifications for unhandled errors and task reminders. Use one provider mapping or a list of channel mappings; system notifications have a separate switch. Configuration: https://github.com/LmeSzinc/AzurLaneAutoScript/wiki/Onepush-configuration-%5BEN%5D"
     }
   },
   "Optimization": {
@@ -256,6 +277,18 @@
     "ClaimDailyRewards": {
       "name": "Claim Daily Rewards",
       "help": "Claim the daily mission reward chest when available."
+    },
+    "DailyPriority": {
+      "name": "Prioritize daily missions",
+      "help": "Below 100 activity, prioritize enabled tasks that are due, run smaller batches and check rewards. Use remaining fixed allowances first. Once exhausted, wait if other tasks scheduled today can fill the gap; otherwise add only the necessary runs using owned resources, without increasing the Leif allowance."
+    },
+    "DailyPlan": {
+      "name": "Daily mission record",
+      "help": ""
+    },
+    "DailyBudget": {
+      "name": "Daily execution allowance record",
+      "help": ""
     }
   },
   "Mail": {
@@ -372,6 +405,194 @@
       "help": "Internal deduplication state for guild war reminders."
     }
   },
+  "KnightsShopWeekly": {
+    "_info": {
+      "name": "Guild shop: weekly purchases",
+      "help": "Overseas Simplified Chinese client only. Daily guild runs buy the missing period amount, including manual purchases in the target. Insufficient funds are checked again next run."
+    },
+    "MysticMedals": {
+      "name": "50 Mystic Medals",
+      "help": "Target number of purchases per game period. 0 disables buying; counts are purchase transactions.",
+      "0": "Do not buy",
+      "1": "1"
+    },
+    "RareCatalystChest": {
+      "name": "Rare Catalyst Selection Chest",
+      "help": "Target number of purchases per game period. 0 disables buying; counts are purchase transactions.",
+      "0": "Do not buy",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7",
+      "8": "8",
+      "9": "9",
+      "10": "10",
+      "11": "11",
+      "12": "12"
+    },
+    "EpicCatalystChest": {
+      "name": "Epic Catalyst Selection Chest",
+      "help": "Target number of purchases per game period. 0 disables buying; counts are purchase transactions.",
+      "0": "Do not buy",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5"
+    },
+    "CatalystChest": {
+      "name": "Catalyst Chest",
+      "help": "Target number of purchases per game period. 0 disables buying; counts are purchase transactions.",
+      "0": "Do not buy",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7",
+      "8": "8",
+      "9": "9",
+      "10": "10"
+    },
+    "ReforgingStoneChest": {
+      "name": "Equipment Conversion Gem Selection Chest",
+      "help": "Target number of purchases per game period. 0 disables buying; counts are purchase transactions.",
+      "0": "Do not buy",
+      "1": "1"
+    }
+  },
+  "KnightsShopMonthly": {
+    "_info": {
+      "name": "Guild shop: monthly purchases",
+      "help": "Overseas Simplified Chinese client only. Daily guild runs buy the missing period amount, including manual purchases in the target. Insufficient funds are checked again next run."
+    },
+    "EquipmentResetStone": {
+      "name": "Equipment Reset Stone",
+      "help": "Target number of purchases per game period. 0 disables buying; counts are purchase transactions.",
+      "0": "Do not buy",
+      "1": "1"
+    },
+    "AccessoryResetStone": {
+      "name": "Accessory Reset Stone",
+      "help": "Target number of purchases per game period. 0 disables buying; counts are purchase transactions.",
+      "0": "Do not buy",
+      "1": "1"
+    },
+    "Level85ManastoneChest": {
+      "name": "Level 85 Manastone Selection Chest",
+      "help": "Target number of purchases per game period. 0 disables buying; counts are purchase transactions.",
+      "0": "Do not buy",
+      "1": "1"
+    },
+    "Level88ManastoneChest": {
+      "name": "Level 88 Manastone Selection Chest",
+      "help": "Target number of purchases per game period. 0 disables buying; counts are purchase transactions.",
+      "0": "Do not buy",
+      "1": "1"
+    },
+    "ConversionGemChest": {
+      "name": "Epic Modification Gem Selection Chest",
+      "help": "Target number of purchases per game period. 0 disables buying; counts are purchase transactions.",
+      "0": "Do not buy",
+      "1": "1",
+      "2": "2"
+    },
+    "GoldTransmitStone": {
+      "name": "Gold Transmit Stone",
+      "help": "Target number of purchases per game period. 0 disables buying; counts are purchase transactions.",
+      "0": "Do not buy",
+      "1": "1",
+      "2": "2"
+    },
+    "EpicSpiritBloom": {
+      "name": "Epic Spirit Bloom",
+      "help": "Target number of purchases per game period. 0 disables buying; counts are purchase transactions.",
+      "0": "Do not buy",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7",
+      "8": "8",
+      "9": "9",
+      "10": "10"
+    },
+    "Molagora": {
+      "name": "MolaGora",
+      "help": "Target number of purchases per game period. 0 disables buying; counts are purchase transactions.",
+      "0": "Do not buy",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5"
+    },
+    "FireConnection": {
+      "name": "Fire Connection",
+      "help": "Target number of purchases per game period. 0 disables buying; counts are purchase transactions.",
+      "0": "Do not buy",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5"
+    },
+    "NatureConnection": {
+      "name": "Earth Connection",
+      "help": "Target number of purchases per game period. 0 disables buying; counts are purchase transactions.",
+      "0": "Do not buy",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5"
+    },
+    "IceConnection": {
+      "name": "Ice Connection",
+      "help": "Target number of purchases per game period. 0 disables buying; counts are purchase transactions.",
+      "0": "Do not buy",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5"
+    },
+    "ReforgingStoneChest": {
+      "name": "Equipment Conversion Gem Selection Chest",
+      "help": "Target number of purchases per game period. 0 disables buying; counts are purchase transactions.",
+      "0": "Do not buy",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5"
+    },
+    "ReforgeMaterialChest": {
+      "name": "Reforge Material Selection Chest",
+      "help": "Target number of purchases per game period. 0 disables buying; counts are purchase transactions.",
+      "0": "Do not buy",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4"
+    }
+  },
+  "KnightsShopRuntime": {
+    "_info": {
+      "name": "KnightsShopRuntime._info.name",
+      "help": "KnightsShopRuntime._info.help"
+    },
+    "Purchases": {
+      "name": "KnightsShopRuntime.Purchases.name",
+      "help": "KnightsShopRuntime.Purchases.help"
+    }
+  },
   "Arena": {
     "_info": {
       "name": "Arena",
@@ -380,6 +601,12 @@
     "ClaimWeeklyRewards": {
       "name": "Claim Weekly Rewards",
       "help": "Automatically claim weekly rewards when the popup appears during arena entry."
+    },
+    "WeeklyReward": {
+      "name": "Weekly Ranking Reward",
+      "help": "Choose Skystone or Mystic Medals when entering Arena. Defaults to Skystone.",
+      "Skystone": "Skystone",
+      "MysticMedals": "Mystic Medals"
     },
     "ClaimWeeklyBattleRewards": {
       "name": "Claim Weekly Battle Rewards",
@@ -399,13 +626,13 @@
     },
     "BurnoutMode": {
       "name": "Execution Mode",
-      "help": "Daily fixed count challenges the configured number of NPCs. Burnout mode spends every available flag, then runs again when flags naturally refill (1 per hour, cap 5). Requires \"Farm NPC\" to be enabled.",
+      "help": "Daily fixed count challenges the configured number of NPCs. Burnout mode spends every available flag, then runs again when flags naturally refill (1 per hour, cap 5). Requires \"Farm NPC\" to be enabled. Daily priority splits runs at mission milestones, then resumes the remaining fixed allowance. If that allowance is exhausted below 100 activity, wait when other tasks today can fill the gap; otherwise add necessary runs using owned resources only.",
       "Daily": "Daily Fixed Count",
       "Burnout": "Burnout Mode"
     },
     "NPCCombatCount": {
       "name": "NPC Battle Count",
-      "help": "Maximum number of NPC battles in this run."
+      "help": "Daily priority splits runs at mission milestones, then resumes the remaining fixed allowance. If that allowance is exhausted below 100 activity, wait when other tasks today can fill the gap; otherwise add necessary runs using owned resources only."
     }
   },
   "StoreDaily": {
@@ -442,6 +669,21 @@
     "BuyConquestMorogora": {
       "name": "Buy Morogora (Conquest)",
       "help": "Buy weekly-limited Morogora in the Conquest Points store."
+    },
+    "BuyFriendshipGiftSelectionChest": {
+      "name": "Weekly Friendship Gift Selection Chest target",
+      "help": "Weekly total of 0–10, disabled by default; manual purchases count. Buy one at a time, checking friendship points and the live price, which rises from 200 to 6400. Stop if funds are insufficient. Supports the global server in Simplified Chinese.",
+      "0": "0",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7",
+      "8": "8",
+      "9": "9",
+      "10": "10"
     },
     "BuyFriendshipArtifactEnhancementStone": {
       "name": "Artifact Enhancement Stone Count (Friendship)",
@@ -526,6 +768,16 @@
       "Fire": "Fire",
       "Nature": "Nature"
     },
+    "HuntBoss": {
+      "name": "Hunt target",
+      "help": "Ogre supports Dimensional difficulty only.",
+      "Wyvern": "Wyvern",
+      "Golem": "Golem",
+      "Banshee": "Banshee",
+      "Azimanak": "Azimanak",
+      "Caides": "Caides",
+      "Ogre": "Ogre"
+    },
     "AltarGrade": {
       "name": "Altar Grade",
       "help": "Difficulty used for Spirit Altar runs.",
@@ -533,6 +785,10 @@
       "Mid": "Mid",
       "High": "High",
       "Hell": "Hell"
+    },
+    "AltarBalance": {
+      "name": "Balance rune farming",
+      "help": "Global server in Simplified Chinese only. Balance five colors using 45 normal, 22 greater and 16 epic runes per five-star hero. Choose difficulty using measured mean yields and stamina costs, then recheck inventory after each batch. Samples are assumed unbuffed. Existing battle and resource limits still apply; no synthesis."
     },
     "HuntGrade": {
       "name": "Hunt Grade",
@@ -564,25 +820,21 @@
     },
     "FastCombat": {
       "name": "Use Fast Combat",
-      "help": "On the new global flow, start server-managed repeat combat first, then spend only the unreserved Energy on fast combat. The CN server keeps the legacy order."
+      "help": "With daily priority, fast combat may run first, followed by a daily check before resuming repeat combat and remaining fast runs. Other modes start repeat combat first and use unreserved stamina for fast combat."
     },
     "BurnoutMode": {
       "name": "Execution Mode",
-      "help": "On the new global flow, Burnout converts each whole 80 Energy into one server-repeat unit, forces owned Energy priority, and gives the remainder to fast combat. After settlement it schedules for 80 Energy. Dimensional Hunt is unsupported.",
+      "help": "Burnout converts each whole 80 Energy into one repeat-combat unit, prioritizes owned Energy, and uses the remainder for fast combat. After repeat combat ends, schedule the next run when Energy recovers to 80. Dimensional Hunt does not support Burnout. Daily priority splits runs at mission milestones, then resumes the remaining fixed allowance. If that allowance is exhausted below 100 activity, wait when other tasks today can fill the gap; otherwise add necessary runs using owned resources only.",
       "Daily": "Daily Fixed Count",
       "Burnout": "Burnout Mode"
     },
     "FastCombatCount": {
       "name": "Fast Combat Count",
-      "help": "Target fast combat count."
-    },
-    "RepeatCombatCount": {
-      "name": "Repeat Combat Count",
-      "help": "Legacy CN-server repeat count. The new global-server flow ignores this option."
+      "help": "Daily priority splits runs at mission milestones, then resumes the remaining fixed allowance. If that allowance is exhausted below 100 activity, wait when other tasks today can fill the gap; otherwise add necessary runs using owned resources only."
     },
     "RepeatCombatLeifCount": {
       "name": "Leifs to Spend",
-      "help": "Leifs the new global daily mode may spend, from 1 to 50. Burnout derives this value from current Energy."
+      "help": "The number of Leifs allowed to be spent. Burnout calculates it automatically from current Energy. Dimensional Hunt costs 2 Leifs per run. Use at least 2; larger odd values are rounded down to an even number. Repeat units and fast runs keep separate remaining allowances. Additional daily repeat units use owned stamina only and never increase this Leif allowance."
     },
     "RepeatCombatPrioritizeStamina": {
       "name": "Prioritize Owned Energy / Spectral Cores",
@@ -679,17 +931,135 @@
       "name": "Free Only",
       "help": "No refresh, no skystones"
     },
+    "CompletionMode": {
+      "name": "Finish condition",
+      "help": "In Purchase count mode, set a positive target for at least one enabled item. When all targets are met, finish scanning and buying the current assortment, then stop without refreshing.",
+      "RefreshCount": "Refresh count",
+      "PurchaseCount": "Purchase count"
+    },
     "MaxRefresh": {
       "name": "Max Refresh",
       "help": ""
     },
+    "TargetCovenant": {
+      "name": "Covenant purchases required to finish",
+      "help": "0 excludes this item from the finish condition. Enabled items are still bought, including after their target is met."
+    },
+    "TargetMystic": {
+      "name": "Mystic purchases required to finish",
+      "help": "0 excludes this item from the finish condition. Enabled items are still bought, including after their target is met."
+    },
     "BuyCovenantBookmark": {
       "name": "Buy Covenant Bookmarks",
-      "help": ""
+      "help": "Buy whenever found until the task finishes, even after this item reaches its target."
     },
     "BuyMysticMedal": {
       "name": "Buy Mystic Medals",
+      "help": "Buy whenever found until the task finishes, even after this item reaches its target."
+    }
+  },
+  "SecretShopRuntime": {
+    "_info": {
+      "name": "Secret shop progress",
       "help": ""
+    },
+    "Session": {
+      "name": "Confirmed purchase progress",
+      "help": ""
+    }
+  },
+  "EquipmentReroll": {
+    "_info": {
+      "name": "Target substats",
+      "help": "Open the steel workshop substat selection screen manually. Obtain speed 5 first, then pursue the remaining priorities. Lock only achieved targets, at most two. Stop at the goals or budget; equipment is not finalized automatically. Simplified Chinese game UI only."
+    },
+    "Stat1": {
+      "name": "Priority 1 stat",
+      "help": "Choose four distinct substats. Speed always targets 5 and takes precedence; other stats follow this order.",
+      "Speed": "Speed",
+      "AttackPercent": "Attack %",
+      "DefensePercent": "Defense %",
+      "HealthPercent": "Health %",
+      "Effectiveness": "Effectiveness %",
+      "Resistance": "Effect Resistance %",
+      "CriticalChance": "Critical Chance %",
+      "CriticalDamage": "Critical Damage %",
+      "FlatAttack": "Flat Attack",
+      "FlatDefense": "Flat Defense",
+      "FlatHealth": "Flat Health"
+    },
+    "Value1": {
+      "name": "Priority 1 target value",
+      "help": "Enter percentages as numbers. Attack/Defense/Health %, Effectiveness and Resistance cap at 8; Critical Chance at 5; Critical Damage at 7. Observed flat values 44/34/201 are references, not hard caps."
+    },
+    "Stat2": {
+      "name": "Priority 2 stat",
+      "help": "Choose four distinct substats. Speed always targets 5 and takes precedence; other stats follow this order.",
+      "Speed": "Speed",
+      "AttackPercent": "Attack %",
+      "DefensePercent": "Defense %",
+      "HealthPercent": "Health %",
+      "Effectiveness": "Effectiveness %",
+      "Resistance": "Effect Resistance %",
+      "CriticalChance": "Critical Chance %",
+      "CriticalDamage": "Critical Damage %",
+      "FlatAttack": "Flat Attack",
+      "FlatDefense": "Flat Defense",
+      "FlatHealth": "Flat Health"
+    },
+    "Value2": {
+      "name": "Priority 2 target value",
+      "help": "Enter percentages as numbers. Attack/Defense/Health %, Effectiveness and Resistance cap at 8; Critical Chance at 5; Critical Damage at 7. Observed flat values 44/34/201 are references, not hard caps."
+    },
+    "Stat3": {
+      "name": "Priority 3 stat",
+      "help": "Choose four distinct substats. Speed always targets 5 and takes precedence; other stats follow this order.",
+      "Speed": "Speed",
+      "AttackPercent": "Attack %",
+      "DefensePercent": "Defense %",
+      "HealthPercent": "Health %",
+      "Effectiveness": "Effectiveness %",
+      "Resistance": "Effect Resistance %",
+      "CriticalChance": "Critical Chance %",
+      "CriticalDamage": "Critical Damage %",
+      "FlatAttack": "Flat Attack",
+      "FlatDefense": "Flat Defense",
+      "FlatHealth": "Flat Health"
+    },
+    "Value3": {
+      "name": "Priority 3 target value",
+      "help": "Enter percentages as numbers. Attack/Defense/Health %, Effectiveness and Resistance cap at 8; Critical Chance at 5; Critical Damage at 7. Observed flat values 44/34/201 are references, not hard caps."
+    },
+    "Stat4": {
+      "name": "Priority 4 stat",
+      "help": "Choose four distinct substats. Speed always targets 5 and takes precedence; other stats follow this order.",
+      "Speed": "Speed",
+      "AttackPercent": "Attack %",
+      "DefensePercent": "Defense %",
+      "HealthPercent": "Health %",
+      "Effectiveness": "Effectiveness %",
+      "Resistance": "Effect Resistance %",
+      "CriticalChance": "Critical Chance %",
+      "CriticalDamage": "Critical Damage %",
+      "FlatAttack": "Flat Attack",
+      "FlatDefense": "Flat Defense",
+      "FlatHealth": "Flat Health"
+    },
+    "Value4": {
+      "name": "Priority 4 target value",
+      "help": "Enter percentages as numbers. Attack/Defense/Health %, Effectiveness and Resistance cap at 8; Critical Chance at 5; Critical Damage at 7. Observed flat values 44/34/201 are references, not hard caps."
+    },
+    "MaxRefresh": {
+      "name": "Maximum rerolls",
+      "help": "0 means unlimited. Counts confirmed rerolls in this run only."
+    },
+    "MaxPoints": {
+      "name": "Point budget",
+      "help": "0 means unlimited. Uses the actual 20/60/150 point price."
+    },
+    "ReservePoints": {
+      "name": "Points to reserve",
+      "help": "Minimum workshop points left after a reroll; 0 reserves none."
     }
   },
   "Gacha": {
@@ -716,26 +1086,118 @@
       "help": "Recognizes summon result names and records them in the log. Accuracy is currently low; results are for reference only."
     }
   },
-  "SpecialActivity": {
+  "LimitedActivity": {
     "_info": {
-      "name": "Special Activity",
-      "help": "Choose which rewards to claim from the current activity."
-    },
-    "GetDailyReward": {
-      "name": "Claim daily rewards",
-      "help": "Claim the activity's daily rewards."
-    },
-    "GetTaskReward": {
-      "name": "Claim task rewards",
-      "help": "Claim completed activity task rewards."
+      "name": "Limited-time events",
+      "help": "Claim daily 20 summons and Meirin task rewards through the event entrance. Scheduled independently of Special activities; the Summon task performs summons."
     },
     "GetFreeGacha": {
-      "name": "Free event summons",
-      "help": "Use all currently available free event summons."
+      "name": "Claim Daily 20 Free Summons",
+      "help": "Claim the current event's daily 20 free summons. The Summon task performs the summons."
     },
-    "GetEnergyDrink": {
-      "name": "Claim energy drink",
-      "help": "Claim the activity energy drink when available."
+    "GetMeirinReward": {
+      "name": "Claim Meirin Task Rewards",
+      "help": "Overseas Simplified Chinese interface only. Claim completed task rewards in the Together with Meirin event. Recheck after Arena or Combat if no reward is ready; stop daily checks only when all tasks are complete."
+    },
+    "GetSupportReward": {
+      "name": "Claim support ticket task rewards",
+      "help": "Overseas Chinese UI: claim 500 support tickets for 10 daily Arena matches and available weekly holding rewards. Recheck after Arena only; resets at 03:00 UTC. Does not spend stamina or tickets."
+    }
+  },
+  "SpecialActivity": {
+    "_info": {
+      "name": "Special activities",
+      "help": "Handle timed content with separate entrances, currently the Huche shop on the main screen. Scheduled independently of Limited-time events."
+    },
+    "BuyHucheMysticMedals": {
+      "name": "Buy Huche Shop Mystic Medals",
+      "help": "Overseas Simplified Chinese only. Buy only Mystic Medals within stock and skystone balance limits. The leading stock rotates every 12 hours; medals are not guaranteed. Buy the 160-skystone offer when present, otherwise wait for the next batch after a complete scan. The 200-skystone offer has a fixed quota of 4 for the entire event; once sold out, inspect only the leading rotating batch. Recheck at 11:00 and 23:00 UTC+8. Disabled by default; enabling spends skystones."
+    }
+  },
+  "BuyPenguins": {
+    "_info": {
+      "name": "Buy penguins in batches",
+      "help": "Manually buy 50 penguins per batch. Stop if stigma is insufficient. Chinese game clients only."
+    },
+    "BatchCount": {
+      "name": "Batch count",
+      "help": "Buy 50 penguins per batch, default 1 batch. Uses the displayed stigma price. This tool does not run on a schedule."
+    }
+  },
+  "DimensionalExploration": {
+    "_info": {
+      "name": "Dimensional Exploration",
+      "help": "Overseas Chinese client only. Keep the current difficulty and start with Heavy Baggage. Finish each run and stop after the configured batch."
+    },
+    "RunCount": {
+      "name": "Runs per batch",
+      "help": "Count rewarded settlements. Interrupted batches resume; clicking Start after a finished batch starts a new count."
+    },
+    "EventSampling": {
+      "name": "Collect event samples",
+      "help": "Save before/after screenshots, option text and resource changes. Try inexpensive unlisted options, preferring untried routes at equal cost. Stop on unclear costs or exhausted life. Samples stay in the screenshots folder. Disabled by default."
+    },
+    "KnightPriority": {
+      "name": "Knight hero priority",
+      "help": "Enter Chinese in-game names in priority order, separated by >, commas or newlines. If no affordable preferred hero is found, choose a low-cost candidate."
+    },
+    "WarriorPriority": {
+      "name": "Warrior hero priority",
+      "help": "Enter Chinese in-game names in priority order, separated by >, commas or newlines. If no affordable preferred hero is found, choose a low-cost candidate."
+    },
+    "RangerPriority": {
+      "name": "Ranger hero priority",
+      "help": "Enter Chinese in-game names in priority order, separated by >, commas or newlines. If no affordable preferred hero is found, choose a low-cost candidate."
+    },
+    "MagePriority": {
+      "name": "Mage hero priority",
+      "help": "Enter Chinese in-game names in priority order, separated by >, commas or newlines. If no affordable preferred hero is found, choose a low-cost candidate."
+    },
+    "HealerPriority": {
+      "name": "Soul Weaver hero priority",
+      "help": "Enter Chinese in-game names in priority order, separated by >, commas or newlines. If no affordable preferred hero is found, choose a low-cost candidate."
+    },
+    "ThiefPriority": {
+      "name": "Thief hero priority",
+      "help": "Enter Chinese in-game names in priority order, separated by >, commas or newlines. If no affordable preferred hero is found, choose a low-cost candidate."
+    }
+  },
+  "DimensionalExplorationRuntime": {
+    "_info": {
+      "name": "Exploration progress",
+      "help": ""
+    },
+    "Session": {
+      "name": "Batch session",
+      "help": ""
+    },
+    "EventHistory": {
+      "name": "Event history",
+      "help": "Stores visited branches and confirmed rewards for this profile across batches. Use a separate profile per account."
+    }
+  },
+  "ActivityRuntime": {
+    "_info": {
+      "name": "Activity Runtime",
+      "help": "Save each event's daily claim status."
+    },
+    "CheckedEvents": {
+      "name": "Event Claim Records",
+      "help": "Track the date checked for each event and server."
+    },
+    "FreeGacha20CheckedAt": {
+      "name": "Previous Daily Check Time",
+      "help": "Preserve daily check records from earlier versions."
+    }
+  },
+  "ResourceRuntime": {
+    "_info": {
+      "name": "Resource runtime",
+      "help": "Stores observed resources and resource wait evidence."
+    },
+    "State": {
+      "name": "Runtime state",
+      "help": "Internal balances, pending refreshes and task waits; daily progress stays independently observed."
     }
   },
   "Dashboard": {
@@ -799,6 +1261,22 @@
       "SS": "SS or higher",
       "MaxMinus1": "Current max tier -1",
       "MaxMinus2": "Current max tier -2 (floor B)"
+    },
+    "Reminder": {
+      "name": "Month-end claim reminder",
+      "help": "Enabled by default. Reminds you to claim manually before the monthly reset. Requires the monthly task, a running script, and global notifications. Stops after claiming is confirmed; at most one successful push per server day."
+    },
+    "ReminderLeadDays": {
+      "name": "Reminder lead days",
+      "help": "Uses this task's server reset time. Checks daily during the reminder window so weekly scheduling cannot skip it.",
+      "1": "1 days",
+      "3": "3 days",
+      "5": "5 days",
+      "7": "7 days"
+    },
+    "ReminderLastSent": {
+      "name": "Last successful reminder",
+      "help": ""
     }
   },
   "Gui": {

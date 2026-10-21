@@ -1,6 +1,7 @@
 from module.base.button import ButtonWrapper
 from module.base.timer import Timer
 from module.exception import RequestHumanTakeover
+from module.game_info.context import level_cap
 from module.logger import logger
 from module.ocr.ocr import Digit
 from tasks.base.assets.assets_base_page import BACK, MAIN_GOTO_COMBAT
@@ -11,10 +12,11 @@ from tasks.base.assets.assets_base_popup import (
 )
 from tasks.base.resource_bar import RESOURCE_BAR_LAYOUT_COMBAT
 from tasks.dungeon.assets import assets_dungeon_configs_combat_element_altar as altar_elements
-from tasks.dungeon.assets import assets_dungeon_configs_combat_element_hunt as hunt_elements
+from tasks.dungeon.assets.assets_dungeon_configs_combat_hunt_boss import OGRE_DIMENSIONAL
 from tasks.dungeon.assets.assets_dungeon_configs_combat_entry import (
     ALTER_CHECK,
     COMMON_ENTRY,
+    CONBAT_ENTRIES,
     HUNT,
     HUNT_CHECK,
     OCR_SEASON_CHECK,
@@ -23,7 +25,7 @@ from tasks.dungeon.assets.assets_dungeon_configs_combat_entry import (
     URGENT_TASKS,
 )
 from tasks.dungeon.assets.assets_dungeon_popup import PACKAGE_FULL
-from tasks.dungeon.assets.assets_dungeon_repeat_entry import REPEAT_COMBAT_MENU
+from tasks.dungeon.assets.assets_dungeon_repeat_common import REPEAT_COMBAT_MENU
 from tasks.dungeon.plan import CombatPlan
 
 
@@ -40,6 +42,11 @@ class CombatEntryMixin:
         return self.match_template_luma(SEASON_CHECK, similarity=self.COMBAT_CHECK_SIMILARITY)
 
     def _is_combat_general_board(self) -> bool:
+        # Event cards shift both entries. Set their search ranges at the
+        # recognition boundary instead of relying on page-module import side
+        # effects; _enter_stage_page clicks these same button objects afterward.
+        HUNT.load_search(CONBAT_ENTRIES.area)
+        SPIRIT_ALTAR.load_search(CONBAT_ENTRIES.area)
         return (
             self.match_template_luma(SPIRIT_ALTAR, similarity=self.COMBAT_CHECK_SIMILARITY)
             or self.match_template_luma(HUNT, similarity=self.COMBAT_CHECK_SIMILARITY)
@@ -111,8 +118,9 @@ class CombatEntryMixin:
             name="ShadowCommissionLevel",
         ).ocr_single_line(self.device.image)
         logger.attr("ShadowCommissionLevel", level)
-        if 0 < level <= self.config.stored.ShadowCommission.FIXED_TOTAL:
-            self.config.stored.ShadowCommission.set(level)
+        maximum = level_cap(self.config, "shadow_commission")
+        if 0 < level <= maximum:
+            self.config.stored.ShadowCommission.set(level, maximum)
         return level
 
     def _update_combat_dashboard_snapshot(self, skip_first_screenshot=True) -> bool:
@@ -200,17 +208,15 @@ class CombatEntryMixin:
                 continue
 
     def _select_element(self, plan: CombatPlan, skip_first_screenshot=True) -> bool:
-        element_name = self._combat_element()
-        button, selected_button = plan.elements[element_name]
-        logger.info(f"Combat: select element {element_name}")
-
-        element_search = (
-            hunt_elements.ELEMENT_SEARCH
-            if plan.name == "Hunt"
-            else altar_elements.ELEMENT_SEARCH
-        )
-        button.load_search(element_search.area)
-        selected_button.load_search(element_search.area)
+        element_name = self._hunt_boss() if plan.name == "Hunt" else self._combat_element()
+        if plan.name == "Hunt":
+            button = self._hunt_boss_button()
+            selected_button = None
+        else:
+            button, selected_button = plan.elements[element_name]
+            button.load_search(altar_elements.ELEMENT_SEARCH.area)
+            selected_button.load_search(altar_elements.ELEMENT_SEARCH.area)
+        logger.info(f"Combat: select {plan.name} target {element_name}")
 
         timeout = Timer(self.COMBAT_SELECT_TIMEOUT_SECONDS, count=80).start()
         scroll_timer = Timer(self.COMBAT_SCROLL_INTERVAL_SECONDS, count=0).start()
@@ -235,12 +241,20 @@ class CombatEntryMixin:
             if scroll_settle.started() and not scroll_settle.reached():
                 continue
 
-            if self._is_selected_element(selected_button):
+            selected = (
+                self._is_selected_hunt_boss(button)
+                if plan.name == "Hunt"
+                else self._is_selected_element(selected_button)
+            )
+            if selected:
                 if not selected_confirm.started():
                     selected_confirm.start()
                 elif selected_confirm.reached():
-                    logger.info(f"Combat: selected element {element_name}")
+                    logger.info(f"Combat: selected {plan.name} target {element_name}")
                     return True
+                # Once the correct card is selected, wait for confirmation
+                # without clicking it again and restarting the stable window.
+                continue
             else:
                 selected_confirm.clear()
 
@@ -265,7 +279,10 @@ class CombatEntryMixin:
                     logger.warning(f"Combat: element {element_name} not found after scrolling")
                     return False
                 logger.info(f"Combat: scroll element list ({scroll_count + 1}/{self.COMBAT_MAX_SCROLLS})")
-                self._scroll_element_list()
+                if plan.name == "Hunt":
+                    self._scroll_hunt_boss_list()
+                else:
+                    self._scroll_element_list()
                 scroll_count += 1
                 scroll_timer.reset()
                 scroll_settle.reset()
@@ -283,7 +300,11 @@ class CombatEntryMixin:
             out: prepare page
         """
         grade_name = self._combat_grade()
-        grade_button = plan.grades[grade_name]
+        grade_button = (
+            OGRE_DIMENSIONAL
+            if plan.name == "Hunt" and self._hunt_boss() == "Ogre"
+            else plan.grades[grade_name]
+        )
         logger.info(f"Combat: select grade {grade_name}")
 
         timeout = Timer(self.COMBAT_PREPARE_TIMEOUT_SECONDS, count=90).start()

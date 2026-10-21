@@ -100,12 +100,17 @@ class EmulatorInstanceBase:
         Convert MuMu 12 instance name to instance id.
         Example names:
             MuMuPlayer-12.0-3
+            MuMuPlayerGlobal-12.0-0
+            MuMuPlayer-15.0-0
             YXArkNights-12.0-1
 
         Returns:
             int: Instance ID, or None if this is not a MuMu 12 instance
         """
         res = re.search(r'MuMuPlayer(?:Global)?-12.0-(\d+)', self.name)
+        if res:
+            return int(res.group(1))
+        res = re.search(r'MuMuPlayer(?:Global)?-15.0-(\d+)', self.name)
         if res:
             return int(res.group(1))
         res = re.search(r'YXArkNights-12.0-(\d+)', self.name)
@@ -155,7 +160,8 @@ class EmulatorBase:
     LDPlayer3 = 'LDPlayer3'
     LDPlayer4 = 'LDPlayer4'
     LDPlayer9 = 'LDPlayer9'
-    LDPlayerFamily = [LDPlayer3, LDPlayer4, LDPlayer9]
+    LDPlayer14 = 'LDPlayer14'
+    LDPlayerFamily = [LDPlayer3, LDPlayer4, LDPlayer9, LDPlayer14]
     MuMuPlayer = 'MuMuPlayer'
     MuMuPlayerX = 'MuMuPlayerX'
     MuMuPlayer12 = 'MuMuPlayer12'

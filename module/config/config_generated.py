@@ -25,7 +25,7 @@ class GeneratedConfig:
     Emulator_AdbRestart = False
 
     # Group `EmulatorInfo`
-    EmulatorInfo_Emulator = 'auto'  # auto, NoxPlayer, NoxPlayer64, BlueStacks4, BlueStacks5, BlueStacks4HyperV, BlueStacks5HyperV, LDPlayer3, LDPlayer4, LDPlayer9, MuMuPlayer, MuMuPlayerX, MuMuPlayer12, MEmuPlayer
+    EmulatorInfo_Emulator = 'auto'  # auto, NoxPlayer, NoxPlayer64, BlueStacks4, BlueStacks5, BlueStacks4HyperV, BlueStacks5HyperV, LDPlayer3, LDPlayer4, LDPlayer9, LDPlayer14, MuMuPlayer, MuMuPlayerX, MuMuPlayer12, MEmuPlayer
     EmulatorInfo_name = None
     EmulatorInfo_path = None
 
@@ -33,6 +33,7 @@ class GeneratedConfig:
     Error_Restart = 'game'  # game, game_emulator
     Error_SaveError = True
     Error_ScreenshotLength = 1
+    Error_SystemNotification = False
     Error_OnePushConfig = 'provider: null'
 
     # Group `Optimization`
@@ -42,6 +43,9 @@ class GeneratedConfig:
 
     # Group `MissionReward`
     MissionReward_ClaimDailyRewards = True
+    MissionReward_DailyPriority = True
+    MissionReward_DailyPlan = {}
+    MissionReward_DailyBudget = {}
 
     # Group `Mail`
     Mail_CollectWithin = '1d'  # 1h, 1d
@@ -71,8 +75,34 @@ class GeneratedConfig:
     KnightsTeamBattle_ReminderLeadMinutes = 60  # 30, 60, 120, 180
     KnightsTeamBattle_ReminderLastEnd = None
 
+    # Group `KnightsShopWeekly`
+    KnightsShopWeekly_MysticMedals = 0  # 0, 1
+    KnightsShopWeekly_RareCatalystChest = 0  # 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+    KnightsShopWeekly_EpicCatalystChest = 0  # 0, 1, 2, 3, 4, 5
+    KnightsShopWeekly_CatalystChest = 0  # 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+    KnightsShopWeekly_ReforgingStoneChest = 0  # 0, 1
+
+    # Group `KnightsShopMonthly`
+    KnightsShopMonthly_EquipmentResetStone = 0  # 0, 1
+    KnightsShopMonthly_AccessoryResetStone = 0  # 0, 1
+    KnightsShopMonthly_Level85ManastoneChest = 0  # 0, 1
+    KnightsShopMonthly_Level88ManastoneChest = 0  # 0, 1
+    KnightsShopMonthly_ConversionGemChest = 0  # 0, 1, 2
+    KnightsShopMonthly_GoldTransmitStone = 0  # 0, 1, 2
+    KnightsShopMonthly_EpicSpiritBloom = 0  # 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+    KnightsShopMonthly_Molagora = 0  # 0, 1, 2, 3, 4, 5
+    KnightsShopMonthly_FireConnection = 0  # 0, 1, 2, 3, 4, 5
+    KnightsShopMonthly_NatureConnection = 0  # 0, 1, 2, 3, 4, 5
+    KnightsShopMonthly_IceConnection = 0  # 0, 1, 2, 3, 4, 5
+    KnightsShopMonthly_ReforgingStoneChest = 0  # 0, 1, 2, 3, 4, 5
+    KnightsShopMonthly_ReforgeMaterialChest = 0  # 0, 1, 2, 3, 4
+
+    # Group `KnightsShopRuntime`
+    KnightsShopRuntime_Purchases = {}
+
     # Group `Arena`
     Arena_ClaimWeeklyRewards = True
+    Arena_WeeklyReward = 'Skystone'  # Skystone, MysticMedals
     Arena_ClaimWeeklyBattleRewards = True
     Arena_ClaimBattlePassRewards = True
     Arena_NPCCombat = True
@@ -88,6 +118,7 @@ class GeneratedConfig:
 
     # Group `StoreWeekly`
     StoreWeekly_BuyConquestMorogora = False
+    StoreWeekly_BuyFriendshipGiftSelectionChest = 0  # 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
     StoreWeekly_BuyFriendshipArtifactEnhancementStone = 0  # 0, 1, 2, 3
     StoreWeekly_BuyInheritanceMorogora = 0  # 0, 1, 2
     StoreWeekly_BuyInheritancePotentialFragments = 0  # 0, 1, 2
@@ -103,13 +134,14 @@ class GeneratedConfig:
     # Group `Combat`
     Combat_Domain = 'Hunt'  # Hunt, SpiritAltar, Saint37, Episode4
     Combat_Element = 'Water'  # Dark, Light, Water, Fire, Nature
+    Combat_HuntBoss = 'Wyvern'  # Wyvern, Golem, Banshee, Azimanak, Caides, Ogre
     Combat_AltarGrade = 'Hell'  # Pri, Mid, High, Hell
+    Combat_AltarBalance = False
     Combat_HuntGrade = 'Hell'  # Mid, High, Hell, Dimensional
     Combat_Episode4Material = 'BREATH_OF_KARMA'  # CATALYST_RARE_BENEVOLENT, CATALYST_RARE_SECRET, CATALYST_RARE_FIGHTING_SPIRIT, CATALYST_RARE_SNIPER, HEART_OF_THE_WOODS, CATALYST_RARE_OATH, CATALYST_RARE_MYSTERIOUS, CATALYST_EPIC_OATH, BREATH_OF_KARMA, CATALYST_EPIC_SNIPER, CATALYST_EPIC_FIGHTING_SPIRIT, FROZEN_SEED, CATALYST_EPIC_BENEVOLENT, CATALYST_EPIC_MYSTERIOUS, CATALYST_EPIC_SECRET, TRACES_OF_BRILLIANCE
     Combat_FastCombat = True
     Combat_BurnoutMode = 'Daily'  # Daily, Burnout
     Combat_FastCombatCount = 10
-    Combat_RepeatCombatCount = 5
     Combat_RepeatCombatLeifCount = 1
     Combat_RepeatCombatPrioritizeStamina = True
     Combat_RepeatCombatGearMode = 'Extract'  # Sell, Extract
@@ -132,9 +164,28 @@ class GeneratedConfig:
 
     # Group `SecretShop`
     SecretShop_OnlyFree = True
+    SecretShop_CompletionMode = 'RefreshCount'  # RefreshCount, PurchaseCount
     SecretShop_MaxRefresh = 10
+    SecretShop_TargetCovenant = 10
+    SecretShop_TargetMystic = 10
     SecretShop_BuyCovenantBookmark = True
     SecretShop_BuyMysticMedal = True
+
+    # Group `SecretShopRuntime`
+    SecretShopRuntime_Session = {}
+
+    # Group `EquipmentReroll`
+    EquipmentReroll_Stat1 = 'Speed'  # Speed, AttackPercent, DefensePercent, HealthPercent, Effectiveness, Resistance, CriticalChance, CriticalDamage, FlatAttack, FlatDefense, FlatHealth
+    EquipmentReroll_Value1 = 5
+    EquipmentReroll_Stat2 = 'DefensePercent'  # Speed, AttackPercent, DefensePercent, HealthPercent, Effectiveness, Resistance, CriticalChance, CriticalDamage, FlatAttack, FlatDefense, FlatHealth
+    EquipmentReroll_Value2 = 8
+    EquipmentReroll_Stat3 = 'HealthPercent'  # Speed, AttackPercent, DefensePercent, HealthPercent, Effectiveness, Resistance, CriticalChance, CriticalDamage, FlatAttack, FlatDefense, FlatHealth
+    EquipmentReroll_Value3 = 8
+    EquipmentReroll_Stat4 = 'Resistance'  # Speed, AttackPercent, DefensePercent, HealthPercent, Effectiveness, Resistance, CriticalChance, CriticalDamage, FlatAttack, FlatDefense, FlatHealth
+    EquipmentReroll_Value4 = 8
+    EquipmentReroll_MaxRefresh = 0
+    EquipmentReroll_MaxPoints = 0
+    EquipmentReroll_ReservePoints = 0
 
     # Group `Gacha`
     Gacha_CollectGoldenInheritance = True
@@ -143,11 +194,37 @@ class GeneratedConfig:
     GachaResult_SaveScreenshot = True
     GachaResult_OcrResult = False
 
+    # Group `LimitedActivity`
+    LimitedActivity_GetFreeGacha = True
+    LimitedActivity_GetMeirinReward = True
+    LimitedActivity_GetSupportReward = True
+
     # Group `SpecialActivity`
-    SpecialActivity_GetDailyReward = True
-    SpecialActivity_GetTaskReward = True
-    SpecialActivity_GetFreeGacha = True
-    SpecialActivity_GetEnergyDrink = True
+    SpecialActivity_BuyHucheMysticMedals = False
+
+    # Group `BuyPenguins`
+    BuyPenguins_BatchCount = 1
+
+    # Group `DimensionalExploration`
+    DimensionalExploration_RunCount = 1
+    DimensionalExploration_EventSampling = False
+    DimensionalExploration_KnightPriority = '起源拉斯 > 亚敏'
+    DimensionalExploration_WarriorPriority = '卡瓦朱'
+    DimensionalExploration_RangerPriority = '尤贝乌斯 > 莉珈'
+    DimensionalExploration_MagePriority = '智武 > 研究者卡萝'
+    DimensionalExploration_HealerPriority = '罪戾的安洁莉卡 > 拉兹'
+    DimensionalExploration_ThiefPriority = '保健室老师律荷 > 转学生艾庭 > 可丽'
+
+    # Group `DimensionalExplorationRuntime`
+    DimensionalExplorationRuntime_Session = {}
+    DimensionalExplorationRuntime_EventHistory = {}
+
+    # Group `ActivityRuntime`
+    ActivityRuntime_CheckedEvents = {}
+    ActivityRuntime_FreeGacha20CheckedAt = datetime.datetime(2020, 1, 1, 0, 0)
+
+    # Group `ResourceRuntime`
+    ResourceRuntime_State = {}
 
     # Group `Dashboard`
     Dashboard_Gold = {}
@@ -163,3 +240,6 @@ class GeneratedConfig:
 
     # Group `SanctuaryMonthly`
     SanctuaryMonthly_RewardTier = 'A'  # Smart, A, B, S, SS, MaxMinus1, MaxMinus2
+    SanctuaryMonthly_Reminder = True
+    SanctuaryMonthly_ReminderLeadDays = 3  # 1, 3, 5, 7
+    SanctuaryMonthly_ReminderLastSent = None

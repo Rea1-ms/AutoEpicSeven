@@ -58,10 +58,11 @@ from module.webui.fake import (
 )
 from module.webui.fastapi import asgi_app
 from module.webui.lang import _t, t
-from module.webui.patch import patch_executor
+from module.webui.patch import patch_executor, patch_mimetype
 from module.webui.pin import put_input, put_select
 from module.webui.process_manager import ProcessManager
 from module.webui.remote_access import RemoteAccess
+from module.webui.runtime_ui import RuntimeUI, put_system_notification_settings
 from module.webui.setting import State
 from module.webui.task_extension import (
     get_task_start,
@@ -96,6 +97,7 @@ from module.webui.widgets import (
 )
 
 patch_executor()
+patch_mimetype()
 task_handler = TaskHandler()
 
 
@@ -380,6 +382,8 @@ class AlasGUI(Frame):
             put_html('<hr class="hr-group">')
             for output in output_list:
                 output.show()
+            if group_name == 'Error' and 'OnePushConfig' in self.ALAS_ARGS[task].get(group_name, {}):
+                put_system_notification_settings(self, task)
 
         return len(output_list)
 
@@ -1312,6 +1316,8 @@ class AlasGUI(Frame):
         self.task_handler.add(self.set_aside_status, 2)
         self.task_handler.add(visibility_state_switch.g(), 15)
         self.task_handler.add(update_switch.g(), 1)
+        self.runtime_ui = RuntimeUI(self)
+        self.runtime_ui.start()
         self.task_handler.start()
 
         # Return to previous page

@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "source": "MuMu-20261003-100049-079.png",
+  "suite": "knights_shop_final",
+  "case": "bulk_confirmation",
+  "items": [
+    {
+      "name": "SHOP_PURCHASE_FINAL_CHECK",
+      "namespace": "global_cn",
+      "module": "knights/shop/actions",
+      "kind": "base",
+      "box": [
+        570,
+        259,
+        715,
+        281
+      ]
+    },
+    {
+      "name": "SHOP_PURCHASE_FINAL_CONFIRM",
+      "namespace": "global_cn",
+      "module": "knights/shop/actions",
+      "kind": "base",
+      "box": [
+        810,
+        519,
+        854,
+        543
+      ]
+    },
+    {
+      "name": "SHOP_PURCHASE_FINAL_CANCEL",
+      "namespace": "global_cn",
+      "module": "knights/shop/actions",
+      "kind": "base",
+      "box": [
+        445,
+        519,
+        491,
+        543
+      ]
+    }
+  ]
+}

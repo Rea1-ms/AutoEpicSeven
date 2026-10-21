@@ -18,6 +18,7 @@
       "Restart": "game",
       "SaveError": true,
       "ScreenshotLength": 1,
+      "SystemNotification": false,
       "OnePushConfig": "provider: null"
     },
     "Optimization": {
@@ -42,7 +43,10 @@
       "ServerUpdate": "02:00"
     },
     "MissionReward": {
-      "ClaimDailyRewards": true
+      "ClaimDailyRewards": true,
+      "DailyPriority": true,
+      "DailyPlan": {},
+      "DailyBudget": {}
     }
   },
   "Mail": {
@@ -88,6 +92,9 @@
       "ConquestPoint": {},
       "ShadowCommission": {},
       "TeamBattle": {}
+    },
+    "ResourceRuntime": {
+      "State": {}
     }
   },
   "SanctuaryDaily": {
@@ -119,6 +126,31 @@
       "Reminder": false,
       "ReminderLeadMinutes": 60,
       "ReminderLastEnd": null
+    },
+    "KnightsShopWeekly": {
+      "MysticMedals": 0,
+      "RareCatalystChest": 0,
+      "EpicCatalystChest": 0,
+      "CatalystChest": 0,
+      "ReforgingStoneChest": 0
+    },
+    "KnightsShopMonthly": {
+      "EquipmentResetStone": 0,
+      "AccessoryResetStone": 0,
+      "Level85ManastoneChest": 0,
+      "Level88ManastoneChest": 0,
+      "ConversionGemChest": 0,
+      "GoldTransmitStone": 0,
+      "EpicSpiritBloom": 0,
+      "Molagora": 0,
+      "FireConnection": 0,
+      "NatureConnection": 0,
+      "IceConnection": 0,
+      "ReforgingStoneChest": 0,
+      "ReforgeMaterialChest": 0
+    },
+    "KnightsShopRuntime": {
+      "Purchases": {}
     }
   },
   "Arena": {
@@ -130,6 +162,7 @@
     },
     "Arena": {
       "ClaimWeeklyRewards": true,
+      "WeeklyReward": "Skystone",
       "ClaimWeeklyBattleRewards": true,
       "ClaimBattlePassRewards": true,
       "NPCCombat": true,
@@ -153,6 +186,7 @@
     },
     "StoreWeekly": {
       "BuyConquestMorogora": false,
+      "BuyFriendshipGiftSelectionChest": 0,
       "BuyFriendshipArtifactEnhancementStone": 0,
       "BuyInheritanceMorogora": 0,
       "BuyInheritancePotentialFragments": 0,
@@ -183,9 +217,15 @@
     },
     "SecretShop": {
       "OnlyFree": true,
+      "CompletionMode": "RefreshCount",
       "MaxRefresh": 10,
+      "TargetCovenant": 10,
+      "TargetMystic": 10,
       "BuyCovenantBookmark": true,
       "BuyMysticMedal": true
+    },
+    "SecretShopRuntime": {
+      "Session": {}
     }
   },
   "Combat": {
@@ -198,13 +238,14 @@
     "Combat": {
       "Domain": "Hunt",
       "Element": "Water",
+      "HuntBoss": "Wyvern",
       "AltarGrade": "Hell",
+      "AltarBalance": false,
       "HuntGrade": "Hell",
       "Episode4Material": "BREATH_OF_KARMA",
       "FastCombat": true,
       "BurnoutMode": "Daily",
       "FastCombatCount": 10,
-      "RepeatCombatCount": 5,
       "RepeatCombatLeifCount": 1,
       "RepeatCombatPrioritizeStamina": true,
       "RepeatCombatGearMode": "Extract",
@@ -249,6 +290,19 @@
       "ServerUpdate": "02:00"
     }
   },
+  "LimitedActivity": {
+    "Scheduler": {
+      "Enable": false,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "LimitedActivity",
+      "ServerUpdate": "02:00"
+    },
+    "LimitedActivity": {
+      "GetFreeGacha": true,
+      "GetMeirinReward": true,
+      "GetSupportReward": true
+    }
+  },
   "SpecialActivity": {
     "Scheduler": {
       "Enable": false,
@@ -257,20 +311,65 @@
       "ServerUpdate": "02:00"
     },
     "SpecialActivity": {
-      "GetDailyReward": true,
-      "GetTaskReward": true,
-      "GetFreeGacha": true,
-      "GetEnergyDrink": true
+      "BuyHucheMysticMedals": false
     },
-    "GachaResult": {
-      "SaveScreenshot": true,
-      "OcrResult": false
+    "ActivityRuntime": {
+      "CheckedEvents": {},
+      "FreeGacha20CheckedAt": "2020-01-01 00:00:00"
+    }
+  },
+  "BuyPenguins": {
+    "Scheduler": {
+      "Enable": false,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "BuyPenguins",
+      "ServerUpdate": "02:00"
+    },
+    "BuyPenguins": {
+      "BatchCount": 1
+    }
+  },
+  "DimensionalExploration": {
+    "DimensionalExploration": {
+      "RunCount": 1,
+      "EventSampling": false,
+      "KnightPriority": "起源拉斯 > 亚敏",
+      "WarriorPriority": "卡瓦朱",
+      "RangerPriority": "尤贝乌斯 > 莉珈",
+      "MagePriority": "智武 > 研究者卡萝",
+      "HealerPriority": "罪戾的安洁莉卡 > 拉兹",
+      "ThiefPriority": "保健室老师律荷 > 转学生艾庭 > 可丽"
+    },
+    "DimensionalExplorationRuntime": {
+      "Session": {},
+      "EventHistory": {}
     }
   },
   "CommunityAuth": {
     "CommunityAuth": {
       "CredentialsFile": null,
       "WaitTimeout": 300
+    }
+  },
+  "EquipmentReroll": {
+    "Scheduler": {
+      "Enable": false,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "EquipmentReroll",
+      "ServerUpdate": "02:00"
+    },
+    "EquipmentReroll": {
+      "Stat1": "Speed",
+      "Value1": 5,
+      "Stat2": "DefensePercent",
+      "Value2": 8,
+      "Stat3": "HealthPercent",
+      "Value3": 8,
+      "Stat4": "Resistance",
+      "Value4": 8,
+      "MaxRefresh": 0,
+      "MaxPoints": 0,
+      "ReservePoints": 0
     }
   },
   "SanctuaryMonthly": {
@@ -281,7 +380,10 @@
       "ServerUpdate": "02:00"
     },
     "SanctuaryMonthly": {
-      "RewardTier": "A"
+      "RewardTier": "A",
+      "Reminder": true,
+      "ReminderLeadDays": 3,
+      "ReminderLastSent": null
     }
   }
 }

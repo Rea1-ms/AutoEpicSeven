@@ -1,0 +1,16 @@
+# 激战门扉原配置备份，不参与当前配置生成。
+argument:
+  LimitedActivity:
+    GetE7wcBattleGateReward: true
+
+task:
+  LimitedActivity:
+    - Scheduler
+    - LimitedActivity
+
+activity:
+  id: e7wc_battle_gate_2026_09_10
+  kind: e7wc_battle_gate
+  sidebar_keyword: 激战门
+  oversea_start: '2026-09-10T11:00:00+08:00'
+  oversea_end: '2026-09-27T11:00:00+08:00'

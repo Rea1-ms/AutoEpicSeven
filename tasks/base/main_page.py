@@ -1,11 +1,12 @@
 import module.config.server as server
 from module.exception import ScriptError
 from module.logger import logger
+from tasks.base.account_level import AccountLevelMixin
 from tasks.base.page import Page, page_main
 from tasks.base.popup import PopupHandler
 
 
-class MainPage(PopupHandler):
+class MainPage(AccountLevelMixin, PopupHandler):
     _lang_checked = False
     _lang_check_success = True
 

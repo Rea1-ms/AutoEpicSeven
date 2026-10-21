@@ -11,9 +11,20 @@ from tasks.base.assets.assets_base_popup import (
     NEW_CHARACTER_VIDEO_PASS,
 )
 from tasks.base.main_page import MainPage
-from tasks.base.page import Page, page_main, page_menu
+from tasks.base.page import (
+    KNIGHTS_CREST_SIMILARITY,
+    Page,
+    page_knights_team_battle,
+    page_main,
+    page_menu,
+)
 from tasks.base.popup import ANNOUNCEMENT_DONOT_REMIND
+from tasks.base.route_entry import match_route_entry
+from tasks.base.resource_bar import ResourceBarMixin
+from tasks.knights.assets.assets_knights_gvg import KNIGHTS_CREST, KNIGHTS_NOT_ENOUGH_PEOPLE
+from tasks.knights.assets.assets_knights_activity_entries import ACTIVITY_PANEL_CHECK
 from tasks.login.assets.assets_login import (
+    LOGIN_AGREEMENT_UNCHECKED,
     LOGIN_ANNOUNCEMENT_CLOSE,
     LOGIN_CONFIRM,
     LOGIN_LOADING,
@@ -26,9 +37,11 @@ from tasks.login.assets.assets_login_popup import (
     NEW_CHARACTER_CONFIRM,
 )
 
-class UI(MainPage):
+class UI(ResourceBarMixin, MainPage):
     ui_current: Page
     ui_main_confirm_timer = Timer(0.2, count=0)
+    UI_SWITCH_RETRY_SECONDS = 2
+    UI_ENTRY_MATCH_TIMEOUT_SECONDS = 8
 
     def _ui_dynamic_origin_store(self) -> dict[str, Page]:
         if not hasattr(self, "_ui_dynamic_origins"):
@@ -122,6 +135,18 @@ class UI(MainPage):
 
         self._ui_set_dynamic_origin(target, source)
 
+    def _ui_match_route_entry(self, page: Page, button: ButtonWrapper):
+        prefer_lower = None
+        if page == page_main:
+            # ui_page_confirm() can take newer screenshots. Recheck the usable
+            # main page before reading its rank or matching an entry on that frame.
+            if not self.is_in_main():
+                return None
+            level = self.read_main_account_level()
+            if level is not None:
+                prefer_lower = level.milestone_unlocked
+        return match_route_entry(button, self.device.image, prefer_lower=prefer_lower)
+
     def _ui_handoff_to_login(self, reason) -> bool:
         if self.__class__.__name__ == 'Login':
             return False
@@ -135,6 +160,13 @@ class UI(MainPage):
         return True
 
     def _is_login_startup_state(self) -> bool:
+        # CN may return to the title screen before its first agreement is checked.
+        # Hand it to Login as well; only the checked state permits entering game.
+        if server_.is_cn_server(self.config.Emulator_PackageName) and self.appear(
+            LOGIN_AGREEMENT_UNCHECKED, interval=0
+        ):
+            return True
+
         return self.is_in_login_confirm(interval=0) \
             or self.appear(LOGIN_LOADING, interval=0, similarity=0.75) \
             or self.appear(VERIFYING, interval=0) \
@@ -188,6 +220,12 @@ class UI(MainPage):
         """
         if page == page_main:
             return self.is_in_main(interval=interval)
+        if page == page_knights_team_battle:
+            # Only the animated crest needs the task's lower threshold.
+            # Keep the insufficient-members marker at its normal threshold.
+            return self.appear(
+                KNIGHTS_CREST, interval=interval, similarity=KNIGHTS_CREST_SIMILARITY
+            ) or self.appear(KNIGHTS_NOT_ENOUGH_PEOPLE, interval=interval)
         return self._ui_process_appear(page.check_button, interval=interval)
 
     def ui_get_current_page(self, skip_first_screenshot=True):
@@ -287,26 +325,52 @@ class UI(MainPage):
         self.interval_clear(list(Page.iter_check_buttons()))
 
         logger.hr(f"UI goto {destination}")
+        pending_source = None
+        pending_target = None
+        switch_retry = Timer(self.UI_SWITCH_RETRY_SECONDS, count=0)
+        entry_wait_route = None
+        entry_wait = Timer(self.UI_ENTRY_MATCH_TIMEOUT_SECONDS, count=4)
         while 1:
             if skip_first_screenshot:
                 skip_first_screenshot = False
+                if not hasattr(self.device, "image") or self.device.image is None:
+                    self.device.screenshot()
             else:
                 self.device.screenshot()
+
+            if self.handle_ui_recovery():
+                continue
 
             # Destination page
             if self.ui_page_appear(destination):
                 logger.info(f'Page arrive: {destination}')
                 if self.ui_page_confirm(destination):
                     logger.info(f'Page arrive confirm {destination}')
+                if destination == page_main:
+                    self.sync_pending_resources()
                 break
+
+            if self.ui_additional():
+                continue
 
             # Other pages
             clicked = False
-            for page in Page.iter_pages():
+            # Recognition must run on every frame, including during a retry
+            # interval. Previously a five-second interval hid the source page
+            # itself, letting overlapping inventory markers send BACK during
+            # a transition. Prefer the expected next page, then the source;
+            # only the repeated click (or an unrelated recovery route) waits.
+            pages = list(dict.fromkeys(
+                [pending_target, pending_source, *Page.iter_pages()]
+            ))
+            for page in pages:
+                if page is None:
+                    continue
                 if page.parent is None or page.check_button is None:
                     continue
-                if self.ui_page_appear(page, interval=5):
-                    logger.info(f'Page switch: {page} -> {page.parent}')
+                if self.ui_page_appear(page):
+                    if pending_source is not None and page != pending_target and not switch_retry.reached():
+                        break
                     # Keep ui_goto deterministic: do not mix opportunistic side actions
                     # (e.g. MENU_PETS_GIFT) into route switching, otherwise navigation
                     # can be interrupted by transient popups/animations.
@@ -314,17 +378,37 @@ class UI(MainPage):
                     if self.ui_page_confirm(page):
                         logger.info(f'Page arrive confirm {page}')
                     button = self._ui_get_link_button(page, page.parent)
+                    click_button = button
+                    if page.parent in page.links_need_match:
+                        click_button = self._ui_match_route_entry(page, button)
+                        if click_button is None:
+                            route = (page, page.parent)
+                            if entry_wait_route != route:
+                                entry_wait_route = route
+                                entry_wait.reset()
+                                logger.info(f'Waiting for UI route entry: {page} -> {page.parent}, {button}')
+                            # Missing recognition must never fall through to a
+                            # default/cached click or to another overlapping page.
+                            # Repeated misses on this route do not reset its deadline.
+                            if entry_wait.reached():
+                                message = f'UI route entry not found: {page} -> {page.parent}, {button}'
+                                logger.error(message)
+                                Page.clear_connection()
+                                raise GamePageUnknownError(message)
+                            break
+                    entry_wait_route = None
+                    logger.info(f'Page switch: {page} -> {page.parent}')
                     self._ui_record_transition(page, button, page.parent)
-                    self.device.click(button)
+                    self.device.click(click_button)
                     self.ui_button_interval_reset(button)
+                    pending_source = page
+                    pending_target = page.parent
+                    switch_retry.reset()
                     clicked = True
                     break
             if clicked:
                 continue
 
-            # Additional
-            if self.ui_additional():
-                continue
             # if self.handle_popup_single():
             #     continue
             if self.handle_popup_confirm():
@@ -516,6 +600,16 @@ class UI(MainPage):
         if self.handle_ui_recovery():
             return True
 
+        # The guild activity panel uses the same bottom close artwork as ads.
+        # A usable panel belongs to the page graph: generic popup handlers must
+        # not close it before ui_goto can follow a sibling-tab edge. Check color
+        # as well as the title, so a dimmed panel behind a real modal does not
+        # suppress that modal's normal recovery handlers.
+        if server_.lang == 'global_cn' and ACTIVITY_PANEL_CHECK.match_template_color(
+            self.device.image, threshold=25
+        ):
+            return False
+
         # === E7 登录弹窗处理 ===
 
         # 0. 新通知/情报 - 一日内不再提示
@@ -577,7 +671,11 @@ class UI(MainPage):
         NOTE:
             Should be called explicitly by task logic, not inside ui_goto route switching.
         """
-        if self.appear_then_click(MENU_PETS_GIFT, interval=0.5):
+        if self.appear(MENU_PETS_GIFT, interval=0.5):
+            from tasks.base.resource_scheduling import ResourceCoordinator
+
+            ResourceCoordinator(self.config).request("PetsGift")
+            self.device.click(MENU_PETS_GIFT)
             logger.info('Collected pets gift from menu')
             return True
         return False

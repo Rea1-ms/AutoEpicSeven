@@ -12,6 +12,7 @@ config/tmp*
 dev_tools/debug_tools
 .idea
 /screenshots
+/data/dimensional_exploration/
 /campaign/test/
 /toolkit
 *.lock

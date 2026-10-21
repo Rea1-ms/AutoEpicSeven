@@ -37,6 +37,12 @@ SecretShop:
 Gacha:
   Scheduler:
     Enable: true
+LimitedActivity:
+  Scheduler:
+    Enable: false
 SpecialActivity:
+  Scheduler:
+    Enable: false
+EquipmentReroll:
   Scheduler:
     Enable: false

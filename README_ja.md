@@ -2,23 +2,24 @@
 
 # AutoEpicSeven
 
-Epic Seven自動化スクリプト | 次世代Alasフレームワークを基盤とし、[StarRailCopilot](https://github.com/LmeSzinc/StarRailCopilot)から改修されています。
+Epic Seven自動化スクリプト | 第2世代Alasフレームワークを基盤とし、[StarRailCopilot](https://github.com/LmeSzinc/StarRailCopilot)から改修されています。
 
-![gui](https://raw.githubusercontent.com/wiki/LmeSzinc/StarRailCopilot/README.assets/gui_cn.png)
+![gui](https://raw.githubusercontent.com/Rea1-ms/AutoEpicSeven/refs/heads/master/README.assets/gui_cn.png)
 
-![setting](https://raw.githubusercontent.com/wiki/LmeSzinc/StarRailCopilot/README.assets/setting_cn.png)
+![setting](https://raw.githubusercontent.com/Rea1-ms/AutoEpicSeven/refs/heads/master/README.assets/setting_cn.png)
 
 ## 機能
 
-- **周回**：毎日の討伐、精霊の祭壇、Episode 4の触媒とアーディンのクラスチェンジ素材、外伝「聖女」3-7。
-- **報酬回収**：デイリーミッション、聖域のデイリー・マンスリー資源、闘技場パス報酬、期限間近のメール、ペットギフトを受け取ります。
-- **召喚**：毎日の無料召喚とペット小屋の無料回数を自動で使用します。
-- **放置周回**：ショップ更新とステージ周回に対応しています。
+- **周回**：討伐、精霊の祭壇、第4章の触媒とアーディンのクラスチェンジ素材、外伝「聖女」3-7、緊急ミッション。
+- **報酬回収**：デイリーミッション、聖域のデイリー・マンスリー資源回収と品質に応じた自動保管、闘技場パス報酬、期限間近のメール、ペットギフトを受け取ります。
+- **召喚**：毎日の無料召喚とペット小屋の無料回数を自動で使用します。~~（スクリーンショットの保存と召喚結果の認識はまだ不正確です）~~。
 - **闘技場**：闘技場のNPC対戦を周回し、週間対戦報酬を受け取ります。
-- **ショップ**：デイリー・ウィークリー商品を自動購入。
-- **ギルド**：ワールドボス、ギルド戦の攻撃検出・通知、花とペンギンの寄付、週間報酬の受け取りを自動化します。
+- **ショップ**：デイリー・ウィークリー商品と継承ショップの商品を自動購入。
+- **秘密ショップ**：ショップを自動更新し、誓約の栞と神秘メダルを購入します。
+- **ギルド**：ワールドボス、ギルド戦の攻撃検出・通知、花とペンギンの寄付、週間報酬の受け取り、ギルドショップのウィークリー・マンスリー商品の購入を自動化します。
 - **バックグラウンド管理**：エミュレーターとゲームを自動起動し、スタミナ消費とデイリーをバックグラウンドで実行、ダッシュボードで資源状況を確認できます。
-- **大型イベント**：バージョン大型イベントに自動参加して報酬を受け取ります。更新は不定期です。
+- **イベント**：時間があるときに更新します。
+- **ツール**：次元探査の周回、ペンギン購入、装備サブステータス再抽選などの補助機能。時間があるときに更新します。
 
 ## インストール
 

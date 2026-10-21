@@ -23,3 +23,21 @@ FREE_20_GACHA_OBTAINED = ButtonWrapper(
         button=(1062, 465, 1113, 534),
     ),
 )
+FREE_20_GACHA_SELECTED = ButtonWrapper(
+    name='FREE_20_GACHA_SELECTED',
+    cn=Button(
+        file='./assets/cn/activity/special/26_8_27/FREE_20_GACHA_SELECTED.png',
+        area=(27, 467, 131, 486),
+        search=(0, 66, 260, 719),
+        color=(233, 166, 129),
+        button=(27, 467, 131, 486),
+    ),
+    global_cn=Button(
+        file='./assets/global_cn/activity/special/26_8_27/FREE_20_GACHA_SELECTED.png',
+        area=(1075, 423, 1099, 433),
+        search=(1055, 403, 1119, 453),
+        color=(212, 174, 132),
+        button=(1075, 423, 1099, 433),
+    ),
+    global_en=None,
+)

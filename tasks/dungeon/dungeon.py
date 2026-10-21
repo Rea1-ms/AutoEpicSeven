@@ -1,39 +1,44 @@
 import module.config.server as server
 from module.logger import logger
-from tasks.activity.scheduling import should_schedule_after_battle
+from tasks.activity.scheduling import schedule_activity_after_battle
 from tasks.base.page import (
     page_combat,
     page_episode,
     page_side_story,
 )
-from tasks.base.resource_bar import ResourceBarMixin
+from tasks.base.resource_scheduling import ResourceCoordinator
 from tasks.base.ui import UI
 from tasks.dungeon.burnout import CombatBurnoutMixin
+from tasks.dungeon.daily import DailyCombatMixin
 from tasks.dungeon.episode import EpisodeNavigateMixin
 from tasks.dungeon.entry import CombatEntryMixin
 from tasks.dungeon.execute import CombatExecuteMixin
+from tasks.dungeon.hunt import HuntNavigateMixin
 from tasks.dungeon.plan import COMBAT_PLANS, HUNT_PLAN
 from tasks.dungeon.prepare import CombatPrepare
 from tasks.dungeon.repeat import CombatRepeatMixin
+from tasks.dungeon.rune_balance import RuneBalanceMixin
 from tasks.dungeon.runtime import CombatRuntimeMixin, is_background_repeat_combat_active
 from tasks.dungeon.side_story import SideStoryNavigateMixin
-from tasks.dungeon.stamina_status import CombatStaminaStatusMixin
 from tasks.dungeon.urgent_tasks import UrgentTasksNavigateMixin
 from tasks.mission_reward.scheduling import should_schedule_mission_reward
+from tasks.item.rune_inventory import RuneInventoryMixin
 
 
 class Combat(
+    DailyCombatMixin,
+    RuneBalanceMixin,
+    RuneInventoryMixin,
     CombatRepeatMixin,
     CombatBurnoutMixin,
     CombatRuntimeMixin,
     CombatExecuteMixin,
     CombatEntryMixin,
+    HuntNavigateMixin,
     EpisodeNavigateMixin,
     SideStoryNavigateMixin,
     UrgentTasksNavigateMixin,
-    CombatStaminaStatusMixin,
     CombatPrepare,
-    ResourceBarMixin,
     UI,
 ):
     COMBAT_RESOURCE_BAR_TIMEOUT_SECONDS = 1
@@ -66,11 +71,15 @@ class Combat(
         completed_sessions: int, runtime_active: bool
     ) -> bool:
         """
-        Only leave combat to claim mission rewards after at least one combat
-        session has fully settled and no background repeat-combat session is
-        still running.
+        Review rewards after at least one combat session has fully settled.
+
+        completed_sessions excludes merely starting a server repeat session:
+        that session credits daily stamina only after its settlement. However,
+        a fast batch can settle while runtime_active describes a separate
+        background repeat. That active repeat must not suppress the fast
+        batch's review, nor may requesting review settle the repeat itself.
         """
-        return completed_sessions > 0 and not runtime_active
+        return completed_sessions > 0
 
     def _configured_dungeon_domain(self) -> str:
         domain = getattr(self.config, "Combat_Domain", "Hunt")
@@ -96,6 +105,11 @@ class Combat(
         )
 
     def _combat_element(self) -> str:
+        if self._dungeon_domain() == "Hunt":
+            return self._hunt_element()
+        target = getattr(self, "_rune_balance_target", None)
+        if self._rune_balance_enabled() and target is not None:
+            return target.element
         return getattr(self.config, "Combat_Element", "Water")
 
     def _combat_grade(self) -> str:
@@ -107,7 +121,12 @@ class Combat(
         if domain == "UrgentTasks":
             return self._urgent_tasks_difficulty()
         if domain == "SpiritAltar":
+            target = getattr(self, "_rune_balance_target", None)
+            if self._rune_balance_enabled() and target is not None:
+                return target.grade
             return getattr(self.config, "Combat_AltarGrade", "Hell")
+        if domain == "Hunt" and self._hunt_boss() == "Ogre":
+            return "Dimensional"
         return getattr(self.config, "Combat_HuntGrade", "Hell")
 
     def _combat_fast_enabled(self) -> bool:
@@ -139,6 +158,10 @@ class Combat(
         return self._combat_fast_enabled()
 
     def _combat_delay_after_settled(self) -> None:
+        budget = getattr(self, "_daily_combat_budget", None)
+        if budget is not None and budget.active:
+            self._daily_combat_delay(budget)
+            return
         if self._combat_is_farm_task():
             self.config.task_delay(minute=self.COMBAT_BACKGROUND_CHECK_MINUTES)
             return
@@ -251,6 +274,12 @@ class Combat(
         if self._combat_runtime_active():
             return
 
+        # A running detail window is a valid adoption context even though it
+        # covers the toolbar page. Read/close it in the repeat watcher before
+        # generic navigation has a chance to dismiss or misclassify it.
+        if self._uses_server_repeat_combat() and self._is_repeat_result_window():
+            return
+
         current = self.ui_get_current_page(skip_first_screenshot=True)
         if self._is_supporter_page():
             # The side-story choose-team page is already deep inside the local
@@ -307,6 +336,12 @@ class Combat(
         logger.hr("Combat", level=1)
         completed_sessions = 0
         normal_session_settled = False
+        settled_session = None
+
+        if self._rune_balance_enabled() and server.lang != "global_cn":
+            logger.warning("Rune balance currently supports global-server Chinese only")
+            self.config.task_delay(server_update=True)
+            return True
 
         if (
             server.is_oversea_server(self.config.Emulator_PackageName)
@@ -323,6 +358,11 @@ class Combat(
             from tasks.login.login import Login
 
             Login(self.config, device=self.device).app_start()
+
+        self._daily_combat_budget = self._new_daily_combat_budget()
+        if not self._combat_is_farm_task():
+            ResourceCoordinator(self.config).begin("Combat")
+        ResourceCoordinator(self.config).invalidate("stamina")
 
         if not hasattr(self.device, "image") or self.device.image is None:
             self.device.screenshot()
@@ -344,13 +384,19 @@ class Combat(
             logger.attr("CombatSessionElement", session.get("element"))
             logger.attr("CombatSessionGrade", session.get("grade"))
 
-            if session.get("state") != "result" and not self.is_in_main(interval=0):
+            if (
+                session.get("state") != "result"
+                and not self._is_repeat_result_window()
+                and not self.is_in_main(interval=0)
+            ):
                 # Return to main so the session can keep running in background.
                 self.ui_goto_main()
 
             status = self._watch_repeat_combat(skip_first_screenshot=True)
             if status == "finished":
                 completed_sessions += 1
+                settled_session = session
+                self._settle_daily_repeat_budget(session)
                 self._combat_runtime_clear()
                 if session.get("domain") == "UrgentTasks":
                     normal_session_settled = not bool(
@@ -422,6 +468,7 @@ class Combat(
             )
 
         if normal_session_settled:
+            self._rune_balance_after_settled(settled_session)
             should_schedule_reward = (
                 self._combat_should_call_mission_reward()
                 and self._should_schedule_mission_reward(
@@ -432,12 +479,13 @@ class Combat(
             if should_schedule_reward:
                 if should_schedule_mission_reward(self.config):
                     self.config.task_call("MissionReward", force_call=False)
-                if should_schedule_after_battle(self.config):
-                    self.config.task_call("SpecialActivity", force_call=False)
+                schedule_activity_after_battle(self.config)
             self._combat_delay_after_settled()
             return True
 
         domain = self._dungeon_domain()
+
+        self._prepare_rune_balance_target()
 
         if domain == "Episode4":
             if self._is_in_episode4_flow_context():
@@ -467,6 +515,8 @@ class Combat(
 
         logger.attr("CombatDomain", domain)
         logger.attr("CombatElement", self._combat_element())
+        if domain == "Hunt":
+            logger.attr("CombatHuntBoss", self._hunt_boss())
         logger.attr("CombatGrade", self._combat_grade())
         logger.attr("CombatFastCombatSupported", self._combat_supports_fast_combat())
         logger.attr("CombatFastCombatAllowed", fast_combat_allowed)
@@ -476,7 +526,7 @@ class Combat(
             logger.attr(
                 "CombatRepeatCombatLeifCount",
                 "stamina // 80"
-                if self._combat_burnout_enabled()
+                if self._combat_burnout_enabled() and self._repeat_leif_step() == 1
                 else self._repeat_combat_leif_count(),
             )
             logger.attr(
@@ -551,6 +601,13 @@ class Combat(
                         success = fast_prepare == "ready"
 
         if success and self._uses_server_repeat_combat():
+            if self._daily_combat_budget.active:
+                leif = prepare_resources.get("leif")
+                return self._run_daily_combat_batch(
+                    self._daily_combat_budget, current_stamina or 0,
+                    leif=leif.value if leif is not None else 0,
+                )
+            ResourceCoordinator(self.config).invalidate("stamina", "leif")
             target_leif_count = self._server_repeat_target_leif_count(current_stamina)
             logger.attr("CombatRepeatTargetLeifCount", target_leif_count)
             fast_stamina = current_stamina or 0
@@ -597,6 +654,7 @@ class Combat(
                     success = False
 
         elif success:
+            ResourceCoordinator(self.config).invalidate("stamina", "leif")
             if fast_combat_selected:
                 success = self._run_fast_combat(skip_first_screenshot=True)
                 if success:
@@ -670,6 +728,8 @@ class Combat(
                             )
                             repeat_combat_started = success
 
+        if completed_sessions:
+            ResourceCoordinator(self.config).request("Combat", keys=("stamina",))
         if success and (not repeat_combat_started or self._uses_server_repeat_combat()):
             success = self._leave_to_main(skip_first_screenshot=True)
 
@@ -686,13 +746,14 @@ class Combat(
             if should_schedule_reward:
                 if should_schedule_mission_reward(self.config):
                     self.config.task_call("MissionReward", force_call=False)
-                if should_schedule_after_battle(self.config):
-                    self.config.task_call("SpecialActivity", force_call=False)
+                schedule_activity_after_battle(self.config)
             if repeat_combat_started:
                 self._combat_runtime_set(self._combat_runtime_build())
                 self._delay_running_repeat_combat()
             else:
                 self._combat_runtime_clear()
+                if completed_sessions:
+                    self._rune_balance_after_settled()
                 self._combat_delay_after_settled()
             return True
 
@@ -708,7 +769,6 @@ class Combat(
         if should_schedule_reward:
             if should_schedule_mission_reward(self.config):
                 self.config.task_call("MissionReward", force_call=False)
-            if should_schedule_after_battle(self.config):
-                self.config.task_call("SpecialActivity", force_call=False)
+            schedule_activity_after_battle(self.config)
         self.config.task_delay(success=False)
         return False

@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "MuMu-20261007-133412-362.png",
+  "suite": "knights_shop_balances",
+  "case": "armband_header_current",
+  "items": [
+    {
+      "name": "ARMBAND_BALANCE_ICON",
+      "namespace": "share",
+      "module": "knights/shop/currencies",
+      "kind": "base",
+      "frame": 1,
+      "box": [
+        993,
+        80,
+        1017,
+        105
+      ]
+    }
+  ]
+}

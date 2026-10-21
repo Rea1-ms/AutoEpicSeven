@@ -7,7 +7,8 @@ from module.exception import RequestHumanTakeover
 from module.logger import logger
 from module.ocr.ocr import Digit, DigitCounter, Duration
 from tasks.base.assets.assets_base_page import BACK
-from tasks.base.assets.assets_base_popup import TOUCH_TO_CLOSE
+from tasks.base.assets.assets_base_popup import AD_BUFF_X_CLOSE, TOUCH_TO_CLOSE
+from tasks.base.page import Page
 from tasks.base.resource_bar import (
     RESOURCE_KIND_INT,
     OcrResourceBar,
@@ -65,11 +66,13 @@ from tasks.dungeon.assets.assets_dungeon_repeat_resource import (
 )
 from tasks.dungeon.assets.assets_dungeon_repeat_settlement import (
     SETTLEMENT_CLOSE,
+    SETTLEMENT_INTERRUPT,
     SETTLEMENT_PROCESSING,
     SETTLEMENT_SETTLE,
     SETTLEMENT_WINDOW_CHECK,
 )
 from tasks.dungeon.burnout import SERVER_REPEAT_LEIF_STAMINA
+from tasks.dungeon.repeat_progress import read_repeat_combat_progress
 
 
 SERVER_REPEAT_RESOURCE_SPECS = {
@@ -106,12 +109,13 @@ def plan_server_repeat_counter_action(
     current: int,
     target: int,
     maximum: int,
+    step: int = 1,
 ) -> str:
     """Choose the counter route requiring the fewest clicks."""
     costs = {
-        "adjust": abs(target - current),
-        "minimum": 1 + target - 1,
-        "maximum": 1 + maximum - target,
+        "adjust": abs(target - current) // step,
+        "minimum": 1 + (target - step) // step,
+        "maximum": 1 + (maximum - target) // step,
     }
     return min(costs, key=costs.get)
 
@@ -151,19 +155,30 @@ class CombatRepeatMixin:
     }
 
     def _uses_server_repeat_combat(self) -> bool:
-        return server.lang == "global_cn"
+        return server.lang in ("cn", "global_cn")
+
+    def _repeat_leif_step(self) -> int:
+        if self._dungeon_domain() == "Hunt" and self._combat_grade() == "Dimensional":
+            return 2
+        return 1
 
     def _repeat_combat_leif_count(self) -> int:
         value = getattr(self.config, "Combat_RepeatCombatLeifCount", 1)
-        return self._sanitize_combat_count(
+        count = self._sanitize_combat_count(
             value,
             default=1,
             max_value=50,
             name="RepeatCombatLeifCount",
         )
+        step = self._repeat_leif_step()
+        # The configured value is a Leif budget, not a count of button clicks.
+        # Dimensional Hunt starts at two and each +/-1 click changes it by two.
+        # Honor the agreed minimum of two, but round larger odd budgets down
+        # so a partial run never adds an unrequested pair of Leifs.
+        return max(count, step) // step * step
 
     def _repeat_prioritize_stamina(self) -> bool:
-        if self._uses_server_repeat_combat() and self._combat_burnout_enabled():
+        if self._uses_server_repeat_combat() and self._combat_burnout_enabled() and self._repeat_leif_step() == 1:
             return True
         return bool(getattr(self.config, "Combat_RepeatCombatPrioritizeStamina", True))
 
@@ -173,16 +188,20 @@ class CombatRepeatMixin:
         return "owned stamina"
 
     def _server_repeat_target_leif_count(self, stamina: int | None) -> int:
-        if self._combat_burnout_enabled() and stamina is not None:
+        if self._combat_burnout_enabled() and self._repeat_leif_step() == 1 and stamina is not None:
             return calculate_server_repeat_leif_count(stamina)
         return self._repeat_combat_leif_count()
 
-    @staticmethod
     def _server_repeat_stamina_budget(
+        self,
         stamina: int,
         leif_count: int,
         prioritize_stamina: bool,
     ) -> tuple[int, int]:
+        # Dimensional batches consume spectral cores / Leifs. Their Leif
+        # count must never reserve ordinary stamina using the 80-point rate.
+        if self._repeat_leif_step() == 2:
+            return 0, max(int(stamina), 0)
         return calculate_server_repeat_stamina_budget(
             stamina,
             leif_count,
@@ -216,8 +235,6 @@ class CombatRepeatMixin:
             return default
 
     def _is_prepare_page(self) -> bool:
-        if not self._uses_server_repeat_combat():
-            return super()._is_prepare_page()
         return self.match_template_luma(
             REPEAT_COMBAT_MENU,
             similarity=self.COMBAT_CHECK_SIMILARITY,
@@ -372,10 +389,15 @@ class CombatRepeatMixin:
 
     def _ensure_repeat_leif_count(self, requested: int) -> bool:
         current, maximum = self._ocr_repeat_leif_counter()
-        if maximum <= 0:
+        step = self._repeat_leif_step()
+        if not step <= current <= maximum <= 50 or current % step:
             return False
 
-        target = min(max(requested, 1), maximum)
+        # Clamp in Leif units, then remove an incomplete run at the upper
+        # boundary. Never accept an odd Dimensional OCR value or translate a
+        # two-Leif difference into two clicks: that would overshoot the budget.
+        maximum = maximum // step * step
+        target = min(max(requested, step), maximum) // step * step
         if current == target:
             logger.attr("RepeatCombatLeifTarget", target)
             self._repeat_combat_prepared_leif_count = target
@@ -385,7 +407,7 @@ class CombatRepeatMixin:
         # nearer part of the counter when the current value is far away from
         # the target. Re-evaluating after every screenshot keeps this retryable
         # when a shortcut click is dropped by the emulator.
-        action = plan_server_repeat_counter_action(current, target, maximum)
+        action = plan_server_repeat_counter_action(current, target, maximum, step)
         if action == "minimum":
             if self.appear_then_click(REPEAT_COMBAT_TIMES_MINIMUM, interval=1):
                 logger.info(
@@ -403,7 +425,7 @@ class CombatRepeatMixin:
         button = REPEAT_COMBAT_TIMES_PLUS if diff > 0 else REPEAT_COMBAT_TIMES_MINUS
         if self.appear(button) and self.interval_is_reached(button, interval=0.8):
             logger.info(f"Combat: adjust repeat leif count {current}->{target}")
-            self.device.multi_click(button, n=abs(diff), interval=(0.2, 0.3))
+            self.device.multi_click(button, n=abs(diff) // step, interval=(0.2, 0.3))
             self.interval_reset(button, interval=0.8)
         return False
 
@@ -494,11 +516,6 @@ class CombatRepeatMixin:
         return parsed
 
     def _update_prepare_resource_snapshot(self, skip_first_screenshot=True):
-        if not self._uses_server_repeat_combat():
-            return super()._update_prepare_resource_snapshot(
-                skip_first_screenshot=skip_first_screenshot
-            )
-
         logger.hr("Combat Prepare Resources", level=2)
         timeout = Timer(self.COMBAT_PREPARE_TIMEOUT_SECONDS, count=90).start()
 
@@ -522,6 +539,9 @@ class CombatRepeatMixin:
             if self._is_repeat_menu_open():
                 parsed = self._ocr_server_repeat_resources()
                 if parsed is not None:
+                    from tasks.base.resource_scheduling import ResourceCoordinator
+
+                    ResourceCoordinator(self.config).observe(parsed, "server_repeat")
                     # Resource OCR and repeat settings share this window. Keep
                     # it open so the next state loop can continue directly on
                     # the battle-settings tab instead of closing and reopening
@@ -540,16 +560,8 @@ class CombatRepeatMixin:
         affordable_count: int | None = None,
         completed_count: int = 0,
         leif_count: int | None = None,
+        prioritize_stamina: bool | None = None,
     ) -> bool:
-        if not self._uses_server_repeat_combat():
-            return super()._prepare_repeat_combat(
-                skip_first_screenshot=skip_first_screenshot,
-                use_max=use_max,
-                clamp_to_counter=clamp_to_counter,
-                affordable_count=affordable_count,
-                completed_count=completed_count,
-            )
-
         logger.hr("Combat Prepare Server Repeat", level=2)
         timeout = Timer(self.REPEAT_MENU_TIMEOUT_SECONDS, count=120).start()
         duration_retry = Timer(3, count=8).clear()
@@ -602,7 +614,7 @@ class CombatRepeatMixin:
 
             if stage == "stamina":
                 if self._ensure_repeat_toggle(
-                    self._repeat_prioritize_stamina(),
+                    self._repeat_prioritize_stamina() if prioritize_stamina is None else prioritize_stamina,
                     PRIORITIZE_OWNED_STAMINA_ON,
                     PRIORITIZE_OWNED_STAMINA_OFF,
                     f"prioritize {self._repeat_owned_resource_label()}",
@@ -741,11 +753,6 @@ class CombatRepeatMixin:
                 continue
 
     def _run_repeat_combat(self, skip_first_screenshot=True) -> bool:
-        if not self._uses_server_repeat_combat():
-            return super()._run_repeat_combat(
-                skip_first_screenshot=skip_first_screenshot
-            )
-
         logger.info("Combat: start server repeat combat")
         timeout = Timer(self.COMBAT_RUN_TIMEOUT_SECONDS, count=240).start()
         start_clicked = False
@@ -801,38 +808,101 @@ class CombatRepeatMixin:
                 continue
 
     def _is_repeat_result_window(self) -> bool:
-        if not self._uses_server_repeat_combat():
-            return super()._is_repeat_result_window()
         return self.match_template_luma(
             SETTLEMENT_WINDOW_CHECK,
             similarity=self.COMBAT_CHECK_SIMILARITY,
         )
 
+    def _is_repeat_combat_running_window(self) -> bool:
+        # The running detail and completed result share the same window title.
+        # Only the Interrupt control proves this is still an active run; it is
+        # a state marker here and must never be clicked to dismiss the window.
+        return (
+            self._uses_server_repeat_combat()
+            and self._is_repeat_result_window()
+            and self.match_template_luma(
+                SETTLEMENT_INTERRUPT,
+                similarity=self.COMBAT_CHECK_SIMILARITY,
+            )
+        )
+
     def _is_repeat_combat_over(self) -> bool:
-        if not self._uses_server_repeat_combat():
-            return super()._is_repeat_combat_over()
         return self.match_template_luma(
             REPEAT_COMBAT_OVER,
             similarity=self.COMBAT_CHECK_SIMILARITY,
         )
 
     def _has_repeat_combat_check(self) -> bool:
-        if not self._uses_server_repeat_combat():
-            return super()._has_repeat_combat_check()
         return self.match_template_luma(
             REPEAT_COMBAT_CHECK,
             similarity=self.COMBAT_CHECK_SIMILARITY,
         )
 
-    def _watch_repeat_combat(self, skip_first_screenshot=True) -> str:
-        if not self._uses_server_repeat_combat():
-            return super()._watch_repeat_combat(
-                skip_first_screenshot=skip_first_screenshot
-            )
+    def _repeat_combat_return_page(self):
+        """Recognize a page that can open the background-repeat overlay.
 
+        Callers must check result/reward overlays first: a page's own marker
+        can remain visible behind them. Use the same explicit page capability
+        as startup precheck, including the shop, instead of assuming that
+        closing settlement always returns to main. Re-read the current image;
+        ui_current may refer to a page visited by an earlier task.
+        """
+        for page in Page.iter_pages():
+            if page.background_repeat_check and self.ui_page_appear(page, interval=0):
+                return page
+        return None
+
+    def _refresh_repeat_combat_progress(self) -> bool:
+        progress = read_repeat_combat_progress(self.device.image, self._ocr_lang())
+        if progress is None:
+            return False
+
+        session = dict(self._combat_runtime_session())
+        now = datetime.now()
+        session["progress"] = {
+            "completed": progress.completed,
+            "total": progress.total,
+            "elapsed_seconds": int(progress.elapsed.total_seconds()),
+            "observed_at": now.isoformat(timespec="seconds"),
+        }
+        remaining = progress.estimated_remaining
+        if remaining is not None:
+            target = now + remaining + timedelta(minutes=self.REPEAT_FINISH_BUFFER_MINUTES)
+            session["expected_finish_at"] = target.isoformat(timespec="seconds")
+            logger.attr("RepeatCombatEstimatedRemaining", remaining)
+            logger.attr("CombatRepeatExpectedFinishAt", target)
+        else:
+            session.pop("expected_finish_at", None)
+            logger.info("Combat: repeat progress has no timing sample, use short polling")
+        # Preserve ownership, urgent-task continuation and active status.
+        # Neither a full counter nor a zero time may settle or clear a run.
+        self._combat_runtime_set(session)
+        return True
+
+    def _repeat_combat_future_finish(self) -> datetime | None:
+        raw = self._combat_runtime_session().get("expected_finish_at")
+        if isinstance(raw, str):
+            try:
+                target = datetime.fromisoformat(raw)
+            except ValueError:
+                return None
+            if target.tzinfo is None and target > datetime.now():
+                return target
+        return None
+
+    def _watch_repeat_combat(self, skip_first_screenshot=True) -> str:
+        """Settle a background run and confirm its underlying page is usable.
+
+        Pages:
+            in: A background-repeat toolbar page, or its settlement overlay.
+            out: A recognized toolbar page after settlement, or an unfinished
+                state when returning running/lost for the caller to handle.
+        """
         logger.info("Combat: watch server repeat combat")
         timeout = Timer(self.COMBAT_WATCH_TIMEOUT_SECONDS, count=60).start()
         stage = "watch"
+        progress_read = False
+        progress_retry = Timer(3, count=8).clear()
         finish_confirm = Timer(0.4, count=2).clear()
         missing_check_confirm = Timer(
             self.COMBAT_MISSING_CHECK_CONFIRM_SECONDS, count=2
@@ -853,7 +923,42 @@ class CombatRepeatMixin:
             if self._handle_dungeon_network_error(interval=1):
                 return "running"
 
-            if stage == "watch":
+            # The same window title is used while running and after finishing.
+            # Handle the positive Interrupt marker before any settlement click;
+            # never press Interrupt and never infer completion from OCR alone.
+            if self._is_repeat_combat_running_window():
+                if stage != "running_detail":
+                    stage = "running_detail"
+                    progress_read = False
+                    progress_retry.reset()
+                    timeout.reset()
+                finish_confirm.clear()
+                missing_check_confirm.clear()
+                if not progress_read:
+                    progress_read = self._refresh_repeat_combat_progress()
+                    if not progress_read and not progress_retry.reached():
+                        continue
+                    if not progress_read:
+                        logger.warning("Combat: repeat progress OCR failed, keep existing schedule")
+                        progress_read = True
+                # This generic X is valid here only after the active-run
+                # window is positively identified. Do not use it for rewards.
+                if self.appear_then_click(AD_BUFF_X_CLOSE, interval=1):
+                    logger.info("Combat: close running repeat detail")
+                continue
+
+            if stage == "running_detail":
+                if self._is_repeat_result_window() or self._is_repeat_combat_over():
+                    stage = "settlement"
+                    continue
+                if (
+                    self._has_repeat_combat_check()
+                    and self._repeat_combat_return_page() is not None
+                ):
+                    return "running"
+                continue
+
+            if stage in ("watch", "open_detail"):
                 if self.appear_then_click(REPEAT_COMBAT_OVER, interval=1):
                     logger.info("Combat: server repeat complete, open settlement")
                     stage = "settlement"
@@ -864,9 +969,28 @@ class CombatRepeatMixin:
                     timeout.reset()
                     continue
                 if self._is_repeat_combat_running():
-                    logger.info("Combat: server repeat combat still running")
-                    return "running"
-                if self.is_in_main(interval=0):
+                    missing_check_confirm.clear()
+                    if stage == "watch" and self._repeat_combat_future_finish() is not None:
+                        logger.info("Combat: server repeat combat still running")
+                        return "running"
+                    # Adopted sessions have no menu duration; expired estimates
+                    # also need a fresh sample. Keep screenshotting until the
+                    # detail opens, including when a click is dropped.
+                    if self.appear_then_click(REPEAT_COMBAT_CHECK, interval=1):
+                        logger.info("Combat: open running repeat detail for progress")
+                        stage = "open_detail"
+                    continue
+                if self.appear(TOUCH_TO_CLOSE):
+                    missing_check_confirm.clear()
+                    if self.appear_then_click(TOUCH_TO_CLOSE, interval=1):
+                        timeout.reset()
+                    continue
+                # Opening the detail can temporarily hide both the toolbar
+                # marker and the window title. A visible underlying page is
+                # not evidence that this known active session disappeared.
+                if stage == "open_detail":
+                    continue
+                if self._repeat_combat_return_page() is not None:
                     if not missing_check_confirm.started():
                         missing_check_confirm.start()
                     elif missing_check_confirm.reached():
@@ -903,20 +1027,39 @@ class CombatRepeatMixin:
                 # incorrectly click an advertisement close asset here.
 
             if stage == "finish":
-                if self.appear_then_click(TOUCH_TO_CLOSE, interval=1):
-                    logger.info("Combat: close server repeat settlement summary")
-                    timeout.reset()
+                # Recognition must remain active during a click cooldown.
+                # The shop marker can still match behind a reward popup; a
+                # throttled close click is not evidence that it disappeared.
+                # Any visible overlay also invalidates earlier clean frames.
+                if self.appear(TOUCH_TO_CLOSE):
+                    finish_confirm.clear()
+                    if self.appear_then_click(TOUCH_TO_CLOSE, interval=1):
+                        logger.info("Combat: close server repeat settlement summary")
+                        timeout.reset()
                     continue
-                if self._is_repeat_result_window():
+                if self.appear(SETTLEMENT_SETTLE) or self.appear(SETTLEMENT_PROCESSING):
+                    finish_confirm.clear()
+                    stage = "settlement"
+                    continue
+                if self._is_repeat_result_window() or self.appear(SETTLEMENT_CLOSE):
+                    finish_confirm.clear()
                     if self.appear_then_click(SETTLEMENT_CLOSE, interval=1):
                         timeout.reset()
                     continue
-                if self.is_in_main(interval=0):
+                if self._is_repeat_combat_over():
+                    finish_confirm.clear()
+                    stage = "settlement"
+                    continue
+                if self._is_repeat_combat_running():
+                    return "running"
+                return_page = self._repeat_combat_return_page()
+                if return_page is not None:
                     if not finish_confirm.started():
                         finish_confirm.start()
                     elif finish_confirm.reached():
-                        logger.info("Combat: server repeat settlement finished")
+                        logger.info(f"Combat: server repeat settlement finished on {return_page}")
                         return "finished"
+                    continue
                 else:
                     finish_confirm.clear()
                 if self._is_in_dungeon_context() and self.appear_then_click(
@@ -946,15 +1089,10 @@ class CombatRepeatMixin:
             self.config.task_delay(minute=self.COMBAT_BACKGROUND_CHECK_MINUTES)
             return
 
-        raw = self._combat_runtime_session().get("expected_finish_at")
-        if isinstance(raw, str):
-            try:
-                target = datetime.fromisoformat(raw)
-            except ValueError:
-                target = None
-            if target is not None and target > datetime.now():
-                logger.attr("CombatRepeatExpectedFinishAt", target)
-                self.config.task_delay(target=target)
-                return
+        target = self._repeat_combat_future_finish()
+        if target is not None:
+            logger.attr("CombatRepeatExpectedFinishAt", target)
+            self.config.task_delay(target=target)
+            return
 
         self.config.task_delay(minute=self.COMBAT_BACKGROUND_CHECK_MINUTES)

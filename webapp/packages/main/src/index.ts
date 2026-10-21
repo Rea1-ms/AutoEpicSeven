@@ -3,6 +3,11 @@ import './security-restrictions';
 import {createApp} from '/@/createApp';
 import logger from '/@/logger';
 import {dpiScaling} from '/@/config';
+import {DESKTOP_APP_ID} from '@common/runtime';
+
+if (process.platform === 'win32') {
+  app.setAppUserModelId(DESKTOP_APP_ID);
+}
 
 /**
  * Prevent electron from running multiple instances.

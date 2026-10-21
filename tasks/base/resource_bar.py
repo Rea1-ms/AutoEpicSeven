@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from module.base.timer import Timer
 from module.base.utils import area_offset
 from module.logger import logger
+from module.ocr.language import resolve_ocr_lang
 from module.ocr.ocr import OcrWhiteLetterOnComplexBackground
 from tasks.base.assets.assets_base_resource_bar import (
     ARENA_FLAG_ICON,
@@ -13,7 +14,7 @@ from tasks.base.assets.assets_base_resource_bar import (
     SKYSTONE_ICON,
     STAMINA_ICON,
 )
-
+from tasks.base.resource_scheduling import ResourceCoordinator
 
 RESOURCE_KIND_INT = "int"
 RESOURCE_KIND_COUNTER = "counter"
@@ -251,16 +252,7 @@ class ResourceBarMixin:
     RESOURCE_BAR_TIMEOUT_COUNT = 8
 
     def _ocr_lang(self) -> str:
-        lang = getattr(self.config, "Emulator_GameLanguage", "cn")
-        if lang in ("auto", "", None, "cn", "global_cn", "zh", "zh_cn"):
-            return "cn"
-        if lang in ("en", "global_en", "en_us"):
-            return "en"
-        if lang in ("jp", "ja", "ja_jp"):
-            return "jp"
-        if lang in ("tw", "zh_tw"):
-            return "tw"
-        return "cn"
+        return resolve_ocr_lang(self.config)
 
     def _match_resource_bar_icons(
         self,
@@ -323,6 +315,7 @@ class ResourceBarMixin:
         icons: dict | None = None,
         specs: dict[str, ResourceBarSpec] | None = None,
         segment_left_paddings: dict[str, int] | None = None,
+        segment_right_limits: dict[str, int] | None = None,
     ) -> dict[str, ResourceBarValue] | None:
         parsed: dict[str, ResourceBarValue] = {}
         raw_texts: list[str] = []
@@ -347,6 +340,11 @@ class ResourceBarMixin:
                 logger.attr(f"{layout_name}ResourceBarIconMatches", matched_icons)
                 logger.attr(f"{layout_name}ResourceBarIconSegments", raw_texts)
                 return None
+
+            if segment_right_limits and key in segment_right_limits:
+                area = (area[0], area[1], min(area[2], segment_right_limits[key]), area[3])
+                if area[2] <= area[0]:
+                    return None
 
             image = self.image_crop(area, copy=False)
             text = OcrResourceBar(
@@ -390,6 +388,7 @@ class ResourceBarMixin:
         specs: dict[str, ResourceBarSpec] | None = None,
         icon_similarity: float = 0.85,
         segment_left_paddings: dict[str, int] | None = None,
+        segment_right_limits: dict[str, int] | None = None,
     ) -> ResourceBarInspectResult:
         """
         Inspect a single already-captured frame of the resource bar.
@@ -418,6 +417,7 @@ class ResourceBarMixin:
             icons=icons,
             specs=specs,
             segment_left_paddings=segment_left_paddings,
+            segment_right_limits=segment_right_limits,
         )
 
         final = parsed_by_icon
@@ -474,6 +474,7 @@ class ResourceBarMixin:
             )
             parsed = inspected.final
             if parsed is not None:
+                self._resource_bar_source = layout_name
                 return parsed
 
             if timeout.reached():
@@ -483,7 +484,9 @@ class ResourceBarMixin:
                 )
                 return None
 
-    def write_resource_bar_status(self, parsed: dict[str, ResourceBarValue] | None) -> bool:
+    def write_resource_bar_status(
+        self, parsed: dict[str, ResourceBarValue] | None, *, source=None
+    ) -> bool:
         if not parsed:
             return False
 
@@ -501,4 +504,30 @@ class ResourceBarMixin:
                     stored.value = value.value
                 updated = True
 
+            ResourceCoordinator(self.config).observe(
+                parsed, source or getattr(self, "_resource_bar_source", "resource_bar"),
+            )
+
         return updated
+
+    def sync_pending_resources(self) -> bool:
+        """Read pending currencies only on a freshly confirmed home frame.
+
+        Pages:
+            in: main
+            out: unchanged
+        """
+        coordinator = ResourceCoordinator(self.config)
+        if not coordinator.pending:
+            return True
+        for _ in range(3):
+            self.device.screenshot()
+            if not self.is_in_main(interval=0):
+                return False
+            inspected = self.inspect_resource_bar_status(
+                layout=RESOURCE_BAR_LAYOUT_MAIN, layout_name="Main", log_result=True,
+            )
+            if inspected.final is not None:
+                self.write_resource_bar_status(inspected.final, source="Main")
+                return not ResourceCoordinator(self.config).pending
+        return False

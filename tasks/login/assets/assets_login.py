@@ -33,6 +33,18 @@ LOGGED_OUT = ButtonWrapper(
     ),
     global_en=None,
 )
+LOGIN_AGREEMENT_UNCHECKED = ButtonWrapper(
+    name='LOGIN_AGREEMENT_UNCHECKED',
+    cn=Button(
+        file='./assets/cn/login/LOGIN_AGREEMENT_UNCHECKED.png',
+        area=(407, 626, 436, 655),
+        search=(387, 606, 456, 675),
+        color=(71, 78, 66),
+        button=(407, 626, 436, 655),
+    ),
+    global_cn=None,
+    global_en=None,
+)
 LOGIN_ANNOUNCEMENT_CLOSE = ButtonWrapper(
     name='LOGIN_ANNOUNCEMENT_CLOSE',
     cn=Button(
@@ -49,9 +61,9 @@ LOGIN_CONFIRM = ButtonWrapper(
     name='LOGIN_CONFIRM',
     cn=Button(
         file='./assets/cn/login/LOGIN_CONFIRM.png',
-        area=(1206, 650, 1233, 677),
-        search=(1186, 630, 1253, 697),
-        color=(101, 125, 148),
+        area=(410, 629, 435, 648),
+        search=(390, 609, 455, 668),
+        color=(73, 108, 40),
         button=(465, 94, 815, 294),
     ),
     global_cn=Button(

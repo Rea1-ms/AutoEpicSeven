@@ -1,0 +1,8 @@
+def test_script_path_points_to_community_aio(self):
+        test_script_path_points_to_community_aio()
+
+def test_build_command_without_credentials_file(self):
+        test_build_command_without_credentials_file()
+
+def test_build_command_with_credentials_file(self):
+        test_build_command_with_credentials_file()

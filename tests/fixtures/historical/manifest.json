@@ -1,0 +1,2255 @@
+{
+  "version": 1,
+  "fixtures": {
+    "gift-shelf-10": {
+      "path": "tests/fixtures/historical/global_cn/friendship_gift/gift-shelf-10.png",
+      "sha256": "3b45e8a0d52ddfff45ffe1e0278dbe43f651c0983f1504d25bcd6b01ffbedf35",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "gift-shelf-10",
+      "source": "MuMu-20261005-171506-918.png",
+      "source_sha256": "dc58b899de0c84aed83c3bb2bd10bd81c8db281cb377d21ad3a71acea01e0318",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          900,
+          63,
+          1280,
+          93
+        ]
+      ],
+      "used_by": [
+        "tests.store.test_friendship_gift.CapturedGiftTests.test_real_shelves_prove_two_debits_and_rising_prices",
+        "tests.store.test_friendship_gift.CapturedGiftTests.test_friendship_resource_bar_tracks_horizontal_position",
+        "tests.store.test_friendship_gift.CapturedGiftTests.test_missing_boundary_icon_does_not_read_a_fixed_friendship_box",
+        "tests.store.test_friendship_gift.CapturedGiftTests.test_item_fields_clipped_by_the_viewport_are_not_accepted"
+      ]
+    },
+    "gift-shelf-9": {
+      "path": "tests/fixtures/historical/global_cn/friendship_gift/gift-shelf-9.png",
+      "sha256": "0a6a89fc6d4d2e484af839671a302a41fbd21b28adf3edbea0a0104e82567ae5",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "gift-shelf-9",
+      "source": "MuMu-20261005-171511-147.png",
+      "source_sha256": "0865ebeb39999876a74776b1e7de860b2d37b1ca63a2ce80f36e707a8c30014c",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          900,
+          63,
+          1280,
+          93
+        ]
+      ],
+      "used_by": [
+        "tests.store.test_friendship_gift.CapturedGiftTests.test_real_shelves_prove_two_debits_and_rising_prices"
+      ]
+    },
+    "gift-shelf-8": {
+      "path": "tests/fixtures/historical/global_cn/friendship_gift/gift-shelf-8.png",
+      "sha256": "3eb80b0aa2a9410c5c4fab9ecd642a8b474644d825dc4e58b6fc1693612dac67",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "gift-shelf-8",
+      "source": "MuMu-20261005-171519-345.png",
+      "source_sha256": "1c97f91bb67bcb2a1840c5de662e05d6c54b680dcbce5c641d8e848d3e15e2ff",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          900,
+          63,
+          1280,
+          93
+        ]
+      ],
+      "used_by": [
+        "tests.store.test_friendship_gift.CapturedGiftTests.test_real_shelves_prove_two_debits_and_rising_prices"
+      ]
+    },
+    "gift-popup-8": {
+      "path": "tests/fixtures/historical/global_cn/friendship_gift/gift-popup-8.png",
+      "sha256": "7f01001e3927ceed7a53c11b5004caaa8b42df2c7c9f04b5bdcfb74db3ac343b",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "gift-popup-8",
+      "source": "MuMu-20261005-172638-280.png",
+      "source_sha256": "f58cd2cdfa50f52b50c93ce10dc2b8e3012ae232ceda872c14f686deee26a118",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          900,
+          63,
+          1280,
+          93
+        ]
+      ],
+      "used_by": [
+        "tests.store.test_friendship_gift.CapturedGiftTests.test_real_single_popup_has_eight_remaining_and_costs_eight_hundred"
+      ]
+    },
+    "gift-price-info": {
+      "path": "tests/fixtures/historical/global_cn/friendship_gift/gift-price-info.png",
+      "sha256": "12a4e4c1f02d990f6340533461cedaf958218ab599c3f27b73b9c55f34b498f4",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "gift-price-info",
+      "source": "MuMu-20261005-172643-895.png",
+      "source_sha256": "03ad1558d3c3a63f58bf50964dbfb9c7c1bd840143dad569d9e764eb4533bc13",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          900,
+          63,
+          1280,
+          93
+        ]
+      ],
+      "used_by": [
+        "tests.store.test_friendship_gift.CapturedGiftTests.test_price_information_overlay_is_not_purchase_evidence"
+      ]
+    },
+    "legacy-activity-navigation-infinity-selected-oversea": {
+      "path": "tests/fixtures/historical/global_cn/activity_navigation/legacy-activity-navigation-infinity-selected-oversea.png",
+      "sha256": "9169953df01e05d39c9b8881edad9930bd8cc3c2a72532920acbc2565127881c",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "activity_navigation/infinity_selected_oversea",
+      "source": "infinity_selected_oversea.png",
+      "source_sha256": "9169953df01e05d39c9b8881edad9930bd8cc3c2a72532920acbc2565127881c",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.captured.test_activity_selection.ActivitySelectionTests.test_reproduces_old_template_failure_on_already_selected_sidebar"
+      ]
+    },
+    "legacy-e7wc-battle-gate-battle-gate-available": {
+      "path": "tests/fixtures/historical/global_cn/e7wc_battle_gate/legacy-e7wc-battle-gate-battle-gate-available.png",
+      "sha256": "3c17bb1eba508f8eef7d73c1d0b2b119bd19d2d96f95d5cf306cceb802fbe488",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "e7wc_battle_gate/battle_gate_available",
+      "source": "battle_gate_available.png",
+      "source_sha256": "caa00af72e6e5c9d96fd9b5713e19c552d80ee9a6f0443f6d75ab9a543826960",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          530,
+          265,
+          1000,
+          665
+        ]
+      ],
+      "used_by": [
+        "tests.captured.test_e7wc_battle_gate.ScreenshotTests.test_common_sidebar_search_restores_bounds_after_success_and_exception",
+        "tests.captured.test_e7wc_battle_gate.ScreenshotTests.test_leaf_template_matches_available",
+        "tests.captured.test_e7wc_battle_gate.ScreenshotTests.test_page_and_selected_templates_reject_other_event",
+        "tests.captured.test_e7wc_battle_gate.ScreenshotTests.test_real_ocr_stable_prefix_finds_event",
+        "tests.captured.test_e7wc_battle_gate.ScreenshotTests.test_single_green_template_matches_both_items_only_when_claimed",
+        "tests.captured.test_koharu_raffle.ScreenshotTests.test_other_event_cannot_be_claimed",
+        "tests.captured.test_activity_selection.ActivitySelectionTests.test_click_stops_as_soon_as_selected_state_arrives",
+        "tests.captured.test_activity_selection.ActivitySelectionTests.test_dropped_click_still_retries_before_real_selection",
+        "tests.captured.test_activity_selection.ActivitySelectionTests.test_other_selected_event_does_not_match_free_summons",
+        "tests.captured.test_common_activity.RealScreenshotBatchTests.test_all_pending_templates_choose_only_the_actual_selected_event"
+      ]
+    },
+    "legacy-e7wc-battle-gate-battle-gate-received": {
+      "path": "tests/fixtures/historical/global_cn/e7wc_battle_gate/legacy-e7wc-battle-gate-battle-gate-received.png",
+      "sha256": "4d2ec29310b97cc611208d606a4dbe2116e3beb4abe63dd141c2f6c0e73fad7a",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "e7wc_battle_gate/battle_gate_received",
+      "source": "battle_gate_received.png",
+      "source_sha256": "3977f1f97704fb082971673b1cebd9d51f3de0377b2d361c469f3dea52a31892",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          530,
+          265,
+          1000,
+          665
+        ]
+      ],
+      "used_by": [
+        "tests.captured.test_e7wc_battle_gate.ScreenshotTests.test_page_and_selected_templates_reject_other_event",
+        "tests.captured.test_e7wc_battle_gate.ScreenshotTests.test_real_ocr_stable_prefix_finds_event",
+        "tests.captured.test_e7wc_battle_gate.ScreenshotTests.test_single_green_template_matches_both_items_only_when_claimed"
+      ]
+    },
+    "legacy-koharu-raffle-available": {
+      "path": "tests/fixtures/historical/global_cn/koharu_raffle/legacy-koharu-raffle-available.png",
+      "sha256": "0b253d793c7d909d80fe00f95a6de5478e0ac49daaeef8a8496aa4899069e886",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "koharu_raffle/available",
+      "source": "available.png",
+      "source_sha256": "34e96f9e0ab394ba86d60c863cbbbe7e38c72f54cb02dc01c056aba61e38a77e",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.captured.test_e7wc_battle_gate.ScreenshotTests.test_page_and_selected_templates_reject_other_event",
+        "tests.captured.test_e7wc_battle_gate.ScreenshotTests.test_real_ocr_stable_prefix_finds_event",
+        "tests.captured.test_e7wc_battle_gate.ScreenshotTests.test_single_green_template_matches_both_items_only_when_claimed",
+        "tests.captured.test_koharu_raffle.ScreenshotTests.test_available_screenshot_confirms_page_sidebar_and_only_claim_state",
+        "tests.captured.test_koharu_raffle.ScreenshotTests.test_real_sidebar_ocr_finds_raffle",
+        "tests.captured.test_activity_selection.ActivitySelectionTests.test_other_selected_event_does_not_match_free_summons",
+        "tests.captured.test_common_activity.RealScreenshotBatchTests.test_all_pending_templates_choose_only_the_actual_selected_event"
+      ]
+    },
+    "legacy-koharu-raffle-scrolled-claimed-row": {
+      "path": "tests/fixtures/historical/global_cn/koharu_raffle/legacy-koharu-raffle-scrolled-claimed-row.png",
+      "sha256": "8e8d022fb16825c0a510b1697dec36192d232ec7c9f590cf6785e5846ea0b004",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "koharu_raffle/scrolled_claimed_row",
+      "source": "scrolled_claimed_row.png",
+      "source_sha256": "53ddff01abd2df448bf31bc9fc6f8abbf7510dd600535e9e8c20bbc860ca0c6e",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.captured.test_koharu_raffle.ScreenshotTests.test_claimed_row_lower_in_scrolled_list_is_not_all_done"
+      ]
+    },
+    "legacy-huche-shop-available": {
+      "path": "tests/fixtures/historical/global_cn/huche_shop/legacy-huche-shop-available.png",
+      "sha256": "c158c43c2651d31b729a42cbdcb2ee792771af386f1ed8c448e71144fcd66569",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "huche_shop/available",
+      "source": "available.png",
+      "source_sha256": "c158c43c2651d31b729a42cbdcb2ee792771af386f1ed8c448e71144fcd66569",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.captured.test_huche_discount_batch.ScreenshotTests.test_clock_rows_include_wrapped_names_and_mystic_medals",
+        "tests.captured.test_huche_discount_batch.ScreenshotTests.test_unreadable_names_and_unrelated_pages_are_not_empty_batches",
+        "tests.captured.test_huche_shop.ScreenshotTests.test_available_and_reordered_sold_out_rows",
+        "tests.captured.test_huche_shop.ScreenshotTests.test_resource_bar_before_and_after_purchase"
+      ]
+    },
+    "legacy-huche-shop-confirm": {
+      "path": "tests/fixtures/historical/global_cn/huche_shop/legacy-huche-shop-confirm.png",
+      "sha256": "d4bcfd6da3f525f2682582eaaa23e387f629bfa686d6e88f99ca45fd67283c6a",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "huche_shop/confirm",
+      "source": "confirm.png",
+      "source_sha256": "d4bcfd6da3f525f2682582eaaa23e387f629bfa686d6e88f99ca45fd67283c6a",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.captured.test_huche_discount_batch.ScreenshotTests.test_unreadable_names_and_unrelated_pages_are_not_empty_batches",
+        "tests.captured.test_huche_shop.ScreenshotTests.test_actual_popup_selects_max_but_does_not_confirm_yet",
+        "tests.captured.test_huche_shop.ScreenshotTests.test_available_and_reordered_sold_out_rows",
+        "tests.captured.test_huche_shop.ScreenshotTests.test_wrong_price_amount_currency_and_unreadable_counter_never_confirm"
+      ]
+    },
+    "legacy-huche-shop-discount-boundary": {
+      "path": "tests/fixtures/historical/global_cn/huche_shop/legacy-huche-shop-discount-boundary.png",
+      "sha256": "424a47fb5e22447402bf39466f8ad44133ceddc797bc8ee16c8ec7b2300f872b",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "huche_shop/discount_boundary",
+      "source": "discount_boundary.png",
+      "source_sha256": "424a47fb5e22447402bf39466f8ad44133ceddc797bc8ee16c8ec7b2300f872b",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.captured.test_huche_discount_batch.ScreenshotTests.test_boundary_includes_catalogue_row_without_buy_button",
+        "tests.captured.test_huche_discount_batch.ScreenshotTests.test_clock_searches_restored_after_scan",
+        "tests.captured.test_huche_discount_batch.ScreenshotTests.test_missing_clock_before_boundary_is_not_a_complete_batch"
+      ]
+    },
+    "legacy-huche-shop-inertia-boundary": {
+      "path": "tests/fixtures/historical/global_cn/huche_shop/legacy-huche-shop-inertia-boundary.png",
+      "sha256": "d8c53da37229a70787b178b4ff59e2409974d9a4d23a74893bfc851b91ca76c4",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "huche_shop/inertia_boundary",
+      "source": "inertia_boundary.png",
+      "source_sha256": "f1de2fd702ef22a6d29f711c738a09d1dc5f8fd3898dc978c35d67862597363a",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.captured.test_huche_drag_recovery.RecoveryTests.test_actual_reported_screenshot_reads_boundary_but_requests_recovery"
+      ]
+    },
+    "legacy-huche-shop-leif-batch": {
+      "path": "tests/fixtures/historical/global_cn/huche_shop/legacy-huche-shop-leif-batch.png",
+      "sha256": "8e25e70ced5e7db223afaed2977daf762c5002214f4e8e6d32b75b3459150869",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "huche_shop/leif_batch",
+      "source": "leif_batch.png",
+      "source_sha256": "7c3ef8e11d918b7e85ea9899bc722b39a549d73776acd0135566203cc7436a3a",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.captured.test_huche_discount_batch.ScreenshotTests.test_possible_mystic_name_is_retained_even_with_low_confidence",
+        "tests.captured.test_huche_discount_batch.ScreenshotTests.test_reported_leif_screenshot_advances_past_low_confidence_name",
+        "tests.captured.test_huche_discount_batch.ScreenshotTests.test_unreadable_non_target_name_still_blocks_absence"
+      ]
+    },
+    "legacy-huche-shop-main": {
+      "path": "tests/fixtures/historical/global_cn/huche_shop/legacy-huche-shop-main.png",
+      "sha256": "d90888838b41aed20cefe1cde6a0ccf1b2d3059a467b9ed074aa92c96444c81f",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "huche_shop/main",
+      "source": "main.png",
+      "source_sha256": "363ba245f41c469fb1bae3e00d29748f69fea83f947c6941ed4b93eab83ce3f1",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          103,
+          5,
+          275,
+          43
+        ],
+        [
+          103,
+          70,
+          300,
+          92
+        ]
+      ],
+      "used_by": [
+        "tests.captured.test_huche_discount_batch.ScreenshotTests.test_unreadable_names_and_unrelated_pages_are_not_empty_batches",
+        "tests.captured.test_huche_shop.ScreenshotTests.test_available_and_reordered_sold_out_rows"
+      ]
+    },
+    "legacy-huche-shop-sold-out": {
+      "path": "tests/fixtures/historical/global_cn/huche_shop/legacy-huche-shop-sold-out.png",
+      "sha256": "6402d49d4f0aea7a7d3f3d3c4f2312afeefec4c277bb7e028346820f477d2371",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "huche_shop/sold_out",
+      "source": "sold_out.png",
+      "source_sha256": "6402d49d4f0aea7a7d3f3d3c4f2312afeefec4c277bb7e028346820f477d2371",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.captured.test_huche_shop.ScreenshotTests.test_available_and_reordered_sold_out_rows",
+        "tests.captured.test_huche_shop.ScreenshotTests.test_resource_bar_before_and_after_purchase"
+      ]
+    },
+    "legacy-huche-shop-sold-out-bottom": {
+      "path": "tests/fixtures/historical/global_cn/huche_shop/legacy-huche-shop-sold-out-bottom.png",
+      "sha256": "55a5d1faad8f27738f44f794b87cf514cd10114555871635f64a2485543ff742",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "huche_shop/sold_out_bottom",
+      "source": "sold_out_bottom.png",
+      "source_sha256": "68fd1b0af19859f0f1874ea6ee79c253c4f6c384156327a4626157649e40c9f2",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.captured.test_huche_discount_batch.ScreenshotTests.test_regular_boundary_excludes_reordered_sold_out_medals",
+        "tests.captured.test_huche_shop.ScreenshotTests.test_asset_search_mutations_are_restored",
+        "tests.captured.test_huche_shop.ScreenshotTests.test_available_and_reordered_sold_out_rows"
+      ]
+    },
+    "legacy-urgent-tasks-battle-auto-on": {
+      "path": "tests/fixtures/historical/global_cn/urgent_tasks/legacy-urgent-tasks-battle-auto-on.png",
+      "sha256": "9a876c1ff0268007b16f6ed0ea09c2e3691f1e7d8faf7ac8d275ef6ccf9e1fe3",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "urgent_tasks/battle-auto-on",
+      "source": "battle-auto-on.png",
+      "source_sha256": "c875fbb107e3f2e32771cff283916ce7cc52c2e48a0dab2dbb6b66b22173374a",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.captured.test_urgent_tasks.ManualChecks.test_urgent_task_recognition_and_exchange",
+        "tests.captured.test_urgent_tasks_hint.HintScreenshotTests.test_unrelated_pages_do_not_report_ready_prepare"
+      ]
+    },
+    "legacy-urgent-tasks-battle-result": {
+      "path": "tests/fixtures/historical/global_cn/urgent_tasks/legacy-urgent-tasks-battle-result.png",
+      "sha256": "45d8bb5b362d82ee25bfa63127728a33c963c15c414157f5a7d1db3fa4671f7a",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "urgent_tasks/battle-result",
+      "source": "battle-result.png",
+      "source_sha256": "d1c2042554bfa7fb67e558c7236e6ccc00d4f6f379d3e606dcbba0ccd53c32c2",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          95,
+          5,
+          275,
+          38
+        ]
+      ],
+      "used_by": [
+        "tests.captured.test_urgent_tasks.ManualChecks.test_urgent_task_recognition_and_exchange",
+        "tests.captured.test_urgent_tasks_hint.HintScreenshotTests.test_unrelated_pages_do_not_report_ready_prepare"
+      ]
+    },
+    "legacy-urgent-tasks-normal-prepare-large": {
+      "path": "tests/fixtures/historical/global_cn/urgent_tasks/legacy-urgent-tasks-normal-prepare-large.png",
+      "sha256": "a7d9caac0e52ce5d233aa30169c379dd5e8d7a94b7af6c3fffbd70624e919f00",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "urgent_tasks/normal-prepare-large",
+      "source": "normal-prepare-large.png",
+      "source_sha256": "be149b49059590ad5e478610b2dcda1d5e322d75b2d092e1ce2d437d6c3e24f0",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.captured.test_urgent_tasks.ManualChecks.test_urgent_task_recognition_and_exchange",
+        "tests.captured.test_urgent_tasks_hint.HintScreenshotTests.test_all_supplied_hint_screenshots_are_detected_without_ocr"
+      ]
+    },
+    "legacy-urgent-tasks-normal-prepare": {
+      "path": "tests/fixtures/historical/global_cn/urgent_tasks/legacy-urgent-tasks-normal-prepare.png",
+      "sha256": "a9e022e739bc46d8351a33ef9b8829c62d82bd8c78a396be6f18657d1bec8c6a",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "urgent_tasks/normal-prepare",
+      "source": "normal-prepare.png",
+      "source_sha256": "01b737bba4e64dd33d9a6eae04ae0e31ace59dece8e7433917ec42f0271a27f1",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.captured.test_urgent_tasks.ManualChecks.test_urgent_task_recognition_and_exchange",
+        "tests.captured.test_urgent_tasks_hint.HintScreenshotTests.test_all_supplied_hint_screenshots_are_detected_without_ocr"
+      ]
+    },
+    "legacy-urgent-tasks-prepare-times-hint": {
+      "path": "tests/fixtures/historical/global_cn/urgent_tasks/legacy-urgent-tasks-prepare-times-hint.png",
+      "sha256": "49d833a485f56f1f596a0d6a3aef5919f0ac2bfd83f78c9fa4c6bb77719af50e",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "urgent_tasks/prepare-times-hint",
+      "source": "prepare-times-hint.png",
+      "source_sha256": "e8dc38703f7ceba5981850ef6f69146afd3b9d8d8f288c5e957b0575d6387fb1",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.captured.test_fast_combat_counter.ScreenshotCounterTests.test_existing_fast_combat_screenshots",
+        "tests.captured.test_urgent_tasks.ManualChecks.test_urgent_task_recognition_and_exchange",
+        "tests.captured.test_urgent_tasks_hint.HintScreenshotTests.test_all_supplied_hint_screenshots_are_detected_without_ocr"
+      ]
+    },
+    "legacy-urgent-tasks-superior-detail": {
+      "path": "tests/fixtures/historical/global_cn/urgent_tasks/legacy-urgent-tasks-superior-detail.png",
+      "sha256": "7e63d4046190b784acc0b5233c3729a7e7f279a6062f635ee7fdb552d3b08c21",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "urgent_tasks/superior-detail",
+      "source": "superior-detail.png",
+      "source_sha256": "e08d5d4f637c26a3809a348fe803262ebbbec00f449fa80b7c7305926dca716c",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.captured.test_asset_crop.AssetCropTest.test_make_dry_run_returns_structured_output_without_writing",
+        "tests.captured.test_urgent_tasks.ManualChecks.test_urgent_task_recognition_and_exchange",
+        "tests.captured.test_urgent_tasks_hint.HintScreenshotTests.test_unrelated_pages_do_not_report_ready_prepare"
+      ]
+    },
+    "legacy-urgent-tasks-superior-fast-off": {
+      "path": "tests/fixtures/historical/global_cn/urgent_tasks/legacy-urgent-tasks-superior-fast-off.png",
+      "sha256": "c18e41086cd9408f1aefc38d93fba1f820260a37ab03436fa1810d353e7873c0",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "urgent_tasks/superior-fast-off",
+      "source": "superior-fast-off.png",
+      "source_sha256": "edca2ed4edc3757b5b4bc64ef189256a941f9623de978becb1131f592f12608f",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.captured.test_urgent_tasks.ManualChecks.test_urgent_task_recognition_and_exchange",
+        "tests.captured.test_urgent_tasks_first_clear.DailyTests.test_screenshot_fast_state_decides_whether_first_normal_clear_is_needed",
+        "tests.captured.test_urgent_tasks_first_clear.ScreenshotAndPolicyTests.test_real_gray_repeat_is_detected_in_fast_off_and_on_screenshots",
+        "tests.captured.test_urgent_tasks_hint.HintScreenshotTests.test_all_supplied_hint_screenshots_are_detected_without_ocr"
+      ]
+    },
+    "legacy-urgent-tasks-superior-fast-on": {
+      "path": "tests/fixtures/historical/global_cn/urgent_tasks/legacy-urgent-tasks-superior-fast-on.png",
+      "sha256": "a4c54c3464fe8e8aa0a800ebc7aaf10de5d0a7ac659578e63b37f94901b499a0",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "urgent_tasks/superior-fast-on",
+      "source": "superior-fast-on.png",
+      "source_sha256": "66acb21d1848f15d51e641ce7259a64d9c3eaf068b67b2584e0b0468ae4ac431",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.captured.test_fast_combat_counter.ScreenshotCounterTests.test_existing_fast_combat_screenshots",
+        "tests.captured.test_fast_combat_counter.ScreenshotCounterTests.test_full_count_asset_screenshot",
+        "tests.captured.test_repeat_settlement_return.AssetRecognitionTests.test_existing_store_marker_identifies_supported_return_page",
+        "tests.captured.test_urgent_tasks.ManualChecks.test_urgent_task_recognition_and_exchange",
+        "tests.captured.test_urgent_tasks_first_clear.DailyTests.test_screenshot_fast_state_decides_whether_first_normal_clear_is_needed",
+        "tests.captured.test_urgent_tasks_first_clear.ScreenshotAndPolicyTests.test_real_gray_repeat_is_detected_in_fast_off_and_on_screenshots",
+        "tests.captured.test_urgent_tasks_hint.HintScreenshotTests.test_all_supplied_hint_screenshots_are_detected_without_ocr"
+      ]
+    },
+    "legacy-urgent-tasks-superior-prepare": {
+      "path": "tests/fixtures/historical/global_cn/urgent_tasks/legacy-urgent-tasks-superior-prepare.png",
+      "sha256": "f08714a8b4873fae1c06e286d238e9c5e6a9238df3d470109b665b7090ab4c12",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "urgent_tasks/superior-prepare",
+      "source": "superior-prepare.png",
+      "source_sha256": "7cba07392c5e616bb3caa210a37e265f3631c09b95d8415d85c26543c2752d85",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.captured.test_urgent_tasks.ManualChecks.test_urgent_task_recognition_and_exchange",
+        "tests.captured.test_urgent_tasks_hint.HintScreenshotTests.test_all_supplied_hint_screenshots_are_detected_without_ocr"
+      ]
+    },
+    "legacy-main-navigation-srank20-20260919": {
+      "path": "tests/fixtures/historical/global_cn/main_navigation/legacy-main-navigation-srank20-20260919.png",
+      "sha256": "bfa74654abc4cb07b9e65a4af767eb02bf1a9d2b519ff66e63e7e387cc13435b",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "main_navigation/srank20_20260919",
+      "source": "srank20_20260919.png",
+      "source_sha256": "36b53d21b5a293793e3e3ae059d116d697f4692e92956b45378a6a824c30de58",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          103,
+          5,
+          275,
+          43
+        ],
+        [
+          103,
+          70,
+          300,
+          92
+        ]
+      ],
+      "used_by": [
+        "tests.captured.test_main_navigation.MatchingTests.test_real_super_rank_page_and_global_entries",
+        "tests.captured.test_main_navigation.RankTests.test_real_rank_and_super_rank_ocr_use_same_crop"
+      ]
+    },
+    "legacy-knights-guild-war-3-of-3-20260919": {
+      "path": "tests/fixtures/historical/global_cn/knights/legacy-knights-guild-war-3-of-3-20260919.png",
+      "sha256": "1acebc203734a264e7a00117097c2e2069eccb740609be57f1632b56d7a42ac5",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "knights/guild_war_3_of_3_20260919",
+      "source": "guild_war_3_of_3_20260919.png",
+      "source_sha256": "e6ab2121bbb6c6f975c6b91373b9b7c010ba778b9363f41c3e559a1d56649021",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          28,
+          246,
+          310,
+          398
+        ],
+        [
+          28,
+          521,
+          230,
+          615
+        ]
+      ],
+      "used_by": [
+        "tests.captured.test_knights_crest_ocr.OcrTests.test_counter_tracks_horizontal_toolbar_shift",
+        "tests.captured.test_knights_crest_ocr.OcrTests.test_counter_tracks_small_vertical_shift",
+        "tests.captured.test_knights_crest_ocr.OcrTests.test_left_neighbour_and_crest_are_excluded",
+        "tests.captured.test_knights_crest_ocr.OcrTests.test_legacy_wide_crop_contains_non_counter_text",
+        "tests.captured.test_knights_crest_ocr.OcrTests.test_no_current_crest_rejects_stale_match_before_ocr",
+        "tests.captured.test_knights_crest_ocr.OcrTests.test_real_3_of_3_and_0_of_3_on_both_asset_namespaces",
+        "tests.captured.test_knights_crest_ocr.OcrTests.test_three_attack_semantic_guard_remains"
+      ]
+    },
+    "legacy-store-inheritance-charms": {
+      "path": "tests/fixtures/historical/global_cn/store/legacy-store-inheritance-charms.png",
+      "sha256": "c90ae185c6f511cc6e6b04d3b590d27f7ba4df95b00538482f96874d40bdd084",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "store/inheritance-charms",
+      "source": "inheritance-charms.png",
+      "source_sha256": "c90ae185c6f511cc6e6b04d3b590d27f7ba4df95b00538482f96874d40bdd084",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.captured.test_store_inheritance_charms.StoreInheritanceCharmsTest.test_assets_match_attached_store_screenshot",
+        "tests.captured.test_store_inheritance_cooldown.StoreInheritanceCooldownTest.test_clock_seen_after_search_does_not_skip_reset",
+        "tests.captured.test_store_inheritance_cooldown.StoreInheritanceCooldownTest.test_next_tab_entry_can_enable_shortcut_after_purchase",
+        "tests.captured.test_store_inheritance_cooldown.StoreInheritanceCooldownTest.test_user_screenshot_has_four_cooldown_clocks",
+        "tests.captured.test_store_inheritance_cooldown.StoreInheritanceCooldownTest.test_view_is_rechecked_after_purchase",
+        "tests.store.test_purchase.PurchaseReplayTests.test_inheritance_store_captures_still_require_active_colors"
+      ]
+    },
+    "legacy-store-inheritance-cooldown-20260925": {
+      "path": "tests/fixtures/historical/global_cn/store/legacy-store-inheritance-cooldown-20260925.png",
+      "sha256": "eaecafddc45d277a40042f85efdcafcd3c77a30c51a72e9e0b8e55561a0ebe61",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "store/inheritance-cooldown-20260925",
+      "source": "inheritance-cooldown-20260925.png",
+      "source_sha256": "eaecafddc45d277a40042f85efdcafcd3c77a30c51a72e9e0b8e55561a0ebe61",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.captured.test_store_inheritance_cooldown.StoreInheritanceCooldownTest.test_available_items_after_missing_item_are_still_bought",
+        "tests.captured.test_store_inheritance_cooldown.StoreInheritanceCooldownTest.test_clock_seen_after_search_does_not_skip_reset",
+        "tests.captured.test_store_inheritance_cooldown.StoreInheritanceCooldownTest.test_dimmed_popup_is_not_an_available_store_view",
+        "tests.captured.test_store_inheritance_cooldown.StoreInheritanceCooldownTest.test_next_tab_entry_can_enable_shortcut_after_purchase",
+        "tests.captured.test_store_inheritance_cooldown.StoreInheritanceCooldownTest.test_no_enabled_items_does_not_enter_store",
+        "tests.captured.test_store_inheritance_cooldown.StoreInheritanceCooldownTest.test_purchase_failure_or_unsettled_store_stops_remaining_items",
+        "tests.captured.test_store_inheritance_cooldown.StoreInheritanceCooldownTest.test_sold_out_items_do_not_trigger_purchase_or_tab_reset",
+        "tests.captured.test_store_inheritance_cooldown.StoreInheritanceCooldownTest.test_target_already_reached_does_not_block_next_item",
+        "tests.captured.test_store_inheritance_cooldown.StoreInheritanceCooldownTest.test_user_screenshot_has_four_cooldown_clocks",
+        "tests.captured.test_store_inheritance_cooldown.StoreInheritanceCooldownTest.test_view_is_rechecked_after_purchase",
+        "tests.store.test_purchase.PurchaseReplayTests.test_inheritance_store_captures_still_require_active_colors"
+      ]
+    },
+    "legacy-urgent-tasks-battle-manual-target": {
+      "path": "tests/fixtures/historical/global_cn/urgent_tasks/legacy-urgent-tasks-battle-manual-target.png",
+      "sha256": "9ebf7790375c93f9c863a6bba81723d095199d19dc2aa0c169c5d84da76f43f0",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "urgent_tasks/battle-manual-target.png",
+      "source": "battle-manual-target.png",
+      "source_sha256": "6a02a9c2cc7b448aa029454382f5a2d5e341ea951f9272e79eea39e18652130a",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.captured.test_urgent_tasks.ManualChecks.test_urgent_task_recognition_and_exchange"
+      ]
+    },
+    "legacy-urgent-tasks-battle-clear": {
+      "path": "tests/fixtures/historical/global_cn/urgent_tasks/legacy-urgent-tasks-battle-clear.png",
+      "sha256": "97f1d326fe3f45a675fc0fe7fc85b36b726571b47231ae5ac7caaf8108673897",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "urgent_tasks/battle-clear.png",
+      "source": "battle-clear.png",
+      "source_sha256": "8d53d1ffb151abfbb4d3d2c5e9db313118763ca1c173f00e682255f5996324a2",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.captured.test_urgent_tasks.ManualChecks.test_urgent_task_recognition_and_exchange"
+      ]
+    },
+    "legacy-urgent-tasks-battle-leave": {
+      "path": "tests/fixtures/historical/global_cn/urgent_tasks/legacy-urgent-tasks-battle-leave.png",
+      "sha256": "5076fd72f136b93ad62fc1d4a2004ae59aa838a5fbf3f85b6e66e16d3f0bab91",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "urgent_tasks/battle-leave.png",
+      "source": "battle-leave.png",
+      "source_sha256": "a6fd295e5296713558df582ee324084416f2221fd0b05137035e30be9ba9dbac",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.captured.test_urgent_tasks.ManualChecks.test_urgent_task_recognition_and_exchange"
+      ]
+    },
+    "legacy-navigation-recognition-black": {
+      "path": "tests/fixtures/historical/global_cn/navigation_recognition/legacy-navigation-recognition-black.png",
+      "sha256": "7efdbbfeb59ec43fc9584c5027bfb5a906d7980f68ffa20f617083617c6cf574",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "navigation_recognition/black.png",
+      "source": "MuMu-20260926-105714-721.png",
+      "source_sha256": "fb770987b3f99f05b441b638ee603253a35c280ee6857943f929c5ca8fd60532",
+      "privacy_redaction": [],
+      "used_by": [
+        "tests.captured.test_navigation_recognition.NavigationTests.test_guild_war_returns_with_one_back",
+        "tests.captured.test_navigation_recognition.NavigationTests.test_insufficient_members_returns_with_one_back",
+        "tests.captured.test_navigation_recognition.NavigationTests.test_menu_to_knights_does_not_click_back_during_black_loading",
+        "tests.captured.test_navigation_recognition.PageTests.test_black_frame_matches_no_registered_page",
+        "tests.captured.test_navigation_recognition.PageTests.test_crest_threshold_does_not_lower_insufficient_members_threshold",
+        "tests.captured.test_navigation_recognition.TemplateTests.test_blank_screenshot_is_really_black",
+        "tests.captured.test_navigation_recognition.TemplateTests.test_flat_frames_never_match_inventory_assets",
+        "tests.captured.test_navigation_recognition.TemplateTests.test_larger_search_preserves_match_offset",
+        "tests.captured.test_navigation_recognition.TemplateTests.test_multi_match_preserves_both_positions"
+      ]
+    },
+    "legacy-navigation-recognition-war": {
+      "path": "tests/fixtures/historical/global_cn/navigation_recognition/legacy-navigation-recognition-war.png",
+      "sha256": "69b77ad4925b3a36d667ff69f108a77d362b6e5323c23874fd3da447ee2e836a",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "navigation_recognition/war.png",
+      "source": "MuMu-20260926-105311-526.png",
+      "source_sha256": "f3c0edabae14830b6c53472697fb5ee329a56b6732067b256c711d5cd2c0f64c",
+      "privacy_redaction": [
+        [
+          28,
+          246,
+          310,
+          398
+        ],
+        [
+          28,
+          521,
+          230,
+          615
+        ],
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.captured.test_navigation_recognition.NavigationTests.test_guild_war_returns_with_one_back",
+        "tests.captured.test_navigation_recognition.PageTests.test_guild_war_task_and_navigation_agree_on_reported_frame"
+      ]
+    },
+    "legacy-navigation-recognition-error": {
+      "path": "tests/fixtures/historical/global_cn/navigation_recognition/legacy-navigation-recognition-error.png",
+      "sha256": "3e76fa27937e8b7777fbc54bdf92c7faccca8c975ca1304d6a16b968e2eade22",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "navigation_recognition/error.png",
+      "source": "2026-09-26_10-53-28-620917.png",
+      "source_sha256": "60457fe679665a67eb3f63fc1a4642f4d2fd50a7ad67613d0c625785eae5af11",
+      "privacy_redaction": [
+        [
+          28,
+          246,
+          310,
+          398
+        ],
+        [
+          28,
+          521,
+          230,
+          615
+        ],
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.captured.test_navigation_recognition.PageTests.test_reported_error_frame_matches_team_battle"
+      ]
+    },
+    "20261003-175150-414": {
+      "path": "tests/fixtures/historical/shared/hunt_boss/MuMu-20261003-175150-414.png",
+      "sha256": "537b77222025d565b2c8bff3a303cbe0dcb304b14827178f8ca97aa5585847a0",
+      "server": "unknown",
+      "scene": "hunt_boss/ogre_selected_with_azimanak_and_caides",
+      "source": "MuMu-20261003-175150-414.png",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_hunt_boss.HuntBossTests.test_shared_dark_icon_never_confirms_azimanak_from_selected_ogre",
+        "tests.combat.test_hunt_boss.HuntBossTests.test_all_six_portraits_match_only_their_visible_cards",
+        "tests.combat.test_hunt_boss.HuntBossTests.test_text_changes_and_assets_languages_do_not_change_portrait_selection",
+        "tests.combat.test_hunt_boss.HuntBossTests.test_selection_border_belongs_to_the_matched_card",
+        "tests.combat.test_hunt_boss.HuntBossTests.test_missing_portrait_never_reuses_a_previous_selected_offset",
+        "tests.combat.test_hunt_boss.HuntBossTests.test_already_selected_target_exits_without_clicking",
+        "tests.combat.test_hunt_boss.HuntBossTests.test_dropped_click_retries_correct_card_until_positive_selection",
+        "tests.combat.test_hunt_boss.HuntBossTests.test_list_scrolls_back_up_to_a_target_above_current_view",
+        "tests.combat.test_hunt_boss.HuntBossTests.test_list_scrolls_down_to_ogre_below_current_view",
+        "tests.combat.test_hunt_boss.HuntBossTests.test_default_wyvern_and_named_targets_ignore_altar_element",
+        "tests.combat.test_hunt_boss.HuntBossTests.test_ogre_uses_only_dimensional_grade_and_disables_fast_combat",
+        "tests.combat.test_hunt_boss.HuntBossTests.test_ogre_clicks_its_top_dimensional_entry_until_prepare_page",
+        "tests.combat.test_hunt_boss.HuntBossTests.test_common_search_finds_scrolled_portrait_and_clicks_shifted_position",
+        "tests.combat.test_hunt_boss.HuntBossTests.test_portrait_outside_common_search_never_matches_or_clicks",
+        "tests.combat.test_hunt_boss.HuntBossTests.test_selection_border_does_not_depend_on_click_rectangle"
+      ],
+      "assets_namespace": "share",
+      "server_confirmed": false
+    },
+    "20261003-175236-705": {
+      "path": "tests/fixtures/historical/shared/hunt_boss/MuMu-20261003-175236-705.png",
+      "sha256": "19539d71c04403d7c3011c4426442854c5c31ea9e5e25b401764eae1cd33f7af",
+      "server": "unknown",
+      "scene": "hunt_boss/wyvern_golem_banshee_sidebar",
+      "source": "MuMu-20261003-175236-705.png",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_hunt_boss.HuntBossTests.test_all_six_portraits_match_only_their_visible_cards",
+        "tests.combat.test_hunt_boss.HuntBossTests.test_missing_portrait_never_reuses_a_previous_selected_offset",
+        "tests.combat.test_hunt_boss.HuntBossTests.test_list_scrolls_back_up_to_a_target_above_current_view",
+        "tests.combat.test_hunt_boss.HuntBossTests.test_list_scrolls_down_to_ogre_below_current_view"
+      ],
+      "assets_namespace": "share",
+      "server_confirmed": false
+    },
+    "20261004-224702-554": {
+      "path": "tests/fixtures/historical/shared/repeat_leif/MuMu-20261004-224702-554.png",
+      "sha256": "1a4f0d6eb02c607a6ae2b1d50f91580b40bb48db6b930c83bfdbc79fe5ea1323",
+      "server": "unknown",
+      "assets_namespace": "share",
+      "server_confirmed": false,
+      "capture_type": "emulator_screenshot",
+      "scene": "repeat_leif/minimum_two_leifs",
+      "source": "MuMu-20261004-224702-554.png",
+      "privacy_redaction": [],
+      "used_by": [
+        "tests.combat.test_repeat_leif_count.RepeatLeifTests.test_supplied_counters_and_spectral_core_resource_are_read_correctly",
+        "tests.combat.test_repeat_leif_count.RepeatLeifTests.test_dimensional_increase_clicks_once_then_confirms_four",
+        "tests.combat.test_repeat_leif_count.RepeatLeifTests.test_odd_request_at_minimum_confirms_two_without_clicking",
+        "tests.combat.test_repeat_leif_count.RepeatLeifTests.test_decrease_clicks_once_and_retries_only_after_interval",
+        "tests.combat.test_repeat_leif_count.RepeatLeifTests.test_normal_combat_still_increments_one_leif_per_click"
+      ]
+    },
+    "20261004-224705-176": {
+      "path": "tests/fixtures/historical/shared/repeat_leif/MuMu-20261004-224705-176.png",
+      "sha256": "6c2664033cb5bea8d1863eb6c3e5a967994a3edc30ba59910da0db4599d700a7",
+      "server": "unknown",
+      "assets_namespace": "share",
+      "server_confirmed": false,
+      "capture_type": "emulator_screenshot",
+      "scene": "repeat_leif/four_leifs_after_one_increment",
+      "source": "MuMu-20261004-224705-176.png",
+      "privacy_redaction": [],
+      "used_by": [
+        "tests.combat.test_repeat_leif_count.RepeatLeifTests.test_supplied_counters_and_spectral_core_resource_are_read_correctly",
+        "tests.combat.test_repeat_leif_count.RepeatLeifTests.test_dimensional_increase_clicks_once_then_confirms_four",
+        "tests.combat.test_repeat_leif_count.RepeatLeifTests.test_decrease_clicks_once_and_retries_only_after_interval"
+      ]
+    },
+    "store-daily-free-available-20261014": {
+      "path": "tests/fixtures/historical/global_cn/store/store-daily-free-available-20261014.png",
+      "sha256": "b08ac696e8dbae9778978f4ff3e225afa5d8f47fbb7a650aaf1fdd29d0869cb2",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "daily_free_available",
+      "source": "MuMu-20261014-102047-871.png",
+      "source_sha256": "b08ac696e8dbae9778978f4ff3e225afa5d8f47fbb7a650aaf1fdd29d0869cb2",
+      "privacy_redaction": [],
+      "used_by": [
+        "tests.store.test_purchase.PurchaseReplayTests.test_real_captures_distinguish_available_reward_and_claimed_store",
+        "tests.store.test_purchase.PurchaseReplayTests.test_real_direct_reward_retries_close_without_confirm_or_reopening_item",
+        "tests.store.test_purchase.PurchaseReplayTests.test_simulated_close_artwork_disappearing_does_not_accept_dimmed_store"
+      ]
+    },
+    "store-daily-free-reward-20261014": {
+      "path": "tests/fixtures/historical/global_cn/store/store-daily-free-reward-20261014.png",
+      "sha256": "b50a4099be8f64bfe9997fbef70169e6fe0bb616183b7b2fbded42c9975bbbf1",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "daily_free_reward",
+      "source": "MuMu-20261014-102054-215.png",
+      "source_sha256": "b50a4099be8f64bfe9997fbef70169e6fe0bb616183b7b2fbded42c9975bbbf1",
+      "privacy_redaction": [],
+      "used_by": [
+        "tests.store.test_purchase.PurchaseReplayTests.test_real_captures_distinguish_available_reward_and_claimed_store",
+        "tests.store.test_purchase.PurchaseReplayTests.test_real_direct_reward_retries_close_without_confirm_or_reopening_item",
+        "tests.store.test_purchase.PurchaseReplayTests.test_simulated_close_artwork_disappearing_does_not_accept_dimmed_store"
+      ]
+    },
+    "store-daily-free-claimed-20261014": {
+      "path": "tests/fixtures/historical/global_cn/store/store-daily-free-claimed-20261014.png",
+      "sha256": "97677c6c42f7aa437cca94ddf18003894550b6ca6cf8583e26e73b20e70ae624",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "daily_free_claimed",
+      "source": "MuMu-20261014-102056-774.png",
+      "source_sha256": "97677c6c42f7aa437cca94ddf18003894550b6ca6cf8583e26e73b20e70ae624",
+      "privacy_redaction": [],
+      "used_by": [
+        "tests.store.test_purchase.PurchaseReplayTests.test_real_captures_distinguish_available_reward_and_claimed_store",
+        "tests.store.test_purchase.PurchaseReplayTests.test_real_direct_reward_retries_close_without_confirm_or_reopening_item",
+        "tests.store.test_purchase.PurchaseReplayTests.test_simulated_close_artwork_disappearing_does_not_accept_dimmed_store"
+      ]
+    },
+    "gift-shelf-7-20261015": {
+      "path": "tests/fixtures/historical/global_cn/friendship_gift/gift-shelf-7-20261015.png",
+      "sha256": "76a0daeaf357949b3f0af37c5a44927c91a08336f0aeb1f9e19e8e5131dae2f3",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "friendship_gift_shelf_7_four_digit_price",
+      "source": "MuMu-20261015-143523-919.png",
+      "source_sha256": "76a0daeaf357949b3f0af37c5a44927c91a08336f0aeb1f9e19e8e5131dae2f3",
+      "privacy_redaction": [],
+      "used_by": [
+        "tests.store.test_friendship_gift.CapturedGiftTests.test_real_four_digit_price_preserves_leading_digit_and_full_card",
+        "tests.store.test_friendship_gift.CapturedGiftTests.test_partial_price_retains_independently_recognized_stock_and_balance",
+        "tests.store.test_friendship_gift.GiftReplayTests.test_partial_captured_card_verifies_pending_purchase_and_completed_target"
+      ]
+    },
+    "meirin-reward-home": {
+      "path": "tests/fixtures/historical/global_cn/meirin_reward/meirin-reward-home.png",
+      "sha256": "cbabef187b6ba13c80ed1b093d36557b8a7d58b1ef87d4819000feb2efb59d37",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "Homepage before entering the event menu",
+      "source": "MuMu-20261015-172657-760.png",
+      "source_sha256": "628bf962242c45c735119a8c210345e3e9070f5406e06090e266f2eb7fa847f0",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          275,
+          105
+        ],
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_meirin_reward.AssetTests.test_real_frames_distinguish_pending_empty_and_scrolled_rows"
+      ]
+    },
+    "meirin-reward-sidebar-top": {
+      "path": "tests/fixtures/historical/global_cn/meirin_reward/meirin-reward-sidebar-top.png",
+      "sha256": "c4f7198680e6d3512009c8b211659afa14cf7158ae4bfd0866a08ea3c22c06d5",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "Anniversary page with Meirin event visible near the sidebar top",
+      "source": "MuMu-20261015-172704-364.png",
+      "source_sha256": "de8d773125e9c359bd2cc42361015e3a0d00e072cd4a4af7c2cb3b7d35eef257",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_meirin_reward.AssetTests.test_real_frames_distinguish_pending_empty_and_scrolled_rows",
+        "tests.activity.test_meirin_reward.AssetTests.test_shifted_selected_sidebar_rejects_other_tabs_and_unselected_label",
+        "tests.captured.test_activity_selection.ActivitySelectionTests.test_existing_complete_captures_confirm_page_with_hidden_tab"
+      ]
+    },
+    "meirin-reward-sidebar-visible": {
+      "path": "tests/fixtures/historical/global_cn/meirin_reward/meirin-reward-sidebar-visible.png",
+      "sha256": "c9c0206210c04139cd578494329b1783cd105388a6e35f1f3bf2fedb858e73fe",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "Anniversary page after scrolling sidebar; Meirin event unselected",
+      "source": "MuMu-20261015-172707-234.png",
+      "source_sha256": "208bb071be87ae27ddf88284420cf4e0745969ace4ed70dc806ecd2a68a247a9",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_meirin_reward.AssetTests.test_real_frames_distinguish_pending_empty_and_scrolled_rows",
+        "tests.activity.test_meirin_reward.AssetTests.test_real_sidebar_selects_meirin_after_stable_text",
+        "tests.activity.test_meirin_reward.AssetTests.test_shifted_selected_sidebar_rejects_other_tabs_and_unselected_label",
+        "tests.activity.test_meirin_reward.ClaimTests.test_wrong_selected_tab_never_claims",
+        "tests.captured.test_activity_selection.ActivitySelectionTests.test_existing_complete_captures_confirm_page_with_hidden_tab"
+      ]
+    },
+    "meirin-reward-available": {
+      "path": "tests/fixtures/historical/global_cn/meirin_reward/meirin-reward-available.png",
+      "sha256": "330a7b6f1c9d8482478202b85aeba380ea1eb564402734be1b11fd3af032bd94",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "Meirin task list with claimable Arena reward in the first row",
+      "source": "MuMu-20261015-172710-687.png",
+      "source_sha256": "8416c77f025c37be1376754b499df6bdcf5c0c2154be0a78d107a2825b1ee68d",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_meirin_reward.AssetTests.test_real_frames_distinguish_pending_empty_and_scrolled_rows",
+        "tests.activity.test_meirin_reward.AssetTests.test_real_sidebar_selects_meirin_after_stable_text",
+        "tests.activity.test_meirin_reward.AssetTests.test_shifted_selected_sidebar_rejects_other_tabs_and_unselected_label",
+        "tests.activity.test_meirin_reward.ClaimTests.test_completion_before_popup_waits_for_reward_confirmation",
+        "tests.activity.test_meirin_reward.ClaimTests.test_dropped_claim_and_close_retry_only_after_production_intervals",
+        "tests.activity.test_meirin_reward.ClaimTests.test_list_update_before_reward_popup_never_finishes_early",
+        "tests.activity.test_meirin_reward.ClaimTests.test_missing_reward_popup_fails_locally_without_completion",
+        "tests.activity.test_meirin_reward.ClaimTests.test_network_repeated_frames_do_not_replace_reward_confirmation",
+        "tests.activity.test_meirin_reward.ClaimTests.test_real_claim_popup_and_empty_queue_stay_recheckable"
+      ]
+    },
+    "meirin-reward-loading": {
+      "path": "tests/fixtures/historical/global_cn/meirin_reward/meirin-reward-loading.png",
+      "sha256": "30b4be9d6121d4a9281350085f42dc8566d98a262c8de3480aab1f9ec1df8464",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "Dimmed Meirin task list during reward request loading",
+      "source": "MuMu-20261015-172717-437.png",
+      "source_sha256": "02ac4646fd30d030966fbb5251034bddfbc46ea7a672f0999a1245b6d2362e74",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_meirin_reward.AssetTests.test_real_frames_distinguish_pending_empty_and_scrolled_rows",
+        "tests.activity.test_meirin_reward.ClaimTests.test_real_claim_popup_and_empty_queue_stay_recheckable"
+      ]
+    },
+    "meirin-reward-popup": {
+      "path": "tests/fixtures/historical/global_cn/meirin_reward/meirin-reward-popup.png",
+      "sha256": "1d94f2e486b8fd5e80a2d216bae7411a2c86b83b98283cd7aa0a35b36faed7da",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "Shared reward popup after collecting the Arena reward",
+      "source": "MuMu-20261015-172719-705.png",
+      "source_sha256": "31c7adf2e914dac9713554f7eb48c3d0e66ee448cf98f290241dc9aaae612d51",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_meirin_reward.AssetTests.test_real_frames_distinguish_pending_empty_and_scrolled_rows",
+        "tests.activity.test_meirin_reward.AssetTests.test_real_sidebar_selects_meirin_after_stable_text",
+        "tests.activity.test_meirin_reward.ClaimTests.test_already_selected_shifted_sidebar_claims_without_clicking_the_tab",
+        "tests.activity.test_meirin_reward.ClaimTests.test_completion_before_popup_waits_for_reward_confirmation",
+        "tests.activity.test_meirin_reward.ClaimTests.test_dropped_claim_and_close_retry_only_after_production_intervals",
+        "tests.activity.test_meirin_reward.ClaimTests.test_list_update_before_reward_popup_never_finishes_early",
+        "tests.activity.test_meirin_reward.ClaimTests.test_network_repeated_frames_do_not_replace_reward_confirmation",
+        "tests.activity.test_meirin_reward.ClaimTests.test_real_claim_popup_and_empty_queue_stay_recheckable"
+      ]
+    },
+    "meirin-reward-unavailable": {
+      "path": "tests/fixtures/historical/global_cn/meirin_reward/meirin-reward-unavailable.png",
+      "sha256": "ad4e9c6f3c1bd12aefc38ad62df68c1728e2ea0b2b64b3ea018f7bcdf020578f",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "First task offers Go now; claimed Arena task moved to the fifth row",
+      "source": "MuMu-20261015-172722-309.png",
+      "source_sha256": "66fecd540003819602f9505dfbd47bab5b2f68443bfba574d0f3ee7acfbd7b02",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_meirin_reward.AssetTests.test_only_explicit_synthetic_first_row_check_proves_all_done",
+        "tests.activity.test_meirin_reward.AssetTests.test_real_frames_distinguish_pending_empty_and_scrolled_rows",
+        "tests.activity.test_meirin_reward.AssetTests.test_real_sidebar_selects_meirin_after_stable_text",
+        "tests.activity.test_meirin_reward.AssetTests.test_shifted_selected_sidebar_rejects_other_tabs_and_unselected_label",
+        "tests.activity.test_meirin_reward.ClaimTests.test_already_selected_shifted_sidebar_claims_without_clicking_the_tab",
+        "tests.activity.test_meirin_reward.ClaimTests.test_bottom_claimed_row_does_not_mark_today_complete",
+        "tests.activity.test_meirin_reward.ClaimTests.test_completion_before_popup_waits_for_reward_confirmation",
+        "tests.activity.test_meirin_reward.ClaimTests.test_dropped_claim_and_close_retry_only_after_production_intervals",
+        "tests.activity.test_meirin_reward.ClaimTests.test_list_update_before_reward_popup_never_finishes_early",
+        "tests.activity.test_meirin_reward.ClaimTests.test_missing_reward_popup_fails_locally_without_completion",
+        "tests.activity.test_meirin_reward.ClaimTests.test_network_repeated_frames_do_not_replace_reward_confirmation",
+        "tests.activity.test_meirin_reward.ClaimTests.test_real_claim_popup_and_empty_queue_stay_recheckable",
+        "tests.activity.test_meirin_reward.ClaimTests.test_synthetic_first_row_completion_records_only_meirin",
+        "tests.activity.test_meirin_reward.SchedulingTests.test_empty_queue_is_scheduled_again_after_battle"
+      ]
+    },
+    "meirin-reward-available-shifted": {
+      "path": "tests/fixtures/historical/global_cn/meirin_reward/meirin-reward-available-shifted.png",
+      "sha256": "1d47d7f282d3bf0ccb02f1b5004e88b37c8db0bd10a6d4522aa1db4d69434ee1",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "Meirin event already selected after sidebar shifts upward; first-row stamina reward is claimable",
+      "source": "MuMu-20261015-181110-831.png",
+      "source_sha256": "885cc5744afc6ee1897a986b1cf60c3cb257be99105e38e3caab37cca8ce53e7",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_meirin_reward.AssetTests.test_real_frames_distinguish_pending_empty_and_scrolled_rows",
+        "tests.activity.test_meirin_reward.AssetTests.test_shifted_selected_sidebar_rejects_other_tabs_and_unselected_label",
+        "tests.activity.test_meirin_reward.ClaimTests.test_already_selected_shifted_sidebar_claims_without_clicking_the_tab"
+      ]
+    },
+    "infinity-page-selected-20261018": {
+      "path": "tests/fixtures/historical/global_cn/activity_navigation/infinity-page-selected-20261018.png",
+      "sha256": "ec0edf89db9fb19b1bd44a409aa968730599689904ace5a29d0f51fa0cab83ef",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "20抽已领取页面，页内装饰确认，侧栏可独立滚动",
+      "source": "MuMu-20261018-162059-974.png",
+      "source_sha256": "2cbcfcada2acefb914063f19a2b6f565558a0a559c5292a42eb90e1cb8843be7",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.captured.test_activity_selection.ActivitySelectionTests.test_already_selected_returns_before_ocr_or_click",
+        "tests.captured.test_activity_selection.ActivitySelectionTests.test_click_stops_as_soon_as_selected_state_arrives",
+        "tests.captured.test_activity_selection.ActivitySelectionTests.test_dimmed_page_is_not_selected",
+        "tests.captured.test_activity_selection.ActivitySelectionTests.test_dropped_click_still_retries_before_real_selection",
+        "tests.captured.test_activity_selection.ActivitySelectionTests.test_missing_page_anchor_rejects_orange_selected_sidebar",
+        "tests.captured.test_activity_selection.ActivitySelectionTests.test_page_anchor_is_not_accepted_in_sidebar",
+        "tests.captured.test_activity_selection.ActivitySelectionTests.test_reproduces_old_template_failure_on_already_selected_sidebar",
+        "tests.captured.test_activity_selection.ActivitySelectionTests.test_scroll_position_uses_common_search_and_restores_wrapper",
+        "tests.captured.test_activity_selection.ActivitySelectionTests.test_text_without_selected_color_is_not_accepted",
+        "tests.captured.test_common_activity.RealScreenshotBatchTests.test_all_pending_templates_choose_only_the_actual_selected_event"
+      ]
+    },
+    "support-reward-received": {
+      "path": "tests/fixtures/historical/global_cn/support_reward/support-reward-received.png",
+      "sha256": "8a5f706b707950b3581b7fc1e14e869b308aa57ef6b5bc50abc63cd26bc2f505",
+      "server": "global_cn",
+      "capture_type": "user_screenshot",
+      "scene": "Support ticket event: received; captured 2026-10-19 evening",
+      "source": "codex-clipboard-5827dc6c-e687-40da-8438-a38812117f07.png",
+      "source_sha256": "3aad33cd5e0de4fbfab1a025b65eedbdd42ddc4cec87bffc893fe558ed1b3922",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_support_reward.SupportRewardTests.test_real_assets_reject_other_pages_popup_and_moved_daily_row",
+        "tests.activity.test_support_reward.SupportRewardTests.test_claim_popup_then_scan_weekly_and_daily_receipt",
+        "tests.activity.test_support_reward.SupportRewardTests.test_incomplete_daily_stays_eligible_and_never_clicks_go",
+        "tests.activity.test_support_reward.SupportRewardTests.test_receipt_before_popup_does_not_complete_claim",
+        "tests.activity.test_support_reward.SupportRewardTests.test_missing_popup_times_out_without_recording_completion",
+        "tests.activity.test_support_reward.SupportRewardTests.test_dropped_claim_and_close_obey_production_intervals",
+        "tests.activity.test_support_reward.SupportRewardTests.test_network_dialog_cannot_replace_reward_popup",
+        "tests.activity.test_support_reward.SupportRewardTests.test_synthetic_weekly_reward_is_claimed_before_daily_scan_finishes",
+        "tests.activity.test_support_reward.SupportRewardTests.test_new_weekly_claim_waits_until_previous_popup_is_closed",
+        "tests.activity.test_support_reward.SupportRewardTests.test_wrong_tab_rejects_claim_without_actions",
+        "tests.activity.test_support_reward.SupportRewardTests.test_weekly_checkmark_cannot_complete_unfinished_daily",
+        "tests.activity.test_support_reward.SupportRewardTests.test_arena_only_scheduling_uses_saved_switch_and_independent_receipt",
+        "tests.activity.test_support_reward.SupportRewardTests.test_calendar_boundaries_and_reset_ignore_scheduler_02",
+        "tests.activity.test_support_reward.SupportRewardTests.test_entry_batches_support_and_skips_disabled_or_checked"
+      ]
+    },
+    "support-reward-home": {
+      "path": "tests/fixtures/historical/global_cn/support_reward/support-reward-home.png",
+      "sha256": "2cdd814c8c65c82f72bab72e2a93030bdd87a59220f87a4c7f289cd314053dde",
+      "server": "global_cn",
+      "capture_type": "user_screenshot",
+      "scene": "Support ticket event: home; captured 2026-10-19 evening",
+      "source": "codex-clipboard-4cbfbc43-5a4f-4bc7-a438-821e923f3e59.png",
+      "source_sha256": "ff7a90c898a4c9a4be70cd823a637f44c3a5524c035618adc6f2198e28bdcbcc",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          0,
+          0,
+          320,
+          120
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_support_reward.SupportRewardTests.test_real_assets_reject_other_pages_popup_and_moved_daily_row",
+        "tests.activity.test_support_reward.SupportRewardTests.test_claim_popup_then_scan_weekly_and_daily_receipt",
+        "tests.activity.test_support_reward.SupportRewardTests.test_incomplete_daily_stays_eligible_and_never_clicks_go",
+        "tests.activity.test_support_reward.SupportRewardTests.test_receipt_before_popup_does_not_complete_claim",
+        "tests.activity.test_support_reward.SupportRewardTests.test_missing_popup_times_out_without_recording_completion",
+        "tests.activity.test_support_reward.SupportRewardTests.test_dropped_claim_and_close_obey_production_intervals",
+        "tests.activity.test_support_reward.SupportRewardTests.test_network_dialog_cannot_replace_reward_popup",
+        "tests.activity.test_support_reward.SupportRewardTests.test_synthetic_weekly_reward_is_claimed_before_daily_scan_finishes",
+        "tests.activity.test_support_reward.SupportRewardTests.test_new_weekly_claim_waits_until_previous_popup_is_closed",
+        "tests.activity.test_support_reward.SupportRewardTests.test_wrong_tab_rejects_claim_without_actions",
+        "tests.activity.test_support_reward.SupportRewardTests.test_weekly_checkmark_cannot_complete_unfinished_daily",
+        "tests.activity.test_support_reward.SupportRewardTests.test_arena_only_scheduling_uses_saved_switch_and_independent_receipt",
+        "tests.activity.test_support_reward.SupportRewardTests.test_calendar_boundaries_and_reset_ignore_scheduler_02",
+        "tests.activity.test_support_reward.SupportRewardTests.test_entry_batches_support_and_skips_disabled_or_checked"
+      ]
+    },
+    "support-reward-incomplete": {
+      "path": "tests/fixtures/historical/global_cn/support_reward/support-reward-incomplete.png",
+      "sha256": "0226193c56a57e17a38bdebea22c5c870e29a8cc3c98a2ceb07a2f52b638cb00",
+      "server": "global_cn",
+      "capture_type": "user_screenshot",
+      "scene": "Support ticket event: incomplete; captured 2026-10-19 evening",
+      "source": "codex-clipboard-c0d99b65-ef4a-4b42-a39f-fd740a6947ea.png",
+      "source_sha256": "a83bb4e2148170a8dd00708a6111d57f07ee15f3fe6a8557499586116ff8460d",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_support_reward.SupportRewardTests.test_real_assets_reject_other_pages_popup_and_moved_daily_row",
+        "tests.activity.test_support_reward.SupportRewardTests.test_claim_popup_then_scan_weekly_and_daily_receipt",
+        "tests.activity.test_support_reward.SupportRewardTests.test_incomplete_daily_stays_eligible_and_never_clicks_go",
+        "tests.activity.test_support_reward.SupportRewardTests.test_receipt_before_popup_does_not_complete_claim",
+        "tests.activity.test_support_reward.SupportRewardTests.test_missing_popup_times_out_without_recording_completion",
+        "tests.activity.test_support_reward.SupportRewardTests.test_dropped_claim_and_close_obey_production_intervals",
+        "tests.activity.test_support_reward.SupportRewardTests.test_network_dialog_cannot_replace_reward_popup",
+        "tests.activity.test_support_reward.SupportRewardTests.test_synthetic_weekly_reward_is_claimed_before_daily_scan_finishes",
+        "tests.activity.test_support_reward.SupportRewardTests.test_new_weekly_claim_waits_until_previous_popup_is_closed",
+        "tests.activity.test_support_reward.SupportRewardTests.test_wrong_tab_rejects_claim_without_actions",
+        "tests.activity.test_support_reward.SupportRewardTests.test_weekly_checkmark_cannot_complete_unfinished_daily",
+        "tests.activity.test_support_reward.SupportRewardTests.test_arena_only_scheduling_uses_saved_switch_and_independent_receipt",
+        "tests.activity.test_support_reward.SupportRewardTests.test_calendar_boundaries_and_reset_ignore_scheduler_02",
+        "tests.activity.test_support_reward.SupportRewardTests.test_entry_batches_support_and_skips_disabled_or_checked"
+      ]
+    },
+    "support-reward-home-after": {
+      "path": "tests/fixtures/historical/global_cn/support_reward/support-reward-home-after.png",
+      "sha256": "31488c7aacec21bbb380fac86c34b99ab89a75579ff8d5e4f7d462686a12c9aa",
+      "server": "global_cn",
+      "capture_type": "user_screenshot",
+      "scene": "Support ticket event: home-after; captured 2026-10-19 evening",
+      "source": "codex-clipboard-74510b26-0df5-4089-af60-e9850ee9de11.png",
+      "source_sha256": "a143a58e02dc94d8f0c8a61050ae546ae39d544d5c9edc8553480904fcf6d774",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          0,
+          0,
+          320,
+          120
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_support_reward.SupportRewardTests.test_real_assets_reject_other_pages_popup_and_moved_daily_row",
+        "tests.activity.test_support_reward.SupportRewardTests.test_claim_popup_then_scan_weekly_and_daily_receipt",
+        "tests.activity.test_support_reward.SupportRewardTests.test_incomplete_daily_stays_eligible_and_never_clicks_go",
+        "tests.activity.test_support_reward.SupportRewardTests.test_receipt_before_popup_does_not_complete_claim",
+        "tests.activity.test_support_reward.SupportRewardTests.test_missing_popup_times_out_without_recording_completion",
+        "tests.activity.test_support_reward.SupportRewardTests.test_dropped_claim_and_close_obey_production_intervals",
+        "tests.activity.test_support_reward.SupportRewardTests.test_network_dialog_cannot_replace_reward_popup",
+        "tests.activity.test_support_reward.SupportRewardTests.test_synthetic_weekly_reward_is_claimed_before_daily_scan_finishes",
+        "tests.activity.test_support_reward.SupportRewardTests.test_new_weekly_claim_waits_until_previous_popup_is_closed",
+        "tests.activity.test_support_reward.SupportRewardTests.test_wrong_tab_rejects_claim_without_actions",
+        "tests.activity.test_support_reward.SupportRewardTests.test_weekly_checkmark_cannot_complete_unfinished_daily",
+        "tests.activity.test_support_reward.SupportRewardTests.test_arena_only_scheduling_uses_saved_switch_and_independent_receipt",
+        "tests.activity.test_support_reward.SupportRewardTests.test_calendar_boundaries_and_reset_ignore_scheduler_02",
+        "tests.activity.test_support_reward.SupportRewardTests.test_entry_batches_support_and_skips_disabled_or_checked"
+      ]
+    },
+    "support-reward-available": {
+      "path": "tests/fixtures/historical/global_cn/support_reward/support-reward-available.png",
+      "sha256": "1e4385dcffc8c196e983e70f77d3f5ee82bd13e630d533755083b9527e080424",
+      "server": "global_cn",
+      "capture_type": "user_screenshot",
+      "scene": "Support ticket event: available; captured 2026-10-19 evening",
+      "source": "codex-clipboard-c5cab356-1d92-4883-9df0-c2858395c9a9.png",
+      "source_sha256": "15f13e3710aa88ae0f18684822a3329148e6f079bbb831dd8e093994827e97e6",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_support_reward.SupportRewardTests.test_real_assets_reject_other_pages_popup_and_moved_daily_row",
+        "tests.activity.test_support_reward.SupportRewardTests.test_claim_popup_then_scan_weekly_and_daily_receipt",
+        "tests.activity.test_support_reward.SupportRewardTests.test_incomplete_daily_stays_eligible_and_never_clicks_go",
+        "tests.activity.test_support_reward.SupportRewardTests.test_receipt_before_popup_does_not_complete_claim",
+        "tests.activity.test_support_reward.SupportRewardTests.test_missing_popup_times_out_without_recording_completion",
+        "tests.activity.test_support_reward.SupportRewardTests.test_dropped_claim_and_close_obey_production_intervals",
+        "tests.activity.test_support_reward.SupportRewardTests.test_network_dialog_cannot_replace_reward_popup",
+        "tests.activity.test_support_reward.SupportRewardTests.test_synthetic_weekly_reward_is_claimed_before_daily_scan_finishes",
+        "tests.activity.test_support_reward.SupportRewardTests.test_new_weekly_claim_waits_until_previous_popup_is_closed",
+        "tests.activity.test_support_reward.SupportRewardTests.test_wrong_tab_rejects_claim_without_actions",
+        "tests.activity.test_support_reward.SupportRewardTests.test_weekly_checkmark_cannot_complete_unfinished_daily",
+        "tests.activity.test_support_reward.SupportRewardTests.test_arena_only_scheduling_uses_saved_switch_and_independent_receipt",
+        "tests.activity.test_support_reward.SupportRewardTests.test_calendar_boundaries_and_reset_ignore_scheduler_02",
+        "tests.activity.test_support_reward.SupportRewardTests.test_entry_batches_support_and_skips_disabled_or_checked"
+      ]
+    },
+    "support-reward-popup": {
+      "path": "tests/fixtures/historical/global_cn/support_reward/support-reward-popup.png",
+      "sha256": "a1ca493797c069a8e6c9cc0913fc10bbb0032a75e9f3438595866ad3c6a26df0",
+      "server": "global_cn",
+      "capture_type": "user_screenshot",
+      "scene": "Support ticket event: popup; captured 2026-10-19 evening",
+      "source": "codex-clipboard-9a1ddfb9-6be5-419d-961d-ec37224204d7.png",
+      "source_sha256": "dbac1010b212ce9c673f3eac0afeaa6b64977c3268ae5a96ae8e65f521daf9a7",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_support_reward.SupportRewardTests.test_real_assets_reject_other_pages_popup_and_moved_daily_row",
+        "tests.activity.test_support_reward.SupportRewardTests.test_claim_popup_then_scan_weekly_and_daily_receipt",
+        "tests.activity.test_support_reward.SupportRewardTests.test_incomplete_daily_stays_eligible_and_never_clicks_go",
+        "tests.activity.test_support_reward.SupportRewardTests.test_receipt_before_popup_does_not_complete_claim",
+        "tests.activity.test_support_reward.SupportRewardTests.test_missing_popup_times_out_without_recording_completion",
+        "tests.activity.test_support_reward.SupportRewardTests.test_dropped_claim_and_close_obey_production_intervals",
+        "tests.activity.test_support_reward.SupportRewardTests.test_network_dialog_cannot_replace_reward_popup",
+        "tests.activity.test_support_reward.SupportRewardTests.test_synthetic_weekly_reward_is_claimed_before_daily_scan_finishes",
+        "tests.activity.test_support_reward.SupportRewardTests.test_new_weekly_claim_waits_until_previous_popup_is_closed",
+        "tests.activity.test_support_reward.SupportRewardTests.test_wrong_tab_rejects_claim_without_actions",
+        "tests.activity.test_support_reward.SupportRewardTests.test_weekly_checkmark_cannot_complete_unfinished_daily",
+        "tests.activity.test_support_reward.SupportRewardTests.test_arena_only_scheduling_uses_saved_switch_and_independent_receipt",
+        "tests.activity.test_support_reward.SupportRewardTests.test_calendar_boundaries_and_reset_ignore_scheduler_02",
+        "tests.activity.test_support_reward.SupportRewardTests.test_entry_batches_support_and_skips_disabled_or_checked"
+      ]
+    },
+    "support-reward-weekly": {
+      "path": "tests/fixtures/historical/global_cn/support_reward/support-reward-weekly.png",
+      "sha256": "d90a751b4ad8e679a676e912b073b4ce721eca3babaf66f4a811b69e68862ae2",
+      "server": "global_cn",
+      "capture_type": "user_screenshot",
+      "scene": "Support ticket event: weekly; captured 2026-10-19 evening",
+      "source": "codex-clipboard-a661e569-0982-4718-a11f-76d054910dd9.png",
+      "source_sha256": "c91f018366857d567660333758f897b3a386bc3e711eea128047cedd14e288f0",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_support_reward.SupportRewardTests.test_real_assets_reject_other_pages_popup_and_moved_daily_row",
+        "tests.activity.test_support_reward.SupportRewardTests.test_claim_popup_then_scan_weekly_and_daily_receipt",
+        "tests.activity.test_support_reward.SupportRewardTests.test_incomplete_daily_stays_eligible_and_never_clicks_go",
+        "tests.activity.test_support_reward.SupportRewardTests.test_receipt_before_popup_does_not_complete_claim",
+        "tests.activity.test_support_reward.SupportRewardTests.test_missing_popup_times_out_without_recording_completion",
+        "tests.activity.test_support_reward.SupportRewardTests.test_dropped_claim_and_close_obey_production_intervals",
+        "tests.activity.test_support_reward.SupportRewardTests.test_network_dialog_cannot_replace_reward_popup",
+        "tests.activity.test_support_reward.SupportRewardTests.test_synthetic_weekly_reward_is_claimed_before_daily_scan_finishes",
+        "tests.activity.test_support_reward.SupportRewardTests.test_new_weekly_claim_waits_until_previous_popup_is_closed",
+        "tests.activity.test_support_reward.SupportRewardTests.test_wrong_tab_rejects_claim_without_actions",
+        "tests.activity.test_support_reward.SupportRewardTests.test_weekly_checkmark_cannot_complete_unfinished_daily",
+        "tests.activity.test_support_reward.SupportRewardTests.test_arena_only_scheduling_uses_saved_switch_and_independent_receipt",
+        "tests.activity.test_support_reward.SupportRewardTests.test_calendar_boundaries_and_reset_ignore_scheduler_02",
+        "tests.activity.test_support_reward.SupportRewardTests.test_entry_batches_support_and_skips_disabled_or_checked"
+      ]
+    },
+    "20261015-195327-585": {
+      "path": "tests/fixtures/historical/cn/mission_reward/20261015-195327-585.png",
+      "sha256": "5712dbb2f142bbb4d6d77c9aefcbdde5840657e913d0e24e48a47954bb20a0da",
+      "server": "cn",
+      "server_confirmed": true,
+      "capture_type": "emulator_screenshot",
+      "scene": "daily_missions/homepage_negative",
+      "source": "MuMu-20261015-195327-585.png",
+      "source_sha256": "754e1d5b2f93e20db2b18d7ac6c7c4f898d25d3a55ec50ab1a25dc612efaa389",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          300,
+          125
+        ]
+      ],
+      "used_by": [
+        "tests.core.test_daily_missions.DailyCaptureTests.test_homepage_does_not_create_daily_state"
+      ]
+    },
+    "20261015-195330-291": {
+      "path": "tests/fixtures/historical/cn/mission_reward/20261015-195330-291.png",
+      "sha256": "faf1897bc208a5262eb515ae884c08a6bedeabb1a079bb501c2c9b110d2ed5e5",
+      "server": "cn",
+      "server_confirmed": true,
+      "capture_type": "emulator_screenshot",
+      "scene": "daily_missions/list_195330-291",
+      "source": "MuMu-20261015-195330-291.png",
+      "source_sha256": "1af528ab1b082538e9fdc16bd5ed1903ab4c2f6dc201b7eeba15eb58e099f21f",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          26
+        ],
+        [
+          0,
+          26,
+          42,
+          665
+        ],
+        [
+          1238,
+          26,
+          1280,
+          665
+        ],
+        [
+          0,
+          665,
+          1280,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.core.test_daily_missions.DailyCaptureTests.test_real_cn_captures_read_complete_rows_and_activity",
+        "tests.core.test_daily_missions.DailyCaptureTests.test_real_cn_captures_collect_all_thirteen_daily_missions",
+        "tests.core.test_daily_missions.DailyCaptureTests.test_partial_title_or_progress_is_ignored",
+        "tests.core.test_daily_missions.DailyCaptureTests.test_unreadable_complete_progress_keeps_frame_unknown",
+        "tests.core.test_daily_missions.DailyCaptureTests.test_dimmed_daily_page_does_not_read_missions",
+        "tests.core.test_daily_missions.DailyCaptureTests.test_real_cn_capture_identifies_only_first_two_reward_chests_as_ready"
+      ]
+    },
+    "20261015-195332-961": {
+      "path": "tests/fixtures/historical/cn/mission_reward/20261015-195332-961.png",
+      "sha256": "413ef5e8197966247db6b594614bbcd69959b2d2f893228f03167ca7ab2ab757",
+      "server": "cn",
+      "server_confirmed": true,
+      "capture_type": "emulator_screenshot",
+      "scene": "daily_missions/list_195332-961",
+      "source": "MuMu-20261015-195332-961.png",
+      "source_sha256": "76d93aaae7a45675a4c3585b6abf61b0928185b70c904742b4a3151e77b0a650",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          26
+        ],
+        [
+          0,
+          26,
+          42,
+          665
+        ],
+        [
+          1238,
+          26,
+          1280,
+          665
+        ],
+        [
+          0,
+          665,
+          1280,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.core.test_daily_missions.DailyCaptureTests.test_real_cn_captures_read_complete_rows_and_activity",
+        "tests.core.test_daily_missions.DailyCaptureTests.test_real_cn_captures_collect_all_thirteen_daily_missions",
+        "tests.core.test_daily_missions.DailyCaptureTests.test_partial_title_or_progress_is_ignored"
+      ]
+    },
+    "20261015-195334-507": {
+      "path": "tests/fixtures/historical/cn/mission_reward/20261015-195334-507.png",
+      "sha256": "5b2e49dea9961d41e74f7e299a958f4740bc0b41e92322d9c853ab43e9482cef",
+      "server": "cn",
+      "server_confirmed": true,
+      "capture_type": "emulator_screenshot",
+      "scene": "daily_missions/list_195334-507",
+      "source": "MuMu-20261015-195334-507.png",
+      "source_sha256": "a692e510e94e78fb698a4b5ccacb3f95d97faffb5d703b469bcbf9279f199477",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          26
+        ],
+        [
+          0,
+          26,
+          42,
+          665
+        ],
+        [
+          1238,
+          26,
+          1280,
+          665
+        ],
+        [
+          0,
+          665,
+          1280,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.core.test_daily_missions.DailyCaptureTests.test_real_cn_captures_read_complete_rows_and_activity",
+        "tests.core.test_daily_missions.DailyCaptureTests.test_real_cn_captures_collect_all_thirteen_daily_missions",
+        "tests.core.test_daily_missions.DailyCaptureTests.test_partial_title_or_progress_is_ignored"
+      ]
+    },
+    "20261015-195336-031": {
+      "path": "tests/fixtures/historical/cn/mission_reward/20261015-195336-031.png",
+      "sha256": "cb7e746e4e117f8f3455f64bde55604292bd9d236d588fddd228a8dae3ad6813",
+      "server": "cn",
+      "server_confirmed": true,
+      "capture_type": "emulator_screenshot",
+      "scene": "daily_missions/list_195336-031",
+      "source": "MuMu-20261015-195336-031.png",
+      "source_sha256": "0a4f3f7bbbfec83326458221de91961757cf098049cb9f41c7541fb41096bd38",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          26
+        ],
+        [
+          0,
+          26,
+          42,
+          665
+        ],
+        [
+          1238,
+          26,
+          1280,
+          665
+        ],
+        [
+          0,
+          665,
+          1280,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.core.test_daily_missions.DailyCaptureTests.test_real_cn_captures_read_complete_rows_and_activity",
+        "tests.core.test_daily_missions.DailyCaptureTests.test_real_cn_captures_collect_all_thirteen_daily_missions",
+        "tests.core.test_daily_missions.DailyCaptureTests.test_partial_title_or_progress_is_ignored"
+      ]
+    },
+    "20261015-195337-685": {
+      "path": "tests/fixtures/historical/cn/mission_reward/20261015-195337-685.png",
+      "sha256": "5cc4392686de5b3eea4ce2c06ab9232ae49c496934607e1a4fe2572e4ec67168",
+      "server": "cn",
+      "server_confirmed": true,
+      "capture_type": "emulator_screenshot",
+      "scene": "daily_missions/list_195337-685",
+      "source": "MuMu-20261015-195337-685.png",
+      "source_sha256": "b449d5bbcb1e3fe6544ea0f9df0cbc973846c53756ee060e81b46a264d7d88d4",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          26
+        ],
+        [
+          0,
+          26,
+          42,
+          665
+        ],
+        [
+          1238,
+          26,
+          1280,
+          665
+        ],
+        [
+          0,
+          665,
+          1280,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.core.test_daily_missions.DailyCaptureTests.test_real_cn_captures_read_complete_rows_and_activity",
+        "tests.core.test_daily_missions.DailyCaptureTests.test_real_cn_captures_collect_all_thirteen_daily_missions",
+        "tests.core.test_daily_missions.DailyCaptureTests.test_partial_title_or_progress_is_ignored"
+      ]
+    },
+    "20261015-195339-394": {
+      "path": "tests/fixtures/historical/cn/mission_reward/20261015-195339-394.png",
+      "sha256": "1b1e2bee667288bae6fd176e31a155d19e5e64d2f21105acac760a7371fcf324",
+      "server": "cn",
+      "server_confirmed": true,
+      "capture_type": "emulator_screenshot",
+      "scene": "daily_missions/list_195339-394",
+      "source": "MuMu-20261015-195339-394.png",
+      "source_sha256": "bba67641e858844fcc26f876e00fca8d3d036641771b72f5d0f69cd99b91d01b",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          26
+        ],
+        [
+          0,
+          26,
+          42,
+          665
+        ],
+        [
+          1238,
+          26,
+          1280,
+          665
+        ],
+        [
+          0,
+          665,
+          1280,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.core.test_daily_missions.DailyCaptureTests.test_real_cn_captures_read_complete_rows_and_activity",
+        "tests.core.test_daily_missions.DailyCaptureTests.test_real_cn_captures_collect_all_thirteen_daily_missions",
+        "tests.core.test_daily_missions.DailyCaptureTests.test_partial_title_or_progress_is_ignored"
+      ]
+    },
+    "20261017-004551-316": {
+      "path": "tests/fixtures/historical/global_cn/mission_reward/20261017-004551-316.png",
+      "sha256": "8c55172a10ffe26602ca435204423c2f13601a1a429c977738ee2cb028567ee4",
+      "server": "global_cn",
+      "server_confirmed": true,
+      "capture_type": "emulator_screenshot",
+      "scene": "global_daily_missions/homepage_negative",
+      "source": "MuMu-20261017-004551-316.png",
+      "source_sha256": "607e4a6c4b0c5be560290cf0dd1f97c97d9f2143e54d660b5a83bb7befeb37ae",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          300,
+          125
+        ]
+      ],
+      "used_by": [
+        "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_real_home_and_menu_never_create_daily_mission_state"
+      ]
+    },
+    "20261017-004552-856": {
+      "path": "tests/fixtures/historical/global_cn/mission_reward/20261017-004552-856.png",
+      "sha256": "8683a87c47addd0a566309d38f2aacf73d73d525dcc27a86130bace03c6a4f0a",
+      "server": "global_cn",
+      "server_confirmed": true,
+      "capture_type": "emulator_screenshot",
+      "scene": "global_daily_missions/menu_negative",
+      "source": "MuMu-20261017-004552-856.png",
+      "source_sha256": "39902190e525ab9d6ae9e5e904b0879a948d005462a2b64276b05583d7eaef2f",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          300,
+          125
+        ]
+      ],
+      "used_by": [
+        "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_real_home_and_menu_never_create_daily_mission_state"
+      ]
+    },
+    "20261017-004555-650": {
+      "path": "tests/fixtures/historical/global_cn/mission_reward/20261017-004555-650.png",
+      "sha256": "684ed2f2ff9bc382fdd12990dda876f6e1a7e95d34d0ec75da9b53b0de654821",
+      "server": "global_cn",
+      "server_confirmed": true,
+      "capture_type": "emulator_screenshot",
+      "scene": "global_daily_missions/list_004555-650",
+      "source": "MuMu-20261017-004555-650.png",
+      "source_sha256": "016e10149132fd79646371b05ba370ff0b2854b21f77e05a7f59d21b45acea17",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          26
+        ],
+        [
+          0,
+          26,
+          42,
+          665
+        ],
+        [
+          1238,
+          26,
+          1280,
+          665
+        ],
+        [
+          0,
+          665,
+          1280,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_real_captures_read_six_panels_and_160_activity",
+        "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_real_captures_collect_thirteen_reordered_missions",
+        "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_real_before_popup_after_frames_identify_reward_state",
+        "tests.core.test_global_daily_missions.GlobalDailyRewardReplayTests.test_real_reward_sequence_retries_then_waits_for_claimed_page",
+        "tests.core.test_global_daily_missions.GlobalDailyScanTests.test_real_login_boundary_infers_completed_suffix_without_scanning_it"
+      ]
+    },
+    "20261017-004557-957": {
+      "path": "tests/fixtures/historical/global_cn/mission_reward/20261017-004557-957.png",
+      "sha256": "fb2ff98331dcc4fb1af6fcead504445c105c1b79cd24b3ea54a00e5f4fc8161e",
+      "server": "global_cn",
+      "server_confirmed": true,
+      "capture_type": "emulator_screenshot",
+      "scene": "global_daily_missions/list_004557-957",
+      "source": "MuMu-20261017-004557-957.png",
+      "source_sha256": "459898ae6033644b8b4f635c619fd696fc0732165853c3e6f025176b588ca001",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          26
+        ],
+        [
+          0,
+          26,
+          42,
+          665
+        ],
+        [
+          1238,
+          26,
+          1280,
+          665
+        ],
+        [
+          0,
+          665,
+          1280,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_real_captures_read_six_panels_and_160_activity",
+        "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_real_captures_collect_thirteen_reordered_missions",
+        "tests.core.test_global_daily_missions.GlobalDailyScanTests.test_real_login_boundary_infers_completed_suffix_without_scanning_it"
+      ]
+    },
+    "20261017-004559-319": {
+      "path": "tests/fixtures/historical/global_cn/mission_reward/20261017-004559-319.png",
+      "sha256": "a26cca02eea4fb84edf74f83b632dedc36f3b9c6f623a364871f7748afe39018",
+      "server": "global_cn",
+      "server_confirmed": true,
+      "capture_type": "emulator_screenshot",
+      "scene": "global_daily_missions/list_004559-319",
+      "source": "MuMu-20261017-004559-319.png",
+      "source_sha256": "71c0123b624ebeb1df617c0970ebe5795247ddb6f9b0c90cd8bb061d69e57da7",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          26
+        ],
+        [
+          0,
+          26,
+          42,
+          665
+        ],
+        [
+          1238,
+          26,
+          1280,
+          665
+        ],
+        [
+          0,
+          665,
+          1280,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_real_captures_read_six_panels_and_160_activity",
+        "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_real_captures_collect_thirteen_reordered_missions",
+        "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_gray_completed_rows_keep_full_progress_and_global_gacha_name",
+        "tests.core.test_global_daily_missions.GlobalDailyScanTests.test_real_login_boundary_infers_completed_suffix_without_scanning_it",
+        "tests.core.test_global_daily_missions.GlobalDailyScanTests.test_fields_below_completed_login_are_not_read"
+      ]
+    },
+    "20261017-004600-561": {
+      "path": "tests/fixtures/historical/global_cn/mission_reward/20261017-004600-561.png",
+      "sha256": "ba6f3e4b901ae18c655644b182ce0831db2d107540befa106fb3d02a969a6468",
+      "server": "global_cn",
+      "server_confirmed": true,
+      "capture_type": "emulator_screenshot",
+      "scene": "global_daily_missions/list_004600-561",
+      "source": "MuMu-20261017-004600-561.png",
+      "source_sha256": "6af8fd67c6e6085521d038becad4891fc7a9c52a273033b956054a5a5746b71e",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          26
+        ],
+        [
+          0,
+          26,
+          42,
+          665
+        ],
+        [
+          1238,
+          26,
+          1280,
+          665
+        ],
+        [
+          0,
+          665,
+          1280,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_real_captures_read_six_panels_and_160_activity",
+        "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_real_captures_collect_thirteen_reordered_missions",
+        "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_gray_completed_rows_keep_full_progress_and_global_gacha_name"
+      ]
+    },
+    "20261017-004601-643": {
+      "path": "tests/fixtures/historical/global_cn/mission_reward/20261017-004601-643.png",
+      "sha256": "fb42dc3fe27da8709430b98e88fec6adbd9a6547224a6ced2e02a4628cdcea32",
+      "server": "global_cn",
+      "server_confirmed": true,
+      "capture_type": "emulator_screenshot",
+      "scene": "global_daily_missions/list_004601-643",
+      "source": "MuMu-20261017-004601-643.png",
+      "source_sha256": "ec9e30378274a8636a457f61c67d4cd17cf9bafdb0becb1ed3fa12d9d6c23cd2",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          26
+        ],
+        [
+          0,
+          26,
+          42,
+          665
+        ],
+        [
+          1238,
+          26,
+          1280,
+          665
+        ],
+        [
+          0,
+          665,
+          1280,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_real_captures_read_six_panels_and_160_activity",
+        "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_real_captures_collect_thirteen_reordered_missions",
+        "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_gray_completed_rows_keep_full_progress_and_global_gacha_name"
+      ]
+    },
+    "20261017-004602-994": {
+      "path": "tests/fixtures/historical/global_cn/mission_reward/20261017-004602-994.png",
+      "sha256": "9c67d213e1a494e18440e2819d902234e6f7c592ee90009ca26687f393ee58e7",
+      "server": "global_cn",
+      "server_confirmed": true,
+      "capture_type": "emulator_screenshot",
+      "scene": "global_daily_missions/list_004602-994",
+      "source": "MuMu-20261017-004602-994.png",
+      "source_sha256": "2ff896ea0cd2bcd9944ebfdee8fd9d19920843b2dd02ea4298f49ca52f33984e",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          26
+        ],
+        [
+          0,
+          26,
+          42,
+          665
+        ],
+        [
+          1238,
+          26,
+          1280,
+          665
+        ],
+        [
+          0,
+          665,
+          1280,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_real_captures_read_six_panels_and_160_activity",
+        "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_real_captures_collect_thirteen_reordered_missions",
+        "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_gray_completed_rows_keep_full_progress_and_global_gacha_name"
+      ]
+    },
+    "20261017-004606-299": {
+      "path": "tests/fixtures/historical/global_cn/mission_reward/20261017-004606-299.png",
+      "sha256": "f974610965cf5931a467461e9ace3dd08f88f27292336b98cd626769c2a48adf",
+      "server": "global_cn",
+      "server_confirmed": true,
+      "capture_type": "emulator_screenshot",
+      "scene": "global_daily_missions/reward_popup",
+      "source": "MuMu-20261017-004606-299.png",
+      "source_sha256": "55a4cea826799737e45dcfc1fb2ffcce68521991198ea43d5eab74172d113a9b",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          26
+        ],
+        [
+          0,
+          26,
+          42,
+          665
+        ],
+        [
+          1238,
+          26,
+          1280,
+          665
+        ],
+        [
+          0,
+          665,
+          1280,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_real_before_popup_after_frames_identify_reward_state",
+        "tests.core.test_global_daily_missions.GlobalDailyRewardReplayTests.test_real_reward_sequence_retries_then_waits_for_claimed_page"
+      ]
+    },
+    "20261017-004607-640": {
+      "path": "tests/fixtures/historical/global_cn/mission_reward/20261017-004607-640.png",
+      "sha256": "6954193e70c0633a10ea42dfc6ba8d6658dc95a0f9d99122a487451b058a72fb",
+      "server": "global_cn",
+      "server_confirmed": true,
+      "capture_type": "emulator_screenshot",
+      "scene": "global_daily_missions/all_rewards_claimed",
+      "source": "MuMu-20261017-004607-640.png",
+      "source_sha256": "90d47823cc032643ddf73dc93420e4471daa509d93eac97781a0af1cba040f35",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          26
+        ],
+        [
+          0,
+          26,
+          42,
+          665
+        ],
+        [
+          1238,
+          26,
+          1280,
+          665
+        ],
+        [
+          0,
+          665,
+          1280,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_real_before_popup_after_frames_identify_reward_state",
+        "tests.core.test_global_daily_missions.GlobalDailyRewardReplayTests.test_real_reward_sequence_retries_then_waits_for_claimed_page",
+        "tests.core.test_global_daily_missions.GlobalDailyRewardReplayTests.test_real_claimed_page_settles_without_clicking_close_hint"
+      ]
+    },
+    "20261017-004609-828": {
+      "path": "tests/fixtures/historical/global_cn/mission_reward/20261017-004609-828.png",
+      "sha256": "999602b4b60c0d18ed4b2a8242c8386c0018625ac7f96250935de5ec907bec41",
+      "server": "global_cn",
+      "server_confirmed": true,
+      "capture_type": "emulator_screenshot",
+      "scene": "global_daily_missions/homepage_negative",
+      "source": "MuMu-20261017-004609-828.png",
+      "source_sha256": "d18a532d3010feeac6f8ffc44c341882ee846ed97df89d6a6fc472aa439905fc",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          300,
+          125
+        ]
+      ],
+      "used_by": [
+        "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_real_home_and_menu_never_create_daily_mission_state"
+      ]
+    }
+  },
+  "aliases": {
+    "activity_navigation/infinity_selected_oversea.png": "legacy-activity-navigation-infinity-selected-oversea",
+    "e7wc_battle_gate/battle_gate_available.png": "legacy-e7wc-battle-gate-battle-gate-available",
+    "e7wc_battle_gate/battle_gate_received.png": "legacy-e7wc-battle-gate-battle-gate-received",
+    "koharu_raffle/available.png": "legacy-koharu-raffle-available",
+    "koharu_raffle/scrolled_claimed_row.png": "legacy-koharu-raffle-scrolled-claimed-row",
+    "huche_shop/available.png": "legacy-huche-shop-available",
+    "huche_shop/confirm.png": "legacy-huche-shop-confirm",
+    "huche_shop/discount_boundary.png": "legacy-huche-shop-discount-boundary",
+    "huche_shop/inertia_boundary.png": "legacy-huche-shop-inertia-boundary",
+    "huche_shop/leif_batch.png": "legacy-huche-shop-leif-batch",
+    "huche_shop/main.png": "legacy-huche-shop-main",
+    "huche_shop/sold_out.png": "legacy-huche-shop-sold-out",
+    "huche_shop/sold_out_bottom.png": "legacy-huche-shop-sold-out-bottom",
+    "urgent_tasks/battle-auto-on.png": "legacy-urgent-tasks-battle-auto-on",
+    "urgent_tasks/battle-result.png": "legacy-urgent-tasks-battle-result",
+    "urgent_tasks/normal-prepare-large.png": "legacy-urgent-tasks-normal-prepare-large",
+    "urgent_tasks/normal-prepare.png": "legacy-urgent-tasks-normal-prepare",
+    "urgent_tasks/prepare-times-hint.png": "legacy-urgent-tasks-prepare-times-hint",
+    "urgent_tasks/superior-detail.png": "legacy-urgent-tasks-superior-detail",
+    "urgent_tasks/superior-fast-off.png": "legacy-urgent-tasks-superior-fast-off",
+    "urgent_tasks/superior-fast-on.png": "legacy-urgent-tasks-superior-fast-on",
+    "urgent_tasks/superior-prepare-large.png": "legacy-urgent-tasks-superior-fast-on",
+    "urgent_tasks/superior-prepare.png": "legacy-urgent-tasks-superior-prepare",
+    "main_navigation/srank20_20260919.png": "legacy-main-navigation-srank20-20260919",
+    "knights/guild_war_3_of_3_20260919.png": "legacy-knights-guild-war-3-of-3-20260919",
+    "store/inheritance-charms.png": "legacy-store-inheritance-charms",
+    "store/inheritance-cooldown-20260925.png": "legacy-store-inheritance-cooldown-20260925",
+    "urgent_tasks/battle-manual-target.png": "legacy-urgent-tasks-battle-manual-target",
+    "urgent_tasks/battle-clear.png": "legacy-urgent-tasks-battle-clear",
+    "urgent_tasks/battle-leave.png": "legacy-urgent-tasks-battle-leave",
+    "navigation_recognition/black.png": "legacy-navigation-recognition-black",
+    "navigation_recognition/war.png": "legacy-navigation-recognition-war",
+    "navigation_recognition/error.png": "legacy-navigation-recognition-error",
+    "activity_navigation/infinity_page_selected.png": "infinity-page-selected-20261018"
+  }
+}

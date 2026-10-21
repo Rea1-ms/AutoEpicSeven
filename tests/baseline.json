@@ -1,0 +1,461 @@
+{
+  "baseline_date": "2026-09-26",
+  "python": "3.10.19",
+  "packages": {
+    "numpy": "1.24.3",
+    "opencv-python": "4.7.0.72",
+    "Pillow": "9.5.0",
+    "pponnxcr": "2.0",
+    "onnxruntime": "1.23.2"
+  },
+  "ocr_model_package": "pponnxcr==2.0 bundled Chinese models",
+  "fixture_count": 62,
+  "original_run_seconds": 77.858,
+  "migrated_run_seconds": 81.515,
+  "cases": [
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration.PolicyTests.test_core_boundary_uses_current_count",
+      "status": "passed",
+      "fixtures": []
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration.PolicyTests.test_event_keeps_last_life_and_reserves_investment",
+      "status": "passed",
+      "fixtures": []
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration.PolicyTests.test_ocr_validation",
+      "status": "passed",
+      "fixtures": []
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration.PolicyTests.test_settlement_latch_survives_repeated_frames_and_restart",
+      "status": "passed",
+      "fixtures": []
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration.PolicyTests.test_shop_invests_before_other_purchases_and_never_withdraws",
+      "status": "passed",
+      "fixtures": []
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_accessible_nodes_exclude_completed_and_gray_nodes",
+      "status": "passed",
+      "fixtures": [
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-081413-154.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-081522-090.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-081554-067.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-081721-752.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-081757-281.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-082926-197.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-083127-685.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260923-233512-883.png"
+      ]
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_auto_combat_only_toggles_on_positive_manual_marker",
+      "status": "passed",
+      "fixtures": [
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-081430-868.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-081440-084.png"
+      ]
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_empty_settlement_does_not_count_as_a_run",
+      "status": "passed",
+      "fixtures": [
+        "tests/fixtures/dimensional_exploration/MuMu-20260924-091819-235.png"
+      ]
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_event_buttons_with_journal_marker",
+      "status": "passed",
+      "fixtures": [
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-081528-636.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260923-232331-766.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260923-233240-604.png"
+      ]
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_hero_names_costs_and_scrolled_columns",
+      "status": "passed",
+      "fixtures": [
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-081352-852.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260923-233036-793.png"
+      ]
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_initial_recruitment_is_not_mistaken_for_ready_party",
+      "status": "passed",
+      "fixtures": [
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-081258-807.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-081357-541.png"
+      ]
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_node_preview_does_not_enter_a_different_type",
+      "status": "passed",
+      "fixtures": [
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-081805-941.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-082932-782.png"
+      ]
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_page_identity_and_modal_precedence",
+      "status": "passed",
+      "fixtures": [
+        "tests/fixtures/dimensional_exploration/MuMu-20260921-105750-804.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-081145-848.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-081153-551.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-081226-118.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-081258-807.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-081352-852.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-081357-541.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-081413-154.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-081423-319.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-081430-868.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-081507-280.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-081517-145.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-081528-636.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-081544-299.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-081548-987.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-081603-149.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-081730-252.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-081751-608.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-082448-905.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-082458-438.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260923-232305-766.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260923-232309-289.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260923-232839-814.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260923-232843-964.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260923-232913-867.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260923-233032-963.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260923-233036-793.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260923-233115-192.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260923-233811-030.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260923-233818-836.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260924-091808-594.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260924-091811-816.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260924-091819-235.png"
+      ]
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_purchase_dialog_rechecks_name_price_currency",
+      "status": "passed",
+      "fixtures": [
+        "tests/fixtures/dimensional_exploration/MuMu-20260923-232848-721.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260923-232858-477.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260923-232904-541.png"
+      ]
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_selected_loot_confirms_instead_of_reselecting",
+      "status": "passed",
+      "fixtures": [
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-082458-438.png"
+      ]
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_server_page_registration_and_return_routes",
+      "status": "passed",
+      "fixtures": []
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_settlement_repeated_frames_and_batch_exit",
+      "status": "passed",
+      "fixtures": [
+        "tests/fixtures/dimensional_exploration/MuMu-20260923-233811-030.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260923-233818-836.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260924-091808-594.png"
+      ]
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_shop_resources_and_offer_binding",
+      "status": "passed",
+      "fixtures": [
+        "tests/fixtures/dimensional_exploration/MuMu-20260923-232839-814.png"
+      ]
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_starting_supply_selection_requires_positive_gold_state",
+      "status": "passed",
+      "fixtures": [
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-081207-157.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-081226-118.png"
+      ]
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_unknown_or_black_frame_has_no_exploration_state",
+      "status": "passed",
+      "fixtures": []
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_unreadable_accessible_node_does_not_change_priority",
+      "status": "passed",
+      "fixtures": [
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-081522-090.png"
+      ]
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_upgrade_and_revive_confirm_selected_hero",
+      "status": "passed",
+      "fixtures": [
+        "tests/fixtures/dimensional_exploration/MuMu-20260923-232312-127.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260923-233117-847.png"
+      ]
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration.ScreenshotTests.test_zero_loot_event_can_still_choose_coin_option",
+      "status": "passed",
+      "fixtures": [
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-081528-636.png"
+      ]
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration_events.EventTests.test_all_supplied_events_have_first_and_repeat_routes",
+      "status": "passed",
+      "fixtures": [
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-081528-636.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260923-232331-766.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260923-232358-161.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260923-233133-331.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260923-233146-181.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260923-233240-604.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260924-193808-685.png"
+      ]
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration_events.EventTests.test_changed_cost_or_extra_condition_never_uses_old_table",
+      "status": "passed",
+      "fixtures": [
+        "tests/fixtures/dimensional_exploration/MuMu-20260924-193808-685.png"
+      ]
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration_events.EventTests.test_dice_crop_does_not_include_die_icon_number",
+      "status": "passed",
+      "fixtures": [
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-081528-636.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260923-233240-604.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260924-193808-685.png"
+      ]
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration_events.EventTests.test_life_floor_and_distinct_cost_types",
+      "status": "passed",
+      "fixtures": [
+        "tests/fixtures/dimensional_exploration/MuMu-20260923-233240-604.png"
+      ]
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration_events.EventTests.test_magnifier_is_not_a_collection_flag_and_click_avoids_preview",
+      "status": "passed",
+      "fixtures": [
+        "tests/fixtures/dimensional_exploration/MuMu-20260923-233133-331.png"
+      ]
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration_events.EventTests.test_malformed_history_does_not_silently_overwrite_observations",
+      "status": "passed",
+      "fixtures": []
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration_events.EventTests.test_named_reward_requires_matching_card_and_is_not_repaid_via_another_branch",
+      "status": "passed",
+      "fixtures": [
+        "tests/fixtures/dimensional_exploration/MuMu-20260924-193808-685.png"
+      ]
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration_events.EventTests.test_pending_choice_is_pinned_until_positive_progress_and_survives_restart",
+      "status": "passed",
+      "fixtures": [
+        "tests/fixtures/dimensional_exploration/MuMu-20260924-193808-685.png"
+      ]
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration_events.EventTests.test_task_click_then_reward_and_batch_reset_preserves_history",
+      "status": "passed",
+      "fixtures": [
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-081528-636.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-081544-299.png"
+      ]
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration_events.EventTests.test_unsent_click_is_not_persisted",
+      "status": "passed",
+      "fixtures": [
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-081528-636.png"
+      ]
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration_sampling.SamplingTests.test_costs_are_all_parsed_and_life_and_investment_guards_hold",
+      "status": "passed",
+      "fixtures": []
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration_sampling.SamplingTests.test_exit_beats_hp_sacrifice_but_pending_click_cannot_switch",
+      "status": "passed",
+      "fixtures": []
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration_sampling.SamplingTests.test_outcome_capture_is_bounded_without_losing_completion",
+      "status": "passed",
+      "fixtures": []
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration_sampling.SamplingTests.test_receipt_waits_for_positive_progress_and_restart_deduplicates",
+      "status": "passed",
+      "fixtures": []
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration_sampling.SamplingTests.test_sampling_disabled_still_stops_on_unlisted_event",
+      "status": "passed",
+      "fixtures": [
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-081528-636.png"
+      ]
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration_sampling.SamplingTests.test_unknown_events_choose_cheap_trials_and_rotate_equal_cost_routes",
+      "status": "passed",
+      "fixtures": []
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration_sampling.SamplingTests.test_unlisted_screenshot_is_sampled_after_two_reads_and_outcome_is_saved",
+      "status": "passed",
+      "fixtures": [
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-081528-636.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-081544-299.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-081554-067.png"
+      ]
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration_shop_new.ShopNewRegressions.test_affordability_and_sold_flags_still_filter_new_loot",
+      "status": "passed",
+      "fixtures": [
+        "tests/fixtures/dimensional_exploration/MuMu-20260925-231015-103.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260925-231033-887.png"
+      ]
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration_shop_new.ShopNewRegressions.test_badges_bind_to_exact_items_in_both_rows",
+      "status": "passed",
+      "fixtures": [
+        "tests/fixtures/dimensional_exploration/MuMu-20260925-231015-103.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260925-231033-887.png"
+      ]
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration_shop_new.ShopNewRegressions.test_investment_and_healing_still_precede_new_loot",
+      "status": "passed",
+      "fixtures": [
+        "tests/fixtures/dimensional_exploration/MuMu-20260925-231015-103.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260925-231033-887.png"
+      ]
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration_shop_new.ShopNewRegressions.test_stable_shop_clicks_new_item_and_keeps_it_through_payment",
+      "status": "passed",
+      "fixtures": [
+        "tests/fixtures/dimensional_exploration/MuMu-20260925-231015-103.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260925-231033-887.png"
+      ]
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.ReceiptRegressions.test_click_history_only_clears_on_confirmed_forward_transition",
+      "status": "passed",
+      "fixtures": []
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.ReceiptRegressions.test_costs_persist_and_unknown_cost_does_not_skip",
+      "status": "passed",
+      "fixtures": []
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.ReceiptRegressions.test_new_loot_wins_after_investment_within_budget",
+      "status": "passed",
+      "fixtures": []
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.ReceiptRegressions.test_recognized_page_does_not_call_global_ad_close_handler",
+      "status": "passed",
+      "fixtures": [
+        "tests/fixtures/dimensional_exploration/MuMu-20260925-113419-624.png"
+      ]
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.ReceiptRegressions.test_shop_keeps_snapshot_through_toast_and_waits_for_debit",
+      "status": "passed",
+      "fixtures": []
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.ReceiptRegressions.test_task_ocr_does_not_define_literal_rectangles",
+      "status": "passed",
+      "fixtures": []
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.ScreenshotRegressions.test_full_class_ticket_uses_first_affordable_visible_hero",
+      "status": "passed",
+      "fixtures": [
+        "tests/fixtures/dimensional_exploration/MuMu-20260925-114714-801.png"
+      ]
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.ScreenshotRegressions.test_initial_party_keeps_affordable_fallback",
+      "status": "passed",
+      "fixtures": []
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.ScreenshotRegressions.test_known_unaffordable_target_skips_without_scrolling",
+      "status": "passed",
+      "fixtures": []
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.ScreenshotRegressions.test_rest_preview_enters_both_new_screenshots",
+      "status": "passed",
+      "fixtures": [
+        "tests/fixtures/dimensional_exploration/MuMu-20260925-113034-953.png",
+        "tests/fixtures/dimensional_exploration/MuMu-20260925-113935-872.png"
+      ]
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.ScreenshotRegressions.test_restart_rest_preview_reselects_then_enters",
+      "status": "passed",
+      "fixtures": [
+        "tests/fixtures/dimensional_exploration/MuMu-20260925-113935-872.png"
+      ]
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.ScreenshotRegressions.test_restart_reward_overlay_claims_loot_and_can_continue",
+      "status": "passed",
+      "fixtures": [
+        "tests/fixtures/dimensional_exploration/MuMu-20260925-113540-999.png"
+      ]
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.ScreenshotRegressions.test_unknown_animation_does_not_reset_selected_hero",
+      "status": "passed",
+      "fixtures": []
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.ScreenshotRegressions.test_unselected_loot_still_selects_a_card",
+      "status": "passed",
+      "fixtures": [
+        "tests/fixtures/dimensional_exploration/MuMu-20260922-082448-905.png"
+      ]
+    },
+    {
+      "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.ScreenshotRegressions.test_white_selected_loot_border_confirms_after_restart",
+      "status": "passed",
+      "fixtures": [
+        "tests/fixtures/dimensional_exploration/MuMu-20260925-113419-624.png"
+      ]
+    }
+  ],
+  "ocr_models": {
+    "ch_PP-OCRv3_det_infer.onnx": "d572c1773fd00e72f2f2a4c6399513223c49d70f64bc8ccf52fc6cc500b2803c",
+    "ch_PP-OCRv3_rec_infer.onnx": "92190be696c020699d393fb44bb70ad628edc5d77bf2852e2650c9f32410050f",
+    "ch_ppocr_mobile_v2.0_cls_infer.onnx": "927c37b1e330452f59e2af36d941ea804831ddd63958cb384bbc6cb1899ecaa9",
+    "ppocr_keys_v1.txt": "28b2362ad4ab2dc38769aa72feb535e3a9ddb3fd2a7585a05920e6393b1dc7f7"
+  }
+}

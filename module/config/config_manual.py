@@ -8,12 +8,14 @@ class ManualConfig:
     def LANG(self):
         return server.lang
 
+    # Keep task order here for both normal runs and daily mission reviews.
+    # Daily budgets decide how much a task does, never reorder the due queue.
+    # Manual tools use their own entry points and do not belong in this table.
     SCHEDULER_PRIORITY = """
-    Restart
-    > Mail > SanctuaryDaily > SanctuaryMonthly
-    > Knights > Store > Arena > PetsGift
-    > SecretShop > Combat > Gacha > MissionReward > Pets > DataUpdate > CommunityAio
-    > SpecialActivity
+    Restart > MissionReward > Gacha > SanctuaryDaily > Mail > Store > PetsGift
+    > DataUpdate > Arena > Combat > SanctuaryMonthly > Knights
+    > SecretShop > Pets > CommunityAio
+    > LimitedActivity > SpecialActivity
     """
 
     """
@@ -30,6 +32,9 @@ class ManualConfig:
     BUTTON_OFFSET = (20, 20)
     BUTTON_MATCH_SIMILARITY = 0.85
     WAIT_BEFORE_SAVING_SCREEN_SHOT = 1
+    SCREEN_SHOT_SAVE_INTERVAL = 1
+    SCREEN_SHOT_SAVE_FOLDER = './screenshots'
+    SCREEN_SHOT_SAVE_FOLDER_BASE = './screenshots'
 
     """
     module.device

@@ -1,5 +1,4 @@
-import re
-
+from module.game_info.context import level_cap
 from module.logger import logger
 from module.ocr.ocr import Digit, DigitCounter
 from tasks.arena.dashboard import ArenaDashboardMixin
@@ -12,6 +11,7 @@ from tasks.base.page import (
 from tasks.base.resource_bar import (
     RESOURCE_BAR_LAYOUT_COMBAT,
 )
+from tasks.base.resource_scheduling import ResourceCoordinator
 from tasks.base.ui import UI
 from tasks.dungeon.assets.assets_dungeon_configs_combat_entry import OCR_SEASON_CHECK
 from tasks.item.assets.assets_item_inventory import OCR_EQUIPMENT_COUNT
@@ -32,14 +32,6 @@ def normalize_e7_counter_text(result: str) -> str:
     result = result.replace(",", "").replace("，", "")
     result = result.replace("／", "/")
     return result
-
-
-def parse_e7_counter_text(result: str) -> tuple[int, int] | None:
-    result = normalize_e7_counter_text(result)
-    matched = re.search(r"(\d+)\s*/\s*(\d+)", result)
-    if matched is None:
-        return None
-    return int(matched.group(1)), int(matched.group(2))
 
 
 class E7DigitCounter(DigitCounter):
@@ -83,8 +75,9 @@ class DataUpdate(ArenaEntryMixin, ArenaDashboardMixin, UI):
             name="ShadowCommissionLevel",
         ).ocr_single_line(self.device.image)
         logger.attr("ShadowCommissionLevel", level)
-        if 0 < level <= self.config.stored.ShadowCommission.FIXED_TOTAL:
-            self.config.stored.ShadowCommission.set(level)
+        maximum = level_cap(self.config, "shadow_commission")
+        if 0 < level <= maximum:
+            self.config.stored.ShadowCommission.set(level, maximum)
         return level
 
     def _update_combat_status(self, skip_first_screenshot=True) -> bool:
@@ -117,6 +110,11 @@ class DataUpdate(ArenaEntryMixin, ArenaDashboardMixin, UI):
 
     def run(self):
         logger.hr("Data Update", level=1)
+        coordinator = ResourceCoordinator(self.config)
+        # Login can reach home and satisfy the pending read itself. Preserve
+        # why this invocation was queued before login clears that evidence;
+        # otherwise a cheap refresh unexpectedly becomes a full page tour.
+        lightweight = coordinator.lightweight_refresh()
 
         if not self.device.app_is_running():
             from tasks.login.login import Login
@@ -125,6 +123,11 @@ class DataUpdate(ArenaEntryMixin, ArenaDashboardMixin, UI):
 
         if not hasattr(self.device, "image") or self.device.image is None:
             self.device.screenshot()
+
+        if lightweight:
+            self.ui_goto(page_main, skip_first_screenshot=False)
+            coordinator.finish_refresh()
+            return not coordinator.pending
 
         updated_any = False
 
@@ -136,7 +139,9 @@ class DataUpdate(ArenaEntryMixin, ArenaDashboardMixin, UI):
 
         if updated_any:
             self.config.task_delay(server_update=True)
+            coordinator.finish_refresh(full=True)
             return True
 
         self.config.task_delay(success=False)
+        coordinator.finish_refresh(full=True)
         return False

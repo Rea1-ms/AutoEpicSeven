@@ -12,6 +12,7 @@ import re
 
 from module.base.timer import Timer
 from module.logger import logger
+from module.ocr.language import resolve_ocr_lang
 from module.ocr.ocr import Digit
 from tasks.base.page import page_main, page_mission_reward_daily
 from tasks.base.ui import UI
@@ -24,7 +25,6 @@ from tasks.mission_reward.assets.assets_mission_reward_daily import (
     DAILY_POINTS_6,
 )
 from tasks.mission_reward.assets.assets_mission_reward_ocr import OCR_MISSION_POINTS
-
 
 
 class OcrMissionPoints(Digit):
@@ -60,16 +60,7 @@ class CurrentMissionReward(UI):
     )
 
     def _mission_ocr_lang(self) -> str:
-        lang = getattr(self.config, "Emulator_GameLanguage", "cn")
-        if lang in ("auto", "", None, "cn", "global_cn", "zh", "zh_cn"):
-            return "cn"
-        if lang in ("en", "global_en", "en_us"):
-            return "en"
-        if lang in ("jp", "ja", "ja_jp"):
-            return "jp"
-        if lang in ("tw", "zh_tw"):
-            return "tw"
-        return "cn"
+        return resolve_ocr_lang(self.config)
 
     def _enter_mission_reward(self, skip_first_screenshot=True) -> bool:
         """

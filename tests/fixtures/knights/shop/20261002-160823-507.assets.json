@@ -1,0 +1,164 @@
+{
+  "version": 1,
+  "source": "MuMu-20261002-160823-507.png",
+  "suite": "knights_shop",
+  "case": "20261002-160823-507",
+  "items": [
+    {
+      "name": "EQUIPMENT_RESET_STONE",
+      "namespace": "global_cn",
+      "module": "knights/shop/items",
+      "kind": "base",
+      "box": [
+        321,
+        153,
+        483,
+        176
+      ]
+    },
+    {
+      "name": "EQUIPMENT_RESET_STONE",
+      "namespace": "global_cn",
+      "module": "knights/shop/items",
+      "kind": "button",
+      "box": [
+        323,
+        344,
+        482,
+        373
+      ]
+    },
+    {
+      "name": "ACCESSORY_RESET_STONE",
+      "namespace": "global_cn",
+      "module": "knights/shop/items",
+      "kind": "base",
+      "box": [
+        321,
+        410,
+        483,
+        433
+      ]
+    },
+    {
+      "name": "ACCESSORY_RESET_STONE",
+      "namespace": "global_cn",
+      "module": "knights/shop/items",
+      "kind": "button",
+      "box": [
+        323,
+        601,
+        482,
+        630
+      ]
+    },
+    {
+      "name": "LEVEL_85_MANASTONE_CHEST",
+      "namespace": "global_cn",
+      "module": "knights/shop/items",
+      "kind": "base",
+      "box": [
+        541,
+        153,
+        703,
+        176
+      ]
+    },
+    {
+      "name": "LEVEL_85_MANASTONE_CHEST",
+      "namespace": "global_cn",
+      "module": "knights/shop/items",
+      "kind": "button",
+      "box": [
+        543,
+        344,
+        702,
+        373
+      ]
+    },
+    {
+      "name": "LEVEL_88_MANASTONE_CHEST",
+      "namespace": "global_cn",
+      "module": "knights/shop/items",
+      "kind": "base",
+      "box": [
+        541,
+        410,
+        703,
+        433
+      ]
+    },
+    {
+      "name": "LEVEL_88_MANASTONE_CHEST",
+      "namespace": "global_cn",
+      "module": "knights/shop/items",
+      "kind": "button",
+      "box": [
+        543,
+        601,
+        702,
+        630
+      ]
+    },
+    {
+      "name": "CONVERSION_GEM_CHEST",
+      "namespace": "global_cn",
+      "module": "knights/shop/items",
+      "kind": "base",
+      "box": [
+        761,
+        153,
+        923,
+        176
+      ]
+    },
+    {
+      "name": "CONVERSION_GEM_CHEST",
+      "namespace": "global_cn",
+      "module": "knights/shop/items",
+      "kind": "button",
+      "box": [
+        763,
+        344,
+        922,
+        373
+      ]
+    },
+    {
+      "name": "SHOP_CHECK",
+      "namespace": "global_cn",
+      "module": "knights/shop/entries",
+      "kind": "base",
+      "box": [
+        316,
+        77,
+        429,
+        107
+      ]
+    },
+    {
+      "name": "SHOP_SELECTED",
+      "namespace": "global_cn",
+      "module": "knights/shop/entries",
+      "kind": "base",
+      "box": [
+        268,
+        198,
+        282,
+        235
+      ]
+    },
+    {
+      "name": "ARMBAND_ICON",
+      "namespace": "share",
+      "module": "knights/shop/currencies",
+      "kind": "base",
+      "box": [
+        371,
+        347,
+        393,
+        372
+      ]
+    }
+  ]
+}

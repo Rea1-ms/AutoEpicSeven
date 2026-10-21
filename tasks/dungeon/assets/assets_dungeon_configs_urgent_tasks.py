@@ -25,15 +25,13 @@ OCR_URGENT_TASKS_REMAINING = ButtonWrapper(
 )
 READY_TO_FIGHT = ButtonWrapper(
     name='READY_TO_FIGHT',
-    cn=None,
-    global_cn=Button(
-        file='./assets/global_cn/dungeon/configs/urgent_tasks/READY_TO_FIGHT.png',
+    share=Button(
+        file='./assets/share/dungeon/configs/urgent_tasks/READY_TO_FIGHT.png',
         area=(1196, 632, 1227, 664),
         search=(1176, 612, 1247, 684),
         color=(43, 88, 28),
         button=(1196, 632, 1227, 664),
     ),
-    global_en=None,
 )
 URGENT_TASKS_CURRENCY_ICON = ButtonWrapper(
     name='URGENT_TASKS_CURRENCY_ICON',
@@ -59,15 +57,13 @@ URGENT_TASKS_NORMAL = ButtonWrapper(
 )
 URGENT_TASKS_NORMAL_SELECTED = ButtonWrapper(
     name='URGENT_TASKS_NORMAL_SELECTED',
-    cn=None,
-    global_cn=Button(
-        file='./assets/global_cn/dungeon/configs/urgent_tasks/URGENT_TASKS_NORMAL_SELECTED.png',
+    share=Button(
+        file='./assets/share/dungeon/configs/urgent_tasks/URGENT_TASKS_NORMAL_SELECTED.png',
         area=(930, 343, 1249, 350),
         search=(910, 323, 1269, 370),
         color=(132, 126, 84),
         button=(930, 343, 1249, 350),
     ),
-    global_en=None,
 )
 URGENT_TASKS_SUPERIOR = ButtonWrapper(
     name='URGENT_TASKS_SUPERIOR',
@@ -83,13 +79,11 @@ URGENT_TASKS_SUPERIOR = ButtonWrapper(
 )
 URGENT_TASKS_SUPERIOR_SELECTED = ButtonWrapper(
     name='URGENT_TASKS_SUPERIOR_SELECTED',
-    cn=None,
-    global_cn=Button(
-        file='./assets/global_cn/dungeon/configs/urgent_tasks/URGENT_TASKS_SUPERIOR_SELECTED.png',
+    share=Button(
+        file='./assets/share/dungeon/configs/urgent_tasks/URGENT_TASKS_SUPERIOR_SELECTED.png',
         area=(929, 529, 1251, 535),
         search=(909, 509, 1271, 555),
         color=(127, 120, 83),
         button=(929, 529, 1251, 535),
     ),
-    global_en=None,
 )

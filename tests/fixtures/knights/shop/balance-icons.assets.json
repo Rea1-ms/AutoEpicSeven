@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "source": "MuMu-20261007-133412-362.png",
+  "suite": "knights_shop_balances",
+  "case": "header_icons",
+  "items": [
+    {
+      "name": "ARMBAND_BALANCE_ICON",
+      "namespace": "share",
+      "module": "knights/shop/currencies",
+      "kind": "base",
+      "box": [
+        993,
+        80,
+        1017,
+        105
+      ]
+    },
+    {
+      "name": "BRAVE_CREST_BALANCE_ICON",
+      "namespace": "share",
+      "module": "knights/shop/currencies",
+      "kind": "base",
+      "box": [
+        1056,
+        81,
+        1079,
+        103
+      ]
+    },
+    {
+      "name": "PROOF_OF_COURAGE_BALANCE_ICON",
+      "namespace": "share",
+      "module": "knights/shop/currencies",
+      "kind": "base",
+      "box": [
+        1118,
+        80,
+        1141,
+        107
+      ]
+    },
+    {
+      "name": "SHOP_BALANCE_SEARCH",
+      "namespace": "share",
+      "module": "knights/shop/currencies",
+      "kind": "base",
+      "box": [
+        650,
+        76,
+        1210,
+        110
+      ]
+    }
+  ]
+}

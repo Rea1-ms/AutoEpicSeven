@@ -33,6 +33,36 @@ DEPOSIT_BOX_NOT_FULL = ButtonWrapper(
         button=(1179, 327, 1225, 370),
     ),
 )
+DEPOSIT_REWARD_TIER_A = ButtonWrapper(
+    name='DEPOSIT_REWARD_TIER_A',
+    share=Button(
+        file='./assets/share/sanctuary/heart_of_eulerbis/DEPOSIT_REWARD_TIER_A.png',
+        area=(1169, 382, 1233, 416),
+        search=(806, 380, 1248, 419),
+        color=(24, 27, 57),
+        button=(1169, 382, 1233, 416),
+    ),
+)
+DEPOSIT_REWARD_TIER_B = ButtonWrapper(
+    name='DEPOSIT_REWARD_TIER_B',
+    share=Button(
+        file='./assets/share/sanctuary/heart_of_eulerbis/DEPOSIT_REWARD_TIER_B.png',
+        area=(1169, 382, 1233, 416),
+        search=(806, 380, 1248, 419),
+        color=(18, 39, 67),
+        button=(1169, 382, 1233, 416),
+    ),
+)
+DEPOSIT_REWARD_TIER_S = ButtonWrapper(
+    name='DEPOSIT_REWARD_TIER_S',
+    share=Button(
+        file='./assets/share/sanctuary/heart_of_eulerbis/DEPOSIT_REWARD_TIER_S.png',
+        area=(821, 382, 885, 416),
+        search=(806, 380, 1248, 419),
+        color=(33, 38, 40),
+        button=(821, 382, 885, 416),
+    ),
+)
 LEVEL_UP = ButtonWrapper(
     name='LEVEL_UP',
     share=Button(

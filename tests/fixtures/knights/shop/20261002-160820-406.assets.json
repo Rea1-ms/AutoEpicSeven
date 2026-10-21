@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "source": "MuMu-20261002-160820-406.png",
+  "suite": "knights_shop",
+  "case": "20261002-160820-406",
+  "items": [
+    {
+      "name": "SHOP_ENTRY",
+      "namespace": "global_cn",
+      "module": "knights/shop/entries",
+      "kind": "base",
+      "box": [
+        70,
+        203,
+        103,
+        232
+      ]
+    }
+  ]
+}

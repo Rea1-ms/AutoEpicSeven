@@ -1,4 +1,5 @@
 from module.logger import logger
+from tasks.base.resource_scheduling import ResourceCoordinator
 
 
 class ArenaBurnoutMixin:
@@ -67,6 +68,7 @@ class ArenaBurnoutMixin:
         target = flag.predict_reach_time(flag.total)
         logger.info(f"Arena burnout: flags {predicted} -> {flag.total}, wait until {target}")
         self.config.task_delay(target=target)
+        ResourceCoordinator(self.config).wait("Arena", "arena_flag", flag.total)
         return True
 
     def _arena_delay_after_run(self) -> None:
