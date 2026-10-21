@@ -102,6 +102,10 @@
       "name": "Renovar subestadísticas de equipo",
       "help": "Abre manualmente la selección de subestadísticas de la forja. Busca velocidad 5 primero y luego las prioridades restantes. Bloquea solo objetivos alcanzados, hasta dos. Se detiene por objetivos o presupuesto, sin fabricar el equipo automáticamente. Solo interfaz del juego en chino simplificado."
     },
+    "Episode": {
+      "name": "Historia principal",
+      "help": "Continúa el capítulo actual, omite diálogos, combate y recoge recompensas con el equipo actual. Se detiene por derrota o energía insuficiente, sin recargar energía. Las capturas verificadas corresponden al episodio 6 en chino simplificado."
+    },
     "SanctuaryMonthly": {
       "name": "Santuario - Mensual",
       "help": "Módulo mensual de santuario con planificador independiente."
@@ -1090,6 +1094,27 @@
     "BuyHucheMysticMedals": {
       "name": "Comprar medallas místicas en la tienda de Huche",
       "help": "Solo servidor internacional en chino simplificado. Compra únicamente medallas místicas según las existencias y el saldo de piedras celestiales. El primer lote cambia cada 12 horas y no siempre incluye medallas. Compra la oferta de 160 cuando aparezca; si una revisión completa no encuentra medallas, espera al próximo lote. La oferta normal de 200 tiene un cupo fijo de 4 para todo el evento; al agotarse, revisa solo el primer lote rotativo. Revisa a las 11:00 y 23:00 UTC+8. Desactivado por defecto; al activarlo se gastan piedras celestiales."
+    }
+  },
+  "Episode": {
+    "_info": {
+      "name": "Historia principal",
+      "help": "Continúa el capítulo actual, omite diálogos, combate y recoge recompensas con el equipo actual. Se detiene por derrota o energía insuficiente, sin recargar energía. Las capturas verificadas corresponden al episodio 6 en chino simplificado."
+    },
+    "Number": {
+      "name": "Episodio",
+      "help": "0 continúa el episodio actual; otro número cambia mediante la selección de capítulos.",
+      "0": "Episodio actual",
+      "1": "Episode 1",
+      "2": "Episode 2",
+      "3": "Episode 3",
+      "4": "Episode 4",
+      "5": "Episode 5",
+      "6": "Episode 6"
+    },
+    "MaxStages": {
+      "name": "Límite de etapas",
+      "help": "0 continúa hasta detenerse. Un combate o historia cuenta una vez al cerrar las recompensas y volver al mapa."
     }
   },
   "BuyPenguins": {

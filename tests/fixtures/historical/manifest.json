@@ -467,7 +467,9 @@
       ],
       "used_by": [
         "tests.captured.test_urgent_tasks.ManualChecks.test_urgent_task_recognition_and_exchange",
-        "tests.captured.test_urgent_tasks_hint.HintScreenshotTests.test_unrelated_pages_do_not_report_ready_prepare"
+        "tests.captured.test_urgent_tasks_hint.HintScreenshotTests.test_unrelated_pages_do_not_report_ready_prepare",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_available_manual_battle_still_retries_auto_toggle",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages"
       ]
     },
     "legacy-urgent-tasks-battle-result": {
@@ -494,7 +496,8 @@
       ],
       "used_by": [
         "tests.captured.test_urgent_tasks.ManualChecks.test_urgent_task_recognition_and_exchange",
-        "tests.captured.test_urgent_tasks_hint.HintScreenshotTests.test_unrelated_pages_do_not_report_ready_prepare"
+        "tests.captured.test_urgent_tasks_hint.HintScreenshotTests.test_unrelated_pages_do_not_report_ready_prepare",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages"
       ]
     },
     "legacy-urgent-tasks-normal-prepare-large": {
@@ -796,7 +799,9 @@
         ]
       ],
       "used_by": [
-        "tests.captured.test_urgent_tasks.ManualChecks.test_urgent_task_recognition_and_exchange"
+        "tests.captured.test_urgent_tasks.ManualChecks.test_urgent_task_recognition_and_exchange",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_available_manual_battle_still_retries_auto_toggle",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages"
       ]
     },
     "legacy-urgent-tasks-battle-clear": {
@@ -816,7 +821,8 @@
         ]
       ],
       "used_by": [
-        "tests.captured.test_urgent_tasks.ManualChecks.test_urgent_task_recognition_and_exchange"
+        "tests.captured.test_urgent_tasks.ManualChecks.test_urgent_task_recognition_and_exchange",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages"
       ]
     },
     "legacy-urgent-tasks-battle-leave": {
@@ -836,7 +842,8 @@
         ]
       ],
       "used_by": [
-        "tests.captured.test_urgent_tasks.ManualChecks.test_urgent_task_recognition_and_exchange"
+        "tests.captured.test_urgent_tasks.ManualChecks.test_urgent_task_recognition_and_exchange",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages"
       ]
     },
     "legacy-navigation-recognition-black": {
@@ -1306,6 +1313,855 @@
         "tests.captured.test_activity_selection.ActivitySelectionTests.test_scroll_position_uses_common_search_and_restores_wrapper",
         "tests.captured.test_activity_selection.ActivitySelectionTests.test_text_without_selected_color_is_not_accepted",
         "tests.captured.test_common_activity.RealScreenshotBatchTests.test_all_pending_templates_choose_only_the_actual_selected_event"
+      ]
+    },
+    "20261019-201915-057": {
+      "path": "tests/fixtures/historical/input/episode/MuMu-20261019-201915-057.png",
+      "sha256": "85ce1cd253defaa16fd82283f8f6231acbb5acbbe535d167a0c83f91d97a8d45",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "episode_main",
+      "source": "MuMu-20261019-201915-057.png",
+      "source_sha256": "ff7a90c898a4c9a4be70cd823a637f44c3a5524c035618adc6f2198e28bdcbcc",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          0,
+          0,
+          285,
+          100
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_episode.EpisodePushTests.test_captured_exploration_marker_rejects_normal_and_obscured_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_pages_reject_dimmed_map_and_unrelated_rewards",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_story_team_marker_rejects_other_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages"
+      ]
+    },
+    "20261019-201919-177": {
+      "path": "tests/fixtures/historical/input/episode/MuMu-20261019-201919-177.png",
+      "sha256": "ce9532e5eb072078a1e4e7fa83dccb559a95d3a54f2bd331d6cade2dc7569550",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "episode_map_frontier",
+      "source": "MuMu-20261019-201919-177.png",
+      "source_sha256": "91b9492809abc5bdbd327095c94cec92ff4889dcda34290d3c1c871fcb00211e",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_episode.EpisodePushTests.test_captured_exploration_marker_rejects_normal_and_obscured_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_map_reads_frontier_and_excludes_locked_rows",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_pages_reject_dimmed_map_and_unrelated_rewards",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_round_retries_without_double_counting_and_settles_both_rewards",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_story_team_marker_rejects_other_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_supporter_recognition_rejects_unrelated_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages"
+      ]
+    },
+    "20261019-201922-561": {
+      "path": "tests/fixtures/historical/input/episode/MuMu-20261019-201922-561.png",
+      "sha256": "f5426b155905f0d50fa060d68b85d86c807c5a46ce50cda3d92881de4ff3a73b",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "episode_supporter",
+      "source": "MuMu-20261019-201922-561.png",
+      "source_sha256": "a1bb659baae96e2887418cdc432fc9758428485ec8eeb0a7a45c9990ce5c2763",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_episode.EpisodePushTests.test_captured_exploration_marker_rejects_normal_and_obscured_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_pages_reject_dimmed_map_and_unrelated_rewards",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_round_retries_without_double_counting_and_settles_both_rewards",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_story_team_marker_rejects_other_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_supporter_recognition_rejects_unrelated_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages"
+      ]
+    },
+    "20261019-201925-028": {
+      "path": "tests/fixtures/historical/input/episode/MuMu-20261019-201925-028.png",
+      "sha256": "b7bb3ffc73a9a1d090c983d9f1e3099aed1229823a89ed9d706baad767f1b24b",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "episode_team_prepare",
+      "source": "MuMu-20261019-201925-028.png",
+      "source_sha256": "306545a107d83b810f60c7cec5c8bac02945782da826e796c37040e136855f86",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_episode.EpisodePushTests.test_captured_exploration_marker_rejects_normal_and_obscured_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_last_star_condition_reads_keyword_and_single_hero",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_normal_team_with_strategy_condition_starts",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_pages_reject_dimmed_map_and_unrelated_rewards",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_prepare_reads_actual_cost_and_available",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_story_team_marker_rejects_other_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_supporter_recognition_rejects_unrelated_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages"
+      ]
+    },
+    "20261019-201930-080": {
+      "path": "tests/fixtures/historical/input/episode/MuMu-20261019-201930-080.png",
+      "sha256": "25984c8d91bb87e75d7560f40078f1b86e2c445c2b63bc7c53c7406e3ea2b496",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "episode_cinematic",
+      "source": "MuMu-20261019-201930-080.png",
+      "source_sha256": "6336ecaaa03fcd4428c7f5bcc0f3d8d82445950e4760eb8fe239d5205c2c925c",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_episode.EpisodePushTests.test_captured_exploration_marker_rejects_normal_and_obscured_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_pages_reject_dimmed_map_and_unrelated_rewards",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_round_retries_without_double_counting_and_settles_both_rewards",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_story_team_marker_rejects_other_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages"
+      ]
+    },
+    "20261019-201935-800": {
+      "path": "tests/fixtures/historical/input/episode/MuMu-20261019-201935-800.png",
+      "sha256": "8e2cd9db327459686bca890c4b08b1a1b819a492dd064f43cde0ab84cf746a99",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "episode_cinematic_text",
+      "source": "MuMu-20261019-201935-800.png",
+      "source_sha256": "8232ee74c9273dd7d462cbba197dfac1c47b27d011a09e350c7bad49ea796963",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_episode.EpisodePushTests.test_captured_exploration_marker_rejects_normal_and_obscured_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_pages_reject_dimmed_map_and_unrelated_rewards",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_round_retries_without_double_counting_and_settles_both_rewards",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_story_team_marker_rejects_other_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages"
+      ]
+    },
+    "20261019-201941-878": {
+      "path": "tests/fixtures/historical/input/episode/MuMu-20261019-201941-878.png",
+      "sha256": "17bc40a54ec69818c769ed880842592ab7c807f428d9a36b28c428342533ffab",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "episode_dialogue",
+      "source": "MuMu-20261019-201941-878.png",
+      "source_sha256": "54c4c386b23951b48680a8bd0bd3207398d8be6574e75cbf38a37047fb2d9fd5",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_episode.EpisodePushTests.test_captured_exploration_marker_rejects_normal_and_obscured_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_pages_reject_dimmed_map_and_unrelated_rewards",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_round_retries_without_double_counting_and_settles_both_rewards",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_story_team_marker_rejects_other_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages"
+      ]
+    },
+    "20261019-201943-776": {
+      "path": "tests/fixtures/historical/input/episode/MuMu-20261019-201943-776.png",
+      "sha256": "f10ceaacadf5b9697c833f8898a5ce50baf46db6ade3bd4cca48478043dac273",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "episode_skip_confirm",
+      "source": "MuMu-20261019-201943-776.png",
+      "source_sha256": "2a90a926ef7bad145aa76bc2e62de9b5336d3abad3e89eb465e09c056782fa13",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_episode.EpisodePushTests.test_captured_exploration_marker_rejects_normal_and_obscured_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_pages_reject_dimmed_map_and_unrelated_rewards",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_round_retries_without_double_counting_and_settles_both_rewards",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_story_team_marker_rejects_other_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_supporter_recognition_rejects_unrelated_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages"
+      ]
+    },
+    "20261019-201947-654": {
+      "path": "tests/fixtures/historical/input/episode/MuMu-20261019-201947-654.png",
+      "sha256": "b5781f369ba2510f2c10ef69830721a2f98956a90f34913796231576cc732efc",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "episode_battle_intro",
+      "source": "MuMu-20261019-201947-654.png",
+      "source_sha256": "10dea1486dcf3f4eb0287359d0125146fd605642db290c627547148e72860fde",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_episode.EpisodePushTests.test_captured_exploration_marker_rejects_normal_and_obscured_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_pages_reject_dimmed_map_and_unrelated_rewards",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_round_retries_without_double_counting_and_settles_both_rewards",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_story_team_marker_rejects_other_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages"
+      ]
+    },
+    "20261019-202147-227": {
+      "path": "tests/fixtures/historical/input/episode/MuMu-20261019-202147-227.png",
+      "sha256": "7fd99faeb3bdfedac26db6c1f0378815249d2148116ae1bd00c86705df0a350f",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "episode_post_battle_story",
+      "source": "MuMu-20261019-202147-227.png",
+      "source_sha256": "d80a0ab110df7221dde3866bfec7f8a06b18004d24f3864d55972f460bfe5881",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_episode.EpisodePushTests.test_captured_exploration_marker_rejects_normal_and_obscured_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_pages_reject_dimmed_map_and_unrelated_rewards",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_round_retries_without_double_counting_and_settles_both_rewards",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_story_team_marker_rejects_other_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages"
+      ]
+    },
+    "20261019-202152-519": {
+      "path": "tests/fixtures/historical/input/episode/MuMu-20261019-202152-519.png",
+      "sha256": "2437a08d2283c7015c806df4a73b575efa69dcbe37b00b2984a59cf7e79fded5",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "episode_post_battle_skip",
+      "source": "MuMu-20261019-202152-519.png",
+      "source_sha256": "98ee69f8fc8ec1f2bcd0e37dc9ca11edcff18ccd1c3f53c4b40f187cac512de2",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_episode.EpisodePushTests.test_captured_exploration_marker_rejects_normal_and_obscured_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_pages_reject_dimmed_map_and_unrelated_rewards",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_round_retries_without_double_counting_and_settles_both_rewards",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_story_team_marker_rejects_other_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages"
+      ]
+    },
+    "20261019-202154-364": {
+      "path": "tests/fixtures/historical/input/episode/MuMu-20261019-202154-364.png",
+      "sha256": "941c0a2a7144d57695ffa62bf0168a76b6c33ecc61118d710cba4cc36da8f020",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "episode_battle_loot",
+      "source": "MuMu-20261019-202154-364.png",
+      "source_sha256": "76b723b323af4df2c925fa0749bba6b792d6664320493a02f6857af46bdebdc5",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_episode.EpisodePushTests.test_captured_exploration_marker_rejects_normal_and_obscured_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_pages_reject_dimmed_map_and_unrelated_rewards",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_round_retries_without_double_counting_and_settles_both_rewards",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_story_team_marker_rejects_other_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages"
+      ]
+    },
+    "20261019-202155-839": {
+      "path": "tests/fixtures/historical/input/episode/MuMu-20261019-202155-839.png",
+      "sha256": "88f84700e483999becbb927cbce8cf4fd9873194764fa6a4e6d017f4e8345868",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "episode_battle_clear",
+      "source": "MuMu-20261019-202155-839.png",
+      "source_sha256": "4d3712b6cc261da7d074f3c5183b16693e699ba8ef3c62216089d3ddcc3414da",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_episode.EpisodePushTests.test_captured_exploration_marker_rejects_normal_and_obscured_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_pages_reject_dimmed_map_and_unrelated_rewards",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_round_retries_without_double_counting_and_settles_both_rewards",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_story_team_marker_rejects_other_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_supporter_recognition_rejects_unrelated_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages"
+      ]
+    },
+    "20261019-202159-255": {
+      "path": "tests/fixtures/historical/input/episode/MuMu-20261019-202159-255.png",
+      "sha256": "e1fa361f2a4ca675f7e7b1c434ac40794a764d3a6a5399fe383f010662bf53e8",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "episode_battle_result",
+      "source": "MuMu-20261019-202159-255.png",
+      "source_sha256": "644751454eccb0a47f3c5bf6f2cb772ab77d04c1824a940d1051bdc6c0b9b1ae",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          0,
+          0,
+          230,
+          108
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_episode.EpisodePushTests.test_captured_clear_and_confirmation_retry_visible_controls",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_exploration_marker_rejects_normal_and_obscured_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_pages_reject_dimmed_map_and_unrelated_rewards",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_round_retries_without_double_counting_and_settles_both_rewards",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_story_team_marker_rejects_other_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages"
+      ]
+    },
+    "20261019-202201-945": {
+      "path": "tests/fixtures/historical/input/episode/MuMu-20261019-202201-945.png",
+      "sha256": "f3415bb876aa574c0322ef1144d8c52a8215f46a2b7d3a0f558781baffa67136",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "episode_story_complete",
+      "source": "MuMu-20261019-202201-945.png",
+      "source_sha256": "1ba6283cd995372903f9b7dadbe7f7f071596aa1933cae823efc5efc07a95c2e",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_episode.EpisodePushTests.test_captured_exploration_marker_rejects_normal_and_obscured_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_pages_reject_dimmed_map_and_unrelated_rewards",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_round_retries_without_double_counting_and_settles_both_rewards",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_story_team_marker_rejects_other_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_supporter_recognition_rejects_unrelated_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages"
+      ]
+    },
+    "20261019-202204-254": {
+      "path": "tests/fixtures/historical/input/episode/MuMu-20261019-202204-254.png",
+      "sha256": "615a8afedd7c659d64cea7455f22199d998a0032f886cbb1249bc855251e08ce",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "episode_chapter_reward",
+      "source": "MuMu-20261019-202204-254.png",
+      "source_sha256": "bbf9a6e834fa5a3bb53cd4dce03904487b6680bf453bc265c3ab965977685293",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_episode.EpisodePushTests.test_captured_exploration_marker_rejects_normal_and_obscured_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_pages_reject_dimmed_map_and_unrelated_rewards",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_round_retries_without_double_counting_and_settles_both_rewards",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_story_team_marker_rejects_other_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_supporter_recognition_rejects_unrelated_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages"
+      ]
+    },
+    "20261019-221856-229": {
+      "path": "tests/fixtures/historical/input/episode/MuMu-20261019-221856-229.png",
+      "sha256": "10d153fd9718bee1c80501fa438c844c793156dd3bbe53489a8c4678ad8a11d8",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "episode_supporter_after_story",
+      "source": "MuMu-20261019-221856-229.png",
+      "source_sha256": "4e0307c20c996be976980ea87ca84ce48d3690324528da705ce47468a1d504f0",
+      "privacy_redaction": [
+        [
+          224,
+          190,
+          700,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_episode.EpisodePushTests.test_captured_exploration_marker_rejects_normal_and_obscured_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_pages_reject_dimmed_map_and_unrelated_rewards",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_story_team_marker_rejects_other_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_supporter_recognition_rejects_unrelated_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_supporter_retries_before_insufficient_stamina_stop",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_story_only_node_continues_through_captured_supporter"
+      ]
+    },
+    "20261019-222835-132": {
+      "path": "tests/fixtures/historical/input/episode/MuMu-20261019-222835-132.png",
+      "sha256": "1f5204c0f0677dee4ff58d6f65197b8312a6b3b0656cd6fde67e1105075cee62",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "episode_prepare_timeout",
+      "source": "MuMu-20261019-222835-132.png",
+      "source_sha256": "3a715b7c17496311700d71bc1fc5ff8eecb41055d3d5d11d8cd519e50a65fa16",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_episode.EpisodePushTests.test_captured_exploration_marker_rejects_normal_and_obscured_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_last_star_condition_reads_keyword_and_single_hero",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_normal_team_with_strategy_condition_starts",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_pages_reject_dimmed_map_and_unrelated_rewards",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_prepare_reads_actual_cost_and_available",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_story_team_marker_rejects_other_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_dimmed_captured_prepare_never_reads_stamina_or_starts"
+      ]
+    },
+    "20261019-224016-279": {
+      "path": "tests/fixtures/historical/input/episode/MuMu-20261019-224016-279.png",
+      "sha256": "4604c1bc188e64a8a246b996691dc2c7d9fabc6ad33d334872eaeb677cfd7ff3",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "episode_clear_stalled",
+      "source": "MuMu-20261019-224016-279.png",
+      "source_sha256": "8fb49efa6aabc393bdc344d8d7c821ee32c046e84c0f6b265c9f1e50ec41a65b",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_episode.EpisodePushTests.test_captured_clear_and_confirmation_retry_visible_controls",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_clear_resumes_when_confirmation_frame_was_not_sampled",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_exploration_marker_rejects_normal_and_obscured_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_pages_reject_dimmed_map_and_unrelated_rewards",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_story_team_marker_rejects_other_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages"
+      ]
+    },
+    "20261019-225007-086": {
+      "path": "tests/fixtures/historical/input/episode/MuMu-20261019-225007-086.png",
+      "sha256": "b5e41f29102f5cb523de218d2c2aeaafbc47e6f440bc91ba16dd7c96d0f68c4c",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "episode_story_team_map",
+      "source": "MuMu-20261019-225007-086.png",
+      "source_sha256": "c55b5a3fe3ab7a5318aa3d38fb5fca2e12ae0844de92af8842c984e2ca14761a",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_episode.EpisodePushTests.test_captured_exploration_marker_rejects_normal_and_obscured_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_story_team_marker_rejects_other_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages"
+      ]
+    },
+    "20261019-225009-755": {
+      "path": "tests/fixtures/historical/input/episode/MuMu-20261019-225009-755.png",
+      "sha256": "83dbc424e64a3818394fe8d2cc1567edc8452e2b1ca43d21cef623872b38a225",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "episode_story_team_supporter",
+      "source": "MuMu-20261019-225009-755.png",
+      "source_sha256": "968c24b79a19c7eae8ba479e1b37baa5ee64cd5333d8dcd3b5da9cb5795d25f4",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          224,
+          190,
+          700,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_episode.EpisodePushTests.test_captured_exploration_marker_rejects_normal_and_obscured_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_story_team_marker_rejects_other_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages"
+      ]
+    },
+    "20261019-225011-385": {
+      "path": "tests/fixtures/historical/input/episode/MuMu-20261019-225011-385.png",
+      "sha256": "e6d128c302c2c2c59ec36cef2fb66156d4a08c19bfe42be37ad394a2486c70f4",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "episode_story_team_prepare",
+      "source": "MuMu-20261019-225011-385.png",
+      "source_sha256": "b187d4cc73536f0a94ea1bf67b2c558e4a9193d4232b5b1dc14078533eae0dd7",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_episode.EpisodePushTests.test_captured_exploration_marker_rejects_normal_and_obscured_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_last_star_condition_reads_keyword_and_single_hero",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_story_team_marker_rejects_other_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_story_team_stops_before_reading_cost_or_starting",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_latest_supporter_retries_then_stops_at_story_team"
+      ]
+    },
+    "20261019-225014-473": {
+      "path": "tests/fixtures/historical/input/episode/MuMu-20261019-225014-473.png",
+      "sha256": "855fb16f8ac1d1627648b50a1868c171d597dffc2041c2ab1e97fac7f501f040",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "episode_story_team_empty_slots",
+      "source": "MuMu-20261019-225014-473.png",
+      "source_sha256": "75b1da3fa516e0b787aa9642fbbd28ec7f94e3af04aa3b2d9a3830b1a6f98999",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_episode.EpisodePushTests.test_captured_exploration_marker_rejects_normal_and_obscured_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_last_star_condition_reads_keyword_and_single_hero",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_story_team_marker_rejects_other_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_story_team_stops_before_reading_cost_or_starting",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages"
+      ]
+    },
+    "20261021-180926-061": {
+      "path": "tests/fixtures/historical/input/episode/MuMu-20261021-180926-061.png",
+      "sha256": "adced1097a07e6421f109abf2e9b5fc23b64587e0e3bf102bff82667a0177d27",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "episode_supporter_navigation_timeout",
+      "source": "MuMu-20261021-180926-061.png",
+      "source_sha256": "896b5b98b91f336255e69166c51ca737ee1b7f2eb0dcbdf8abb52cbed584980b",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          224,
+          190,
+          700,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_episode.EpisodePushTests.test_captured_exploration_marker_rejects_normal_and_obscured_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_story_team_marker_rejects_other_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_supporter_recognition_rejects_unrelated_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_latest_supporter_retries_then_stops_at_story_team",
+        "tests.upstream.test_device.AssetLanguageTests.test_connection_refreshes_cached_assets_for_configured_language"
+      ]
+    },
+    "20261021-193325-307": {
+      "path": "tests/fixtures/historical/input/episode/MuMu-20261021-193325-307.png",
+      "sha256": "9cb679840f5bd2e80bca74fdbadfbf3a1b96c550cb2f43e9e15739c392f14a83",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "episode_stage_six_map",
+      "source": "MuMu-20261021-193325-307.png",
+      "source_sha256": "9c413c7f0832ed6e9031ce3a2d422c1acb06d9b263939361974c59dc2ff1f331",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_episode.EpisodePushTests.test_captured_exploration_marker_rejects_normal_and_obscured_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_map_reads_frontier_and_excludes_locked_rows",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_stage_six_story_team_stops_after_supporter",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_stage_six_supporter_retries_choose_team_after_map",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_story_team_marker_rejects_other_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_supporter_recognition_rejects_unrelated_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages"
+      ]
+    },
+    "20261021-193327-115": {
+      "path": "tests/fixtures/historical/input/episode/MuMu-20261021-193327-115.png",
+      "sha256": "5019faf607e3e15db0961711b4682e73c9743a02b899a65f1c78fa19d42e07b1",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "episode_stage_six_supporter_stalled",
+      "source": "MuMu-20261021-193327-115.png",
+      "source_sha256": "4b14e323281b863073593c8d117b2a34e6551a397c2272b094a9f8ba41c46052",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          224,
+          190,
+          700,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_episode.EpisodePushTests.test_captured_exploration_marker_rejects_normal_and_obscured_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_stage_six_story_team_stops_after_supporter",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_stage_six_supporter_retries_choose_team_after_map",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_story_team_marker_rejects_other_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_supporter_recognition_rejects_unrelated_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages"
+      ]
+    },
+    "20261021-194836-087": {
+      "path": "tests/fixtures/historical/input/episode/MuMu-20261021-194836-087.png",
+      "sha256": "5a8349e0ac1bd64d6960da24d59f16da63d80ad609ffb85fc11eb2f83e957c64",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "episode_story_team_stage_six_missed",
+      "source": "MuMu-20261021-194836-087.png",
+      "source_sha256": "5564d36c54e609f617df6f0200703bac222887e140d9656132e7624d17aa028d",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_episode.EpisodePushTests.test_captured_exploration_marker_rejects_normal_and_obscured_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_last_star_condition_reads_keyword_and_single_hero",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_stage_six_story_team_stops_after_supporter",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_story_team_marker_rejects_other_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_story_team_stops_before_reading_cost_or_starting",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages"
+      ]
+    },
+    "20261021-200843-005": {
+      "path": "tests/fixtures/historical/input/episode/MuMu-20261021-200843-005.png",
+      "sha256": "472bb8a8eef4daeabd1e7453a1a08795967aff74255544c780082c20e512881f",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "episode_last_star_supporter_strategy",
+      "source": "MuMu-20261021-200843-005.png",
+      "source_sha256": "66e7a94c7873b8ade31be2c6789f7e75cf568ee93d3a3e2e433b6b1422739ce0",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          224,
+          190,
+          700,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_episode.EpisodePushTests.test_captured_exploration_marker_rejects_normal_and_obscured_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_last_star_condition_reads_keyword_and_single_hero",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_story_team_marker_rejects_other_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_latest_supporter_retries_then_stops_at_story_team"
+      ]
+    },
+    "20261021-200846-129": {
+      "path": "tests/fixtures/historical/input/episode/MuMu-20261021-200846-129.png",
+      "sha256": "1896a21b567ce748e05c7a5434fc2d2515d876805b1b2bee30f56b676503618c",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "episode_last_star_story_team_strategy",
+      "source": "MuMu-20261021-200846-129.png",
+      "source_sha256": "e2c859b46172651d2d1cac822a5125147c793b89469cd6fe7dba1158eddda2e3",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_episode.EpisodePushTests.test_captured_exploration_marker_rejects_normal_and_obscured_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_last_star_condition_reads_keyword_and_single_hero",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_story_team_marker_rejects_other_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_story_team_stops_before_reading_cost_or_starting",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_last_star_condition_ignores_keyword_in_earlier_rows",
+        "tests.combat.test_episode.EpisodePushTests.test_latest_supporter_retries_then_stops_at_story_team"
+      ]
+    },
+    "20261021-200850-486": {
+      "path": "tests/fixtures/historical/input/episode/MuMu-20261021-200850-486.png",
+      "sha256": "4b0922bc0b1489f6cb3b31d3e584d4bad2146bfa681c21726a9fa15608a47a22",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "episode_last_star_single_hero_allowed",
+      "source": "MuMu-20261021-200850-486.png",
+      "source_sha256": "cd1ac3daa208aac09bab37de83c6789e3ce6333fab9357c51d79542e16ff26f1",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_episode.EpisodePushTests.test_captured_exploration_marker_rejects_normal_and_obscured_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_last_star_condition_reads_keyword_and_single_hero",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_prepare_uses_shared_start_and_retries_until_battle",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_round_retries_without_double_counting_and_settles_both_rewards",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_story_team_marker_rejects_other_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_stops_before_any_battle_action",
+        "tests.combat.test_episode.EpisodePushTests.test_last_star_condition_ignores_keyword_in_earlier_rows",
+        "tests.combat.test_episode.EpisodePushTests.test_story_only_node_continues_through_captured_supporter"
+      ]
+    },
+    "20261021-202808-776": {
+      "path": "tests/fixtures/historical/input/episode/MuMu-20261021-202808-776.png",
+      "sha256": "1d15350830780b14c3bdda3c560f657f5c0aaa96730fa188b050975d5efb6340",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "episode_auto_combat_unavailable",
+      "source": "MuMu-20261021-202808-776.png",
+      "source_sha256": "cb92669277decf237ef82b0621723cb052336317e1abda5288b0e17b64f0b841",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_episode.EpisodePushTests.test_captured_exploration_marker_rejects_normal_and_obscured_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_stops_before_any_battle_action"
+      ]
+    },
+    "20261021-203153-292": {
+      "path": "tests/fixtures/historical/input/episode/MuMu-20261021-203153-292.png",
+      "sha256": "7103307de05a7314d04f2d97be3ad5b7a54c8812fc52aea06fe8113adab24799",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "episode_normal_team_strategy_condition_allowed",
+      "source": "MuMu-20261021-203153-292.png",
+      "source_sha256": "b37f41768348f4ca7489d0a16650b67d1fde58305871986071e166cb6236b886",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_episode.EpisodePushTests.test_captured_exploration_marker_rejects_normal_and_obscured_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_last_star_condition_reads_keyword_and_single_hero",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_normal_team_with_strategy_condition_starts",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_prepare_reads_actual_cost_and_available",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_story_team_marker_rejects_other_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages"
+      ]
+    },
+    "20261021-211204-367": {
+      "path": "tests/fixtures/historical/input/episode/MuMu-20261021-211204-367.png",
+      "sha256": "329621214591a663f7fd04f92879c34b4829bccc90b7153ec0bb3df475fc5c04",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "episode_exploration_stage_requires_manual",
+      "source": "MuMu-20261021-211204-367.png",
+      "source_sha256": "b0f73b5cae173e1ba3c8dbd841c1314f9becbb260cd7e3475937186c0d685f73",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_episode.EpisodePushTests.test_captured_exploration_marker_rejects_normal_and_obscured_pages",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_exploration_stage_stops_before_navigation_or_starting",
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages"
       ]
     }
   },

@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "source": "../../input/episode/MuMu-20261021-193327-115.png",
+  "suite": "episode",
+  "case": "choose_team_20261021_193327",
+  "items": [
+    {
+      "name": "CHOOSE_TEAM",
+      "namespace": "global_cn",
+      "module": "dungeon/action",
+      "frame": 2,
+      "box": [1038, 645, 1128, 669]
+    }
+  ]
+}

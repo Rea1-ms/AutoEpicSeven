@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "source": "../../input/episode/MuMu-20261019-201941-878.png",
+  "suite": "episode_20261019",
+  "case": "201941-878",
+  "items": [
+    {
+      "name": "EPISODE_STORY_SKIP",
+      "box": [
+        1187,
+        26,
+        1254,
+        51
+      ],
+      "kind": "base",
+      "namespace": "share",
+      "module": "dungeon/episode/story"
+    }
+  ]
+}

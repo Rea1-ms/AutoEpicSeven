@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "source": "../../input/episode/MuMu-20261019-224016-279.png",
+  "suite": "episode",
+  "case": "clear_20261019",
+  "items": [
+    {
+      "name": "COMBAT_RESULT_CLEAR",
+      "namespace": "share",
+      "module": "dungeon/state",
+      "box": [520, 428, 770, 467],
+      "frame": 2
+    },
+    {
+      "name": "COMBAT_RESULT_CLEAR",
+      "namespace": "share",
+      "module": "dungeon/state",
+      "box": [1233, 663, 1251, 690],
+      "kind": "button",
+      "frame": 2
+    }
+  ]
+}

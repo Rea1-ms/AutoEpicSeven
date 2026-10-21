@@ -2,6 +2,8 @@
 
 import contextlib
 import importlib
+import subprocess
+import sys
 import unittest
 from types import SimpleNamespace
 from unittest.mock import Mock, patch
@@ -14,11 +16,80 @@ from module.device.connection import Connection
 from module.device.device import Device
 from module.device.method.adb import Adb
 from module.device.method.ldopengl import LDOpenGL
-from module.device.method.remove_warning import remove_screenshot_warning, remove_shell_warning
-from module.device.method.utils import remove_prefix, remove_suffix, removeprefix, removesuffix
+from module.device.method.remove_warning import (
+    remove_screenshot_warning,
+    remove_shell_warning,
+)
+from module.device.method.utils import (
+    remove_prefix,
+    remove_suffix,
+    removeprefix,
+    removesuffix,
+)
 from module.device.pkg_resources import remove_suffix as package_remove_suffix
 from module.exception import RequestHumanTakeover
+from tests.support.offline import ROOT
 from tests.support.windows import windows_registry_imports
+
+
+class AssetLanguageTests(unittest.TestCase):
+    def test_connection_refreshes_cached_assets_for_configured_language(self):
+        # Each process exercises the production connection initializer with
+        # its base/device methods replaced. No serial, account, ADB client,
+        # registry or emulator is opened; the parent runner keeps its guards.
+        code = """
+from types import SimpleNamespace
+from unittest.mock import patch
+from module.device.pkg_resources import get_distribution
+from module.config import server
+from module.device.connection import Connection
+from module.device.connection_attr import ConnectionAttr
+server.set_lang({before!r})
+from tasks.dungeon.assets.assets_dungeon_action import CHOOSE_TEAM
+from tasks.dungeon.assets.assets_dungeon_configs_side_story_entry import SUPPORTER_CHECK
+wrappers = (SUPPORTER_CHECK, CHOOSE_TEAM)
+for wrapper in wrappers:
+    wrapper._matched_button = wrapper.buttons[0]
+
+def fake_base(device, config):
+    device.config = config
+    device.is_over_http = True
+    device.adb = 'offline'
+
+config = SimpleNamespace(is_cloud_game=False, Emulator_PackageName={package!r},
+                         Emulator_GameLanguage={game_lang!r}, LANG={expected!r})
+with patch.object(ConnectionAttr, '__init__', fake_base), \\
+        patch.object(Connection, 'detect_device', side_effect=AssertionError('real device')), \\
+        patch.object(Connection, 'adb_connect') as connect, \\
+        patch.object(Connection, 'check_mumu_app_keep_alive') as keepalive:
+    Connection(config)
+    connect.assert_called_once_with(wait_device=False)
+    keepalive.assert_called_once_with()
+assert server.lang == {expected!r}, server.lang
+assert server.server == {package!r}, server.server
+if server.lang == 'global_cn':
+    from tests.support.offline import fixture_image, ROOT
+    image = fixture_image(ROOT / 'tests/fixtures/historical/manifest.json', '20261021-180926-061')
+    assert SUPPORTER_CHECK.match_template_luma(image, similarity=.8), 'supporter not recognized'
+    assert CHOOSE_TEAM.match_template(image), 'choose team not recognized'
+for wrapper in wrappers:
+    assert all(button.file.startswith({prefix!r}) for button in wrapper.buttons), (wrapper, wrapper.buttons)
+    assert wrapper.matched_button is wrapper.buttons[0], (wrapper, wrapper.matched_button)
+"""
+        for before, package, game_lang, expected, prefix in (
+            ('cn', 'OVERSEA-Play', 'cn', 'global_cn', './assets/global_cn/'),
+            ('global_cn', 'CN-Official', 'cn', 'cn', './assets/cn/'),
+            ('global_cn', 'OVERSEA-Play', 'en', 'global_en', './assets/cn/'),
+        ):
+            with self.subTest(before=before, expected=expected):
+                result = subprocess.run(
+                    [sys.executable, '-X', 'utf8', '-B', '-c', code.format(
+                        before=before, package=package, game_lang=game_lang,
+                        expected=expected, prefix=prefix,
+                    )],
+                    cwd=ROOT, capture_output=True, text=True, encoding='utf-8', timeout=30, check=False,
+                )
+                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
 
 def benchmark_for(sdk):

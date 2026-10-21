@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "source": "../../input/episode/MuMu-20261019-201925-028.png",
+  "suite": "episode_20261019",
+  "case": "201925-028",
+  "items": [
+    {
+      "name": "EPISODE_TEAM_CHECK",
+      "box": [
+        272,
+        632,
+        368,
+        650
+      ],
+      "kind": "base",
+      "namespace": "share",
+      "module": "dungeon/episode/battle"
+    },
+    {
+      "name": "EPISODE_BATTLE_START",
+      "box": [
+        1102,
+        648,
+        1187,
+        671
+      ],
+      "kind": "base",
+      "namespace": "share",
+      "module": "dungeon/episode/battle"
+    },
+    {
+      "name": "EPISODE_BATTLE_START",
+      "box": [
+        1087,
+        637,
+        1203,
+        687
+      ],
+      "kind": "button",
+      "namespace": "share",
+      "module": "dungeon/episode/battle"
+    },
+    {
+      "name": "OCR_EPISODE_STAMINA_COST",
+      "box": [
+        971,
+        646,
+        1048,
+        673
+      ],
+      "kind": "base",
+      "namespace": "share",
+      "module": "dungeon/episode/battle"
+    },
+    {
+      "name": "EPISODE_TEAM_AUTO_ON",
+      "box": [
+        846,
+        527,
+        872,
+        554
+      ],
+      "kind": "base",
+      "namespace": "share",
+      "module": "dungeon/episode/battle"
+    },
+    {
+      "name": "EPISODE_TEAM_AUTO_ON",
+      "box": [
+        719,
+        526,
+        873,
+        555
+      ],
+      "kind": "button",
+      "namespace": "share",
+      "module": "dungeon/episode/battle"
+    }
+  ]
+}

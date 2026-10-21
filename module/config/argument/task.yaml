@@ -94,6 +94,9 @@ Tool:
     EquipmentReroll:
       - Scheduler
       - EquipmentReroll
+    Episode:
+      - Scheduler
+      - Episode
 
 # ==================== Monthly ====================
 

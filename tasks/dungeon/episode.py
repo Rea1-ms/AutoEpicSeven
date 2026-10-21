@@ -270,14 +270,18 @@ class EpisodeNavigateMixin:
             similarity=self.COMBAT_CHECK_SIMILARITY,
         )
 
-    def _swipe_episode_stage_list(self, toward_top=False, strong=False) -> None:
-        x = (EPISODE_STAGE_SEARCH.area[0] + EPISODE_STAGE_SEARCH.area[2]) // 2
+    def _swipe_episode_stage_list(self, toward_top=False, strong=False, *, area=None) -> None:
+        # Material farming keeps its existing locator area. Story progression
+        # supplies its full text-list area because later episodes use another
+        # viewport; both flows derive gestures from assets rather than pixels.
+        left, area_top, right, area_bottom = area if area is not None else EPISODE_STAGE_SEARCH.area
+        x = (left + right) // 2
         if strong:
-            top = EPISODE_STAGE_SEARCH.area[1] + 5
-            bottom = EPISODE_STAGE_SEARCH.area[3] - 5
+            top = area_top + 5
+            bottom = area_bottom - 5
         else:
-            top = EPISODE_STAGE_SEARCH.area[1] + 20
-            bottom = EPISODE_STAGE_SEARCH.area[3] - 20
+            top = area_top + 20
+            bottom = area_bottom - 20
         if toward_top:
             start = (x, top)
             end = (x, bottom)

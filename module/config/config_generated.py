@@ -197,6 +197,10 @@ class GeneratedConfig:
     # Group `SpecialActivity`
     SpecialActivity_BuyHucheMysticMedals = False
 
+    # Group `Episode`
+    Episode_Number = 0  # 0, 1, 2, 3, 4, 5, 6
+    Episode_MaxStages = 0
+
     # Group `BuyPenguins`
     BuyPenguins_BatchCount = 1
 

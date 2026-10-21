@@ -57,3 +57,17 @@ EquipmentReroll:
       display: hide
     ServerUpdate:
       display: hide
+
+# Main-story progression is a manually started tool.
+Episode:
+  Scheduler:
+    Enable:
+      value: false
+      display: hide
+      option: [ false, ]
+    NextRun:
+      display: hide
+    Command:
+      display: hide
+    ServerUpdate:
+      display: hide

@@ -133,10 +133,13 @@ class Connection(ConnectionAttr):
         logger.attr('Server', self.config.Emulator_PackageName)
         server_.server = self.config.Emulator_PackageName
         logger.attr('PackageName', self.package)
-        server_.lang = server_.map_assets_lang(
+        # Wrappers may already cache the default language before connection.
+        # Updating only server_.lang leaves their buttons/matched_button on
+        # the old server even though the logged language is now correct.
+        server_.set_lang(server_.map_assets_lang(
             self.config.Emulator_PackageName,
             self.config.Emulator_GameLanguage,
-        )
+        ))
         logger.attr('Lang', self.config.LANG)
 
         self.check_mumu_app_keep_alive()

@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "source": "../../input/episode/MuMu-20261021-211204-367.png",
+  "suite": "episode",
+  "case": "exploration_stage_20261021",
+  "items": [
+    {
+      "name": "EPISODE_EXPLORATION_CHECK",
+      "namespace": "share",
+      "module": "dungeon/episode/map",
+      "box": [
+        1087,
+        648,
+        1137,
+        674
+      ]
+    }
+  ]
+}
