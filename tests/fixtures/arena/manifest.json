@@ -358,6 +358,44 @@
         "tests.arena.test_captures.CapturedWeeklyRewardTests.test_captured_reward_switch_claims_only_after_configured_selection",
         "tests.arena.test_captures.CapturedWeeklyRewardTests.test_mystic_selection_uses_only_outer_right_border"
       ]
+    },
+    "20261021-001015-030": {
+      "path": "tests/fixtures/arena/global_cn/MuMu-20261021-001015-030.png",
+      "sha256": "4b900cb4e05363e1dd29e19c1ea342455dbb4fdbecf9cf40c2bfad364436f104",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "fast_battle_prepare_no_flags",
+      "source": "MuMu-20261021-001015-030.png",
+      "source_sha256": "502529826d278e49b7b7d221b722c60d0e5576057087b996d2586827981bf052",
+      "privacy_redaction": [
+        [
+          165,
+          505,
+          320,
+          600
+        ],
+        [
+          780,
+          500,
+          1000,
+          545
+        ],
+        [
+          910,
+          60,
+          1280,
+          90
+        ]
+      ],
+      "used_by": [
+        "tests.arena.test_captures.CapturedArenaTests.test_challenge_ready_requires_bright_list_button",
+        "tests.arena.test_captures.CapturedArenaTests.test_fast_prepare_controls_are_separate_from_list_and_result",
+        "tests.arena.test_captures.CapturedArenaTests.test_shifted_fast_result_confirm_matches_and_clicks_current_position",
+        "tests.arena.test_captures.CapturedArenaTests.test_arena_home_rejects_fast_animation_and_accepts_return_highlight",
+        "tests.arena.test_npc_combat.NpcCombatReplayTests.test_captured_zero_flags_override_stale_positive_at_task_start",
+        "tests.arena.test_npc_combat.NpcCombatReplayTests.test_first_preparation_zero_flags_never_start_battle",
+        "tests.arena.test_captures.CapturedArenaTests.test_flag_counter_is_independent_and_rejects_missing_flag_field"
+      ]
     }
   }
 }

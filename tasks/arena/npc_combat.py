@@ -140,7 +140,7 @@ class ArenaNpcCombatMixin:
         return current, remain, total
 
     def _npc_combat_once(
-        self, use_fast_battle: bool, skip_first_screenshot=True
+        self, use_fast_battle: bool, skip_first_screenshot=True, check_flags=False
     ) -> str:
         """
         Pages:
@@ -351,6 +351,19 @@ class ArenaNpcCombatMixin:
                         continue
                     continue
 
+                if check_flags:
+                    flag_status = self._ocr_arena_flag_status()
+                    if flag_status is None:
+                        logger.warning("Arena NPC: first preparation flag check failed")
+                        return "failed"
+                    if flag_status[0] <= 0:
+                        logger.info("Arena NPC: no flags on first battle preparation")
+                        return "exhausted"
+                    # Only the first preparation of this task refreshes flags.
+                    # Keep the verified snapshot through toggle/start retries;
+                    # later rounds use the existing confirmed-battle deduction.
+                    check_flags = False
+
                 if fast_battle_effective and self.appear(FAST_BATTLE_LOCKED):
                     logger.info(
                         "Arena NPC: fast battle locked, fallback to normal battle"
@@ -520,17 +533,26 @@ class ArenaNpcCombatMixin:
         # arena fast battle remains available. Honor the user's setting here;
         # each round checks the actual lock and remaining uses on the prepare page.
         use_fast_battle = getattr(self.config, "Arena_NPCCombatFastBattle", True)
-        flag_status = self._stored_arena_flag_status()
-        if flag_status is not None and flag_status[0] <= 0:
+        # Manual play can invalidate either a positive or zero cached balance.
+        # A task starts with a live reading; an unreadable counter cannot make
+        # the old estimate current again. The first prepare page checks once
+        # more before any start click, then normal per-round deduction resumes.
+        flag_status = self._ocr_arena_flag_status(
+            skip_first_screenshot=skip_first_screenshot,
+        )
+        skip_first_screenshot = True
+        if flag_status is None:
+            logger.warning("Arena NPC: initial flag check failed")
+            return False
+        if flag_status[0] <= 0:
             logger.info("Arena NPC: arena flag is already 0, skip combat")
             return True
 
         if self._arena_burnout_enabled():
-            # Burnout mode is resource-bounded, not batch-bounded. The fresh
-            # dashboard snapshot normally gives an exact target, including
-            # stockpiled flags above the natural recovery cap. If OCR was not
-            # available, keep running until the game reports no usable flag.
-            target_count = flag_status[0] if flag_status is not None else None
+            # The initial live reading includes stockpiled flags above the
+            # natural recovery cap. Preparation may lower this budget; the
+            # existing stored deduction stops the batch when it is exhausted.
+            target_count = flag_status[0]
             logger.info(
                 f"Arena NPC: burnout target={target_count or 'until exhausted'}"
             )
@@ -556,6 +578,7 @@ class ArenaNpcCombatMixin:
             status = self._npc_combat_once(
                 use_fast_battle=use_fast_battle,
                 skip_first_screenshot=skip_first_screenshot,
+                check_flags=completed == 0,
             )
             skip_first_screenshot = True
 

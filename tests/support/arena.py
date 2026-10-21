@@ -1,6 +1,8 @@
 """Arena round replays with production intervals and explicit observations."""
 
+from contextlib import nullcontext
 from pathlib import Path
+from types import SimpleNamespace
 from unittest.mock import Mock
 
 from module.config import server
@@ -31,8 +33,14 @@ class ArenaReplay(InteractionReplay):
         self.task._ocr_fast_battle_times = self.fast_times
         self.task.handle_network_error = lambda: False
         self.task.handle_popup_cancel = lambda **kw: False
-        self.task._stored_arena_flag_status = lambda: self.frame.get('flags')
-        self.task._consume_stored_arena_flags = Mock()
+        value, total = self.frame.get('flags') or (5, 5)
+        self.flags = SimpleNamespace(value=value, total=total, set=self.store_flags)
+        self.task.config.stored = SimpleNamespace(ArenaFlag=self.flags)
+        self.task.config.multi_set = nullcontext
+        self.task._ocr_arena_flag_status = Mock(side_effect=self.flag_status)
+        self.task._consume_stored_arena_flags = Mock(
+            side_effect=lambda count: Arena._consume_stored_arena_flags(self.task, count),
+        )
 
     def screenshot(self):
         super().screenshot()
@@ -71,3 +79,16 @@ class ArenaReplay(InteractionReplay):
         if self.frame.get('fixture'):
             return Arena._ocr_fast_battle_times(self.task)
         return self.frame.get('fast_times', (9, 1, 10))
+
+    def store_flags(self, value, total):
+        self.flags.value, self.flags.total = value, total
+
+    def flag_status(self, skip_first_screenshot=True):
+        if not skip_first_screenshot:
+            self.screenshot()
+        if self.frame.get('fixture'):
+            return Arena._ocr_arena_flag_status(self.task)
+        status = self.frame.get('fresh_flags', self.frame.get('flags', (5, 5)))
+        if status is not None:
+            self.store_flags(*status)
+        return status

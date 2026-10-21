@@ -80,15 +80,16 @@ class ManualChecks(unittest.TestCase):
                 arena.device = SimpleNamespace(click_record_clear=Mock())
                 arena._arena_burnout_enabled = Mock(return_value=False)
                 arena._stored_arena_flag_status = Mock(
-                    side_effect=[(2, 5), (1, 5), (0, 5)]
+                    side_effect=[(1, 5), (0, 5)]
                 )
+                arena._ocr_arena_flag_status = Mock(return_value=(2, 5))
                 arena._consume_stored_arena_flags = Mock()
                 arena._npc_combat_once = Mock(return_value="completed")
 
                 assert arena._run_npc_combat(), (background, setting)
                 assert arena._npc_combat_once.call_args_list == [
-                    call(use_fast_battle=expected, skip_first_screenshot=True),
-                    call(use_fast_battle=expected, skip_first_screenshot=True),
+                    call(use_fast_battle=expected, skip_first_screenshot=True, check_flags=True),
+                    call(use_fast_battle=expected, skip_first_screenshot=True, check_flags=False),
                 ], (background, setting, arena._npc_combat_once.call_args_list)
                 assert arena._arena_npc_completed_rounds == 2
                 assert arena._consume_stored_arena_flags.call_args_list == [

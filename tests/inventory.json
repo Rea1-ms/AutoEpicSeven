@@ -17603,6 +17603,73 @@
           "fixtures": [],
           "status": "已纳入",
           "reason": "竞技场状态、入口与结算回归；真实截图和模拟观察分别登记"
+        },
+        {
+          "id": "tests.arena.test_npc_combat.NpcCombatReplayTests.test_captured_zero_flags_override_stale_positive_at_task_start",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/arena/global_cn/MuMu-20261021-001015-030.png"
+          ],
+          "status": "已纳入",
+          "reason": "竞技场任务开始和第一轮准备现场复核旗帜；未知读数不使用旧余量，后续轮次保持原有扣减"
+        },
+        {
+          "id": "tests.arena.test_npc_combat.NpcCombatReplayTests.test_first_preparation_zero_flags_never_start_battle",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/arena/global_cn/MuMu-20261021-001015-030.png"
+          ],
+          "status": "已纳入",
+          "reason": "竞技场任务开始和第一轮准备现场复核旗帜；未知读数不使用旧余量，后续轮次保持原有扣减"
+        },
+        {
+          "id": "tests.arena.test_npc_combat.NpcCombatReplayTests.test_unknown_flag_checks_do_not_reuse_cached_balance",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "竞技场任务开始和第一轮准备现场复核旗帜；未知读数不使用旧余量，后续轮次保持原有扣减"
+        },
+        {
+          "id": "tests.arena.test_npc_combat.NpcCombatReplayTests.test_fresh_positive_flags_override_stale_zero",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "竞技场任务开始和第一轮准备现场复核旗帜；未知读数不使用旧余量，后续轮次保持原有扣减"
+        },
+        {
+          "id": "tests.arena.test_npc_combat.NpcCombatReplayTests.test_only_first_preparation_reads_flags_during_toggles_and_later_rounds",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "竞技场任务开始和第一轮准备现场复核旗帜；未知读数不使用旧余量，后续轮次保持原有扣减"
+        },
+        {
+          "id": "tests.arena.test_npc_combat.NpcCombatReplayTests.test_first_preparation_lower_balance_limits_remaining_rounds",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "竞技场任务开始和第一轮准备现场复核旗帜；未知读数不使用旧余量，后续轮次保持原有扣减"
+        },
+        {
+          "id": "tests.arena.test_npc_combat.NpcCombatReplayTests.test_each_task_invocation_rechecks_first_preparation",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "竞技场任务开始和第一轮准备现场复核旗帜；未知读数不使用旧余量，后续轮次保持原有扣减"
         }
       ]
     },
@@ -17792,7 +17859,8 @@
             "tests/fixtures/arena/global_cn/MuMu-20261019-201529-443.png",
             "tests/fixtures/arena/global_cn/MuMu-20261019-201532-705.png",
             "tests/fixtures/arena/global_cn/MuMu-20261019-201534-380.png",
-            "tests/fixtures/arena/global_cn/MuMu-20261019-201536-225.png"
+            "tests/fixtures/arena/global_cn/MuMu-20261019-201536-225.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261021-001015-030.png"
           ],
           "status": "已纳入",
           "reason": "竞技场状态、入口与结算回归；真实截图和模拟观察分别登记"
@@ -17831,7 +17899,8 @@
             "tests/fixtures/arena/global_cn/MuMu-20261019-201529-443.png",
             "tests/fixtures/arena/global_cn/MuMu-20261019-201532-705.png",
             "tests/fixtures/arena/global_cn/MuMu-20261019-201534-380.png",
-            "tests/fixtures/arena/global_cn/MuMu-20261019-201536-225.png"
+            "tests/fixtures/arena/global_cn/MuMu-20261019-201536-225.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261021-001015-030.png"
           ],
           "status": "已纳入",
           "reason": "竞技场状态、入口与结算回归；真实截图和模拟观察分别登记"
@@ -17856,7 +17925,8 @@
             "tests/fixtures/arena/global_cn/MuMu-20261019-201529-443.png",
             "tests/fixtures/arena/global_cn/MuMu-20261019-201532-705.png",
             "tests/fixtures/arena/global_cn/MuMu-20261019-201534-380.png",
-            "tests/fixtures/arena/global_cn/MuMu-20261019-201536-225.png"
+            "tests/fixtures/arena/global_cn/MuMu-20261019-201536-225.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261021-001015-030.png"
           ],
           "status": "已纳入",
           "reason": "竞技场状态、入口与结算回归；真实截图和模拟观察分别登记"
@@ -17881,7 +17951,8 @@
             "tests/fixtures/arena/global_cn/MuMu-20261019-201529-443.png",
             "tests/fixtures/arena/global_cn/MuMu-20261019-201532-705.png",
             "tests/fixtures/arena/global_cn/MuMu-20261019-201534-380.png",
-            "tests/fixtures/arena/global_cn/MuMu-20261019-201536-225.png"
+            "tests/fixtures/arena/global_cn/MuMu-20261019-201536-225.png",
+            "tests/fixtures/arena/global_cn/MuMu-20261021-001015-030.png"
           ],
           "status": "已纳入",
           "reason": "竞技场状态、入口与结算回归；真实截图和模拟观察分别登记"
@@ -17939,6 +18010,17 @@
           ],
           "status": "已纳入",
           "reason": "神秘奖牌只识别外侧右边框，左侧遮盖仍可识别，右侧缺失和天空石选中禁止领取"
+        },
+        {
+          "id": "tests.arena.test_captures.CapturedArenaTests.test_flag_counter_is_independent_and_rejects_missing_flag_field",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/arena/global_cn/MuMu-20261021-001015-030.png"
+          ],
+          "status": "已纳入",
+          "reason": "竞技场任务开始和第一轮准备现场复核旗帜；未知读数不使用旧余量，后续轮次保持原有扣减"
         }
       ]
     },

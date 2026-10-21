@@ -25,6 +25,7 @@ from tasks.arena.assets.assets_arena_weekly_rewards import (
     WEEKLY_REWARDS_SKYSTONE,
     WEEKLY_REWARDS_SKYSTONE_SELECTED,
 )
+from tasks.base.resource_bar import RESOURCE_BAR_ICONS, get_resource_bar_segment_area
 from tests.support.arena import MANIFEST, ArenaReplay
 from tests.support.arena_entry import WeeklyRewardsReplay
 from tests.support.interaction import scene
@@ -137,6 +138,27 @@ class CapturedArenaTests(unittest.TestCase):
                     # unobstructed home marker already proves the round ended.
                     self.assertFalse(replay.task.appear(NPC_OPPONENT))
                     self.assertTrue(replay.task.appear(CHALLENGE))
+
+    def test_flag_counter_is_independent_and_rejects_missing_flag_field(self):
+        for missing in (False, True):
+            with self.subTest(missing=missing), ControlledClock() as clock:
+                replay = ArenaReplay([
+                    scene(fixture='20261021-001015-030', flags=(9, 5)),
+                ], clock)
+                self.device = replay
+                layout = ('arena_flag', 'conquest_point')
+                offsets, _ = replay.task._match_resource_bar_icons(layout)
+                self.assertEqual(set(offsets), set(layout))
+                area = get_resource_bar_segment_area(layout, 'arena_flag', icon_offsets=offsets)
+                self.assertIsNotNone(area)
+                x1, y1, x2, y2 = area
+                # Other currencies cannot prevent checking the live flag field.
+                currency_start = RESOURCE_BAR_ICONS['conquest_point'].area[2] + offsets['conquest_point'][0]
+                replay.image[y1:y2, currency_start:] = 0
+                if missing:
+                    replay.image[y1:y2, x1:x2] = 0
+                self.assertEqual(replay.task._ocr_arena_flag_status(), None if missing else (0, 5))
+                self.assertEqual(replay.flags.value, 9 if missing else 0)
 
     def test_fast_battle_counter_reads_remaining_before_start(self):
         for fixture_id in FIXTURE_CASES['test_fast_battle_counter_reads_remaining_before_start']:
