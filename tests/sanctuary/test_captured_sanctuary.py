@@ -16,7 +16,7 @@ from tasks.sanctuary.monthly_deposit import deposit_tiers_increased, match_depos
 from tasks.sanctuary.sanctuary import Sanctuary  # noqa: E402
 from tasks.sanctuary.assets.assets_sanctuary_forest_of_elves import ALTAR_OF_GROWTH, CLAIM_REWARDS  # noqa: E402
 from tests.support.offline import ControlledClock  # noqa: E402
-from tests.support.sanctuary import CapturedMonthlyReplay, captured_screenshot  # noqa: E402
+from tests.support.sanctuary import CapturedMonthlyReplay, DailyForestReplay, captured_screenshot  # noqa: E402
 
 
 CAPTURES = (
@@ -126,8 +126,60 @@ class CapturedForestTests(unittest.TestCase):
         centers = sorted((int((item.area[0] + item.area[2]) / 2),
                           int((item.area[1] + item.area[3]) / 2)) for item in matches)
         self.assertEqual(centers, [(995, 262), (995, 378), (995, 493)])
+        task = task_for_image(image)
+        self.assertEqual(
+            [task._daily_claim_reward_kind(item) for item in sorted(matches, key=lambda item: item.area[1])],
+            ["Penguin", "Flower", "Morogora"],
+        )
         self.assertEqual(match_deposit_tiers(image), (None,) * 5)
         self.assertIsNone(task_for_image(image)._is_monthly_deposit_box_full())
+
+
+class DailyForestReviewTests(unittest.TestCase):
+    def setUp(self):
+        previous = server.lang
+        self.addCleanup(server.set_lang, previous)
+        server.set_lang("global_cn")
+
+    def test_other_claim_kinds_do_not_review_flower_daily(self):
+        for kind in ("Penguin", "Morogora", "Unknown", "Care", None):
+            with self.subTest(kind=kind), ControlledClock() as clock:
+                flow = DailyForestReplay(clock)
+                first = {"care": True} if kind == "Care" else {"rewards": [kind]} if kind else {}
+                self.assertTrue(flow.run([first] + [{}] * 14))
+                self.assertEqual(flow.actions, ["CARE" if kind == "Care" else kind] if kind else [])
+                flow.task.config.task_call.assert_not_called()
+                flow.task.config.task_delay.assert_called_once_with(target=flow.target)
+
+    def test_flower_claim_requests_one_review_and_does_not_mark_daily_complete(self):
+        with ControlledClock() as clock:
+            flow = DailyForestReplay(clock)
+            self.assertTrue(flow.run([{"rewards": ["Flower"]}] + [{}] * 14))
+        self.assertEqual(flow.actions, ["Flower"])
+        flow.task.config.task_call.assert_called_once_with("MissionReward", force_call=False)
+        flow.task.config.task_delay.assert_called_once_with(target=flow.target)
+        flow.task.config.cross_set.assert_not_called()
+
+    def test_mixed_claims_remain_sequential_and_only_request_one_review(self):
+        all_rewards = {"rewards": ["Morogora", "Flower", "Penguin"]}
+        last_two = {"rewards": ["Morogora", "Flower"]}
+        last_one = {"rewards": ["Morogora"]}
+        with ControlledClock() as clock:
+            flow = DailyForestReplay(clock)
+            self.assertTrue(flow.run([all_rewards] + [last_two] * 3 + [last_one] * 3 + [{}] * 14))
+        self.assertEqual(flow.actions, ["Penguin", "Flower", "Morogora"])
+        self.assertEqual(flow.action_frames, [1, 4, 7])
+        flow.task.config.task_call.assert_called_once_with("MissionReward", force_call=False)
+
+    def test_flower_review_does_not_leak_into_the_next_penguin_collection(self):
+        with ControlledClock() as clock:
+            flow = DailyForestReplay(clock)
+            self.assertTrue(flow.run([{"rewards": ["Flower"]}] + [{}] * 14))
+            flow.task.config.task_call.assert_called_once_with("MissionReward", force_call=False)
+            flow.task.config.task_call.reset_mock()
+            self.assertTrue(flow.run([{"rewards": ["Penguin"]}] + [{}] * 14))
+        self.assertEqual(flow.actions, ["Flower", "Penguin"])
+        flow.task.config.task_call.assert_not_called()
 
 
 if __name__ == '__main__':

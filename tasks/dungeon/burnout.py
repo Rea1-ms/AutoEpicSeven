@@ -1,5 +1,6 @@
 from module.logger import logger
 from tasks.base.resource_bar import RESOURCE_BAR_LAYOUT_MAIN
+from tasks.base.resource_scheduling import ResourceCoordinator
 
 SERVER_REPEAT_LEIF_STAMINA = 80
 
@@ -147,6 +148,14 @@ class CombatBurnoutMixin:
             logger.warning("Combat burnout: stored stamina is unknown, fallback to daily scheduling")
             return False
 
+        if self._uses_server_repeat_combat() and need > stamina.total:
+            # A low-level natural cap cannot form a server-repeat unit. Keep
+            # the real 80-point gate for external gifts instead of waking on
+            # a full but still unaffordable bar over and over.
+            self.config.task_delay(server_update=True)
+            ResourceCoordinator(self.config).wait("Combat", "stamina", need)
+            return True
+
         # Natural regeneration can never exceed the cap, so a batch larger
         # than the cap waits until stamina is full instead of forever.
         need = min(need, stamina.total)
@@ -162,4 +171,5 @@ class CombatBurnoutMixin:
         target = stamina.predict_reach_time(need)
         logger.info(f"Combat burnout: stamina {predicted} -> {need}, wait until {target}")
         self.config.task_delay(target=target)
+        ResourceCoordinator(self.config).wait("Combat", "stamina", need)
         return True

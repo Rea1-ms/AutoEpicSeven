@@ -20,6 +20,7 @@ from tasks.base.page import (
 )
 from tasks.base.popup import ANNOUNCEMENT_DONOT_REMIND
 from tasks.base.route_entry import match_route_entry
+from tasks.base.resource_bar import ResourceBarMixin
 from tasks.knights.assets.assets_knights_gvg import KNIGHTS_CREST, KNIGHTS_NOT_ENOUGH_PEOPLE
 from tasks.knights.assets.assets_knights_activity_entries import ACTIVITY_PANEL_CHECK
 from tasks.login.assets.assets_login import (
@@ -36,7 +37,7 @@ from tasks.login.assets.assets_login_popup import (
     NEW_CHARACTER_CONFIRM,
 )
 
-class UI(MainPage):
+class UI(ResourceBarMixin, MainPage):
     ui_current: Page
     ui_main_confirm_timer = Timer(0.2, count=0)
     UI_SWITCH_RETRY_SECONDS = 2
@@ -345,6 +346,8 @@ class UI(MainPage):
                 logger.info(f'Page arrive: {destination}')
                 if self.ui_page_confirm(destination):
                     logger.info(f'Page arrive confirm {destination}')
+                if destination == page_main:
+                    self.sync_pending_resources()
                 break
 
             if self.ui_additional():
@@ -668,7 +671,11 @@ class UI(MainPage):
         NOTE:
             Should be called explicitly by task logic, not inside ui_goto route switching.
         """
-        if self.appear_then_click(MENU_PETS_GIFT, interval=0.5):
+        if self.appear(MENU_PETS_GIFT, interval=0.5):
+            from tasks.base.resource_scheduling import ResourceCoordinator
+
+            ResourceCoordinator(self.config).request("PetsGift")
+            self.device.click(MENU_PETS_GIFT)
             logger.info('Collected pets gift from menu')
             return True
         return False

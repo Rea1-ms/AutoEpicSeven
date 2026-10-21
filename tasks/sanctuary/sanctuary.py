@@ -9,6 +9,7 @@ import datetime
 import re
 
 from module.base.timer import Timer
+from module.base.utils import point_in_area
 from module.config.utils import get_server_next_monday_update, get_server_next_month_update, get_server_next_update
 from module.logger import logger
 from module.ocr.ocr import Duration, OcrWhiteLetterOnComplexBackground
@@ -64,10 +65,15 @@ class Sanctuary(SanctuaryMonthlyMixin, UI):
     DAILY_FOREST_DELAY_BUFFER_SECONDS = 10
     DAILY_FOREST_MAX_SECONDS = 168 * 60 * 60 + 59 * 60 + 59
     DAILY_FOREST_ZERO_SKIP_TIMERS = {"Care"}
+    DAILY_FOREST_REWARD_ROWS = (
+        ("Penguin", OCR_PENGUIN_TIME),
+        ("Flower", OCR_FLOWER_TIME),
+        ("Morogora", OCR_MOROGORA_TIME),
+    )
 
     @staticmethod
-    def _should_schedule_mission_reward_after_daily(claimed_any: bool) -> bool:
-        return bool(claimed_any)
+    def _should_schedule_mission_reward_after_daily(flower_attempted: bool) -> bool:
+        return bool(flower_attempted)
 
     def _enter_sanctuary(self) -> bool:
         logger.hr("Enter Sanctuary", level=1)
@@ -121,6 +127,11 @@ class Sanctuary(SanctuaryMonthlyMixin, UI):
         timeout = Timer(20, count=40).start()
         no_action_confirm = Timer(2, count=6).start()
         claimed_any = False
+        # Attempts are scoped to this collection pass, never confirmed daily
+        # progress. Care and every crop share the old claimed_any flag, but
+        # only the flower row can advance the flower daily. Retain the kind
+        # of each clicked match so another crop cannot cause a useless review.
+        self._daily_claim_attempts = set()
         self.interval_clear(CARE)
         while 1:
             self.device.screenshot()
@@ -136,6 +147,7 @@ class Sanctuary(SanctuaryMonthlyMixin, UI):
             if self._care_ready(interval=1):
                 self.device.click(CARE)
                 claimed_any = True
+                self._daily_claim_attempts.add("Care")
                 self._wait_daily_claim_settle()
                 timeout.reset()
                 no_action_confirm.reset()
@@ -145,8 +157,12 @@ class Sanctuary(SanctuaryMonthlyMixin, UI):
             if matches:
                 # One-by-one claim is more stable than batch clicking.
                 target = sorted(matches, key=lambda x: x.area[1])[0]
+                kind = self._daily_claim_reward_kind(target)
                 self.device.click(target)
                 claimed_any = True
+                if kind is not None:
+                    self._daily_claim_attempts.add(kind)
+                logger.attr("DailyForestClaimKind", kind or "Unknown")
                 self._wait_daily_claim_settle()
                 timeout.reset()
                 no_action_confirm.reset()
@@ -165,6 +181,21 @@ class Sanctuary(SanctuaryMonthlyMixin, UI):
                 break
 
         return claimed_any
+
+    def _daily_claim_reward_kind(self, target) -> str | None:
+        """Associate a matched claim icon with its fixed cultivation row.
+
+        All three claim icons have identical pixels. Their centers occupy the
+        existing countdown areas for penguins, flowers and morogora, even when
+        only one reward is ready. Match order or the number of ready icons
+        cannot identify a crop; an unmatched row must stay unknown.
+        """
+        left, top, right, bottom = target.area
+        center = ((left + right) / 2, (top + bottom) / 2)
+        for kind, row in self.DAILY_FOREST_REWARD_ROWS:
+            if point_in_area(center, row.area, threshold=0):
+                return kind
+        return None
 
     def _care_ready(self, interval=1) -> bool:
         """
@@ -289,6 +320,7 @@ class Sanctuary(SanctuaryMonthlyMixin, UI):
     def run_daily(self) -> bool:
         self._daily_delay_target = None
         self._daily_claimed_any = False
+        self._daily_claim_attempts = set()
         if not self._enter_sanctuary():
             return False
         if not self._enter_daily():
@@ -343,7 +375,7 @@ class Sanctuary(SanctuaryMonthlyMixin, UI):
         self._ensure_app_running()
         success = self.run_daily()
         if success and self._should_schedule_mission_reward_after_daily(
-            getattr(self, "_daily_claimed_any", False)
+            "Flower" in getattr(self, "_daily_claim_attempts", set())
         ) and should_schedule_mission_reward(self.config):
             self.config.task_call("MissionReward", force_call=False)
         target = getattr(self, "_daily_delay_target", None)

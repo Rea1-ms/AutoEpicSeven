@@ -650,6 +650,9 @@ class Mail(UI):
                     return True
 
             if receive_available and self.interval_is_reached(RECEIVE, interval=self.CLICK_INTERVAL_SECONDS):
+                from tasks.base.resource_scheduling import ResourceCoordinator
+
+                ResourceCoordinator(self.config).request("Mail")
                 logger.info("Mail: click RECEIVE on top mail")
                 self.device.click(RECEIVE)
                 claimed = True
@@ -691,29 +694,22 @@ class Mail(UI):
             self.config.task_delay(success=False)
             return False
 
-        claimed_any = False
         while 1:
             self.device.screenshot()
 
             if not self._receive_available(interval=0):
                 self.ui_goto(page_main, skip_first_screenshot=True)
-                if claimed_any:
-                    self.config.task_call("DataUpdate", force_call=False)
                 self._schedule_after_no_receive()
                 return True
 
             state = self._ocr_top_remaining_state()
             if not state.valid or state.unlimited:
                 self.ui_goto(page_main, skip_first_screenshot=True)
-                if claimed_any:
-                    self.config.task_call("DataUpdate", force_call=False)
                 self._schedule_after_ineligible(state)
                 return True
 
             if not self._is_within_threshold(state):
                 self.ui_goto(page_main, skip_first_screenshot=True)
-                if claimed_any:
-                    self.config.task_call("DataUpdate", force_call=False)
                 self._schedule_after_ineligible(state)
                 return True
 
@@ -723,4 +719,3 @@ class Mail(UI):
                 self.config.task_delay(success=False)
                 return False
             self._clear_click_history_after_claim_progress()
-            claimed_any = True

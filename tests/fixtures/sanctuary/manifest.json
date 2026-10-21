@@ -410,7 +410,7 @@
       "sha256": "8c84a7104cdb5d7dba42fd63b95cd2adb2fb38cf1ca39fdebfeaf0172581c4ae",
       "server": "global_cn",
       "capture_type": "emulator_screenshot",
-      "scene": "精灵之森：三个奖励均可领取，仅验证页面和标记识别",
+      "scene": "精灵之森：三个奖励均可领取，验证页面、标记及企鹅、花、萝卜所在行；不代表领取完成",
       "source": "MuMu-20260517-230524-881.png",
       "source_sha256": "9c5ba650d376261ec3fe3a205accaca4b9f2ced3f4a1939acd3bde4765ca1c7b",
       "privacy_redaction": [

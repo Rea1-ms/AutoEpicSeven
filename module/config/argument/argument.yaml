@@ -96,6 +96,17 @@ Optimization:
 
 MissionReward:
   ClaimDailyRewards: true
+  DailyPriority: true
+  DailyPlan:
+    keepvalue: true
+    display: hide
+    type: dict
+    value: {}
+  DailyBudget:
+    keepvalue: true
+    display: hide
+    type: dict
+    value: {}
 
 Mail:
   CollectWithin:
@@ -453,6 +464,13 @@ ActivityRuntime:
     keepvalue: true
     display: hide
     value: 2020-01-01 00:00:00
+
+ResourceRuntime:
+  State:
+    keepvalue: true
+    display: hide
+    type: dict
+    value: {}
 
 Dashboard:
   Gold:

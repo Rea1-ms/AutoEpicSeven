@@ -1,8 +1,10 @@
 """Sanctuary fixtures with explicit capture servers and offline frame replays."""
 
 import json
+from datetime import datetime
 from types import SimpleNamespace
-from unittest.mock import patch
+from typing import ClassVar
+from unittest.mock import Mock, patch
 
 from module.config import server
 from tests.support.offline import ROOT, fixture_image, record_action, record_frame
@@ -16,6 +18,7 @@ from tasks.sanctuary.assets.assets_sanctuary_heart_of_eulerbis import (  # noqa:
     DEPOSIT_REWARD_TIER_S,
 )
 from tasks.sanctuary.sanctuary import Sanctuary  # noqa: E402
+from tasks.sanctuary.assets.assets_sanctuary_forest_of_elves import CLAIM_REWARDS
 
 
 PROJECT_ROOT = ROOT
@@ -40,6 +43,61 @@ def captured_screenshot(fixture_id, *, expected_server='global_cn'):
     if item.get('capture_type') != 'emulator_screenshot':
         raise ValueError(f'Fixture is not a captured emulator screenshot: {fixture_id}')
     return fixture_image(MANIFEST, fixture_id)
+
+
+class DailyForestReplay:
+    """Replay explicit claim-row observations; no screenshots or device access."""
+
+    ROW_Y: ClassVar[dict[str, int]] = {"Penguin": 262, "Flower": 378, "Morogora": 493, "Unknown": 320}
+
+    def __init__(self, clock):
+        self.clock = clock
+        self.frame = {}
+        self.actions = []
+        self.action_frames = []
+        self.task = Sanctuary.__new__(Sanctuary)
+        self.target = datetime.fromisoformat("2026-10-18T21:14:49")
+        self.task.config = SimpleNamespace(
+            Emulator_PackageName="com.stove.epic7.google", Emulator_GameLanguage="cn",
+            Scheduler_ServerUpdate="02:00", task_call=Mock(), task_delay=Mock(),
+            cross_set=Mock(),
+            cross_get=lambda path, default=None: True if path == "MissionReward.Scheduler.Enable" else default,
+        )
+        self.task.interval_timer = {}
+        self.task.device = SimpleNamespace(image=object(), screenshot=self.screenshot, click=self.click)
+        self.task._ensure_app_running = Mock()
+        self.task._enter_sanctuary = Mock(return_value=True)
+        self.task._enter_daily = Mock(return_value=True)
+        self.task._back_to_sanctuary = Mock(return_value=True)
+        self.task._daily_next_run_target = Mock(return_value=self.target)
+        self.task.handle_touch_to_close = lambda **kwargs: False
+        self.task.ui_additional = lambda: False
+        self.task.handle_network_error = lambda: False
+        self.task._care_ready = lambda **kwargs: self.frame.get("care", False)
+
+    def screenshot(self):
+        try:
+            self.frame = next(self.frames)
+        except StopIteration:
+            raise AssertionError("Forest did not finish within the supplied observations") from None
+        self.clock.advance(.5)
+        self.frames_read += 1
+        record_frame(f"mock-forest:{self.frame}")
+
+    def matches(self, *args, **kwargs):
+        return [SimpleNamespace(
+            name=kind, area=(990, self.ROW_Y[kind] - 5, 1000, self.ROW_Y[kind] + 5),
+        ) for kind in self.frame.get("rewards", ())]
+
+    def click(self, button):
+        self.actions.append(record_action(button.name))
+        self.action_frames.append(self.frames_read)
+
+    def run(self, frames):
+        self.frames = iter(frames)
+        self.frames_read = 0
+        with patch.object(CLAIM_REWARDS, "match_multi_template", side_effect=self.matches):
+            return self.task.run_daily_task()
 
 
 class CapturedMonthlyReplay:

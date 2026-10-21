@@ -34,6 +34,7 @@ Daily:
     DataUpdate:
       - Scheduler
       - Dashboard
+      - ResourceRuntime
     SanctuaryDaily:
       - Scheduler
     Knights:

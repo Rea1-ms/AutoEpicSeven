@@ -1550,6 +1550,670 @@
         "tests.activity.test_support_reward.SupportRewardTests.test_calendar_boundaries_and_reset_ignore_scheduler_02",
         "tests.activity.test_support_reward.SupportRewardTests.test_entry_batches_support_and_skips_disabled_or_checked"
       ]
+    },
+    "20261015-195327-585": {
+      "path": "tests/fixtures/historical/cn/mission_reward/20261015-195327-585.png",
+      "sha256": "5712dbb2f142bbb4d6d77c9aefcbdde5840657e913d0e24e48a47954bb20a0da",
+      "server": "cn",
+      "server_confirmed": true,
+      "capture_type": "emulator_screenshot",
+      "scene": "daily_missions/homepage_negative",
+      "source": "MuMu-20261015-195327-585.png",
+      "source_sha256": "754e1d5b2f93e20db2b18d7ac6c7c4f898d25d3a55ec50ab1a25dc612efaa389",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          300,
+          125
+        ]
+      ],
+      "used_by": [
+        "tests.core.test_daily_missions.DailyCaptureTests.test_homepage_does_not_create_daily_state"
+      ]
+    },
+    "20261015-195330-291": {
+      "path": "tests/fixtures/historical/cn/mission_reward/20261015-195330-291.png",
+      "sha256": "faf1897bc208a5262eb515ae884c08a6bedeabb1a079bb501c2c9b110d2ed5e5",
+      "server": "cn",
+      "server_confirmed": true,
+      "capture_type": "emulator_screenshot",
+      "scene": "daily_missions/list_195330-291",
+      "source": "MuMu-20261015-195330-291.png",
+      "source_sha256": "1af528ab1b082538e9fdc16bd5ed1903ab4c2f6dc201b7eeba15eb58e099f21f",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          26
+        ],
+        [
+          0,
+          26,
+          42,
+          665
+        ],
+        [
+          1238,
+          26,
+          1280,
+          665
+        ],
+        [
+          0,
+          665,
+          1280,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.core.test_daily_missions.DailyCaptureTests.test_real_cn_captures_read_complete_rows_and_activity",
+        "tests.core.test_daily_missions.DailyCaptureTests.test_real_cn_captures_collect_all_thirteen_daily_missions",
+        "tests.core.test_daily_missions.DailyCaptureTests.test_partial_title_or_progress_is_ignored",
+        "tests.core.test_daily_missions.DailyCaptureTests.test_unreadable_complete_progress_keeps_frame_unknown",
+        "tests.core.test_daily_missions.DailyCaptureTests.test_dimmed_daily_page_does_not_read_missions",
+        "tests.core.test_daily_missions.DailyCaptureTests.test_real_cn_capture_identifies_only_first_two_reward_chests_as_ready"
+      ]
+    },
+    "20261015-195332-961": {
+      "path": "tests/fixtures/historical/cn/mission_reward/20261015-195332-961.png",
+      "sha256": "413ef5e8197966247db6b594614bbcd69959b2d2f893228f03167ca7ab2ab757",
+      "server": "cn",
+      "server_confirmed": true,
+      "capture_type": "emulator_screenshot",
+      "scene": "daily_missions/list_195332-961",
+      "source": "MuMu-20261015-195332-961.png",
+      "source_sha256": "76d93aaae7a45675a4c3585b6abf61b0928185b70c904742b4a3151e77b0a650",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          26
+        ],
+        [
+          0,
+          26,
+          42,
+          665
+        ],
+        [
+          1238,
+          26,
+          1280,
+          665
+        ],
+        [
+          0,
+          665,
+          1280,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.core.test_daily_missions.DailyCaptureTests.test_real_cn_captures_read_complete_rows_and_activity",
+        "tests.core.test_daily_missions.DailyCaptureTests.test_real_cn_captures_collect_all_thirteen_daily_missions",
+        "tests.core.test_daily_missions.DailyCaptureTests.test_partial_title_or_progress_is_ignored"
+      ]
+    },
+    "20261015-195334-507": {
+      "path": "tests/fixtures/historical/cn/mission_reward/20261015-195334-507.png",
+      "sha256": "5b2e49dea9961d41e74f7e299a958f4740bc0b41e92322d9c853ab43e9482cef",
+      "server": "cn",
+      "server_confirmed": true,
+      "capture_type": "emulator_screenshot",
+      "scene": "daily_missions/list_195334-507",
+      "source": "MuMu-20261015-195334-507.png",
+      "source_sha256": "a692e510e94e78fb698a4b5ccacb3f95d97faffb5d703b469bcbf9279f199477",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          26
+        ],
+        [
+          0,
+          26,
+          42,
+          665
+        ],
+        [
+          1238,
+          26,
+          1280,
+          665
+        ],
+        [
+          0,
+          665,
+          1280,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.core.test_daily_missions.DailyCaptureTests.test_real_cn_captures_read_complete_rows_and_activity",
+        "tests.core.test_daily_missions.DailyCaptureTests.test_real_cn_captures_collect_all_thirteen_daily_missions",
+        "tests.core.test_daily_missions.DailyCaptureTests.test_partial_title_or_progress_is_ignored"
+      ]
+    },
+    "20261015-195336-031": {
+      "path": "tests/fixtures/historical/cn/mission_reward/20261015-195336-031.png",
+      "sha256": "cb7e746e4e117f8f3455f64bde55604292bd9d236d588fddd228a8dae3ad6813",
+      "server": "cn",
+      "server_confirmed": true,
+      "capture_type": "emulator_screenshot",
+      "scene": "daily_missions/list_195336-031",
+      "source": "MuMu-20261015-195336-031.png",
+      "source_sha256": "0a4f3f7bbbfec83326458221de91961757cf098049cb9f41c7541fb41096bd38",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          26
+        ],
+        [
+          0,
+          26,
+          42,
+          665
+        ],
+        [
+          1238,
+          26,
+          1280,
+          665
+        ],
+        [
+          0,
+          665,
+          1280,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.core.test_daily_missions.DailyCaptureTests.test_real_cn_captures_read_complete_rows_and_activity",
+        "tests.core.test_daily_missions.DailyCaptureTests.test_real_cn_captures_collect_all_thirteen_daily_missions",
+        "tests.core.test_daily_missions.DailyCaptureTests.test_partial_title_or_progress_is_ignored"
+      ]
+    },
+    "20261015-195337-685": {
+      "path": "tests/fixtures/historical/cn/mission_reward/20261015-195337-685.png",
+      "sha256": "5cc4392686de5b3eea4ce2c06ab9232ae49c496934607e1a4fe2572e4ec67168",
+      "server": "cn",
+      "server_confirmed": true,
+      "capture_type": "emulator_screenshot",
+      "scene": "daily_missions/list_195337-685",
+      "source": "MuMu-20261015-195337-685.png",
+      "source_sha256": "b449d5bbcb1e3fe6544ea0f9df0cbc973846c53756ee060e81b46a264d7d88d4",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          26
+        ],
+        [
+          0,
+          26,
+          42,
+          665
+        ],
+        [
+          1238,
+          26,
+          1280,
+          665
+        ],
+        [
+          0,
+          665,
+          1280,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.core.test_daily_missions.DailyCaptureTests.test_real_cn_captures_read_complete_rows_and_activity",
+        "tests.core.test_daily_missions.DailyCaptureTests.test_real_cn_captures_collect_all_thirteen_daily_missions",
+        "tests.core.test_daily_missions.DailyCaptureTests.test_partial_title_or_progress_is_ignored"
+      ]
+    },
+    "20261015-195339-394": {
+      "path": "tests/fixtures/historical/cn/mission_reward/20261015-195339-394.png",
+      "sha256": "1b1e2bee667288bae6fd176e31a155d19e5e64d2f21105acac760a7371fcf324",
+      "server": "cn",
+      "server_confirmed": true,
+      "capture_type": "emulator_screenshot",
+      "scene": "daily_missions/list_195339-394",
+      "source": "MuMu-20261015-195339-394.png",
+      "source_sha256": "bba67641e858844fcc26f876e00fca8d3d036641771b72f5d0f69cd99b91d01b",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          26
+        ],
+        [
+          0,
+          26,
+          42,
+          665
+        ],
+        [
+          1238,
+          26,
+          1280,
+          665
+        ],
+        [
+          0,
+          665,
+          1280,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.core.test_daily_missions.DailyCaptureTests.test_real_cn_captures_read_complete_rows_and_activity",
+        "tests.core.test_daily_missions.DailyCaptureTests.test_real_cn_captures_collect_all_thirteen_daily_missions",
+        "tests.core.test_daily_missions.DailyCaptureTests.test_partial_title_or_progress_is_ignored"
+      ]
+    },
+    "20261017-004551-316": {
+      "path": "tests/fixtures/historical/global_cn/mission_reward/20261017-004551-316.png",
+      "sha256": "8c55172a10ffe26602ca435204423c2f13601a1a429c977738ee2cb028567ee4",
+      "server": "global_cn",
+      "server_confirmed": true,
+      "capture_type": "emulator_screenshot",
+      "scene": "global_daily_missions/homepage_negative",
+      "source": "MuMu-20261017-004551-316.png",
+      "source_sha256": "607e4a6c4b0c5be560290cf0dd1f97c97d9f2143e54d660b5a83bb7befeb37ae",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          300,
+          125
+        ]
+      ],
+      "used_by": [
+        "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_real_home_and_menu_never_create_daily_mission_state"
+      ]
+    },
+    "20261017-004552-856": {
+      "path": "tests/fixtures/historical/global_cn/mission_reward/20261017-004552-856.png",
+      "sha256": "8683a87c47addd0a566309d38f2aacf73d73d525dcc27a86130bace03c6a4f0a",
+      "server": "global_cn",
+      "server_confirmed": true,
+      "capture_type": "emulator_screenshot",
+      "scene": "global_daily_missions/menu_negative",
+      "source": "MuMu-20261017-004552-856.png",
+      "source_sha256": "39902190e525ab9d6ae9e5e904b0879a948d005462a2b64276b05583d7eaef2f",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          300,
+          125
+        ]
+      ],
+      "used_by": [
+        "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_real_home_and_menu_never_create_daily_mission_state"
+      ]
+    },
+    "20261017-004555-650": {
+      "path": "tests/fixtures/historical/global_cn/mission_reward/20261017-004555-650.png",
+      "sha256": "684ed2f2ff9bc382fdd12990dda876f6e1a7e95d34d0ec75da9b53b0de654821",
+      "server": "global_cn",
+      "server_confirmed": true,
+      "capture_type": "emulator_screenshot",
+      "scene": "global_daily_missions/list_004555-650",
+      "source": "MuMu-20261017-004555-650.png",
+      "source_sha256": "016e10149132fd79646371b05ba370ff0b2854b21f77e05a7f59d21b45acea17",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          26
+        ],
+        [
+          0,
+          26,
+          42,
+          665
+        ],
+        [
+          1238,
+          26,
+          1280,
+          665
+        ],
+        [
+          0,
+          665,
+          1280,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_real_captures_read_six_panels_and_160_activity",
+        "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_real_captures_collect_thirteen_reordered_missions",
+        "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_real_before_popup_after_frames_identify_reward_state",
+        "tests.core.test_global_daily_missions.GlobalDailyRewardReplayTests.test_real_reward_sequence_retries_then_waits_for_claimed_page",
+        "tests.core.test_global_daily_missions.GlobalDailyScanTests.test_real_login_boundary_infers_completed_suffix_without_scanning_it"
+      ]
+    },
+    "20261017-004557-957": {
+      "path": "tests/fixtures/historical/global_cn/mission_reward/20261017-004557-957.png",
+      "sha256": "fb2ff98331dcc4fb1af6fcead504445c105c1b79cd24b3ea54a00e5f4fc8161e",
+      "server": "global_cn",
+      "server_confirmed": true,
+      "capture_type": "emulator_screenshot",
+      "scene": "global_daily_missions/list_004557-957",
+      "source": "MuMu-20261017-004557-957.png",
+      "source_sha256": "459898ae6033644b8b4f635c619fd696fc0732165853c3e6f025176b588ca001",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          26
+        ],
+        [
+          0,
+          26,
+          42,
+          665
+        ],
+        [
+          1238,
+          26,
+          1280,
+          665
+        ],
+        [
+          0,
+          665,
+          1280,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_real_captures_read_six_panels_and_160_activity",
+        "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_real_captures_collect_thirteen_reordered_missions",
+        "tests.core.test_global_daily_missions.GlobalDailyScanTests.test_real_login_boundary_infers_completed_suffix_without_scanning_it"
+      ]
+    },
+    "20261017-004559-319": {
+      "path": "tests/fixtures/historical/global_cn/mission_reward/20261017-004559-319.png",
+      "sha256": "a26cca02eea4fb84edf74f83b632dedc36f3b9c6f623a364871f7748afe39018",
+      "server": "global_cn",
+      "server_confirmed": true,
+      "capture_type": "emulator_screenshot",
+      "scene": "global_daily_missions/list_004559-319",
+      "source": "MuMu-20261017-004559-319.png",
+      "source_sha256": "71c0123b624ebeb1df617c0970ebe5795247ddb6f9b0c90cd8bb061d69e57da7",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          26
+        ],
+        [
+          0,
+          26,
+          42,
+          665
+        ],
+        [
+          1238,
+          26,
+          1280,
+          665
+        ],
+        [
+          0,
+          665,
+          1280,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_real_captures_read_six_panels_and_160_activity",
+        "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_real_captures_collect_thirteen_reordered_missions",
+        "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_gray_completed_rows_keep_full_progress_and_global_gacha_name",
+        "tests.core.test_global_daily_missions.GlobalDailyScanTests.test_real_login_boundary_infers_completed_suffix_without_scanning_it",
+        "tests.core.test_global_daily_missions.GlobalDailyScanTests.test_fields_below_completed_login_are_not_read"
+      ]
+    },
+    "20261017-004600-561": {
+      "path": "tests/fixtures/historical/global_cn/mission_reward/20261017-004600-561.png",
+      "sha256": "ba6f3e4b901ae18c655644b182ce0831db2d107540befa106fb3d02a969a6468",
+      "server": "global_cn",
+      "server_confirmed": true,
+      "capture_type": "emulator_screenshot",
+      "scene": "global_daily_missions/list_004600-561",
+      "source": "MuMu-20261017-004600-561.png",
+      "source_sha256": "6af8fd67c6e6085521d038becad4891fc7a9c52a273033b956054a5a5746b71e",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          26
+        ],
+        [
+          0,
+          26,
+          42,
+          665
+        ],
+        [
+          1238,
+          26,
+          1280,
+          665
+        ],
+        [
+          0,
+          665,
+          1280,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_real_captures_read_six_panels_and_160_activity",
+        "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_real_captures_collect_thirteen_reordered_missions",
+        "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_gray_completed_rows_keep_full_progress_and_global_gacha_name"
+      ]
+    },
+    "20261017-004601-643": {
+      "path": "tests/fixtures/historical/global_cn/mission_reward/20261017-004601-643.png",
+      "sha256": "fb42dc3fe27da8709430b98e88fec6adbd9a6547224a6ced2e02a4628cdcea32",
+      "server": "global_cn",
+      "server_confirmed": true,
+      "capture_type": "emulator_screenshot",
+      "scene": "global_daily_missions/list_004601-643",
+      "source": "MuMu-20261017-004601-643.png",
+      "source_sha256": "ec9e30378274a8636a457f61c67d4cd17cf9bafdb0becb1ed3fa12d9d6c23cd2",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          26
+        ],
+        [
+          0,
+          26,
+          42,
+          665
+        ],
+        [
+          1238,
+          26,
+          1280,
+          665
+        ],
+        [
+          0,
+          665,
+          1280,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_real_captures_read_six_panels_and_160_activity",
+        "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_real_captures_collect_thirteen_reordered_missions",
+        "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_gray_completed_rows_keep_full_progress_and_global_gacha_name"
+      ]
+    },
+    "20261017-004602-994": {
+      "path": "tests/fixtures/historical/global_cn/mission_reward/20261017-004602-994.png",
+      "sha256": "9c67d213e1a494e18440e2819d902234e6f7c592ee90009ca26687f393ee58e7",
+      "server": "global_cn",
+      "server_confirmed": true,
+      "capture_type": "emulator_screenshot",
+      "scene": "global_daily_missions/list_004602-994",
+      "source": "MuMu-20261017-004602-994.png",
+      "source_sha256": "2ff896ea0cd2bcd9944ebfdee8fd9d19920843b2dd02ea4298f49ca52f33984e",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          26
+        ],
+        [
+          0,
+          26,
+          42,
+          665
+        ],
+        [
+          1238,
+          26,
+          1280,
+          665
+        ],
+        [
+          0,
+          665,
+          1280,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_real_captures_read_six_panels_and_160_activity",
+        "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_real_captures_collect_thirteen_reordered_missions",
+        "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_gray_completed_rows_keep_full_progress_and_global_gacha_name"
+      ]
+    },
+    "20261017-004606-299": {
+      "path": "tests/fixtures/historical/global_cn/mission_reward/20261017-004606-299.png",
+      "sha256": "f974610965cf5931a467461e9ace3dd08f88f27292336b98cd626769c2a48adf",
+      "server": "global_cn",
+      "server_confirmed": true,
+      "capture_type": "emulator_screenshot",
+      "scene": "global_daily_missions/reward_popup",
+      "source": "MuMu-20261017-004606-299.png",
+      "source_sha256": "55a4cea826799737e45dcfc1fb2ffcce68521991198ea43d5eab74172d113a9b",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          26
+        ],
+        [
+          0,
+          26,
+          42,
+          665
+        ],
+        [
+          1238,
+          26,
+          1280,
+          665
+        ],
+        [
+          0,
+          665,
+          1280,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_real_before_popup_after_frames_identify_reward_state",
+        "tests.core.test_global_daily_missions.GlobalDailyRewardReplayTests.test_real_reward_sequence_retries_then_waits_for_claimed_page"
+      ]
+    },
+    "20261017-004607-640": {
+      "path": "tests/fixtures/historical/global_cn/mission_reward/20261017-004607-640.png",
+      "sha256": "6954193e70c0633a10ea42dfc6ba8d6658dc95a0f9d99122a487451b058a72fb",
+      "server": "global_cn",
+      "server_confirmed": true,
+      "capture_type": "emulator_screenshot",
+      "scene": "global_daily_missions/all_rewards_claimed",
+      "source": "MuMu-20261017-004607-640.png",
+      "source_sha256": "90d47823cc032643ddf73dc93420e4471daa509d93eac97781a0af1cba040f35",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          26
+        ],
+        [
+          0,
+          26,
+          42,
+          665
+        ],
+        [
+          1238,
+          26,
+          1280,
+          665
+        ],
+        [
+          0,
+          665,
+          1280,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_real_before_popup_after_frames_identify_reward_state",
+        "tests.core.test_global_daily_missions.GlobalDailyRewardReplayTests.test_real_reward_sequence_retries_then_waits_for_claimed_page",
+        "tests.core.test_global_daily_missions.GlobalDailyRewardReplayTests.test_real_claimed_page_settles_without_clicking_close_hint"
+      ]
+    },
+    "20261017-004609-828": {
+      "path": "tests/fixtures/historical/global_cn/mission_reward/20261017-004609-828.png",
+      "sha256": "999602b4b60c0d18ed4b2a8242c8386c0018625ac7f96250935de5ec907bec41",
+      "server": "global_cn",
+      "server_confirmed": true,
+      "capture_type": "emulator_screenshot",
+      "scene": "global_daily_missions/homepage_negative",
+      "source": "MuMu-20261017-004609-828.png",
+      "source_sha256": "d18a532d3010feeac6f8ffc44c341882ee846ed97df89d6a6fc472aa439905fc",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          300,
+          125
+        ]
+      ],
+      "used_by": [
+        "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_real_home_and_menu_never_create_daily_mission_state"
+      ]
     }
   },
   "aliases": {

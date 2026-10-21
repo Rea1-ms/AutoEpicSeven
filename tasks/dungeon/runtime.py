@@ -130,6 +130,7 @@ class CombatRuntimeMixin:
                 return False
 
             if self.is_in_main(interval=0):
+                self.sync_pending_resources()
                 return True
 
             if self._handle_dungeon_additional():

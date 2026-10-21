@@ -5273,7 +5273,7 @@
       "source": "tests/sanctuary/test_captured_sanctuary.py",
       "business": "圣域实机截图回归",
       "status": "已纳入",
-      "reason": "仅国际服中文月常及精灵之森页面；精灵之森不代表日常流程覆盖",
+      "reason": "国际服中文月常及精灵之森实图识别；日常分类回查另用明确模拟帧，不代表实机领取流程",
       "cases": [
         {
           "id": "tests.sanctuary.test_captured_sanctuary.CapturedMonthlyTests.test_monthly_deposit_slots_in_captured_frames",
@@ -5431,7 +5431,43 @@
           ],
           "capture_server": "global_cn",
           "status": "已纳入",
-          "reason": "国际服中文实机截图像素回归；不连接设备，不代表其他服务器实机验证"
+          "reason": "国际服中文实图验证三个领取标记及其企鹅、花、萝卜行归属；不连接设备，不代表其他服务器实机验证"
+        },
+        {
+          "id": "tests.sanctuary.test_captured_sanctuary.DailyForestReviewTests.test_other_claim_kinds_do_not_review_flower_daily",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "明确模拟各领取行、照料及空页面；非花收取不触发每日回查，保留成熟时间调度"
+        },
+        {
+          "id": "tests.sanctuary.test_captured_sanctuary.DailyForestReviewTests.test_flower_claim_requests_one_review_and_does_not_mark_daily_complete",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "明确模拟花领取行及稳定等待；只安排回查，不写入每日完成进度"
+        },
+        {
+          "id": "tests.sanctuary.test_captured_sanctuary.DailyForestReviewTests.test_mixed_claims_remain_sequential_and_only_request_one_review",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "明确模拟同屏三个领取标记，每次只点最上方一项，花领取后仅回查一次"
+        },
+        {
+          "id": "tests.sanctuary.test_captured_sanctuary.DailyForestReviewTests.test_flower_review_does_not_leak_into_the_next_penguin_collection",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "同一任务实例先领花再领企鹅；本次动作记录每轮重置，不沿用上次的花领取"
         }
       ]
     },
@@ -6606,7 +6642,7 @@
       "source": "tests/core/test_data_update.py",
       "business": "core",
       "status": "部分迁移",
-      "reason": "有效用例直接由测试类执行；过期接口保留原编号、历史来源和排除原因",
+      "reason": "资源观察与调度联动、额度和待确认动作的离线回归",
       "migration_batch": "20261002-1",
       "cases": [
         {
@@ -6654,6 +6690,258 @@
           "status": "未纳入",
           "reason": "资源采集流程和旧 E7 仪表盘字段已经替换，原规则不适用于当前版本",
           "validation_scope": "obsolete_contract"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_store_five_flags_wake_arena_once_and_restore_full_scan",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_partial_flags_shorten_recovery_without_starting_immediately",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_stamina_below_server_batch_only_shortens_wait",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_failed_read_keeps_request_and_original_consumer_time",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_partial_observation_clears_only_corresponding_request",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_empty_pet_reward_does_not_create_arena_or_combat_runs",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_disabled_consumer_is_not_enabled_by_resources",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_failure_or_user_time_edit_invalidates_old_resource_wait",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_route_edit_invalidates_resource_wait",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_task_begin_prevents_self_rescheduling",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_fixed_quota_without_resource_wait_is_not_reopened",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_active_background_repeat_keeps_settlement_schedule",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_pending_payment_on_same_server_blocks_replacement",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_data_update_disabled_does_not_block_local_resource_sync",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_failure_cooldown_survives_further_gifts_and_full_due_is_kept",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_language_and_server_changes_do_not_reuse_resource_evidence",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_local_estimate_invalidates_evidence_without_faking_a_read_time",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_zero_overflow_and_repeat_observation_revision_are_preserved",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_lightweight_data_update_skips_inventory_and_arena_detours",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_full_scan_due_is_not_replaced_by_lightweight_mode",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_common_resource_write_updates_evidence_and_consumer_time",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_home_refresh_requires_fresh_unobscured_page",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_language_change_is_persisted_before_switching_back",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_pending_pet_gift_is_saved_before_click_without_daily_progress",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_mail_marks_refresh_before_receive_click",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_partial_store_failure_keeps_pending_refresh",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_server_repeat_keeps_full_unit_when_natural_cap_is_too_low",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "资源门槛保留完整托管单位，固定次数用尽不重开"
+        },
+        {
+          "id": "tests.core.test_data_update.ResourceCoordinationTests.test_login_sync_does_not_turn_lightweight_refresh_into_full_scan",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "登录途中完成资源补读后仍保留轻量意图，不触发多余完整巡查"
         }
       ]
     },
@@ -6836,14 +7124,14 @@
           "original_source": "test/test_mission_reward_callbacks.py"
         },
         {
-          "id": "tests.core.test_mission_reward_callbacks.MissionRewardCallbackRuleTest.test_combat_requires_finished_session_and_no_background_runtime",
+          "id": "tests.core.test_mission_reward_callbacks.MissionRewardCallbackRuleTest.test_combat_requires_settled_work_even_with_background_runtime",
           "original_id": "test.test_mission_reward_callbacks.MissionRewardCallbackRuleTest.test_combat_requires_finished_session_and_no_background_runtime",
           "category": "规则测试",
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
           "status": "已纳入",
-          "reason": "原断言迁移；模拟输入或既有资产，不代表实机截图验证",
+          "reason": "已结算工作独立触发每日回查，不被其他运行中的托管阻止；单纯启动托管不能提前回查",
           "input_kind": "mock_or_rule",
           "original_source": "test/test_mission_reward_callbacks.py"
         },
@@ -18909,6 +19197,1120 @@
           ],
           "status": "已纳入",
           "reason": "奖励弹窗前禁止领取其他任务"
+        }
+      ]
+    },
+    {
+      "source": "tests/core/test_daily_scheduling.py",
+      "business": "每日任务",
+      "status": "新增",
+      "reason": "统一使用原调度优先级表，保留每日分批与实际进度回查",
+      "cases": [
+        {
+          "id": "tests.core.test_daily_scheduling.DailySchedulingTest.test_supported_servers_use_the_same_daily_executor",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "两服共用每日执行入口，关闭优先或不支持语言保持原领奖流程"
+        },
+        {
+          "id": "tests.core.test_daily_scheduling.DailySchedulingTest.test_facade_keeps_claim_only_when_priority_is_disabled_or_language_unsupported",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "两服共用每日执行入口，关闭优先或不支持语言保持原领奖流程"
+        },
+        {
+          "id": "tests.core.test_daily_scheduling.DailySchedulingTest.test_overseas_chinese_uses_daily_priority_and_verified_reward_callback",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        },
+        {
+          "id": "tests.core.test_daily_scheduling.DailySchedulingTest.test_package_change_invalidates_same_day_snapshot",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        },
+        {
+          "id": "tests.core.test_daily_scheduling.DailySchedulingTest.test_server_alias_keeps_context_but_language_change_invalidates_snapshot",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        },
+        {
+          "id": "tests.core.test_daily_scheduling.DailySchedulingTest.test_legacy_and_malformed_snapshot_context_requires_new_scan",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        },
+        {
+          "id": "tests.core.test_daily_scheduling.DailySchedulingTest.test_full_points_without_confirmed_rewards_keeps_callback",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        },
+        {
+          "id": "tests.core.test_daily_scheduling.DailySchedulingTest.test_full_confirmed_rewards_stop_callback_only_for_current_day",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        },
+        {
+          "id": "tests.core.test_daily_scheduling.DailySchedulingTest.test_generated_config_update_preserves_plan_and_switch",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        },
+        {
+          "id": "tests.core.test_daily_scheduling.DailySchedulingTest.test_missing_plan_does_not_trust_full_dashboard_counter",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        },
+        {
+          "id": "tests.core.test_daily_scheduling.DailySchedulingTest.test_malformed_mission_counter_invalidates_snapshot",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        },
+        {
+          "id": "tests.core.test_daily_scheduling.DailySchedulingTest.test_daily_switches_disable_strategy_without_invalidating_snapshot",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "实际调度遵循唯一优先级表，保留启停、到期时间和每日回查边界"
+        },
+        {
+          "id": "tests.core.test_daily_scheduling.DailySchedulingTest.test_unsupported_context_uses_dashboard_for_reward_callback",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "实际调度遵循唯一优先级表，保留启停、到期时间和每日回查边界"
+        },
+        {
+          "id": "tests.core.test_daily_scheduling.DailySchedulingTest.test_malformed_snapshot_requires_review",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "实际调度遵循唯一优先级表，保留启停、到期时间和每日回查边界"
+        },
+        {
+          "id": "tests.core.test_daily_scheduling.DailySchedulingTest.test_review_callback_reads_latest_snapshot_and_switch",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "实际调度遵循唯一优先级表，保留启停、到期时间和每日回查边界"
+        },
+        {
+          "id": "tests.core.test_daily_scheduling.SchedulerPriorityTest.test_original_table_places_daily_tasks_first_and_keeps_other_relative_order",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "统一调度表保留自动任务顺序，即使旧配置误启用手动工具也不进入待执行队列"
+        },
+        {
+          "id": "tests.core.test_daily_scheduling.SchedulerPriorityTest.test_editing_original_table_changes_order_without_daily_override",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "实际调度遵循唯一优先级表，保留启停、到期时间和每日回查边界"
+        },
+        {
+          "id": "tests.core.test_daily_scheduling.SchedulerPriorityTest.test_snapshot_and_reward_state_do_not_change_original_table_order",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "实际调度遵循唯一优先级表，保留启停、到期时间和每日回查边界"
+        },
+        {
+          "id": "tests.core.test_daily_scheduling.SchedulerPriorityTest.test_disabled_and_future_tasks_keep_enable_and_wait_times",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "实际调度遵循唯一优先级表，保留启停、到期时间和每日回查边界"
+        },
+        {
+          "id": "tests.core.test_daily_scheduling.SchedulerPriorityTest.test_waiting_queue_uses_next_run_and_table_for_ties",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "等待队列按到期时间及原表处理同时间任务，手动工具不进入等待队列"
+        },
+        {
+          "id": "tests.core.test_daily_scheduling.SchedulerPriorityTest.test_daily_switch_and_language_do_not_select_another_priority_order",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "实际调度遵循唯一优先级表，保留启停、到期时间和每日回查边界"
+        }
+      ]
+    },
+    {
+      "source": "tests/core/test_daily_missions.py",
+      "business": "每日任务",
+      "status": "新增",
+      "reason": "按支持服务器每日缺项优先调度已到期任务",
+      "cases": [
+        {
+          "id": "tests.core.test_daily_missions.DailyCaptureTests.test_real_cn_capture_identifies_only_first_two_reward_chests_as_ready",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/cn/mission_reward/20261015-195330-291.png"
+          ],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        },
+        {
+          "id": "tests.core.test_daily_missions.DailyCaptureTests.test_real_cn_captures_read_complete_rows_and_activity",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/cn/mission_reward/20261015-195330-291.png",
+            "tests/fixtures/historical/cn/mission_reward/20261015-195332-961.png",
+            "tests/fixtures/historical/cn/mission_reward/20261015-195334-507.png",
+            "tests/fixtures/historical/cn/mission_reward/20261015-195336-031.png",
+            "tests/fixtures/historical/cn/mission_reward/20261015-195337-685.png",
+            "tests/fixtures/historical/cn/mission_reward/20261015-195339-394.png"
+          ],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        },
+        {
+          "id": "tests.core.test_daily_missions.DailyCaptureTests.test_real_cn_captures_collect_all_thirteen_daily_missions",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/cn/mission_reward/20261015-195330-291.png",
+            "tests/fixtures/historical/cn/mission_reward/20261015-195332-961.png",
+            "tests/fixtures/historical/cn/mission_reward/20261015-195334-507.png",
+            "tests/fixtures/historical/cn/mission_reward/20261015-195336-031.png",
+            "tests/fixtures/historical/cn/mission_reward/20261015-195337-685.png",
+            "tests/fixtures/historical/cn/mission_reward/20261015-195339-394.png"
+          ],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        },
+        {
+          "id": "tests.core.test_daily_missions.DailyCaptureTests.test_partial_title_or_progress_is_ignored",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/cn/mission_reward/20261015-195330-291.png",
+            "tests/fixtures/historical/cn/mission_reward/20261015-195332-961.png",
+            "tests/fixtures/historical/cn/mission_reward/20261015-195334-507.png",
+            "tests/fixtures/historical/cn/mission_reward/20261015-195336-031.png",
+            "tests/fixtures/historical/cn/mission_reward/20261015-195337-685.png",
+            "tests/fixtures/historical/cn/mission_reward/20261015-195339-394.png"
+          ],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        },
+        {
+          "id": "tests.core.test_daily_missions.DailyCaptureTests.test_unreadable_complete_progress_keeps_frame_unknown",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/cn/mission_reward/20261015-195330-291.png"
+          ],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        },
+        {
+          "id": "tests.core.test_daily_missions.DailyCaptureTests.test_homepage_does_not_create_daily_state",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/cn/mission_reward/20261015-195327-585.png"
+          ],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        },
+        {
+          "id": "tests.core.test_daily_missions.DailyCaptureTests.test_dimmed_daily_page_does_not_read_missions",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/cn/mission_reward/20261015-195330-291.png"
+          ],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        },
+        {
+          "id": "tests.core.test_daily_missions.DailyImportTests.test_overseas_import_can_later_use_cn_assets_in_same_process",
+          "category": "资源基础",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        },
+        {
+          "id": "tests.core.test_daily_missions.DailyScanTests.test_complete_scan_collects_thirteen_keys_with_overlap_and_repeated_frames",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        },
+        {
+          "id": "tests.core.test_daily_missions.DailyScanTests.test_missing_mission_never_turns_a_partial_list_into_complete",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        },
+        {
+          "id": "tests.core.test_daily_missions.DailyScanTests.test_overlay_is_closed_before_reading_or_scrolling_visible_daily_tab",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        },
+        {
+          "id": "tests.core.test_daily_missions.DailyScanTests.test_unresponsive_swipes_stop_without_claiming_a_complete_list",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        },
+        {
+          "id": "tests.core.test_daily_missions.DailyScanTests.test_unreadable_frames_cannot_be_counted_as_stable_complete_observations",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        },
+        {
+          "id": "tests.core.test_daily_missions.DailyScanTests.test_completed_login_stops_without_another_swipe_or_bottom_probe",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "每日登录作为已完成区边界，单向扫描并核对总活跃，不反向重扫"
+        },
+        {
+          "id": "tests.core.test_daily_missions.DailyScanTests.test_login_without_complete_progress_does_not_end_the_scan",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "每日登录作为已完成区边界，单向扫描并核对总活跃，不反向重扫"
+        },
+        {
+          "id": "tests.core.test_daily_missions.DailyScanTests.test_conflicting_overlapping_progress_never_proves_complete_input",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "每日登录作为已完成区边界，单向扫描并核对总活跃，不反向重扫"
+        }
+      ]
+    },
+    {
+      "source": "tests/core/test_cn_daily_reward.py",
+      "business": "每日任务",
+      "status": "新增",
+      "reason": "按支持服务器每日缺项优先调度已到期任务",
+      "cases": [
+        {
+          "id": "tests.core.test_cn_daily_reward.CnDailyRewardReplayTests.test_empty_daily_page_requires_several_fresh_observations",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        },
+        {
+          "id": "tests.core.test_cn_daily_reward.CnDailyRewardReplayTests.test_ready_chest_during_cooldown_cannot_prove_claim_completion",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        },
+        {
+          "id": "tests.core.test_cn_daily_reward.CnDailyRewardReplayTests.test_reward_popup_must_close_and_daily_page_must_settle",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        },
+        {
+          "id": "tests.core.test_cn_daily_reward.CnDailyRewardReplayTests.test_network_overlay_does_not_count_as_received_reward",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        },
+        {
+          "id": "tests.core.test_cn_daily_reward.CnDailyRewardReplayTests.test_daily_page_close_hint_is_not_clicked_while_settling",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        },
+        {
+          "id": "tests.core.test_cn_daily_reward.CnDailyRewardReplayTests.test_persistent_popup_times_out_without_confirming_rewards",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        },
+        {
+          "id": "tests.core.test_cn_daily_reward.CnDailyRewardReplayTests.test_ready_chest_that_never_changes_times_out_with_pending_claim",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        },
+        {
+          "id": "tests.core.test_cn_daily_reward.CnDailyRunTests.test_complete_day_uses_post_claim_points_and_skips_list",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        },
+        {
+          "id": "tests.core.test_cn_daily_reward.CnDailyRunTests.test_full_activity_with_unconfirmed_claim_retries_without_completed_day",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        },
+        {
+          "id": "tests.core.test_cn_daily_reward.CnDailyRunTests.test_partial_day_saves_all_observed_missions_for_due_task_priority",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        },
+        {
+          "id": "tests.core.test_cn_daily_reward.CnDailyRunTests.test_unreadable_points_invalidate_previous_plan_and_keep_stored_activity",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        },
+        {
+          "id": "tests.core.test_cn_daily_reward.CnDailyRunTests.test_reset_during_scan_invalidates_observation_instead_of_reusing_old_day",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        },
+        {
+          "id": "tests.core.test_cn_daily_reward.CnDailyRunTests.test_incomplete_scan_retries_without_retaining_old_missions",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        },
+        {
+          "id": "tests.core.test_cn_daily_reward.CnDailyRunTests.test_server_change_during_scan_cannot_relabel_previous_observation",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        },
+        {
+          "id": "tests.core.test_cn_daily_reward.CnDailyRunTests.test_navigation_failure_cannot_leave_previous_day_plan_eligible",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        },
+        {
+          "id": "tests.core.test_cn_daily_reward.CnDailyPointsRuleTests.test_unreadable_or_decorated_text_is_unknown_and_zero_is_valid",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        }
+      ]
+    },
+    {
+      "source": "tests/core/test_global_daily_missions.py",
+      "business": "每日任务",
+      "status": "新增",
+      "reason": "按支持服务器每日缺项优先调度已到期任务",
+      "cases": [
+        {
+          "id": "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_real_captures_read_six_panels_and_160_activity",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/global_cn/mission_reward/20261017-004555-650.png",
+            "tests/fixtures/historical/global_cn/mission_reward/20261017-004557-957.png",
+            "tests/fixtures/historical/global_cn/mission_reward/20261017-004559-319.png",
+            "tests/fixtures/historical/global_cn/mission_reward/20261017-004600-561.png",
+            "tests/fixtures/historical/global_cn/mission_reward/20261017-004601-643.png",
+            "tests/fixtures/historical/global_cn/mission_reward/20261017-004602-994.png"
+          ],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        },
+        {
+          "id": "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_real_captures_collect_thirteen_reordered_missions",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/global_cn/mission_reward/20261017-004555-650.png",
+            "tests/fixtures/historical/global_cn/mission_reward/20261017-004557-957.png",
+            "tests/fixtures/historical/global_cn/mission_reward/20261017-004559-319.png",
+            "tests/fixtures/historical/global_cn/mission_reward/20261017-004600-561.png",
+            "tests/fixtures/historical/global_cn/mission_reward/20261017-004601-643.png",
+            "tests/fixtures/historical/global_cn/mission_reward/20261017-004602-994.png"
+          ],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        },
+        {
+          "id": "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_gray_completed_rows_keep_full_progress_and_global_gacha_name",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/global_cn/mission_reward/20261017-004559-319.png",
+            "tests/fixtures/historical/global_cn/mission_reward/20261017-004600-561.png",
+            "tests/fixtures/historical/global_cn/mission_reward/20261017-004601-643.png",
+            "tests/fixtures/historical/global_cn/mission_reward/20261017-004602-994.png"
+          ],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        },
+        {
+          "id": "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_real_before_popup_after_frames_identify_reward_state",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/global_cn/mission_reward/20261017-004555-650.png",
+            "tests/fixtures/historical/global_cn/mission_reward/20261017-004606-299.png",
+            "tests/fixtures/historical/global_cn/mission_reward/20261017-004607-640.png"
+          ],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        },
+        {
+          "id": "tests.core.test_global_daily_missions.GlobalDailyCaptureTests.test_real_home_and_menu_never_create_daily_mission_state",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/global_cn/mission_reward/20261017-004551-316.png",
+            "tests/fixtures/historical/global_cn/mission_reward/20261017-004552-856.png",
+            "tests/fixtures/historical/global_cn/mission_reward/20261017-004609-828.png"
+          ],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        },
+        {
+          "id": "tests.core.test_global_daily_missions.GlobalDailyRewardReplayTests.test_real_reward_sequence_retries_then_waits_for_claimed_page",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/global_cn/mission_reward/20261017-004555-650.png",
+            "tests/fixtures/historical/global_cn/mission_reward/20261017-004606-299.png",
+            "tests/fixtures/historical/global_cn/mission_reward/20261017-004607-640.png"
+          ],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        },
+        {
+          "id": "tests.core.test_global_daily_missions.GlobalDailyRewardReplayTests.test_real_claimed_page_settles_without_clicking_close_hint",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/global_cn/mission_reward/20261017-004607-640.png"
+          ],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        },
+        {
+          "id": "tests.core.test_global_daily_missions.GlobalDailyScanTests.test_reordered_synthetic_partial_day_scans_all_thirteen_missions",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        },
+        {
+          "id": "tests.core.test_global_daily_missions.GlobalDailyScanTests.test_partial_reordered_list_never_claims_completeness",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国服及国际服简中每日100活跃优先、完整清单与领奖确认"
+        },
+        {
+          "id": "tests.core.test_global_daily_missions.GlobalDailyScanTests.test_real_login_boundary_infers_completed_suffix_without_scanning_it",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/global_cn/mission_reward/20261017-004555-650.png",
+            "tests/fixtures/historical/global_cn/mission_reward/20261017-004557-957.png",
+            "tests/fixtures/historical/global_cn/mission_reward/20261017-004559-319.png"
+          ],
+          "status": "已纳入",
+          "reason": "每日登录作为已完成区边界，单向扫描并核对总活跃，不反向重扫"
+        },
+        {
+          "id": "tests.core.test_global_daily_missions.GlobalDailyScanTests.test_fields_below_completed_login_are_not_read",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/global_cn/mission_reward/20261017-004559-319.png"
+          ],
+          "status": "已纳入",
+          "reason": "每日登录作为已完成区边界，单向扫描并核对总活跃，不反向重扫"
+        },
+        {
+          "id": "tests.core.test_global_daily_missions.GlobalDailyScanTests.test_unreadable_activity_cannot_verify_inferred_completed_rows",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "每日登录作为已完成区边界，单向扫描并核对总活跃，不反向重扫"
+        },
+        {
+          "id": "tests.core.test_global_daily_missions.GlobalDailyScanTests.test_partial_activity_infers_completed_suffix_without_reading_it",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "70活跃时在登录边界推算下方完成项，保持完整计划且不向下重读"
+        }
+      ]
+    },
+    {
+      "source": "tests/core/test_daily_planning.py",
+      "business": "每日任务预算",
+      "status": "新增",
+      "reason": "资源观察与调度联动、额度和待确认动作的离线回归",
+      "cases": [
+        {
+          "id": "tests.core.test_daily_planning.DailyPlanningTests.test_cn_and_overseas_chinese_share_conditional_addition_policy",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "每日分批、固定余量、条件追加和未决动作恢复；明确模拟输入"
+        },
+        {
+          "id": "tests.core.test_daily_planning.DailyPlanningTests.test_arena_uses_only_two_rounds_to_reach_next_milestone",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "每日分批、固定余量、条件追加和未决动作恢复；明确模拟输入"
+        },
+        {
+          "id": "tests.core.test_daily_planning.DailyPlanningTests.test_exhausted_original_waits_for_other_scheduled_allowances",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "每日分批、固定余量、条件追加和未决动作恢复；明确模拟输入"
+        },
+        {
+          "id": "tests.core.test_daily_planning.DailyPlanningTests.test_adds_only_next_milestone_if_other_tasks_cannot_finish",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "每日分批、固定余量、条件追加和未决动作恢复；明确模拟输入"
+        },
+        {
+          "id": "tests.core.test_daily_planning.DailyPlanningTests.test_free_task_before_reset_can_replace_an_additional_batch",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "每日分批、固定余量、条件追加和未决动作恢复；明确模拟输入"
+        },
+        {
+          "id": "tests.core.test_daily_planning.DailyPlanningTests.test_observed_resource_exhaustion_reconsiders_waiting",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "每日分批、固定余量、条件追加和未决动作恢复；明确模拟输入"
+        },
+        {
+          "id": "tests.core.test_daily_planning.DailyPlanningTests.test_pending_is_not_refunded_or_repeated_after_restart",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "每日分批、固定余量、条件追加和未决动作恢复；明确模拟输入"
+        },
+        {
+          "id": "tests.core.test_daily_planning.DailyPlanningTests.test_scan_acknowledgement_never_confirms_a_pending_payment",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "每日分批、固定余量、条件追加和未决动作恢复；明确模拟输入"
+        },
+        {
+          "id": "tests.core.test_daily_planning.DailyPlanningTests.test_partial_scan_does_not_release_review_wait",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "每日分批、固定余量、条件追加和未决动作恢复；明确模拟输入"
+        },
+        {
+          "id": "tests.core.test_daily_planning.DailyPlanningTests.test_completed_day_resumes_original_remaining_without_additions",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "每日分批、固定余量、条件追加和未决动作恢复；明确模拟输入"
+        },
+        {
+          "id": "tests.core.test_daily_planning.DailyPlanningTests.test_full_points_without_claim_confirmation_requires_review",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "每日分批、固定余量、条件追加和未决动作恢复；明确模拟输入"
+        },
+        {
+          "id": "tests.core.test_daily_planning.DailyPlanningTests.test_language_change_preserves_used_allowance_but_requires_new_scan",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "每日分批、固定余量、条件追加和未决动作恢复；明确模拟输入"
+        },
+        {
+          "id": "tests.core.test_daily_planning.DailyPlanningTests.test_pending_survives_reset_and_other_server_has_its_own_allowance",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "每日分批、固定余量、条件追加和未决动作恢复；明确模拟输入"
+        },
+        {
+          "id": "tests.core.test_daily_planning.DailyPlanningTests.test_editing_limits_does_not_restore_consumed_allowance",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "每日分批、固定余量、条件追加和未决动作恢复；明确模拟输入"
+        },
+        {
+          "id": "tests.core.test_daily_planning.DailyPlanningTests.test_zero_affordability_never_authorizes_addition",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "每日分批、固定余量、条件追加和未决动作恢复；明确模拟输入"
+        },
+        {
+          "id": "tests.core.test_daily_planning.DailyPlanningTests.test_core_missions_never_create_a_dedicated_consumption_route",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "每日分批、固定余量、条件追加和未决动作恢复；明确模拟输入"
+        },
+        {
+          "id": "tests.core.test_daily_planning.DailyPlanningTests.test_burnout_disabled_priority_and_dimensional_keep_original_flow",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "每日分批、固定余量、条件追加和未决动作恢复；明确模拟输入"
+        },
+        {
+          "id": "tests.core.test_daily_planning.DailyPlanningTests.test_burnout_without_resources_before_reset_cannot_complete_daily",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_daily_planning.DailyPlanningTests.test_fast_and_repeat_allocate_one_shared_stamina_balance",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_daily_planning.DailyPlanningTests.test_refill_revision_invalidates_previous_zero_capacity",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_daily_planning.DailyPlanningTests.test_unknown_and_expired_resources_cannot_be_inferred_from_gifts_or_store",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_daily_planning.DailyPlanningTests.test_settings_edit_invalidates_capacity_without_inventing_leaf_balance",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        },
+        {
+          "id": "tests.core.test_daily_planning.DailyPlanningTests.test_natural_recovery_is_limited_by_time_and_recovery_cap",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "可信资源、补给后等待调整、每日共享预算及未确认动作保护"
+        }
+      ]
+    },
+    {
+      "source": "tests/arena/test_daily_batch.py",
+      "business": "竞技场每日分批",
+      "status": "新增",
+      "reason": "每日优先固定额度分批",
+      "cases": [
+        {
+          "id": "tests.arena.test_daily_batch.ArenaDailyBatchTests.test_real_round_loop_reserves_once_for_retries_and_repeated_result",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "每日分批、固定余量、条件追加和未决动作恢复；明确模拟输入"
+        },
+        {
+          "id": "tests.arena.test_daily_batch.ArenaDailyBatchTests.test_ten_fixed_rounds_split_into_five_and_five_without_restarting_total",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "每日分批、固定余量、条件追加和未决动作恢复；明确模拟输入"
+        },
+        {
+          "id": "tests.arena.test_daily_batch.ArenaDailyBatchTests.test_start_retries_reserve_the_same_round_once",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "每日分批、固定余量、条件追加和未决动作恢复；明确模拟输入"
+        },
+        {
+          "id": "tests.arena.test_daily_batch.ArenaDailyBatchTests.test_partial_failure_schedules_review_and_pending_round_is_not_replayed",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "每日分批、固定余量、条件追加和未决动作恢复；明确模拟输入"
+        },
+        {
+          "id": "tests.arena.test_daily_batch.ArenaDailyBatchTests.test_wait_then_add_only_when_other_executor_is_no_longer_available",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "每日分批、固定余量、条件追加和未决动作恢复；明确模拟输入"
+        },
+        {
+          "id": "tests.arena.test_daily_batch.ArenaDailyBatchTests.test_unknown_flags_do_not_authorize_consumption",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "每日分批、固定余量、条件追加和未决动作恢复；明确模拟输入"
+        }
+      ]
+    },
+    {
+      "source": "tests/combat/test_daily_batch.py",
+      "business": "副本每日分批",
+      "status": "新增",
+      "reason": "每日优先固定额度分批",
+      "cases": [
+        {
+          "id": "tests.combat.test_daily_batch.CombatDailyBatchTests.test_real_fast_prepare_uses_explicit_batch_cap_without_rewriting_total",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "每日分批、固定余量、条件追加和未决动作恢复；明确模拟输入"
+        },
+        {
+          "id": "tests.combat.test_daily_batch.CombatDailyBatchTests.test_fast_batch_stops_at_next_stamina_milestone_and_preserves_repeat",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "每日分批、固定余量、条件追加和未决动作恢复；明确模拟输入"
+        },
+        {
+          "id": "tests.combat.test_daily_batch.CombatDailyBatchTests.test_claimed_goal_resumes_both_original_allowances",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "每日分批、固定余量、条件追加和未决动作恢复；明确模拟输入"
+        },
+        {
+          "id": "tests.combat.test_daily_batch.CombatDailyBatchTests.test_repeat_launch_intent_is_saved_before_consumption",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "托管启动及运行期间只保留额度预留；结算确认后才允许回查每日，不能预加体力或活跃"
+        },
+        {
+          "id": "tests.combat.test_daily_batch.CombatDailyBatchTests.test_lost_or_manually_adopted_repeat_does_not_confirm_reserved_batch",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "每日分批、固定余量、条件追加和未决动作恢复；明确模拟输入"
+        },
+        {
+          "id": "tests.combat.test_daily_batch.CombatDailyBatchTests.test_failed_fast_settlement_is_never_recharged_or_replayed",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "每日分批、固定余量、条件追加和未决动作恢复；明确模拟输入"
+        },
+        {
+          "id": "tests.combat.test_daily_batch.CombatDailyBatchTests.test_extra_repeat_uses_owned_stamina_and_no_extra_leaf_allowance",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "每日分批、固定余量、条件追加和未决动作恢复；明确模拟输入"
+        },
+        {
+          "id": "tests.combat.test_daily_batch.CombatDailyBatchTests.test_insufficient_owned_stamina_never_starts_an_extra_leaf_batch",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "每日分批、固定余量、条件追加和未决动作恢复；明确模拟输入"
+        },
+        {
+          "id": "tests.combat.test_daily_batch.CombatDailyBatchTests.test_no_complete_daily_snapshot_schedules_review_without_starting",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "每日分批、固定余量、条件追加和未决动作恢复；明确模拟输入"
+        },
+        {
+          "id": "tests.combat.test_daily_batch.CombatDailyBatchTests.test_outer_run_confirms_matching_repeat_only_after_finished_status",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "托管启动及运行期间只保留额度预留；结算确认后才允许回查每日，不能预加体力或活跃"
+        },
+        {
+          "id": "tests.combat.test_daily_batch.CombatDailyBatchTests.test_burnout_fast_completion_reviews_daily_while_repeat_keeps_running",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "模拟燃竭先托管后快战；快战完成应回查且托管继续运行；未完成快战不提前回查，不预加每日体力或活跃"
+        },
+        {
+          "id": "tests.combat.test_daily_batch.CombatDailyBatchTests.test_empty_repeat_resources_release_other_executor_from_waiting",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "每日分批、固定余量、条件追加和未决动作恢复；明确模拟输入"
+        },
+        {
+          "id": "tests.combat.test_daily_batch.CombatDailyBatchTests.test_original_repeat_can_use_owned_stamina_when_user_enabled_it",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "每日分批、固定余量、条件追加和未决动作恢复；明确模拟输入"
+        },
+        {
+          "id": "tests.combat.test_daily_batch.CombatDailyBatchTests.test_exhausted_fast_quota_does_not_lower_repeat_resource_gate",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "资源门槛保留完整托管单位，固定次数用尽不重开"
+        },
+        {
+          "id": "tests.combat.test_daily_batch.CombatDailyBatchTests.test_claimed_goal_and_exhausted_quotas_do_not_record_resource_wait",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "资源门槛保留完整托管单位，固定次数用尽不重开"
         }
       ]
     }

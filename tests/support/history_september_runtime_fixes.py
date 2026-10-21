@@ -16,6 +16,7 @@ server.set_lang("global_cn")
 from tasks.base.ui import UI
 from tasks.dungeon.prepare import CombatPrepare
 from tasks.store.current import CurrentStore
+from tests.support.resources import ResourceConfig
 
 
 def timers(clock):
@@ -132,6 +133,7 @@ class Prepare(Frames, CombatPrepare):
 class Store(Frames, CurrentStore):
     def __init__(self, frames):
         Frames.__init__(self, frames)
+        self.config = ResourceConfig()
         self.index = -1  # purchase loop always requests a fresh screenshot
         self.closes, self.network_calls, self.confirms = [], [], []
         self._log_purchase_debug = Mock()

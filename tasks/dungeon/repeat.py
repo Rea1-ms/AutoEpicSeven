@@ -539,6 +539,9 @@ class CombatRepeatMixin:
             if self._is_repeat_menu_open():
                 parsed = self._ocr_server_repeat_resources()
                 if parsed is not None:
+                    from tasks.base.resource_scheduling import ResourceCoordinator
+
+                    ResourceCoordinator(self.config).observe(parsed, "server_repeat")
                     # Resource OCR and repeat settings share this window. Keep
                     # it open so the next state loop can continue directly on
                     # the battle-settings tab instead of closing and reopening
@@ -557,6 +560,7 @@ class CombatRepeatMixin:
         affordable_count: int | None = None,
         completed_count: int = 0,
         leif_count: int | None = None,
+        prioritize_stamina: bool | None = None,
     ) -> bool:
         logger.hr("Combat Prepare Server Repeat", level=2)
         timeout = Timer(self.REPEAT_MENU_TIMEOUT_SECONDS, count=120).start()
@@ -610,7 +614,7 @@ class CombatRepeatMixin:
 
             if stage == "stamina":
                 if self._ensure_repeat_toggle(
-                    self._repeat_prioritize_stamina(),
+                    self._repeat_prioritize_stamina() if prioritize_stamina is None else prioritize_stamina,
                     PRIORITIZE_OWNED_STAMINA_ON,
                     PRIORITIZE_OWNED_STAMINA_OFF,
                     f"prioritize {self._repeat_owned_resource_label()}",

@@ -250,7 +250,10 @@ class EntryTests(unittest.TestCase):
     def test_task_keeps_open_running_detail_for_watcher(self):
         server.set_lang("global_cn")
         combat = object.__new__(Combat)
-        combat.config = SimpleNamespace(Emulator_PackageName="com.stove.epic7.google")
+        combat.config = SimpleNamespace(
+            Emulator_PackageName="com.stove.epic7.google",
+            cross_get=lambda key, default=None: default,
+        )
         combat.device = SimpleNamespace(image=object(), app_is_running=lambda: True)
         combat._prepare_background_repeat_check_context = Mock()
         combat._adopt_existing_background_repeat_combat = Mock()

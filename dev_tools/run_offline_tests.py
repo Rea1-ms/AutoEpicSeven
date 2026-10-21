@@ -32,6 +32,7 @@ EXPLORATION_MODULES = (
 )
 RUNNER_MODULES = ("tests.test_offline_runner",)
 ARENA_MODULES = (
+    "tests.arena.test_daily_batch",
     "tests.arena.test_npc_combat",
     "tests.arena.test_entry",
     "tests.arena.test_rules",
@@ -62,11 +63,16 @@ RUNTIME_MODULES = (
     "tests.core.test_runtime_ui",
 )
 CORE_MODULES = (
+    "tests.core.test_daily_planning",
     "tests.core.test_data_update",
     "tests.core.test_task_entries",
     "tests.core.test_page_route",
     "tests.core.test_community_aio",
     "tests.core.test_mission_reward_callbacks",
+    "tests.core.test_daily_scheduling",
+    "tests.core.test_daily_missions",
+    "tests.core.test_cn_daily_reward",
+    "tests.core.test_global_daily_missions",
     "tests.core.test_mail",
     "tests.core.test_login_domain_popup",
     "tests.game_info.test_game_info",
@@ -82,6 +88,7 @@ ACTIVITY_MODULES = (
     "tests.activity.test_support_reward",
 )
 COMBAT_MODULES = (
+    "tests.combat.test_daily_batch",
     "tests.combat.test_hunt_boss",
     "tests.combat.test_repeat_leif_count",
     "tests.combat.test_combat_entry_search",

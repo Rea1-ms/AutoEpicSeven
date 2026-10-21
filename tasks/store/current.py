@@ -13,7 +13,7 @@ from tasks.base.assets.assets_base_popup import (
     NETWORK_ERROR_DISCONNECT,
     TOUCH_TO_CLOSE,
 )
-from tasks.base.page import page_store
+from tasks.base.page import page_main, page_store
 from tasks.base.ui import UI
 from tasks.store.friendship_gift import FriendshipGiftMixin
 from tasks.store.assets.assets_store_friendship_gift import FRIENDSHIP_GIFT_ITEM
@@ -599,6 +599,9 @@ class CurrentStore(FriendshipGiftMixin, UI):
             logger.info(f'{item.name} counter={counter_to_text(result.counter)}')
 
     def _purchase_item(self, item: ItemPurchasePlan) -> PurchaseResult:
+        from tasks.base.resource_scheduling import ResourceCoordinator
+
+        ResourceCoordinator(self.config).request("Store")
         logger.info(f'Purchase {item.name}')
         if item.single_purchase:
             return self._purchase_friendship_gift(item)
@@ -1247,6 +1250,6 @@ class CurrentStore(FriendshipGiftMixin, UI):
             for name, quantity in sorted(self.purchase_stats.items()):
                 logger.attr(name, quantity)
 
-        self.config.task_call('DataUpdate', force_call=False)
+        self.ui_goto(page_main, skip_first_screenshot=True)
         self.config.task_delay(server_update=True)
         return True
