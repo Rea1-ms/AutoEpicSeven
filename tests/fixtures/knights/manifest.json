@@ -44,9 +44,24 @@
       ],
       "source": "user-provided MuMu-20261007-134422-578.png",
       "privacy_redaction": [
-        [0, 0, 1280, 25],
-        [0, 665, 580, 720],
-        [704, 665, 1280, 720]
+        [
+          0,
+          0,
+          1280,
+          25
+        ],
+        [
+          0,
+          665,
+          580,
+          720
+        ],
+        [
+          704,
+          665,
+          1280,
+          720
+        ]
       ]
     },
     "20261007-133412-362": {
@@ -62,9 +77,24 @@
       ],
       "source": "user-provided MuMu-20261007-133412-362.png",
       "privacy_redaction": [
-        [0, 0, 1280, 25],
-        [0, 665, 580, 720],
-        [704, 665, 1280, 720]
+        [
+          0,
+          0,
+          1280,
+          25
+        ],
+        [
+          0,
+          665,
+          580,
+          720
+        ],
+        [
+          704,
+          665,
+          1280,
+          720
+        ]
       ]
     },
     "20261001-171607-666": {
@@ -536,6 +566,450 @@
           665,
           1280,
           720
+        ]
+      ]
+    },
+    "20261018-141840-024": {
+      "path": "tests/fixtures/knights/donate/MuMu-20261018-141840-024.png",
+      "sha256": "6df47c14250ea9068e5becfed9f197fe9176b65228ee366441d18ccec3e1f809",
+      "server": "unknown",
+      "scene": "Chinese support inventory and request rows",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.knights.test_donate.DonationCaptureTests.test_all_visible_rows_read_stock_and_exact_button_quantity"
+      ],
+      "source": "user-provided MuMu-20261018-141840-024.png; server not independently confirmed",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          25
+        ],
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          842,
+          133,
+          1018,
+          645
+        ]
+      ]
+    },
+    "20261018-142106-068": {
+      "path": "tests/fixtures/knights/donate/MuMu-20261018-142106-068.png",
+      "sha256": "dbe476c1ebc05a6449b00c363685d47007db3d226b0a2a552b9a5dfde70b8d40",
+      "server": "unknown",
+      "scene": "Chinese support inventory and request rows",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.knights.test_donate.DonationCaptureTests.test_all_visible_rows_read_stock_and_exact_button_quantity",
+        "tests.knights.test_donate.DonationCaptureTests.test_own_flower_inventory_is_read_but_not_paired_with_other_items",
+        "tests.knights.test_donate.DonationCaptureTests.test_cut_stock_field_is_unknown_without_ocr",
+        "tests.knights.test_donate.DonationReplayTests.test_captured_three_donations_confirm_inventory_even_without_reward_frames",
+        "tests.knights.test_donate.DonationCaptureTests.test_recipient_change_is_list_movement_but_portrait_glow_is_not"
+      ],
+      "source": "user-provided MuMu-20261018-142106-068.png; server not independently confirmed",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          25
+        ],
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          842,
+          133,
+          1018,
+          645
+        ]
+      ]
+    },
+    "20261018-142109-419": {
+      "path": "tests/fixtures/knights/donate/MuMu-20261018-142109-419.png",
+      "sha256": "26353a42a0297b56cb6cb569a711dd5d1bea96b80e1b40ddc70e6eec7d1520b7",
+      "server": "unknown",
+      "scene": "Successful donation reward overlay",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.knights.test_donate.DonationCaptureTests.test_reward_overlay_cannot_be_used_as_a_ready_list"
+      ],
+      "source": "user-provided MuMu-20261018-142109-419.png; server not independently confirmed",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          25
+        ],
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          842,
+          133,
+          1018,
+          645
+        ]
+      ]
+    },
+    "20261018-142110-919": {
+      "path": "tests/fixtures/knights/donate/MuMu-20261018-142110-919.png",
+      "sha256": "5346e481cd5d63cd68b92d83f2a74ec3e039b7527271f8299c2f6e00a8a9ceef",
+      "server": "unknown",
+      "scene": "Chinese support inventory and request rows",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.knights.test_donate.DonationCaptureTests.test_all_visible_rows_read_stock_and_exact_button_quantity",
+        "tests.knights.test_donate.DonationReplayTests.test_captured_three_donations_confirm_inventory_even_without_reward_frames"
+      ],
+      "source": "user-provided MuMu-20261018-142110-919.png; server not independently confirmed",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          25
+        ],
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          842,
+          133,
+          1018,
+          645
+        ]
+      ]
+    },
+    "20261018-142114-942": {
+      "path": "tests/fixtures/knights/donate/MuMu-20261018-142114-942.png",
+      "sha256": "03533d8b74abe3d393b37c650232f8d7914d82754a4bfb4acce7d79cc817518a",
+      "server": "unknown",
+      "scene": "Chinese support inventory and request rows",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.knights.test_donate.DonationCaptureTests.test_all_visible_rows_read_stock_and_exact_button_quantity",
+        "tests.knights.test_donate.DonationReplayTests.test_captured_three_donations_confirm_inventory_even_without_reward_frames"
+      ],
+      "source": "user-provided MuMu-20261018-142114-942.png; server not independently confirmed",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          25
+        ],
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          842,
+          133,
+          1018,
+          645
+        ]
+      ]
+    },
+    "20261018-142118-971": {
+      "path": "tests/fixtures/knights/donate/MuMu-20261018-142118-971.png",
+      "sha256": "c2456b165371157456d89eeb219360155881a6c400b5631b2b5a66b2c4f810e0",
+      "server": "unknown",
+      "scene": "Chinese support inventory and request rows",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.knights.test_donate.DonationCaptureTests.test_own_flower_inventory_is_read_but_not_paired_with_other_items",
+        "tests.knights.test_donate.DonationReplayTests.test_captured_three_donations_confirm_inventory_even_without_reward_frames"
+      ],
+      "source": "user-provided MuMu-20261018-142118-971.png; server not independently confirmed",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          25
+        ],
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          842,
+          133,
+          1018,
+          645
+        ]
+      ]
+    },
+    "20261018-184049-280": {
+      "path": "tests/fixtures/knights/donate/MuMu-20261018-184049-280.png",
+      "sha256": "21af4bf0c1a8260a55df1f6150fee7a38bcf2cbce4c97c2afc983a5369046f9a",
+      "server": "unknown",
+      "scene": "Flower request: stock 8474, donate 1; penguin requests require 2",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.knights.test_donate.DonationCaptureTests.test_captured_flower_quantity_debit_and_completed_request",
+        "tests.knights.test_donate.DonationReplayTests.test_captured_flower_donation_waits_through_reward_and_delayed_list",
+        "tests.knights.test_donate.DonationReplayTests.test_captured_flower_debit_confirms_when_reward_frame_is_missed"
+      ],
+      "source": "user-provided MuMu-20261018-184049-280.png; server not independently confirmed",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          25
+        ],
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          842,
+          133,
+          1018,
+          645
+        ]
+      ]
+    },
+    "20261018-184103-792": {
+      "path": "tests/fixtures/knights/donate/MuMu-20261018-184103-792.png",
+      "sha256": "485c20999472cb5dc01d3942e97c3809b921030514aa7e356fe500841f6ac5c7",
+      "server": "unknown",
+      "scene": "Successful flower donation reward overlay, 30 armbands",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.knights.test_donate.DonationCaptureTests.test_reward_overlay_cannot_be_used_as_a_ready_list",
+        "tests.knights.test_donate.DonationReplayTests.test_captured_flower_donation_waits_through_reward_and_delayed_list"
+      ],
+      "source": "user-provided MuMu-20261018-184103-792.png; server not independently confirmed",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          25
+        ],
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          842,
+          133,
+          1018,
+          645
+        ]
+      ]
+    },
+    "20261018-184105-118": {
+      "path": "tests/fixtures/knights/donate/MuMu-20261018-184105-118.png",
+      "sha256": "a79611685d806226c17df21122fcfb0bef90a830c4a1b47a862ae77149e0f670",
+      "server": "unknown",
+      "scene": "Flower stock 8473 after one donation; completed request reordered out of view",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.knights.test_donate.DonationCaptureTests.test_captured_flower_quantity_debit_and_completed_request",
+        "tests.knights.test_donate.DonationReplayTests.test_captured_flower_donation_waits_through_reward_and_delayed_list",
+        "tests.knights.test_donate.DonationReplayTests.test_captured_flower_debit_confirms_when_reward_frame_is_missed"
+      ],
+      "source": "user-provided MuMu-20261018-184105-118.png; server not independently confirmed",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          25
+        ],
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          842,
+          133,
+          1018,
+          645
+        ]
+      ]
+    },
+    "20261018-184107-923": {
+      "path": "tests/fixtures/knights/donate/MuMu-20261018-184107-923.png",
+      "sha256": "17dfcef2c90750a5ee83fd31d26c8ff3943dc699e40f0a235781d4bb3adf4bb0",
+      "server": "unknown",
+      "scene": "Scrolled list shows completed flower request, stock 8473 and progress 3/4",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.knights.test_donate.DonationCaptureTests.test_captured_flower_quantity_debit_and_completed_request",
+        "tests.knights.test_donate.DonationReplayTests.test_captured_flower_donation_waits_through_reward_and_delayed_list",
+        "tests.knights.test_donate.DonationReplayTests.test_captured_flower_debit_confirms_when_reward_frame_is_missed"
+      ],
+      "source": "user-provided MuMu-20261018-184107-923.png; server not independently confirmed",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          25
+        ],
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          842,
+          133,
+          1018,
+          645
+        ]
+      ]
+    },
+    "20261020-211027-988": {
+      "path": "tests/fixtures/knights/popups/MuMu-20261020-211027-988.png",
+      "sha256": "c0f1eba016ecb2fb06650e81d5a79409bf89a256fa80a9fbd8dbc7d84baa870b",
+      "server": "cn",
+      "scene": "Guild hall of fame season notification",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.knights.test_donate.DonationServerCaptureTests.test_cn_season_popups_close_before_own_request_exit"
+      ],
+      "source": "user-provided MuMu-20261020-211027-988.png; server confirmed by user",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          110
+        ]
+      ]
+    },
+    "20261020-211031-757": {
+      "path": "tests/fixtures/knights/popups/MuMu-20261020-211031-757.png",
+      "sha256": "65e5fabb3148d8c7c17f97eccd570a81ac5c0a45099a17bf60dc16ce3d5b0c32",
+      "server": "cn",
+      "scene": "Guild war champion notification",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.knights.test_donate.DonationServerCaptureTests.test_cn_season_popups_close_before_own_request_exit"
+      ],
+      "source": "user-provided MuMu-20261020-211031-757.png; server confirmed by user",
+      "privacy_redaction": []
+    },
+    "20261020-211036-975": {
+      "path": "tests/fixtures/knights/donate/MuMu-20261020-211036-975.png",
+      "sha256": "6b46182366fe06b7b349bae63e71fef059ea883eeb487500c47e331c4e21b1f6",
+      "server": "cn",
+      "scene": "Only own flower request, stock 6694, no support actions or checks",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.knights.test_donate.DonationServerCaptureTests.test_cn_own_request_capture_exits_without_ocr_or_swiping",
+        "tests.knights.test_donate.DonationServerCaptureTests.test_cn_season_popups_close_before_own_request_exit"
+      ],
+      "source": "user-provided MuMu-20261020-211036-975.png; server confirmed by user",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          25
+        ],
+        [
+          842,
+          133,
+          1018,
+          645
+        ]
+      ]
+    },
+    "20261020-211849-489": {
+      "path": "tests/fixtures/knights/popups/MuMu-20261020-211849-489.png",
+      "sha256": "6292c49296de6ff60f1ef919b6cc7e95347a57bef8ac0e376e6fd58ab8807b44",
+      "server": "global_cn",
+      "scene": "Guild war champion notification",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.knights.test_donate.DonationServerCaptureTests.test_global_champion_popup_closes_before_completed_request_exit"
+      ],
+      "source": "user-provided MuMu-20261020-211849-489.png; server confirmed by user",
+      "privacy_redaction": []
+    },
+    "20261020-211920-535": {
+      "path": "tests/fixtures/knights/donate/MuMu-20261020-211920-535.png",
+      "sha256": "7b79fe15ff1e36e6fe9ad765a8180b976e617862066073d76eec51fa5ccda813",
+      "server": "global_cn",
+      "scene": "Scrolled support list with one rune action and three completed penguin rows",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.knights.test_donate.DonationServerCaptureTests.test_global_completed_captures_scroll_then_exit_without_donating"
+      ],
+      "source": "user-provided MuMu-20261020-211920-535.png; server confirmed by user",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          25
+        ],
+        [
+          842,
+          133,
+          1018,
+          645
+        ]
+      ]
+    },
+    "20261020-211923-116": {
+      "path": "tests/fixtures/knights/donate/MuMu-20261020-211923-116.png",
+      "sha256": "894c86432828f560b15ad7c36210c0afa5f172ed004d026aa79dd7b95fda1f65",
+      "server": "global_cn",
+      "scene": "Scrolled support list with four completed rows, including rune and catalyst",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.knights.test_donate.DonationServerCaptureTests.test_global_completed_captures_scroll_then_exit_without_donating",
+        "tests.knights.test_donate.DonationServerCaptureTests.test_global_champion_popup_closes_before_completed_request_exit"
+      ],
+      "source": "user-provided MuMu-20261020-211923-116.png; server confirmed by user",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          25
+        ],
+        [
+          842,
+          133,
+          1018,
+          645
         ]
       ]
     }

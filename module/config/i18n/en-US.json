@@ -357,12 +357,12 @@
       "help": "Enter guild support and run donation/request flows."
     },
     "SupportLowerLevelFairyFlower": {
-      "name": "Donate Lower-Level Fairy Flower",
-      "help": "Donate Lower-Level Fairy Flower to guild requests in support."
+      "name": "Donate Available Lower-Level Fairy Flowers",
+      "help": "Donate as much as current inventory allows. Skip requests that cost more than you own. Disable to stop donating this item."
     },
     "SupportBeginnerPenguin": {
-      "name": "Donate Beginner Penguin",
-      "help": "Donate Beginner Penguin to guild requests in support."
+      "name": "Donate Available Beginner Penguins",
+      "help": "Donate as much as current inventory allows. Skip requests that cost more than you own. Disable to stop donating this item."
     },
     "RequestItem": {
       "name": "Support Request Item",
