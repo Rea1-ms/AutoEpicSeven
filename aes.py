@@ -132,6 +132,10 @@ class AutoEpicSeven(AzurLaneAutoScript):
         from tasks.equipment_reroll.equipment_reroll import EquipmentReroll
         EquipmentReroll(config=self.config, device=self.device, task="EquipmentReroll").run()
 
+    def brawl(self):
+        from tasks.brawl.tool import BrawlTool
+        BrawlTool(config=self.config, device=self.device, task="Brawl").run()
+
 
 if __name__ == '__main__':
     app = AutoEpicSeven('alas')

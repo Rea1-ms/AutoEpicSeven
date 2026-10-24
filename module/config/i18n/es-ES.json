@@ -102,6 +102,10 @@
       "name": "Renovar subestadísticas de equipo",
       "help": "Abre manualmente la selección de subestadísticas de la forja. Busca velocidad 5 primero y luego las prioridades restantes. Bloquea solo objetivos alcanzados, hasta dos. Se detiene por objetivos o presupuesto, sin fabricar el equipo automáticamente. Solo interfaz del juego en chino simplificado."
     },
+    "Brawl": {
+      "name": "Batalla campal",
+      "help": "Solo servidor internacional, chino simplificado y 1280x720. Accede desde Inicio, Batalla y Temporada; continúa una partida guardada o confirma la entrada gratuita en el modo actual. Las partidas normales guardadas recuperan todos los héroes, improntas, posiciones originales y los seis talentos de profesión antes de continuar la gestión, formación y combate hasta el resultado final. Las nuevas partidas empiezan con el campo vacío en la primera ronda. Prioriza subir de nivel, invoca si faltan héroes, ahorra 40 fichas para la invocación superior y transfiere reservas prescindibles solo con precios verificados. La recuperación puede intercambiar o retirar héroes temporalmente y debe verificar su restauración. Mantén seleccionada la pestaña Sinergia. Se detiene si no puede verificar la plantilla, los recursos, las posiciones o los talentos. El modo desafío sigue limitado a una batalla; aún no hay reinicio automático tras el resultado final."
+    },
     "SanctuaryMonthly": {
       "name": "Santuario - Mensual",
       "help": "Módulo mensual de santuario con planificador independiente."
@@ -1086,6 +1090,16 @@
     "BuyHucheMysticMedals": {
       "name": "Comprar medallas místicas en la tienda de Huche",
       "help": "Solo servidor internacional en chino simplificado. Compra únicamente medallas místicas según las existencias y el saldo de piedras celestiales. El primer lote cambia cada 12 horas y no siempre incluye medallas. Compra la oferta de 160 cuando aparezca; si una revisión completa no encuentra medallas, espera al próximo lote. La oferta normal de 200 tiene un cupo fijo de 4 para todo el evento; al agotarse, revisa solo el primer lote rotativo. Revisa a las 11:00 y 23:00 UTC+8. Desactivado por defecto; al activarlo se gastan piedras celestiales."
+    }
+  },
+  "Brawl": {
+    "_info": {
+      "name": "Entrada",
+      "help": "Elige si se usan solo las entradas gratuitas."
+    },
+    "OnlyFree": {
+      "name": "Solo entradas gratuitas",
+      "help": "Usa solo entradas gratuitas al activarlo. Desactiva para permitir entradas con recursos del juego."
     }
   },
   "BuyPenguins": {

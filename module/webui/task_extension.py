@@ -18,6 +18,15 @@ TaskDefaultAction = Callable[[], None]
 TaskAction = Callable[[Any, str, TaskDefaultAction], None]
 
 
+def render_brawl_task_panel(gui: Any) -> None:
+    """Show the one-battle scope and opening requirements without talent inputs."""
+    from pywebio.output import put_text
+
+    from module.webui.lang import t
+
+    put_text(t("Task.Brawl.help"))
+
+
 TASK_VISIBILITY_FILTERS: dict[str, TaskVisibility] = {
     COMMUNITY_AIO_TASK: is_community_visible,
     COMMUNITY_AUTH_TASK: is_community_visible,
@@ -25,6 +34,7 @@ TASK_VISIBILITY_FILTERS: dict[str, TaskVisibility] = {
 
 TASK_DETAIL_RENDERERS: dict[str, TaskRenderer] = {
     COMMUNITY_AUTH_TASK: render_community_auth_task_panel,
+    "Brawl": render_brawl_task_panel,
 }
 
 TASK_START_HANDLERS: dict[str, TaskAction] = {

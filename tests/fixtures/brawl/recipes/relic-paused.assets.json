@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "source": "../global_cn/brawl-relic-paused.png",
+  "suite": "brawl_relics",
+  "case": "relic_paused",
+  "items": [
+    {
+      "name": "PAUSE_MENU_CHECK",
+      "namespace": "global_cn",
+      "module": "brawl/relics",
+      "box": [
+        622,
+        216,
+        659,
+        237
+      ]
+    },
+    {
+      "name": "SAVE_EXIT",
+      "namespace": "global_cn",
+      "module": "brawl/relics",
+      "box": [
+        586,
+        277,
+        695,
+        303
+      ]
+    },
+    {
+      "name": "SAVE_EXIT",
+      "namespace": "global_cn",
+      "module": "brawl/relics",
+      "box": [
+        520,
+        269,
+        758,
+        310
+      ],
+      "kind": "button"
+    },
+    {
+      "name": "PAUSE_RETURN",
+      "namespace": "global_cn",
+      "module": "brawl/relics",
+      "box": [
+        618,
+        404,
+        663,
+        431
+      ]
+    },
+    {
+      "name": "PAUSE_RETURN",
+      "namespace": "global_cn",
+      "module": "brawl/relics",
+      "box": [
+        520,
+        398,
+        758,
+        440
+      ],
+      "kind": "button"
+    }
+  ]
+}

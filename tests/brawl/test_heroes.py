@@ -51,7 +51,8 @@ class HeroRecognitionTests(unittest.TestCase):
 
     def test_overflow_keeps_retained_hero_at_maximum_imprint(self):
         self.frame = frame("hero-new-08")
-        self.assertEqual(read_hero_result(self.frame), HeroResult("小春", Imprint.SSS, Imprint.SSS))
+        self.assertEqual(read_hero_result(self.frame),
+                         HeroResult("小春", Imprint.SSS, Imprint.SSS, True))
 
     def test_transmit_gift_result_and_later_preparation_keep_their_evidence_separate(self):
         self.frame = frame("transmit-gift-result")

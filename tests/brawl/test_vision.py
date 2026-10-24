@@ -1,5 +1,6 @@
 import unittest
-from dataclasses import asdict
+from dataclasses import asdict, replace
+from typing import ClassVar
 from unittest.mock import patch
 
 import numpy as np
@@ -8,8 +9,15 @@ from module.config import server
 
 server.set_lang("global_cn")
 
-from tasks.brawl.assets.assets_brawl import COIN_ICON, TOKEN_ICON  # noqa: E402
-from tasks.brawl.vision import BrawlMode, BrawlScreen, BrawlVision, parse_panel  # noqa: E402
+from tasks.brawl.assets.assets_brawl import COIN_ICON, HERO_RESULT_CHECK, TOKEN_ICON  # noqa: E402
+from tasks.brawl.talents import read_opening_talents  # noqa: E402
+from tasks.brawl.vision import (  # noqa: E402
+    BrawlMode,
+    BrawlScreen,
+    BrawlVision,
+    ObservationError,
+    parse_panel,
+)
 from tests.support.brawl import frame  # noqa: E402
 
 
@@ -70,6 +78,21 @@ class VisionTests(unittest.TestCase):
         self.assertIsNone(observations[2].panel)
         self.assertEqual((observations[3].panel.level, observations[3].panel.capacity), (5, 6))
         self.assertEqual(observations[3].panel.coins, 105)
+
+    def test_hero_footer_accepts_artwork_variation_without_matching_other_pages(self):
+        self.frame = frame("normal-summon-christy")
+        self.assertFalse(HERO_RESULT_CHECK.match_template(self.frame, similarity=0.9))
+        self.assertTrue(BrawlVision(self.frame).matches(HERO_RESULT_CHECK))
+        self.assertEqual(BrawlVision(self.frame).observe().state, BrawlScreen.HERO_RESULT)
+        self.frame = self.frame.copy()
+        self.frame[626:691, 570:715] = 0
+        self.assertFalse(BrawlVision(self.frame).matches(HERO_RESULT_CHECK))
+        for name in ("lobby", "normal-opening", "normal-first-summon", "prepare-level5",
+                     "combat", "round-clear", "round-failed", "upgrade-dialog", "formation",
+                     "transmit", "probabilities", "normal-victory15", "challenge-defeat"):
+            with self.subTest(sample=name):
+                self.frame = frame(name)
+                self.assertFalse(BrawlVision(self.frame).matches(HERO_RESULT_CHECK))
 
     def test_currency_positions_shift_and_missing_icons_never_reuse_previous_match(self):
         original_search = (COIN_ICON.search, TOKEN_ICON.search)
@@ -200,3 +223,112 @@ class VisionTests(unittest.TestCase):
         self.frame = frame("combat-speed-one").copy()
         self.frame[0:65, 1090:1170] = 0
         self.assertIsNone(BrawlVision(self.frame).observe().speed)
+
+
+class OpeningTalentTests(unittest.TestCase):
+    EXPECTED: ClassVar[dict[str, int]] = {"战士": 1, "骑士": 1, "射手": 1, "魔导士": 1, "盗贼": 1, "精灵师": 1}
+
+    def setUp(self):
+        server.set_lang("global_cn")
+
+    def opening(self):
+        self.frame = frame("opening-lorina-carmainerose")
+        return BrawlVision(self.frame).observe()
+
+    def test_captured_empty_openings_read_all_six_current_talents(self):
+        for name in ("opening-lorina-carmainerose", "normal-opening", "normal-first-summon"):
+            with self.subTest(sample=name):
+                self.frame = frame(name)
+                self.assertEqual(read_opening_talents(self.frame), self.EXPECTED)
+
+    def test_captured_incomplete_profession_list_is_not_six_confirmed_talents(self):
+        self.frame = frame("challenge-opening")
+        # The user confirmed that locked talents are hidden entirely. This
+        # older capture predates unlocking Soul Weaver, unlike the new frame.
+        self.assertEqual(read_opening_talents(self.frame), {**self.EXPECTED, "精灵师": 0})
+
+    def test_reordered_rows_follow_profession_icons_instead_of_old_positions(self):
+        observed = self.opening()
+        original = self.frame.copy()
+        # Reorder complete photographed rows, including their count and bar.
+        # Mixed count parsing is tested separately with explicit OCR outputs.
+        for target, source in enumerate((5, 3, 1, 4, 0, 2)):
+            top, source_top = 380 + target * 37, 380 + source * 37
+            self.frame[top:top + 37, 20:110] = original[source_top:source_top + 37, 20:110]
+        self.assertEqual(read_opening_talents(self.frame, observation=observed), self.EXPECTED)
+
+    def test_missing_duplicate_and_dimmed_icons_cannot_default_to_zero(self):
+        observed = self.opening()
+        original = self.frame.copy()
+        for damage in ("missing", "duplicate", "dimmed"):
+            with self.subTest(damage=damage):
+                self.frame = original.copy()
+                if damage == "missing":
+                    self.frame[384:411, 26:55] = 0
+                elif damage == "duplicate":
+                    self.frame[200:227, 26:55] = original[384:411, 26:55]
+                else:
+                    self.frame[384:411, 26:55] = (original[384:411, 26:55] * 0.3).astype(np.uint8)
+                with patch("tasks.brawl.talents.Ocr.ocr_multi_lines") as counts, self.assertRaises(ObservationError):
+                    read_opening_talents(self.frame, observation=observed)
+                counts.assert_not_called()
+        self.frame = original
+        self.assertEqual(read_opening_talents(self.frame, observation=observed), self.EXPECTED)
+
+    def test_hidden_or_dimmed_synergy_tab_rejects_before_count_reading(self):
+        observed = self.opening()
+        original = self.frame.copy()
+        for factor in (0, 0.3):
+            with self.subTest(factor=factor):
+                self.frame = original.copy()
+                self.frame[656:679, 24:94] = (original[656:679, 24:94] * factor).astype(np.uint8)
+                with patch("tasks.brawl.talents.Ocr") as ocr, self.assertRaises(ObservationError):
+                    read_opening_talents(self.frame, observation=observed)
+                ocr.assert_not_called()
+
+    def test_deployed_later_round_and_overlays_are_not_talent_evidence(self):
+        for name in ("normal-deployed", "normal-round2", "hero-result", "formation-place"):
+            with self.subTest(sample=name):
+                self.frame = frame(name)
+                with self.assertRaises(ObservationError):
+                    read_opening_talents(self.frame)
+        observed = self.opening()
+        for invalid in (replace(observed, panel=None), replace(observed, game_mode=None)):
+            with self.subTest(observation=invalid), patch("tasks.brawl.talents.Ocr") as ocr, \
+                    self.assertRaises(ObservationError):
+                read_opening_talents(self.frame, observation=invalid)
+            ocr.assert_not_called()
+
+    def test_explicit_zero_and_mixed_counts_are_read_without_manual_defaults(self):
+        observed = self.opening()
+        with patch("tasks.brawl.talents.Ocr.ocr_multi_lines") as counts:
+            counts.return_value = [
+                (text, 0.99) for text in ("0/6", "1/6", "0/6", "1/4", "1/6", "0/4")]
+            self.assertEqual(read_opening_talents(self.frame, observation=observed),
+                             {"战士": 0, "骑士": 1, "射手": 0, "魔导士": 1, "盗贼": 1, "精灵师": 0})
+        self.assertEqual(len(counts.call_args.args[0]), 6)
+
+    def test_incomplete_low_confidence_and_invalid_counts_stay_unknown(self):
+        observed = self.opening()
+        valid = [(text, 0.99) for text in ("1/6", "1/6", "1/6", "1/4", "1/6", "1/4")]
+        candidates = [valid[:-1], valid + [("1/6", 0.99)]]
+        for value in (("", 0.99), ("1/6", 0.89), ("1/6", float("nan")),
+                      ("2/6", 0.99), ("1/4", 0.99), ("1/6-", 0.99)):
+            candidates.append([value, *valid[1:]])
+        for values in candidates:
+            with self.subTest(values=values), \
+                    patch("tasks.brawl.talents.Ocr.ocr_multi_lines", return_value=values), \
+                    self.assertRaises(ObservationError):
+                read_opening_talents(self.frame, observation=observed)
+
+    def test_supplied_observation_validates_image_and_model_errors_propagate(self):
+        observed = self.opening()
+        with patch("tasks.brawl.talents.Ocr.ocr_multi_lines", side_effect=RuntimeError("model unavailable")), \
+                self.assertRaisesRegex(RuntimeError, "model unavailable"):
+            read_opening_talents(self.frame, observation=observed)
+        for invalid in (None, np.zeros((360, 640, 3), np.uint8),
+                        np.zeros((720, 1280, 3), np.float32)):
+            with self.subTest(shape=getattr(invalid, "shape", None)), self.assertRaises(ValueError):
+                read_opening_talents(invalid, observation=observed)
+        with patch.object(server, "lang", "cn"), self.assertRaises(ValueError):
+            read_opening_talents(self.frame, observation=observed)

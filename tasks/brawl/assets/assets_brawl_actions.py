@@ -15,6 +15,18 @@ SUMMON_LOWER = ButtonWrapper(
     ),
     global_en=None,
 )
+SUMMON_NORMAL = ButtonWrapper(
+    name='SUMMON_NORMAL',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/brawl/actions/SUMMON_NORMAL.png',
+        area=(442, 647, 587, 699),
+        search=(422, 627, 607, 719),
+        color=(112, 76, 53),
+        button=(442, 647, 587, 699),
+    ),
+    global_en=None,
+)
 SUMMON_UPPER = ButtonWrapper(
     name='SUMMON_UPPER',
     cn=None,

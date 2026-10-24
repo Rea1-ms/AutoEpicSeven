@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "source": "../global_cn/brawl-relic-earth.png",
+  "suite": "brawl_relics",
+  "case": "relic_earth",
+  "items": [
+    {
+      "name": "RELIC_PAGE_CHECK",
+      "namespace": "global_cn",
+      "module": "brawl/relics",
+      "box": [
+        68,
+        19,
+        126,
+        49
+      ]
+    },
+    {
+      "name": "RELIC_EFFECTS_CHECK",
+      "namespace": "global_cn",
+      "module": "brawl/relics",
+      "box": [
+        914,
+        100,
+        1047,
+        127
+      ]
+    },
+    {
+      "name": "HARMONY_TAB",
+      "namespace": "global_cn",
+      "module": "brawl/relics",
+      "box": [
+        84,
+        410,
+        167,
+        439
+      ]
+    },
+    {
+      "name": "HARMONY_TAB",
+      "namespace": "global_cn",
+      "module": "brawl/relics",
+      "box": [
+        10,
+        382,
+        237,
+        472
+      ],
+      "kind": "button"
+    },
+    {
+      "name": "NODE_AVAILABLE",
+      "namespace": "global_cn",
+      "module": "brawl/relics",
+      "box": [
+        467,
+        219,
+        492,
+        222
+      ]
+    }
+  ]
+}

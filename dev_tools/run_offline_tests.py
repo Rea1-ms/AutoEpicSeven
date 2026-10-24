@@ -87,6 +87,9 @@ BRAWL_MODULES = (
     "tests.brawl.test_strategy",
     "tests.brawl.test_vision",
     "tests.brawl.test_brawl",
+    "tests.brawl.test_entry",
+    "tests.brawl.test_normal_summon",
+    "tests.brawl.test_opening",
     "tests.brawl.test_heroes",
     "tests.brawl.test_combat",
     "tests.brawl.test_board",
@@ -101,6 +104,8 @@ BRAWL_MODULES = (
     "tests.brawl.test_multi_transmit",
     "tests.brawl.test_swap",
     "tests.brawl.test_summon",
+    "tests.brawl.test_resume",
+    "tests.brawl.test_relics",
 )
 SECRET_SHOP_MODULES = ("tests.secret_shop.test_payment", "tests.secret_shop.test_captures")
 INTERACTION_MODULES = ("tests.core.test_missed_clicks",)

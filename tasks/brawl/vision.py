@@ -9,15 +9,45 @@ import numpy as np
 from module.config import server
 from module.ocr.ocr import Ocr
 from tasks.brawl.assets.assets_brawl import (
-    BRAWL_CHALLENGE_CHECK, BRAWL_CHECK, COIN_ICON, COMBAT_CHECK, CURRENCY_TOOLTIP_CHECK,
-    FORMATION_CHECK, FORMATION_GRID_CHECK, GIVE_UP_CHECK, HERO_OBTAIN_CHECK, HERO_RESULT_CHECK,
-    HERO_UNLOCK_CHECK, INCOME_TOOLTIP_CHECK,
-    LEVEL_STABLE_CHECK, LEVEL_UP_CHECK, LOBBY_CHECK, LOBBY_EMPTY_CHECK,
-    OCR_DEPLOYMENT, OCR_LEVEL, OCR_ROUND, PREPARATION_CHECK, PROBABILITY_CHECK, RANK_UP_CHECK,
-    RESOURCE_INFO_CHECK, ROUND_CHECK, ROUND_CLEAR_CHECK, ROUND_FAILED_CHECK, RUN_DEFEAT_CHECK,
-    RUN_RETURN_CHECK, RUN_VICTORY_CHECK, SPEED_ONE_CHECK, SPEED_TWO_CHECK, TOKEN_ICON, TRANSMIT_CHECK,
+    BRAWL_CHALLENGE_CHECK,
+    BRAWL_CHECK,
+    COIN_ICON,
+    COMBAT_CHECK,
+    CURRENCY_TOOLTIP_CHECK,
+    FORMATION_CHECK,
+    FORMATION_GRID_CHECK,
+    GIVE_UP_CHECK,
+    HERO_OBTAIN_CHECK,
+    HERO_RESULT_CHECK,
+    HERO_UNLOCK_CHECK,
+    INCOME_TOOLTIP_CHECK,
+    LEVEL_STABLE_CHECK,
+    LEVEL_UP_CHECK,
+    LOBBY_CHECK,
+    LOBBY_EMPTY_CHECK,
+    OCR_DEPLOYMENT,
+    OCR_LEVEL,
+    OCR_ROUND,
+    PREPARATION_CHECK,
+    PROBABILITY_CHECK,
+    RANK_UP_CHECK,
+    RESOURCE_INFO_CHECK,
+    ROUND_CHECK,
+    ROUND_CLEAR_CHECK,
+    ROUND_FAILED_CHECK,
+    RUN_DEFEAT_CHECK,
+    RUN_RETURN_CHECK,
+    RUN_VICTORY_CHECK,
+    SPEED_ONE_CHECK,
+    SPEED_TWO_CHECK,
+    TOKEN_ICON,
+    TRANSMIT_CHECK,
 )
 from tasks.brawl.rules import TOTAL_ROUNDS, team_capacity
+
+# The same continuation text overlays different hero artwork. Keep its lower
+# threshold local to this footer; page identities and resources still use 0.9.
+HERO_RESULT_SIMILARITY = 0.8
 
 
 class BrawlScreen(str, Enum):
@@ -101,9 +131,10 @@ class BrawlVision:
         self.lang = "cn"
 
     def matches(self, button, *, color=False):
+        similarity = HERO_RESULT_SIMILARITY if button is HERO_RESULT_CHECK else 0.9
         if color:
-            return button.match_template_color(self.image, similarity=0.9, threshold=20)
-        return button.match_template(self.image, similarity=0.9)
+            return button.match_template_color(self.image, similarity=similarity, threshold=20)
+        return button.match_template(self.image, similarity=similarity)
 
     def currency_areas(self):
         """Locate both icons in this frame; never reuse a previous match offset.
@@ -151,7 +182,7 @@ class BrawlVision:
         values = Ocr(OCR_ROUND, lang="en", name="BRAWL_PANEL").ocr_multi_lines(regions)
         return parse_panel(values)
 
-    def observe(self):
+    def observe(self, *, read_panel=True):
         modes = [mode for mode, button in (
             (BrawlMode.NORMAL, BRAWL_CHECK), (BrawlMode.CHALLENGE, BRAWL_CHALLENGE_CHECK),
         ) if self.matches(button)]
@@ -203,6 +234,8 @@ class BrawlVision:
         if self.matches(PREPARATION_CHECK, color=True) and self.matches(ROUND_CHECK):
             if not self.matches(LEVEL_STABLE_CHECK, color=True):
                 return observed(BrawlScreen.PREPARATION, reason="Level label is transitioning or obscured")
+            if not read_panel:
+                return observed(BrawlScreen.PREPARATION)
             try:
                 return observed(BrawlScreen.PREPARATION, self.preparation_panel())
             except ObservationError as exc:

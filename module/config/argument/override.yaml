@@ -57,3 +57,17 @@ EquipmentReroll:
       display: hide
     ServerUpdate:
       display: hide
+
+# Manually started brawl tool; never enable recurring runs in the scheduler.
+Brawl:
+  Scheduler:
+    Enable:
+      value: false
+      display: hide
+      option: [ false, ]
+    NextRun:
+      display: hide
+    Command:
+      display: hide
+    ServerUpdate:
+      display: hide

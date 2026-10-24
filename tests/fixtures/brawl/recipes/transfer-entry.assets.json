@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "source": "../brawl-multi-transmit-before.png",
+  "suite": "brawl",
+  "case": "transfer-entry",
+  "items": [
+    {"name": "TRANSMIT_ENTER", "namespace": "global_cn", "module": "brawl/transfer", "box": [1123, 574, 1194, 596]},
+    {"name": "TRANSMIT_ENTER", "namespace": "global_cn", "module": "brawl/transfer", "kind": "button", "box": [1015, 560, 1255, 612]},
+    {"name": "OCR_TRANSFER_CARDS", "namespace": "global_cn", "module": "brawl/transfer", "box": [980, 120, 1280, 550]}
+  ]
+}

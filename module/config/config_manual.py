@@ -14,7 +14,7 @@ class ManualConfig:
     > Knights > Store > Arena > PetsGift
     > SecretShop > Combat > Gacha > MissionReward > Pets > DataUpdate > CommunityAio
     > LimitedActivity > SpecialActivity > BuyPenguins
-    > EquipmentReroll
+    > EquipmentReroll > Brawl
     """
 
     """

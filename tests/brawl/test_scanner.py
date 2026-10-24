@@ -10,12 +10,23 @@ from module.config import server
 server.set_lang("global_cn")
 
 from tasks.brawl.bench import BenchHero  # noqa: E402
+from tasks.brawl.cursor import read_cursor  # noqa: E402
 from tasks.brawl.rules import HEROES, Imprint  # noqa: E402
-from tasks.brawl.scanner import BrawlBenchScanner, ScanOutcome  # noqa: E402
-from tasks.brawl.vision import BrawlMode, BrawlObservation, BrawlScreen, PreparationPanel  # noqa: E402
+from tasks.brawl.scanner import (  # noqa: E402
+    BenchScanResult,
+    BrawlBenchScanner,
+    ScanOutcome,
+    SelectionOutcome,
+)
+from tasks.brawl.vision import (  # noqa: E402
+    BrawlMode,
+    BrawlObservation,
+    BrawlScreen,
+    BrawlVision,
+    PreparationPanel,
+)
 from tests.support.brawl import frame  # noqa: E402
 from tests.support.offline import ControlledClock, record_action  # noqa: E402
-
 
 PANEL = PreparationPanel(5, 4, 0, 5, 65, 0)
 NEXT = (1070, 331, 1170, 374)
@@ -75,6 +86,27 @@ class ScanReplay:
 
 
 class BenchScannerTests(unittest.TestCase):
+    def test_completed_scan_reuses_selection_only_in_its_unchanged_current_frame(self):
+        for change in ("none", "copy", "pixels", "expired", "fresh"):
+            with self.subTest(change=change):
+                replay = self.replay(["normal-first-summon"] * 2, synthetic=False)
+                with patch("tasks.brawl.scanner.read_cursor", wraps=read_cursor) as reader:
+                    scanned = replay.task.scan()
+                    self.assertEqual(scanned.outcome, ScanOutcome.COMPLETE)
+                    self.assertEqual(len(scanned.heroes), 1)
+                    if change == "copy":
+                        replay.image = replay.image.copy()
+                    elif change == "pixels":
+                        replay.image[0, 0, 0] ^= 1
+                    elif change == "expired":
+                        self.clock.advance(3.1)
+                    selected = replay.task.select(scanned.heroes[-1], scanned,
+                                                  skip_first_screenshot=change != "fresh")
+                self.assertEqual(selected.outcome, SelectionOutcome.SELECTED)
+                self.assertEqual(selected.hero, scanned.heroes[-1])
+                self.assertEqual(reader.call_count, 1 if change == "none" else 2)
+                self.assertEqual(replay.actions, [])
+
     def setUp(self):
         server.set_lang("global_cn")
         self.clock = ControlledClock()
@@ -120,6 +152,21 @@ class BenchScannerTests(unittest.TestCase):
         self.assertTrue(all(1000 <= action[2][0] < 1280 and 327 <= action[2][1] < 550
                             for action in replay.actions))
 
+    def test_each_fresh_frame_is_read_once_while_comparisons_reuse_its_cursor(self):
+        replay = self.replay(["queue-top", "queue-second", "queue-second", "combat"], synthetic=False)
+        with patch("tasks.brawl.scanner.read_cursor", wraps=read_cursor) as reader, patch(
+                "tasks.brawl.cursor.read_cursor", side_effect=AssertionError("Repeated comparison OCR")):
+            result = replay.task.scan()
+        self.assertEqual(result.outcome, ScanOutcome.SCENE_CHANGED)
+        self.assertEqual(result.heroes, (BenchHero("维多丽卡", Imprint.C), BenchHero("克莉丝缇", Imprint.D)))
+        # The pending transition and the following unchanged frame are checked
+        # against their own paired reads. The scene change never inherits the
+        # accepted hero or authorizes a second click during the action interval.
+        self.assertEqual(reader.call_count, 3)
+        for call, image in zip(reader.call_args_list, replay.frames[:3]):
+            self.assertIs(call.args[0], image)
+        self.assertEqual([item[1] for item in replay.actions], ["BrawlBenchNext"])
+
     def test_captured_empty_bench_needs_no_swipe_or_click(self):
         replay = self.replay(["queue-empty"], synthetic=False)
         result = replay.task.scan()
@@ -132,6 +179,23 @@ class BenchScannerTests(unittest.TestCase):
         self.assertEqual(result.panel.deployed, 3)
         self.assertFalse(result.roster_complete)
         self.assertEqual(replay.actions, [])
+
+    def test_live_opening_clicks_next_once_and_reports_pending_timeout(self):
+        # The user supplied a manual emulator PNG, not the script's actual
+        # screenshot sequence. Repeating it models a click with no confirmed
+        # response; it must neither invent the covered hero nor retry blindly.
+        replay = self.replay(["opening-lorina-carmainerose"] * 5, synthetic=False, seconds=4)
+        with patch("tasks.brawl.scanner.logger") as log:
+            result = replay.task.scan()
+        self.assertEqual(result.outcome, ScanOutcome.TIMEOUT)
+        self.assertFalse(result.coverage_complete)
+        self.assertEqual(result.heroes, (BenchHero("萝里娜", Imprint.D),))
+        self.assertEqual(replay.actions, [(0, "BrawlBenchNext", (1147, 355, 1148, 356))])
+        messages = [item.args[0] for item in log.info.call_args_list]
+        gates = [message for message in messages if message.startswith("Brawl bench scan gate:")]
+        self.assertEqual(len(gates), 2)
+        self.assertIn("imprint=D, top=True, bottom=False", gates[0])
+        self.assertIn("outcome=timeout, verified=1, actions=1, pending_next=True", messages[-1])
 
     def test_return_to_top_retries_only_with_interval_then_walks_forward(self):
         middle = cursor("卡琳")
@@ -338,5 +402,183 @@ class BenchScannerTests(unittest.TestCase):
                              cursor(top=True, bottom=True, next_area=None)])
         result = replay.task.scan(skip_first_screenshot=False)
         self.assertEqual(result.outcome, ScanOutcome.COMPLETE)
+        self.assertEqual(replay.index, 1)
+        self.assertEqual(replay.actions, [])
+
+
+class BenchSelectionTests(unittest.TestCase):
+    setUp = BenchScannerTests.setUp
+    replay = BenchScannerTests.replay
+
+    @staticmethod
+    def expected(heroes=None, panel=PANEL):
+        if heroes is None:
+            heroes = (BenchHero("维多丽卡", Imprint.C), BenchHero("格伦", Imprint.C))
+        return BenchScanResult(tuple(heroes), panel, BrawlMode.NORMAL, ScanOutcome.COMPLETE)
+
+    def test_captured_scan_then_rewind_selects_exact_second_hero(self):
+        # These are real static card selections arranged into a simulated
+        # scan/rewind response, not a capture of automatic device operations.
+        names = ("queue-top", "queue-second", "queue-middle", "queue-karin", "queue-glen")
+        frames = [*names, "queue-bottom", "queue-bottom", "queue-top", "queue-second"]
+        replay = self.replay(frames, synthetic=False, seconds=4)
+        observation = BrawlVision(replay.image).observe()
+        expected = BenchScanResult((
+            BenchHero("维多丽卡", Imprint.C), BenchHero("克莉丝缇", Imprint.D),
+            BenchHero("战斗型玛雅", Imprint.C), BenchHero("卡琳", Imprint.A),
+            BenchHero("格伦", Imprint.C), BenchHero("辅助型拉兹", Imprint.C),
+        ), observation.panel, observation.game_mode, ScanOutcome.COMPLETE)
+        result = replay.task.select(expected.heroes[1], expected)
+        self.assertEqual(result.outcome, SelectionOutcome.SELECTED)
+        self.assertEqual(result.hero, expected.heroes[1])
+        self.assertEqual(result.panel, expected.panel)
+        self.assertFalse(hasattr(result, "coverage_complete"))
+        self.assertEqual(replay.index, 8)
+        np.testing.assert_array_equal(replay.image, replay.frames[-1])
+        self.assertEqual([action[:2] for action in replay.actions], [
+            (0, "BrawlBenchNext"), (1, "BrawlBenchNext"), (2, "BrawlBenchNext"),
+            (3, "BrawlBenchNext"), (4, "BrawlBenchNext"), (6, "BrawlBenchTop"),
+            (7, "BrawlBenchNext"),
+        ])
+
+    def test_target_at_top_still_requires_full_validation_then_rewind(self):
+        expected = self.expected()
+        first = cursor(top=True)
+        last = cursor("格伦", bottom=True, next_area=None)
+        replay = self.replay([first] * 7 + [last] * 8 + [first])
+        result = replay.task.select(expected.heroes[0], expected)
+        self.assertEqual(result.outcome, SelectionOutcome.SELECTED)
+        self.assertEqual(result.hero, expected.heroes[0])
+        self.assertEqual(replay.index, 15)
+        self.assertEqual([action[:2] for action in replay.actions], [
+            (0, "BrawlBenchNext"), (8, "BrawlBenchTop"),
+        ])
+
+    def test_invalid_or_absent_target_and_incomplete_roster_never_act(self):
+        expected = self.expected()
+        target = expected.heroes[0]
+        cases = (
+            (None, expected, SelectionOutcome.INVALID_REQUEST),
+            (target, replace(expected, outcome=ScanOutcome.TIMEOUT), SelectionOutcome.INVALID_REQUEST),
+            (target, replace(expected, panel=None), SelectionOutcome.INVALID_REQUEST),
+            (target, replace(expected, game_mode=None), SelectionOutcome.INVALID_REQUEST),
+            (target, replace(expected, heroes=(target, target)), SelectionOutcome.INVALID_REQUEST),
+            (target, replace(expected, heroes=(BenchHero("维多丽卡", None),)),
+             SelectionOutcome.INVALID_REQUEST),
+            (BenchHero("小春", Imprint.D), expected, SelectionOutcome.INVALID_REQUEST),
+            (BenchHero("未知", Imprint.NONE), expected, SelectionOutcome.INVALID_REQUEST),
+            (BenchHero("卡琳", Imprint.A), expected, SelectionOutcome.TARGET_MISSING),
+            (target, replace(expected, heroes=()), SelectionOutcome.TARGET_MISSING),
+        )
+        for hero, scan, outcome in cases:
+            with self.subTest(hero=hero, outcome=outcome):
+                replay = self.replay([cursor(top=True)])
+                result = replay.task.select(hero, scan)
+                self.assertEqual(result.outcome, outcome)
+                self.assertIsNone(result.hero)
+                self.assertEqual(replay.actions, [])
+
+    def test_extra_missing_reordered_or_imprint_changed_bench_rejects_target(self):
+        expected = self.expected()
+        cases = (
+            [cursor(top=True, bottom=True, next_area=None)],
+            [cursor(top=True), cursor("格伦")],
+            [cursor(top=True), cursor("卡琳", Imprint.A, bottom=True, next_area=None)],
+            [cursor("格伦", top=True)],
+            [cursor(imprint=Imprint.B, top=True)],
+            [cursor(name=None, empty=True, top=True, bottom=True, next_area=None)],
+        )
+        for frames in cases:
+            with self.subTest(frames=frames):
+                replay = self.replay(frames)
+                result = replay.task.select(expected.heroes[0], expected)
+                self.assertEqual(result.outcome, SelectionOutcome.BENCH_CHANGED)
+                self.assertIsNone(result.hero)
+                self.assertLessEqual(len(replay.actions), 1)
+
+    def test_selection_requires_continuous_confirmed_adjacent_portraits(self):
+        expected = self.expected()
+        for confirmation, outcome in ((False, SelectionOutcome.TRANSITION_MISMATCH),
+                                      (None, SelectionOutcome.TIMEOUT)):
+            with self.subTest(confirmation=confirmation):
+                replay = self.replay([cursor(top=True)]
+                                     + [cursor("格伦", bottom=True, next_area=None)] * 30,
+                                     confirmed=confirmation)
+                result = replay.task.select(expected.heroes[-1], expected)
+                self.assertEqual(result.outcome, outcome)
+                self.assertIsNone(result.hero)
+                self.assertEqual(len(replay.actions), 1)
+
+    def test_unconfirmed_click_is_not_repeated_and_missing_imprint_is_not_selected(self):
+        expected = self.expected()
+        for frames, count in (([cursor(top=True)] * 30, 1),
+                              ([cursor(imprint=None, top=True)] * 30, 0)):
+            with self.subTest(count=count):
+                replay = self.replay(frames)
+                result = replay.task.select(expected.heroes[0], expected)
+                self.assertEqual(result.outcome, SelectionOutcome.TIMEOUT)
+                self.assertIsNone(result.hero)
+                self.assertEqual(len(replay.actions), count)
+
+    def test_changed_resources_mode_or_scene_rejects_before_action(self):
+        expected = self.expected()
+        cases = (
+            (cursor(top=True, panel=replace(PANEL, coins=66)), SelectionOutcome.CONTEXT_CHANGED),
+            (cursor(top=True, mode=BrawlMode.CHALLENGE), SelectionOutcome.CONTEXT_CHANGED),
+            (cursor(state=BrawlScreen.FORMATION_SELECTION), SelectionOutcome.SCENE_CHANGED),
+            (cursor(state=BrawlScreen.COMBAT), SelectionOutcome.SCENE_CHANGED),
+        )
+        for observed, outcome in cases:
+            with self.subTest(outcome=outcome):
+                replay = self.replay([observed])
+                result = replay.task.select(expected.heroes[0], expected)
+                self.assertEqual(result.outcome, outcome)
+                self.assertIsNone(result.hero)
+                self.assertEqual(replay.actions, [])
+
+    def test_rewind_rechecks_visible_queue_before_accepting_requested_focus(self):
+        expected = self.expected()
+        frames = [cursor(top=True), cursor("格伦", bottom=True, next_area=None), cursor(top=True)]
+        for agreement, outcome in ((False, SelectionOutcome.BENCH_CHANGED),
+                                   (None, SelectionOutcome.TIMEOUT)):
+            with self.subTest(agreement=agreement):
+                replay = self.replay(frames + [frames[-1]] * 30, agreement=agreement)
+                result = replay.task.select(expected.heroes[0], expected)
+                self.assertEqual(result.outcome, outcome)
+                self.assertIsNone(result.hero)
+                self.assertEqual(len(replay.actions), 1)
+
+    def test_rewind_and_selection_share_one_action_budget(self):
+        expected = self.expected()
+        replay = self.replay([cursor(top=True)]
+                             + [cursor("格伦", bottom=True, next_area=None)] * 2)
+        replay.task.MAX_ACTIONS = 1
+        result = replay.task.select(expected.heroes[0], expected)
+        self.assertEqual(result.outcome, SelectionOutcome.ACTION_LIMIT)
+        self.assertEqual(len(replay.actions), 1)
+
+    def test_selected_late_final_frame_wins_over_timeout_and_action_limit(self):
+        expected = self.expected()
+        replay = self.replay([cursor(top=True), cursor("格伦", bottom=True, next_area=None)], seconds=13)
+        replay.task.MAX_ACTIONS = 1
+        result = replay.task.select(expected.heroes[-1], expected)
+        self.assertEqual(result.outcome, SelectionOutcome.SELECTED)
+        self.assertEqual(result.hero, expected.heroes[-1])
+        self.assertEqual(len(replay.actions), 1)
+
+    def test_selection_preserves_previous_scan_action_interval(self):
+        expected = self.expected()
+        replay = self.replay([cursor(top=True)] * 8 + [cursor("格伦", bottom=True, next_area=None)])
+        replay.task.interval_reset(replay.task.ACTION_TIMER, interval=replay.task.ACTION_INTERVAL)
+        result = replay.task.select(expected.heroes[-1], expected)
+        self.assertEqual(result.outcome, SelectionOutcome.SELECTED)
+        self.assertEqual([action[0] for action in replay.actions], [7])
+
+    def test_selection_can_replace_stale_first_image_without_clicking(self):
+        hero = BenchHero("维多丽卡", Imprint.C)
+        replay = self.replay([cursor(state=BrawlScreen.COMBAT),
+                             cursor(top=True, bottom=True, next_area=None)])
+        result = replay.task.select(hero, self.expected((hero,)), skip_first_screenshot=False)
+        self.assertEqual(result.outcome, SelectionOutcome.SELECTED)
         self.assertEqual(replay.index, 1)
         self.assertEqual(replay.actions, [])

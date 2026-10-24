@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "source": "../brawl-hero-start-03.png",
+  "suite": "brawl",
+  "case": "hero-normal-summon-continue",
+  "items": [
+    {"name": "HERO_RESULT_CHECK", "frame": 5, "namespace": "global_cn", "module": "brawl", "box": [590, 646, 695, 671]}
+  ]
+}

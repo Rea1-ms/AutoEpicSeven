@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "source": "../global_cn/brawl-relic-preparation.png",
+  "suite": "brawl_relics",
+  "case": "relic_preparation",
+  "items": [
+    {
+      "name": "PAUSE_BUTTON",
+      "namespace": "global_cn",
+      "module": "brawl/relics",
+      "box": [
+        1229,
+        16,
+        1255,
+        51
+      ]
+    },
+    {
+      "name": "PAUSE_BUTTON",
+      "namespace": "global_cn",
+      "module": "brawl/relics",
+      "box": [
+        1215,
+        4,
+        1270,
+        61
+      ],
+      "kind": "button"
+    }
+  ]
+}

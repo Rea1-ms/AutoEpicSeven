@@ -397,6 +397,9 @@ SpecialActivity:
   # 花费天空石的购买项默认关闭，避免升级后自动改变用户消费。
   BuyHucheMysticMedals: false
 
+Brawl:
+  OnlyFree: true
+
 BuyPenguins:
   BatchCount:
     value: 1

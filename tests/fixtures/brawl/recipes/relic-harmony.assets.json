@@ -1,0 +1,96 @@
+{
+  "version": 1,
+  "source": "../global_cn/brawl-relic-harmony.png",
+  "suite": "brawl_relics",
+  "case": "relic_harmony",
+  "items": [
+    {
+      "name": "HARMONY_SELECTED",
+      "namespace": "global_cn",
+      "module": "brawl/relics",
+      "box": [
+        9,
+        381,
+        35,
+        405
+      ]
+    },
+    {
+      "name": "NODE_ACTIVE",
+      "namespace": "global_cn",
+      "module": "brawl/relics",
+      "box": [
+        467,
+        219,
+        492,
+        222
+      ]
+    },
+    {
+      "name": "RELIC_KNIGHT",
+      "namespace": "global_cn",
+      "module": "brawl/relics",
+      "box": [
+        460,
+        236,
+        499,
+        274
+      ]
+    },
+    {
+      "name": "RELIC_SOUL_WEAVER",
+      "namespace": "global_cn",
+      "module": "brawl/relics",
+      "box": [
+        630,
+        235,
+        669,
+        275
+      ]
+    },
+    {
+      "name": "RELIC_RANGER",
+      "namespace": "global_cn",
+      "module": "brawl/relics",
+      "box": [
+        460,
+        376,
+        499,
+        414
+      ]
+    },
+    {
+      "name": "RELIC_THIEF",
+      "namespace": "global_cn",
+      "module": "brawl/relics",
+      "box": [
+        630,
+        375,
+        669,
+        415
+      ]
+    },
+    {
+      "name": "RELIC_MAGE",
+      "namespace": "global_cn",
+      "module": "brawl/relics",
+      "box": [
+        457,
+        514,
+        502,
+        554
+      ]
+    },
+    {
+      "name": "RELIC_WARRIOR",
+      "namespace": "global_cn",
+      "module": "brawl/relics",
+      "box": [
+        626,
+        514,
+        671,
+        554
+      ]
+    }
+  ]
+}

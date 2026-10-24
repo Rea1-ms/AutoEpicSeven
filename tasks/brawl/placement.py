@@ -53,8 +53,17 @@ def capture_placement(image, screen_row, screen_column):
     return PlacementRequest(cursor.selected, cursor.panel, cursor.game_mode, screen_row, screen_column)
 
 
-def _selected_entry(image, observation):
-    entries = read_bench(image, observation=observation).entries
+def _selected_entry(image, observation, *, viewport=None):
+    """Select a card from a viewport belonging to this exact screenshot only."""
+    if viewport is not None:
+        BrawlVision(image)
+        if observation.state not in (BrawlScreen.PREPARATION, BrawlScreen.FORMATION_SELECTION,
+                                     BrawlScreen.TRANSMIT_SELECTION):
+            return None
+    visible = viewport if viewport is not None else read_bench(image, observation=observation)
+    if observation.panel is not None and visible.panel != observation.panel:
+        return None
+    entries = visible.entries
     selected = [entry for entry in entries if 996 <= entry.name_area[0] <= 1010
                 and 247 <= entry.name_area[1] < entry.name_area[3] <= 284
                 and entry.plus_area is not None]

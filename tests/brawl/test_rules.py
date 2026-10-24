@@ -49,7 +49,10 @@ class CatalogueTests(unittest.TestCase):
         self.assertEqual(get_hero("露斌"), get_hero("露彬"))
         self.assertEqual(get_hero("露彬").attack_range, 1)
         self.assertEqual(get_hero("指挥型莱伊卡").attack_range, 4)
-        self.assertEqual(get_hero("卡麦萝兹").attack_range, 3)
+        for name in ("卡萝", "卡麦萝兹"):
+            self.assertEqual(get_hero(name).attack_range, 1)
+            self.assertEqual(get_hero(name).profession, "魔导士")
+        self.assertEqual(get_hero("玫勒赛德丝").attack_range, 3)
         self.assertEqual(get_hero("塔玛林尔").attack_range, 1)
 
     def test_total_rank_unlocks_at_each_boundary(self):

@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "source": "../global_cn/brawl-lobby-saved-opening.png",
+  "suite": "brawl",
+  "case": "entry-saved-opening",
+  "items": [
+    {"name": "LOBBY_CONTINUE", "namespace": "global_cn", "module": "brawl/entry", "box": [1113, 648, 1198, 675]},
+    {"name": "LOBBY_NORMAL_CHECK", "frame": 2, "namespace": "global_cn", "module": "brawl/entry", "box": [749, 648, 837, 676]}
+  ]
+}

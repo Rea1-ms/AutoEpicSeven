@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "source": "../brawl-full-swap-before.png",
+  "suite": "brawl_talents",
+  "case": "resume-talents-active",
+  "items": [
+    {"name": "TALENT_WARRIOR_ICON", "frame": 2, "namespace": "global_cn", "module": "brawl/talents", "box": [26, 384, 55, 411]},
+    {"name": "TALENT_KNIGHT_ICON", "frame": 2, "namespace": "global_cn", "module": "brawl/talents", "box": [26, 421, 55, 448]},
+    {"name": "TALENT_MAGE_ICON", "frame": 2, "namespace": "global_cn", "module": "brawl/talents", "box": [26, 458, 55, 485]},
+    {"name": "TALENT_THIEF_ICON", "frame": 2, "namespace": "global_cn", "module": "brawl/talents", "box": [26, 199, 55, 226]},
+    {"name": "TALENT_SOUL_WEAVER_ICON", "frame": 3, "namespace": "global_cn", "module": "brawl/talents", "box": [26, 162, 55, 189]}
+  ]
+}

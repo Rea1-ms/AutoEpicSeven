@@ -196,6 +196,9 @@ class GeneratedConfig:
     # Group `SpecialActivity`
     SpecialActivity_BuyHucheMysticMedals = False
 
+    # Group `Brawl`
+    Brawl_OnlyFree = True
+
     # Group `BuyPenguins`
     BuyPenguins_BatchCount = 1
 

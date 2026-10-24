@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "source": "../brawl-normal-lobby-empty.png",
+  "suite": "brawl",
+  "case": "entry-normal-empty",
+  "items": [
+    {"name": "LOBBY_ENTER", "namespace": "global_cn", "module": "brawl/entry", "box": [1111, 648, 1156, 675]},
+    {"name": "LOBBY_FREE_CHECK", "namespace": "global_cn", "module": "brawl/entry", "box": [982, 650, 1027, 675]},
+    {"name": "LOBBY_NORMAL_CHECK", "namespace": "global_cn", "module": "brawl/entry", "box": [749, 648, 837, 676]}
+  ]
+}

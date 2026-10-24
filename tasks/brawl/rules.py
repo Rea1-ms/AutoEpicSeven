@@ -97,7 +97,8 @@ LEVEL_UP_COSTS = MappingProxyType(dict(enumerate((20, 50, 70, 100, 120, 150, 200
 
 
 def _hero(name, rarity, faction, profession, unlock_rank=0, skill_count=None, ultimate_imprint=None):
-    attack_range = {"黎洁特": 3, "露彬": 1, "莱娅": 2}.get(name, PROFESSION_RANGES[profession])
+    attack_range = {"黎洁特": 3, "露彬": 1, "莱娅": 2, "卡萝": 1, "卡麦萝兹": 1}.get(
+        name, PROFESSION_RANGES[profession])
     return Hero(name, rarity, faction, profession, attack_range, unlock_rank, skill_count, ultimate_imprint)
 
 

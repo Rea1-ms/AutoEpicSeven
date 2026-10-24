@@ -8,14 +8,21 @@ from module.config import server
 
 server.set_lang("global_cn")
 
+from tasks.brawl.assets.assets_brawl import HERO_RESULT_CHECK  # noqa: E402
 from tasks.brawl.heroes import HeroResult, read_hero_result  # noqa: E402
-from tasks.brawl.rules import Imprint, SummonKind  # noqa: E402
+from tasks.brawl.rules import Imprint, Resources, SummonKind  # noqa: E402
 from tasks.brawl.summon import (  # noqa: E402
     BrawlSummon,
     SummonOutcome,
+    SummonRequest,
     capture_summon,
 )
-from tasks.brawl.vision import BrawlVision, ObservationError  # noqa: E402
+from tasks.brawl.vision import (  # noqa: E402
+    BrawlMode,
+    BrawlVision,
+    ObservationError,
+    PreparationPanel,
+)
 from tests.support.brawl import BrawlReplay, frame  # noqa: E402
 from tests.support.offline import ControlledClock  # noqa: E402
 
@@ -84,7 +91,9 @@ class SynergySummonReplayTests(unittest.TestCase):
                 ("lower-summon-return", "upper-summon-result", "upper-summon-return",
                  SummonKind.UPPER, 4, HeroResult("黎洁特", Imprint.SS, Imprint.S))):
             request = capture_summon(frame(before), kind)
-            replay = self.replay([before] + [result] * 7 + [after])
+            # Leave stale result frames beyond a second action interval. The
+            # footer is an acknowledgement, not a repeatable draw action.
+            replay = self.replay([before] + [result] * 16 + [after])
             report = replay.task.summon_once(request)
             self.assertEqual(report.outcome, SummonOutcome.CONFIRMED)
             self.assertEqual(report.hero, hero)
@@ -137,12 +146,36 @@ class SynergySummonReplayTests(unittest.TestCase):
         self.assertEqual(replay.task.summon_once(self.request).outcome, SummonOutcome.RESULT_UNSUPPORTED)
         self.assertEqual([action[1] for action in replay.actions], ["SUMMON_LOWER"])
 
-    def test_overflow_result_is_preserved_without_guessing_its_refund(self):
-        # Deliberate synthetic interruption; this old overflow capture is not
-        # represented as an actual result of the new lower summon sequence.
-        replay = self.replay([self.before, "hero-new-08"])
-        self.assertEqual(replay.task.summon_once(self.request).outcome, SummonOutcome.RESULT_UNSUPPORTED)
-        self.assertEqual([action[1] for action in replay.actions], ["SUMMON_LOWER"])
+    def test_overflow_result_requires_a_matching_measured_refund(self):
+        before = PreparationPanel(1, 3, 0, 4, 116, 75)
+        request = SummonRequest(before, BrawlMode.NORMAL, SummonKind.UPPER)
+        returned = frame("lower-summon-return")
+        actual = BrawlVision.preparation_panel
+
+        def read_panel(vision):
+            if vision.image is returned:
+                return PreparationPanel(1, 3, 0, 4, 123, 45)
+            if vision.image is self.before:
+                return before
+            return actual(vision)
+
+        replay = self.replay([self.before] + ["hero-new-08"] * 16 + [returned])
+        with patch("tasks.brawl.summon.BrawlVision.preparation_panel", autospec=True,
+                   side_effect=read_panel):
+            report = replay.task.summon_once(request)
+        self.assertEqual(report.outcome, SummonOutcome.CONFIRMED)
+        self.assertEqual(report.hero, HeroResult("小春", Imprint.SSS, Imprint.SSS, True))
+        self.assertEqual(report.proceeds, Resources(7, 10))
+        self.assertEqual([(action[0], action[1]) for action in replay.actions],
+                         [(0, "SUMMON_UPPER"), (7, "HERO_RESULT_CHECK")])
+
+        replay = self.replay([self.before] + ["hero-new-08"] * 16 + [returned] * 40, seconds=1)
+        with patch("tasks.brawl.summon.BrawlVision.preparation_panel", autospec=True,
+                   side_effect=lambda vision: (before if vision.image is self.before else
+                                               PreparationPanel(1, 3, 0, 4, 116, 35))):
+            report = replay.task.summon_once(request)
+        self.assertEqual(report.outcome, SummonOutcome.TIMEOUT)
+        self.assertIsNone(report.proceeds)
 
     def test_previous_action_interval_is_honored_before_a_new_payment(self):
         replay = self.replay([self.before] * 8 + ["lower-summon-result"] * 7 + ["lower-summon-return"])
@@ -173,12 +206,107 @@ class SynergySummonReplayTests(unittest.TestCase):
             panel = real(vision)
             return replace(panel, deployed=9) if vision.image is returned else panel
 
-        replay = self.replay([self.before, "lower-summon-result", returned])
+        # The result must first be closed; otherwise disappearing before our
+        # acknowledgement is already a scene interruption, regardless of the
+        # counters on the following preparation.
+        replay = self.replay([self.before] + ["lower-summon-result"] * 7 + [returned])
         with patch("tasks.brawl.summon.BrawlVision.preparation_panel", autospec=True, side_effect=read_panel):
             self.assertEqual(replay.task.summon_once(self.request).outcome, SummonOutcome.CONTEXT_CHANGED)
-        self.assertEqual([action[1] for action in replay.actions], ["SUMMON_LOWER"])
+        self.assertEqual([action[1] for action in replay.actions], ["SUMMON_LOWER", "HERO_RESULT_CHECK"])
 
     def test_slow_exact_return_confirms_before_timeout(self):
         replay = self.replay([self.before, "lower-summon-result", "lower-summon-return"], seconds=10)
         self.assertEqual(replay.task.summon_once(self.request).outcome, SummonOutcome.CONFIRMED)
         self.assertEqual([action[1] for action in replay.actions], ["SUMMON_LOWER", "HERO_RESULT_CHECK"])
+
+    def test_missing_footer_preserves_complete_result_without_clicking(self):
+        actual = BrawlVision.matches
+
+        def matches(vision, button, **kwargs):
+            return False if button is HERO_RESULT_CHECK else actual(vision, button, **kwargs)
+
+        replay = self.replay([self.before] + ["lower-summon-result"] * 34)
+        with patch("tasks.brawl.summon.BrawlVision.matches", autospec=True, side_effect=matches):
+            report = replay.task.summon_once(self.request)
+        self.assertEqual(report.outcome, SummonOutcome.TIMEOUT)
+        self.assertEqual(report.hero, HeroResult("维多丽卡", Imprint.C, None))
+        self.assertEqual([action[1] for action in replay.actions], ["SUMMON_LOWER"])
+
+    def test_unread_result_cannot_disappear_into_exact_return(self):
+        replay = self.replay([self.before, "lower-summon-result", "lower-summon-return"])
+        with patch("tasks.brawl.summon.read_hero_result", return_value=None) as reader:
+            report = replay.task.summon_once(self.request)
+        reader.assert_called_once()
+        self.assertEqual(report.outcome, SummonOutcome.SCENE_CHANGED)
+        self.assertIsNone(report.hero)
+        self.assertEqual([action[1] for action in replay.actions], ["SUMMON_LOWER"])
+
+    def test_complete_result_cannot_disappear_before_footer_acknowledgement(self):
+        replay = self.replay([self.before, "lower-summon-result", "lower-summon-return"])
+        report = replay.task.summon_once(self.request)
+        self.assertEqual(report.outcome, SummonOutcome.SCENE_CHANGED)
+        self.assertEqual(report.hero, HeroResult("维多丽卡", Imprint.C, None))
+        self.assertEqual([action[1] for action in replay.actions], ["SUMMON_LOWER"])
+
+    def test_paid_upper_result_may_obscure_mode_but_still_closes_once(self):
+        # Only the result mode is intentionally obscured. Real identity, debit
+        # and footer readers continue to verify the photographed upper draw.
+        result = frame("upper-summon-result")
+        actual = BrawlVision.observe
+
+        def observe(vision):
+            observed = actual(vision)
+            return replace(observed, game_mode=None) if vision.image is result else observed
+
+        request = capture_summon(frame("lower-summon-return"), SummonKind.UPPER)
+        replay = self.replay(["lower-summon-return"] + [result] * 16 + ["upper-summon-return"])
+        with patch("tasks.brawl.summon.BrawlVision.observe", autospec=True, side_effect=observe):
+            report = replay.task.summon_once(request)
+        self.assertEqual(report.outcome, SummonOutcome.CONFIRMED)
+        self.assertEqual(report.hero, HeroResult("黎洁特", Imprint.SS, Imprint.S))
+        self.assertEqual([(action[0], action[1]) for action in replay.actions],
+                         [(0, "SUMMON_UPPER"), (7, "HERO_RESULT_CHECK")])
+
+    def test_occluded_result_at_entry_still_has_no_payment_provenance(self):
+        result = frame("upper-summon-result")
+        actual = BrawlVision.observe
+
+        def observe(vision):
+            return replace(actual(vision), game_mode=None)
+
+        replay = self.replay([result])
+        with patch("tasks.brawl.summon.BrawlVision.observe", autospec=True, side_effect=observe):
+            report = replay.task.summon_once(self.request)
+        self.assertEqual(report.outcome, SummonOutcome.SCENE_CHANGED)
+        self.assertEqual(replay.actions, [])
+
+    def test_explicit_result_mode_change_prevents_dismissal(self):
+        result = frame("lower-summon-result")
+        actual = BrawlVision.observe
+
+        def observe(vision):
+            observed = actual(vision)
+            return replace(observed, game_mode=BrawlMode.CHALLENGE) if vision.image is result else observed
+
+        replay = self.replay([self.before, result])
+        with patch("tasks.brawl.summon.BrawlVision.observe", autospec=True, side_effect=observe):
+            report = replay.task.summon_once(self.request)
+        self.assertEqual(report.outcome, SummonOutcome.CONTEXT_CHANGED)
+        self.assertEqual([action[1] for action in replay.actions], ["SUMMON_LOWER"])
+
+    def test_hidden_mode_on_return_cannot_confirm_or_reopen_result_ownership(self):
+        returned = frame("lower-summon-return")
+        actual = BrawlVision.observe
+
+        def observe(vision):
+            observed = actual(vision)
+            return replace(observed, game_mode=None) if vision.image is returned else observed
+
+        for tail, outcome in (([returned] * 5, SummonOutcome.TIMEOUT),
+                              ([returned, "lower-summon-result"], SummonOutcome.SCENE_CHANGED)):
+            with self.subTest(outcome=outcome):
+                replay = self.replay([self.before, "lower-summon-result"] + tail, seconds=4)
+                with patch("tasks.brawl.summon.BrawlVision.observe", autospec=True, side_effect=observe):
+                    report = replay.task.summon_once(self.request)
+                self.assertEqual(report.outcome, outcome)
+                self.assertEqual([action[1] for action in replay.actions], ["SUMMON_LOWER", "HERO_RESULT_CHECK"])

@@ -102,6 +102,10 @@
       "name": "Equipment Substat Reroll",
       "help": "Open the steel workshop substat selection screen manually. Obtain speed 5 first, then pursue the remaining priorities. Lock only achieved targets, at most two. Stop at the goals or budget; equipment is not finalized automatically. Simplified Chinese game UI only."
     },
+    "Brawl": {
+      "name": "Brawl",
+      "help": "International server, Simplified Chinese, 1280x720 only. Navigate from Home through Battle and Season; continue a saved run or confirm free entry in the current lobby mode. Normal saves reconstruct every hero, imprint, original position and all six profession talents before continuing economy, formation and battles to the final result. New runs begin with an empty first-round field. Prioritize upgrades, summon when short of heroes, save 40 synergy tokens for upper summons and transfer dispensable reserves only at verified quotes. Recovery may temporarily swap or withdraw heroes and must confirm their restoration. Keep the Synergy tab selected. Stop if roster, resources, positions or talents cannot be verified. Challenge mode remains one battle; automatic restart after a final result is not implemented."
+    },
     "SanctuaryMonthly": {
       "name": "Sanctuary Monthly",
       "help": "Sanctuary monthly module with independent scheduler."
@@ -1086,6 +1090,16 @@
     "BuyHucheMysticMedals": {
       "name": "Buy Huche Shop Mystic Medals",
       "help": "Overseas Simplified Chinese only. Buy only Mystic Medals within stock and skystone balance limits. The leading stock rotates every 12 hours; medals are not guaranteed. Buy the 160-skystone offer when present, otherwise wait for the next batch after a complete scan. The 200-skystone offer has a fixed quota of 4 for the entire event; once sold out, inspect only the leading rotating batch. Recheck at 11:00 and 23:00 UTC+8. Disabled by default; enabling spends skystones."
+    }
+  },
+  "Brawl": {
+    "_info": {
+      "name": "Entry settings",
+      "help": "Choose whether to use free entries only."
+    },
+    "OnlyFree": {
+      "name": "Free entries only",
+      "help": "Use only free entries when enabled. Disable to allow entry using in-game resources."
     }
   },
   "BuyPenguins": {

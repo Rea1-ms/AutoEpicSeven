@@ -1,9 +1,8 @@
 """Brawl fixtures use the shared recorder and never construct a device."""
 
-from tests.support.offline import ROOT, fixture_image
-from tests.support.offline import record_action
 from types import SimpleNamespace
 
+from tests.support.offline import ROOT, fixture_image, record_action
 
 MANIFEST = ROOT / "tests/fixtures/brawl/manifest.json"
 
@@ -22,6 +21,7 @@ class BrawlReplay:
         self.clock = clock
         self.seconds = seconds
         self.actions = []
+        self.click_record_clears = []
         self.task = object.__new__(task_type)
         self.task.config = SimpleNamespace()
         self.task.device = self
@@ -38,3 +38,6 @@ class BrawlReplay:
         action = (self.index, str(button), tuple(button.button))
         self.actions.append(action)
         record_action(action)
+
+    def click_record_clear(self):
+        self.click_record_clears.append(self.index)

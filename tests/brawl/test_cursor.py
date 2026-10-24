@@ -30,6 +30,14 @@ class BenchCursorTests(unittest.TestCase):
         self.frame = frame(name)
         return read_cursor(self.frame)
 
+    def test_live_opening_has_positive_top_and_current_adjacent_card(self):
+        observed = self.read("opening-lorina-carmainerose")
+        self.assertEqual(observed.selected, BenchHero("萝里娜", Imprint.D))
+        self.assertEqual((observed.top, observed.bottom, observed.empty), (True, False, False))
+        self.assertEqual(observed.next_area, (1030, 335, 1265, 375))
+        self.assertEqual(observed.panel, PreparationPanel(1, 2, 0, 3, 50, 0))
+        self.assertEqual(observed.reason, "")
+
     def test_captured_selected_cards_have_positive_endpoints_and_adjacent_targets(self):
         for index, (name, hero) in enumerate(zip(QUEUE, HEROES)):
             with self.subTest(sample=name):
@@ -74,12 +82,14 @@ class BenchCursorTests(unittest.TestCase):
                 self.assertIsNotNone(observed.selected)
                 self.assertIsNone(getattr(observed, field))
                 self.assertIs(observed.empty, False)
+                self.assertIn("endpoint", observed.reason)
         self.frame = frame("queue-top").copy()
         self.frame[247:284, 996:1158] = 0
         observed = read_cursor(self.frame)
         self.assertIsNotNone(observed.panel)
         self.assertIsNone(observed.selected)
         self.assertEqual((observed.top, observed.bottom, observed.empty), (None, None, None))
+        self.assertIn("Selected card is unread", observed.reason)
         self.frame = frame("queue-empty").copy()
         self.frame[310:372, 1080:1210] = 0
         observed = read_cursor(self.frame)
@@ -92,6 +102,56 @@ class BenchCursorTests(unittest.TestCase):
             with self.subTest(before=QUEUE[index], after=QUEUE[index + 1]):
                 self.frame = after
                 self.assertIs(confirms_next(before, after), True)
+
+    def test_supplied_cursors_reuse_recognition_but_still_check_current_pixels(self):
+        before, after = frame("queue-top"), frame("queue-second")
+        prior, current = read_cursor(before), read_cursor(after)
+        changed = before.copy()
+        changed[335:374, 1202:1268] = frame("queue-karin")[335:374, 1202:1268]
+        self.frame = changed
+        with patch("tasks.brawl.cursor.read_cursor", side_effect=AssertionError("Repeated cursor OCR")):
+            self.assertIs(confirms_next(before, after, before_cursor=prior, after_cursor=current), True)
+            self.assertIs(agrees_selection(before, before.copy(),
+                                          before_cursor=prior, after_cursor=prior), True)
+            # The selected name and endpoints still agree. Reusing those reads
+            # must not bypass the independent, changed-neighbour pixel check.
+            self.assertIs(agrees_selection(before, changed,
+                                          before_cursor=prior, after_cursor=prior), False)
+            wrong_context = replace(current, panel=replace(current.panel, coins=current.panel.coins + 1))
+            self.assertIsNone(confirms_next(before, after,
+                                           before_cursor=prior, after_cursor=wrong_context))
+
+    def test_comparison_without_supplied_cursors_still_reads_each_image(self):
+        before, after = frame("queue-top"), frame("queue-second")
+        self.frame = after
+        with patch("tasks.brawl.cursor.read_cursor", wraps=read_cursor) as reader:
+            self.assertIs(confirms_next(before, after), True)
+            self.assertEqual(reader.call_count, 2)
+            self.assertIs(reader.call_args_list[0].args[0], before)
+            self.assertIs(reader.call_args_list[1].args[0], after)
+            reader.reset_mock()
+            self.assertIs(agrees_selection(before, before), True)
+            self.assertEqual(reader.call_count, 2)
+
+    def test_supplied_cursors_preserve_image_and_server_validation(self):
+        before, after = frame("queue-top"), frame("queue-second")
+        prior, current = read_cursor(before), read_cursor(after)
+        self.frame = after
+        for comparison in (confirms_next, agrees_selection):
+            for invalid in (None, np.zeros((360, 640, 3), np.uint8),
+                            np.zeros((720, 1280, 3), np.float32)):
+                with self.subTest(comparison=comparison.__name__, shape=getattr(invalid, "shape", None)):
+                    with self.assertRaises(ValueError):
+                        comparison(invalid, after, before_cursor=prior, after_cursor=current)
+                    with self.assertRaises(ValueError):
+                        comparison(before, invalid, before_cursor=prior, after_cursor=current)
+        try:
+            server.set_lang("cn")
+            for comparison in (confirms_next, agrees_selection):
+                with self.subTest(comparison=comparison.__name__), self.assertRaises(ValueError):
+                    comparison(before, after, before_cursor=prior, after_cursor=current)
+        finally:
+            server.set_lang("global_cn")
 
     def test_changed_name_alone_cannot_confirm_a_skipped_or_wrong_card(self):
         for before_name, after_name in (("queue-top", "queue-top"),

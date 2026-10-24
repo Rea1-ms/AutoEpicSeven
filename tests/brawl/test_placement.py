@@ -9,19 +9,40 @@ from module.config import server
 
 server.set_lang("global_cn")
 
-from tasks.brawl.bench import BenchEntry, BenchHero  # noqa: E402
-from tasks.brawl.board import BoardCell, BoardObservation  # noqa: E402
+from tasks.brawl.bench import BenchEntry, BenchHero, BenchViewport  # noqa: E402
+from tasks.brawl.board import BoardCell, BoardObservation, FormationGrid  # noqa: E402
+from tasks.brawl.cursor import Cursor  # noqa: E402
 from tasks.brawl.field import FieldHero, FieldObservation  # noqa: E402
+from tasks.brawl.formation import BrawlFormation, FormationOutcome  # noqa: E402
 from tasks.brawl.placement import (  # noqa: E402
-    BrawlPlacement, PlacementOutcome, PlacementRequest, capture_placement,
+    BrawlPlacement,
+    PlacementOutcome,
+    PlacementRequest,
+    capture_placement,
 )
-from tasks.brawl.rules import Imprint  # noqa: E402
+from tasks.brawl.roster import (  # noqa: E402
+    FormationKind,
+    FormationStep,
+    RosterHero,
+    RosterState,
+)
+from tasks.brawl.rules import Imprint, RuleInputError  # noqa: E402
+from tasks.brawl.scanner import (  # noqa: E402
+    BenchScanResult,
+    BenchSelectionResult,
+    ScanOutcome,
+    SelectionOutcome,
+)
 from tasks.brawl.vision import (  # noqa: E402
-    BrawlMode, BrawlObservation, BrawlScreen, ObservationError, PreparationPanel,
+    BrawlMode,
+    BrawlObservation,
+    BrawlScreen,
+    ObservationError,
+    PreparationPanel,
 )
+from tasks.brawl.withdraw import WithdrawControl  # noqa: E402
 from tests.support.brawl import BrawlReplay, frame  # noqa: E402
 from tests.support.offline import ControlledClock  # noqa: E402
-
 
 PANEL = PreparationPanel(1, 3, 0, 4, 10, 0)
 HERO = BenchHero("格伦", Imprint.D)
@@ -198,3 +219,599 @@ class PlacementTests(unittest.TestCase):
         self.assertEqual(replay.task.place_selected(REQUEST, skip_first_screenshot=False),
                          PlacementOutcome.SELECTION_CHANGED)
         self.assertEqual(replay.actions, [])
+
+
+class NewGameFormationTests(unittest.TestCase):
+    """Explicit simulated observations exercise the production interaction loop.
+
+    No frame in this class claims captured pixels. Readers provide independently
+    specified observations, while the real clock, timer, action order and roster
+    transition checks remain active. Clicks do not advance the supplied frames.
+    """
+
+    def setUp(self):
+        server.set_lang("global_cn")
+        self.clock = ControlledClock()
+        self.clock.__enter__()
+        self.addCleanup(self.clock.__exit__, None, None, None)
+
+    @staticmethod
+    def scan(heroes=(HERO,), panel=PANEL, outcome=ScanOutcome.COMPLETE):
+        return BenchScanResult(heroes, panel, BrawlMode.NORMAL, outcome)
+
+    @staticmethod
+    def state_frame(state=BrawlScreen.PREPARATION, *, panel=PANEL, entries=(ENTRY,),
+                    grid=None, selected=ENTRY, empty=False, control=None,
+                    mode=BrawlMode.NORMAL):
+        return SimpleNamespace(
+            observation=BrawlObservation(state, panel, game_mode=mode),
+            viewport=BenchViewport(entries, panel), grid=grid, selected=selected,
+            empty=empty, control=control)
+
+    def replay(self, frames):
+        images = []
+        for index in range(len(frames)):
+            image = np.zeros((720, 1280, 3), np.uint8)
+            image[0, 0, 0] = index
+            images.append(image)
+        replay = BrawlReplay(BrawlFormation, images, self.clock)
+
+        def current(image):
+            return frames[int(image[0, 0, 0])]
+
+        def vision(image):
+            value = current(image)
+            return SimpleNamespace(observe=lambda **kwargs: value.observation,
+                                   preparation_panel=lambda: value.observation.panel,
+                                   matches=lambda *args, **kwargs: value.empty)
+
+        def grid(image, *, expected_source, **kwargs):
+            value = current(image).grid
+            # Preserve the production reader's source-proof contract. A frame
+            # selecting another source is unreadable for the requested action.
+            if value is not None and expected_source is not None:
+                source = value.selected_source
+                if source is None or (source.screen_row, source.screen_column) != expected_source:
+                    return None
+            return value
+
+        patches = (
+            patch("tasks.brawl.formation.BrawlVision", side_effect=vision),
+            patch("tasks.brawl.withdraw.BrawlVision", side_effect=vision),
+            patch("tasks.brawl.withdraw.read_bench", side_effect=lambda image, **kwargs:
+                  current(image).viewport),
+            patch("tasks.brawl.formation.read_bench", side_effect=lambda image, **kwargs:
+                  current(image).viewport),
+            patch("tasks.brawl.formation._selected_entry", side_effect=lambda image, observation, **kwargs:
+                  current(image).selected),
+            patch("tasks.brawl.formation.read_formation_grid", side_effect=grid),
+            patch("tasks.brawl.formation.read_withdraw_control", side_effect=lambda image, **kwargs:
+                  current(image).control),
+        )
+        for item in patches:
+            item.start()
+            self.addCleanup(item.stop)
+        self.frame = replay.image
+        return replay
+
+    @staticmethod
+    def initialize(task, heroes, panel=PANEL):
+        task._roster = RosterState(heroes, panel, BrawlMode.NORMAL)
+        task._scan_result = NewGameFormationTests.scan(
+            tuple(BenchHero(hero.name, hero.imprint) for hero in heroes if hero.cell is None), panel)
+        task._valid = True
+        return task.roster
+
+    def test_probe_cancels_through_fresh_bench_name_and_preserves_interval(self):
+        panel = replace(PANEL, deployed=1)
+        fresh_entry = replace(ENTRY, name_area=(1010, 300, 1080, 325))
+        grid = FormationGrid((CELL,), (CELL,), None, (), panel)
+        prep = self.state_frame(panel=panel, entries=(fresh_entry,))
+        selected = self.state_frame(BrawlScreen.FORMATION_SELECTION, panel=panel,
+                                    entries=(fresh_entry,), grid=grid)
+        replay = self.replay([prep] + [selected] * 7 + [prep])
+        result = replay.task._grid_action(self.scan(panel=panel), frozenset({(3, 3)}))
+        self.assertEqual(result, frozenset({(3, 3)}))
+        self.assertEqual(replay.actions, [
+            (0, "BrawlFormationOpen", ENTRY.plus_area),
+            (7, "BrawlFormationCancelRound", (620, 15, 660, 30))])
+        self.assertTrue(all(area != (1205, 280, 1260, 310) for _, _, area in replay.actions))
+        self.assertEqual(replay.click_record_clears, [])
+
+    def test_probe_uses_bench_plus_when_field_has_room_and_rejects_a_selected_source(self):
+        panel = replace(PANEL, level=4, deployed=4, capacity=5)
+        cells = (CELL, BoardCell(2, 3, (794, 353)), BoardCell(3, 0, (358, 409)),
+                 BoardCell(4, 3, (794, 465)))
+        expected = frozenset((cell.screen_row, cell.screen_column) for cell in cells)
+        for source in (None, CELL):
+            with self.subTest(selected_source=source):
+                grid = FormationGrid(cells, cells, source, (), panel)
+                prep = self.state_frame(panel=panel)
+                selected = self.state_frame(BrawlScreen.FORMATION_SELECTION, panel=panel, grid=grid)
+                replay = self.replay([prep] + [selected] * 7 + [prep])
+                if source is None:
+                    self.assertEqual(replay.task._probe(self.scan(panel=panel), expected), expected)
+                    self.assertEqual(replay.actions, [
+                        (0, "BrawlFormationOpen", ENTRY.plus_area),
+                        (7, "BrawlFormationCancelRound", (620, 15, 660, 30))])
+                else:
+                    with self.assertRaises(ObservationError):
+                        replay.task._probe(self.scan(panel=panel), expected)
+                    self.assertEqual(len(replay.actions), 1)
+                self.assertEqual(replay.actions[0][2], ENTRY.plus_area)
+
+    def test_probe_empty_bench_requires_positive_empty_marker_before_cancel(self):
+        panel = replace(PANEL, deployed=1)
+        grid = FormationGrid((CELL,), (CELL,), CELL, (), panel)
+        for positive in (True, False):
+            with self.subTest(empty_marker=positive):
+                prep = self.state_frame(panel=panel, entries=(), empty=True)
+                selected = self.state_frame(BrawlScreen.FORMATION_SELECTION, panel=panel,
+                                            entries=(), empty=positive, grid=grid)
+                replay = self.replay([prep] + [selected] * 7 + [prep])
+                if positive:
+                    self.assertEqual(replay.task._grid_action(self.scan((), panel), {(3, 3)}),
+                                     frozenset({(3, 3)}))
+                    self.assertEqual(replay.actions[-1],
+                                     (7, "BrawlFormationCancelRound", (620, 15, 660, 30)))
+                else:
+                    with self.assertRaises(ObservationError):
+                        replay.task._grid_action(self.scan((), panel), {(3, 3)})
+                    self.assertEqual(len(replay.actions), 1)
+
+    def test_place_waits_for_delayed_count_without_repeating_destination(self):
+        action = FormationStep(FormationKind.PLACE, "格伦", None, (3, 3), None, 0)
+        grid = FormationGrid((CELL,), (), None, (CELL,), PANEL)
+        selected = self.state_frame(BrawlScreen.FORMATION_SELECTION, grid=grid)
+        after = replace(PANEL, deployed=1)
+        replay = self.replay([self.state_frame()] + [selected] * 7
+                             + [self.state_frame(BrawlScreen.UNKNOWN, panel=None),
+                                self.state_frame(), self.state_frame(panel=after)])
+        replay.task._grid_action(self.scan(), frozenset(), action=action, expected_panel=after)
+        self.assertEqual(replay.actions, [
+            (0, "BrawlFormationOpen", ENTRY.plus_area),
+            (7, "BrawlFormationTarget", (731, 409, 732, 410))])
+
+    def test_move_swap_and_withdraw_use_only_their_positive_controls(self):
+        panel = replace(PANEL, deployed=1)
+        target = BoardCell(2, 3, (794, 353))
+        actions = (
+            FormationStep(FormationKind.MOVE, "卡琳", (3, 3), (2, 3), None, 0),
+            FormationStep(FormationKind.SWAP, "格伦", None, (3, 3), "卡琳", 0),
+            FormationStep(FormationKind.WITHDRAW, "卡琳", (3, 3), None, None, 0),
+        )
+        for action in actions:
+            with self.subTest(kind=action.kind):
+                source = None if action.kind == FormationKind.SWAP else CELL
+                grid = FormationGrid((CELL, target), (CELL,), source, (target,), panel)
+                control = WithdrawControl(CELL, (681, 372, 711, 399), panel)
+                selected = self.state_frame(BrawlScreen.FORMATION_SELECTION, panel=panel,
+                                            grid=grid, control=control)
+                after = replace(panel, deployed=0) if action.kind == FormationKind.WITHDRAW else panel
+                replay = self.replay([self.state_frame(panel=panel)] + [selected] * 7
+                                     + [self.state_frame(panel=after)])
+                replay.task._grid_action(self.scan(panel=panel), {(3, 3)},
+                                         action=action, expected_panel=after)
+                name = "BrawlFormationWithdraw" if action.kind == FormationKind.WITHDRAW else "BrawlFormationTarget"
+                area = control.button_area if action.kind == FormationKind.WITHDRAW else (
+                    (731, 409, 732, 410) if action.kind == FormationKind.SWAP else (794, 353, 795, 354))
+                self.assertEqual(replay.actions[-1], (7, name, area))
+                self.assertEqual(len(replay.actions), 2)
+
+    def test_wrong_source_missing_destination_and_changed_occupation_never_act(self):
+        panel = replace(PANEL, deployed=1)
+        target = BoardCell(2, 3, (794, 353))
+        action = FormationStep(FormationKind.MOVE, "卡琳", (3, 3), (2, 3), None, 0)
+        invalid = (
+            FormationGrid((CELL, target), (target,), target, (), panel),
+            FormationGrid((CELL,), (CELL,), CELL, (), panel),
+            FormationGrid((CELL, target), (CELL, target), CELL, (target,), panel),
+        )
+        for grid in invalid:
+            with self.subTest(grid=grid):
+                selected = self.state_frame(BrawlScreen.FORMATION_SELECTION, panel=panel, grid=grid)
+                replay = self.replay([self.state_frame(panel=panel)] + [selected] * 30)
+                with self.assertRaises(ObservationError):
+                    replay.task._grid_action(self.scan(panel=panel), {(3, 3)},
+                                             action=action, expected_panel=panel)
+                self.assertEqual(len(replay.actions), 1)
+
+    def test_move_without_yellow_target_still_requires_post_action_occupation(self):
+        panel = PreparationPanel(4, 4, 4, 5, 20, 0)
+        target = BoardCell(2, 3, (794, 353))
+        others = (BoardCell(1, 3, (731, 297)), BoardCell(3, 0, (358, 409)),
+                  BoardCell(4, 3, (794, 465)))
+        occupied = (*others, CELL)
+        grid = FormationGrid((*occupied, target), occupied, CELL, (), panel)
+        entry = replace(ENTRY, name="克莉丝缇")
+        ready = self.state_frame(panel=panel, entries=(entry,), selected=entry)
+        selected = self.state_frame(BrawlScreen.FORMATION_SELECTION, panel=panel,
+                                    entries=(entry,), selected=entry, grid=grid)
+        heroes = (RosterHero(entry.name, entry.imprint), RosterHero("卡萝", Imprint.D, (1, 3)),
+                  RosterHero("缪斯黎玛", Imprint.NONE, (3, 0)),
+                  RosterHero("萝里娜", Imprint.D, (3, 3)),
+                  RosterHero("未知可能性雅卡泰丝", Imprint.C, (4, 3)))
+        action = FormationStep(FormationKind.MOVE, "萝里娜", (3, 3), (2, 3), None, 0)
+        expected = {(1, 3), (3, 0), (2, 3), (4, 3)}
+        for actual in (expected, {(1, 3), (3, 0), (3, 3), (4, 3)}):
+            with self.subTest(post_action_occupied=actual):
+                replay = self.replay([ready] + [selected] * 7 + [ready])
+                before = self.initialize(replay.task, heroes, panel)
+                after_scan = self.scan((BenchHero(entry.name, entry.imprint),), panel)
+                with patch.object(replay.task, "scan", return_value=after_scan), \
+                        patch.object(replay.task, "_probe", return_value=actual) as probe:
+                    if actual == expected:
+                        replay.task._execute_step(action)
+                        self.assertTrue(replay.task.valid)
+                        self.assertEqual(replay.task.roster.revision, 1)
+                        self.assertEqual(next(hero.cell for hero in replay.task.roster.heroes
+                                              if hero.name == "萝里娜"), (2, 3))
+                        self.assertEqual(replay.click_record_clears, [8])
+                    else:
+                        with self.assertRaises(RuleInputError):
+                            replay.task._execute_step(action)
+                        self.assertFalse(replay.task.valid)
+                        self.assertIs(replay.task.roster, before)
+                        self.assertEqual(replay.click_record_clears, [])
+                probe.assert_called_once_with(after_scan, frozenset(expected))
+                self.assertEqual(replay.actions, [
+                    (0, "BrawlFormationOpen", (731, 409, 732, 410)),
+                    (7, "BrawlFormationTarget", (794, 353, 795, 354))])
+
+    def test_unrequested_grid_changed_scene_and_changed_context_stop_without_target(self):
+        action = FormationStep(FormationKind.PLACE, "格伦", None, (3, 3), None, 0)
+        cases = (
+            [self.state_frame(BrawlScreen.FORMATION_SELECTION)],
+            [self.state_frame(), self.state_frame(BrawlScreen.COMBAT)],
+            [self.state_frame(), self.state_frame(mode=BrawlMode.CHALLENGE)],
+            [self.state_frame()] + [self.state_frame(panel=replace(PANEL, coins=11))] * 8,
+            [self.state_frame()] + [self.state_frame(entries=(replace(ENTRY, imprint=Imprint.C),))] * 8,
+        )
+        for frames in cases:
+            with self.subTest(frames=frames):
+                replay = self.replay(frames)
+                with self.assertRaises(ObservationError):
+                    replay.task._grid_action(self.scan(), set(), action=action,
+                                             expected_panel=replace(PANEL, deployed=1))
+                self.assertTrue(all(item[1] == "BrawlFormationOpen" for item in replay.actions))
+                self.assertLessEqual(len(replay.actions), 1)
+
+    def test_pending_target_timeout_and_reopened_grid_cannot_repeat_or_confirm(self):
+        action = FormationStep(FormationKind.PLACE, "格伦", None, (3, 3), None, 0)
+        grid = FormationGrid((CELL,), (), None, (CELL,), PANEL)
+        selected = self.state_frame(BrawlScreen.FORMATION_SELECTION, grid=grid)
+        for tail in ([selected] * 30,
+                     [self.state_frame(panel=None), selected] * 15):
+            with self.subTest(tail=tail[0].observation.state):
+                replay = self.replay([self.state_frame()] + [selected] * 7 + tail)
+                with self.assertRaises(ObservationError):
+                    replay.task._grid_action(self.scan(), set(), action=action,
+                                             expected_panel=replace(PANEL, deployed=1))
+                self.assertEqual([item[1] for item in replay.actions],
+                                 ["BrawlFormationOpen", "BrawlFormationTarget"])
+
+    def test_probe_checks_bench_again_after_cancellation(self):
+        panel = replace(PANEL, deployed=1)
+        grid = FormationGrid((CELL,), (CELL,), None, (), panel)
+        selected = self.state_frame(BrawlScreen.FORMATION_SELECTION, panel=panel, grid=grid)
+        replay = self.replay([self.state_frame(panel=panel)] + [selected] * 7 + [
+            self.state_frame(panel=panel, entries=(replace(ENTRY, imprint=Imprint.C),))])
+        with self.assertRaises(ObservationError):
+            replay.task._grid_action(self.scan(panel=panel), {(3, 3)})
+        self.assertEqual(len(replay.actions), 2)
+
+    def test_begin_requires_a_complete_empty_first_round_and_clears_old_session(self):
+        task = self.replay([self.state_frame()]).task
+        for scan in (self.scan(outcome=ScanOutcome.TIMEOUT),
+                     self.scan(panel=replace(PANEL, round_number=2)),
+                     self.scan(panel=replace(PANEL, deployed=1))):
+            self.initialize(task, (RosterHero("格伦", Imprint.D),))
+            with self.subTest(scan=scan), patch.object(task, "scan", return_value=scan):
+                result = task.begin()
+                self.assertEqual(result.outcome, FormationOutcome.FAILED)
+                self.assertFalse(task.valid)
+                self.assertIsNone(task.roster)
+        with patch.object(task, "scan", return_value=self.scan()):
+            self.assertEqual(task.begin().outcome, FormationOutcome.READY)
+            self.assertTrue(task.valid)
+            self.assertEqual(task.roster.heroes, (RosterHero("格伦", Imprint.D),))
+
+    def test_execute_unsupported_body_hero_commits_only_after_full_scan_and_probe(self):
+        task = self.replay([self.state_frame()]).task
+        before = self.initialize(task, (RosterHero("赛兹", Imprint.B),))
+        action = FormationStep(FormationKind.PLACE, "赛兹", None, (3, 3), None, 0)
+        after = self.scan((), replace(PANEL, deployed=1))
+        calls = []
+
+        def action_done(*args, **kwargs):
+            self.assertIs(task.roster, before)
+            self.assertFalse(task.valid)
+            calls.append("action")
+
+        def scan_done(*args, **kwargs):
+            self.assertIs(task.roster, before)
+            calls.append("scan")
+            return after
+
+        def probe_done(scan, expected):
+            self.assertIs(task.roster, before)
+            self.assertFalse(task.valid)
+            self.assertIs(scan, after)
+            self.assertEqual(expected, frozenset({(3, 3)}))
+            self.assertEqual(task.device.click_record_clears, [])
+            calls.append("probe")
+            return {(3, 3)}
+
+        selected = BenchSelectionResult(SelectionOutcome.SELECTED,
+                                        BenchHero("赛兹", Imprint.B), PANEL, BrawlMode.NORMAL)
+        with patch.object(task, "select", return_value=selected), \
+                patch.object(task, "_grid_action", side_effect=action_done), \
+                patch.object(task, "scan", side_effect=scan_done), \
+                patch.object(task, "_probe", side_effect=probe_done):
+            task._execute_step(action)
+        self.assertEqual(calls, ["action", "scan", "probe"])
+        self.assertEqual(task.roster.heroes, (RosterHero("赛兹", Imprint.B, (3, 3)),))
+        self.assertEqual(task.roster.revision, 1)
+        self.assertTrue(task.valid)
+
+        self.assertEqual(task.device.click_record_clears, [0])
+
+    def test_execute_scan_or_occupation_failure_keeps_last_roster_invalid(self):
+        task = self.replay([self.state_frame()]).task
+        action = FormationStep(FormationKind.PLACE, "格伦", None, (3, 3), None, 0)
+        selected = BenchSelectionResult(SelectionOutcome.SELECTED, HERO, PANEL, BrawlMode.NORMAL)
+        cases = ((self.scan(panel=replace(PANEL, deployed=1)), {(3, 3)}, False),
+                 (self.scan((), replace(PANEL, deployed=1)), {(2, 3)}, True),
+                 (self.scan((), replace(PANEL, deployed=1), ScanOutcome.TIMEOUT), {(3, 3)}, False))
+        for after, cells, probes in cases:
+            with self.subTest(after=after, cells=cells):
+                before = self.initialize(task, (RosterHero("格伦", Imprint.D),))
+                with patch.object(task, "select", return_value=selected), \
+                        patch.object(task, "_grid_action"), patch.object(task, "scan", return_value=after), \
+                        patch.object(task, "_probe", return_value=cells) as probe:
+                    with self.assertRaises(RuleInputError):
+                        task._execute_step(action)
+                    self.assertEqual(probe.called, probes)
+                self.assertIs(task.roster, before)
+                self.assertFalse(task.valid)
+                self.assertEqual(task.device.click_record_clears, [])
+
+    def test_execute_place_runs_action_and_empty_bench_probe_before_commit(self):
+        # Explicit simulated observations connect both production grid loops.
+        # Scan and selection are separate tested components; their responses
+        # here do not advance screenshots or authorize a roster commit alone.
+        hero = BenchHero("赛兹", Imprint.B)
+        entry = replace(ENTRY, name=hero.name, imprint=hero.imprint)
+        after_panel = replace(PANEL, deployed=1)
+        placement = FormationGrid((CELL,), (), None, (), PANEL)
+        verification = FormationGrid((CELL,), (CELL,), CELL, (), after_panel)
+        ready = self.state_frame(entries=(entry,), selected=entry)
+        placing = self.state_frame(BrawlScreen.FORMATION_SELECTION, entries=(entry,),
+                                   selected=entry, grid=placement)
+        after = self.state_frame(panel=after_panel, entries=(), empty=True)
+        checking = self.state_frame(BrawlScreen.FORMATION_SELECTION, panel=after_panel,
+                                    entries=(), empty=True, grid=verification)
+        replay = self.replay([ready] + [placing] * 7 + [after] * 7 + [checking] * 7 + [after])
+        before = self.initialize(replay.task, (RosterHero(hero.name, hero.imprint),))
+        action = FormationStep(FormationKind.PLACE, hero.name, None, (3, 3), None, 0)
+        selected = BenchSelectionResult(SelectionOutcome.SELECTED, hero, PANEL, BrawlMode.NORMAL)
+
+        def scanned(*args, **kwargs):
+            self.assertIs(replay.task.roster, before)
+            self.assertEqual(replay.index, 8)
+            return self.scan((), after_panel)
+
+        with patch.object(replay.task, "select", return_value=selected), \
+                patch.object(replay.task, "scan", side_effect=scanned):
+            replay.task._execute_step(action)
+        self.assertEqual([item[:2] for item in replay.actions], [
+            (0, "BrawlFormationOpen"), (7, "BrawlFormationTarget"),
+            (14, "BrawlFormationOpen"), (21, "BrawlFormationCancelRound")])
+        self.assertEqual(replay.index, 22)
+        self.assertTrue(replay.task.valid)
+        self.assertEqual(replay.task.roster.heroes, (RosterHero(hero.name, hero.imprint, (3, 3)),))
+
+    def test_execute_selection_failure_and_device_exception_invalidate_before_clicks(self):
+        task = self.replay([self.state_frame()]).task
+        action = FormationStep(FormationKind.PLACE, "格伦", None, (3, 3), None, 0)
+        rejected = BenchSelectionResult(SelectionOutcome.BENCH_CHANGED, None, PANEL, BrawlMode.NORMAL)
+        before = self.initialize(task, (RosterHero("格伦", Imprint.D),))
+        with patch.object(task, "select", return_value=rejected), patch.object(task, "_grid_action") as grid:
+            with self.assertRaises(ObservationError):
+                task._execute_step(action)
+            grid.assert_not_called()
+        self.assertFalse(task.valid)
+        self.assertIs(task.roster, before)
+        self.initialize(task, before.heroes)
+        with patch.object(task, "select", side_effect=RuntimeError("simulated device failure")), \
+                self.assertRaises(RuntimeError):
+            task._execute_step(action)
+        self.assertFalse(task.valid)
+
+    def test_refresh_requires_fresh_occupation_and_invalidates_escaped_device_errors(self):
+        task = self.replay([self.state_frame()]).task
+        panel = replace(PANEL, deployed=1)
+        before = self.initialize(task, (RosterHero("格伦", Imprint.D, (3, 3)),), panel)
+        with patch.object(task, "scan", return_value=self.scan((), panel)), \
+                patch.object(task, "_probe", return_value={(2, 3)}):
+            self.assertEqual(task.refresh().outcome, FormationOutcome.FAILED)
+        self.assertIs(task.roster, before)
+        self.assertFalse(task.valid)
+        self.initialize(task, before.heroes, panel)
+        with patch.object(task, "scan", side_effect=RuntimeError("simulated device failure")), \
+                self.assertRaises(RuntimeError):
+            task.refresh()
+        self.assertFalse(task.valid)
+
+    def test_arrange_recommendation_commits_each_hero_before_next_selection(self):
+        task = self.replay([self.state_frame()]).task
+        heroes = (RosterHero("格伦", Imprint.D), RosterHero("卡琳", Imprint.C))
+        self.initialize(task, heroes)
+        initial = task._scan_result
+        first = self.scan((HERO,), replace(PANEL, deployed=1))
+        last = self.scan((), replace(PANEL, deployed=2))
+        recommendation = SimpleNamespace(placements=(
+            SimpleNamespace(name="格伦", row=0, column=3),
+            SimpleNamespace(name="卡琳", row=0, column=2)))
+        revisions = []
+
+        def select(hero, scan):
+            revisions.append(task.roster.revision)
+            self.assertFalse(task.valid)
+            return BenchSelectionResult(SelectionOutcome.SELECTED, hero, scan.panel, scan.game_mode)
+
+        with patch("tasks.brawl.formation.recommend_lineup", return_value=recommendation), \
+                patch.object(task, "scan", side_effect=[initial, first, last]), \
+                patch.object(task, "_probe", side_effect=[set(), {(2, 3)}, {(2, 3), (3, 3)}]), \
+                patch.object(task, "select", side_effect=select), patch.object(task, "_grid_action") as grid:
+            result = task.arrange({})
+        self.assertEqual(result.outcome, FormationOutcome.COMPLETE)
+        self.assertEqual([item.hero for item in result.steps], ["卡琳", "格伦"])
+        self.assertEqual(revisions, [0, 1])
+        self.assertEqual(grid.call_count, 2)
+        self.assertEqual({hero.name: hero.cell for hero in task.roster.heroes},
+                         {"格伦": (3, 3), "卡琳": (2, 3)})
+        self.assertTrue(task.valid)
+
+    def test_arrange_failure_retains_only_confirmed_steps_and_requires_explicit_bonuses(self):
+        task = self.replay([self.state_frame()]).task
+        heroes = (RosterHero("格伦", Imprint.D), RosterHero("卡琳", Imprint.C))
+        self.initialize(task, heroes)
+        with patch.object(task, "refresh") as refresh, self.assertRaises(RuleInputError):
+            task.arrange(None)
+        refresh.assert_not_called()
+        initial = task._scan_result
+        first = self.scan((HERO,), replace(PANEL, deployed=1))
+        recommendation = SimpleNamespace(placements=(
+            SimpleNamespace(name="格伦", row=0, column=3),
+            SimpleNamespace(name="卡琳", row=0, column=2)))
+
+        def select(hero, scan):
+            if hero.name == "格伦":
+                raise ObservationError("simulated changed bench")
+            return BenchSelectionResult(SelectionOutcome.SELECTED, hero, scan.panel, scan.game_mode)
+
+        with patch("tasks.brawl.formation.recommend_lineup", return_value=recommendation), \
+                patch.object(task, "scan", side_effect=[initial, first]), \
+                patch.object(task, "_probe", side_effect=[set(), {(2, 3)}]), \
+                patch.object(task, "select", side_effect=select), patch.object(task, "_grid_action"):
+            result = task.arrange({})
+        self.assertEqual(result.outcome, FormationOutcome.FAILED)
+        self.assertEqual([item.hero for item in result.steps], ["卡琳"])
+        self.assertEqual(task.roster.revision, 1)
+        self.assertFalse(task.valid)
+
+    def test_immediate_opening_reuses_scan_and_last_selection_but_still_commits(self):
+        task = self.replay([self.state_frame()]).task
+        last = BenchHero("卡琳", Imprint.C)
+        first = self.scan((HERO,), replace(PANEL, deployed=1))
+        after = self.scan((), replace(PANEL, deployed=2))
+        recommendation = SimpleNamespace(placements=(
+            SimpleNamespace(name="格伦", row=0, column=3), SimpleNamespace(name="卡琳", row=0, column=2)))
+        cursor = Cursor(last, None, True, False, None, PANEL, BrawlMode.NORMAL)
+        selected = BenchSelectionResult(SelectionOutcome.SELECTED, HERO, first.panel, BrawlMode.NORMAL)
+        with patch.object(task, "scan", side_effect=[self.scan((HERO, last)), first, after]) as scan, \
+                patch("tasks.brawl.formation.recommend_lineup", return_value=recommendation), \
+                patch("tasks.brawl.formation.read_cursor", return_value=cursor), \
+                patch.object(task, "refresh") as refresh, \
+                patch.object(task, "select", return_value=selected) as select, \
+                patch.object(task, "_grid_action") as grid, \
+                patch.object(task, "_probe", side_effect=[{(2, 3)}, {(2, 3), (3, 3)}]) as probe:
+            self.assertEqual(task.begin().outcome, FormationOutcome.READY)
+            result = task.arrange({})
+        self.assertEqual(result.outcome, FormationOutcome.COMPLETE)
+        self.assertEqual(scan.call_count, 3)  # Initial scan and one after each placement.
+        refresh.assert_not_called()
+        select.assert_called_once_with(HERO, first)  # Later steps cannot reuse opening proof.
+        self.assertEqual(grid.call_count, 2)
+        self.assertEqual(probe.call_count, 2)
+        self.assertEqual(result.roster.heroes, (RosterHero("格伦", Imprint.D, (3, 3)),
+                                              RosterHero("卡琳", Imprint.C, (2, 3))))
+        self.assertEqual(len(result.steps), 2)
+        self.assertIsNone(task._opening_evidence)
+
+    def test_opening_reuse_rejects_new_mutated_expired_and_untracked_frames(self):
+        for change in ("new_frame", "mutated", "expired", "fresh_requested", "invalidated", "results"):
+            with self.subTest(change=change):
+                task = self.replay([self.state_frame()]).task
+                with patch.object(task, "scan", return_value=self.scan()):
+                    task.begin()
+                if change == "new_frame":
+                    task.device.image = task.device.image.copy()
+                elif change == "mutated":
+                    task.device.image[1, 1, 0] = 1
+                elif change == "expired":
+                    self.clock.advance(task.ACTION_INTERVAL + .1)
+                elif change == "invalidated":
+                    task.invalidate()
+                failed = SimpleNamespace(outcome=FormationOutcome.FAILED)
+                with patch.object(task, "refresh", return_value=failed) as refresh:
+                    self.assertIs(task.arrange({}, hero_results=(HERO,) if change == "results" else (),
+                                               skip_first_screenshot=change != "fresh_requested"), failed)
+                refresh.assert_called_once()
+                self.assertIsNone(task._opening_evidence)
+
+    def test_opening_last_selection_requires_matching_cursor_and_unexpired_proof(self):
+        good = Cursor(HERO, True, True, False, None, PANEL, BrawlMode.NORMAL)
+        bad = (replace(good, selected=BenchHero("格伦", Imprint.C)),
+               replace(good, bottom=None), replace(good, next_area=(1030, 335, 1265, 375)),
+               replace(good, panel=replace(PANEL, coins=11)),
+               replace(good, game_mode=BrawlMode.CHALLENGE), replace(good, empty=None), "expired", "not_last")
+        for cursor in bad:
+            with self.subTest(cursor=cursor):
+                task = self.replay([self.state_frame()]).task
+                opening = self.scan((HERO, BenchHero("卡琳", Imprint.C))) if cursor == "not_last" else self.scan()
+                with patch.object(task, "scan", return_value=opening):
+                    task.begin()
+                evidence = task._opening_evidence
+                if cursor == "expired":
+                    self.clock.advance(task.ACTION_INTERVAL + .1)
+                    cursor = good
+                elif cursor == "not_last":
+                    cursor = good
+                rejected = BenchSelectionResult(SelectionOutcome.BENCH_CHANGED, None, PANEL, BrawlMode.NORMAL)
+                action = FormationStep(FormationKind.PLACE, "格伦", None, (3, 3), None, 0)
+                with patch("tasks.brawl.formation.read_cursor", return_value=cursor), \
+                        patch.object(task, "select", return_value=rejected) as select, \
+                        patch.object(task, "_grid_action") as grid, self.assertRaises(ObservationError):
+                    task._execute_step(action, opening_evidence=evidence)
+                select.assert_called_once()
+                grid.assert_not_called()
+                self.assertFalse(task.valid)
+
+    def test_opening_evidence_is_consumed_on_failure_and_never_reused_for_later_steps(self):
+        task = self.replay([self.state_frame()]).task
+        with patch.object(task, "scan", return_value=self.scan()):
+            task.begin()
+        with patch("tasks.brawl.formation.recommend_lineup", side_effect=RuntimeError("simulated failure")), \
+                self.assertRaises(RuntimeError):
+            task.arrange({})
+        self.assertIsNone(task._opening_evidence)
+        failed = SimpleNamespace(outcome=FormationOutcome.FAILED)
+        with patch.object(task, "refresh", return_value=failed) as refresh:
+            self.assertIs(task.arrange({}), failed)
+        refresh.assert_called_once()
+
+    def test_grid_readers_share_only_current_frame_panel_and_viewport(self):
+        action = FormationStep(FormationKind.PLACE, "格伦", None, (3, 3), None, 0)
+        grid = FormationGrid((CELL,), (), None, (CELL,), PANEL)
+        selected = self.state_frame(BrawlScreen.FORMATION_SELECTION, grid=grid)
+        after = replace(PANEL, deployed=1)
+        replay = self.replay([self.state_frame()] + [selected] * 7 + [self.state_frame(panel=after)])
+        viewports = []
+
+        def read(image, *, observation):
+            self.assertEqual(observation.panel, PANEL)
+            viewport = BenchViewport((ENTRY,), PANEL)
+            viewports.append((id(image), viewport))
+            return viewport
+
+        def selected_entry(image, observation, *, viewport):
+            self.assertEqual(viewports[-1], (id(image), viewport))
+            return ENTRY
+
+        with patch("tasks.brawl.formation.read_bench", side_effect=read) as reader, \
+                patch("tasks.brawl.formation._selected_entry", side_effect=selected_entry):
+            replay.task._grid_action(self.scan(), set(), action=action, expected_panel=after)
+        self.assertEqual(reader.call_count, 2)
+        self.assertEqual(len(replay.actions), 2)

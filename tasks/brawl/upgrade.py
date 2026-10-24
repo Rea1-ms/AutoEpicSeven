@@ -142,7 +142,12 @@ class BrawlUpgrade(ModuleBase):
             else:
                 self.device.screenshot()
             vision = BrawlVision(self.device.image)
-            observed = vision.observe()
+            action_ready = self.interval_is_reached(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)
+            # While no action is eligible, scene/mode checks are sufficient.
+            # Read the panel/quote on the actual action frame, never reuse an
+            # earlier price. Paid returns still read immediately for success.
+            observed = vision.observe(read_panel=paid or action_ready)
+            dialog = None
             if observed.game_mode is not None and observed.game_mode != request.game_mode:
                 return UpgradeOutcome.CONTEXT_CHANGED
             if observed.state not in (BrawlScreen.PREPARATION, BrawlScreen.LEVEL_UP, BrawlScreen.UNKNOWN):
@@ -180,10 +185,11 @@ class BrawlUpgrade(ModuleBase):
                         return UpgradeOutcome.TIMEOUT
                     dialog_seen = True
                     timeout.reset()
-                try:
-                    dialog = read_upgrade_dialog(self.device.image)
-                except ObservationError:
-                    dialog = None
+                if not paid and action_ready:
+                    try:
+                        dialog = read_upgrade_dialog(self.device.image)
+                    except ObservationError:
+                        pass
                 if dialog is not None and (dialog.header != before or dialog.game_mode != request.game_mode):
                     return UpgradeOutcome.CONTEXT_CHANGED
             else:
@@ -196,7 +202,7 @@ class BrawlUpgrade(ModuleBase):
                 return UpgradeOutcome.TIMEOUT
             if paid or observed.game_mode != request.game_mode:
                 continue
-            if not self.interval_is_reached(self.ACTION_TIMER, interval=self.ACTION_INTERVAL):
+            if not action_ready:
                 continue
             if observed.state == BrawlScreen.PREPARATION and observed.panel == before:
                 if vision.matches(UPGRADE_ENTRY):

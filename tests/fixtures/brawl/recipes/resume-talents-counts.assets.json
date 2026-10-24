@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "source": "../brawl-prepare-level4.png",
+  "suite": "brawl_talents",
+  "case": "resume-talents-counts",
+  "items": [
+    {"name": "TALENT_RANGER_ICON", "frame": 2, "namespace": "global_cn", "module": "brawl/talents", "box": [26, 310, 55, 337]},
+    {"name": "TALENT_SOUL_WEAVER_ICON", "frame": 2, "namespace": "global_cn", "module": "brawl/talents", "box": [26, 384, 55, 411]}
+  ]
+}

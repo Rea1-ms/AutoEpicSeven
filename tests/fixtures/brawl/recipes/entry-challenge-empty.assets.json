@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "source": "../brawl-challenge-lobby-empty.png",
+  "suite": "brawl",
+  "case": "entry-challenge-empty",
+  "items": [
+    {"name": "LOBBY_CHALLENGE_CHECK", "namespace": "global_cn", "module": "brawl/entry", "box": [749, 648, 837, 676]}
+  ]
+}

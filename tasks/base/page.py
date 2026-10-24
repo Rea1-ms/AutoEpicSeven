@@ -457,6 +457,20 @@ if server_.lang == "global_cn":
     page_urgent_tasks.link(BACK, destination=page_combat_urgent)
     page_combat_urgent.link(URGENT_TASKS, destination=page_urgent_tasks)
 
+# Brawl is currently supported only by the international Chinese captures.
+# The lobby is a navigation destination; continuing or starting a run belongs
+# to its local entry loop, where the current mode and free entry are verified.
+if server_.lang == "global_cn":
+    from tasks.brawl.assets.assets_brawl import (
+        LOBBY_CHECK as BRAWL_LOBBY_SAVED_CHECK,
+        LOBBY_EMPTY_CHECK as BRAWL_LOBBY_EMPTY_CHECK,
+    )
+    from tasks.brawl.assets.assets_brawl_entry import BRAWL_ENTRY
+
+    page_brawl_lobby = Page((BRAWL_LOBBY_SAVED_CHECK, BRAWL_LOBBY_EMPTY_CHECK))
+    page_brawl_lobby.link(BACK, destination=page_combat_season)
+    page_combat_season.link(BRAWL_ENTRY, destination=page_brawl_lobby, match_before_click=True)
+
 # Dimensional exploration (overseas Chinese client)
 if server_.lang == "global_cn":
     from tasks.dimensional_exploration.assets.assets_dimensional_exploration import (
@@ -600,6 +614,7 @@ shared_toolbar_pages = [
 ]
 if server_.lang == "global_cn":
     shared_toolbar_pages.append(page_urgent_tasks)
+    shared_toolbar_pages.append(page_brawl_lobby)
 
 link_shared_toolbar(*shared_toolbar_pages)
 
@@ -610,3 +625,5 @@ link_shared_toolbar(*shared_toolbar_pages)
 #   the stable top-right repeat marker used by startup precheck
 page_gacha.background_repeat_check = False
 page_combat_prepare.background_repeat_check = False
+if server_.lang == "global_cn":
+    page_brawl_lobby.background_repeat_check = False

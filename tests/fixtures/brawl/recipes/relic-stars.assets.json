@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "source": "../global_cn/brawl-relic-stars.png",
+  "suite": "brawl_relics",
+  "case": "relic_stars",
+  "items": [
+    {
+      "name": "NODE_INACTIVE",
+      "namespace": "global_cn",
+      "module": "brawl/relics",
+      "box": [
+        637,
+        219,
+        662,
+        222
+      ]
+    }
+  ]
+}

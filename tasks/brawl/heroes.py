@@ -9,11 +9,24 @@ import numpy as np
 from module.config import server
 from module.ocr.ocr import Ocr
 from tasks.brawl.assets.assets_brawl import (
-    HERO_OBTAIN_CHECK, HERO_OVERFLOW_CHECK, HERO_RESULT_CHECK, HERO_UNLOCK_CHECK,
-    IMPRINT_A, IMPRINT_ARROW, IMPRINT_B, IMPRINT_C, IMPRINT_D, IMPRINT_NONE,
-    IMPRINT_S, IMPRINT_SS, IMPRINT_SSS, OCR_HERO_NAME, RANK_UP_CHECK,
+    HERO_OBTAIN_CHECK,
+    HERO_OVERFLOW_CHECK,
+    HERO_RESULT_CHECK,
+    HERO_UNLOCK_CHECK,
+    IMPRINT_A,
+    IMPRINT_ARROW,
+    IMPRINT_B,
+    IMPRINT_C,
+    IMPRINT_D,
+    IMPRINT_NONE,
+    IMPRINT_S,
+    IMPRINT_SS,
+    IMPRINT_SSS,
+    OCR_HERO_NAME,
+    RANK_UP_CHECK,
 )
 from tasks.brawl.rules import Imprint, RuleInputError, get_hero, validate_imprint
+from tasks.brawl.vision import HERO_RESULT_SIMILARITY
 
 
 @dataclass(frozen=True)
@@ -21,6 +34,11 @@ class HeroResult:
     name: str
     imprint: Imprint
     previous_imprint: Imprint | None
+    # A duplicate of an already maxed hero is converted by the game. It keeps
+    # the owned hero at SSS and shows a separate two-resource refund panel.
+    # This flag distinguishes that result from an ordinary SSS-to-SSS upgrade
+    # chain, whose proceeds must not be inferred.
+    is_overflow: bool = False
 
 
 _BADGES = (
@@ -108,7 +126,9 @@ def read_hero_result(image):
 
     ``previous_imprint=None`` means no upgrade pair is displayed. It does not
     imply that the hero was unowned before the run. A full-imprint refund leaves
-    the retained hero at SSS; its currency icons must never be read as a badge.
+    the retained hero at SSS and is marked explicitly. The refund amounts are
+    not read from the small reward glyphs here; callers must verify them from
+    the actual resource increase after the result is closed.
     This function carries no roster or acquisition counter between frames.
     """
     if server.lang != "global_cn":
@@ -119,13 +139,13 @@ def read_hero_result(image):
            for wrapper in (RANK_UP_CHECK, HERO_UNLOCK_CHECK)):
         return None
     if not (HERO_OBTAIN_CHECK.match_template(image, similarity=0.9)
-            or HERO_RESULT_CHECK.match_template(image, similarity=0.9)):
+            or HERO_RESULT_CHECK.match_template(image, similarity=HERO_RESULT_SIMILARITY)):
         return None
     name = _read_name(image)
     if name is None:
         return None
     if HERO_OVERFLOW_CHECK.match_template(image, similarity=0.9):
-        return HeroResult(name, Imprint.SSS, Imprint.SSS)
+        return HeroResult(name, Imprint.SSS, Imprint.SSS, True)
     left = _read_badge(_crop(image, _LEFT_BADGE))
     right = _read_badge(_crop(image, _RIGHT_BADGE))
     arrow = _has_arrow(image)

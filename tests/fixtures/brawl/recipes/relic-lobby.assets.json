@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "source": "../global_cn/brawl-relic-lobby.png",
+  "suite": "brawl_relics",
+  "case": "relic_lobby",
+  "items": [
+    {
+      "name": "LOBBY_RELICS",
+      "namespace": "global_cn",
+      "module": "brawl/relics",
+      "box": [
+        174,
+        625,
+        210,
+        691
+      ]
+    },
+    {
+      "name": "LOBBY_RELICS",
+      "namespace": "global_cn",
+      "module": "brawl/relics",
+      "box": [
+        150,
+        620,
+        230,
+        704
+      ],
+      "kind": "button"
+    }
+  ]
+}

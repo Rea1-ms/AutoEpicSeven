@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "source": "../brawl-hero-new-01.png",
+  "suite": "brawl",
+  "case": "hero-upgrade-result-continue",
+  "items": [
+    {
+      "name": "HERO_RESULT_CHECK",
+      "kind": "base",
+      "frame": 4,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [590, 646, 695, 671]
+    }
+  ]
+}

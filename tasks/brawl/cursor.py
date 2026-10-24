@@ -21,6 +21,7 @@ class Cursor:
     next_area: tuple[int, int, int, int] | None = None
     panel: PreparationPanel | None = None
     game_mode: BrawlMode | None = None
+    reason: str = ""
 
 
 def read_cursor(image, *, observation=None):
@@ -39,21 +40,30 @@ def read_cursor(image, *, observation=None):
     scope = {"panel": observed.panel, "game_mode": observed.game_mode}
     if vision.matches(QUEUE_EMPTY_CHECK, color=True):
         return Cursor(top=True, bottom=True, empty=True, **scope)
-    entries = read_bench(image, observation=observed).entries
-    selected = [entry for entry in entries
+    viewport = read_bench(image, observation=observed)
+    selected = [entry for entry in viewport.entries
                 if 996 <= entry.name_area[0] <= 1010
                 and 247 <= entry.name_area[1] < entry.name_area[3] <= 284
                 and entry.plus_area is not None]
     if len(selected) != 1:
-        return Cursor(**scope)
+        return Cursor(reason="Selected card is unread; " + viewport.reason, **scope)
     hero = BenchHero(selected[0].name, selected[0].imprint)
     top = True if vision.matches(QUEUE_TOP_CHECK, color=True) else None
     bottom = vision.matches(QUEUE_BOTTOM_CHECK, color=True)
     neighbor = vision.matches(QUEUE_NEXT_CHECK, color=True)
+    reasons = []
+    if hero.imprint is None:
+        reasons.append("Selected imprint is unread; " + viewport.reason)
+    if top is None:
+        reasons.append("Top endpoint is unread")
+    if not bottom and not neighbor:
+        reasons.append("Bottom endpoint and adjacent card are unread")
     if bottom and neighbor:
-        return Cursor(selected=hero, top=top, empty=False, **scope)
+        reasons.append("Bottom endpoint conflicts with adjacent card")
+        return Cursor(selected=hero, top=top, empty=False, reason="; ".join(reasons), **scope)
     return Cursor(selected=hero, top=top, bottom=True if bottom else False if neighbor else None,
-                  empty=False, next_area=(1030, 335, 1265, 375) if neighbor else None, **scope)
+                  empty=False, next_area=(1030, 335, 1265, 375) if neighbor else None,
+                  reason="; ".join(reasons), **scope)
 
 
 def _usable(region):
@@ -68,15 +78,28 @@ def _same_context(before, after):
             and before.panel == after.panel and before.game_mode == after.game_mode)
 
 
-def confirms_next(before, after):
+def _cursor_for_image(image, cursor):
+    if cursor is None:
+        return read_cursor(image)
+    # Reusing a read from this exact frame only avoids OCR. Keep the same
+    # server, shape and pixel-type contract as the ordinary reader; supplied
+    # observations never make an unsupported image a valid comparison input.
+    BrawlVision(image)
+    return cursor
+
+
+def confirms_next(before, after, *, before_cursor=None, after_cursor=None):
     """Verify that the prior adjacent card's portrait became the selected one.
 
     The adjacent card is smaller and partly covered by the current selection.
     Its visible face survives enlargement at approximately 1.08 times scale.
     Search that photographed range within the new selected portrait, rather
-    than trusting a changed name or arbitrary movement of the list.
+    than trusting a changed name or arbitrary movement of the list. Supplied
+    cursors must belong to their exact corresponding images. They reuse only
+    recognition, never the cross-frame context and portrait checks below.
     """
-    prior, current = read_cursor(before), read_cursor(after)
+    prior = _cursor_for_image(before, before_cursor)
+    current = _cursor_for_image(after, after_cursor)
     if not _same_context(prior, current):
         return None
     if (prior.selected is None or current.selected is None
@@ -94,15 +117,18 @@ def confirms_next(before, after):
     return score >= .92
 
 
-def agrees_selection(before, after):
+def agrees_selection(before, after, *, before_cursor=None, after_cursor=None):
     """Check that the current visible queue still agrees while a click waits.
 
     This compares only the visible portion, never the hidden inventory. Both
     frames must independently identify the same selected hero and preparation
     context. Unknown endpoints are allowed if the same adjacent card anchor
     is positively visible in each frame. No historical click area is reused.
+    Optional cursors must have been read from these exact respective frames;
+    the visible row comparison is still performed on both supplied images.
     """
-    prior, current = read_cursor(before), read_cursor(after)
+    prior = _cursor_for_image(before, before_cursor)
+    current = _cursor_for_image(after, after_cursor)
     if not _same_context(prior, current):
         return None
     if prior.selected is None or current.selected is None:

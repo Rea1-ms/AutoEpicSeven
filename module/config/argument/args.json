@@ -1641,6 +1641,40 @@
       }
     }
   },
+  "Brawl": {
+    "Scheduler": {
+      "Enable": {
+        "type": "checkbox",
+        "value": false,
+        "option": [
+          false
+        ],
+        "display": "hide"
+      },
+      "NextRun": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime",
+        "display": "hide"
+      },
+      "Command": {
+        "type": "input",
+        "value": "Brawl",
+        "display": "hide"
+      },
+      "ServerUpdate": {
+        "type": "input",
+        "value": "02:00",
+        "display": "hide"
+      }
+    },
+    "Brawl": {
+      "OnlyFree": {
+        "type": "checkbox",
+        "value": true
+      }
+    }
+  },
   "SanctuaryMonthly": {
     "Scheduler": {
       "Enable": {

@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "source": "../brawl-normal-opening.png",
+  "suite": "brawl",
+  "case": "actions-normal-summon",
+  "items": [
+    {"name": "SUMMON_NORMAL", "namespace": "global_cn", "module": "brawl/actions", "box": [442, 647, 587, 699]}
+  ]
+}

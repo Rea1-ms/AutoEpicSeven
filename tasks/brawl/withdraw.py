@@ -3,9 +3,6 @@
 from dataclasses import dataclass, replace
 from enum import Enum
 
-import cv2
-import numpy as np
-
 from module.base.base import ModuleBase
 from module.base.button import ClickButton
 from module.base.timer import Timer
@@ -14,9 +11,8 @@ from tasks.brawl.assets.assets_brawl import (
     FORMATION_MOVE_SOURCE,
     QUEUE_EMPTY_CHECK,
 )
-from tasks.brawl.assets.assets_brawl_withdraw import FIELD_WITHDRAW
 from tasks.brawl.bench import BenchHero, read_bench
-from tasks.brawl.board import BoardCell, _cells, _outline_coverage
+from tasks.brawl.board import BoardCell, _cells, _source_withdraw_area
 from tasks.brawl.rules import BENCH_CAPACITY, RuleInputError, get_hero, validate_imprint
 from tasks.brawl.scanner import BenchScanResult
 from tasks.brawl.vision import (
@@ -71,16 +67,20 @@ def read_withdraw_control(image, *, observation=None):
     current = observation if observation is not None else vision.observe()
     if current.state != BrawlScreen.FORMATION_SELECTION or current.game_mode is None:
         return None
-    try:
-        panel = vision.preparation_panel()
-    except ObservationError:
-        return None
+    # A supplied panel belongs to this exact screenshot, not to the captured
+    # withdrawal request or a previous loop iteration. A new image must always
+    # receive its own observation, even if the numeric context seems unchanged.
+    panel = current.panel
+    if panel is None:
+        try:
+            panel = vision.preparation_panel()
+        except ObservationError:
+            return None
     if panel.deployed == 0:
         return None
     anchors = FORMATION_GRID_CHECK.match_multi_template(image, similarity=.9)
     sources = FORMATION_MOVE_SOURCE.match_multi_template(image, similarity=.9)
-    minus = FIELD_WITHDRAW.match_multi_template(image, similarity=.92)
-    if len(anchors) != 1 or len(sources) != 1 or len(minus) != 1:
+    if len(anchors) != 1 or len(sources) != 1:
         return None
     dx = int(anchors[0].area[0] - FORMATION_GRID_CHECK.area[0])
     dy = int(anchors[0].area[1] - FORMATION_GRID_CHECK.area[1])
@@ -95,19 +95,10 @@ def read_withdraw_control(image, *, observation=None):
     x, y = source.center
     if not (285 <= x <= 870 and 190 <= y <= 615):
         return None
-    r, g, b = (image[:, :, channel].astype(np.int16) for channel in range(3))
-    green = (g > 130) & (g - r > 20) & (g - b > 20)
-    outline = cv2.dilate(green.astype(np.uint8), np.ones((7, 7), dtype=np.uint8))
-    if _outline_coverage(outline, source.center) < .8:
+    button_area = _source_withdraw_area(image, source.center, sources[0].area)
+    if button_area is None:
         return None
-    left, top, right, bottom = minus[0].area
-    if abs((left + right) / 2 - x + 35) > 7 or abs((top + bottom) / 2 - y + 23) > 7:
-        return None
-    region = image[top:bottom, left:right]
-    if (np.mean(np.all(region == 0, axis=2)) >= .01
-            or np.max(np.abs(region.mean(axis=(0, 1)) - np.array(FIELD_WITHDRAW.color))) > 20):
-        return None
-    return WithdrawControl(source, tuple(map(int, minus[0].button)), panel)
+    return WithdrawControl(source, button_area, panel)
 
 
 def _valid_bench(scan):
@@ -131,16 +122,30 @@ def _valid_bench(scan):
     return True
 
 
-def _bench_agrees(image, current, scan):
-    visible = read_bench(image, observation=current)
+def _bench_agrees(image, current, scan, *, viewport=None):
+    """Compare a scan with visible cards read from this exact image.
+
+    A supplied viewport saves duplicate OCR within one loop iteration. The
+    caller must discard it on every new screenshot; matching resource values
+    alone cannot establish that the visible hero names are still current.
+    """
+    if viewport is not None or not scan.heroes:
+        BrawlVision(image)
+        if current.state not in (BrawlScreen.PREPARATION, BrawlScreen.FORMATION_SELECTION,
+                                 BrawlScreen.TRANSMIT_SELECTION):
+            return False
+    if not scan.heroes:
+        # The explicit empty-queue template is enough to prove zero cards.
+        # Do not OCR its decorative "no heroes" text on every selection frame.
+        return (current.panel == scan.panel
+                and (viewport is None or (not viewport.entries and viewport.panel == scan.panel))
+                and BrawlVision(image).matches(QUEUE_EMPTY_CHECK, color=True))
+    visible = viewport if viewport is not None else read_bench(image, observation=current)
+    if current.panel is not None and visible.panel != current.panel:
+        return False
     if visible.panel != scan.panel:
         return False
     known = {hero.name: hero.imprint for hero in scan.heroes}
-    if not scan.heroes:
-        # The queue remains visible in the selection overlay, but the ordinary
-        # cursor reader intentionally accepts preparation only. Check the same
-        # positive empty-queue asset here without changing that reader's scope.
-        return not visible.entries and BrawlVision(image).matches(QUEUE_EMPTY_CHECK, color=True)
     return bool(visible.entries) and all(
         entry.name in known and entry.imprint == known[entry.name] for entry in visible.entries)
 
@@ -164,6 +169,7 @@ def capture_withdraw(image, screen_row, screen_column, before_scan):
     if current.state not in (BrawlScreen.PREPARATION, BrawlScreen.FORMATION_SELECTION):
         raise ObservationError("A stable preparation or explicitly selected field cell is required")
     panel = vision.preparation_panel() if selected else current.panel
+    current = replace(current, panel=panel)
     if (panel is None or panel.deployed == 0 or panel != before_scan.panel
             or current.game_mode != before_scan.game_mode
             or not _bench_agrees(image, current, before_scan)):
@@ -245,6 +251,7 @@ class BrawlWithdraw(ModuleBase):
                 continue
             if panel != request.panel and not (clicked and panel == expected):
                 return WithdrawResult(WithdrawOutcome.CONTEXT_CHANGED)
+            current = replace(current, panel=panel)
             if clicked:
                 if current.state == BrawlScreen.PREPARATION and panel == expected:
                     visible = read_bench(image, observation=current)

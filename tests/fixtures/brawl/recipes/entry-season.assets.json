@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "source": "../global_cn/brawl-navigation-season.png",
+  "suite": "brawl",
+  "case": "entry-season",
+  "items": [
+    {"name": "BRAWL_ENTRY", "namespace": "global_cn", "module": "brawl/entry", "box": [655, 184, 764, 217]},
+    {"name": "BRAWL_ENTRY", "kind": "search", "namespace": "global_cn", "module": "brawl/entry", "box": [320, 174, 1230, 225]}
+  ]
+}

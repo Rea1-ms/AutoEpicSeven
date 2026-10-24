@@ -46,3 +46,8 @@ SpecialActivity:
 EquipmentReroll:
   Scheduler:
     Enable: false
+Brawl:
+  Scheduler:
+    Enable: false
+  Brawl:
+    OnlyFree: true

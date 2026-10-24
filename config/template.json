@@ -363,6 +363,17 @@
       "ReservePoints": 0
     }
   },
+  "Brawl": {
+    "Scheduler": {
+      "Enable": false,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "Brawl",
+      "ServerUpdate": "02:00"
+    },
+    "Brawl": {
+      "OnlyFree": true
+    }
+  },
   "SanctuaryMonthly": {
     "Scheduler": {
       "Enable": false,

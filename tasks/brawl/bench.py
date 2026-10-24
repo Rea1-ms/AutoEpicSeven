@@ -130,6 +130,8 @@ def read_bench(image, *, observation=None):
     names can still be OCR-readable, but their row identity and badge cannot be
     paired reliably. Exclude them before reading badges. A known name with an
     unread badge remains explicit partial evidence, never an assumed imprint.
+    An optional observation, including its panel, must belong to this exact
+    image. Reusing it avoids repeated numeric OCR without caching across frames.
     """
     vision = BrawlVision(image)
     observed = observation if observation is not None else vision.observe()
@@ -144,11 +146,15 @@ def read_bench(image, *, observation=None):
             pass
     lines = Ocr(OCR_BENCH, lang="cn", name="BRAWL_BENCH_NAMES").detect_and_ocr(image)
     entries = []
+    issues = []
     for line in sorted(lines, key=lambda item: (item.box[1], item.box[0])):
         x1, y1, x2, y2 = map(int, line.box)
         selected = 996 <= x1 <= 1010 and 247 <= y1 < y2 <= 284
         small = 1043 <= x1 <= 1086 and 370 <= y1 < y2 and y2 + 35 <= 550
         if not selected and not small:
+            if _known_name(line) is not None:
+                issues.append(f"Name outside a complete card anchor: {line.ocr_text!r}, "
+                              f"area={(x1, y1, x2, y2)}, confidence={line.score:.3f}")
             continue
         name = _known_name(line)
         # The captured complete Christy name loses its last glyph in Chinese
@@ -158,6 +164,9 @@ def read_bench(image, *, observation=None):
                 and BENCH_NAME_CHRISTY.match_template_color(image, similarity=0.95, threshold=20)):
             name = "克莉丝缇"
         if name is None:
+            if selected:
+                issues.append(f"Selected name rejected: {line.ocr_text!r}, "
+                              f"area={(x1, y1, x2, y2)}, confidence={line.score:.3f}")
             continue
         plus_area = None
         if selected:
@@ -168,6 +177,8 @@ def read_bench(image, *, observation=None):
                 pluses = BENCH_PLUS.match_multi_template(image, similarity=0.92)
                 if len(pluses) == 1:
                     plus_area = tuple(map(int, pluses[0].area))
+                else:
+                    issues.append(f"Selected formation plus matches={len(pluses)}; expected one")
         else:
             left = 1000 + 25 * round((x1 - 1000) / 25)
             imprint = _small_imprint(image, (left - 3, y2 + 5, left + 31, y2 + 35))
@@ -176,6 +187,8 @@ def read_bench(image, *, observation=None):
                 validate_imprint(name, imprint)
             except RuleInputError:
                 imprint = None
+        if selected and imprint is None:
+            issues.append(f"Selected imprint unread: {name!r}, area=(998, 286, 1044, 322)")
         entries.append(BenchEntry(name, imprint, (x1, y1, x2, y2), plus_area))
     names = [entry.name for entry in entries]
     if len(names) != len(set(names)):
@@ -185,6 +198,12 @@ def read_bench(image, *, observation=None):
         reason += "; some visible imprints are unread"
     if not entries:
         reason += "; no complete card text is readable"
+        if not issues:
+            issues.append("No selected name anchor; OCR=" + repr([
+                (line.ocr_text, tuple(map(int, line.box)), round(float(line.score), 3))
+                for line in lines]))
+    if issues:
+        reason += "; " + "; ".join(issues)
     return BenchViewport(tuple(entries), panel, reason)
 
 

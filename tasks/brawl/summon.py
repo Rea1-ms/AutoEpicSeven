@@ -12,7 +12,7 @@ from module.ocr.ocr import Ocr
 from tasks.brawl.assets.assets_brawl import HERO_RESULT_CHECK, OCR_ROUND
 from tasks.brawl.assets.assets_brawl_actions import SUMMON_LOWER, SUMMON_UPPER
 from tasks.brawl.heroes import HeroResult, read_hero_result
-from tasks.brawl.rules import Imprint, SummonKind, summon_cost
+from tasks.brawl.rules import Imprint, Resources, SummonKind, summon_cost
 from tasks.brawl.vision import (
     BrawlMode,
     BrawlScreen,
@@ -43,6 +43,7 @@ class SummonOutcome(str, Enum):
 class SummonReport:
     outcome: SummonOutcome
     hero: HeroResult | None = None
+    proceeds: Resources | None = None
 
 
 def _button(kind):
@@ -96,10 +97,13 @@ class BrawlSummon(ModuleBase):
             in: preparation matching the caller's captured request
             out: verified preparation, interruption or the last unconfirmed frame
 
-        Result prompts are dismissed only after this call's payment and exact
-        displayed debit. A free hero prompt at entry has no paid provenance.
-        Full-imprint overflow and additional different hero results stay visible
-        for the caller; their rewards must not be guessed. No roster is updated.
+        Result prompts are dismissed once, only after this call's payment,
+        exact displayed debit and positively recognized continuation footer.
+        A free hero prompt at entry has no paid provenance. A full-imprint
+        overflow is accepted only after its two-resource refund appears as the
+        exact preparation balance increase; the refund is never estimated from
+        rarity. Additional different hero results stay visible for the caller.
+        No roster is updated.
         """
         if (not isinstance(request, SummonRequest)
                 or type(request.reserve_tokens) is not int or request.reserve_tokens < 0):
@@ -111,11 +115,12 @@ class BrawlSummon(ModuleBase):
         before = request.panel
         expected = (before.coins, before.synergy_tokens - cost.tokens)
         timeout = Timer(self.STEP_TIMEOUT).start()
-        paid = returned = False
+        paid = returned = closed = result_seen = False
         result = None
+        proceeds = None
 
         def report(outcome):
-            return SummonReport(outcome, result)
+            return SummonReport(outcome, result, proceeds)
 
         while True:
             if skip_first_screenshot:
@@ -127,14 +132,27 @@ class BrawlSummon(ModuleBase):
             current = vision.observe()
             if current.game_mode is not None and current.game_mode != request.game_mode:
                 return report(SummonOutcome.CONTEXT_CHANGED)
-            if current.game_mode is None:
+            if current.state == BrawlScreen.HERO_RESULT and (not paid or returned):
+                return report(SummonOutcome.SCENE_CHANGED)
+            if current.state not in (BrawlScreen.PREPARATION, BrawlScreen.HERO_RESULT, BrawlScreen.UNKNOWN):
+                return report(SummonOutcome.SCENE_CHANGED)
+            # A positively recognized preparation ends this result's ownership,
+            # even if its mode or counters are temporarily unreadable. Seeing a
+            # result is distinct from reading or closing it: an unread card
+            # disappearing must never authorize accepting a debit or a later
+            # hero. Repeated result frames cannot repeat our close click.
+            if current.state == BrawlScreen.PREPARATION and result_seen:
+                returned = True
+                if not closed:
+                    return report(SummonOutcome.SCENE_CHANGED)
+            # Hero artwork may cover the mode title. Only an owned result may
+            # inherit the mode from this call's payment; preparation must still
+            # independently confirm it before the operation can succeed.
+            if current.game_mode is None and not (paid and current.state == BrawlScreen.HERO_RESULT):
                 if timeout.reached():
                     return report(SummonOutcome.TIMEOUT)
                 continue
             if current.state == BrawlScreen.PREPARATION:
-                if result is not None:
-                    # Remember this boundary even while resource OCR animates.
-                    returned = True
                 panel = current.panel
                 if panel is not None:
                     if (panel.round_number, panel.level, panel.deployed, panel.capacity) != (
@@ -154,7 +172,28 @@ class BrawlSummon(ModuleBase):
                             paid = True
                             timeout.reset()
                             continue
-                    elif balances == expected and result is not None:
+                    elif result is not None and result.is_overflow and closed:
+                        # The overflow result says a max-imprint duplicate was
+                        # converted, but its tiny reward glyphs are not a safe
+                        # OCR target. Measure both credited resources on the
+                        # positively confirmed preparation instead. This is an
+                        # observed delta from the only unobserved transition we
+                        # initiated (one result close), not a rarity estimate.
+                        coin_gain = panel.coins - before.coins
+                        token_gain = panel.synergy_tokens - expected[1]
+                        if coin_gain < 0 or token_gain < 0:
+                            return report(SummonOutcome.BALANCE_MISMATCH)
+                        if coin_gain + token_gain == 0:
+                            # The refund can be credited a frame after the
+                            # preparation appears. Keep waiting for a positive
+                            # measured gain; a persistent zero gain times out
+                            # instead of being accepted as a normal summon.
+                            if timeout.reached():
+                                return report(SummonOutcome.TIMEOUT)
+                            continue
+                        proceeds = Resources(coin_gain, token_gain)
+                        return report(SummonOutcome.CONFIRMED)
+                    elif balances == expected and closed:
                         return report(SummonOutcome.CONFIRMED)
                     elif (panel.coins != before.coins
                           or not expected[1] <= panel.synergy_tokens <= before.synergy_tokens):
@@ -162,9 +201,11 @@ class BrawlSummon(ModuleBase):
             elif current.state == BrawlScreen.HERO_RESULT:
                 if not paid or returned:
                     return report(SummonOutcome.SCENE_CHANGED)
+                result_seen = True
                 hero = read_hero_result(image)
                 if hero is not None:
-                    if hero.previous_imprint == hero.imprint == Imprint.SSS:
+                    if (hero.previous_imprint == hero.imprint == Imprint.SSS
+                            and not hero.is_overflow):
                         return report(SummonOutcome.RESULT_UNSUPPORTED)
                     if result is not None and hero != result:
                         return report(SummonOutcome.RESULT_UNSUPPORTED)
@@ -180,11 +221,13 @@ class BrawlSummon(ModuleBase):
                             result = hero
                             if timeout.reached():
                                 return report(SummonOutcome.TIMEOUT)
-                            if (current.game_mode == request.game_mode
+                            if (not closed and vision.matches(HERO_RESULT_CHECK)
                                     and self.interval_is_reached(self.ACTION_TIMER,
                                                                  interval=self.ACTION_INTERVAL)):
                                 self.device.click(HERO_RESULT_CHECK)
                                 self.interval_reset(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)
+                                closed = True
+                                timeout.reset()
                                 continue
             elif current.state != BrawlScreen.UNKNOWN:
                 return report(SummonOutcome.SCENE_CHANGED)

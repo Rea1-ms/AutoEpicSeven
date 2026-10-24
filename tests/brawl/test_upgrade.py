@@ -9,8 +9,8 @@ from module.config import server
 
 server.set_lang("global_cn")
 
-from tasks.brawl.brawl import analyze
-from tasks.brawl.upgrade import (
+from tasks.brawl.brawl import analyze  # noqa: E402
+from tasks.brawl.upgrade import (  # noqa: E402
     BrawlUpgrade,
     UpgradeDialog,
     UpgradeOutcome,
@@ -19,15 +19,15 @@ from tasks.brawl.upgrade import (
     parse_upgrade_fields,
     read_upgrade_dialog,
 )
-from tasks.brawl.vision import (
+from tasks.brawl.vision import (  # noqa: E402
     BrawlMode,
     BrawlObservation,
     BrawlScreen,
     ObservationError,
     PreparationPanel,
 )
-from tests.support.brawl import BrawlReplay, frame
-from tests.support.offline import ControlledClock
+from tests.support.brawl import BrawlReplay, frame  # noqa: E402
+from tests.support.offline import ControlledClock  # noqa: E402
 
 PANEL = PreparationPanel(8, 4, 5, 5, 205, 0)
 REQUEST = UpgradeRequest(PANEL, BrawlMode.NORMAL)
@@ -145,7 +145,8 @@ class UpgradeReplayTests(unittest.TestCase):
 
         patches = (
             patch("tasks.brawl.upgrade.BrawlVision", side_effect=lambda image: SimpleNamespace(
-                observe=lambda: current(image).observation, matches=lambda button: current(image).entry)),
+                observe=lambda **kwargs: current(image).observation,
+                matches=lambda button: current(image).entry)),
             patch("tasks.brawl.upgrade.read_upgrade_dialog", side_effect=read_dialog),
         )
         for item in patches:
@@ -164,7 +165,9 @@ class UpgradeReplayTests(unittest.TestCase):
         replay = BrawlReplay(BrawlUpgrade,
                              ["upgrade-before"] * 2 + ["upgrade-dialog"] * 7
                              + ["upgrade-animation"] * 2 + ["prepare-level5"], self.clock)
-        self.assertEqual(replay.task.upgrade_once(request), UpgradeOutcome.CONFIRMED)
+        with patch("tasks.brawl.upgrade.read_upgrade_dialog", wraps=read_upgrade_dialog) as reader:
+            self.assertEqual(replay.task.upgrade_once(request), UpgradeOutcome.CONFIRMED)
+        reader.assert_called_once()
         self.assertEqual(replay.actions, [(0, "UPGRADE_ENTRY", (248, 649, 292, 695)),
                                           (7, "UPGRADE_CONFIRM", (767, 494, 873, 545))])
 
@@ -193,7 +196,8 @@ class UpgradeReplayTests(unittest.TestCase):
                 replay = self.replay([step(panel=panel)])
                 self.assertEqual(replay.task.upgrade_once(REQUEST), UpgradeOutcome.CONTEXT_CHANGED)
                 self.assert_actions(replay, [])
-                replay = self.replay([READY, step(BrawlScreen.LEVEL_UP, panel=None, dialog=replace(DIALOG, header=panel))])
+                replay = self.replay([READY] + [step(BrawlScreen.LEVEL_UP, panel=None,
+                                                    dialog=replace(DIALOG, header=panel))] * 7)
                 self.assertEqual(replay.task.upgrade_once(REQUEST), UpgradeOutcome.CONTEXT_CHANGED)
                 self.assert_actions(replay, ["UPGRADE_ENTRY"])
 
