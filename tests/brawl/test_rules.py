@@ -30,6 +30,12 @@ from tasks.brawl.rules import (
 
 
 class CatalogueTests(unittest.TestCase):
+    def test_christy_uses_the_requested_canonical_name_without_accepting_truncated_text(self):
+        self.assertEqual(get_hero("克莉丝媞").name, "克莉丝缇")
+        self.assertEqual(get_hero("克莉丝缇").name, "克莉丝缇")
+        with self.assertRaises(RuleInputError):
+            get_hero("克莉丝")
+
     def test_all_34_heroes_have_the_guide_rarities_and_traits(self):
         self.assertEqual(len(HEROES), 34)
         self.assertEqual(Counter(hero.rarity for hero in HEROES.values()), {

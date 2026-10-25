@@ -17376,6 +17376,15 @@
           "fixtures": [],
           "status": "已纳入",
           "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_rules.CatalogueTests.test_christy_uses_the_requested_canonical_name_without_accepting_truncated_text",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "首格来源识别、就近临时空位、全员加号核对及按正面状态推进的回归"
         }
       ]
     },

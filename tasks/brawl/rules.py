@@ -86,7 +86,7 @@ class ActiveSynergy:
 PROFESSION_RANGES = MappingProxyType({
     "战士": 1, "骑士": 1, "盗贼": 1, "精灵师": 1, "魔导士": 3, "射手": 4,
 })
-HERO_ALIASES = MappingProxyType({"露斌": "露彬"})
+HERO_ALIASES = MappingProxyType({"露斌": "露彬", "克莉丝媞": "克莉丝缇"})
 MAX_LEVEL = 9
 BENCH_CAPACITY = 10
 BOARD_ROWS = 4
