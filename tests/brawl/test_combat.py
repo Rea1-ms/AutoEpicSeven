@@ -1,5 +1,6 @@
 import unittest
 from dataclasses import replace
+from itertools import pairwise
 from types import SimpleNamespace
 from unittest.mock import patch
 
@@ -182,6 +183,70 @@ class RoundFlowTests(unittest.TestCase):
         self.assertEqual(result.hero_results, ())
         self.assertEqual(replay.index, 13)
         self.assertEqual([(a[0], a[1]) for a in replay.actions], [(0, "PREPARATION_CHECK")])
+
+    def test_reported_network_retry_keeps_the_started_round_and_requires_real_combat(self):
+        replay = self.replay(["normal-deployed"] + ["network-retry"] * 8
+                             + ["normal-deployed"] * 2 + ["combat-speed-two", "round-clear"]
+                             + ["normal-round2"] * 3, seconds=1)
+        result = self.play(replay)
+        self.assertEqual(result.outcome, RoundOutcome.NEXT_PREPARATION, result.reason)
+        self.assertEqual([a[1] for a in replay.actions], ["PREPARATION_CHECK", "TOUCH_TO_CLOSE"])
+        retry = replay.actions[1]
+        self.assertGreaterEqual(retry[0], 4)
+        self.assertTrue(620 <= retry[2][0] <= 650 and 460 <= retry[2][1] <= 480)
+        self.assertEqual(result.panel, self.next_panel)
+
+    def test_network_retry_is_bounded_and_never_restarts_or_clicks_a_missing_arrow(self):
+        missing = frame("network-retry").copy()
+        missing[455:495, 620:665] = 0
+        for overlay in (frame("network-retry"), missing):
+            with self.subTest(arrow=overlay is not missing):
+                replay = self.replay(["normal-deployed"] + [overlay] * 40, seconds=1)
+                result = self.play(replay)
+                self.assertEqual(result.outcome, RoundOutcome.FAILED)
+                self.assertIn("Network retry", result.reason)
+                self.assertEqual(sum(a[1] == "PREPARATION_CHECK" for a in replay.actions), 1)
+                retries = [a for a in replay.actions if a[1] == "TOUCH_TO_CLOSE"]
+                self.assertTrue(all(b[0] - a[0] >= 5 for a, b in pairwise(retries)))
+                if overlay is missing:
+                    self.assertEqual(retries, [])
+
+    def test_network_reappearance_does_not_renew_budget_or_own_an_unrequested_round(self):
+        replay = self.replay(["network-retry"])
+        result = self.play(replay)
+        self.assertEqual(result.outcome, RoundOutcome.FAILED)
+        self.assertIn("before this call started", result.reason)
+        self.assertEqual(replay.actions, [])
+        replay = self.replay(["normal-deployed"] + ["network-retry"] * 14
+                             + ["normal-deployed"] + ["network-retry"] * 40, seconds=1)
+        result = self.play(replay)
+        self.assertEqual(result.outcome, RoundOutcome.FAILED)
+        self.assertIn("Network retry", result.reason)
+        self.assertLess(replay.index, 35)
+        self.assertEqual(sum(a[1] == "PREPARATION_CHECK" for a in replay.actions), 1)
+        self.assertEqual(replay.stuck_clear_frames, [])
+
+    def test_disconnect_leaves_the_tracked_round_without_login_or_retry(self):
+        popup = frame("network-retry")
+        replay = self.replay(["normal-deployed", popup], seconds=1)
+        # No disconnected capture is claimed: explicitly simulate the shared
+        # disconnect match on this overlay, with the production loop intact.
+        with patch("tasks.brawl.vision.NETWORK_ERROR_DISCONNECT.match_template",
+                   side_effect=lambda image, **kwargs: np.array_equal(image, popup)):
+            result = self.play(replay)
+        self.assertEqual(result.outcome, RoundOutcome.FAILED)
+        self.assertIn("Network disconnected", result.reason)
+        self.assertEqual([a[1] for a in replay.actions], ["PREPARATION_CHECK"])
+
+    def test_resumed_combat_ends_the_retry_episode_before_a_later_outage(self):
+        replay = self.replay(["normal-deployed"] + ["network-retry"] * 5
+                             + ["combat-speed-two"] * 32 + ["network-retry"] * 5
+                             + ["combat-speed-two", "round-clear"] + ["normal-round2"] * 3, seconds=1)
+        result = self.play(replay)
+        self.assertEqual(result.outcome, RoundOutcome.NEXT_PREPARATION, result.reason)
+        self.assertEqual([a[1] for a in replay.actions],
+                         ["PREPARATION_CHECK", "TOUCH_TO_CLOSE", "TOUCH_TO_CLOSE"])
+        self.assertGreater(replay.actions[-1][0] - replay.actions[1][0], 30)
 
     def test_start_and_reward_close_share_the_previous_formation_interval(self):
         replay = self.replay(["normal-deployed"] * 8 + ["combat-speed-two"] * 3

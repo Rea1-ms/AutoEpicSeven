@@ -29,6 +29,14 @@ class VisionTests(unittest.TestCase):
         self.frame = frame(name)
         return BrawlVision(self.frame).observe()
 
+    def test_reported_network_overlay_precedes_underlying_preparation_without_ocr(self):
+        self.frame = frame("network-retry")
+        with patch.object(BrawlVision, "preparation_panel", side_effect=AssertionError("dimmed counters")):
+            observed = BrawlVision(self.frame).observe()
+        self.assertEqual(observed.state.value, "network_retry")
+        self.assertIsNone(observed.panel)
+        self.assertIsNone(observed.speed)
+
     def test_real_preparation_fields_across_levels_and_currencies(self):
         expected = {
             "prepare-level4": (7, 4, 5, 5, 145, 0),

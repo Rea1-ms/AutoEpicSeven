@@ -8,6 +8,10 @@ import numpy as np
 
 from module.config import server
 from module.ocr.ocr import Ocr
+from tasks.base.assets.assets_base_popup import (
+    NETWORK_ERROR_ABNORMAL,
+    NETWORK_ERROR_DISCONNECT,
+)
 from tasks.brawl.assets.assets_brawl import (
     BRAWL_CHALLENGE_CHECK,
     BRAWL_CHECK,
@@ -51,6 +55,8 @@ HERO_RESULT_SIMILARITY = 0.8
 
 
 class BrawlScreen(str, Enum):
+    NETWORK_RETRY = "network_retry"
+    NETWORK_DISCONNECTED = "network_disconnected"
     PREPARATION = "preparation"
     LEVEL_UP = "level_up"
     HERO_RESULT = "hero_result"
@@ -196,6 +202,14 @@ class BrawlVision:
                 if one != two:
                     speed = 1 if one else 2
             return BrawlObservation(state, panel, reason, mode, speed)
+
+        # Reuse the shared popup templates and their established threshold.
+        # Dimmed preparation controls behind a retry dialog do not authorize
+        # resource reads, another start click or a formation operation.
+        for state, button in ((BrawlScreen.NETWORK_DISCONNECTED, NETWORK_ERROR_DISCONNECT),
+                              (BrawlScreen.NETWORK_RETRY, NETWORK_ERROR_ABNORMAL)):
+            if button.match_template(self.image, similarity=.85):
+                return observed(state)
 
         # Overlays precede their underlying page. A visible green start button
         # behind a translucent explanation is not a usable preparation screen.

@@ -6,6 +6,7 @@ from enum import Enum
 from module.base.base import ModuleBase
 from module.base.timer import Timer
 from module.logger import logger
+from tasks.base.assets.assets_base_popup import TOUCH_TO_CLOSE
 from tasks.brawl.assets.assets_brawl import (
     HERO_RESULT_CHECK,
     PREPARATION_CHECK,
@@ -49,9 +50,14 @@ class BrawlCombat(ModuleBase):
     STEP_TIMEOUT = 15
     UNREAD_TIMEOUT = 60
     PREPARATION_STABLE_INTERVAL = 0.6
+    NETWORK_TIMEOUT = 30
+    NETWORK_RETRY_INTERVAL = 5
+    NETWORK_RETRY_DELAY = 3
     SPEED_INTERVAL = 3
     SPEED_TIMEOUT = 10
     SPEED_INTERRUPTED_STATES = frozenset({
+        BrawlScreen.NETWORK_RETRY,
+        BrawlScreen.NETWORK_DISCONNECTED,
         BrawlScreen.LEVEL_UP,
         BrawlScreen.HERO_RESULT,
         BrawlScreen.HERO_UNLOCK,
@@ -100,6 +106,8 @@ class BrawlCombat(ModuleBase):
         pending_closed = False
         preparation_candidate = None
         preparation_stable = Timer(self.PREPARATION_STABLE_INTERVAL)
+        network_timeout = None
+        network_ready = None
 
         def finish(outcome, reason, preparation=None):
             if outcome == RoundOutcome.FAILED:
@@ -116,6 +124,41 @@ class BrawlCombat(ModuleBase):
             image = self.device.image
             vision = BrawlVision(image)
             current = vision.observe()
+            if current.game_mode is not None and current.game_mode != game_mode:
+                return finish(RoundOutcome.FAILED, "The brawl mode changed")
+            if current.state == BrawlScreen.NETWORK_DISCONNECTED:
+                return finish(RoundOutcome.FAILED, "Network disconnected; the tracked run needs reconstruction")
+            if current.state == BrawlScreen.NETWORK_RETRY:
+                preparation_candidate = None
+                preparation_stable.clear()
+                if not started:
+                    return finish(RoundOutcome.FAILED, "Network retry appeared before this call started a round")
+                if network_timeout is None:
+                    network_timeout = Timer(self.NETWORK_TIMEOUT).start()
+                if network_ready is None:
+                    network_ready = Timer(self.NETWORK_RETRY_DELAY).start()
+                if network_timeout.reached():
+                    return finish(RoundOutcome.FAILED, "Network retry did not recover within its deadline")
+                # Preserve started/battle_seen/rewards: retry resumes the same
+                # server request, never authorizes another start or acquisition.
+                # Match the shared arrow at its current position; its original
+                # click rectangle belongs to a different popup layout. Wait by
+                # observing fresh frames, without the shared handler's sleep or
+                # login handoff (which would invalidate this tracked roster).
+                if (network_ready.reached()
+                        and self.interval_is_reached(self.ACTION_TIMER, interval=self.NETWORK_RETRY_INTERVAL)
+                        and TOUCH_TO_CLOSE.match_template(image, similarity=.85)):
+                    self.device.click(TOUCH_TO_CLOSE)
+                    self.interval_reset(self.ACTION_TIMER, interval=self.NETWORK_RETRY_INTERVAL)
+                    logger.info("Brawl network retry requested; retaining the current round")
+                continue
+            if network_timeout is not None:
+                # Give the interrupted transition one fresh local deadline, not
+                # a new battle start. Retain the total retry budget across popup
+                # reappearances so flickering unknown/preparation cannot renew it.
+                if network_ready is not None and timeout is not None:
+                    timeout.reset()
+                network_ready = None
             # A readable preparation can precede coin count-up completion and
             # the bench's fade-in. Stability belongs to consecutive readable
             # frames of this return, never to time spent in combat or overlays.
@@ -126,9 +169,6 @@ class BrawlCombat(ModuleBase):
                     or current.game_mode != game_mode):
                 preparation_candidate = None
                 preparation_stable.clear()
-            if current.game_mode is not None and current.game_mode != game_mode:
-                return finish(RoundOutcome.FAILED, "The brawl mode changed")
-
             # A run result is a positive terminal boundary, but an unrelated
             # result present at entry cannot stand in for this call's battle.
             # Leave the terminal screen visible instead of exiting the run.
@@ -242,6 +282,10 @@ class BrawlCombat(ModuleBase):
                     logger.info(f"Brawl round {panel.round_number} combat confirmed")
                 battle_seen = True
                 timeout = None
+                # Only positively resumed combat ends this network episode.
+                # A later outage gets its own budget; unknown/old preparation
+                # and popup flicker above cannot renew the interrupted episode.
+                network_timeout = None
                 # Device.screenshot also checks its own inactivity watchdog;
                 # disabling only this loop's short timeout does not protect a
                 # long automatic fight from that independent 60-second limit.

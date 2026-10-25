@@ -18110,6 +18110,17 @@
           ],
           "status": "已纳入",
           "reason": "继续提示独立使用0.8相似度，真实角色背景正例与准备、战斗、弹窗等页面反例；涂黑提示后不可点击"
+        },
+        {
+          "id": "tests.brawl.test_vision.VisionTests.test_reported_network_overlay_precedes_underlying_preparation_without_ocr",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "brawl-network-retry"
+          ],
+          "status": "已纳入",
+          "reason": "网络异常优先识别，不读取暗色背景资源"
         }
       ]
     },
@@ -19422,6 +19433,72 @@
           "fixtures": [],
           "status": "已纳入",
           "reason": "明确模拟战后金币变化、候补淡入、重复与未知帧；稳定后才交接，未稳定时只读等待并有界退出"
+        },
+        {
+          "id": "tests.brawl.test_combat.RoundFlowTests.test_reported_network_retry_keeps_the_started_round_and_requires_real_combat",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "brawl-network-retry",
+            "brawl-normal-deployed",
+            "brawl-combat-speed-two",
+            "brawl-round-clear",
+            "brawl-normal-round2"
+          ],
+          "status": "已纳入",
+          "reason": "重试只关闭已识别网络提示，保留单次开战归属并等待实际战斗"
+        },
+        {
+          "id": "tests.brawl.test_combat.RoundFlowTests.test_network_retry_is_bounded_and_never_restarts_or_clicks_a_missing_arrow",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "brawl-network-retry",
+            "brawl-normal-deployed"
+          ],
+          "status": "已纳入",
+          "reason": "持续网络异常有总上限、重试有间隔，缺失箭头不盲点"
+        },
+        {
+          "id": "tests.brawl.test_combat.RoundFlowTests.test_network_reappearance_does_not_renew_budget_or_own_an_unrequested_round",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "brawl-network-retry",
+            "brawl-normal-deployed"
+          ],
+          "status": "已纳入",
+          "reason": "网络提示重现不延长总上限，未请求开战不重试"
+        },
+        {
+          "id": "tests.brawl.test_combat.RoundFlowTests.test_disconnect_leaves_the_tracked_round_without_login_or_retry",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "brawl-network-retry",
+            "brawl-normal-deployed"
+          ],
+          "status": "已纳入",
+          "reason": "明确断线保留画面并停止跟踪流程，不跨登录沿用旧名单"
+        },
+        {
+          "id": "tests.brawl.test_combat.RoundFlowTests.test_resumed_combat_ends_the_retry_episode_before_a_later_outage",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "brawl-network-retry",
+            "brawl-normal-deployed",
+            "brawl-combat-speed-two",
+            "brawl-round-clear",
+            "brawl-normal-round2"
+          ],
+          "status": "已纳入",
+          "reason": "真实战斗恢复后结束断网计时，后续独立断网仍可重试，整轮只开战一次"
         }
       ]
     },

@@ -332,7 +332,9 @@
         "tests.brawl.test_combat.RoundFlowTests.test_unstarted_combat_results_and_rewards_never_authorize_any_click",
         "tests.brawl.test_combat.RoundFlowTests.test_new_hero_and_imprint_upgrade_are_recorded_once_despite_repeated_frames",
         "tests.brawl.test_combat.RoundFlowTests.test_positive_combat_keeps_real_device_watchdog_alive_without_clearing_unknown_frames",
-        "tests.brawl.test_vision.VisionTests.test_hero_footer_accepts_artwork_variation_without_matching_other_pages"
+        "tests.brawl.test_vision.VisionTests.test_hero_footer_accepts_artwork_variation_without_matching_other_pages",
+        "tests.brawl.test_combat.RoundFlowTests.test_reported_network_retry_keeps_the_started_round_and_requires_real_combat",
+        "tests.brawl.test_combat.RoundFlowTests.test_resumed_combat_ends_the_retry_episode_before_a_later_outage"
       ]
     },
     "brawl-prepare-level8": {
@@ -1008,7 +1010,12 @@
         "tests.brawl.test_normal_summon.NormalSummonReadingTests.test_capture_rejects_invalid_reserves_nonpreparation_and_insufficient_coins",
         "tests.brawl.test_combat.RoundFlowTests.test_owned_reward_with_artwork_covering_mode_is_read_and_closed_once",
         "tests.brawl.test_combat.RoundFlowTests.test_unowned_reward_with_hidden_mode_never_authorizes_a_close",
-        "tests.brawl.test_combat.RoundFlowTests.test_owned_reward_exception_never_accepts_a_changed_mode_or_unread_return_mode"
+        "tests.brawl.test_combat.RoundFlowTests.test_owned_reward_exception_never_accepts_a_changed_mode_or_unread_return_mode",
+        "tests.brawl.test_combat.RoundFlowTests.test_reported_network_retry_keeps_the_started_round_and_requires_real_combat",
+        "tests.brawl.test_combat.RoundFlowTests.test_network_retry_is_bounded_and_never_restarts_or_clicks_a_missing_arrow",
+        "tests.brawl.test_combat.RoundFlowTests.test_network_reappearance_does_not_renew_budget_or_own_an_unrequested_round",
+        "tests.brawl.test_combat.RoundFlowTests.test_disconnect_leaves_the_tracked_round_without_login_or_retry",
+        "tests.brawl.test_combat.RoundFlowTests.test_resumed_combat_ends_the_retry_episode_before_a_later_outage"
       ]
     },
     "brawl-formation-move": {
@@ -1080,7 +1087,9 @@
         "tests.brawl.test_combat.RoundFlowTests.test_owned_reward_exception_never_accepts_a_changed_mode_or_unread_return_mode",
         "tests.brawl.test_resume.ResumedTalentTests.test_real_later_round_subtracts_only_the_deployed_profession",
         "tests.brawl.test_resume.ResumedTalentTests.test_current_context_missing_icons_and_dimmed_sidebar_cannot_supply_defaults",
-        "tests.brawl.test_resume.ResumedTalentTests.test_unread_wrong_denominator_and_impossible_counts_are_rejected"
+        "tests.brawl.test_resume.ResumedTalentTests.test_unread_wrong_denominator_and_impossible_counts_are_rejected",
+        "tests.brawl.test_combat.RoundFlowTests.test_reported_network_retry_keeps_the_started_round_and_requires_real_combat",
+        "tests.brawl.test_combat.RoundFlowTests.test_resumed_combat_ends_the_retry_episode_before_a_later_outage"
       ]
     },
     "brawl-round-failed": {
@@ -1636,7 +1645,9 @@
         "tests.brawl.test_combat.RoundFlowTests.test_fresh_first_frame_discards_an_unowned_reward_before_starting",
         "tests.brawl.test_combat.RoundFlowTests.test_positive_combat_keeps_real_device_watchdog_alive_without_clearing_unknown_frames",
         "tests.brawl.test_combat.RoundFlowTests.test_owned_reward_with_artwork_covering_mode_is_read_and_closed_once",
-        "tests.brawl.test_combat.RoundFlowTests.test_owned_reward_exception_never_accepts_a_changed_mode_or_unread_return_mode"
+        "tests.brawl.test_combat.RoundFlowTests.test_owned_reward_exception_never_accepts_a_changed_mode_or_unread_return_mode",
+        "tests.brawl.test_combat.RoundFlowTests.test_reported_network_retry_keeps_the_started_round_and_requires_real_combat",
+        "tests.brawl.test_combat.RoundFlowTests.test_resumed_combat_ends_the_retry_episode_before_a_later_outage"
       ]
     },
     "brawl-formation-deploy-animation": {
@@ -3544,6 +3555,24 @@
       "privacy_redaction": [],
       "used_by": [
         "tests.brawl.test_board.FormationGridTests.test_reported_occluded_yellow_target_uses_the_complete_occupied_set"
+      ]
+    },
+    "brawl-network-retry": {
+      "path": "tests/fixtures/brawl/global_cn/brawl-network-retry.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "network_retry",
+      "source": "MuMu-20261024-223557-737.png",
+      "source_sha256": "b81cce555c0954e863d57af83e2ff62aa4b1b187912253e0d96e9ff65e8ffdbb",
+      "sha256": "b81cce555c0954e863d57af83e2ff62aa4b1b187912253e0d96e9ff65e8ffdbb",
+      "privacy_redaction": [],
+      "used_by": [
+        "tests.brawl.test_vision.VisionTests.test_reported_network_overlay_precedes_underlying_preparation_without_ocr",
+        "tests.brawl.test_combat.RoundFlowTests.test_reported_network_retry_keeps_the_started_round_and_requires_real_combat",
+        "tests.brawl.test_combat.RoundFlowTests.test_network_retry_is_bounded_and_never_restarts_or_clicks_a_missing_arrow",
+        "tests.brawl.test_combat.RoundFlowTests.test_network_reappearance_does_not_renew_budget_or_own_an_unrequested_round",
+        "tests.brawl.test_combat.RoundFlowTests.test_disconnect_leaves_the_tracked_round_without_login_or_retry",
+        "tests.brawl.test_combat.RoundFlowTests.test_resumed_combat_ends_the_retry_episode_before_a_later_outage"
       ]
     }
   }
