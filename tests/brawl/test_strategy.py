@@ -462,6 +462,23 @@ class NewGameRosterTests(unittest.TestCase):
         self.assertEqual({hero.name: hero.cell for hero in state.heroes}, desired)
         self.assertIsNone(next_step(state, desired))
 
+    def test_reported_frontline_cycle_uses_a_nearby_spare_instead_of_the_first_cell(self):
+        state = self.state(RosterHero("卡萝", "D", (1, 3)), RosterHero("萝里娜", "D", (2, 3)),
+                           RosterHero("缪斯黎玛", "NONE", (3, 0)), RosterHero("卡琳", "C", (3, 3)),
+                           RosterHero("未知可能性雅卡泰丝", "C", (4, 3)), level=4)
+        desired = {hero.name: hero.cell for hero in state.heroes}
+        desired.update({"萝里娜": (3, 3), "卡琳": (2, 3)})
+        first = next_step(state, desired)
+        self.assertEqual((first.hero, first.source, first.target), ("萝里娜", (2, 3), (0, 3)))
+        for _ in range(3):
+            action = next_step(state, desired)
+            self.assertIsNotNone(action)
+            self.assertNotEqual(action.target, (0, 0))
+            expected = derive_after(state, action)
+            state = commit_step(state, action, self.scan(expected), self.cells(expected))
+        self.assertIsNone(next_step(state, desired))
+        self.assertEqual({hero.name: hero.cell for hero in state.heroes}, desired)
+
     def test_replacement_then_vacant_moves_and_placement_finish_complete_recommendation(self):
         state = self.state(RosterHero("赛兹", "B", (0, 0)), RosterHero("露彬", "B", (0, 1)),
                            RosterHero("卡琳", "C"), RosterHero("度假风优芬妮", "B"))

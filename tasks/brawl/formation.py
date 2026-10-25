@@ -295,8 +295,11 @@ class BrawlFormation(BrawlBenchScanner):
     def _click_formation(self, area, name):
         self._selection_evidence = None
         self.device.click(ClickButton(area, name=name))
-        # Share the scanner timer: selecting a card, opening a grid, moving a
-        # hero and cancelling selection may never bypass each other's interval.
+        # Preserve the shared cooldown before the next independent interaction.
+        # Inside one requested grid, a positively observed selection authorizes
+        # its one destination/cancel immediately. The opened/clicked flags keep
+        # repeated frames from repeating either click; elapsed time alone never
+        # proves a transition or permits another interaction.
         self.interval_reset(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)
 
     def _grid_action(self, scan, expected_cells, *, action=None, expected_panel=None):
@@ -307,10 +310,11 @@ class BrawlFormation(BrawlBenchScanner):
         again afterwards. No stale pixel coordinate authorizes a destination.
         """
         probe = action is None
-        # When a bench card and a free slot exist, its plus exposes the whole
+        # When a bench card exists, its plus exposes the whole
         # occupied set directly. This reads positions without selecting or
-        # swapping a field hero. A full field or empty bench keeps the known-source path.
-        probe_plus = probe and bool(scan.heroes) and scan.panel.deployed < scan.panel.capacity
+        # swapping a field hero, including at full capacity. Only an empty
+        # bench requires selecting a known field source for this read-only check.
+        probe_plus = probe and bool(scan.heroes)
         source = (None if probe_plus else min(expected_cells)) if probe else action.source
         expected_panel = scan.panel if probe else expected_panel
         timeout = Timer(self.STEP_TIMEOUT).start()
@@ -351,7 +355,12 @@ class BrawlFormation(BrawlBenchScanner):
                 if timeout.reached():
                     raise ObservationError("Formation response timed out")
                 continue
-            if not clicked and not self.interval_is_reached(self.ACTION_TIMER, interval=self.ACTION_INTERVAL):
+            if opened and not clicked and current.state == BrawlScreen.PREPARATION:
+                if timeout.reached():
+                    raise ObservationError("Formation grid did not open")
+                continue
+            if (not clicked and not opened
+                    and not self.interval_is_reached(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)):
                 if timeout.reached():
                     raise ObservationError("Formation response timed out")
                 continue

@@ -21,7 +21,12 @@ from tasks.brawl.board import (  # noqa: E402
     read_formation_grid,
     screen_to_logical,
 )
-from tasks.brawl.vision import BrawlScreen, BrawlVision, ObservationError  # noqa: E402
+from tasks.brawl.vision import (  # noqa: E402
+    BrawlScreen,
+    BrawlVision,
+    ObservationError,
+    PreparationPanel,
+)
 from tasks.brawl.withdraw import read_withdraw_control  # noqa: E402
 from tests.support.brawl import frame  # noqa: E402
 
@@ -269,6 +274,86 @@ class FormationGridTests(unittest.TestCase):
         self.assertEqual(grid.yellow_destinations, ())
         self.assertEqual(grid.empty_destinations, ())
         self.assertIsNone(read_formation_grid(self.frame, expected_target=(0, 0)))
+
+    def test_full_five_swap_uses_controls_when_both_edge_anchors_are_absent(self):
+        # Explicitly simulate five occupied cells from the captured full grid.
+        # Unlike the ten-hero capture, neither static edge anchor survives.
+        self.frame = frame("full-swap-grid").copy()
+        kept = {(1, 3), (2, 3), (3, 2), (3, 3), (4, 3)}
+        for marker in FORMATION_SOURCE_SELECTED.match_multi_template(self.frame, similarity=.9):
+            left, top, right, bottom = marker.area
+            center = ((left + right) / 2, (top + bottom) / 2 + 23)
+            cell = min(((r, c) for r in range(7) for c in range(4)),
+                       key=lambda rc: abs(420 + rc[1] * 124.5 - (rc[0] % 2) * 62.25 - center[0])
+                       + abs(241 + rc[0] * 56 - center[1]))
+            if cell not in kept:
+                self.frame[top - 1:bottom + 1, left - 1:right + 1] = 0
+        for asset in (FORMATION_GRID_CHECK, SWAP_GRID_ANCHOR):
+            left, top, right, bottom = asset.search
+            self.frame[top:bottom, left:right] = 0
+        observation = replace(BrawlVision(self.frame).observe(read_panel=False),
+                              panel=PreparationPanel(5, 4, 5, 5, 60, 0))
+        self.assertEqual(observation.state, BrawlScreen.FORMATION_SELECTION)
+        grid = read_formation_grid(self.frame, observation=observation, expected_target=(1, 3))
+        self.assertIsNotNone(grid)
+        self.assertEqual({(c.screen_row, c.screen_column) for c in grid.occupied}, kept)
+        self.assertEqual(grid.empty_destinations, ())
+        self.assertIsNone(read_formation_grid(self.frame, observation=observation, expected_target=(0, 0)))
+        self.assertIsNone(read_formation_grid(self.frame, observation=replace(
+            observation, panel=replace(observation.panel, deployed=6))))
+        shifted = np.roll(self.frame, shift=(3, 4), axis=(0, 1))
+        translated = read_formation_grid(shifted, observation=observation)
+        self.assertIsNotNone(translated)
+        self.assertEqual(translated.cells[0].center,
+                         (grid.cells[0].center[0] + 4, grid.cells[0].center[1] + 3))
+        marker = FORMATION_SOURCE_SELECTED.match_multi_template(self.frame, similarity=.9)[0]
+        left, top, right, bottom = marker.area
+        moved = self.frame[top:bottom, left:right].copy()
+        self.frame[top:bottom, left:right + 6] = 0
+        self.frame[top:bottom, left + 6:right + 6] = moved
+        self.assertIsNone(read_formation_grid(self.frame, observation=observation))
+
+    def test_reported_first_cell_selection_keeps_the_green_source_and_all_five_heroes(self):
+        self.frame = frame("selected-first-cell")
+        with patch.object(BrawlVision, "preparation_panel", side_effect=AssertionError("scene needs no OCR")):
+            observation = BrawlVision(self.frame).observe(read_panel=False)
+        self.assertEqual(observation.state, BrawlScreen.FORMATION_SELECTION)
+        panel = BrawlVision(self.frame).preparation_panel()
+        self.assertEqual(panel, PreparationPanel(5, 4, 5, 5, 60, 0))
+        grid = read_formation_grid(self.frame, observation=replace(observation, panel=panel),
+                                   expected_source=(0, 0), expected_target=(2, 3))
+        self.assertIsNotNone(grid)
+        self.assertEqual(grid.selected_source, grid.cells[0])
+        self.assertEqual(grid.occupied, tuple(grid.cells[index] for index in (0, 7, 12, 15, 19)))
+        self.assertIn(grid.cells[11], grid.empty_destinations)
+        self.assertIsNone(read_formation_grid(self.frame, observation=replace(observation, panel=panel),
+                                             expected_target=(0, 0)))
+
+    def test_first_cell_control_calibration_rejects_missing_misaligned_and_recolored_controls(self):
+        original = frame("selected-first-cell")
+        observation = replace(BrawlVision(original).observe(read_panel=False),
+                              panel=PreparationPanel(5, 4, 5, 5, 60, 0))
+        # No static edge anchor survives this capture. The complete blue set,
+        # green magnifier and correctly positioned red minus are all required.
+        for asset in (FORMATION_SOURCE_SELECTED, FORMATION_MOVE_SOURCE):
+            marker = asset.match_multi_template(original, similarity=.9)[0]
+            left, top, right, bottom = marker.area
+            for corrupt in ("missing", "shifted", "duplicate", "recolored"):
+                with self.subTest(asset=asset.name, corrupt=corrupt):
+                    self.frame = original.copy()
+                    if corrupt == "duplicate":
+                        shift = 124 if asset is FORMATION_MOVE_SOURCE else -249
+                        self.frame[top + 112:bottom + 112, left + shift:right + shift] = original[top:bottom, left:right]
+                    else:
+                        self.frame[top:bottom, left:right] = 0
+                        if corrupt == "shifted":
+                            self.frame[top:bottom, left + 6:right + 6] = original[top:bottom, left:right]
+                        elif corrupt == "recolored":
+                            self.frame[top:bottom, left:right] = original[top:bottom, left:right].mean(axis=2, keepdims=True)
+                    self.assertIsNone(read_formation_grid(self.frame, observation=observation))
+        self.frame = original.copy()
+        self.frame[200:237, 368:406] = 0
+        self.assertIsNone(read_formation_grid(self.frame, observation=observation))
 
     def test_captured_green_source_is_occupied_but_never_its_own_destination(self):
         self.frame = frame("move-source")

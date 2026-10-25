@@ -37,6 +37,7 @@ from tasks.brawl.vision import (  # noqa: E402
     BrawlMode,
     BrawlObservation,
     BrawlScreen,
+    BrawlVision,
     ObservationError,
     PreparationPanel,
 )
@@ -314,7 +315,7 @@ class NewGameFormationTests(unittest.TestCase):
         self.assertEqual(result, frozenset({(3, 3)}))
         self.assertEqual(replay.actions, [
             (0, "BrawlFormationOpen", ENTRY.plus_area),
-            (7, "BrawlFormationCancelRound", (620, 15, 660, 30))])
+            (1, "BrawlFormationCancelRound", (620, 15, 660, 30))])
         self.assertTrue(all(area != (1205, 280, 1260, 310) for _, _, area in replay.actions))
         self.assertEqual(replay.click_record_clears, [])
 
@@ -333,12 +334,61 @@ class NewGameFormationTests(unittest.TestCase):
                     self.assertEqual(replay.task._probe(self.scan(panel=panel), expected), expected)
                     self.assertEqual(replay.actions, [
                         (0, "BrawlFormationOpen", ENTRY.plus_area),
-                        (7, "BrawlFormationCancelRound", (620, 15, 660, 30))])
+                        (1, "BrawlFormationCancelRound", (620, 15, 660, 30))])
                 else:
                     with self.assertRaises(ObservationError):
                         replay.task._probe(self.scan(panel=panel), expected)
                     self.assertEqual(len(replay.actions), 1)
                 self.assertEqual(replay.actions[0][2], ENTRY.plus_area)
+
+    def test_full_field_probe_uses_plus_and_advances_on_the_first_confirmed_grid(self):
+        panel = PreparationPanel(5, 4, 5, 5, 60, 0)
+        cells = (BoardCell(0, 0, (420, 241)), BoardCell(1, 3, (731, 297)),
+                 BoardCell(3, 0, (358, 409)), CELL, BoardCell(4, 3, (794, 465)))
+        expected = frozenset((cell.screen_row, cell.screen_column) for cell in cells)
+        grid = FormationGrid(cells, cells, None, (), panel)
+        prep = self.state_frame(panel=panel)
+        selected = self.state_frame(BrawlScreen.FORMATION_SELECTION, panel=panel, grid=grid)
+        replay = self.replay([prep] * 8 + [selected] * 3 + [prep])
+        # The initial independent interaction still waits three seconds. A new
+        # positively recognized grid then authorizes one cancellation promptly,
+        # and repeated grid frames cannot cause a second cancel or field click.
+        replay.task.interval_reset(replay.task.ACTION_TIMER, interval=replay.task.ACTION_INTERVAL)
+        self.assertEqual(replay.task._probe(self.scan(panel=panel), expected), expected)
+        self.assertEqual(replay.actions, [
+            (7, "BrawlFormationOpen", ENTRY.plus_area),
+            (8, "BrawlFormationCancelRound", replay.task.ROUND_CANCEL_AREA)])
+        self.assertFalse(replay.task.interval_is_reached(
+            replay.task.ACTION_TIMER, interval=replay.task.ACTION_INTERVAL))
+
+    def test_reported_first_cell_move_uses_real_selection_controls_without_repeating_the_target(self):
+        selected = frame("selected-first-cell")
+        real_vision = BrawlVision
+        panel = real_vision(selected).preparation_panel()
+        prep, after = np.zeros_like(selected), np.ones_like(selected)
+        replay = BrawlReplay(BrawlFormation, [prep] + [selected] * 4 + [after], self.clock, seconds=.1)
+        scan = self.scan((BenchHero("克莉丝缇", Imprint.D),), panel)
+        action = FormationStep(FormationKind.MOVE, "萝里娜", (0, 0), (2, 3), None, 0)
+
+        def vision(image):
+            if image is selected:
+                return real_vision(image)
+            return SimpleNamespace(observe=lambda **kwargs: BrawlObservation(
+                BrawlScreen.PREPARATION, panel, game_mode=BrawlMode.NORMAL))
+
+        from tasks.brawl.withdraw import _bench_agrees
+
+        def bench(image, current, checked, **kwargs):
+            return _bench_agrees(image, current, checked, **kwargs) if image is selected else True
+
+        with patch("tasks.brawl.formation.BrawlVision", side_effect=vision), \
+                patch("tasks.brawl.formation._bench_agrees", side_effect=bench):
+            replay.task._grid_action(scan, {(0, 0), (1, 3), (3, 0), (3, 3), (4, 3)},
+                                     action=action, expected_panel=panel)
+        self.assertEqual(replay.actions, [
+            (0, "BrawlFormationOpen", (420, 241, 421, 242)),
+            (1, "BrawlFormationTarget", (794, 353, 795, 354))])
+        self.assertEqual(replay.index, 5)
 
     def test_probe_empty_bench_requires_positive_empty_marker_before_cancel(self):
         panel = replace(PANEL, deployed=1)
@@ -353,7 +403,7 @@ class NewGameFormationTests(unittest.TestCase):
                     self.assertEqual(replay.task._grid_action(self.scan((), panel), {(3, 3)}),
                                      frozenset({(3, 3)}))
                     self.assertEqual(replay.actions[-1],
-                                     (7, "BrawlFormationCancelRound", (620, 15, 660, 30)))
+                                     (1, "BrawlFormationCancelRound", (620, 15, 660, 30)))
                 else:
                     with self.assertRaises(ObservationError):
                         replay.task._grid_action(self.scan((), panel), {(3, 3)})
@@ -370,7 +420,7 @@ class NewGameFormationTests(unittest.TestCase):
         replay.task._grid_action(self.scan(), frozenset(), action=action, expected_panel=after)
         self.assertEqual(replay.actions, [
             (0, "BrawlFormationOpen", ENTRY.plus_area),
-            (7, "BrawlFormationTarget", (731, 409, 732, 410))])
+            (1, "BrawlFormationTarget", (731, 409, 732, 410))])
 
     def test_move_swap_and_withdraw_use_only_their_positive_controls(self):
         panel = replace(PANEL, deployed=1)
@@ -395,7 +445,7 @@ class NewGameFormationTests(unittest.TestCase):
                 name = "BrawlFormationWithdraw" if action.kind == FormationKind.WITHDRAW else "BrawlFormationTarget"
                 area = control.button_area if action.kind == FormationKind.WITHDRAW else (
                     (731, 409, 732, 410) if action.kind == FormationKind.SWAP else (794, 353, 795, 354))
-                self.assertEqual(replay.actions[-1], (7, name, area))
+                self.assertEqual(replay.actions[-1], (1, name, area))
                 self.assertEqual(len(replay.actions), 2)
 
     def test_wrong_source_missing_destination_and_changed_occupation_never_act(self):
@@ -456,7 +506,7 @@ class NewGameFormationTests(unittest.TestCase):
                 probe.assert_called_once_with(after_scan, frozenset(expected))
                 self.assertEqual(replay.actions, [
                     (0, "BrawlFormationOpen", (731, 409, 732, 410)),
-                    (7, "BrawlFormationTarget", (794, 353, 795, 354))])
+                    (1, "BrawlFormationTarget", (794, 353, 795, 354))])
 
     def test_unrequested_grid_changed_scene_and_changed_context_stop_without_target(self):
         action = FormationStep(FormationKind.PLACE, "格伦", None, (3, 3), None, 0)
@@ -605,7 +655,7 @@ class NewGameFormationTests(unittest.TestCase):
                 patch.object(replay.task, "scan", side_effect=scanned):
             replay.task._execute_step(action)
         self.assertEqual([item[:2] for item in replay.actions], [
-            (0, "BrawlFormationOpen"), (7, "BrawlFormationTarget"),
+            (0, "BrawlFormationOpen"), (1, "BrawlFormationTarget"),
             (14, "BrawlFormationOpen"), (21, "BrawlFormationCancelRound")])
         self.assertEqual(replay.index, 22)
         self.assertTrue(replay.task.valid)

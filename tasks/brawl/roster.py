@@ -194,9 +194,19 @@ def next_step(state, desired):
         # desired destination breaks it without exchanging occupied cells or
         # disturbing a hero already placed correctly. At most ten of 28 cells
         # are occupied, so a spare cell exists for every valid roster.
-        spare = next((row, column) for row in range(7) for column in range(4)
-                     if (row, column) not in occupied and (row, column) not in wanted.values())
         hero = misplaced[0]
+        # A cycle needs one vacant buffer. Rank temporary cells by distance
+        # from this source on the staggered board instead of always using the
+        # first row-major cell. Desired cells and correctly placed heroes stay
+        # untouched. This geometry only ranks indices; the interaction layer
+        # still locates the current grid before authorizing any actual click.
+        row, column = hero.cell
+        x = 124.5 * column - (row % 2) * 62.25
+        y = 56 * row
+        spare = min(((r, c) for r in range(7) for c in range(4)
+                     if (r, c) not in occupied and (r, c) not in wanted.values()),
+                    key=lambda cell: ((124.5 * cell[1] - (cell[0] % 2) * 62.25 - x) ** 2
+                                      + (56 * cell[0] - y) ** 2, cell))
         return FormationStep(FormationKind.MOVE, hero.name, hero.cell, spare, None, state.revision)
     if incoming:
         raise RuleInputError("The desired lineup cannot be reached from this roster")

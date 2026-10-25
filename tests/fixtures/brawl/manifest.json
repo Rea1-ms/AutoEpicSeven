@@ -2518,7 +2518,8 @@
         "tests.brawl.test_swap.IdentificationSwapTests.test_missing_incoming_pose_never_confirms_or_repeats_the_exchange",
         "tests.brawl.test_swap.IdentificationSwapTests.test_unknown_outgoing_pose_does_not_prevent_explicit_identification_swap",
         "tests.brawl.test_swap.IdentificationSwapTests.test_unknown_target_requires_positive_occupied_control",
-        "tests.brawl.test_swap.WithdrawTests.test_red_minus_pairs_with_green_source_on_new_and_independent_old_grids"
+        "tests.brawl.test_swap.WithdrawTests.test_red_minus_pairs_with_green_source_on_new_and_independent_old_grids",
+        "tests.brawl.test_board.FormationGridTests.test_full_five_swap_uses_controls_when_both_edge_anchors_are_absent"
       ]
     },
     "brawl-full-swap-after": {
@@ -3573,6 +3574,21 @@
         "tests.brawl.test_combat.RoundFlowTests.test_network_reappearance_does_not_renew_budget_or_own_an_unrequested_round",
         "tests.brawl.test_combat.RoundFlowTests.test_disconnect_leaves_the_tracked_round_without_login_or_retry",
         "tests.brawl.test_combat.RoundFlowTests.test_resumed_combat_ends_the_retry_episode_before_a_later_outage"
+      ]
+    },
+    "brawl-selected-first-cell": {
+      "path": "tests/fixtures/brawl/global_cn/brawl-selected-first-cell.png",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "formation_selection",
+      "source": "MuMu-20261025-170604-828.png",
+      "source_sha256": "a04918bc97f75b2405a479a84a7dafe2a88a8144ab8142c66405e42d765a7956",
+      "sha256": "a04918bc97f75b2405a479a84a7dafe2a88a8144ab8142c66405e42d765a7956",
+      "privacy_redaction": [],
+      "used_by": [
+        "tests.brawl.test_board.FormationGridTests.test_reported_first_cell_selection_keeps_the_green_source_and_all_five_heroes",
+        "tests.brawl.test_board.FormationGridTests.test_first_cell_control_calibration_rejects_missing_misaligned_and_recolored_controls",
+        "tests.brawl.test_placement.NewGameFormationTests.test_reported_first_cell_move_uses_real_selection_controls_without_repeating_the_target"
       ]
     }
   }

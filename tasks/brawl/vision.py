@@ -20,6 +20,8 @@ from tasks.brawl.assets.assets_brawl import (
     CURRENCY_TOOLTIP_CHECK,
     FORMATION_CHECK,
     FORMATION_GRID_CHECK,
+    FORMATION_MOVE_SOURCE,
+    FORMATION_SOURCE_SELECTED,
     GIVE_UP_CHECK,
     HERO_OBTAIN_CHECK,
     HERO_RESULT_CHECK,
@@ -237,7 +239,15 @@ class BrawlVision:
         for button in (CURRENCY_TOOLTIP_CHECK, INCOME_TOOLTIP_CHECK):
             if self.matches(button):
                 return observed(BrawlScreen.UNKNOWN, reason="Tooltip is open")
-        if self.matches(FORMATION_CHECK) or self.matches(FORMATION_GRID_CHECK, color=True):
+        # Selecting the first cell replaces the fixed yellow anchor with a
+        # green source; a full bench-origin grid can hide both edge anchors.
+        # Current colored selection controls identify the overlay independently
+        # of those edges. This proves only the scene: board.py still requires
+        # every occupied control, source/minus pairing and the current counters
+        # before a destination or cancellation can be authorized.
+        if (self.matches(FORMATION_CHECK) or self.matches(FORMATION_GRID_CHECK, color=True)
+                or self.matches(FORMATION_MOVE_SOURCE, color=True)
+                or self.matches(FORMATION_SOURCE_SELECTED, color=True)):
             return observed(BrawlScreen.FORMATION_SELECTION)
         if self.matches(LOBBY_CHECK, color=True) or self.matches(LOBBY_EMPTY_CHECK, color=True):
             return observed(BrawlScreen.LOBBY)

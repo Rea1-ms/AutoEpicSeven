@@ -145,8 +145,37 @@ def read_formation_grid(image, *, observation=None, expected_source=None, expect
         if anchors:
             area = anchors[0].area
             offsets.append((int(area[0] - asset.area[0]), int(area[1] - asset.area[1])))
-    if not offsets or len(set(offsets)) != 1:
+    if len(set(offsets)) > 1:
         return None
+    markers = FORMATION_SOURCE_SELECTED.match_multi_template(image, similarity=0.9)
+    sources = FORMATION_MOVE_SOURCE.match_multi_template(image, similarity=0.9)
+    if len(sources) > 1:
+        return None
+    if not offsets:
+        # A full bench-origin grid hides every yellow edge; a field source at
+        # (0, 0) also replaces the fixed yellow anchor. Count the green source
+        # alongside the remaining blue controls, never as a missing hero. All
+        # controls must independently agree on one small translation of unique
+        # calibrated cells; the green source additionally needs its red minus
+        # below. No cached position, absent marker or expected source supplies
+        # geometry, and no control may drift a whole cell to another identity.
+        if panel.deployed != panel.capacity or len(markers) + len(sources) != panel.deployed:
+            return None
+        controls = []
+        for marker, source_offset in [(marker, 0) for marker in markers] + [(marker, 33.5) for marker in sources]:
+            left, top, right, bottom = marker.area
+            x, y = (left + right) / 2 - source_offset, (top + bottom) / 2 + 23
+            candidates = [cell for cell in _cells()
+                          if abs(cell.center[0] - x) <= 8 and abs(cell.center[1] - y) <= 8]
+            if len(candidates) != 1 or candidates[0] in [c for c, _, _ in controls]:
+                return None
+            cell = candidates[0]
+            controls.append((cell, x - cell.center[0], y - cell.center[1]))
+        dx, dy = (round(float(np.median([control[axis] for control in controls])))
+                  for axis in (1, 2))
+        if any(abs(x - dx) > 2 or abs(y - dy) > 2 for _, x, y in controls):
+            return None
+        offsets.append((dx, dy))
     cells = _cells(*offsets[0])
     if any(not (61 <= cell.center[0] < image.shape[1] - 61
                 and 35 <= cell.center[1] < image.shape[0] - 35) for cell in cells):
@@ -156,7 +185,7 @@ def read_formation_grid(image, *, observation=None, expected_source=None, expect
     kernel = np.ones((7, 7), dtype=np.uint8)
     yellow_outline = cv2.dilate(yellow.astype(np.uint8), kernel)
     targets = []
-    for marker in FORMATION_SOURCE_SELECTED.match_multi_template(image, similarity=0.9):
+    for marker in markers:
         left, top, right, bottom = marker.area
         x, y = (left + right) / 2, (top + bottom) / 2 + 23
         candidates = [cell for cell in cells
@@ -168,9 +197,6 @@ def read_formation_grid(image, *, observation=None, expected_source=None, expect
             return None
         targets.append(target)
 
-    sources = FORMATION_MOVE_SOURCE.match_multi_template(image, similarity=0.9)
-    if len(sources) > 1:
-        return None
     source = None
     if sources:
         left, top, right, bottom = sources[0].area

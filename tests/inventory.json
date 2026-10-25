@@ -17783,6 +17783,15 @@
           "fixtures": [],
           "status": "已纳入",
           "reason": "远程英雄组合的近战惩罚不得把两名传送误算成比单名损失更低；输入与动作结果明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_strategy.NewGameRosterTests.test_reported_frontline_cycle_uses_a_nearby_spare_instead_of_the_first_cell",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "首格来源识别、就近临时空位、全员加号核对及按正面状态推进的回归"
         }
       ]
     },
@@ -19828,6 +19837,39 @@
           ],
           "status": "已纳入",
           "reason": "真实截图中目标黄边被遮挡，完整占格与来源格通过后仍按固定格位提供空目标；缺少占格标记仍拒绝"
+        },
+        {
+          "id": "tests.brawl.test_board.FormationGridTests.test_full_five_swap_uses_controls_when_both_edge_anchors_are_absent",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "brawl-full-swap-grid"
+          ],
+          "status": "已纳入",
+          "reason": "真实满场图明确模拟五人无边框布局，以完整换人图标校准；人数或目标不符拒绝"
+        },
+        {
+          "id": "tests.brawl.test_board.FormationGridTests.test_reported_first_cell_selection_keeps_the_green_source_and_all_five_heroes",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "brawl-selected-first-cell"
+          ],
+          "status": "已纳入",
+          "reason": "首格来源遮住固定边框时仍确认完整占格，缺失或错位控件不得授权点击"
+        },
+        {
+          "id": "tests.brawl.test_board.FormationGridTests.test_first_cell_control_calibration_rejects_missing_misaligned_and_recolored_controls",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "brawl-selected-first-cell"
+          ],
+          "status": "已纳入",
+          "reason": "首格来源遮住固定边框时仍确认完整占格，缺失或错位控件不得授权点击"
         }
       ]
     },
@@ -21450,6 +21492,26 @@
           "fixtures": [],
           "status": "已纳入",
           "reason": "明确模拟4/5从已确认来源按坐标移动到无黄边目标，保持三秒间隔、单次点击和完整移动结果核对"
+        },
+        {
+          "id": "tests.brawl.test_placement.NewGameFormationTests.test_full_field_probe_uses_plus_and_advances_on_the_first_confirmed_grid",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "首格来源识别、就近临时空位、全员加号核对及按正面状态推进的回归"
+        },
+        {
+          "id": "tests.brawl.test_placement.NewGameFormationTests.test_reported_first_cell_move_uses_real_selection_controls_without_repeating_the_target",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "brawl-selected-first-cell"
+          ],
+          "status": "已纳入",
+          "reason": "首格来源识别、就近临时空位、全员加号核对及按正面状态推进的回归"
         }
       ]
     },

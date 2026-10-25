@@ -400,9 +400,9 @@ class ResumeDiscoveryTests(unittest.TestCase):
                              + [self.state()])
         self.assertEqual(replay.task._discover(scan()), frozenset({CELL}))
         self.assertEqual([action[1] for action in replay.actions], ["BrawlResumeDiscover", "BrawlResumeCancelRound"])
-        self.assertEqual([action[0] for action in replay.actions], [0, 7])
-        self.assertEqual(replay.panel_reads, [0, 7, 13])
-        self.assertEqual(replay.bench_reads, [0, 7, 13])
+        self.assertEqual([action[0] for action in replay.actions], [0, 1])
+        self.assertEqual(replay.panel_reads, [0, 1, 13])
+        self.assertEqual(replay.bench_reads, [0, 1, 13])
 
     def test_unknown_or_incomplete_grids_time_out_without_cancelling_or_moving(self):
         for pending in (self.state(BrawlScreen.UNKNOWN), self.state(BrawlScreen.FORMATION_SELECTION)):
@@ -446,16 +446,17 @@ class ResumeDiscoveryTests(unittest.TestCase):
         grid = FormationGrid((cell,), (cell,), cell, (), PANEL)
         # Four fresh observations span the short probe interval. Once a source
         # appears, repeated grid frames must never authorize another candidate;
-        # cancellation and the next formation action retain the shared timer.
-        replay = self.replay([self.state()] * 5 + [self.state(BrawlScreen.FORMATION_SELECTION, grid=grid)] * 50
+        # cancellation follows positive grid evidence; the next independent
+        # formation action still retains the shared cooldown.
+        replay = self.replay([self.state()] * 5 + [self.state(BrawlScreen.FORMATION_SELECTION, grid=grid)] * 8
                              + [self.state()])
         replay.seconds = 0.0625
         self.assertEqual(replay.task._discover(scan(())), frozenset({(0, 1)}))
-        self.assertEqual([action[0] for action in replay.actions], [0, 4, 53])
+        self.assertEqual([action[0] for action in replay.actions], [0, 4, 5])
         self.assertEqual([action[1] for action in replay.actions],
                          ["BrawlResumeDiscover0_0", "BrawlResumeDiscover0_1", "BrawlResumeCancelRound"])
         self.assertEqual(len({action[2] for action in replay.actions[:2]}), 2)
-        self.assertEqual(replay.panel_reads, [0, 4, 53, 55])
+        self.assertEqual(replay.panel_reads, [0, 4, 5, 13])
         self.assertEqual(replay.bench_reads, [])
         self.assertFalse(replay.task.interval_is_reached(
             replay.task.ACTION_TIMER, interval=replay.task.ACTION_INTERVAL))
@@ -551,9 +552,9 @@ class ResumeDiscoveryTests(unittest.TestCase):
             replay.task._grid_action(scan((), panel), {(2, 1), (3, 1), (3, 3), (4, 3)},
                                      action=action, expected_panel=after_panel)
         self.assertEqual([action[:2] for action in replay.actions],
-                         [(0, "BrawlFormationOpen"), (7, "BrawlFormationWithdraw")])
+                         [(0, "BrawlFormationOpen"), (1, "BrawlFormationWithdraw")])
         self.assertEqual(replay.actions[0][2], (731, 409, 732, 410))
-        self.assertEqual(reads, [7])
+        self.assertEqual(reads, [1])
         self.assertEqual(replay.index, 12)
 
     def test_preparation_scene_can_be_checked_without_reading_counters(self):
