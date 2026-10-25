@@ -38,6 +38,17 @@ class ArenaRuleTests(unittest.TestCase):
             with self.subTest(saved=saved):
                 updated = ConfigUpdater().config_update({'Arena': {'Arena': saved}})
                 self.assertEqual(updated['Arena']['Arena']['WeeklyReward'], expected)
+        updater = ConfigUpdater()
+        for reward in ('Skystone', 'MysticMedals'):
+            for saved, hidden in (({}, False), ({'ClaimWeeklyRewards': False}, True),
+                                  ({'ClaimWeeklyRewards': True}, False)):
+                with self.subTest(reward=reward, saved=saved):
+                    data = {'Arena': {'Arena': {**saved, 'WeeklyReward': reward, 'NPCCombat': False}}}
+                    self.assertEqual('Arena.Arena.WeeklyReward' in updater.get_hidden_args(data), hidden)
+                    for enabled in (False, True, False, True):
+                        data['Arena']['Arena']['ClaimWeeklyRewards'] = enabled
+                        self.assertEqual('Arena.Arena.WeeklyReward' in updater.get_hidden_args(data), not enabled)
+                        self.assertEqual(data['Arena']['Arena']['WeeklyReward'], reward)
 
     def test_settlement_window_includes_start_and_excludes_end(self):
         for timestamp, expected in (

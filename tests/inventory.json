@@ -18117,7 +18117,7 @@
           "has_automatic_assertion": true,
           "fixtures": [],
           "status": "已纳入",
-          "reason": "竞技场每周奖励二选一，确认目标选中后领取与重试间隔"
+          "reason": "每周排名奖励默认值、统一隐藏规则及反复开关后保留奖励选择"
         }
       ]
     },

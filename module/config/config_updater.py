@@ -617,6 +617,8 @@ class ConfigUpdater:
         if deep_get(data, 'Knights.Knights.Support', default=True) is False:
             yield 'Knights.Knights.RequestItem'
         # Arena
+        if deep_get(data, 'Arena.Arena.ClaimWeeklyRewards', default=True) is False:
+            yield 'Arena.Arena.WeeklyReward'
         if deep_get(data, 'Arena.Arena.NPCCombat', default=False) is False:
             yield 'Arena.Arena.NPCCombatFastBattle'
             yield 'Arena.Arena.NPCCombatCount'
