@@ -8,6 +8,7 @@ from module.config import server
 
 server.set_lang("global_cn")
 
+from module.ocr.ocr import Ocr  # noqa: E402
 from tasks.brawl.assets.assets_brawl_actions import (  # noqa: E402
     TRANSMIT_COIN_ICON,
     TRANSMIT_TOKEN_ICON,
@@ -21,6 +22,7 @@ from tasks.brawl.auto_transfer import (  # noqa: E402
 from tasks.brawl.bench import BenchHero  # noqa: E402
 from tasks.brawl.cursor import Cursor, read_cursor  # noqa: E402
 from tasks.brawl.heroes import HeroResult  # noqa: E402
+from tasks.brawl.name_cache import bench_name_cache  # noqa: E402
 from tasks.brawl.rules import Imprint, Resources  # noqa: E402
 from tasks.brawl.scanner import (  # noqa: E402
     BenchScanResult,
@@ -49,6 +51,34 @@ from tests.support.offline import ControlledClock, record_action  # noqa: E402
 class MultiTransmitReadingTests(unittest.TestCase):
     def setUp(self):
         server.set_lang("global_cn")
+
+    def test_static_transfer_names_reuse_text_but_selected_cards_and_positions_stay_current(self):
+        samples = ("multi-transmit-empty", "multi-transmit-one", "multi-transmit-two")
+        expected = [read_transfer_cards(frame(sample)) for sample in samples]
+        self.assertNotEqual(expected[0], expected[1])
+        original = Ocr.ocr_multi_lines
+        reads = []
+
+        def recognize(ocr, images):
+            result = original(ocr, images)
+            if ocr.name == "BRAWL_TRANSFER_NAMES":
+                # Unknown artwork, partial neighboring names and badges still
+                # need independent OCR. Count only complete current identities
+                # when proving that static hero names are not recognized twice.
+                reads.extend(text for text, score in result
+                             if score >= .8 and text in set().union(*expected))
+            return result
+
+        with bench_name_cache(), patch.object(Ocr, "ocr_multi_lines", recognize):
+            for sample, cards in zip(samples, expected):
+                self.frame = frame(sample)
+                self.assertEqual(read_transfer_cards(self.frame), cards)
+                count = len(reads)
+                self.assertEqual(read_transfer_cards(self.frame.copy()), cards)
+                self.assertEqual(len(reads), count)
+            self.frame = frame("multi-transmit-empty")
+            self.assertEqual(read_transfer_cards(self.frame), expected[0])
+        self.assertTrue(reads)
 
     def test_real_batch_quotes_do_not_change_balances_before_confirmation(self):
         for sample, quote in (("multi-transmit-empty", (0, 0)), ("multi-transmit-one", (3, 2)),

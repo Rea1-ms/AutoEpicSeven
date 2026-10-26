@@ -25,6 +25,7 @@ from tasks.brawl.assets.assets_brawl import (
     OCR_HERO_NAME,
     RANK_UP_CHECK,
 )
+from tasks.brawl.name_cache import match_name_region, remember_name_region
 from tasks.brawl.rules import Imprint, RuleInputError, get_hero, validate_imprint
 from tasks.brawl.vision import HERO_RESULT_SIMILARITY
 
@@ -111,14 +112,23 @@ def _has_arrow(image):
 
 
 def _read_name(image):
+    region = _crop(image, OCR_HERO_NAME.area)
+    cached = match_name_region(region, "hero_result")
+    if cached is not None:
+        return cached
     lines = Ocr(OCR_HERO_NAME, lang="cn", name="BRAWL_HERO_NAME").detect_and_ocr(image)
     if not lines or any(not np.isfinite(line.score) or line.score < 0.8 for line in lines):
         return None
     text = "".join(line.ocr_text for line in sorted(lines, key=lambda line: (line.box[1], line.box[0])))
     try:
-        return get_hero(re.sub(r"\s+", "", text)).name
+        name = get_hero(re.sub(r"\s+", "", text)).name
     except RuleInputError:
         return None
+    # The whole fixed name field includes every wrapped line. Badge changes
+    # cannot invalidate this static label, and a cached name cannot supply a
+    # missing badge: read_hero_result still checks both badges on this frame.
+    remember_name_region(region, "hero_result", name)
+    return name
 
 
 def read_hero_result(image):

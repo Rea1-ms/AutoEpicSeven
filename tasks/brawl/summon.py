@@ -12,6 +12,7 @@ from module.ocr.ocr import Ocr
 from tasks.brawl.assets.assets_brawl import HERO_RESULT_CHECK, OCR_ROUND
 from tasks.brawl.assets.assets_brawl_actions import SUMMON_LOWER, SUMMON_UPPER
 from tasks.brawl.heroes import HeroResult, read_hero_result
+from tasks.brawl.observation_cache import invalidate_panel_observation_cache
 from tasks.brawl.rules import Imprint, Resources, SummonKind, summon_cost
 from tasks.brawl.vision import (
     BrawlMode,
@@ -168,6 +169,7 @@ class BrawlSummon(ModuleBase):
                                 and self.interval_is_reached(self.ACTION_TIMER,
                                                              interval=self.ACTION_INTERVAL)):
                             self.device.click(button)
+                            invalidate_panel_observation_cache()
                             self.interval_reset(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)
                             paid = True
                             timeout.reset()

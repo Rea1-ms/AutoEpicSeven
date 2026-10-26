@@ -8,6 +8,7 @@ from tasks.base.assets.assets_base_popup import TOUCH_TO_CLOSE
 from tasks.brawl.assets.assets_brawl import HERO_RESULT_CHECK
 from tasks.brawl.assets.assets_brawl_actions import SUMMON_NORMAL
 from tasks.brawl.heroes import read_hero_result
+from tasks.brawl.observation_cache import invalidate_panel_observation_cache
 from tasks.brawl.rules import Imprint, Resources, SummonKind, summon_cost
 from tasks.brawl.summon import SummonOutcome, SummonReport, _result_balances
 from tasks.brawl.vision import (
@@ -140,6 +141,7 @@ class BrawlNormalSummon(ModuleBase):
                             return report(SummonOutcome.TIMEOUT)
                         if vision.matches(SUMMON_NORMAL, color=True) and action_ready:
                             self.device.click(SUMMON_NORMAL)
+                            invalidate_panel_observation_cache()
                             self.interval_reset(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)
                             paid = True
                             timeout.reset()

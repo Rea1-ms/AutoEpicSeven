@@ -9,8 +9,10 @@ from module.config import server
 
 server.set_lang("global_cn")
 
+from module.ocr.ocr import Ocr  # noqa: E402
 from tasks.brawl.bench import BenchHero  # noqa: E402
 from tasks.brawl.cursor import read_cursor  # noqa: E402
+from tasks.brawl.observation_cache import panel_observation_cache  # noqa: E402
 from tasks.brawl.rules import HEROES, Imprint  # noqa: E402
 from tasks.brawl.scanner import (  # noqa: E402
     BenchScanResult,
@@ -86,6 +88,20 @@ class ScanReplay:
 
 
 class BenchScannerTests(unittest.TestCase):
+    def test_run_cache_reuses_counters_across_completed_scan_and_fresh_selection(self):
+        replay = self.replay(["normal-first-summon"] * 2, synthetic=False)
+        reads = Ocr.ocr_multi_lines
+        with panel_observation_cache(), patch.object(
+                Ocr, "ocr_multi_lines", autospec=True, side_effect=reads) as reader:
+            scanned = replay.task.scan()
+            self.assertEqual(scanned.outcome, ScanOutcome.COMPLETE)
+            selected = replay.task.select(scanned.heroes[-1], scanned, skip_first_screenshot=False)
+            self.assertEqual(selected.outcome, SelectionOutcome.SELECTED)
+            self.assertEqual(selected.hero, scanned.heroes[-1])
+            panel_calls = [call for call in reader.call_args_list if call.args[0].name == "BRAWL_PANEL"]
+            self.assertEqual(len(panel_calls), 1)
+            self.assertEqual(replay.actions, [])
+
     def test_completed_scan_reuses_selection_only_in_its_unchanged_current_frame(self):
         for change in ("none", "copy", "pixels", "expired", "fresh"):
             with self.subTest(change=change):

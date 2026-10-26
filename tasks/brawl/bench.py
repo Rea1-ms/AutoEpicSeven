@@ -18,6 +18,7 @@ from tasks.brawl.assets.assets_brawl import (
     BENCH_SMALL_IMPRINT_C,
     OCR_BENCH,
 )
+from tasks.brawl.name_cache import read_name_lines, remember_name
 from tasks.brawl.rules import (
     BENCH_CAPACITY,
     Imprint,
@@ -144,7 +145,7 @@ def read_bench(image, *, observation=None):
             panel = vision.preparation_panel()
         except ObservationError:
             pass
-    lines = Ocr(OCR_BENCH, lang="cn", name="BRAWL_BENCH_NAMES").detect_and_ocr(image)
+    lines = read_name_lines(image)
     entries = []
     issues = []
     for line in sorted(lines, key=lambda item: (item.box[1], item.box[0])):
@@ -168,6 +169,7 @@ def read_bench(image, *, observation=None):
                 issues.append(f"Selected name rejected: {line.ocr_text!r}, "
                               f"area={(x1, y1, x2, y2)}, confidence={line.score:.3f}")
             continue
+        remember_name(line, name)
         plus_area = None
         if selected:
             imprint = _selected_imprint(image)

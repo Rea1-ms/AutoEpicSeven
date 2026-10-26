@@ -10,6 +10,10 @@ from module.config import server
 server.set_lang("global_cn")
 
 from tasks.brawl.brawl import analyze  # noqa: E402
+from tasks.brawl.observation_cache import (  # noqa: E402
+    invalidate_panel_observation_cache,
+    panel_observation_cache,
+)
 from tasks.brawl.upgrade import (  # noqa: E402
     BrawlUpgrade,
     UpgradeDialog,
@@ -170,6 +174,66 @@ class UpgradeReplayTests(unittest.TestCase):
         reader.assert_called_once()
         self.assertEqual(replay.actions, [(0, "UPGRADE_ENTRY", (248, 649, 292, 695)),
                                           (7, "UPGRADE_CONFIRM", (767, 494, 873, 545))])
+
+    def test_cached_upgrade_refreshes_before_request_and_after_payment_without_repaying_old_frames(self):
+        from module.ocr.ocr import Ocr
+
+        # All pixels are captured samples; only their repetition/order models a
+        # delayed response. A click never advances the frame or supplies a debit.
+        replay = BrawlReplay(BrawlUpgrade,
+                             ["upgrade-before"] * 2 + ["upgrade-dialog"] * 11
+                             + ["upgrade-before"] * 3 + ["prepare-level5"], self.clock)
+        self.frame = replay.image
+        reads, invalidations = [], []
+        real_ocr = Ocr.ocr_multi_lines
+
+        def counted_read(reader, images):
+            reads.append((replay.index, reader.name))
+            return real_ocr(reader, images)
+
+        def invalidate():
+            invalidations.append((replay.index, tuple(action[1] for action in replay.actions)))
+            invalidate_panel_observation_cache()
+
+        with panel_observation_cache(), \
+                patch.object(Ocr, "ocr_multi_lines", autospec=True, side_effect=counted_read), \
+                patch("tasks.brawl.upgrade.invalidate_panel_observation_cache", side_effect=invalidate):
+            # Prime a valid header in the same scope. Starting the request must
+            # still refresh affordability even when those exact pixels persist.
+            request = capture_upgrade(replay.image)
+            self.assertEqual(request, REQUEST)
+            self.assertEqual(replay.task.upgrade_once(request), UpgradeOutcome.CONFIRMED)
+        self.assertEqual(invalidations, [
+            (0, ()), (7, ("UPGRADE_ENTRY", "UPGRADE_CONFIRM"))])
+        self.assertEqual([index for index, name in reads if name == "BRAWL_PANEL"], [0, 0, 7, 13, 16])
+        self.assertEqual([index for index, name in reads if name == "BRAWL_UPGRADE_QUOTE"], [7])
+        self.assertEqual(replay.index, 16)
+        self.assertEqual(replay.actions, [(0, "UPGRADE_ENTRY", (248, 649, 292, 695)),
+                                          (7, "UPGRADE_CONFIRM", (767, 494, 873, 545))])
+
+    def test_cache_invalidation_does_not_repeat_on_unconfirmed_opening_or_payment(self):
+        cases = (
+            ([READY] * 27, ["UPGRADE_ENTRY"] * 4, [(0, ())]),
+            ([READY] + [QUOTE] * 42, ["UPGRADE_ENTRY", "UPGRADE_CONFIRM"],
+             [(0, ()), (7, ("UPGRADE_ENTRY", "UPGRADE_CONFIRM"))]),
+        )
+        for frames, actions, expected_invalidations in cases:
+            with self.subTest(expected_actions=actions):
+                replay = self.replay(frames)
+                invalidations = []
+
+                def invalidate(replay=replay, invalidations=invalidations):
+                    invalidations.append((replay.index, tuple(action[1] for action in replay.actions)))
+                    invalidate_panel_observation_cache()
+
+                # Explicit simulated states retain the production timer and
+                # payment latch. Cache invalidation follows owned transactions,
+                # not opening retries, duplicate quotes or a timeout itself.
+                with panel_observation_cache(), \
+                        patch("tasks.brawl.upgrade.invalidate_panel_observation_cache", side_effect=invalidate):
+                    self.assertEqual(replay.task.upgrade_once(REQUEST), UpgradeOutcome.TIMEOUT)
+                self.assert_actions(replay, actions)
+                self.assertEqual(invalidations, expected_invalidations)
 
     def test_delayed_digits_and_unknown_frames_never_repeat_payment(self):
         unread = step(panel=None)

@@ -9,7 +9,17 @@ from module.config import server
 
 server.set_lang("global_cn")
 
-from tasks.brawl.assets.assets_brawl import COIN_ICON, HERO_RESULT_CHECK, TOKEN_ICON  # noqa: E402
+from module.ocr.ocr import Ocr  # noqa: E402
+from tasks.brawl.assets.assets_brawl import (  # noqa: E402
+    BRAWL_CHECK,
+    COIN_ICON,
+    HERO_RESULT_CHECK,
+    TOKEN_ICON,
+)
+from tasks.brawl.observation_cache import (  # noqa: E402
+    invalidate_panel_observation_cache,
+    panel_observation_cache,
+)
 from tasks.brawl.talents import read_opening_talents  # noqa: E402
 from tasks.brawl.vision import (  # noqa: E402
     BrawlMode,
@@ -28,6 +38,100 @@ class VisionTests(unittest.TestCase):
     def observe(self, name):
         self.frame = frame(name)
         return BrawlVision(self.frame).observe()
+
+    def test_scoped_panel_cache_reuses_real_grid_and_move_frames(self):
+        reads = Ocr.ocr_multi_lines
+        with panel_observation_cache(), patch.object(
+                Ocr, "ocr_multi_lines", autospec=True, side_effect=reads) as reader:
+            first = self.observe("full-swap-before")
+            self.assertIsNotNone(first.panel, first.reason)
+            for name in ("full-swap-grid", "full-swap-after", "full-swap-stable"):
+                self.frame = frame(name)
+                vision = BrawlVision(self.frame)
+                current = vision.observe()
+                panel = current.panel or vision.preparation_panel()
+                self.assertEqual(panel, first.panel)
+            self.assertEqual(reader.call_count, 1)
+
+    def test_panel_cache_refreshes_changed_digits_and_never_estimates_delayed_balances(self):
+        reads = Ocr.ocr_multi_lines
+        with panel_observation_cache(), patch.object(
+                Ocr, "ocr_multi_lines", autospec=True, side_effect=reads) as reader:
+            before = self.observe("normal-round2")
+            self.assertEqual(self.observe("normal-round2").panel, before.panel)
+            after = self.observe("normal-after-loss")
+            self.assertEqual((before.panel.round_number, after.panel.round_number), (2, 2))
+            self.assertEqual((before.panel.coins, after.panel.coins), (55, 70))
+            self.assertEqual(reader.call_count, 2)
+            # The old actual frame remains old evidence, not an assumed credit.
+            self.assertEqual(self.observe("normal-round2").panel.coins, 55)
+            self.assertEqual(reader.call_count, 3)
+
+    def test_panel_cache_keeps_overlay_and_missing_currency_unreadable(self):
+        with panel_observation_cache():
+            self.assertIsNotNone(self.observe("prepare-level4").panel)
+            with patch.object(Ocr, "ocr_multi_lines", side_effect=AssertionError("obscured OCR")):
+                current = self.observe("network-retry")
+                self.assertEqual(current.state, BrawlScreen.NETWORK_RETRY)
+                self.assertIsNone(current.panel)
+                with self.assertRaises(ObservationError):
+                    BrawlVision(self.frame).preparation_panel()
+                self.frame = frame("prepare-level4").copy()
+                self.frame[70:110, 1020:1210] = 0
+                self.assertIsNone(BrawlVision(self.frame).observe().panel)
+            # An unread numeric field must not return the previous valid panel.
+            self.frame = frame("prepare-level4").copy()
+            self.frame[48:94, 606:676] = 0
+            with self.assertRaises(ObservationError):
+                BrawlVision(self.frame).preparation_panel()
+
+    def test_panel_cache_event_boundaries_and_explicit_invalidation_force_fresh_reads(self):
+        reads = Ocr.ocr_multi_lines
+        with panel_observation_cache(), patch.object(
+                Ocr, "ocr_multi_lines", autospec=True, side_effect=reads) as reader:
+            first = self.observe("normal-round2")
+            self.assertEqual(reader.call_count, 1)
+            self.observe("normal-combat")
+            self.observe("round-failed")
+            self.assertEqual(self.observe("normal-round2").panel, first.panel)
+            self.assertEqual(reader.call_count, 2)
+            invalidate_panel_observation_cache()
+            self.assertEqual(self.observe("normal-round2").panel, first.panel)
+            self.assertEqual(reader.call_count, 3)
+            # Repeated direct dialog reads do not repeatedly invalidate a page.
+            self.frame = frame("upgrade-dialog")
+            first_dialog = BrawlVision(self.frame).preparation_panel()
+            self.assertEqual(BrawlVision(self.frame.copy()).preparation_panel(), first_dialog)
+            self.assertEqual(reader.call_count, 4)
+
+    def test_panel_cache_run_scopes_and_standalone_observations_are_isolated(self):
+        reads = Ocr.ocr_multi_lines
+        with patch.object(Ocr, "ocr_multi_lines", autospec=True, side_effect=reads) as reader:
+            with panel_observation_cache():
+                expected = self.observe("prepare-level4").panel
+                self.assertEqual(self.observe("prepare-level4").panel, expected)
+            with panel_observation_cache():
+                self.assertEqual(self.observe("prepare-level4").panel, expected)
+            self.assertEqual(self.observe("prepare-level4").panel, expected)
+            self.assertEqual(self.observe("prepare-level4").panel, expected)
+            self.assertEqual(reader.call_count, 4)
+
+    def test_panel_cache_reuses_scene_proof_only_inside_the_current_observe_call(self):
+        self.frame = frame("prepare-level4")
+        vision = BrawlVision(self.frame)
+        with panel_observation_cache(), patch.object(vision, "matches", wraps=vision.matches) as matched:
+            expected = vision.observe().panel
+            self.assertIsNotNone(expected)
+            self.assertEqual(sum(call.args[0] is BRAWL_CHECK for call in matched.call_args_list), 1)
+            matched.reset_mock()
+            self.assertEqual(vision.preparation_panel(), expected)
+            self.assertEqual(sum(call.args[0] is BRAWL_CHECK for call in matched.call_args_list), 1)
+            # A failed numeric read must also release the temporary page proof.
+            with patch.object(vision, "preparation_panel", side_effect=ObservationError("unread")):
+                self.assertIsNone(vision.observe().panel)
+            vision.image = frame("network-retry")
+            with self.assertRaises(ObservationError):
+                vision.preparation_panel()
 
     def test_reported_network_overlay_precedes_underlying_preparation_without_ocr(self):
         self.frame = frame("network-retry")

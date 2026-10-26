@@ -8,7 +8,10 @@ from module.config import server
 
 server.set_lang("global_cn")
 
+from module.ocr.ocr import Ocr  # noqa: E402
+from tasks.brawl.assets.assets_brawl import OCR_HERO_NAME  # noqa: E402
 from tasks.brawl.heroes import HeroResult, read_hero_result  # noqa: E402
+from tasks.brawl.name_cache import bench_name_cache  # noqa: E402
 from tasks.brawl.rules import Imprint  # noqa: E402
 from tasks.brawl.vision import BrawlScreen, BrawlVision  # noqa: E402
 from tests.support.brawl import frame  # noqa: E402
@@ -17,6 +20,50 @@ from tests.support.brawl import frame  # noqa: E402
 class HeroRecognitionTests(unittest.TestCase):
     def setUp(self):
         server.set_lang("global_cn")
+
+    def test_static_wrapped_result_name_is_cached_but_each_badge_is_read_from_current_frame(self):
+        self.frame = frame("hero-new-12")
+        original = Ocr.detect_and_ocr
+        reads = []
+
+        def recognize(ocr, image, *args, **kwargs):
+            if ocr.name == "BRAWL_HERO_NAME":
+                reads.append(ocr.name)
+            return original(ocr, image, *args, **kwargs)
+
+        with bench_name_cache(), patch.object(Ocr, "detect_and_ocr", recognize):
+            first = read_hero_result(self.frame)
+            self.assertEqual(first, HeroResult("最后的骑士克劳乌", Imprint.SSS, Imprint.SS))
+            changed = self.frame.copy()
+            changed[382:422, 947:1023] = 0
+            self.assertIsNone(read_hero_result(changed))
+            self.assertEqual(read_hero_result(self.frame.copy()), first)
+            self.assertEqual(reads, ["BRAWL_HERO_NAME"])
+
+    def test_result_name_cache_rejects_changed_or_clipped_names_and_other_font_namespaces(self):
+        self.frame = frame("hero-new-05")
+        original = Ocr.detect_and_ocr
+        reads = []
+
+        def recognize(ocr, image, *args, **kwargs):
+            if ocr.name == "BRAWL_HERO_NAME":
+                reads.append(ocr.name)
+            return original(ocr, image, *args, **kwargs)
+
+        left, top, right, bottom = OCR_HERO_NAME.area
+        with bench_name_cache() as cache, patch.object(Ocr, "detect_and_ocr", recognize):
+            region = self.frame[top:bottom, left:right]
+            # Even an identical synthetic patch under the bench namespace
+            # cannot bypass independent result-font recognition.
+            cache.remember_region(region, "selected", "最后的碎片卡琳")
+            self.assertEqual(read_hero_result(self.frame).name, "最后的碎片卡琳")
+            self.assertEqual(read_hero_result(frame("hero-new-09")).name, "辅助型拉兹")
+            self.assertEqual(len(reads), 2)
+            changed = self.frame.copy()
+            changed[top:bottom, (left + right) // 2:right] = 0
+            with patch.object(Ocr, "detect_and_ocr", return_value=[]) as missing:
+                self.assertIsNone(read_hero_result(changed))
+                missing.assert_called_once()
 
     def test_real_result_names_and_imprint_transitions(self):
         expected = {

@@ -491,7 +491,9 @@ class ResumeDiscoveryTests(unittest.TestCase):
         names = [f"BrawlResumeDiscover{row}_{column}" for row, column in
                  ((0, 0), (0, 1), (0, 2), (0, 3), (1, 0), (1, 1), (1, 2), (1, 3), (2, 0), (2, 1))]
         self.assertEqual([action[1] for action in replay.actions], names + ["BrawlResumeCancelRound"])
-        self.assertEqual([action[0] for action in replay.actions], list(range(10)) + [16])
+        # The first positive grid at frame 10 authorizes cancellation without
+        # another fixed delay; repeated selected frames cannot repeat it.
+        self.assertEqual([action[0] for action in replay.actions], list(range(10)) + [10])
         self.assertEqual(replay.index, 22)
 
     def test_unrequested_grid_context_change_and_changed_bench_never_authorize_cancel(self):

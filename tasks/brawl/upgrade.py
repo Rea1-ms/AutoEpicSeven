@@ -19,6 +19,7 @@ from tasks.brawl.assets.assets_brawl_upgrade import (
     UPGRADE_CONFIRM,
     UPGRADE_ENTRY,
 )
+from tasks.brawl.observation_cache import invalidate_panel_observation_cache
 from tasks.brawl.rules import MAX_LEVEL, team_capacity, upgrade_cost
 from tasks.brawl.vision import (
     BrawlMode,
@@ -132,6 +133,9 @@ class BrawlUpgrade(ModuleBase):
                 or request.panel.coins < upgrade_cost(request.panel.level) + request.reserve_coins):
             raise ValueError("A captured, affordable upgrade request is required")
         before = request.panel
+        # Each new upgrade is a fresh affordability boundary. Cache reuse is
+        # allowed while that same request waits, never across two purchases.
+        invalidate_panel_observation_cache()
         cost = upgrade_cost(before.level)
         expected_coins = before.coins - cost
         timeout = Timer(self.STEP_TIMEOUT).start()
@@ -211,6 +215,7 @@ class BrawlUpgrade(ModuleBase):
                     opened = True
             elif observed.state == BrawlScreen.LEVEL_UP and dialog is not None and dialog.ready:
                 self.device.click(UPGRADE_CONFIRM)
+                invalidate_panel_observation_cache()
                 self.interval_reset(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)
                 # Do not clear this latch on duplicate dialogs, unknown frames,
                 # stale balances or level animations. Those observations cannot

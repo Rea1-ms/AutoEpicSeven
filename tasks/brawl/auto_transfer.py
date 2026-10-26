@@ -11,7 +11,6 @@ from module.base.base import ModuleBase
 from module.base.button import ClickButton
 from module.base.timer import Timer
 from module.logger import logger
-from module.ocr.ocr import Ocr
 from tasks.brawl.assets.assets_brawl import (
     HERO_RESULT_CHECK,
     TRANSMIT_CHECK,
@@ -19,6 +18,8 @@ from tasks.brawl.assets.assets_brawl import (
 )
 from tasks.brawl.assets.assets_brawl_transfer import OCR_TRANSFER_CARDS, TRANSMIT_ENTER
 from tasks.brawl.heroes import HeroResult, read_hero_result
+from tasks.brawl.name_cache import read_name_lines, remember_name
+from tasks.brawl.observation_cache import invalidate_panel_observation_cache
 from tasks.brawl.rules import (
     Imprint,
     Resources,
@@ -62,7 +63,7 @@ def read_transfer_cards(image):
     if BrawlVision(image).observe().state != BrawlScreen.TRANSMIT_SELECTION:
         raise ObservationError("Transfer cards require the selection scene")
     entries = {}
-    for line in Ocr(OCR_TRANSFER_CARDS, lang="cn", name="BRAWL_TRANSFER_NAMES").detect_and_ocr(image):
+    for line in read_name_lines(image, OCR_TRANSFER_CARDS, font="transfer", log_name="BRAWL_TRANSFER_NAMES"):
         x1, y1, x2, y2 = map(int, line.box)
         # The faded row at the upper edge is still a selectable card, but only
         # its complete name is useful. Clipped names, badges and footer text
@@ -77,6 +78,7 @@ def read_transfer_cards(image):
         if name in entries:
             raise ObservationError("Transfer card names are ambiguous")
         entries[name] = (x1, y1, x2, y2)
+        remember_name(line, name, font="transfer")
     return entries
 
 
@@ -297,6 +299,8 @@ class BrawlAutoTransfer(ModuleBase):
                     raise ObservationError("Transfer selection changed after its preview")
                 if not clicked and self._ready():
                     self._click(TRANSMIT_CONFIRM if commit else TRANSMIT_CHECK)
+                    if commit:
+                        invalidate_panel_observation_cache()
                     clicked = True
                     timeout.reset()
                     continue

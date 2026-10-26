@@ -9,6 +9,7 @@ from module.config import server
 
 server.set_lang("global_cn")
 
+from module.ocr.ocr import Ocr  # noqa: E402
 from tasks.brawl.assets.assets_brawl import BENCH_SMALL_IMPRINT_C  # noqa: E402
 from tasks.brawl.bench import (  # noqa: E402
     BenchEntry,
@@ -17,6 +18,7 @@ from tasks.brawl.bench import (  # noqa: E402
     merge_bench_views,
     read_bench,
 )
+from tasks.brawl.name_cache import BenchNameCache, bench_name_cache  # noqa: E402
 from tasks.brawl.placement import _selected_entry  # noqa: E402
 from tasks.brawl.rules import HEROES, Imprint  # noqa: E402
 from tasks.brawl.vision import (  # noqa: E402
@@ -39,6 +41,133 @@ def viewport(*heroes, panel=PANEL):
 class BenchRecognitionTests(unittest.TestCase):
     def setUp(self):
         server.set_lang("global_cn")
+
+    def test_static_names_are_recognized_once_while_badges_and_controls_stay_current(self):
+        self.frame = frame("normal-deployed")
+        observation = BrawlVision(self.frame).observe()
+        original = Ocr.ocr_multi_lines
+        name_reads = []
+
+        def recognize(ocr, images):
+            if ocr.name == "BRAWL_BENCH_NAMES":
+                name_reads.append(len(images))
+            return original(ocr, images)
+
+        with bench_name_cache(), patch.object(Ocr, "ocr_multi_lines", recognize):
+            first = read_bench(self.frame, observation=observation)
+            changed = self.frame.copy()
+            changed[300:600, :900] = 0  # Unrelated animation must not invalidate a name.
+            changed[286:323, 997:1049] = 0
+            changed[250:322, 925:987] = 0
+            after = read_bench(changed, observation=observation)
+            repeated = read_bench(self.frame.copy(), observation=observation)
+        self.assertEqual(name_reads, [1])
+        self.assertEqual((first.entries[0].name, after.entries[0].name, repeated.entries[0].name),
+                         ("卡萝", "卡萝", "卡萝"))
+        self.assertIsNone(after.entries[0].imprint)
+        self.assertIsNone(after.entries[0].plus_area)
+        self.assertNotEqual(after.entries[0].name_area, first.entries[0].name_area)
+        self.assertEqual(repeated.entries, first.entries)
+
+    def test_name_cache_keeps_new_names_and_other_fonts_separate_and_ends_with_the_run(self):
+        self.frame = frame("normal-deployed")
+        original = Ocr.ocr_multi_lines
+        name_reads = []
+        candidate_reads = []
+
+        def recognize(ocr, images):
+            values = original(ocr, images)
+            if ocr.name == "BRAWL_BENCH_NAMES":
+                candidate_reads.append(len(images))
+                name_reads.append(sum(score >= .8 and text in HEROES for text, score in values))
+            return values
+
+        with bench_name_cache() as cache, patch.object(Ocr, "ocr_multi_lines", recognize):
+            first = read_bench(self.frame)
+            changed = read_bench(frame("prepare-level4"))
+            returned = read_bench(self.frame.copy())
+            self.assertEqual(first.entries, returned.entries)
+            self.assertEqual([entry.name for entry in changed.entries],
+                             ["维多丽卡", "玫勒赛德丝", "萝季"])
+            self.assertEqual(name_reads, [1, 3])
+            # The current detector also proposes the artwork at (1072, 409,
+            # 1169, 433). OCR rejects that fourth candidate with low confidence;
+            # it must still be read rather than guessed away as a known badge.
+            self.assertEqual(candidate_reads, [1, 4])
+            sample = next(iter(cache.templates.values()))[0]
+            # Learned selected-card fonts cannot identify a rear-card or a
+            # result/transfer label, even if a synthetic crop is identical.
+            self.assertIsNone(cache.match(np.repeat(sample[:, :, None], 3, axis=2), "hero_result"))
+        with patch.object(Ocr, "detect_and_ocr", side_effect=RuntimeError("fresh run")), \
+                self.assertRaisesRegex(RuntimeError, "fresh run"):
+            read_bench(self.frame)
+        with bench_name_cache(), patch.object(Ocr, "ocr_multi_lines", recognize):
+            read_bench(self.frame)
+        self.assertEqual(name_reads, [1, 3, 1])
+
+    def test_cached_name_requires_full_glyphs_and_unknown_text_still_uses_ocr(self):
+        self.frame = frame("normal-deployed")
+        with bench_name_cache():
+            read_bench(self.frame)
+            changed = self.frame.copy()
+            changed[248:284, 1023:1051] = 0  # Erase the last glyph, leaving a prefix.
+            original = Ocr.ocr_multi_lines
+            reads = []
+
+            def reject_partial(ocr, images):
+                if ocr.name == "BRAWL_BENCH_NAMES":
+                    reads.append(len(images))
+                    return [("未知", .99) for _ in images]
+                return original(ocr, images)
+
+            with patch.object(Ocr, "ocr_multi_lines", reject_partial):
+                after = read_bench(changed)
+            self.assertEqual(after.entries, ())
+            self.assertEqual(reads, [1])
+
+    def test_christy_static_template_never_learns_a_missing_final_glyph(self):
+        self.frame = frame("queue-second")
+        with bench_name_cache() as cache:
+            observed = read_bench(self.frame)
+            self.assertEqual(observed.entries[0].name, "克莉丝缇")
+            self.assertNotIn(("selected", "克莉丝缇"), cache.templates)
+            changed = self.frame.copy()
+            changed[253:279, 1067:1090] = 0
+            self.assertFalse(any(entry.name == "克莉丝缇" for entry in read_bench(changed).entries))
+
+    def test_name_cache_is_bounded_and_ambiguous_templates_cannot_authorize_identity(self):
+        self.frame = frame("normal-deployed")
+        cache = BenchNameCache()
+        cache.MAX_LABELS = 2
+        region = self.frame[250:281, 1000:1048]
+        cache.remember_region(region, "selected", "卡萝")
+        self.assertEqual(cache.match(region, "selected")[0], "卡萝")
+        cache.remember_region(region, "selected", "卡琳")
+        self.assertIsNone(cache.match(region, "selected"))
+        cache.remember_region(region, "small", "卡萝")
+        self.assertEqual(len(cache.templates), 2)
+        self.assertNotIn(("selected", "卡萝"), cache.templates)
+
+    def test_cold_and_warm_name_cache_preserve_current_entries_across_supported_bench_layouts(self):
+        # The plain Ocr reader does not merge boxes (both merge thresholds are
+        # zero). Its recognized entries are the baseline for the cache's direct
+        # detector path, including long names, rear-card sizes and clipped rows.
+        samples = (
+            "normal-deployed", "formation-place", "prepare-level4", "prepare-max", "transmit",
+            "queue-top", "queue-second", "queue-middle", "queue-bottom", "queue-empty",
+            "opening-lorina-carmainerose", "normal-summon-christy", "focus-christy-return",
+        )
+        for sample in samples:
+            with self.subTest(sample=sample):
+                self.frame = frame(sample)
+                observation = BrawlVision(self.frame).observe()
+                expected = read_bench(self.frame, observation=observation)
+                with bench_name_cache():
+                    cold = read_bench(self.frame, observation=observation)
+                    warm = read_bench(self.frame.copy(), observation=observation)
+                self.assertEqual(cold.entries, expected.entries)
+                self.assertEqual(warm.entries, expected.entries)
+                self.assertEqual((cold.panel, warm.panel), (expected.panel, expected.panel))
 
     def test_live_opening_lorina_has_a_readable_imprint_and_unique_plus(self):
         self.frame = frame("opening-lorina-carmainerose")

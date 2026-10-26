@@ -36,76 +36,82 @@ class BrawlTool(ModuleBase):
 
         from tasks.brawl.entry import BrawlEntry
         from tasks.brawl.formation import BrawlFormation, FormationOutcome
+        from tasks.brawl.name_cache import bench_name_cache
+        from tasks.brawl.observation_cache import panel_observation_cache
         from tasks.brawl.opening import BrawlOpening
         from tasks.brawl.relics import BrawlRelics
         from tasks.brawl.vision import BrawlMode, BrawlScreen, ObservationError
 
-        self.device.screenshot()
-        self.entry = BrawlEntry(config=self.config, device=self.device)
-        self.entry.interval_timer = self.interval_timer
-        self.relics = BrawlRelics(config=self.config, device=self.device)
-        self.relics.interval_timer = self.interval_timer
-        try:
-            bonuses = self.relics.read(skip_first_screenshot=True)
-            entered = self.entry.enter(skip_first_screenshot=True, only_free=only_free)
-            observation = entered.observation
-        except ValueError as exc:
-            logger.critical(f"Brawl relics or entry could not be confirmed; stopped on the current screen. Reason: {exc}")
-            raise RequestHumanTakeover from exc
-        if (observation.state != BrawlScreen.PREPARATION or observation.panel is None
-                or observation.game_mode is None):
-            logger.critical("A stable brawl preparation is required after entry")
-            if observation.reason:
-                logger.info(f"Observation reason: {observation.reason}")
-            raise RequestHumanTakeover
-        if (observation.game_mode == BrawlMode.NORMAL
-                and (observation.panel.deployed > 0 or observation.panel.round_number != 1)):
-            from tasks.brawl.resume import BrawlResume
+        # Static labels and confirmed counters belong to this single run.
+        # Context managers release all learned observations on every exit,
+        # including exceptions; a later manual restart must read them afresh.
+        with bench_name_cache(), panel_observation_cache():
+            self.device.screenshot()
+            self.entry = BrawlEntry(config=self.config, device=self.device)
+            self.entry.interval_timer = self.interval_timer
+            self.relics = BrawlRelics(config=self.config, device=self.device)
+            self.relics.interval_timer = self.interval_timer
+            try:
+                bonuses = self.relics.read(skip_first_screenshot=True)
+                entered = self.entry.enter(skip_first_screenshot=True, only_free=only_free)
+                observation = entered.observation
+            except ValueError as exc:
+                logger.critical(f"Brawl relics or entry could not be confirmed; stopped on the current screen. Reason: {exc}")
+                raise RequestHumanTakeover from exc
+            if (observation.state != BrawlScreen.PREPARATION or observation.panel is None
+                    or observation.game_mode is None):
+                logger.critical("A stable brawl preparation is required after entry")
+                if observation.reason:
+                    logger.info(f"Observation reason: {observation.reason}")
+                raise RequestHumanTakeover
+            if (observation.game_mode == BrawlMode.NORMAL
+                    and (observation.panel.deployed > 0 or observation.panel.round_number != 1)):
+                from tasks.brawl.resume import BrawlResume
 
-            self.formation = BrawlResume(config=self.config, device=self.device)
-            self.formation.interval_timer = self.entry.interval_timer
-            result = self.formation.recover(class_bonuses=bonuses, skip_first_screenshot=True)
-            if result.outcome != FormationOutcome.READY or self.formation.class_bonuses is None:
-                self._failed("Saved-run reconstruction could not be confirmed", result)
-            return self._run_tracked(result, self.formation.class_bonuses)
-        if observation.panel.deployed > 0:
-            return self._continue_existing(observation)
-        if observation.panel.round_number != 1:
-            logger.critical("The saved run has an empty field after round 1; lineup reconstruction is not supported")
-            raise RequestHumanTakeover
+                self.formation = BrawlResume(config=self.config, device=self.device)
+                self.formation.interval_timer = self.entry.interval_timer
+                result = self.formation.recover(class_bonuses=bonuses, skip_first_screenshot=True)
+                if result.outcome != FormationOutcome.READY or self.formation.class_bonuses is None:
+                    self._failed("Saved-run reconstruction could not be confirmed", result)
+                return self._run_tracked(result, self.formation.class_bonuses)
+            if observation.panel.deployed > 0:
+                return self._continue_existing(observation)
+            if observation.panel.round_number != 1:
+                logger.critical("The saved run has an empty field after round 1; lineup reconstruction is not supported")
+                raise RequestHumanTakeover
 
-        self.opening = BrawlOpening(config=self.config, device=self.device)
-        self.opening.interval_timer = self.interval_timer
-        try:
-            observation = self.opening.prepare(skip_first_screenshot=True)
-        except ObservationError as exc:
-            logger.critical(f"Opening preparation or class talents remain unconfirmed. Reason: {exc}")
-            raise RequestHumanTakeover from exc
-        # Only this startup's relic visit supplies the profession bonuses. The
-        # prepared field and legacy account switches cannot override that read.
-        logger.info(f"Using the class talents confirmed on this startup's relic visit: {bonuses}")
+            self.opening = BrawlOpening(config=self.config, device=self.device)
+            self.opening.interval_timer = self.interval_timer
+            try:
+                observation = self.opening.prepare(skip_first_screenshot=True)
+            except ObservationError as exc:
+                logger.critical(f"Opening preparation or class talents remain unconfirmed. Reason: {exc}")
+                raise RequestHumanTakeover from exc
+            # Only this startup's relic visit supplies the profession bonuses. The
+            # prepared field and legacy account switches cannot override that read.
+            logger.info(f"Using the class talents confirmed on this startup's relic visit: {bonuses}")
 
-        self.formation = BrawlFormation(config=self.config, device=self.device)
-        self.formation.interval_timer = self.interval_timer
-        logger.info("Scanning all bench hero names and imprints")
-        result = self.formation.begin(skip_first_screenshot=True)
-        if result.outcome != FormationOutcome.READY:
-            self._failed("Complete bench roster could not be confirmed", result)
-        if not result.roster.heroes:
-            self.formation.invalidate("No acquired heroes are available to arrange")
-            logger.critical("The bench is empty; acquire heroes manually before starting on round 1 with an empty field")
-            raise RequestHumanTakeover
-        logger.info(f"Confirmed {len(result.roster.heroes)} heroes; arranging for the current level and observed talents")
-        if result.roster.game_mode == BrawlMode.NORMAL:
-            # Normal economy arranges before assessing its first transaction.
-            # Hand off the fresh opening scan directly instead of arranging here
-            # and immediately scanning/arranging the identical board again.
+            self.formation = BrawlFormation(config=self.config, device=self.device)
+            self.formation.interval_timer = self.interval_timer
+            logger.info("Scanning all bench hero names and imprints")
+            result = self.formation.begin(skip_first_screenshot=True)
+            if result.outcome != FormationOutcome.READY:
+                self._failed("Complete bench roster could not be confirmed", result)
+            if not result.roster.heroes:
+                self.formation.invalidate("No acquired heroes are available to arrange")
+                logger.critical("The bench is empty; acquire heroes manually before starting on round 1 with an empty field")
+                raise RequestHumanTakeover
+            logger.info(f"Confirmed {len(result.roster.heroes)} heroes; arranging for the current level and observed talents")
+            if result.roster.game_mode == BrawlMode.NORMAL:
+                # Normal economy arranges before assessing its first transaction.
+                # Hand off the fresh opening scan directly instead of arranging here
+                # and immediately scanning/arranging the identical board again.
+                return self._run_tracked(result, bonuses)
+            result = self.formation.arrange(bonuses, skip_first_screenshot=True)
+            if result.outcome != FormationOutcome.COMPLETE:
+                self._failed("Formation could not be confirmed", result)
+            logger.info(f"Opening formation complete: {len(result.steps)} verified actions")
             return self._run_tracked(result, bonuses)
-        result = self.formation.arrange(bonuses, skip_first_screenshot=True)
-        if result.outcome != FormationOutcome.COMPLETE:
-            self._failed("Formation could not be confirmed", result)
-        logger.info(f"Opening formation complete: {len(result.steps)} verified actions")
-        return self._run_tracked(result, bonuses)
 
     def _run_tracked(self, result, bonuses):
         """Continue only while every economy, reward and formation stays verified.

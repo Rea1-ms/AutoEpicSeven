@@ -80,7 +80,12 @@
         "tests.brawl.test_vision.VisionTests.test_model_errors_are_not_downgraded_to_unknown_readings",
         "tests.brawl.test_heroes.HeroRecognitionTests.test_unknown_low_confidence_names_and_unrelated_frames_remain_unknown",
         "tests.brawl.test_bench.BenchRecognitionTests.test_selected_cards_read_names_imprints_and_current_plus",
-        "tests.brawl.test_bench.BenchRecognitionTests.test_occluded_and_bottom_clipped_rows_are_not_complete_entries"
+        "tests.brawl.test_bench.BenchRecognitionTests.test_occluded_and_bottom_clipped_rows_are_not_complete_entries",
+        "tests.brawl.test_bench.BenchRecognitionTests.test_name_cache_keeps_new_names_and_other_fonts_separate_and_ends_with_the_run",
+        "tests.brawl.test_vision.VisionTests.test_panel_cache_keeps_overlay_and_missing_currency_unreadable",
+        "tests.brawl.test_vision.VisionTests.test_panel_cache_run_scopes_and_standalone_observations_are_isolated",
+        "tests.brawl.test_bench.BenchRecognitionTests.test_cold_and_warm_name_cache_preserve_current_entries_across_supported_bench_layouts",
+        "tests.brawl.test_vision.VisionTests.test_panel_cache_reuses_scene_proof_only_inside_the_current_observe_call"
       ]
     },
     "brawl-formation": {
@@ -206,7 +211,8 @@
         "tests.brawl.test_upgrade.UpgradeReplayTests.test_real_sequence_confirms_level_capacity_and_exact_debit_once",
         "tests.brawl.test_vision.VisionTests.test_real_preparation_fields_across_levels_and_currencies",
         "tests.brawl.test_vision.VisionTests.test_upgrade_animation_waits_then_reads_new_level_and_capacity",
-        "tests.brawl.test_vision.VisionTests.test_hero_footer_accepts_artwork_variation_without_matching_other_pages"
+        "tests.brawl.test_vision.VisionTests.test_hero_footer_accepts_artwork_variation_without_matching_other_pages",
+        "tests.brawl.test_upgrade.UpgradeReplayTests.test_cached_upgrade_refreshes_before_request_and_after_payment_without_repaying_old_frames"
       ]
     },
     "brawl-hero-result": {
@@ -258,7 +264,8 @@
         "tests.brawl.test_transmit.TransmitConfirmationTests.test_empty_selection_or_other_scene_never_gets_confirmed",
         "tests.brawl.test_transmit.TransmitReadingTests.test_empty_and_selected_quotes_do_not_claim_a_completed_sale",
         "tests.brawl.test_vision.VisionTests.test_overlay_scene_priority_does_not_read_underlying_balances",
-        "tests.brawl.test_vision.VisionTests.test_hero_footer_accepts_artwork_variation_without_matching_other_pages"
+        "tests.brawl.test_vision.VisionTests.test_hero_footer_accepts_artwork_variation_without_matching_other_pages",
+        "tests.brawl.test_bench.BenchRecognitionTests.test_cold_and_warm_name_cache_preserve_current_entries_across_supported_bench_layouts"
       ]
     },
     "brawl-prepare-level6": {
@@ -530,7 +537,8 @@
         "tests.brawl.test_bench.BenchRecognitionTests.test_selected_cards_read_names_imprints_and_current_plus",
         "tests.brawl.test_upgrade.UpgradeReadingTests.test_capture_enforces_reserve_funds_maximum_and_preparation",
         "tests.brawl.test_vision.VisionTests.test_currency_positions_shift_and_missing_icons_never_reuse_previous_match",
-        "tests.brawl.test_vision.VisionTests.test_real_preparation_fields_across_levels_and_currencies"
+        "tests.brawl.test_vision.VisionTests.test_real_preparation_fields_across_levels_and_currencies",
+        "tests.brawl.test_bench.BenchRecognitionTests.test_cold_and_warm_name_cache_preserve_current_entries_across_supported_bench_layouts"
       ]
     },
     "brawl-hero-imprint": {
@@ -916,7 +924,8 @@
         "tests.brawl.test_normal_summon.NormalSummonReplayTests.test_reported_christy_result_closes_once_without_repeated_ocr",
         "tests.brawl.test_normal_summon.NormalSummonReplayTests.test_waiting_for_payment_interval_reads_panel_only_when_action_is_ready",
         "tests.brawl.test_normal_summon.NormalSummonReplayTests.test_reused_result_is_invalidated_by_balance_change_or_missing_badge",
-        "tests.brawl.test_vision.VisionTests.test_hero_footer_accepts_artwork_variation_without_matching_other_pages"
+        "tests.brawl.test_vision.VisionTests.test_hero_footer_accepts_artwork_variation_without_matching_other_pages",
+        "tests.brawl.test_scanner.BenchScannerTests.test_run_cache_reuses_counters_across_completed_scan_and_fresh_selection"
       ]
     },
     "brawl-formation-place": {
@@ -951,7 +960,8 @@
         "tests.brawl.test_cursor.BenchCursorTests.test_non_preparation_frames_never_inherit_a_previous_cursor",
         "tests.brawl.test_vision.OpeningTalentTests.test_deployed_later_round_and_overlays_are_not_talent_evidence",
         "tests.brawl.test_vision.VisionTests.test_grid_selection_blocks_preparation_readings",
-        "tests.brawl.test_vision.VisionTests.test_speed_requires_stable_scene_and_unambiguous_visible_control"
+        "tests.brawl.test_vision.VisionTests.test_speed_requires_stable_scene_and_unambiguous_visible_control",
+        "tests.brawl.test_bench.BenchRecognitionTests.test_cold_and_warm_name_cache_preserve_current_entries_across_supported_bench_layouts"
       ]
     },
     "brawl-normal-deployed": {
@@ -1015,7 +1025,12 @@
         "tests.brawl.test_combat.RoundFlowTests.test_network_retry_is_bounded_and_never_restarts_or_clicks_a_missing_arrow",
         "tests.brawl.test_combat.RoundFlowTests.test_network_reappearance_does_not_renew_budget_or_own_an_unrequested_round",
         "tests.brawl.test_combat.RoundFlowTests.test_disconnect_leaves_the_tracked_round_without_login_or_retry",
-        "tests.brawl.test_combat.RoundFlowTests.test_resumed_combat_ends_the_retry_episode_before_a_later_outage"
+        "tests.brawl.test_combat.RoundFlowTests.test_resumed_combat_ends_the_retry_episode_before_a_later_outage",
+        "tests.brawl.test_bench.BenchRecognitionTests.test_static_names_are_recognized_once_while_badges_and_controls_stay_current",
+        "tests.brawl.test_bench.BenchRecognitionTests.test_name_cache_keeps_new_names_and_other_fonts_separate_and_ends_with_the_run",
+        "tests.brawl.test_bench.BenchRecognitionTests.test_cached_name_requires_full_glyphs_and_unknown_text_still_uses_ocr",
+        "tests.brawl.test_bench.BenchRecognitionTests.test_name_cache_is_bounded_and_ambiguous_templates_cannot_authorize_identity",
+        "tests.brawl.test_bench.BenchRecognitionTests.test_cold_and_warm_name_cache_preserve_current_entries_across_supported_bench_layouts"
       ]
     },
     "brawl-formation-move": {
@@ -1089,7 +1104,9 @@
         "tests.brawl.test_resume.ResumedTalentTests.test_current_context_missing_icons_and_dimmed_sidebar_cannot_supply_defaults",
         "tests.brawl.test_resume.ResumedTalentTests.test_unread_wrong_denominator_and_impossible_counts_are_rejected",
         "tests.brawl.test_combat.RoundFlowTests.test_reported_network_retry_keeps_the_started_round_and_requires_real_combat",
-        "tests.brawl.test_combat.RoundFlowTests.test_resumed_combat_ends_the_retry_episode_before_a_later_outage"
+        "tests.brawl.test_combat.RoundFlowTests.test_resumed_combat_ends_the_retry_episode_before_a_later_outage",
+        "tests.brawl.test_vision.VisionTests.test_panel_cache_refreshes_changed_digits_and_never_estimates_delayed_balances",
+        "tests.brawl.test_vision.VisionTests.test_panel_cache_event_boundaries_and_explicit_invalidation_force_fresh_reads"
       ]
     },
     "brawl-round-failed": {
@@ -1116,7 +1133,8 @@
         "tests.brawl.test_combat.RoundFlowTests.test_failed_round_returns_same_round_without_clicking_result_or_retry",
         "tests.brawl.test_combat.RoundFlowTests.test_fast_round_can_confirm_from_positive_end_scene_without_a_combat_frame",
         "tests.brawl.test_combat.RoundFlowTests.test_unstarted_combat_results_and_rewards_never_authorize_any_click",
-        "tests.brawl.test_vision.VisionTests.test_hero_footer_accepts_artwork_variation_without_matching_other_pages"
+        "tests.brawl.test_vision.VisionTests.test_hero_footer_accepts_artwork_variation_without_matching_other_pages",
+        "tests.brawl.test_vision.VisionTests.test_panel_cache_event_boundaries_and_explicit_invalidation_force_fresh_reads"
       ]
     },
     "brawl-normal-after-loss": {
@@ -1138,7 +1156,8 @@
       "used_by": [
         "tests.brawl.test_vision.VisionTests.test_new_modes_openings_and_final_results",
         "tests.brawl.test_brawl.AnalysisTests.test_round_animations_can_be_missed_without_inventing_completion",
-        "tests.brawl.test_combat.RoundFlowTests.test_failed_round_returns_same_round_without_clicking_result_or_retry"
+        "tests.brawl.test_combat.RoundFlowTests.test_failed_round_returns_same_round_without_clicking_result_or_retry",
+        "tests.brawl.test_vision.VisionTests.test_panel_cache_refreshes_changed_digits_and_never_estimates_delayed_balances"
       ]
     },
     "brawl-normal-combat": {
@@ -1159,7 +1178,8 @@
       ],
       "used_by": [
         "tests.brawl.test_vision.VisionTests.test_new_modes_openings_and_final_results",
-        "tests.brawl.test_board.BoardRecognitionTests.test_non_grid_scenes_and_deployment_animation_have_no_targets"
+        "tests.brawl.test_board.BoardRecognitionTests.test_non_grid_scenes_and_deployment_animation_have_no_targets",
+        "tests.brawl.test_vision.VisionTests.test_panel_cache_event_boundaries_and_explicit_invalidation_force_fresh_reads"
       ]
     },
     "brawl-last-round-failed": {
@@ -1269,7 +1289,8 @@
         "tests.brawl.test_heroes.HeroRecognitionTests.test_single_and_wrapped_names_preserve_explicit_no_imprint",
         "tests.brawl.test_heroes.HeroRecognitionTests.test_unknown_low_confidence_names_and_unrelated_frames_remain_unknown",
         "tests.brawl.test_heroes.HeroRecognitionTests.test_model_failures_propagate_and_unsupported_inputs_fail",
-        "tests.brawl.test_bench.BenchRecognitionTests.test_low_confidence_unknown_names_and_overlays_do_not_create_entries"
+        "tests.brawl.test_bench.BenchRecognitionTests.test_low_confidence_unknown_names_and_overlays_do_not_create_entries",
+        "tests.brawl.test_heroes.HeroRecognitionTests.test_result_name_cache_rejects_changed_or_clipped_names_and_other_font_namespaces"
       ]
     },
     "brawl-hero-new-07": {
@@ -1331,7 +1352,8 @@
         ]
       ],
       "used_by": [
-        "tests.brawl.test_heroes.HeroRecognitionTests.test_single_and_wrapped_names_preserve_explicit_no_imprint"
+        "tests.brawl.test_heroes.HeroRecognitionTests.test_single_and_wrapped_names_preserve_explicit_no_imprint",
+        "tests.brawl.test_heroes.HeroRecognitionTests.test_result_name_cache_rejects_changed_or_clipped_names_and_other_font_namespaces"
       ]
     },
     "brawl-hero-new-10": {
@@ -1373,7 +1395,8 @@
       "used_by": [
         "tests.brawl.test_heroes.HeroRecognitionTests.test_real_result_names_and_imprint_transitions",
         "tests.brawl.test_heroes.HeroRecognitionTests.test_incomplete_badge_or_arrow_never_reports_old_imprint_as_new",
-        "tests.brawl.test_brawl.AnalysisTests.test_single_hero_result_is_serializable_without_inventing_a_roster"
+        "tests.brawl.test_brawl.AnalysisTests.test_single_hero_result_is_serializable_without_inventing_a_roster",
+        "tests.brawl.test_heroes.HeroRecognitionTests.test_static_wrapped_result_name_is_cached_but_each_badge_is_read_from_current_frame"
       ]
     },
     "brawl-hero-new-14": {
@@ -1780,7 +1803,8 @@
         "tests.brawl.test_placement.PlacementTests.test_capture_rejects_unsupported_hero_full_field_and_nonpreparation",
         "tests.brawl.test_scanner.BenchScannerTests.test_captured_reverse_order_simulates_a_complete_forward_scan",
         "tests.brawl.test_scanner.BenchScannerTests.test_each_fresh_frame_is_read_once_while_comparisons_reuse_its_cursor",
-        "tests.brawl.test_scanner.BenchSelectionTests.test_captured_scan_then_rewind_selects_exact_second_hero"
+        "tests.brawl.test_scanner.BenchSelectionTests.test_captured_scan_then_rewind_selects_exact_second_hero",
+        "tests.brawl.test_bench.BenchRecognitionTests.test_cold_and_warm_name_cache_preserve_current_entries_across_supported_bench_layouts"
       ]
     },
     "brawl-queue-second": {
@@ -1810,7 +1834,9 @@
         "tests.brawl.test_cursor.BenchCursorTests.test_supplied_cursors_reuse_recognition_but_still_check_current_pixels",
         "tests.brawl.test_scanner.BenchScannerTests.test_captured_reverse_order_simulates_a_complete_forward_scan",
         "tests.brawl.test_scanner.BenchScannerTests.test_each_fresh_frame_is_read_once_while_comparisons_reuse_its_cursor",
-        "tests.brawl.test_scanner.BenchSelectionTests.test_captured_scan_then_rewind_selects_exact_second_hero"
+        "tests.brawl.test_scanner.BenchSelectionTests.test_captured_scan_then_rewind_selects_exact_second_hero",
+        "tests.brawl.test_bench.BenchRecognitionTests.test_christy_static_template_never_learns_a_missing_final_glyph",
+        "tests.brawl.test_bench.BenchRecognitionTests.test_cold_and_warm_name_cache_preserve_current_entries_across_supported_bench_layouts"
       ]
     },
     "brawl-queue-middle": {
@@ -1837,7 +1863,8 @@
         "tests.brawl.test_cursor.BenchCursorTests.test_identical_captured_visible_queues_agree_without_claiming_hidden_inventory",
         "tests.brawl.test_cursor.BenchCursorTests.test_same_selected_hero_with_changed_visible_neighbor_does_not_agree",
         "tests.brawl.test_scanner.BenchScannerTests.test_captured_reverse_order_simulates_a_complete_forward_scan",
-        "tests.brawl.test_scanner.BenchSelectionTests.test_captured_scan_then_rewind_selects_exact_second_hero"
+        "tests.brawl.test_scanner.BenchSelectionTests.test_captured_scan_then_rewind_selects_exact_second_hero",
+        "tests.brawl.test_bench.BenchRecognitionTests.test_cold_and_warm_name_cache_preserve_current_entries_across_supported_bench_layouts"
       ]
     },
     "brawl-queue-karin": {
@@ -1922,7 +1949,8 @@
         "tests.brawl.test_cursor.BenchCursorTests.test_identical_captured_visible_queues_agree_without_claiming_hidden_inventory",
         "tests.brawl.test_cursor.BenchCursorTests.test_missing_portraits_or_selection_context_cannot_confirm_a_transition",
         "tests.brawl.test_scanner.BenchScannerTests.test_captured_reverse_order_simulates_a_complete_forward_scan",
-        "tests.brawl.test_scanner.BenchSelectionTests.test_captured_scan_then_rewind_selects_exact_second_hero"
+        "tests.brawl.test_scanner.BenchSelectionTests.test_captured_scan_then_rewind_selects_exact_second_hero",
+        "tests.brawl.test_bench.BenchRecognitionTests.test_cold_and_warm_name_cache_preserve_current_entries_across_supported_bench_layouts"
       ]
     },
     "brawl-queue-empty": {
@@ -1950,7 +1978,8 @@
         "tests.brawl.test_field.FieldRecognitionTests.test_independent_captures_locate_three_supported_heroes",
         "tests.brawl.test_field.FieldTraitRecognitionTests.test_different_profession_is_read_as_its_own_combination",
         "tests.brawl.test_scanner.BenchScannerTests.test_captured_empty_bench_needs_no_swipe_or_click",
-        "tests.brawl.test_swap.WithdrawTests.test_empty_bench_requires_positive_empty_pixels_in_preparation_and_grid"
+        "tests.brawl.test_swap.WithdrawTests.test_empty_bench_requires_positive_empty_pixels_in_preparation_and_grid",
+        "tests.brawl.test_bench.BenchRecognitionTests.test_cold_and_warm_name_cache_preserve_current_entries_across_supported_bench_layouts"
       ]
     },
     "brawl-swap-two": {
@@ -2231,7 +2260,8 @@
       "used_by": [
         "tests.brawl.test_upgrade.UpgradeReadingTests.test_capture_enforces_reserve_funds_maximum_and_preparation",
         "tests.brawl.test_upgrade.UpgradeReadingTests.test_hidden_price_or_wrong_scene_cannot_create_a_quote",
-        "tests.brawl.test_upgrade.UpgradeReplayTests.test_real_sequence_confirms_level_capacity_and_exact_debit_once"
+        "tests.brawl.test_upgrade.UpgradeReplayTests.test_real_sequence_confirms_level_capacity_and_exact_debit_once",
+        "tests.brawl.test_upgrade.UpgradeReplayTests.test_cached_upgrade_refreshes_before_request_and_after_payment_without_repaying_old_frames"
       ]
     },
     "brawl-upgrade-dialog": {
@@ -2258,7 +2288,9 @@
         "tests.brawl.test_upgrade.UpgradeReadingTests.test_real_quote_checks_price_capacity_header_and_button",
         "tests.brawl.test_upgrade.UpgradeReadingTests.test_wrong_header_price_and_model_failures_are_not_hidden",
         "tests.brawl.test_upgrade.UpgradeReplayTests.test_real_sequence_confirms_level_capacity_and_exact_debit_once",
-        "tests.brawl.test_vision.VisionTests.test_hero_footer_accepts_artwork_variation_without_matching_other_pages"
+        "tests.brawl.test_vision.VisionTests.test_hero_footer_accepts_artwork_variation_without_matching_other_pages",
+        "tests.brawl.test_upgrade.UpgradeReplayTests.test_cached_upgrade_refreshes_before_request_and_after_payment_without_repaying_old_frames",
+        "tests.brawl.test_vision.VisionTests.test_panel_cache_event_boundaries_and_explicit_invalidation_force_fresh_reads"
       ]
     },
     "brawl-full-bench-initial": {
@@ -2442,7 +2474,8 @@
       ],
       "used_by": [
         "tests.brawl.test_full_bench.FullBenchFocusTests.test_real_click_focus_keeps_full_deployment_and_resources",
-        "tests.brawl.test_full_bench.FullBenchFocusTests.test_real_nonadjacent_jumps_cannot_complete_a_forward_scan"
+        "tests.brawl.test_full_bench.FullBenchFocusTests.test_real_nonadjacent_jumps_cannot_complete_a_forward_scan",
+        "tests.brawl.test_bench.BenchRecognitionTests.test_cold_and_warm_name_cache_preserve_current_entries_across_supported_bench_layouts"
       ]
     },
     "brawl-full-swap-before": {
@@ -2480,7 +2513,8 @@
         "tests.brawl.test_swap.IdentificationSwapTests.test_stale_visible_bench_or_known_field_conflict_forbids_reopening",
         "tests.brawl.test_swap.IdentificationSwapTests.test_unknown_target_requires_positive_occupied_control",
         "tests.brawl.test_swap.IdentificationSwapTests.test_missing_incoming_pose_never_confirms_or_repeats_the_exchange",
-        "tests.brawl.test_swap.IdentificationSwapTests.test_scan_difference_requires_one_exchange_with_unchanged_imprints_and_context"
+        "tests.brawl.test_swap.IdentificationSwapTests.test_scan_difference_requires_one_exchange_with_unchanged_imprints_and_context",
+        "tests.brawl.test_vision.VisionTests.test_scoped_panel_cache_reuses_real_grid_and_move_frames"
       ]
     },
     "brawl-full-swap-grid": {
@@ -2519,7 +2553,8 @@
         "tests.brawl.test_swap.IdentificationSwapTests.test_unknown_outgoing_pose_does_not_prevent_explicit_identification_swap",
         "tests.brawl.test_swap.IdentificationSwapTests.test_unknown_target_requires_positive_occupied_control",
         "tests.brawl.test_swap.WithdrawTests.test_red_minus_pairs_with_green_source_on_new_and_independent_old_grids",
-        "tests.brawl.test_board.FormationGridTests.test_full_five_swap_uses_controls_when_both_edge_anchors_are_absent"
+        "tests.brawl.test_board.FormationGridTests.test_full_five_swap_uses_controls_when_both_edge_anchors_are_absent",
+        "tests.brawl.test_vision.VisionTests.test_scoped_panel_cache_reuses_real_grid_and_move_frames"
       ]
     },
     "brawl-full-swap-after": {
@@ -2553,7 +2588,8 @@
         "tests.brawl.test_swap.IdentificationSwapTests.test_full_bench_identification_uses_scan_difference_not_automatic_focus",
         "tests.brawl.test_swap.IdentificationSwapTests.test_unknown_outgoing_pose_does_not_prevent_explicit_identification_swap",
         "tests.brawl.test_swap.IdentificationSwapTests.test_missing_incoming_pose_never_confirms_or_repeats_the_exchange",
-        "tests.brawl.test_resume.ResumedTalentTests.test_real_glowing_count_above_threshold_is_not_capped"
+        "tests.brawl.test_resume.ResumedTalentTests.test_real_glowing_count_above_threshold_is_not_capped",
+        "tests.brawl.test_vision.VisionTests.test_scoped_panel_cache_reuses_real_grid_and_move_frames"
       ]
     },
     "brawl-full-swap-stable": {
@@ -2579,7 +2615,8 @@
         "tests.brawl.test_swap.FullSwapReplayTests.test_unknown_post_swap_pose_waits_for_independent_known_pose",
         "tests.brawl.test_field.FieldTraitRecognitionTests.test_xiaochun_headers_survive_independent_idle_poses",
         "tests.brawl.test_field.FieldTraitRecognitionTests.test_missing_or_redacted_symbol_does_not_reuse_prior_identity",
-        "tests.brawl.test_brawl.AnalysisTests.test_idle_motion_traits_report_identity_without_inventing_a_click_position"
+        "tests.brawl.test_brawl.AnalysisTests.test_idle_motion_traits_report_identity_without_inventing_a_click_position",
+        "tests.brawl.test_vision.VisionTests.test_scoped_panel_cache_reuses_real_grid_and_move_frames"
       ]
     },
     "brawl-multi-transmit-before": {
@@ -2629,7 +2666,8 @@
         "tests.brawl.test_multi_transmit.MultiTransmitReplayTests.test_bench_scanner_never_clicks_a_card_in_the_transmit_scene",
         "tests.brawl.test_swap.FullSwapReadingTests.test_missing_anchor_or_occupied_control_keeps_the_set_unknown",
         "tests.brawl.test_multi_transmit.AutoTransferReplayTests.test_real_three_hero_selection_then_exact_proceeds_confirms_once",
-        "tests.brawl.test_multi_transmit.AutoTransferReplayTests.test_each_selected_portrait_remains_identical_while_names_leave_the_bench"
+        "tests.brawl.test_multi_transmit.AutoTransferReplayTests.test_each_selected_portrait_remains_identical_while_names_leave_the_bench",
+        "tests.brawl.test_multi_transmit.MultiTransmitReadingTests.test_static_transfer_names_reuse_text_but_selected_cards_and_positions_stay_current"
       ]
     },
     "brawl-multi-transmit-one": {
@@ -2652,7 +2690,8 @@
       "used_by": [
         "tests.brawl.test_multi_transmit.MultiTransmitReadingTests.test_real_batch_quotes_do_not_change_balances_before_confirmation",
         "tests.brawl.test_multi_transmit.AutoTransferReplayTests.test_real_three_hero_selection_then_exact_proceeds_confirms_once",
-        "tests.brawl.test_multi_transmit.AutoTransferReplayTests.test_each_selected_portrait_remains_identical_while_names_leave_the_bench"
+        "tests.brawl.test_multi_transmit.AutoTransferReplayTests.test_each_selected_portrait_remains_identical_while_names_leave_the_bench",
+        "tests.brawl.test_multi_transmit.MultiTransmitReadingTests.test_static_transfer_names_reuse_text_but_selected_cards_and_positions_stay_current"
       ]
     },
     "brawl-multi-transmit-two": {
@@ -2676,7 +2715,8 @@
         "tests.brawl.test_multi_transmit.MultiTransmitReadingTests.test_real_batch_quotes_do_not_change_balances_before_confirmation",
         "tests.brawl.test_multi_transmit.MultiTransmitReplayTests.test_changed_batch_or_third_portrait_aborts_before_confirming",
         "tests.brawl.test_multi_transmit.AutoTransferReplayTests.test_real_three_hero_selection_then_exact_proceeds_confirms_once",
-        "tests.brawl.test_multi_transmit.AutoTransferReplayTests.test_each_selected_portrait_remains_identical_while_names_leave_the_bench"
+        "tests.brawl.test_multi_transmit.AutoTransferReplayTests.test_each_selected_portrait_remains_identical_while_names_leave_the_bench",
+        "tests.brawl.test_multi_transmit.MultiTransmitReadingTests.test_static_transfer_names_reuse_text_but_selected_cards_and_positions_stay_current"
       ]
     },
     "brawl-multi-transmit-three": {
@@ -3120,7 +3160,8 @@
         "tests.brawl.test_vision.OpeningTalentTests.test_incomplete_low_confidence_and_invalid_counts_stay_unknown",
         "tests.brawl.test_vision.OpeningTalentTests.test_missing_duplicate_and_dimmed_icons_cannot_default_to_zero",
         "tests.brawl.test_vision.OpeningTalentTests.test_reordered_rows_follow_profession_icons_instead_of_old_positions",
-        "tests.brawl.test_vision.OpeningTalentTests.test_supplied_observation_validates_image_and_model_errors_propagate"
+        "tests.brawl.test_vision.OpeningTalentTests.test_supplied_observation_validates_image_and_model_errors_propagate",
+        "tests.brawl.test_bench.BenchRecognitionTests.test_cold_and_warm_name_cache_preserve_current_entries_across_supported_bench_layouts"
       ],
       "source_directory": ""
     },
@@ -3542,7 +3583,8 @@
       "privacy_redaction": [],
       "used_by": [
         "tests.brawl.test_normal_summon.NormalSummonReplayTests.test_reported_christy_result_closes_once_without_repeated_ocr",
-        "tests.brawl.test_vision.VisionTests.test_hero_footer_accepts_artwork_variation_without_matching_other_pages"
+        "tests.brawl.test_vision.VisionTests.test_hero_footer_accepts_artwork_variation_without_matching_other_pages",
+        "tests.brawl.test_bench.BenchRecognitionTests.test_cold_and_warm_name_cache_preserve_current_entries_across_supported_bench_layouts"
       ]
     },
     "brawl-move-target-yellow-occluded": {
@@ -3573,7 +3615,9 @@
         "tests.brawl.test_combat.RoundFlowTests.test_network_retry_is_bounded_and_never_restarts_or_clicks_a_missing_arrow",
         "tests.brawl.test_combat.RoundFlowTests.test_network_reappearance_does_not_renew_budget_or_own_an_unrequested_round",
         "tests.brawl.test_combat.RoundFlowTests.test_disconnect_leaves_the_tracked_round_without_login_or_retry",
-        "tests.brawl.test_combat.RoundFlowTests.test_resumed_combat_ends_the_retry_episode_before_a_later_outage"
+        "tests.brawl.test_combat.RoundFlowTests.test_resumed_combat_ends_the_retry_episode_before_a_later_outage",
+        "tests.brawl.test_vision.VisionTests.test_panel_cache_keeps_overlay_and_missing_currency_unreadable",
+        "tests.brawl.test_vision.VisionTests.test_panel_cache_reuses_scene_proof_only_inside_the_current_observe_call"
       ]
     },
     "brawl-selected-first-cell": {

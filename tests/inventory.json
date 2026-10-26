@@ -18130,6 +18130,81 @@
           ],
           "status": "已纳入",
           "reason": "网络异常优先识别，不读取暗色背景资源"
+        },
+        {
+          "id": "tests.brawl.test_vision.VisionTests.test_scoped_panel_cache_reuses_real_grid_and_move_frames",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-full-swap-after.png",
+            "tests/fixtures/brawl/brawl-full-swap-before.png",
+            "tests/fixtures/brawl/brawl-full-swap-grid.png",
+            "tests/fixtures/brawl/brawl-full-swap-stable.png"
+          ],
+          "status": "已纳入",
+          "reason": "静态姓名与资源面板按当前证据复用，状态变化与未确认动作保持原校验"
+        },
+        {
+          "id": "tests.brawl.test_vision.VisionTests.test_panel_cache_refreshes_changed_digits_and_never_estimates_delayed_balances",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-normal-after-loss.png",
+            "tests/fixtures/brawl/brawl-normal-round2.png"
+          ],
+          "status": "已纳入",
+          "reason": "静态姓名与资源面板按当前证据复用，状态变化与未确认动作保持原校验"
+        },
+        {
+          "id": "tests.brawl.test_vision.VisionTests.test_panel_cache_keeps_overlay_and_missing_currency_unreadable",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/global_cn/brawl-network-retry.png",
+            "tests/fixtures/brawl/brawl-prepare-level4.png"
+          ],
+          "status": "已纳入",
+          "reason": "静态姓名与资源面板按当前证据复用，状态变化与未确认动作保持原校验"
+        },
+        {
+          "id": "tests.brawl.test_vision.VisionTests.test_panel_cache_event_boundaries_and_explicit_invalidation_force_fresh_reads",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-normal-combat.png",
+            "tests/fixtures/brawl/brawl-normal-round2.png",
+            "tests/fixtures/brawl/brawl-round-failed.png",
+            "tests/fixtures/brawl/brawl-upgrade-dialog.png"
+          ],
+          "status": "已纳入",
+          "reason": "静态姓名与资源面板按当前证据复用，状态变化与未确认动作保持原校验"
+        },
+        {
+          "id": "tests.brawl.test_vision.VisionTests.test_panel_cache_run_scopes_and_standalone_observations_are_isolated",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-prepare-level4.png"
+          ],
+          "status": "已纳入",
+          "reason": "静态姓名与资源面板按当前证据复用，状态变化与未确认动作保持原校验"
+        },
+        {
+          "id": "tests.brawl.test_vision.VisionTests.test_panel_cache_reuses_scene_proof_only_inside_the_current_observe_call",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/global_cn/brawl-network-retry.png",
+            "tests/fixtures/brawl/brawl-prepare-level4.png"
+          ],
+          "status": "已纳入",
+          "reason": "单次调用复用当前页面识别，直接读取与异常后仍重新核对页面"
         }
       ]
     },
@@ -18882,6 +18957,29 @@
           ],
           "status": "已纳入",
           "reason": "国际服中文大乱斗规则、截图与模拟设备回放，不连接真实设备"
+        },
+        {
+          "id": "tests.brawl.test_heroes.HeroRecognitionTests.test_static_wrapped_result_name_is_cached_but_each_badge_is_read_from_current_frame",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-hero-new-12.png"
+          ],
+          "status": "已纳入",
+          "reason": "静态姓名与资源面板按当前证据复用，状态变化与未确认动作保持原校验"
+        },
+        {
+          "id": "tests.brawl.test_heroes.HeroRecognitionTests.test_result_name_cache_rejects_changed_or_clipped_names_and_other_font_namespaces",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-hero-new-05.png",
+            "tests/fixtures/brawl/brawl-hero-new-09.png"
+          ],
+          "status": "已纳入",
+          "reason": "静态姓名与资源面板按当前证据复用，状态变化与未确认动作保持原校验"
         }
       ]
     },
@@ -20045,6 +20143,85 @@
           ],
           "status": "已纳入",
           "reason": "开局工具、识别等待原因及同帧读取复用回归"
+        },
+        {
+          "id": "tests.brawl.test_bench.BenchRecognitionTests.test_static_names_are_recognized_once_while_badges_and_controls_stay_current",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-normal-deployed.png"
+          ],
+          "status": "已纳入",
+          "reason": "静态姓名与资源面板按当前证据复用，状态变化与未确认动作保持原校验"
+        },
+        {
+          "id": "tests.brawl.test_bench.BenchRecognitionTests.test_name_cache_keeps_new_names_and_other_fonts_separate_and_ends_with_the_run",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-normal-deployed.png",
+            "tests/fixtures/brawl/brawl-prepare-level4.png"
+          ],
+          "status": "已纳入",
+          "reason": "静态姓名与资源面板按当前证据复用，状态变化与未确认动作保持原校验"
+        },
+        {
+          "id": "tests.brawl.test_bench.BenchRecognitionTests.test_cached_name_requires_full_glyphs_and_unknown_text_still_uses_ocr",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-normal-deployed.png"
+          ],
+          "status": "已纳入",
+          "reason": "静态姓名与资源面板按当前证据复用，状态变化与未确认动作保持原校验"
+        },
+        {
+          "id": "tests.brawl.test_bench.BenchRecognitionTests.test_christy_static_template_never_learns_a_missing_final_glyph",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-queue-second.png"
+          ],
+          "status": "已纳入",
+          "reason": "静态姓名与资源面板按当前证据复用，状态变化与未确认动作保持原校验"
+        },
+        {
+          "id": "tests.brawl.test_bench.BenchRecognitionTests.test_name_cache_is_bounded_and_ambiguous_templates_cannot_authorize_identity",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-normal-deployed.png"
+          ],
+          "status": "已纳入",
+          "reason": "静态姓名与资源面板按当前证据复用，状态变化与未确认动作保持原校验"
+        },
+        {
+          "id": "tests.brawl.test_bench.BenchRecognitionTests.test_cold_and_warm_name_cache_preserve_current_entries_across_supported_bench_layouts",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-focus-christy-return.png",
+            "tests/fixtures/brawl/brawl-formation-place.png",
+            "tests/fixtures/brawl/brawl-normal-deployed.png",
+            "tests/fixtures/brawl/global_cn/brawl-normal-summon-christy.png",
+            "tests/fixtures/brawl/global_cn/brawl-opening-lorina-carmainerose.png",
+            "tests/fixtures/brawl/brawl-prepare-level4.png",
+            "tests/fixtures/brawl/brawl-prepare-max.png",
+            "tests/fixtures/brawl/brawl-queue-bottom.png",
+            "tests/fixtures/brawl/brawl-queue-empty.png",
+            "tests/fixtures/brawl/brawl-queue-middle.png",
+            "tests/fixtures/brawl/brawl-queue-second.png",
+            "tests/fixtures/brawl/brawl-queue-top.png",
+            "tests/fixtures/brawl/brawl-transmit.png"
+          ],
+          "status": "已纳入",
+          "reason": "对照未缓存读取，逐一核对常见候补布局的首次与复用姓名、刻印及当前位置"
         }
       ]
     },
@@ -20859,6 +21036,17 @@
           "fixtures": [],
           "status": "已纳入",
           "reason": "完整候补核对后按姓名与刻印选人；真实静态截图序列、设备响应与时间推进明确区分"
+        },
+        {
+          "id": "tests.brawl.test_scanner.BenchScannerTests.test_run_cache_reuses_counters_across_completed_scan_and_fresh_selection",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-normal-first-summon.png"
+          ],
+          "status": "已纳入",
+          "reason": "静态姓名与资源面板按当前证据复用，状态变化与未确认动作保持原校验"
         }
       ]
     },
@@ -21512,6 +21700,51 @@
           ],
           "status": "已纳入",
           "reason": "首格来源识别、就近临时空位、全员加号核对及按正面状态推进的回归"
+        },
+        {
+          "id": "tests.brawl.test_placement.NewGameFormationTests.test_probe_retries_unconfirmed_cancellation_with_fresh_grid_and_shared_interval",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "明确模拟退出编队点击未生效、限次重试与上下文变化；实际布阵动作仍只点击一次"
+        },
+        {
+          "id": "tests.brawl.test_placement.NewGameFormationTests.test_probe_cancellation_retries_keep_original_deadline_and_log_scene",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "明确模拟退出编队点击未生效、限次重试与上下文变化；实际布阵动作仍只点击一次"
+        },
+        {
+          "id": "tests.brawl.test_placement.NewGameFormationTests.test_probe_cancellation_retry_rejects_changed_context_source_or_bench",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "明确模拟退出编队点击未生效、限次重试与上下文变化；实际布阵动作仍只点击一次"
+        },
+        {
+          "id": "tests.brawl.test_placement.NewGameFormationTests.test_probe_cancellation_never_retries_after_unread_preparation",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "明确模拟退出编队点击未生效、限次重试与上下文变化；实际布阵动作仍只点击一次"
+        },
+        {
+          "id": "tests.brawl.test_placement.NewGameFormationTests.test_unconfirmed_move_swap_and_withdraw_never_repeat_destination",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "明确模拟退出编队点击未生效、限次重试与上下文变化；实际布阵动作仍只点击一次"
         }
       ]
     },
@@ -21707,6 +21940,28 @@
           "fixtures": [],
           "status": "已纳入",
           "reason": "国际服中文单次升级；核对等级、人数上限与实际扣款，模拟设备禁止重复付款"
+        },
+        {
+          "id": "tests.brawl.test_upgrade.UpgradeReplayTests.test_cached_upgrade_refreshes_before_request_and_after_payment_without_repaying_old_frames",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-prepare-level5.png",
+            "tests/fixtures/brawl/brawl-upgrade-before.png",
+            "tests/fixtures/brawl/brawl-upgrade-dialog.png"
+          ],
+          "status": "已纳入",
+          "reason": "静态姓名与资源面板按当前证据复用，状态变化与未确认动作保持原校验"
+        },
+        {
+          "id": "tests.brawl.test_upgrade.UpgradeReplayTests.test_cache_invalidation_does_not_repeat_on_unconfirmed_opening_or_payment",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "静态姓名与资源面板按当前证据复用，状态变化与未确认动作保持原校验"
         }
       ]
     },
@@ -22088,6 +22343,19 @@
           ],
           "status": "已纳入",
           "reason": "传送确认超时后原预览失效，不能再次确认同一选择"
+        },
+        {
+          "id": "tests.brawl.test_multi_transmit.MultiTransmitReadingTests.test_static_transfer_names_reuse_text_but_selected_cards_and_positions_stay_current",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-multi-transmit-empty.png",
+            "tests/fixtures/brawl/brawl-multi-transmit-one.png",
+            "tests/fixtures/brawl/brawl-multi-transmit-two.png"
+          ],
+          "status": "已纳入",
+          "reason": "静态姓名与资源面板按当前证据复用，状态变化与未确认动作保持原校验"
         }
       ]
     },

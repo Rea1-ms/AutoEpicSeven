@@ -49,6 +49,7 @@ from tasks.brawl.assets.assets_brawl import (
     TOKEN_ICON,
     TRANSMIT_CHECK,
 )
+from tasks.brawl.observation_cache import active_panel_observation_cache
 from tasks.brawl.rules import TOTAL_ROUNDS, team_capacity
 
 # The same continuation text overlays different hero artwork. Keep its lower
@@ -137,6 +138,7 @@ class BrawlVision:
             raise ValueError("Brawl requires a 1280x720 RGB uint8 screenshot")
         self.image = image
         self.lang = "cn"
+        self._panel_context = None
 
     def matches(self, button, *, color=False):
         similarity = HERO_RESULT_SIMILARITY if button is HERO_RESULT_CHECK else 0.9
@@ -182,13 +184,28 @@ class BrawlVision:
                 (token[2] + 3, top, end, bottom))
 
     def preparation_panel(self):
+        cache = active_panel_observation_cache()
+        mode = None
+        if cache is not None:
+            # Direct header readers (upgrade/transfer/grid) need the same
+            # current page proof as observe(). A remembered panel alone cannot
+            # authorize reads through a popup, missing title or level animation.
+            current = self._panel_context or self.observe(read_panel=False)
+            if (current.state not in (BrawlScreen.PREPARATION, BrawlScreen.FORMATION_SELECTION,
+                                      BrawlScreen.LEVEL_UP, BrawlScreen.TRANSMIT_SELECTION)
+                    or current.game_mode is None or current.reason):
+                raise ObservationError("Preparation counters require a recognized unobscured context")
+            mode = current.game_mode
         areas = [OCR_ROUND.area, OCR_LEVEL.area, OCR_DEPLOYMENT.area, *self.currency_areas()]
         regions = [self.image[y1:y2, x1:x2] for x1, y1, x2, y2 in areas]
         # These five fields contain Latin level labels and digits only. The
         # numeric/English model reads the isolated zero as a digit instead of
         # Chinese punctuation; never replace an OCR punctuation mark with zero.
-        values = Ocr(OCR_ROUND, lang="en", name="BRAWL_PANEL").ocr_multi_lines(regions)
-        return parse_panel(values)
+        def read():
+            values = Ocr(OCR_ROUND, lang="en", name="BRAWL_PANEL").ocr_multi_lines(regions)
+            return parse_panel(values)
+
+        return read() if cache is None else cache.read(mode, areas, regions, read)
 
     def observe(self, *, read_panel=True):
         modes = [mode for mode, button in (
@@ -197,6 +214,9 @@ class BrawlVision:
         mode = modes[0] if len(modes) == 1 else None
 
         def observed(state, panel=None, reason=""):
+            cache = active_panel_observation_cache()
+            if cache is not None:
+                cache.observe_scene(state.value, mode)
             speed = None
             if state == BrawlScreen.COMBAT or (state == BrawlScreen.PREPARATION and panel is not None):
                 one = self.matches(SPEED_ONE_CHECK, color=True)
@@ -260,8 +280,16 @@ class BrawlVision:
                 return observed(BrawlScreen.PREPARATION, reason="Level label is transitioning or obscured")
             if not read_panel:
                 return observed(BrawlScreen.PREPARATION)
+            # This proof lives only on the current observe() call stack.
+            # Repeating every scene template inside preparation_panel() would
+            # cost more than the numeric OCR saved on some frames. Direct
+            # callers still perform their own scene check, and neither a later
+            # screenshot nor an exception can inherit this temporary proof.
+            self._panel_context = observed(BrawlScreen.PREPARATION)
             try:
                 return observed(BrawlScreen.PREPARATION, self.preparation_panel())
             except ObservationError as exc:
                 return observed(BrawlScreen.PREPARATION, reason=str(exc))
+            finally:
+                self._panel_context = None
         return observed(BrawlScreen.UNKNOWN, reason="No supported scene anchor")

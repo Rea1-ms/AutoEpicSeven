@@ -17,6 +17,7 @@ from module.logger import logger
 from tasks.brawl.bench import BenchHero, read_bench
 from tasks.brawl.board import _cells, logical_to_screen, read_formation_grid
 from tasks.brawl.cursor import read_cursor
+from tasks.brawl.observation_cache import invalidate_panel_observation_cache
 from tasks.brawl.placement import _selected_entry
 from tasks.brawl.roster import (
     FormationKind,
@@ -297,9 +298,9 @@ class BrawlFormation(BrawlBenchScanner):
         self.device.click(ClickButton(area, name=name))
         # Preserve the shared cooldown before the next independent interaction.
         # Inside one requested grid, a positively observed selection authorizes
-        # its one destination/cancel immediately. The opened/clicked flags keep
-        # repeated frames from repeating either click; elapsed time alone never
-        # proves a transition or permits another interaction.
+        # its destination/cancel immediately. Actual formation actions are never
+        # repeated; only a still-verified read-only cancellation may retry after
+        # this cooldown. Elapsed time alone cannot authorize another click.
         self.interval_reset(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)
 
     def _grid_action(self, scan, expected_cells, *, action=None, expected_panel=None):
@@ -319,8 +320,17 @@ class BrawlFormation(BrawlBenchScanner):
         expected_panel = scan.panel if probe else expected_panel
         timeout = Timer(self.STEP_TIMEOUT).start()
         opened = grid_seen = clicked = returned = False
+        cancel_attempts = 0
         observed_cells = None
         skip_first_screenshot = True
+
+        def failed(reason):
+            logger.warning(
+                f"Brawl formation stopped: {reason}; state={current.state.value}, "
+                f"observation_reason={current.reason!r}, probe={probe}, opened={opened}, "
+                f"clicked={clicked}, returned={returned}, cancel_attempts={cancel_attempts}")
+            return ObservationError(reason)
+
         while True:
             if skip_first_screenshot:
                 skip_first_screenshot = False
@@ -331,19 +341,19 @@ class BrawlFormation(BrawlBenchScanner):
             current = vision.observe(read_panel=False)
             if current.state not in (BrawlScreen.PREPARATION, BrawlScreen.FORMATION_SELECTION,
                                      BrawlScreen.UNKNOWN):
-                raise ObservationError("The formation scene changed")
+                raise failed("The formation scene changed")
             if current.game_mode is not None and current.game_mode != scan.game_mode:
-                raise ObservationError("The formation game mode changed")
+                raise failed("The formation game mode changed")
             if current.state == BrawlScreen.UNKNOWN or current.game_mode is None:
                 if timeout.reached():
-                    raise ObservationError("Formation observation timed out")
+                    raise failed("Formation observation timed out")
                 continue
             if current.state == BrawlScreen.FORMATION_SELECTION:
                 if not opened or returned:
-                    raise ObservationError("An unrequested selection grid appeared")
+                    raise failed("An unrequested selection grid appeared")
                 grid_seen = True
             elif grid_seen and not clicked:
-                raise ObservationError("Selection closed before its requested action")
+                raise failed("Selection closed before its requested action")
             elif clicked:
                 # Even unread preparation closes the pending grid. A later
                 # grid is a new interaction and cannot confirm the old click.
@@ -351,18 +361,28 @@ class BrawlFormation(BrawlBenchScanner):
             # Template-only scene checks continue during the action interval.
             # OCR is fresh at an actionable boundary or at positive return;
             # intermediate grid/animation frames cannot authorize another click.
+            retry_cancel = clicked and probe and current.state == BrawlScreen.FORMATION_SELECTION
             if clicked and current.state == BrawlScreen.FORMATION_SELECTION:
                 if timeout.reached():
-                    raise ObservationError("Formation response timed out")
-                continue
+                    raise failed("Formation response timed out")
+                # A lost read-only cancellation may be requested again, but a
+                # move, placement, swap or withdrawal must never be repeated.
+                # Retry only the still-open grid: any observed preparation ends
+                # this interaction, even if its counters are unreadable. The
+                # full current grid/bench/source checks below remain mandatory.
+                # Three total attempts share the original response deadline;
+                # retry clicks must not renew it and hide a persistent failure.
+                if (not retry_cancel or cancel_attempts >= 3
+                        or not self.interval_is_reached(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)):
+                    continue
             if opened and not clicked and current.state == BrawlScreen.PREPARATION:
                 if timeout.reached():
-                    raise ObservationError("Formation grid did not open")
+                    raise failed("Formation grid did not open")
                 continue
             if (not clicked and not opened
                     and not self.interval_is_reached(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)):
                 if timeout.reached():
-                    raise ObservationError("Formation response timed out")
+                    raise failed("Formation response timed out")
                 continue
             panel = current.panel
             if panel is None and not current.reason:
@@ -372,26 +392,26 @@ class BrawlFormation(BrawlBenchScanner):
                     panel = None
             if panel is None:
                 if timeout.reached():
-                    raise ObservationError("Formation counters remained unreadable")
+                    raise failed("Formation counters remained unreadable")
                 continue
             if panel != scan.panel and not (clicked and panel == expected_panel):
-                raise ObservationError("The formation context changed")
-            # Grid observations omit counters by default. Attach this frame's
-            # verified panel so downstream readers do not OCR it again. These
-            # values are local to this iteration and never survive a screenshot.
+                raise failed("The formation context changed")
+            # Grid observations omit counters by default. Attach the panel
+            # verified against this frame's numeric glyphs so downstream
+            # readers share it without another OCR request.
             current = replace(current, panel=panel)
             # Positive return precedes both the timeout and every action branch.
             if clicked and current.state == BrawlScreen.PREPARATION and panel == expected_panel:
                 if probe and not _bench_agrees(image, current, scan):
-                    raise ObservationError("The bench changed while closing selection")
+                    raise failed("The bench changed while closing selection")
                 return observed_cells
             if timeout.reached():
-                raise ObservationError("Formation response timed out")
-            if clicked:
+                raise failed("Formation response timed out")
+            if clicked and not retry_cancel:
                 continue
             viewport = read_bench(image, observation=current) if scan.heroes else None
             if not _bench_agrees(image, current, scan, viewport=viewport):
-                raise ObservationError("The current bench no longer matches its complete scan")
+                raise failed("The current bench no longer matches its complete scan")
             if current.state == BrawlScreen.PREPARATION:
                 if opened:
                     continue
@@ -405,7 +425,7 @@ class BrawlFormation(BrawlBenchScanner):
                     hero = scan.heroes[-1] if probe else next(
                         hero for hero in scan.heroes if hero.name == action.hero)
                     if entry is None or BenchHero(entry.name, entry.imprint) != hero:
-                        raise ObservationError("The requested bench hero is no longer selected")
+                        raise failed("The requested bench hero is no longer selected")
                     area = entry.plus_area
                 self._click_formation(area, "BrawlFormationOpen")
                 opened = True
@@ -416,14 +436,14 @@ class BrawlFormation(BrawlBenchScanner):
             if grid is None:
                 continue
             if grid.panel != scan.panel or _indices(grid.occupied) != expected_cells:
-                raise ObservationError("The actual occupied cells differ from the tracked roster")
+                raise failed("The actual occupied cells differ from the tracked roster")
             if source is None:
                 entry = _selected_entry(image, current, viewport=viewport)
                 hero = scan.heroes[-1] if probe else next(
                     hero for hero in scan.heroes if hero.name == action.hero)
                 if (grid.selected_source is not None or entry is None
                         or BenchHero(entry.name, entry.imprint) != hero):
-                    raise ObservationError("The selected hero changed inside the grid")
+                    raise failed("The selected hero changed inside the grid")
             if probe:
                 observed_cells = _indices(grid.occupied)
                 # _bench_agrees above proves an empty queue with a fresh asset,
@@ -435,7 +455,7 @@ class BrawlFormation(BrawlBenchScanner):
                     continue
                 if (control.panel != scan.panel
                         or (control.source.screen_row, control.source.screen_column) != source):
-                    raise ObservationError("The withdrawal control belongs to a different source")
+                    raise failed("The withdrawal control belongs to a different source")
                 area, name = control.button_area, "BrawlFormationWithdraw"
             else:
                 # Occupation and the current grid anchor determine where to
@@ -447,9 +467,17 @@ class BrawlFormation(BrawlBenchScanner):
                 targets = [cell for cell in available
                            if (cell.screen_row, cell.screen_column) == action.target]
                 if len(targets) != 1:
-                    raise ObservationError("The requested destination has no positive control")
+                    raise failed("The requested destination has no positive control")
                 x, y = targets[0].center
                 area, name = (x, y, x + 1, y + 1), "BrawlFormationTarget"
             self._click_formation(area, name)
+            if action is not None and action.kind in (FormationKind.PLACE, FormationKind.WITHDRAW):
+                invalidate_panel_observation_cache()
+            if probe:
+                cancel_attempts += 1
+                if retry_cancel:
+                    logger.info(f"Brawl formation cancellation retried: attempt={cancel_attempts}, "
+                                f"state={current.state.value}")
+            if not clicked:
+                timeout.reset()
             clicked = True
-            timeout.reset()
