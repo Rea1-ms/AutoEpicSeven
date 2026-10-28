@@ -15,7 +15,7 @@ class ManualConfig:
     Restart > MissionReward > Gacha > SanctuaryDaily > Mail > Store > PetsGift
     > DataUpdate > Arena > Combat > SanctuaryMonthly > Knights
     > SecretShop > Pets > CommunityAio
-    > LimitedActivity > SpecialActivity > BuyPenguins > EquipmentReroll > Episode
+    > LimitedActivity > SpecialActivity
     """
 
     """
