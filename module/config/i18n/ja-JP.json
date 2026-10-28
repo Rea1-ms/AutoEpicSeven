@@ -739,11 +739,11 @@
     },
     "Domain": {
       "name": "副本種類",
-      "help": "緊急ミッション完了後に続ける通常副本を、討伐、精霊祭壇、Saint 3-7、Episode 4 の素材ルートから選択します。",
+      "help": "緊急ミッション完了後に続ける通常副本を、討伐、精霊祭壇、Saint 3-7、メインストーリー素材から選択します。",
       "Hunt": "討伐",
       "SpiritAltar": "精霊祭壇",
       "Saint37": "Saint 3-7",
-      "Episode4": "Episode 4"
+      "Episode4": "メインストーリー素材"
     },
     "Element": {
       "name": "属性",
@@ -784,9 +784,18 @@
       "Hell": "地獄",
       "Dimensional": "異界"
     },
+    "EpisodeNumber": {
+      "name": "対象エピソード",
+      "help": "素材を集めるエピソードを選択します。初期値はエピソード4です。",
+      "1": "エピソード1",
+      "2": "エピソード2",
+      "3": "エピソード3",
+      "4": "エピソード4",
+      "5": "エピソード5"
+    },
     "Episode4Material": {
-      "name": "Episode 4 目標素材",
-      "help": "Episode 4 のみ有効です。選んだ素材に応じて章とステージへ移動します。",
+      "name": "目標素材",
+      "help": "選択したエピソードで行き先が登録されている素材のみを表示します。エピソード1はレア触媒のみです。エピソード4では専用の育成素材4種類も末尾に表示します。エピソードを変更しても、選択済みの素材は自動変更しません。",
       "CATALYST_RARE_BENEVOLENT": "Rare Benevolent Catalyst",
       "CATALYST_RARE_SECRET": "Rare Secret Catalyst",
       "CATALYST_RARE_FIGHTING_SPIRIT": "Rare Fighting Spirit Catalyst",
@@ -1372,6 +1381,7 @@
     },
     "Text": {
       "InvalidFeedBack": "形式エラーです。例: {0}",
+      "SelectUnavailable": "現在の選択肢は使用できません。選び直してください。",
       "Clear": "クリア",
       "CommunityAuthCredentials": "コミュニティログイン認証情報",
       "CommunityAuthCredentialsHelp": "現在の CK 状態を確認し、Electron ログイン画面を開いてローカル認証情報を更新します。",

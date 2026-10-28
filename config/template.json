@@ -235,6 +235,7 @@
       "AltarGrade": "Hell",
       "AltarBalance": false,
       "HuntGrade": "Hell",
+      "EpisodeNumber": 4,
       "Episode4Material": "BREATH_OF_KARMA",
       "FastCombat": true,
       "BurnoutMode": "Daily",

@@ -21,7 +21,8 @@ class EpisodeReplay(InteractionReplay):
         self.task._prepare_stamina = self.stamina
         self.task._last_star_condition = self.last_star_condition
         self.task._selector_episode = self.selector
-        self.task._chapter_entries = lambda: self.frame.get('chapter_entries', [])
+        self.task._is_episode_selector = self.selector_ready
+        self.task._chapter_entries = self.chapter_entries
         self.task.is_in_main = lambda **kw: self.frame.get('main', False)
         self.task.match_template_color = self.color
         self.task.match_color = self.fixed_color
@@ -91,6 +92,16 @@ class EpisodeReplay(InteractionReplay):
             return Episode._selector_episode(self.task)
         return self.frame.get('selector')
 
+    def selector_ready(self):
+        if self.frame.get('fixture'):
+            return Episode._is_episode_selector(self.task)
+        return 'selector' in self.frame
+
+    def chapter_entries(self):
+        if self.frame.get('fixture'):
+            return Episode._chapter_entries(self.task)
+        return self.frame.get('chapter_entries', [])
+
     def route(self, page, **kwargs):
         self.actions.append((self.index, f'route:{page.name}'))
         self.screenshot()
@@ -103,3 +114,35 @@ class EpisodeReplay(InteractionReplay):
         self.click_record = type(self.click_record)(
             (item for item in self.click_record if item != button.name), maxlen=30,
         )
+
+
+class Episode4Replay(EpisodeReplay):
+    """Run the farming navigator with real entry frames and explicit map states."""
+
+    def __init__(self, frames, clock, *, episode=4, material='BREATH_OF_KARMA'):
+        super().__init__(frames, clock)
+        self.task.config.Combat_EpisodeNumber = episode
+        self.task.config.Combat_Episode4Material = material
+        self.task._is_prepare_page = lambda: self.frame.get('prepare', False)
+        self.task._is_episode_choose_page = self.farming_map
+        self.task._is_episode_stage_page = self.farming_map
+        self.task._ocr_episode_number = self.episode_number
+        self.task._ocr_episode_chapter_index = self.chapter_index
+        self.task._ocr_episode_current_stage_index = lambda: self.frame.get('stage', 0)
+        self.task._episode_has_target_material = lambda plan: self.frame.get('material', False)
+        self.task._handle_dungeon_additional = lambda: False
+
+    def farming_map(self):
+        if self.frame.get('fixture'):
+            return Episode._is_episode_choose_page(self.task) or Episode._is_episode_stage_page(self.task)
+        return self.frame.get('map_ready', False)
+
+    def episode_number(self):
+        if self.frame.get('fixture'):
+            return Episode._ocr_episode_number(self.task)
+        return self.frame.get('episode')
+
+    def chapter_index(self):
+        if self.frame.get('fixture'):
+            return Episode._ocr_episode_chapter_index(self.task)
+        return self.frame.get('chapter', 0)

@@ -148,6 +148,7 @@ class CombatRuntimeMixin:
                 or self._is_side_story_map_page()
                 or self._is_supporter_page()
                 or self._is_urgent_tasks_detail_page()
+                or self._is_episode_selector()
                 or self._is_episode_choose_page()
                 or self._is_episode_stage_page()
                 or self._is_episode_supporter_page()

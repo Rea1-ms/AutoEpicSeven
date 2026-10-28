@@ -487,6 +487,20 @@ page_episode.link(BACK, destination=page_main)
 page_main.link(MAIN_GOTO_EPISODE, destination=page_episode)
 page_menu.link(MENU_GOTO_EPISODE, destination=page_episode)
 
+if server_.lang in ('cn', 'global_cn'):
+    from tasks.dungeon.assets.assets_dungeon_episode_navigation import (
+        EPISODE_SELECTOR_CHECK,
+        EPISODE_SELECTOR_ENTRY,
+    )
+
+    # The blue map control opens this selector. BACK on the selector returns
+    # to the current map; BACK on the map leaves adventure for the main page.
+    # Keep those transitions separate so switching episodes cannot leave the
+    # adventure flow, and match the entry before using its current position.
+    page_episode_selector = Page(EPISODE_SELECTOR_CHECK)
+    page_episode.link(EPISODE_SELECTOR_ENTRY, destination=page_episode_selector, match_before_click=True)
+    page_episode_selector.link(BACK, destination=page_episode)
+
 # Side Story
 page_side_story = Page(SIDE_STORY_CHECK)
 page_side_story.link(BACK, destination=page_main)
@@ -600,6 +614,8 @@ shared_toolbar_pages = [
 ]
 if server_.lang == "global_cn":
     shared_toolbar_pages.append(page_urgent_tasks)
+if server_.lang in ('cn', 'global_cn'):
+    shared_toolbar_pages.append(page_episode_selector)
 
 link_shared_toolbar(*shared_toolbar_pages)
 

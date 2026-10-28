@@ -10,7 +10,6 @@ from module.exception import RequestHumanTakeover
 from module.logger import logger
 from module.ocr.language import resolve_ocr_lang
 from module.ocr.ocr import Ocr
-from tasks.base.assets.assets_base_page import BACK
 from tasks.base.page import page_episode
 from tasks.base.ui import UI
 from tasks.dungeon.assets.assets_dungeon_action import (
@@ -20,19 +19,6 @@ from tasks.dungeon.assets.assets_dungeon_action import (
     COMBAT_START,
 )
 from tasks.dungeon.assets.assets_dungeon_configs_episode_entry import (
-    GOTO_CHAPTER,
-    GOTO_EPISODE_1,
-    GOTO_EPISODE_1_CHECK,
-    GOTO_EPISODE_2,
-    GOTO_EPISODE_2_CHECK,
-    GOTO_EPISODE_3,
-    GOTO_EPISODE_3_CHECK,
-    GOTO_EPISODE_4,
-    GOTO_EPISODE_4_CHECK,
-    GOTO_EPISODE_5,
-    GOTO_EPISODE_5_CHECK,
-    GOTO_EPISODE_6,
-    GOTO_EPISODE_6_CHECK,
     NEXT_CHAPTER,
     READY_TO_FIGHT,
 )
@@ -50,7 +36,6 @@ from tasks.dungeon.assets.assets_dungeon_episode_map import (
     EPISODE_MAP_CHECK,
     EPISODE_STAGE_COMPLETE,
     EPISODE_STAGE_LOCKED,
-    OCR_EPISODE_NUMBER,
     OCR_EPISODE_STAGE_LIST,
 )
 from tasks.dungeon.assets.assets_dungeon_episode_reward import (
@@ -69,16 +54,8 @@ from tasks.dungeon.assets.assets_dungeon_state import (
 )
 from tasks.dungeon.entry import CombatEntryMixin
 from tasks.dungeon.episode import EpisodeNavigateMixin, OcrEpisodeLabel
+from tasks.dungeon.episode_navigation import EPISODE_ENTRIES
 from tasks.dungeon.execute import detect_auto_combat_state
-
-EPISODE_ENTRIES = {
-    1: (GOTO_EPISODE_1, GOTO_EPISODE_1_CHECK),
-    2: (GOTO_EPISODE_2, GOTO_EPISODE_2_CHECK),
-    3: (GOTO_EPISODE_3, GOTO_EPISODE_3_CHECK),
-    4: (GOTO_EPISODE_4, GOTO_EPISODE_4_CHECK),
-    5: (GOTO_EPISODE_5, GOTO_EPISODE_5_CHECK),
-    6: (GOTO_EPISODE_6, GOTO_EPISODE_6_CHECK),
-}
 
 
 @dataclass(frozen=True)
@@ -127,12 +104,12 @@ class Episode(EpisodeNavigateMixin, CombatEntryMixin, UI):
         )
 
     def _map_identity(self):
-        episode = re.fullmatch(r'Episode\s*([1-6])', self._text(OCR_EPISODE_NUMBER), re.IGNORECASE)
+        episode = self._ocr_episode_number()
         chapter_text = self._ocr_episode_chapter_text()
         chapter = re.match(r'(?:第\s*)?(\d{1,2})(?:\s*章|[.．、\s])', chapter_text)
         selected = parse_stage_index(self._ocr_episode_current_stage_text())
         if episode and chapter:
-            return (int(episode[1]), int(chapter[1])), selected
+            return (episode, int(chapter[1])), selected
         return None, selected
 
     def _read_stages(self):
@@ -191,18 +168,6 @@ class Episode(EpisodeNavigateMixin, CombatEntryMixin, UI):
             self.interval_reset(button, interval=self.ACTION_INTERVAL)
             return True
         return False
-
-    def _selector_episode(self):
-        for number, (_, check) in EPISODE_ENTRIES.items():
-            if self.match_template_color(check, threshold=25):
-                return number
-        return None
-
-    def _chapter_entries(self):
-        # Each returned button carries this frame's coordinates. Never click
-        # the wrapper's default coordinate after a failed or older match.
-        entries = GOTO_CHAPTER.match_multi_template(self.device.image)
-        return sorted(entries, key=lambda item: (item.area[1], item.area[0]))
 
     def run(self):
         """Continue unlocked main-story nodes using the currently configured team.
@@ -364,10 +329,10 @@ class Episode(EpisodeNavigateMixin, CombatEntryMixin, UI):
                 if not entered and timeout.reached():
                     return 'navigation_timeout'
                 if number and identity[0] != number:
-                    # The title-row arrow is NEXT_CHAPTER in Episode 4 too;
-                    # it cannot select a different episode. Back out to the
-                    # episode selector and let its recognized entries decide.
-                    self._click(BACK)
+                    # BACK leaves adventure. The blue map control opens the
+                    # episode selector; require its current-frame match before
+                    # clicking, then confirm the selected panel on a new frame.
+                    self._handle_episode_switch()
                     continue
                 if identity in exhausted_chapters:
                     if self.appear(NEXT_CHAPTER):
@@ -491,10 +456,16 @@ class Episode(EpisodeNavigateMixin, CombatEntryMixin, UI):
                 continue
 
             selected_episode = self._selector_episode()
-            if selected_episode is not None:
+            if self._is_episode_selector():
                 if timeout.reached():
                     return 'navigation_timeout'
                 active_episode = active_episode or selected_episode
+                if active_episode is None:
+                    # Prelude/side-story panels do not identify a numbered
+                    # episode. A missing title may also be a loading frame.
+                    # With no configured target, wait for positive identity
+                    # within the navigation deadline instead of guessing.
+                    continue
                 if selected_episode != active_episode:
                     chapter_timeout.clear()
                     entry, _ = EPISODE_ENTRIES[active_episode]

@@ -1,6 +1,9 @@
 # ruff: noqa: E402
 """Historical manual assertions adapted to the account-free offline runner."""
+import json
 import unittest
+from copy import deepcopy
+from pathlib import Path
 from module.config import server as _test_server
 _test_server.set_lang("global_cn")
 
@@ -13,7 +16,7 @@ from datetime import datetime, timedelta
 
 from module.config.config import MultiSetWrapper
 
-from module.config.config_updater import ConfigUpdater, normalize_execution_mode
+from module.config.config_updater import ConfigGenerator, ConfigUpdater, normalize_execution_mode
 
 from module.config.stored.classes import StoredArenaFlag, StoredStamina
 
@@ -383,3 +386,167 @@ class ManualChecks(unittest.TestCase):
                 }
         hidden = updater.get_hidden_args(combat_burnout)
         self.assertTrue("Combat.Combat.FastCombatCount" not in hidden, 'combat burnout keeps fast count')
+
+
+class EpisodeConfigTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        # Build definitions in memory so these checks never generate files or
+        # read an account configuration while testing the configuration source.
+        cls.args = ConfigGenerator().args
+
+    def updater(self):
+        updater = ConfigUpdater()
+        updater.args = self.args
+        return updater
+
+    def test_defaults_keep_legacy_material_selection(self):
+        from module.config.config_generated import GeneratedConfig
+
+        definitions = self.args["Combat"]["Combat"]
+        generated = ConfigUpdater().args["Combat"]["Combat"]
+        for field in ("Domain", "EpisodeNumber", "Episode4Material"):
+            self.assertEqual(generated[field], definitions[field])
+        self.assertEqual(GeneratedConfig.Combat_EpisodeNumber, 4)
+        root = Path(__file__).resolve().parents[2]
+        template = json.loads((root / "config/template.json").read_text(encoding="utf-8"))
+        self.assertEqual(template["Combat"]["Combat"]["EpisodeNumber"], 4)
+        self.assertEqual(template["Combat"]["Combat"]["Episode4Material"], "BREATH_OF_KARMA")
+        self.assertIn("Episode4", definitions["Domain"]["option"])
+        self.assertEqual(definitions["EpisodeNumber"]["value"], 4)
+        self.assertEqual(definitions["EpisodeNumber"]["option"], [1, 2, 3, 4, 5])
+        self.assertEqual(definitions["Episode4Material"]["value"], "BREATH_OF_KARMA")
+        self.assertEqual(
+            definitions["Episode4Material"]["option"],
+            [
+                "CATALYST_RARE_BENEVOLENT", "CATALYST_RARE_SECRET",
+                "CATALYST_RARE_FIGHTING_SPIRIT", "CATALYST_RARE_SNIPER",
+                "HEART_OF_THE_WOODS", "CATALYST_RARE_OATH",
+                "CATALYST_RARE_MYSTERIOUS", "CATALYST_EPIC_OATH",
+                "BREATH_OF_KARMA", "CATALYST_EPIC_SNIPER",
+                "CATALYST_EPIC_FIGHTING_SPIRIT", "FROZEN_SEED",
+                "CATALYST_EPIC_BENEVOLENT", "CATALYST_EPIC_MYSTERIOUS",
+                "CATALYST_EPIC_SECRET", "TRACES_OF_BRILLIANCE",
+            ],
+        )
+
+    def test_old_configs_default_to_four_without_replacing_material(self):
+        updater = self.updater()
+        for material in self.args["Combat"]["Combat"]["Episode4Material"]["option"]:
+            with self.subTest(material=material):
+                old = {"Combat": {"Combat": {"Domain": "Episode4", "Episode4Material": material}}}
+                snapshot = deepcopy(old)
+                updated = updater.config_update(old)["Combat"]["Combat"]
+                self.assertEqual(updated["Domain"], "Episode4")
+                self.assertEqual(updated["EpisodeNumber"], 4)
+                self.assertEqual(updated["Episode4Material"], material)
+                self.assertEqual(old, snapshot)
+
+    def test_explicit_episode_and_material_survive_config_update(self):
+        updater = self.updater()
+        for episode in range(1, 6):
+            with self.subTest(episode=episode):
+                old = {"Combat": {"Combat": {
+                    "Domain": "Episode4", "EpisodeNumber": episode,
+                    "Episode4Material": "BREATH_OF_KARMA",
+                }}}
+                updated = updater.config_update(old)["Combat"]["Combat"]
+                self.assertEqual(updated["EpisodeNumber"], episode)
+                # Unsupported combinations must reach business validation; the
+                # config updater must not silently choose a different material.
+                self.assertEqual(updated["Episode4Material"], "BREATH_OF_KARMA")
+
+    def test_episode_controls_follow_domain_without_changing_saved_values(self):
+        updater = self.updater()
+        paths = {"Combat.Combat.EpisodeNumber", "Combat.Combat.Episode4Material"}
+        self.assertTrue(paths.issubset(updater.get_hidden_args({})))
+        data = {"Combat": {"Combat": {
+            "EpisodeNumber": 2, "Episode4Material": "CATALYST_RARE_SECRET",
+        }}}
+        for domain in ("Episode4", "Hunt", "Episode4", "SpiritAltar", "Saint37", "Episode4"):
+            with self.subTest(domain=domain):
+                data["Combat"]["Combat"]["Domain"] = domain
+                for fast_combat in (True, False):
+                    data["Combat"]["Combat"]["FastCombat"] = fast_combat
+                    snapshot = deepcopy(data)
+                    hidden = updater.get_hidden_args(data)
+                    self.assertEqual(paths & hidden, set() if domain == "Episode4" else paths)
+                    self.assertEqual(data, snapshot)
+                    updated = updater.config_update(data)["Combat"]["Combat"]
+                    self.assertEqual(updated["EpisodeNumber"], 2)
+                    self.assertEqual(updated["Episode4Material"], "CATALYST_RARE_SECRET")
+
+    def test_translations_cover_episode_choices_and_legacy_materials(self):
+        root = Path(__file__).resolve().parents[2] / "module" / "config" / "i18n"
+        material_options = self.args["Combat"]["Combat"]["Episode4Material"]["option"]
+        for language in ("zh-CN", "zh-TW", "en-US", "ja-JP", "es-ES"):
+            with self.subTest(language=language):
+                combat = json.loads((root / f"{language}.json").read_text(encoding="utf-8"))["Combat"]
+                fields = {
+                    "Domain": ("help", "Episode4"),
+                    "EpisodeNumber": ("name", "help", "1", "2", "3", "4", "5"),
+                    "Episode4Material": ("name", "help", *material_options),
+                }
+                for field, keys in fields.items():
+                    for key in keys:
+                        value = combat[field][key]
+                        self.assertTrue(value.strip(), f"{language}: Combat.{field}.{key}")
+                        self.assertFalse(value.startswith("Combat."), value)
+
+    def test_material_options_follow_episode_and_put_growth_materials_last(self):
+        updater = self.updater()
+        path = "Combat.Combat.Episode4Material"
+        rare = [
+            "CATALYST_RARE_BENEVOLENT", "CATALYST_RARE_SECRET",
+            "CATALYST_RARE_FIGHTING_SPIRIT", "CATALYST_RARE_SNIPER",
+            "CATALYST_RARE_OATH", "CATALYST_RARE_MYSTERIOUS",
+        ]
+        catalysts = rare + [
+            "CATALYST_EPIC_OATH", "CATALYST_EPIC_SNIPER",
+            "CATALYST_EPIC_FIGHTING_SPIRIT", "CATALYST_EPIC_BENEVOLENT",
+            "CATALYST_EPIC_MYSTERIOUS", "CATALYST_EPIC_SECRET",
+        ]
+        growth = ["HEART_OF_THE_WOODS", "BREATH_OF_KARMA", "FROZEN_SEED", "TRACES_OF_BRILLIANCE"]
+        expected = {1: rare, 2: catalysts, 3: catalysts, 4: catalysts + growth, 5: catalysts}
+        for episode, options in expected.items():
+            with self.subTest(episode=episode):
+                data = {"Combat": {"Combat": {"EpisodeNumber": episode}}}
+                self.assertEqual(updater.get_select_options(data), {path: options})
+        self.assertEqual(updater.get_select_options({}), {path: catalysts + growth})
+
+    def test_invalid_episodes_offer_no_materials(self):
+        updater = self.updater()
+        for episode in (0, 6, -1, "4", None, True, 4.0, [], {}):
+            with self.subTest(episode=episode):
+                data = {"Combat": {"Combat": {"EpisodeNumber": episode}}}
+                self.assertEqual(updater.get_select_options(data), {"Combat.Combat.Episode4Material": []})
+
+    def test_filtered_options_preserve_saved_values_and_shared_definitions(self):
+        updater = self.updater()
+        original_args = deepcopy(updater.args)
+        data = {"Combat": {"Combat": {
+            "Domain": "Episode4", "EpisodeNumber": 4, "Episode4Material": "BREATH_OF_KARMA",
+        }}}
+        for episode in (4, 1, 2, 5, 4):
+            with self.subTest(episode=episode):
+                data["Combat"]["Combat"]["EpisodeNumber"] = episode
+                original_data = deepcopy(data)
+                selected = updater.get_select_options(data)
+                self.assertEqual(data, original_data)
+                self.assertEqual(updater.args, original_args)
+                self.assertEqual(updater.config_update(data)["Combat"]["Combat"]["Episode4Material"],
+                                 "BREATH_OF_KARMA")
+                selected["Combat.Combat.Episode4Material"].clear()
+                self.assertTrue(updater.get_select_options(data)["Combat.Combat.Episode4Material"])
+                self.assertEqual(updater.args, original_args)
+
+    def test_unavailable_selection_hint_is_defined_in_all_languages(self):
+        generator = ConfigGenerator()
+        self.assertIn("SelectUnavailable", generator.gui["Text"])
+        root = Path(__file__).resolve().parents[2] / "module" / "config" / "i18n"
+        for language in ("zh-CN", "zh-TW", "en-US", "ja-JP", "es-ES"):
+            with self.subTest(language=language):
+                data = json.loads((root / f"{language}.json").read_text(encoding="utf-8"))
+                value = data["Gui"]["Text"]["SelectUnavailable"]
+                self.assertTrue(value.strip())
+                self.assertFalse(value.startswith("Gui."), value)

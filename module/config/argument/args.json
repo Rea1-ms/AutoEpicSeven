@@ -1122,6 +1122,17 @@
           "Dimensional"
         ]
       },
+      "EpisodeNumber": {
+        "type": "select",
+        "value": 4,
+        "option": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
       "Episode4Material": {
         "type": "select",
         "value": "BREATH_OF_KARMA",

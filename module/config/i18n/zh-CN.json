@@ -739,11 +739,11 @@
     },
     "Domain": {
       "name": "副本类型",
-      "help": "选择紧急任务完成后继续刷取的常规副本类型，包括讨伐、精灵祭坛、圣女3-7和 Episode 4 定向材料。",
+      "help": "选择紧急任务完成后继续刷取的常规副本类型，包括讨伐、精灵祭坛、圣女3-7和主线材料。",
       "Hunt": "讨伐",
       "SpiritAltar": "精灵祭坛",
       "Saint37": "圣女3-7",
-      "Episode4": "Episode 4"
+      "Episode4": "主线材料"
     },
     "Element": {
       "name": "属性",
@@ -784,9 +784,18 @@
       "Hell": "地狱",
       "Dimensional": "异界"
     },
+    "EpisodeNumber": {
+      "name": "目标篇章",
+      "help": "选择主线材料所在篇章，默认为第四篇。",
+      "1": "第一篇",
+      "2": "第二篇",
+      "3": "第三篇",
+      "4": "第四篇",
+      "5": "第五篇"
+    },
     "Episode4Material": {
-      "name": "第四季目标材料",
-      "help": "仅对 Episode 4 生效。根据材料自动路由到对应章节与关卡。",
+      "name": "目标材料",
+      "help": "下拉列表仅显示当前篇章已登记的材料。第一篇仅有稀有催化剂；第四篇另有四种专属养成材料，排列在末尾。切换篇章不会自动更换已选材料。",
       "CATALYST_RARE_BENEVOLENT": "稀有慈爱催化剂",
       "CATALYST_RARE_SECRET": "稀有隐匿催化剂",
       "CATALYST_RARE_FIGHTING_SPIRIT": "稀有斗志催化剂",
@@ -1372,6 +1381,7 @@
     },
     "Text": {
       "InvalidFeedBack": "格式错误。 示例：{0}",
+      "SelectUnavailable": "当前选项不适用，请重新选择",
       "Clear": "清除",
       "CommunityAuthCredentials": "社区登录凭证",
       "CommunityAuthCredentialsHelp": "用于查看当前凭证状态，并拉起 Electron 登录窗口更新本地凭证。",

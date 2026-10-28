@@ -2,7 +2,8 @@
 
 import json
 import unittest
-from unittest.mock import patch
+from types import SimpleNamespace
+from unittest.mock import Mock, patch
 
 from module.config import server
 
@@ -50,8 +51,8 @@ from tasks.dungeon.episode_push import (
     parse_stage_index,
     parse_story_stamina,
 )
-from tests.support.episode import MANIFEST, EpisodeReplay
-from tests.support.interaction import scene
+from tests.support.episode import MANIFEST, Episode4Replay, EpisodeReplay
+from tests.support.interaction import InteractionReplay, scene
 from tests.support.offline import ControlledClock, fixture_image
 
 
@@ -95,8 +96,454 @@ class LegacyRuleTests(unittest.TestCase):
         self.assertIs(current_stage > target.stage, False)
 
 
+class EpisodeMaterialRuleTests(unittest.TestCase):
+    def test_all_catalyst_targets_match_user_table(self):
+        from tasks.dungeon.episode import EPISODE_MATERIAL_PLANS
+        from tasks.dungeon.episode_materials import EPISODE_MATERIAL_STAGES
+
+        # An independent transcription of the supplied 54 destinations catches
+        # swapped material names, missing episodes and lost special suffixes.
+        rows = {
+            'EPIC_FIGHTING_SPIRIT': (None, '6-7', '10-7', '8-7', '7-6'),
+            'EPIC_OATH': (None, '5-12', '8-6', '6-8', '8S-7'),
+            'EPIC_SECRET': (None, '9-2', '7-2', '10-6', '10S-4'),
+            'EPIC_SNIPER': (None, '10-3', '8-7', '7-10', '10-5'),
+            'EPIC_MYSTERIOUS': (None, '7-10', '7-10', '9-10', '9-6'),
+            'EPIC_BENEVOLENT': (None, '8-10', '9-10', '9-7', '8-7'),
+            'RARE_FIGHTING_SPIRIT': ('1-5', '3-10', '6-9', '3-10', '6-7'),
+            'RARE_OATH': ('2-5', '2-9', '2-8', '5-5', '1-7'),
+            'RARE_SECRET': ('3-5', '5-6', '4-7', '2-10', '2-8'),
+            'RARE_SNIPER': ('4-4', '1-10', '3-10', '4-8', '5-7'),
+            'RARE_MYSTERIOUS': ('5-9', '4-5', '1-8', '5-10', '3-6'),
+            'RARE_BENEVOLENT': ('6-6', '4-10', '5-10', '1-9', '4-7'),
+        }
+        expected = {
+            episode: {f'CATALYST_{key}': targets[episode - 1] for key, targets in rows.items()
+                      if targets[episode - 1] is not None}
+            for episode in range(1, 6)
+        }
+        self.assertEqual(sum(map(len, expected.values())), 54)
+        self.assertEqual(set(EPISODE_MATERIAL_PLANS), set(expected))
+        for episode, targets in expected.items():
+            with self.subTest(episode=episode):
+                actual = {key: value.stage_label for key, value in EPISODE_MATERIAL_PLANS[episode].items()
+                          if key.startswith('CATALYST_')}
+                self.assertEqual(actual, targets)
+                data = {key: f'{chapter}-{stage}' for key, (chapter, stage)
+                        in EPISODE_MATERIAL_STAGES[episode].items() if key.startswith('CATALYST_')}
+                self.assertEqual(data, targets)
+
+    def test_legacy_default_and_growth_targets_remain_episode_four(self):
+        from tasks.dungeon.episode import EPISODE_MATERIAL_PLANS
+
+        dummy = _DummyEpisode()
+        dummy.config = SimpleNamespace()
+        self.assertIs(dummy._combat_episode_target(), EPISODE4_MATERIAL_PLANS['BREATH_OF_KARMA'])
+        self.assertIs(EPISODE4_MATERIAL_PLANS, EPISODE_MATERIAL_PLANS[4])
+        growth = {'HEART_OF_THE_WOODS': '4-10', 'BREATH_OF_KARMA': '6-10',
+                  'FROZEN_SEED': '8-9', 'TRACES_OF_BRILLIANCE': '10-9'}
+        for key, label in growth.items():
+            dummy.config.Combat_Episode4Material = key
+            self.assertEqual(dummy._combat_episode_target().stage_label, label)
+            for episode in (1, 2, 3, 5):
+                self.assertNotIn(key, EPISODE_MATERIAL_PLANS[episode])
+
+    def test_unsupported_material_combination_stops_before_actions(self):
+        for episode, material in ((1, 'CATALYST_EPIC_OATH'), (2, 'BREATH_OF_KARMA'),
+                                  (3, 'FROZEN_SEED'), (5, 'HEART_OF_THE_WOODS'),
+                                  (6, 'CATALYST_RARE_OATH'), (4, 'UNKNOWN_MATERIAL')):
+            with self.subTest(episode=episode, material=material), ControlledClock() as clock:
+                replay = Episode4Replay([scene('READY_TO_FIGHT', prepare=True)], clock,
+                                        episode=episode, material=material)
+                self.device = replay
+                with self.assertRaises(RequestHumanTakeover):
+                    replay.task._navigate_episode4()
+                self.assertEqual(replay.actions, [])
+
+    def test_chapter_ocr_preserves_special_suffix(self):
+        dummy = _DummyEpisode()
+        for text, expected in (('第8章 相会', 8), ('第8S章 相会', '8S'),
+                               ('第8 S章 相会', '8S'), ('第10章 不完整的意义', 10),
+                               ('第10S章 连接', '10S'), ('第10s章 连接', '10S'),
+                               ('第105章', 0), ('第110章', 0), ('第10SS章', 0),
+                               ('', 0), ('没有章节编号', 0)):
+            with self.subTest(text=text), patch.object(dummy, '_ocr_episode_chapter_text', return_value=text):
+                self.assertEqual(dummy._ocr_episode_chapter_index(), expected)
+
+    def test_episode_stamina_costs_limit_fast_combat_counts(self):
+        for episode, cost, count in ((1, 8, 4), (2, 12, 3), (3, 16, 2), (4, 20, 1), (5, 20, 1)):
+            with self.subTest(episode=episode), ControlledClock():
+                combat = Combat.__new__(Combat)
+                combat.config = SimpleNamespace(Combat_EpisodeNumber=episode, Combat_FastCombatCount=10)
+                combat._dungeon_domain = lambda: 'Episode4'
+                combat._handle_dungeon_additional = lambda: False
+                combat._is_prepare_page = lambda: True
+                combat._is_fast_combat_locked = lambda: False
+                combat._ensure_fast_combat_state = lambda **kwargs: True
+                combat._ocr_fast_combat_remaining_times = lambda: 10
+                combat._set_prepare_count = Mock(return_value=True)
+                self.assertEqual(combat._combat_stage_stamina_cost(), cost)
+                self.assertTrue(combat._combat_supports_fast_combat())
+                self.assertEqual(combat._prepare_fast_combat(stamina=39), ('ready', count))
+                self.assertEqual(combat._set_prepare_count.call_args.args[0], count)
+                combat._set_prepare_count.reset_mock()
+                self.assertEqual(combat._prepare_fast_combat(stamina=cost - 1), ('no_stamina', 0))
+                combat._set_prepare_count.assert_not_called()
+
+
+class EpisodeMaterialNavigationTests(unittest.TestCase):
+    def setUp(self):
+        server.set_lang('global_cn')
+
+    def test_map_identity_is_read_once_until_a_chapter_arrow_changes_it(self):
+        frames = [scene('NEXT_CHAPTER', map_ready=True, episode=2, chapter=6),
+                  scene('CATALYST_EPIC_MYSTERIOUS_INDEX', map_ready=True,
+                        episode=2, chapter=7, stage=7, seconds=1.3),
+                  scene(map_ready=True, episode=2, chapter=7, stage=7, seconds=.2),
+                  scene('READY_TO_FIGHT', map_ready=True, episode=2, chapter=7,
+                        stage=10, material=True, seconds=1.1),
+                  scene('READY_TO_FIGHT', map_ready=True, episode=2, chapter=7,
+                        stage=10, material=True, seconds=.2), scene(prepare=True)]
+        with ControlledClock() as clock:
+            replay = Episode4Replay(frames, clock, episode=2, material='CATALYST_EPIC_MYSTERIOUS')
+            self.device = replay
+            with patch.object(replay.task, '_ocr_episode_number', wraps=replay.episode_number) as episode, \
+                    patch.object(replay.task, '_ocr_episode_chapter_index', wraps=replay.chapter_index) as chapter:
+                self.assertTrue(replay.task._navigate_episode4())
+            self.assertEqual(episode.call_count, 1)
+            self.assertEqual(chapter.call_count, 2)
+            self.assertEqual(replay.actions, [(0, 'NEXT_CHAPTER'),
+                                             (1, 'CATALYST_EPIC_MYSTERIOUS_INDEX'),
+                                             (3, 'READY_TO_FIGHT')])
+            self.assertEqual(replay.index, 5)
+
+    def test_failed_selector_navigation_can_return_to_main(self):
+        from tasks.dungeon.runtime import CombatRuntimeMixin
+
+        frames = [scene('BACK', selector=5), scene('BACK', selector=5, seconds=.4),
+                  scene('BACK', selector=5, seconds=.7),
+                  scene('BACK', map_ready=True, episode=5, seconds=1.1), scene(main=True)]
+        with ControlledClock() as clock:
+            replay = Episode4Replay(frames, clock)
+            self.device = replay
+            replay.task.COMBAT_EXIT_TIMEOUT_SECONDS = Combat.COMBAT_EXIT_TIMEOUT_SECONDS
+            # Episode's shared farming replay does not inherit unrelated
+            # dungeon-page recognizers. These explicit absent observations
+            # leave the selector and map recognizers as the only exit path.
+            for name in ('_is_stage_page', '_is_combat_general_board', '_is_combat_season_board',
+                         '_is_combat_urgent_board', '_is_side_story_page', '_is_time_book_page',
+                         '_is_episode_preview_page', '_is_side_story_map_page', '_is_supporter_page',
+                         '_is_urgent_tasks_detail_page'):
+                setattr(replay.task, name, lambda: False)
+            self.assertTrue(CombatRuntimeMixin._leave_to_main(replay.task))
+            self.assertEqual(replay.actions, [(0, 'BACK'), (2, 'BACK'), (3, 'BACK')])
+            replay.assert_retried(self, 'BACK', 1)
+            self.assertEqual(replay.index, 4)
+
+    def test_captured_chapter_ocr_distinguishes_ten_and_ten_special(self):
+        for stamp, chapter in (('20261028-161745-685', 10), ('20261028-161748-124', '10S')):
+            with self.subTest(stamp=stamp), ControlledClock() as clock:
+                replay = Episode4Replay([scene(fixture=stamp)], clock, episode=5)
+                self.device = replay
+                self.assertEqual(replay.task._ocr_episode_number(), 5)
+                self.assertEqual(replay.task._ocr_episode_chapter_index(), chapter)
+                self.assertEqual(replay.actions, [])
+
+    def test_each_episode_uses_configured_entry_before_material_selection(self):
+        selectors = {1: '20261021-220739-548', 2: '20261021-220738-490',
+                     3: '20261021-220737-336', 4: '20261021-220735-802',
+                     5: '20261021-220734-052'}
+        # These map/prepare observations are synthetic. Only the episode tabs,
+        # selected titles and enterable stars use captured pixels.
+        chapters = {1: 2, 2: 2, 3: 2, 4: 5, 5: 1}
+        for episode, stamp in selectors.items():
+            frames = [scene(fixture='20261021-220728-697'), scene(fixture=stamp),
+                      scene('READY_TO_FIGHT', map_ready=True, episode=episode,
+                            chapter=chapters[episode], material=True), scene(prepare=True)]
+            with self.subTest(episode=episode), ControlledClock() as clock:
+                replay = Episode4Replay(frames, clock, episode=episode, material='CATALYST_RARE_OATH')
+                self.device = replay
+                self.assertTrue(replay.task._navigate_episode4())
+                self.assertEqual(replay.actions, [(0, f'GOTO_EPISODE_{episode}'),
+                                                 (1, 'EPISODE_CHAPTER_STAR_result0'),
+                                                 (2, 'READY_TO_FIGHT')])
+
+    def test_special_chapters_use_confirmed_order_in_both_directions(self):
+        for material, current, target, direction in (
+            ('CATALYST_EPIC_OATH', 8, '8S', 'NEXT_CHAPTER'),
+            ('CATALYST_EPIC_OATH', 9, '8S', 'LAST_CHAPTER'),
+            ('CATALYST_EPIC_SECRET', 10, '10S', 'NEXT_CHAPTER'),
+            ('CATALYST_EPIC_SNIPER', '10S', 10, 'LAST_CHAPTER'),
+            ('CATALYST_EPIC_MYSTERIOUS', '8S', 9, 'NEXT_CHAPTER'),
+            ('CATALYST_EPIC_BENEVOLENT', '8S', 8, 'LAST_CHAPTER'),
+        ):
+            frames = [scene(direction, 'READY_TO_FIGHT', map_ready=True, episode=5,
+                            chapter=current, material=True),
+                      scene('READY_TO_FIGHT', map_ready=True, episode=5,
+                            chapter=target, material=True, seconds=1.3), scene(prepare=True)]
+            with self.subTest(current=current, target=target), ControlledClock() as clock:
+                replay = Episode4Replay(frames, clock, episode=5, material=material)
+                self.device = replay
+                self.assertTrue(replay.task._navigate_episode4())
+                self.assertEqual(replay.actions, [(0, direction), (1, 'READY_TO_FIGHT')])
+
+    def test_repeated_chapter_frames_never_start_wrong_material(self):
+        frames = [scene('NEXT_CHAPTER', 'READY_TO_FIGHT', 'CATALYST_EPIC_SECRET_INDEX',
+                        map_ready=True, episode=5, chapter=10, material=True, seconds=seconds)
+                  for seconds in (.5, .5, .8, .5)]
+        frames += [scene('READY_TO_FIGHT', map_ready=True, episode=5, chapter='10S',
+                         material=True, seconds=1.3), scene(prepare=True)]
+        with ControlledClock() as clock:
+            replay = Episode4Replay(frames, clock, episode=5, material='CATALYST_EPIC_SECRET')
+            self.device = replay
+            self.assertTrue(replay.task._navigate_episode4())
+            self.assertEqual(replay.actions, [(0, 'NEXT_CHAPTER'), (2, 'NEXT_CHAPTER'),
+                                             (4, 'READY_TO_FIGHT')])
+            replay.assert_retried(self, 'NEXT_CHAPTER', 1)
+
+    def test_ignored_special_chapter_switch_times_out_without_material_actions(self):
+        frames = [scene('NEXT_CHAPTER', 'READY_TO_FIGHT', 'CATALYST_EPIC_SECRET_INDEX',
+                        map_ready=True, episode=5, chapter=10, material=True, seconds=15.1)
+                  for _ in range(4)]
+        with ControlledClock() as clock:
+            replay = Episode4Replay(frames, clock, episode=5, material='CATALYST_EPIC_SECRET')
+            self.device = replay
+            self.assertFalse(replay.task._navigate_episode4())
+            self.assertEqual(replay.actions, [(0, 'NEXT_CHAPTER'), (1, 'NEXT_CHAPTER'), (2, 'NEXT_CHAPTER')])
+
+    def test_material_stage_selection_keeps_four_branch_priority(self):
+        index = 'CATALYST_RARE_FIGHTING_SPIRIT_INDEX'
+        common = {'map_ready': True, 'episode': 5, 'chapter': 6}
+        ready = scene('READY_TO_FIGHT', index, stage=7, material=True, seconds=1.1, **common)
+        scenarios = (
+            ([scene('READY_TO_FIGHT', index, stage=8, material=True, **common)],
+             [(0, 'READY_TO_FIGHT')]),
+            ([scene(index, stage=8, **common), scene(index, stage=1, seconds=1.1, **common), ready],
+             [(0, 'swipe'), (1, index), (2, 'READY_TO_FIGHT')]),
+            ([scene(index, stage=6, **common), ready], [(0, index), (1, 'READY_TO_FIGHT')]),
+            ([scene(stage=6, **common), scene(index, stage=6, seconds=1.1, **common), ready],
+             [(0, 'EPISODE_STAGE_SEARCH_LOWER_THIRD'), (1, index), (2, 'READY_TO_FIGHT')]),
+        )
+        for frames, expected in scenarios:
+            with self.subTest(expected=expected), ControlledClock() as clock:
+                replay = Episode4Replay([*frames, scene(prepare=True)], clock,
+                                        episode=5, material='CATALYST_RARE_FIGHTING_SPIRIT')
+                self.device = replay
+                self.assertTrue(replay.task._navigate_episode4())
+                self.assertEqual(replay.actions, expected)
+
+
+class EpisodeFastOnlyTests(unittest.TestCase):
+    def test_captured_fast_result_is_not_locked_prepare_and_exhausted_prepare_is(self):
+        server.set_lang('global_cn')
+        task = Combat.__new__(Combat)
+        task.config = SimpleNamespace(Emulator_GameLanguage='cn')
+        task.interval_timer = {}
+        for stamp, prepare in (('20261028-174355-065', False), ('20261028-174449-194', True)):
+            with self.subTest(stamp=stamp):
+                task.device = SimpleNamespace(image=fixture_image(MANIFEST, stamp),
+                                              stuck_record_add=lambda *args: None)
+                self.assertEqual(task._is_prepare_page(), prepare)
+                self.assertEqual(task._is_repeat_combat_unavailable(), prepare)
+                if prepare:
+                    task.appear_then_click = Mock(side_effect=AssertionError('No repeat click'))
+                    resources = task._update_standard_prepare_resource_snapshot()
+                    self.assertEqual(resources['stamina'].value, 701)
+                    task._update_prepare_resource_snapshot()
+                    task.appear_then_click.assert_not_called()
+                    self.assertTrue(task._is_fast_combat_locked())
+
+    def prepare_run(self, clock):
+        server.set_lang('global_cn')
+        replay = InteractionReplay(Combat, [scene('REPEAT_COMBAT_UNAVAILABLE')], clock)
+        self.device = replay
+        task = replay.task
+        task.config.Combat_Domain = 'Episode4'
+        task.config.Combat_EpisodeNumber = 2
+        task.config.Combat_Episode4Material = 'CATALYST_EPIC_MYSTERIOUS'
+        task.config.UrgentTasks_Enable = False
+        task.match_color = replay.appear
+        task._prepare_background_repeat_check_context = Mock()
+        task._adopt_existing_background_repeat_combat = Mock()
+        task._combat_runtime_active = Mock(return_value=False)
+        task._prepare_rune_balance_target = Mock()
+        task._dungeon_navigate = Mock(return_value=True)
+        task.ocr_resource_bar_status = Mock(return_value={'stamina': SimpleNamespace(value=60)})
+        task._prepare_fast_combat = Mock(return_value=('ready', 5))
+        task._run_fast_combat = Mock(return_value=True)
+        task._prepare_repeat_combat = Mock(side_effect=AssertionError('Locked repeat must not open'))
+        task._run_repeat_combat = Mock(side_effect=AssertionError('Locked repeat must not start'))
+        task._leave_to_main = Mock(return_value=True)
+        task._combat_should_call_mission_reward = Mock(return_value=False)
+        task._combat_runtime_clear = Mock()
+        task._rune_balance_after_settled = Mock()
+        task._combat_delay_after_settled = Mock()
+        return task
+
+    def test_locked_repeat_uses_top_resources_and_finishes_available_fast_combat(self):
+        with ControlledClock() as clock:
+            task = self.prepare_run(clock)
+            self.assertTrue(task.run())
+            task.ocr_resource_bar_status.assert_called_once()
+            self.assertEqual(task.ocr_resource_bar_status.call_args.kwargs['layout'],
+                             ('stamina', 'gold', 'skystone'))
+            task._prepare_fast_combat.assert_called_once_with(
+                stamina=60, use_max=False, skip_first_screenshot=True)
+            task._run_fast_combat.assert_called_once_with(skip_first_screenshot=True)
+            task._prepare_repeat_combat.assert_not_called()
+            task._run_repeat_combat.assert_not_called()
+            task._leave_to_main.assert_called_once_with(skip_first_screenshot=True)
+            task._combat_delay_after_settled.assert_called_once()
+            self.assertEqual(self.device.actions, [])
+
+    def test_locked_repeat_and_unusable_fast_combat_do_not_claim_completion(self):
+        for state in ('exhausted', 'disabled', 'locked'):
+            with self.subTest(state=state), ControlledClock() as clock:
+                task = self.prepare_run(clock)
+                if state == 'exhausted':
+                    task._prepare_fast_combat.return_value = ('fallback', 0)
+                elif state == 'disabled':
+                    task.config.Combat_FastCombat = False
+                else:
+                    task._is_fast_combat_locked = Mock(return_value=True)
+                with self.assertRaises(RequestHumanTakeover):
+                    task.run()
+                task._run_fast_combat.assert_not_called()
+                task._prepare_repeat_combat.assert_not_called()
+                task._run_repeat_combat.assert_not_called()
+                task._combat_delay_after_settled.assert_not_called()
+                self.assertEqual(self.device.actions, [])
+
+
 def frontier(index=3, **kwargs):
     return scene(map_ready=True, selected=index, rows=[StoryStage(index, (95, 218, 300, 246), False, False)], **kwargs)
+
+
+class EpisodeNavigationReplayTests(unittest.TestCase):
+    def setUp(self):
+        server.set_lang('global_cn')
+
+    def test_daily_captured_entry_then_ocr_chapter_selection_reaches_prepare(self):
+        # The captured entry pages are real; Episode 4's map, chapter changes
+        # and destination prepare are explicit simulated states, not evidence
+        # of a continuous emulator run or of the material matcher itself.
+        frames = [scene(fixture='20261021-220726-466'),
+                  scene(fixture='20261021-220726-466', seconds=1),
+                  scene(fixture='20261021-220726-466', seconds=1.1),
+                  scene(fixture='20261021-220728-697'),
+                  scene(fixture='20261021-220728-697', seconds=1),
+                  scene(fixture='20261021-220728-697', seconds=1.1),
+                  scene(fixture='20261021-220735-802'),
+                  scene(fixture='20261021-220735-802', seconds=1),
+                  scene(fixture='20261021-220735-802', seconds=1.1),
+                  scene('LAST_CHAPTER', map_ready=True, episode=4, chapter=7),
+                  scene('LAST_CHAPTER', map_ready=True, episode=4, chapter=7, seconds=.5),
+                  scene('BREATH_OF_KARMA_INDEX', map_ready=True, episode=4, chapter=6, stage=9, seconds=1),
+                  scene('BREATH_OF_KARMA_INDEX', map_ready=True, episode=4, chapter=6, stage=9),
+                  scene('READY_TO_FIGHT', map_ready=True, episode=4, chapter=6, stage=10,
+                        material=True, seconds=1.1),
+                  scene('SUPPORTER_CHECK', 'CHOOSE_TEAM'), scene(prepare=True)]
+        with ControlledClock() as clock:
+            replay = Episode4Replay(frames, clock)
+            self.device = replay
+            self.assertTrue(replay.task._navigate_episode4())
+            self.assertEqual(replay.actions, [
+                (0, 'EPISODE_SELECTOR_ENTRY'), (2, 'EPISODE_SELECTOR_ENTRY'),
+                (3, 'GOTO_EPISODE_4'), (5, 'GOTO_EPISODE_4'),
+                (6, 'EPISODE_CHAPTER_STAR_result0'), (8, 'EPISODE_CHAPTER_STAR_result0'),
+                (9, 'LAST_CHAPTER'), (11, 'BREATH_OF_KARMA_INDEX'),
+                (13, 'READY_TO_FIGHT'), (14, 'CHOOSE_TEAM'),
+            ])
+            for name in ('EPISODE_SELECTOR_ENTRY', 'GOTO_EPISODE_4', 'EPISODE_CHAPTER_STAR_result0'):
+                replay.assert_retried(self, name, 2)
+            for index, name, area in replay.positions:
+                if name == 'EPISODE_CHAPTER_STAR_result0':
+                    self.assertTrue(414 <= area[0] < area[2] <= 440, (index, area))
+                    self.assertTrue(289 <= area[1] < area[3] <= 315, (index, area))
+
+    def test_daily_correct_episode_changes_only_chapter_before_material_actions(self):
+        frames = [scene('NEXT_CHAPTER', map_ready=True, episode=4, chapter=5, material=True),
+                  scene('READY_TO_FIGHT', map_ready=True, episode=4, chapter=6, material=True, seconds=1.3),
+                  scene(prepare=True)]
+        with ControlledClock() as clock:
+            replay = Episode4Replay(frames, clock)
+            self.device = replay
+            self.assertTrue(replay.task._navigate_episode4())
+            self.assertEqual(replay.actions, [(0, 'NEXT_CHAPTER'), (1, 'READY_TO_FIGHT')])
+
+    def test_daily_unreadable_episode_or_chapter_never_selects_material(self):
+        for episode, chapter in ((None, 6), (4, 0)):
+            frames = [scene('READY_TO_FIGHT', 'BREATH_OF_KARMA_INDEX', map_ready=True,
+                            episode=episode, chapter=chapter, material=True, seconds=15.1)
+                      for _ in range(4)]
+            with self.subTest(episode=episode, chapter=chapter), ControlledClock() as clock:
+                replay = Episode4Replay(frames, clock)
+                self.device = replay
+                self.assertFalse(replay.task._navigate_episode4())
+                self.assertEqual(replay.actions, [])
+
+    def test_daily_missing_or_ignored_selector_controls_have_bounded_retries(self):
+        for buttons in ((), ('EPISODE_SELECTOR_ENTRY',)):
+            frames = [scene(*buttons, map_ready=True, episode=6, chapter=6, seconds=15.1) for _ in range(4)]
+            with self.subTest(buttons=buttons), ControlledClock() as clock:
+                replay = Episode4Replay(frames, clock)
+                self.device = replay
+                self.assertFalse(replay.task._navigate_episode4())
+                expected = [(index, 'EPISODE_SELECTOR_ENTRY') for index in range(3)] if buttons else []
+                self.assertEqual(replay.actions, expected)
+
+    def test_daily_missing_star_never_reuses_old_coordinates(self):
+        first = ClickButton((418, 292, 432, 312), name='STAR_FIRST')
+        second = ClickButton((778, 292, 792, 312), name='STAR_SECOND')
+        frames = [scene(selector=4, chapter_entries=[first, second])]
+        frames += [scene(selector=4, chapter_entries=[second], seconds=15.1) for _ in range(3)]
+        with ControlledClock() as clock:
+            replay = Episode4Replay(frames, clock)
+            self.device = replay
+            self.assertFalse(replay.task._navigate_episode4())
+            self.assertEqual(replay.actions, [(0, 'STAR_FIRST')])
+
+    def test_story_captured_blue_entry_and_star_switch_to_target_episode(self):
+        frames = [scene(fixture='20261021-220726-466'),
+                  scene(fixture='20261021-220728-697'),
+                  scene(fixture='20261021-220735-802'),
+                  frontier(identity=(4, 1)), scene('EPISODE_STORY_COMPLETE'),
+                  frontier(4, identity=(4, 1))]
+        with ControlledClock() as clock:
+            replay = EpisodeReplay(frames, clock)
+            self.device = replay
+            self.assertEqual(replay.task._push(number=4, limit=1), 'stage_limit')
+            self.assertEqual(replay.actions, [
+                (0, 'EPISODE_SELECTOR_ENTRY'), (1, 'GOTO_EPISODE_4'),
+                (2, 'EPISODE_CHAPTER_STAR_result0'), (3, 'READY_TO_FIGHT'),
+                (4, 'EPISODE_STORY_COMPLETE'),
+            ])
+            self.assertEqual(replay.task.completed_stages, 1)
+
+    def test_prelude_and_side_story_panels_can_switch_to_configured_episode(self):
+        for stamp in ('20261021-220732-535', '20261021-220740-914'):
+            frames = [scene(fixture=stamp), scene(fixture='20261021-220735-802'),
+                      frontier(identity=(4, 1)), scene('EPISODE_STORY_COMPLETE'), frontier(4, identity=(4, 1))]
+            with self.subTest(stamp=stamp), ControlledClock() as clock:
+                replay = EpisodeReplay(frames, clock)
+                self.device = replay
+                self.assertEqual(replay.task._push(number=4, limit=1), 'stage_limit')
+                self.assertEqual(replay.actions[:2], [(0, 'GOTO_EPISODE_4'), (1, 'EPISODE_CHAPTER_STAR_result0')])
+            with self.subTest(no_target=stamp), ControlledClock() as clock:
+                replay = EpisodeReplay([scene(fixture=stamp, seconds=15.1) for _ in range(4)], clock)
+                self.device = replay
+                self.assertEqual(replay.task._push(), 'navigation_timeout')
+                self.assertEqual(replay.actions, [])
+
+        first = ClickButton((418, 292, 433, 311), name='CHAPTER_FIRST')
+        frames = [scene(selector=None), scene(selector=6, chapter_entries=[first]),
+                  frontier(), scene('EPISODE_STORY_COMPLETE'), frontier(4)]
+        with ControlledClock() as clock:
+            replay = EpisodeReplay(frames, clock)
+            self.device = replay
+            self.assertEqual(replay.task._push(limit=1), 'stage_limit')
+            self.assertEqual(replay.actions, [(1, 'CHAPTER_FIRST'), (2, 'READY_TO_FIGHT'),
+                                             (3, 'EPISODE_STORY_COMPLETE')])
 
 
 class EpisodePushTests(unittest.TestCase):
@@ -875,10 +1322,12 @@ class EpisodePushTests(unittest.TestCase):
         frames = [frontier(identity=(6, 1)), scene('GOTO_EPISODE_4', selector=6),
                   scene(selector=4, chapter_entries=[entry]), frontier(identity=(4, 1)),
                   scene('EPISODE_STORY_COMPLETE'), frontier(4, identity=(4, 1))]
+        frames[0]['buttons'] = frozenset(('EPISODE_SELECTOR_ENTRY',))
         with ControlledClock() as clock:
             replay = self.replay(frames, clock)
             self.assertEqual(replay.task._push(number=4, limit=1), 'stage_limit')
-            self.assertEqual(replay.clicks('BACK'), [0])
+            self.assertEqual(replay.clicks('EPISODE_SELECTOR_ENTRY'), [0])
+            self.assertEqual(replay.clicks('BACK'), [])
             self.assertEqual(replay.clicks('GOTO_EPISODE_4'), [1])
             self.assertEqual(replay.clicks('NEXT_CHAPTER'), [])
 
@@ -941,3 +1390,82 @@ class EpisodePushTests(unittest.TestCase):
             app.episode()
             tool.assert_called_once_with(config=app.config, device=app.device, task='Episode')
             tool.return_value.run.assert_called_once_with()
+
+
+class EpisodeSelectionRecognitionTests(unittest.TestCase):
+    MAP = '20261021-220726-466'
+    SELECTORS = (
+        # Both 0/15 cards are enterable; the locked cards have no star.
+        ('20261021-220728-697', 6, ((559, 292), (379, 536), (739, 536))),
+        ('20261021-220732-535', None, ((418, 292), (778, 292), (598, 536), (958, 536))),
+        ('20261021-220734-052', 5, ((418, 292), (778, 292), (1138, 292), (598, 536), (958, 536))),
+        ('20261021-220735-802', 4, ((418, 292), (778, 292), (1138, 292), (598, 536), (958, 536))),
+        ('20261021-220737-336', 3, ((418, 292), (778, 292), (1138, 292), (598, 536), (958, 536))),
+        ('20261021-220738-490', 2, ((418, 292), (778, 292), (1138, 292), (598, 536), (958, 536))),
+        ('20261021-220739-548', 1, ((418, 292), (778, 292), (1138, 292), (598, 536), (958, 536))),
+        ('20261021-220740-914', None, ((418, 292), (778, 292), (598, 536), (958, 536))),
+    )
+
+    def setUp(self):
+        server.set_lang('global_cn')
+
+    def test_captured_selector_titles_stars_and_map_entry(self):
+        from tasks.dungeon.assets.assets_dungeon_episode_navigation import (
+            EPISODE_SELECTOR_ENTRY,
+        )
+
+        for stamp, number, positions in ((self.MAP, None, ()), *self.SELECTORS):
+            with self.subTest(stamp=stamp), ControlledClock() as clock:
+                replay = EpisodeReplay([scene(fixture=stamp)], clock)
+                self.device = replay
+                self.assertEqual(replay.task._is_episode_selector(), stamp != self.MAP)
+                self.assertEqual(replay.task._selector_episode(), number)
+                entries = replay.task._chapter_entries()
+                self.assertEqual([tuple(entry.area[:2]) for entry in entries], list(positions))
+                self.assertEqual([tuple(entry.button) for entry in entries],
+                                 [(x, y, x + 15, y + 19) for x, y in positions])
+                self.assertEqual(replay.task.match_template_color(EPISODE_SELECTOR_ENTRY, threshold=25),
+                                 stamp == self.MAP)
+                self.assertEqual(replay.actions, [])
+
+    def test_captured_episode_tabs_match_current_rows(self):
+        from tasks.dungeon.episode_navigation import EPISODE_ENTRIES
+
+        rows = {1: 203, 2: 273, 3: 343, 4: 413, 5: 483, 6: 623}
+        for stamp in (self.MAP, *(stamp for stamp, _, _ in self.SELECTORS)):
+            with self.subTest(stamp=stamp), ControlledClock() as clock:
+                replay = EpisodeReplay([scene(fixture=stamp)], clock)
+                self.device = replay
+                for number, (button, _) in EPISODE_ENTRIES.items():
+                    self.assertEqual(replay.task.appear(button), stamp != self.MAP)
+                    if stamp != self.MAP:
+                        self.assertEqual(tuple(button.button), (76, rows[number], 151, rows[number] + 19))
+                self.assertEqual(replay.actions, [])
+
+    def test_selection_rejects_old_maps_prepare_rewards_and_dimmed_overlay(self):
+        from tasks.dungeon.assets.assets_dungeon_episode_navigation import (
+            EPISODE_SELECTOR_ENTRY,
+        )
+
+        for stamp in ('20261019-201919-177', '20261019-201925-028',
+                      '20261019-202201-945', '20261019-201943-776'):
+            with self.subTest(stamp=stamp), ControlledClock() as clock:
+                replay = EpisodeReplay([scene(fixture=stamp)], clock)
+                self.device = replay
+                self.assertFalse(replay.task._is_episode_selector())
+                self.assertIsNone(replay.task._selector_episode())
+                self.assertEqual(replay.task._chapter_entries(), [])
+                if stamp != '20261019-201919-177':
+                    self.assertFalse(replay.task.match_template_color(EPISODE_SELECTOR_ENTRY, threshold=25))
+                self.assertEqual(replay.actions, [])
+        for stamp in (self.MAP, '20261021-220735-802'):
+            with self.subTest(obscured=stamp), ControlledClock() as clock:
+                replay = EpisodeReplay([scene(fixture=stamp)], clock)
+                self.device = replay
+                replay.image = (fixture_image(MANIFEST, stamp) * .5).astype('uint8')
+                # Correlation alone can still find stars through a dimmed
+                # overlay. The selector's color guard owns permission to act.
+                self.assertFalse(replay.task._is_episode_selector())
+                self.assertIsNone(replay.task._selector_episode())
+                self.assertFalse(replay.task._handle_episode_switch())
+                self.assertEqual(replay.actions, [])

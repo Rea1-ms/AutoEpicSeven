@@ -1,12 +1,13 @@
 from module.logger import logger
 from tasks.base.resource_bar import RESOURCE_BAR_LAYOUT_MAIN
+from tasks.dungeon.episode_materials import EPISODE_STAMINA_COST
 
 SERVER_REPEAT_LEIF_STAMINA = 80
 
 # Stamina cost of one combat run from in-game data.
 # Dimensional hunt is intentionally absent: it consumes its own resource and
 # is out of burnout-mode scope for now.
-EPISODE4_STAMINA_COST = 20
+EPISODE4_STAMINA_COST = EPISODE_STAMINA_COST[4]
 SAINT37_STAMINA_COST = 8
 URGENT_TASKS_STAMINA_COST = {
     "Normal": 15,
@@ -61,7 +62,8 @@ class CombatBurnoutMixin:
         """
         domain = self._dungeon_domain()
         if domain == "Episode4":
-            return EPISODE4_STAMINA_COST
+            episode = getattr(self.config, "Combat_EpisodeNumber", 4)
+            return EPISODE_STAMINA_COST.get(int(episode))
         if domain == "Saint37":
             return SAINT37_STAMINA_COST
         if domain == "UrgentTasks":

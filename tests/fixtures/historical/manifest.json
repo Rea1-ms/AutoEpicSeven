@@ -1367,7 +1367,8 @@
         "tests.combat.test_episode.EpisodePushTests.test_captured_round_retries_without_double_counting_and_settles_both_rewards",
         "tests.combat.test_episode.EpisodePushTests.test_captured_story_team_marker_rejects_other_pages",
         "tests.combat.test_episode.EpisodePushTests.test_captured_supporter_recognition_rejects_unrelated_pages",
-        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages"
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages",
+        "tests.combat.test_episode.EpisodeSelectionRecognitionTests.test_selection_rejects_old_maps_prepare_rewards_and_dimmed_overlay"
       ]
     },
     "20261019-201922-561": {
@@ -1419,7 +1420,8 @@
         "tests.combat.test_episode.EpisodePushTests.test_captured_prepare_reads_actual_cost_and_available",
         "tests.combat.test_episode.EpisodePushTests.test_captured_story_team_marker_rejects_other_pages",
         "tests.combat.test_episode.EpisodePushTests.test_captured_supporter_recognition_rejects_unrelated_pages",
-        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages"
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages",
+        "tests.combat.test_episode.EpisodeSelectionRecognitionTests.test_selection_rejects_old_maps_prepare_rewards_and_dimmed_overlay"
       ]
     },
     "20261019-201930-080": {
@@ -1516,7 +1518,8 @@
         "tests.combat.test_episode.EpisodePushTests.test_captured_round_retries_without_double_counting_and_settles_both_rewards",
         "tests.combat.test_episode.EpisodePushTests.test_captured_story_team_marker_rejects_other_pages",
         "tests.combat.test_episode.EpisodePushTests.test_captured_supporter_recognition_rejects_unrelated_pages",
-        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages"
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages",
+        "tests.combat.test_episode.EpisodeSelectionRecognitionTests.test_selection_rejects_old_maps_prepare_rewards_and_dimmed_overlay"
       ]
     },
     "20261019-201947-654": {
@@ -1693,7 +1696,8 @@
         "tests.combat.test_episode.EpisodePushTests.test_captured_round_retries_without_double_counting_and_settles_both_rewards",
         "tests.combat.test_episode.EpisodePushTests.test_captured_story_team_marker_rejects_other_pages",
         "tests.combat.test_episode.EpisodePushTests.test_captured_supporter_recognition_rejects_unrelated_pages",
-        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages"
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages",
+        "tests.combat.test_episode.EpisodeSelectionRecognitionTests.test_selection_rejects_old_maps_prepare_rewards_and_dimmed_overlay"
       ]
     },
     "20261019-202204-254": {
@@ -2162,6 +2166,324 @@
         "tests.combat.test_episode.EpisodePushTests.test_captured_exploration_marker_rejects_normal_and_obscured_pages",
         "tests.combat.test_episode.EpisodePushTests.test_captured_exploration_stage_stops_before_navigation_or_starting",
         "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages"
+      ]
+    },
+    "20261021-220726-466": {
+      "path": "tests/fixtures/historical/input/episode_navigation/MuMu-20261021-220726-466.png",
+      "sha256": "e56b36834f225f4c6873fe1ba180639181e0e005a6a401a469fa0a9f111a4750",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "episode_6_map",
+      "source": "MuMu-20261021-220726-466.png",
+      "source_sha256": "a44afc09001b9ef85584aefde939e6e034a0938b6d6112fd17987071be9abe4c",
+      "privacy_redaction": [
+        [
+          580,
+          0,
+          1280,
+          66
+        ],
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_episode.EpisodeNavigationReplayTests.test_daily_captured_entry_then_ocr_chapter_selection_reaches_prepare",
+        "tests.combat.test_episode.EpisodeNavigationReplayTests.test_story_captured_blue_entry_and_star_switch_to_target_episode",
+        "tests.combat.test_episode.EpisodeSelectionRecognitionTests.test_captured_selector_titles_stars_and_map_entry",
+        "tests.combat.test_episode.EpisodeSelectionRecognitionTests.test_captured_episode_tabs_match_current_rows",
+        "tests.combat.test_episode.EpisodeSelectionRecognitionTests.test_selection_rejects_old_maps_prepare_rewards_and_dimmed_overlay"
+      ]
+    },
+    "20261021-220728-697": {
+      "path": "tests/fixtures/historical/input/episode_navigation/MuMu-20261021-220728-697.png",
+      "sha256": "541f02df9ae3778947b10f0e366019b552493b2c5d25ace83bef1e1657e10286",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "episode_6_selector",
+      "source": "MuMu-20261021-220728-697.png",
+      "source_sha256": "baabf768ee98743a46ccf41da85518dd57bf0114f8ef4d74002ba7867ece463f",
+      "privacy_redaction": [
+        [
+          580,
+          0,
+          1280,
+          66
+        ],
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_episode.EpisodeNavigationReplayTests.test_daily_captured_entry_then_ocr_chapter_selection_reaches_prepare",
+        "tests.combat.test_episode.EpisodeNavigationReplayTests.test_story_captured_blue_entry_and_star_switch_to_target_episode",
+        "tests.combat.test_episode.EpisodeSelectionRecognitionTests.test_captured_selector_titles_stars_and_map_entry",
+        "tests.combat.test_episode.EpisodeSelectionRecognitionTests.test_captured_episode_tabs_match_current_rows",
+        "tests.combat.test_episode.EpisodeMaterialNavigationTests.test_each_episode_uses_configured_entry_before_material_selection"
+      ]
+    },
+    "20261021-220732-535": {
+      "path": "tests/fixtures/historical/input/episode_navigation/MuMu-20261021-220732-535.png",
+      "sha256": "a33a93da754d0d5f04d257268e18796e6d72c08370fe8cd06fb007321dccd7d7",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "side_story_selector",
+      "source": "MuMu-20261021-220732-535.png",
+      "source_sha256": "8a5c22815ed1febd2aa921269988fd736b5705e59a07eaaabfe937f161689369",
+      "privacy_redaction": [
+        [
+          580,
+          0,
+          1280,
+          66
+        ],
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_episode.EpisodeNavigationReplayTests.test_prelude_and_side_story_panels_can_switch_to_configured_episode",
+        "tests.combat.test_episode.EpisodeSelectionRecognitionTests.test_captured_selector_titles_stars_and_map_entry",
+        "tests.combat.test_episode.EpisodeSelectionRecognitionTests.test_captured_episode_tabs_match_current_rows"
+      ]
+    },
+    "20261021-220734-052": {
+      "path": "tests/fixtures/historical/input/episode_navigation/MuMu-20261021-220734-052.png",
+      "sha256": "012ceb64510a042d6a7171d7bfc0feb1da4f9aa83b4455e83f6131f5d0416ca9",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "episode_5_selector",
+      "source": "MuMu-20261021-220734-052.png",
+      "source_sha256": "e11ae7bc45b7ece7b2c1ff58cdc857fb767dab7be79c5a20959cae9e4fd31746",
+      "privacy_redaction": [
+        [
+          580,
+          0,
+          1280,
+          66
+        ],
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_episode.EpisodeSelectionRecognitionTests.test_captured_selector_titles_stars_and_map_entry",
+        "tests.combat.test_episode.EpisodeSelectionRecognitionTests.test_captured_episode_tabs_match_current_rows",
+        "tests.combat.test_episode.EpisodeMaterialNavigationTests.test_each_episode_uses_configured_entry_before_material_selection"
+      ]
+    },
+    "20261021-220735-802": {
+      "path": "tests/fixtures/historical/input/episode_navigation/MuMu-20261021-220735-802.png",
+      "sha256": "879a64e74b85c147e757244ee3005f4a3ede8a3db0780245e2712b7ccf6f5b4b",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "episode_4_selector",
+      "source": "MuMu-20261021-220735-802.png",
+      "source_sha256": "741f8f77e291c460fbc3068ee9ebafcc57628ad0d772a113ab9a09aded94a01e",
+      "privacy_redaction": [
+        [
+          580,
+          0,
+          1280,
+          66
+        ],
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_episode.EpisodeNavigationReplayTests.test_daily_captured_entry_then_ocr_chapter_selection_reaches_prepare",
+        "tests.combat.test_episode.EpisodeNavigationReplayTests.test_story_captured_blue_entry_and_star_switch_to_target_episode",
+        "tests.combat.test_episode.EpisodeNavigationReplayTests.test_prelude_and_side_story_panels_can_switch_to_configured_episode",
+        "tests.combat.test_episode.EpisodeSelectionRecognitionTests.test_captured_selector_titles_stars_and_map_entry",
+        "tests.combat.test_episode.EpisodeSelectionRecognitionTests.test_captured_episode_tabs_match_current_rows",
+        "tests.combat.test_episode.EpisodeSelectionRecognitionTests.test_selection_rejects_old_maps_prepare_rewards_and_dimmed_overlay",
+        "tests.combat.test_episode.EpisodeMaterialNavigationTests.test_each_episode_uses_configured_entry_before_material_selection"
+      ]
+    },
+    "20261021-220737-336": {
+      "path": "tests/fixtures/historical/input/episode_navigation/MuMu-20261021-220737-336.png",
+      "sha256": "08ee8cb294216ab3466b067f24d0bc622dce368d5d7d719d2e3dc1feca319cd7",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "episode_3_selector",
+      "source": "MuMu-20261021-220737-336.png",
+      "source_sha256": "172562c43ac2f53808d4d0e011b0f3eb9c8cdd7402f861c5dac1b6dfe3b2c32e",
+      "privacy_redaction": [
+        [
+          580,
+          0,
+          1280,
+          66
+        ],
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_episode.EpisodeSelectionRecognitionTests.test_captured_selector_titles_stars_and_map_entry",
+        "tests.combat.test_episode.EpisodeSelectionRecognitionTests.test_captured_episode_tabs_match_current_rows",
+        "tests.combat.test_episode.EpisodeMaterialNavigationTests.test_each_episode_uses_configured_entry_before_material_selection"
+      ]
+    },
+    "20261021-220738-490": {
+      "path": "tests/fixtures/historical/input/episode_navigation/MuMu-20261021-220738-490.png",
+      "sha256": "f2d457fdcec785007e7f81854d7a446bad054b03b1f9cb557bad3a6af12b7f7a",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "episode_2_selector",
+      "source": "MuMu-20261021-220738-490.png",
+      "source_sha256": "2732017d9343ade3f8039e23f88ac340f1909ebcd7980513344cb3e3fbf50400",
+      "privacy_redaction": [
+        [
+          580,
+          0,
+          1280,
+          66
+        ],
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_episode.EpisodeSelectionRecognitionTests.test_captured_selector_titles_stars_and_map_entry",
+        "tests.combat.test_episode.EpisodeSelectionRecognitionTests.test_captured_episode_tabs_match_current_rows",
+        "tests.combat.test_episode.EpisodeMaterialNavigationTests.test_each_episode_uses_configured_entry_before_material_selection"
+      ]
+    },
+    "20261021-220739-548": {
+      "path": "tests/fixtures/historical/input/episode_navigation/MuMu-20261021-220739-548.png",
+      "sha256": "b33ddb543caa2792b5398f893570792c5a9d1a3782c6e536ae75b7aae575608c",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "episode_1_selector",
+      "source": "MuMu-20261021-220739-548.png",
+      "source_sha256": "1d51a5dc4a36df58fb72fd92fa4b7a3eded1298369ddca7fc0e170baefb72118",
+      "privacy_redaction": [
+        [
+          580,
+          0,
+          1280,
+          66
+        ],
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_episode.EpisodeSelectionRecognitionTests.test_captured_selector_titles_stars_and_map_entry",
+        "tests.combat.test_episode.EpisodeSelectionRecognitionTests.test_captured_episode_tabs_match_current_rows",
+        "tests.combat.test_episode.EpisodeMaterialNavigationTests.test_each_episode_uses_configured_entry_before_material_selection"
+      ]
+    },
+    "20261021-220740-914": {
+      "path": "tests/fixtures/historical/input/episode_navigation/MuMu-20261021-220740-914.png",
+      "sha256": "95179a40c43b40e1a92df01878bdf4e8e1e394ef54801b75c55b2317d2c6e1da",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "prologue_selector",
+      "source": "MuMu-20261021-220740-914.png",
+      "source_sha256": "e2ae5bf8f723914a495dc45ec1a230e1a77a49ea9cd1406aff669ef5b0f3fbda",
+      "privacy_redaction": [
+        [
+          580,
+          0,
+          1280,
+          66
+        ],
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_episode.EpisodeNavigationReplayTests.test_prelude_and_side_story_panels_can_switch_to_configured_episode",
+        "tests.combat.test_episode.EpisodeSelectionRecognitionTests.test_captured_selector_titles_stars_and_map_entry",
+        "tests.combat.test_episode.EpisodeSelectionRecognitionTests.test_captured_episode_tabs_match_current_rows"
+      ]
+    },
+    "20261028-161745-685": {
+      "path": "tests/fixtures/historical/input/episode_materials/MuMu-20261028-161745-685.png",
+      "sha256": "fa22007103f37253d482b5e682fdc7f9f008e667fcc7634adffc367d13b63d19",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "episode_5_chapter_10",
+      "source": "MuMu-20261028-161745-685.png",
+      "source_sha256": "798fc27a983af8e2985090b5677eb7ccd9abf60408e0ac4957e27ced8632225e",
+      "privacy_redaction": [
+        [
+          580,
+          0,
+          1280,
+          66
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_episode.EpisodeMaterialNavigationTests.test_captured_chapter_ocr_distinguishes_ten_and_ten_special"
+      ]
+    },
+    "20261028-161748-124": {
+      "path": "tests/fixtures/historical/input/episode_materials/MuMu-20261028-161748-124.png",
+      "sha256": "a4d614d0366694c6a81e2c9563074c543f9e691942194aff251f52ed999b5341",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "episode_5_chapter_10S",
+      "source": "MuMu-20261028-161748-124.png",
+      "source_sha256": "4a4ab3417d167018580db1a3fefcf2b70bb180ed2dfc87fd6ae317e2e07e4055",
+      "privacy_redaction": [
+        [
+          580,
+          0,
+          1280,
+          66
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_episode.EpisodeMaterialNavigationTests.test_captured_chapter_ocr_distinguishes_ten_and_ten_special"
+      ]
+    },
+    "20261028-174355-065": {
+      "path": "tests/fixtures/historical/input/episode_fast_combat/MuMu-20261028-174355-065.png",
+      "sha256": "1238e9bf9c2b4fb60ae265da5112f4075638633328f02e9a2f61d7b5bb3d2db9",
+      "server": "global_cn",
+      "scene": "fast_combat_running",
+      "used_by": [
+        "tests.combat.test_episode.EpisodeFastOnlyTests.test_captured_fast_result_is_not_locked_prepare_and_exhausted_prepare_is"
+      ]
+    },
+    "20261028-174449-194": {
+      "path": "tests/fixtures/historical/input/episode_fast_combat/MuMu-20261028-174449-194.png",
+      "sha256": "0005f0c9b5ad3520cfcb0fce6ad1bd1d550f25e2a1909e97f7b6f356f2188a9e",
+      "server": "global_cn",
+      "scene": "fast_combat_exhausted_repeat_locked",
+      "used_by": [
+        "tests.combat.test_episode.EpisodeFastOnlyTests.test_captured_fast_result_is_not_locked_prepare_and_exhausted_prepare_is"
       ]
     }
   },

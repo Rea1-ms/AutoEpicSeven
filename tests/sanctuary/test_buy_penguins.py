@@ -83,6 +83,7 @@ class PenguinRuleTests(unittest.TestCase):
             pin_remove_invalid_mark=Mock(), pin_set_invalid_mark=Mock(),
             pin_set_hidden_arg=Mock(), pin_remove_hidden_arg=Mock(),
         )
+        gui._update_select_options = AlasGUI._update_select_options.__get__(gui)
         with retained_directory('penguin-gui-save') as directory:
             profile = str(Path(directory) / 'synthetic.json')
             pins = {}

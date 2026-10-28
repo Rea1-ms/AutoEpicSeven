@@ -54,10 +54,10 @@ GOTO_EPISODE_1 = ButtonWrapper(
     ),
     global_cn=Button(
         file='./assets/global_cn/dungeon/configs/episode/entry/GOTO_EPISODE_1.png',
-        area=(77, 289, 147, 308),
-        search=(57, 269, 167, 328),
-        color=(37, 77, 101),
-        button=(77, 289, 147, 308),
+        area=(76, 203, 151, 222),
+        search=(56, 183, 171, 242),
+        color=(33, 74, 102),
+        button=(76, 203, 151, 222),
     ),
     global_en=None,
 )
@@ -90,10 +90,10 @@ GOTO_EPISODE_2 = ButtonWrapper(
     ),
     global_cn=Button(
         file='./assets/global_cn/dungeon/configs/episode/entry/GOTO_EPISODE_2.png',
-        area=(77, 359, 149, 377),
-        search=(57, 339, 169, 397),
-        color=(46, 90, 115),
-        button=(77, 359, 149, 377),
+        area=(76, 273, 151, 292),
+        search=(56, 253, 171, 312),
+        color=(36, 75, 100),
+        button=(76, 273, 151, 292),
     ),
     global_en=None,
 )
@@ -126,10 +126,10 @@ GOTO_EPISODE_3 = ButtonWrapper(
     ),
     global_cn=Button(
         file='./assets/global_cn/dungeon/configs/episode/entry/GOTO_EPISODE_3.png',
-        area=(77, 429, 148, 447),
-        search=(57, 409, 168, 467),
-        color=(45, 86, 113),
-        button=(77, 429, 148, 447),
+        area=(76, 343, 151, 362),
+        search=(56, 323, 171, 382),
+        color=(42, 82, 107),
+        button=(76, 343, 151, 362),
     ),
     global_en=None,
 )
@@ -162,10 +162,10 @@ GOTO_EPISODE_4 = ButtonWrapper(
     ),
     global_cn=Button(
         file='./assets/global_cn/dungeon/configs/episode/entry/GOTO_EPISODE_4.png',
-        area=(77, 499, 149, 517),
-        search=(57, 479, 169, 537),
-        color=(43, 82, 103),
-        button=(77, 499, 149, 517),
+        area=(76, 413, 151, 432),
+        search=(56, 393, 171, 452),
+        color=(43, 86, 116),
+        button=(76, 413, 151, 432),
     ),
     global_en=None,
 )
@@ -198,10 +198,10 @@ GOTO_EPISODE_5 = ButtonWrapper(
     ),
     global_cn=Button(
         file='./assets/global_cn/dungeon/configs/episode/entry/GOTO_EPISODE_5.png',
-        area=(77, 569, 149, 587),
-        search=(57, 549, 169, 607),
-        color=(44, 83, 101),
-        button=(77, 569, 149, 587),
+        area=(76, 483, 151, 502),
+        search=(56, 463, 171, 522),
+        color=(41, 78, 101),
+        button=(76, 483, 151, 502),
     ),
     global_en=None,
 )
@@ -234,10 +234,10 @@ GOTO_EPISODE_6 = ButtonWrapper(
     ),
     global_cn=Button(
         file='./assets/global_cn/dungeon/configs/episode/entry/GOTO_EPISODE_6.png',
-        area=(77, 111, 149, 129),
-        search=(57, 91, 169, 149),
-        color=(38, 81, 105),
-        button=(77, 111, 149, 129),
+        area=(76, 623, 151, 642),
+        search=(56, 603, 171, 662),
+        color=(47, 94, 123),
+        button=(76, 623, 151, 642),
     ),
     global_en=None,
 )

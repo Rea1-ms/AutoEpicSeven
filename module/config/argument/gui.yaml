@@ -102,6 +102,7 @@ Remote:
 
 Text:
   InvalidFeedBack:
+  SelectUnavailable:
   Clear:
   CommunityAuthCredentials:
   CommunityAuthCredentialsHelp:

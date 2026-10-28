@@ -86,6 +86,12 @@ SERVER_REPEAT_RESOURCE_ICONS = {
     "leif": LEIF_ICON,
 }
 
+# The prepare page can expose a repeat button that is visibly unavailable
+# (for example, no recorded clear or no pet). Resource inspection must report
+# that state to the caller so a fast-combat run can finish without converting a
+# normal eligibility condition into an immediate human takeover.
+REPEAT_RESOURCE_SNAPSHOT_UNAVAILABLE = "__repeat_combat_unavailable__"
+
 
 def calculate_server_repeat_leif_count(stamina: int, maximum: int = 50) -> int:
     """Convert owned stamina into whole server-repeat Leif units."""
@@ -530,7 +536,12 @@ class CombatRepeatMixin:
                 return None
 
             if self._is_prepare_page():
-                self._raise_if_repeat_combat_unavailable()
+                if self._is_repeat_combat_unavailable():
+                    logger.info(
+                        "Combat: server repeat combat is locked for this stage; "
+                        "skip repeat setup for the current run"
+                    )
+                    return {REPEAT_RESOURCE_SNAPSHOT_UNAVAILABLE: True}
                 if self.appear_then_click(REPEAT_COMBAT_MENU, interval=1):
                     logger.info("Combat: open server repeat menu for resource snapshot")
                     timeout.reset()

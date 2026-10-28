@@ -739,11 +739,11 @@
     },
     "Domain": {
       "name": "Domain",
-      "help": "Choose the regular dungeon to run after Urgent Tasks: Hunt, Spirit Altar, Saint 3-7, or a routed Episode 4 material stage.",
+      "help": "Choose the regular dungeon to run after Urgent Tasks: Hunt, Spirit Altar, Saint 3-7, or story materials.",
       "Hunt": "Hunt",
       "SpiritAltar": "Spirit Altar",
       "Saint37": "Saint 3-7",
-      "Episode4": "Episode 4"
+      "Episode4": "Story materials"
     },
     "Element": {
       "name": "Element",
@@ -784,9 +784,18 @@
       "Hell": "Hell",
       "Dimensional": "Dimensional"
     },
+    "EpisodeNumber": {
+      "name": "Target episode",
+      "help": "Choose the episode for material farming. Defaults to Episode 4.",
+      "1": "Episode 1",
+      "2": "Episode 2",
+      "3": "Episode 3",
+      "4": "Episode 4",
+      "5": "Episode 5"
+    },
     "Episode4Material": {
-      "name": "Episode 4 target material",
-      "help": "Only applies to Episode 4. Route to the mapped chapter and stage by target material.",
+      "name": "Target material",
+      "help": "The list shows only materials with a mapped stage in the selected episode. Episode 1 lists rare catalysts only. Episode 4 also includes four exclusive growth materials at the end. Changing episodes does not automatically replace the selected material.",
       "CATALYST_RARE_BENEVOLENT": "Rare Benevolent Catalyst",
       "CATALYST_RARE_SECRET": "Rare Secret Catalyst",
       "CATALYST_RARE_FIGHTING_SPIRIT": "Rare Fighting Spirit Catalyst",
@@ -1372,6 +1381,7 @@
     },
     "Text": {
       "InvalidFeedBack": "Invalid format. Example: {0}",
+      "SelectUnavailable": "The current option is unavailable. Please choose another option.",
       "Clear": "Clear",
       "CommunityAuthCredentials": "Community login credentials",
       "CommunityAuthCredentialsHelp": "Check current CK status and open the Electron login window to refresh local credentials.",
