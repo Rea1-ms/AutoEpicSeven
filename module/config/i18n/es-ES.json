@@ -102,6 +102,10 @@
       "name": "Renovar subestadísticas de equipo",
       "help": "Abre manualmente la selección de subestadísticas de la forja. Busca velocidad 5 primero y luego las prioridades restantes. Bloquea solo objetivos alcanzados, hasta dos. Se detiene por objetivos o presupuesto, sin fabricar el equipo automáticamente. Solo interfaz del juego en chino simplificado."
     },
+    "Episode": {
+      "name": "Historia principal",
+      "help": "Continúa el capítulo actual, omite diálogos, combate y recoge recompensas con el equipo actual. Se detiene por derrota o energía insuficiente, sin recargar energía. Las capturas verificadas corresponden al episodio 6 en chino simplificado."
+    },
     "SanctuaryMonthly": {
       "name": "Santuario - Mensual",
       "help": "Módulo mensual de santuario con planificador independiente."
@@ -753,11 +757,11 @@
     },
     "Domain": {
       "name": "Dominio",
-      "help": "Elige el dominio normal que se ejecutará después de las Misiones urgentes: Cacería, Altar Espiritual, Saint 3-7 o una ruta de materiales de Episode 4.",
+      "help": "Elige el dominio normal que se ejecutará después de las Misiones urgentes: Cacería, Altar Espiritual, Saint 3-7 o materiales de la historia.",
       "Hunt": "Cacería",
       "SpiritAltar": "Altar Espiritual",
       "Saint37": "Saint 3-7",
-      "Episode4": "Episode 4"
+      "Episode4": "Materiales de la historia"
     },
     "Element": {
       "name": "Elemento",
@@ -798,9 +802,18 @@
       "Hell": "Infierno",
       "Dimensional": "Dimensional"
     },
+    "EpisodeNumber": {
+      "name": "Episodio objetivo",
+      "help": "Elige el episodio donde obtener materiales. El valor predeterminado es el episodio 4.",
+      "1": "Episodio 1",
+      "2": "Episodio 2",
+      "3": "Episodio 3",
+      "4": "Episodio 4",
+      "5": "Episodio 5"
+    },
     "Episode4Material": {
-      "name": "Material objetivo de Episode 4",
-      "help": "Solo se aplica a Episode 4. Enruta al capítulo y stage según el material elegido.",
+      "name": "Material objetivo",
+      "help": "La lista solo muestra materiales con una fase registrada en el episodio elegido. El episodio 1 solo incluye catalizadores raros. El episodio 4 también incluye cuatro materiales de desarrollo exclusivos al final. Cambiar de episodio no sustituye automáticamente el material seleccionado.",
       "CATALYST_RARE_BENEVOLENT": "Rare Benevolent Catalyst",
       "CATALYST_RARE_SECRET": "Rare Secret Catalyst",
       "CATALYST_RARE_FIGHTING_SPIRIT": "Rare Fighting Spirit Catalyst",
@@ -1114,6 +1127,27 @@
       "help": "Solo servidor internacional en chino simplificado. Compra únicamente medallas místicas según las existencias y el saldo de piedras celestiales. El primer lote cambia cada 12 horas y no siempre incluye medallas. Compra la oferta de 160 cuando aparezca; si una revisión completa no encuentra medallas, espera al próximo lote. La oferta normal de 200 tiene un cupo fijo de 4 para todo el evento; al agotarse, revisa solo el primer lote rotativo. Revisa a las 11:00 y 23:00 UTC+8. Desactivado por defecto; al activarlo se gastan piedras celestiales."
     }
   },
+  "Episode": {
+    "_info": {
+      "name": "Historia principal",
+      "help": "Continúa el capítulo actual, omite diálogos, combate y recoge recompensas con el equipo actual. Se detiene por derrota o energía insuficiente, sin recargar energía. Las capturas verificadas corresponden al episodio 6 en chino simplificado."
+    },
+    "Number": {
+      "name": "Episodio",
+      "help": "0 continúa el episodio actual; otro número cambia mediante la selección de capítulos.",
+      "0": "Episodio actual",
+      "1": "Episode 1",
+      "2": "Episode 2",
+      "3": "Episode 3",
+      "4": "Episode 4",
+      "5": "Episode 5",
+      "6": "Episode 6"
+    },
+    "MaxStages": {
+      "name": "Límite de etapas",
+      "help": "0 continúa hasta detenerse. Un combate o historia cuenta una vez al cerrar las recompensas y volver al mapa."
+    }
+  },
   "BuyPenguins": {
     "_info": {
       "name": "Compra de pingüinos por lotes",
@@ -1379,6 +1413,7 @@
     },
     "Text": {
       "InvalidFeedBack": "Formato inválido. Ejemplo: {0}",
+      "SelectUnavailable": "La opción actual no está disponible. Selecciona otra opción.",
       "Clear": "Limpiar",
       "CommunityAuthCredentials": "Credenciales de comunidad",
       "CommunityAuthCredentialsHelp": "Comprueba el estado actual de la CK y abre la ventana de Electron para actualizar las credenciales locales.",

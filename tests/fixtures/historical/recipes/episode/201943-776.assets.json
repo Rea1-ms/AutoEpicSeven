@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "source": "../../input/episode/MuMu-20261019-201943-776.png",
+  "suite": "episode_20261019",
+  "case": "201943-776",
+  "items": [
+    {
+      "name": "EPISODE_STORY_SKIP_CHECK",
+      "box": [
+        552,
+        313,
+        732,
+        335
+      ],
+      "kind": "base",
+      "namespace": "share",
+      "module": "dungeon/episode/story"
+    },
+    {
+      "name": "EPISODE_STORY_SKIP_CONFIRM",
+      "box": [
+        729,
+        451,
+        766,
+        471
+      ],
+      "kind": "base",
+      "namespace": "share",
+      "module": "dungeon/episode/story"
+    },
+    {
+      "name": "EPISODE_STORY_SKIP_CONFIRM",
+      "box": [
+        665,
+        438,
+        830,
+        482
+      ],
+      "kind": "button",
+      "namespace": "share",
+      "module": "dungeon/episode/story"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "source": "../../input/episode/MuMu-20261021-194836-087.png",
+  "suite": "episode",
+  "case": "story_team_sidebar_20261021_194836",
+  "items": [
+    {
+      "name": "EPISODE_STORY_TEAM_CHECK",
+      "namespace": "share",
+      "module": "dungeon/episode/battle",
+      "frame": 2,
+      "box": [32, 87, 112, 110]
+    }
+  ]
+}

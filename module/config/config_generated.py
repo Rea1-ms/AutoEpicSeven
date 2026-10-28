@@ -138,6 +138,7 @@ class GeneratedConfig:
     Combat_AltarGrade = 'Hell'  # Pri, Mid, High, Hell
     Combat_AltarBalance = False
     Combat_HuntGrade = 'Hell'  # Mid, High, Hell, Dimensional
+    Combat_EpisodeNumber = 4  # 1, 2, 3, 4, 5
     Combat_Episode4Material = 'BREATH_OF_KARMA'  # CATALYST_RARE_BENEVOLENT, CATALYST_RARE_SECRET, CATALYST_RARE_FIGHTING_SPIRIT, CATALYST_RARE_SNIPER, HEART_OF_THE_WOODS, CATALYST_RARE_OATH, CATALYST_RARE_MYSTERIOUS, CATALYST_EPIC_OATH, BREATH_OF_KARMA, CATALYST_EPIC_SNIPER, CATALYST_EPIC_FIGHTING_SPIRIT, FROZEN_SEED, CATALYST_EPIC_BENEVOLENT, CATALYST_EPIC_MYSTERIOUS, CATALYST_EPIC_SECRET, TRACES_OF_BRILLIANCE
     Combat_FastCombat = True
     Combat_BurnoutMode = 'Daily'  # Daily, Burnout
@@ -201,6 +202,10 @@ class GeneratedConfig:
 
     # Group `SpecialActivity`
     SpecialActivity_BuyHucheMysticMedals = False
+
+    # Group `Episode`
+    Episode_Number = 0  # 0, 1, 2, 3, 4, 5, 6
+    Episode_MaxStages = 0
 
     # Group `BuyPenguins`
     BuyPenguins_BatchCount = 1

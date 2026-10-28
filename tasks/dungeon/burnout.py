@@ -1,6 +1,7 @@
 from module.logger import logger
 from tasks.base.resource_bar import RESOURCE_BAR_LAYOUT_MAIN
 from tasks.base.resource_scheduling import ResourceCoordinator
+from tasks.dungeon.episode_materials import EPISODE_STAMINA_COST
 
 SERVER_REPEAT_LEIF_STAMINA = 80
 

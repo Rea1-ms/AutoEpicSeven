@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "source": "../../input/episode/MuMu-20261021-200850-486.png",
+  "suite": "episode",
+  "case": "last_star_condition_20261021",
+  "items": [
+    {
+      "name": "OCR_EPISODE_LAST_STAR_CONDITION",
+      "namespace": "share",
+      "module": "dungeon/episode/battle",
+      "box": [958, 231, 1262, 269]
+    }
+  ]
+}

@@ -3920,6 +3920,17 @@
           "fixtures": [],
           "status": "已纳入",
           "reason": "上游通用更新；合成数据与模拟设备，不访问实际账号或网络"
+        },
+        {
+          "id": "tests.upstream.test_device.AssetLanguageTests.test_connection_refreshes_cached_assets_for_configured_language",
+          "category": "资源基础",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261021-180926-061"
+          ],
+          "status": "已纳入",
+          "reason": "独立进程以模拟连接初始化验证三种素材语言，清除旧语言的按钮缓存及已匹配按钮，不访问设备或账号"
         }
       ]
     },
@@ -7011,6 +7022,24 @@
           "reason": "原断言迁移；模拟输入或既有资产，不代表实机截图验证",
           "input_kind": "mock_or_rule",
           "original_source": "test/test_page_route.py"
+        },
+        {
+          "id": "tests.core.test_page_route.LegacyRuleTests.test_episode_selector_route_waits_for_blue_entry_and_returns_to_map",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "蓝色入口、目标篇章确认、星星入章及重复帧与禁止动作"
+        },
+        {
+          "id": "tests.core.test_page_route.LegacyRuleTests.test_episode_selector_registration_scan_and_routes_by_language",
+          "category": "资源基础检查",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "蓝色入口、目标篇章确认、星星入章及重复帧与禁止动作"
         }
       ]
     },
@@ -8253,6 +8282,994 @@
           "reason": "原断言迁移；模拟输入或既有资产，不代表实机截图验证",
           "input_kind": "mock_or_rule",
           "original_source": "test/test_episode.py"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_stage_prefix_and_stamina_semantics",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "主线连续推进；生产动作间隔、重复帧、剧情与奖励、资源不足及禁止动作"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_captured_map_reads_frontier_and_excludes_locked_rows",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261019-201919-177",
+            "20261021-193325-307"
+          ],
+          "status": "已纳入",
+          "reason": "主线连续推进；生产动作间隔、重复帧、剧情与奖励、资源不足及禁止动作"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_captured_prepare_reads_actual_cost_and_available",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261019-201925-028",
+            "20261019-222835-132",
+            "20261021-203153-292"
+          ],
+          "status": "已纳入",
+          "reason": "三张普通准备页实图读取实际体力费用及余额，保留20/360、20/597并识别新图带费用前缀的20/374"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_captured_pages_reject_dimmed_map_and_unrelated_rewards",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261019-201915-057",
+            "20261019-201919-177",
+            "20261019-201922-561",
+            "20261019-201925-028",
+            "20261019-201930-080",
+            "20261019-201935-800",
+            "20261019-201941-878",
+            "20261019-201943-776",
+            "20261019-201947-654",
+            "20261019-202147-227",
+            "20261019-202152-519",
+            "20261019-202154-364",
+            "20261019-202155-839",
+            "20261019-202159-255",
+            "20261019-202201-945",
+            "20261019-202204-254",
+            "20261019-221856-229",
+            "20261019-222835-132",
+            "20261019-224016-279"
+          ],
+          "status": "已纳入",
+          "reason": "主线连续推进；生产动作间隔、重复帧、剧情与奖励、资源不足及禁止动作"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_captured_round_retries_without_double_counting_and_settles_both_rewards",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261019-201919-177",
+            "20261019-201922-561",
+            "20261019-201930-080",
+            "20261019-201935-800",
+            "20261019-201941-878",
+            "20261019-201943-776",
+            "20261019-201947-654",
+            "20261019-202147-227",
+            "20261019-202152-519",
+            "20261019-202154-364",
+            "20261019-202155-839",
+            "20261019-202159-255",
+            "20261019-202201-945",
+            "20261019-202204-254",
+            "20261021-200850-486"
+          ],
+          "status": "已纳入",
+          "reason": "使用独立允许准备截图替换含攻略旧页的混合回放，保留剧情、结算、奖励重试及仅回地图后计数断言；不是连续实机证据"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_story_only_node_continues_to_next_frontier",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "主线连续推进；生产动作间隔、重复帧、剧情与奖励、资源不足及禁止动作"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_resumed_story_counts_only_after_unobscured_map",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "主线连续推进；生产动作间隔、重复帧、剧情与奖励、资源不足及禁止动作"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_insufficient_stamina_never_starts_or_confirms_purchase",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "主线连续推进；生产动作间隔、重复帧、剧情与奖励、资源不足及禁止动作"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_unknown_stamina_times_out_without_starting",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "主线连续推进；生产动作间隔、重复帧、剧情与奖励、资源不足及禁止动作"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_failed_battle_and_full_inventory_require_attention",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "主线连续推进；生产动作间隔、重复帧、剧情与奖励、资源不足及禁止动作"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_auto_combat_only_toggles_with_positive_manual_hud",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "主线连续推进；生产动作间隔、重复帧、剧情与奖励、资源不足及禁止动作"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_ignored_map_click_retries_after_production_interval",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "主线连续推进；生产动作间隔、重复帧、剧情与奖励、资源不足及禁止动作"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_selecting_frontier_does_not_start_previous_completed_stage",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "主线连续推进；生产动作间隔、重复帧、剧情与奖励、资源不足及禁止动作"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_unknown_frames_timeout_without_clicking",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "主线连续推进；生产动作间隔、重复帧、剧情与奖励、资源不足及禁止动作"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_locked_rows_do_not_end_on_first_delayed_scroll_frame",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "主线连续推进；生产动作间隔、重复帧、剧情与奖励、资源不足及禁止动作"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_chapter_entry_click_does_not_skip_to_another_entry_on_ignored_click",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "主线连续推进；生产动作间隔、重复帧、剧情与奖励、资源不足及禁止动作"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_main_uses_shared_episode_route",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "主线连续推进；生产动作间隔、重复帧、剧情与奖励、资源不足及禁止动作"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_unsupported_language_exits_without_device_access",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "主线连续推进；生产动作间隔、重复帧、剧情与奖励、资源不足及禁止动作"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_tool_entry_is_manual_and_preserves_constructor_arguments",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "主线连续推进；生产动作间隔、重复帧、剧情与奖励、资源不足及禁止动作"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_delayed_next_chapter_entry_is_not_reported_as_completion",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "模拟章节入口延迟与持续不可用；不把缺少箭头当作主线完成"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_unavailable_next_chapter_stops_without_claiming_completion",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "模拟章节入口延迟与持续不可用；不把缺少箭头当作主线完成"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_exhausted_chapter_advances_with_existing_next_arrow",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "复用第四部导航：切章与切部数、滚动区域、网络重试和禁止确认购买"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_episode_switch_backs_out_instead_of_changing_current_chapter",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "复用第四部导航：切章与切部数、滚动区域、网络重试和禁止确认购买"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_shared_swipe_preserves_farming_bounds_and_uses_story_viewport",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "复用第四部导航：切章与切部数、滚动区域、网络重试和禁止确认购买"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_shared_network_retry_keeps_interval_and_does_not_confirm_purchase",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "复用第四部导航：切章与切部数、滚动区域、网络重试和禁止确认购买"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_captured_supporter_recognition_rejects_unrelated_pages",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261019-201919-177",
+            "20261019-201922-561",
+            "20261019-201925-028",
+            "20261019-201943-776",
+            "20261019-202155-839",
+            "20261019-202201-945",
+            "20261019-202204-254",
+            "20261019-221856-229",
+            "20261021-180926-061",
+            "20261021-193325-307",
+            "20261021-193327-115"
+          ],
+          "status": "已纳入",
+          "reason": "使用生产亮度匹配验证新旧辅助英雄页，地图、准备页及奖励等为反例"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_captured_supporter_retries_before_insufficient_stamina_stop",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261019-221856-229"
+          ],
+          "status": "已纳入",
+          "reason": "新实图重复帧按生产间隔点击选择队伍；后续模拟体力不足，不开战、不购买、不计通关"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_story_only_node_continues_through_captured_supporter",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261019-221856-229",
+            "20261021-200850-486"
+          ],
+          "status": "已纳入",
+          "reason": "模拟故事节点衔接独立辅助页及允许的单角色准备页实图，保持动作间隔并完成两节点计数"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_captured_prepare_uses_shared_start_and_retries_until_battle",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261021-200850-486"
+          ],
+          "status": "已纳入",
+          "reason": "最后条件不含攻略的单角色故事队伍实图按两秒生产间隔重试开战，模拟长战斗与结算后仅计数一次"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_dimmed_captured_prepare_never_reads_stamina_or_starts",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261019-222835-132"
+          ],
+          "status": "已纳入",
+          "reason": "实图模拟遮罩后禁止读取体力与开战，保留正常导航超时及零计数"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_captured_clear_and_confirmation_retry_visible_controls",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261019-224016-279",
+            "20261019-202159-255"
+          ],
+          "status": "已纳入",
+          "reason": "通关与已有确认实图按生产间隔重试可见控件，未返回模拟地图前不计数、禁止其他动作"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_captured_clear_resumes_when_confirmation_frame_was_not_sampled",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261019-224016-279"
+          ],
+          "status": "已纳入",
+          "reason": "恢复或已进入节点均以真实通关证据和后续模拟无遮挡地图计数，不依赖采样到每张结算页"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_captured_story_team_marker_rejects_other_pages",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261019-201915-057",
+            "20261019-201919-177",
+            "20261019-201922-561",
+            "20261019-201925-028",
+            "20261019-201930-080",
+            "20261019-201935-800",
+            "20261019-201941-878",
+            "20261019-201943-776",
+            "20261019-201947-654",
+            "20261019-202147-227",
+            "20261019-202152-519",
+            "20261019-202154-364",
+            "20261019-202155-839",
+            "20261019-202159-255",
+            "20261019-202201-945",
+            "20261019-202204-254",
+            "20261019-221856-229",
+            "20261019-222835-132",
+            "20261019-224016-279",
+            "20261019-225007-086",
+            "20261019-225009-755",
+            "20261019-225011-385",
+            "20261019-225014-473",
+            "20261021-180926-061",
+            "20261021-193325-307",
+            "20261021-193327-115",
+            "20261021-194836-087",
+            "20261021-200843-005",
+            "20261021-200846-129",
+            "20261021-200850-486",
+            "20261021-203153-292"
+          ],
+          "status": "已纳入",
+          "reason": "31张主线准备及其他页面中，仅五张故事队伍准备页识别到标记；最新普通队伍含攻略仍无故事队伍标记"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_captured_story_team_stops_before_reading_cost_or_starting",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261019-225011-385",
+            "20261019-225014-473",
+            "20261021-194836-087",
+            "20261021-200846-129"
+          ],
+          "status": "已纳入",
+          "reason": "四张故事队伍实图最后条件含攻略，在读取体力、开战及计数前请求人工处理，普通队伍由允许回归覆盖"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_story_team_stop_precedes_stale_controls_and_pending_result",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "模拟故事队伍标记与最后条件攻略同时满足时优先于旧地图结果计数、开战及购买控件停止"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_latest_supporter_retries_then_stops_at_story_team",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261019-225011-385",
+            "20261021-180926-061",
+            "20261021-200843-005",
+            "20261021-200846-129"
+          ],
+          "status": "已纳入",
+          "reason": "分别回放新旧辅助页重试并衔接独立准备页，最后一行橙色或绿色攻略字样均停止，零开战和计数"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_navigation_timeout_keeps_last_frame_and_records_loaded_templates",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "模拟未知页导航超时时保存当前帧，记录实际素材语言、路径和辅助页识别结果，不再截图或点击"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_captured_stage_six_supporter_retries_choose_team_after_map",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261021-193325-307",
+            "20261021-193327-115"
+          ],
+          "status": "已纳入",
+          "reason": "第六关地图与辅助英雄问题实图连续回放，旧地图重复帧后按生产间隔重试选择队伍，模拟体力不足准备页停止，零开战与计数"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_captured_stage_six_story_team_stops_after_supporter",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261021-193325-307",
+            "20261021-193327-115",
+            "20261021-194836-087"
+          ],
+          "status": "已纳入",
+          "reason": "第六关地图和辅助页衔接独立准备页实图，最后条件含攻略即接管，禁止读取体力、开战、购买与计数"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_captured_last_star_condition_reads_keyword_and_single_hero",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261019-201925-028",
+            "20261019-222835-132",
+            "20261019-225011-385",
+            "20261019-225014-473",
+            "20261021-194836-087",
+            "20261021-200843-005",
+            "20261021-200846-129",
+            "20261021-200850-486",
+            "20261021-203153-292"
+          ],
+          "status": "已纳入",
+          "reason": "九张新旧实图仅OCR最后一行，普通及故事队伍含攻略文字均正确读取，单角色条件完整识别"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_last_star_condition_ignores_keyword_in_earlier_rows",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261021-200846-129",
+            "20261021-200850-486"
+          ],
+          "status": "已纳入",
+          "reason": "明确合成前两行攻略文字，保留最后一行无关键词；生产识别仍允许开战并在模拟结果返回地图后计数"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_unknown_last_star_condition_times_out_without_cost_or_clicks",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "故事队伍最后满星条件空白持续十二秒后明确停止，零体力读取、零点击及零通关计数"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_last_star_condition_retries_and_resets_after_leaving_prepare",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "故事队伍最后条件短暂空白可重试，离开准备页后清除计时，允许条件再按实际体力停止且禁止购买"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_stops_before_any_battle_action",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261021-200850-486",
+            "20261021-202808-776"
+          ],
+          "status": "已纳入",
+          "reason": "恢复战斗或独立准备页开战后遇灰暗不可用自动图标立即抛错，零战斗操作、零通关计数；过渡为模拟"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261019-201915-057",
+            "20261019-201919-177",
+            "20261019-201922-561",
+            "20261019-201925-028",
+            "20261019-201930-080",
+            "20261019-201935-800",
+            "20261019-201941-878",
+            "20261019-201943-776",
+            "20261019-201947-654",
+            "20261019-202147-227",
+            "20261019-202152-519",
+            "20261019-202154-364",
+            "20261019-202155-839",
+            "20261019-202159-255",
+            "20261019-202201-945",
+            "20261019-202204-254",
+            "20261019-221856-229",
+            "20261019-222835-132",
+            "20261019-224016-279",
+            "20261019-225007-086",
+            "20261019-225009-755",
+            "20261019-225011-385",
+            "20261019-225014-473",
+            "20261021-180926-061",
+            "20261021-193325-307",
+            "20261021-193327-115",
+            "20261021-194836-087",
+            "20261021-200843-005",
+            "20261021-200846-129",
+            "20261021-200850-486",
+            "20261021-202808-776",
+            "20261021-203153-292",
+            "20261021-211204-367",
+            "legacy-urgent-tasks-battle-auto-on",
+            "legacy-urgent-tasks-battle-clear",
+            "legacy-urgent-tasks-battle-leave",
+            "legacy-urgent-tasks-battle-manual-target",
+            "legacy-urgent-tasks-battle-result"
+          ],
+          "status": "已纳入",
+          "reason": "33张主线和5张历史实图仅问题页命中；额外合成整屏变暗及移除图标反例，排除普通手动、自动开启、结算和遮罩"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_unavailable_auto_combat_precedes_stale_result_and_manual_marker",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "不可用图标停止优先于模拟旧地图计数、可开启自动的敌人数字、开战和购买控件"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_captured_available_manual_battle_still_retries_auto_toggle",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "legacy-urgent-tasks-battle-auto-on",
+            "legacy-urgent-tasks-battle-manual-target"
+          ],
+          "status": "已纳入",
+          "reason": "可开启自动的普通手动战斗实图仍按两秒生产间隔重试开启，已有自动实图不再切换；模拟结算仅计数一次"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_captured_normal_team_with_strategy_condition_starts",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261019-201925-028",
+            "20261019-222835-132",
+            "20261021-203153-292"
+          ],
+          "status": "已纳入",
+          "reason": "三张普通队伍含攻略实图均可开战；十二帧相同准备页只读取三次体力，保留两秒重试和模拟结果回图仅计数一次"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_normal_team_skips_empty_condition_and_resets_story_timeout",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "普通队伍不读取空白满星条件，正常开战并清除故事队伍读取计时；再次出现故事队伍重新等待，禁止购买"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_stamina_confirmation_restarts_after_changed_or_unreadable_values",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "费用或余额变化、读取失败会重置连续确认，三次相同后停止读取并保持开战间隔，禁止购买及重复计数"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_stamina_cache_is_cleared_before_a_new_prepare_page",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "三次相同读数只在当前准备页复用，离开后重新读取，新准备页体力不足立即停止且禁止购买"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_captured_exploration_stage_stops_before_navigation_or_starting",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261021-211204-367"
+          ],
+          "status": "已纳入",
+          "reason": "探险实图在导航识别和体力读取前抛错，首帧零点击、零购买及零通关计数"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_captured_exploration_marker_rejects_normal_and_obscured_pages",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261019-201915-057",
+            "20261019-201919-177",
+            "20261019-201922-561",
+            "20261019-201925-028",
+            "20261019-201930-080",
+            "20261019-201935-800",
+            "20261019-201941-878",
+            "20261019-201943-776",
+            "20261019-201947-654",
+            "20261019-202147-227",
+            "20261019-202152-519",
+            "20261019-202154-364",
+            "20261019-202155-839",
+            "20261019-202159-255",
+            "20261019-202201-945",
+            "20261019-202204-254",
+            "20261019-221856-229",
+            "20261019-222835-132",
+            "20261019-224016-279",
+            "20261019-225007-086",
+            "20261019-225009-755",
+            "20261019-225011-385",
+            "20261019-225014-473",
+            "20261021-180926-061",
+            "20261021-193325-307",
+            "20261021-193327-115",
+            "20261021-194836-087",
+            "20261021-200843-005",
+            "20261021-200846-129",
+            "20261021-200850-486",
+            "20261021-202808-776",
+            "20261021-203153-292",
+            "20261021-211204-367"
+          ],
+          "status": "已纳入",
+          "reason": "33张主线实图仅探险入口命中，普通地图、准备、故事和结果页不误判；合成遮罩及移除标签反例不命中"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodePushTests.test_exploration_stop_precedes_stale_map_result_and_prepare_controls",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "模拟探险标记优先于旧地图结果计数及开战、购买控件停止，保留之前剧情动作"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodeNavigationReplayTests.test_daily_captured_entry_then_ocr_chapter_selection_reaches_prepare",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/input/episode_navigation/MuMu-20261021-220726-466.png",
+            "tests/fixtures/historical/input/episode_navigation/MuMu-20261021-220728-697.png",
+            "tests/fixtures/historical/input/episode_navigation/MuMu-20261021-220735-802.png"
+          ],
+          "status": "已纳入",
+          "reason": "蓝色入口、目标篇章确认、星星入章及重复帧与禁止动作"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodeNavigationReplayTests.test_daily_correct_episode_changes_only_chapter_before_material_actions",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "蓝色入口、目标篇章确认、星星入章及重复帧与禁止动作"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodeNavigationReplayTests.test_daily_unreadable_episode_or_chapter_never_selects_material",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "蓝色入口、目标篇章确认、星星入章及重复帧与禁止动作"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodeNavigationReplayTests.test_daily_missing_or_ignored_selector_controls_have_bounded_retries",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "蓝色入口、目标篇章确认、星星入章及重复帧与禁止动作"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodeNavigationReplayTests.test_daily_missing_star_never_reuses_old_coordinates",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "蓝色入口、目标篇章确认、星星入章及重复帧与禁止动作"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodeNavigationReplayTests.test_story_captured_blue_entry_and_star_switch_to_target_episode",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/input/episode_navigation/MuMu-20261021-220726-466.png",
+            "tests/fixtures/historical/input/episode_navigation/MuMu-20261021-220728-697.png",
+            "tests/fixtures/historical/input/episode_navigation/MuMu-20261021-220735-802.png"
+          ],
+          "status": "已纳入",
+          "reason": "蓝色入口、目标篇章确认、星星入章及重复帧与禁止动作"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodeNavigationReplayTests.test_prelude_and_side_story_panels_can_switch_to_configured_episode",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/input/episode_navigation/MuMu-20261021-220732-535.png",
+            "tests/fixtures/historical/input/episode_navigation/MuMu-20261021-220740-914.png",
+            "tests/fixtures/historical/input/episode_navigation/MuMu-20261021-220735-802.png"
+          ],
+          "status": "已纳入",
+          "reason": "蓝色入口、目标篇章确认、星星入章及重复帧与禁止动作"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodeSelectionRecognitionTests.test_captured_selector_titles_stars_and_map_entry",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/input/episode_navigation/MuMu-20261021-220726-466.png",
+            "tests/fixtures/historical/input/episode_navigation/MuMu-20261021-220728-697.png",
+            "tests/fixtures/historical/input/episode_navigation/MuMu-20261021-220732-535.png",
+            "tests/fixtures/historical/input/episode_navigation/MuMu-20261021-220734-052.png",
+            "tests/fixtures/historical/input/episode_navigation/MuMu-20261021-220735-802.png",
+            "tests/fixtures/historical/input/episode_navigation/MuMu-20261021-220737-336.png",
+            "tests/fixtures/historical/input/episode_navigation/MuMu-20261021-220738-490.png",
+            "tests/fixtures/historical/input/episode_navigation/MuMu-20261021-220739-548.png",
+            "tests/fixtures/historical/input/episode_navigation/MuMu-20261021-220740-914.png"
+          ],
+          "status": "已纳入",
+          "reason": "蓝色入口、目标篇章确认、星星入章及重复帧与禁止动作"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodeSelectionRecognitionTests.test_captured_episode_tabs_match_current_rows",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/input/episode_navigation/MuMu-20261021-220726-466.png",
+            "tests/fixtures/historical/input/episode_navigation/MuMu-20261021-220728-697.png",
+            "tests/fixtures/historical/input/episode_navigation/MuMu-20261021-220732-535.png",
+            "tests/fixtures/historical/input/episode_navigation/MuMu-20261021-220734-052.png",
+            "tests/fixtures/historical/input/episode_navigation/MuMu-20261021-220735-802.png",
+            "tests/fixtures/historical/input/episode_navigation/MuMu-20261021-220737-336.png",
+            "tests/fixtures/historical/input/episode_navigation/MuMu-20261021-220738-490.png",
+            "tests/fixtures/historical/input/episode_navigation/MuMu-20261021-220739-548.png",
+            "tests/fixtures/historical/input/episode_navigation/MuMu-20261021-220740-914.png"
+          ],
+          "status": "已纳入",
+          "reason": "蓝色入口、目标篇章确认、星星入章及重复帧与禁止动作"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodeSelectionRecognitionTests.test_selection_rejects_old_maps_prepare_rewards_and_dimmed_overlay",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/input/episode/MuMu-20261019-201919-177.png",
+            "tests/fixtures/historical/input/episode/MuMu-20261019-201925-028.png",
+            "tests/fixtures/historical/input/episode/MuMu-20261019-202201-945.png",
+            "tests/fixtures/historical/input/episode/MuMu-20261019-201943-776.png",
+            "tests/fixtures/historical/input/episode_navigation/MuMu-20261021-220726-466.png",
+            "tests/fixtures/historical/input/episode_navigation/MuMu-20261021-220735-802.png"
+          ],
+          "status": "已纳入",
+          "reason": "蓝色入口、目标篇章确认、星星入章及重复帧与禁止动作"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodeMaterialRuleTests.test_all_catalyst_targets_match_user_table",
+          "category": "纯逻辑",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "材料表、篇章配置兼容、特殊章节识别及原选关流程回归"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodeMaterialRuleTests.test_legacy_default_and_growth_targets_remain_episode_four",
+          "category": "纯逻辑",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "材料表、篇章配置兼容、特殊章节识别及原选关流程回归"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodeMaterialRuleTests.test_unsupported_material_combination_stops_before_actions",
+          "category": "纯逻辑",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "材料表、篇章配置兼容、特殊章节识别及原选关流程回归"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodeMaterialRuleTests.test_chapter_ocr_preserves_special_suffix",
+          "category": "纯逻辑",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "材料表、篇章配置兼容、特殊章节识别及原选关流程回归"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodeMaterialNavigationTests.test_captured_chapter_ocr_distinguishes_ten_and_ten_special",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/input/episode_materials/MuMu-20261028-161745-685.png",
+            "tests/fixtures/historical/input/episode_materials/MuMu-20261028-161748-124.png"
+          ],
+          "status": "已纳入",
+          "reason": "材料表、篇章配置兼容、特殊章节识别及原选关流程回归"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodeMaterialNavigationTests.test_each_episode_uses_configured_entry_before_material_selection",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/input/episode_navigation/MuMu-20261021-220728-697.png",
+            "tests/fixtures/historical/input/episode_navigation/MuMu-20261021-220739-548.png",
+            "tests/fixtures/historical/input/episode_navigation/MuMu-20261021-220738-490.png",
+            "tests/fixtures/historical/input/episode_navigation/MuMu-20261021-220737-336.png",
+            "tests/fixtures/historical/input/episode_navigation/MuMu-20261021-220735-802.png",
+            "tests/fixtures/historical/input/episode_navigation/MuMu-20261021-220734-052.png"
+          ],
+          "status": "已纳入",
+          "reason": "材料表、篇章配置兼容、特殊章节识别及原选关流程回归"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodeMaterialNavigationTests.test_special_chapters_use_confirmed_order_in_both_directions",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "材料表、篇章配置兼容、特殊章节识别及原选关流程回归"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodeMaterialNavigationTests.test_repeated_chapter_frames_never_start_wrong_material",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "材料表、篇章配置兼容、特殊章节识别及原选关流程回归"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodeMaterialNavigationTests.test_ignored_special_chapter_switch_times_out_without_material_actions",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "材料表、篇章配置兼容、特殊章节识别及原选关流程回归"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodeMaterialNavigationTests.test_material_stage_selection_keeps_four_branch_priority",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "材料表、篇章配置兼容、特殊章节识别及原选关流程回归"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodeMaterialRuleTests.test_episode_stamina_costs_limit_fast_combat_counts",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "各篇章行动力费用、快速战斗可负担次数与不足单场限制"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodeMaterialNavigationTests.test_failed_selector_navigation_can_return_to_main",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "篇章选择页导航失败后返回主页；返回未生效和旧帧下按间隔重试"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodeMaterialNavigationTests.test_map_identity_is_read_once_until_a_chapter_arrow_changes_it",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "篇章与章节读取缓存、箭头切章重新读取以及选关动作顺序"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodeFastOnlyTests.test_locked_repeat_uses_top_resources_and_finishes_available_fast_combat",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "托管不可用时读取备战资源并执行可用快速战斗，禁止打开托管"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodeFastOnlyTests.test_locked_repeat_and_unusable_fast_combat_do_not_claim_completion",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "快速战斗耗尽、禁用或锁定且托管不可用时不能声称完成"
+        },
+        {
+          "id": "tests.combat.test_episode.EpisodeFastOnlyTests.test_captured_fast_result_is_not_locked_prepare_and_exhausted_prepare_is",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261028-174355-065",
+            "20261028-174449-194"
+          ],
+          "status": "已纳入",
+          "reason": "用户截图中进行中的快速战斗不误判备战；耗尽后的托管不可用状态及实际行动力读取"
         }
       ]
     },
@@ -14472,6 +15489,87 @@
           "historical_source": "test/test_burnout.py",
           "historical_line": 381,
           "exclusion": "obsolete_contract"
+        },
+        {
+          "id": "tests.combat.test_burnout.EpisodeConfigTests.test_defaults_keep_legacy_material_selection",
+          "category": "纯逻辑",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "材料表、篇章配置兼容、特殊章节识别及原选关流程回归"
+        },
+        {
+          "id": "tests.combat.test_burnout.EpisodeConfigTests.test_old_configs_default_to_four_without_replacing_material",
+          "category": "纯逻辑",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "材料表、篇章配置兼容、特殊章节识别及原选关流程回归"
+        },
+        {
+          "id": "tests.combat.test_burnout.EpisodeConfigTests.test_explicit_episode_and_material_survive_config_update",
+          "category": "纯逻辑",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "材料表、篇章配置兼容、特殊章节识别及原选关流程回归"
+        },
+        {
+          "id": "tests.combat.test_burnout.EpisodeConfigTests.test_episode_controls_follow_domain_without_changing_saved_values",
+          "category": "纯逻辑",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "材料表、篇章配置兼容、特殊章节识别及原选关流程回归"
+        },
+        {
+          "id": "tests.combat.test_burnout.EpisodeConfigTests.test_translations_cover_episode_choices_and_legacy_materials",
+          "category": "纯逻辑",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "材料表、篇章配置兼容、特殊章节识别及原选关流程回归"
+        },
+        {
+          "id": "tests.combat.test_burnout.EpisodeConfigTests.test_material_options_follow_episode_and_put_growth_materials_last",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "按篇章过滤材料候选，保留原配置及第四篇专属材料顺序"
+        },
+        {
+          "id": "tests.combat.test_burnout.EpisodeConfigTests.test_invalid_episodes_offer_no_materials",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "按篇章过滤材料候选，保留原配置及第四篇专属材料顺序"
+        },
+        {
+          "id": "tests.combat.test_burnout.EpisodeConfigTests.test_filtered_options_preserve_saved_values_and_shared_definitions",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "按篇章过滤材料候选，保留原配置及第四篇专属材料顺序"
+        },
+        {
+          "id": "tests.combat.test_burnout.EpisodeConfigTests.test_unavailable_selection_hint_is_defined_in_all_languages",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "按篇章过滤材料候选，保留原配置及第四篇专属材料顺序"
         }
       ]
     },
@@ -18948,6 +20046,51 @@
           "fixtures": [],
           "status": "已纳入",
           "reason": "系统通知独立开关、多渠道失败隔离与旧配置兼容；不连接设备或发送真实通知"
+        },
+        {
+          "id": "tests.core.test_runtime_ui.MaterialSelectUITests.test_first_render_filters_material_candidates_for_selected_episode",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "材料下拉首次渲染、保存后联动、旧值不可用提示及普通下拉兼容"
+        },
+        {
+          "id": "tests.core.test_runtime_ui.MaterialSelectUITests.test_first_render_preserves_unavailable_material_as_disabled_selection",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "材料下拉首次渲染、保存后联动、旧值不可用提示及普通下拉兼容"
+        },
+        {
+          "id": "tests.core.test_runtime_ui.MaterialSelectUITests.test_saving_episode_refreshes_candidates_and_restores_fourth_episode",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "材料下拉首次渲染、保存后联动、旧值不可用提示及普通下拉兼容"
+        },
+        {
+          "id": "tests.core.test_runtime_ui.MaterialSelectUITests.test_saving_material_clears_placeholder_and_unrelated_save_does_not_refresh",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "材料下拉首次渲染、保存后联动、旧值不可用提示及普通下拉兼容"
+        },
+        {
+          "id": "tests.core.test_runtime_ui.MaterialSelectUITests.test_normal_select_options_and_disabled_values_remain_unchanged",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "材料下拉首次渲染、保存后联动、旧值不可用提示及普通下拉兼容"
         }
       ]
     },

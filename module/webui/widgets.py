@@ -440,11 +440,32 @@ def put_arg_planner(kwargs: T_Output_Kwargs) -> Output | None:
     )
 
 
+def build_select_options(options, options_label, value, unavailable_label=None):
+    """Keep unavailable saved values explicit without selecting a substitute."""
+    items = [
+        {"label": label, "value": option, "selected": option == value}
+        for option, label in zip(options, options_label)
+    ]
+    if unavailable_label is not None and value not in options:
+        # Replacing a select's candidates otherwise lets the browser display
+        # its first option while the saved configuration still names another
+        # material. Keep a disabled placeholder with the old value until the
+        # user explicitly picks a supported option; never save a substitute.
+        items.insert(0, {
+            "label": unavailable_label,
+            "value": value,
+            "selected": True,
+            "disabled": True,
+        })
+    return items
+
+
 def put_arg_select(kwargs: T_Output_Kwargs) -> Output:
     name: str = kwargs["name"]
     value: str = kwargs["value"]
     options: List[str] = kwargs["options"]
     options_label: List[str] = kwargs.pop("options_label", [])
+    unavailable_label = kwargs.pop("unavailable_label", None)
     disabled: bool = kwargs.pop("disabled", False)
     _: str = kwargs.pop("invalid_feedback", None)
 
@@ -455,11 +476,7 @@ def put_arg_select(kwargs: T_Output_Kwargs) -> Output:
             "selected": True,
         }]
     else:
-        option = [{
-            "label": opt_label,
-            "value": opt,
-            "select": opt == value,
-        } for opt, opt_label in zip(options, options_label)]
+        option = build_select_options(options, options_label, value, unavailable_label)
     kwargs["options"] = option
 
     return put_scope(

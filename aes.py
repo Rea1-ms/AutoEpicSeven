@@ -132,6 +132,10 @@ class AutoEpicSeven(AzurLaneAutoScript):
         from tasks.equipment_reroll.equipment_reroll import EquipmentReroll
         EquipmentReroll(config=self.config, device=self.device, task="EquipmentReroll").run()
 
+    def episode(self):
+        from tasks.dungeon.episode_push import Episode
+        Episode(config=self.config, device=self.device, task="Episode").run()
+
 
 if __name__ == '__main__':
     app = AutoEpicSeven('alas')

@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "source": "../../input/episode_navigation/MuMu-20261021-220726-466.png",
+  "suite": "episode_navigation_20261021",
+  "case": "map_entry",
+  "items": [
+    {
+      "name": "EPISODE_SELECTOR_ENTRY",
+      "namespace": "share",
+      "module": "dungeon/episode/navigation",
+      "box": [
+        918,
+        644,
+        964,
+        682
+      ],
+      "kind": "base"
+    }
+  ]
+}

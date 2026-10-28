@@ -664,6 +664,7 @@ class ConfigUpdater:
             yield f'{task_prefix}.AltarGrade'
 
         if combat_domain != 'Episode4':
+            yield f'{task_prefix}.EpisodeNumber'
             yield f'{task_prefix}.Episode4Material'
 
         if combat_domain == 'Saint37':
@@ -722,6 +723,20 @@ class ConfigUpdater:
         """
         out = list(self.iter_hidden_args(data))
         return set(out)
+
+    def get_select_options(self, data) -> dict[str, list[str]]:
+        """Return contextual options without changing stored selections."""
+        from tasks.dungeon.episode_materials import EPISODE_MATERIAL_STAGES
+
+        episode = deep_get(data, 'Combat.Combat.EpisodeNumber', default=4)
+        destinations = EPISODE_MATERIAL_STAGES.get(episode, {}) if type(episode) is int else {}
+        options = self.args['Combat']['Combat']['Episode4Material']['option']
+        # Keep the global list intact so config updates still retain an old
+        # material when the new episode cannot use it. The UI owns the disabled
+        # placeholder; filtering must never choose a replacement for the user.
+        available = [material for material in options if material in destinations]
+        available.sort(key=lambda material: not material.startswith('CATALYST_'))
+        return {'Combat.Combat.Episode4Material': available}
 
     def read_file(self, config_name, is_template=False):
         """

@@ -3,6 +3,7 @@ def get_available_func():
         'Benchmark',
         'CombatFarm',
         'EquipmentReroll',
+        'Episode',
     )
 
 

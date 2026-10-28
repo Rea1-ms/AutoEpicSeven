@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "source": "../../input/episode_navigation/MuMu-20261021-220728-697.png",
+  "suite": "episode_navigation_20261021",
+  "case": "episode_tabs",
+  "items": [
+    {
+      "name": "GOTO_EPISODE_1",
+      "namespace": "global_cn",
+      "module": "dungeon/configs/episode/entry",
+      "box": [
+        76,
+        203,
+        151,
+        222
+      ],
+      "kind": "base"
+    },
+    {
+      "name": "GOTO_EPISODE_2",
+      "namespace": "global_cn",
+      "module": "dungeon/configs/episode/entry",
+      "box": [
+        76,
+        273,
+        151,
+        292
+      ],
+      "kind": "base"
+    },
+    {
+      "name": "GOTO_EPISODE_3",
+      "namespace": "global_cn",
+      "module": "dungeon/configs/episode/entry",
+      "box": [
+        76,
+        343,
+        151,
+        362
+      ],
+      "kind": "base"
+    },
+    {
+      "name": "GOTO_EPISODE_4",
+      "namespace": "global_cn",
+      "module": "dungeon/configs/episode/entry",
+      "box": [
+        76,
+        413,
+        151,
+        432
+      ],
+      "kind": "base"
+    },
+    {
+      "name": "GOTO_EPISODE_5",
+      "namespace": "global_cn",
+      "module": "dungeon/configs/episode/entry",
+      "box": [
+        76,
+        483,
+        151,
+        502
+      ],
+      "kind": "base"
+    },
+    {
+      "name": "GOTO_EPISODE_6",
+      "namespace": "global_cn",
+      "module": "dungeon/configs/episode/entry",
+      "box": [
+        76,
+        623,
+        151,
+        642
+      ],
+      "kind": "base"
+    }
+  ]
+}

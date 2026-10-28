@@ -242,6 +242,7 @@
       "AltarGrade": "Hell",
       "AltarBalance": false,
       "HuntGrade": "Hell",
+      "EpisodeNumber": 4,
       "Episode4Material": "BREATH_OF_KARMA",
       "FastCombat": true,
       "BurnoutMode": "Daily",
@@ -370,6 +371,18 @@
       "MaxRefresh": 0,
       "MaxPoints": 0,
       "ReservePoints": 0
+    }
+  },
+  "Episode": {
+    "Scheduler": {
+      "Enable": false,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "Episode",
+      "ServerUpdate": "02:00"
+    },
+    "Episode": {
+      "Number": 0,
+      "MaxStages": 0
     }
   },
   "SanctuaryMonthly": {

@@ -102,6 +102,10 @@
       "name": "Equipment Substat Reroll",
       "help": "Open the steel workshop substat selection screen manually. Obtain speed 5 first, then pursue the remaining priorities. Lock only achieved targets, at most two. Stop at the goals or budget; equipment is not finalized automatically. Simplified Chinese game UI only."
     },
+    "Episode": {
+      "name": "Main story",
+      "help": "Continue the current chapter, skip dialogue, fight and collect rewards with the current team. Stop on defeat or insufficient stamina; never refill stamina. Captured verification currently covers Episode 6 in Simplified Chinese."
+    },
     "SanctuaryMonthly": {
       "name": "Sanctuary Monthly",
       "help": "Sanctuary monthly module with independent scheduler."
@@ -753,11 +757,11 @@
     },
     "Domain": {
       "name": "Domain",
-      "help": "Choose the regular dungeon to run after Urgent Tasks: Hunt, Spirit Altar, Saint 3-7, or a routed Episode 4 material stage.",
+      "help": "Choose the regular dungeon to run after Urgent Tasks: Hunt, Spirit Altar, Saint 3-7, or story materials.",
       "Hunt": "Hunt",
       "SpiritAltar": "Spirit Altar",
       "Saint37": "Saint 3-7",
-      "Episode4": "Episode 4"
+      "Episode4": "Story materials"
     },
     "Element": {
       "name": "Element",
@@ -798,9 +802,18 @@
       "Hell": "Hell",
       "Dimensional": "Dimensional"
     },
+    "EpisodeNumber": {
+      "name": "Target episode",
+      "help": "Choose the episode for material farming. Defaults to Episode 4.",
+      "1": "Episode 1",
+      "2": "Episode 2",
+      "3": "Episode 3",
+      "4": "Episode 4",
+      "5": "Episode 5"
+    },
     "Episode4Material": {
-      "name": "Episode 4 target material",
-      "help": "Only applies to Episode 4. Route to the mapped chapter and stage by target material.",
+      "name": "Target material",
+      "help": "The list shows only materials with a mapped stage in the selected episode. Episode 1 lists rare catalysts only. Episode 4 also includes four exclusive growth materials at the end. Changing episodes does not automatically replace the selected material.",
       "CATALYST_RARE_BENEVOLENT": "Rare Benevolent Catalyst",
       "CATALYST_RARE_SECRET": "Rare Secret Catalyst",
       "CATALYST_RARE_FIGHTING_SPIRIT": "Rare Fighting Spirit Catalyst",
@@ -1114,6 +1127,27 @@
       "help": "Overseas Simplified Chinese only. Buy only Mystic Medals within stock and skystone balance limits. The leading stock rotates every 12 hours; medals are not guaranteed. Buy the 160-skystone offer when present, otherwise wait for the next batch after a complete scan. The 200-skystone offer has a fixed quota of 4 for the entire event; once sold out, inspect only the leading rotating batch. Recheck at 11:00 and 23:00 UTC+8. Disabled by default; enabling spends skystones."
     }
   },
+  "Episode": {
+    "_info": {
+      "name": "Main story",
+      "help": "Continue the current chapter, skip dialogue, fight and collect rewards with the current team. Stop on defeat or insufficient stamina; never refill stamina. Captured verification currently covers Episode 6 in Simplified Chinese."
+    },
+    "Number": {
+      "name": "Episode",
+      "help": "0 continues the current episode; another number switches through the chapter selector.",
+      "0": "Current episode",
+      "1": "Episode 1",
+      "2": "Episode 2",
+      "3": "Episode 3",
+      "4": "Episode 4",
+      "5": "Episode 5",
+      "6": "Episode 6"
+    },
+    "MaxStages": {
+      "name": "Node limit",
+      "help": "0 continues until blocked. A battle or story counts once after rewards close and the map returns."
+    }
+  },
   "BuyPenguins": {
     "_info": {
       "name": "Buy penguins in batches",
@@ -1379,6 +1413,7 @@
     },
     "Text": {
       "InvalidFeedBack": "Invalid format. Example: {0}",
+      "SelectUnavailable": "The current option is unavailable. Please choose another option.",
       "Clear": "Clear",
       "CommunityAuthCredentials": "Community login credentials",
       "CommunityAuthCredentialsHelp": "Check current CK status and open the Electron login window to refresh local credentials.",
