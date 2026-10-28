@@ -150,9 +150,9 @@ class BenchScannerTests(unittest.TestCase):
         # The user recorded bottom-to-top card selections. Reversing those
         # stable captures simulates forward responses; it is not a recording
         # of our actual clicks or their timing. Duplicates explicitly model
-        # delayed responses while retaining the real production intervals.
+        # delayed responses while retaining fresh queue stability checks.
         names = ("queue-top", "queue-second", "queue-middle", "queue-karin", "queue-glen")
-        replay = self.replay([name for name in names for _ in range(7)] + ["queue-bottom"],
+        replay = self.replay([name for name in names for _ in range(7)] + ["queue-bottom"] * 2,
                              synthetic=False)
         result = replay.task.scan()
         self.assertEqual(result.outcome, ScanOutcome.COMPLETE)
@@ -163,7 +163,7 @@ class BenchScannerTests(unittest.TestCase):
             ("维多丽卡", Imprint.C), ("克莉丝缇", Imprint.D), ("战斗型玛雅", Imprint.C),
             ("卡琳", Imprint.A), ("格伦", Imprint.C), ("辅助型拉兹", Imprint.C),
         ])
-        self.assertEqual([action[0] for action in replay.actions], [0, 7, 14, 21, 28])
+        self.assertEqual([action[0] for action in replay.actions], [0, 8, 15, 22, 29])
         self.assertTrue(all(action[1] == "BrawlBenchNext" for action in replay.actions))
         self.assertTrue(all(1000 <= action[2][0] < 1280 and 327 <= action[2][1] < 550
                             for action in replay.actions))
@@ -177,11 +177,13 @@ class BenchScannerTests(unittest.TestCase):
         self.assertEqual(result.heroes, (BenchHero("维多丽卡", Imprint.C), BenchHero("克莉丝缇", Imprint.D)))
         # The pending transition and the following unchanged frame are checked
         # against their own paired reads. The scene change never inherits the
-        # accepted hero or authorizes a second click during the action interval.
+        # accepted hero. The next stable queue frame can advance immediately;
+        # the subsequent scene change cannot authorize a third click.
         self.assertEqual(reader.call_count, 3)
         for call, image in zip(reader.call_args_list, replay.frames[:3]):
             self.assertIs(call.args[0], image)
-        self.assertEqual([item[1] for item in replay.actions], ["BrawlBenchNext"])
+        self.assertEqual([item[:2] for item in replay.actions], [
+            (0, "BrawlBenchNext"), (2, "BrawlBenchNext")])
 
     def test_captured_empty_bench_needs_no_swipe_or_click(self):
         replay = self.replay(["queue-empty"], synthetic=False)
@@ -217,11 +219,11 @@ class BenchScannerTests(unittest.TestCase):
         middle = cursor("卡琳")
         first = cursor(top=True)
         last = cursor("格伦", bottom=True, next_area=None)
-        replay = self.replay([middle] * 8 + [first] * 7 + [last])
+        replay = self.replay([middle] * 8 + [first] * 7 + [last] * 2)
         result = replay.task.scan()
         self.assertEqual(result.outcome, ScanOutcome.COMPLETE)
         self.assertEqual([action[:2] for action in replay.actions], [
-            (0, "BrawlBenchTop"), (7, "BrawlBenchTop"), (14, "BrawlBenchNext"),
+            (0, "BrawlBenchTop"), (7, "BrawlBenchTop"), (9, "BrawlBenchNext"),
         ])
         self.assertEqual(replay.actions[0][2:], ((1150, 205), (1150, 520)))
         self.assertEqual([hero.name for hero in result.heroes], ["维多丽卡", "格伦"])
@@ -254,7 +256,7 @@ class BenchScannerTests(unittest.TestCase):
         unknown = cursor(state=BrawlScreen.UNKNOWN, panel=None, mode=None)
         first = cursor(top=True)
         last = cursor("格伦", bottom=True, next_area=None)
-        replay = self.replay([unknown, first, unknown, unknown, last])
+        replay = self.replay([unknown, first, unknown, unknown, last, last])
         result = replay.task.scan()
         self.assertEqual(result.outcome, ScanOutcome.COMPLETE)
         self.assertEqual([action[:2] for action in replay.actions], [(1, "BrawlBenchNext")])
@@ -306,14 +308,14 @@ class BenchScannerTests(unittest.TestCase):
         self.assertEqual(replay.actions, [])
 
     def test_positive_last_frame_exits_before_timeout_or_action_limit(self):
-        replay = self.replay([cursor(top=True), cursor("格伦", bottom=True, next_area=None)], seconds=13)
+        replay = self.replay([cursor(top=True)] + [cursor("格伦", bottom=True, next_area=None)] * 2, seconds=13)
         replay.task.MAX_ACTIONS = 1
         result = replay.task.scan()
         self.assertEqual(result.outcome, ScanOutcome.COMPLETE)
         self.assertEqual(len(replay.actions), 1)
 
     def test_action_budget_is_not_treated_as_inventory_capacity(self):
-        replay = self.replay([cursor(top=True), cursor("格伦")])
+        replay = self.replay([cursor(top=True), cursor("格伦"), cursor("格伦")])
         replay.task.MAX_ACTIONS = 1
         result = replay.task.scan()
         self.assertEqual(result.outcome, ScanOutcome.ACTION_LIMIT)
@@ -349,7 +351,7 @@ class BenchScannerTests(unittest.TestCase):
 
     def test_action_budget_still_waits_for_the_last_pending_click(self):
         replay = self.replay([cursor(top=True)] * 8
-                             + [cursor("格伦", bottom=True, next_area=None)])
+                             + [cursor("格伦", bottom=True, next_area=None)] * 2)
         replay.task.MAX_ACTIONS = 1
         result = replay.task.scan()
         self.assertEqual(result.outcome, ScanOutcome.COMPLETE)
@@ -388,8 +390,8 @@ class BenchScannerTests(unittest.TestCase):
         self.assertEqual(len(replay.actions), 2)
 
     def test_visible_queue_change_during_the_interval_prevents_the_next_click(self):
-        # The first click completes before the 3-second interval. While that
-        # interval is pending, the same selected hero has changed neighbours.
+        # The first click completes, but the next fresh queue observation
+        # changes neighbours. Identity alone cannot authorize another click.
         replay = self.replay([cursor(top=True), cursor("格伦"), cursor("格伦")],
                              agreement=False)
         result = replay.task.scan()
@@ -405,6 +407,33 @@ class BenchScannerTests(unittest.TestCase):
         self.assertFalse(result.coverage_complete)
         self.assertEqual(len(result.heroes), 2)
         self.assertEqual(len(replay.actions), 1)
+
+    def test_confirmed_stable_queue_advances_without_an_unrelated_action_cooldown(self):
+        first = cursor(top=True)
+        middle = cursor("格伦")
+        last = cursor("卡琳", bottom=True, next_area=None)
+        replay = self.replay([first, middle, middle, last, last], seconds=0.2)
+        replay.task.interval_reset(replay.task.ACTION_TIMER, interval=3)
+        result = replay.task.scan()
+        self.assertEqual(result.outcome, ScanOutcome.COMPLETE)
+        self.assertEqual([hero.name for hero in result.heroes], ["维多丽卡", "格伦", "卡琳"])
+        self.assertEqual([item[:2] for item in replay.actions], [
+            (0, "BrawlBenchNext"), (2, "BrawlBenchNext")])
+        self.assertEqual(replay.index, 4)
+
+    def test_changed_last_selection_requires_a_fresh_agreeing_frame_before_completion(self):
+        last = cursor("格伦", bottom=True, next_area=None)
+        for agreement, outcome in ((True, ScanOutcome.COMPLETE), (False, ScanOutcome.CONTEXT_CHANGED),
+                                   (None, ScanOutcome.TIMEOUT)):
+            with self.subTest(agreement=agreement):
+                replay = self.replay([cursor(top=True)] + [last] * 70,
+                                     seconds=0.2, agreement=agreement)
+                result = replay.task.scan()
+                self.assertEqual(result.outcome, outcome)
+                self.assertGreaterEqual(replay.index, 2)
+                self.assertEqual([item[:2] for item in replay.actions], [(0, "BrawlBenchNext")])
+                self.assertEqual(getattr(replay.task, "_selection_evidence", None) is not None,
+                                 outcome == ScanOutcome.COMPLETE)
 
     def test_malformed_next_target_never_clicks_the_formation_plus(self):
         replay = self.replay([cursor(top=True, next_area=(943, 268, 977, 303))] * 30)
@@ -435,9 +464,11 @@ class BenchSelectionTests(unittest.TestCase):
     def test_captured_scan_then_rewind_selects_exact_second_hero(self):
         # These are real static card selections arranged into a simulated
         # scan/rewind response, not a capture of automatic device operations.
-        names = ("queue-top", "queue-second", "queue-middle", "queue-karin", "queue-glen")
-        frames = [*names, "queue-bottom", "queue-bottom", "queue-top", "queue-second"]
-        replay = self.replay(frames, synthetic=False, seconds=4)
+        names = ("queue-second", "queue-middle", "queue-karin", "queue-glen")
+        frames = ["queue-top", *[name for name in names for _ in range(2)],
+                  "queue-bottom", "queue-bottom", "queue-bottom", "queue-top", "queue-top",
+                  "queue-second", "queue-second"]
+        replay = self.replay(frames, synthetic=False, seconds=0.2)
         observation = BrawlVision(replay.image).observe()
         expected = BenchScanResult((
             BenchHero("维多丽卡", Imprint.C), BenchHero("克莉丝缇", Imprint.D),
@@ -449,26 +480,38 @@ class BenchSelectionTests(unittest.TestCase):
         self.assertEqual(result.hero, expected.heroes[1])
         self.assertEqual(result.panel, expected.panel)
         self.assertFalse(hasattr(result, "coverage_complete"))
-        self.assertEqual(replay.index, 8)
+        self.assertEqual(replay.index, 15)
         np.testing.assert_array_equal(replay.image, replay.frames[-1])
         self.assertEqual([action[:2] for action in replay.actions], [
-            (0, "BrawlBenchNext"), (1, "BrawlBenchNext"), (2, "BrawlBenchNext"),
-            (3, "BrawlBenchNext"), (4, "BrawlBenchNext"), (6, "BrawlBenchTop"),
-            (7, "BrawlBenchNext"),
+            (0, "BrawlBenchNext"), (2, "BrawlBenchNext"), (4, "BrawlBenchNext"),
+            (6, "BrawlBenchNext"), (8, "BrawlBenchNext"), (11, "BrawlBenchTop"),
+            (13, "BrawlBenchNext"),
         ])
 
     def test_target_at_top_still_requires_full_validation_then_rewind(self):
         expected = self.expected()
         first = cursor(top=True)
         last = cursor("格伦", bottom=True, next_area=None)
-        replay = self.replay([first] * 7 + [last] * 8 + [first])
+        replay = self.replay([first] * 7 + [last] * 8 + [first] * 2)
         result = replay.task.select(expected.heroes[0], expected)
         self.assertEqual(result.outcome, SelectionOutcome.SELECTED)
         self.assertEqual(result.hero, expected.heroes[0])
-        self.assertEqual(replay.index, 15)
+        self.assertEqual(replay.index, 16)
         self.assertEqual([action[:2] for action in replay.actions], [
-            (0, "BrawlBenchNext"), (8, "BrawlBenchTop"),
+            (0, "BrawlBenchNext"), (9, "BrawlBenchTop"),
         ])
+
+    def test_confirmed_top_ends_retry_interval_before_later_rewind(self):
+        expected = self.expected()
+        first = cursor(top=True)
+        last = cursor("格伦", bottom=True, next_area=None)
+        replay = self.replay([last, first, first, last, last, last, first, first], seconds=0.2)
+        result = replay.task.select(expected.heroes[0], expected)
+        self.assertEqual(result.outcome, SelectionOutcome.SELECTED)
+        self.assertEqual(result.hero, expected.heroes[0])
+        self.assertEqual([item[:2] for item in replay.actions], [
+            (0, "BrawlBenchTop"), (2, "BrawlBenchNext"), (5, "BrawlBenchTop")])
+        self.assertEqual(replay.index, 7)
 
     def test_invalid_or_absent_target_and_incomplete_roster_never_act(self):
         expected = self.expected()
@@ -554,12 +597,17 @@ class BenchSelectionTests(unittest.TestCase):
 
     def test_rewind_rechecks_visible_queue_before_accepting_requested_focus(self):
         expected = self.expected()
-        frames = [cursor(top=True), cursor("格伦", bottom=True, next_area=None), cursor(top=True)]
+        frames = [cursor(top=True)] + [cursor("格伦", bottom=True, next_area=None)] * 2 + [cursor(top=True)]
         for agreement, outcome in ((False, SelectionOutcome.BENCH_CHANGED),
                                    (None, SelectionOutcome.TIMEOUT)):
             with self.subTest(agreement=agreement):
                 replay = self.replay(frames + [frames[-1]] * 30, agreement=agreement)
-                result = replay.task.select(expected.heroes[0], expected)
+                # The last-card settling frame is valid; the disagreement
+                # belongs specifically to the requested focus after rewind.
+                with patch("tasks.brawl.scanner.agrees_selection",
+                           side_effect=lambda before, after, agreement=agreement, **kwargs:
+                           True if int(after[0, 0, 0]) == 2 else agreement):
+                    result = replay.task.select(expected.heroes[0], expected)
                 self.assertEqual(result.outcome, outcome)
                 self.assertIsNone(result.hero)
                 self.assertEqual(len(replay.actions), 1)
@@ -567,7 +615,7 @@ class BenchSelectionTests(unittest.TestCase):
     def test_rewind_and_selection_share_one_action_budget(self):
         expected = self.expected()
         replay = self.replay([cursor(top=True)]
-                             + [cursor("格伦", bottom=True, next_area=None)] * 2)
+                             + [cursor("格伦", bottom=True, next_area=None)] * 3)
         replay.task.MAX_ACTIONS = 1
         result = replay.task.select(expected.heroes[0], expected)
         self.assertEqual(result.outcome, SelectionOutcome.ACTION_LIMIT)
@@ -575,7 +623,7 @@ class BenchSelectionTests(unittest.TestCase):
 
     def test_selected_late_final_frame_wins_over_timeout_and_action_limit(self):
         expected = self.expected()
-        replay = self.replay([cursor(top=True), cursor("格伦", bottom=True, next_area=None)], seconds=13)
+        replay = self.replay([cursor(top=True)] + [cursor("格伦", bottom=True, next_area=None)] * 2, seconds=13)
         replay.task.MAX_ACTIONS = 1
         result = replay.task.select(expected.heroes[-1], expected)
         self.assertEqual(result.outcome, SelectionOutcome.SELECTED)
@@ -584,11 +632,23 @@ class BenchSelectionTests(unittest.TestCase):
 
     def test_selection_preserves_previous_scan_action_interval(self):
         expected = self.expected()
-        replay = self.replay([cursor(top=True)] * 8 + [cursor("格伦", bottom=True, next_area=None)])
+        replay = self.replay([cursor(top=True)] * 8 + [cursor("格伦", bottom=True, next_area=None)] * 2)
         replay.task.interval_reset(replay.task.ACTION_TIMER, interval=replay.task.ACTION_INTERVAL)
         result = replay.task.select(expected.heroes[-1], expected)
         self.assertEqual(result.outcome, SelectionOutcome.SELECTED)
-        self.assertEqual([action[0] for action in replay.actions], [7])
+        # A prior unrelated click cannot delay the first fully verified card.
+        # Its pending next-card click still remains unique across old frames.
+        self.assertEqual([action[0] for action in replay.actions], [0])
+
+    def test_changed_target_requires_stable_queue_before_selection_evidence_can_escape(self):
+        expected = self.expected()
+        last = cursor("格伦", bottom=True, next_area=None)
+        replay = self.replay([cursor(top=True), last, last], seconds=0.2)
+        result = replay.task.select(expected.heroes[-1], expected)
+        self.assertEqual(result.outcome, SelectionOutcome.SELECTED)
+        self.assertEqual(result.hero, expected.heroes[-1])
+        self.assertEqual(replay.index, 2)
+        self.assertEqual([item[:2] for item in replay.actions], [(0, "BrawlBenchNext")])
 
     def test_selection_can_replace_stale_first_image_without_clicking(self):
         hero = BenchHero("维多丽卡", Imprint.C)

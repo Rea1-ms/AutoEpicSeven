@@ -190,9 +190,10 @@ class RoundFlowTests(unittest.TestCase):
                              + ["normal-round2"] * 3, seconds=1)
         result = self.play(replay)
         self.assertEqual(result.outcome, RoundOutcome.NEXT_PREPARATION, result.reason)
-        self.assertEqual([a[1] for a in replay.actions], ["PREPARATION_CHECK", "TOUCH_TO_CLOSE"])
+        self.assertEqual([a[1] for a in replay.actions],
+                         ["PREPARATION_CHECK", "TOUCH_TO_CLOSE", "TOUCH_TO_CLOSE"])
         retry = replay.actions[1]
-        self.assertGreaterEqual(retry[0], 4)
+        self.assertEqual([a[0] for a in replay.actions[1:]], [1, 7])
         self.assertTrue(620 <= retry[2][0] <= 650 and 460 <= retry[2][1] <= 480)
         self.assertEqual(result.panel, self.next_panel)
 
@@ -249,6 +250,8 @@ class RoundFlowTests(unittest.TestCase):
         self.assertGreater(replay.actions[-1][0] - replay.actions[1][0], 30)
 
     def test_start_and_reward_close_share_the_previous_formation_interval(self):
+        # The registered case now checks that a previous formation timer does
+        # not postpone a verified start or an owned, readable reward close.
         replay = self.replay(["normal-deployed"] * 8 + ["combat-speed-two"] * 3
                              + ["hero-start-10"] * 5 + ["normal-round2"] * 3)
         replay.task.interval_reset("BrawlBenchScan", interval=3)
@@ -256,7 +259,7 @@ class RoundFlowTests(unittest.TestCase):
         self.assertEqual(result.outcome, RoundOutcome.NEXT_PREPARATION, result.reason)
         self.assertEqual(result.hero_results, (HeroResult("萝季", Imprint.C, None),))
         self.assertEqual([(a[0], a[1]) for a in replay.actions],
-                         [(7, "PREPARATION_CHECK"), (14, "HERO_RESULT_CHECK")])
+                         [(0, "PREPARATION_CHECK"), (11, "HERO_RESULT_CHECK")])
 
     def test_start_without_combat_response_times_out_without_another_start(self):
         replay = self.replay(["normal-deployed"] * 35)
@@ -421,12 +424,29 @@ class RoundFlowTests(unittest.TestCase):
         self.assertEqual([a[1] for a in replay.actions], ["PREPARATION_CHECK"])
 
     def test_speed_change_preserves_the_shared_start_and_reward_action_interval(self):
+        # Speed retries retain their own interval; neither the battle start
+        # nor the owned reward is delayed by that unrelated button's timer.
         replay = self.replay(["normal-deployed"] + ["combat-speed-one"] * 7 + ["combat-speed-two"]
                              + ["hero-start-10"] * 7 + ["normal-round2"] * 3)
         result = self.play(replay)
         self.assertEqual(result.outcome, RoundOutcome.NEXT_PREPARATION, result.reason)
         self.assertEqual([(a[0], a[1]) for a in replay.actions],
-                         [(0, "PREPARATION_CHECK"), (7, "SPEED_ONE_CHECK"), (14, "HERO_RESULT_CHECK")])
+                         [(0, "PREPARATION_CHECK"), (1, "SPEED_ONE_CHECK"), (9, "HERO_RESULT_CHECK")])
+
+    def test_fast_distinct_rewards_and_speed_use_verified_states_without_shared_wait(self):
+        replay = self.replay(["normal-deployed", "combat-speed-one", "combat-speed-two",
+                              "hero-start-10", "hero-start-10", "hero-new-01", "hero-new-01"]
+                             + ["normal-round2"] * 4, seconds=0.25)
+        replay.task.interval_reset("BrawlBenchScan", interval=3)
+        result = self.play(replay)
+        self.assertEqual(result.outcome, RoundOutcome.NEXT_PREPARATION, result.reason)
+        self.assertEqual(result.hero_results, (HeroResult("萝季", Imprint.C, None),
+                                               HeroResult("萝季", Imprint.B, Imprint.C)))
+        self.assertEqual([(a[0], a[1]) for a in replay.actions], [
+            (0, "PREPARATION_CHECK"), (1, "SPEED_ONE_CHECK"),
+            (3, "HERO_RESULT_CHECK"), (5, "HERO_RESULT_CHECK")])
+        self.assertEqual(replay.index, 10)
+        self.assertLess(replay.index * replay.seconds, 3)
 
     def test_new_hero_and_imprint_upgrade_are_recorded_once_despite_repeated_frames(self):
         replay = self.replay(["normal-deployed", "combat-speed-two", "round-clear",
@@ -548,11 +568,88 @@ class RoundFlowTests(unittest.TestCase):
 
     def test_preparation_before_reward_close_does_not_commit_the_unclosed_hero(self):
         replay = self.replay(["normal-deployed", "combat-speed-two", "hero-start-10", "normal-round2"])
-        result = self.play(replay)
+        actual_matches = BrawlVision.matches
+
+        def matches(vision, button, **kwargs):
+            # The old case relied on an unrelated three-second cooldown to
+            # leave the reward unclosed. Model the actual missing permission:
+            # its readable identity has no currently recognized close footer.
+            return False if button is HERO_RESULT_CHECK else actual_matches(vision, button, **kwargs)
+
+        with patch("tasks.brawl.combat.BrawlVision.matches", autospec=True, side_effect=matches):
+            result = self.play(replay)
         self.assertEqual(result.outcome, RoundOutcome.FAILED, result.reason)
         self.assertEqual(result.reason, "Preparation returned before the hero reward was closed")
         self.assertEqual(result.hero_results, ())
         self.assertEqual([a[1] for a in replay.actions], ["PREPARATION_CHECK"])
+
+    def test_failed_round13_keeps_both_rewards_and_confirms_real_same_round_return(self):
+        # This is an explicit reconstruction, not a continuous recording.
+        # The earlier start panel is supplied from the log; combat, failed
+        # banner and Karin C->B are existing captures in a synthetic sequence.
+        # Karin's old capture is from challenge mode, so only its mode is
+        # explicitly supplied as normal for this synthetic reward sequence.
+        # Achates B->A and the 160-coin return are the user's two new captures;
+        # their names, badges, page identities and counters stay unmocked.
+        before = PreparationPanel(13, 7, 8, 8, 135, 0)
+        returned = PreparationPanel(13, 7, 8, 8, 160, 0)
+        replay = self.replay(["normal-deployed", "combat-speed-two", "round-failed",
+                              "hero-new-27", "hero-new-27",
+                              "hero-reward-achates-a", "hero-reward-achates-a"]
+                             + ["failed-round13-return"] * 4, seconds=0.25)
+        actual_observe = BrawlVision.observe
+
+        def observe(vision, **kwargs):
+            observation = actual_observe(vision, **kwargs)
+            if replay.index in (3, 4):
+                self.assertEqual(observation.game_mode, BrawlMode.CHALLENGE)
+                return replace(observation, game_mode=BrawlMode.NORMAL)
+            return replace(observation, panel=before) if replay.index == 0 else observation
+
+        with patch("tasks.brawl.combat.BrawlVision.observe", autospec=True, side_effect=observe):
+            result = self.play(replay, panel=before)
+        self.assertEqual(result.outcome, RoundOutcome.NEXT_PREPARATION, result.reason)
+        self.assertEqual(result.panel, returned)
+        self.assertEqual(result.hero_results, (HeroResult("卡琳", Imprint.B, Imprint.C),
+                                               HeroResult("未知可能性雅卡泰丝", Imprint.A, Imprint.B)))
+        self.assertEqual([(a[0], a[1]) for a in replay.actions], [
+            (0, "PREPARATION_CHECK"), (3, "HERO_RESULT_CHECK"), (5, "HERO_RESULT_CHECK")])
+        self.assertEqual(replay.index, 10)
+        self.assertIn("failed; retry preparation confirmed", result.reason)
+
+    def test_missed_failed_banner_uses_one_lost_heart_and_keeps_both_rewards(self):
+        # The user log missed the short defeat banner. This reconstructed
+        # sequence uses an older three-heart preparation with only its panel
+        # replaced from that log; it is not a captured continuous battle.
+        # Both the starting hearts and the user's two-heart return are read
+        # from real pixels, as are the two independent hero reward identities.
+        # Only Karin's mode from its older challenge capture is explicitly
+        # replaced for this normal-mode sequence; production mode checks remain.
+        before = PreparationPanel(13, 7, 8, 8, 135, 0)
+        returned = PreparationPanel(13, 7, 8, 8, 160, 0)
+        replay = self.replay(["normal-deployed", "combat-speed-two",
+                              "hero-new-27", "hero-new-27",
+                              "hero-reward-achates-a", "hero-reward-achates-a"]
+                             + ["failed-round13-return"] * 4, seconds=0.25)
+        actual_observe = BrawlVision.observe
+
+        def observe(vision, **kwargs):
+            observation = actual_observe(vision, **kwargs)
+            if replay.index in (2, 3):
+                self.assertEqual(observation.game_mode, BrawlMode.CHALLENGE)
+                return replace(observation, game_mode=BrawlMode.NORMAL)
+            return replace(observation, panel=before) if replay.index == 0 else observation
+
+        with patch("tasks.brawl.combat.BrawlVision.observe", autospec=True, side_effect=observe):
+            result = self.play(replay, panel=before)
+        self.assertEqual(result.outcome, RoundOutcome.NEXT_PREPARATION, result.reason)
+        self.assertEqual(result.panel, returned)
+        self.assertEqual(result.hero_results, (HeroResult("卡琳", Imprint.B, Imprint.C),
+                                               HeroResult("未知可能性雅卡泰丝", Imprint.A, Imprint.B)))
+        self.assertEqual([(a[0], a[1]) for a in replay.actions], [
+            (0, "PREPARATION_CHECK"), (2, "HERO_RESULT_CHECK"), (4, "HERO_RESULT_CHECK")])
+        self.assertEqual(replay.index, 9)
+        self.assertIn("lives: 3->2", result.reason)
 
     def test_disconnected_upgrade_chain_is_not_closed_or_added(self):
         replay = self.replay(["normal-deployed", "combat-speed-two", "hero-start-10", "hero-new-01"],
@@ -675,4 +772,36 @@ class PostBattlePreparationTests(unittest.TestCase):
         self.assertEqual(result.outcome, RoundOutcome.NEXT_PREPARATION, result.reason)
         self.assertEqual(result.panel, self.returned)
         self.assertEqual(replay.index, 3)
+        self.assertEqual([action[1] for action in replay.actions], ["PREPARATION_CHECK"])
+
+    def test_same_round_requires_a_measured_single_nonterminal_life_loss(self):
+        # Explicit synthetic counts cover cases for which no complete capture
+        # pair exists. Neither a reward balance nor an absolute heart count
+        # may replace evidence of this particular battle losing one life.
+        returned = replace(self.panel, coins=100)
+        for starting, remaining in ((3, 3), (None, 2), (3, None), (3, 1), (1, 0), (2, 3)):
+            with self.subTest(starting=starting, remaining=remaining):
+                replay = self.replay([returned] * 36, seconds=0.5)
+                with patch("tasks.brawl.combat.read_lives", side_effect=lambda *args,
+                           starting=starting, remaining=remaining, replay=replay, **kwargs: (
+                        starting if replay.index == 0 else remaining)):
+                    result = self.play(replay)
+                self.assertEqual(result.outcome, RoundOutcome.FAILED, result.reason)
+                self.assertIsNone(result.panel)
+                self.assertEqual(result.hero_results, ())
+                self.assertLess(replay.index, 37)
+                self.assertEqual([action[1] for action in replay.actions], ["PREPARATION_CHECK"])
+
+    def test_unread_lives_restart_same_round_preparation_stability(self):
+        returned = replace(self.panel, coins=100)
+        replay = self.replay([returned] * 8)
+        # Frames 2/3 have two lives; frame 4 is unread, so the same readable
+        # panel cannot finish until a fresh 0.6-second interval after frame 5.
+        with patch("tasks.brawl.combat.read_lives", side_effect=lambda *args, **kwargs: (
+                3 if replay.index == 0 else None if replay.index == 4 else 2)):
+            result = self.play(replay)
+        self.assertEqual(result.outcome, RoundOutcome.NEXT_PREPARATION, result.reason)
+        self.assertEqual(result.panel, returned)
+        self.assertEqual(replay.index, 8)
+        self.assertIn("lives: 3->2", result.reason)
         self.assertEqual([action[1] for action in replay.actions], ["PREPARATION_CHECK"])

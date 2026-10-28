@@ -296,12 +296,11 @@ class BrawlFormation(BrawlBenchScanner):
     def _click_formation(self, area, name):
         self._selection_evidence = None
         self.device.click(ClickButton(area, name=name))
-        # Preserve the shared cooldown before the next independent interaction.
-        # Inside one requested grid, a positively observed selection authorizes
-        # its destination/cancel immediately. Actual formation actions are never
-        # repeated; only a still-verified read-only cancellation may retry after
-        # this cooldown. Elapsed time alone cannot authorize another click.
-        self.interval_reset(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)
+        # Only a repeat of this same action owns its cooldown. A verified new
+        # preparation or grid is sufficient for the next distinct action; the
+        # previous selection/cancel must not impose an extra fixed wait there.
+        # Actual formation actions remain one-shot through the pending flags.
+        self.interval_reset(name, interval=self.ACTION_INTERVAL)
 
     def _grid_action(self, scan, expected_cells, *, action=None, expected_panel=None):
         """Select once, act once, and positively return to preparation.
@@ -373,16 +372,12 @@ class BrawlFormation(BrawlBenchScanner):
                 # Three total attempts share the original response deadline;
                 # retry clicks must not renew it and hide a persistent failure.
                 if (not retry_cancel or cancel_attempts >= 3
-                        or not self.interval_is_reached(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)):
+                        or not self.interval_is_reached("BrawlFormationCancelRound",
+                                                        interval=self.ACTION_INTERVAL)):
                     continue
             if opened and not clicked and current.state == BrawlScreen.PREPARATION:
                 if timeout.reached():
                     raise failed("Formation grid did not open")
-                continue
-            if (not clicked and not opened
-                    and not self.interval_is_reached(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)):
-                if timeout.reached():
-                    raise failed("Formation response timed out")
                 continue
             panel = current.panel
             if panel is None and not current.reason:

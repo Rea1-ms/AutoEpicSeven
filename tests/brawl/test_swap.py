@@ -6,8 +6,13 @@ from module.config import server
 
 server.set_lang("global_cn")
 
+from tasks.brawl.assets.assets_brawl import (  # noqa: E402
+    FORMATION_GRID_CHECK,
+    FORMATION_SOURCE_SELECTED,
+)
+from tasks.brawl.assets.assets_brawl_actions import SWAP_GRID_ANCHOR  # noqa: E402
 from tasks.brawl.bench import BenchHero, read_bench  # noqa: E402
-from tasks.brawl.board import read_board, read_swap_targets  # noqa: E402
+from tasks.brawl.board import read_board, read_formation_grid, read_swap_targets  # noqa: E402
 from tasks.brawl.brawl import analyze  # noqa: E402
 from tasks.brawl.cursor import read_cursor  # noqa: E402
 from tasks.brawl.field import read_field  # noqa: E402
@@ -20,7 +25,12 @@ from tasks.brawl.swap import (  # noqa: E402
     capture_swap,
     identify_swapped_hero,
 )
-from tasks.brawl.vision import BrawlMode, BrawlVision, ObservationError  # noqa: E402
+from tasks.brawl.vision import (  # noqa: E402
+    BrawlMode,
+    BrawlVision,
+    ObservationError,
+    PreparationPanel,
+)
 from tasks.brawl.withdraw import (  # noqa: E402
     BrawlWithdraw,
     WithdrawOutcome,
@@ -69,11 +79,25 @@ class WithdrawTests(unittest.TestCase):
             self.assertIsNone(read_withdraw_control(sample))
 
     def test_missing_duplicate_or_unpaired_controls_and_dim_button_stay_unknown(self):
-        for area in ((740, 536, 778, 573), (802, 529, 851, 579), (350, 196, 485, 250)):
+        for area in ((740, 536, 778, 573), (802, 529, 851, 579)):
             self.frame = self.grid.copy()
             x1, y1, x2, y2 = area
             self.frame[y1:y2, x1:x2] = 0
             self.assertIsNone(read_withdraw_control(self.frame))
+        # A missing fixed edge is not itself missing geometry: the other edge
+        # or a complete full-field control set can locate this same screenshot.
+        # Remove both fixed anchors and one blue control to withhold every
+        # valid localization proof while leaving the source/minus pair intact.
+        self.frame = self.grid.copy()
+        for asset in (FORMATION_GRID_CHECK, SWAP_GRID_ANCHOR):
+            for marker in asset.match_multi_template(self.grid, similarity=.9):
+                x1, y1, x2, y2 = marker.area
+                self.frame[y1:y2, x1:x2] = 0
+        marker = FORMATION_SOURCE_SELECTED.match_multi_template(self.grid, similarity=.9)[0]
+        x1, y1, x2, y2 = marker.area
+        self.frame[y1:y2, x1:x2] = 0
+        self.assertIsNone(read_formation_grid(self.frame))
+        self.assertIsNone(read_withdraw_control(self.frame))
         for variant in ("duplicate", "moved", "dark"):
             self.frame = self.grid.copy()
             if variant != "dark":
@@ -83,6 +107,53 @@ class WithdrawTests(unittest.TestCase):
             if variant == "dark":
                 self.frame[536:573, 740:778] //= 2
             self.assertIsNone(read_withdraw_control(self.frame))
+
+    def test_reported_round13_withdraw_uses_complete_grid_when_fixed_anchors_are_missing(self):
+        self.frame = frame("resume-round13-withdraw")
+        vision = BrawlVision(self.frame)
+        observation = replace(vision.observe(read_panel=False), panel=vision.preparation_panel())
+        self.assertEqual(observation.panel, PreparationPanel(13, 7, 8, 8, 160, 0))
+        for asset in (FORMATION_GRID_CHECK, SWAP_GRID_ANCHOR):
+            self.assertEqual(asset.match_multi_template(self.frame, similarity=.9), [])
+        grid = read_formation_grid(self.frame, observation=observation, expected_source=(0, 3))
+        self.assertIsNotNone(grid)
+        self.assertEqual(grid.selected_source.center, (794, 241))
+        self.assertEqual({(cell.screen_row, cell.screen_column) for cell in grid.occupied},
+                         {(0, 3), (1, 3), (2, 0), (2, 3), (3, 0), (3, 3), (4, 3), (5, 3)})
+        control = read_withdraw_control(self.frame, observation=observation)
+        self.assertIsNotNone(control)
+        self.assertEqual(control.source, grid.selected_source)
+        self.assertEqual(control.button_area, (750, 209, 767, 226))
+        self.assertEqual(control.panel, observation.panel)
+
+    def test_anchorless_withdraw_rejects_incomplete_or_ambiguous_current_controls(self):
+        original = frame("resume-round13-withdraw")
+        vision = BrawlVision(original)
+        observation = replace(vision.observe(read_panel=False), panel=vision.preparation_panel())
+        for area in ((740, 200, 778, 237), (802, 193, 851, 243)):
+            left, top, right, bottom = area
+            for corrupt in ("missing", "duplicate", "shifted", "dark"):
+                with self.subTest(area=area, corrupt=corrupt):
+                    self.frame = original.copy()
+                    if corrupt == "duplicate":
+                        self.frame[top:bottom, left - 249:right - 249] = original[top:bottom, left:right]
+                    elif corrupt == "dark":
+                        self.frame[top:bottom, left:right] //= 2
+                    else:
+                        self.frame[top:bottom, left:right] = 0
+                        if corrupt == "shifted":
+                            self.frame[top:bottom, left + 16:right + 16] = original[top:bottom, left:right]
+                    self.assertIsNone(read_withdraw_control(self.frame, observation=observation))
+        self.frame = original.copy()
+        self.frame[250:298, 706:756] = 0
+        self.assertIsNone(read_withdraw_control(self.frame, observation=observation))
+        # Counter contradictions are explicit synthetic observations, not
+        # additional captured states. A lone paired source cannot anchor them.
+        for panel in (replace(observation.panel, capacity=9), replace(observation.panel, deployed=7)):
+            with self.subTest(panel=panel):
+                self.assertIsNone(read_withdraw_control(original, observation=replace(observation, panel=panel)))
+        self.frame = original
+        self.assertIsNotNone(read_withdraw_control(self.frame, observation=observation))
 
     def test_partial_full_invalid_and_stale_bench_cannot_authorize_withdrawal(self):
         from tasks.brawl.rules import HEROES
@@ -134,7 +205,7 @@ class WithdrawTests(unittest.TestCase):
         self.assertEqual(result.hero, BenchHero("小春", Imprint.B))
         self.assertEqual(read_cursor(self.after).selected.name, "利纳柯")
         self.assertEqual(replay.actions, [(0, "BrawlWithdrawSelect", (794, 577, 795, 578)),
-                                          (7, "BrawlWithdrawMinus", (750, 545, 767, 562))])
+                                          (1, "BrawlWithdrawMinus", (750, 545, 767, 562))])
 
     def test_already_selected_source_does_not_click_the_hero_again(self):
         request = capture_withdraw(self.grid, 6, 3, self.scan)
@@ -197,7 +268,9 @@ class WithdrawTests(unittest.TestCase):
         self.assertEqual(len(replay.actions), 1)
         unread = self.after.copy()
         unread[66:114, 1010:1264] = 0
-        for images in ([self.before, self.grid, self.before],
+        no_minus = self.grid.copy()
+        no_minus[536:573, 740:778] = 0
+        for images in ([self.before, no_minus, self.before],
                        [self.before] + [self.grid] * 7 + [unread, self.grid]):
             replay = self.replay(images, seconds=.5)
             self.assertEqual(replay.task.withdraw(self.request).outcome, WithdrawOutcome.SCENE_CHANGED)
@@ -228,7 +301,9 @@ class WithdrawTests(unittest.TestCase):
         replay = self.replay([self.grid] * 8 + [self.after], seconds=.5)
         replay.task.interval_reset(replay.task.ACTION_TIMER, interval=3)
         self.assertEqual(replay.task.withdraw(request).outcome, WithdrawOutcome.CONFIRMED)
-        self.assertEqual([action[0] for action in replay.actions], [7])
+        # A confirmed selected source is a new actionable state, regardless of
+        # a preceding independent interaction's timer. The minus is still once.
+        self.assertEqual([action[0] for action in replay.actions], [0])
         replay = self.replay([self.before, self.grid, self.after])
         original = replay.screenshot
 
@@ -321,9 +396,10 @@ class FullSwapReplayTests(unittest.TestCase):
 
     def test_real_full_field_swap_confirms_position_without_using_new_focus(self):
         replay = self.replay([self.before] + [self.grid] * 7 + [self.after])
+        replay.task.interval_reset(replay.task.ACTION_TIMER, interval=3)
         self.assertEqual(replay.task.swap_selected(self.request), SwapOutcome.CONFIRMED)
         self.assertEqual(replay.actions, [(0, "BrawlSwapOpen", (943, 268, 977, 303)),
-                                          (7, "BrawlSwapCell", (794, 577, 795, 578))])
+                                          (1, "BrawlSwapCell", (794, 577, 795, 578))])
 
     def test_unknown_post_swap_pose_waits_for_independent_known_pose(self):
         replay = self.replay([self.before] + [self.grid] * 7
@@ -336,7 +412,7 @@ class FullSwapReplayTests(unittest.TestCase):
     def test_unknown_pose_then_real_swap_frame_confirms_without_reclicking(self):
         replay = self.replay([self.before] + [self.grid] * 7 + ["full-swap-stable"] * 4 + [self.after])
         self.assertEqual(replay.task.swap_selected(self.request), SwapOutcome.CONFIRMED)
-        self.assertEqual([action[0] for action in replay.actions], [0, 7])
+        self.assertEqual([action[0] for action in replay.actions], [0, 1])
 
     def test_unchanged_deployed_count_and_missing_sprite_do_not_confirm(self):
         erased = self.after.copy()
@@ -357,7 +433,9 @@ class FullSwapReplayTests(unittest.TestCase):
     def test_closed_grid_and_reappearing_grid_cannot_reuse_an_old_request(self):
         unread = self.after.copy()
         unread[66:114, 1010:1264] = 0
-        for images in ([self.before, self.grid, self.before],
+        no_target = self.grid.copy()
+        no_target[530:578, 768:818] = 0
+        for images in ([self.before, no_target, self.before],
                        [self.before] + [self.grid] * 7 + [unread, self.grid]):
             replay = self.replay(images)
             self.assertEqual(replay.task.swap_selected(self.request), SwapOutcome.SCENE_CHANGED)
@@ -435,7 +513,7 @@ class IdentificationSwapTests(unittest.TestCase):
         replay = self.replay([self.before] + ["full-swap-grid"] * 7 + ["full-swap-after"])
         outcome = replay.task.swap_selected(request)
         self.assertEqual(outcome, SwapOutcome.CONFIRMED)
-        self.assertEqual([action[0] for action in replay.actions], [0, 7])
+        self.assertEqual([action[0] for action in replay.actions], [0, 1])
         self.assertEqual(read_cursor(replay.image).selected.name, "卡琳")
         identified = identify_swapped_hero(request, self.after_scan, outcome)
         self.assertEqual(identified, BenchHero("战斗型玛雅", Imprint.A))

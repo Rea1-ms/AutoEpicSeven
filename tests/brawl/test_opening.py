@@ -202,11 +202,11 @@ class OpeningPolicyTests(unittest.TestCase):
         replay = self.scenario(observation(panel), [operation("scan", scan(panel, (LORINA,)))])
         replay.task.prepare()
         self.assertEqual(set(replay.modules), {"upgrade", "scan", "summon"})
-        for child in replay.modules.values():
+        for kind, child in replay.modules.items():
             self.assertIs(child.device, replay.task.device)
             self.assertIs(child.config, replay.task.config)
             self.assertIs(child.interval_timer, replay.task.interval_timer)
-            self.assertEqual(child.ACTION_TIMER, "BrawlBenchScan")
+            self.assertEqual(child.ACTION_TIMER, kind)
 
     def test_nonopening_scenes_and_incomplete_context_cannot_start_children(self):
         panel = PreparationPanel(1, 2, 0, 3, 70, 0)
@@ -682,11 +682,11 @@ class EconomyOrchestrationTests(unittest.TestCase):
         result = replay.task.prepare(replay.formation, {})
         self.assertEqual(result.outcome, FormationOutcome.FAILED)
         self.assertFalse(replay.calls)
-        for child in replay.modules.values():
+        for kind, child in replay.modules.items():
             self.assertIs(child.config, replay.task.config)
             self.assertIs(child.device, replay.task.device)
             self.assertIs(child.interval_timer, replay.task.interval_timer)
-            self.assertEqual(child.ACTION_TIMER, "BrawlBenchScan")
+            self.assertEqual(child.ACTION_TIMER, kind)
 
     def test_challenge_mode_and_invalid_sessions_cannot_rearrange_or_spend(self):
         for mode, valid in ((BrawlMode.CHALLENGE, True), (BrawlMode.NORMAL, False)):

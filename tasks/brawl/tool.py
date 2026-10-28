@@ -136,8 +136,9 @@ class BrawlTool(ModuleBase):
         else:
             logger.info("Challenge mode retains the one-battle boundary")
         self.combat = BrawlCombat(config=self.config, device=self.device)
-        # The last grid cancellation and the first battle click belong to the
-        # same action sequence. A new controller must not erase its cooldown.
+        # Preserve same-action retry history across controllers. A verified
+        # formation return permits battle immediately; unrelated actions use
+        # distinct timer keys instead of inheriting a global click cooldown.
         self.combat.interval_timer = self.formation.interval_timer
         while True:
             if continuous:

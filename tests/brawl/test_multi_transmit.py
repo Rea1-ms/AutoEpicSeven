@@ -226,8 +226,9 @@ class AutoTransferReplayTests(unittest.TestCase):
                              ["multi-transmit-before"] + ["multi-transmit-empty"] * 2
                              + ["multi-transmit-one"] * 2 + ["multi-transmit-two"] * 2
                              + ["multi-transmit-three"] * 3 + ["multi-transmit-proceeds"],
-                             self.clock, seconds=4)
+                             self.clock, seconds=.2)
         self.frame = replay.image
+        replay.task.interval_reset(replay.task.ACTION_TIMER, interval=3)
         preview = replay.task.preview(self.NAMES, self.annotated_scan())
         self.assertEqual(preview.names, self.NAMES)
         self.assertEqual(preview.header, self.HEADER)
@@ -267,7 +268,7 @@ class AutoTransferReplayTests(unittest.TestCase):
         # exercise all five production loop transitions and their action gate;
         # the separate three-hero case retains the real visual readers.
         images = [np.full((720, 1280, 3), index, np.uint8) for index in range(14)]
-        replay = BrawlReplay(BrawlAutoTransfer, images, self.clock, seconds=4)
+        replay = BrawlReplay(BrawlAutoTransfer, images, self.clock, seconds=.2)
         self.frame = replay.image
         names = self.BENCH[:5]
         quotes = tuple(Resources(*values) for values in ((0, 0), (3, 2), (8, 7),
@@ -394,10 +395,26 @@ class AutoTransferReplayTests(unittest.TestCase):
 
     def test_repeated_gift_frames_close_once_then_verify_exact_return(self):
         replay, preview = self.finish_replay(["multi-transmit-three"]
-                                             + ["transmit-gift-result"] * 4 + ["multi-transmit-return"])
-        with patch("tasks.brawl.auto_transfer._result_balances", return_value=(48, 9)):
+                                             + ["transmit-gift-result"] * 4 + ["multi-transmit-return"], seconds=.2)
+        with patch("tasks.brawl.summon._result_balances", return_value=(48, 9)):
             report = replay.task.finish(preview, commit=True)
         self.assertEqual(report.hero_results, (HeroResult("黎洁特", Imprint.S, Imprint.A),))
+        self.assertEqual(report.panel, replace(self.HEADER, coins=48, synergy_tokens=9))
+        self.assertEqual([(a[0], a[1]) for a in replay.actions],
+                         [(0, "TRANSMIT_CONFIRM"), (1, "HERO_RESULT_CHECK")])
+
+    def test_unread_gift_identity_discards_balance_cache_without_reclosing(self):
+        replay, preview = self.finish_replay(["multi-transmit-three"]
+                                             + ["transmit-gift-result"] * 4 + ["multi-transmit-return"], seconds=.2)
+        hero = HeroResult("黎洁特", Imprint.S, Imprint.A)
+        # One modeled unread identity interrupts otherwise captured identical
+        # result frames. Its balance must be read again, but the already closed
+        # gift still cannot authorize a duplicate close or a second reward.
+        with patch("tasks.brawl.auto_transfer.read_hero_result", side_effect=(hero, None, hero, hero)), \
+                patch("tasks.brawl.summon._result_balances", return_value=(48, 9)) as balances:
+            report = replay.task.finish(preview, commit=True)
+        self.assertEqual(balances.call_count, 2)
+        self.assertEqual(report.hero_results, (hero,))
         self.assertEqual(report.panel, replace(self.HEADER, coins=48, synergy_tokens=9))
         self.assertEqual([(a[0], a[1]) for a in replay.actions],
                          [(0, "TRANSMIT_CONFIRM"), (1, "HERO_RESULT_CHECK")])
@@ -414,24 +431,32 @@ class AutoTransferReplayTests(unittest.TestCase):
     def test_unclosed_gift_cannot_disappear_during_the_shared_action_interval(self):
         replay, preview = self.finish_replay(["multi-transmit-three", "transmit-gift-result",
                                              "multi-transmit-return"], seconds=.5)
-        with patch("tasks.brawl.auto_transfer._result_balances", return_value=(48, 9)), \
+        # Missing footer evidence, not a previous click's cooldown, is the
+        # reason this otherwise readable gift cannot be closed before return.
+        original = BrawlVision.matches
+
+        def matches(vision, button, **kwargs):
+            return False if str(button) == "HERO_RESULT_CHECK" else original(vision, button, **kwargs)
+
+        with patch("tasks.brawl.summon._result_balances", return_value=(48, 9)), \
+                patch("tasks.brawl.auto_transfer.BrawlVision.matches", autospec=True, side_effect=matches), \
                 self.assertRaisesRegex(ObservationError, "disappeared before its verified close"):
             replay.task.finish(preview, commit=True)
         self.assertEqual([a[1] for a in replay.actions], ["TRANSMIT_CONFIRM"])
 
     def test_gift_balance_mismatch_preserves_the_result_without_closing(self):
         replay, preview = self.finish_replay(["multi-transmit-three", "transmit-gift-result"])
-        with patch("tasks.brawl.auto_transfer._result_balances", return_value=(47, 9)), \
+        with patch("tasks.brawl.summon._result_balances", return_value=(47, 9)), \
                 self.assertRaisesRegex(ObservationError, "balances do not match"):
             replay.task.finish(preview, commit=True)
         self.assertEqual([a[1] for a in replay.actions], ["TRANSMIT_CONFIRM"])
 
     def test_successive_same_hero_gifts_require_a_continuous_imprint_chain(self):
         replay, preview = self.finish_replay(["multi-transmit-three", "transmit-gift-result",
-                                             "upper-summon-result", "multi-transmit-return"])
+                                             "upper-summon-result", "multi-transmit-return"], seconds=.2)
         # The two result images are real A -> S and S -> SS observations, but
         # their adjacency and quoted balances are explicitly simulated here.
-        with patch("tasks.brawl.auto_transfer._result_balances", return_value=(48, 9)):
+        with patch("tasks.brawl.summon._result_balances", return_value=(48, 9)):
             report = replay.task.finish(preview, commit=True)
         self.assertEqual(report.hero_results, (HeroResult("黎洁特", Imprint.S, Imprint.A),
                                               HeroResult("黎洁特", Imprint.SS, Imprint.S)))
@@ -443,7 +468,7 @@ class AutoTransferReplayTests(unittest.TestCase):
                                              "upper-summon-result"])
         results = (HeroResult("黎洁特", Imprint.S, Imprint.A),
                    HeroResult("黎洁特", Imprint.SS, Imprint.A))
-        with patch("tasks.brawl.auto_transfer._result_balances", return_value=(48, 9)), \
+        with patch("tasks.brawl.summon._result_balances", return_value=(48, 9)), \
                 patch("tasks.brawl.auto_transfer.read_hero_result", side_effect=results), \
                 self.assertRaisesRegex(ObservationError, "consistent imprint chain"):
             replay.task.finish(preview, commit=True)

@@ -10,7 +10,13 @@ from tasks.brawl.bench import BenchHero, read_bench
 from tasks.brawl.board import read_board
 from tasks.brawl.cursor import read_cursor
 from tasks.brawl.field import SUPPORTED_FIELD_HEROES, read_field
-from tasks.brawl.vision import BrawlMode, BrawlScreen, BrawlVision, ObservationError, PreparationPanel
+from tasks.brawl.vision import (
+    BrawlMode,
+    BrawlScreen,
+    BrawlVision,
+    ObservationError,
+    PreparationPanel,
+)
 
 
 @dataclass(frozen=True)
@@ -172,11 +178,15 @@ class BrawlPlacement(ModuleBase):
                 return PlacementOutcome.SELECTION_CHANGED
             if timeout.reached():
                 return PlacementOutcome.TIMEOUT
-            if not self.interval_is_reached(self.ACTION_TIMER, interval=self.ACTION_INTERVAL):
-                continue
             if observed.state == BrawlScreen.PREPARATION:
+                # Retry only this pending plus request. A positively observed
+                # grid authorizes its distinct destination immediately; it must
+                # not inherit the open button's retry interval.
+                if plus_clicked and not self.interval_is_reached(
+                        "BrawlPlacementOpen", interval=self.ACTION_INTERVAL):
+                    continue
                 self.device.click(ClickButton(entry.plus_area, name="BrawlPlacementOpen"))
-                self.interval_reset(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)
+                self.interval_reset("BrawlPlacementOpen", interval=self.ACTION_INTERVAL)
                 plus_clicked = True
                 continue
             board = read_board(image, observation=observed)
@@ -192,5 +202,4 @@ class BrawlPlacement(ModuleBase):
             target = cell.center
             x, y = target
             self.device.click(ClickButton((x, y, x + 1, y + 1), name="BrawlPlacementCell"))
-            self.interval_reset(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)
             timeout.reset()

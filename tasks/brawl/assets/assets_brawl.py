@@ -363,6 +363,13 @@ IMPRINT_A = ButtonWrapper(
             color=(152, 65, 178),
             button=(775, 386, 802, 418),
         ),
+        Button(
+            file='./assets/global_cn/brawl/IMPRINT_A.3.png',
+            area=(982, 386, 1009, 418),
+            search=(962, 366, 1029, 438),
+            color=(113, 36, 129),
+            button=(982, 386, 1009, 418),
+        ),
     ],
     global_en=None,
 )

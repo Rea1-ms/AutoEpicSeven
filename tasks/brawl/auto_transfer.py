@@ -28,7 +28,7 @@ from tasks.brawl.rules import (
     validate_imprint,
 )
 from tasks.brawl.scanner import BenchScanResult
-from tasks.brawl.summon import _result_balances
+from tasks.brawl.summon import _ResultBalanceCache
 from tasks.brawl.transmit import SELECTION_AREA, read_transmit_panel
 from tasks.brawl.vision import (
     BrawlMode,
@@ -112,12 +112,8 @@ class BrawlAutoTransfer(ModuleBase):
     STEP_TIMEOUT = 18
     MAX_SWIPES = 10
 
-    def _ready(self):
-        return self.interval_is_reached(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)
-
     def _click(self, button):
         self.device.click(button)
-        self.interval_reset(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)
 
     def preview(self, names, scan, skip_first_screenshot=True):
         """Select only named candidates and return the game's actual quote.
@@ -153,6 +149,8 @@ class BrawlAutoTransfer(ModuleBase):
         pending = None
         previous_cards = None
         swipes = 0
+        scrolled_cards = None
+        scroll_retry = Timer(self.ACTION_INTERVAL)
         quote = Resources(0, 0)
         while True:
             if skip_first_screenshot:
@@ -167,7 +165,7 @@ class BrawlAutoTransfer(ModuleBase):
                 if observation.panel is not None and observation.panel != scan.panel:
                     raise ObservationError("Transfer preparation changed after its scan")
                 if (not entered and observation.panel == scan.panel and observation.game_mode == scan.game_mode
-                        and vision.matches(TRANSMIT_ENTER) and self._ready()):
+                        and vision.matches(TRANSMIT_ENTER)):
                     self._click(TRANSMIT_ENTER)
                     entered = True
                     timeout.reset()
@@ -206,24 +204,31 @@ class BrawlAutoTransfer(ModuleBase):
                     logger.info(f"Brawl transfer quote: heroes={names}, coins={panel.quote.coins}, "
                                 f"tokens={panel.quote.tokens}")
                     return result
-                if pending is None and self._ready():
+                if pending is None:
                     target = names[len(selected)]
                     area = cards.get(target)
                     # Two independent frames must agree before a moving card
                     # becomes clickable. After every swipe or selection the
                     # stability evidence is reset, never inherited by a new row.
+                    # A verified removal authorizes the next named selection;
+                    # it must not inherit the previous hero's click cooldown.
                     if area is not None and previous_cards == cards:
                         self._click(ClickButton(area, name="BRAWL_TRANSFER_SELECT"))
                         pending = target
                         previous_cards = None
                         timeout.reset()
                         continue
-                    if area is None and previous_cards == cards:
+                    if (area is None and previous_cards == cards
+                            and (cards != scrolled_cards or scroll_retry.reached())):
                         if swipes >= self.MAX_SWIPES:
                             raise ObservationError("Transfer candidate was not found within the bounded search")
                         start, end = ((1150, 205), (1150, 505)) if swipes < 3 else ((1150, 505), (1150, 205))
                         self.device.swipe(start, end, name="BRAWL_TRANSFER_SCROLL")
-                        self.interval_reset(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)
+                        # A changed, stable viewport is a new search state.
+                        # Only retrying a swipe with no observed movement waits
+                        # for the interval; it never delays an available card.
+                        scrolled_cards = cards
+                        scroll_retry.reset()
                         swipes += 1
                         previous_cards = None
                         timeout.reset()
@@ -231,6 +236,8 @@ class BrawlAutoTransfer(ModuleBase):
                 previous_cards = cards
             elif observation.state != BrawlScreen.UNKNOWN:
                 raise ObservationError("Transfer preview was interrupted")
+            else:
+                previous_cards = None
             if timeout.reached():
                 raise ObservationError("Transfer preview did not reach a verified selection")
 
@@ -260,6 +267,7 @@ class BrawlAutoTransfer(ModuleBase):
         clicked = returned = result_seen = pending_closed = False
         gifts = []
         pending = None
+        balance_cache = _ResultBalanceCache()
         while True:
             if skip_first_screenshot:
                 skip_first_screenshot = False
@@ -267,6 +275,8 @@ class BrawlAutoTransfer(ModuleBase):
                 self.device.screenshot()
             vision = BrawlVision(self.device.image)
             current = vision.observe()
+            if current.state != BrawlScreen.HERO_RESULT:
+                balance_cache.clear()
             if current.game_mode is not None and current.game_mode != preview.game_mode:
                 raise ObservationError("Transfer finish mode changed")
             if current.state == BrawlScreen.PREPARATION:
@@ -297,7 +307,10 @@ class BrawlAutoTransfer(ModuleBase):
                 if (panel.header != before or panel.game_mode != preview.game_mode
                         or panel.quote != preview.quote or panel.selection_fingerprint != preview.evidence):
                     raise ObservationError("Transfer selection changed after its preview")
-                if not clicked and self._ready():
+                if not clicked:
+                    # The preview already proves the completed selection. This
+                    # call rechecks its exact fingerprint before its one action;
+                    # a previous selection click supplies no additional delay.
                     self._click(TRANSMIT_CONFIRM if commit else TRANSMIT_CHECK)
                     if commit:
                         invalidate_panel_observation_cache()
@@ -309,6 +322,10 @@ class BrawlAutoTransfer(ModuleBase):
                     raise ObservationError("Hero result is not attributable to this transfer")
                 result_seen = True
                 hero = read_hero_result(self.device.image)
+                if hero is None:
+                    # An unread identity cannot preserve the previous gift's
+                    # balance observation through a changed/occluded result.
+                    balance_cache.clear()
                 if hero is not None:
                     if hero.imprint == hero.previous_imprint == Imprint.SSS:
                         raise ObservationError("Transfer gift overflow requires separate proceeds evidence")
@@ -322,10 +339,13 @@ class BrawlAutoTransfer(ModuleBase):
                             raise ObservationError("Transfer gifts do not form a consistent imprint chain")
                         pending, pending_closed = hero, False
                         timeout.reset()
-                    balances = _result_balances(vision)
+                    balances = balance_cache.read(vision, hero)
                     if balances != expected:
                         raise ObservationError("Transfer gift balances do not match the quoted proceeds")
-                    if not pending_closed and vision.matches(HERO_RESULT_CHECK) and self._ready():
+                    if not pending_closed and vision.matches(HERO_RESULT_CHECK):
+                        # A new complete gift identity is the next state. The
+                        # pending_closed latch handles repeats of that identity
+                        # without delaying a separately verified next gift.
                         self._click(HERO_RESULT_CHECK)
                         gifts.append(hero)
                         pending_closed = True

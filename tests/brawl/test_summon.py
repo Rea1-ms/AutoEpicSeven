@@ -15,6 +15,8 @@ from tasks.brawl.summon import (  # noqa: E402
     BrawlSummon,
     SummonOutcome,
     SummonRequest,
+    _result_balances,
+    _ResultBalanceCache,
     capture_summon,
 )
 from tasks.brawl.vision import (  # noqa: E402
@@ -30,6 +32,42 @@ from tests.support.offline import ControlledClock  # noqa: E402
 class SynergySummonReadingTests(unittest.TestCase):
     def setUp(self):
         server.set_lang("global_cn")
+
+    def test_result_balances_reuse_glyphs_but_recheck_changed_digits_and_anchors(self):
+        self.frame = frame("lower-summon-result")
+        hero = HeroResult("维多丽卡", Imprint.C, None)
+        cache = _ResultBalanceCache()
+        actual_reader = _result_balances
+        with patch("tasks.brawl.summon._result_balances", wraps=actual_reader) as reader:
+            self.assertEqual(cache.read(BrawlVision(self.frame), hero), (90, 44))
+            animated = self.frame.copy()
+            # Background movement inside the old broad result snapshot cannot
+            # invalidate the unchanged two-currency glyphs and current anchors.
+            animated[150:180, 1000:1030] = 0
+            self.assertEqual(cache.read(BrawlVision(animated), hero), (90, 44))
+            self.assertEqual(reader.call_count, 1)
+
+            changed = self.frame.copy()
+            x1, y1, x2, y2 = BrawlVision(changed).currency_areas()[1]
+            changed[y1:y2, x1:x2] = 0
+            with self.assertRaises(ObservationError):
+                cache.read(BrawlVision(changed), hero)
+            self.assertEqual(reader.call_count, 2)
+            # A failed changed-field read clears the old record, even when
+            # the original valid numeral subsequently reappears.
+            self.assertEqual(cache.read(BrawlVision(self.frame), hero), (90, 44))
+            self.assertEqual(reader.call_count, 3)
+
+            hidden = self.frame.copy()
+            hidden[66:114, 1010:1264] = 0
+            with self.assertRaises(ObservationError):
+                cache.read(BrawlVision(hidden), hero)
+            self.assertEqual(reader.call_count, 3)
+            self.assertEqual(cache.read(BrawlVision(self.frame), hero), (90, 44))
+            self.assertEqual(reader.call_count, 4)
+            cache.clear()
+            self.assertEqual(cache.read(BrawlVision(self.frame), hero), (90, 44))
+            self.assertEqual(reader.call_count, 5)
 
     def test_two_real_results_keep_new_hero_and_existing_imprint_upgrade_distinct(self):
         for sample, expected in (("lower-summon-result", HeroResult("维多丽卡", Imprint.C, None)),
@@ -98,7 +136,7 @@ class SynergySummonReplayTests(unittest.TestCase):
             self.assertEqual(report.outcome, SummonOutcome.CONFIRMED)
             self.assertEqual(report.hero, hero)
             self.assertEqual([(action[0], action[1]) for action in replay.actions],
-                             [(0, "SUMMON_" + kind.name), (7, "HERO_RESULT_CHECK")])
+                             [(0, "SUMMON_" + kind.name), (1, "HERO_RESULT_CHECK")])
             self.assertEqual(BrawlVision(replay.image).observe().panel.synergy_tokens, balance)
 
     def test_repeat_preparation_never_triggers_a_second_payment(self):
@@ -144,7 +182,7 @@ class SynergySummonReplayTests(unittest.TestCase):
     def test_additional_different_result_stops_without_guessing_a_buff(self):
         replay = self.replay([self.before, "lower-summon-result", "upper-summon-result"])
         self.assertEqual(replay.task.summon_once(self.request).outcome, SummonOutcome.RESULT_UNSUPPORTED)
-        self.assertEqual([action[1] for action in replay.actions], ["SUMMON_LOWER"])
+        self.assertEqual([action[1] for action in replay.actions], ["SUMMON_LOWER", "HERO_RESULT_CHECK"])
 
     def test_overflow_result_requires_a_matching_measured_refund(self):
         before = PreparationPanel(1, 3, 0, 4, 116, 75)
@@ -167,7 +205,7 @@ class SynergySummonReplayTests(unittest.TestCase):
         self.assertEqual(report.hero, HeroResult("小春", Imprint.SSS, Imprint.SSS, True))
         self.assertEqual(report.proceeds, Resources(7, 10))
         self.assertEqual([(action[0], action[1]) for action in replay.actions],
-                         [(0, "SUMMON_UPPER"), (7, "HERO_RESULT_CHECK")])
+                         [(0, "SUMMON_UPPER"), (1, "HERO_RESULT_CHECK")])
 
         replay = self.replay([self.before] + ["hero-new-08"] * 16 + [returned] * 40, seconds=1)
         with patch("tasks.brawl.summon.BrawlVision.preparation_panel", autospec=True,
@@ -178,18 +216,22 @@ class SynergySummonReplayTests(unittest.TestCase):
         self.assertIsNone(report.proceeds)
 
     def test_previous_action_interval_is_honored_before_a_new_payment(self):
-        replay = self.replay([self.before] * 8 + ["lower-summon-result"] * 7 + ["lower-summon-return"])
+        # New positive states no longer inherit another action's cooldown.
+        # Repeated result frames past three seconds still cannot repeat either
+        # the captured payment or its verified one-time acknowledgement.
+        replay = self.replay([self.before] + ["lower-summon-result"] * 20
+                             + ["lower-summon-return"], seconds=.2)
         replay.task.interval_reset(replay.task.ACTION_TIMER, interval=replay.task.ACTION_INTERVAL)
         self.assertEqual(replay.task.summon_once(self.request).outcome, SummonOutcome.CONFIRMED)
         self.assertEqual([(a[0], a[1]) for a in replay.actions],
-                         [(7, "SUMMON_LOWER"), (14, "HERO_RESULT_CHECK")])
+                         [(0, "SUMMON_LOWER"), (1, "HERO_RESULT_CHECK")])
 
     def test_preparation_boundary_prevents_dismissing_a_later_hero(self):
         unread = frame("lower-summon-return").copy()
         unread[66:114, 1010:1264] = 0
         replay = self.replay([self.before, "lower-summon-result", unread, "lower-summon-result"])
         self.assertEqual(replay.task.summon_once(self.request).outcome, SummonOutcome.SCENE_CHANGED)
-        self.assertEqual([action[1] for action in replay.actions], ["SUMMON_LOWER"])
+        self.assertEqual([action[1] for action in replay.actions], ["SUMMON_LOWER", "HERO_RESULT_CHECK"])
 
     def test_changed_request_context_aborts_without_paying(self):
         replay = self.replay(["lower-summon-return"])
@@ -242,8 +284,16 @@ class SynergySummonReplayTests(unittest.TestCase):
         self.assertEqual([action[1] for action in replay.actions], ["SUMMON_LOWER"])
 
     def test_complete_result_cannot_disappear_before_footer_acknowledgement(self):
+        # Hide the actual footer instead of relying on an unrelated payment
+        # cooldown to keep an otherwise complete result unacknowledged.
+        actual = BrawlVision.matches
+
+        def matches(vision, button, **kwargs):
+            return False if button is HERO_RESULT_CHECK else actual(vision, button, **kwargs)
+
         replay = self.replay([self.before, "lower-summon-result", "lower-summon-return"])
-        report = replay.task.summon_once(self.request)
+        with patch("tasks.brawl.summon.BrawlVision.matches", autospec=True, side_effect=matches):
+            report = replay.task.summon_once(self.request)
         self.assertEqual(report.outcome, SummonOutcome.SCENE_CHANGED)
         self.assertEqual(report.hero, HeroResult("维多丽卡", Imprint.C, None))
         self.assertEqual([action[1] for action in replay.actions], ["SUMMON_LOWER"])
@@ -265,7 +315,7 @@ class SynergySummonReplayTests(unittest.TestCase):
         self.assertEqual(report.outcome, SummonOutcome.CONFIRMED)
         self.assertEqual(report.hero, HeroResult("黎洁特", Imprint.SS, Imprint.S))
         self.assertEqual([(action[0], action[1]) for action in replay.actions],
-                         [(0, "SUMMON_UPPER"), (7, "HERO_RESULT_CHECK")])
+                         [(0, "SUMMON_UPPER"), (1, "HERO_RESULT_CHECK")])
 
     def test_occluded_result_at_entry_still_has_no_payment_provenance(self):
         result = frame("upper-summon-result")

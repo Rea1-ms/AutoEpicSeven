@@ -139,6 +139,7 @@ class BrawlUpgrade(ModuleBase):
         cost = upgrade_cost(before.level)
         expected_coins = before.coins - cost
         timeout = Timer(self.STEP_TIMEOUT).start()
+        opening_retry = Timer(self.ACTION_INTERVAL)
         opened = dialog_seen = paid = returned = False
         while True:
             if skip_first_screenshot:
@@ -146,11 +147,12 @@ class BrawlUpgrade(ModuleBase):
             else:
                 self.device.screenshot()
             vision = BrawlVision(self.device.image)
-            action_ready = self.interval_is_reached(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)
-            # While no action is eligible, scene/mode checks are sufficient.
-            # Read the panel/quote on the actual action frame, never reuse an
-            # earlier price. Paid returns still read immediately for success.
-            observed = vision.observe(read_panel=paid or action_ready)
+            # Only a retry of this same opening request has a cooldown. A
+            # positively observed dialog belongs to a different state and may
+            # authorize its one payment immediately. Previous transactions and
+            # unrelated controls cannot delay this freshly captured request.
+            opening_ready = opening_retry.reached()
+            observed = vision.observe(read_panel=paid or opening_ready)
             dialog = None
             if observed.game_mode is not None and observed.game_mode != request.game_mode:
                 return UpgradeOutcome.CONTEXT_CHANGED
@@ -189,7 +191,7 @@ class BrawlUpgrade(ModuleBase):
                         return UpgradeOutcome.TIMEOUT
                     dialog_seen = True
                     timeout.reset()
-                if not paid and action_ready:
+                if not paid:
                     try:
                         dialog = read_upgrade_dialog(self.device.image)
                     except ObservationError:
@@ -206,17 +208,14 @@ class BrawlUpgrade(ModuleBase):
                 return UpgradeOutcome.TIMEOUT
             if paid or observed.game_mode != request.game_mode:
                 continue
-            if not action_ready:
-                continue
             if observed.state == BrawlScreen.PREPARATION and observed.panel == before:
-                if vision.matches(UPGRADE_ENTRY):
+                if opening_ready and vision.matches(UPGRADE_ENTRY):
                     self.device.click(UPGRADE_ENTRY)
-                    self.interval_reset(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)
+                    opening_retry.reset()
                     opened = True
             elif observed.state == BrawlScreen.LEVEL_UP and dialog is not None and dialog.ready:
                 self.device.click(UPGRADE_CONFIRM)
                 invalidate_panel_observation_cache()
-                self.interval_reset(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)
                 # Do not clear this latch on duplicate dialogs, unknown frames,
                 # stale balances or level animations. Those observations cannot
                 # establish that the previous payment failed; retrying can buy

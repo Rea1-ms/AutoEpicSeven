@@ -57,12 +57,8 @@ class BrawlEntry(UI):
             # the resolved device language before importing this controller.
             from tasks.base.page import page_brawl_lobby
 
-            switched = self.ui_ensure(page_brawl_lobby, acquire_lang_checked=False,
-                                      skip_first_screenshot=True)
-            if switched:
-                # Shared navigation uses its own retry timer. The final card
-                # click must still be separated from the lobby's entry click.
-                self.interval_reset(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)
+            self.ui_ensure(page_brawl_lobby, acquire_lang_checked=False,
+                           skip_first_screenshot=True)
         elif current.state not in (BrawlScreen.PREPARATION, BrawlScreen.LOBBY, BrawlScreen.UNKNOWN):
             raise ObservationError(f"Cannot enter brawl from {current.state.value}; keep the current screen for inspection")
 
@@ -127,11 +123,11 @@ class BrawlEntry(UI):
                 # Never infer a payment amount from the enabled entry button
                 # or call an unread free marker exhausted free attempts.
                 raise ObservationError("Paid brawl entry requires a verified price and available resources")
-            if not self.interval_is_reached(self.ACTION_TIMER, interval=self.ACTION_INTERVAL):
-                continue
+            # The verified lobby is the completed navigation boundary. The
+            # pending entry below owns this one request across repeated frames;
+            # a timer from the route or relic return cannot delay a new action.
             button = LOBBY_CONTINUE if action == "continue" else LOBBY_ENTER
             self.device.click(button)
-            self.interval_reset(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)
             pending, expected_mode = action, mode
             timeout.reset()
             logger.info(f"Brawl lobby entry requested: {action}, mode={mode.value}")

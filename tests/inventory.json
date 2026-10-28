@@ -18205,6 +18205,72 @@
           ],
           "status": "已纳入",
           "reason": "单次调用复用当前页面识别，直接读取与异常后仍重新核对页面"
+        },
+        {
+          "id": "tests.brawl.test_vision.LivesRecognitionTests.test_real_preparations_confirm_all_three_heart_slots_without_ocr",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-normal-opening.png",
+            "tests/fixtures/brawl/brawl-normal-deployed.png",
+            "tests/fixtures/brawl/global_cn/brawl-resume-preparation.png",
+            "tests/fixtures/brawl/brawl-prepare-level4.png",
+            "tests/fixtures/brawl/brawl-normal-round2.png",
+            "tests/fixtures/brawl/brawl-normal-after-loss.png",
+            "tests/fixtures/brawl/global_cn/brawl-failed-round13-return.png"
+          ],
+          "status": "已纳入",
+          "reason": "真实准备页完整三个生命槽核对，不使用文字识别"
+        },
+        {
+          "id": "tests.brawl.test_vision.LivesRecognitionTests.test_missing_partial_dimmed_and_flat_slots_never_become_lost_hearts",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/global_cn/brawl-failed-round13-return.png"
+          ],
+          "status": "已纳入",
+          "reason": "缺失、局部遮挡、变暗与平涂生命槽保持未知，不误记为生命减少"
+        },
+        {
+          "id": "tests.brawl.test_vision.LivesRecognitionTests.test_explicit_synthetic_empty_and_noncontiguous_heart_sequences",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/global_cn/brawl-failed-round13-return.png"
+          ],
+          "status": "已纳入",
+          "reason": "以明确合成的灰心排列验证真实零值与生命槽连续性约束"
+        },
+        {
+          "id": "tests.brawl.test_vision.LivesRecognitionTests.test_overlays_combat_and_unknown_mode_cannot_supply_preparation_lives",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/global_cn/brawl-hero-reward-achates-a.png",
+            "tests/fixtures/brawl/global_cn/brawl-network-retry.png",
+            "tests/fixtures/brawl/brawl-give-up.png",
+            "tests/fixtures/brawl/brawl-combat-speed-two.png",
+            "tests/fixtures/brawl/brawl-lobby.png",
+            "tests/fixtures/brawl/brawl-normal-deployed.png"
+          ],
+          "status": "已纳入",
+          "reason": "奖励、重连、弹窗、战斗、大厅与未知模式不能提供准备页生命读数"
+        },
+        {
+          "id": "tests.brawl.test_vision.LivesRecognitionTests.test_supplied_observation_still_validates_image_and_supported_language",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-normal-deployed.png"
+          ],
+          "status": "已纳入",
+          "reason": "传入既有观察仍严格验证图像格式与国际服中文支持范围"
         }
       ]
     },
@@ -18980,6 +19046,29 @@
           ],
           "status": "已纳入",
           "reason": "静态姓名与资源面板按当前证据复用，状态变化与未确认动作保持原校验"
+        },
+        {
+          "id": "tests.brawl.test_heroes.HeroRecognitionTests.test_achates_wrapped_name_upgrade_reuses_name_with_current_badge_proof",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/global_cn/brawl-hero-reward-achates-a.png"
+          ],
+          "status": "已纳入",
+          "reason": "实图验证分行完整姓名与升级刻印；残缺姓名、缺失刻印和返回准备页不能继承旧结果"
+        },
+        {
+          "id": "tests.brawl.test_heroes.HeroRecognitionTests.test_achates_missing_wrapped_suffix_and_return_never_reuse_result_identity",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/global_cn/brawl-hero-reward-achates-a.png",
+            "tests/fixtures/brawl/global_cn/brawl-failed-round13-return.png"
+          ],
+          "status": "已纳入",
+          "reason": "实图验证分行完整姓名与升级刻印；残缺姓名、缺失刻印和返回准备页不能继承旧结果"
         }
       ]
     },
@@ -19606,6 +19695,71 @@
           ],
           "status": "已纳入",
           "reason": "真实战斗恢复后结束断网计时，后续独立断网仍可重试，整轮只开战一次"
+        },
+        {
+          "id": "tests.brawl.test_combat.RoundFlowTests.test_fast_distinct_rewards_and_speed_use_verified_states_without_shared_wait",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-normal-deployed.png",
+            "tests/fixtures/brawl/brawl-combat-speed-one.png",
+            "tests/fixtures/brawl/brawl-combat-speed-two.png",
+            "tests/fixtures/brawl/brawl-hero-start-10.png",
+            "tests/fixtures/brawl/brawl-hero-new-01.png",
+            "tests/fixtures/brawl/brawl-normal-round2.png"
+          ],
+          "status": "已纳入",
+          "reason": "已确认新状态立即推进；保留同一动作的重试间隔、正面完成与禁止重复操作检查"
+        },
+        {
+          "id": "tests.brawl.test_combat.RoundFlowTests.test_failed_round13_keeps_both_rewards_and_confirms_real_same_round_return",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-normal-deployed.png",
+            "tests/fixtures/brawl/brawl-combat-speed-two.png",
+            "tests/fixtures/brawl/brawl-round-failed.png",
+            "tests/fixtures/brawl/brawl-hero-new-27.png",
+            "tests/fixtures/brawl/global_cn/brawl-hero-reward-achates-a.png",
+            "tests/fixtures/brawl/global_cn/brawl-failed-round13-return.png"
+          ],
+          "status": "已纳入",
+          "reason": "明确拼接模拟日志第13轮普通战斗：首次准备面板按日志替换，三心来自旧实图；卡琳奖励实图原为挑战模式，断言原模式后仅替换为普通，姓名与刻印保持真实；雅卡泰丝奖励和两心返回均为用户新实图，失败横幅来自既有样本，验证两次奖励与同回合返回"
+        },
+        {
+          "id": "tests.brawl.test_combat.RoundFlowTests.test_missed_failed_banner_uses_one_lost_heart_and_keeps_both_rewards",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-normal-deployed.png",
+            "tests/fixtures/brawl/brawl-combat-speed-two.png",
+            "tests/fixtures/brawl/brawl-hero-new-27.png",
+            "tests/fixtures/brawl/global_cn/brawl-hero-reward-achates-a.png",
+            "tests/fixtures/brawl/global_cn/brawl-failed-round13-return.png"
+          ],
+          "status": "已纳入",
+          "reason": "明确拼接模拟漏过失败横幅的第13轮普通战斗：首次准备面板按日志替换，三心来自旧实图；卡琳奖励实图原为挑战模式，断言原模式后仅替换为普通，姓名与刻印保持真实；雅卡泰丝奖励和两心返回均为用户新实图，凭三心到两心确认同回合结束，不重复开战或关闭奖励"
+        },
+        {
+          "id": "tests.brawl.test_combat.PostBattlePreparationTests.test_same_round_requires_a_measured_single_nonterminal_life_loss",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "明确合成同回合面板与生命读数；不变、未知、增加、一次减少两心或归零均不能确认战败返回，始终只开战一次"
+        },
+        {
+          "id": "tests.brawl.test_combat.PostBattlePreparationTests.test_unread_lives_restart_same_round_preparation_stability",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "明确合成生命读数在稳定途中变为未知；重新读到少一心后必须重新累计准备页稳定时间，不继承未知帧等待"
         }
       ]
     },
@@ -21047,6 +21201,42 @@
           ],
           "status": "已纳入",
           "reason": "静态姓名与资源面板按当前证据复用，状态变化与未确认动作保持原校验"
+        },
+        {
+          "id": "tests.brawl.test_scanner.BenchScannerTests.test_confirmed_stable_queue_advances_without_an_unrelated_action_cooldown",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "已确认新状态立即推进；保留同一动作的重试间隔、正面完成与禁止重复操作检查"
+        },
+        {
+          "id": "tests.brawl.test_scanner.BenchSelectionTests.test_confirmed_top_ends_retry_interval_before_later_rewind",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "回顶正面完成后结束该请求的重试计时，后续完整扫描与再次回顶不继承旧等待"
+        },
+        {
+          "id": "tests.brawl.test_scanner.BenchScannerTests.test_changed_last_selection_requires_a_fresh_agreeing_frame_before_completion",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "末张候补选中变化后需要新的相符稳定帧，不因更快推进而提前完成扫描"
+        },
+        {
+          "id": "tests.brawl.test_scanner.BenchSelectionTests.test_changed_target_requires_stable_queue_before_selection_evidence_can_escape",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "目标候补变化后先确认当前队列稳定，再允许返回可操作的选中证据"
         }
       ]
     },
@@ -21679,7 +21869,7 @@
           "has_automatic_assertion": true,
           "fixtures": [],
           "status": "已纳入",
-          "reason": "明确模拟4/5从已确认来源按坐标移动到无黄边目标，保持三秒间隔、单次点击和完整移动结果核对"
+          "reason": "明确模拟4/5从已确认来源按坐标移动到无黄边目标，确认新状态后推进，保留单次点击和完整移动结果核对"
         },
         {
           "id": "tests.brawl.test_placement.NewGameFormationTests.test_full_field_probe_uses_plus_and_advances_on_the_first_confirmed_grid",
@@ -21745,6 +21935,24 @@
           "fixtures": [],
           "status": "已纳入",
           "reason": "明确模拟退出编队点击未生效、限次重试与上下文变化；实际布阵动作仍只点击一次"
+        },
+        {
+          "id": "tests.brawl.test_placement.NewGameFormationTests.test_verified_return_allows_next_probe_without_cross_action_delay",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "已确认新状态立即推进；保留同一动作的重试间隔、正面完成与禁止重复操作检查"
+        },
+        {
+          "id": "tests.brawl.test_placement.PlacementTests.test_new_grid_advances_without_a_previous_action_cooldown",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "已确认新状态立即推进；保留同一动作的重试间隔、正面完成与禁止重复操作检查"
         }
       ]
     },
@@ -21962,6 +22170,15 @@
           "fixtures": [],
           "status": "已纳入",
           "reason": "静态姓名与资源面板按当前证据复用，状态变化与未确认动作保持原校验"
+        },
+        {
+          "id": "tests.brawl.test_upgrade.UpgradeReplayTests.test_verified_dialog_pays_immediately_despite_a_previous_action_cooldown",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "新截图确认升级弹窗后立即单次支付，不继承其他操作的冷却；重复弹窗和实际余额确认仍受约束"
         }
       ]
     },
@@ -22174,7 +22391,7 @@
             "tests/fixtures/brawl/brawl-multi-transmit-two.png"
           ],
           "status": "已纳入",
-          "reason": "真实三人选择与实际收益确认只提交一次，保留生产识别和三秒门控；候补姓名标注明确模拟"
+          "reason": "真实三人选择与实际收益确认只提交一次，保留生产识别并由当前选中状态推进；候补姓名标注明确模拟"
         },
         {
           "id": "tests.brawl.test_multi_transmit.AutoTransferReplayTests.test_five_modeled_selections_accumulate_quotes_before_a_single_confirmation",
@@ -22183,7 +22400,7 @@
           "has_automatic_assertion": true,
           "fixtures": [],
           "status": "已纳入",
-          "reason": "五人传送的全部循环转换和报价累计使用明确模拟输入，只确认一次并保留三秒动作门控"
+          "reason": "五人传送的全部循环转换和报价累计使用明确模拟输入，只确认一次，按当前已选集合推进下一步"
         },
         {
           "id": "tests.brawl.test_multi_transmit.AutoTransferReplayTests.test_a_swipe_that_selects_a_hero_stops_before_any_card_or_confirm_click",
@@ -22356,6 +22573,19 @@
           ],
           "status": "已纳入",
           "reason": "静态姓名与资源面板按当前证据复用，状态变化与未确认动作保持原校验"
+        },
+        {
+          "id": "tests.brawl.test_multi_transmit.AutoTransferReplayTests.test_unread_gift_identity_discards_balance_cache_without_reclosing",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-multi-transmit-three.png",
+            "tests/fixtures/brawl/brawl-transmit-gift-result.png",
+            "tests/fixtures/brawl/brawl-multi-transmit-return.png"
+          ],
+          "status": "已纳入",
+          "reason": "赠送身份暂时不可读后重新核对实际余额；关闭与结果记账仍各一次"
         }
       ]
     },
@@ -22792,6 +23022,34 @@
           ],
           "status": "已纳入",
           "reason": "单次下场与正面选格、完整候补容量和具名返回验证；扫描输入与时间为明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_swap.WithdrawTests.test_reported_round13_withdraw_uses_complete_grid_when_fixed_anchors_are_missing",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-withdraw-after.png",
+            "tests/fixtures/brawl/brawl-withdraw-before.png",
+            "tests/fixtures/brawl/brawl-withdraw-grid.png",
+            "tests/fixtures/brawl/global_cn/brawl-resume-round13-withdraw.png"
+          ],
+          "status": "已纳入",
+          "reason": "第13回合真实满员选格截图无两处固定锚点时，完整控件定位仍须提供正确源格、当前面板及下场减号"
+        },
+        {
+          "id": "tests.brawl.test_swap.WithdrawTests.test_anchorless_withdraw_rejects_incomplete_or_ambiguous_current_controls",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-withdraw-after.png",
+            "tests/fixtures/brawl/brawl-withdraw-before.png",
+            "tests/fixtures/brawl/brawl-withdraw-grid.png",
+            "tests/fixtures/brawl/global_cn/brawl-resume-round13-withdraw.png"
+          ],
+          "status": "已纳入",
+          "reason": "在第13回合实图上明确合成缺失、重复、移位、暗化控件及矛盾面板，拒绝缺少当前完整定位证据的下场"
         }
       ]
     },
@@ -23018,7 +23276,7 @@
             "tests/fixtures/brawl/brawl-synergy-summon-before.png"
           ],
           "status": "已纳入",
-          "reason": "保留溢出结果并遵守跨调用的3秒动作间隔；结果中断与时间是明确模拟"
+          "reason": "保留溢出结果，已确认返回允许后续操作且付款只一次；结果中断与时间是明确模拟"
         },
         {
           "id": "tests.brawl.test_summon.SynergySummonReplayTests.test_missing_footer_preserves_complete_result_without_clicking",
@@ -23108,6 +23366,17 @@
           ],
           "status": "已纳入",
           "reason": "返回准备页模式不可读时不能确认，也不能重新授权后续同名结果；使用正式实图，遮挡和时间为明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_summon.SynergySummonReadingTests.test_result_balances_reuse_glyphs_but_recheck_changed_digits_and_anchors",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/brawl-lower-summon-result.png"
+          ],
+          "status": "已纳入",
+          "reason": "召唤结果余额按当前货币锚点和数字字形复用；数字变化、缺锚点、失败和场景切换清除缓存"
         }
       ]
     },
@@ -24078,7 +24347,7 @@
           "has_automatic_assertion": true,
           "fixtures": [],
           "status": "已纳入",
-          "reason": "空候补逐格探测间隔0.2秒，识别到源格立即停止探测；取消与后续动作保留三秒间隔"
+          "reason": "空候补逐格探测间隔0.2秒，识别到源格立即停止探测；取消及后续动作依赖当前状态与单次请求保护"
         },
         {
           "id": "tests.brawl.test_resume.ResumeDiscoveryTests.test_unrequested_grid_context_change_and_changed_bench_never_authorize_cancel",
@@ -24189,7 +24458,7 @@
             "tests/fixtures/brawl/global_cn/brawl-resume-discovery-occluded.png"
           ],
           "status": "已纳入",
-          "reason": "真实失败帧结合模拟准备页，逐格探测缩短间隔；核对十次选格、三秒后一次取消与正面返回"
+          "reason": "真实失败帧结合模拟准备页，逐格探测缩短间隔；核对十次探测、选格正面出现后一次取消与确认返回"
         },
         {
           "id": "tests.brawl.test_resume.ResumeDiscoveryTests.test_real_right_occluded_source_withdraws_once_without_wait_frame_ocr",
@@ -24221,6 +24490,17 @@
           "fixtures": [],
           "status": "已纳入",
           "reason": "遗物页未提供六职业明确值时，不扫描或移动人物"
+        },
+        {
+          "id": "tests.brawl.test_resume.ResumeDiscoveryTests.test_reported_round13_recovery_withdraws_once_from_anchorless_grid",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/global_cn/brawl-resume-round13-withdraw.png"
+          ],
+          "status": "已纳入",
+          "reason": "第13回合真实无锚点网格回放仅打开和下场各一次，重复帧不重复识字；前后准备帧及下场后人数为明确模拟"
         }
       ]
     },
@@ -24239,7 +24519,7 @@
             "tests/fixtures/brawl/global_cn/brawl-relic-harmony.png"
           ],
           "status": "已纳入",
-          "reason": "六职业完整图标与颜色、无识字读取、保存继续上下文及三秒动作间隔；变色、错位、重复帧和未响应时停止"
+          "reason": "六职业完整图标与颜色、无识字读取、保存继续上下文及已确认状态推进；变色、错位、重复帧和未响应时停止"
         },
         {
           "id": "tests.brawl.test_relics.RelicRecognitionTests.test_other_relic_trees_cannot_supply_harmony_talents",
@@ -24253,7 +24533,7 @@
             "tests/fixtures/brawl/global_cn/brawl-relic-trials.png"
           ],
           "status": "已纳入",
-          "reason": "六职业完整图标与颜色、无识字读取、保存继续上下文及三秒动作间隔；变色、错位、重复帧和未响应时停止"
+          "reason": "六职业完整图标与颜色、无识字读取、保存继续上下文及已确认状态推进；变色、错位、重复帧和未响应时停止"
         },
         {
           "id": "tests.brawl.test_relics.RelicRecognitionTests.test_synthetic_gray_and_available_borders_are_explicit_zero_states",
@@ -24264,7 +24544,7 @@
             "tests/fixtures/brawl/global_cn/brawl-relic-harmony.png"
           ],
           "status": "已纳入",
-          "reason": "六职业完整图标与颜色、无识字读取、保存继续上下文及三秒动作间隔；变色、错位、重复帧和未响应时停止"
+          "reason": "六职业完整图标与颜色、无识字读取、保存继续上下文及已确认状态推进；变色、错位、重复帧和未响应时停止"
         },
         {
           "id": "tests.brawl.test_relics.RelicRecognitionTests.test_missing_or_displaced_glyph_never_defaults_to_zero",
@@ -24275,7 +24555,7 @@
             "tests/fixtures/brawl/global_cn/brawl-relic-harmony.png"
           ],
           "status": "已纳入",
-          "reason": "六职业完整图标与颜色、无识字读取、保存继续上下文及三秒动作间隔；变色、错位、重复帧和未响应时停止"
+          "reason": "六职业完整图标与颜色、无识字读取、保存继续上下文及已确认状态推进；变色、错位、重复帧和未响应时停止"
         },
         {
           "id": "tests.brawl.test_relics.RelicRecognitionTests.test_unknown_border_or_missing_page_proof_never_returns_partial_talents",
@@ -24286,7 +24566,7 @@
             "tests/fixtures/brawl/global_cn/brawl-relic-harmony.png"
           ],
           "status": "已纳入",
-          "reason": "六职业完整图标与颜色、无识字读取、保存继续上下文及三秒动作间隔；变色、错位、重复帧和未响应时停止"
+          "reason": "六职业完整图标与颜色、无识字读取、保存继续上下文及已确认状态推进；变色、错位、重复帧和未响应时停止"
         },
         {
           "id": "tests.brawl.test_relics.RelicRecognitionTests.test_pause_overlay_is_distinct_from_preparation_and_requires_all_controls",
@@ -24298,7 +24578,7 @@
             "tests/fixtures/brawl/global_cn/brawl-relic-paused.png"
           ],
           "status": "已纳入",
-          "reason": "六职业完整图标与颜色、无识字读取、保存继续上下文及三秒动作间隔；变色、错位、重复帧和未响应时停止"
+          "reason": "六职业完整图标与颜色、无识字读取、保存继续上下文及已确认状态推进；变色、错位、重复帧和未响应时停止"
         },
         {
           "id": "tests.brawl.test_relics.RelicFlowTests.test_lobby_visit_uses_each_control_once_and_never_ocr_or_nodes",
@@ -24312,7 +24592,7 @@
             "tests/fixtures/brawl/global_cn/brawl-relic-return-lobby.png"
           ],
           "status": "已纳入",
-          "reason": "六职业完整图标与颜色、无识字读取、保存继续上下文及三秒动作间隔；变色、错位、重复帧和未响应时停止"
+          "reason": "六职业完整图标与颜色、无识字读取、保存继续上下文及已确认状态推进；变色、错位、重复帧和未响应时停止"
         },
         {
           "id": "tests.brawl.test_relics.RelicFlowTests.test_starting_on_harmony_confirms_two_frames_then_waits_for_lobby",
@@ -24324,7 +24604,7 @@
             "tests/fixtures/brawl/global_cn/brawl-relic-return-lobby.png"
           ],
           "status": "已纳入",
-          "reason": "六职业完整图标与颜色、无识字读取、保存继续上下文及三秒动作间隔；变色、错位、重复帧和未响应时停止"
+          "reason": "六职业完整图标与颜色、无识字读取、保存继续上下文及已确认状态推进；变色、错位、重复帧和未响应时停止"
         },
         {
           "id": "tests.brawl.test_relics.RelicFlowTests.test_initial_shared_action_cooldown_is_preserved",
@@ -24338,7 +24618,7 @@
             "tests/fixtures/brawl/global_cn/brawl-relic-return-lobby.png"
           ],
           "status": "已纳入",
-          "reason": "六职业完整图标与颜色、无识字读取、保存继续上下文及三秒动作间隔；变色、错位、重复帧和未响应时停止"
+          "reason": "六职业完整图标与颜色、无识字读取、保存继续上下文及已确认状态推进；变色、错位、重复帧和未响应时停止"
         },
         {
           "id": "tests.brawl.test_relics.RelicFlowTests.test_preparation_saves_reads_and_continues_same_real_panel",
@@ -24354,7 +24634,7 @@
             "tests/fixtures/brawl/global_cn/brawl-relic-return-lobby.png"
           ],
           "status": "已纳入",
-          "reason": "六职业完整图标与颜色、无识字读取、保存继续上下文及三秒动作间隔；变色、错位、重复帧和未响应时停止"
+          "reason": "六职业完整图标与颜色、无识字读取、保存继续上下文及已确认状态推进；变色、错位、重复帧和未响应时停止"
         },
         {
           "id": "tests.brawl.test_relics.RelicFlowTests.test_starting_paused_returns_once_to_obtain_unmasked_original_context",
@@ -24370,7 +24650,7 @@
             "tests/fixtures/brawl/global_cn/brawl-relic-return-lobby.png"
           ],
           "status": "已纳入",
-          "reason": "六职业完整图标与颜色、无识字读取、保存继续上下文及三秒动作间隔；变色、错位、重复帧和未响应时停止"
+          "reason": "六职业完整图标与颜色、无识字读取、保存继续上下文及已确认状态推进；变色、错位、重复帧和未响应时停止"
         },
         {
           "id": "tests.brawl.test_relics.RelicFlowTests.test_missing_save_after_exit_stops_without_new_entry_or_relic_click",
@@ -24383,7 +24663,7 @@
             "tests/fixtures/brawl/brawl-normal-lobby-empty.png"
           ],
           "status": "已纳入",
-          "reason": "六职业完整图标与颜色、无识字读取、保存继续上下文及三秒动作间隔；变色、错位、重复帧和未响应时停止"
+          "reason": "六职业完整图标与颜色、无识字读取、保存继续上下文及已确认状态推进；变色、错位、重复帧和未响应时停止"
         },
         {
           "id": "tests.brawl.test_relics.RelicFlowTests.test_save_changed_after_relic_read_stops_before_continue_or_new_entry",
@@ -24397,7 +24677,7 @@
             "tests/fixtures/brawl/brawl-normal-lobby-empty.png"
           ],
           "status": "已纳入",
-          "reason": "六职业完整图标与颜色、无识字读取、保存继续上下文及三秒动作间隔；变色、错位、重复帧和未响应时停止"
+          "reason": "六职业完整图标与颜色、无识字读取、保存继续上下文及已确认状态推进；变色、错位、重复帧和未响应时停止"
         },
         {
           "id": "tests.brawl.test_relics.RelicFlowTests.test_changed_original_panel_or_mode_stops_after_only_one_continue",
@@ -24414,7 +24694,7 @@
             "tests/fixtures/brawl/brawl-challenge-opening.png"
           ],
           "status": "已纳入",
-          "reason": "六职业完整图标与颜色、无识字读取、保存继续上下文及三秒动作间隔；变色、错位、重复帧和未响应时停止"
+          "reason": "六职业完整图标与颜色、无识字读取、保存继续上下文及已确认状态推进；变色、错位、重复帧和未响应时停止"
         },
         {
           "id": "tests.brawl.test_relics.RelicFlowTests.test_missing_talent_or_unconfirmed_return_times_out_without_duplicate_actions",
@@ -24430,7 +24710,7 @@
             "tests/fixtures/brawl/global_cn/brawl-relic-return-lobby.png"
           ],
           "status": "已纳入",
-          "reason": "六职业完整图标与颜色、无识字读取、保存继续上下文及三秒动作间隔；变色、错位、重复帧和未响应时停止"
+          "reason": "六职业完整图标与颜色、无识字读取、保存继续上下文及已确认状态推进；变色、错位、重复帧和未响应时停止"
         },
         {
           "id": "tests.brawl.test_relics.RelicFlowTests.test_unexpected_scene_and_unread_initial_panel_never_authorize_battle",
@@ -24444,7 +24724,7 @@
             "tests/fixtures/brawl/global_cn/brawl-relic-paused.png"
           ],
           "status": "已纳入",
-          "reason": "六职业完整图标与颜色、无识字读取、保存继续上下文及三秒动作间隔；变色、错位、重复帧和未响应时停止"
+          "reason": "六职业完整图标与颜色、无识字读取、保存继续上下文及已确认状态推进；变色、错位、重复帧和未响应时停止"
         },
         {
           "id": "tests.brawl.test_relics.RelicFlowTests.test_partial_observation_breaks_the_required_two_complete_frames",
@@ -24456,7 +24736,68 @@
             "tests/fixtures/brawl/global_cn/brawl-relic-return-lobby.png"
           ],
           "status": "已纳入",
-          "reason": "六职业完整图标与颜色、无识字读取、保存继续上下文及三秒动作间隔；变色、错位、重复帧和未响应时停止"
+          "reason": "六职业完整图标与颜色、无识字读取、保存继续上下文及已确认状态推进；变色、错位、重复帧和未响应时停止"
+        },
+        {
+          "id": "tests.brawl.test_relics.RelicFlowTests.test_fast_verified_pages_progress_without_waiting_for_unrelated_actions",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/global_cn/brawl-relic-paused.png",
+            "tests/fixtures/brawl/global_cn/brawl-relic-preparation.png",
+            "tests/fixtures/brawl/global_cn/brawl-relic-lobby.png",
+            "tests/fixtures/brawl/global_cn/brawl-relic-earth.png",
+            "tests/fixtures/brawl/global_cn/brawl-relic-harmony.png",
+            "tests/fixtures/brawl/global_cn/brawl-relic-return-lobby.png"
+          ],
+          "status": "已纳入",
+          "reason": "已确认新状态立即推进；保留同一动作的重试间隔、正面完成与禁止重复操作检查"
+        },
+        {
+          "id": "tests.brawl.test_relics.RelicFlowTests.test_reported_earth_page_retries_harmony_only_after_same_action_interval",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/global_cn/brawl-relic-earth-missed-tab.png",
+            "tests/fixtures/brawl/global_cn/brawl-relic-harmony.png",
+            "tests/fixtures/brawl/global_cn/brawl-relic-return-lobby.png"
+          ],
+          "status": "已纳入",
+          "reason": "当前实图仍在大地页时按同按钮间隔重试和谐页签，未知推进不代替真实画面，下一页面立即继续"
+        },
+        {
+          "id": "tests.brawl.test_relics.RelicFlowTests.test_each_relic_navigation_control_retries_without_delaying_the_next_page",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/global_cn/brawl-relic-paused.png",
+            "tests/fixtures/brawl/global_cn/brawl-relic-preparation.png",
+            "tests/fixtures/brawl/global_cn/brawl-relic-lobby.png",
+            "tests/fixtures/brawl/global_cn/brawl-relic-earth.png",
+            "tests/fixtures/brawl/global_cn/brawl-relic-harmony.png",
+            "tests/fixtures/brawl/global_cn/brawl-relic-return-lobby.png"
+          ],
+          "status": "已纳入",
+          "reason": "明确模拟遗物全链各导航首击失效，同按钮限频重试且不同按钮不共用等待"
+        },
+        {
+          "id": "tests.brawl.test_relics.RelicFlowTests.test_unknown_frames_cannot_retry_and_completed_source_cannot_reopen",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/global_cn/brawl-relic-earth.png",
+            "tests/fixtures/brawl/global_cn/brawl-relic-harmony.png",
+            "tests/fixtures/brawl/global_cn/brawl-relic-return-lobby.png",
+            "tests/fixtures/brawl/global_cn/brawl-relic-lobby.png",
+            "tests/fixtures/brawl/global_cn/brawl-relic-paused.png",
+            "tests/fixtures/brawl/global_cn/brawl-relic-preparation.png"
+          ],
+          "status": "已纳入",
+          "reason": "未知帧与不完整或变化天赋不能重试；正面目标出现后旧来源重现不能重放已完成导航；暂停重试不得覆写已确认原面板"
         }
       ]
     }

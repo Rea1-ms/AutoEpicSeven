@@ -173,7 +173,7 @@ class UpgradeReplayTests(unittest.TestCase):
             self.assertEqual(replay.task.upgrade_once(request), UpgradeOutcome.CONFIRMED)
         reader.assert_called_once()
         self.assertEqual(replay.actions, [(0, "UPGRADE_ENTRY", (248, 649, 292, 695)),
-                                          (7, "UPGRADE_CONFIRM", (767, 494, 873, 545))])
+                                          (2, "UPGRADE_CONFIRM", (767, 494, 873, 545))])
 
     def test_cached_upgrade_refreshes_before_request_and_after_payment_without_repaying_old_frames(self):
         from module.ocr.ocr import Ocr
@@ -204,18 +204,18 @@ class UpgradeReplayTests(unittest.TestCase):
             self.assertEqual(request, REQUEST)
             self.assertEqual(replay.task.upgrade_once(request), UpgradeOutcome.CONFIRMED)
         self.assertEqual(invalidations, [
-            (0, ()), (7, ("UPGRADE_ENTRY", "UPGRADE_CONFIRM"))])
-        self.assertEqual([index for index, name in reads if name == "BRAWL_PANEL"], [0, 0, 7, 13, 16])
-        self.assertEqual([index for index, name in reads if name == "BRAWL_UPGRADE_QUOTE"], [7])
+            (0, ()), (2, ("UPGRADE_ENTRY", "UPGRADE_CONFIRM"))])
+        self.assertEqual([index for index, name in reads if name == "BRAWL_PANEL"], [0, 0, 2, 13, 16])
+        self.assertEqual([index for index, name in reads if name == "BRAWL_UPGRADE_QUOTE"], [2])
         self.assertEqual(replay.index, 16)
         self.assertEqual(replay.actions, [(0, "UPGRADE_ENTRY", (248, 649, 292, 695)),
-                                          (7, "UPGRADE_CONFIRM", (767, 494, 873, 545))])
+                                          (2, "UPGRADE_CONFIRM", (767, 494, 873, 545))])
 
     def test_cache_invalidation_does_not_repeat_on_unconfirmed_opening_or_payment(self):
         cases = (
             ([READY] * 27, ["UPGRADE_ENTRY"] * 4, [(0, ())]),
             ([READY] + [QUOTE] * 42, ["UPGRADE_ENTRY", "UPGRADE_CONFIRM"],
-             [(0, ()), (7, ("UPGRADE_ENTRY", "UPGRADE_CONFIRM"))]),
+             [(0, ()), (1, ("UPGRADE_ENTRY", "UPGRADE_CONFIRM"))]),
         )
         for frames, actions, expected_invalidations in cases:
             with self.subTest(expected_actions=actions):
@@ -252,6 +252,14 @@ class UpgradeReplayTests(unittest.TestCase):
         self.assertEqual(replay.task.upgrade_once(REQUEST), UpgradeOutcome.TIMEOUT)
         self.assertEqual([action[0] for action in replay.actions], [0, 7, 14, 21])
         self.assert_actions(replay, ["UPGRADE_ENTRY"] * 4)
+
+    def test_verified_dialog_pays_immediately_despite_a_previous_action_cooldown(self):
+        replay = self.replay([READY, QUOTE, QUOTE, QUOTE, DONE], seconds=.2)
+        replay.task.interval_reset(replay.task.ACTION_TIMER, interval=3)
+        self.assertEqual(replay.task.upgrade_once(REQUEST), UpgradeOutcome.CONFIRMED)
+        self.assertEqual([action[0] for action in replay.actions], [0, 1])
+        self.assert_actions(replay, ["UPGRADE_ENTRY", "UPGRADE_CONFIRM"])
+        self.assertEqual(replay.index, 4)
 
     def test_changed_request_or_dialog_context_prevents_payment(self):
         for panel in (replace(PANEL, round_number=9), replace(PANEL, coins=204), replace(PANEL, deployed=4),
@@ -291,7 +299,10 @@ class UpgradeReplayTests(unittest.TestCase):
         replay = self.replay([READY] + [QUOTE] * 7 + [step(panel=None), QUOTE])
         self.assertEqual(replay.task.upgrade_once(REQUEST), UpgradeOutcome.SCENE_CHANGED)
         self.assert_actions(replay, ["UPGRADE_ENTRY", "UPGRADE_CONFIRM"])
-        replay = self.replay([READY, QUOTE, step(panel=None)])
+        # An unread quote cannot authorize payment even when preparation
+        # returns before three seconds; the old cooldown is not the guard.
+        unread_quote = step(BrawlScreen.LEVEL_UP, panel=None, dialog=ObservationError("unread quote"))
+        replay = self.replay([READY, unread_quote, step(panel=None)])
         self.assertEqual(replay.task.upgrade_once(REQUEST), UpgradeOutcome.SCENE_CHANGED)
         self.assert_actions(replay, ["UPGRADE_ENTRY"])
 

@@ -12,7 +12,10 @@ from module.ocr.ocr import Ocr
 from tasks.brawl.assets.assets_brawl import HERO_RESULT_CHECK, OCR_ROUND
 from tasks.brawl.assets.assets_brawl_actions import SUMMON_LOWER, SUMMON_UPPER
 from tasks.brawl.heroes import HeroResult, read_hero_result
-from tasks.brawl.observation_cache import invalidate_panel_observation_cache
+from tasks.brawl.observation_cache import (
+    PanelObservationCache,
+    invalidate_panel_observation_cache,
+)
 from tasks.brawl.rules import Imprint, Resources, SummonKind, summon_cost
 from tasks.brawl.vision import (
     BrawlMode,
@@ -86,6 +89,42 @@ def _result_balances(vision):
     return tuple(map(int, texts))
 
 
+class _ResultBalanceCache:
+    """Reuse measured digits only inside one owned hero-result interaction.
+
+    Hero artwork and the arena animate while the result is visible. They do
+    not invalidate unchanged resource glyphs. Every hit still locates both
+    currency anchors in the current frame and includes the complete measured
+    hero identity, both numeral regions and their locations. No expected debit
+    enters this cache. Unknown scenes or unread heroes clear ownership; failed
+    reads cannot leave an older balance available for the next frame.
+    """
+
+    def __init__(self):
+        self.clear()
+
+    def clear(self):
+        self._key = self._balances = None
+
+    def read(self, vision, hero, reader=None):
+        if hero is None:
+            self.clear()
+            raise ObservationError("Result balances require a complete current hero")
+        try:
+            areas = tuple(vision.currency_areas())
+            crops = [vision.image[y1:y2, x1:x2] for x1, y1, x2, y2 in areas]
+            key = (hero, areas, PanelObservationCache.signature(crops))
+            if key == self._key:
+                return self._balances
+            self.clear()
+            balances = (reader or _result_balances)(vision)
+        except ObservationError:
+            self.clear()
+            raise
+        self._key, self._balances = key, balances
+        return balances
+
+
 class BrawlSummon(ModuleBase):
     ACTION_INTERVAL = 3
     STEP_TIMEOUT = 15
@@ -119,6 +158,7 @@ class BrawlSummon(ModuleBase):
         paid = returned = closed = result_seen = False
         result = None
         proceeds = None
+        balance_cache = _ResultBalanceCache()
 
         def report(outcome):
             return SummonReport(outcome, result, proceeds)
@@ -131,6 +171,8 @@ class BrawlSummon(ModuleBase):
             image = self.device.image
             vision = BrawlVision(image)
             current = vision.observe()
+            if current.state != BrawlScreen.HERO_RESULT:
+                balance_cache.clear()
             if current.game_mode is not None and current.game_mode != request.game_mode:
                 return report(SummonOutcome.CONTEXT_CHANGED)
             if current.state == BrawlScreen.HERO_RESULT and (not paid or returned):
@@ -165,12 +207,12 @@ class BrawlSummon(ModuleBase):
                             return report(SummonOutcome.CONTEXT_CHANGED)
                         if timeout.reached():
                             return report(SummonOutcome.TIMEOUT)
-                        if (vision.matches(button, color=True)
-                                and self.interval_is_reached(self.ACTION_TIMER,
-                                                             interval=self.ACTION_INTERVAL)):
+                        if vision.matches(button, color=True):
                             self.device.click(button)
                             invalidate_panel_observation_cache()
-                            self.interval_reset(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)
+                            # This captured request owns exactly one payment.
+                            # Its paid latch blocks stale preparation frames;
+                            # a cooldown from another action adds no evidence.
                             paid = True
                             timeout.reset()
                             continue
@@ -212,7 +254,7 @@ class BrawlSummon(ModuleBase):
                     if result is not None and hero != result:
                         return report(SummonOutcome.RESULT_UNSUPPORTED)
                     try:
-                        balances = _result_balances(vision)
+                        balances = balance_cache.read(vision, hero)
                     except ObservationError:
                         balances = None
                     if balances is not None:
@@ -223,14 +265,16 @@ class BrawlSummon(ModuleBase):
                             result = hero
                             if timeout.reached():
                                 return report(SummonOutcome.TIMEOUT)
-                            if (not closed and vision.matches(HERO_RESULT_CHECK)
-                                    and self.interval_is_reached(self.ACTION_TIMER,
-                                                                 interval=self.ACTION_INTERVAL)):
+                            if not closed and vision.matches(HERO_RESULT_CHECK):
                                 self.device.click(HERO_RESULT_CHECK)
-                                self.interval_reset(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)
+                                # Positive result identity and actual debit
+                                # authorize this different action immediately.
+                                # Only the local latch prevents repeat closes.
                                 closed = True
                                 timeout.reset()
                                 continue
+                else:
+                    balance_cache.clear()
             elif current.state != BrawlScreen.UNKNOWN:
                 return report(SummonOutcome.SCENE_CHANGED)
             if timeout.reached():

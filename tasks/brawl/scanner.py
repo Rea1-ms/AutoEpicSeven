@@ -101,9 +101,10 @@ class BrawlBenchScanner(ModuleBase):
         expected identity, including cards below the target, before returning
         to the top. The second pass follows confirmed adjacent portraits and
         compares each visible queue with its first-pass frame. Both passes
-        share the scanner's persistent action interval and bounded action
-        budget; neither historical card coordinates nor a changed focus alone
-        can authorize a selection.
+        share a bounded action budget. Only retrying the same return-to-top
+        gesture uses an interval; a newly confirmed stable queue can advance
+        immediately. Neither historical card coordinates nor a changed focus
+        alone can authorize a selection.
         """
         evidence = getattr(self, "_selection_evidence", None)
         self._selection_evidence = None
@@ -176,6 +177,7 @@ class BrawlBenchScanner(ModuleBase):
         pending_frame = None
         accepted_frame = None
         swipes = actions = 0
+        top_retry = Timer(self.ACTION_INTERVAL)
         timeout = Timer(self.STEP_TIMEOUT, count=3).start()
         previous_gate = None
         gate_detail = "No bench frame has been read"
@@ -207,6 +209,7 @@ class BrawlBenchScanner(ModuleBase):
                 return result(ScanOutcome.SCENE_CHANGED)
             cursor = None
             selection_stable = False
+            queue_changed = False
             if observation.state == BrawlScreen.PREPARATION:
                 if panel is not None and (
                     observation.panel is not None and observation.panel != panel
@@ -265,10 +268,15 @@ class BrawlBenchScanner(ModuleBase):
                            for hero in heroes):
                         return result(ScanOutcome.CONTEXT_CHANGED)
                     if not started and cursor.top:
+                        # Positive top ends this rewind request. A later full
+                        # traversal may request another rewind immediately;
+                        # only retries of the still-unconfirmed gesture wait.
+                        top_retry.clear()
                         heroes.append(selected)
                         started = True
                         accepted_frame = (self.device.image.copy(), cursor)
                         selection_stable = True
+                        queue_changed = swipes > 0
                         timeout.reset()
                     elif started and selected != heroes[-1]:
                         if pending_frame is None:
@@ -285,12 +293,13 @@ class BrawlBenchScanner(ModuleBase):
                             pending_frame = None
                             accepted_frame = (self.device.image.copy(), cursor)
                             selection_stable = True
+                            queue_changed = True
                             timeout.reset()
                     if (started and pending_frame is None and selected == heroes[-1]
                             and not selection_stable):
-                        # The action interval can span several frames after a
-                        # successful selection. Check the visible neighbours
-                        # against that accepted frame before another click;
+                        # A newly selected portrait proves identity but not
+                        # that its adjacent rows have finished moving. Check
+                        # the next fresh frame against that accepted queue;
                         # unchanged resources alone do not preserve ordering.
                         # Unknown/occluded neighbours never prove a mutation,
                         # but also cannot authorize another stale-list action.
@@ -303,7 +312,7 @@ class BrawlBenchScanner(ModuleBase):
                     if expected_scan is not None and started:
                         if tuple(heroes) != expected_scan.heroes[:len(heroes)]:
                             return result(SelectionOutcome.BENCH_CHANGED)
-                        if selection_stable:
+                        if selection_stable and not queue_changed:
                             if selecting:
                                 prior_frame = verified_frames[selected.name]
                                 agreement = agrees_selection(prior_frame[0], self.device.image,
@@ -319,7 +328,7 @@ class BrawlBenchScanner(ModuleBase):
                                     or (len(heroes) == len(expected_scan.heroes)
                                         and cursor.next_area is not None)):
                                 return result(SelectionOutcome.BENCH_CHANGED)
-                            if selecting and selected == target:
+                            if selecting and selected == target and not queue_changed:
                                 return result(SelectionOutcome.SELECTED)
                     # Ten is the confirmed seat limit, not an inferred endpoint.
                     # Reaching it forbids advancing to an eleventh card, but an
@@ -331,14 +340,14 @@ class BrawlBenchScanner(ModuleBase):
                     # A lower endpoint is meaningful only after continuous,
                     # identity-verified advancement from the upper endpoint.
                     # Check it before timeout and before issuing another action.
-                    if (selection_stable and pending_frame is None and selected == heroes[-1]
+                    if (selection_stable and not queue_changed and pending_frame is None and selected == heroes[-1]
                             and cursor.bottom and cursor.next_area is None):
                         if expected_scan is not None:
                             if selected == target:
                                 return result(SelectionOutcome.SELECTED)
                             # A full verification may finish below the target.
                             # Restart only the traversal state, never its action
-                            # timer or budget. The next fresh frame must prove
+                            # retry timer or budget. The next fresh frame must prove
                             # the top before another adjacent card can be used.
                             selecting = True
                             heroes = []
@@ -349,6 +358,12 @@ class BrawlBenchScanner(ModuleBase):
                             continue
                         return result(ScanOutcome.COMPLETE)
 
+            # A changed selection owns a new identity, but its moving rows are
+            # not yet reusable selection evidence. Require the next fresh
+            # agreeing queue before either another click or COMPLETE/SELECTED;
+            # otherwise a caller could open formation from that transient frame.
+            if queue_changed:
+                continue
             if timeout.reached():
                 return result(ScanOutcome.TIMEOUT)
             # An exhausted action budget prohibits another gesture, but the
@@ -358,17 +373,20 @@ class BrawlBenchScanner(ModuleBase):
                 return result(ScanOutcome.ACTION_LIMIT)
             if cursor is None or cursor.empty:
                 continue
-            if not self.interval_is_reached(self.ACTION_TIMER, interval=self.ACTION_INTERVAL):
-                continue
             if not started and not cursor.top:
                 if swipes >= self.MAX_TOP_SWIPES:
                     return result(ScanOutcome.ACTION_LIMIT)
+                # This timer belongs only to repeated return-to-top gestures.
+                # It cannot hold a verified top/next-card state behind an
+                # unrelated formation or previous card click's cooldown.
+                if not top_retry.reached():
+                    continue
                 self.device.swipe(self.TOP_START, self.TOP_END, name="BrawlBenchTop")
-                self.interval_reset(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)
+                top_retry.reset()
                 swipes += 1
                 actions += 1
                 continue
-            if (selection_stable and pending_frame is None and cursor.selected == heroes[-1]
+            if (selection_stable and not queue_changed and pending_frame is None and cursor.selected == heroes[-1]
                     and len(heroes) < BENCH_CAPACITY
                     and cursor.next_area is not None and not cursor.bottom):
                 left, top, right, bottom = cursor.next_area
@@ -380,6 +398,5 @@ class BrawlBenchScanner(ModuleBase):
                     continue
                 pending_frame = (self.device.image.copy(), cursor)
                 self.device.click(ClickButton((x, y, x + 1, y + 1), name="BrawlBenchNext"))
-                self.interval_reset(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)
                 actions += 1
                 timeout.reset()

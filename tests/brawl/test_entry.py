@@ -75,7 +75,7 @@ class EntryTests(unittest.TestCase):
         self.assertEqual(result.observation.game_mode, BrawlMode.NORMAL)
         self.assertEqual(result.observation.panel.deployed, 2)
         self.assertEqual([(item[0], item[1]) for item in replay.actions],
-                         [(1, "MAIN_GOTO_COMBAT"), (2, "BRAWL_ENTRY"), (7, "LOBBY_CONTINUE")])
+                         [(1, "MAIN_GOTO_COMBAT"), (2, "BRAWL_ENTRY"), (3, "LOBBY_CONTINUE")])
         self.assertTrue(all(page.parent is None for page in Page.iter_pages()))
 
     def test_repeated_saved_lobby_frames_never_repeat_entry_or_choose_other_controls(self):
@@ -85,11 +85,13 @@ class EntryTests(unittest.TestCase):
         self.assertEqual([(item[0], item[1]) for item in replay.actions], [(0, "LOBBY_CONTINUE")])
 
     def test_lobby_entry_preserves_the_shared_action_interval(self):
+        # Keep this registered regression ID: the user now requires a fresh
+        # positive lobby to proceed independently of the preceding action.
         replay = self.replay(["lobby-saved-opening"] * 9 + ["resume-preparation"])
         replay.task.interval_reset("BrawlBenchScan", interval=3)
         result = replay.task.enter()
         self.assertTrue(result.resumed)
-        self.assertEqual([(item[0], item[1]) for item in replay.actions], [(7, "LOBBY_CONTINUE")])
+        self.assertEqual([(item[0], item[1]) for item in replay.actions], [(0, "LOBBY_CONTINUE")])
 
     def test_free_new_run_keeps_each_lobby_mode_and_requires_first_empty_preparation(self):
         for lobby, preparation, mode in (

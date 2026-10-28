@@ -203,20 +203,16 @@ class BrawlResume(BrawlFormation):
                 raise ObservationError("Recovery discovery timed out")
             if closed and current.state == BrawlScreen.FORMATION_SELECTION:
                 continue
-            if not closed:
-                # Only consecutive empty-bench probes use the short interval.
-                # Every probe still resets the shared formation timer below:
-                # the first probe, cancellation and later actions keep their
-                # normal spacing before independent interactions. Once a grid
-                # is positively seen, its one cancellation can proceed without
-                # another fixed wait. Never probe again, even if its source or
-                # occupied controls are not yet readable; closed prevents any
-                # repeated cancellation while fresh frames acknowledge return.
-                if opened and not scan.heroes and not grid_seen and current.state == BrawlScreen.PREPARATION:
-                    if not candidate_interval.reached():
-                        continue
-                elif not grid_seen and not self.interval_is_reached(self.ACTION_TIMER, interval=self.ACTION_INTERVAL):
-                    continue
+            # Only consecutive empty-bench probes use the short interval.
+            # The first probe follows the current verified preparation;
+            # unrelated actions cannot postpone it. Once a grid is
+            # positively seen, its one cancellation can proceed without
+            # another fixed wait. Never probe again, even if its source or
+            # occupied controls are not yet readable; closed prevents any
+            # repeated cancellation while fresh frames acknowledge return.
+            if (not closed and opened and not scan.heroes and not grid_seen
+                    and current.state == BrawlScreen.PREPARATION and not candidate_interval.reached()):
+                continue
             if opened and scan.heroes and current.state == BrawlScreen.PREPARATION and not closed:
                 continue
             if current.panel is None:

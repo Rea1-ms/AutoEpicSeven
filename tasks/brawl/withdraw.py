@@ -12,7 +12,12 @@ from tasks.brawl.assets.assets_brawl import (
     QUEUE_EMPTY_CHECK,
 )
 from tasks.brawl.bench import BenchHero, read_bench
-from tasks.brawl.board import BoardCell, _cells, _source_withdraw_area
+from tasks.brawl.board import (
+    BoardCell,
+    _cells,
+    _source_withdraw_area,
+    read_formation_grid,
+)
 from tasks.brawl.rules import BENCH_CAPACITY, RuleInputError, get_hero, validate_imprint
 from tasks.brawl.scanner import BenchScanResult
 from tasks.brawl.vision import (
@@ -59,9 +64,10 @@ def read_withdraw_control(image, *, observation=None):
     """Pair the current green source and red minus without claiming a full grid.
 
     Several occupied outlines can be obscured by bodies at ten deployed heroes.
-    A removal needs only the grid anchor, one positively green source, and its
-    uniquely adjacent red minus. It never infers empty destinations from missing
-    controls, nor converts an overhead symbol's location into a board cell.
+    With the fixed anchor, a removal needs only one positively green source
+    and its uniquely adjacent red minus. If that anchor is absent, a complete
+    current grid must establish the source instead. Neither path infers empty
+    destinations or turns an unpaired overhead symbol into a board cell.
     """
     vision = BrawlVision(image)
     current = observation if observation is not None else vision.observe()
@@ -80,18 +86,30 @@ def read_withdraw_control(image, *, observation=None):
         return None
     anchors = FORMATION_GRID_CHECK.match_multi_template(image, similarity=.9)
     sources = FORMATION_MOVE_SOURCE.match_multi_template(image, similarity=.9)
-    if len(anchors) != 1 or len(sources) != 1:
+    if len(anchors) > 1 or len(sources) != 1:
         return None
-    dx = int(anchors[0].area[0] - FORMATION_GRID_CHECK.area[0])
-    dy = int(anchors[0].area[1] - FORMATION_GRID_CHECK.area[1])
-    left, top, right, bottom = sources[0].area
-    mx, my = (left + right) / 2, (top + bottom) / 2
-    candidates = [cell for cell in _cells(dx, dy)
-                  if abs(cell.center[0] - mx + 33.5) <= 8
-                  and abs(cell.center[1] - my - 23) <= 8]
-    if len(candidates) != 1:
-        return None
-    source = candidates[0]
+    if anchors:
+        # Keep local removal independent of unrelated blue controls hidden by
+        # sprites. The fixed anchor already supplies this frame's geometry.
+        dx = int(anchors[0].area[0] - FORMATION_GRID_CHECK.area[0])
+        dy = int(anchors[0].area[1] - FORMATION_GRID_CHECK.area[1])
+        left, top, right, bottom = sources[0].area
+        mx, my = (left + right) / 2, (top + bottom) / 2
+        candidates = [cell for cell in _cells(dx, dy)
+                      if abs(cell.center[0] - mx + 33.5) <= 8
+                      and abs(cell.center[1] - my - 23) <= 8]
+        if len(candidates) != 1:
+            return None
+        source = candidates[0]
+    else:
+        # Full fields may hide both fixed edges while every blue control and
+        # the green source still agree on one calibrated grid. Require that
+        # complete positive proof from this same image; never use a remembered
+        # grid or the green symbol alone to guess which hero would be removed.
+        grid = read_formation_grid(image, observation=replace(current, panel=panel))
+        if grid is None or grid.selected_source is None:
+            return None
+        source = grid.selected_source
     x, y = source.center
     if not (285 <= x <= 870 and 190 <= y <= 615):
         return None
@@ -275,15 +293,15 @@ class BrawlWithdraw(ModuleBase):
                     return WithdrawResult(WithdrawOutcome.SOURCE_CHANGED)
             if timeout.reached():
                 return WithdrawResult(WithdrawOutcome.TIMEOUT)
-            if not self.interval_is_reached(self.ACTION_TIMER, interval=self.ACTION_INTERVAL):
-                continue
+            # Selection and removal are distinct, one-shot actions. A fresh
+            # grid with the requested source and verified minus permits removal
+            # immediately; selected/clicked prevent either action from repeating
+            # while its response remains unconfirmed.
             if current.state == BrawlScreen.PREPARATION and not selected:
                 x, y = request.source.center
                 self.device.click(ClickButton((x, y, x + 1, y + 1), name="BrawlWithdrawSelect"))
-                self.interval_reset(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)
                 selected = True
             elif control is not None:
                 self.device.click(ClickButton(control.button_area, name="BrawlWithdrawMinus"))
-                self.interval_reset(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)
                 clicked = True
                 timeout.reset()

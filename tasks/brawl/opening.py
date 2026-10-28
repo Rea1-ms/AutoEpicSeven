@@ -23,15 +23,12 @@ from tasks.brawl.vision import BrawlScreen, BrawlVision, ObservationError
 
 
 class BrawlOpening(ModuleBase):
-    ACTION_INTERVAL = 3
-    ACTION_TIMER = "BrawlBenchScan"
-
     def _module(self, factory):
         module = factory(self.config, self.device)
-        # Merely sharing the dictionary is insufficient if a child uses its
-        # own timer name. Purchases and scanner clicks all observe this gate.
+        # Retry timers retain their own action identities. A child's positively
+        # verified return authorizes the next operation; a previous purchase or
+        # scanner click must not impose a delay on a different current state.
         module.interval_timer = self.interval_timer
-        module.ACTION_TIMER = self.ACTION_TIMER
         return module
 
     def _observe(self, mode=None, expected=None):

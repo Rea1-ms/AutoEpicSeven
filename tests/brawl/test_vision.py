@@ -16,6 +16,7 @@ from tasks.brawl.assets.assets_brawl import (  # noqa: E402
     HERO_RESULT_CHECK,
     TOKEN_ICON,
 )
+from tasks.brawl.lives import read_lives  # noqa: E402
 from tasks.brawl.observation_cache import (  # noqa: E402
     invalidate_panel_observation_cache,
     panel_observation_cache,
@@ -444,3 +445,81 @@ class OpeningTalentTests(unittest.TestCase):
                 read_opening_talents(invalid, observation=observed)
         with patch.object(server, "lang", "cn"), self.assertRaises(ValueError):
             read_opening_talents(self.frame, observation=observed)
+
+
+class LivesRecognitionTests(unittest.TestCase):
+    def setUp(self):
+        server.set_lang("global_cn")
+
+    def test_real_preparations_confirm_all_three_heart_slots_without_ocr(self):
+        for name, expected in (("normal-opening", 3), ("normal-deployed", 3),
+                               ("resume-preparation", 3), ("prepare-level4", 3),
+                               ("normal-round2", 2), ("normal-after-loss", 1),
+                               ("failed-round13-return", 2)):
+            with self.subTest(sample=name), patch.object(
+                    Ocr, "ocr_multi_lines", side_effect=AssertionError("Heart reading must not OCR")):
+                self.frame = frame(name)
+                self.assertEqual(read_lives(self.frame), expected)
+                current = BrawlVision(self.frame).observe(read_panel=False)
+                self.assertEqual(read_lives(self.frame, observation=current), expected)
+
+    def test_missing_partial_dimmed_and_flat_slots_never_become_lost_hearts(self):
+        original = frame("failed-round13-return")
+        current = BrawlVision(original).observe(read_panel=False)
+        for index in range(3):
+            left = 1009 + index * 27
+            for damage in ("missing", "partial", "dimmed", "flat_gray", "flat_red", "shifted"):
+                with self.subTest(slot=index, damage=damage):
+                    self.frame = original.copy()
+                    if damage == "missing":
+                        self.frame[22:44, left:left + 23] = 0
+                    elif damage == "partial":
+                        self.frame[22:44, left:left + 12] = 0
+                    elif damage == "dimmed":
+                        self.frame[22:44, left:left + 23] = (
+                            self.frame[22:44, left:left + 23] * 0.5).astype(np.uint8)
+                    elif damage == "flat_gray":
+                        self.frame[22:44, left:left + 23] = (95, 99, 100)
+                    elif damage == "flat_red":
+                        self.frame[22:44, left:left + 23] = (126, 52, 56)
+                    else:
+                        self.frame[22:44, left:left + 23] = 0
+                        self.frame[25:47, left:left + 23] = original[22:44, left:left + 23]
+                    self.assertIsNone(read_lives(self.frame, observation=current))
+        # A failed read must not leave an invented count for the next frame.
+        self.frame = original
+        self.assertEqual(read_lives(self.frame, observation=current), 2)
+
+    def test_explicit_synthetic_empty_and_noncontiguous_heart_sequences(self):
+        original = frame("failed-round13-return")
+        current = BrawlVision(original).observe(read_panel=False)
+        lost = original[22:44, 1063:1086].copy()
+        self.frame = original.copy()
+        # No real zero-life preparation is claimed: these transplanted captured
+        # gray icons exercise complete positive counting and ordering only.
+        for left in (1009, 1036, 1063):
+            self.frame[22:44, left:left + 23] = lost
+        self.assertEqual(read_lives(self.frame, observation=current), 0)
+        self.frame = original.copy()
+        self.frame[22:44, 1009:1032] = lost
+        self.assertIsNone(read_lives(self.frame, observation=current))
+
+    def test_overlays_combat_and_unknown_mode_cannot_supply_preparation_lives(self):
+        for name in ("hero-reward-achates-a", "network-retry", "give-up", "combat-speed-two", "lobby"):
+            with self.subTest(sample=name), patch.object(
+                    Ocr, "ocr_multi_lines", side_effect=AssertionError("Heart reading must not OCR")):
+                self.frame = frame(name)
+                self.assertIsNone(read_lives(self.frame))
+        self.frame = frame("normal-deployed")
+        current = BrawlVision(self.frame).observe(read_panel=False)
+        self.assertIsNone(read_lives(self.frame, observation=replace(current, game_mode=None)))
+
+    def test_supplied_observation_still_validates_image_and_supported_language(self):
+        self.frame = frame("normal-deployed")
+        current = BrawlVision(self.frame).observe(read_panel=False)
+        for invalid in (None, np.zeros((360, 640, 3), np.uint8),
+                        np.zeros((720, 1280, 3), np.float32)):
+            with self.subTest(shape=getattr(invalid, "shape", None)), self.assertRaises(ValueError):
+                read_lives(invalid, observation=current)
+        with patch.object(server, "lang", "cn"), self.assertRaises(ValueError):
+            read_lives(self.frame, observation=current)

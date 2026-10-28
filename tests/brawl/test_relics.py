@@ -10,18 +10,29 @@ from module.config import server
 
 server.set_lang("global_cn")
 
+from tasks.brawl.assets.assets_brawl_entry import LOBBY_CONTINUE, LOBBY_ENTER  # noqa: E402
 from tasks.brawl.assets.assets_brawl_relics import (  # noqa: E402
-    HARMONY_SELECTED, NODE_AVAILABLE, NODE_INACTIVE, RELIC_PAGE_CHECK, SAVE_EXIT,
+    HARMONY_SELECTED,
+    NODE_AVAILABLE,
+    NODE_INACTIVE,
+    RELIC_PAGE_CHECK,
+    SAVE_EXIT,
 )
 from tasks.brawl.relics import (  # noqa: E402
-    BrawlRelics, _NODES, harmony_selected, pause_menu, read_relic_talents, relic_page,
+    _NODES,
+    BrawlRelics,
+    harmony_selected,
+    pause_menu,
+    read_relic_talents,
+    relic_page,
 )
 from tasks.brawl.vision import (  # noqa: E402
-    BrawlVision, ObservationError, PreparationPanel,
+    BrawlVision,
+    ObservationError,
+    PreparationPanel,
 )
 from tests.support.brawl import BrawlReplay, frame  # noqa: E402
 from tests.support.offline import ControlledClock  # noqa: E402
-
 
 BONUSES = {name: 1 for name, *_ in _NODES}
 PANEL = PreparationPanel(3, 3, 4, 4, 60, 0)
@@ -100,8 +111,8 @@ class RelicFlowTests(unittest.TestCase):
         self.clock.__enter__()
         self.addCleanup(self.clock.__exit__, None, None, None)
 
-    def replay(self, frames):
-        replay = BrawlReplay(BrawlRelics, frames, self.clock)
+    def replay(self, frames, seconds=.1):
+        replay = BrawlReplay(BrawlRelics, frames, self.clock, seconds=seconds)
         replay.task.ui_ensure = Mock(side_effect=AssertionError("Unexpected global navigation"))
         return replay
 
@@ -114,8 +125,10 @@ class RelicFlowTests(unittest.TestCase):
 
     def assert_actions(self, replay, names):
         self.assertEqual([action[1] for action in replay.actions], names)
+        # Distinct controls require fresh page evidence, not a fixed delay.
+        # These routes perform at most one action per observed screenshot.
         for before, after in zip(replay.actions, replay.actions[1:]):
-            self.assertGreaterEqual((after[0] - before[0]) * replay.seconds, 3)
+            self.assertGreater(after[0], before[0])
 
     def test_lobby_visit_uses_each_control_once_and_never_ocr_or_nodes(self):
         replay = self.replay(self.visit())
@@ -145,11 +158,157 @@ class RelicFlowTests(unittest.TestCase):
         self.assert_actions(replay, ["BACK"])
 
     def test_initial_shared_action_cooldown_is_preserved(self):
+        # Keep this registered regression ID while checking the revised user
+        # contract: an unrelated timer cannot delay the current lobby control.
         replay = self.replay(self.visit())
         replay.task.interval_reset(replay.task.ACTION_TIMER, interval=3)
         self.assertEqual(replay.task.read(), BONUSES)
-        self.assertEqual(replay.actions[0][0], 7)
+        self.assertEqual(replay.actions[0][0], 0)
         self.assert_actions(replay, ["LOBBY_RELICS", "HARMONY_TAB", "BACK"])
+
+    def test_fast_verified_pages_progress_without_waiting_for_unrelated_actions(self):
+        # Repeated pause, relic and result frames remain present after their
+        # click. Only the next positive page allows a different action, even
+        # when the complete save/read/continue path takes less than 3 seconds.
+        replay = self.replay(["relic-paused", "relic-paused", "relic-preparation",
+                              "relic-paused", "relic-paused", "relic-lobby",
+                              "relic-earth", "relic-earth", "relic-harmony",
+                              "relic-harmony", "relic-harmony", "relic-return-lobby",
+                              "relic-return-lobby", "relic-preparation"])
+        replay.seconds = 0.1
+        replay.task.interval_reset("BrawlBenchScan", interval=3)
+        self.assertEqual(replay.task.read(), BONUSES)
+        self.assertEqual([(item[0], item[1]) for item in replay.actions], [
+            (0, "PAUSE_RETURN"), (2, "PAUSE_BUTTON"), (3, "SAVE_EXIT"),
+            (5, "LOBBY_RELICS"), (6, "HARMONY_TAB"), (9, "BACK"),
+            (11, "LOBBY_CONTINUE")])
+        self.assertEqual(replay.index, 13)
+        self.assertLess(replay.index * replay.seconds, 3)
+
+    def test_reported_earth_page_retries_harmony_only_after_same_action_interval(self):
+        image = frame("relic-earth-missed-tab")
+        self.assertTrue(relic_page(image))
+        self.assertFalse(harmony_selected(image))
+        # The reported unselected tree is real. Repeated frames and its later
+        # transition to the separately captured harmony tree are explicit
+        # simulation: a recorded click never advances the mock screen itself.
+        replay = self.replay([image] * 8 + ["relic-harmony"] * 2 + ["relic-return-lobby"])
+        replay.seconds = .5
+        with patch("tasks.brawl.vision.Ocr", side_effect=AssertionError("Relics require no OCR")):
+            self.assertEqual(replay.task.read(), BONUSES)
+        self.assertEqual([(item[0], item[1]) for item in replay.actions],
+                         [(0, "HARMONY_TAB"), (7, "HARMONY_TAB"), (9, "BACK")])
+        self.assertEqual(replay.index, 10)
+
+    def test_each_relic_navigation_control_retries_without_delaying_the_next_page(self):
+        # Every first click is explicitly ineffective for more than three
+        # seconds. New positive pages then arrive half a second after retry;
+        # one control's cooldown must not suppress the next distinct control.
+        replay = self.replay(["relic-paused"] * 8 + ["relic-preparation"] * 8
+                             + ["relic-paused"] * 8 + ["relic-lobby"] * 8
+                             + ["relic-earth"] * 8 + ["relic-harmony"] * 9
+                             + ["relic-return-lobby"] * 8 + ["relic-preparation"])
+        replay.seconds = .5
+        with patch.object(BrawlVision, "preparation_panel", return_value=PANEL):
+            self.assertEqual(replay.task.read(), BONUSES)
+        self.assertEqual([(item[0], item[1]) for item in replay.actions], [
+            (0, "PAUSE_RETURN"), (7, "PAUSE_RETURN"),
+            (8, "PAUSE_BUTTON"), (15, "PAUSE_BUTTON"),
+            (16, "SAVE_EXIT"), (23, "SAVE_EXIT"),
+            (24, "LOBBY_RELICS"), (31, "LOBBY_RELICS"),
+            (32, "HARMONY_TAB"), (39, "HARMONY_TAB"),
+            (41, "BACK"), (48, "BACK"),
+            (49, "LOBBY_CONTINUE"), (56, "LOBBY_CONTINUE")])
+        self.assertEqual(replay.index, 57)
+
+    def test_unknown_frames_cannot_retry_and_completed_source_cannot_reopen(self):
+        unknown = np.zeros_like(frame("relic-earth"))
+        replay = self.replay(["relic-earth"] + [unknown] * 8 + ["relic-earth"]
+                             + ["relic-harmony"] * 2 + ["relic-return-lobby"])
+        replay.seconds = .5
+        self.assertEqual(replay.task.read(), BONUSES)
+        self.assertEqual([(item[0], item[1]) for item in replay.actions],
+                         [(0, "HARMONY_TAB"), (9, "HARMONY_TAB"), (11, "BACK")])
+        # After the relic page positively completes opening, a later lobby is
+        # an unexpected reversal, not evidence that the old open click failed.
+        replay = self.replay(["relic-lobby", "relic-earth"] + ["relic-lobby"] * 45)
+        replay.seconds = .5
+        with self.assertRaises(ObservationError):
+            replay.task.read()
+        self.assertEqual([item[1] for item in replay.actions], ["LOBBY_RELICS", "HARMONY_TAB"])
+
+        # A first complete harmony frame closes the tab request even though
+        # its second talent sample has not arrived. Seeing the old tree again
+        # cannot authorize replaying that completed selection.
+        replay = self.replay(["relic-earth", "relic-harmony"] + ["relic-earth"] * 45)
+        replay.seconds = .5
+        with self.assertRaises(ObservationError):
+            replay.task.read()
+        self.assertEqual([item[1] for item in replay.actions], ["HARMONY_TAB"])
+
+        # Back may retry only while the current complete tree still agrees
+        # with the confirmed talents. Missing or changed nodes below are
+        # explicit pixel mutations, not separately captured account states.
+        original = frame("relic-harmony")
+        for variant in ("missing", "changed"):
+            damaged = original.copy()
+            damaged[219:222, 467:492] = 0 if variant == "missing" else NODE_INACTIVE.color
+            replay = self.replay([original] * 2 + [damaged] * 45, seconds=.5)
+            with self.subTest(variant=variant), self.assertRaises(ObservationError):
+                replay.task.read()
+            self.assertEqual([item[1] for item in replay.actions], ["BACK"])
+
+        replay = self.replay(["relic-preparation", "relic-paused", "relic-lobby", "relic-earth"]
+                             + ["relic-harmony"] * 2 + ["relic-return-lobby"]
+                             + ["relic-harmony"] * 45, seconds=.5)
+        with self.assertRaises(ObservationError):
+            replay.task.read()
+        self.assertEqual([item[1] for item in replay.actions], [
+            "PAUSE_BUTTON", "SAVE_EXIT", "LOBBY_RELICS", "HARMONY_TAB", "BACK", "LOBBY_CONTINUE"])
+
+        # The original panel is explicit simulation. A later resource change
+        # must not become a replacement baseline for retrying Pause or Save.
+        replay = self.replay(["relic-preparation"] * 45, seconds=.5)
+        with patch.object(BrawlVision, "preparation_panel",
+                          side_effect=[PANEL] + [replace(PANEL, coins=61)] * 45), \
+                self.assertRaises(ObservationError):
+            replay.task.read()
+        self.assertEqual([item[1] for item in replay.actions], ["PAUSE_BUTTON"])
+
+        # Destination page identity closes an old action before all resource
+        # or save fields settle. The missing fields below are explicit mocks;
+        # all page identities still use captured images and real recognition.
+        replay = self.replay(["relic-preparation", "relic-paused", "relic-lobby", "relic-earth"]
+                             + ["relic-harmony"] * 2 + ["relic-return-lobby", "relic-preparation"]
+                             + ["relic-return-lobby"] * 45, seconds=.5)
+        read_panel = BrawlVision.preparation_panel
+
+        def unread_return(vision):
+            if replay.index == 7:
+                raise ObservationError("Explicit unread panel on the continued preparation")
+            return read_panel(vision)
+
+        with patch.object(BrawlVision, "preparation_panel", unread_return), self.assertRaises(ObservationError):
+            replay.task.read()
+        self.assertEqual([item[1] for item in replay.actions], [
+            "PAUSE_BUTTON", "SAVE_EXIT", "LOBBY_RELICS", "HARMONY_TAB", "BACK", "LOBBY_CONTINUE"])
+
+        matches = BrawlVision.matches
+
+        def unread_lobby(vision, button, **kwargs):
+            if replay.index == 2 and button in (LOBBY_CONTINUE, LOBBY_ENTER):
+                return False
+            return matches(vision, button, **kwargs)
+
+        for frames, actions in (
+                (["relic-preparation", "relic-paused", "relic-lobby"] + ["relic-paused"] * 45,
+                 ["PAUSE_BUTTON", "SAVE_EXIT"]),
+                (["relic-harmony"] * 2 + ["relic-return-lobby"] + ["relic-harmony"] * 45, ["BACK"])):
+            with self.subTest(actions=actions):
+                replay = self.replay(frames, seconds=.5)
+                with patch.object(BrawlVision, "matches", unread_lobby), self.assertRaises(ObservationError):
+                    replay.task.read()
+                self.assertEqual([item[1] for item in replay.actions], actions)
 
     def test_preparation_saves_reads_and_continues_same_real_panel(self):
         replay = self.replay(self.saved_visit() + ["relic-preparation"])
@@ -206,21 +365,29 @@ class RelicFlowTests(unittest.TestCase):
     def test_missing_talent_or_unconfirmed_return_times_out_without_duplicate_actions(self):
         broken = frame("relic-harmony").copy()
         broken[219:222, 467:492] = 0
-        for frames, actions in (([broken] * 45, []),
-                                (["relic-harmony"] * 45, ["BACK"]),
-                                (["relic-lobby"] * 45, ["LOBBY_RELICS"]),
-                                (["relic-earth"] * 45, ["HARMONY_TAB"]),
-                                (["relic-preparation"] * 45, ["PAUSE_BUTTON"]),
-                                (["relic-preparation"] + ["relic-paused"] * 60,
-                                 ["PAUSE_BUTTON", "SAVE_EXIT"]),
-                                (self.saved_visit() + ["relic-return-lobby"] * 45,
-                                 ["PAUSE_BUTTON", "SAVE_EXIT", "LOBBY_RELICS", "HARMONY_TAB", "BACK", "LOBBY_CONTINUE"])):
-            with self.subTest(actions=actions):
-                replay = self.replay(frames)
+        # Keep this regression's registered ID, but pending navigation must
+        # retry at its own interval. Repeated attempts may never extend the
+        # first request's twenty-second deadline or target another control.
+        for frames, prefix, name, first in (
+                ([broken] * 45, [], None, 0),
+                (["relic-harmony"] * 45, [], "BACK", 1),
+                (["relic-lobby"] * 45, [], "LOBBY_RELICS", 0),
+                (["relic-earth"] * 45, [], "HARMONY_TAB", 0),
+                (["relic-preparation"] * 45, [], "PAUSE_BUTTON", 0),
+                (["relic-preparation"] + ["relic-paused"] * 45,
+                 [(0, "PAUSE_BUTTON")], "SAVE_EXIT", 1),
+                (["relic-preparation", "relic-paused", "relic-lobby", "relic-earth"]
+                 + ["relic-harmony"] * 2 + ["relic-return-lobby"] * 45,
+                 [(0, "PAUSE_BUTTON"), (1, "SAVE_EXIT"), (2, "LOBBY_RELICS"),
+                  (3, "HARMONY_TAB"), (5, "BACK")], "LOBBY_CONTINUE", 6)):
+            with self.subTest(name=name):
+                replay = self.replay(frames, seconds=.5)
                 with patch.object(BrawlVision, "preparation_panel", return_value=PANEL), \
                         self.assertRaisesRegex(ObservationError, "verified return"):
                     replay.task.read()
-                self.assert_actions(replay, actions)
+                expected = prefix + ([(first + offset, name) for offset in range(0, 36, 7)] if name else [])
+                self.assertEqual([(item[0], item[1]) for item in replay.actions], expected)
+                self.assertEqual(replay.index, first + 41)
 
     def test_unexpected_scene_and_unread_initial_panel_never_authorize_battle(self):
         replay = self.replay(["relic-harmony"] * 12 + ["combat"])
@@ -231,7 +398,7 @@ class RelicFlowTests(unittest.TestCase):
         with self.assertRaisesRegex(ObservationError, "unexpected pause menu"):
             replay.task.read()
         self.assert_actions(replay, ["BACK"])
-        replay = self.replay(["relic-preparation"] * 45)
+        replay = self.replay(["relic-preparation"] * 45, seconds=.5)
         with patch.object(BrawlVision, "preparation_panel", side_effect=ObservationError("unread panel")), \
                 self.assertRaisesRegex(ObservationError, "unread panel"):
             replay.task.read()

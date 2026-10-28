@@ -131,7 +131,15 @@ class PlacementTests(unittest.TestCase):
         result = replay.task.place_selected(REQUEST)
         self.assertEqual(result, PlacementOutcome.TIMEOUT)
         self.assertEqual([action[:2] for action in replay.actions], [
-            (0, "BrawlPlacementOpen"), (7, "BrawlPlacementOpen"), (14, "BrawlPlacementCell")])
+            (0, "BrawlPlacementOpen"), (7, "BrawlPlacementOpen"), (8, "BrawlPlacementCell")])
+
+    def test_new_grid_advances_without_a_previous_action_cooldown(self):
+        replay = self.replay([step(), step(BrawlScreen.FORMATION_SELECTION), finished()], seconds=.1)
+        replay.task.interval_reset(replay.task.ACTION_TIMER, interval=3)
+        self.assertEqual(replay.task.place_selected(REQUEST), PlacementOutcome.CONFIRMED)
+        self.assertEqual([action[:2] for action in replay.actions], [
+            (0, "BrawlPlacementOpen"), (1, "BrawlPlacementCell")])
+        self.assertEqual(replay.index, 2)
 
     def test_count_change_alone_or_wrong_hero_position_cannot_confirm(self):
         for after in (step(panel=replace(PANEL, deployed=1)), finished(name="卡琳"),
@@ -204,7 +212,11 @@ class PlacementTests(unittest.TestCase):
         # after the destination click, even when its numeric panel is unread.
         for grid_frames, action_count in ((1, 1), (7, 2)):
             with self.subTest(grid_frames=grid_frames):
-                replay = self.replay([step()] + [step(BrawlScreen.FORMATION_SELECTION)] * grid_frames
+                # An unread board prevents the target in the pre-action case;
+                # elapsed time is no longer used to keep a valid target idle.
+                grid = step(BrawlScreen.FORMATION_SELECTION, board=None) if action_count == 1 else step(
+                    BrawlScreen.FORMATION_SELECTION)
+                replay = self.replay([step()] + [grid] * grid_frames
                                      + [step(panel=None), step(BrawlScreen.FORMATION_SELECTION)] * 14)
                 self.assertEqual(replay.task.place_selected(REQUEST), PlacementOutcome.SCENE_CHANGED)
                 self.assertEqual(len(replay.actions), action_count)
@@ -349,17 +361,17 @@ class NewGameFormationTests(unittest.TestCase):
         grid = FormationGrid(cells, cells, None, (), panel)
         prep = self.state_frame(panel=panel)
         selected = self.state_frame(BrawlScreen.FORMATION_SELECTION, panel=panel, grid=grid)
-        replay = self.replay([prep] * 8 + [selected] * 3 + [prep])
-        # The initial independent interaction still waits three seconds. A new
-        # positively recognized grid then authorizes one cancellation promptly,
-        # and repeated grid frames cannot cause a second cancel or field click.
+        replay = self.replay([prep] + [selected] * 3 + [prep])
+        # A preceding independent action cannot delay a verified preparation.
+        # The new grid authorizes cancellation on the next frame; repeated
+        # selected frames still cannot repeat that cancel before its interval.
         replay.task.interval_reset(replay.task.ACTION_TIMER, interval=replay.task.ACTION_INTERVAL)
         self.assertEqual(replay.task._probe(self.scan(panel=panel), expected), expected)
         self.assertEqual(replay.actions, [
-            (7, "BrawlFormationOpen", ENTRY.plus_area),
-            (8, "BrawlFormationCancelRound", replay.task.ROUND_CANCEL_AREA)])
+            (0, "BrawlFormationOpen", ENTRY.plus_area),
+            (1, "BrawlFormationCancelRound", replay.task.ROUND_CANCEL_AREA)])
         self.assertFalse(replay.task.interval_is_reached(
-            replay.task.ACTION_TIMER, interval=replay.task.ACTION_INTERVAL))
+            "BrawlFormationCancelRound", interval=replay.task.ACTION_INTERVAL))
 
     def test_reported_first_cell_move_uses_real_selection_controls_without_repeating_the_target(self):
         selected = frame("selected-first-cell")
@@ -577,7 +589,7 @@ class NewGameFormationTests(unittest.TestCase):
                     (8, "BrawlFormationCancelRound")])
                 self.assertGreaterEqual((8 - 1) * replay.seconds, replay.task.ACTION_INTERVAL)
                 self.assertFalse(replay.task.interval_is_reached(
-                    replay.task.ACTION_TIMER, interval=replay.task.ACTION_INTERVAL))
+                    "BrawlFormationCancelRound", interval=replay.task.ACTION_INTERVAL))
                 self.assertEqual(replay.click_record_clears, [])
 
     def test_probe_cancellation_retries_keep_original_deadline_and_log_scene(self):
@@ -634,6 +646,22 @@ class NewGameFormationTests(unittest.TestCase):
             replay.task._probe(self.scan(panel=panel), {(3, 3)})
         self.assertEqual([item[:2] for item in replay.actions], [
             (0, "BrawlFormationOpen"), (1, "BrawlFormationCancelRound")])
+
+    def test_verified_return_allows_next_probe_without_cross_action_delay(self):
+        panel = replace(PANEL, deployed=1)
+        grid = FormationGrid((CELL,), (CELL,), None, (), panel)
+        prep = self.state_frame(panel=panel)
+        selected = self.state_frame(BrawlScreen.FORMATION_SELECTION, panel=panel, grid=grid)
+        replay = self.replay([prep, selected, prep, selected, prep])
+        replay.seconds = .1
+        for _ in range(2):
+            self.assertEqual(replay.task._probe(self.scan(panel=panel), {(3, 3)}), frozenset({(3, 3)}))
+        # Each return positively ends its own read-only interaction. A second
+        # probe may start there, while each grid still receives just one cancel.
+        self.assertEqual([item[:2] for item in replay.actions], [
+            (0, "BrawlFormationOpen"), (1, "BrawlFormationCancelRound"),
+            (2, "BrawlFormationOpen"), (3, "BrawlFormationCancelRound")])
+        self.assertEqual(replay.index, 4)
 
     def test_unconfirmed_move_swap_and_withdraw_never_repeat_destination(self):
         panel = replace(PANEL, deployed=1)
@@ -764,7 +792,7 @@ class NewGameFormationTests(unittest.TestCase):
         with patch.object(replay.task, "select", return_value=selected), \
                 patch.object(replay.task, "scan", side_effect=scanned):
             replay.task._execute_step(action)
-        # The independent probe opens after 3.5 seconds since the target.
+        # The returned preparation at frame 8 permits the independent probe.
         # Positive grid evidence then permits immediate cancellation, while
         # the roster still cannot commit until preparation returns at frame 22.
         self.assertEqual([item[:2] for item in replay.actions], [

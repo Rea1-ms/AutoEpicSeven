@@ -398,6 +398,9 @@ class ResumeDiscoveryTests(unittest.TestCase):
         grid = FormationGrid((cell,), (cell,), None, (), PANEL)
         replay = self.replay([self.state()] + [self.state(BrawlScreen.FORMATION_SELECTION, grid=grid)] * 12
                              + [self.state()])
+        # Other completed actions cannot delay a verified discovery request.
+        # Repeated grids still never repeat the single cancellation.
+        replay.task.interval_reset(replay.task.ACTION_TIMER, interval=3)
         self.assertEqual(replay.task._discover(scan()), frozenset({CELL}))
         self.assertEqual([action[1] for action in replay.actions], ["BrawlResumeDiscover", "BrawlResumeCancelRound"])
         self.assertEqual([action[0] for action in replay.actions], [0, 1])
@@ -446,8 +449,7 @@ class ResumeDiscoveryTests(unittest.TestCase):
         grid = FormationGrid((cell,), (cell,), cell, (), PANEL)
         # Four fresh observations span the short probe interval. Once a source
         # appears, repeated grid frames must never authorize another candidate;
-        # cancellation follows positive grid evidence; the next independent
-        # formation action still retains the shared cooldown.
+        # cancellation follows positive grid evidence without a fixed wait.
         replay = self.replay([self.state()] * 5 + [self.state(BrawlScreen.FORMATION_SELECTION, grid=grid)] * 8
                              + [self.state()])
         replay.seconds = 0.0625
@@ -458,11 +460,6 @@ class ResumeDiscoveryTests(unittest.TestCase):
         self.assertEqual(len({action[2] for action in replay.actions[:2]}), 2)
         self.assertEqual(replay.panel_reads, [0, 4, 5, 13])
         self.assertEqual(replay.bench_reads, [])
-        self.assertFalse(replay.task.interval_is_reached(
-            replay.task.ACTION_TIMER, interval=replay.task.ACTION_INTERVAL))
-        self.clock.advance(3)
-        self.assertTrue(replay.task.interval_is_reached(
-            replay.task.ACTION_TIMER, interval=replay.task.ACTION_INTERVAL))
 
     def test_real_occluded_discovery_cancels_once_after_the_tenth_empty_bench_candidate(self):
         selected = frame("resume-discovery-occluded")
@@ -566,6 +563,50 @@ class ResumeDiscoveryTests(unittest.TestCase):
         self.assertEqual(current.state, BrawlScreen.PREPARATION)
         self.assertEqual(current.game_mode, BrawlMode.NORMAL)
         self.assertIsNone(current.panel)
+
+    def test_reported_round13_recovery_withdraws_once_from_anchorless_grid(self):
+        selected = frame("resume-round13-withdraw")
+        real_vision = BrawlVision
+        panel = real_vision(selected).preparation_panel()
+        after_panel = replace(panel, deployed=7)
+        preparation = np.zeros_like(selected)
+        after = np.ones_like(selected)
+        replay = BrawlReplay(BrawlResume, [preparation] + [selected] * 11 + [after], self.clock)
+        reads = []
+        read_panel = real_vision.preparation_panel
+
+        def vision(image):
+            if image is selected:
+                return real_vision(image)
+            # Only the selected eight-hero grid is captured. Preparation and
+            # the seven-hero return are explicit simulation; this replay does
+            # not establish a real completed recovery or the removed identity.
+            return SimpleNamespace(observe=lambda **kwargs: BrawlObservation(
+                BrawlScreen.PREPARATION, after_panel if image is after else panel,
+                game_mode=BrawlMode.NORMAL))
+
+        def panel_read(vision):
+            reads.append(replay.index)
+            return read_panel(vision)
+
+        from tasks.brawl.withdraw import _bench_agrees
+
+        def bench(image, current, checked, **kwargs):
+            return _bench_agrees(image, current, checked, **kwargs) if image is selected else True
+
+        action = SimpleNamespace(kind=FormationKind.WITHDRAW, source=(0, 3), target=None)
+        cells = {(0, 3), (1, 3), (2, 0), (2, 3), (3, 0), (3, 3), (4, 3), (5, 3)}
+        with patch("tasks.brawl.formation.BrawlVision", side_effect=vision), \
+                patch("tasks.brawl.formation._bench_agrees", side_effect=bench), \
+                patch.object(real_vision, "preparation_panel", panel_read), \
+                patch("tasks.brawl.formation.read_bench", side_effect=AssertionError("empty bench needs no OCR")), \
+                patch("tasks.brawl.withdraw.read_bench", side_effect=AssertionError("empty bench needs no OCR")):
+            replay.task._grid_action(scan((), panel), cells, action=action, expected_panel=after_panel)
+        self.assertIs(replay.image, after)
+        self.assertEqual(replay.actions, [(0, "BrawlFormationOpen", (794, 241, 795, 242)),
+                                          (1, "BrawlFormationWithdraw", (750, 209, 767, 226))])
+        self.assertEqual(reads, [1])
+        self.assertEqual(replay.index, 12)
 
 
 class ResumedTalentTests(unittest.TestCase):

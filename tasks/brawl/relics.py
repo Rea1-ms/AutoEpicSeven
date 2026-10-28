@@ -29,7 +29,6 @@ from tasks.brawl.assets.assets_brawl_relics import (
 from tasks.brawl.entry import BrawlEntry
 from tasks.brawl.vision import BrawlScreen, BrawlVision, ObservationError
 
-
 _NODES = (
     ("骑士", RELIC_KNIGHT, (479, 254)),
     ("精灵师", RELIC_SOUL_WEAVER, (649, 254)),
@@ -101,18 +100,51 @@ class BrawlRelics(BrawlEntry):
             if current.state == BrawlScreen.UNKNOWN and current.game_mode is None:
                 from tasks.base.page import page_brawl_lobby
 
-                if self.ui_ensure(page_brawl_lobby, acquire_lang_checked=False, skip_first_screenshot=True):
-                    self.interval_reset(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)
+                self.ui_ensure(page_brawl_lobby, acquire_lang_checked=False, skip_first_screenshot=True)
             elif current.state not in (BrawlScreen.PREPARATION, BrawlScreen.LOBBY):
                 raise ObservationError("Relic reading requires a stable preparation, lobby or navigation page")
 
         timeout = Timer(self.ENTRY_TIMEOUT).start()
         original = None
         unpausing = pausing = saving = False
-        opened = selected = returning = resuming = False
+        opened = returning = resuming = False
         lobby_saved = None
         previous = bonuses = None
         reason = "No complete harmony talent observation"
+        pending = None
+        completed = set()
+        retry = Timer(self.ACTION_INTERVAL)
+        attempts = 0
+
+        def complete(button):
+            nonlocal pending
+            # A positively observed destination closes its source action even
+            # when the visit began on that destination. A later stale source
+            # frame must never reopen a completed part of this route.
+            completed.add(button.name)
+            if pending == button.name:
+                pending = None
+
+        def request(button):
+            nonlocal pending, attempts
+            if button.name in completed or pending not in (None, button.name):
+                return False
+            repeated = pending == button.name
+            if repeated and not retry.reached():
+                return False
+            self.device.click(button)
+            pending = button.name
+            attempts = attempts + 1 if repeated else 1
+            retry.reset()
+            if repeated:
+                logger.info(f"Brawl relic navigation retried: action={button.name}, attempt={attempts}")
+            else:
+                # Only a newly authorized transition owns a fresh deadline.
+                # A click without a destination is still pending: retrying it
+                # must not keep an unresponsive screen alive indefinitely.
+                timeout.reset()
+            return True
+
         first = True
         while True:
             if first:
@@ -126,11 +158,18 @@ class BrawlRelics(BrawlEntry):
             # A pause overlay can leave underlying preparation templates visible.
             # Classify it first, without OCR of the darkened background.
             current = vision.observe(read_panel=False) if not menu and not page else None
-            ready = self.interval_is_reached(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)
+            # Flags record requested transitions, not successful clicks. Only
+            # positive destination evidence completes them. Safe navigation can
+            # retry on its still-verified source page after its own interval;
+            # neither unknown frames nor old completed pages authorize clicks.
 
             # A positively verified return wins over a deadline on that same
             # frame. Unread panels still pass through the bounded wait below.
             if current is not None and current.state == BrawlScreen.PREPARATION and resuming:
+                # Reaching preparation closes Continue even if its digits have
+                # not settled yet. A later stale lobby must not retry a click
+                # whose destination was already positively observed.
+                complete(LOBBY_CONTINUE)
                 restored = vision.observe()
                 if restored.panel is None or restored.game_mode is None:
                     reason = restored.reason or "The continued preparation is unread"
@@ -140,6 +179,13 @@ class BrawlRelics(BrawlEntry):
                     logger.info(f"Class talents confirmed from harmony relics: {bonuses}")
                     return bonuses
             if current is not None and current.state == BrawlScreen.LOBBY:
+                # Destination identity closes the old navigation before save
+                # controls become readable. Those controls still gate the next
+                # action and final result; they cannot revive Save/Back retries.
+                if saving:
+                    complete(SAVE_EXIT)
+                if returning:
+                    complete(BACK)
                 saved = vision.matches(LOBBY_CHECK, color=True) and vision.matches(LOBBY_CONTINUE, color=True)
                 empty = vision.matches(LOBBY_EMPTY_CHECK, color=True) and vision.matches(LOBBY_ENTER, color=True)
                 if saved == empty:
@@ -162,67 +208,77 @@ class BrawlRelics(BrawlEntry):
                     raise ObservationError("An unexpected pause menu interrupted the relic visit")
                 if original is None:
                     # Starting on Pause has no trustworthy unmasked panel yet.
-                    # Close it once, acquire that panel, then use the normal save
-                    # path. Never infer original resources from dimmed digits.
-                    if not unpausing and ready:
-                        self.device.click(PAUSE_RETURN)
-                        self.interval_reset(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)
+                    # Return to preparation before capturing the original
+                    # context; never read resources through the dimmed overlay.
+                    if request(PAUSE_RETURN):
                         unpausing = True
-                        timeout.reset()
-                elif pausing and not saving and ready:
-                    self.device.click(SAVE_EXIT)
-                    self.interval_reset(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)
-                    saving = True
-                    timeout.reset()
+                elif pausing:
+                    complete(PAUSE_BUTTON)
+                    if request(SAVE_EXIT):
+                        saving = True
                 continue
 
             if current is not None and current.state == BrawlScreen.PREPARATION:
                 if resuming:
                     continue
-                if pausing:
-                    # Pending pause/save frames never authorize another click.
+                if saving:
+                    # A pause menu already proved the previous pause click.
+                    # Seeing preparation again cannot start another save path.
                     continue
                 if opened or returning:
                     raise ObservationError("Preparation appeared before the saved-run continuation request")
-                if ready and vision.matches(PAUSE_BUTTON, color=True):
-                    original = vision.observe()
-                    if original.panel is None or original.game_mode is None:
-                        reason = original.reason or "The original preparation is unread"
-                        original = None
+                if unpausing:
+                    complete(PAUSE_RETURN)
+                if pausing and not retry.reached():
+                    continue
+                if vision.matches(PAUSE_BUTTON, color=True):
+                    observed = vision.observe()
+                    if observed.panel is None or observed.game_mode is None:
+                        reason = observed.reason or "The original preparation is unread"
                         continue
-                    self.device.click(PAUSE_BUTTON)
-                    self.interval_reset(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)
-                    pausing = True
-                    timeout.reset()
+                    if original is None:
+                        original = observed
+                    elif observed.panel != original.panel or observed.game_mode != original.game_mode:
+                        raise ObservationError("The original preparation changed while pause was pending")
+                    if request(PAUSE_BUTTON):
+                        pausing = True
                 continue
 
             if current is not None and current.state == BrawlScreen.LOBBY:
                 if saved == empty:
                     continue
                 if returning:
-                    if not resuming and ready:
-                        self.device.click(LOBBY_CONTINUE)
-                        self.interval_reset(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)
+                    if request(LOBBY_CONTINUE):
                         resuming = True
-                        timeout.reset()
                     continue
-                if not opened and ready and vision.matches(LOBBY_RELICS, color=True):
-                    self.device.click(LOBBY_RELICS)
-                    self.interval_reset(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)
+                if vision.matches(LOBBY_RELICS, color=True) and request(LOBBY_RELICS):
                     opened = True
-                    timeout.reset()
                 continue
 
             if returning:
-                # Back/Continue remain pending through repeated relic frames.
-                # No extra Back, tab or entry request is permitted.
+                # Retry Back only while its destination is still unseen and
+                # the current harmony page retains the complete readout that
+                # authorized leaving it. Once the lobby was seen, relic frames
+                # cannot send another Back while Continue is pending.
+                if page and pending == BACK.name and retry.reached() and harmony_selected(image):
+                    try:
+                        values = read_relic_talents(image)
+                    except ObservationError as exc:
+                        reason = str(exc)
+                    else:
+                        if values == bonuses and vision.matches(BACK, color=True):
+                            request(BACK)
+                        else:
+                            reason = "The harmony talents changed while return was pending"
                 if current is not None and current.state != BrawlScreen.UNKNOWN:
                     raise ObservationError("The relic return was interrupted by an unexpected scene")
                 continue
             if page:
                 if original is not None and (not saving or not opened):
                     raise ObservationError("The relic page appeared before a verified save and lobby")
+                complete(LOBBY_RELICS)
                 if harmony_selected(image):
+                    complete(HARMONY_TAB)
                     try:
                         values = read_relic_talents(image)
                     except ObservationError as exc:
@@ -232,18 +288,12 @@ class BrawlRelics(BrawlEntry):
                         previous = values
                         continue
                     bonuses = values
-                    if ready and vision.matches(BACK, color=True):
-                        self.device.click(BACK)
-                        self.interval_reset(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)
+                    if vision.matches(BACK, color=True) and request(BACK):
                         returning = True
-                        timeout.reset()
                     continue
                 previous = None
-                if not selected and ready and vision.matches(HARMONY_TAB, color=True):
-                    self.device.click(HARMONY_TAB)
-                    self.interval_reset(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)
-                    selected = True
-                    timeout.reset()
+                if vision.matches(HARMONY_TAB, color=True):
+                    request(HARMONY_TAB)
                 continue
             previous = None
             if current.state != BrawlScreen.UNKNOWN:

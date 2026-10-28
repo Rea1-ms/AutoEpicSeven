@@ -23,13 +23,12 @@ from tasks.brawl.vision import BrawlMode, BrawlScreen, BrawlVision, ObservationE
 
 
 class BrawlEconomy(ModuleBase):
-    ACTION_TIMER = "BrawlBenchScan"
-    ACTION_INTERVAL = 3
-
     def _module(self, factory):
         module = factory(self.config, self.device)
+        # Share same-action retry history without replacing each child's key.
+        # Verified transaction completion, not an unrelated timer, permits the
+        # next economic decision and its independently observed action.
         module.interval_timer = self.interval_timer
-        module.ACTION_TIMER = self.ACTION_TIMER
         return module
 
     def _observe(self, state):

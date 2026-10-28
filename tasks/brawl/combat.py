@@ -14,6 +14,7 @@ from tasks.brawl.assets.assets_brawl import (
 )
 from tasks.brawl.cursor import read_cursor
 from tasks.brawl.heroes import HeroResult, read_hero_result
+from tasks.brawl.lives import read_lives
 from tasks.brawl.rules import TOTAL_ROUNDS, team_capacity
 from tasks.brawl.vision import (
     BrawlMode,
@@ -52,7 +53,6 @@ class BrawlCombat(ModuleBase):
     PREPARATION_STABLE_INTERVAL = 0.6
     NETWORK_TIMEOUT = 30
     NETWORK_RETRY_INTERVAL = 5
-    NETWORK_RETRY_DELAY = 3
     SPEED_INTERVAL = 3
     SPEED_TIMEOUT = 10
     SPEED_INTERRUPTED_STATES = frozenset({
@@ -84,8 +84,9 @@ class BrawlCombat(ModuleBase):
         This method does not establish field identities or apply hero results to
         a roster. Its caller must reconcile the returned results against a fresh
         complete bench and occupied-cell observation before arranging again.
-        The caller shares interval_timer with formation so the final grid close,
-        battle start, speed toggle and reward close obey one action interval.
+        Each completed scene boundary permits its next action immediately.
+        Starting and closing each owned reward are one-shot requests; only
+        repeated speed and network requests use their own button intervals.
         """
         if not isinstance(panel, PreparationPanel) or not isinstance(game_mode, BrawlMode):
             raise TypeError("A verified preparation panel and game mode are required")
@@ -107,7 +108,8 @@ class BrawlCombat(ModuleBase):
         preparation_candidate = None
         preparation_stable = Timer(self.PREPARATION_STABLE_INTERVAL)
         network_timeout = None
-        network_ready = None
+        network_waiting = False
+        starting_lives = None
 
         def finish(outcome, reason, preparation=None):
             if outcome == RoundOutcome.FAILED:
@@ -135,30 +137,30 @@ class BrawlCombat(ModuleBase):
                     return finish(RoundOutcome.FAILED, "Network retry appeared before this call started a round")
                 if network_timeout is None:
                     network_timeout = Timer(self.NETWORK_TIMEOUT).start()
-                if network_ready is None:
-                    network_ready = Timer(self.NETWORK_RETRY_DELAY).start()
+                network_waiting = True
                 if network_timeout.reached():
                     return finish(RoundOutcome.FAILED, "Network retry did not recover within its deadline")
                 # Preserve started/battle_seen/rewards: retry resumes the same
                 # server request, never authorizes another start or acquisition.
                 # Match the shared arrow at its current position; its original
-                # click rectangle belongs to a different popup layout. Wait by
-                # observing fresh frames, without the shared handler's sleep or
-                # login handoff (which would invalidate this tracked roster).
-                if (network_ready.reached()
-                        and self.interval_is_reached(self.ACTION_TIMER, interval=self.NETWORK_RETRY_INTERVAL)
+                # click rectangle belongs to a different popup layout. The
+                # first verified popup can retry immediately; only repeated
+                # requests for this same network control share a cooldown.
+                # Never call the shared handler's sleep or login handoff, which
+                # would invalidate this tracked roster.
+                if (self.interval_is_reached("BrawlNetworkRetry", interval=self.NETWORK_RETRY_INTERVAL)
                         and TOUCH_TO_CLOSE.match_template(image, similarity=.85)):
                     self.device.click(TOUCH_TO_CLOSE)
-                    self.interval_reset(self.ACTION_TIMER, interval=self.NETWORK_RETRY_INTERVAL)
+                    self.interval_reset("BrawlNetworkRetry", interval=self.NETWORK_RETRY_INTERVAL)
                     logger.info("Brawl network retry requested; retaining the current round")
                 continue
             if network_timeout is not None:
                 # Give the interrupted transition one fresh local deadline, not
                 # a new battle start. Retain the total retry budget across popup
                 # reappearances so flickering unknown/preparation cannot renew it.
-                if network_ready is not None and timeout is not None:
+                if network_waiting and timeout is not None:
                     timeout.reset()
-                network_ready = None
+                network_waiting = False
             # A readable preparation can precede coin count-up completion and
             # the bench's fade-in. Stability belongs to consecutive readable
             # frames of this return, never to time spent in combat or overlays.
@@ -216,10 +218,12 @@ class BrawlCombat(ModuleBase):
                         return finish(RoundOutcome.FAILED, "Preparation changed before battle start")
                     if timeout.reached():
                         return finish(RoundOutcome.FAILED, "Battle start remained unavailable")
-                    if (vision.matches(PREPARATION_CHECK, color=True)
-                            and self.interval_is_reached(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)):
+                    # Current panel and button evidence authorize this start.
+                    # The started flag, not a preceding formation timer, keeps
+                    # old preparation frames from requesting a second battle.
+                    if vision.matches(PREPARATION_CHECK, color=True):
+                        starting_lives = read_lives(image, observation=current)
                         self.device.click(PREPARATION_CHECK)
-                        self.interval_reset(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)
                         started = True
                         timeout.reset()
                         logger.info(f"Brawl round {panel.round_number} start requested")
@@ -236,7 +240,16 @@ class BrawlCombat(ModuleBase):
                     if reward_seen and (pending is None or not pending_closed):
                         return finish(RoundOutcome.FAILED, "Preparation returned before the hero reward was closed")
                     next_round = observed.round_number == panel.round_number + 1
-                    if next_round or round_end == BrawlScreen.ROUND_FAILED:
+                    remaining_lives = read_lives(image, observation=current) if not next_round else None
+                    # A short defeat banner may fall between screenshots. Only
+                    # a positively read one-heart decrease from this call's
+                    # pre-click preparation can replace that missing banner.
+                    # An unchanged, unread or zero-life return is not permission
+                    # to start the same round again. Never infer a loss from
+                    # resources or from an absolute remaining-heart count.
+                    lost_life = (starting_lives is not None and remaining_lives is not None
+                                 and 0 < remaining_lives == starting_lives - 1)
+                    if next_round or round_end == BrawlScreen.ROUND_FAILED or lost_life:
                         if timeout is None:
                             timeout = Timer(self.STEP_TIMEOUT).start()
                         cursor = read_cursor(image, observation=current)
@@ -244,7 +257,8 @@ class BrawlCombat(ModuleBase):
                             cursor.empty is False and cursor.selected is not None
                             and cursor.selected.imprint is not None and cursor.bottom is not None)
                         candidate = (observed, cursor.selected, cursor.top, cursor.bottom,
-                                     cursor.empty, cursor.next_area)
+                                     cursor.empty, cursor.next_area,
+                                     remaining_lives if lost_life else None)
                         if not bench_ready:
                             preparation_candidate = None
                             preparation_stable.clear()
@@ -255,6 +269,8 @@ class BrawlCombat(ModuleBase):
                         elif preparation_stable.reached():
                             reason = (f"Preparation for round {observed.round_number} confirmed" if next_round else
                                       f"Round {observed.round_number} failed; retry preparation confirmed")
+                            if lost_life and round_end != BrawlScreen.ROUND_FAILED:
+                                reason += f" (lives: {starting_lives}->{remaining_lives})"
                             return finish(RoundOutcome.NEXT_PREPARATION, reason, observed)
                         # Do not scan/swipe an unread bench, and never restart
                         # this deadline when another intermediate balance is
@@ -264,9 +280,14 @@ class BrawlCombat(ModuleBase):
                             return finish(RoundOutcome.FAILED,
                                           "The post-battle preparation or bench did not settle")
                         continue
-                    # A still-visible old preparation after the start click is
-                    # neither an invitation to start again nor proof of a loss.
-                    # The same round is accepted only with a real failed banner.
+                    # Losing heart evidence breaks a consecutive stable return,
+                    # just as an unread panel/bench does. A later matching count
+                    # must begin stability again instead of inheriting the time
+                    # spent on unread/unchanged-life frames.
+                    preparation_candidate = None
+                    preparation_stable.clear()
+                    # A still-visible old preparation is not proof of a loss.
+                    # The same round requires a failed banner or measured loss.
                     if timeout is None:
                         timeout = Timer(self.STEP_TIMEOUT).start()
                 if timeout.reached():
@@ -295,9 +316,7 @@ class BrawlCombat(ModuleBase):
                 # the watchdog for unknown, reward or waiting frames: doing so
                 # would conceal an unsupported popup or a stalled transition.
                 self.device.stuck_record_clear()
-                if (self.interval_is_reached(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)
-                        and self._handle_double_speed(current)):
-                    self.interval_reset(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)
+                self._handle_double_speed(current)
                 continue
 
             if current.state in (BrawlScreen.ROUND_CLEAR, BrawlScreen.ROUND_FAILED):
@@ -345,10 +364,8 @@ class BrawlCombat(ModuleBase):
             # or trigger another close; a distinct verified result opens a new
             # reward step while preserving ordered imprint changes for the roster.
             if (hero is not None and hero == pending and not pending_closed
-                    and vision.matches(HERO_RESULT_CHECK)
-                    and self.interval_is_reached(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)):
+                    and vision.matches(HERO_RESULT_CHECK)):
                 self.device.click(HERO_RESULT_CHECK)
-                self.interval_reset(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)
                 results.append(hero)
                 pending_closed = True
                 timeout.reset()

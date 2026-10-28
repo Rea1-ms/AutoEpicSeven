@@ -10,7 +10,12 @@ from tasks.brawl.assets.assets_brawl_actions import SUMMON_NORMAL
 from tasks.brawl.heroes import read_hero_result
 from tasks.brawl.observation_cache import invalidate_panel_observation_cache
 from tasks.brawl.rules import Imprint, Resources, SummonKind, summon_cost
-from tasks.brawl.summon import SummonOutcome, SummonReport, _result_balances
+from tasks.brawl.summon import (
+    SummonOutcome,
+    SummonReport,
+    _result_balances,
+    _ResultBalanceCache,
+)
 from tasks.brawl.vision import (
     BrawlMode,
     BrawlScreen,
@@ -78,6 +83,7 @@ class BrawlNormalSummon(ModuleBase):
         result = None
         result_pixels = None
         proceeds = None
+        balance_cache = _ResultBalanceCache()
 
         def report(outcome):
             return SummonReport(outcome, result, proceeds)
@@ -95,13 +101,13 @@ class BrawlNormalSummon(ModuleBase):
                 self.device.screenshot()
             image = self.device.image
             vision = BrawlVision(image)
-            action_ready = self.interval_is_reached(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)
-            # A cooldown cannot authorize payment. Observe scene/mode on every
-            # frame, then read the live panel when spending becomes possible.
-            # After payment, returned resources remain an immediate exit check.
-            observed = vision.observe(read_panel=paid or action_ready)
+            # Current context, a captured quote and the one-payment latch
+            # authorize spending. A different earlier action's cooldown cannot
+            # delay a verified new preparation or the resulting hero footer.
+            observed = vision.observe()
             if observed.state != BrawlScreen.HERO_RESULT:
                 result_pixels = None
+                balance_cache.clear()
             if observed.game_mode is not None and observed.game_mode != request.game_mode:
                 return report(SummonOutcome.CONTEXT_CHANGED)
             if observed.state == BrawlScreen.HERO_RESULT and (not paid or returned):
@@ -139,10 +145,9 @@ class BrawlNormalSummon(ModuleBase):
                             return report(SummonOutcome.CONTEXT_CHANGED)
                         if timeout.reached():
                             return report(SummonOutcome.TIMEOUT)
-                        if vision.matches(SUMMON_NORMAL, color=True) and action_ready:
+                        if vision.matches(SUMMON_NORMAL, color=True):
                             self.device.click(SUMMON_NORMAL)
                             invalidate_panel_observation_cache()
-                            self.interval_reset(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)
                             paid = True
                             timeout.reset()
                             continue
@@ -174,24 +179,23 @@ class BrawlNormalSummon(ModuleBase):
                 if not paid or returned:
                     return report(SummonOutcome.SCENE_CHANGED)
                 result_seen = True
-                # Reuse only a successfully read identity and exact debit from
-                # this owned result, while every relevant pixel is unchanged.
-                # The first region includes the whole name, both badges, arrow
-                # and overflow marker; the second includes both moving currency
-                # icons and balances. Changed/missing fields force fresh reads.
-                # Unknown/other scenes clear the snapshot, and the current
-                # footer must still match before the single close click.
-                pixels = (image[137:610, 700:1065].tobytes(), image[60:120, 1000:1265].tobytes())
+                # Reuse a complete identity only while its current name/badge
+                # region is unchanged. Resource evidence has its own glyph
+                # cache: animated artwork is not a reason to OCR balances.
+                # Neither cache replaces current page/footer validation.
+                pixels = image[137:610, 700:1065].tobytes()
                 if result is not None and pixels == result_pixels:
-                    hero, balances = result, expected
+                    hero = result
                 else:
                     hero = read_hero_result(image)
-                    balances = None
-                    if hero is not None:
-                        try:
-                            balances = _result_balances(vision)
-                        except ObservationError:
-                            pass
+                balances = None
+                if hero is not None:
+                    try:
+                        balances = balance_cache.read(vision, hero, _result_balances)
+                    except ObservationError:
+                        pass
+                else:
+                    balance_cache.clear()
                 if hero is not None:
                     if (hero.previous_imprint == hero.imprint == Imprint.SSS
                             and not hero.is_overflow):
@@ -206,7 +210,7 @@ class BrawlNormalSummon(ModuleBase):
                             result_pixels = pixels
                             if timeout.reached():
                                 return report(SummonOutcome.TIMEOUT)
-                            if not closed and action_ready:
+                            if not closed:
                                 # The shared arrow survives artwork changes
                                 # better than the overlaid continuation text.
                                 # It is only a close target after this owned
@@ -219,7 +223,6 @@ class BrawlNormalSummon(ModuleBase):
                                     close = HERO_RESULT_CHECK
                                 if close is not None:
                                     self.device.click(close)
-                                    self.interval_reset(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)
                                     closed = True
                                     timeout.reset()
                                     continue

@@ -21,6 +21,49 @@ class HeroRecognitionTests(unittest.TestCase):
     def setUp(self):
         server.set_lang("global_cn")
 
+    def test_achates_wrapped_name_upgrade_reuses_name_with_current_badge_proof(self):
+        self.frame = frame("hero-reward-achates-a")
+        expected = HeroResult("未知可能性雅卡泰丝", Imprint.A, Imprint.B)
+        original = Ocr.detect_and_ocr
+        reads = []
+
+        def recognize(ocr, image, *args, **kwargs):
+            if ocr.name == "BRAWL_HERO_NAME":
+                reads.append(ocr.name)
+            return original(ocr, image, *args, **kwargs)
+
+        with bench_name_cache(), patch.object(Ocr, "detect_and_ocr", recognize):
+            self.assertEqual(read_hero_result(self.frame), expected)
+            self.assertEqual(read_hero_result(self.frame.copy()), expected)
+            # Replace the A with neighboring purple artwork, preserving the
+            # independently cached full two-line name and the B-to-A arrow.
+            # Background color alone must never stand in for the current badge.
+            missing = self.frame.copy()
+            missing[386:418, 982:1009] = self.frame[386:418, 1010:1037]
+            self.assertIsNone(read_hero_result(missing))
+            self.assertEqual(read_hero_result(self.frame.copy()), expected)
+            self.assertEqual(reads, ["BRAWL_HERO_NAME"])
+
+    def test_achates_missing_wrapped_suffix_and_return_never_reuse_result_identity(self):
+        self.frame = frame("hero-reward-achates-a")
+        with bench_name_cache():
+            self.assertEqual(read_hero_result(self.frame),
+                             HeroResult("未知可能性雅卡泰丝", Imprint.A, Imprint.B))
+            # Remove the last wrapped glyph while retaining the whole first
+            # line. Neither the learned template nor the catalogue may turn
+            # that visible prefix into a complete hero identity.
+            clipped = self.frame.copy()
+            clipped[205:243, 768:815] = self.frame[205:243, 815:862]
+            self.assertIsNone(read_hero_result(clipped))
+            self.frame = frame("failed-round13-return")
+            self.assertIsNone(read_hero_result(self.frame))
+            observed = BrawlVision(self.frame).observe()
+            self.assertEqual(observed.state, BrawlScreen.PREPARATION)
+            self.assertEqual((observed.panel.round_number, observed.panel.level,
+                              observed.panel.deployed, observed.panel.capacity,
+                              observed.panel.coins, observed.panel.synergy_tokens),
+                             (13, 7, 8, 8, 160, 0))
+
     def test_static_wrapped_result_name_is_cached_but_each_badge_is_read_from_current_frame(self):
         self.frame = frame("hero-new-12")
         original = Ocr.detect_and_ocr

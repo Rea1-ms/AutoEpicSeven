@@ -240,9 +240,13 @@ class BrawlSwap(ModuleBase):
                 return SwapOutcome.SELECTION_CHANGED
             if timeout.reached():
                 return SwapOutcome.TIMEOUT
-            if not self.interval_is_reached(self.ACTION_TIMER, interval=self.ACTION_INTERVAL):
-                continue
             if current.state == BrawlScreen.PREPARATION:
+                # Only repeated open requests share a retry interval. A new
+                # positive grid proves the first request completed and permits
+                # its single target immediately, without a cross-action delay.
+                if opened and not self.interval_is_reached(
+                        "BrawlSwapOpen", interval=self.ACTION_INTERVAL):
+                    continue
                 # A stale selected card must not swap a different outgoing hero.
                 try:
                     if request.outgoing_name is None:
@@ -255,7 +259,7 @@ class BrawlSwap(ModuleBase):
                 if fresh != request:
                     return SwapOutcome.CONTEXT_CHANGED
                 self.device.click(ClickButton(entry.plus_area, name="BrawlSwapOpen"))
-                self.interval_reset(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)
+                self.interval_reset("BrawlSwapOpen", interval=self.ACTION_INTERVAL)
                 opened = True
                 continue
             targets = read_swap_targets(image, observation=current)
@@ -268,6 +272,5 @@ class BrawlSwap(ModuleBase):
                 return SwapOutcome.TARGET_UNAVAILABLE
             x, y = cell.center
             self.device.click(ClickButton((x, y, x + 1, y + 1), name="BrawlSwapCell"))
-            self.interval_reset(self.ACTION_TIMER, interval=self.ACTION_INTERVAL)
             clicked = True
             timeout.reset()

@@ -104,7 +104,7 @@ class NormalSummonReplayTests(unittest.TestCase):
         self.assertEqual(report.outcome, SummonOutcome.CONFIRMED)
         self.assertEqual(report.hero, self.hero)
         self.assertEqual([(a[0], a[1]) for a in replay.actions],
-                         [(0, "SUMMON_NORMAL"), (7, "TOUCH_TO_CLOSE")])
+                         [(0, "SUMMON_NORMAL"), (1, "TOUCH_TO_CLOSE")])
         self.assertEqual(BrawlVision(replay.image).observe().panel.coins, 10)
 
     def test_reported_christy_result_closes_once_without_repeated_ocr(self):
@@ -135,14 +135,16 @@ class NormalSummonReplayTests(unittest.TestCase):
                 self.assertEqual(report.hero, expected_hero)
                 close = "TOUCH_TO_CLOSE" if arrow_visible else "HERO_RESULT_CHECK"
                 self.assertEqual([(a[0], a[1]) for a in replay.actions],
-                                 [(0, "SUMMON_NORMAL"), (7, close)])
+                                 [(0, "SUMMON_NORMAL"), (1, close)])
                 if arrow_visible:
                     self.assertEqual(replay.actions[1][2], (628, 681, 651, 696))
                 hero_reader.assert_called_once()
                 balance_reader.assert_called_once()
 
     def test_waiting_for_payment_interval_reads_panel_only_when_action_is_ready(self):
-        replay = self.replay([self.before] * 8 + [self.hero_image] * 7 + [self.after])
+        # Current verified states, not the previous shared cooldown, authorize
+        # this captured payment and its separate one-time acknowledgement.
+        replay = self.replay([self.before, self.hero_image, self.after], seconds=.2)
         replay.task.interval_reset("BrawlBenchScan", interval=3)
         actual = BrawlVision.preparation_panel
         reads = []
@@ -155,8 +157,8 @@ class NormalSummonReplayTests(unittest.TestCase):
             report = replay.task.summon_once(self.request)
         self.assertEqual(report.outcome, SummonOutcome.CONFIRMED)
         self.assertEqual([(a[0], a[1]) for a in replay.actions],
-                         [(7, "SUMMON_NORMAL"), (14, "TOUCH_TO_CLOSE")])
-        self.assertEqual(reads, [7, 15])
+                         [(0, "SUMMON_NORMAL"), (1, "TOUCH_TO_CLOSE")])
+        self.assertEqual(reads, [0, 2])
 
     def test_reused_result_is_invalidated_by_balance_change_or_missing_badge(self):
         for balance_changed in (True, False):
@@ -173,14 +175,18 @@ class NormalSummonReplayTests(unittest.TestCase):
                 self.assertEqual(report.outcome, SummonOutcome.BALANCE_MISMATCH if balance_changed
                                  else SummonOutcome.TIMEOUT)
                 self.assertEqual(reader.call_count, 2 if balance_changed else 1)
-                self.assertEqual([a[1] for a in replay.actions], ["SUMMON_NORMAL"])
+                # The complete first result closes immediately; the changed
+                # frame still stops without acknowledging the result twice.
+                self.assertEqual([a[1] for a in replay.actions], ["SUMMON_NORMAL", "TOUCH_TO_CLOSE"])
 
     def test_shared_interval_delays_both_payment_and_result_close(self):
-        replay = self.replay([self.before] * 8 + [self.hero_image] * 7 + [self.after])
+        # Regression for the former shared delay: new positive states advance
+        # immediately, while stale results past three seconds never repeat it.
+        replay = self.replay([self.before] + [self.hero_image] * 20 + [self.after], seconds=.2)
         replay.task.interval_reset("BrawlBenchScan", interval=3)
         self.assertEqual(self.play(replay).outcome, SummonOutcome.CONFIRMED)
         self.assertEqual([(a[0], a[1]) for a in replay.actions],
-                         [(7, "SUMMON_NORMAL"), (14, "TOUCH_TO_CLOSE")])
+                         [(0, "SUMMON_NORMAL"), (1, "TOUCH_TO_CLOSE")])
 
     def test_stale_preparation_never_repeats_payment(self):
         replay = self.replay([self.before] * 34)
@@ -263,7 +269,7 @@ class NormalSummonReplayTests(unittest.TestCase):
         self.assertEqual(report.hero, HeroResult("小春", Imprint.SSS, Imprint.SSS, True))
         self.assertEqual(report.proceeds, Resources(7, 10))
         self.assertEqual([(a[0], a[1]) for a in replay.actions],
-                         [(0, "SUMMON_NORMAL"), (7, "TOUCH_TO_CLOSE")])
+                         [(0, "SUMMON_NORMAL"), (1, "TOUCH_TO_CLOSE")])
 
         # A max-imprint result with no actual credit must not pass as an
         # ordinary ten-coin draw, and a negative delta must stop immediately.
