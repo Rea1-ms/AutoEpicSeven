@@ -13,7 +13,7 @@ from module.device.device import Device
 
 server.set_lang("global_cn")
 
-from tasks.brawl.bench import BenchEntry, BenchHero  # noqa: E402
+from tasks.brawl.bench import BenchEntry, BenchHero, read_bench  # noqa: E402
 from tasks.brawl.board import BoardCell, FormationGrid  # noqa: E402
 from tasks.brawl.formation import FormationOutcome, FormationResult  # noqa: E402
 from tasks.brawl.resume import BrawlResume  # noqa: E402
@@ -702,6 +702,81 @@ class ResumeDiscoveryTests(unittest.TestCase):
                                           (1, "BrawlFormationWithdraw", (750, 209, 767, 226))])
         self.assertEqual(reads, [1])
         self.assertEqual(replay.index, 12)
+
+    def test_reported_round13_identity_withdraws_and_restores_caro_once(self):
+        withdrawn = frame("resume-round13-withdraw")
+        selected = frame("resume-round13-restore")
+        real_vision = BrawlVision
+        panel = real_vision(withdrawn).preparation_panel()
+        after_panel = real_vision(selected).preparation_panel()
+        self.assertEqual(panel, PreparationPanel(13, 7, 8, 8, 160, 0))
+        self.assertEqual(after_panel, replace(panel, deployed=7))
+        before, after = scan((), panel), scan((BenchHero("卡萝", Imprint.D),), after_panel)
+        selected_observation = replace(real_vision(selected).observe(read_panel=False), panel=after_panel)
+        viewport = read_bench(selected, observation=selected_observation)
+        self.assertEqual([(entry.name, entry.imprint) for entry in viewport.entries], [("卡萝", Imprint.D)])
+        preparation = np.zeros_like(selected)
+        identified = np.ones_like(selected)
+        restored = np.full_like(selected, 2)
+        # Both selection grids are unmodified user captures. Their repeated
+        # waiting frames, preparation returns, complete scan outcomes and focus
+        # acknowledgement are explicit simulation; no device click is claimed.
+        replay = BrawlReplay(BrawlResume, [preparation] + [withdrawn] * 6 + [identified]
+                             + [selected] * 8 + [restored], self.clock)
+        replay.task.scan = Mock(side_effect=[after, before])
+        replay.task.select = Mock(return_value=BenchSelectionResult(
+            SelectionOutcome.SELECTED, after.heroes[0], after_panel, BrawlMode.NORMAL))
+        reads = []
+        bench_reads = []
+        read_panel = real_vision.preparation_panel
+
+        def vision(image):
+            if image is selected or image is withdrawn:
+                return real_vision(image)
+            return SimpleNamespace(observe=lambda **kwargs: BrawlObservation(
+                BrawlScreen.PREPARATION, after_panel if image is identified else panel,
+                game_mode=BrawlMode.NORMAL))
+
+        def panel_read(vision):
+            reads.append(replay.index)
+            return read_panel(vision)
+
+        def bench_read(image, **kwargs):
+            bench_reads.append(replay.index)
+            if image is selected:
+                return read_bench(image, **kwargs)
+            self.assertIs(image, identified)
+            return viewport
+
+        from tasks.brawl.withdraw import _bench_agrees
+
+        def bench(image, current, checked, **kwargs):
+            if image is selected or image is withdrawn:
+                return _bench_agrees(image, current, checked, **kwargs)
+            return True
+
+        cells = frozenset({(0, 3), (1, 3), (2, 0), (2, 3), (3, 0), (3, 3), (4, 3), (5, 3)})
+        with patch("tasks.brawl.formation.BrawlVision", side_effect=vision), \
+                patch("tasks.brawl.formation._bench_agrees", side_effect=bench), \
+                patch("tasks.brawl.formation.read_bench", side_effect=bench_read), \
+                patch.object(real_vision, "preparation_panel", panel_read):
+            hero, result = replay.task._identify(before, cells, (0, 3))
+        self.assertEqual(hero, BenchHero("卡萝", Imprint.D))
+        self.assertIs(result, before)
+        self.assertIs(replay.image, restored)
+        self.assertEqual([action[:2] for action in replay.actions], [
+            (0, "BrawlFormationOpen"), (1, "BrawlFormationWithdraw"),
+            (7, "BrawlFormationOpen"), (8, "BrawlFormationTarget")])
+        self.assertEqual(replay.actions[0][2], (794, 241, 795, 242))
+        self.assertEqual(replay.actions[1][2], (750, 209, 767, 226))
+        self.assertEqual(replay.actions[2][2], viewport.entries[0].plus_area)
+        self.assertEqual(replay.actions[3][2], (794, 241, 795, 242))
+        self.assertEqual(reads, [1, 8])
+        self.assertEqual(bench_reads, [7, 8])
+        self.assertEqual(replay.task.scan.call_count, 2)
+        replay.task.select.assert_called_once_with(after.heroes[0], after)
+        self.assertEqual(replay.click_record_clears, [16])
+        self.assertEqual(replay.index, 16)
 
 
 class ResumedTalentTests(unittest.TestCase):

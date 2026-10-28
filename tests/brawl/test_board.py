@@ -313,6 +313,60 @@ class FormationGridTests(unittest.TestCase):
         self.frame[top:bottom, left + 6:right + 6] = moved
         self.assertIsNone(read_formation_grid(self.frame, observation=observation))
 
+    def test_reported_recovery_restore_locates_seven_heroes_without_fixed_anchors(self):
+        self.frame = frame("resume-round13-restore")
+        vision = BrawlVision(self.frame)
+        observation = replace(vision.observe(read_panel=False), panel=vision.preparation_panel())
+        self.assertEqual(observation.state, BrawlScreen.FORMATION_SELECTION)
+        self.assertEqual(observation.panel, PreparationPanel(13, 7, 7, 8, 160, 0))
+        for asset in (FORMATION_GRID_CHECK, SWAP_GRID_ANCHOR, FORMATION_MOVE_SOURCE):
+            self.assertEqual(asset.match_multi_template(self.frame, similarity=.9), [])
+        self.assertEqual(len(FORMATION_SOURCE_SELECTED.match_multi_template(self.frame, similarity=.9)), 7)
+        grid = read_formation_grid(self.frame, observation=observation, expected_target=(0, 3))
+        self.assertIsNotNone(grid)
+        self.assertIsNone(grid.selected_source)
+        self.assertEqual({(cell.screen_row, cell.screen_column) for cell in grid.occupied},
+                         {(1, 3), (2, 0), (2, 3), (3, 0), (3, 3), (4, 3), (5, 3)})
+        self.assertEqual(grid.cells[3].center, (794, 241))
+        self.assertIn(grid.cells[3], grid.empty_destinations)
+        self.assertEqual(len(grid.empty_destinations), 21)
+
+    def test_partial_anchorless_grid_requires_complete_consistent_current_controls(self):
+        original = frame("resume-round13-restore")
+        vision = BrawlVision(original)
+        observation = replace(vision.observe(read_panel=False), panel=vision.preparation_panel())
+        marker = FORMATION_SOURCE_SELECTED.match_multi_template(original, similarity=.9)[0]
+        left, top, right, bottom = marker.area
+        # These are explicit corruptions of the captured seven-hero selection,
+        # not additional real game states. Missing or duplicated arrows cannot
+        # turn an occupied cell into permission to restore a bench hero there.
+        for corrupt in ("missing", "duplicate", "shifted"):
+            with self.subTest(corrupt=corrupt):
+                self.frame = original.copy()
+                if corrupt == "duplicate":
+                    self.frame[top:bottom, left - 249:right - 249] = original[top:bottom, left:right]
+                else:
+                    self.frame[top:bottom, left:right] = 0
+                    if corrupt == "shifted":
+                        self.frame[top:bottom, left + 6:right + 6] = original[top:bottom, left:right]
+                self.assertIsNone(read_formation_grid(self.frame, observation=observation,
+                                                     expected_target=(0, 3)))
+        for panel in (replace(observation.panel, deployed=6), replace(observation.panel, capacity=9)):
+            with self.subTest(panel=panel):
+                self.assertIsNone(read_formation_grid(original, observation=replace(observation, panel=panel)))
+        self.frame = original.copy()
+        for control in FORMATION_SOURCE_SELECTED.match_multi_template(original, similarity=.9):
+            x1, y1, x2, y2 = control.area
+            self.frame[y1:y2, x1:x2] = 0
+        self.assertIsNone(read_formation_grid(self.frame, observation=replace(
+            observation, panel=replace(observation.panel, deployed=0))))
+        # A shared small translation is explicitly simulated. The current
+        # controls must relocate the grid rather than reuse old pixel offsets.
+        self.frame = np.roll(original, shift=(3, 4), axis=(0, 1))
+        translated = read_formation_grid(self.frame, observation=observation, expected_target=(0, 3))
+        self.assertIsNotNone(translated)
+        self.assertEqual(translated.cells[3].center, (798, 244))
+
     def test_reported_first_cell_selection_keeps_the_green_source_and_all_five_heroes(self):
         self.frame = frame("selected-first-cell")
         with patch.object(BrawlVision, "preparation_panel", side_effect=AssertionError("scene needs no OCR")):

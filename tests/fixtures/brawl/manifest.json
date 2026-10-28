@@ -3737,7 +3737,8 @@
       "used_by": [
         "tests.brawl.test_swap.WithdrawTests.test_reported_round13_withdraw_uses_complete_grid_when_fixed_anchors_are_missing",
         "tests.brawl.test_swap.WithdrawTests.test_anchorless_withdraw_rejects_incomplete_or_ambiguous_current_controls",
-        "tests.brawl.test_resume.ResumeDiscoveryTests.test_reported_round13_recovery_withdraws_once_from_anchorless_grid"
+        "tests.brawl.test_resume.ResumeDiscoveryTests.test_reported_round13_recovery_withdraws_once_from_anchorless_grid",
+        "tests.brawl.test_resume.ResumeDiscoveryTests.test_reported_round13_identity_withdraws_and_restores_caro_once"
       ]
     },
     "brawl-relic-earth-missed-tab": {
@@ -3764,6 +3765,21 @@
       "privacy_redaction": [],
       "used_by": [
         "tests.brawl.test_resume.ResumeDiscoveryTests.test_reported_discovery_cancel_retries_the_same_verified_grid"
+      ]
+    },
+    "brawl-resume-round13-restore": {
+      "path": "tests/fixtures/brawl/global_cn/brawl-resume-round13-restore.png",
+      "source": "MuMu-20261028-171023-044.png",
+      "source_sha256": "f39d150e5de3f123f1c8aaebea0960037d08df1ccc0621ae6ead0b1128ed7457",
+      "sha256": "f39d150e5de3f123f1c8aaebea0960037d08df1ccc0621ae6ead0b1128ed7457",
+      "scene": "resume_round13_restore_seven_of_eight",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "privacy_redaction": [],
+      "used_by": [
+        "tests.brawl.test_board.FormationGridTests.test_reported_recovery_restore_locates_seven_heroes_without_fixed_anchors",
+        "tests.brawl.test_board.FormationGridTests.test_partial_anchorless_grid_requires_complete_consistent_current_controls",
+        "tests.brawl.test_resume.ResumeDiscoveryTests.test_reported_round13_identity_withdraws_and_restores_caro_once"
       ]
     }
   }

@@ -12,6 +12,7 @@ from tasks.brawl.assets.assets_brawl import (
 )
 from tasks.brawl.assets.assets_brawl_actions import SWAP_GRID_ANCHOR
 from tasks.brawl.assets.assets_brawl_withdraw import FIELD_WITHDRAW
+from tasks.brawl.rules import team_capacity
 from tasks.brawl.vision import (
     BrawlScreen,
     BrawlVision,
@@ -152,14 +153,18 @@ def read_formation_grid(image, *, observation=None, expected_source=None, expect
     if len(sources) > 1:
         return None
     if not offsets:
-        # A full bench-origin grid hides every yellow edge; a field source at
-        # (0, 0) also replaces the fixed yellow anchor. Count the green source
-        # alongside the remaining blue controls, never as a missing hero. All
-        # controls must independently agree on one small translation of unique
-        # calibrated cells; the green source additionally needs its red minus
-        # below. No cached position, absent marker or expected source supplies
-        # geometry, and no control may drift a whole cell to another identity.
-        if panel.deployed != panel.capacity or len(markers) + len(sources) != panel.deployed:
+        # Fixed edges can be obscured at any occupancy. Requiring a full team
+        # here strands recovery after withdrawing a hero: its remaining seven
+        # controls still prove the same grid, but its count is now 7/8. Require
+        # a nonempty, complete set instead, retaining the panel parser's level
+        # and capacity invariant for explicit same-frame observations as well.
+        # Count a green source alongside the blue controls, never as a missing
+        # hero. Every control must agree on one small translation of unique
+        # calibrated cells; a source additionally needs its red minus below.
+        # Neither an absent marker nor the expected destination proves geometry,
+        # and no control may drift a whole cell to another hero's position.
+        if (panel.capacity != team_capacity(panel.level) or not 0 < panel.deployed <= panel.capacity
+                or len(markers) + len(sources) != panel.deployed):
             return None
         controls = []
         for marker, source_offset in [(marker, 0) for marker in markers] + [(marker, 33.5) for marker in sources]:

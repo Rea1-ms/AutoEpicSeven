@@ -20122,6 +20122,28 @@
           ],
           "status": "已纳入",
           "reason": "首格来源遮住固定边框时仍确认完整占格，缺失或错位控件不得授权点击"
+        },
+        {
+          "id": "tests.brawl.test_board.FormationGridTests.test_reported_recovery_restore_locates_seven_heroes_without_fixed_anchors",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/global_cn/brawl-resume-round13-restore.png"
+          ],
+          "status": "已纳入",
+          "reason": "第13回合卡萝下场后的7/8实图以七个完整蓝色控件校准棋盘，不要求满员，原位置可重新上场"
+        },
+        {
+          "id": "tests.brawl.test_board.FormationGridTests.test_partial_anchorless_grid_requires_complete_consistent_current_controls",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/global_cn/brawl-resume-round13-restore.png"
+          ],
+          "status": "已纳入",
+          "reason": "非满员无边框实图缺失、重复、独立错位和计数矛盾均拒绝，正人数与共同偏移保留"
         }
       ]
     },
@@ -24530,6 +24552,18 @@
           "fixtures": [],
           "status": "已纳入",
           "reason": "明确模拟未知、来源、占格、候补和面板变化及已到准备页后的旧网格，均禁止旧取消请求"
+        },
+        {
+          "id": "tests.brawl.test_resume.ResumeDiscoveryTests.test_reported_round13_identity_withdraws_and_restores_caro_once",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/global_cn/brawl-resume-round13-withdraw.png",
+            "tests/fixtures/brawl/global_cn/brawl-resume-round13-restore.png"
+          ],
+          "status": "已纳入",
+          "reason": "第13回合实图下场识名后放回原位各一次，重复选格帧不重做；准备返回、扫描与选中结果为明确模拟"
         }
       ]
     },
