@@ -3752,6 +3752,19 @@
       "used_by": [
         "tests.brawl.test_relics.RelicFlowTests.test_reported_earth_page_retries_harmony_only_after_same_action_interval"
       ]
+    },
+    "brawl-resume-cancel-pending": {
+      "path": "tests/fixtures/brawl/global_cn/brawl-resume-cancel-pending.png",
+      "source": "MuMu-20261028-162246-629.png",
+      "source_sha256": "0895ceb11acf81500a8eb4cd4761e16b47e9f0f57fdc4a4766d02f05ddcf1baa",
+      "sha256": "0895ceb11acf81500a8eb4cd4761e16b47e9f0f57fdc4a4766d02f05ddcf1baa",
+      "scene": "resume_discovery_cancel_unconfirmed",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "privacy_redaction": [],
+      "used_by": [
+        "tests.brawl.test_resume.ResumeDiscoveryTests.test_reported_discovery_cancel_retries_the_same_verified_grid"
+      ]
     }
   }
 }

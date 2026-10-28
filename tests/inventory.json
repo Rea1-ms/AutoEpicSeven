@@ -24501,6 +24501,35 @@
           ],
           "status": "已纳入",
           "reason": "第13回合真实无锚点网格回放仅打开和下场各一次，重复帧不重复识字；前后准备帧及下场后人数为明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_resume.ResumeDiscoveryTests.test_reported_discovery_cancel_retries_the_same_verified_grid",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/brawl/global_cn/brawl-resume-cancel-pending.png"
+          ],
+          "status": "已纳入",
+          "reason": "第13回合实图只读发现取消未生效时重新核对完整网格后限频重试，返回帧为明确模拟"
+        },
+        {
+          "id": "tests.brawl.test_resume.ResumeDiscoveryTests.test_discovery_cancel_retries_are_bounded_by_the_original_deadline",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "明确模拟持续取消未生效，最多三次且首次取消后的十二秒预算不刷新"
+        },
+        {
+          "id": "tests.brawl.test_resume.ResumeDiscoveryTests.test_discovery_cancel_rechecks_context_and_closes_on_preparation_identity",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "明确模拟未知、来源、占格、候补和面板变化及已到准备页后的旧网格，均禁止旧取消请求"
         }
       ]
     },

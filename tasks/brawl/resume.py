@@ -168,8 +168,7 @@ class BrawlResume(BrawlFormation):
             return frozenset()
         candidates = iter(_cells())
         source = None
-        opened = closed = grid_seen = False
-        cells = None
+        opened = grid_seen = False
         timer = Timer(self.STEP_TIMEOUT).start()
         candidate_interval = Timer(0.2)
         skip_first_screenshot = True
@@ -191,29 +190,24 @@ class BrawlResume(BrawlFormation):
             if current.state == BrawlScreen.FORMATION_SELECTION:
                 if not opened:
                     raise ObservationError("An unrequested recovery grid appeared")
-                # Cancellation has its own acknowledgement window. Repeated
-                # grid frames after that click are animation, not a new grid;
-                # wait for positive preparation without clicking a second time.
                 grid_seen = True
             # Waiting frames still check scene/mode, but cannot authorize an
             # action. Read fresh counters and cards only when an action can run
-            # or positive preparation can acknowledge cancellation. Never reuse
-            # an earlier frame's panel or viewport to authorize the next click.
-            if timer.reached() and not (closed and current.state == BrawlScreen.PREPARATION):
+            # without reusing an earlier frame's panel or viewport. Once a
+            # complete grid is found, the shared formation loop owns closing
+            # that selection, its retries and the verified preparation return.
+            if timer.reached():
                 raise ObservationError("Recovery discovery timed out")
-            if closed and current.state == BrawlScreen.FORMATION_SELECTION:
-                continue
             # Only consecutive empty-bench probes use the short interval.
             # The first probe follows the current verified preparation;
             # unrelated actions cannot postpone it. Once a grid is
-            # positively seen, its one cancellation can proceed without
-            # another fixed wait. Never probe again, even if its source or
-            # occupied controls are not yet readable; closed prevents any
-            # repeated cancellation while fresh frames acknowledge return.
-            if (not closed and opened and not scan.heroes and not grid_seen
+            # positively seen, never probe another cell, even while its source
+            # or occupied controls are unread. Cancellation is handled by the
+            # same state loop as every other read-only formation check.
+            if (opened and not scan.heroes and not grid_seen
                     and current.state == BrawlScreen.PREPARATION and not candidate_interval.reached()):
                 continue
-            if opened and scan.heroes and current.state == BrawlScreen.PREPARATION and not closed:
+            if opened and scan.heroes and current.state == BrawlScreen.PREPARATION:
                 continue
             if current.panel is None:
                 if current.reason:
@@ -229,8 +223,6 @@ class BrawlResume(BrawlFormation):
             viewport = read_bench(image, observation=current) if scan.heroes else None
             if current.panel != scan.panel or not _bench_agrees(image, current, scan, viewport=viewport):
                 raise ObservationError("The complete recovery context changed during discovery")
-            if closed and current.state == BrawlScreen.PREPARATION:
-                return cells
             if grid_seen and current.state == BrawlScreen.PREPARATION:
                 raise ObservationError("Recovery selection disappeared before cancellation")
             if current.state == BrawlScreen.FORMATION_SELECTION:
@@ -240,10 +232,13 @@ class BrawlResume(BrawlFormation):
                 if scan.heroes and grid.selected_source is not None:
                     raise ObservationError("The discovery plus selected an unexpected field source")
                 cells = _indices(grid.occupied)
-                self._click_formation(self.ROUND_CANCEL_AREA, "BrawlResumeCancelRound")
-                closed = True
-                timer.reset()
-                continue
+                # Discovery used to duplicate cancellation and kept a permanent
+                # one-click latch after ordinary formation gained retries.
+                # Delegate the complete read-only transition, retaining its
+                # source, cells and current observation. The child returns only
+                # to verified preparation; no identity action may run while a
+                # cancellation is still pending.
+                return self._grid_action(scan, cells, opened_grid=grid, observation=current)
             if scan.heroes:
                 if opened:
                     continue

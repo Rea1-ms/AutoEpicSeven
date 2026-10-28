@@ -302,12 +302,18 @@ class BrawlFormation(BrawlBenchScanner):
         # Actual formation actions remain one-shot through the pending flags.
         self.interval_reset(name, interval=self.ACTION_INTERVAL)
 
-    def _grid_action(self, scan, expected_cells, *, action=None, expected_panel=None):
+    def _grid_action(self, scan, expected_cells, *, action=None, expected_panel=None,
+                     opened_grid=None, observation=None):
         """Select once, act once, and positively return to preparation.
 
         With no action this probes a known field cell and closes the grid. Grid
         evidence is captured before closing, and preparation/bench are checked
         again afterwards. No stale pixel coordinate authorizes a destination.
+
+        Recovery may hand over an already discovered grid and its explicit
+        same-frame observation. This path only closes a read-only selection;
+        current geometry and bench are still verified before every attempt.
+        The loop must return to preparation before recovery can identify heroes.
         """
         probe = action is None
         # When a bench card exists, its plus exposes the whole
@@ -316,10 +322,23 @@ class BrawlFormation(BrawlBenchScanner):
         # bench requires selecting a known field source for this read-only check.
         probe_plus = probe and bool(scan.heroes)
         source = (None if probe_plus else min(expected_cells)) if probe else action.source
+        if opened_grid is not None:
+            if (not probe or observation is None or observation.state != BrawlScreen.FORMATION_SELECTION
+                    or observation.panel != scan.panel or observation.game_mode != scan.game_mode
+                    or opened_grid.panel != scan.panel or _indices(opened_grid.occupied) != expected_cells):
+                raise ObservationError("Discovery requires a complete same-frame read-only grid")
+            selected = opened_grid.selected_source
+            source = None if selected is None else (selected.screen_row, selected.screen_column)
+            if (probe_plus and source is not None) or (not probe_plus and source not in expected_cells):
+                raise ObservationError("The discovered selection source does not match its origin")
+        elif observation is not None:
+            raise ObservationError("An initial observation requires a discovered selection grid")
         expected_panel = scan.panel if probe else expected_panel
         timeout = Timer(self.STEP_TIMEOUT).start()
-        opened = grid_seen = clicked = returned = False
+        opened = grid_seen = opened_grid is not None
+        clicked = returned = False
         cancel_attempts = 0
+        cancel_name = "BrawlResumeCancelRound" if opened_grid is not None else "BrawlFormationCancelRound"
         observed_cells = None
         skip_first_screenshot = True
 
@@ -337,7 +356,11 @@ class BrawlFormation(BrawlBenchScanner):
                 self.device.screenshot()
             image = self.device.image
             vision = BrawlVision(image)
-            current = vision.observe(read_panel=False)
+            # Consume the caller's observation only for the unchanged first
+            # screenshot. Every subsequent frame acquires its own observation;
+            # a previous panel can never authorize a cancellation retry.
+            current = observation if observation is not None else vision.observe(read_panel=False)
+            observation = None
             if current.state not in (BrawlScreen.PREPARATION, BrawlScreen.FORMATION_SELECTION,
                                      BrawlScreen.UNKNOWN):
                 raise failed("The formation scene changed")
@@ -372,7 +395,7 @@ class BrawlFormation(BrawlBenchScanner):
                 # Three total attempts share the original response deadline;
                 # retry clicks must not renew it and hide a persistent failure.
                 if (not retry_cancel or cancel_attempts >= 3
-                        or not self.interval_is_reached("BrawlFormationCancelRound",
+                        or not self.interval_is_reached(cancel_name,
                                                         interval=self.ACTION_INTERVAL)):
                     continue
             if opened and not clicked and current.state == BrawlScreen.PREPARATION:
@@ -443,7 +466,7 @@ class BrawlFormation(BrawlBenchScanner):
                 observed_cells = _indices(grid.occupied)
                 # _bench_agrees above proves an empty queue with a fresh asset,
                 # and checks all visible names/imprints for a nonempty queue.
-                area, name = self.ROUND_CANCEL_AREA, "BrawlFormationCancelRound"
+                area, name = self.ROUND_CANCEL_AREA, cancel_name
             elif action.kind == FormationKind.WITHDRAW:
                 control = read_withdraw_control(image, observation=current)
                 if control is None:

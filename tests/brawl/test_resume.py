@@ -374,16 +374,19 @@ class ResumeDiscoveryTests(unittest.TestCase):
             replay.bench_reads.append(replay.index)
             return SimpleNamespace()
 
-        patches = (
-            patch("tasks.brawl.resume.BrawlVision", side_effect=lambda image: SimpleNamespace(
+        # Discovery hands its current grid to the shared formation cancellation
+        # loop. Both consume the same synthetic frame evidence, and all actual
+        # action timers remain production timers driven by the common clock.
+        patches = tuple(item for module in ("resume", "formation") for item in (
+            patch(f"tasks.brawl.{module}.BrawlVision", side_effect=lambda image: SimpleNamespace(
                 observe=lambda **kwargs: replace(current(image).observation, panel=None),
                 preparation_panel=lambda: panel(image))),
-            patch("tasks.brawl.resume._bench_agrees", side_effect=lambda image, *args, **kwargs: current(image).agrees),
-            patch("tasks.brawl.resume.read_bench", side_effect=bench),
-            patch("tasks.brawl.resume._selected_entry", return_value=BenchEntry(
+            patch(f"tasks.brawl.{module}._bench_agrees", side_effect=lambda image, *args, **kwargs: current(image).agrees),
+            patch(f"tasks.brawl.{module}.read_bench", side_effect=bench),
+            patch(f"tasks.brawl.{module}._selected_entry", return_value=BenchEntry(
                 HERO.name, HERO.imprint, (1000, 253, 1060, 278), (943, 268, 977, 303))),
-            patch("tasks.brawl.resume.read_formation_grid", side_effect=grid),
-        )
+            patch(f"tasks.brawl.{module}.read_formation_grid", side_effect=grid),
+        ))
         for item in patches:
             item.start()
             self.addCleanup(item.stop)
@@ -398,14 +401,15 @@ class ResumeDiscoveryTests(unittest.TestCase):
         grid = FormationGrid((cell,), (cell,), None, (), PANEL)
         replay = self.replay([self.state()] + [self.state(BrawlScreen.FORMATION_SELECTION, grid=grid)] * 12
                              + [self.state()])
+        replay.seconds = .1
         # Other completed actions cannot delay a verified discovery request.
-        # Repeated grids still never repeat the single cancellation.
+        # Short repeated grids remain inside the same-button retry interval.
         replay.task.interval_reset(replay.task.ACTION_TIMER, interval=3)
         self.assertEqual(replay.task._discover(scan()), frozenset({CELL}))
         self.assertEqual([action[1] for action in replay.actions], ["BrawlResumeDiscover", "BrawlResumeCancelRound"])
         self.assertEqual([action[0] for action in replay.actions], [0, 1])
         self.assertEqual(replay.panel_reads, [0, 1, 13])
-        self.assertEqual(replay.bench_reads, [0, 1, 13])
+        self.assertEqual(replay.bench_reads, [0, 1, 1])
 
     def test_unknown_or_incomplete_grids_time_out_without_cancelling_or_moving(self):
         for pending in (self.state(BrawlScreen.UNKNOWN), self.state(BrawlScreen.FORMATION_SELECTION)):
@@ -468,7 +472,8 @@ class ResumeDiscoveryTests(unittest.TestCase):
         # Only the surrounding preparation frames are simulated. The actual
         # failed capture supplies scene, counters, empty bench and grid markers;
         # neither the grid reader nor its source/count checks are replaced.
-        replay = BrawlReplay(BrawlResume, [preparation] * 10 + [selected] * 12 + [preparation], self.clock)
+        replay = BrawlReplay(BrawlResume, [preparation] * 10 + [selected] * 12 + [preparation],
+                             self.clock, seconds=.25)
         observe = BrawlVision
         from tasks.brawl.withdraw import _bench_agrees
 
@@ -482,16 +487,106 @@ class ResumeDiscoveryTests(unittest.TestCase):
             return _bench_agrees(image, current, before, **kwargs) if image is selected else True
 
         with patch("tasks.brawl.resume.BrawlVision", side_effect=vision), \
-                patch("tasks.brawl.resume._bench_agrees", side_effect=bench):
+                patch("tasks.brawl.resume._bench_agrees", side_effect=bench), \
+                patch("tasks.brawl.formation.BrawlVision", side_effect=vision), \
+                patch("tasks.brawl.formation._bench_agrees", side_effect=bench):
             occupied = replay.task._discover(scan((), panel))
         self.assertEqual(occupied, frozenset({(2, 1), (3, 1), (3, 3), (4, 3)}))
         names = [f"BrawlResumeDiscover{row}_{column}" for row, column in
                  ((0, 0), (0, 1), (0, 2), (0, 3), (1, 0), (1, 1), (1, 2), (1, 3), (2, 0), (2, 1))]
         self.assertEqual([action[1] for action in replay.actions], names + ["BrawlResumeCancelRound"])
         # The first positive grid at frame 10 authorizes cancellation without
-        # another fixed delay; repeated selected frames cannot repeat it.
+        # another fixed delay; short repeated frames remain below retry time.
         self.assertEqual([action[0] for action in replay.actions], list(range(10)) + [10])
         self.assertEqual(replay.index, 22)
+
+    def test_reported_discovery_cancel_retries_the_same_verified_grid(self):
+        selected = frame("resume-cancel-pending")
+        real_vision = BrawlVision
+        panel = real_vision(selected).preparation_panel()
+        self.assertEqual(panel, PreparationPanel(13, 7, 8, 8, 160, 0))
+        preparation = np.zeros_like(selected)
+        # The selected grid is the user's unmodified failure capture. Probe
+        # preparations, repeated failed-click frames and the final successful
+        # return are explicit simulation, never evidence of a real click.
+        replay = BrawlReplay(BrawlResume, [preparation] * 4 + [selected] * 8 + [preparation], self.clock)
+        reads = []
+        read_panel = real_vision.preparation_panel
+
+        def vision(image):
+            if image is selected:
+                return real_vision(image)
+            return SimpleNamespace(observe=lambda **kwargs: BrawlObservation(
+                BrawlScreen.PREPARATION, panel, game_mode=BrawlMode.NORMAL))
+
+        def panel_read(vision):
+            reads.append(replay.index)
+            return read_panel(vision)
+
+        from tasks.brawl.withdraw import _bench_agrees
+
+        def bench(image, current, before, **kwargs):
+            return _bench_agrees(image, current, before, **kwargs) if image is selected else True
+
+        with patch("tasks.brawl.resume.BrawlVision", side_effect=vision), \
+                patch("tasks.brawl.resume._bench_agrees", side_effect=bench), \
+                patch("tasks.brawl.formation.BrawlVision", side_effect=vision), \
+                patch("tasks.brawl.formation._bench_agrees", side_effect=bench), \
+                patch.object(real_vision, "preparation_panel", panel_read):
+            occupied = replay.task._discover(scan((), panel))
+        self.assertEqual(occupied, frozenset({(0, 3), (1, 3), (2, 0), (2, 3),
+                                             (3, 0), (3, 3), (4, 3), (5, 3)}))
+        self.assertEqual([(item[0], item[1]) for item in replay.actions], [
+            (0, "BrawlResumeDiscover0_0"), (1, "BrawlResumeDiscover0_1"),
+            (2, "BrawlResumeDiscover0_2"), (3, "BrawlResumeDiscover0_3"),
+            (4, "BrawlResumeCancelRound"), (11, "BrawlResumeCancelRound")])
+        self.assertEqual(reads, [4, 11])
+        self.assertEqual(replay.index, 12)
+
+    def test_discovery_cancel_retries_are_bounded_by_the_original_deadline(self):
+        cell = BoardCell(3, 3, (731, 409))
+        grid = FormationGrid((cell,), (cell,), None, (), PANEL)
+        replay = self.replay([self.state()] + [self.state(BrawlScreen.FORMATION_SELECTION, grid=grid)] * 40)
+        with self.assertRaises(ObservationError):
+            replay.task._discover(scan())
+        self.assertEqual([(item[0], item[1]) for item in replay.actions], [
+            (0, "BrawlResumeDiscover"), (1, "BrawlResumeCancelRound"),
+            (8, "BrawlResumeCancelRound"), (15, "BrawlResumeCancelRound")])
+        self.assertEqual(replay.index, 26)
+        self.assertEqual(replay.panel_reads, [0, 1, 8, 15])
+        self.assertEqual(replay.bench_reads, [0, 1, 1, 8, 15])
+
+    def test_discovery_cancel_rechecks_context_and_closes_on_preparation_identity(self):
+        cell = BoardCell(3, 3, (731, 409))
+        other = BoardCell(3, 2, (607, 409))
+        grid = FormationGrid((cell, other), (cell,), None, (), PANEL)
+        selected = self.state(BrawlScreen.FORMATION_SELECTION, grid=grid)
+        # Each invalid continuation is explicitly synthetic. A pending cancel
+        # must not turn missing evidence, another source/occupation or changed
+        # bench/resources into permission to act on a different selection.
+        for invalid in (
+                self.state(BrawlScreen.UNKNOWN),
+                self.state(BrawlScreen.FORMATION_SELECTION),
+                self.state(BrawlScreen.FORMATION_SELECTION, grid=replace(grid, selected_source=cell)),
+                self.state(BrawlScreen.FORMATION_SELECTION, grid=replace(grid, occupied=(other,))),
+                self.state(BrawlScreen.FORMATION_SELECTION, grid=grid, agrees=False),
+                self.state(BrawlScreen.FORMATION_SELECTION, grid=grid, panel=replace(PANEL, coins=91)),
+                self.state(BrawlScreen.FORMATION_SELECTION, grid=grid, mode=BrawlMode.CHALLENGE)):
+            with self.subTest(invalid=invalid):
+                replay = self.replay([self.state(), selected] + [invalid] * 40)
+                with self.assertRaises(ObservationError):
+                    replay.task._discover(scan())
+                self.assertEqual([item[1] for item in replay.actions],
+                                 ["BrawlResumeDiscover", "BrawlResumeCancelRound"])
+        # Preparation identity ends the selected-grid lifetime before its
+        # counters settle; an old grid afterwards cannot retry the old cancel.
+        unread = self.state(panel=None)
+        unread.observation = replace(unread.observation, reason="Explicit unread preparation counters")
+        replay = self.replay([self.state(), selected, unread] + [selected] * 40)
+        with self.assertRaises(ObservationError):
+            replay.task._discover(scan())
+        self.assertEqual([item[1] for item in replay.actions],
+                         ["BrawlResumeDiscover", "BrawlResumeCancelRound"])
 
     def test_unrequested_grid_context_change_and_changed_bench_never_authorize_cancel(self):
         # A plus click that never opens selection has no actionable boundary;
