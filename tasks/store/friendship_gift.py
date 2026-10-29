@@ -95,7 +95,8 @@ class FriendshipGiftMixin(ResourceBarMixin):
             FRIENDSHIP_STORE_LAYOUT, 'FriendshipStore',
             icons=FRIENDSHIP_STORE_ICONS, specs=FRIENDSHIP_STORE_SPECS,
         )
-        return inspected.final['friendship'].value if inspected.final is not None else None
+        balance = inspected.final.get('friendship') if inspected.final else None
+        return balance.value if balance is not None else None
 
     def _shop_ready(self):
         # The reward toast changes this highlight by up to 17 color levels in

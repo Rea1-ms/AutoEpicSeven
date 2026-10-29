@@ -1,6 +1,7 @@
 from module.base.timer import Timer
 from module.exception import RequestHumanTakeover
 from module.logger import logger
+from tasks.base.resource_scheduling import ResourceCoordinator
 from tasks.dungeon.assets.assets_dungeon_action import (
     AUTO_COMBAT,
     AUTO_COMBAT_ENEMY_SELECT,
@@ -216,10 +217,16 @@ class CombatExecuteMixin:
             if stage == "prepare" and self._is_prepare_page():
                 if not self._ensure_fast_combat_state(enabled=False):
                     continue
-                if self.appear_then_click(
+                if self.appear(
                     COMBAT_START,
                     interval=self.COMBAT_START_INTERVAL_SECONDS,
                 ):
+                    # A visible start control is the first potentially paying
+                    # action. Persist invalidation before dispatch so a dropped
+                    # acknowledgement or a crash cannot revive the pre-battle
+                    # balance. Merely opening this loop must keep it valid.
+                    ResourceCoordinator(self.config).invalidate("stamina", "leif")
+                    self.device.click(COMBAT_START)
                     logger.info("Combat: start normal foreground battle")
                     stage = "battle"
                     start_pending.reset()
@@ -295,7 +302,12 @@ class CombatExecuteMixin:
                     timeout.reset()
                     continue
 
-                if self.appear_then_click(COMBAT_START, interval=self.COMBAT_START_INTERVAL_SECONDS):
+                if self.appear(COMBAT_START, interval=self.COMBAT_START_INTERVAL_SECONDS):
+                    # Keep successful preparation reads until a start click is
+                    # actually issued, including when no affordable run exists.
+                    # Invalidate before the click, never after result handling.
+                    ResourceCoordinator(self.config).invalidate("stamina", "leif")
+                    self.device.click(COMBAT_START)
                     logger.info("Combat: start fast combat")
                     stage = "pending"
                     start_pending.reset()

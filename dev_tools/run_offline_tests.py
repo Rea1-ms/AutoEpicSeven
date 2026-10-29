@@ -66,6 +66,8 @@ RUNTIME_MODULES = (
 CORE_MODULES = (
     "tests.core.test_daily_planning",
     "tests.core.test_data_update",
+    "tests.core.test_resource_bar_partial",
+    "tests.core.test_resource_refresh",
     "tests.core.test_task_entries",
     "tests.core.test_page_route",
     "tests.core.test_community_aio",
@@ -90,6 +92,7 @@ ACTIVITY_MODULES = (
 )
 COMBAT_MODULES = (
     "tests.combat.test_daily_batch",
+    "tests.combat.test_resource_lifecycle",
     "tests.combat.test_hunt_boss",
     "tests.combat.test_repeat_leif_count",
     "tests.combat.test_combat_entry_search",

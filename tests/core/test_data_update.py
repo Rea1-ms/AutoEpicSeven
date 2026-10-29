@@ -97,6 +97,7 @@ class ResourceCoordinationTests(unittest.TestCase):
         task._combat_burnout_batch_need = Mock(return_value=80)
         task._uses_server_repeat_combat = Mock(return_value=True)
         task._combat_burnout_refresh_status = Mock()
+        self.sync.observe(resource_values(stamina=(50, 50)), "Main")
         self.assertTrue(task._combat_burnout_schedule())
         original = self.next_run("Combat")
         self.sync.observe(resource_values(stamina=(60, 50)), "Main")

@@ -13,6 +13,7 @@ from module.ocr.language import resolve_ocr_lang
 RESOURCE_STATE_PATH = "DataUpdate.ResourceRuntime.State"
 RESOURCE_RECOVERY_SECONDS = {"arena_flag": 3600, "stamina": 240}
 RESOURCE_OBSERVATION_SECONDS = 300
+RESOURCE_REFRESH_RETRY_MINUTES = 30
 
 
 def local_now():
@@ -145,6 +146,16 @@ class ResourceCoordinator:
                     "source": source, "valid": True,
                     "revision": previous.get("revision", 0) + int(changed),
                 }
+                # Repeat menus report only the owned amount, not the natural
+                # recovery cap. Keep that frame's total=0 truthful, while
+                # retaining separately the last cap actually read in this
+                # server/language bucket. Consumption invalidates the amount,
+                # not the cap; language changes clear both in _load(). Never
+                # borrow a cap from the unpartitioned dashboard on migration.
+                if key in RESOURCE_RECOVERY_SECONDS:
+                    bucket["observations"][key]["capacity"] = (
+                        value.total or previous.get("capacity", previous.get("total", 0))
+                    )
                 bucket["pending"].pop(key, None)
             self._reconcile(bucket, parsed, now)
             self._restore_full_schedule(bucket)
@@ -207,7 +218,8 @@ class ResourceCoordinator:
             need = wait["need"]
             if value.value >= need:
                 target = now
-            elif value.total >= need and key in RESOURCE_RECOVERY_SECONDS:
+            elif (bucket["observations"][key].get("capacity", value.total) >= need
+                  and key in RESOURCE_RECOVERY_SECONDS):
                 # The HUD does not expose the partial recovery countdown. A
                 # whole interval per missing point is a conservative deadline.
                 target = now + timedelta(seconds=(need - value.value) * RESOURCE_RECOVERY_SECONDS[key])
@@ -233,7 +245,7 @@ class ResourceCoordinator:
             due = _date(config_value(self.config, "DataUpdate.Scheduler.NextRun"))
             bucket["full_due"] = due.isoformat() if due else None
         if bucket["pending"]:
-            target = local_now().replace(microsecond=0) + timedelta(minutes=30)
+            target = local_now().replace(microsecond=0) + timedelta(minutes=RESOURCE_REFRESH_RETRY_MINUTES)
             due = _date(bucket.get("full_due"))
             if due and due > local_now():
                 target = min(target, due)

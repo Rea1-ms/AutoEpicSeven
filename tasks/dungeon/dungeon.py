@@ -7,7 +7,7 @@ from tasks.base.page import (
     page_episode,
     page_side_story,
 )
-from tasks.base.resource_bar import RESOURCE_BAR_LAYOUT_COMBAT, ResourceBarMixin
+from tasks.base.resource_bar import RESOURCE_BAR_LAYOUT_COMBAT
 from tasks.base.resource_scheduling import ResourceCoordinator
 from tasks.base.ui import UI
 from tasks.dungeon.burnout import CombatBurnoutMixin
@@ -44,7 +44,6 @@ class Combat(
     SideStoryNavigateMixin,
     UrgentTasksNavigateMixin,
     CombatPrepare,
-    ResourceBarMixin,
     UI,
 ):
     COMBAT_RESOURCE_BAR_TIMEOUT_SECONDS = 1
@@ -660,7 +659,6 @@ class Combat(
                     self._daily_combat_budget, current_stamina or 0,
                     leif=leif.value if leif is not None else 0,
                 )
-            ResourceCoordinator(self.config).invalidate("stamina", "leif")
             target_leif_count = self._server_repeat_target_leif_count(current_stamina)
             logger.attr("CombatRepeatTargetLeifCount", target_leif_count)
             fast_stamina = current_stamina or 0
@@ -707,7 +705,6 @@ class Combat(
                     success = False
 
         elif success:
-            ResourceCoordinator(self.config).invalidate("stamina", "leif")
             if fast_combat_selected:
                 success = self._run_fast_combat(skip_first_screenshot=True)
                 if success:

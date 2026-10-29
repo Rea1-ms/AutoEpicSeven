@@ -3,6 +3,394 @@
   "source_root": "ignored test/ in main checkout",
   "files": [
     {
+      "source": "tests/core/test_resource_bar_partial.py",
+      "business": "��Դ��������ȡ",
+      "status": "����",
+      "reason": "��Դ��������������ʧ�ܻع�",
+      "cases": [
+        {
+          "id": "tests.core.test_resource_bar_partial.PartialResourceBarTests.test_missing_flag_preserves_independently_anchored_stamina_and_skystone",
+          "category": "����",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "������",
+          "reason": "ȱʧ�ֶζ������¡��¹۲���ȼ�����ǰʧЧ����ֹ��ֵ������������"
+        },
+        {
+          "id": "tests.core.test_resource_bar_partial.PartialResourceBarTests.test_missing_middle_icon_never_uses_default_or_later_boundary",
+          "category": "����",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "������",
+          "reason": "ȱʧ�ֶζ������¡��¹۲���ȼ�����ǰʧЧ����ֹ��ֵ������������"
+        },
+        {
+          "id": "tests.core.test_resource_bar_partial.PartialResourceBarTests.test_missing_last_icon_retains_only_fields_with_complete_boundaries",
+          "category": "����",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "������",
+          "reason": "ȱʧ�ֶζ������¡��¹۲���ȼ�����ǰʧЧ����ֹ��ֵ������������"
+        },
+        {
+          "id": "tests.core.test_resource_bar_partial.PartialResourceBarTests.test_invalid_counter_does_not_discard_other_valid_fields",
+          "category": "����",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "������",
+          "reason": "ȱʧ�ֶζ������¡��¹۲���ȼ�����ǰʧЧ����ֹ��ֵ������������"
+        },
+        {
+          "id": "tests.core.test_resource_bar_partial.PartialResourceBarTests.test_zero_and_overflow_values_remain_valid",
+          "category": "����",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "������",
+          "reason": "ȱʧ�ֶζ������¡��¹۲���ȼ�����ǰʧЧ����ֹ��ֵ������������"
+        },
+        {
+          "id": "tests.core.test_resource_bar_partial.PartialResourceBarTests.test_missing_icons_never_read_from_stale_offsets",
+          "category": "����",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "������",
+          "reason": "ȱʧ�ֶζ������¡��¹۲���ȼ�����ǰʧЧ����ֹ��ֵ������������"
+        },
+        {
+          "id": "tests.core.test_resource_bar_partial.PartialResourceBarTests.test_wrong_order_or_overlap_rejects_even_a_partial_frame",
+          "category": "����",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "������",
+          "reason": "ȱʧ�ֶζ������¡��¹۲���ȼ�����ǰʧЧ����ֹ��ֵ������������"
+        },
+        {
+          "id": "tests.core.test_resource_bar_partial.PartialResourceBarTests.test_explicit_partial_offsets_require_both_boundaries",
+          "category": "����",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "������",
+          "reason": "ȱʧ�ֶζ������¡��¹۲���ȼ�����ǰʧЧ����ֹ��ֵ������������"
+        },
+        {
+          "id": "tests.core.test_resource_bar_partial.PartialResourceBarTests.test_invalid_extra_boundary_does_not_discard_other_fields",
+          "category": "����",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "������",
+          "reason": "ȱʧ�ֶζ������¡��¹۲���ȼ�����ǰʧЧ����ֹ��ֵ������������"
+        },
+        {
+          "id": "tests.core.test_resource_bar_partial.PartialResourceBarTests.test_retry_recovers_complete_frame_without_merging_old_values",
+          "category": "����",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "������",
+          "reason": "ȱʧ�ֶζ������¡��¹۲���ȼ�����ǰʧЧ����ֹ��ֵ������������"
+        },
+        {
+          "id": "tests.core.test_resource_bar_partial.PartialResourceBarTests.test_timeout_returns_only_the_latest_partial_frame",
+          "category": "����",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "������",
+          "reason": "ȱʧ�ֶζ������¡��¹۲���ȼ�����ǰʧЧ����ֹ��ֵ������������"
+        },
+        {
+          "id": "tests.core.test_resource_bar_partial.PartialResourceBarTests.test_pending_refresh_retries_missing_fields_within_frame_budget",
+          "category": "����",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "������",
+          "reason": "ȱʧ�ֶζ������¡��¹۲���ȼ�����ǰʧЧ����ֹ��ֵ������������"
+        },
+        {
+          "id": "tests.core.test_resource_bar_partial.ResourceDashboardWriteTests.test_repeat_integer_updates_stamina_without_erasing_observed_cap",
+          "category": "����",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "������",
+          "reason": "ȱʧ�ֶζ������¡��¹۲���ȼ�����ǰʧЧ����ֹ��ֵ������������"
+        },
+        {
+          "id": "tests.core.test_resource_bar_partial.ResourceDashboardWriteTests.test_integer_snapshot_maps_standard_currency_and_keeps_unknown_resource_separate",
+          "category": "����",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "������",
+          "reason": "ȱʧ�ֶζ������¡��¹۲���ȼ�����ǰʧЧ����ֹ��ֵ������������"
+        },
+        {
+          "id": "tests.core.test_resource_bar_partial.CapturedPartialResourceBarTests.test_real_main_without_flag_reads_stamina_and_skystone",
+          "category": "��ͼʶ��",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/arena/global_cn/MuMu-20261019-201526-416.png"
+          ],
+          "status": "������",
+          "reason": "ȱʧ�ֶζ������¡��¹۲���ȼ�����ǰʧЧ����ֹ��ֵ������������"
+        },
+        {
+          "id": "tests.core.test_resource_bar_partial.CapturedPartialResourceBarTests.test_real_main_missing_right_anchor_does_not_guess_stamina_boundary",
+          "category": "��ͼʶ��",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/arena/global_cn/MuMu-20261019-201526-416.png"
+          ],
+          "status": "������",
+          "reason": "ȱʧ�ֶζ������¡��¹۲���ȼ�����ǰʧЧ����ֹ��ֵ������������"
+        }
+      ]
+    },
+    {
+      "source": "tests/core/test_resource_refresh.py",
+      "business": "��Դˢ����ս������",
+      "status": "����",
+      "reason": "��Դ��������������ʧ�ܻع�",
+      "cases": [
+        {
+          "id": "tests.core.test_resource_refresh.ResourceRefreshTests.test_eight_stamina_replaces_old_415_and_waits_for_80",
+          "category": "����",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "������",
+          "reason": "ȱʧ�ֶζ������¡��¹۲���ȼ�����ǰʧЧ����ֹ��ֵ������������"
+        },
+        {
+          "id": "tests.core.test_resource_refresh.ResourceRefreshTests.test_no_observation_never_uses_old_dashboard_to_schedule_one_minute",
+          "category": "����",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "������",
+          "reason": "ȱʧ�ֶζ������¡��¹۲���ȼ�����ǰʧЧ����ֹ��ֵ������������"
+        },
+        {
+          "id": "tests.core.test_resource_refresh.ResourceRefreshTests.test_consumed_expired_future_and_pending_amounts_cannot_authorize_a_run",
+          "category": "����",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "������",
+          "reason": "ȱʧ�ֶζ������¡��¹۲���ȼ�����ǰʧЧ����ֹ��ֵ������������"
+        },
+        {
+          "id": "tests.core.test_resource_refresh.ResourceRefreshTests.test_unknown_capacity_does_not_borrow_unpartitioned_dashboard_cap",
+          "category": "����",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "������",
+          "reason": "ȱʧ�ֶζ������¡��¹۲���ȼ�����ǰʧЧ����ֹ��ֵ������������"
+        },
+        {
+          "id": "tests.core.test_resource_refresh.ResourceRefreshTests.test_sufficient_integer_amount_does_not_require_unknown_capacity",
+          "category": "����",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "������",
+          "reason": "ȱʧ�ֶζ������¡��¹۲���ȼ�����ǰʧЧ����ֹ��ֵ������������"
+        },
+        {
+          "id": "tests.core.test_resource_refresh.ResourceRefreshTests.test_zero_is_fresh_evidence_and_waits_for_full_batch",
+          "category": "����",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "������",
+          "reason": "ȱʧ�ֶζ������¡��¹۲���ȼ�����ǰʧЧ����ֹ��ֵ������������"
+        },
+        {
+          "id": "tests.core.test_resource_refresh.ResourceRefreshTests.test_capacity_below_batch_does_not_block_sufficient_overflow",
+          "category": "����",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "������",
+          "reason": "ȱʧ�ֶζ������¡��¹۲���ȼ�����ǰʧЧ����ֹ��ֵ������������"
+        },
+        {
+          "id": "tests.core.test_resource_refresh.ResourceRefreshTests.test_new_partial_main_stamina_takes_precedence_over_menu",
+          "category": "����",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "������",
+          "reason": "ȱʧ�ֶζ������¡��¹۲���ȼ�����ǰʧЧ����ֹ��ֵ������������"
+        },
+        {
+          "id": "tests.core.test_resource_refresh.ResourceRefreshTests.test_skystone_only_success_does_not_count_as_stamina_refresh",
+          "category": "����",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "������",
+          "reason": "ȱʧ�ֶζ������¡��¹۲���ȼ�����ǰʧЧ����ֹ��ֵ������������"
+        },
+        {
+          "id": "tests.core.test_resource_refresh.ResourceRefreshTests.test_recovery_keeps_original_observation_time_and_partial_tick",
+          "category": "����",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "������",
+          "reason": "ȱʧ�ֶζ������¡��¹۲���ȼ�����ǰʧЧ����ֹ��ֵ������������"
+        },
+        {
+          "id": "tests.core.test_resource_refresh.ResourceRefreshTests.test_capacity_survives_integer_reads_without_faking_their_total",
+          "category": "����",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "������",
+          "reason": "ȱʧ�ֶζ������¡��¹۲���ȼ�����ǰʧЧ����ֹ��ֵ������������"
+        },
+        {
+          "id": "tests.core.test_resource_refresh.ResourceRefreshTests.test_capacity_is_not_shared_between_servers_or_languages",
+          "category": "����",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "������",
+          "reason": "ȱʧ�ֶζ������¡��¹۲���ȼ�����ǰʧЧ����ֹ��ֵ������������"
+        },
+        {
+          "id": "tests.core.test_resource_refresh.ResourceRefreshTests.test_legacy_observation_total_migrates_to_separate_capacity",
+          "category": "����",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "������",
+          "reason": "ȱʧ�ֶζ������¡��¹۲���ȼ�����ǰʧЧ����ֹ��ֵ������������"
+        },
+        {
+          "id": "tests.core.test_resource_refresh.ResourceRefreshTests.test_unknown_retry_keeps_refresh_failure_cooldown",
+          "category": "����",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "������",
+          "reason": "ȱʧ�ֶζ������¡��¹۲���ȼ�����ǰʧЧ����ֹ��ֵ������������"
+        },
+        {
+          "id": "tests.core.test_resource_refresh.ResourceRefreshTests.test_integer_observation_shortens_known_resource_wait",
+          "category": "����",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "������",
+          "reason": "ȱʧ�ֶζ������¡��¹۲���ȼ�����ǰʧЧ����ֹ��ֵ������������"
+        },
+        {
+          "id": "tests.core.test_resource_refresh.ResourceRefreshTests.test_partial_shop_snapshot_without_required_currency_remains_unknown",
+          "category": "����",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "������",
+          "reason": "ȱʧ�ֶζ������¡��¹۲���ȼ�����ǰʧЧ����ֹ��ֵ������������"
+        }
+      ]
+    },
+    {
+      "source": "tests/combat/test_resource_lifecycle.py",
+      "business": "ս����Դ��Ч��",
+      "status": "����",
+      "reason": "��Դ��������������ʧ�ܻع�",
+      "cases": [
+        {
+          "id": "tests.combat.test_resource_lifecycle.ResourceLifecycleTests.test_fast_start_invalidates_before_dispatch_and_preserves_retry_interval",
+          "category": "���̻ط�",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "������",
+          "reason": "ȱʧ�ֶζ������¡��¹۲���ȼ�����ǰʧЧ����ֹ��ֵ������������"
+        },
+        {
+          "id": "tests.combat.test_resource_lifecycle.ResourceLifecycleTests.test_normal_start_invalidates_before_dispatch_and_preserves_retry_interval",
+          "category": "���̻ط�",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "������",
+          "reason": "ȱʧ�ֶζ������¡��¹۲���ȼ�����ǰʧЧ����ֹ��ֵ������������"
+        },
+        {
+          "id": "tests.combat.test_resource_lifecycle.ResourceLifecycleTests.test_repeat_start_invalidates_before_dispatch_and_preserves_retry_interval",
+          "category": "���̻ط�",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "������",
+          "reason": "ȱʧ�ֶζ������¡��¹۲���ȼ�����ǰʧЧ����ֹ��ֵ������������"
+        },
+        {
+          "id": "tests.combat.test_resource_lifecycle.ResourceLifecycleTests.test_resumed_repeat_confirmation_invalidates_before_dispatch",
+          "category": "���̻ط�",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "������",
+          "reason": "ȱʧ�ֶζ������¡��¹۲���ȼ�����ǰʧЧ����ֹ��ֵ������������"
+        },
+        {
+          "id": "tests.combat.test_resource_lifecycle.ResourceLifecycleTests.test_repeat_unknown_and_missing_start_do_not_invalidate_observations",
+          "category": "���̻ط�",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "������",
+          "reason": "ȱʧ�ֶζ������¡��¹۲���ȼ�����ǰʧЧ����ֹ��ֵ������������"
+        },
+        {
+          "id": "tests.combat.test_resource_lifecycle.ResourceLifecycleTests.test_fast_missing_start_does_not_invalidate_observations",
+          "category": "���̻ط�",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "������",
+          "reason": "ȱʧ�ֶζ������¡��¹۲���ȼ�����ǰʧЧ����ֹ��ֵ������������"
+        },
+        {
+          "id": "tests.combat.test_resource_lifecycle.ResourceLifecycleTests.test_eight_stamina_run_keeps_fresh_snapshot_without_starting_combat",
+          "category": "���̻ط�",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "������",
+          "reason": "ȱʧ�ֶζ������¡��¹۲���ȼ�����ǰʧЧ����ֹ��ֵ������������"
+        },
+        {
+          "id": "tests.combat.test_resource_lifecycle.ResourceLifecycleTests.test_server_panel_snapshot_updates_dashboard_without_closing",
+          "category": "���̻ط�",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "������",
+          "reason": "ȱʧ�ֶζ������¡��¹۲���ȼ�����ǰʧЧ����ֹ��ֵ������������"
+        }
+      ]
+    },
+    {
       "source": "tests/store/test_purchase.py",
       "business": "普通商店",
       "status": "新增",

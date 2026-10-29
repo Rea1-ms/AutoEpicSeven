@@ -256,7 +256,8 @@ class HucheShop(UI):
 
     def read_balance(self) -> int | None:
         result = self.inspect_resource_bar_status(RESOURCE_BAR_LAYOUT_SECRET_SHOP, "HucheShop")
-        return result.final["skystone"].value if result.final is not None else None
+        balance = result.final.get("skystone") if result.final else None
+        return balance.value if balance is not None else None
 
     def read_discount_view(self) -> DiscountView | None:
         """Read clock-marked rows before the first explicit regular label.

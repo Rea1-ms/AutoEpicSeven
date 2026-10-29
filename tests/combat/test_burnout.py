@@ -21,6 +21,8 @@ from module.config.config_updater import ConfigGenerator, ConfigUpdater, normali
 from module.config.stored.classes import StoredArenaFlag, StoredStamina
 
 from tasks.arena.burnout import ArenaBurnoutMixin
+from tasks.base.resource_scheduling import ResourceCoordinator
+from tests.support.resources import ResourceConfig, resource_values
 
 from tasks.dungeon.burnout import (
     ALTAR_STAMINA_COST,
@@ -67,12 +69,18 @@ def make_flag(value: int, total: int, time: datetime) -> StoredArenaFlag:
 def near(a: datetime, b: datetime, seconds: int = 3) -> bool:
     return abs((a - b).total_seconds()) <= seconds
 
-class DelayRecorder:
+class DelayRecorder(ResourceConfig):
     def __init__(self, stamina=None, flag=None):
+        super().__init__()
+        self.task.command = "Combat"
         self.stored = FakeStored()
         self.stored.Stamina = stamina
         self.stored.ArenaFlag = flag
         self.delay_calls = []
+        if stamina is not None:
+            ResourceCoordinator(self).observe(
+                resource_values(stamina=(stamina.value, stamina.total)), "Main",
+            )
 
     def task_delay(self, success=None, server_update=None, target=None, minute=None, task=None):
         self.delay_calls.append(
@@ -119,7 +127,7 @@ class FakeCombat(CombatBurnoutMixin):
         return self._repeat_count
 
     def _combat_burnout_refresh_status(self):
-        # Offline: skip resource-bar OCR, rely on injected stored values.
+        # Offline: no new home read; use the injected fresh observation.
         return False
 
 class FakeArenaConfig(DelayRecorder):
@@ -151,6 +159,10 @@ class ManualChecks(unittest.TestCase):
         clock = patch('module.config.stored.classes.now', return_value=datetime.now())
         clock.start()
         self.addCleanup(clock.stop)
+        for name in ("tasks.base.resource_scheduling.local_now", "tasks.dungeon.burnout.local_now"):
+            clock = patch(name, return_value=datetime.now())
+            clock.start()
+            self.addCleanup(clock.stop)
 
     def test_recover_10_in_40min(self):
         s = make_stamina(100, 336, now() - timedelta(minutes=40))
@@ -246,7 +258,9 @@ class ManualChecks(unittest.TestCase):
         t0 = now()
         config = DelayRecorder(stamina=make_stamina(0, 0, t0))
         combat = FakeCombat(config)
-        self.assertTrue(combat._combat_burnout_schedule() is False and not config.delay_calls, 'unknown stamina -> not scheduled')
+        self.assertTrue(combat._combat_burnout_schedule())
+        self.assertEqual(config.delay_calls[-1]["minute"], 30)
+        self.assertEqual(ResourceCoordinator(config).pending, {"stamina"})
 
     def test_combat_disabled_not_scheduled(self):
         t0 = now()

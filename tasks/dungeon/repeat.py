@@ -7,7 +7,7 @@ from module.exception import RequestHumanTakeover
 from module.logger import logger
 from module.ocr.ocr import Digit, DigitCounter, Duration
 from tasks.base.assets.assets_base_page import BACK
-from tasks.base.assets.assets_base_popup import AD_BUFF_X_CLOSE, TOUCH_TO_CLOSE
+from tasks.base.assets.assets_base_popup import AD_BUFF_X_CLOSE, POPUP_CONFIRM, TOUCH_TO_CLOSE
 from tasks.base.page import Page
 from tasks.base.resource_bar import (
     RESOURCE_KIND_INT,
@@ -16,6 +16,7 @@ from tasks.base.resource_bar import (
     ResourceBarValue,
     parse_resource_bar_text,
 )
+from tasks.base.resource_scheduling import ResourceCoordinator
 from tasks.dungeon.assets.assets_dungeon_repeat_battle import (
     OCR_REPEAT_COMBAT_TIMES,
     PRIORITIZE_OWNED_STAMINA_OFF,
@@ -550,9 +551,7 @@ class CombatRepeatMixin:
             if self._is_repeat_menu_open():
                 parsed = self._ocr_server_repeat_resources()
                 if parsed is not None:
-                    from tasks.base.resource_scheduling import ResourceCoordinator
-
-                    ResourceCoordinator(self.config).observe(parsed, "server_repeat")
+                    self.write_resource_bar_status(parsed, source="server_repeat")
                     # Resource OCR and repeat settings share this window. Keep
                     # it open so the next state loop can continue directly on
                     # the battle-settings tab instead of closing and reopening
@@ -796,15 +795,24 @@ class CombatRepeatMixin:
                 return True
 
             if self._is_repeat_menu_open():
-                if self.appear_then_click(
+                if self.appear(
                     REPEAT_START, interval=self.COMBAT_START_INTERVAL_SECONDS
                 ):
+                    # Preparation is read-only with respect to currencies.
+                    # Only this potentially consuming action invalidates the
+                    # snapshot, before dispatch so interrupted runs stay safe.
+                    ResourceCoordinator(self.config).invalidate("stamina", "leif")
+                    self.device.click(REPEAT_START)
                     logger.info("Combat: request server repeat combat")
                     start_clicked = True
                     timeout.reset()
                     continue
 
-            if self.handle_popup_confirm(interval=1):
+            if self.appear(POPUP_CONFIRM, interval=1):
+                # A resumed invocation may begin at the confirmation dialog
+                # without seeing its original start click in this process.
+                ResourceCoordinator(self.config).invalidate("stamina", "leif")
+                self.device.click(POPUP_CONFIRM)
                 logger.info("Combat: confirm server repeat combat")
                 start_clicked = True
                 timeout.reset()

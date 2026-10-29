@@ -254,7 +254,9 @@
         "tests.arena.test_captures.CapturedArenaTests.test_fast_prepare_controls_are_separate_from_list_and_result",
         "tests.arena.test_captures.CapturedArenaTests.test_shifted_fast_result_confirm_matches_and_clicks_current_position",
         "tests.arena.test_captures.CapturedArenaTests.test_arena_home_rejects_fast_animation_and_accepts_return_highlight",
-        "tests.arena.test_captures.CapturedWeeklyRewardTests.test_reward_captures_distinguish_selection_and_claim_availability"
+        "tests.arena.test_captures.CapturedWeeklyRewardTests.test_reward_captures_distinguish_selection_and_claim_availability",
+        "tests.core.test_resource_bar_partial.CapturedPartialResourceBarTests.test_real_main_without_flag_reads_stamina_and_skystone",
+        "tests.core.test_resource_bar_partial.CapturedPartialResourceBarTests.test_real_main_missing_right_anchor_does_not_guess_stamina_boundary"
       ]
     },
     "20261019-201529-443": {

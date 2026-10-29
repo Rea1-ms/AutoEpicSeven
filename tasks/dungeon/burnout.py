@@ -1,6 +1,13 @@
+from datetime import datetime, timedelta
+
 from module.logger import logger
 from tasks.base.resource_bar import RESOURCE_BAR_LAYOUT_MAIN
-from tasks.base.resource_scheduling import ResourceCoordinator
+from tasks.base.resource_scheduling import (
+    RESOURCE_RECOVERY_SECONDS,
+    RESOURCE_REFRESH_RETRY_MINUTES,
+    ResourceCoordinator,
+    local_now,
+)
 from tasks.dungeon.episode_materials import EPISODE_STAMINA_COST
 
 SERVER_REPEAT_LEIF_STAMINA = 80
@@ -8,7 +15,7 @@ SERVER_REPEAT_LEIF_STAMINA = 80
 # Stamina cost of one combat run from in-game data.
 # Dimensional hunt is intentionally absent: it consumes its own resource and
 # is out of burnout-mode scope for now.
-EPISODE4_STAMINA_COST = 20
+EPISODE4_STAMINA_COST = EPISODE_STAMINA_COST[4]
 SAINT37_STAMINA_COST = 8
 URGENT_TASKS_STAMINA_COST = {
     "Normal": 15,
@@ -41,8 +48,8 @@ class CombatBurnoutMixin:
     - CombatFarm keeps its own 1-minute background loop and never uses this.
     - Dimensional hunt consumes leaves, not stamina, so it falls back to the
       daily server-update scheduling.
-    - When stored stamina has never been OCR'd (`total <= 0`), fall back to
-      daily scheduling instead of guessing.
+    - Unknown, expired, or consumed stamina requests a fresh read and a
+      bounded retry instead of scheduling from an old dashboard amount.
     """
 
     COMBAT_BURNOUT_RECHECK_MINUTES = 1
@@ -63,7 +70,8 @@ class CombatBurnoutMixin:
         """
         domain = self._dungeon_domain()
         if domain == "Episode4":
-            return EPISODE4_STAMINA_COST
+            episode = getattr(self.config, "Combat_EpisodeNumber", 4)
+            return EPISODE_STAMINA_COST.get(int(episode))
         if domain == "Saint37":
             return SAINT37_STAMINA_COST
         if domain == "UrgentTasks":
@@ -105,8 +113,8 @@ class CombatBurnoutMixin:
         Burnout scheduling runs at the settle points of Combat.run(), which
         are both on the main page, and the main resource bar carries the
         post-burn stamina (plus arena flags as a free bonus for the arena
-        burnout mode). A failed OCR is not fatal: scheduling then falls back
-        to predicting from the last stored record.
+        burnout mode). A failed OCR may still leave a fresh, unconsumed
+        prepare-page observation available to scheduling.
 
         Pages:
             in: page_main
@@ -119,10 +127,11 @@ class CombatBurnoutMixin:
             timeout_seconds=self.COMBAT_RESOURCE_BAR_TIMEOUT_SECONDS,
             timeout_count=self.COMBAT_RESOURCE_BAR_TIMEOUT_COUNT,
         )
-        if parsed is None:
-            logger.warning("Combat burnout: main resource bar OCR failed, use stored stamina record")
+        self.write_resource_bar_status(parsed)
+        if not parsed or "stamina" not in parsed:
+            logger.warning("Combat burnout: main stamina unreadable, check fresh resource observation")
             return False
-        return self.write_resource_bar_status(parsed)
+        return True
 
     def _combat_burnout_schedule(self) -> bool:
         """
@@ -144,33 +153,54 @@ class CombatBurnoutMixin:
             return False
 
         self._combat_burnout_refresh_status()
-        stamina = self.config.stored.Stamina
-        if stamina.total <= 0:
-            logger.warning("Combat burnout: stored stamina is unknown, fallback to daily scheduling")
-            return False
-
-        if self._uses_server_repeat_combat() and need > stamina.total:
-            # A low-level natural cap cannot form a server-repeat unit. Keep
-            # the real 80-point gate for external gifts instead of waking on
-            # a full but still unaffordable bar over and over.
-            self.config.task_delay(server_update=True)
-            ResourceCoordinator(self.config).wait("Combat", "stamina", need)
+        coordinator = ResourceCoordinator(self.config)
+        now = local_now().replace(microsecond=0)
+        observed = coordinator.observation("stamina", now=now)
+        # Dashboard values are for display and can predate an entire combat
+        # session. Only a fresh, unconsumed observation can authorize a short
+        # rerun or anchor recovery. In particular, a missing home flag must
+        # never resurrect the old 415/360 after the menu just reported 8.
+        if observed is None or (
+            observed["value"] < need
+            and observed.get("capacity", observed["total"]) <= 0
+        ):
+            logger.warning("Combat burnout: stamina or recovery cap unknown, request refresh and retry later")
+            coordinator.request("Combat", keys=("stamina",))
+            self.config.task_delay(minute=RESOURCE_REFRESH_RETRY_MINUTES)
+            coordinator.wait("Combat", "stamina", need)
             return True
 
-        # Natural regeneration can never exceed the cap, so a batch larger
-        # than the cap waits until stamina is full instead of forever.
-        need = min(need, stamina.total)
-        predicted = stamina.predict_current()
-        logger.attr("BurnoutStamina", f"{predicted}/{stamina.total}")
+        value = observed["value"]
+        capacity = observed.get("capacity", observed["total"])
+        logger.attr("BurnoutStamina", f"{value}/{capacity}")
         logger.attr("BurnoutStaminaNeed", need)
-
-        if predicted >= need:
+        if value >= need:
+            # Stockpiled stamina can afford the batch even above a small or
+            # unknown natural cap. Check the fresh amount before cap limits.
             logger.info("Combat burnout: stamina already sufficient, run again shortly")
             self.config.task_delay(minute=self.COMBAT_BURNOUT_RECHECK_MINUTES)
             return True
 
-        target = stamina.predict_reach_time(need)
-        logger.info(f"Combat burnout: stamina {predicted} -> {need}, wait until {target}")
+        if self._uses_server_repeat_combat() and need > capacity:
+            # A low-level natural cap cannot form a server-repeat unit. Keep
+            # the real 80-point gate for external gifts instead of waking on
+            # a full but still unaffordable bar over and over.
+            self.config.task_delay(server_update=True)
+            coordinator.wait("Combat", "stamina", need)
+            return True
+
+        # Natural regeneration can never exceed the cap, so a batch larger
+        # than the cap waits until stamina is full instead of forever.
+        need = min(need, capacity)
+        observed_at = datetime.fromisoformat(observed["at"])
+        target = observed_at + timedelta(seconds=(need - value) * RESOURCE_RECOVERY_SECONDS["stamina"])
+
+        if target <= now:
+            logger.info("Combat burnout: stamina already sufficient, run again shortly")
+            self.config.task_delay(minute=self.COMBAT_BURNOUT_RECHECK_MINUTES)
+            return True
+
+        logger.info(f"Combat burnout: stamina {value} -> {need}, wait until {target}")
         self.config.task_delay(target=target)
-        ResourceCoordinator(self.config).wait("Combat", "stamina", need)
+        coordinator.wait("Combat", "stamina", need)
         return True

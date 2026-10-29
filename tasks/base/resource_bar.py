@@ -198,6 +198,13 @@ def get_resource_bar_segment_area(
 
     if icon_offsets is None:
         icon_offsets = {}
+    elif key not in icon_offsets or (
+        index + 1 < len(layout) and layout[index + 1] not in icon_offsets
+    ):
+        # An explicitly supplied observation must contain both boundaries.
+        # A missing adjacent icon cannot use its asset's default position or
+        # the next visible currency: either would mix unrelated text fields.
+        return None
     if icons is None:
         icons = RESOURCE_BAR_ICONS
     if segment_left_paddings is None:
@@ -263,15 +270,13 @@ class ResourceBarMixin:
         """
         Match every currency icon in the resource bar band.
 
-        Unlike the earlier implementation, a single icon miss no longer aborts
-        the scan. A transient overlay or fade on one currency would otherwise
-        pin the whole frame to the fallback path and leak garbage into stored
-        data. We match all icons, then reject the whole frame if any missed
-        or if the matched icons are not left-to-right in layout order.
+        Missing icons leave their fields unknown without discarding unrelated
+        anchors. Observed icons must remain disjoint and in layout order;
+        an ordering conflict makes the whole frame ambiguous.
 
         Returns:
-            icon_offsets: {key: (dx, dy)} when every icon matched in order.
-                          Empty dict when any icon missed or order was wrong.
+            icon_offsets: {key: (dx, dy)} for icons matched in layout order.
+                          Empty dict when none matched or order was wrong.
             matched_icons: per-icon status string, always populated for log.
         """
         icon_offsets: dict[str, tuple[int, int]] = {}
@@ -289,20 +294,19 @@ class ResourceBarMixin:
             else:
                 matched_icons.append(f"{key}=miss")
 
-        if len(icon_offsets) != len(layout):
-            return {}, matched_icons
-
         # Guard against a template binding to the wrong slot. Template matching
         # without positional check can let e.g. skystone pick up gold's glyph
         # when the bar is partially occluded, producing plausible-but-wrong
         # OCR segments downstream.
-        last_x = -1
+        last_right = -1
         for key in layout:
+            if key not in icon_offsets:
+                continue
             matched_x = icons[key].area[0] + icon_offsets[key][0]
-            if matched_x <= last_x:
+            if matched_x <= last_right:
                 matched_icons.append(f"order_violation:{key}")
                 return {}, matched_icons
-            last_x = matched_x
+            last_right = icons[key].area[2] + icon_offsets[key][0]
 
         return icon_offsets, matched_icons
 
@@ -323,11 +327,6 @@ class ResourceBarMixin:
             icons = RESOURCE_BAR_ICONS
         if specs is None:
             specs = RESOURCE_BAR_SPECS
-        if len(icon_offsets) != len(layout):
-            logger.attr(f"{layout_name}ResourceBarIconMatches", matched_icons)
-            logger.attr(f"{layout_name}ResourceBarIconSegments", raw_texts)
-            return None
-
         for key in layout:
             area = get_resource_bar_segment_area(
                 layout,
@@ -337,14 +336,12 @@ class ResourceBarMixin:
                 segment_left_paddings=segment_left_paddings,
             )
             if area is None:
-                logger.attr(f"{layout_name}ResourceBarIconMatches", matched_icons)
-                logger.attr(f"{layout_name}ResourceBarIconSegments", raw_texts)
-                return None
+                continue
 
             if segment_right_limits and key in segment_right_limits:
                 area = (area[0], area[1], min(area[2], segment_right_limits[key]), area[3])
                 if area[2] <= area[0]:
-                    return None
+                    continue
 
             image = self.image_crop(area, copy=False)
             text = OcrResourceBar(
@@ -356,14 +353,12 @@ class ResourceBarMixin:
 
             value = parse_resource_bar_text(text, spec=specs[key])
             if value is None:
-                logger.attr(f"{layout_name}ResourceBarIconMatches", matched_icons)
-                logger.attr(f"{layout_name}ResourceBarIconSegments", raw_texts)
-                return None
+                continue
             parsed[key] = value
 
         logger.attr(f"{layout_name}ResourceBarIconMatches", matched_icons)
         logger.attr(f"{layout_name}ResourceBarIconSegments", raw_texts)
-        return parsed
+        return parsed or None
 
     @staticmethod
     def format_resource_bar_value(value: ResourceBarValue) -> str:
@@ -377,7 +372,8 @@ class ResourceBarMixin:
         parsed: dict[str, ResourceBarValue],
     ) -> None:
         for key in layout:
-            logger.attr(f"ResourceBar.{key}", self.format_resource_bar_value(parsed[key]))
+            if key in parsed:
+                logger.attr(f"ResourceBar.{key}", self.format_resource_bar_value(parsed[key]))
 
     def inspect_resource_bar_status(
         self,
@@ -396,8 +392,9 @@ class ResourceBarMixin:
         Single-frame, no retry. Only the icon-anchored path is evaluated.
         Candidate-based fallbacks were removed because their text-fraction
         splitting produced spatially plausible but numerically wrong readings
-        that then poisoned stored dashboard values. If the icon path fails
-        here, the production caller retries; offline debug prints the miss.
+        that then poisoned stored dashboard values. Each returned field has
+        its own verified anchors and parsed text; missing fields stay absent.
+        The production caller retries incomplete frames within its timeout.
 
         The legacy `parsed_by_candidates`, `parsed_by_candidate_split`, and
         `candidates` fields on the returned result are kept only so the
@@ -473,16 +470,22 @@ class ResourceBarMixin:
                 segment_left_paddings=segment_left_paddings,
             )
             parsed = inspected.final
-            if parsed is not None:
+            if parsed is not None and len(parsed) == len(layout):
                 self._resource_bar_source = layout_name
                 return parsed
 
             if timeout.reached():
                 logger.warning(
                     f"Resource bar OCR timeout on {layout_name}: "
-                    f"icons={inspected.icon_matches}"
+                    f"icons={inspected.icon_matches}, "
+                    f"missing={[key for key in layout if not parsed or key not in parsed]}"
                 )
-                return None
+                # Return only the final frame's independently verified values.
+                # Merging earlier partial frames could revive a balance read
+                # before a resource change, while assigning it a fresh time.
+                if parsed is not None:
+                    self._resource_bar_source = layout_name
+                return parsed
 
     def write_resource_bar_status(
         self, parsed: dict[str, ResourceBarValue] | None, *, source=None
@@ -494,6 +497,9 @@ class ResourceBarMixin:
         with self.config.multi_set():
             for value in parsed.values():
                 attr = value.spec.stored_attr
+                if not attr:
+                    standard = RESOURCE_BAR_SPECS.get(value.spec.key)
+                    attr = standard.stored_attr if standard is not None else None
                 if not attr or not hasattr(self.config.stored, attr):
                     continue
 
@@ -501,6 +507,10 @@ class ResourceBarMixin:
                 if value.spec.kind == RESOURCE_KIND_COUNTER:
                     stored.set(value.value, value.total)
                 else:
+                    # Repeat menus expose stamina as an integer without its
+                    # recovery cap. Update the current amount while preserving
+                    # the separately observed cap; runtime evidence must keep
+                    # total=0 because this frame did not observe that cap.
                     stored.value = value.value
                 updated = True
 
@@ -529,5 +539,6 @@ class ResourceBarMixin:
             )
             if inspected.final is not None:
                 self.write_resource_bar_status(inspected.final, source="Main")
-                return not ResourceCoordinator(self.config).pending
+                if not ResourceCoordinator(self.config).pending:
+                    return True
         return False
