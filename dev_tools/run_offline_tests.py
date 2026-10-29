@@ -78,6 +78,7 @@ CORE_MODULES = (
     "tests.core.test_global_daily_missions",
     "tests.core.test_mail",
     "tests.core.test_login_domain_popup",
+    "tests.core.test_login_update",
     "tests.game_info.test_game_info",
     "tests.game_info.test_game_info_seasons",
 )
@@ -169,6 +170,7 @@ SUITES = {
     "upstream": UPSTREAM_MODULES,
     "runtime": RUNTIME_MODULES,
     "core": CORE_MODULES,
+    "login_update": ("tests.core.test_login_update",),
     "activity": ACTIVITY_MODULES,
     "combat": COMBAT_MODULES,
     "secret_shop": SECRET_SHOP_MODULES,
@@ -189,6 +191,7 @@ KNIGHTS_FIXTURE_MANIFEST = ROOT / "tests" / "fixtures" / "knights" / "manifest.j
 HISTORICAL_FIXTURE_MANIFEST = ROOT / "tests" / "fixtures" / "historical" / "manifest.json"
 SECRET_SHOP_FIXTURE_MANIFEST = ROOT / "tests" / "fixtures" / "secret_shop" / "manifest.json"
 ARENA_FIXTURE_MANIFEST = ROOT / "tests" / "fixtures" / "arena" / "manifest.json"
+LOGIN_UPDATE_FIXTURE_MANIFEST = ROOT / "tests" / "fixtures" / "login_update" / "manifest.json"
 
 
 def iter_cases(suite):
@@ -259,7 +262,7 @@ def fixture_manifest(verify):
     # corpus. IDs share one report namespace, so collisions must fail before
     # tests run rather than silently replacing another business's evidence.
     for manifest in (FIXTURE_MANIFEST, SANCTUARY_FIXTURE_MANIFEST, KNIGHTS_FIXTURE_MANIFEST, HISTORICAL_FIXTURE_MANIFEST,
-                     SECRET_SHOP_FIXTURE_MANIFEST, ARENA_FIXTURE_MANIFEST):
+                     SECRET_SHOP_FIXTURE_MANIFEST, ARENA_FIXTURE_MANIFEST, LOGIN_UPDATE_FIXTURE_MANIFEST):
         raw = json.loads(manifest.read_text(encoding="utf-8"))
         entries = raw.get("fixtures")
         if raw.get("version") != 1 or not isinstance(entries, dict) or not entries:

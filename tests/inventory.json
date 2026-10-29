@@ -22212,6 +22212,266 @@
           "reason": "用户确认服务器的真实截图；独立进程验证单人退出、完成白勾和赛季弹窗关闭，重复帧与页面转换为显式输入"
         }
       ]
+    },
+    {
+      "source": "tests/core/test_login_update.py",
+      "business": "国际服登录更新",
+      "status": "新增",
+      "reason": "2026年10月29日更新界面及应用商店更新回归",
+      "cases": [
+        {
+          "id": "tests.core.test_login_update.UpdateCaptureTests.test_version_notice_matches_new_dialog",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-194637-390",
+            "20261029-194638-366",
+            "20261029-194640-422",
+            "20261029-194642-189",
+            "20261029-194645-647",
+            "20261029-194651-922",
+            "20261029-194703-928",
+            "20261029-194709-969",
+            "20261029-194712-614",
+            "20261029-194725-016",
+            "20261029-194905-434",
+            "20261029-194911-593",
+            "20261029-194922-656"
+          ],
+          "status": "已纳入",
+          "reason": "验证当前截图、动作间隔、禁止动作及正面终态；最终主页和超时序列明确模拟"
+        },
+        {
+          "id": "tests.core.test_login_update.UpdateCaptureTests.test_patch_confirmation_targets_proceed_button",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-194637-390",
+            "20261029-194638-366",
+            "20261029-194640-422",
+            "20261029-194642-189",
+            "20261029-194645-647",
+            "20261029-194651-922",
+            "20261029-194703-928",
+            "20261029-194709-969",
+            "20261029-194712-614",
+            "20261029-194725-016",
+            "20261029-194905-434",
+            "20261029-194911-593",
+            "20261029-194922-656"
+          ],
+          "status": "已纳入",
+          "reason": "验证当前截图、动作间隔、禁止动作及正面终态；最终主页和超时序列明确模拟"
+        },
+        {
+          "id": "tests.core.test_login_update.UpdateCaptureTests.test_google_play_buttons_have_positive_and_negative_captures",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-194637-390",
+            "20261029-194638-366",
+            "20261029-194640-422",
+            "20261029-194642-189",
+            "20261029-194645-647",
+            "20261029-194651-922",
+            "20261029-194703-928",
+            "20261029-194709-969",
+            "20261029-194712-614",
+            "20261029-194725-016",
+            "20261029-194905-434",
+            "20261029-194911-593",
+            "20261029-194922-656"
+          ],
+          "status": "已纳入",
+          "reason": "验证当前截图、动作间隔、禁止动作及正面终态；最终主页和超时序列明确模拟"
+        },
+        {
+          "id": "tests.core.test_login_update.UpdateCaptureTests.test_patch_checking_and_downloading_are_read_only_distinct_states",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-194637-390",
+            "20261029-194638-366",
+            "20261029-194640-422",
+            "20261029-194642-189",
+            "20261029-194645-647",
+            "20261029-194651-922",
+            "20261029-194703-928",
+            "20261029-194709-969",
+            "20261029-194712-614",
+            "20261029-194725-016",
+            "20261029-194905-434",
+            "20261029-194911-593",
+            "20261029-194922-656"
+          ],
+          "status": "已纳入",
+          "reason": "验证当前截图、动作间隔、禁止动作及正面终态；最终主页和超时序列明确模拟"
+        },
+        {
+          "id": "tests.core.test_login_update.UpdateReplayTests.test_version_notice_opens_store_and_updates_until_play",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-194637-390",
+            "20261029-194642-189",
+            "20261029-194645-647",
+            "20261029-194651-922",
+            "20261029-194703-928"
+          ],
+          "status": "已纳入",
+          "reason": "验证当前截图、动作间隔、禁止动作及正面终态；最终主页和超时序列明确模拟"
+        },
+        {
+          "id": "tests.core.test_login_update.UpdateReplayTests.test_notice_and_update_retry_only_after_their_own_intervals",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-194637-390",
+            "20261029-194642-189",
+            "20261029-194645-647",
+            "20261029-194651-922",
+            "20261029-194703-928"
+          ],
+          "status": "已纳入",
+          "reason": "验证当前截图、动作间隔、禁止动作及正面终态；最终主页和超时序列明确模拟"
+        },
+        {
+          "id": "tests.core.test_login_update.UpdateReplayTests.test_pending_cancelling_and_download_never_click_cancel_or_uninstall",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-194638-366",
+            "20261029-194640-422",
+            "20261029-194645-647",
+            "20261029-194651-922",
+            "20261029-194703-928"
+          ],
+          "status": "已纳入",
+          "reason": "验证当前截图、动作间隔、禁止动作及正面终态；最终主页和超时序列明确模拟"
+        },
+        {
+          "id": "tests.core.test_login_update.UpdateReplayTests.test_already_ready_exits_on_prepared_frame_without_clicking_play",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-194703-928"
+          ],
+          "status": "已纳入",
+          "reason": "验证当前截图、动作间隔、禁止动作及正面终态；最终主页和超时序列明确模拟"
+        },
+        {
+          "id": "tests.core.test_login_update.UpdateReplayTests.test_fresh_first_screenshot_and_completion_bypass_click_interval",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-194642-189",
+            "20261029-194703-928"
+          ],
+          "status": "已纳入",
+          "reason": "验证当前截图、动作间隔、禁止动作及正面终态；最终主页和超时序列明确模拟"
+        },
+        {
+          "id": "tests.core.test_login_update.UpdateReplayTests.test_completion_has_priority_over_timeout_and_retryable_buttons",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "验证当前截图、动作间隔、禁止动作及正面终态；最终主页和超时序列明确模拟"
+        },
+        {
+          "id": "tests.core.test_login_update.UpdateReplayTests.test_unknown_screen_times_out_without_actions",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "验证当前截图、动作间隔、禁止动作及正面终态；最终主页和超时序列明确模拟"
+        },
+        {
+          "id": "tests.core.test_login_update.UpdateReplayTests.test_failed_update_clicks_do_not_extend_original_deadline",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "验证当前截图、动作间隔、禁止动作及正面终态；最终主页和超时序列明确模拟"
+        },
+        {
+          "id": "tests.core.test_login_update.UpdateReplayTests.test_public_handler_leaves_cn_and_non_update_screens_untouched",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-194637-390",
+            "20261029-194709-969"
+          ],
+          "status": "已纳入",
+          "reason": "验证当前截图、动作间隔、禁止动作及正面终态；最终主页和超时序列明确模拟"
+        },
+        {
+          "id": "tests.core.test_login_update.LoginUpdateFlowTests.test_login_restarts_once_only_after_store_reports_play",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-194637-390",
+            "20261029-194642-189",
+            "20261029-194645-647",
+            "20261029-194651-922",
+            "20261029-194703-928"
+          ],
+          "status": "已纳入",
+          "reason": "验证当前截图、动作间隔、禁止动作及正面终态；最终主页和超时序列明确模拟"
+        },
+        {
+          "id": "tests.core.test_login_update.LoginUpdateFlowTests.test_long_patch_scan_and_download_wait_then_enter_main",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-194712-614",
+            "20261029-194725-016",
+            "20261029-194905-434",
+            "20261029-194911-593",
+            "20261029-194922-656"
+          ],
+          "status": "已纳入",
+          "reason": "验证当前截图、动作间隔、禁止动作及正面终态；最终主页和超时序列明确模拟"
+        },
+        {
+          "id": "tests.core.test_login_update.LoginUpdateFlowTests.test_popup_handoff_recognizes_each_new_patch_progress_state",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-194712-614",
+            "20261029-194725-016",
+            "20261029-194911-593",
+            "20261029-194922-656"
+          ],
+          "status": "已纳入",
+          "reason": "验证当前截图、动作间隔、禁止动作及正面终态；最终主页和超时序列明确模拟"
+        },
+        {
+          "id": "tests.core.test_login_update.LoginUpdateFlowTests.test_cn_progress_does_not_access_oversea_only_assets",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "验证当前截图、动作间隔、禁止动作及正面终态；最终主页和超时序列明确模拟"
+        }
+      ]
     }
   ]
 }

@@ -27,3 +27,27 @@ GOOGLE_PLAY_UPDATE = ButtonWrapper(
     ),
     global_en=None,
 )
+PATCH_CHECKING = ButtonWrapper(
+    name='PATCH_CHECKING',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/login/update/PATCH_CHECKING.png',
+        area=(486, 232, 795, 255),
+        search=(466, 212, 815, 275),
+        color=(99, 101, 103),
+        button=(486, 232, 795, 255),
+    ),
+    global_en=None,
+)
+PATCH_DOWNLOADING = ButtonWrapper(
+    name='PATCH_DOWNLOADING',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/login/update/PATCH_DOWNLOADING.png',
+        area=(586, 607, 697, 627),
+        search=(566, 587, 717, 647),
+        color=(180, 164, 163),
+        button=(586, 607, 697, 627),
+    ),
+    global_en=None,
+)

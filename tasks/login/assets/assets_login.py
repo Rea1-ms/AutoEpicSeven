@@ -6,13 +6,22 @@ from module.base.button import Button, ButtonWrapper
 GAME_UPGRADE_AVAILABLE = ButtonWrapper(
     name='GAME_UPGRADE_AVAILABLE',
     cn=None,
-    global_cn=Button(
-        file='./assets/global_cn/login/GAME_UPGRADE_AVAILABLE.png',
-        area=(685, 329, 724, 349),
-        search=(665, 309, 744, 369),
-        color=(86, 90, 96),
-        button=(685, 329, 724, 349),
-    ),
+    global_cn=[
+        Button(
+            file='./assets/global_cn/login/GAME_UPGRADE_AVAILABLE.png',
+            area=(685, 329, 724, 349),
+            search=(665, 309, 744, 369),
+            color=(86, 90, 96),
+            button=(685, 329, 724, 349),
+        ),
+        Button(
+            file='./assets/global_cn/login/GAME_UPGRADE_AVAILABLE.2.png',
+            area=(516, 154, 767, 184),
+            search=(496, 134, 787, 204),
+            color=(135, 141, 147),
+            button=(600, 530, 680, 569),
+        ),
+    ],
     global_en=None,
 )
 LOGGED_OUT = ButtonWrapper(
@@ -145,13 +154,22 @@ PATCH_APPLY = ButtonWrapper(
         color=(128, 146, 129),
         button=(620, 535, 660, 555),
     ),
-    global_cn=Button(
-        file='./assets/global_cn/login/PATCH_APPLY.png',
-        area=(620, 535, 661, 555),
-        search=(600, 515, 681, 575),
-        color=(125, 144, 127),
-        button=(620, 535, 661, 555),
-    ),
+    global_cn=[
+        Button(
+            file='./assets/global_cn/login/PATCH_APPLY.png',
+            area=(620, 535, 661, 555),
+            search=(600, 515, 681, 575),
+            color=(125, 144, 127),
+            button=(620, 535, 661, 555),
+        ),
+        Button(
+            file='./assets/global_cn/login/PATCH_APPLY.2.png',
+            area=(750, 535, 791, 555),
+            search=(730, 515, 811, 575),
+            color=(123, 142, 125),
+            button=(689, 529, 854, 565),
+        ),
+    ],
     global_en=None,
 )
 PATCH_PERCENT_SIGN = ButtonWrapper(

@@ -39,7 +39,6 @@ from module.exception import (
 from module.logger import logger
 from module.ocr.ocr import Duration, OcrWhiteLetterOnComplexBackground
 from tasks.base.ui import UI
-from tasks.base.assets.assets_base_popup import TOUCH_TO_CLOSE
 from tasks.login.assets.assets_login import (
     GAME_UPGRADE_AVAILABLE,
     LOGIN_AGREEMENT_UNCHECKED,
@@ -58,6 +57,7 @@ from tasks.login.assets.assets_login_maintenance import (
     OCR_MAINTENANCE_TIME,
 )
 from tasks.login.update import UpdateHandler
+from tasks.login.assets.assets_login_update import PATCH_CHECKING, PATCH_DOWNLOADING
 from tasks.base.page import BACK
 from tasks.login.assets.assets_login_popup import (
     ACTIVITY_2026SUMMER,
@@ -119,6 +119,10 @@ class Login(UI):
             or self.appear(VERIFYING, interval=0)
             or self.appear(PATCH_APPLY, interval=0)
             or self.appear(PATCH_PERCENT_SIGN, interval=0)
+            or (
+                server_.is_oversea_server(self.config.Emulator_PackageName)
+                and (self.appear(PATCH_CHECKING) or self.appear(PATCH_DOWNLOADING))
+            )
             or self.appear(UNDER_MAINTENANCE, interval=0)
             or (
                 server_.is_oversea_server(self.config.Emulator_PackageName)
@@ -327,10 +331,9 @@ class Login(UI):
 
             # 版本更新（跳转 Google Play）
             if server_.is_oversea_server(self.config.Emulator_PackageName) and self.appear(
-                GAME_UPGRADE_AVAILABLE, interval=5
+                GAME_UPGRADE_AVAILABLE, interval=0
             ):
                 logger.warning('Game update available')
-                self.device.click(TOUCH_TO_CLOSE)
                 UpdateHandler._handle_google_play_update(self)
                 self.app_restart()
                 return True
@@ -348,6 +351,19 @@ class Login(UI):
                 continue
 
             # 下载中
+            # The new client checks/scans files before offering Proceed, then
+            # downloads on the splash screen. These are read-only observations:
+            # do not gate them on a click interval or let a long scan trigger the
+            # unknown-screen watchdog. The confirmation is checked above so its
+            # first actionable frame is handled immediately.
+            if server_.is_oversea_server(self.config.Emulator_PackageName) and (
+                self.appear(PATCH_CHECKING) or self.appear(PATCH_DOWNLOADING)
+            ):
+                network_error_count = 0
+                timeout.reset()
+                self.device.stuck_record_clear()
+                continue
+
             if self.appear(PATCH_PERCENT_SIGN, interval=3):
                 logger.info('Patch downloading...')
                 network_error_count = 0

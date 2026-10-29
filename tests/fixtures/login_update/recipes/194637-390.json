@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "source": "../global_cn/MuMu-20261029-194637-390.png",
+  "suite": "login_update_20261029",
+  "case": "update_194637_390",
+  "items": [
+    {
+      "name": "GAME_UPGRADE_AVAILABLE",
+      "kind": "base",
+      "box": [
+        516,
+        154,
+        767,
+        184
+      ],
+      "frame": 2,
+      "namespace": "global_cn",
+      "module": "login"
+    },
+    {
+      "name": "GAME_UPGRADE_AVAILABLE",
+      "kind": "button",
+      "box": [
+        600,
+        530,
+        680,
+        569
+      ],
+      "frame": 2,
+      "namespace": "global_cn",
+      "module": "login"
+    }
+  ]
+}

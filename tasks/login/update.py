@@ -10,9 +10,7 @@ Epic Seven Google Play 更新模块
 流程:
     检测到 GAME_UPGRADE_AVAILABLE
         ↓
-    点击 TOUCH_TO_CLOSE → 跳转 Google Play
-        ↓
-    等待 3 秒加载
+    识别并点击更新通知 → 跳转 Google Play
         ↓
     轮询 GOOGLE_PLAY_UPDATE → 点击开始更新
         ↓
@@ -22,25 +20,22 @@ Epic Seven Google Play 更新模块
 """
 import module.config.server as server_
 from module.base.timer import Timer
-from module.exception import GameNotRunningError
 from module.logger import logger
-from tasks.base.popup import PopupHandler
 from tasks.base.assets.assets_base_popup import TOUCH_TO_CLOSE
+from tasks.base.popup import PopupHandler
 from tasks.login.assets.assets_login import GAME_UPGRADE_AVAILABLE
 from tasks.login.assets.assets_login_update import (
-    GOOGLE_PLAY_UPDATE,
     GOOGLE_PLAY_PLAY,
+    GOOGLE_PLAY_UPDATE,
 )
 
 
 class GameUpdateRequired(Exception):
     """游戏需要更新，更新完成后需要重启"""
-    pass
 
 
 class GameUpdateFailed(Exception):
     """游戏更新失败"""
-    pass
 
 
 class UpdateHandler(PopupHandler):
@@ -71,32 +66,37 @@ class UpdateHandler(PopupHandler):
         logger.hr('Game update required')
         logger.info('Detected game version update, redirecting to Google Play')
 
-        # 点击跳转 Google Play
-        self.device.click(TOUCH_TO_CLOSE)
+        return self._handle_google_play_update()
 
-        # 执行更新流程
-        self._handle_google_play_update()
-
-        return True
-
-    def _handle_google_play_update(self):
+    def _handle_google_play_update(self, skip_first_screenshot=True) -> bool:
         """
         处理 Google Play 更新流程
+
+        Pages:
+            in: 游戏更新通知或 Google Play 更新页面
+            out: Google Play 显示可启动游戏
+
+        Returns:
+            bool: 是否执行了跳转或更新点击。
 
         Raises:
             GameUpdateFailed: 更新超时或失败
         """
-        logger.info('Waiting for Google Play to load...')
-
-        # 等待 Google Play 加载
-        self.device.sleep(3)
-
-        # 超时设置：5 分钟
-        timeout = Timer(300, count=300).start()
-        update_clicked = False
+        logger.info('Waiting for Google Play update...')
+        timeout = Timer(300).start()
+        clicked = False
 
         while 1:
-            self.device.screenshot()
+            if skip_first_screenshot:
+                skip_first_screenshot = False
+            else:
+                self.device.screenshot()
+
+            # Completion is current-frame evidence, independent of either
+            # action's retry interval and of whether this invocation clicked.
+            if self.appear(GOOGLE_PLAY_PLAY):
+                logger.info('Update completed, Play button appeared')
+                return clicked
 
             # 超时检查
             if timeout.reached():
@@ -104,18 +104,20 @@ class UpdateHandler(PopupHandler):
                 self.device.app_stop()
                 raise GameUpdateFailed('Google Play update timeout')
 
-            # 阶段1：等待并点击 Update 按钮
-            if not update_clicked:
-                if self.appear_then_click(GOOGLE_PLAY_UPDATE, interval=5):
-                    logger.info('Clicked Update button, waiting for download...')
-                    update_clicked = True
-                    continue
+            # A sent click is not proof that downloading started. Retry only
+            # while the current frame still positively offers Update. Pending,
+            # cancelling, download, and unknown frames authorize no clicks.
+            # Neither retry renews the original five-minute deadline.
+            if self.appear_then_click(GOOGLE_PLAY_UPDATE, interval=5):
+                logger.info('Clicked Update button, waiting for download...')
+                clicked = True
+                continue
 
-            # 阶段2：等待更新完成（Play 按钮出现）
-            if self.appear(GOOGLE_PLAY_PLAY):
-                logger.info('Update completed, Play button appeared')
-                # 不点击 Play，直接返回让调用方 app_restart
-                return
-
-        # 不应该到达这里
-        raise GameUpdateFailed('Unexpected state in Google Play update')
+            # The legacy notice text still matches the new dialog. Its matched
+            # coordinates therefore do not identify the retry control. Match
+            # the shared arrow on this frame to carry its vertical offset into
+            # the click instead of using the old fixed footer coordinates.
+            if self.appear(GAME_UPGRADE_AVAILABLE) and self.appear_then_click(TOUCH_TO_CLOSE, interval=3):
+                logger.info('Clicked game update notice, waiting for Google Play...')
+                clicked = True
+                continue
