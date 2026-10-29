@@ -1409,6 +1409,18 @@
       "GetSupportReward": {
         "type": "checkbox",
         "value": true
+      },
+      "GetCompletionRecord": {
+        "type": "checkbox",
+        "value": true
+      },
+      "GetDetectiveSearch": {
+        "type": "checkbox",
+        "value": true
+      },
+      "GetEpicPathDailyReward": {
+        "type": "checkbox",
+        "value": true
       }
     }
   },

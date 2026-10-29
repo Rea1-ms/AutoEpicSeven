@@ -3392,6 +3392,323 @@
       "used_by": [
         "tests.combat.test_episode.EpisodeFastOnlyTests.test_captured_fast_result_is_not_locked_prepare_and_exhausted_prepare_is"
       ]
+    },
+    "20261029-203759-503": {
+      "path": "tests/fixtures/historical/global_cn/october_2026_10_29/MuMu-20261029-203759-503.png",
+      "sha256": "59e042eb1c9134319d97d2656c9012085aa35eaeca2823755fd7910a9669b3cc",
+      "server": "global_cn",
+      "scene": "october-203759-503",
+      "source": "user-provided MuMu-20261029-203759-503.png",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_october_events.OctoberPageTests.test_activity_title_identifies_epic_path_without_clock",
+        "tests.activity.test_october_events.OctoberPageTests.test_page_markers_are_mutually_exclusive_and_reject_overlays",
+        "tests.activity.test_october_events.OctoberPageTests.test_title_rejects_both_dialog_overlays",
+        "tests.activity.test_october_events.OctoberReplayTests.test_detective_wrong_tab_is_rejected",
+        "tests.activity.test_october_events.OctoberReplayTests.test_epic_open_and_close_retries_use_separate_production_intervals",
+        "tests.activity.test_october_events.OctoberReplayTests.test_epic_real_unfinished_daily_closes_without_clicking_go",
+        "tests.activity.test_october_events.OctoberReplayTests.test_epic_synthetic_claim_waits_for_popup_and_returns_to_event",
+        "tests.activity.test_october_events.OctoberReplayTests.test_epic_unknown_status_never_closes_or_marks_done",
+        "tests.activity.test_october_events.OctoberReplayTests.test_fixed_page_markers_preserve_search_bounds_and_skip_sidebar_ocr",
+        "tests.activity.test_october_events.OctoberReplayTests.test_shared_batch_processes_three_real_selected_pages_and_keeps_dialogs_closed",
+        "tests.activity.test_october_events.OctoberReplayTests.test_wrong_attendance_page_never_records_or_claims"
+      ],
+      "capture_type": "emulator_screenshot",
+      "source_sha256": "4b1bd1b80f8712a74103713f8ea2d623723bf0a2f2e0ca3af2c8f55e0c2d8f42"
+    },
+    "20261029-203901-709": {
+      "path": "tests/fixtures/historical/global_cn/october_2026_10_29/MuMu-20261029-203901-709.png",
+      "sha256": "0cdf135a937d2a5329f39d27f942ffe39751ac069de313a0a267de03f83c36ca",
+      "server": "global_cn",
+      "scene": "october-203901-709",
+      "source": "user-provided MuMu-20261029-203901-709.png",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_october_events.OctoberPageTests.test_page_markers_are_mutually_exclusive_and_reject_overlays",
+        "tests.activity.test_october_events.OctoberPageTests.test_real_ocr_reads_detective_points_and_four_daily_task_rows",
+        "tests.activity.test_october_events.OctoberPageTests.test_title_rejects_both_dialog_overlays",
+        "tests.activity.test_october_events.OctoberReplayTests.test_detective_claim_popup_then_all_receipts_records_completion",
+        "tests.activity.test_october_events.OctoberReplayTests.test_detective_dropped_tap_retries_only_original_tier",
+        "tests.activity.test_october_events.OctoberReplayTests.test_detective_missing_popup_cannot_extend_deadline",
+        "tests.activity.test_october_events.OctoberReplayTests.test_detective_network_dialog_does_not_confirm_pending_reward",
+        "tests.activity.test_october_events.OctoberReplayTests.test_detective_partial_claim_advances_to_next_tier_only_after_popup",
+        "tests.activity.test_october_events.OctoberReplayTests.test_detective_real_four_tiers_and_partial_receipt",
+        "tests.activity.test_october_events.OctoberReplayTests.test_detective_receipts_before_popup_do_not_finish_pending_reward",
+        "tests.activity.test_october_events.OctoberReplayTests.test_detective_unknown_points_time_out_without_completion",
+        "tests.activity.test_october_events.OctoberReplayTests.test_detective_zero_points_keeps_battle_recheck_without_clicking",
+        "tests.activity.test_october_events.OctoberReplayTests.test_fixed_page_markers_preserve_search_bounds_and_skip_sidebar_ocr",
+        "tests.activity.test_october_events.OctoberReplayTests.test_shared_batch_processes_three_real_selected_pages_and_keeps_dialogs_closed"
+      ],
+      "capture_type": "emulator_screenshot",
+      "source_sha256": "35c1b7f6c1a50be4f91d17ada37677ada08947a6082be79ac7886d5f861e9d61"
+    },
+    "20261029-203905-985": {
+      "path": "tests/fixtures/historical/global_cn/october_2026_10_29/MuMu-20261029-203905-985.png",
+      "sha256": "a16504fe57853719a7c93e2db98bd3bdb81cb738011f6836d3e95815fcec3967",
+      "server": "global_cn",
+      "scene": "october-203905-985",
+      "source": "user-provided MuMu-20261029-203905-985.png",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_october_events.OctoberPageTests.test_page_markers_are_mutually_exclusive_and_reject_overlays",
+        "tests.activity.test_october_events.OctoberPageTests.test_title_rejects_both_dialog_overlays",
+        "tests.activity.test_october_events.OctoberReplayTests.test_detective_claim_popup_then_all_receipts_records_completion",
+        "tests.activity.test_october_events.OctoberReplayTests.test_detective_dropped_tap_retries_only_original_tier",
+        "tests.activity.test_october_events.OctoberReplayTests.test_detective_network_dialog_does_not_confirm_pending_reward",
+        "tests.activity.test_october_events.OctoberReplayTests.test_detective_partial_claim_advances_to_next_tier_only_after_popup",
+        "tests.activity.test_october_events.OctoberReplayTests.test_detective_receipts_before_popup_do_not_finish_pending_reward",
+        "tests.activity.test_october_events.OctoberReplayTests.test_shared_batch_processes_three_real_selected_pages_and_keeps_dialogs_closed"
+      ],
+      "capture_type": "emulator_screenshot",
+      "source_sha256": "da5eaa8bcbbe1527cc6d5bdad099cab029d30edd848d1007c3bdf3079e75d683"
+    },
+    "20261029-203908-514": {
+      "path": "tests/fixtures/historical/global_cn/october_2026_10_29/MuMu-20261029-203908-514.png",
+      "sha256": "a6a23111112cc5cfeb0e61bde5b0ffa871db570ee5de81e60e72e0277069d900",
+      "server": "global_cn",
+      "scene": "october-203908-514",
+      "source": "user-provided MuMu-20261029-203908-514.png",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_october_events.OctoberPageTests.test_page_markers_are_mutually_exclusive_and_reject_overlays",
+        "tests.activity.test_october_events.OctoberPageTests.test_title_rejects_both_dialog_overlays",
+        "tests.activity.test_october_events.OctoberReplayTests.test_detective_claim_popup_then_all_receipts_records_completion",
+        "tests.activity.test_october_events.OctoberReplayTests.test_detective_dropped_tap_retries_only_original_tier",
+        "tests.activity.test_october_events.OctoberReplayTests.test_detective_missing_popup_cannot_extend_deadline",
+        "tests.activity.test_october_events.OctoberReplayTests.test_detective_network_dialog_does_not_confirm_pending_reward",
+        "tests.activity.test_october_events.OctoberReplayTests.test_detective_partial_claim_advances_to_next_tier_only_after_popup",
+        "tests.activity.test_october_events.OctoberReplayTests.test_detective_real_four_tiers_and_partial_receipt",
+        "tests.activity.test_october_events.OctoberReplayTests.test_detective_receipts_before_popup_do_not_finish_pending_reward",
+        "tests.activity.test_october_events.OctoberReplayTests.test_shared_batch_processes_three_real_selected_pages_and_keeps_dialogs_closed"
+      ],
+      "capture_type": "emulator_screenshot",
+      "source_sha256": "b086f7593eece8662f0036b3d7504902d4326286a6bf7756255e40f71bbf68cb"
+    },
+    "20261029-203917-664": {
+      "path": "tests/fixtures/historical/global_cn/october_2026_10_29/MuMu-20261029-203917-664.png",
+      "sha256": "c784a8cded884b7f5b7148b32c9503cfa8fb5b2972c7d5d41bb556d164fb3c39",
+      "server": "global_cn",
+      "scene": "october-203917-664",
+      "source": "user-provided MuMu-20261029-203917-664.png",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_october_events.OctoberPageTests.test_page_markers_are_mutually_exclusive_and_reject_overlays",
+        "tests.activity.test_october_events.OctoberPageTests.test_title_rejects_both_dialog_overlays",
+        "tests.activity.test_october_events.OctoberReplayTests.test_epic_open_and_close_retries_use_separate_production_intervals",
+        "tests.activity.test_october_events.OctoberReplayTests.test_epic_real_unfinished_daily_closes_without_clicking_go",
+        "tests.activity.test_october_events.OctoberReplayTests.test_epic_synthetic_claim_waits_for_popup_and_returns_to_event",
+        "tests.activity.test_october_events.OctoberReplayTests.test_shared_batch_processes_three_real_selected_pages_and_keeps_dialogs_closed"
+      ],
+      "capture_type": "emulator_screenshot",
+      "source_sha256": "90085e153499254b79fad310788f34fc874077c746b301dcff12c84659a8aedd"
+    },
+    "20261029-204832-039": {
+      "path": "tests/fixtures/historical/global_cn/october_2026_10_29/MuMu-20261029-204832-039.png",
+      "sha256": "2e0ffa070a069c368a5eb279a671fa4d1d1a7d8fcfa1049c0f6460ed12016aca",
+      "server": "global_cn",
+      "scene": "october-204832-039",
+      "source": "user-provided MuMu-20261029-204832-039.png",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_october_events.OctoberPageTests.test_page_markers_are_mutually_exclusive_and_reject_overlays",
+        "tests.activity.test_october_events.OctoberPageTests.test_title_rejects_both_dialog_overlays",
+        "tests.activity.test_october_events.OctoberReplayTests.test_attendance_records_only_after_verified_page_without_any_click",
+        "tests.activity.test_october_events.OctoberReplayTests.test_fixed_page_markers_preserve_search_bounds_and_skip_sidebar_ocr",
+        "tests.activity.test_october_events.OctoberReplayTests.test_shared_batch_processes_three_real_selected_pages_and_keeps_dialogs_closed"
+      ],
+      "capture_type": "emulator_screenshot",
+      "source_sha256": "66caa0b9cf82313c54cf59411eddd48780a548a1d3a8977d75acc1736a24aa4c"
+    },
+    "20261029-205440-353": {
+      "path": "tests/fixtures/historical/global_cn/october_2026_10_29/MuMu-20261029-205440-353.png",
+      "sha256": "a01c715fad89910e0c1e2ff37c9055d2465f6ac2274baed3547fb178b6549047",
+      "server": "global_cn",
+      "scene": "october-205440-353",
+      "source": "user-provided MuMu-20261029-205440-353.png",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_october_events.OctoberPageTests.test_page_markers_are_mutually_exclusive_and_reject_overlays",
+        "tests.activity.test_october_events.OctoberPageTests.test_real_ocr_reads_detective_points_and_four_daily_task_rows",
+        "tests.activity.test_october_events.OctoberPageTests.test_title_rejects_both_dialog_overlays",
+        "tests.activity.test_october_events.OctoberReplayTests.test_epic_open_and_close_retries_use_separate_production_intervals",
+        "tests.activity.test_october_events.OctoberReplayTests.test_epic_parser_rejects_partial_duplicate_and_wrong_task_set",
+        "tests.activity.test_october_events.OctoberReplayTests.test_epic_real_unfinished_daily_closes_without_clicking_go",
+        "tests.activity.test_october_events.OctoberReplayTests.test_epic_synthetic_claim_waits_for_popup_and_returns_to_event",
+        "tests.activity.test_october_events.OctoberReplayTests.test_epic_unknown_status_never_closes_or_marks_done",
+        "tests.activity.test_october_events.OctoberReplayTests.test_shared_batch_processes_three_real_selected_pages_and_keeps_dialogs_closed"
+      ],
+      "capture_type": "emulator_screenshot",
+      "source_sha256": "fa106e8de2b4c3c8e69083778039d21fe41c714e3986dc51825b516cd64c2285"
+    },
+    "20261029-213319-743": {
+      "path": "tests/fixtures/historical/global_cn/october_2026_10_29/MuMu-20261029-213319-743.png",
+      "sha256": "40f20c4c415c7e35cb2a0835e50f5e3c00af7fbe14a7a4f43abbde476734eb73",
+      "server": "global_cn",
+      "scene": "epic-path-213319-743",
+      "source": "user-provided MuMu-20261029-213319-743.png",
+      "source_sha256": "3f6661f747f9506be1ab16a6fdfd619e825786e1526dd3238652b0621297fde7",
+      "capture_type": "emulator_screenshot",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_october_events.OctoberReplayTests.test_epic_real_claim_and_popup_retry_with_production_intervals",
+        "tests.activity.test_october_events.OctoberReplayTests.test_epic_real_control_markers_reject_other_rows_and_overlays",
+        "tests.activity.test_october_events.OctoberReplayTests.test_epic_real_receipts_before_reward_keep_pending_task",
+        "tests.activity.test_october_events.OctoberReplayTests.test_epic_real_rewards_reorder_tasks_and_preserve_arena_recheck"
+      ]
+    },
+    "20261029-213321-139": {
+      "path": "tests/fixtures/historical/global_cn/october_2026_10_29/MuMu-20261029-213321-139.png",
+      "sha256": "cb32001270edbbd5203a63015e82c663ce432e0499f50e7cace6aaeb00526424",
+      "server": "global_cn",
+      "scene": "epic-path-213321-139",
+      "source": "user-provided MuMu-20261029-213321-139.png",
+      "source_sha256": "41b9e65c55ff87e6f3ddf527cd8a8c8154b5e53db96525f6d1f16a50a24d73f0",
+      "capture_type": "emulator_screenshot",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_october_events.OctoberReplayTests.test_epic_real_claim_and_popup_retry_with_production_intervals",
+        "tests.activity.test_october_events.OctoberReplayTests.test_epic_real_control_markers_reject_other_rows_and_overlays",
+        "tests.activity.test_october_events.OctoberReplayTests.test_epic_real_receipts_before_reward_keep_pending_task",
+        "tests.activity.test_october_events.OctoberReplayTests.test_epic_real_received_marks_follow_task_identity_after_reorder",
+        "tests.activity.test_october_events.OctoberReplayTests.test_epic_real_rewards_reorder_tasks_and_preserve_arena_recheck"
+      ]
+    },
+    "20261029-213322-958": {
+      "path": "tests/fixtures/historical/global_cn/october_2026_10_29/MuMu-20261029-213322-958.png",
+      "sha256": "3841e856c3b1a77036da4085be726844445bedffff0ddd951f7124879ef817ce",
+      "server": "global_cn",
+      "scene": "epic-path-213322-958",
+      "source": "user-provided MuMu-20261029-213322-958.png",
+      "source_sha256": "5f854cacbf6495c2c5e284a63d953a5dcb5165101e6d044565f9e9a66f8749a0",
+      "capture_type": "emulator_screenshot",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_october_events.OctoberReplayTests.test_epic_real_claim_and_popup_retry_with_production_intervals",
+        "tests.activity.test_october_events.OctoberReplayTests.test_epic_real_control_markers_reject_other_rows_and_overlays",
+        "tests.activity.test_october_events.OctoberReplayTests.test_epic_real_receipts_before_reward_keep_pending_task",
+        "tests.activity.test_october_events.OctoberReplayTests.test_epic_real_rewards_reorder_tasks_and_preserve_arena_recheck",
+        "tests.activity.test_october_events.OctoberReplayTests.test_epic_synthetic_claim_waits_for_popup_and_returns_to_event"
+      ]
+    },
+    "20261029-213324-130": {
+      "path": "tests/fixtures/historical/global_cn/october_2026_10_29/MuMu-20261029-213324-130.png",
+      "sha256": "fb552aa8fbad129fb946619a21c462c922f2a63bef293cec9888b64e6f096157",
+      "server": "global_cn",
+      "scene": "epic-path-213324-130",
+      "source": "user-provided MuMu-20261029-213324-130.png",
+      "source_sha256": "c81bc2d50a3c11eb896093268fa18835a6dd9b2d63d62886fc10431dd84d934f",
+      "capture_type": "emulator_screenshot",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_october_events.OctoberReplayTests.test_epic_open_and_close_retries_use_separate_production_intervals",
+        "tests.activity.test_october_events.OctoberReplayTests.test_epic_parser_rejects_partial_duplicate_and_wrong_task_set",
+        "tests.activity.test_october_events.OctoberReplayTests.test_epic_real_claim_and_popup_retry_with_production_intervals",
+        "tests.activity.test_october_events.OctoberReplayTests.test_epic_real_control_markers_reject_other_rows_and_overlays",
+        "tests.activity.test_october_events.OctoberReplayTests.test_epic_real_receipts_before_reward_keep_pending_task",
+        "tests.activity.test_october_events.OctoberReplayTests.test_epic_real_received_marks_follow_task_identity_after_reorder",
+        "tests.activity.test_october_events.OctoberReplayTests.test_epic_real_rewards_reorder_tasks_and_preserve_arena_recheck",
+        "tests.activity.test_october_events.OctoberReplayTests.test_epic_synthetic_claim_waits_for_popup_and_returns_to_event"
+      ]
+    },
+    "20261029-213328-666": {
+      "path": "tests/fixtures/historical/global_cn/october_2026_10_29/MuMu-20261029-213328-666.png",
+      "sha256": "2a973f187ef6cfcc8534d76ca1672891ad384b07968e93956225159a7313c180",
+      "server": "global_cn",
+      "scene": "epic-path-213328-666",
+      "source": "user-provided MuMu-20261029-213328-666.png",
+      "source_sha256": "4e7be8f5ae16aa29b776c3e86ed83ae4e11eb967bfa8abc991dde597617dcd6f",
+      "capture_type": "emulator_screenshot",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_october_events.OctoberReplayTests.test_epic_real_claim_and_popup_retry_with_production_intervals",
+        "tests.activity.test_october_events.OctoberReplayTests.test_epic_real_control_markers_reject_other_rows_and_overlays",
+        "tests.activity.test_october_events.OctoberReplayTests.test_epic_real_receipts_before_reward_keep_pending_task",
+        "tests.activity.test_october_events.OctoberReplayTests.test_epic_real_rewards_reorder_tasks_and_preserve_arena_recheck"
+      ]
     }
   },
   "aliases": {

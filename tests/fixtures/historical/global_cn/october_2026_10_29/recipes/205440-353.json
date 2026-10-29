@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "source": "../MuMu-20261029-205440-353.png",
+  "suite": "october_events_20261029",
+  "case": "205440-353",
+  "items": [
+    {
+      "namespace": "global_cn",
+      "module": "activity/epic_path",
+      "name": "EPIC_PATH_DAILY_TASK_CHECK",
+      "box": [
+        274,
+        122,
+        346,
+        143
+      ],
+      "kind": "base"
+    },
+    {
+      "namespace": "global_cn",
+      "module": "activity/epic_path",
+      "name": "EPIC_PATH_TASK_LIST",
+      "box": [
+        193,
+        189,
+        1098,
+        653
+      ],
+      "kind": "base"
+    },
+    {
+      "namespace": "global_cn",
+      "module": "activity/epic_path",
+      "name": "EPIC_PATH_TASK_GO",
+      "box": [
+        968,
+        228,
+        1012,
+        253
+      ],
+      "kind": "base"
+    },
+    {
+      "namespace": "global_cn",
+      "module": "activity/epic_path",
+      "name": "EPIC_PATH_TASK_GO",
+      "box": [
+        905,
+        200,
+        1079,
+        641
+      ],
+      "kind": "search"
+    },
+    {
+      "namespace": "global_cn",
+      "module": "activity/epic_path",
+      "name": "EPIC_PATH_TASK_CLOSE",
+      "box": [
+        583,
+        682,
+        673,
+        701
+      ],
+      "kind": "base"
+    }
+  ]
+}

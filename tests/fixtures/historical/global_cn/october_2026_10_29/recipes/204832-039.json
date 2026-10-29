@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "source": "../MuMu-20261029-204832-039.png",
+  "suite": "october_events_20261029",
+  "case": "204832-039",
+  "items": [
+    {
+      "namespace": "global_cn",
+      "module": "activity/completion_record",
+      "name": "COMPLETION_RECORD_CHECK",
+      "box": [
+        1049,
+        429,
+        1214,
+        470
+      ],
+      "kind": "base"
+    }
+  ]
+}

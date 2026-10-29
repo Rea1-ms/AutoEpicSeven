@@ -80,7 +80,7 @@
     },
     "LimitedActivity": {
       "name": "Eventos temporales",
-      "help": "Recoge las 20 invocaciones diarias y las recompensas de tareas de Meirin desde la entrada de eventos. Se programa de forma independiente de Eventos especiales; Invocación realiza las invocaciones."
+      "help": "Visita el registro de asistencia y recoge las recompensas de los eventos activos, incluidas la búsqueda diaria del detective y las tareas diarias del Camino épico. Se programa de forma independiente de Eventos especiales; Invocación realiza las invocaciones."
     },
     "SpecialActivity": {
       "name": "Eventos especiales",
@@ -1102,7 +1102,7 @@
   "LimitedActivity": {
     "_info": {
       "name": "Eventos temporales",
-      "help": "Recoge las 20 invocaciones diarias y las recompensas de tareas de Meirin desde la entrada de eventos. Se programa de forma independiente de Eventos especiales; Invocación realiza las invocaciones."
+      "help": "Visita el registro de asistencia y recoge las recompensas de los eventos activos, incluidas la búsqueda diaria del detective y las tareas diarias del Camino épico. Se programa de forma independiente de Eventos especiales; Invocación realiza las invocaciones."
     },
     "GetFreeGacha": {
       "name": "Recoger las 20 invocaciones gratis diarias",
@@ -1115,6 +1115,18 @@
     "GetSupportReward": {
       "name": "Recoger recompensas de boletos de apoyo",
       "help": "Solo interfaz china del servidor internacional: recoge 500 boletos por 10 combates diarios de Arena y las recompensas semanales disponibles. Revisa solo tras Arena; reinicio diario a las 03:00 UTC. No gasta energía ni boletos."
+    },
+    "GetCompletionRecord": {
+      "name": "Visitar el registro de asistencia",
+      "help": "Abre el registro diario sin reclamar recompensas acumuladas ni comprar días perdidos. Solo interfaz global en chino."
+    },
+    "GetDetectiveSearch": {
+      "name": "Reclamar recompensas del detective",
+      "help": "Reclama los niveles de 180/360/540/720 puntos. Revisa tras combate o arena hasta recibir los cuatro. No gasta recursos."
+    },
+    "GetEpicPathDailyReward": {
+      "name": "Reclamar recompensas diarias de Ruta épica",
+      "help": "Solo misiones diarias. Revisa tras combate o arena hasta recibirlas todas. No opera misiones de temporada ni intercambios."
     }
   },
   "SpecialActivity": {

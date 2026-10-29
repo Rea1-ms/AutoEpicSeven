@@ -81,7 +81,8 @@ class MigrationTests(unittest.TestCase):
                     self.assertEqual(result[task]['Scheduler']['ServerUpdate'], '02:00')
                     self.assertEqual(result[task]['Scheduler']['Command'], task)
                 self.assertEqual(result['LimitedActivity']['LimitedActivity'], {
-                    'GetFreeGacha': True, 'GetMeirinReward': True, 'GetSupportReward': True})
+                    'GetFreeGacha': True, 'GetMeirinReward': True, 'GetSupportReward': True, 'GetCompletionRecord': True,
+                    'GetDetectiveSearch': True, 'GetEpicPathDailyReward': True})
                 self.assertEqual(result['SpecialActivity']['SpecialActivity'], {'BuyHucheMysticMedals': True})
                 self.assertEqual(result['SpecialActivity']['ActivityRuntime']['CheckedEvents'],
                                  old['SpecialActivity']['ActivityRuntime']['CheckedEvents'])
@@ -98,7 +99,8 @@ class MigrationTests(unittest.TestCase):
         self.assertEqual(result['Scheduler']['NextRun'], datetime(2026, 9, 24, 3))
         # ServerUpdate is hidden and follows the existing schema/server override.
         self.assertEqual(result['Scheduler']['ServerUpdate'], '02:00')
-        self.assertEqual(result['LimitedActivity'], {'GetFreeGacha': False, 'GetMeirinReward': False, 'GetSupportReward': True})
+        self.assertEqual(result['LimitedActivity'], {'GetFreeGacha': False, 'GetMeirinReward': False, 'GetSupportReward': True, 'GetCompletionRecord': True,
+                    'GetDetectiveSearch': True, 'GetEpicPathDailyReward': True})
 
     def test_fresh_profile_does_not_enable_tasks_or_spending(self):
         result = ConfigUpdater().config_update({})

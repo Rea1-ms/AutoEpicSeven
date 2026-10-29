@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "source": "../MuMu-20261029-203908-514.png",
+  "suite": "october_events_20261029",
+  "case": "203908-514",
+  "items": [
+    {
+      "namespace": "global_cn",
+      "module": "activity/detective_search",
+      "name": "DETECTIVE_REWARD_RECEIVED",
+      "box": [
+        385,
+        574,
+        412,
+        595
+      ],
+      "kind": "base"
+    },
+    {
+      "namespace": "global_cn",
+      "module": "activity/detective_search",
+      "name": "DETECTIVE_REWARD_RECEIVED",
+      "box": [
+        310,
+        555,
+        1236,
+        650
+      ],
+      "kind": "search"
+    }
+  ]
+}

@@ -22472,6 +22472,428 @@
           "reason": "验证当前截图、动作间隔、禁止动作及正面终态；最终主页和超时序列明确模拟"
         }
       ]
+    },
+    {
+      "source": "tests/activity/test_october_events.py",
+      "business": "十月活动",
+      "status": "已迁移",
+      "reason": "新活动页面、领奖与调度回归",
+      "cases": [
+        {
+          "id": "tests.activity.test_october_events.OctoberPageTests.test_activity_title_identifies_epic_path_without_clock",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-203759-503"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文活动页面、领取确认与完成调度"
+        },
+        {
+          "id": "tests.activity.test_october_events.OctoberPageTests.test_title_rejects_both_dialog_overlays",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-203759-503",
+            "20261029-203901-709",
+            "20261029-203905-985",
+            "20261029-203908-514",
+            "20261029-203917-664",
+            "20261029-204832-039",
+            "20261029-205440-353"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文活动页面、领取确认与完成调度"
+        },
+        {
+          "id": "tests.activity.test_october_events.OctoberPageTests.test_page_markers_are_mutually_exclusive_and_reject_overlays",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-203759-503",
+            "20261029-203901-709",
+            "20261029-203905-985",
+            "20261029-203908-514",
+            "20261029-203917-664",
+            "20261029-204832-039",
+            "20261029-205440-353"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文活动页面、领取确认与完成调度"
+        },
+        {
+          "id": "tests.activity.test_october_events.OctoberPageTests.test_real_ocr_reads_detective_points_and_four_daily_task_rows",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-203901-709",
+            "20261029-205440-353"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文活动页面、领取确认与完成调度"
+        },
+        {
+          "id": "tests.activity.test_october_events.OctoberReplayTests.test_attendance_records_only_after_verified_page_without_any_click",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-204832-039"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文活动页面、领取确认与完成调度"
+        },
+        {
+          "id": "tests.activity.test_october_events.OctoberReplayTests.test_wrong_attendance_page_never_records_or_claims",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-203759-503"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文活动页面、领取确认与完成调度"
+        },
+        {
+          "id": "tests.activity.test_october_events.OctoberReplayTests.test_fixed_page_markers_preserve_search_bounds_and_skip_sidebar_ocr",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-203759-503",
+            "20261029-203901-709",
+            "20261029-204832-039"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文活动页面、领取确认与完成调度"
+        },
+        {
+          "id": "tests.activity.test_october_events.OctoberReplayTests.test_detective_real_four_tiers_and_partial_receipt",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-203901-709",
+            "20261029-203908-514"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文活动页面、领取确认与完成调度"
+        },
+        {
+          "id": "tests.activity.test_october_events.OctoberReplayTests.test_detective_claim_popup_then_all_receipts_records_completion",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-203901-709",
+            "20261029-203905-985",
+            "20261029-203908-514"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文活动页面、领取确认与完成调度"
+        },
+        {
+          "id": "tests.activity.test_october_events.OctoberReplayTests.test_detective_receipts_before_popup_do_not_finish_pending_reward",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-203901-709",
+            "20261029-203905-985",
+            "20261029-203908-514"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文活动页面、领取确认与完成调度"
+        },
+        {
+          "id": "tests.activity.test_october_events.OctoberReplayTests.test_detective_dropped_tap_retries_only_original_tier",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-203901-709",
+            "20261029-203905-985",
+            "20261029-203908-514"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文活动页面、领取确认与完成调度"
+        },
+        {
+          "id": "tests.activity.test_october_events.OctoberReplayTests.test_detective_partial_claim_advances_to_next_tier_only_after_popup",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-203901-709",
+            "20261029-203905-985",
+            "20261029-203908-514"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文活动页面、领取确认与完成调度"
+        },
+        {
+          "id": "tests.activity.test_october_events.OctoberReplayTests.test_detective_zero_points_keeps_battle_recheck_without_clicking",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-203901-709"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文活动页面、领取确认与完成调度"
+        },
+        {
+          "id": "tests.activity.test_october_events.OctoberReplayTests.test_detective_unknown_points_time_out_without_completion",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-203901-709"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文活动页面、领取确认与完成调度"
+        },
+        {
+          "id": "tests.activity.test_october_events.OctoberReplayTests.test_detective_missing_popup_cannot_extend_deadline",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-203901-709",
+            "20261029-203908-514"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文活动页面、领取确认与完成调度"
+        },
+        {
+          "id": "tests.activity.test_october_events.OctoberReplayTests.test_detective_wrong_tab_is_rejected",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-203759-503"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文活动页面、领取确认与完成调度"
+        },
+        {
+          "id": "tests.activity.test_october_events.OctoberReplayTests.test_epic_real_unfinished_daily_closes_without_clicking_go",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-203759-503",
+            "20261029-203917-664",
+            "20261029-205440-353"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文活动页面、领取确认与完成调度"
+        },
+        {
+          "id": "tests.activity.test_october_events.OctoberReplayTests.test_epic_synthetic_claim_waits_for_popup_and_returns_to_event",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-203759-503",
+            "20261029-205440-353",
+            "20261029-213324-130",
+            "20261029-213322-958",
+            "20261029-203917-664"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文活动页面、领取确认与完成调度"
+        },
+        {
+          "id": "tests.activity.test_october_events.OctoberReplayTests.test_epic_unknown_status_never_closes_or_marks_done",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-203759-503",
+            "20261029-205440-353"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文活动页面、领取确认与完成调度"
+        },
+        {
+          "id": "tests.activity.test_october_events.OctoberReplayTests.test_epic_parser_rejects_partial_duplicate_and_wrong_task_set",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-205440-353",
+            "20261029-213324-130"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文活动页面、领取确认与完成调度"
+        },
+        {
+          "id": "tests.activity.test_october_events.OctoberReplayTests.test_shared_batch_processes_three_real_selected_pages_and_keeps_dialogs_closed",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-203759-503",
+            "20261029-203901-709",
+            "20261029-203905-985",
+            "20261029-203908-514",
+            "20261029-203917-664",
+            "20261029-204832-039",
+            "20261029-205440-353"
+          ],
+          "status": "已纳入",
+          "reason": "活动批处理、点击重试、分服页面与调度隔离"
+        },
+        {
+          "id": "tests.activity.test_october_events.OctoberReplayTests.test_detective_network_dialog_does_not_confirm_pending_reward",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-203901-709",
+            "20261029-203905-985",
+            "20261029-203908-514"
+          ],
+          "status": "已纳入",
+          "reason": "活动批处理、点击重试、分服页面与调度隔离"
+        },
+        {
+          "id": "tests.activity.test_october_events.OctoberReplayTests.test_epic_open_and_close_retries_use_separate_production_intervals",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-203759-503",
+            "20261029-205440-353",
+            "20261029-213324-130",
+            "20261029-203917-664"
+          ],
+          "status": "已纳入",
+          "reason": "活动批处理、点击重试、分服页面与调度隔离"
+        },
+        {
+          "id": "tests.activity.test_october_events.OctoberSchedulingTests.test_new_events_are_international_only_and_have_end_boundaries",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文活动页面、领取确认与完成调度"
+        },
+        {
+          "id": "tests.activity.test_october_events.OctoberSchedulingTests.test_battle_and_arena_wake_each_unfinished_event_and_stop_after_receipt",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文活动页面、领取确认与完成调度"
+        },
+        {
+          "id": "tests.activity.test_october_events.OctoberSchedulingTests.test_attendance_does_not_wake_after_battle_and_flags_are_registered",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "国际服中文活动页面、领取确认与完成调度"
+        },
+        {
+          "id": "tests.activity.test_october_events.OctoberSchedulingTests.test_disabled_task_does_not_wake_battle_rewards",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "活动批处理、点击重试、分服页面与调度隔离"
+        },
+        {
+          "id": "tests.activity.test_october_events.OctoberSchedulingTests.test_activity_route_and_modal_registration_are_isolated_by_server",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "活动批处理、点击重试、分服页面与调度隔离"
+        },
+        {
+          "id": "tests.activity.test_october_events.OctoberReplayTests.test_epic_real_rewards_reorder_tasks_and_preserve_arena_recheck",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-213319-743",
+            "20261029-213321-139",
+            "20261029-213322-958",
+            "20261029-213324-130",
+            "20261029-213328-666"
+          ],
+          "status": "已纳入",
+          "reason": "史诗每日真实体力领奖、任务重排和未完成竞技场复查"
+        },
+        {
+          "id": "tests.activity.test_october_events.OctoberReplayTests.test_epic_real_receipts_before_reward_keep_pending_task",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-213319-743",
+            "20261029-213321-139",
+            "20261029-213322-958",
+            "20261029-213324-130",
+            "20261029-213328-666"
+          ],
+          "status": "已纳入",
+          "reason": "史诗每日真实体力领奖、任务重排和未完成竞技场复查"
+        },
+        {
+          "id": "tests.activity.test_october_events.OctoberReplayTests.test_epic_real_claim_and_popup_retry_with_production_intervals",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-213319-743",
+            "20261029-213321-139",
+            "20261029-213322-958",
+            "20261029-213324-130",
+            "20261029-213328-666"
+          ],
+          "status": "已纳入",
+          "reason": "史诗每日真实体力领奖、任务重排和未完成竞技场复查"
+        },
+        {
+          "id": "tests.activity.test_october_events.OctoberReplayTests.test_epic_real_received_marks_follow_task_identity_after_reorder",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-213321-139",
+            "20261029-213324-130"
+          ],
+          "status": "已纳入",
+          "reason": "史诗每日真实体力领奖、任务重排和未完成竞技场复查"
+        },
+        {
+          "id": "tests.activity.test_october_events.OctoberReplayTests.test_epic_real_control_markers_reject_other_rows_and_overlays",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-213319-743",
+            "20261029-213321-139",
+            "20261029-213322-958",
+            "20261029-213324-130",
+            "20261029-213328-666"
+          ],
+          "status": "已纳入",
+          "reason": "史诗奖励标题与灰勾的真实正反例、逐行定位及搜索范围恢复"
+        }
+      ]
     }
   ]
 }

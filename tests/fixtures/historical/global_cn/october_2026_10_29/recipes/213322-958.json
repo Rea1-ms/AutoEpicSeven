@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "source": "../MuMu-20261029-213322-958.png",
+  "suite": "october_epic_claim_20261029",
+  "case": "213322-958",
+  "items": [
+    {
+      "namespace": "global_cn",
+      "module": "activity/epic_path",
+      "name": "EPIC_PATH_REWARD_POPUP_CHECK",
+      "box": [
+        577,
+        152,
+        705,
+        183
+      ],
+      "kind": "base"
+    }
+  ]
+}

@@ -21,6 +21,13 @@ COMMON_ACTIVITY_CHECK = ButtonWrapper(
             button=(1064, 613, 1167, 633),
         ),
     ],
+    global_cn=Button(
+        file='./assets/global_cn/activity/common/COMMON_ACTIVITY_CHECK.png',
+        area=(69, 20, 118, 46),
+        search=(49, 0, 138, 66),
+        color=(143, 164, 198),
+        button=(69, 20, 118, 46),
+    ),
     share=[
         Button(
             file='./assets/share/activity/common/COMMON_ACTIVITY_CHECK.png',

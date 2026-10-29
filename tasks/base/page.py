@@ -527,6 +527,19 @@ page_common_activity = Page(COMMON_ACTIVITY_CHECK)
 page_common_activity.link(BACK, destination=page_main)
 page_main.link(MAIN_GOTO_COMMON_ACTIVITY, destination=page_common_activity, match_before_click=True)
 
+# The task dialog has its own positive identity and a local close control.
+# Register its return edge so a resumed daily check can restore the activity
+# container before the batch chooses a sidebar tab. Other languages have no
+# verified dialog assets and must not scan this page.
+if server_.is_oversea_server() and server_.lang == 'global_cn':
+    from tasks.activity.assets.assets_activity_epic_path import (
+        EPIC_PATH_DAILY_TASK_CHECK,
+        EPIC_PATH_TASK_CLOSE,
+    )
+
+    page_epic_path_daily = Page(EPIC_PATH_DAILY_TASK_CHECK)
+    page_epic_path_daily.link(EPIC_PATH_TASK_CLOSE, destination=page_common_activity)
+
 page_special_activity = Page(ACTIVITY_2026SUMMER)
 page_special_activity.link(BACK, destination=page_main)
 page_main.link(MAIN_GOTO_SPECIAL_ACTIVITY, destination=page_special_activity)

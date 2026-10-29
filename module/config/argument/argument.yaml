@@ -411,6 +411,9 @@ LimitedActivity:
   GetFreeGacha: true
   GetMeirinReward: true
   GetSupportReward: true
+  GetCompletionRecord: true
+  GetDetectiveSearch: true
+  GetEpicPathDailyReward: true
 
 SpecialActivity:
   # 花费天空石的购买项默认关闭，避免升级后自动改变用户消费。

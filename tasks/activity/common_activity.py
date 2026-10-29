@@ -2,9 +2,19 @@ from module.base.timer import Timer
 from module.logger import logger
 from module.ocr.ocr import Ocr, OcrResultButton
 from tasks.activity.assets.assets_activity_common import COMMON_ACTIVITY_LIST
+from tasks.activity.assets.assets_activity_completion_record import (
+    COMPLETION_RECORD_CHECK,
+)
+from tasks.activity.assets.assets_activity_detective_search import (
+    DETECTIVE_SEARCH_CHECK,
+)
+from tasks.activity.assets.assets_activity_epic_path import EPIC_PATH_CHECK
 from tasks.activity.assets.assets_activity_special_26_8_27 import FREE_20_GACHA_SELECTED
 from tasks.activity.assets.assets_activity_special_26_10_15 import MEIRIN_GATE_SELECTED
 from tasks.activity.assets.assets_activity_special_26_10_19 import SUPPORT_GATE_CHECK
+from tasks.activity.completion_record import CompletionRecord
+from tasks.activity.detective_search import DetectiveSearch
+from tasks.activity.epic_path import EpicPath
 from tasks.activity.free_gacha_20 import FreeGacha20
 from tasks.activity.meirin_reward import MeirinReward
 from tasks.activity.navigation import ActivityNavigationMixin
@@ -20,6 +30,9 @@ class CommonActivityBatch(ActivityNavigationMixin, UI):
         "free_gacha_20": ("INFINITY", FREE_20_GACHA_SELECTED, FreeGacha20),
         "meirin_reward": ("与梅铃一起吧", MEIRIN_GATE_SELECTED, MeirinReward),
         "support_reward": ("应援任务", SUPPORT_GATE_CHECK, SupportReward),
+        "completion_record": ("完成记录", COMPLETION_RECORD_CHECK, CompletionRecord),
+        "detective_search": ("名侦探的每日搜查", DETECTIVE_SEARCH_CHECK, DetectiveSearch),
+        "epic_path": ("史诗之路", EPIC_PATH_CHECK, EpicPath),
     }
 
     def run(self, activities) -> bool:

@@ -3,6 +3,13 @@ from module.config import server
 from module.logger import logger
 from module.ocr.ocr import Ocr, OcrResultButton
 from tasks.activity.assets.assets_activity_common import COMMON_ACTIVITY_LIST
+from tasks.activity.assets.assets_activity_completion_record import (
+    COMPLETION_RECORD_CHECK,
+)
+from tasks.activity.assets.assets_activity_detective_search import (
+    DETECTIVE_SEARCH_CHECK,
+)
+from tasks.activity.assets.assets_activity_epic_path import EPIC_PATH_CHECK
 from tasks.activity.assets.assets_activity_special_26_8_27 import FREE_20_GACHA_SELECTED
 from tasks.activity.assets.assets_activity_special_26_10_19 import SUPPORT_GATE_CHECK
 from tasks.base.page import page_common_activity
@@ -36,7 +43,10 @@ class ActivityNavigationMixin:
         try:
             if not (
                 server.lang == "global_cn"
-                and selected_button in (FREE_20_GACHA_SELECTED, SUPPORT_GATE_CHECK)
+                and selected_button in (
+                    FREE_20_GACHA_SELECTED, SUPPORT_GATE_CHECK,
+                    COMPLETION_RECORD_CHECK, DETECTIVE_SEARCH_CHECK, EPIC_PATH_CHECK,
+                )
             ):
                 selected_button.load_search(COMMON_ACTIVITY_LIST.area)
             return self.match_template_color(selected_button)

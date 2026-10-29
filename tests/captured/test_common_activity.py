@@ -12,11 +12,21 @@ from unittest.mock import patch
 WORKTREE = Path(__file__).resolve().parents[2]
 
 import module.config.server as server
+from module.base.button import ButtonWrapper
+from tasks.activity.assets.assets_activity_common import COMMON_ACTIVITY_CHECK
 from tasks.activity.common_activity import CommonActivityBatch
+from tasks.base.page import page_common_activity
 from tests.support.history_e7wc_battle_gate import HISTORICAL_ACTIVITIES
 
 F, G, K = 'free_gacha_20', 'e7wc_battle_gate', 'koharu_raffle'
 MODES = (F, G, K)
+
+# These retired-event captures predate the October title check. Keep using
+# their real clock templates without restoring that fallback in production.
+HISTORICAL_ACTIVITY_CHECK = ButtonWrapper(
+    name='HISTORICAL_COMMON_ACTIVITY_CHECK',
+    share=COMMON_ACTIVITY_CHECK.data_buttons['share'],
+)
 
 
 def frame(selected=None, rows=(), **kwargs):
@@ -51,7 +61,7 @@ class RealScreenshotBatchTests(unittest.TestCase):
                            for mode, (keyword, button, _) in batch.ACTIVITIES.items()}
                 with patch('tasks.activity.common_activity.Ocr') as ocr, patch(
                     'tasks.activity.common_activity.Timer'
-                ) as timer:
+                ) as timer, patch.object(page_common_activity, 'check_button', HISTORICAL_ACTIVITY_CHECK):
                     timer.return_value.start.return_value.reached.return_value = True
                     self.assertFalse(batch._run_pending(pending))
                 workers[expected].run_claim.assert_called_once_with(navigate=False)

@@ -80,7 +80,7 @@
     },
     "LimitedActivity": {
       "name": "Limited-time events",
-      "help": "Claim daily 20 summons and Meirin task rewards through the event entrance. Scheduled independently of Special activities; the Summon task performs summons."
+      "help": "Visit attendance and claim current event rewards through the event entrance, including Attendance Record, Daily Detective Search and Epic Path daily tasks. Scheduled independently of Special activities; the Summon task performs summons."
     },
     "SpecialActivity": {
       "name": "Special activities",
@@ -1102,7 +1102,7 @@
   "LimitedActivity": {
     "_info": {
       "name": "Limited-time events",
-      "help": "Claim daily 20 summons and Meirin task rewards through the event entrance. Scheduled independently of Special activities; the Summon task performs summons."
+      "help": "Visit attendance and claim current event rewards through the event entrance, including Attendance Record, Daily Detective Search and Epic Path daily tasks. Scheduled independently of Special activities; the Summon task performs summons."
     },
     "GetFreeGacha": {
       "name": "Claim Daily 20 Free Summons",
@@ -1115,6 +1115,18 @@
     "GetSupportReward": {
       "name": "Claim support ticket task rewards",
       "help": "Overseas Chinese UI: claim 500 support tickets for 10 daily Arena matches and available weekly holding rewards. Recheck after Arena only; resets at 03:00 UTC. Does not spend stamina or tickets."
+    },
+    "GetCompletionRecord": {
+      "name": "Visit attendance record",
+      "help": "Open the attendance record daily without claiming stored rewards or buying missed days. Global Chinese UI only."
+    },
+    "GetDetectiveSearch": {
+      "name": "Claim daily detective rewards",
+      "help": "Claim earned 180/360/540/720 point tiers. Recheck after combat or arena until all four are received. Never spend resources. Global Chinese UI only."
+    },
+    "GetEpicPathDailyReward": {
+      "name": "Claim Epic Path daily rewards",
+      "help": "Claim daily tasks only. Recheck after combat or arena until received. Leave season tasks and reward exchanges untouched. Global Chinese UI only."
     }
   },
   "SpecialActivity": {

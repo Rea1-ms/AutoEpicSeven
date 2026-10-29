@@ -90,6 +90,7 @@ ACTIVITY_MODULES = (
     "tests.activity.test_free_gacha_20",
     "tests.activity.test_meirin_reward",
     "tests.activity.test_support_reward",
+    "tests.activity.test_october_events",
 )
 COMBAT_MODULES = (
     "tests.combat.test_daily_batch",
@@ -172,6 +173,7 @@ SUITES = {
     "core": CORE_MODULES,
     "login_update": ("tests.core.test_login_update",),
     "activity": ACTIVITY_MODULES,
+    "october_events": ("tests.activity.test_october_events",),
     "combat": COMBAT_MODULES,
     "secret_shop": SECRET_SHOP_MODULES,
     "interaction": INTERACTION_MODULES,

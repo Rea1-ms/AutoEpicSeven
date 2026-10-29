@@ -199,6 +199,9 @@ class GeneratedConfig:
     LimitedActivity_GetFreeGacha = True
     LimitedActivity_GetMeirinReward = True
     LimitedActivity_GetSupportReward = True
+    LimitedActivity_GetCompletionRecord = True
+    LimitedActivity_GetDetectiveSearch = True
+    LimitedActivity_GetEpicPathDailyReward = True
 
     # Group `SpecialActivity`
     SpecialActivity_BuyHucheMysticMedals = False

@@ -101,7 +101,7 @@ def should_schedule_after_battle(config, *, task="LimitedActivity", arena=False)
         return False
 
     for event in active_activities(config, task=task):
-        if event.mode == "meirin_reward":
+        if event.mode in ("meirin_reward", "detective_search", "epic_path"):
             # An empty reward queue is not daily completion. The claim flow
             # only writes this event/server record after ALL_TASK_DONE, so
             # later battles can request another check without waking retired
@@ -109,9 +109,14 @@ def should_schedule_after_battle(config, *, task="LimitedActivity", arena=False)
             # Arena/Combat are bound to their own option groups. Read the
             # owning task's saved switch instead of a generated default left
             # on the currently bound config object.
+            option = {
+                "meirin_reward": "GetMeirinReward",
+                "detective_search": "GetDetectiveSearch",
+                "epic_path": "GetEpicPathDailyReward",
+            }[event.mode]
             enabled = config.cross_get(
-                "LimitedActivity.LimitedActivity.GetMeirinReward",
-                default=config.LimitedActivity_GetMeirinReward,
+                f"LimitedActivity.LimitedActivity.{option}",
+                default=getattr(config, f"LimitedActivity_{option}"),
             )
             if enabled and not is_activity_checked_today(config, event.event_id, task=task):
                 return True

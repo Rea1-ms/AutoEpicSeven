@@ -11,4 +11,7 @@ class LimitedActivityEntry(SpecialActivityEntry):
         "free_gacha_20": "LimitedActivity_GetFreeGacha",
         "meirin_reward": "LimitedActivity_GetMeirinReward",
         "support_reward": "LimitedActivity_GetSupportReward",
+        "completion_record": "LimitedActivity_GetCompletionRecord",
+        "detective_search": "LimitedActivity_GetDetectiveSearch",
+        "epic_path": "LimitedActivity_GetEpicPathDailyReward",
     }
