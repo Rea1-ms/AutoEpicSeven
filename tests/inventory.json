@@ -22215,7 +22215,7 @@
     },
     {
       "source": "tests/core/test_login_update.py",
-      "business": "国际服登录更新",
+      "business": "国服与国际服登录更新",
       "status": "新增",
       "reason": "2026年10月29日更新界面及应用商店更新回归",
       "cases": [
@@ -22470,6 +22470,209 @@
           "fixtures": [],
           "status": "已纳入",
           "reason": "验证当前截图、动作间隔、禁止动作及正面终态；最终主页和超时序列明确模拟"
+        },
+        {
+          "id": "tests.core.test_login_update.CnUpdateTests.test_patch_confirm_and_progress_match_only_their_own_captures",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-220435-623",
+            "20261029-220437-897",
+            "20261029-220443-735",
+            "20261029-220447-999",
+            "20261029-220451-467",
+            "20261029-221739-381",
+            "20261029-221833-219",
+            "20261029-221842-942",
+            "20261029-222010-024",
+            "20261029-222013-948",
+            "20261029-222031-002"
+          ],
+          "status": "已迁移",
+          "reason": "2026年10月29日国服更新界面、大版本更新与竖屏安装回归"
+        },
+        {
+          "id": "tests.core.test_login_update.CnUpdateTests.test_long_patch_scan_and_download_continue_without_restart",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-221739-381",
+            "20261029-221842-942",
+            "20261029-222010-024",
+            "20261029-222013-948",
+            "20261029-222031-002"
+          ],
+          "status": "已迁移",
+          "reason": "2026年10月29日国服更新界面、大版本更新与竖屏安装回归"
+        },
+        {
+          "id": "tests.core.test_login_update.CnUpdateTests.test_popup_handoff_accepts_new_cn_patch_and_client_states",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-220435-623",
+            "20261029-220437-897",
+            "20261029-220443-735",
+            "20261029-220447-999",
+            "20261029-220451-467",
+            "20261029-221739-381",
+            "20261029-221842-942",
+            "20261029-222010-024",
+            "20261029-222013-948",
+            "20261029-222031-002"
+          ],
+          "status": "已迁移",
+          "reason": "2026年10月29日国服更新界面、大版本更新与竖屏安装回归"
+        },
+        {
+          "id": "tests.core.test_login_update.CnUpdateTests.test_client_states_match_only_their_own_captures",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-220435-623",
+            "20261029-220437-897",
+            "20261029-220443-735",
+            "20261029-220447-999",
+            "20261029-220451-467",
+            "20261029-221739-381",
+            "20261029-221833-219",
+            "20261029-221842-942",
+            "20261029-222010-024",
+            "20261029-222013-948",
+            "20261029-222031-002"
+          ],
+          "status": "已迁移",
+          "reason": "2026年10月29日国服更新界面、大版本更新与竖屏安装回归"
+        },
+        {
+          "id": "tests.core.test_login_update.CnUpdateTests.test_client_download_install_and_portrait_confirmation_finish_before_restart",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-220435-623",
+            "20261029-220437-897",
+            "20261029-220443-735",
+            "20261029-220447-999",
+            "20261029-220451-467"
+          ],
+          "status": "已迁移",
+          "reason": "2026年10月29日国服更新界面、大版本更新与竖屏安装回归"
+        },
+        {
+          "id": "tests.core.test_login_update.CnUpdateTests.test_failed_clicks_retry_independently_and_never_cancel_installation",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-220435-623",
+            "20261029-220437-897",
+            "20261029-220443-735",
+            "20261029-220447-999",
+            "20261029-220451-467"
+          ],
+          "status": "已迁移",
+          "reason": "2026年10月29日国服更新界面、大版本更新与竖屏安装回归"
+        },
+        {
+          "id": "tests.core.test_login_update.CnUpdateTests.test_long_client_download_is_read_only",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-220437-897",
+            "20261029-220451-467"
+          ],
+          "status": "已迁移",
+          "reason": "2026年10月29日国服更新界面、大版本更新与竖屏安装回归"
+        },
+        {
+          "id": "tests.core.test_login_update.CnUpdateTests.test_installed_frame_exits_immediately_without_open_or_done_click",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-220451-467"
+          ],
+          "status": "已迁移",
+          "reason": "2026年10月29日国服更新界面、大版本更新与竖屏安装回归"
+        },
+        {
+          "id": "tests.core.test_login_update.CnUpdateTests.test_new_screenshot_and_completion_take_priority_over_timeout",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-220451-467"
+          ],
+          "status": "已迁移",
+          "reason": "2026年10月29日国服更新界面、大版本更新与竖屏安装回归"
+        },
+        {
+          "id": "tests.core.test_login_update.CnUpdateTests.test_unknown_screen_and_failed_clicks_have_a_fixed_update_deadline",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已迁移",
+          "reason": "2026年10月29日国服更新界面、大版本更新与竖屏安装回归"
+        },
+        {
+          "id": "tests.core.test_login_update.CnUpdateTests.test_other_app_portrait_confirmation_is_not_clicked",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-220447-999"
+          ],
+          "status": "已迁移",
+          "reason": "2026年10月29日国服更新界面、大版本更新与竖屏安装回归"
+        },
+        {
+          "id": "tests.core.test_login_update.CnUpdateTests.test_login_allows_updater_to_leave_game_and_restarts_after_installation",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-220435-623",
+            "20261029-220437-897",
+            "20261029-220443-735",
+            "20261029-220447-999",
+            "20261029-220451-467"
+          ],
+          "status": "已迁移",
+          "reason": "2026年10月29日国服更新界面、大版本更新与竖屏安装回归"
+        },
+        {
+          "id": "tests.core.test_login_update.CnUpdateTests.test_patch_confirmation_cooldown_does_not_delay_login_action",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-222010-024"
+          ],
+          "status": "已迁移",
+          "reason": "2026年10月29日国服更新界面、大版本更新与竖屏安装回归"
+        },
+        {
+          "id": "tests.core.test_login_update.CnUpdateTests.test_public_handler_leaves_patch_and_health_notice_untouched",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-221739-381",
+            "20261029-221833-219",
+            "20261029-221842-942",
+            "20261029-222010-024",
+            "20261029-222013-948",
+            "20261029-222031-002"
+          ],
+          "status": "已迁移",
+          "reason": "2026年10月29日国服更新界面、大版本更新与竖屏安装回归"
         }
       ]
     },

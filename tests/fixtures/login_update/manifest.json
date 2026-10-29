@@ -320,6 +320,273 @@
           720
         ]
       ]
+    },
+    "20261029-220435-623": {
+      "path": "tests/fixtures/login_update/cn/MuMu-20261029-220435-623.png",
+      "sha256": "fccde962e3c25fc7f705d3674c68bf2ecdfc43b72febb72896faa1617deab59e",
+      "server": "cn",
+      "scene": "client_update_confirm",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.core.test_login_update.CnUpdateTests.test_patch_confirm_and_progress_match_only_their_own_captures",
+        "tests.core.test_login_update.CnUpdateTests.test_popup_handoff_accepts_new_cn_patch_and_client_states",
+        "tests.core.test_login_update.CnUpdateTests.test_client_states_match_only_their_own_captures",
+        "tests.core.test_login_update.CnUpdateTests.test_client_download_install_and_portrait_confirmation_finish_before_restart",
+        "tests.core.test_login_update.CnUpdateTests.test_failed_clicks_retry_independently_and_never_cancel_installation",
+        "tests.core.test_login_update.CnUpdateTests.test_login_allows_updater_to_leave_game_and_restarts_after_installation"
+      ],
+      "source": "user-provided MuMu-20261029-220435-623.png",
+      "source_sha256": "c4a3bfc44899d35035456bca2af5ccf0f9b99e747adbd8762f279d680dd5d697",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ]
+    },
+    "20261029-220437-897": {
+      "path": "tests/fixtures/login_update/cn/MuMu-20261029-220437-897.png",
+      "sha256": "4e4e5395bac2e3d1e0a82f5ec9cae755cf0cda5389c982b3912fd95c3ea781ab",
+      "server": "cn",
+      "scene": "client_downloading",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.core.test_login_update.CnUpdateTests.test_patch_confirm_and_progress_match_only_their_own_captures",
+        "tests.core.test_login_update.CnUpdateTests.test_popup_handoff_accepts_new_cn_patch_and_client_states",
+        "tests.core.test_login_update.CnUpdateTests.test_client_states_match_only_their_own_captures",
+        "tests.core.test_login_update.CnUpdateTests.test_client_download_install_and_portrait_confirmation_finish_before_restart",
+        "tests.core.test_login_update.CnUpdateTests.test_failed_clicks_retry_independently_and_never_cancel_installation",
+        "tests.core.test_login_update.CnUpdateTests.test_long_client_download_is_read_only",
+        "tests.core.test_login_update.CnUpdateTests.test_login_allows_updater_to_leave_game_and_restarts_after_installation"
+      ],
+      "source": "user-provided MuMu-20261029-220437-897.png",
+      "source_sha256": "e99cdeb8f35c620d40a2ae7e1374e29261fb1962dfb37512a9f67a07031b2cc5",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ]
+    },
+    "20261029-220443-735": {
+      "path": "tests/fixtures/login_update/cn/MuMu-20261029-220443-735.png",
+      "sha256": "b9f664ce5909de2474755113f8b8af9d8bec6055f3662bbcc745de3bcc98f4aa",
+      "server": "cn",
+      "scene": "client_install_prompt",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.core.test_login_update.CnUpdateTests.test_patch_confirm_and_progress_match_only_their_own_captures",
+        "tests.core.test_login_update.CnUpdateTests.test_popup_handoff_accepts_new_cn_patch_and_client_states",
+        "tests.core.test_login_update.CnUpdateTests.test_client_states_match_only_their_own_captures",
+        "tests.core.test_login_update.CnUpdateTests.test_client_download_install_and_portrait_confirmation_finish_before_restart",
+        "tests.core.test_login_update.CnUpdateTests.test_failed_clicks_retry_independently_and_never_cancel_installation",
+        "tests.core.test_login_update.CnUpdateTests.test_login_allows_updater_to_leave_game_and_restarts_after_installation"
+      ],
+      "source": "user-provided MuMu-20261029-220443-735.png",
+      "source_sha256": "bd594d1ba3ed0443882cb77564910f2ce42f2c4bccd38452779ee40b2c3be571",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ]
+    },
+    "20261029-220447-999": {
+      "path": "tests/fixtures/login_update/cn/MuMu-20261029-220447-999.png",
+      "sha256": "85de343712397b5acbe5629aceb7b2932125810e8ff640c3fc0e0df2695458a1",
+      "server": "cn",
+      "scene": "android_install_confirm",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.core.test_login_update.CnUpdateTests.test_patch_confirm_and_progress_match_only_their_own_captures",
+        "tests.core.test_login_update.CnUpdateTests.test_popup_handoff_accepts_new_cn_patch_and_client_states",
+        "tests.core.test_login_update.CnUpdateTests.test_client_states_match_only_their_own_captures",
+        "tests.core.test_login_update.CnUpdateTests.test_client_download_install_and_portrait_confirmation_finish_before_restart",
+        "tests.core.test_login_update.CnUpdateTests.test_failed_clicks_retry_independently_and_never_cancel_installation",
+        "tests.core.test_login_update.CnUpdateTests.test_other_app_portrait_confirmation_is_not_clicked",
+        "tests.core.test_login_update.CnUpdateTests.test_login_allows_updater_to_leave_game_and_restarts_after_installation"
+      ],
+      "source": "user-provided MuMu-20261029-220447-999.png",
+      "source_sha256": "1e6d8882db8af664c9b72426db31bb8372e9c6771554c8327a38fad0f58bfa46",
+      "privacy_redaction": [],
+      "normalization": "rotate_90_clockwise"
+    },
+    "20261029-220451-467": {
+      "path": "tests/fixtures/login_update/cn/MuMu-20261029-220451-467.png",
+      "sha256": "7552c586a1eab020cae35891fc7e95e6926b7735f4038198c46102b2a73352d9",
+      "server": "cn",
+      "scene": "android_install_complete",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.core.test_login_update.CnUpdateTests.test_patch_confirm_and_progress_match_only_their_own_captures",
+        "tests.core.test_login_update.CnUpdateTests.test_popup_handoff_accepts_new_cn_patch_and_client_states",
+        "tests.core.test_login_update.CnUpdateTests.test_client_states_match_only_their_own_captures",
+        "tests.core.test_login_update.CnUpdateTests.test_client_download_install_and_portrait_confirmation_finish_before_restart",
+        "tests.core.test_login_update.CnUpdateTests.test_failed_clicks_retry_independently_and_never_cancel_installation",
+        "tests.core.test_login_update.CnUpdateTests.test_long_client_download_is_read_only",
+        "tests.core.test_login_update.CnUpdateTests.test_installed_frame_exits_immediately_without_open_or_done_click",
+        "tests.core.test_login_update.CnUpdateTests.test_new_screenshot_and_completion_take_priority_over_timeout",
+        "tests.core.test_login_update.CnUpdateTests.test_login_allows_updater_to_leave_game_and_restarts_after_installation"
+      ],
+      "source": "user-provided MuMu-20261029-220451-467.png",
+      "source_sha256": "ea03b1a8824557520b2f67131fbdbaf6caee2ca72b7d6f4b2ee26d5eb50f760a",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ]
+    },
+    "20261029-221739-381": {
+      "path": "tests/fixtures/login_update/cn/MuMu-20261029-221739-381.png",
+      "sha256": "d0c26d87e7b53d85786f2e76e306d0df6aaaff0522754962f3cc4a91306e2f10",
+      "server": "cn",
+      "scene": "patch_checking",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.core.test_login_update.CnUpdateTests.test_patch_confirm_and_progress_match_only_their_own_captures",
+        "tests.core.test_login_update.CnUpdateTests.test_long_patch_scan_and_download_continue_without_restart",
+        "tests.core.test_login_update.CnUpdateTests.test_popup_handoff_accepts_new_cn_patch_and_client_states",
+        "tests.core.test_login_update.CnUpdateTests.test_client_states_match_only_their_own_captures",
+        "tests.core.test_login_update.CnUpdateTests.test_public_handler_leaves_patch_and_health_notice_untouched"
+      ],
+      "source": "user-provided MuMu-20261029-221739-381.png",
+      "source_sha256": "71cf779a34ae37adc60cbec81bc7dbdb073a2a02e058aa26dbf9f8dd63bf3894",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ]
+    },
+    "20261029-221833-219": {
+      "path": "tests/fixtures/login_update/cn/MuMu-20261029-221833-219.png",
+      "sha256": "08bc649e5f796b2153fb0e4106618704da97daf86b663c97ad88fed6e4bcb92a",
+      "server": "cn",
+      "scene": "healthy_game_notice",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.core.test_login_update.CnUpdateTests.test_patch_confirm_and_progress_match_only_their_own_captures",
+        "tests.core.test_login_update.CnUpdateTests.test_client_states_match_only_their_own_captures",
+        "tests.core.test_login_update.CnUpdateTests.test_public_handler_leaves_patch_and_health_notice_untouched"
+      ],
+      "source": "user-provided MuMu-20261029-221833-219.png",
+      "source_sha256": "ee25d782f131be5abe5417f7af5dabd0bcef7a98945af32bd6a77479f97d005f",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ]
+    },
+    "20261029-221842-942": {
+      "path": "tests/fixtures/login_update/cn/MuMu-20261029-221842-942.png",
+      "sha256": "507cbed80f68a3d72e7662fc6d62fcf7d19d2a84ee161609f2afb3b96d8b3d23",
+      "server": "cn",
+      "scene": "patch_checking_later",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.core.test_login_update.CnUpdateTests.test_patch_confirm_and_progress_match_only_their_own_captures",
+        "tests.core.test_login_update.CnUpdateTests.test_long_patch_scan_and_download_continue_without_restart",
+        "tests.core.test_login_update.CnUpdateTests.test_popup_handoff_accepts_new_cn_patch_and_client_states",
+        "tests.core.test_login_update.CnUpdateTests.test_client_states_match_only_their_own_captures",
+        "tests.core.test_login_update.CnUpdateTests.test_public_handler_leaves_patch_and_health_notice_untouched"
+      ],
+      "source": "user-provided MuMu-20261029-221842-942.png",
+      "source_sha256": "2e45e18c039b40b868573b70015a696141b1f725d0bc7dd516450184975e787d",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ]
+    },
+    "20261029-222010-024": {
+      "path": "tests/fixtures/login_update/cn/MuMu-20261029-222010-024.png",
+      "sha256": "ce82c1ddcaeb5d71735ec1d66c1999bdba070f2cc2f3ff22d0e0c31e8b9fff50",
+      "server": "cn",
+      "scene": "patch_confirm",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.core.test_login_update.CnUpdateTests.test_patch_confirm_and_progress_match_only_their_own_captures",
+        "tests.core.test_login_update.CnUpdateTests.test_long_patch_scan_and_download_continue_without_restart",
+        "tests.core.test_login_update.CnUpdateTests.test_popup_handoff_accepts_new_cn_patch_and_client_states",
+        "tests.core.test_login_update.CnUpdateTests.test_client_states_match_only_their_own_captures",
+        "tests.core.test_login_update.CnUpdateTests.test_patch_confirmation_cooldown_does_not_delay_login_action",
+        "tests.core.test_login_update.CnUpdateTests.test_public_handler_leaves_patch_and_health_notice_untouched"
+      ],
+      "source": "user-provided MuMu-20261029-222010-024.png",
+      "source_sha256": "bf715efd2b1440acf6618ca501ac0d57fe164f932c274068544e809a07fbe953",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ]
+    },
+    "20261029-222013-948": {
+      "path": "tests/fixtures/login_update/cn/MuMu-20261029-222013-948.png",
+      "sha256": "a435db0b4f33b48a8447fff70432a7262cf2417a3027098dbccb7d02e52c09cb",
+      "server": "cn",
+      "scene": "patch_downloading",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.core.test_login_update.CnUpdateTests.test_patch_confirm_and_progress_match_only_their_own_captures",
+        "tests.core.test_login_update.CnUpdateTests.test_long_patch_scan_and_download_continue_without_restart",
+        "tests.core.test_login_update.CnUpdateTests.test_popup_handoff_accepts_new_cn_patch_and_client_states",
+        "tests.core.test_login_update.CnUpdateTests.test_client_states_match_only_their_own_captures",
+        "tests.core.test_login_update.CnUpdateTests.test_public_handler_leaves_patch_and_health_notice_untouched"
+      ],
+      "source": "user-provided MuMu-20261029-222013-948.png",
+      "source_sha256": "531d51cb0980b4f93e156c759161f4d1d50c3b06e8fef6e578f46d11294915fa",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ]
+    },
+    "20261029-222031-002": {
+      "path": "tests/fixtures/login_update/cn/MuMu-20261029-222031-002.png",
+      "sha256": "b65b6c9e4804156ab6388f4fd27a5e90a2458d2edfe06c9bb94a0175fc4cd290",
+      "server": "cn",
+      "scene": "patch_downloading_later",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.core.test_login_update.CnUpdateTests.test_patch_confirm_and_progress_match_only_their_own_captures",
+        "tests.core.test_login_update.CnUpdateTests.test_long_patch_scan_and_download_continue_without_restart",
+        "tests.core.test_login_update.CnUpdateTests.test_popup_handoff_accepts_new_cn_patch_and_client_states",
+        "tests.core.test_login_update.CnUpdateTests.test_client_states_match_only_their_own_captures",
+        "tests.core.test_login_update.CnUpdateTests.test_public_handler_leaves_patch_and_health_notice_untouched"
+      ],
+      "source": "user-provided MuMu-20261029-222031-002.png",
+      "source_sha256": "ee5a7a28a82812ab8e5d3659b5b86f9583888cf0d83812e85c1dbef5376527f2",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ]
     }
   }
 }

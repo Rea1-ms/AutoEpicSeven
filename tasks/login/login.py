@@ -119,10 +119,9 @@ class Login(UI):
             or self.appear(VERIFYING, interval=0)
             or self.appear(PATCH_APPLY, interval=0)
             or self.appear(PATCH_PERCENT_SIGN, interval=0)
-            or (
-                server_.is_oversea_server(self.config.Emulator_PackageName)
-                and (self.appear(PATCH_CHECKING) or self.appear(PATCH_DOWNLOADING))
-            )
+            or self.appear(PATCH_CHECKING)
+            or self.appear(PATCH_DOWNLOADING)
+            or UpdateHandler._is_cn_app_update(self)
             or self.appear(UNDER_MAINTENANCE, interval=0)
             or (
                 server_.is_oversea_server(self.config.Emulator_PackageName)
@@ -329,6 +328,14 @@ class Login(UI):
                 self._handle_maintenance()
                 # _handle_maintenance 会抛出异常，不会执行到这里
 
+            # CN SDK updates can leave the game and rotate into Android's
+            # installer. Let the bounded updater own those frames before the
+            # next liveness check can mistake that transition for a crash.
+            if UpdateHandler._is_cn_app_update(self):
+                UpdateHandler._handle_cn_app_update(self)
+                self.app_restart()
+                return True
+
             # 版本更新（跳转 Google Play）
             if server_.is_oversea_server(self.config.Emulator_PackageName) and self.appear(
                 GAME_UPGRADE_AVAILABLE, interval=0
@@ -356,9 +363,7 @@ class Login(UI):
             # do not gate them on a click interval or let a long scan trigger the
             # unknown-screen watchdog. The confirmation is checked above so its
             # first actionable frame is handled immediately.
-            if server_.is_oversea_server(self.config.Emulator_PackageName) and (
-                self.appear(PATCH_CHECKING) or self.appear(PATCH_DOWNLOADING)
-            ):
+            if self.appear(PATCH_CHECKING) or self.appear(PATCH_DOWNLOADING):
                 network_error_count = 0
                 timeout.reset()
                 self.device.stuck_record_clear()
