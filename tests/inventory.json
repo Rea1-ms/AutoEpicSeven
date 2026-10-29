@@ -8318,6 +8318,36 @@
           "reason": "原断言迁移；模拟输入或既有资产，不代表实机截图验证",
           "input_kind": "mock_or_rule",
           "original_source": "test/test_activity_task_split.py"
+        },
+        {
+          "id": "tests.activity.test_activity_task_split.ActivityVisibilityTests.test_current_options_follow_saved_server_and_language_without_global_state",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "活动选项按保存的服务器、语言及开放区间显示，隐藏不改原值，不读取设备",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.activity.test_activity_task_split.ActivityVisibilityTests.test_open_and_end_boundaries_refresh_options_without_erasing_choices",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "活动选项按保存的服务器、语言及开放区间显示，隐藏不改原值，不读取设备",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.activity.test_activity_task_split.ActivityVisibilityTests.test_unknown_server_and_unverified_archived_flows_never_show_options",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "活动选项按保存的服务器、语言及开放区间显示，隐藏不改原值，不读取设备",
+          "input_kind": "mock_or_rule"
         }
       ]
     },
@@ -20569,6 +20599,36 @@
           "fixtures": [],
           "status": "已纳入",
           "reason": "材料下拉首次渲染、保存后联动、旧值不可用提示及普通下拉兼容"
+        },
+        {
+          "id": "tests.core.test_runtime_ui.ActivityVisibilityUITests.test_shared_settings_renderer_hides_inactive_options_and_preserves_saved_values",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "真实界面渲染与保存入口使用模拟浏览器，验证分服显隐和旧值保留，不读取账号配置",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.core.test_runtime_ui.ActivityVisibilityUITests.test_saved_server_and_language_changes_refresh_visibility_without_resetting_flags",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "真实界面渲染与保存入口使用模拟浏览器，验证分服显隐和旧值保留，不读取账号配置",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.core.test_runtime_ui.ActivityVisibilityUITests.test_archived_special_purchase_never_renders_or_resets_saved_choice",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "真实界面渲染与保存入口使用模拟浏览器，验证分服显隐和旧值保留，不读取账号配置",
+          "input_kind": "mock_or_rule"
         }
       ]
     },

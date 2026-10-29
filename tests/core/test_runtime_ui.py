@@ -3,6 +3,7 @@
 import unittest
 from contextlib import nullcontext
 from copy import deepcopy
+from datetime import datetime
 from inspect import unwrap
 from types import SimpleNamespace
 from unittest.mock import Mock, patch
@@ -289,6 +290,120 @@ class MaterialSelectUITests(unittest.TestCase):
         self.assertEqual(select.call_args.kwargs['options'], [
             {'label': '精灵祭坛', 'value': 'SpiritAltar', 'selected': True},
         ])
+
+
+class ActivityVisibilityUITests(unittest.TestCase):
+    def setUp(self):
+        from module.config.config_updater import ConfigUpdater
+
+        with (patch('module.webui.config.DeployConfig.read'),
+              patch('module.webui.patch.patch_executor'),
+              patch('module.webui.patch.patch_mimetype')):
+            from module.webui.app import AlasGUI
+
+        clock = self.start_patch('tasks.activity.calendar.datetime', wraps=datetime)
+        clock.now.return_value = datetime.fromisoformat('2026-10-29T22:26:00+08:00')
+        self.gui_type = AlasGUI
+        self.gui = AlasGUI.__new__(AlasGUI)
+        self.updater = ConfigUpdater()
+        self.gui.ALAS_ARGS = deepcopy(self.updater.args)
+        self.gui.alas_config = self.updater
+        self.config = {
+            'Alas': {'Emulator': {'PackageName': 'OVERSEA-Play', 'GameLanguage': 'cn'}},
+            'LimitedActivity': {'Scheduler': {'Enable': False}, 'LimitedActivity': {
+                'GetFreeGacha': False, 'GetSupportReward': True, 'GetCompletionRecord': False,
+                'GetDetectiveSearch': True, 'GetEpicPathDailyReward': False}},
+            'SpecialActivity': {'Scheduler': {'Enable': False},
+                                'SpecialActivity': {'BuyHucheMysticMedals': True}},
+        }
+        self.gui.alas_config_hidden = self.updater.get_hidden_args(self.config)
+        for name in ('pin_remove_invalid_mark', 'pin_set_invalid_mark',
+                     'pin_set_hidden_arg', 'pin_remove_hidden_arg'):
+            setattr(self.gui, name, Mock())
+        self.updater.read_file = Mock(side_effect=lambda name: deepcopy(self.config))
+        self.updater.write_file = Mock(side_effect=self.store_config)
+        self.start_patch('module.webui.app.t', side_effect=lambda key, *args: key)
+        self.start_patch('module.webui.app.pin', new={})
+        self.start_patch('module.webui.app.toast')
+        self.start_patch('module.webui.app.filepath_config', return_value='synthetic-profile.json')
+        self.start_patch('module.webui.app.pin_update')
+        self.errors = self.start_patch('module.webui.app.logger.exception')
+
+    def start_patch(self, target, **kwargs):
+        patcher = patch(target, **kwargs)
+        self.addCleanup(patcher.stop)
+        return patcher.start()
+
+    def store_config(self, name, config):
+        self.config = deepcopy(config)
+
+    def render_options(self, task):
+        rendered = {}
+
+        def build(kwargs):
+            output = Mock(spec=['spec', 'style', 'show'])
+            output.spec = {}
+            output.style.return_value = output
+            rendered[kwargs['name']] = (kwargs, output)
+            return output
+
+        self.gui.alas_config_hidden = self.updater.get_hidden_args(self.config)
+        with (patch('module.webui.app.use_scope', side_effect=lambda *args, **kwargs: nullcontext()),
+              patch('module.webui.app.put_text'), patch('module.webui.app.put_html'),
+              patch('module.webui.app.put_output', side_effect=build)):
+            unwrap(self.gui_type.set_group)(self.gui, [task], self.gui.ALAS_ARGS[task][task], self.config, task)
+        self.updater.write_file.assert_not_called()
+        return rendered
+
+    def test_shared_settings_renderer_hides_inactive_options_and_preserves_saved_values(self):
+        before = deepcopy(self.config)
+        for package, visible in (
+            ('OVERSEA-Play', {'GetSupportReward', 'GetCompletionRecord',
+                              'GetDetectiveSearch', 'GetEpicPathDailyReward'}),
+            ('CN-Official', {'GetFreeGacha'}),
+        ):
+            self.config['Alas']['Emulator']['PackageName'] = package
+            rendered = self.render_options('LimitedActivity')
+            self.assertNotIn('LimitedActivity_LimitedActivity_GetMeirinReward', rendered)
+            for pin_name, (kwargs, output) in rendered.items():
+                name = pin_name.rsplit('_', 1)[1]
+                self.assertEqual(output.style.called, name not in visible)
+                self.assertEqual(kwargs['value'], self.config['LimitedActivity']['LimitedActivity'][name])
+                output.show.assert_called_once()
+        self.assertEqual(self.config['LimitedActivity'], before['LimitedActivity'])
+        self.assertEqual(self.config['SpecialActivity'], before['SpecialActivity'])
+
+    def test_saved_server_and_language_changes_refresh_visibility_without_resetting_flags(self):
+        before = deepcopy(self.config)
+        self.gui._save_config({'Alas.Emulator.PackageName': 'CN-Official'}, 'synthetic', self.updater)
+        self.errors.assert_not_called()
+        hidden = {call.args[0] for call in self.gui.pin_set_hidden_arg.call_args_list}
+        shown = {call.args[0] for call in self.gui.pin_remove_hidden_arg.call_args_list}
+        self.assertEqual(shown, {'LimitedActivity.LimitedActivity.GetFreeGacha'})
+        self.assertEqual(hidden, {f'LimitedActivity.LimitedActivity.{name}' for name in (
+            'GetSupportReward', 'GetCompletionRecord', 'GetDetectiveSearch', 'GetEpicPathDailyReward')})
+        for package, language in (('OVERSEA-Play', 'cn'), ('OVERSEA-Play', 'en'), ('OVERSEA-Play', 'auto')):
+            self.gui.pin_set_hidden_arg.reset_mock()
+            self.gui.pin_remove_hidden_arg.reset_mock()
+            self.gui._save_config({'Alas.Emulator.PackageName': package, 'Alas.Emulator.GameLanguage': language},
+                                  'synthetic', self.updater)
+            self.errors.assert_not_called()
+            self.assertEqual(self.config['LimitedActivity'], before['LimitedActivity'])
+            self.assertEqual(self.config['SpecialActivity'], before['SpecialActivity'])
+        self.assertEqual(len([path for path in self.gui.alas_config_hidden
+                              if path.startswith('LimitedActivity.')]), 1)
+        self.gui.pin_set_hidden_arg.reset_mock()
+        self.gui.pin_remove_hidden_arg.reset_mock()
+        self.gui._save_config({'LimitedActivity.Scheduler.Enable': True}, 'synthetic', self.updater)
+        self.errors.assert_not_called()
+        self.gui.pin_set_hidden_arg.assert_not_called()
+        self.gui.pin_remove_hidden_arg.assert_not_called()
+
+    def test_archived_special_purchase_never_renders_or_resets_saved_choice(self):
+        self.config['Alas']['Emulator']['PackageName'] = 'CN-Official'
+        self.assertEqual(self.render_options('SpecialActivity'), {})
+        self.assertTrue(self.config['SpecialActivity']['SpecialActivity']['BuyHucheMysticMedals'])
+        self.assertFalse(self.config['SpecialActivity']['Scheduler']['Enable'])
 
 
 if __name__ == "__main__":

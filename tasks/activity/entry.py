@@ -1,5 +1,5 @@
 from module.logger import logger
-from tasks.activity.calendar import ACTIVITY_TASK_MODES, active_activities
+from tasks.activity.calendar import ACTIVITY_OPTIONS, ACTIVITY_TASK_MODES, active_activities
 from tasks.activity.common_activity import CommonActivityBatch
 from tasks.activity.scheduling import delay_next_activity_check, is_activity_checked_in_window
 from tasks.base.page import page_main
@@ -11,7 +11,7 @@ class SpecialActivityEntry:
     SCHEDULER_TASK = "SpecialActivity"
     ACTIVITY_MODES = ACTIVITY_TASK_MODES[SCHEDULER_TASK]
 
-    COMMON_ACTIVITY_OPTIONS = {}
+    COMMON_ACTIVITY_OPTIONS = ACTIVITY_OPTIONS[SCHEDULER_TASK]
 
     def __init__(self, config, device=None, task=None):
         self.config = config

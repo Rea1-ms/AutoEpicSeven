@@ -122,6 +122,69 @@ class MigrationTests(unittest.TestCase):
         self.assertTrue({'limited_activity', 'special_activity'} <= methods)
 
 
+class ActivityVisibilityTests(unittest.TestCase):
+    OPTIONS = {'GetFreeGacha', 'GetSupportReward', 'GetCompletionRecord',
+               'GetDetectiveSearch', 'GetEpicPathDailyReward'}
+
+    def setUp(self):
+        self.updater = ConfigUpdater()
+        self.data = {'Alas': {'Emulator': {'PackageName': 'OVERSEA-Play', 'GameLanguage': 'cn'}},
+                     'LimitedActivity': {'Scheduler': {'Enable': False}, 'LimitedActivity': {
+                         'GetFreeGacha': False, 'GetSupportReward': True, 'GetCompletionRecord': False,
+                         'GetDetectiveSearch': True, 'GetEpicPathDailyReward': False}},
+                     'SpecialActivity': {'SpecialActivity': {'BuyHucheMysticMedals': True}}}
+
+    def visible(self, at):
+        with patch.object(calendar, 'datetime', wraps=datetime) as clock:
+            clock.now.return_value = datetime.fromisoformat(at)
+            hidden = self.updater.get_hidden_args(self.data)
+        return {name for name in self.OPTIONS if f'LimitedActivity.LimitedActivity.{name}' not in hidden}
+
+    def test_current_options_follow_saved_server_and_language_without_global_state(self):
+        at = '2026-10-29T22:26:00+08:00'
+        for package in ('OVERSEA-Play', 'com.stove.epic7.google'):
+            with self.subTest(package=package), patch.object(server, 'lang', 'cn'):
+                self.data['Alas']['Emulator'].update(PackageName=package, GameLanguage='cn')
+                self.assertEqual(self.visible(at), self.OPTIONS - {'GetFreeGacha'})
+        for package in ('CN-Official', 'com.zlongame.cn.epicseven'):
+            with self.subTest(package=package), patch.object(server, 'lang', 'global_cn'):
+                self.data['Alas']['Emulator']['PackageName'] = package
+                self.assertEqual(self.visible(at), {'GetFreeGacha'})
+        self.data['Alas']['Emulator'].update(PackageName='OVERSEA-Play', GameLanguage='en')
+        self.assertEqual(self.visible(at), set())
+        self.data['Alas']['Emulator']['GameLanguage'] = 'auto'
+        self.assertEqual(self.visible(at), self.OPTIONS - {'GetFreeGacha'})
+
+    def test_open_and_end_boundaries_refresh_options_without_erasing_choices(self):
+        before = deepcopy(self.data)
+        self.assertEqual(self.visible('2026-10-29T20:36:59+08:00'), {'GetSupportReward'})
+        self.assertEqual(self.visible('2026-10-29T20:37:00+08:00'), {
+            'GetSupportReward', 'GetCompletionRecord', 'GetEpicPathDailyReward'})
+        self.assertEqual(self.visible('2026-10-29T20:39:00+08:00'), self.OPTIONS - {'GetFreeGacha'})
+        self.assertEqual(self.visible('2026-11-19T10:59:59+08:00'), self.OPTIONS - {'GetFreeGacha'})
+        self.assertEqual(self.visible('2026-11-19T11:00:00+08:00'), {
+            'GetSupportReward', 'GetCompletionRecord', 'GetEpicPathDailyReward'})
+        self.assertEqual(self.visible('2026-12-18T02:00:00+08:00'), set())
+        self.assertEqual(self.data, before)
+        self.data['Alas']['Emulator']['PackageName'] = 'CN-Official'
+        self.assertEqual(self.visible('2026-11-19T10:59:59+08:00'), {'GetFreeGacha'})
+        self.assertEqual(self.visible('2026-11-19T11:00:00+08:00'), set())
+        self.assertFalse(self.data['LimitedActivity']['LimitedActivity']['GetFreeGacha'])
+        self.assertTrue(self.data['SpecialActivity']['SpecialActivity']['BuyHucheMysticMedals'])
+
+    def test_unknown_server_and_unverified_archived_flows_never_show_options(self):
+        at = '2026-10-29T22:26:00+08:00'
+        for package in ('auto', 'unknown'):
+            self.data['Alas']['Emulator']['PackageName'] = package
+            self.assertEqual(self.visible(at), set())
+        self.data.pop('Alas')
+        self.assertEqual(self.visible(at), set())
+        for task, name in (('LimitedActivity', 'GetMeirinReward'),
+                           ('SpecialActivity', 'BuyHucheMysticMedals')):
+            self.assertEqual(self.updater.args[task][task][name]['display'], 'hide')
+            self.assertTrue(self.updater.args[task][task][name]['keepvalue'])
+
+
 class SchedulingTests(unittest.TestCase):
     def setUp(self):
         server.set_lang('global_cn')

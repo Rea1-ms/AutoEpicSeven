@@ -19,6 +19,16 @@ ACTIVITY_TASK_MODES = {
                         "completion_record", "detective_search", "epic_path"),
     "SpecialActivity": ("legacy",),
 }
+ACTIVITY_OPTIONS = {
+    "LimitedActivity": {
+        "free_gacha_20": "LimitedActivity_GetFreeGacha",
+        "support_reward": "LimitedActivity_GetSupportReward",
+        "completion_record": "LimitedActivity_GetCompletionRecord",
+        "detective_search": "LimitedActivity_GetDetectiveSearch",
+        "epic_path": "LimitedActivity_GetEpicPathDailyReward",
+    },
+    "SpecialActivity": {},
+}
 
 
 @dataclass(frozen=True)
@@ -60,12 +70,13 @@ def load_calendar(path: Path = CALENDAR_PATH) -> tuple[ActivityWindow, ...]:
                  for p in load_info(path).periods if p.kind in SUPPORTED_MODES)
 
 
-def _server_windows(config) -> tuple[ActivityWindow, ...]:
+def _server_windows(config, *, assets_lang: str | None = None) -> tuple[ActivityWindow, ...]:
     family = server.server_family(config.Emulator_PackageName)
+    assets_lang = server.lang if assets_lang is None else assets_lang
     supported = (
-        family == server.SERVER_FAMILY_CN and server.lang == "cn"
+        family == server.SERVER_FAMILY_CN and assets_lang == "cn"
     ) or (
-        family == server.SERVER_FAMILY_OVERSEA and server.lang == "global_cn"
+        family == server.SERVER_FAMILY_OVERSEA and assets_lang == "global_cn"
     )
     if not supported:
         return ()
@@ -78,10 +89,12 @@ def _server_windows(config) -> tuple[ActivityWindow, ...]:
     )
 
 
-def active_activities(config, now: datetime | None = None, *, task=None) -> tuple[ActivityWindow, ...]:
+def active_activities(config, now: datetime | None = None, *, task=None,
+                      assets_lang: str | None = None) -> tuple[ActivityWindow, ...]:
     now = now or datetime.now(EVENT_TIMEZONE)
     modes = SUPPORTED_MODES if task is None else ACTIVITY_TASK_MODES[task]
-    return tuple(window for window in _server_windows(config) if window.mode in modes and window.contains(now))
+    return tuple(window for window in _server_windows(config, assets_lang=assets_lang)
+                 if window.mode in modes and window.contains(now))
 
 
 def next_activity_start(config, now: datetime | None = None, *, task=None) -> datetime | None:

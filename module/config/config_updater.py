@@ -611,6 +611,25 @@ class ConfigUpdater:
         Yields:
             str: Arg path that should be hidden
         """
+        from types import SimpleNamespace
+
+        import module.config.server as server
+        from tasks.activity.calendar import ACTIVITY_OPTIONS, active_activities
+
+        # Use the selected profile, never the worker's process-wide language:
+        # one GUI process may render CN and overseas profiles concurrently.
+        # Unknown/auto packages stay unresolved here; only the worker may detect
+        # a device. Visibility must not connect to it or change stored choices.
+        package = deep_get(data, 'Alas.Emulator.PackageName', default='auto') or 'auto'
+        game_language = deep_get(data, 'Alas.Emulator.GameLanguage', default='cn')
+        context = SimpleNamespace(Emulator_PackageName=package)
+        assets_lang = server.map_assets_lang(package, game_language)
+        for task, options in ACTIVITY_OPTIONS.items():
+            active = {event.mode for event in active_activities(context, task=task, assets_lang=assets_lang)}
+            for mode, option in options.items():
+                if mode not in active:
+                    yield f'{task}.{option.replace("_", ".", 1)}'
+
         # Knights
         if deep_get(data, 'Knights.KnightsTeamBattle.Reminder', default=False) is False:
             yield 'Knights.KnightsTeamBattle.ReminderLeadMinutes'
