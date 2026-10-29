@@ -304,7 +304,7 @@ class BrawlFormation(BrawlBenchScanner):
 
     def _grid_action(self, scan, expected_cells, *, action=None, expected_panel=None,
                      opened_grid=None, observation=None):
-        """Select once, act once, and positively return to preparation.
+        """Open a verified selection, act once, and return to preparation.
 
         With no action this probes a known field cell and closes the grid. Grid
         evidence is captured before closing, and preparation/bench are checked
@@ -337,6 +337,7 @@ class BrawlFormation(BrawlBenchScanner):
         timeout = Timer(self.STEP_TIMEOUT).start()
         opened = grid_seen = opened_grid is not None
         clicked = returned = False
+        open_attempts = 0
         cancel_attempts = 0
         cancel_name = "BrawlResumeCancelRound" if opened_grid is not None else "BrawlFormationCancelRound"
         observed_cells = None
@@ -346,6 +347,7 @@ class BrawlFormation(BrawlBenchScanner):
             logger.warning(
                 f"Brawl formation stopped: {reason}; state={current.state.value}, "
                 f"observation_reason={current.reason!r}, probe={probe}, opened={opened}, "
+                f"grid_seen={grid_seen}, source={source}, open_attempts={open_attempts}, "
                 f"clicked={clicked}, returned={returned}, cancel_attempts={cancel_attempts}")
             return ObservationError(reason)
 
@@ -366,20 +368,25 @@ class BrawlFormation(BrawlBenchScanner):
                 raise failed("The formation scene changed")
             if current.game_mode is not None and current.game_mode != scan.game_mode:
                 raise failed("The formation game mode changed")
-            if current.state == BrawlScreen.UNKNOWN or current.game_mode is None:
-                if timeout.reached():
-                    raise failed("Formation observation timed out")
-                continue
+            # Page identity ends the old opening request even if its mode or
+            # counters are still unreadable. Waiting for those fields before
+            # latching this transition could let a later preparation frame
+            # reopen a selection that already appeared. The latch belongs to
+            # this invocation only and never resets on unknown/old frames.
             if current.state == BrawlScreen.FORMATION_SELECTION:
                 if not opened or returned:
                     raise failed("An unrequested selection grid appeared")
                 grid_seen = True
-            elif grid_seen and not clicked:
+            elif current.state == BrawlScreen.PREPARATION and grid_seen and not clicked:
                 raise failed("Selection closed before its requested action")
-            elif clicked:
+            elif current.state == BrawlScreen.PREPARATION and clicked:
                 # Even unread preparation closes the pending grid. A later
                 # grid is a new interaction and cannot confirm the old click.
                 returned = True
+            if current.state == BrawlScreen.UNKNOWN or current.game_mode is None:
+                if timeout.reached():
+                    raise failed("Formation observation timed out")
+                continue
             # Template-only scene checks continue during the action interval.
             # OCR is fresh at an actionable boundary or at positive return;
             # intermediate grid/animation frames cannot authorize another click.
@@ -401,7 +408,17 @@ class BrawlFormation(BrawlBenchScanner):
             if opened and not clicked and current.state == BrawlScreen.PREPARATION:
                 if timeout.reached():
                     raise failed("Formation grid did not open")
-                continue
+                # opened records a request, not an observed grid. Retry only
+                # this read-only opening while the same preparation remains
+                # visible; the checks below re-read its panel, bench and exact
+                # selected card before each request. Field cells retain their
+                # verified logical source; a later grid must independently
+                # prove that source and the complete occupied set before any
+                # destination or minus click. Three attempts share the first
+                # opening deadline. Neither retries nor unknown frames renew it.
+                if (open_attempts >= 3 or not self.interval_is_reached(
+                        "BrawlFormationOpen", interval=self.ACTION_INTERVAL)):
+                    continue
             panel = current.panel
             if panel is None and not current.reason:
                 try:
@@ -431,8 +448,6 @@ class BrawlFormation(BrawlBenchScanner):
             if not _bench_agrees(image, current, scan, viewport=viewport):
                 raise failed("The current bench no longer matches its complete scan")
             if current.state == BrawlScreen.PREPARATION:
-                if opened:
-                    continue
                 if source is not None:
                     cell = next(cell for cell in _cells()
                                 if (cell.screen_row, cell.screen_column) == source)
@@ -445,9 +460,19 @@ class BrawlFormation(BrawlBenchScanner):
                     if entry is None or BenchHero(entry.name, entry.imprint) != hero:
                         raise failed("The requested bench hero is no longer selected")
                     area = entry.plus_area
+                # Fresh bench OCR may itself cross the response deadline.
+                # Check again immediately before requesting an opening so a
+                # slow read cannot authorize a late retry of the same request.
+                if timeout.reached():
+                    raise failed("Formation grid did not open" if opened else "Formation response timed out")
                 self._click_formation(area, "BrawlFormationOpen")
+                open_attempts += 1
+                if not opened:
+                    timeout.reset()
+                else:
+                    logger.info(f"Brawl formation opening retried: source={source}, "
+                                f"attempt={open_attempts}, state={current.state.value}")
                 opened = True
-                timeout.reset()
                 continue
             grid = read_formation_grid(image, observation=current, expected_source=source,
                                        expected_target=None if probe else action.target)

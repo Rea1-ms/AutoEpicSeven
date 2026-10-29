@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from typing import Any, Callable
+from collections.abc import Callable
+from typing import Any
 
 from module.webui.community_auth import (
     COMMUNITY_AIO_TASK,
@@ -11,20 +12,10 @@ from module.webui.community_auth import (
     stop_community_auth_tool,
 )
 
-
 TaskVisibility = Callable[[Any], bool]
 TaskRenderer = Callable[[Any], None]
 TaskDefaultAction = Callable[[], None]
 TaskAction = Callable[[Any, str, TaskDefaultAction], None]
-
-
-def render_brawl_task_panel(gui: Any) -> None:
-    """Show the one-battle scope and opening requirements without talent inputs."""
-    from pywebio.output import put_text
-
-    from module.webui.lang import t
-
-    put_text(t("Task.Brawl.help"))
 
 
 TASK_VISIBILITY_FILTERS: dict[str, TaskVisibility] = {
@@ -34,7 +25,6 @@ TASK_VISIBILITY_FILTERS: dict[str, TaskVisibility] = {
 
 TASK_DETAIL_RENDERERS: dict[str, TaskRenderer] = {
     COMMUNITY_AUTH_TASK: render_community_auth_task_panel,
-    "Brawl": render_brawl_task_panel,
 }
 
 TASK_START_HANDLERS: dict[str, TaskAction] = {

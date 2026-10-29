@@ -8,6 +8,7 @@ from module.config import server
 
 server.set_lang("global_cn")
 
+from tasks.base.assets.assets_base_popup import AD_BUFF_X_CLOSE  # noqa: E402
 from tasks.brawl.assets.assets_brawl import HERO_RESULT_CHECK  # noqa: E402
 from tasks.brawl.heroes import HeroResult, read_hero_result  # noqa: E402
 from tasks.brawl.rules import Imprint, Resources, SummonKind  # noqa: E402
@@ -139,10 +140,37 @@ class SynergySummonReplayTests(unittest.TestCase):
                              [(0, "SUMMON_" + kind.name), (1, "HERO_RESULT_CHECK")])
             self.assertEqual(BrawlVision(replay.image).observe().panel.synergy_tokens, balance)
 
-    def test_repeat_preparation_never_triggers_a_second_payment(self):
+    def test_repeat_preparation_retries_only_within_the_payment_bound(self):
         replay = self.replay([self.before] * 34)
         self.assertEqual(replay.task.summon_once(self.request).outcome, SummonOutcome.TIMEOUT)
-        self.assertEqual([action[1] for action in replay.actions], ["SUMMON_LOWER"])
+        self.assertEqual([action[1] for action in replay.actions], ["SUMMON_LOWER"] * 3)
+
+    def test_missed_first_click_retries_before_result_then_closes_once(self):
+        # The first six preparation frames leave the balance unchanged, so the
+        # retry window permits one more tap. The result debit then locks the
+        # payment and the footer is acknowledged once.
+        replay = self.replay([self.before] * 8 + ["lower-summon-result"] * 8
+                             + ["lower-summon-return"])
+        report = replay.task.summon_once(self.request)
+        self.assertEqual(report.outcome, SummonOutcome.CONFIRMED)
+        self.assertEqual([action[1] for action in replay.actions],
+                         ["SUMMON_LOWER", "SUMMON_LOWER", "HERO_RESULT_CHECK"])
+        # Explicitly simulated popup visibility; the following summon and
+        # result still run the real readers and production timing.
+        replay = self.replay([self.before] * 2 + ["lower-summon-result", "lower-summon-return"])
+        with patch.object(AD_BUFF_X_CLOSE, "match_template",
+                          side_effect=lambda *args, **kwargs: replay.index == 0):
+            report = replay.task.summon_once(self.request)
+        self.assertEqual(report.outcome, SummonOutcome.CONFIRMED)
+        self.assertEqual([(a[0], a[1]) for a in replay.actions],
+                         [(0, "AD_BUFF_X_CLOSE"), (1, "SUMMON_LOWER"), (2, "HERO_RESULT_CHECK")])
+        replay = self.replay([self.before] * 20, seconds=1)
+        with patch.object(AD_BUFF_X_CLOSE, "match_template", return_value=True):
+            report = replay.task.summon_once(self.request)
+        self.assertEqual(report.outcome, SummonOutcome.TIMEOUT)
+        self.assertEqual(replay.index, 16)
+        self.assertEqual([(a[0], a[1]) for a in replay.actions],
+                         [(i, "AD_BUFF_X_CLOSE") for i in (0, 3, 6, 9, 12, 15)])
 
     def test_exact_debit_without_a_read_result_does_not_confirm_a_draw(self):
         replay = self.replay([self.before] + ["lower-summon-return"] * 34)
@@ -150,6 +178,27 @@ class SynergySummonReplayTests(unittest.TestCase):
         self.assertEqual(report.outcome, SummonOutcome.TIMEOUT)
         self.assertIsNone(report.hero)
         self.assertEqual([action[1] for action in replay.actions], ["SUMMON_LOWER"])
+        # Simulate either a complete debit or an intermediate token animation,
+        # then stale old counters. Neither can reopen this payment request.
+        for tokens in (44, 49):
+            replay = self.replay([self.before] * 34)
+            with patch.object(BrawlVision, "preparation_panel", autospec=True,
+                              side_effect=lambda vision, tokens=tokens, replay=replay: replace(
+                                  self.request.panel, synergy_tokens=tokens
+                              ) if replay.index == 1 else self.request.panel):
+                report = replay.task.summon_once(self.request)
+            self.assertEqual(report.outcome, SummonOutcome.TIMEOUT)
+            self.assertIsNone(report.hero)
+            self.assertEqual([a[1] for a in replay.actions], ["SUMMON_LOWER"])
+        # A different currency changing still rejects the operation immediately
+        # even while the token debit is pending.
+        replay = self.replay([self.before] * 2)
+        with patch.object(BrawlVision, "preparation_panel", autospec=True,
+                          side_effect=lambda vision: replace(self.request.panel, coins=91)
+                          if replay.index == 1 else self.request.panel):
+            report = replay.task.summon_once(self.request)
+        self.assertEqual(report.outcome, SummonOutcome.BALANCE_MISMATCH)
+        self.assertEqual([a[1] for a in replay.actions], ["SUMMON_LOWER"])
 
     def test_result_at_entry_has_no_payment_provenance_and_is_not_dismissed(self):
         replay = self.replay(["lower-summon-result"])

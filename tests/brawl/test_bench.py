@@ -12,12 +12,16 @@ server.set_lang("global_cn")
 from module.ocr.ocr import Ocr  # noqa: E402
 from tasks.brawl.assets.assets_brawl import BENCH_SMALL_IMPRINT_C  # noqa: E402
 from tasks.brawl.bench import (  # noqa: E402
+    SELECTED_IMPRINT_AREA,
     BenchEntry,
     BenchHero,
     BenchViewport,
+    _ocr_imprint,
+    _selected_imprint,
     merge_bench_views,
     read_bench,
 )
+from tasks.brawl.cursor import read_cursor  # noqa: E402
 from tasks.brawl.name_cache import BenchNameCache, bench_name_cache  # noqa: E402
 from tasks.brawl.placement import _selected_entry  # noqa: E402
 from tasks.brawl.rules import HEROES, Imprint  # noqa: E402
@@ -41,6 +45,100 @@ def viewport(*heroes, panel=PANEL):
 class BenchRecognitionTests(unittest.TestCase):
     def setUp(self):
         server.set_lang("global_cn")
+
+    def test_selected_achates_a_is_read_without_neighboring_faction_ocr(self):
+        self.frame = frame("bench-achates-a")
+        observed = read_bench(self.frame)
+        self.assertEqual([(entry.name, entry.imprint) for entry in observed.entries],
+                         [("未知可能性雅卡泰丝", Imprint.A)])
+        self.assertEqual(observed.panel, PreparationPanel(13, 7, 7, 8, 160, 0))
+        self.assertEqual(observed.entries[0].plus_area, (943, 268, 977, 303))
+        self.assertNotIn("imprint unread", observed.reason)
+        cursor = read_cursor(self.frame)
+        self.assertEqual(cursor.selected, BenchHero("未知可能性雅卡泰丝", Imprint.A))
+        self.assertEqual((cursor.top, cursor.bottom, cursor.empty), (True, True, False))
+        self.assertIsNone(cursor.next_area)
+        self.assertEqual(cursor.reason, "")
+
+    def test_selected_imprint_ocr_fallback_excludes_neighboring_faction(self):
+        original = Ocr.ocr_multi_lines
+        imprint_reads = []
+
+        def recognize(ocr, images):
+            if ocr.name == "BRAWL_BENCH_IMPRINT":
+                imprint_reads.append(len(images))
+            return original(ocr, images)
+
+        # The normal A template can hide an overly wide OCR fallback. Force
+        # only that template decision to fail, then read the real full card;
+        # keep the production OCR, confidence and hero validation unchanged.
+        for sample, hero in (("bench-achates-a", "未知可能性雅卡泰丝"), ("queue-karin", "卡琳")):
+            with self.subTest(sample=sample), patch(
+                    "tasks.brawl.bench._selected_imprint", return_value=None), patch.object(
+                    Ocr, "ocr_multi_lines", recognize):
+                imprint_reads.clear()
+                self.frame = frame(sample)
+                observed = read_bench(self.frame)
+                self.assertEqual((observed.entries[0].name, observed.entries[0].imprint),
+                                 (hero, Imprint.A))
+                self.assertEqual(observed.entries[0].plus_area, (943, 268, 977, 303))
+                self.assertEqual(imprint_reads, [1])
+
+    def test_selected_a_repeated_frames_and_other_factions_do_not_need_imprint_ocr(self):
+        original = Ocr.ocr_multi_lines
+        imprint_reads = []
+
+        def recognize(ocr, images):
+            if ocr.name == "BRAWL_BENCH_IMPRINT":
+                imprint_reads.append(len(images))
+            return original(ocr, images)
+
+        with bench_name_cache(), patch.object(Ocr, "ocr_multi_lines", recognize):
+            self.frame = frame("bench-achates-a")
+            observation = BrawlVision(self.frame).observe()
+            for _ in range(10):
+                observed = read_bench(self.frame.copy(), observation=observation)
+                self.assertEqual(observed.entries[0].imprint, Imprint.A)
+            # Existing captures are independent of the new template's source
+            # and have different neighboring faction glyphs and card artwork.
+            for sample in ("queue-karin", "multi-transmit-two"):
+                with self.subTest(sample=sample):
+                    self.frame = frame(sample)
+                    self.assertEqual(_selected_imprint(self.frame), Imprint.A)
+        self.assertEqual(imprint_reads, [])
+
+    def test_selected_a_missing_or_partial_glyph_cannot_be_replaced_by_faction_or_cache(self):
+        self.frame = frame("bench-achates-a")
+        with bench_name_cache():
+            self.assertEqual(read_bench(self.frame).entries[0].imprint, Imprint.A)
+            erased = self.frame.copy()
+            # Remove only the letter, preserving the adjacent white faction
+            # glyph inside the historical wide OCR area.
+            erased[286:322, 998:1025] = 0
+            observed = read_bench(erased)
+            self.assertEqual(observed.entries[0].name, "未知可能性雅卡泰丝")
+            self.assertIsNone(observed.entries[0].imprint)
+            self.assertIn("Selected imprint unread", observed.reason)
+            self.assertIsNotNone(observed.entries[0].plus_area)
+            partial = self.frame.copy()
+            partial[292:315, 1001:1014] = 0
+            self.assertIsNone(_selected_imprint(partial))
+            self.assertEqual(read_bench(self.frame).entries[0].imprint, Imprint.A)
+
+    def test_imprint_ocr_keeps_full_ranks_and_rejects_extra_faction_characters(self):
+        # These are explicit parser inputs, not photographed S/SS/SSS bench
+        # evidence. The common field must retain each complete rank string;
+        # stripping a trailing faction symbol would conceal ambiguous crops.
+        image = np.zeros((720, 1280, 3), np.uint8)
+        for text, score, expected in (
+                ("S", .99, Imprint.S), ("SS", .99, Imprint.SS),
+                ("SSS", .99, Imprint.SSS), ("A", .99, Imprint.A),
+                ("A&", .99, None), ("SS&", .99, None), ("SSSS", .99, None),
+                ("&", .99, None), ("", .99, None), ("A", .79, None),
+                ("A", float("nan"), None)):
+            with self.subTest(text=text, score=score), patch.object(
+                    Ocr, "ocr_multi_lines", return_value=[(text, score)]):
+                self.assertEqual(_ocr_imprint(image, SELECTED_IMPRINT_AREA), expected)
 
     def test_static_names_are_recognized_once_while_badges_and_controls_stay_current(self):
         self.frame = frame("normal-deployed")

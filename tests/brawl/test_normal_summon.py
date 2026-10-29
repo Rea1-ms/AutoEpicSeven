@@ -8,7 +8,7 @@ from module.config import server
 
 server.set_lang("global_cn")
 
-from tasks.base.assets.assets_base_popup import TOUCH_TO_CLOSE  # noqa: E402
+from tasks.base.assets.assets_base_popup import AD_BUFF_X_CLOSE, TOUCH_TO_CLOSE  # noqa: E402
 from tasks.brawl.assets.assets_brawl import HERO_RESULT_CHECK  # noqa: E402
 from tasks.brawl.heroes import HeroResult, read_hero_result  # noqa: E402
 from tasks.brawl.normal_summon import (  # noqa: E402
@@ -188,10 +188,72 @@ class NormalSummonReplayTests(unittest.TestCase):
         self.assertEqual([(a[0], a[1]) for a in replay.actions],
                          [(0, "SUMMON_NORMAL"), (1, "TOUCH_TO_CLOSE")])
 
-    def test_stale_preparation_never_repeats_payment(self):
-        replay = self.replay([self.before] * 34)
+    def test_stale_preparation_retries_only_within_bound(self):
+        replay = self.replay([self.before] * 20, seconds=1)
         self.assertEqual(self.play(replay).outcome, SummonOutcome.TIMEOUT)
-        self.assertEqual([a[1] for a in replay.actions], ["SUMMON_NORMAL"])
+        self.assertEqual([a[1] for a in replay.actions],
+                         ["SUMMON_NORMAL", "SUMMON_NORMAL", "SUMMON_NORMAL"])
+
+    def test_missed_tap_retries_then_reads_the_result(self):
+        # A summon tap is only a request.  Four unchanged preparation frames
+        # leave the first request unconfirmed long enough for one retry; once
+        # the result appears, the retry latch is permanently closed.
+        replay = self.replay([self.before] * 5 + [self.hero_image] * 8 + [self.after],
+                             seconds=1)
+        report = self.play(replay)
+        self.assertEqual(report.outcome, SummonOutcome.CONFIRMED)
+        self.assertEqual(report.hero, self.hero)
+        self.assertEqual([(a[0], a[1]) for a in replay.actions],
+                         [(0, "SUMMON_NORMAL"), (4, "SUMMON_NORMAL"), (5, "TOUCH_TO_CLOSE")])
+
+    def test_result_seen_before_retry_window_never_repeats_payment(self):
+        replay = self.replay([self.before] + [self.hero_image] * 16 + [self.after],
+                             seconds=.5)
+        report = self.play(replay)
+        self.assertEqual(report.outcome, SummonOutcome.CONFIRMED)
+        self.assertEqual([a[1] for a in replay.actions], ["SUMMON_NORMAL", "TOUCH_TO_CLOSE"])
+
+    def test_unconfirmed_payment_stops_after_three_requests(self):
+        replay = self.replay([self.before] * 20, seconds=1)
+        report = self.play(replay)
+        self.assertEqual(report.outcome, SummonOutcome.TIMEOUT)
+        self.assertEqual([a[1] for a in replay.actions],
+                         ["SUMMON_NORMAL", "SUMMON_NORMAL", "SUMMON_NORMAL"])
+        self.assertEqual(replay.index, 16)
+        # Slow screenshots cross the original deadline before a third tap.
+        replay = self.replay([self.before] * 4, seconds=8)
+        self.assertEqual(self.play(replay).outcome, SummonOutcome.TIMEOUT)
+        self.assertEqual([(a[0], a[1]) for a in replay.actions],
+                         [(0, "SUMMON_NORMAL"), (1, "SUMMON_NORMAL")])
+        self.assertEqual(replay.index, 2)
+
+    def test_ad_buff_popup_is_closed_before_retry_or_result_reading(self):
+        replay = self.replay([self.before, self.before] + [self.hero_image] * 16 + [self.after],
+                             seconds=.5)
+        ad_seen = False
+
+        def match_ad(image, **kwargs):
+            nonlocal ad_seen
+            if not ad_seen:
+                ad_seen = True
+                return True
+            return False
+
+        with patch.object(AD_BUFF_X_CLOSE, "match_template", side_effect=match_ad):
+            report = self.play(replay)
+        self.assertEqual(report.outcome, SummonOutcome.CONFIRMED)
+        self.assertEqual([(a[0], a[1]) for a in replay.actions],
+                         [(0, "AD_BUFF_X_CLOSE"), (1, "SUMMON_NORMAL"),
+                          (2, "TOUCH_TO_CLOSE")])
+        # Simulate a close that never takes effect. Repeated popup frames
+        # remain throttled and cannot bypass the original deadline or pay.
+        replay = self.replay([self.before] * 20, seconds=1)
+        with patch.object(AD_BUFF_X_CLOSE, "match_template", return_value=True):
+            report = self.play(replay)
+        self.assertEqual(report.outcome, SummonOutcome.TIMEOUT)
+        self.assertEqual([(a[0], a[1]) for a in replay.actions],
+                         [(index, "AD_BUFF_X_CLOSE") for index in (0, 3, 6, 9, 12, 15)])
+        self.assertEqual(replay.index, 16)
 
     def test_exact_debit_without_a_result_never_confirms_purchase(self):
         replay = self.replay([self.before] + [self.after] * 34)
@@ -199,6 +261,16 @@ class NormalSummonReplayTests(unittest.TestCase):
         self.assertEqual(report.outcome, SummonOutcome.TIMEOUT)
         self.assertIsNone(report.hero)
         self.assertEqual([a[1] for a in replay.actions], ["SUMMON_NORMAL"])
+        # Even an intermediate debit must latch progress. Reappearance of
+        # the old preparation cannot turn a paid/animating request into a
+        # missed tap. The fifteen-coin intermediate read is simulated.
+        for coins in (10, 15):
+            with self.subTest(coins=coins):
+                replay = self.replay([self.before, self.after] + [self.before] * 34)
+                report = self.play(replay, after=replace(self.panel, coins=coins))
+                self.assertEqual(report.outcome, SummonOutcome.TIMEOUT)
+                self.assertIsNone(report.hero)
+                self.assertEqual([a[1] for a in replay.actions], ["SUMMON_NORMAL"])
 
     def test_result_at_entry_has_no_paid_provenance(self):
         replay = self.replay([self.hero_image])

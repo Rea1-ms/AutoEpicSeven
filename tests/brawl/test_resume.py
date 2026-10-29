@@ -703,6 +703,87 @@ class ResumeDiscoveryTests(unittest.TestCase):
         self.assertEqual(reads, [1])
         self.assertEqual(replay.index, 12)
 
+    def test_reported_round14_open_retry_identifies_and_restores_the_same_cell(self):
+        from tasks.brawl.board import _cells
+        from tasks.brawl.withdraw import _bench_agrees
+
+        preparation = frame("resume-round14-open-pending")
+        real_vision = BrawlVision
+        current = real_vision(preparation).observe()
+        panel = PreparationPanel(14, 8, 8, 9, 20, 0)
+        self.assertEqual(current.state, BrawlScreen.PREPARATION)
+        self.assertEqual(current.game_mode, BrawlMode.NORMAL)
+        self.assertEqual(current.panel, panel)
+        before = scan((), panel)
+        self.assertTrue(_bench_agrees(preparation, current, before))
+        after_panel = replace(panel, deployed=7)
+        hero = BenchHero("卡萝", Imprint.D)
+        after = scan((hero,), after_panel)
+        entry = BenchEntry(hero.name, hero.imprint, (1000, 253, 1060, 278), (943, 268, 977, 303))
+        occupied = frozenset({(0, 3), (1, 3), (2, 0), (2, 3), (3, 0), (3, 3), (4, 3), (5, 3)})
+        cells = _cells()
+        source = next(cell for cell in cells if (cell.screen_row, cell.screen_column) == (0, 3))
+        field = tuple(cell for cell in cells if (cell.screen_row, cell.screen_column) in occupied)
+        withdrawal_grid = FormationGrid(cells, field, source, (), panel)
+        replacement_grid = FormationGrid(cells, tuple(cell for cell in field if cell != source),
+                                         None, (source,), after_panel)
+        selected, identified, replacing = [np.full_like(preparation, value) for value in (1, 2, 3)]
+        # Only preparation is a real reported capture. The later selection,
+        # counts, identity scans and selected bench card are explicit synthetic
+        # evidence. Clicks never advance frames: both first open requests fail,
+        # then the unchanged preparation authorizes their bounded retry.
+        replay = BrawlReplay(BrawlResume, [preparation] * 8 + [selected] * 6
+                             + [identified] * 8 + [replacing] * 7 + [preparation], self.clock)
+        replay.task.scan = Mock(side_effect=[after, before])
+        replay.task.select = Mock(return_value=BenchSelectionResult(
+            SelectionOutcome.SELECTED, hero, after_panel, BrawlMode.NORMAL))
+
+        def vision(image):
+            if image is preparation:
+                return real_vision(image)
+            state = BrawlScreen.PREPARATION if image is identified else BrawlScreen.FORMATION_SELECTION
+            observed_panel = panel if image is selected else after_panel
+            return SimpleNamespace(observe=lambda **kwargs: BrawlObservation(
+                state, observed_panel, game_mode=BrawlMode.NORMAL))
+
+        def bench_agrees(image, observation, checked, **kwargs):
+            if image is preparation:
+                return _bench_agrees(image, observation, checked, **kwargs)
+            expected = before if image is selected else after
+            return checked == expected and observation.panel == expected.panel
+
+        def grid(image, *, expected_source, **kwargs):
+            if image is selected:
+                self.assertEqual(expected_source, (0, 3))
+                return withdrawal_grid
+            self.assertIs(image, replacing)
+            self.assertIsNone(expected_source)
+            return replacement_grid
+
+        control = SimpleNamespace(source=source, panel=panel, button_area=(750, 209, 767, 226))
+        with patch("tasks.brawl.formation.BrawlVision", side_effect=vision), \
+                patch("tasks.brawl.formation._bench_agrees", side_effect=bench_agrees), \
+                patch("tasks.brawl.formation.read_bench", return_value=SimpleNamespace(
+                    entries=(entry,), panel=after_panel)), \
+                patch("tasks.brawl.formation._selected_entry", return_value=entry), \
+                patch("tasks.brawl.formation.read_formation_grid", side_effect=grid), \
+                patch("tasks.brawl.formation.read_withdraw_control", return_value=control):
+            actual, restored = replay.task._identify(before, occupied, (0, 3))
+        self.assertEqual(actual, hero)
+        self.assertIs(restored, before)
+        self.assertIs(replay.image, preparation)
+        self.assertEqual(replay.actions, [
+            (0, "BrawlFormationOpen", (794, 241, 795, 242)),
+            (7, "BrawlFormationOpen", (794, 241, 795, 242)),
+            (8, "BrawlFormationWithdraw", control.button_area),
+            (14, "BrawlFormationOpen", entry.plus_area),
+            (21, "BrawlFormationOpen", entry.plus_area),
+            (22, "BrawlFormationTarget", (794, 241, 795, 242))])
+        self.assertEqual(replay.task.scan.call_count, 2)
+        replay.task.select.assert_called_once_with(hero, after)
+        self.assertEqual(replay.click_record_clears, [29])
+        self.assertEqual(replay.index, 29)
+
     def test_reported_round13_identity_withdraws_and_restores_caro_once(self):
         withdrawn = frame("resume-round13-withdraw")
         selected = frame("resume-round13-restore")

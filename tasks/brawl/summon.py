@@ -9,6 +9,7 @@ import numpy as np
 from module.base.base import ModuleBase
 from module.base.timer import Timer
 from module.ocr.ocr import Ocr
+from tasks.base.assets.assets_base_popup import AD_BUFF_X_CLOSE
 from tasks.brawl.assets.assets_brawl import HERO_RESULT_CHECK, OCR_ROUND
 from tasks.brawl.assets.assets_brawl_actions import SUMMON_LOWER, SUMMON_UPPER
 from tasks.brawl.heroes import HeroResult, read_hero_result
@@ -127,16 +128,19 @@ class _ResultBalanceCache:
 
 class BrawlSummon(ModuleBase):
     ACTION_INTERVAL = 3
+    MAX_PAYMENT_RETRIES = 2
     STEP_TIMEOUT = 15
     ACTION_TIMER = "BrawlSummon"
 
     def summon_once(self, request, skip_first_screenshot=True):
-        """Pay once, read one result and verify its return to preparation.
+        """Request one summon, confirm its debit, and verify its return.
 
         Pages:
             in: preparation matching the caller's captured request
             out: verified preparation, interruption or the last unconfirmed frame
 
+        A missed preparation tap is retried a bounded number of times. The
+        common ``AD_BUFF_X_CLOSE`` popup is handled before page recognition.
         Result prompts are dismissed once, only after this call's payment,
         exact displayed debit and positively recognized continuation footer.
         A free hero prompt at entry has no paid provenance. A full-imprint
@@ -155,7 +159,14 @@ class BrawlSummon(ModuleBase):
         before = request.panel
         expected = (before.coins, before.synergy_tokens - cost.tokens)
         timeout = Timer(self.STEP_TIMEOUT).start()
-        paid = returned = closed = result_seen = False
+        retry_timer = Timer(self.ACTION_INTERVAL).start()
+        ad_close_timer = Timer(2).clear()
+        # A click request is not proof that the game accepted the payment.
+        # Keep those facts separate so a missed tap can be retried, while an
+        # observed debit permanently blocks another payment for this request.
+        click_attempted = debit_confirmed = returned = closed = result_seen = False
+        payment_progress_seen = False
+        retry_count = 0
         result = None
         proceeds = None
         balance_cache = _ResultBalanceCache()
@@ -170,12 +181,23 @@ class BrawlSummon(ModuleBase):
                 self.device.screenshot()
             image = self.device.image
             vision = BrawlVision(image)
+            # Keep a still-visible ad from allowing a summon tap through its
+            # overlay. Visibility stays independent from click throttling;
+            # an ad inside its close interval still blocks other controls.
+            if AD_BUFF_X_CLOSE.match_template(image, similarity=0.85):
+                if timeout.reached():
+                    return report(SummonOutcome.TIMEOUT)
+                if ad_close_timer.reached():
+                    self.device.click(AD_BUFF_X_CLOSE)
+                    invalidate_panel_observation_cache()
+                    ad_close_timer.reset()
+                continue
             current = vision.observe()
             if current.state != BrawlScreen.HERO_RESULT:
                 balance_cache.clear()
             if current.game_mode is not None and current.game_mode != request.game_mode:
                 return report(SummonOutcome.CONTEXT_CHANGED)
-            if current.state == BrawlScreen.HERO_RESULT and (not paid or returned):
+            if current.state == BrawlScreen.HERO_RESULT and (not click_attempted or returned):
                 return report(SummonOutcome.SCENE_CHANGED)
             if current.state not in (BrawlScreen.PREPARATION, BrawlScreen.HERO_RESULT, BrawlScreen.UNKNOWN):
                 return report(SummonOutcome.SCENE_CHANGED)
@@ -191,7 +213,7 @@ class BrawlSummon(ModuleBase):
             # Hero artwork may cover the mode title. Only an owned result may
             # inherit the mode from this call's payment; preparation must still
             # independently confirm it before the operation can succeed.
-            if current.game_mode is None and not (paid and current.state == BrawlScreen.HERO_RESULT):
+            if current.game_mode is None and not (click_attempted and current.state == BrawlScreen.HERO_RESULT):
                 if timeout.reached():
                     return report(SummonOutcome.TIMEOUT)
                 continue
@@ -202,7 +224,12 @@ class BrawlSummon(ModuleBase):
                             before.round_number, before.level, before.deployed, before.capacity):
                         return report(SummonOutcome.CONTEXT_CHANGED)
                     balances = (panel.coins, panel.synergy_tokens)
-                    if not paid:
+                    if balances != (before.coins, before.synergy_tokens):
+                        # An intermediate resource frame may be a debit in
+                        # progress. Returning to the old digits
+                        # later must not reopen payment retries.
+                        payment_progress_seen = True
+                    if not click_attempted:
                         if panel != before:
                             return report(SummonOutcome.CONTEXT_CHANGED)
                         if timeout.reached():
@@ -210,11 +237,34 @@ class BrawlSummon(ModuleBase):
                         if vision.matches(button, color=True):
                             self.device.click(button)
                             invalidate_panel_observation_cache()
-                            # This captured request owns exactly one payment.
-                            # Its paid latch blocks stale preparation frames;
-                            # a cooldown from another action adds no evidence.
-                            paid = True
-                            timeout.reset()
+                            click_attempted = True
+                            retry_count += 1
+                            retry_timer.reset()
+                            continue
+                    elif not debit_confirmed:
+                        if balances == expected:
+                            # The exact token debit is the first reliable
+                            # evidence that the latest request was accepted.
+                            debit_confirmed = True
+                        elif balances != (before.coins, before.synergy_tokens):
+                            # A changed but non-exact balance is not safe to
+                            # spend against; wait for a result or fail closed.
+                            if (balances[0] != before.coins
+                                    or not expected[1] <= balances[1] <= before.synergy_tokens):
+                                return report(SummonOutcome.BALANCE_MISMATCH)
+                        elif (not payment_progress_seen
+                              and balances == (before.coins, before.synergy_tokens)
+                              and retry_count < self.MAX_PAYMENT_RETRIES + 1
+                              and retry_timer.reached() and not timeout.reached()
+                              and vision.matches(button, color=True)):
+                            # The preparation counters are unchanged and
+                            # no debit was observed during the confirmation
+                            # window, so retry the missed tap a bounded number
+                            # of times. The overall timeout is never extended.
+                            self.device.click(button)
+                            invalidate_panel_observation_cache()
+                            retry_count += 1
+                            retry_timer.reset()
                             continue
                     elif result is not None and result.is_overflow and closed:
                         # The overflow result says a max-imprint duplicate was
@@ -243,7 +293,7 @@ class BrawlSummon(ModuleBase):
                           or not expected[1] <= panel.synergy_tokens <= before.synergy_tokens):
                         return report(SummonOutcome.BALANCE_MISMATCH)
             elif current.state == BrawlScreen.HERO_RESULT:
-                if not paid or returned:
+                if not click_attempted or returned:
                     return report(SummonOutcome.SCENE_CHANGED)
                 result_seen = True
                 hero = read_hero_result(image)
@@ -262,6 +312,7 @@ class BrawlSummon(ModuleBase):
                                 or not expected[1] <= balances[1] <= before.synergy_tokens):
                             return report(SummonOutcome.BALANCE_MISMATCH)
                         if balances == expected:
+                            debit_confirmed = True
                             result = hero
                             if timeout.reached():
                                 return report(SummonOutcome.TIMEOUT)
@@ -271,6 +322,10 @@ class BrawlSummon(ModuleBase):
                                 # authorize this different action immediately.
                                 # Only the local latch prevents repeat closes.
                                 closed = True
+                                # The payment/retry deadline is complete once
+                                # identity, debit, and footer are verified; a
+                                # fresh short window is then allowed for the
+                                # game to render the confirmed preparation.
                                 timeout.reset()
                                 continue
                 else:

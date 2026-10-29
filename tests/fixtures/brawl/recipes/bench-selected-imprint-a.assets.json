@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "source": "../global_cn/brawl-bench-achates-a.png",
+  "suite": "brawl_bench",
+  "case": "selected_imprint_a",
+  "items": [
+    {
+      "name": "BENCH_IMPRINT_A",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "brawl",
+      "box": [1001, 292, 1022, 315]
+    }
+  ]
+}

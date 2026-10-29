@@ -3,6 +3,18 @@ from module.base.button import Button, ButtonWrapper
 # This file was auto-generated, do not modify it manually. To generate:
 # ``` python -m dev_tools.button_extract ```
 
+BENCH_IMPRINT_A = ButtonWrapper(
+    name='BENCH_IMPRINT_A',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/brawl/BENCH_IMPRINT_A.png',
+        area=(1001, 292, 1022, 315),
+        search=(981, 272, 1042, 335),
+        color=(85, 61, 158),
+        button=(1001, 292, 1022, 315),
+    ),
+    global_en=None,
+)
 BENCH_IMPRINT_B = ButtonWrapper(
     name='BENCH_IMPRINT_B',
     cn=None,

@@ -1129,7 +1129,7 @@ class ToolEntryTests(unittest.TestCase):
         import yaml
 
         from module.config.config_manual import ManualConfig
-        from module.webui.task_extension import TASK_DETAIL_RENDERERS
+        from module.webui.task_extension import render_task_detail
 
         folder = Path(__file__).resolve().parents[2] / "module" / "config"
         source = {}
@@ -1150,12 +1150,11 @@ class ToolEntryTests(unittest.TestCase):
         for field in ("NextRun", "Command", "ServerUpdate"):
             self.assertEqual(scheduler[field]["display"], "hide")
         self.assertIn("Brawl", ManualConfig.SCHEDULER_PRIORITY.split())
-        self.assertTrue(callable(TASK_DETAIL_RENDERERS["Brawl"]))
         with patch("pywebio.output.put_text") as put_text, \
-                patch("module.webui.lang.t", return_value="Opening instructions") as translate:
-            TASK_DETAIL_RENDERERS["Brawl"](SimpleNamespace())
-        translate.assert_called_once_with("Task.Brawl.help")
-        put_text.assert_called_once_with("Opening instructions")
+                patch("module.webui.lang.t") as translate:
+            render_task_detail(SimpleNamespace(), "Brawl")
+        translate.assert_not_called()
+        put_text.assert_not_called()
         locales = list((folder / "i18n").glob("*.json"))
         self.assertEqual(len(locales), 5)
         for file in locales:

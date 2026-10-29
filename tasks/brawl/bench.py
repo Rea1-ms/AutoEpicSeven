@@ -8,6 +8,7 @@ import numpy as np
 
 from module.ocr.ocr import Ocr
 from tasks.brawl.assets.assets_brawl import (
+    BENCH_IMPRINT_A,
     BENCH_IMPRINT_B,
     BENCH_IMPRINT_C,
     BENCH_IMPRINT_D,
@@ -32,6 +33,8 @@ from tasks.brawl.vision import (
     ObservationError,
     PreparationPanel,
 )
+
+SELECTED_IMPRINT_AREA = (998, 286, 1031, 322)
 
 
 @dataclass(frozen=True)
@@ -76,14 +79,18 @@ def _known_name(line):
 
 
 def _selected_imprint(image):
+    # Keep template matching and OCR inside the same badge lane. Captured
+    # faction glyphs begin to its right; including them turns A into "A&".
+    # Full badge templates avoid repeated OCR without borrowing a prior rank.
     found = []
     for imprint, button in (
         (Imprint.NONE, BENCH_IMPRINT_NONE), (Imprint.D, BENCH_IMPRINT_D),
         (Imprint.C, BENCH_IMPRINT_C), (Imprint.B, BENCH_IMPRINT_B),
+        (Imprint.A, BENCH_IMPRINT_A),
     ):
         search = button.search
         try:
-            button.load_search((997, 286, 1048, 322))
+            button.load_search(SELECTED_IMPRINT_AREA)
             if button.match_template_color(image, similarity=0.9, threshold=20):
                 found.append(imprint)
         finally:
@@ -107,7 +114,7 @@ def _small_imprint(image, area):
     # The two rear card sizes render C differently from the selected card.
     # English OCR splits its confidence between upper/lowercase (C), or fails
     # on the complete small purple A. Match full captured glyphs at each size;
-    # do not narrow the shared OCR field, which must still contain SS/SSS.
+    # the rear cards have their own name-relative badge geometry.
     found = []
     for imprint, asset in ((Imprint.C, BENCH_SMALL_IMPRINT_C), (Imprint.A, BENCH_SMALL_IMPRINT_A)):
         for button in asset.buttons:
@@ -174,7 +181,7 @@ def read_bench(image, *, observation=None):
         if selected:
             imprint = _selected_imprint(image)
             if imprint is None:
-                imprint = _ocr_imprint(image, (998, 286, 1044, 322))
+                imprint = _ocr_imprint(image, SELECTED_IMPRINT_AREA)
             if observed.state != BrawlScreen.TRANSMIT_SELECTION:
                 pluses = BENCH_PLUS.match_multi_template(image, similarity=0.92)
                 if len(pluses) == 1:
@@ -190,7 +197,7 @@ def read_bench(image, *, observation=None):
             except RuleInputError:
                 imprint = None
         if selected and imprint is None:
-            issues.append(f"Selected imprint unread: {name!r}, area=(998, 286, 1044, 322)")
+            issues.append(f"Selected imprint unread: {name!r}, area={SELECTED_IMPRINT_AREA}")
         entries.append(BenchEntry(name, imprint, (x1, y1, x2, y2), plus_area))
     names = [entry.name for entry in entries]
     if len(names) != len(set(names)):

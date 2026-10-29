@@ -331,6 +331,115 @@ class NewGameFormationTests(unittest.TestCase):
         self.assertTrue(all(area != (1205, 280, 1260, 310) for _, _, area in replay.actions))
         self.assertEqual(replay.click_record_clears, [])
 
+    def test_grid_open_retries_before_selection_and_advances_without_extra_delay(self):
+        panel = replace(PANEL, deployed=1)
+        for empty in (False, True):
+            with self.subTest(empty_bench=empty):
+                entries = () if empty else (ENTRY,)
+                prep = self.state_frame(panel=panel, entries=entries, empty=empty)
+                grid = FormationGrid((CELL,), (CELL,), CELL if empty else None, (), panel)
+                selected = self.state_frame(BrawlScreen.FORMATION_SELECTION, panel=panel,
+                                            entries=entries, empty=empty, grid=grid)
+                replay = self.replay([prep] * 8 + [selected, prep])
+                checked = self.scan((), panel) if empty else self.scan(panel=panel)
+                # A new verified interaction starts immediately, even when the
+                # preceding interaction used this same opening control. Only a
+                # repeat within this pending interaction owns the cooldown.
+                replay.task.interval_reset("BrawlFormationOpen", interval=3)
+                self.assertEqual(replay.task._probe(checked, {(3, 3)}), frozenset({(3, 3)}))
+                area = (731, 409, 732, 410) if empty else ENTRY.plus_area
+                self.assertEqual(replay.actions, [
+                    (0, "BrawlFormationOpen", area), (7, "BrawlFormationOpen", area),
+                    (8, "BrawlFormationCancelRound", replay.task.ROUND_CANCEL_AREA)])
+                self.assertEqual(replay.index, 9)
+                self.assertEqual(replay.click_record_clears, [])
+
+    def test_grid_open_retries_keep_the_original_deadline_and_attempt_limit(self):
+        panel = replace(PANEL, deployed=1)
+        for empty in (False, True):
+            with self.subTest(empty_bench=empty):
+                prep = self.state_frame(panel=panel, entries=() if empty else (ENTRY,), empty=empty)
+                replay = self.replay([prep] * 30)
+                checked = self.scan((), panel) if empty else self.scan(panel=panel)
+                with patch("tasks.brawl.formation.logger.warning") as warning, \
+                        self.assertRaisesRegex(ObservationError, "Formation grid did not open"):
+                    replay.task._probe(checked, {(3, 3)})
+                self.assertEqual([item[:2] for item in replay.actions], [
+                    (0, "BrawlFormationOpen"), (7, "BrawlFormationOpen"), (14, "BrawlFormationOpen")])
+                self.assertEqual(replay.index, 25)
+                self.assertIn("open_attempts=3", warning.call_args.args[0])
+                self.assertEqual(replay.click_record_clears, [])
+        for reader in ("read_bench", "_selected_entry"):
+            with self.subTest(slow_reader=reader):
+                prep = self.state_frame(panel=panel)
+                replay = self.replay([prep] * 30)
+
+                def delayed_read(*args, replay=replay,
+                                 result=prep.viewport if reader == "read_bench" else prep.selected, **kwargs):
+                    if replay.index == 7:
+                        self.clock.advance(10)
+                    return result
+
+                with patch(f"tasks.brawl.formation.{reader}", side_effect=delayed_read), \
+                        self.assertRaises(ObservationError):
+                    replay.task._probe(self.scan(panel=panel), {(3, 3)})
+                self.assertEqual(replay.actions, [(0, "BrawlFormationOpen", ENTRY.plus_area)])
+                self.assertEqual(replay.index, 7)
+
+    def test_grid_open_retry_rechecks_current_context_and_selected_bench_control(self):
+        panel = replace(PANEL, deployed=1)
+        prep = self.state_frame(panel=panel)
+        invalid = [
+            self.state_frame(BrawlScreen.UNKNOWN, panel=None),
+            self.state_frame(panel=None),
+            self.state_frame(panel=panel, mode=None),
+            self.state_frame(panel=panel, mode=BrawlMode.CHALLENGE),
+            self.state_frame(panel=panel, entries=(replace(ENTRY, imprint=Imprint.C),)),
+            self.state_frame(panel=panel, selected=replace(ENTRY, name="卡萝")),
+            self.state_frame(panel=panel, selected=None),
+        ]
+        for field in ("round_number", "level", "deployed", "capacity", "coins", "synergy_tokens"):
+            invalid.append(self.state_frame(panel=replace(panel, **{field: getattr(panel, field) + 1})))
+        for index, invalid_frame in enumerate(invalid):
+            with self.subTest(invalid_evidence=index):
+                replay = self.replay([prep] * 7 + [invalid_frame] * 30)
+                with self.assertRaises(ObservationError):
+                    replay.task._probe(self.scan(panel=panel), {(3, 3)})
+                self.assertEqual(replay.actions, [(0, "BrawlFormationOpen", ENTRY.plus_area)])
+                self.assertEqual(replay.click_record_clears, [])
+        fresh_entry = replace(ENTRY, plus_area=(943, 320, 977, 355))
+        moved = self.state_frame(panel=panel, entries=(fresh_entry,), selected=fresh_entry)
+        grid = FormationGrid((CELL,), (CELL,), None, (), panel)
+        selected = self.state_frame(BrawlScreen.FORMATION_SELECTION, panel=panel, grid=grid,
+                                    entries=(fresh_entry,), selected=fresh_entry)
+        replay = self.replay([prep] * 7 + [moved, selected, moved])
+        self.assertEqual(replay.task._probe(self.scan(panel=panel), {(3, 3)}), frozenset({(3, 3)}))
+        self.assertEqual(replay.actions, [
+            (0, "BrawlFormationOpen", ENTRY.plus_area),
+            (7, "BrawlFormationOpen", fresh_entry.plus_area),
+            (8, "BrawlFormationCancelRound", replay.task.ROUND_CANCEL_AREA)])
+
+    def test_seen_grid_identity_ends_open_retries_before_panel_or_mode_is_complete(self):
+        panel = replace(PANEL, deployed=1)
+        prep = self.state_frame(panel=panel)
+        for mode in (BrawlMode.NORMAL, None):
+            with self.subTest(incomplete_mode=mode):
+                selected = self.state_frame(BrawlScreen.FORMATION_SELECTION, panel=None, mode=mode)
+                replay = self.replay([prep] + [selected] * 7 + [prep] * 30)
+                with self.assertRaisesRegex(ObservationError, "Selection closed before its requested action"):
+                    replay.task._probe(self.scan(panel=panel), {(3, 3)})
+                self.assertEqual(replay.actions, [(0, "BrawlFormationOpen", ENTRY.plus_area)])
+                self.assertEqual(replay.index, 8)
+                grid = FormationGrid((CELL,), (CELL,), None, (), panel)
+                readable = self.state_frame(BrawlScreen.FORMATION_SELECTION, panel=panel, grid=grid)
+                replay = self.replay([prep, selected, readable, prep])
+                replay.seconds = .1
+                self.assertEqual(replay.task._probe(self.scan(panel=panel), {(3, 3)}), frozenset({(3, 3)}))
+                self.assertEqual(replay.actions, [
+                    (0, "BrawlFormationOpen", ENTRY.plus_area),
+                    (2, "BrawlFormationCancelRound", replay.task.ROUND_CANCEL_AREA)])
+                self.assertEqual(replay.index, 3)
+
     def test_probe_uses_bench_plus_when_field_has_room_and_rejects_a_selected_source(self):
         panel = replace(PANEL, level=4, deployed=4, capacity=5)
         cells = (CELL, BoardCell(2, 3, (794, 353)), BoardCell(3, 0, (358, 409)),
@@ -522,9 +631,9 @@ class NewGameFormationTests(unittest.TestCase):
 
     def test_unrequested_grid_changed_scene_and_changed_context_stop_without_target(self):
         action = FormationStep(FormationKind.PLACE, "格伦", None, (3, 3), None, 0)
-        # Preparation after opening has no actionable grid boundary. Keep
-        # sampling until the real 12-second deadline; changed context in an
-        # actual grid must instead fail before any target can be clicked.
+        # Repeated preparation may authorize another opening only after fresh
+        # context checks. A changed panel or bench must reject that retry;
+        # an actual grid still requires its independent target validation.
         cases = (
             [self.state_frame(BrawlScreen.FORMATION_SELECTION)],
             [self.state_frame(), self.state_frame(BrawlScreen.COMBAT)],
