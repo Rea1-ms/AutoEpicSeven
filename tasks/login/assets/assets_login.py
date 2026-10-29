@@ -147,13 +147,22 @@ LOGIN_LOADING = ButtonWrapper(
 )
 PATCH_APPLY = ButtonWrapper(
     name='PATCH_APPLY',
-    cn=Button(
-        file='./assets/cn/login/PATCH_APPLY.png',
-        area=(620, 535, 660, 555),
-        search=(600, 515, 680, 575),
-        color=(128, 146, 129),
-        button=(620, 535, 660, 555),
-    ),
+    cn=[
+        Button(
+            file='./assets/cn/login/PATCH_APPLY.png',
+            area=(620, 535, 660, 555),
+            search=(600, 515, 680, 575),
+            color=(128, 146, 129),
+            button=(620, 535, 660, 555),
+        ),
+        Button(
+            file='./assets/cn/login/PATCH_APPLY.2.png',
+            area=(751, 534, 793, 556),
+            search=(731, 514, 813, 576),
+            color=(114, 134, 116),
+            button=(689, 529, 854, 565),
+        ),
+    ],
     global_cn=[
         Button(
             file='./assets/global_cn/login/PATCH_APPLY.png',
