@@ -16,13 +16,12 @@ WORKTREE = Path(__file__).resolve().parents[2]
 PROJECT_ROOT = WORKTREE
 import module.config.server as server
 from module.game_info.catalog import parse_info
-from tasks.activity import calendar, scheduling
+from tasks.activity import scheduling
 from tasks.activity.entry import SpecialActivityEntry
-from tasks.activity.huche_shop import MysticOffer
+from tasks.activity.legacy.huche_shop_2026_09_17.huche_shop import MysticOffer
 
 NOW = datetime.fromisoformat("2026-09-20T12:30:00+08:00")
 EVENT_ID = "huche_shop_2026_09_17"
-WINDOW = next(e for e in calendar.load_calendar() if e.event_id == EVENT_ID)
 FIXTURES = Path(__file__).parent / "screenshots/huche_shop"
 CHEAP = MysticOffer((634, 285, 733, 314), 160, 2, 2, False)
 REGULAR = MysticOffer((634, 632, 733, 661), 200, 4, 4, False)
@@ -30,12 +29,12 @@ CHEAP_DONE = MysticOffer(CHEAP.row, 160, 0, 2, True)
 REGULAR_DONE = MysticOffer(REGULAR.row, 200, 0, 4, True)
 
 
-from tests.support.history_huche_shop import Config, Flow
+from tests.support.history_huche_shop import Config, Flow, WINDOW
 
 class FlowTests(unittest.TestCase):
     def setUp(self):
         server.set_lang("global_cn")
-        clock = patch("tasks.activity.huche_shop.aware_time", return_value=NOW)
+        clock = patch("tasks.activity.legacy.huche_shop_2026_09_17.huche_shop.aware_time", return_value=NOW)
         clock.start()
         self.addCleanup(clock.stop)
 
@@ -69,7 +68,7 @@ class FlowTests(unittest.TestCase):
 
     def test_counter_zero_without_sold_out_does_not_complete(self):
         flow = Flow(["partial"]*3)
-        with patch("tasks.activity.huche_shop.Timer") as timer:
+        with patch("tasks.activity.legacy.huche_shop_2026_09_17.huche_shop.Timer") as timer:
             timer.return_value.start.return_value.reached.side_effect=[False,False,True]
             self.assertFalse(flow.run_purchase(WINDOW))
         self.assertNotIn(scheduling._checked_path(flow.config, EVENT_ID), flow.config.values)
@@ -87,7 +86,7 @@ class FlowTests(unittest.TestCase):
 
     def test_refresh_boundary_discards_old_sold_out_observation(self):
         flow = Flow(["done"]*2)
-        with patch("tasks.activity.huche_shop.aware_time",side_effect=[NOW,NOW,NOW,NOW+timedelta(hours=12)]):
+        with patch("tasks.activity.legacy.huche_shop_2026_09_17.huche_shop.aware_time",side_effect=[NOW,NOW,NOW,NOW+timedelta(hours=12)]):
             self.assertFalse(flow.run_purchase(WINDOW))
         self.assertEqual(flow.config.values,{})
 
@@ -166,13 +165,14 @@ class ScheduleTests(unittest.TestCase):
                 parse_info(json.dumps(data))
 
     def test_entry_dispatches_shop_and_skips_disabled_option(self):
+        """An injected historical window cannot enable the retired shop."""
         with patch("tasks.activity.entry.active_activities",return_value=(WINDOW,)), patch(
-            "tasks.activity.huche_shop.HucheShop"
+            "tasks.activity.legacy.huche_shop_2026_09_17.huche_shop.HucheShop"
         ) as task, patch("tasks.activity.entry.delay_next_activity_check"):
             task.return_value.run.return_value=True
             self.assertTrue(SpecialActivityEntry(self.config).run())
-            task.assert_called_once()
-            task.return_value.ui_goto.assert_called_once()
+            task.assert_not_called()
+            task.return_value.ui_goto.assert_not_called()
             task.reset_mock()
             self.config.SpecialActivity_BuyHucheMysticMedals=False
             self.assertTrue(SpecialActivityEntry(self.config).run())
@@ -188,6 +188,8 @@ class ScheduleTests(unittest.TestCase):
             entry=json.loads(path.read_text(encoding='utf-8'))['SpecialActivity']['BuyHucheMysticMedals']
             self.assertTrue(entry['name'])
             self.assertTrue(entry['help'])
+        args = json.loads(Path('module/config/argument/args.json').read_text(encoding='utf-8'))
+        self.assertEqual(args['SpecialActivity']['SpecialActivity']['BuyHucheMysticMedals']['display'], 'hide')
 
     def test_page_registration_and_routes_per_server(self):
         code="""
@@ -196,7 +198,7 @@ import module.config.server as server
 server.set_lang(sys.argv[1])
 server.server='CN-Official' if sys.argv[1]=='cn' else 'OVERSEA-Play'
 from tasks.base import page
-from tasks.activity.huche_shop import HucheShop
+from tasks.activity.legacy.huche_shop_2026_09_17.huche_shop import HucheShop
 assert hasattr(page,'page_huche_shop') == (sys.argv[1]=='global_cn')
 list(page.Page.iter_check_buttons())
 if sys.argv[1]=='global_cn':

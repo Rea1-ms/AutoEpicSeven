@@ -23,7 +23,7 @@ from module.config.deep import deep_set
 from tasks.activity import calendar, scheduling
 from tasks.activity.common_activity import CommonActivityBatch
 from tasks.activity.entry import SpecialActivityEntry
-from tasks.activity.huche_shop import HucheShop
+from tasks.activity.legacy.huche_shop_2026_09_17.huche_shop import HucheShop
 from tasks.activity.limited_activity import LimitedActivityEntry
 from tasks.base.ui import UI
 
@@ -129,6 +129,25 @@ class SchedulingTests(unittest.TestCase):
         clock = patch.object(calendar, 'datetime', wraps=datetime)
         clock.start().now.return_value = NOW
         self.addCleanup(clock.stop)
+        # Replay the original two-task contract with explicit historical input.
+        # These patches never register the retired shop in production.
+        from module.game_info.catalog import load_info
+        from tests.support.history_huche_shop import WINDOW
+        from tasks.activity.legacy.huche_shop_2026_09_17 import huche_shop
+
+        info = load_info()
+        for context in (
+            patch.object(calendar, 'load_calendar', return_value=(*calendar.load_calendar(), WINDOW)),
+            patch.object(calendar, 'SUPPORTED_MODES', (*calendar.SUPPORTED_MODES, 'huche_shop')),
+            patch.dict(calendar.ACTIVITY_TASK_MODES, {'SpecialActivity': ('legacy', 'huche_shop')}),
+            patch.object(SpecialActivityEntry, 'ACTIVITY_MODES', ('legacy', 'huche_shop')),
+            patch.object(SpecialActivityEntry, 'COMMON_ACTIVITY_OPTIONS',
+                         {'huche_shop': 'SpecialActivity_BuyHucheMysticMedals'}),
+            patch.object(huche_shop, 'load_info', return_value=SimpleNamespace(
+                values=lambda kind, family: info.values(kind, family, NOW))),
+        ):
+            context.start()
+            self.addCleanup(context.stop)
         self.events = calendar.active_activities(self.config, NOW)
 
     def test_each_task_only_sees_its_entrances(self):
@@ -167,11 +186,12 @@ class SchedulingTests(unittest.TestCase):
             shop.event_id + '_regular_mystic', shop.start, now=NOW))
 
     def test_after_battle_only_wakes_enabled_unfinished_limited_task(self):
+        deep_set(self.config.data, 'LimitedActivity.LimitedActivity.GetEpicPathDailyReward', False)
         self.config.init_task('Combat')
         # Keep the original task split/stock dates above as historical facts.
         # Battle wakeups must use the current campaign instead of reactivating
-        # Koharu merely to satisfy a past scheduling expectation.
-        current = datetime(2026, 10, 15, 18, tzinfo=calendar.EVENT_TIMEZONE)
+        # retired events merely to satisfy a past scheduling expectation.
+        current = datetime(2026, 10, 29, 22, tzinfo=calendar.EVENT_TIMEZONE)
         with patch.object(self.config, 'task_call') as call, patch.object(
             calendar, 'datetime', wraps=datetime
         ) as clock:
@@ -179,11 +199,11 @@ class SchedulingTests(unittest.TestCase):
             scheduling.schedule_activity_after_battle(self.config)
             call.assert_called_once_with('LimitedActivity', force_call=False)
             call.reset_mock()
-            deep_set(self.config.data, 'LimitedActivity.LimitedActivity.GetMeirinReward', False)
-            self.assertTrue(self.config.LimitedActivity_GetMeirinReward)
+            deep_set(self.config.data, 'LimitedActivity.LimitedActivity.GetDetectiveSearch', False)
+            self.assertTrue(self.config.LimitedActivity_GetDetectiveSearch)
             scheduling.schedule_activity_after_battle(self.config)
             call.assert_not_called()
-            deep_set(self.config.data, 'LimitedActivity.LimitedActivity.GetMeirinReward', True)
+            deep_set(self.config.data, 'LimitedActivity.LimitedActivity.GetDetectiveSearch', True)
             deep_set(self.config.data, 'LimitedActivity.Scheduler.Enable', False)
             scheduling.schedule_activity_after_battle(self.config)
             call.assert_not_called()
@@ -214,7 +234,7 @@ class SchedulingTests(unittest.TestCase):
                 method = '_run_pending' if failing_task == 'LimitedActivity' else 'run_purchase'
                 with patch.object(target, method, return_value=False), patch.object(UI, 'ui_goto'), patch(
                         'tasks.activity.entry.is_activity_checked_in_window', return_value=False), patch(
-                        'tasks.activity.huche_shop.is_activity_checked_in_window', return_value=False):
+                        'tasks.activity.legacy.huche_shop_2026_09_17.huche_shop.is_activity_checked_in_window', return_value=False):
                     self.assertFalse(entry(config, device=device).run())
                 self.assertEqual(config.data[other]['Scheduler']['NextRun'], before)
                 self.assertGreater(config.data[failing_task]['Scheduler']['NextRun'], datetime.now())

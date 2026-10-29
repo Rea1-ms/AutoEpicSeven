@@ -10,7 +10,7 @@ from unittest.mock import patch
 from tests.support.history_huche_shop import Config
 FIXTURES = input_root("huche_shop")
 import module.config.server as server
-from tasks.activity.huche_shop import HucheShop, DiscountItem, DiscountView, DiscountBatchScan
+from tasks.activity.legacy.huche_shop_2026_09_17.huche_shop import HucheShop, DiscountItem, DiscountView, DiscountBatchScan
 from tasks.activity.assets.assets_activity_huche_shop_26_9_17 import HUCHE_REFRESH_ITEM
 from types import SimpleNamespace
 
@@ -55,14 +55,14 @@ class ScreenshotTests(unittest.TestCase):
 
     def test_unreadable_non_target_name_still_blocks_absence(self):
         results = [SimpleNamespace(ocr_text="生命之叶", score=0.4)]
-        with patch("tasks.activity.huche_shop.Ocr.detect_and_ocr", return_value=results), patch.object(
+        with patch("tasks.activity.legacy.huche_shop_2026_09_17.huche_shop.Ocr.detect_and_ocr", return_value=results), patch.object(
             self.shop, "_match_at", return_value=False
         ):
             self.assertIsNone(self.read("leif_batch"))
 
     def test_possible_mystic_name_is_retained_even_with_low_confidence(self):
         results = [SimpleNamespace(ocr_text="神秘奖牌", score=0.4)]
-        with patch("tasks.activity.huche_shop.Ocr.detect_and_ocr", return_value=results), patch.object(
+        with patch("tasks.activity.legacy.huche_shop_2026_09_17.huche_shop.Ocr.detect_and_ocr", return_value=results), patch.object(
             self.shop, "_match_at", return_value=False
         ):
             view = self.read("leif_batch")
@@ -91,7 +91,7 @@ class ScreenshotTests(unittest.TestCase):
     def test_unreadable_names_and_unrelated_pages_are_not_empty_batches(self):
         for name in ("main", "confirm"):
             self.assertIsNone(self.read(name))
-        with patch("tasks.activity.huche_shop.Ocr.detect_and_ocr", return_value=[]):
+        with patch("tasks.activity.legacy.huche_shop_2026_09_17.huche_shop.Ocr.detect_and_ocr", return_value=[]):
             self.assertIsNone(self.read("available"))
 
     def test_missing_clock_before_boundary_is_not_a_complete_batch(self):

@@ -11,7 +11,7 @@ from unittest.mock import patch
 from tests.support.history_huche_shop import Flow, EVENT_ID, WINDOW, NOW
 import module.config.server as server
 from tasks.activity import scheduling
-from tasks.activity.huche_shop import HucheShop, DiscountItem, DiscountView, DiscountBatchScan
+from tasks.activity.legacy.huche_shop_2026_09_17.huche_shop import HucheShop, DiscountItem, DiscountView, DiscountBatchScan
 
 TOP = DiscountView(tuple(DiscountItem(y, name, False) for y, name in zip(
     (85, 230, 375, 520), ("圣约书签", "装备重铸精髓", "上级转换石选择箱", "5★英雄召唤券"))), None)
@@ -77,7 +77,7 @@ class FlowTests(unittest.TestCase):
         flow = Flow(["empty"] * HucheShop.BATCH_UNVERIFIED_LIMIT)
         fixed_key = scheduling._checked_path(flow.config, EVENT_ID + "_regular_mystic")
         flow.config.values[fixed_key] = "2026-09-18 12:00:00"
-        with patch("tasks.activity.huche_shop.aware_time", return_value=NOW), patch.object(
+        with patch("tasks.activity.legacy.huche_shop_2026_09_17.huche_shop.aware_time", return_value=NOW), patch.object(
             flow, "read_discount_view", return_value=None
         ):
             self.assertFalse(flow.run_purchase(WINDOW))
@@ -92,9 +92,9 @@ class FlowTests(unittest.TestCase):
         flow.config.values[fixed_key] = "2026-09-18 12:00:00"
         view = replace(EDGE, items=(DiscountItem(69, "神秘奖牌", True),) + EDGE.items[1:])
         scan = at_top()
-        with patch("tasks.activity.huche_shop.aware_time", return_value=NOW), patch.object(
+        with patch("tasks.activity.legacy.huche_shop_2026_09_17.huche_shop.aware_time", return_value=NOW), patch.object(
             flow, "read_discount_view", return_value=view
-        ), patch("tasks.activity.huche_shop.DiscountBatchScan", return_value=scan):
+        ), patch("tasks.activity.legacy.huche_shop_2026_09_17.huche_shop.DiscountBatchScan", return_value=scan):
             self.assertFalse(flow.run_purchase(WINDOW))
         self.assertEqual(flow.clicks, [])
         self.assertEqual(list(flow.config.values), [fixed_key])
@@ -104,7 +104,7 @@ class FlowTests(unittest.TestCase):
         flow = Flow(["empty"] * len(views))
         fixed_key = scheduling._checked_path(flow.config, EVENT_ID + "_regular_mystic")
         flow.config.values[fixed_key] = "2026-09-18 12:00:00"
-        with patch("tasks.activity.huche_shop.aware_time", return_value=NOW), patch.object(
+        with patch("tasks.activity.legacy.huche_shop_2026_09_17.huche_shop.aware_time", return_value=NOW), patch.object(
             flow, "read_discount_view", side_effect=lambda: views[flow.frame]
         ):
             self.assertTrue(flow.run_purchase(WINDOW))
@@ -116,7 +116,7 @@ class FlowTests(unittest.TestCase):
         flow = Flow(["empty"] * len(views))
         fixed_key = scheduling._checked_path(flow.config, EVENT_ID + "_regular_mystic")
         flow.config.values[fixed_key] = "2026-09-18 12:00:00"
-        with patch("tasks.activity.huche_shop.aware_time", return_value=NOW), patch.object(
+        with patch("tasks.activity.legacy.huche_shop_2026_09_17.huche_shop.aware_time", return_value=NOW), patch.object(
             flow, "read_discount_view", side_effect=lambda: views[flow.frame]
         ):
             self.assertTrue(flow.run_purchase(WINDOW))
@@ -128,7 +128,7 @@ class FlowTests(unittest.TestCase):
         flow = Flow(["empty"] * len(views))
         fixed_key = scheduling._checked_path(flow.config, EVENT_ID + "_regular_mystic")
         flow.config.values[fixed_key] = "2026-09-18 12:00:00"
-        with patch("tasks.activity.huche_shop.aware_time", return_value=NOW), patch.object(
+        with patch("tasks.activity.legacy.huche_shop_2026_09_17.huche_shop.aware_time", return_value=NOW), patch.object(
             flow, "read_discount_view", side_effect=lambda: views[flow.frame]
         ):
             self.assertTrue(flow.run_purchase(WINDOW))
@@ -142,7 +142,7 @@ class FlowTests(unittest.TestCase):
 
     def test_no_fixed_quota_record_still_searches_for_regular_stock(self):
         flow = Flow(["empty"] * 14)
-        with patch("tasks.activity.huche_shop.aware_time", return_value=NOW), patch.object(
+        with patch("tasks.activity.legacy.huche_shop_2026_09_17.huche_shop.aware_time", return_value=NOW), patch.object(
             flow, "read_discount_view", return_value=EDGE
         ) as read_batch:
             self.assertFalse(flow.run_purchase(WINDOW))
@@ -155,7 +155,7 @@ class FlowTests(unittest.TestCase):
         flow.config.values[key] = "2026-09-18 12:00:00"
         views = [TOP] * 2 + [EDGE] * 2
         times = [NOW] * 5 + [NOW.replace(hour=23)]
-        with patch("tasks.activity.huche_shop.aware_time", side_effect=times), patch.object(
+        with patch("tasks.activity.legacy.huche_shop_2026_09_17.huche_shop.aware_time", side_effect=times), patch.object(
             flow, "read_discount_view", side_effect=lambda: views[flow.frame]
         ):
             self.assertFalse(flow.run_purchase(WINDOW))
@@ -167,7 +167,7 @@ class FlowTests(unittest.TestCase):
         key = scheduling._checked_path(flow.config, EVENT_ID + "_regular_mystic")
         flow.config.values[key] = "2026-09-18 12:00:00"
         views = [TOP] * 2 + [EDGE] * 2
-        with patch("tasks.activity.huche_shop.aware_time", side_effect=[NOW] * 6 + [NOW.replace(hour=23)]), patch.object(
+        with patch("tasks.activity.legacy.huche_shop_2026_09_17.huche_shop.aware_time", side_effect=[NOW] * 6 + [NOW.replace(hour=23)]), patch.object(
             flow, "read_discount_view", side_effect=lambda: views[flow.frame]
         ):
             self.assertFalse(flow.run_purchase(WINDOW))

@@ -6,7 +6,7 @@ _test_server.set_lang("global_cn")
 
 """Rotating Huche batches: screenshot boundaries and continuous scan coverage."""
 
-from tasks.activity.huche_shop import DiscountItem, DiscountView, DiscountBatchScan
+from tasks.activity.legacy.huche_shop_2026_09_17.huche_shop import DiscountItem, DiscountView, DiscountBatchScan
 
 TOP = DiscountView(tuple(DiscountItem(y, name, False) for y, name in zip(
     (85, 230, 375, 520), ("圣约书签", "装备重铸精髓", "上级转换石选择箱", "5★英雄召唤券"))), None)

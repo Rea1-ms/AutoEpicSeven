@@ -1,0 +1,12 @@
+# 归档时的配置与日期备份，不参与当前配置生成。
+argument:
+  LimitedActivity:
+    GetMeirinReward: true
+activity:
+  id: meirin_reward_2026_10_08
+  kind: meirin_reward
+  name: 与梅铃一起吧！
+  source: 开始日期由用户2026-10-15确认：10月8日，时刻按接续小春结束的北京时间11点。截图 MuMu-20261015-172710-687.png
+    显示剩余13天17小时32分，推算10月29日11点结束；倒计时精确到分钟，秒数未独立核实。当前仅确认国际服中文。
+  oversea_start: '2026-10-08T11:00:00+08:00'
+  oversea_end: '2026-10-29T11:00:00+08:00'

@@ -10,7 +10,7 @@ from tests.support.offline import fixture_image, record_frame
 
 server.set_lang('global_cn')
 
-from tasks.activity.meirin_reward import MeirinReward
+from tasks.activity.legacy.meirin_reward_2026_10_15.meirin_reward import MeirinReward
 
 MANIFEST = Path(__file__).resolve().parents[1] / 'fixtures/historical/manifest.json'
 EVENT_ID = 'meirin_reward_2026_10_08'

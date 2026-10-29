@@ -1,0 +1,22 @@
+{
+  "en-US": {
+    "name": "Buy Huche Shop Mystic Medals",
+    "help": "Overseas Simplified Chinese only. Buy only Mystic Medals within stock and skystone balance limits. The leading stock rotates every 12 hours; medals are not guaranteed. Buy the 160-skystone offer when present, otherwise wait for the next batch after a complete scan. The 200-skystone offer has a fixed quota of 4 for the entire event; once sold out, inspect only the leading rotating batch. Recheck at 11:00 and 23:00 UTC+8. Disabled by default; enabling spends skystones."
+  },
+  "es-ES": {
+    "name": "Comprar medallas místicas en la tienda de Huche",
+    "help": "Solo servidor internacional en chino simplificado. Compra únicamente medallas místicas según las existencias y el saldo de piedras celestiales. El primer lote cambia cada 12 horas y no siempre incluye medallas. Compra la oferta de 160 cuando aparezca; si una revisión completa no encuentra medallas, espera al próximo lote. La oferta normal de 200 tiene un cupo fijo de 4 para todo el evento; al agotarse, revisa solo el primer lote rotativo. Revisa a las 11:00 y 23:00 UTC+8. Desactivado por defecto; al activarlo se gastan piedras celestiales."
+  },
+  "ja-JP": {
+    "name": "期間限定ショップの神秘メダルを購入",
+    "help": "海外版の簡体字中国語表示のみ。神秘メダルだけを在庫と天空石の所持数に応じて購入します。先頭の商品は12時間ごとに入れ替わり、神秘メダルが出ない場合もあります。160個の対象商品があれば購入し、対象がないと確認できたら次回を待ちます。200個の通常枠は開催期間全体で4個、売り切れ後は先頭の更新商品だけを確認します。北京時間11時・23時に再確認。初期設定は無効で、有効にすると天空石を消費します。"
+  },
+  "zh-CN": {
+    "name": "购买德朗商店神秘奖牌",
+    "help": "仅国际服中文。只购买神秘奖牌，按实际库存与天空石余额选择数量。顶部商品每12小时轮换，神秘奖牌不保证出现；出现时购买160天空石档，完整检查无奖牌则等下批。200天空石普通档整期固定4份，售罄后只检查顶部刷新批次。北京时间11点、23点复查。默认关闭，启用后会花费天空石。"
+  },
+  "zh-TW": {
+    "name": "購買德朗商店神秘獎牌",
+    "help": "僅國際服簡體中文。只購買神秘獎牌，依實際庫存與天空石餘額選擇數量。頂部商品每12小時輪換，不保證出現神秘獎牌；出現時購買160天空石檔，完整檢查無獎牌則等下批。200天空石普通檔整期固定4份，售罄後只檢查頂部刷新批次。北京時間11點、23點複查。預設關閉，啟用後會花費天空石。"
+  }
+}

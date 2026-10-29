@@ -10,13 +10,11 @@ from tasks.activity.assets.assets_activity_detective_search import (
 )
 from tasks.activity.assets.assets_activity_epic_path import EPIC_PATH_CHECK
 from tasks.activity.assets.assets_activity_special_26_8_27 import FREE_20_GACHA_SELECTED
-from tasks.activity.assets.assets_activity_special_26_10_15 import MEIRIN_GATE_SELECTED
 from tasks.activity.assets.assets_activity_special_26_10_19 import SUPPORT_GATE_CHECK
 from tasks.activity.completion_record import CompletionRecord
 from tasks.activity.detective_search import DetectiveSearch
 from tasks.activity.epic_path import EpicPath
 from tasks.activity.free_gacha_20 import FreeGacha20
-from tasks.activity.meirin_reward import MeirinReward
 from tasks.activity.navigation import ActivityNavigationMixin
 from tasks.activity.support_reward import SupportReward
 from tasks.base.page import page_common_activity
@@ -28,7 +26,6 @@ class CommonActivityBatch(ActivityNavigationMixin, UI):
 
     ACTIVITIES = {
         "free_gacha_20": ("INFINITY", FREE_20_GACHA_SELECTED, FreeGacha20),
-        "meirin_reward": ("与梅铃一起吧", MEIRIN_GATE_SELECTED, MeirinReward),
         "support_reward": ("应援任务", SUPPORT_GATE_CHECK, SupportReward),
         "completion_record": ("完成记录", COMPLETION_RECORD_CHECK, CompletionRecord),
         "detective_search": ("名侦探的每日搜查", DETECTIVE_SEARCH_CHECK, DetectiveSearch),

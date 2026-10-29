@@ -1404,7 +1404,9 @@
       },
       "GetMeirinReward": {
         "type": "checkbox",
-        "value": true
+        "value": true,
+        "display": "hide",
+        "keepvalue": true
       },
       "GetSupportReward": {
         "type": "checkbox",
@@ -1453,7 +1455,9 @@
     "SpecialActivity": {
       "BuyHucheMysticMedals": {
         "type": "checkbox",
-        "value": false
+        "value": false,
+        "display": "hide",
+        "keepvalue": true
       }
     },
     "ActivityRuntime": {

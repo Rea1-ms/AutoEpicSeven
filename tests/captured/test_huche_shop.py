@@ -12,8 +12,7 @@ from unittest.mock import patch
 
 WORKTREE = Path(__file__).resolve().parents[2]
 import module.config.server as server
-from tasks.activity import calendar
-from tasks.activity.huche_shop import HucheShop, MysticOffer
+from tasks.activity.legacy.huche_shop_2026_09_17.huche_shop import HucheShop, MysticOffer
 from tasks.activity.assets.assets_activity_huche_shop_26_9_17 import (
     OCR_HUCHE_BUY_AMOUNT, HUCHE_MYSTIC_ITEM, HUCHE_PRICE_CURRENCY,
 )
@@ -21,7 +20,6 @@ from tasks.store.assets.assets_store_actions import BUY_CONFIRM_MULTI, BUY_CONFI
 
 NOW = datetime.fromisoformat("2026-09-20T12:30:00+08:00")
 EVENT_ID = "huche_shop_2026_09_17"
-WINDOW = next(e for e in calendar.load_calendar() if e.event_id == EVENT_ID)
 FIXTURES = input_root('huche_shop')
 CHEAP = MysticOffer((634, 285, 733, 314), 160, 2, 2, False)
 REGULAR = MysticOffer((634, 632, 733, 661), 200, 4, 4, False)
@@ -78,7 +76,7 @@ class ScreenshotTests(unittest.TestCase):
         self.shop.medals_per_item = 50
         with patch.object(self.shop,"_match_at",return_value=False):
             self.assertIsNone(self.shop.popup_selection(CHEAP,2000))
-        with patch("tasks.activity.huche_shop.ocr_purchase_counter",return_value=(0,0,0)):
+        with patch("tasks.activity.legacy.huche_shop_2026_09_17.huche_shop.ocr_purchase_counter",return_value=(0,0,0)):
             self.assertIsNone(self.shop.popup_selection(CHEAP,2000))
         with patch.object(self.shop,"_locate",return_value=None):
             self.assertIsNone(self.shop.popup_selection(CHEAP,2000))

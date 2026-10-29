@@ -101,7 +101,7 @@ def should_schedule_after_battle(config, *, task="LimitedActivity", arena=False)
         return False
 
     for event in active_activities(config, task=task):
-        if event.mode in ("meirin_reward", "detective_search", "epic_path"):
+        if event.mode in ("detective_search", "epic_path"):
             # An empty reward queue is not daily completion. The claim flow
             # only writes this event/server record after ALL_TASK_DONE, so
             # later battles can request another check without waking retired
@@ -110,7 +110,6 @@ def should_schedule_after_battle(config, *, task="LimitedActivity", arena=False)
             # owning task's saved switch instead of a generated default left
             # on the currently bound config object.
             option = {
-                "meirin_reward": "GetMeirinReward",
                 "detective_search": "GetDetectiveSearch",
                 "epic_path": "GetEpicPathDailyReward",
             }[event.mode]

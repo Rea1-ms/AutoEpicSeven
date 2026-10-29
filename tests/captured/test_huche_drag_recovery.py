@@ -11,7 +11,7 @@ from tests.support.history_huche_shop import Flow, EVENT_ID, WINDOW, NOW
 FIXTURES = input_root("huche_shop")
 from tests.support.history_huche_capture import ScreenshotTests as BatchScreenshots, stable
 from tasks.activity import scheduling
-from tasks.activity.huche_shop import DiscountBatchScan, DiscountItem, DiscountView
+from tasks.activity.legacy.huche_shop_2026_09_17.huche_shop import DiscountBatchScan, DiscountItem, DiscountView
 
 
 def rows(names, first=127):
@@ -33,9 +33,9 @@ class RecoveryTests(unittest.TestCase):
         flow.device.swipe = Mock(side_effect=AssertionError("Batch scanning must brake inertia with drag"))
         flow.device.drag = Mock(side_effect=lambda *a, **kw: flow.scans.append(a))
         scan = scan or DiscountBatchScan()
-        with patch("tasks.activity.huche_shop.aware_time", return_value=NOW), patch.object(
+        with patch("tasks.activity.legacy.huche_shop_2026_09_17.huche_shop.aware_time", return_value=NOW), patch.object(
             flow, "read_discount_view", side_effect=lambda: views[flow.frame]
-        ), patch("tasks.activity.huche_shop.DiscountBatchScan", return_value=scan):
+        ), patch("tasks.activity.legacy.huche_shop_2026_09_17.huche_shop.DiscountBatchScan", return_value=scan):
             self.assertEqual(flow.run_purchase(WINDOW), expected)
         self.assertEqual(flow.clicks, [])
         self.assertEqual(flow.config.values[fixed_key], "2026-09-18 12:00:00")

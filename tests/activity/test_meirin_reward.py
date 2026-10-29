@@ -34,7 +34,7 @@ from tasks.activity.assets.assets_activity_special_26_10_15 import (
     MEIRIN_TASK_REWARD_PENDING,
 )
 from tasks.activity.limited_activity import LimitedActivityEntry
-from tasks.activity.meirin_reward import MeirinReward
+from tasks.activity.legacy.meirin_reward_2026_10_15.meirin_reward import MeirinReward
 from tasks.base.assets.assets_base_popup import TOUCH_TO_CLOSE
 
 NOW = datetime.fromisoformat('2026-10-15T17:30:00+08:00')
@@ -205,7 +205,7 @@ class SchedulingTests(ReplayCase):
         r = self.replay([captured(UNAVAILABLE)] * 2)
         self.assertTrue(r.task.run_claim(navigate=False))
         scheduling.schedule_activity_after_battle(r.task.config)
-        self.assertEqual(r.task.config.calls, [('LimitedActivity', {'force_call': False})])
+        self.assertEqual(r.task.config.calls, [])
         scheduling.mark_activity_checked(r.task.config, EVENT_ID)
         self.assertFalse(scheduling.should_schedule_after_battle(r.task.config))
 
@@ -213,9 +213,9 @@ class SchedulingTests(ReplayCase):
         scheduling.mark_activity_checked(self.config, 'koharu_raffle_2026_09_17')
         checked_at = datetime.now(calendar.EVENT_TIMEZONE).astimezone().replace(tzinfo=None)
         self.config.values['SpecialActivity.ActivityRuntime.TaskRewardClaimedAt'] = checked_at
-        self.assertTrue(scheduling.should_schedule_after_battle(self.config))
+        self.assertFalse(scheduling.should_schedule_after_battle(self.config))
         self.config.values[scheduling._checked_path(self.config, EVENT_ID)] = checked_at - timedelta(days=2)
-        self.assertTrue(scheduling.should_schedule_after_battle(self.config))
+        self.assertFalse(scheduling.should_schedule_after_battle(self.config))
         scheduling.mark_activity_checked(self.config, EVENT_ID)
         self.config.Emulator_PackageName = 'com.zlongame.cn.epicseven'
         self.assertFalse(scheduling.is_activity_checked_today(self.config, EVENT_ID))
@@ -228,16 +228,23 @@ class SchedulingTests(ReplayCase):
         self.assertFalse(scheduling.should_schedule_after_battle(self.config))
 
     def test_current_calendar_activates_meirin_and_retires_koharu(self):
+        """Historical boundaries stay queryable without enabling old flows."""
+        from module.game_info.catalog import load_info
+
         events = calendar.active_activities(self.config, NOW)
-        self.assertIn(EVENT_ID, {event.event_id for event in events})
+        self.assertNotIn(EVENT_ID, {event.event_id for event in events})
         self.assertNotIn('koharu_raffle_2026_09_17', {event.event_id for event in events})
-        event = next(event for event in events if event.event_id == EVENT_ID)
-        for at, expected in ((event.start - timedelta(seconds=1), False), (event.start, True), (event.end, False)):
-            self.assertEqual(EVENT_ID in {e.event_id for e in calendar.active_activities(self.config, at)}, expected)
+        event = load_info().current('meirin_reward', 'OVERSEA', NOW)
+        self.assertFalse(event.contains(event.start - timedelta(seconds=1)))
+        self.assertTrue(event.contains(event.start))
+        self.assertFalse(event.contains(event.end))
+        for at in (event.start - timedelta(seconds=1), event.start, event.end):
+            self.assertNotIn(EVENT_ID, {e.event_id for e in calendar.active_activities(self.config, at)})
 
     def test_entry_rechecks_empty_queue_but_skips_event_after_completion(self):
-        events = tuple(e for e in calendar.active_activities(self.config, NOW) if e.event_id == EVENT_ID)
-        self.assertEqual(len(events), 1)
+        event = calendar.ActivityWindow(EVENT_ID, 'Meirin', 'meirin_reward', 'OVERSEA',
+                                        NOW, NOW + timedelta(days=1))
+        events = (event,)
         with patch('tasks.activity.entry.active_activities', return_value=events), patch(
             'tasks.activity.entry.CommonActivityBatch'
         ) as task:
@@ -245,9 +252,53 @@ class SchedulingTests(ReplayCase):
             task.return_value.run.return_value = True
             self.assertTrue(LimitedActivityEntry(self.config).run())
             self.assertTrue(LimitedActivityEntry(self.config).run())
-            self.assertEqual(task.call_count, 2)
-            self.assertEqual(task.return_value.run.call_args.args[0][0].event_id, EVENT_ID)
+            task.assert_not_called()
             scheduling.mark_activity_checked(self.config, EVENT_ID)
             task.reset_mock()
             self.assertTrue(LimitedActivityEntry(self.config).run())
             task.assert_not_called()
+
+    def test_future_dates_do_not_reactivate_archived_flows(self):
+        from dataclasses import replace
+        from types import SimpleNamespace
+        from module.game_info.catalog import load_info
+
+        start = NOW + timedelta(days=60)
+        info = load_info()
+        for kind in ('meirin_reward', 'huche_shop'):
+            period = replace(info.current(kind, 'OVERSEA', NOW), start=start, end=start + timedelta(days=7))
+            with self.subTest(kind=kind), patch.object(calendar, 'load_info',
+                                                       return_value=SimpleNamespace(periods=(period,))):
+                self.assertEqual(calendar.load_calendar(), ())
+                self.assertEqual(calendar.active_activities(self.config, start), ())
+                self.assertIsNone(calendar.next_activity_start(self.config, NOW))
+
+    def test_production_imports_do_not_load_archived_flows(self):
+        import subprocess
+        import sys
+        from pathlib import Path
+
+        code = """
+import sys
+from module.config import server
+server.set_lang(sys.argv[1])
+from tasks.activity.limited_activity import LimitedActivityEntry
+from tasks.activity.entry import SpecialActivityEntry
+from tasks.activity.common_activity import CommonActivityBatch
+from tasks.activity.calendar import SUPPORTED_MODES
+for kind in ('meirin_reward', 'huche_shop'):
+    assert kind not in SUPPORTED_MODES
+    for entry in (LimitedActivityEntry, SpecialActivityEntry):
+        assert kind not in entry.ACTIVITY_MODES
+        assert kind not in entry.COMMON_ACTIVITY_OPTIONS
+    assert kind not in CommonActivityBatch.ACTIVITIES
+    assert f'tasks.activity.{kind}' not in sys.modules
+    assert not any(name.startswith(f'tasks.activity.legacy.{kind}') for name in sys.modules)
+assert 'tasks.activity.assets.assets_activity_special_26_10_15' not in sys.modules
+"""
+        for lang in ('cn', 'global_cn', 'global_en'):
+            with self.subTest(lang=lang):
+                result = subprocess.run([sys.executable, '-X', 'utf8', '-B', '-c', code, lang],
+                                        cwd=Path(__file__).resolve().parents[2], capture_output=True,
+                                        text=True, encoding='utf-8', timeout=30, check=False)
+                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)

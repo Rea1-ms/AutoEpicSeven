@@ -12,7 +12,8 @@ from types import SimpleNamespace
 WORKTREE = Path(__file__).resolve().parents[2]
 PROJECT_ROOT = WORKTREE
 from tasks.activity import calendar
-from tasks.activity.huche_shop import HucheShop, MysticOffer
+from module.game_info.catalog import load_info
+from tasks.activity.legacy.huche_shop_2026_09_17.huche_shop import HucheShop, MysticOffer
 from tasks.activity.assets.assets_activity_huche_shop_26_9_17 import (
     HUCHE_SHOP_CHECK, HUCHE_BUY_POPUP_CHECK,
 )
@@ -21,7 +22,9 @@ from tasks.store.purchase import plan_purchase_selection
 
 NOW = datetime.fromisoformat("2026-09-20T12:30:00+08:00")
 EVENT_ID = "huche_shop_2026_09_17"
-WINDOW = next(e for e in calendar.load_calendar() if e.event_id == EVENT_ID)
+_period = load_info().current('huche_shop', 'OVERSEA', NOW)
+WINDOW = calendar.ActivityWindow(_period.event_id, _period.name, _period.kind, _period.server_family,
+                                 _period.start, _period.end, _period.values['refresh_hours'])
 FIXTURES = Path(__file__).parent / "screenshots/huche_shop"
 CHEAP = MysticOffer((634, 285, 733, 314), 160, 2, 2, False)
 REGULAR = MysticOffer((634, 632, 733, 661), 200, 4, 4, False)

@@ -27,7 +27,7 @@ from tasks.sanctuary.sanctuary import Sanctuary  # noqa: E402
 from tests.support.interaction import InteractionReplay, scene  # noqa: E402
 from tests.support.offline import ControlledClock  # noqa: E402
 from tests.support.history_huche_shop import CHEAP, CHEAP_DONE, REGULAR_DONE, NOW, WINDOW  # noqa: E402
-from tasks.activity.huche_shop import HucheShop  # noqa: E402
+from tasks.activity.legacy.huche_shop_2026_09_17.huche_shop import HucheShop  # noqa: E402
 from tasks.store.purchase import plan_purchase_selection  # noqa: E402
 
 
@@ -314,7 +314,7 @@ class HucheMissedClickTests(MissedClickTests):
         r.task.popup_selection = lambda offer, balance: (
             (plan_purchase_selection('target', r.frame.get('counter', (2, 0, 2)), 2), BUY_CONFIRM_MULTI)
             if not r.frame.get('wrong') else None)
-        self.stack.enter_context(patch('tasks.activity.huche_shop.aware_time', return_value=NOW))
+        self.stack.enter_context(patch('tasks.activity.legacy.huche_shop_2026_09_17.huche_shop.aware_time', return_value=NOW))
         return r
 
     def test_offer_quantity_and_confirm_retry_then_wait_for_stock(self):

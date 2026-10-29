@@ -9,7 +9,7 @@ from tests.support.offline import OfflineAssertions
 from tests.support.history_huche_shop import Config
 FIXTURES = input_root("huche_shop")
 import module.config.server as server
-from tasks.activity.huche_shop import HucheShop, DiscountItem, DiscountView, DiscountBatchScan
+from tasks.activity.legacy.huche_shop_2026_09_17.huche_shop import HucheShop, DiscountItem, DiscountView, DiscountBatchScan
 from types import SimpleNamespace
 
 TOP = DiscountView(tuple(DiscountItem(y, name, False) for y, name in zip(

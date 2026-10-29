@@ -9,7 +9,6 @@ class LimitedActivityEntry(SpecialActivityEntry):
     ACTIVITY_MODES = ACTIVITY_TASK_MODES[SCHEDULER_TASK]
     COMMON_ACTIVITY_OPTIONS = {
         "free_gacha_20": "LimitedActivity_GetFreeGacha",
-        "meirin_reward": "LimitedActivity_GetMeirinReward",
         "support_reward": "LimitedActivity_GetSupportReward",
         "completion_record": "LimitedActivity_GetCompletionRecord",
         "detective_search": "LimitedActivity_GetDetectiveSearch",

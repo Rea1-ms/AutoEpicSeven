@@ -11,9 +11,7 @@ class SpecialActivityEntry:
     SCHEDULER_TASK = "SpecialActivity"
     ACTIVITY_MODES = ACTIVITY_TASK_MODES[SCHEDULER_TASK]
 
-    COMMON_ACTIVITY_OPTIONS = {
-        "huche_shop": "SpecialActivity_BuyHucheMysticMedals",
-    }
+    COMMON_ACTIVITY_OPTIONS = {}
 
     def __init__(self, config, device=None, task=None):
         self.config = config
@@ -68,7 +66,9 @@ class SpecialActivityEntry:
                 last_activity = activity
                 continue
             elif event.mode == "huche_shop":
-                from tasks.activity.huche_shop import HucheShop
+                # Retained for explicit historical replay only. The production
+                # mode and option registries exclude this retired entrance.
+                from tasks.activity.legacy.huche_shop_2026_09_17.huche_shop import HucheShop
 
                 activity = HucheShop(
                     config=self.config,

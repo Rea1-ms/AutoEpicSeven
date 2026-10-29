@@ -22,12 +22,12 @@ from tasks.activity.common_activity import CommonActivityBatch
 from tasks.activity.free_gacha_20 import FreeGacha20
 from tasks.activity.legacy.e7wc_battle_gate_2026_09_12.e7wc_battle_gate import E7wcBattleGate
 from tasks.activity.legacy.koharu_raffle_2026_09_17.koharu_raffle import KoharuRaffle
-from tasks.activity.meirin_reward import MeirinReward
+from tasks.activity.detective_search import DetectiveSearch
 from tasks.activity.support_reward import SupportReward
 from tests.support.history_e7wc_battle_gate import HISTORICAL_ACTIVITIES
 
-MODES = ('free_gacha_20', 'meirin_reward', 'support_reward')
-CLASSES = (FreeGacha20, E7wcBattleGate, KoharuRaffle, MeirinReward, SupportReward)
+MODES = ('free_gacha_20', 'detective_search', 'support_reward')
+CLASSES = (FreeGacha20, E7wcBattleGate, KoharuRaffle, DetectiveSearch, SupportReward)
 HISTORICAL_OPTIONS = {
     'free_gacha_20': 'LimitedActivity_GetFreeGacha',
     'e7wc_battle_gate': 'LimitedActivity_GetE7wcBattleGateReward',
@@ -41,7 +41,7 @@ class Config:
     LimitedActivity_GetFreeGacha = True
     LimitedActivity_GetE7wcBattleGateReward = True
     LimitedActivity_GetKoharuRaffleReward = True
-    LimitedActivity_GetMeirinReward = True
+    LimitedActivity_GetDetectiveSearch = True
     LimitedActivity_GetSupportReward = True
 
     def __init__(self):

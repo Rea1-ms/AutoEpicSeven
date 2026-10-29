@@ -169,7 +169,7 @@ class ResourceRefreshTests(unittest.TestCase):
         self.assertEqual(self.next_run(), self.now + timedelta(minutes=288))
 
     def test_partial_shop_snapshot_without_required_currency_remains_unknown(self):
-        from tasks.activity.huche_shop import HucheShop
+        from tasks.activity.legacy.huche_shop_2026_09_17.huche_shop import HucheShop
         from tasks.store.friendship_gift import FriendshipGiftMixin
 
         reader = FriendshipGiftMixin()

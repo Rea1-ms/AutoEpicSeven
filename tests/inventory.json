@@ -19802,7 +19802,7 @@
       "source": "tests/activity/test_meirin_reward.py",
       "business": "梅铃活动领奖",
       "status": "新增",
-      "reason": "接替已归档小春活动，八张真实样本与可推进时钟验证领奖及侧栏选中态",
+      "reason": "保留归档实图领奖回归，验证过期玩法不会经日期、入口或生产导入恢复",
       "cases": [
         {
           "id": "tests.activity.test_meirin_reward.AssetTests.test_real_frames_distinguish_pending_empty_and_scrolled_rows",
@@ -20041,6 +20041,26 @@
           ],
           "status": "已纳入",
           "reason": "新实图复现已选中页签被反复点击；确认选中态、其他页签反例和实际领奖动作"
+        },
+        {
+          "id": "tests.activity.test_meirin_reward.SchedulingTests.test_future_dates_do_not_reactivate_archived_flows",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留归档实图领奖回归，验证过期玩法不会经日期、入口或生产导入恢复",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.activity.test_meirin_reward.SchedulingTests.test_production_imports_do_not_load_archived_flows",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留归档实图领奖回归，验证过期玩法不会经日期、入口或生产导入恢复",
+          "input_kind": "mock_or_rule"
         }
       ]
     },

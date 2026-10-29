@@ -9,7 +9,7 @@ from dataclasses import replace
 
 import tests.support.history_huche_drag_recovery as recovery
 from tests.support.history_huche_discount_batch import stable
-from tasks.activity.huche_shop import DiscountBatchScan, DiscountItem, DiscountView, HucheShop
+from tasks.activity.legacy.huche_shop_2026_09_17.huche_shop import DiscountBatchScan, DiscountItem, DiscountView, HucheShop
 
 
 def view(names, first=78, boundary=None):
