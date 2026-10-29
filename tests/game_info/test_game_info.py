@@ -63,6 +63,55 @@ class CatalogTests(unittest.TestCase):
         self.assertEqual(cn.end.day, 23)
         self.assertTrue(cn.inferred)
 
+    def test_shared_window_applies_to_both_servers_before_legacy_delay(self):
+        data = document('free_gacha_20')
+        event = data['events'][0]
+        for key in ('oversea_start', 'oversea_end', 'cn_start', 'cn_end'):
+            event.pop(key)
+        event.update(start='2030-01-01T11:00:00+08:00', end='2030-02-01T11:00:00+08:00')
+        oversea, cn = parse(data).periods
+        self.assertEqual((oversea.start, oversea.end), (cn.start, cn.end))
+        self.assertEqual(cn.start.isoformat(), event['start'])
+        self.assertFalse(cn.inferred)
+        # Historical records without shared dates retain their original scope.
+        event['oversea_start'] = event.pop('start')
+        event['oversea_end'] = event.pop('end')
+        data['cn_delay_days'] = {}
+        self.assertEqual([p.server_family for p in parse(data).periods], ['OVERSEA'])
+
+    def test_shared_window_supports_independent_server_overrides(self):
+        data = document('free_gacha_20')
+        event = data['events'][0]
+        for key in ('oversea_start', 'oversea_end', 'cn_start', 'cn_end'):
+            event.pop(key)
+        event.update(start='2030-01-01T02:00:00+08:00', end='2030-02-01T02:00:00+08:00',
+                     oversea_start='2030-01-02T02:00:00+08:00', cn_end='2030-02-01T03:00:00+08:00')
+        oversea, cn = parse(data).periods
+        self.assertEqual(oversea.start.isoformat(), event['oversea_start'])
+        self.assertEqual(oversea.end.isoformat(), event['end'])
+        self.assertEqual(cn.start.isoformat(), event['start'])
+        self.assertEqual(cn.end.isoformat(), event['cn_end'])
+        self.assertFalse(cn.inferred)
+        self.assertIsNone(parse(data).current('free_gacha_20', 'OVERSEA', oversea.end))
+        self.assertIsNotNone(parse(data).current('free_gacha_20', 'CN', oversea.end))
+
+    def test_incomplete_or_invalid_shared_windows_are_rejected(self):
+        for change in (
+            dict(start='2030-01-01T02:00:00+08:00'),
+            dict(end='2030-02-01T02:00:00+08:00'),
+            dict(start='2030-01-01T02:00:00', end='2030-02-01T02:00:00+08:00'),
+            dict(start='2030-02-01T02:00:00+08:00', end='2030-01-01T02:00:00+08:00'),
+            dict(start='2030-01-01T02:00:00+08:00', end='2030-01-01T02:00:00+08:00'),
+            dict(start='2030-01-01T02:00:00+08:00', end='2030-02-01T02:00:00+08:00',
+                 cn_end='2029-12-31T02:00:00+08:00'),
+        ):
+            with self.subTest(change=change), self.assertRaises(ValueError):
+                parse(document(**change))
+        data = document()
+        data['events'][0].pop('oversea_start')
+        with self.assertRaisesRegex(ValueError, 'Incomplete OVERSEA'):
+            parse(data)
+
     def test_adjacent_seasons_and_observation_boundary(self):
         data = document()
         first = data["events"][0]
@@ -159,6 +208,96 @@ class CatalogTests(unittest.TestCase):
             "assert not any(m == 'tasks' or m.startswith('tasks.') for m in sys.modules)"],
             cwd=WORKTREE, capture_output=True, encoding="utf-8")
         self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_timeline_archives_each_server_at_its_exact_end(self):
+        info = catalog.load_info()
+        at = datetime.fromisoformat('2026-10-29T11:00:00+08:00')
+        timeline = render_timeline(info, at)
+        current, history = timeline.split('<details>', 1)
+        chart = current.split('```mermaid', 1)[1].split('```', 1)[0]
+        self.assertIn('CN_free_gacha_20_2026_08_27', chart)
+        self.assertNotIn('OVERSEA_free_gacha_20_2026_08_27', chart)
+        for event_id in ('meirin_reward_2026_10_08', 'huche_shop_2026_09_17',
+                         'koharu_raffle_2026_09_17', 'e7wc_battle_gate_2026_09_10'):
+            self.assertNotIn(f'OVERSEA_{event_id}', chart)
+        self.assertIn('CN_meirin_reward_2026_10_08', chart)
+        self.assertIn('CN_huche_shop_cn_2026_10_08', chart)
+        self.assertIn('与梅铃一起吧', history)
+        self.assertIn('| 已结束 |', history)
+        before = render_timeline(info, at - timedelta(seconds=1)).split('<details>', 1)[0]
+        self.assertIn('OVERSEA_meirin_reward_2026_10_08', before)
+        self.assertIn('OVERSEA_huche_shop_2026_09_17', before)
+        self.assertIsNotNone(info.current('meirin_reward', 'OVERSEA', at - timedelta(seconds=1)))
+        self.assertIsNone(info.current('meirin_reward', 'OVERSEA', at))
+
+    def test_alignment_transition_preserves_confirmed_windows_and_daily_resets(self):
+        from module.config.server import SERVER_UPDATE
+        from tasks.activity import calendar
+        import yaml
+
+        self.assertEqual(yaml.safe_load(catalog.INFO_PATH.read_text(encoding='utf-8'))['cn_delay_days'], {})
+        info = catalog.load_info()
+        at = datetime.fromisoformat('2026-10-29T22:26:00+08:00')
+        for kind, end in (
+            ('huche_shop', '2026-11-19T11:00:00+08:00'),
+            ('meirin_reward', '2026-11-19T11:00:00+08:00'),
+            ('detective_search', '2026-11-19T11:00:00+08:00'),
+            ('completion_record', '2026-12-18T03:00:00+08:00'),
+            ('epic_path', '2026-12-18T03:00:00+08:00'),
+        ):
+            with self.subTest(kind=kind):
+                period = info.current(kind, 'CN', at)
+                self.assertEqual(period.end.isoformat(), end)
+                self.assertFalse(period.inferred)
+                self.assertIsNotNone(info.current(kind, 'CN', period.end - timedelta(seconds=1)))
+                self.assertIsNone(info.current(kind, 'CN', period.end))
+        cn_shop = info.current('huche_shop', 'CN', at)
+        self.assertEqual(cn_shop.start.isoformat(), '2026-10-08T11:00:00+08:00')
+        self.assertEqual(dict(cn_shop.values), {})  # CN prices and stock are not verified.
+        self.assertIsNone(info.current('huche_shop', 'OVERSEA', at))
+        self.assertIsNone(info.current('meirin_reward', 'OVERSEA', at))
+        self.assertIsNone(info.current('support_reward', 'CN', at))
+        for kind in ('completion_record', 'detective_search', 'epic_path'):
+            self.assertEqual(info.current(kind, 'CN', at).start, at)
+        for kind in ('completion_record', 'epic_path'):
+            self.assertEqual(info.current(kind, 'OVERSEA', at).end.isoformat(), '2026-12-18T02:00:00+08:00')
+        self.assertEqual(SERVER_UPDATE['CN-Official'], '03:00')
+        self.assertEqual(SERVER_UPDATE['OVERSEA-Play'], '02:00')
+        config = SimpleNamespace(Emulator_PackageName='com.zlongame.cn.epicseven')
+        with patch.object(calendar.server, 'lang', 'cn'):
+            self.assertEqual([p.mode for p in calendar.active_activities(config, at)], ['free_gacha_20'])
+        current, history = render_timeline(info, at).split('<details>', 1)
+        for kind in ('completion_record', 'detective_search', 'epic_path'):
+            self.assertIn(f'CN_{kind}_2026_10_29', current)
+        self.assertIn('CN_huche_shop_cn_2026_10_08', current)
+        self.assertIn('CN_meirin_reward_2026_10_08', current)
+        self.assertIn('德朗商店 | 国际服', history)
+
+    def test_timeline_keeps_new_events_and_marks_unconfirmed_seasons(self):
+        info = catalog.load_info()
+        at = datetime.fromisoformat('2026-10-29T22:00:00+08:00')
+        current = render_timeline(info, at).split('<details>', 1)[0]
+        for kind in ('completion_record', 'detective_search', 'epic_path'):
+            self.assertIn(f'OVERSEA_{kind}_2026_10_29', current)
+        self.assertIn('国服竞技场通行证', current)
+        self.assertIn('国际服暗影情报委托', current)
+        self.assertIn('国服暗影情报委托', current)
+        self.assertIn('当前期日期尚未确认', current)
+        for kind, family in (('arena_pass', 'CN'), ('shadow_commission', 'CN'),
+                             ('shadow_commission', 'OVERSEA')):
+            self.assertIsNone(info.current(kind, family, at))
+        future = render_timeline(info, datetime.fromisoformat('2027-01-01T00:00:00+08:00'))
+        self.assertIn('当前没有已填写且尚未结束的时段', future)
+        self.assertNotIn('```mermaid', future)
+
+    def test_timeline_cli_respects_at_and_normalizes_timezone(self):
+        at = datetime.fromisoformat('2026-10-29T03:00:00+00:00')
+        expected = render_timeline(catalog.load_info(), at)
+        self.assertIn('更新时点：2026-10-29 11:00', expected)
+        result = subprocess.run([sys.executable, '-X', 'utf8', '-B', '-m', 'module.game_info',
+                                 'timeline', '--at', at.isoformat()], cwd=WORKTREE, capture_output=True,
+                                text=True, encoding='utf-8', check=True, timeout=30)
+        self.assertEqual(result.stdout, expected)
 
 
 class ConsumerTests(unittest.TestCase):

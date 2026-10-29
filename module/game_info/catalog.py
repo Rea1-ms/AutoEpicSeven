@@ -162,7 +162,7 @@ def parse_info(text: str) -> GameInfo:
     periods, ids = [], set()
     for event in data["events"]:
         _mapping(event, "event")
-        _keys(event, ("id", "kind", "name", "source", "oversea_start", "oversea_end",
+        _keys(event, ("id", "kind", "name", "source", "start", "end", "oversea_start", "oversea_end",
                       "cn_start", "cn_end", "values", "cn_values"), "event")
         event_id = _identifier(event.get("id"))
         if event_id in ids:
@@ -173,14 +173,26 @@ def parse_info(text: str) -> GameInfo:
         source = _text(event.get("source"), f"{event_id}.source")
         common = dict(_values(event.get("values", {})))
         cn_values = dict(_values(event.get("cn_values", {})))
-        oversea = {}
-        if "oversea_start" in event or "oversea_end" in event:
-            if not all(f"oversea_{key}" in event for key in ("start", "end")):
-                raise ValueError(f"Incomplete OVERSEA window: {event_id}")
-            oversea = {key: _timestamp(event[f"oversea_{key}"]) for key in ("start", "end")}
-        cn = {}
+        shared = {}
+        if "start" in event or "end" in event:
+            if not all(key in event for key in ("start", "end")):
+                raise ValueError(f"Incomplete shared window: {event_id}")
+            shared = {key: _timestamp(event[key]) for key in ("start", "end")}
+            if shared["start"] >= shared["end"]:
+                raise ValueError(f"Period must end after it starts: {event_id}/shared")
+        oversea = dict(shared)
+        for key in ("start", "end"):
+            if f"oversea_{key}" in event:
+                oversea[key] = _timestamp(event[f"oversea_{key}"])
+        if oversea and len(oversea) != 2:
+            raise ValueError(f"Incomplete OVERSEA window: {event_id}")
+        cn = dict(shared)
         inferred = False
-        if oversea and kind in delays:
+        # Shared dates explicitly opt both servers into an aligned period.
+        # A legacy overseas-only record must never acquire a CN window merely
+        # because newer events use shared dates. Delay parsing remains solely
+        # for old documents that still configure it, below explicit shared facts.
+        if not shared and oversea and kind in delays:
             cn = {key: value + timedelta(days=delays[kind]) for key, value in oversea.items()}
             inferred = not all(f"cn_{key}" in event for key in ("start", "end"))
         for key in ("start", "end"):

@@ -7925,6 +7925,76 @@
           "reason": "原断言迁移；模拟输入或既有资产，不代表实机截图验证",
           "input_kind": "mock_or_rule",
           "original_source": "test/test_game_info.py"
+        },
+        {
+          "id": "tests.game_info.test_game_info.CatalogTests.test_timeline_archives_each_server_at_its_exact_end",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "当前时间图与过期历史分区、精确结束边界、分服保留及指定查询时刻",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.game_info.test_game_info.CatalogTests.test_timeline_keeps_new_events_and_marks_unconfirmed_seasons",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "当前时间图与过期历史分区、精确结束边界、分服保留及指定查询时刻",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.game_info.test_game_info.CatalogTests.test_timeline_cli_respects_at_and_normalizes_timezone",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "当前时间图与过期历史分区、精确结束边界、分服保留及指定查询时刻",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.game_info.test_game_info.CatalogTests.test_shared_window_applies_to_both_servers_before_legacy_delay",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "共用日期优先于历史顺延；旧单服记录不自动同步",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.game_info.test_game_info.CatalogTests.test_shared_window_supports_independent_server_overrides",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "共用起止可由单服独立覆盖；两服结束边界分别生效",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.game_info.test_game_info.CatalogTests.test_incomplete_or_invalid_shared_windows_are_rejected",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "拒绝不完整、无时区、反向及空共用区间和非法分服覆盖",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.game_info.test_game_info.CatalogTests.test_alignment_transition_preserves_confirmed_windows_and_daily_resets",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "核对对齐过渡期国服五项活动、两服刷新差异、时间图及自动操作支持范围",
+          "input_kind": "mock_or_rule"
         }
       ]
     },

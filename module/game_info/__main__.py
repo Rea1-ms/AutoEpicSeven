@@ -28,7 +28,7 @@ def main():
     if args.command == "validate":
         print(f"资料校验通过：{len(info.periods)}个服务器时段，{len(info.defaults)}类默认规则。")
     elif args.command == "timeline":
-        print(render_timeline(info), end="")
+        print(render_timeline(info, now), end="")
     else:
         kinds = sorted(set(info.defaults) | {p.kind for p in info.periods})
         current = [info.current(kind, args.server, now) for kind in kinds]
