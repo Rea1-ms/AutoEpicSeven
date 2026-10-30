@@ -18122,7 +18122,7 @@
       "source": "tests/combat/test_repeat_leif_count.py",
       "business": "托管战斗",
       "status": "已纳入",
-      "reason": "异界按两片生命之叶递增，数量和预算使用正确单位",
+      "reason": "异界生命之叶计数，以及托管配置顺序和萃取出售页直接开始",
       "cases": [
         {
           "id": "tests.combat.test_repeat_leif_count.RepeatLeifTests.test_supplied_counters_and_spectral_core_resource_are_read_correctly",
@@ -18224,6 +18224,51 @@
           "fixtures": [],
           "status": "已纳入",
           "reason": "异界两片递增、奇数取整、真实计数和点击确认回归"
+        },
+        {
+          "id": "tests.combat.test_repeat_leif_count.RepeatPreparationTests.test_read_duration_before_gear_and_start_on_gear_tab_in_both_clients",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "模拟两服体力配置、先读所需时间、萃取出售配置确认后同帧开始，保留生产点击间隔"
+        },
+        {
+          "id": "tests.combat.test_repeat_leif_count.RepeatPreparationTests.test_duration_retries_on_battle_tab_then_switches_immediately_when_read",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "模拟所需时间延迟读取，仅在首个有效读数后切换萃取出售页"
+        },
+        {
+          "id": "tests.combat.test_repeat_leif_count.RepeatPreparationTests.test_unreadable_duration_keeps_short_polling_and_starts_from_gear",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "模拟读时失败超时后继续装备配置，直接开始并保留短间隔复查"
+        },
+        {
+          "id": "tests.combat.test_repeat_leif_count.RepeatPreparationTests.test_entry_on_gear_tab_returns_to_battle_only_before_preparation",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "模拟初始停留萃取出售页，体力和读时前切回首页，配置完成后不再返回"
+        },
+        {
+          "id": "tests.combat.test_repeat_leif_count.RepeatPreparationTests.test_dropped_gear_tab_click_retries_without_reading_duration_again",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "模拟切页点击丢失及重复旧帧，按生产间隔重试且不重复读取已确认时间"
         },
         {
           "id": "tests.combat.test_repeat_leif_count.RepeatLeifTests.test_normal_combat_still_increments_one_leif_per_click",

@@ -572,6 +572,12 @@ class CombatRepeatMixin:
         leif_count: int | None = None,
         prioritize_stamina: bool | None = None,
     ) -> bool:
+        """Configure resources, read duration, then leave gear settings ready.
+
+        Pages:
+            in: prepare page or either server-repeat settings tab.
+            out: gear settings tab with all requested options confirmed.
+        """
         logger.hr("Combat Prepare Server Repeat", level=2)
         timeout = Timer(self.REPEAT_MENU_TIMEOUT_SECONDS, count=120).start()
         duration_retry = Timer(3, count=8).clear()
@@ -634,8 +640,27 @@ class CombatRepeatMixin:
 
             if stage == "leif":
                 if self._ensure_repeat_leif_count(requested_leif_count):
-                    stage = "gear_tab"
+                    # The duration belongs to the confirmed resource settings
+                    # on this tab. Read it before leaving: the same start
+                    # control is available on the gear tab, so returning here
+                    # after gear configuration only adds a redundant click.
+                    duration_retry.reset()
+                    stage = "duration"
                 continue
+
+            if stage == "duration":
+                duration = self._ocr_repeat_remaining_duration()
+                if duration.total_seconds() > 0:
+                    self._repeat_combat_estimated_duration = duration
+                    logger.info(f"Combat: server repeat estimated duration={duration}")
+                    stage = "gear_tab"
+                elif duration_retry.reached():
+                    logger.warning(
+                        "Combat: repeat remaining time OCR failed, use short polling"
+                    )
+                    stage = "gear_tab"
+                else:
+                    continue
 
             if stage == "gear_tab":
                 if self._is_repeat_gear_tab():
@@ -737,28 +762,6 @@ class CombatRepeatMixin:
                     EXCLUDE_OTHERWORLD_LEGENDARY_OFF,
                     "exclude otherworld legendary",
                 ):
-                    stage = "duration_tab"
-                continue
-
-            if stage == "duration_tab":
-                if self._is_repeat_battle_tab():
-                    duration_retry.reset()
-                    stage = "duration"
-                    continue
-                if self.appear_then_click(TAB_AUTO_BATTLE_SETTINGS, interval=1):
-                    timeout.reset()
-                continue
-
-            if stage == "duration":
-                duration = self._ocr_repeat_remaining_duration()
-                if duration.total_seconds() > 0:
-                    self._repeat_combat_estimated_duration = duration
-                    logger.info(f"Combat: server repeat estimated duration={duration}")
-                    return True
-                if duration_retry.reached():
-                    logger.warning(
-                        "Combat: repeat remaining time OCR failed, use short polling"
-                    )
                     return True
                 continue
 
