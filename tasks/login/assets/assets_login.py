@@ -6,13 +6,22 @@ from module.base.button import Button, ButtonWrapper
 GAME_UPGRADE_AVAILABLE = ButtonWrapper(
     name='GAME_UPGRADE_AVAILABLE',
     cn=None,
-    global_cn=Button(
-        file='./assets/global_cn/login/GAME_UPGRADE_AVAILABLE.png',
-        area=(685, 329, 724, 349),
-        search=(665, 309, 744, 369),
-        color=(86, 90, 96),
-        button=(685, 329, 724, 349),
-    ),
+    global_cn=[
+        Button(
+            file='./assets/global_cn/login/GAME_UPGRADE_AVAILABLE.png',
+            area=(685, 329, 724, 349),
+            search=(665, 309, 744, 369),
+            color=(86, 90, 96),
+            button=(685, 329, 724, 349),
+        ),
+        Button(
+            file='./assets/global_cn/login/GAME_UPGRADE_AVAILABLE.2.png',
+            area=(516, 154, 767, 184),
+            search=(496, 134, 787, 204),
+            color=(135, 141, 147),
+            button=(600, 530, 680, 569),
+        ),
+    ],
     global_en=None,
 )
 LOGGED_OUT = ButtonWrapper(
@@ -33,6 +42,18 @@ LOGGED_OUT = ButtonWrapper(
     ),
     global_en=None,
 )
+LOGIN_AGREEMENT_UNCHECKED = ButtonWrapper(
+    name='LOGIN_AGREEMENT_UNCHECKED',
+    cn=Button(
+        file='./assets/cn/login/LOGIN_AGREEMENT_UNCHECKED.png',
+        area=(407, 626, 436, 655),
+        search=(387, 606, 456, 675),
+        color=(71, 78, 66),
+        button=(407, 626, 436, 655),
+    ),
+    global_cn=None,
+    global_en=None,
+)
 LOGIN_ANNOUNCEMENT_CLOSE = ButtonWrapper(
     name='LOGIN_ANNOUNCEMENT_CLOSE',
     cn=Button(
@@ -49,9 +70,9 @@ LOGIN_CONFIRM = ButtonWrapper(
     name='LOGIN_CONFIRM',
     cn=Button(
         file='./assets/cn/login/LOGIN_CONFIRM.png',
-        area=(1206, 650, 1233, 677),
-        search=(1186, 630, 1253, 697),
-        color=(101, 125, 148),
+        area=(410, 629, 435, 648),
+        search=(390, 609, 455, 668),
+        color=(73, 108, 40),
         button=(465, 94, 815, 294),
     ),
     global_cn=Button(
@@ -126,20 +147,38 @@ LOGIN_LOADING = ButtonWrapper(
 )
 PATCH_APPLY = ButtonWrapper(
     name='PATCH_APPLY',
-    cn=Button(
-        file='./assets/cn/login/PATCH_APPLY.png',
-        area=(620, 535, 660, 555),
-        search=(600, 515, 680, 575),
-        color=(128, 146, 129),
-        button=(620, 535, 660, 555),
-    ),
-    global_cn=Button(
-        file='./assets/global_cn/login/PATCH_APPLY.png',
-        area=(620, 535, 661, 555),
-        search=(600, 515, 681, 575),
-        color=(125, 144, 127),
-        button=(620, 535, 661, 555),
-    ),
+    cn=[
+        Button(
+            file='./assets/cn/login/PATCH_APPLY.png',
+            area=(620, 535, 660, 555),
+            search=(600, 515, 680, 575),
+            color=(128, 146, 129),
+            button=(620, 535, 660, 555),
+        ),
+        Button(
+            file='./assets/cn/login/PATCH_APPLY.2.png',
+            area=(751, 534, 793, 556),
+            search=(731, 514, 813, 576),
+            color=(114, 134, 116),
+            button=(689, 529, 854, 565),
+        ),
+    ],
+    global_cn=[
+        Button(
+            file='./assets/global_cn/login/PATCH_APPLY.png',
+            area=(620, 535, 661, 555),
+            search=(600, 515, 681, 575),
+            color=(125, 144, 127),
+            button=(620, 535, 661, 555),
+        ),
+        Button(
+            file='./assets/global_cn/login/PATCH_APPLY.2.png',
+            area=(750, 535, 791, 555),
+            search=(730, 515, 811, 575),
+            color=(123, 142, 125),
+            button=(689, 529, 854, 565),
+        ),
+    ],
     global_en=None,
 )
 PATCH_PERCENT_SIGN = ButtonWrapper(

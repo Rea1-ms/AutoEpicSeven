@@ -518,24 +518,6 @@ class AzurLaneConfig(ConfigUpdater, ManualConfig, GeneratedConfig, ConfigWatcher
     def is_task_enabled(self, task):
         return bool(self.cross_get(keys=[task, 'Scheduler', 'Enable'], default=False))
 
-    def update_daily_quests(self):
-        """
-        AES no longer maintains the legacy daily-quest state in the shared
-        config core.
-        Keep this method as a compatibility no-op so leftover exploratory
-        imports do not crash while HSR-only modules are being retired.
-        """
-        return None
-
-    def update_battle_pass_quests(self):
-        """
-        AES no longer maintains the legacy battle-pass state in the shared
-        config core.
-        Keep this method as a compatibility no-op while old HSR-only modules
-        are being removed from the runnable task surface.
-        """
-        return None
-
     @property
     def DEVICE_SCREENSHOT_METHOD(self):
         return self.Emulator_ScreenshotMethod

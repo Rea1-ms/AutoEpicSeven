@@ -34,12 +34,16 @@ Daily:
     DataUpdate:
       - Scheduler
       - Dashboard
+      - ResourceRuntime
     SanctuaryDaily:
       - Scheduler
     Knights:
       - Scheduler
       - Knights
       - KnightsTeamBattle
+      - KnightsShopWeekly
+      - KnightsShopMonthly
+      - KnightsShopRuntime
     Arena:
       - Scheduler
       - Arena
@@ -53,6 +57,7 @@ Daily:
     SecretShop:
       - Scheduler
       - SecretShop
+      - SecretShopRuntime
     Combat:
       - Scheduler
       - Combat
@@ -64,10 +69,13 @@ Daily:
       - GachaResult
     Pets:
       - Scheduler
+    LimitedActivity:
+      - Scheduler
+      - LimitedActivity
     SpecialActivity:
       - Scheduler
       - SpecialActivity
-      - GachaResult
+      - ActivityRuntime
 
 
 # ==================== Tool ====================
@@ -76,8 +84,20 @@ Tool:
   menu: 'list'
   page: 'tool'
   tasks:
+    BuyPenguins:
+      - Scheduler
+      - BuyPenguins
+    DimensionalExploration:
+      - DimensionalExploration
+      - DimensionalExplorationRuntime
     CommunityAuth:
       - CommunityAuth
+    EquipmentReroll:
+      - Scheduler
+      - EquipmentReroll
+    Episode:
+      - Scheduler
+      - Episode
 
 # ==================== Monthly ====================
 

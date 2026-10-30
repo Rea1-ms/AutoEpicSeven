@@ -1,0 +1,5 @@
+def test_data_update_run_skips_main_resource_stage(self):
+        test_data_update_run_skips_main_resource_stage()
+
+def test_e7_dashboard_generated_stored_entries_visible(self):
+        test_e7_dashboard_generated_stored_entries_visible()

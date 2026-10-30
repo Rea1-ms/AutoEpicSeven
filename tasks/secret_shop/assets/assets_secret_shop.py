@@ -181,3 +181,13 @@ SECRET_SHOP_CHECK = ButtonWrapper(
         button=(342, 487, 372, 519),
     ),
 )
+SECRET_SHOP_GOLD_ICON = ButtonWrapper(
+    name='SECRET_SHOP_GOLD_ICON',
+    share=Button(
+        file='./assets/share/secret_shop/SECRET_SHOP_GOLD_ICON.png',
+        area=(710, 19, 735, 48),
+        search=(690, 0, 755, 68),
+        color=(191, 128, 53),
+        button=(710, 19, 735, 48),
+    ),
+)

@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "source": "../../input/episode/MuMu-20261019-202201-945.png",
+  "suite": "episode_20261019",
+  "case": "202201-945",
+  "items": [
+    {
+      "name": "EPISODE_STORY_COMPLETE",
+      "box": [
+        579,
+        159,
+        702,
+        190
+      ],
+      "kind": "base",
+      "namespace": "share",
+      "module": "dungeon/episode/reward"
+    },
+    {
+      "name": "EPISODE_STORY_COMPLETE",
+      "box": [
+        580,
+        470,
+        700,
+        528
+      ],
+      "kind": "button",
+      "namespace": "share",
+      "module": "dungeon/episode/reward"
+    }
+  ]
+}

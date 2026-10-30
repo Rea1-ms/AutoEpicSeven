@@ -23,6 +23,16 @@ MENU_CLOSE = ButtonWrapper(
         button=(1226, 18, 1255, 47),
     ),
 )
+OCR_ACCOUNT_LEVEL = ButtonWrapper(
+    name='OCR_ACCOUNT_LEVEL',
+    share=Button(
+        file='./assets/share/base/main_page/OCR_ACCOUNT_LEVEL.png',
+        area=(107, 44, 196, 68),
+        search=(87, 24, 216, 88),
+        color=(127, 87, 59),
+        button=(107, 44, 196, 68),
+    ),
+)
 POPUP_OVERLAY = ButtonWrapper(
     name='POPUP_OVERLAY',
     share=Button(

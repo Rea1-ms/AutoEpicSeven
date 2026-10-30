@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "source": "../MuMu-20261029-203901-709.png",
+  "suite": "october_events_20261029",
+  "case": "203901-709",
+  "items": [
+    {
+      "namespace": "global_cn",
+      "module": "activity/detective_search",
+      "name": "DETECTIVE_SEARCH_CHECK",
+      "box": [
+        557,
+        146,
+        975,
+        195
+      ],
+      "kind": "base"
+    },
+    {
+      "namespace": "global_cn",
+      "module": "activity/detective_search",
+      "name": "DETECTIVE_REWARD_PENDING",
+      "box": [
+        379,
+        573,
+        417,
+        595
+      ],
+      "kind": "base"
+    },
+    {
+      "namespace": "global_cn",
+      "module": "activity/detective_search",
+      "name": "DETECTIVE_REWARD_PENDING",
+      "box": [
+        300,
+        554,
+        1236,
+        652
+      ],
+      "kind": "search"
+    },
+    {
+      "namespace": "global_cn",
+      "module": "activity/detective_search",
+      "name": "OCR_DETECTIVE_POINTS",
+      "box": [
+        902,
+        242,
+        994,
+        267
+      ],
+      "kind": "base"
+    }
+  ]
+}

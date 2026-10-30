@@ -1,0 +1,169 @@
+# ruff: noqa: E402
+from module.config import server as _test_server
+
+_test_server.set_lang("global_cn")
+
+from tasks.base.resource_bar import (
+    RESOURCE_BAR_LAYOUT_COMBAT,
+    RESOURCE_BAR_LAYOUT_ARENA_BATTLE_PASS,
+    RESOURCE_BAR_LAYOUT_MAIN,
+    RESOURCE_BAR_LAYOUT_SECRET_SHOP,
+    ResourceBarCandidate,
+    expand_resource_bar_candidates,
+    merge_resource_bar_candidates,
+    normalize_resource_bar_text,
+    parse_resource_bar_candidates,
+)
+
+
+def test_normalize_resource_bar_text():
+    assert normalize_resource_bar_text(" 16,425 ") == "16425"
+    assert normalize_resource_bar_text("145／5") == "145/5"
+    assert normalize_resource_bar_text("I6,O25") == "16025"
+    assert normalize_resource_bar_text("$237/360") == "$237/360"
+
+
+def test_merge_resource_bar_candidates_split_digits():
+    candidates = [
+        ResourceBarCandidate(box=(10, 0, 30, 20), text="16"),
+        ResourceBarCandidate(box=(32, 0, 60, 20), text="425"),
+        ResourceBarCandidate(box=(120, 0, 150, 20), text="902"),
+    ]
+
+    merged = merge_resource_bar_candidates(candidates, expected_count=2, max_gap=8)
+
+    assert merged is not None
+    assert [candidate.text for candidate in merged] == ["16425", "902"]
+
+
+def test_expand_resource_bar_candidates_combined_counters():
+    candidates = [
+        ResourceBarCandidate(box=(10, 0, 130, 20), text="318/5$237/360"),
+        ResourceBarCandidate(box=(160, 0, 200, 20), text="15504"),
+    ]
+
+    expanded = expand_resource_bar_candidates(candidates)
+
+    assert [candidate.text for candidate in expanded] == ["318/5", "237/360", "15504"]
+
+
+def test_parse_secret_shop_layout():
+    candidates = [
+        ResourceBarCandidate(box=(10, 0, 40, 20), text="16425"),
+        ResourceBarCandidate(box=(120, 0, 150, 20), text="902"),
+    ]
+
+    parsed = parse_resource_bar_candidates(candidates, RESOURCE_BAR_LAYOUT_SECRET_SHOP)
+
+    assert parsed is not None
+    assert parsed["gold"].value == 16425
+    assert parsed["skystone"].value == 902
+
+
+def test_parse_main_layout_counter():
+    candidates = [
+        ResourceBarCandidate(box=(10, 0, 200, 20), text="145/5$1611/360"),
+        ResourceBarCandidate(box=(260, 0, 300, 20), text="902"),
+    ]
+
+    parsed = parse_resource_bar_candidates(candidates, RESOURCE_BAR_LAYOUT_MAIN)
+
+    assert parsed is not None
+    assert parsed["arena_flag"].value == 145
+    assert parsed["arena_flag"].total == 5
+    assert parsed["stamina"].value == 1611
+    assert parsed["stamina"].total == 360
+    assert parsed["skystone"].value == 902
+
+
+def test_parse_combat_layout_counter_first():
+    candidates = [
+        ResourceBarCandidate(box=(10, 0, 70, 20), text="$237/360"),
+        ResourceBarCandidate(box=(120, 0, 200, 20), text="119367861"),
+        ResourceBarCandidate(box=(260, 0, 320, 20), text="15504"),
+    ]
+
+    parsed = parse_resource_bar_candidates(candidates, RESOURCE_BAR_LAYOUT_COMBAT)
+
+    assert parsed is not None
+    assert parsed["stamina"].value == 237
+    assert parsed["stamina"].total == 360
+    assert parsed["gold"].value == 119367861
+    assert parsed["skystone"].value == 15504
+
+
+def test_parse_combat_layout_trim_leading_icon_digit():
+    candidates = [
+        ResourceBarCandidate(box=(686, 0, 760, 20), text="5248/360"),
+        ResourceBarCandidate(box=(780, 0, 860, 20), text="119367861"),
+        ResourceBarCandidate(box=(900, 0, 960, 20), text="15504"),
+    ]
+
+    parsed = parse_resource_bar_candidates(candidates, RESOURCE_BAR_LAYOUT_COMBAT)
+
+    assert parsed is not None
+    assert parsed["stamina"].value == 248
+    assert parsed["stamina"].total == 360
+
+
+def test_parse_combat_layout_keep_real_large_stamina_when_no_icon_overlap():
+    candidates = [
+        ResourceBarCandidate(box=(705, 0, 790, 20), text="5248/360"),
+        ResourceBarCandidate(box=(800, 0, 880, 20), text="119367861"),
+        ResourceBarCandidate(box=(900, 0, 960, 20), text="15504"),
+    ]
+
+    parsed = parse_resource_bar_candidates(candidates, RESOURCE_BAR_LAYOUT_COMBAT)
+
+    assert parsed is not None
+    assert parsed["stamina"].value == 5248
+    assert parsed["stamina"].total == 360
+
+
+def test_parse_arena_battle_pass_layout():
+    candidates = [
+        ResourceBarCandidate(box=(10, 0, 60, 20), text="318/5"),
+        ResourceBarCandidate(box=(90, 0, 130, 20), text="12"),
+        ResourceBarCandidate(box=(160, 0, 190, 20), text="345678"),
+        ResourceBarCandidate(box=(240, 0, 270, 20), text="950"),
+    ]
+
+    parsed = parse_resource_bar_candidates(candidates, RESOURCE_BAR_LAYOUT_ARENA_BATTLE_PASS)
+
+    assert parsed is not None
+    assert parsed["arena_flag"].value == 318
+    assert parsed["arena_flag"].total == 5
+    assert parsed["conquest_point"].value == 12
+    assert parsed["gold"].value == 345678
+    assert parsed["skystone"].value == 950
+
+
+import unittest
+
+class LegacyRuleTests(unittest.TestCase):
+    def test_normalize_resource_bar_text(self):
+        test_normalize_resource_bar_text()
+
+    def test_merge_resource_bar_candidates_split_digits(self):
+        test_merge_resource_bar_candidates_split_digits()
+
+    def test_expand_resource_bar_candidates_combined_counters(self):
+        test_expand_resource_bar_candidates_combined_counters()
+
+    def test_parse_secret_shop_layout(self):
+        test_parse_secret_shop_layout()
+
+    def test_parse_main_layout_counter(self):
+        test_parse_main_layout_counter()
+
+    def test_parse_combat_layout_counter_first(self):
+        test_parse_combat_layout_counter_first()
+
+    def test_parse_combat_layout_trim_leading_icon_digit(self):
+        test_parse_combat_layout_trim_leading_icon_digit()
+
+    def test_parse_combat_layout_keep_real_large_stamina_when_no_icon_overlap(self):
+        test_parse_combat_layout_keep_real_large_stamina_when_no_icon_overlap()
+
+    def test_parse_arena_battle_pass_layout(self):
+        test_parse_arena_battle_pass_layout()

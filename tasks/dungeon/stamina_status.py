@@ -132,6 +132,9 @@ class CombatStaminaStatusMixin:
                 if not close_pending:
                     inspected = self._ocr_pet_repeat_resources()
                     if inspected.values is not None:
+                        from tasks.base.resource_scheduling import ResourceCoordinator
+
+                        ResourceCoordinator(self.config).observe(inspected.values, "pet_repeat")
                         parsed = inspected.values
                         close_pending = True
                     elif ocr_timeout.started() and ocr_timeout.reached():

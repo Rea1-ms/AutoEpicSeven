@@ -16,6 +16,7 @@ import module.config.server as server
 from module.base.timer import Timer
 from module.exception import ScriptError
 from module.logger import logger
+from module.ocr.language import resolve_ocr_lang
 from module.ocr.ocr import OcrWhiteLetterOnComplexBackground
 from tasks.base.page import page_mail, page_main
 from tasks.base.ui import UI
@@ -134,16 +135,7 @@ class Mail(UI):
         self.device.click_record_clear()
 
     def _ocr_lang(self) -> str:
-        lang = getattr(self.config, "Emulator_GameLanguage", "cn")
-        if lang in ("auto", "", None, "cn", "global_cn", "zh", "zh_cn"):
-            return "cn"
-        if lang in ("en", "global_en", "en_us"):
-            return "en"
-        if lang in ("jp", "ja", "ja_jp"):
-            return "jp"
-        if lang in ("tw", "zh_tw"):
-            return "tw"
-        return "cn"
+        return resolve_ocr_lang(self.config)
 
     def _mail_threshold(self) -> str:
         return getattr(self.config, "Mail_CollectWithin", "1h")
@@ -551,19 +543,19 @@ class Mail(UI):
                     continue
 
             if link_confirm_open and goto_link_done:
-                logger.info("Mail: confirm link receive popup")
-                self.device.click(RECEIVE_CONFIRM_LINK)
-                self.interval_reset(RECEIVE_CONFIRM_LINK, interval=self.CLICK_INTERVAL_SECONDS)
-                timeout.reset()
+                if self.interval_is_reached(RECEIVE_CONFIRM_LINK, interval=self.CLICK_INTERVAL_SECONDS):
+                    logger.info("Mail: confirm link receive popup")
+                    self.device.click(RECEIVE_CONFIRM_LINK)
+                    self.interval_reset(RECEIVE_CONFIRM_LINK, interval=self.CLICK_INTERVAL_SECONDS)
                 done_confirm.reset()
                 popup_idle.reset()
                 continue
 
             if normal_confirm_open:
-                logger.info("Mail: confirm receive popup")
-                self.device.click(RECEIVE_CONFIRM)
-                self.interval_reset(RECEIVE_CONFIRM, interval=self.CLICK_INTERVAL_SECONDS)
-                timeout.reset()
+                if self.interval_is_reached(RECEIVE_CONFIRM, interval=self.CLICK_INTERVAL_SECONDS):
+                    logger.info("Mail: confirm receive popup")
+                    self.device.click(RECEIVE_CONFIRM)
+                    self.interval_reset(RECEIVE_CONFIRM, interval=self.CLICK_INTERVAL_SECONDS)
                 done_confirm.reset()
                 popup_idle.reset()
                 continue
@@ -631,8 +623,15 @@ class Mail(UI):
                     logger.info("Mail: receive reward flow settled")
                     return True
                 if result is False:
-                    logger.warning("Mail: returned to mailbox but no mail state change was detected")
-                    return False
+                    # The initial RECEIVE may have been dropped. Keep the same
+                    # pre-claim count/time and retry only on a recognized mail
+                    # page whose count and top row are still unchanged. Do not
+                    # reset the deadline or clear click history without receipt.
+                    if self._receive_available(interval=self.CLICK_INTERVAL_SECONDS):
+                        logger.info("Mail: unchanged top mail, retry receive")
+                        self.device.click(RECEIVE)
+                        done_confirm.reset()
+                    continue
 
     def _claim_top_mail(self, state: MailRemainingState, skip_first_screenshot=True) -> bool:
         logger.info("Mail: claim top mail")
@@ -651,6 +650,9 @@ class Mail(UI):
                     return True
 
             if receive_available and self.interval_is_reached(RECEIVE, interval=self.CLICK_INTERVAL_SECONDS):
+                from tasks.base.resource_scheduling import ResourceCoordinator
+
+                ResourceCoordinator(self.config).request("Mail")
                 logger.info("Mail: click RECEIVE on top mail")
                 self.device.click(RECEIVE)
                 claimed = True
@@ -692,29 +694,22 @@ class Mail(UI):
             self.config.task_delay(success=False)
             return False
 
-        claimed_any = False
         while 1:
             self.device.screenshot()
 
             if not self._receive_available(interval=0):
                 self.ui_goto(page_main, skip_first_screenshot=True)
-                if claimed_any:
-                    self.config.task_call("DataUpdate", force_call=False)
                 self._schedule_after_no_receive()
                 return True
 
             state = self._ocr_top_remaining_state()
             if not state.valid or state.unlimited:
                 self.ui_goto(page_main, skip_first_screenshot=True)
-                if claimed_any:
-                    self.config.task_call("DataUpdate", force_call=False)
                 self._schedule_after_ineligible(state)
                 return True
 
             if not self._is_within_threshold(state):
                 self.ui_goto(page_main, skip_first_screenshot=True)
-                if claimed_any:
-                    self.config.task_call("DataUpdate", force_call=False)
                 self._schedule_after_ineligible(state)
                 return True
 
@@ -724,4 +719,3 @@ class Mail(UI):
                 self.config.task_delay(success=False)
                 return False
             self._clear_click_history_after_claim_progress()
-            claimed_any = True

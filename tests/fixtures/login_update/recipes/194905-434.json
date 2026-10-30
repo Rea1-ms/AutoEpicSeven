@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "source": "../global_cn/MuMu-20261029-194905-434.png",
+  "suite": "login_update_20261029",
+  "case": "update_194905_434",
+  "items": [
+    {
+      "name": "PATCH_APPLY",
+      "kind": "base",
+      "box": [
+        750,
+        535,
+        791,
+        555
+      ],
+      "frame": 2,
+      "namespace": "global_cn",
+      "module": "login"
+    },
+    {
+      "name": "PATCH_APPLY",
+      "kind": "button",
+      "box": [
+        689,
+        529,
+        854,
+        565
+      ],
+      "frame": 2,
+      "namespace": "global_cn",
+      "module": "login"
+    }
+  ]
+}

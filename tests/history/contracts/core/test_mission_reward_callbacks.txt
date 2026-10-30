@@ -1,0 +1,4 @@
+def test_combat_success_runtime_state_matches_mode(self):
+        self.assertTrue(Combat._runtime_active_after_success(event_mode=True, use_fast_combat=True))
+        self.assertTrue(Combat._runtime_active_after_success(event_mode=False, use_fast_combat=False))
+        self.assertFalse(Combat._runtime_active_after_success(event_mode=False, use_fast_combat=True))

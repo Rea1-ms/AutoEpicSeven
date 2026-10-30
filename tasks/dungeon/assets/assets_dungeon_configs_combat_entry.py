@@ -39,15 +39,18 @@ COMMON_ENTRY = ButtonWrapper(
     ),
     global_en=None,
 )
+CONBAT_ENTRIES = ButtonWrapper(
+    name='CONBAT_ENTRIES',
+    share=Button(
+        file='./assets/share/dungeon/configs/combat/entry/CONBAT_ENTRIES.png',
+        area=(0, 181, 1280, 223),
+        search=(0, 161, 1280, 243),
+        color=(44, 48, 51),
+        button=(0, 181, 1280, 223),
+    ),
+)
 HUNT = ButtonWrapper(
     name='HUNT',
-    global_cn=Button(
-        file='./assets/global_cn/dungeon/configs/combat/entry/HUNT.png',
-        area=(360, 186, 384, 215),
-        search=(340, 166, 404, 235),
-        color=(152, 158, 163),
-        button=(360, 186, 384, 215),
-    ),
     share=Button(
         file='./assets/share/dungeon/configs/combat/entry/HUNT.png',
         area=(667, 186, 691, 215),
@@ -137,10 +140,10 @@ URGENT_ENTRY = ButtonWrapper(
     cn=None,
     global_cn=Button(
         file='./assets/global_cn/dungeon/configs/combat/entry/URGENT_ENTRY.png',
-        area=(454, 105, 537, 134),
-        search=(434, 85, 557, 154),
-        color=(54, 74, 79),
-        button=(454, 105, 537, 134),
+        area=(460, 107, 524, 133),
+        search=(440, 87, 544, 153),
+        color=(61, 80, 84),
+        button=(460, 107, 524, 133),
     ),
     global_en=None,
 )

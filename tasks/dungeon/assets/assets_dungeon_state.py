@@ -45,13 +45,22 @@ COMBAT_PREPARE_PET_EMPTY = ButtonWrapper(
 )
 COMBAT_RESULT_CLEAR = ButtonWrapper(
     name='COMBAT_RESULT_CLEAR',
-    share=Button(
-        file='./assets/share/dungeon/state/COMBAT_RESULT_CLEAR.png',
-        area=(623, 278, 658, 305),
-        search=(603, 258, 678, 325),
-        color=(248, 168, 93),
-        button=(623, 278, 658, 305),
-    ),
+    share=[
+        Button(
+            file='./assets/share/dungeon/state/COMBAT_RESULT_CLEAR.png',
+            area=(623, 278, 658, 305),
+            search=(603, 258, 678, 325),
+            color=(248, 168, 93),
+            button=(623, 278, 658, 305),
+        ),
+        Button(
+            file='./assets/share/dungeon/state/COMBAT_RESULT_CLEAR.2.png',
+            area=(520, 428, 770, 467),
+            search=(500, 408, 790, 487),
+            color=(202, 162, 124),
+            button=(1233, 663, 1251, 690),
+        ),
+    ],
 )
 COMBAT_RESULT_FAILED = ButtonWrapper(
     name='COMBAT_RESULT_FAILED',

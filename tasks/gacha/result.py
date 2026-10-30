@@ -8,6 +8,7 @@ import numpy as np
 from module.base.timer import Timer
 from module.base.utils import crop, save_image
 from module.logger import logger
+from module.ocr.language import resolve_ocr_lang
 from module.ocr.ocr import Ocr
 from tasks.gacha.assets.assets_gacha import (
     GACHA_10_1,
@@ -188,16 +189,7 @@ class SummonResultRecorder:
         return self._save_result_screenshot_enabled() or self._ocr_result_enabled()
 
     def _ocr_lang(self) -> str:
-        lang = getattr(self.config, "Emulator_GameLanguage", "cn")
-        if lang in ("auto", "", None, "cn", "global_cn", "zh", "zh_cn"):
-            return "cn"
-        if lang in ("en", "global_en", "en_us"):
-            return "en"
-        if lang in ("jp", "ja", "ja_jp"):
-            return "jp"
-        if lang in ("tw", "zh_tw"):
-            return "tw"
-        return "cn"
+        return resolve_ocr_lang(self.config)
 
     def _read_result_name(self, image) -> str:
         raw_name = Ocr(

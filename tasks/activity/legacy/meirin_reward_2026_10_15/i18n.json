@@ -1,0 +1,22 @@
+{
+  "en-US": {
+    "name": "Claim Meirin Task Rewards",
+    "help": "Overseas Simplified Chinese interface only. Claim completed task rewards in the Together with Meirin event. Recheck after Arena or Combat if no reward is ready; stop daily checks only when all tasks are complete."
+  },
+  "es-ES": {
+    "name": "Recoger recompensas de tareas de Meirin",
+    "help": "Solo para la interfaz en chino simplificado del servidor internacional. Recoge las recompensas de tareas completadas del evento ¡Junto a Meirin! Si no hay recompensas disponibles, vuelve a comprobar tras Arena o Combate; espera al reinicio diario solo cuando todas las tareas estén completadas."
+  },
+  "ja-JP": {
+    "name": "メイリンのミッション報酬を受け取る",
+    "help": "海外版の簡体字中国語表示に限定。「メイリンと一緒に！」イベントで達成済みミッションの報酬を受け取ります。受取可能な報酬がなければ闘技場や戦闘後に再確認し、全達成後は翌日のリセットを待ちます。"
+  },
+  "zh-CN": {
+    "name": "领取梅铃任务奖励",
+    "help": "国际服中文界面：领取「与梅铃一起吧！」的已完成任务奖励。暂无可领时，竞技场或战斗结束后再次检查；全部完成后等次日刷新。"
+  },
+  "zh-TW": {
+    "name": "領取梅鈴任務獎勵",
+    "help": "國際服簡體中文介面：領取「與梅鈴一起吧！」的已完成任務獎勵。暫時無法領取時，競技場或戰鬥結束後再次檢查；全部完成後等隔日重置。"
+  }
+}

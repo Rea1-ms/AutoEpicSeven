@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "source": "MuMu-20261002-160938-463.png",
+  "suite": "knights_shop",
+  "case": "20261002-160938-463",
+  "items": [
+    {
+      "name": "SHOP_PURCHASE_CANCEL",
+      "namespace": "global_cn",
+      "module": "knights/shop/actions",
+      "kind": "base",
+      "box": [
+        446,
+        578,
+        491,
+        602
+      ]
+    }
+  ]
+}

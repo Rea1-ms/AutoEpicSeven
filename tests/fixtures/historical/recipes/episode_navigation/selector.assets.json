@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "source": "../../input/episode_navigation/MuMu-20261021-220735-802.png",
+  "suite": "episode_navigation_20261021",
+  "case": "selector",
+  "items": [
+    {
+      "name": "EPISODE_SELECTOR_CHECK",
+      "namespace": "share",
+      "module": "dungeon/episode/navigation",
+      "box": [
+        68,
+        20,
+        210,
+        48
+      ],
+      "kind": "base"
+    },
+    {
+      "name": "EPISODE_CHAPTER_STAR",
+      "namespace": "share",
+      "module": "dungeon/episode/navigation",
+      "box": [
+        418,
+        292,
+        433,
+        311
+      ],
+      "kind": "base"
+    },
+    {
+      "name": "EPISODE_CHAPTER_STAR",
+      "namespace": "share",
+      "module": "dungeon/episode/navigation",
+      "box": [
+        357,
+        270,
+        1280,
+        680
+      ],
+      "kind": "search"
+    }
+  ]
+}

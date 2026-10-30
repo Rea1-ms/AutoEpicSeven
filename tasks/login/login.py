@@ -19,6 +19,7 @@ Epic Seven 登录模块
       - GAME_UPGRADE_AVAILABLE → 跳转 Google Play → 更新 → 重启
       - PATCH_APPLY → 等待热更新完成
       - LOGIN_LOADING → 等待加载中
+      - LOGIN_AGREEMENT_UNCHECKED → 国服首次启动勾选协议
       - LOGIN_CONFIRM → 点击进入
       - ui_additional() → 签到/新角色/buff/礼包等弹窗
       - handle_login_popup() → special activity popups
@@ -38,9 +39,9 @@ from module.exception import (
 from module.logger import logger
 from module.ocr.ocr import Duration, OcrWhiteLetterOnComplexBackground
 from tasks.base.ui import UI
-from tasks.base.assets.assets_base_popup import TOUCH_TO_CLOSE
 from tasks.login.assets.assets_login import (
     GAME_UPGRADE_AVAILABLE,
+    LOGIN_AGREEMENT_UNCHECKED,
     LOGIN_ANNOUNCEMENT_CLOSE,
     LOGGED_OUT,
     LOGIN_ERROR,
@@ -56,6 +57,7 @@ from tasks.login.assets.assets_login_maintenance import (
     OCR_MAINTENANCE_TIME,
 )
 from tasks.login.update import UpdateHandler
+from tasks.login.assets.assets_login_update import PATCH_CHECKING, PATCH_DOWNLOADING
 from tasks.base.page import BACK
 from tasks.login.assets.assets_login_popup import (
     ACTIVITY_2026SUMMER,
@@ -109,10 +111,17 @@ class Login(UI):
             or self.appear(LOGGED_OUT, interval=0)
             or self.appear(LOGIN_ERROR, interval=0)
             or self.appear(LOGIN_CONFIRM, interval=0)
+            or (
+                server_.is_cn_server(self.config.Emulator_PackageName)
+                and self.appear(LOGIN_AGREEMENT_UNCHECKED, interval=0)
+            )
             or self.appear(LOGIN_LOADING, interval=0, similarity=0.75)
             or self.appear(VERIFYING, interval=0)
             or self.appear(PATCH_APPLY, interval=0)
             or self.appear(PATCH_PERCENT_SIGN, interval=0)
+            or self.appear(PATCH_CHECKING)
+            or self.appear(PATCH_DOWNLOADING)
+            or UpdateHandler._is_cn_app_update(self)
             or self.appear(UNDER_MAINTENANCE, interval=0)
             or (
                 server_.is_oversea_server(self.config.Emulator_PackageName)
@@ -319,12 +328,19 @@ class Login(UI):
                 self._handle_maintenance()
                 # _handle_maintenance 会抛出异常，不会执行到这里
 
+            # CN SDK updates can leave the game and rotate into Android's
+            # installer. Let the bounded updater own those frames before the
+            # next liveness check can mistake that transition for a crash.
+            if UpdateHandler._is_cn_app_update(self):
+                UpdateHandler._handle_cn_app_update(self)
+                self.app_restart()
+                return True
+
             # 版本更新（跳转 Google Play）
             if server_.is_oversea_server(self.config.Emulator_PackageName) and self.appear(
-                GAME_UPGRADE_AVAILABLE, interval=5
+                GAME_UPGRADE_AVAILABLE, interval=0
             ):
                 logger.warning('Game update available')
-                self.device.click(TOUCH_TO_CLOSE)
                 UpdateHandler._handle_google_play_update(self)
                 self.app_restart()
                 return True
@@ -342,6 +358,17 @@ class Login(UI):
                 continue
 
             # 下载中
+            # The new client checks/scans files before offering Proceed, then
+            # downloads on the splash screen. These are read-only observations:
+            # do not gate them on a click interval or let a long scan trigger the
+            # unknown-screen watchdog. The confirmation is checked above so its
+            # first actionable frame is handled immediately.
+            if self.appear(PATCH_CHECKING) or self.appear(PATCH_DOWNLOADING):
+                network_error_count = 0
+                timeout.reset()
+                self.device.stuck_record_clear()
+                continue
+
             if self.appear(PATCH_PERCENT_SIGN, interval=3):
                 logger.info('Patch downloading...')
                 network_error_count = 0
@@ -360,6 +387,20 @@ class Login(UI):
             # 进入游戏
             # ==========================================
 
+            # CN first launch requires consent. Only the empty box is clickable
+            # here; verify the green check on a fresh screenshot before entering.
+            # Leave the total timeout running so repeated failed checkbox clicks
+            # cannot keep login alive indefinitely.
+            if server_.is_cn_server(self.config.Emulator_PackageName) and self.appear_then_click(
+                LOGIN_AGREEMENT_UNCHECKED, interval=2
+            ):
+                logger.info('Selecting CN login agreement')
+                network_error_count = 0
+                main_confirm.reset()
+                continue
+
+            # CN LOGIN_CONFIRM recognizes the green check, but its BUTTON asset
+            # still targets empty space: clicking the check would revoke consent.
             if self.appear_then_click(LOGIN_CONFIRM, interval=2):
                 logger.info('Clicking to enter game')
                 login_success = True

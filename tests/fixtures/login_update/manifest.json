@@ -1,0 +1,592 @@
+{
+  "version": 1,
+  "fixtures": {
+    "20261029-194637-390": {
+      "path": "tests/fixtures/login_update/global_cn/MuMu-20261029-194637-390.png",
+      "sha256": "fa461d2649681d6f055047636add8f5d02e3f2e138610aa82c1079ef7d629e4a",
+      "server": "global_cn",
+      "scene": "version_upgrade_notice",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.core.test_login_update.UpdateCaptureTests.test_version_notice_matches_new_dialog",
+        "tests.core.test_login_update.UpdateCaptureTests.test_patch_confirmation_targets_proceed_button",
+        "tests.core.test_login_update.UpdateCaptureTests.test_google_play_buttons_have_positive_and_negative_captures",
+        "tests.core.test_login_update.UpdateCaptureTests.test_patch_checking_and_downloading_are_read_only_distinct_states",
+        "tests.core.test_login_update.UpdateReplayTests.test_version_notice_opens_store_and_updates_until_play",
+        "tests.core.test_login_update.UpdateReplayTests.test_notice_and_update_retry_only_after_their_own_intervals",
+        "tests.core.test_login_update.UpdateReplayTests.test_public_handler_leaves_cn_and_non_update_screens_untouched",
+        "tests.core.test_login_update.LoginUpdateFlowTests.test_login_restarts_once_only_after_store_reports_play"
+      ],
+      "source": "user-provided MuMu-20261029-194637-390.png",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ]
+    },
+    "20261029-194638-366": {
+      "path": "tests/fixtures/login_update/global_cn/MuMu-20261029-194638-366.png",
+      "sha256": "d2f1d80719b0bff5d4a453c7d7360230b304d4b315fdd7c408dc98587db6fe26",
+      "server": "global_cn",
+      "scene": "google_play_pending_before_manual_cancel",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.core.test_login_update.UpdateCaptureTests.test_version_notice_matches_new_dialog",
+        "tests.core.test_login_update.UpdateCaptureTests.test_patch_confirmation_targets_proceed_button",
+        "tests.core.test_login_update.UpdateCaptureTests.test_google_play_buttons_have_positive_and_negative_captures",
+        "tests.core.test_login_update.UpdateCaptureTests.test_patch_checking_and_downloading_are_read_only_distinct_states",
+        "tests.core.test_login_update.UpdateReplayTests.test_pending_cancelling_and_download_never_click_cancel_or_uninstall"
+      ],
+      "source": "user-provided MuMu-20261029-194638-366.png",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ]
+    },
+    "20261029-194640-422": {
+      "path": "tests/fixtures/login_update/global_cn/MuMu-20261029-194640-422.png",
+      "sha256": "b0bcfda3d859bed1e0e4e19067ff4e99dd27b1b32fd633c2ae89d6a8b23ec30a",
+      "server": "global_cn",
+      "scene": "google_play_cancelling",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.core.test_login_update.UpdateCaptureTests.test_version_notice_matches_new_dialog",
+        "tests.core.test_login_update.UpdateCaptureTests.test_patch_confirmation_targets_proceed_button",
+        "tests.core.test_login_update.UpdateCaptureTests.test_google_play_buttons_have_positive_and_negative_captures",
+        "tests.core.test_login_update.UpdateCaptureTests.test_patch_checking_and_downloading_are_read_only_distinct_states",
+        "tests.core.test_login_update.UpdateReplayTests.test_pending_cancelling_and_download_never_click_cancel_or_uninstall"
+      ],
+      "source": "user-provided MuMu-20261029-194640-422.png",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ]
+    },
+    "20261029-194642-189": {
+      "path": "tests/fixtures/login_update/global_cn/MuMu-20261029-194642-189.png",
+      "sha256": "ab5562c5f0bc645a224fcc95afaae5a10ba55e294fc433089517b62d5e0f187c",
+      "server": "global_cn",
+      "scene": "google_play_update_available",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.core.test_login_update.UpdateCaptureTests.test_version_notice_matches_new_dialog",
+        "tests.core.test_login_update.UpdateCaptureTests.test_patch_confirmation_targets_proceed_button",
+        "tests.core.test_login_update.UpdateCaptureTests.test_google_play_buttons_have_positive_and_negative_captures",
+        "tests.core.test_login_update.UpdateCaptureTests.test_patch_checking_and_downloading_are_read_only_distinct_states",
+        "tests.core.test_login_update.UpdateReplayTests.test_version_notice_opens_store_and_updates_until_play",
+        "tests.core.test_login_update.UpdateReplayTests.test_notice_and_update_retry_only_after_their_own_intervals",
+        "tests.core.test_login_update.UpdateReplayTests.test_fresh_first_screenshot_and_completion_bypass_click_interval",
+        "tests.core.test_login_update.LoginUpdateFlowTests.test_login_restarts_once_only_after_store_reports_play"
+      ],
+      "source": "user-provided MuMu-20261029-194642-189.png",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ]
+    },
+    "20261029-194645-647": {
+      "path": "tests/fixtures/login_update/global_cn/MuMu-20261029-194645-647.png",
+      "sha256": "1c69ca20be310cb32a9ba79bd99a798556e54a86db7eb4932cb217e9b8bef1af",
+      "server": "global_cn",
+      "scene": "google_play_pending",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.core.test_login_update.UpdateCaptureTests.test_version_notice_matches_new_dialog",
+        "tests.core.test_login_update.UpdateCaptureTests.test_patch_confirmation_targets_proceed_button",
+        "tests.core.test_login_update.UpdateCaptureTests.test_google_play_buttons_have_positive_and_negative_captures",
+        "tests.core.test_login_update.UpdateCaptureTests.test_patch_checking_and_downloading_are_read_only_distinct_states",
+        "tests.core.test_login_update.UpdateReplayTests.test_version_notice_opens_store_and_updates_until_play",
+        "tests.core.test_login_update.UpdateReplayTests.test_notice_and_update_retry_only_after_their_own_intervals",
+        "tests.core.test_login_update.UpdateReplayTests.test_pending_cancelling_and_download_never_click_cancel_or_uninstall",
+        "tests.core.test_login_update.LoginUpdateFlowTests.test_login_restarts_once_only_after_store_reports_play"
+      ],
+      "source": "user-provided MuMu-20261029-194645-647.png",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ]
+    },
+    "20261029-194651-922": {
+      "path": "tests/fixtures/login_update/global_cn/MuMu-20261029-194651-922.png",
+      "sha256": "e95e6113aedb55f236baa0480c2e3504e5f83d1be8f9bb8920af0590379e84d9",
+      "server": "global_cn",
+      "scene": "google_play_downloading",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.core.test_login_update.UpdateCaptureTests.test_version_notice_matches_new_dialog",
+        "tests.core.test_login_update.UpdateCaptureTests.test_patch_confirmation_targets_proceed_button",
+        "tests.core.test_login_update.UpdateCaptureTests.test_google_play_buttons_have_positive_and_negative_captures",
+        "tests.core.test_login_update.UpdateCaptureTests.test_patch_checking_and_downloading_are_read_only_distinct_states",
+        "tests.core.test_login_update.UpdateReplayTests.test_version_notice_opens_store_and_updates_until_play",
+        "tests.core.test_login_update.UpdateReplayTests.test_notice_and_update_retry_only_after_their_own_intervals",
+        "tests.core.test_login_update.UpdateReplayTests.test_pending_cancelling_and_download_never_click_cancel_or_uninstall",
+        "tests.core.test_login_update.LoginUpdateFlowTests.test_login_restarts_once_only_after_store_reports_play"
+      ],
+      "source": "user-provided MuMu-20261029-194651-922.png",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ]
+    },
+    "20261029-194703-928": {
+      "path": "tests/fixtures/login_update/global_cn/MuMu-20261029-194703-928.png",
+      "sha256": "84777525fefa09ddeaee14b60dde26944265c1a4be41cd744849e5f83820b036",
+      "server": "global_cn",
+      "scene": "google_play_ready",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.core.test_login_update.UpdateCaptureTests.test_version_notice_matches_new_dialog",
+        "tests.core.test_login_update.UpdateCaptureTests.test_patch_confirmation_targets_proceed_button",
+        "tests.core.test_login_update.UpdateCaptureTests.test_google_play_buttons_have_positive_and_negative_captures",
+        "tests.core.test_login_update.UpdateCaptureTests.test_patch_checking_and_downloading_are_read_only_distinct_states",
+        "tests.core.test_login_update.UpdateReplayTests.test_version_notice_opens_store_and_updates_until_play",
+        "tests.core.test_login_update.UpdateReplayTests.test_notice_and_update_retry_only_after_their_own_intervals",
+        "tests.core.test_login_update.UpdateReplayTests.test_pending_cancelling_and_download_never_click_cancel_or_uninstall",
+        "tests.core.test_login_update.UpdateReplayTests.test_already_ready_exits_on_prepared_frame_without_clicking_play",
+        "tests.core.test_login_update.UpdateReplayTests.test_fresh_first_screenshot_and_completion_bypass_click_interval",
+        "tests.core.test_login_update.LoginUpdateFlowTests.test_login_restarts_once_only_after_store_reports_play"
+      ],
+      "source": "user-provided MuMu-20261029-194703-928.png",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ]
+    },
+    "20261029-194709-969": {
+      "path": "tests/fixtures/login_update/global_cn/MuMu-20261029-194709-969.png",
+      "sha256": "f116fdde7bba054fd17c6f7daa88cb8352f94436fa5b72bfe90ddf66e84f2ca7",
+      "server": "global_cn",
+      "scene": "game_splash",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.core.test_login_update.UpdateCaptureTests.test_version_notice_matches_new_dialog",
+        "tests.core.test_login_update.UpdateCaptureTests.test_patch_confirmation_targets_proceed_button",
+        "tests.core.test_login_update.UpdateCaptureTests.test_google_play_buttons_have_positive_and_negative_captures",
+        "tests.core.test_login_update.UpdateCaptureTests.test_patch_checking_and_downloading_are_read_only_distinct_states",
+        "tests.core.test_login_update.UpdateReplayTests.test_public_handler_leaves_cn_and_non_update_screens_untouched"
+      ],
+      "source": "user-provided MuMu-20261029-194709-969.png",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ]
+    },
+    "20261029-194712-614": {
+      "path": "tests/fixtures/login_update/global_cn/MuMu-20261029-194712-614.png",
+      "sha256": "c4c4f94d7c3942146d269ea79515ce8a74f75573fe39e79817471f5f144eafc6",
+      "server": "global_cn",
+      "scene": "patch_checking",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.core.test_login_update.UpdateCaptureTests.test_version_notice_matches_new_dialog",
+        "tests.core.test_login_update.UpdateCaptureTests.test_patch_confirmation_targets_proceed_button",
+        "tests.core.test_login_update.UpdateCaptureTests.test_google_play_buttons_have_positive_and_negative_captures",
+        "tests.core.test_login_update.UpdateCaptureTests.test_patch_checking_and_downloading_are_read_only_distinct_states",
+        "tests.core.test_login_update.LoginUpdateFlowTests.test_long_patch_scan_and_download_wait_then_enter_main",
+        "tests.core.test_login_update.LoginUpdateFlowTests.test_popup_handoff_recognizes_each_new_patch_progress_state"
+      ],
+      "source": "user-provided MuMu-20261029-194712-614.png",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ]
+    },
+    "20261029-194725-016": {
+      "path": "tests/fixtures/login_update/global_cn/MuMu-20261029-194725-016.png",
+      "sha256": "60e2de870865695793e6e853ebd02b43f65bbd70509484c182d07871566c96eb",
+      "server": "global_cn",
+      "scene": "patch_scanning",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.core.test_login_update.UpdateCaptureTests.test_version_notice_matches_new_dialog",
+        "tests.core.test_login_update.UpdateCaptureTests.test_patch_confirmation_targets_proceed_button",
+        "tests.core.test_login_update.UpdateCaptureTests.test_google_play_buttons_have_positive_and_negative_captures",
+        "tests.core.test_login_update.UpdateCaptureTests.test_patch_checking_and_downloading_are_read_only_distinct_states",
+        "tests.core.test_login_update.LoginUpdateFlowTests.test_long_patch_scan_and_download_wait_then_enter_main",
+        "tests.core.test_login_update.LoginUpdateFlowTests.test_popup_handoff_recognizes_each_new_patch_progress_state"
+      ],
+      "source": "user-provided MuMu-20261029-194725-016.png",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ]
+    },
+    "20261029-194905-434": {
+      "path": "tests/fixtures/login_update/global_cn/MuMu-20261029-194905-434.png",
+      "sha256": "19474e1011f30a75b62b6bba6e6a8755d6164cf1725355f47749639d81b22a3a",
+      "server": "global_cn",
+      "scene": "patch_download_confirmation",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.core.test_login_update.UpdateCaptureTests.test_version_notice_matches_new_dialog",
+        "tests.core.test_login_update.UpdateCaptureTests.test_patch_confirmation_targets_proceed_button",
+        "tests.core.test_login_update.UpdateCaptureTests.test_google_play_buttons_have_positive_and_negative_captures",
+        "tests.core.test_login_update.UpdateCaptureTests.test_patch_checking_and_downloading_are_read_only_distinct_states",
+        "tests.core.test_login_update.LoginUpdateFlowTests.test_long_patch_scan_and_download_wait_then_enter_main"
+      ],
+      "source": "user-provided MuMu-20261029-194905-434.png",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ]
+    },
+    "20261029-194911-593": {
+      "path": "tests/fixtures/login_update/global_cn/MuMu-20261029-194911-593.png",
+      "sha256": "45be8a7edba4385dcd9b64f6211bc18f86a5e1f153c826dc0ef54aedda629482",
+      "server": "global_cn",
+      "scene": "patch_downloading_zero",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.core.test_login_update.UpdateCaptureTests.test_version_notice_matches_new_dialog",
+        "tests.core.test_login_update.UpdateCaptureTests.test_patch_confirmation_targets_proceed_button",
+        "tests.core.test_login_update.UpdateCaptureTests.test_google_play_buttons_have_positive_and_negative_captures",
+        "tests.core.test_login_update.UpdateCaptureTests.test_patch_checking_and_downloading_are_read_only_distinct_states",
+        "tests.core.test_login_update.LoginUpdateFlowTests.test_long_patch_scan_and_download_wait_then_enter_main",
+        "tests.core.test_login_update.LoginUpdateFlowTests.test_popup_handoff_recognizes_each_new_patch_progress_state"
+      ],
+      "source": "user-provided MuMu-20261029-194911-593.png",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ]
+    },
+    "20261029-194922-656": {
+      "path": "tests/fixtures/login_update/global_cn/MuMu-20261029-194922-656.png",
+      "sha256": "a6eb06f3392bd69516998fb53000aae7df0a4b971a385784f0e64908792ad2d3",
+      "server": "global_cn",
+      "scene": "patch_downloading_five_percent",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.core.test_login_update.UpdateCaptureTests.test_version_notice_matches_new_dialog",
+        "tests.core.test_login_update.UpdateCaptureTests.test_patch_confirmation_targets_proceed_button",
+        "tests.core.test_login_update.UpdateCaptureTests.test_google_play_buttons_have_positive_and_negative_captures",
+        "tests.core.test_login_update.UpdateCaptureTests.test_patch_checking_and_downloading_are_read_only_distinct_states",
+        "tests.core.test_login_update.LoginUpdateFlowTests.test_long_patch_scan_and_download_wait_then_enter_main",
+        "tests.core.test_login_update.LoginUpdateFlowTests.test_popup_handoff_recognizes_each_new_patch_progress_state"
+      ],
+      "source": "user-provided MuMu-20261029-194922-656.png",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ]
+    },
+    "20261029-220435-623": {
+      "path": "tests/fixtures/login_update/cn/MuMu-20261029-220435-623.png",
+      "sha256": "fccde962e3c25fc7f705d3674c68bf2ecdfc43b72febb72896faa1617deab59e",
+      "server": "cn",
+      "scene": "client_update_confirm",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.core.test_login_update.CnUpdateTests.test_patch_confirm_and_progress_match_only_their_own_captures",
+        "tests.core.test_login_update.CnUpdateTests.test_popup_handoff_accepts_new_cn_patch_and_client_states",
+        "tests.core.test_login_update.CnUpdateTests.test_client_states_match_only_their_own_captures",
+        "tests.core.test_login_update.CnUpdateTests.test_client_download_install_and_portrait_confirmation_finish_before_restart",
+        "tests.core.test_login_update.CnUpdateTests.test_failed_clicks_retry_independently_and_never_cancel_installation",
+        "tests.core.test_login_update.CnUpdateTests.test_login_allows_updater_to_leave_game_and_restarts_after_installation"
+      ],
+      "source": "user-provided MuMu-20261029-220435-623.png",
+      "source_sha256": "c4a3bfc44899d35035456bca2af5ccf0f9b99e747adbd8762f279d680dd5d697",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ]
+    },
+    "20261029-220437-897": {
+      "path": "tests/fixtures/login_update/cn/MuMu-20261029-220437-897.png",
+      "sha256": "4e4e5395bac2e3d1e0a82f5ec9cae755cf0cda5389c982b3912fd95c3ea781ab",
+      "server": "cn",
+      "scene": "client_downloading",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.core.test_login_update.CnUpdateTests.test_patch_confirm_and_progress_match_only_their_own_captures",
+        "tests.core.test_login_update.CnUpdateTests.test_popup_handoff_accepts_new_cn_patch_and_client_states",
+        "tests.core.test_login_update.CnUpdateTests.test_client_states_match_only_their_own_captures",
+        "tests.core.test_login_update.CnUpdateTests.test_client_download_install_and_portrait_confirmation_finish_before_restart",
+        "tests.core.test_login_update.CnUpdateTests.test_failed_clicks_retry_independently_and_never_cancel_installation",
+        "tests.core.test_login_update.CnUpdateTests.test_long_client_download_is_read_only",
+        "tests.core.test_login_update.CnUpdateTests.test_login_allows_updater_to_leave_game_and_restarts_after_installation"
+      ],
+      "source": "user-provided MuMu-20261029-220437-897.png",
+      "source_sha256": "e99cdeb8f35c620d40a2ae7e1374e29261fb1962dfb37512a9f67a07031b2cc5",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ]
+    },
+    "20261029-220443-735": {
+      "path": "tests/fixtures/login_update/cn/MuMu-20261029-220443-735.png",
+      "sha256": "b9f664ce5909de2474755113f8b8af9d8bec6055f3662bbcc745de3bcc98f4aa",
+      "server": "cn",
+      "scene": "client_install_prompt",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.core.test_login_update.CnUpdateTests.test_patch_confirm_and_progress_match_only_their_own_captures",
+        "tests.core.test_login_update.CnUpdateTests.test_popup_handoff_accepts_new_cn_patch_and_client_states",
+        "tests.core.test_login_update.CnUpdateTests.test_client_states_match_only_their_own_captures",
+        "tests.core.test_login_update.CnUpdateTests.test_client_download_install_and_portrait_confirmation_finish_before_restart",
+        "tests.core.test_login_update.CnUpdateTests.test_failed_clicks_retry_independently_and_never_cancel_installation",
+        "tests.core.test_login_update.CnUpdateTests.test_login_allows_updater_to_leave_game_and_restarts_after_installation"
+      ],
+      "source": "user-provided MuMu-20261029-220443-735.png",
+      "source_sha256": "bd594d1ba3ed0443882cb77564910f2ce42f2c4bccd38452779ee40b2c3be571",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ]
+    },
+    "20261029-220447-999": {
+      "path": "tests/fixtures/login_update/cn/MuMu-20261029-220447-999.png",
+      "sha256": "85de343712397b5acbe5629aceb7b2932125810e8ff640c3fc0e0df2695458a1",
+      "server": "cn",
+      "scene": "android_install_confirm",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.core.test_login_update.CnUpdateTests.test_patch_confirm_and_progress_match_only_their_own_captures",
+        "tests.core.test_login_update.CnUpdateTests.test_popup_handoff_accepts_new_cn_patch_and_client_states",
+        "tests.core.test_login_update.CnUpdateTests.test_client_states_match_only_their_own_captures",
+        "tests.core.test_login_update.CnUpdateTests.test_client_download_install_and_portrait_confirmation_finish_before_restart",
+        "tests.core.test_login_update.CnUpdateTests.test_failed_clicks_retry_independently_and_never_cancel_installation",
+        "tests.core.test_login_update.CnUpdateTests.test_other_app_portrait_confirmation_is_not_clicked",
+        "tests.core.test_login_update.CnUpdateTests.test_login_allows_updater_to_leave_game_and_restarts_after_installation"
+      ],
+      "source": "user-provided MuMu-20261029-220447-999.png",
+      "source_sha256": "1e6d8882db8af664c9b72426db31bb8372e9c6771554c8327a38fad0f58bfa46",
+      "privacy_redaction": [],
+      "normalization": "rotate_90_clockwise"
+    },
+    "20261029-220451-467": {
+      "path": "tests/fixtures/login_update/cn/MuMu-20261029-220451-467.png",
+      "sha256": "7552c586a1eab020cae35891fc7e95e6926b7735f4038198c46102b2a73352d9",
+      "server": "cn",
+      "scene": "android_install_complete",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.core.test_login_update.CnUpdateTests.test_patch_confirm_and_progress_match_only_their_own_captures",
+        "tests.core.test_login_update.CnUpdateTests.test_popup_handoff_accepts_new_cn_patch_and_client_states",
+        "tests.core.test_login_update.CnUpdateTests.test_client_states_match_only_their_own_captures",
+        "tests.core.test_login_update.CnUpdateTests.test_client_download_install_and_portrait_confirmation_finish_before_restart",
+        "tests.core.test_login_update.CnUpdateTests.test_failed_clicks_retry_independently_and_never_cancel_installation",
+        "tests.core.test_login_update.CnUpdateTests.test_long_client_download_is_read_only",
+        "tests.core.test_login_update.CnUpdateTests.test_installed_frame_exits_immediately_without_open_or_done_click",
+        "tests.core.test_login_update.CnUpdateTests.test_new_screenshot_and_completion_take_priority_over_timeout",
+        "tests.core.test_login_update.CnUpdateTests.test_login_allows_updater_to_leave_game_and_restarts_after_installation"
+      ],
+      "source": "user-provided MuMu-20261029-220451-467.png",
+      "source_sha256": "ea03b1a8824557520b2f67131fbdbaf6caee2ca72b7d6f4b2ee26d5eb50f760a",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ]
+    },
+    "20261029-221739-381": {
+      "path": "tests/fixtures/login_update/cn/MuMu-20261029-221739-381.png",
+      "sha256": "d0c26d87e7b53d85786f2e76e306d0df6aaaff0522754962f3cc4a91306e2f10",
+      "server": "cn",
+      "scene": "patch_checking",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.core.test_login_update.CnUpdateTests.test_patch_confirm_and_progress_match_only_their_own_captures",
+        "tests.core.test_login_update.CnUpdateTests.test_long_patch_scan_and_download_continue_without_restart",
+        "tests.core.test_login_update.CnUpdateTests.test_popup_handoff_accepts_new_cn_patch_and_client_states",
+        "tests.core.test_login_update.CnUpdateTests.test_client_states_match_only_their_own_captures",
+        "tests.core.test_login_update.CnUpdateTests.test_public_handler_leaves_patch_and_health_notice_untouched"
+      ],
+      "source": "user-provided MuMu-20261029-221739-381.png",
+      "source_sha256": "71cf779a34ae37adc60cbec81bc7dbdb073a2a02e058aa26dbf9f8dd63bf3894",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ]
+    },
+    "20261029-221833-219": {
+      "path": "tests/fixtures/login_update/cn/MuMu-20261029-221833-219.png",
+      "sha256": "08bc649e5f796b2153fb0e4106618704da97daf86b663c97ad88fed6e4bcb92a",
+      "server": "cn",
+      "scene": "healthy_game_notice",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.core.test_login_update.CnUpdateTests.test_patch_confirm_and_progress_match_only_their_own_captures",
+        "tests.core.test_login_update.CnUpdateTests.test_client_states_match_only_their_own_captures",
+        "tests.core.test_login_update.CnUpdateTests.test_public_handler_leaves_patch_and_health_notice_untouched"
+      ],
+      "source": "user-provided MuMu-20261029-221833-219.png",
+      "source_sha256": "ee25d782f131be5abe5417f7af5dabd0bcef7a98945af32bd6a77479f97d005f",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ]
+    },
+    "20261029-221842-942": {
+      "path": "tests/fixtures/login_update/cn/MuMu-20261029-221842-942.png",
+      "sha256": "507cbed80f68a3d72e7662fc6d62fcf7d19d2a84ee161609f2afb3b96d8b3d23",
+      "server": "cn",
+      "scene": "patch_checking_later",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.core.test_login_update.CnUpdateTests.test_patch_confirm_and_progress_match_only_their_own_captures",
+        "tests.core.test_login_update.CnUpdateTests.test_long_patch_scan_and_download_continue_without_restart",
+        "tests.core.test_login_update.CnUpdateTests.test_popup_handoff_accepts_new_cn_patch_and_client_states",
+        "tests.core.test_login_update.CnUpdateTests.test_client_states_match_only_their_own_captures",
+        "tests.core.test_login_update.CnUpdateTests.test_public_handler_leaves_patch_and_health_notice_untouched"
+      ],
+      "source": "user-provided MuMu-20261029-221842-942.png",
+      "source_sha256": "2e45e18c039b40b868573b70015a696141b1f725d0bc7dd516450184975e787d",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ]
+    },
+    "20261029-222010-024": {
+      "path": "tests/fixtures/login_update/cn/MuMu-20261029-222010-024.png",
+      "sha256": "ce82c1ddcaeb5d71735ec1d66c1999bdba070f2cc2f3ff22d0e0c31e8b9fff50",
+      "server": "cn",
+      "scene": "patch_confirm",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.core.test_login_update.CnUpdateTests.test_patch_confirm_and_progress_match_only_their_own_captures",
+        "tests.core.test_login_update.CnUpdateTests.test_long_patch_scan_and_download_continue_without_restart",
+        "tests.core.test_login_update.CnUpdateTests.test_popup_handoff_accepts_new_cn_patch_and_client_states",
+        "tests.core.test_login_update.CnUpdateTests.test_client_states_match_only_their_own_captures",
+        "tests.core.test_login_update.CnUpdateTests.test_patch_confirmation_cooldown_does_not_delay_login_action",
+        "tests.core.test_login_update.CnUpdateTests.test_public_handler_leaves_patch_and_health_notice_untouched"
+      ],
+      "source": "user-provided MuMu-20261029-222010-024.png",
+      "source_sha256": "bf715efd2b1440acf6618ca501ac0d57fe164f932c274068544e809a07fbe953",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ]
+    },
+    "20261029-222013-948": {
+      "path": "tests/fixtures/login_update/cn/MuMu-20261029-222013-948.png",
+      "sha256": "a435db0b4f33b48a8447fff70432a7262cf2417a3027098dbccb7d02e52c09cb",
+      "server": "cn",
+      "scene": "patch_downloading",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.core.test_login_update.CnUpdateTests.test_patch_confirm_and_progress_match_only_their_own_captures",
+        "tests.core.test_login_update.CnUpdateTests.test_long_patch_scan_and_download_continue_without_restart",
+        "tests.core.test_login_update.CnUpdateTests.test_popup_handoff_accepts_new_cn_patch_and_client_states",
+        "tests.core.test_login_update.CnUpdateTests.test_client_states_match_only_their_own_captures",
+        "tests.core.test_login_update.CnUpdateTests.test_public_handler_leaves_patch_and_health_notice_untouched"
+      ],
+      "source": "user-provided MuMu-20261029-222013-948.png",
+      "source_sha256": "531d51cb0980b4f93e156c759161f4d1d50c3b06e8fef6e578f46d11294915fa",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ]
+    },
+    "20261029-222031-002": {
+      "path": "tests/fixtures/login_update/cn/MuMu-20261029-222031-002.png",
+      "sha256": "b65b6c9e4804156ab6388f4fd27a5e90a2458d2edfe06c9bb94a0175fc4cd290",
+      "server": "cn",
+      "scene": "patch_downloading_later",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.core.test_login_update.CnUpdateTests.test_patch_confirm_and_progress_match_only_their_own_captures",
+        "tests.core.test_login_update.CnUpdateTests.test_long_patch_scan_and_download_continue_without_restart",
+        "tests.core.test_login_update.CnUpdateTests.test_popup_handoff_accepts_new_cn_patch_and_client_states",
+        "tests.core.test_login_update.CnUpdateTests.test_client_states_match_only_their_own_captures",
+        "tests.core.test_login_update.CnUpdateTests.test_public_handler_leaves_patch_and_health_notice_untouched"
+      ],
+      "source": "user-provided MuMu-20261029-222031-002.png",
+      "source_sha256": "ee5a7a28a82812ab8e5d3659b5b86f9583888cf0d83812e85c1dbef5376527f2",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ]
+    }
+  }
+}

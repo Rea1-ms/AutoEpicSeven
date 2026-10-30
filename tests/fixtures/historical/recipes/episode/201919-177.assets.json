@@ -1,0 +1,140 @@
+{
+  "version": 1,
+  "source": "../../input/episode/MuMu-20261019-201919-177.png",
+  "suite": "episode_20261019",
+  "case": "201919-177",
+  "items": [
+    {
+      "name": "EPISODE_MAP_CHECK",
+      "box": [
+        69,
+        22,
+        157,
+        49
+      ],
+      "kind": "base",
+      "namespace": "share",
+      "module": "dungeon/episode/map"
+    },
+    {
+      "name": "EPISODE_CHAPTER_ENTRY",
+      "box": [
+        246,
+        99,
+        261,
+        119
+      ],
+      "kind": "base",
+      "namespace": "share",
+      "module": "dungeon/episode/map"
+    },
+    {
+      "name": "OCR_EPISODE_STAGE_LIST",
+      "box": [
+        88,
+        128,
+        390,
+        593
+      ],
+      "kind": "base",
+      "namespace": "share",
+      "module": "dungeon/episode/map"
+    },
+    {
+      "name": "EPISODE_STAGE_COMPLETE",
+      "box": [
+        65,
+        140,
+        83,
+        158
+      ],
+      "kind": "base",
+      "namespace": "share",
+      "module": "dungeon/episode/map"
+    },
+    {
+      "name": "EPISODE_STAGE_COMPLETE",
+      "box": [
+        45,
+        128,
+        90,
+        595
+      ],
+      "kind": "search",
+      "namespace": "share",
+      "module": "dungeon/episode/map"
+    },
+    {
+      "name": "EPISODE_STAGE_LOCKED",
+      "box": [
+        65,
+        341,
+        83,
+        360
+      ],
+      "kind": "base",
+      "namespace": "share",
+      "module": "dungeon/episode/map"
+    },
+    {
+      "name": "EPISODE_STAGE_LOCKED",
+      "box": [
+        45,
+        128,
+        90,
+        595
+      ],
+      "kind": "search",
+      "namespace": "share",
+      "module": "dungeon/episode/map"
+    },
+    {
+      "name": "EPISODE_MAP_ACTION",
+      "box": [
+        1221,
+        650,
+        1245,
+        672
+      ],
+      "kind": "base",
+      "namespace": "share",
+      "module": "dungeon/episode/map"
+    },
+    {
+      "name": "EPISODE_MAP_ACTION",
+      "box": [
+        1004,
+        639,
+        1254,
+        686
+      ],
+      "kind": "button",
+      "namespace": "share",
+      "module": "dungeon/episode/map"
+    },
+    {
+      "name": "EPISODE_MAP_ACTION",
+      "box": [
+        1221,
+        650,
+        1245,
+        672
+      ],
+      "kind": "color",
+      "namespace": "share",
+      "module": "dungeon/episode/map"
+    },
+    {
+      "name": "OCR_EPISODE_NUMBER",
+      "namespace": "share",
+      "module": "dungeon/episode/map",
+      "kind": "base",
+      "box": [
+        68,
+        17,
+        185,
+        51
+      ]
+    }
+  ]
+}

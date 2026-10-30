@@ -32,18 +32,33 @@ CHOOSE_TEAM = ButtonWrapper(
         color=(126, 140, 126),
         button=(1045, 648, 1126, 669),
     ),
-    global_cn=Button(
-        file='./assets/global_cn/dungeon/action/CHOOSE_TEAM.png',
-        area=(1044, 652, 1128, 673),
-        search=(1024, 632, 1148, 693),
-        color=(124, 134, 120),
-        button=(1044, 652, 1128, 673),
-    ),
+    global_cn=[
+        Button(
+            file='./assets/global_cn/dungeon/action/CHOOSE_TEAM.png',
+            area=(1044, 652, 1128, 673),
+            search=(1024, 632, 1148, 693),
+            color=(124, 134, 120),
+            button=(1044, 652, 1128, 673),
+        ),
+        Button(
+            file='./assets/global_cn/dungeon/action/CHOOSE_TEAM.2.png',
+            area=(1038, 645, 1128, 669),
+            search=(1018, 625, 1148, 689),
+            color=(107, 122, 108),
+            button=(1038, 645, 1128, 669),
+        ),
+    ],
     global_en=None,
 )
 COMBAT_RESULT_CONFIRM = ButtonWrapper(
     name='COMBAT_RESULT_CONFIRM',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/dungeon/action/COMBAT_RESULT_CONFIRM.png',
+        area=(1134, 649, 1173, 669),
+        search=(1114, 629, 1193, 689),
+        color=(134, 150, 136),
+        button=(1134, 649, 1173, 669),
+    ),
     global_cn=Button(
         file='./assets/global_cn/dungeon/action/COMBAT_RESULT_CONFIRM.png',
         area=(1120, 640, 1195, 682),
@@ -55,7 +70,13 @@ COMBAT_RESULT_CONFIRM = ButtonWrapper(
 )
 COMBAT_RESULT_LEAVE = ButtonWrapper(
     name='COMBAT_RESULT_LEAVE',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/dungeon/action/COMBAT_RESULT_LEAVE.png',
+        area=(44, 647, 147, 673),
+        search=(24, 627, 167, 693),
+        color=(100, 83, 69),
+        button=(44, 647, 147, 673),
+    ),
     global_cn=Button(
         file='./assets/global_cn/dungeon/action/COMBAT_RESULT_LEAVE.png',
         area=(38, 642, 165, 682),

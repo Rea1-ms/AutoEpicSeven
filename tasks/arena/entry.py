@@ -7,12 +7,10 @@ from tasks.arena.assets.assets_arena import (
     ARENA_CHECK,
     ARENA_COMMON_ENTRY,
     SETTLING_INFO_ICON,
-    WEEKLY_REWARDS_CHECK,
-    WEEKLY_REWARDS_CLAIM,
-    WEEKLY_REWARDS_SELECTED,
 )
+from tasks.arena.assets.assets_arena_weekly_rewards import WEEKLY_REWARDS_SKYSTONE
+from tasks.arena.weekly_rewards import ArenaWeeklyRewardsMixin
 from tasks.base.page import page_arena_hub
-
 
 ARENA_SETTLING_TIMEZONE = timezone(timedelta(hours=8), name="UTC+8")
 
@@ -31,16 +29,12 @@ def is_arena_settling_period(now: datetime | None = None) -> bool:
     )
 
 
-class ArenaEntryMixin:
+class ArenaEntryMixin(ArenaWeeklyRewardsMixin):
     ARENA_ENTRY_TIMEOUT_SECONDS = 45
     ARENA_CHECK_LUMA_SIMILARITY = 0.8
     ARENA_CHECK_COLOR_THRESHOLD = 5
     ARENA_SETTLING_CHECK_LUMA_SIMILARITY = 0.8
     ARENA_SETTLING_CHECK_COLOR_THRESHOLD = 5
-    ARENA_WEEKLY_REWARDS_SELECT_INTERVAL_SECONDS = 1
-    ARENA_WEEKLY_REWARDS_CLAIM_INTERVAL_SECONDS = 1
-    ARENA_WEEKLY_REWARDS_CLAIM_SIMILARITY = 0.85
-    ARENA_WEEKLY_REWARDS_CLAIM_COLOR_THRESHOLD = 30
 
     def _is_arena_page_ready(self, interval=0) -> bool:
         """
@@ -91,43 +85,6 @@ class ArenaEntryMixin:
         return (
             self._is_arena_page_ready(interval=0) or self._is_settling_npc_page_ready()
         )
-
-    def _handle_weekly_rewards_popup(self) -> bool:
-        """
-        Handle the weekly rewards popup that blocks arena entry.
-
-        Popup semantics are easy to mix up after asset refreshes, so keep the
-        state rules explicit here:
-            1. `WEEKLY_REWARDS_CHECK` means the popup is active, and the reward
-               entry can be clicked when the reward is not selected yet.
-            2. `WEEKLY_REWARDS_SELECTED` only marks that the reward has already
-               been selected. It is not the click target anymore.
-            3. `WEEKLY_REWARDS_CLAIM` must use template-plus-color matching so
-               the loop only clicks the bright enabled button, and naturally
-               ignores the grey disabled state after claim is consumed.
-
-        Returns:
-            bool: True if an action is taken and caller should refresh frame.
-        """
-        if not self.appear(WEEKLY_REWARDS_SELECTED):
-            if self.appear_then_click(
-                WEEKLY_REWARDS_CHECK,
-                interval=self.ARENA_WEEKLY_REWARDS_SELECT_INTERVAL_SECONDS,
-            ):
-                logger.info("Arena: weekly rewards select reward")
-                return True
-
-        if self.match_template_color(
-            WEEKLY_REWARDS_CLAIM,
-            interval=self.ARENA_WEEKLY_REWARDS_CLAIM_INTERVAL_SECONDS,
-            similarity=self.ARENA_WEEKLY_REWARDS_CLAIM_SIMILARITY,
-            threshold=self.ARENA_WEEKLY_REWARDS_CLAIM_COLOR_THRESHOLD,
-        ):
-            self.device.click(WEEKLY_REWARDS_CLAIM)
-            logger.info("Arena: weekly rewards claim selected reward")
-            return True
-
-        return False
 
     def _ensure_arena_entry_surface(self, skip_first_screenshot=True) -> str:
         """
@@ -182,7 +139,7 @@ class ArenaEntryMixin:
                 logger.info("Arena page reached")
                 return "entered"
 
-            if self.appear(WEEKLY_REWARDS_CHECK):
+            if self.appear(WEEKLY_REWARDS_SKYSTONE):
                 if self._handle_weekly_rewards_popup():
                     timeout.reset()
                 continue
@@ -232,7 +189,7 @@ class ArenaEntryMixin:
                 logger.info("Arena settlement NPC page reached")
                 return "settling_npc"
 
-            if self.appear(WEEKLY_REWARDS_CHECK):
+            if self.appear(WEEKLY_REWARDS_SKYSTONE):
                 if self._handle_weekly_rewards_popup():
                     timeout.reset()
                 continue

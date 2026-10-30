@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "source": "MuMu-20261001-144433-233.png",
+  "suite": "buy_penguins",
+  "case": "reward",
+  "items": [
+    {
+      "name": "PENGUIN_REWARD_CHECK",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "share",
+      "module": "sanctuary/buy_penguins",
+      "box": [
+        535,
+        149,
+        747,
+        184
+      ]
+    },
+    {
+      "name": "PENGUIN_REWARD_CLOSE",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "share",
+      "module": "sanctuary/buy_penguins",
+      "box": [
+        600,
+        516,
+        681,
+        569
+      ]
+    }
+  ]
+}

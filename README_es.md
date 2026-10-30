@@ -2,23 +2,24 @@
 
 # AutoEpicSeven
 
-Script de automatización para Epic Seven, basado en la nueva generación del framework Alas y adaptado de [StarRailCopilot](https://github.com/LmeSzinc/StarRailCopilot).
+Script de automatización para Epic Seven, basado en la segunda generación del framework Alas y adaptado de [StarRailCopilot](https://github.com/LmeSzinc/StarRailCopilot).
 
-![gui](https://raw.githubusercontent.com/wiki/LmeSzinc/StarRailCopilot/README.assets/gui_cn.png)
+![gui](https://raw.githubusercontent.com/Rea1-ms/AutoEpicSeven/refs/heads/master/README.assets/gui_cn.png)
 
-![setting](https://raw.githubusercontent.com/wiki/LmeSzinc/StarRailCopilot/README.assets/setting_cn.png)
+![setting](https://raw.githubusercontent.com/Rea1-ms/AutoEpicSeven/refs/heads/master/README.assets/setting_cn.png)
 
 ## Funciones
 
-- **Farmeo**: Cacerías diarias, Altar Espiritual, catalizadores de Episode 4 y materiales de cambio de especialidad de Adin, e historia secundaria del Episodio 3-7.
-- **Recompensas**: Completa las misiones diarias, recoge recursos diarios y mensuales del Santuario y reclama recompensas del pase de Arena, correos próximos a vencer y regalos de mascotas.
-- **Invocaciones**: Usa automáticamente las invocaciones gratuitas diarias y las oportunidades gratuitas de la Casa de Mascotas.
-- **Farmeo AFK**: Actualiza la tienda y farmea etapas.
+- **Farmeo**: Cacerías, Altar Espiritual, catalizadores del Episodio 4 y materiales de cambio de especialidad de Adin, la historia secundaria «Santa» 3-7 y misiones urgentes.
+- **Recompensas**: Completa las misiones diarias, recoge recursos diarios y mensuales del Santuario con almacenamiento inteligente y reclama recompensas del pase de Arena, correos próximos a vencer y regalos de mascotas.
+- **Invocaciones**: Usa automáticamente las invocaciones gratuitas diarias y las oportunidades gratuitas de la Casa de Mascotas. ~~(Las capturas de pantalla y el reconocimiento de los resultados de las invocaciones aún no son fiables)~~.
 - **Arena**: Farmea rivales NPC de Arena y reclama las recompensas semanales de combate.
-- **Tienda**: Compra automáticamente artículos diarios y semanales.
-- **Gremio**: Automatiza el Jefe Mundial, detecta y avisa sobre ataques de Guerra de Gremios, dona flores y pingüinos, y reclama recompensas semanales.
+- **Tienda**: Compra automáticamente artículos diarios y semanales y artículos de la Tienda de Herencia.
+- **Tienda secreta**: Actualiza automáticamente la tienda para comprar Marcadores de Pacto y Medallas Místicas.
+- **Gremio**: Automatiza el Jefe Mundial, detecta y avisa sobre ataques de Guerra de Gremios, dona flores y pingüinos, reclama recompensas semanales y compra artículos semanales y mensuales de la tienda del gremio.
 - **Automatización en segundo plano**: Inicia automáticamente el emulador y el juego, ejecuta tareas diarias y de resistencia en segundo plano, y muestra los recursos en el panel.
-- **Eventos principales**: Participa automáticamente en grandes eventos de versión y reclama recompensas. Las actualizaciones se publican cuando sea posible.
+- **Eventos**: Se actualizan cuando hay tiempo.
+- **Herramientas**: Funciones de ayuda para farmear la Exploración dimensional, comprar pingüinos, renovar las subestadísticas del equipo y más. Se actualizan cuando hay tiempo.
 
 ## Instalación
 

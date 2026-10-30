@@ -1,0 +1,389 @@
+"""Small contract checks for preflight and deterministic replay."""
+
+import json
+import contextlib
+import io
+import subprocess
+import sys
+import unittest
+from types import SimpleNamespace
+from unittest.mock import patch
+
+from dev_tools import run_offline_tests as runner
+from dev_tools import build_exploration_fixtures as fixture_importer
+from dev_tools import build_fixture_contact_sheets as contact_sheets
+from dev_tools import build_test_inventory as inventory_builder
+from tests.support.exploration import ReplayDevice, artifact_path
+from tests.support import offline
+from tests.support import history_fixtures
+
+
+class RunnerContractTests(unittest.TestCase):
+    def test_inventory_builder_refuses_existing_output(self):
+        destination = runner.ROOT / "tests/inventory.json"
+        original = destination.read_bytes()
+        for kwargs in ({}, {"destination": destination}):
+            with self.subTest(explicit_output=bool(kwargs)), self.assertRaises(FileExistsError):
+                inventory_builder.build(runner.ROOT / "test", **kwargs)
+        self.assertEqual(destination.read_bytes(), original)
+
+    def test_inventory_has_one_record_per_registered_case(self):
+        inventory = json.loads((runner.ROOT / 'tests/inventory.json').read_text(encoding='utf-8'))
+        sources = [item['source'] for item in inventory['files']]
+        self.assertEqual(len(sources), len(set(sources)), 'Duplicate inventory source files')
+        records = [case for item in inventory['files'] for case in item['cases']]
+        ids = [case.get('migrated_to') or case['id'] for case in records]
+        self.assertEqual(len(ids), len(set(ids)), 'Duplicate inventory case or migration target')
+        registered = {case.id() for case in runner.tests_for('all')}
+        included = {case.get('migrated_to') or case['id'] for case in records if case['status'] != '未纳入'}
+        self.assertEqual(included, registered, 'Inventory differs from the registered offline suite')
+
+    def test_time_rules_across_scheduler_timezones(self):
+        # Windows lacks time.tzset. An isolated process substitutes only the
+        # implicit local datetime zone; aware calendar instants keep their zone.
+        # This reproduces the Linux UTC failures without changing the OS clock
+        # or allowing imported datetime aliases to leak into other tests.
+        code = '''
+import datetime as datetime_module
+import sys
+import unittest
+from datetime import datetime as RealDatetime, timedelta, timezone
+from unittest.mock import patch
+
+local_timezone = timezone(timedelta(hours=int(sys.argv[1])))
+class SchedulerDatetime(RealDatetime):
+    def astimezone(self, tz=None):
+        value = self if self.tzinfo is not None else self.replace(tzinfo=local_timezone)
+        return RealDatetime.astimezone(value, tz or local_timezone)
+
+    @classmethod
+    def now(cls, tz=None):
+        value = cls.fromtimestamp(RealDatetime.now(timezone.utc).timestamp(), tz or local_timezone)
+        return value if tz is not None else value.replace(tzinfo=None)
+
+ids = {
+    'tests.game_info.test_game_info.ConsumerTests.test_season_change_or_cap_change_rechecks_full_progress',
+    'tests.activity.test_activity_task_split.SchedulingTests.test_opening_and_refresh_are_scoped_to_own_task',
+    'tests.activity.test_huche_shop.ScheduleTests.test_next_run_includes_refresh_only_when_enabled',
+    'tests.activity.test_huche_shop.ScheduleTests.test_record_never_skips_next_half_day_or_another_server',
+}
+with patch.object(datetime_module, 'datetime', SchedulerDatetime):
+    from dev_tools.run_offline_tests import tests_for
+    cases = [case for case in tests_for('all') if case.id() in ids]
+    assert len(cases) == len(ids), 'Timezone regression cases were not collected'
+    import module.game_info.catalog as catalog
+    catalog.datetime = SchedulerDatetime
+    result = unittest.TextTestRunner(verbosity=2).run(unittest.TestSuite(cases))
+    assert result.wasSuccessful() and not result.skipped, 'Timezone regression failed'
+'''
+        for offset in (0, 8):
+            with self.subTest(local_offset_hours=offset):
+                result = subprocess.run([sys.executable, '-X', 'utf8', '-B', '-c', code, str(offset)],
+                                        cwd=runner.ROOT, capture_output=True, text=True,
+                                        encoding='utf-8', timeout=60)
+                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+    def test_all_suites_collect_without_windows_registry(self):
+        # A fresh process prevents the Windows host's cached platform modules
+        # from hiding Linux collection failures. Only the platform selector is
+        # changed; numerical libraries still use their real host binaries.
+        code = '''
+import importlib.abc
+import json
+import sys
+
+class MissingRegistry(importlib.abc.MetaPathFinder):
+    def find_spec(self, fullname, path=None, target=None):
+        if fullname == 'winreg':
+            raise ModuleNotFoundError("No module named 'winreg'", name='winreg')
+
+sys.modules.pop('winreg', None)
+sys.meta_path.insert(0, MissingRegistry())
+from module.device import env
+env.IS_WINDOWS = False
+from dev_tools.run_offline_tests import tests_for
+cases = tests_for('all')
+assert 'winreg' not in sys.modules, 'Registry stub leaked beyond test imports'
+from tests.support.windows import windows_registry_imports
+with windows_registry_imports():
+    import module.device.platform.emulator_windows as emulators
+    try:
+        emulators.winreg.OpenKey(None, 'forbidden')
+    except AssertionError as exc:
+        assert 'registry access' in str(exc)
+    else:
+        raise AssertionError('Offline registry access was not rejected')
+assert 'winreg' not in sys.modules, 'Registry stub leaked beyond test imports'
+print('COLLECTED_TEST_IDS=' + json.dumps([case.id() for case in cases]))
+'''
+        result = subprocess.run([sys.executable, '-X', 'utf8', '-B', '-c', code],
+                                cwd=runner.ROOT, capture_output=True, text=True,
+                                encoding='utf-8', timeout=60)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        line = next(line for line in result.stdout.splitlines() if line.startswith('COLLECTED_TEST_IDS='))
+        self.assertEqual(json.loads(line.split('=', 1)[1]),
+                         [case.id() for case in runner.tests_for('all')])
+
+    def test_historical_capture_aliases_share_one_input(self):
+        aliases = ('urgent_tasks/superior-fast-on.png', 'urgent_tasks/superior-prepare-large.png')
+        self.assertEqual(*(history_fixtures.fixture_path(alias) for alias in aliases))
+        fixtures = runner.fixture_manifest(verify=False)
+        self.assertIn('legacy-urgent-tasks-superior-fast-on', fixtures)
+
+    def test_historical_loader_rejects_unregistered_and_external_inputs(self):
+        for path in (history_fixtures.input_root() / 'unregistered.png',
+                     offline.ROOT / 'config/unknown.png'):
+            with self.subTest(path=path.name), self.assertRaises(ValueError):
+                history_fixtures.read_input(path)
+
+    def test_historical_alias_target_must_be_registered(self):
+        original = type(runner.FIXTURE_MANIFEST).read_text
+
+        def replacement(path, *args, **kwargs):
+            raw = json.loads(original(path, *args, **kwargs))
+            if path == runner.HISTORICAL_FIXTURE_MANIFEST:
+                raw['aliases']['unregistered.png'] = 'missing'
+            return json.dumps(raw)
+
+        with patch.object(type(runner.FIXTURE_MANIFEST), 'read_text', autospec=True, side_effect=replacement):
+            with self.assertRaisesRegex(ValueError, 'Invalid fixture alias'):
+                runner.fixture_manifest(verify=False)
+
+    def test_historical_capture_origin_must_match_declared_source(self):
+        original = type(history_fixtures.MANIFEST).read_text
+        alias = 'urgent_tasks/superior-detail.png'
+
+        def replacement(path, *args, **kwargs):
+            raw = json.loads(original(path, *args, **kwargs))
+            if path == history_fixtures.MANIFEST:
+                raw['fixtures'][raw['aliases'][alias]]['server'] = 'cn'
+            return json.dumps(raw)
+
+        with patch.object(type(history_fixtures.MANIFEST), 'read_text', autospec=True, side_effect=replacement):
+            with self.assertRaises(ValueError):
+                history_fixtures.read_input(history_fixtures.input_root() / alias)
+            with self.assertRaises(ValueError):
+                history_fixtures.fixture_path(alias)
+
+    def test_historical_missing_and_changed_capture_fail_preflight(self):
+        filename = 'legacy-urgent-tasks-superior-detail.png'
+        original_file = type(runner.FIXTURE_MANIFEST).is_file
+        original_hash = runner.sha256
+        with patch.object(type(runner.FIXTURE_MANIFEST), 'is_file', autospec=True,
+                          side_effect=lambda path: False if path.name == filename else original_file(path)):
+            with self.assertRaisesRegex(FileNotFoundError, filename):
+                runner.fixture_manifest(verify=True)
+        with patch.object(runner, 'sha256', side_effect=lambda path:
+                          'changed' if path.name == filename else original_hash(path)):
+            with self.assertRaisesRegex(ValueError, 'checksum differs.*'+filename):
+                runner.fixture_manifest(verify=True)
+
+    def test_listing_uses_fixture_server_metadata(self):
+        case_id = 'tests.sanctuary.test_monthly_deposit.DepositScreenshotTests.test_shared_assets_dispatch_for_cn'
+        args = SimpleNamespace(list=True, suite='sanctuary', case=case_id)
+        case = SimpleNamespace(id=lambda: case_id)
+        # Synthetic metadata verifies formatting only; it creates no evidence
+        # that a cn/global-en game capture exists in the real fixture corpus.
+        for origin in ('global_cn', 'cn', 'global_en'):
+            with self.subTest(capture_origin=origin):
+                fixtures = {'sample': {'server': origin, 'used_by': [case_id]}}
+                output = io.StringIO()
+                with patch.object(runner, 'fixture_manifest', return_value=fixtures), \
+                        patch.object(runner, 'tests_for', return_value=[case]), \
+                        contextlib.redirect_stdout(output):
+                    self.assertEqual(runner.run(args), 0)
+                self.assertIn(f'[样本来源={origin}]', output.getvalue())
+
+    def test_shared_diagnostics_preserve_original_actions_and_frames(self):
+        action = (2, 'CUSTODY', (10, 20, 30, 40))
+        # Restore the prior state under both the custom Result and ordinary
+        # unittest entry points; neither should inherit this synthetic record.
+        with patch.object(offline, '_active_test', None), patch.object(offline, '_diagnostics', {}):
+            offline.set_active_test('shared-diagnostics-contract')
+            self.assertEqual(offline.record_action(action), action)
+            offline.record_frame('sanctuary-synthetic:2')
+            recorded = offline.finish_test('shared-diagnostics-contract')
+        self.assertEqual(recorded, {'frames_read': ['sanctuary-synthetic:2'], 'actions': [str(action)]})
+
+    def test_sanctuary_and_exploration_fixtures_share_reports(self):
+        fixtures = runner.fixture_manifest(verify=False)
+        self.assertIn('sanctuary-full-s-20260921', fixtures)
+        self.assertIn('20260925-231015-103', fixtures)
+
+    def test_duplicate_fixture_id_across_businesses_is_rejected(self):
+        original = type(runner.FIXTURE_MANIFEST).read_text
+        raw = json.loads(original(runner.FIXTURE_MANIFEST, encoding='utf-8'))
+        key, item = next(iter(raw['fixtures'].items()))
+
+        def replacement(path, *args, **kwargs):
+            if path == runner.SANCTUARY_FIXTURE_MANIFEST:
+                return json.dumps({'version': 1, 'fixtures': {key: item}})
+            return original(path, *args, **kwargs)
+
+        with patch.object(type(runner.FIXTURE_MANIFEST), 'read_text', autospec=True, side_effect=replacement):
+            with self.assertRaisesRegex(ValueError, 'Duplicate fixture ID'):
+                runner.fixture_manifest(verify=False)
+
+    def test_sanctuary_missing_fixture_is_not_skipped(self):
+        original = type(runner.FIXTURE_MANIFEST).is_file
+
+        def is_file(path):
+            if path.name == 'sanctuary-full-s-20260921.png':
+                return False
+            return original(path)
+
+        with patch.object(type(runner.FIXTURE_MANIFEST), 'is_file', autospec=True, side_effect=is_file):
+            with self.assertRaisesRegex(FileNotFoundError, 'sanctuary-full-s-20260921'):
+                runner.fixture_manifest(verify=True)
+
+    def test_sanctuary_changed_fixture_is_rejected(self):
+        original = runner.sha256
+
+        def checksum(path):
+            return 'changed' if path.name == 'sanctuary-full-s-20260921.png' else original(path)
+
+        with patch.object(runner, 'sha256', side_effect=checksum):
+            with self.assertRaisesRegex(ValueError, 'checksum differs.*sanctuary-full-s-20260921'):
+                runner.fixture_manifest(verify=True)
+
+    def test_fixture_cannot_reference_another_business_directory(self):
+        original = type(runner.FIXTURE_MANIFEST).read_text
+
+        def replacement(path, *args, **kwargs):
+            raw = json.loads(original(path, *args, **kwargs))
+            if path == runner.SANCTUARY_FIXTURE_MANIFEST:
+                key = 'sanctuary-full-s-20260921'
+                raw['fixtures'][key]['path'] = 'tests/fixtures/dimensional_exploration/' + key + '.png'
+            return json.dumps(raw)
+
+        with patch.object(type(runner.FIXTURE_MANIFEST), 'read_text', autospec=True, side_effect=replacement):
+            with self.assertRaisesRegex(ValueError, 'Invalid fixture path'):
+                runner.fixture_manifest(verify=False)
+
+    def test_unknown_case_returns_preparation_status(self):
+        args = SimpleNamespace(list=True, suite="dimensional_exploration", case="not.registered")
+        self.assertEqual(runner.run(args), 2)
+
+    def test_missing_fixture_is_not_skipped(self):
+        missing = {"version": 1, "fixtures": {"20260101-000000-001": {
+            "path": "tests/fixtures/dimensional_exploration/MuMu-20260101-000000-001.png",
+            "sha256": "0" * 64}}}
+        with patch.object(type(runner.FIXTURE_MANIFEST), "read_text", return_value=json.dumps(missing)):
+            with self.assertRaises(FileNotFoundError):
+                runner.fixture_manifest(verify=True)
+
+    def test_changed_fixture_is_not_silently_accepted(self):
+        with patch.object(runner, "sha256", return_value="0" * 64):
+            with self.assertRaisesRegex(ValueError, "checksum differs"):
+                runner.fixture_manifest(verify=True)
+
+    def test_replay_only_advances_on_explicit_frame_request(self):
+        replay = ReplayDevice(["20260925-231015-103", "20260925-231015-103"], ["BUY"])
+        self.assertEqual(replay.index, 0)
+        replay.click("BUY")
+        self.assertEqual(replay.index, 0)
+        replay.screenshot()
+        self.assertEqual(replay.index, 1)
+        replay.assert_actions_complete()
+        with self.assertRaises(AssertionError):
+            replay.screenshot()
+
+
+class FixtureMaintenanceTests(unittest.TestCase):
+    def setUp(self):
+        self.root = artifact_path("fixture-maintenance")
+        self.fixtures = self.root / "tests" / "fixtures" / "dimensional_exploration"
+        self.source = self.root / "source"
+        self.fixtures.mkdir(parents=True)
+        self.source.mkdir()
+        self.suffix = "20260101-000000-001"
+
+    def register(self, suffix, category="shop", content=b"registered screenshot"):
+        path = self.fixtures / category / f"MuMu-{suffix}.png"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(content)
+        return {
+            "path": path.relative_to(self.root).as_posix(),
+            "sha256": fixture_importer.file_hash(path),
+            "server": "global_cn",
+            "scene": "buy",
+            "used_by": ["reviewed.case"],
+        }
+
+    def save_manifest(self, fixtures):
+        path = self.fixtures / "manifest.json"
+        path.write_text(json.dumps({"version": 1, "fixtures": fixtures}), encoding="utf-8")
+
+    def import_fixtures(self, references, category="unclassified"):
+        with (patch.object(fixture_importer, "ROOT", self.root),
+              patch.object(fixture_importer, "FIXTURES", self.fixtures),
+              patch.object(fixture_importer, "references", return_value=references)):
+            fixture_importer.run(self.source, category)
+        return json.loads((self.fixtures / "manifest.json").read_text(encoding="utf-8"))["fixtures"]
+
+    def test_import_keeps_registered_paths_and_metadata(self):
+        item = self.register(self.suffix)
+        item["note"] = "人工核对后的付款画面"
+        self.save_manifest({self.suffix: item})
+        (self.source / f"MuMu-{self.suffix}.png").write_bytes(b"registered screenshot")
+        result = self.import_fixtures({self.suffix: {"new.case"}}, "events")
+        self.assertEqual(result[self.suffix], {**item, "used_by": ["new.case", "reviewed.case"]})
+        self.assertFalse((self.fixtures / f"MuMu-{self.suffix}.png").exists())
+        self.assertFalse((self.fixtures / "events").exists())
+
+    def test_import_preserves_registered_but_unreferenced_images(self):
+        other = "20260101-000000-002"
+        existing = {self.suffix: self.register(self.suffix), other: self.register(other, "entry")}
+        self.save_manifest(existing)
+        (self.source / f"MuMu-{self.suffix}.png").write_bytes(b"registered screenshot")
+        result = self.import_fixtures({self.suffix: {"reviewed.case"}})
+        self.assertEqual(result, existing)
+
+    def test_import_adds_new_images_to_selected_category(self):
+        (self.source / f"MuMu-{self.suffix}.png").write_bytes(b"new screenshot")
+        result = self.import_fixtures({self.suffix: {"new.case"}}, "events")
+        self.assertEqual(result[self.suffix]["scene"], "events")
+        self.assertEqual(result[self.suffix]["path"],
+                         f"tests/fixtures/dimensional_exploration/events/MuMu-{self.suffix}.png")
+        self.assertEqual((self.root / result[self.suffix]["path"]).read_bytes(), b"new screenshot")
+        self.assertFalse((self.fixtures / f"MuMu-{self.suffix}.png").exists())
+
+    def test_import_rejects_changed_registered_source(self):
+        item = self.register(self.suffix)
+        self.save_manifest({self.suffix: item})
+        (self.source / f"MuMu-{self.suffix}.png").write_bytes(b"changed screenshot")
+        with self.assertRaisesRegex(ValueError, "Registered fixture differs"):
+            self.import_fixtures({self.suffix: {"reviewed.case"}})
+        self.assertEqual((self.root / item["path"]).read_bytes(), b"registered screenshot")
+        self.assertEqual(json.loads((self.fixtures / "manifest.json").read_text(encoding="utf-8"))["fixtures"],
+                         {self.suffix: item})
+
+    def test_import_rejects_paths_outside_fixture_directory(self):
+        item = self.register(self.suffix)
+        item["path"] = f"source/MuMu-{self.suffix}.png"
+        self.save_manifest({self.suffix: item})
+        with self.assertRaisesRegex(ValueError, "Invalid fixture path"):
+            self.import_fixtures({self.suffix: {"reviewed.case"}})
+
+    def test_contact_sheets_follow_manifest_and_allow_any_count(self):
+        other = "20260101-000000-002"
+        items = {self.suffix: self.register(self.suffix), other: self.register(other, "entry")}
+        self.save_manifest(items)
+        (self.fixtures / "MuMu-20260101-000000-003.png").write_bytes(b"not registered")
+        with (patch.object(contact_sheets, "ROOT", self.root),
+              patch.object(contact_sheets, "SOURCE", self.fixtures)):
+            groups = contact_sheets.fixture_groups()
+        self.assertEqual(groups, {"shop": [(self.root / items[self.suffix]["path"]).resolve()],
+                                  "entry": [(self.root / items[other]["path"]).resolve()]})
+
+    def test_contact_sheets_fail_on_missing_registered_image(self):
+        missing = {"path": f"tests/fixtures/dimensional_exploration/shop/MuMu-{self.suffix}.png"}
+        self.save_manifest({self.suffix: missing})
+        with (patch.object(contact_sheets, "ROOT", self.root),
+              patch.object(contact_sheets, "SOURCE", self.fixtures)):
+            with self.assertRaises(FileNotFoundError):
+                contact_sheets.fixture_groups()
+
+
+if __name__ == "__main__":
+    unittest.main()

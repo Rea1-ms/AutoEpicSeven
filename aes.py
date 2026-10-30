@@ -53,6 +53,10 @@ class AutoEpicSeven(AzurLaneAutoScript):
         from tasks.sanctuary.sanctuary import Sanctuary
         Sanctuary(config=self.config, device=self.device, task="SanctuaryMonthly").run_monthly_task()
 
+    def buy_penguins(self):
+        from tasks.sanctuary.buy_penguins import BuyPenguins
+        BuyPenguins(config=self.config, device=self.device, task="BuyPenguins").run()
+
     def knights(self):
         from tasks.knights.knights import Knights
         Knights(config=self.config, device=self.device, task="Knights").run()
@@ -89,6 +93,10 @@ class AutoEpicSeven(AzurLaneAutoScript):
         from tasks.dungeon.dungeon import Combat
         Combat(config=self.config, device=self.device, task="Combat").run()
 
+    def limited_activity(self):
+        from tasks.activity.limited_activity import LimitedActivityEntry
+        LimitedActivityEntry(config=self.config, device=self.device, task="LimitedActivity").run()
+
     def special_activity(self):
         from tasks.activity.entry import SpecialActivityEntry
         SpecialActivityEntry(config=self.config, device=self.device, task="SpecialActivity").run()
@@ -119,6 +127,14 @@ class AutoEpicSeven(AzurLaneAutoScript):
     def benchmark(self):
         from module.daemon.benchmark import run_benchmark
         run_benchmark(config=self.config)
+
+    def equipment_reroll(self):
+        from tasks.equipment_reroll.equipment_reroll import EquipmentReroll
+        EquipmentReroll(config=self.config, device=self.device, task="EquipmentReroll").run()
+
+    def episode(self):
+        from tasks.dungeon.episode_push import Episode
+        Episode(config=self.config, device=self.device, task="Episode").run()
 
 
 if __name__ == '__main__':

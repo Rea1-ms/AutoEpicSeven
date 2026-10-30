@@ -11,6 +11,7 @@ module.exports = async function () {
   const {getVersion} = await import('./version/getVersion.mjs');
 
   return {
+    appId: 'com.electron.aes',
     directories: {
       output: 'dist',
       buildResources: 'buildResources',

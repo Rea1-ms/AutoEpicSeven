@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "source": "../../input/episode/MuMu-20261019-202204-254.png",
+  "suite": "episode_20261019",
+  "case": "202204-254",
+  "items": [
+    {
+      "name": "EPISODE_CHAPTER_REWARD",
+      "box": [
+        591,
+        159,
+        689,
+        183
+      ],
+      "kind": "base",
+      "namespace": "share",
+      "module": "dungeon/episode/reward"
+    },
+    {
+      "name": "EPISODE_CHAPTER_REWARD",
+      "box": [
+        580,
+        470,
+        700,
+        528
+      ],
+      "kind": "button",
+      "namespace": "share",
+      "module": "dungeon/episode/reward"
+    }
+  ]
+}

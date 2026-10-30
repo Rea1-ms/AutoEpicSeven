@@ -24,6 +24,7 @@
       "Combat",
       "Gacha",
       "Pets",
+      "LimitedActivity",
       "SpecialActivity"
     ]
   },
@@ -31,7 +32,11 @@
     "menu": "list",
     "page": "tool",
     "tasks": [
-      "CommunityAuth"
+      "BuyPenguins",
+      "DimensionalExploration",
+      "CommunityAuth",
+      "EquipmentReroll",
+      "Episode"
     ]
   },
   "Monthly": {

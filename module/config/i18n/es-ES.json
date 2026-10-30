@@ -78,13 +78,33 @@
       "name": "Tienda de mascotas",
       "help": ""
     },
+    "LimitedActivity": {
+      "name": "Eventos temporales",
+      "help": "Visita el registro de asistencia y recoge las recompensas de los eventos activos, incluidas la búsqueda diaria del detective y las tareas diarias del Camino épico. Se programa de forma independiente de Eventos especiales; Invocación realiza las invocaciones."
+    },
     "SpecialActivity": {
-      "name": "Actividad especial",
-      "help": "Recoge las recompensas disponibles de las actividades temporales."
+      "name": "Eventos especiales",
+      "help": "Gestiona contenido temporal con entradas propias, actualmente la tienda de Huche en la pantalla principal. Se programa de forma independiente de Eventos temporales."
+    },
+    "BuyPenguins": {
+      "name": "Compra de pingüinos por lotes",
+      "help": "Compra manual de 50 pingüinos por lote. Se detiene si no hay suficiente estigma. Solo para el juego en chino."
+    },
+    "DimensionalExploration": {
+      "name": "Exploración dimensional",
+      "help": "Solo para el cliente internacional en chino. Se inicia manualmente desde Herramientas, de forma independiente del planificador principal. Mantiene la dificultad actual y empieza con Heavy Baggage. Se detiene tras completar el lote."
     },
     "CommunityAuth": {
       "name": "Inicio comunidad",
       "help": "Abre la ventana de inicio de sesión de Electron y actualiza la CK usada por Community AIO."
+    },
+    "EquipmentReroll": {
+      "name": "Renovar subestadísticas de equipo",
+      "help": "Abre manualmente la selección de subestadísticas de la forja. Busca velocidad 5 primero y luego las prioridades restantes. Bloquea solo objetivos alcanzados, hasta dos. Se detiene por objetivos o presupuesto, sin fabricar el equipo automáticamente. Solo interfaz del juego en chino simplificado."
+    },
+    "Episode": {
+      "name": "Historia principal",
+      "help": "Continúa el capítulo actual, omite diálogos, combate y recoge recompensas con el equipo actual. Se detiene por derrota o energía insuficiente, sin recargar energía. Las capturas verificadas corresponden al episodio 6 en chino simplificado."
     },
     "SanctuaryMonthly": {
       "name": "Santuario - Mensual",
@@ -188,6 +208,7 @@
       "LDPlayer3": "LD Player 3",
       "LDPlayer4": "LD Player 4",
       "LDPlayer9": "LD Player 9",
+      "LDPlayer14": "LD Player 14",
       "MuMuPlayer": "MuMu Player",
       "MuMuPlayerX": "MuMu Player X",
       "MuMuPlayer12": "MuMu Player 12",
@@ -221,9 +242,13 @@
       "name": "Tomar capturas de pantalla",
       "help": "Número de capturas de pantalla tomadas cuando ocurra un error"
     },
+    "SystemNotification": {
+      "name": "Notificaciones del sistema",
+      "help": "Activa las notificaciones del sistema de forma independiente del envío remoto. Avisa solo de errores no controlados o recordatorios específicos de las tareas, sin avisar cuando finalicen."
+    },
     "OnePushConfig": {
-      "name": "Configuración para notificar errores",
-      "help": "Cuando AES no puede manejar un error, envía un mensaje automáticamente. Puedes leer más información sobre este ajuste aquí:\nhttps://github.com/LmeSzinc/AzurLaneAutoScript/wiki/Onepush-configuration-%5BEN%5D"
+      "name": "Configuración de notificaciones remotas",
+      "help": "Envía avisos de errores no controlados y recordatorios de tareas. Acepta la configuración de un proveedor o una lista de canales; las notificaciones del sistema tienen un interruptor independiente. Configuración: https://github.com/LmeSzinc/AzurLaneAutoScript/wiki/Onepush-configuration-%5BEN%5D"
     }
   },
   "Optimization": {
@@ -256,6 +281,18 @@
     "ClaimDailyRewards": {
       "name": "Reclamar recompensas diarias",
       "help": "Reclama el cofre de recompensas diarias cuando esté disponible."
+    },
+    "DailyPriority": {
+      "name": "Priorizar misiones diarias",
+      "help": "Por debajo de 100 de actividad, prioriza las tareas activadas cuyo horario ya haya llegado, ejecuta tandas pequeñas y comprueba las recompensas. Usa primero las cantidades fijas restantes. Al agotarlas, espera si las demás tareas de hoy pueden cubrir lo que falta; si no, añade solo las partidas necesarias con recursos disponibles, sin aumentar el límite de hojas de Leif."
+    },
+    "DailyPlan": {
+      "name": "Registro de misiones diarias",
+      "help": ""
+    },
+    "DailyBudget": {
+      "name": "Registro de cantidades diarias",
+      "help": ""
     }
   },
   "Mail": {
@@ -324,12 +361,12 @@
       "help": "Entra en apoyo de gremio y ejecuta donaciones/solicitudes según la configuración."
     },
     "SupportLowerLevelFairyFlower": {
-      "name": "Donar Flor Feérica Inferior",
-      "help": "Donar Flor Feérica Inferior a solicitudes del gremio en apoyo."
+      "name": "Donar flores feéricas inferiores disponibles",
+      "help": "Dona todo lo que permita el inventario actual. Omite solicitudes que requieran más de lo que tienes. Desactiva para no donar este objeto."
     },
     "SupportBeginnerPenguin": {
-      "name": "Donar Pingüino Básico",
-      "help": "Donar Pingüino Básico a solicitudes del gremio en apoyo."
+      "name": "Donar pingüinos básicos disponibles",
+      "help": "Dona todo lo que permita el inventario actual. Omite solicitudes que requieran más de lo que tienes. Desactiva para no donar este objeto."
     },
     "RequestItem": {
       "name": "Material de Solicitud",
@@ -372,6 +409,194 @@
       "help": "Estado interno para evitar recordatorios duplicados."
     }
   },
+  "KnightsShopWeekly": {
+    "_info": {
+      "name": "Tienda del gremio: compras semanales",
+      "help": "Solo cliente internacional en chino simplificado. La tarea diaria completa el objetivo del período e incluye las compras manuales. Si faltan fondos, vuelve a comprobarlo en la próxima ejecución."
+    },
+    "MysticMedals": {
+      "name": "50 medallas místicas",
+      "help": "Número objetivo de compras por período del juego. 0 desactiva la compra.",
+      "0": "No comprar",
+      "1": "1"
+    },
+    "RareCatalystChest": {
+      "name": "Cofre de selección de catalizador raro",
+      "help": "Número objetivo de compras por período del juego. 0 desactiva la compra.",
+      "0": "No comprar",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7",
+      "8": "8",
+      "9": "9",
+      "10": "10",
+      "11": "11",
+      "12": "12"
+    },
+    "EpicCatalystChest": {
+      "name": "Cofre de selección de catalizador épico",
+      "help": "Número objetivo de compras por período del juego. 0 desactiva la compra.",
+      "0": "No comprar",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5"
+    },
+    "CatalystChest": {
+      "name": "Cofre de catalizadores",
+      "help": "Número objetivo de compras por período del juego. 0 desactiva la compra.",
+      "0": "No comprar",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7",
+      "8": "8",
+      "9": "9",
+      "10": "10"
+    },
+    "ReforgingStoneChest": {
+      "name": "Cofre de selección de gema de equipo",
+      "help": "Número objetivo de compras por período del juego. 0 desactiva la compra.",
+      "0": "No comprar",
+      "1": "1"
+    }
+  },
+  "KnightsShopMonthly": {
+    "_info": {
+      "name": "Tienda del gremio: compras mensuales",
+      "help": "Solo cliente internacional en chino simplificado. La tarea diaria completa el objetivo del período e incluye las compras manuales. Si faltan fondos, vuelve a comprobarlo en la próxima ejecución."
+    },
+    "EquipmentResetStone": {
+      "name": "Piedra de reinicio de equipo",
+      "help": "Número objetivo de compras por período del juego. 0 desactiva la compra.",
+      "0": "No comprar",
+      "1": "1"
+    },
+    "AccessoryResetStone": {
+      "name": "Piedra de reinicio de accesorio",
+      "help": "Número objetivo de compras por período del juego. 0 desactiva la compra.",
+      "0": "No comprar",
+      "1": "1"
+    },
+    "Level85ManastoneChest": {
+      "name": "Cofre de selección de piedra mágica de nivel 85",
+      "help": "Número objetivo de compras por período del juego. 0 desactiva la compra.",
+      "0": "No comprar",
+      "1": "1"
+    },
+    "Level88ManastoneChest": {
+      "name": "Cofre de selección de piedra mágica de nivel 88",
+      "help": "Número objetivo de compras por período del juego. 0 desactiva la compra.",
+      "0": "No comprar",
+      "1": "1"
+    },
+    "ConversionGemChest": {
+      "name": "Cofre de selección de gema de modificación épica",
+      "help": "Número objetivo de compras por período del juego. 0 desactiva la compra.",
+      "0": "No comprar",
+      "1": "1",
+      "2": "2"
+    },
+    "GoldTransmitStone": {
+      "name": "Piedra de transmisión dorada",
+      "help": "Número objetivo de compras por período del juego. 0 desactiva la compra.",
+      "0": "No comprar",
+      "1": "1",
+      "2": "2"
+    },
+    "EpicSpiritBloom": {
+      "name": "Flor espiritual épica",
+      "help": "Número objetivo de compras por período del juego. 0 desactiva la compra.",
+      "0": "No comprar",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7",
+      "8": "8",
+      "9": "9",
+      "10": "10"
+    },
+    "Molagora": {
+      "name": "MolaGora",
+      "help": "Número objetivo de compras por período del juego. 0 desactiva la compra.",
+      "0": "No comprar",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5"
+    },
+    "FireConnection": {
+      "name": "Vínculo de fuego",
+      "help": "Número objetivo de compras por período del juego. 0 desactiva la compra.",
+      "0": "No comprar",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5"
+    },
+    "NatureConnection": {
+      "name": "Vínculo de tierra",
+      "help": "Número objetivo de compras por período del juego. 0 desactiva la compra.",
+      "0": "No comprar",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5"
+    },
+    "IceConnection": {
+      "name": "Vínculo de hielo",
+      "help": "Número objetivo de compras por período del juego. 0 desactiva la compra.",
+      "0": "No comprar",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5"
+    },
+    "ReforgingStoneChest": {
+      "name": "Cofre de selección de gema de equipo",
+      "help": "Número objetivo de compras por período del juego. 0 desactiva la compra.",
+      "0": "No comprar",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5"
+    },
+    "ReforgeMaterialChest": {
+      "name": "Cofre de selección de materiales de reforja",
+      "help": "Número objetivo de compras por período del juego. 0 desactiva la compra.",
+      "0": "No comprar",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4"
+    }
+  },
+  "KnightsShopRuntime": {
+    "_info": {
+      "name": "KnightsShopRuntime._info.name",
+      "help": "KnightsShopRuntime._info.help"
+    },
+    "Purchases": {
+      "name": "KnightsShopRuntime.Purchases.name",
+      "help": "KnightsShopRuntime.Purchases.help"
+    }
+  },
   "Arena": {
     "_info": {
       "name": "Arena",
@@ -380,6 +605,12 @@
     "ClaimWeeklyRewards": {
       "name": "Reclamar recompensas semanales",
       "help": "Reclama automáticamente las recompensas semanales cuando aparece el popup al entrar en arena."
+    },
+    "WeeklyReward": {
+      "name": "Recompensa de clasificación semanal",
+      "help": "Elige Piedras del cielo o Medallas místicas al entrar en la Arena. Por defecto: Piedras del cielo.",
+      "Skystone": "Piedras del cielo",
+      "MysticMedals": "Medallas místicas"
     },
     "ClaimWeeklyBattleRewards": {
       "name": "Reclamar recompensas semanales de combate",
@@ -399,13 +630,13 @@
     },
     "BurnoutMode": {
       "name": "Modo de ejecución",
-      "help": "La cantidad fija diaria desafía al número configurado de PNJ. El modo de agotamiento gasta todas las banderas disponibles y vuelve a ejecutarse cuando se regeneran al máximo (1 por hora, límite 5). Requiere activar \"Farmear NPC\".",
+      "help": "La cantidad fija diaria desafía al número configurado de PNJ. El modo de agotamiento gasta todas las banderas disponibles y vuelve a ejecutarse cuando se regeneran al máximo (1 por hora, límite 5). Requiere activar \"Farmear NPC\". La prioridad diaria divide las partidas según los objetivos y después completa la cantidad fija restante. Si se agota antes de llegar a 100 de actividad, espera si otras tareas de hoy pueden cubrir la diferencia; de lo contrario, añade las partidas necesarias solo con recursos disponibles.",
       "Daily": "Cantidad fija diaria",
       "Burnout": "Modo de agotamiento"
     },
     "NPCCombatCount": {
       "name": "Cantidad de combates NPC",
-      "help": "Número máximo de combates NPC en esta ejecución."
+      "help": "La prioridad diaria divide las partidas según los objetivos y después completa la cantidad fija restante. Si se agota antes de llegar a 100 de actividad, espera si otras tareas de hoy pueden cubrir la diferencia; de lo contrario, añade las partidas necesarias solo con recursos disponibles."
     }
   },
   "StoreDaily": {
@@ -442,6 +673,21 @@
     "BuyConquestMorogora": {
       "name": "Comprar Morogora (Conquista)",
       "help": "Compra Morogora con límite semanal en la tienda de Conquista."
+    },
+    "BuyFriendshipGiftSelectionChest": {
+      "name": "Objetivo semanal de cofres de regalo de amistad",
+      "help": "Total semanal de 0 a 10, desactivado por defecto; incluye compras manuales. Compra de uno en uno, comprobando los puntos de amistad y el precio, que sube de 200 a 6400. Se detiene si faltan fondos. Solo admite el servidor global en chino simplificado.",
+      "0": "0",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7",
+      "8": "8",
+      "9": "9",
+      "10": "10"
     },
     "BuyFriendshipArtifactEnhancementStone": {
       "name": "Cantidad de piedras de mejora de artefacto (Amistad)",
@@ -511,11 +757,11 @@
     },
     "Domain": {
       "name": "Dominio",
-      "help": "Elige el dominio normal que se ejecutará después de las Misiones urgentes: Cacería, Altar Espiritual, Saint 3-7 o una ruta de materiales de Episode 4.",
+      "help": "Elige el dominio normal que se ejecutará después de las Misiones urgentes: Cacería, Altar Espiritual, Saint 3-7 o materiales de la historia.",
       "Hunt": "Cacería",
       "SpiritAltar": "Altar Espiritual",
       "Saint37": "Saint 3-7",
-      "Episode4": "Episode 4"
+      "Episode4": "Materiales de la historia"
     },
     "Element": {
       "name": "Elemento",
@@ -526,6 +772,16 @@
       "Fire": "Fuego",
       "Nature": "Naturaleza"
     },
+    "HuntBoss": {
+      "name": "Objetivo de cacería",
+      "help": "Ogre solo admite la dificultad dimensional.",
+      "Wyvern": "Wyvern",
+      "Golem": "Golem",
+      "Banshee": "Banshee",
+      "Azimanak": "Azimanak",
+      "Caides": "Caides",
+      "Ogre": "Ogre"
+    },
     "AltarGrade": {
       "name": "Dificultad del altar",
       "help": "Dificultad usada en Altar Espiritual.",
@@ -533,6 +789,10 @@
       "Mid": "Media",
       "High": "Alta",
       "Hell": "Infierno"
+    },
+    "AltarBalance": {
+      "name": "Equilibrar farmeo de runas",
+      "help": "Solo servidor global en chino simplificado. Equilibra cinco colores según 45 runas normales, 22 superiores y 16 épicas por héroe de cinco estrellas. Elige la dificultad según rendimientos medios medidos y coste de energía; revisa el inventario tras cada lote. Se supone que las muestras no tienen bonificaciones. Conserva los límites existentes, sin síntesis."
     },
     "HuntGrade": {
       "name": "Dificultad de cacería",
@@ -542,9 +802,18 @@
       "Hell": "Infierno",
       "Dimensional": "Dimensional"
     },
+    "EpisodeNumber": {
+      "name": "Episodio objetivo",
+      "help": "Elige el episodio donde obtener materiales. El valor predeterminado es el episodio 4.",
+      "1": "Episodio 1",
+      "2": "Episodio 2",
+      "3": "Episodio 3",
+      "4": "Episodio 4",
+      "5": "Episodio 5"
+    },
     "Episode4Material": {
-      "name": "Material objetivo de Episode 4",
-      "help": "Solo se aplica a Episode 4. Enruta al capítulo y stage según el material elegido.",
+      "name": "Material objetivo",
+      "help": "La lista solo muestra materiales con una fase registrada en el episodio elegido. El episodio 1 solo incluye catalizadores raros. El episodio 4 también incluye cuatro materiales de desarrollo exclusivos al final. Cambiar de episodio no sustituye automáticamente el material seleccionado.",
       "CATALYST_RARE_BENEVOLENT": "Rare Benevolent Catalyst",
       "CATALYST_RARE_SECRET": "Rare Secret Catalyst",
       "CATALYST_RARE_FIGHTING_SPIRIT": "Rare Fighting Spirit Catalyst",
@@ -564,25 +833,21 @@
     },
     "FastCombat": {
       "name": "Usar combate rápido",
-      "help": "En el nuevo flujo global, inicia primero el combate delegado en segundo plano y usa solo la energía no reservada en combate rápido. El servidor chino mantiene el orden anterior."
+      "help": "Con prioridad diaria, el combate rápido puede ejecutarse primero. Después de comprobar las misiones diarias, continúa el combate repetido y las partidas rápidas restantes. Los demás modos inician primero el combate repetido y usan la energía no reservada para el combate rápido."
     },
     "BurnoutMode": {
       "name": "Modo de ejecución",
-      "help": "En el nuevo flujo global, Agotamiento convierte cada 80 de energía completos en una unidad delegada, fuerza la prioridad de energía disponible y deja el resto al combate rápido. Tras liquidar, programa la recuperación hasta 80. La caza Dimensional no es compatible.",
+      "help": "Agotamiento convierte cada 80 de energía en una unidad de combate delegado, da prioridad a la energía disponible y usa el resto para el combate rápido. Al terminar el combate delegado, programa la siguiente ejecución cuando la energía se recupere hasta 80. La cacería dimensional no admite Agotamiento. La prioridad diaria divide las partidas según los objetivos y después completa la cantidad fija restante. Si se agota antes de llegar a 100 de actividad, espera si otras tareas de hoy pueden cubrir la diferencia; de lo contrario, añade las partidas necesarias solo con recursos disponibles.",
       "Daily": "Cantidad fija diaria",
       "Burnout": "Modo de agotamiento"
     },
     "FastCombatCount": {
       "name": "Cantidad de combate rapido",
-      "help": "Cantidad objetivo de combate rapido."
-    },
-    "RepeatCombatCount": {
-      "name": "Cantidad de combate repetido",
-      "help": "Cantidad del sistema antiguo del servidor chino. El nuevo sistema global ignora esta opción."
+      "help": "La prioridad diaria divide las partidas según los objetivos y después completa la cantidad fija restante. Si se agota antes de llegar a 100 de actividad, espera si otras tareas de hoy pueden cubrir la diferencia; de lo contrario, añade las partidas necesarias solo con recursos disponibles."
     },
     "RepeatCombatLeifCount": {
       "name": "Hojas de vida a gastar",
-      "help": "Hojas de vida que puede gastar el modo diario global, de 1 a 50. Agotamiento calcula el valor desde la energía actual."
+      "help": "Cantidad de hojas de vida que se permite gastar. Agotamiento la calcula automáticamente a partir de la energía actual. La cacería dimensional consume 2 hojas por combate. Se usan al menos 2; los valores impares mayores se redondean hacia abajo al número par anterior. Las unidades de repetición y las partidas rápidas conservan cantidades restantes separadas. Las repeticiones diarias adicionales solo usan energía disponible y nunca aumentan este límite de hojas de Leif."
     },
     "RepeatCombatPrioritizeStamina": {
       "name": "Priorizar energía / núcleos espectrales",
@@ -679,17 +944,135 @@
       "name": "Solo gratis",
       "help": "Sin refrescar"
     },
+    "CompletionMode": {
+      "name": "Condición de finalización",
+      "help": "En el modo de compras, establece un objetivo positivo para al menos un artículo cuya compra esté activada. Al alcanzar todos los objetivos, termina de revisar y comprar los artículos actuales y finaliza sin renovar.",
+      "RefreshCount": "Número de renovaciones",
+      "PurchaseCount": "Número de compras"
+    },
     "MaxRefresh": {
       "name": "Máx. refrescos",
       "help": ""
     },
+    "TargetCovenant": {
+      "name": "Compras de marcadores necesarias para terminar",
+      "help": "0 excluye este artículo de la condición de finalización. Si su compra está activada, se compra al encontrarlo, incluso después de alcanzar su objetivo."
+    },
+    "TargetMystic": {
+      "name": "Compras de medallas necesarias para terminar",
+      "help": "0 excluye este artículo de la condición de finalización. Si su compra está activada, se compra al encontrarlo, incluso después de alcanzar su objetivo."
+    },
     "BuyCovenantBookmark": {
       "name": "Comprar Marcadores del Pacto",
-      "help": ""
+      "help": "Compra al encontrarlo hasta que termine la tarea, incluso después de alcanzar el objetivo de este artículo."
     },
     "BuyMysticMedal": {
       "name": "Comprar Medallas Místicas",
+      "help": "Compra al encontrarlo hasta que termine la tarea, incluso después de alcanzar el objetivo de este artículo."
+    }
+  },
+  "SecretShopRuntime": {
+    "_info": {
+      "name": "Progreso de la tienda secreta",
       "help": ""
+    },
+    "Session": {
+      "name": "Progreso de compras confirmadas",
+      "help": ""
+    }
+  },
+  "EquipmentReroll": {
+    "_info": {
+      "name": "Subestadísticas objetivo",
+      "help": "Abre manualmente la selección de subestadísticas de la forja. Busca velocidad 5 primero y luego las prioridades restantes. Bloquea solo objetivos alcanzados, hasta dos. Se detiene por objetivos o presupuesto, sin fabricar el equipo automáticamente. Solo interfaz del juego en chino simplificado."
+    },
+    "Stat1": {
+      "name": "Estadística de prioridad 1",
+      "help": "Elige cuatro estadísticas distintas. Velocidad siempre busca 5 y tiene prioridad; las demás siguen este orden.",
+      "Speed": "Velocidad",
+      "AttackPercent": "Ataque %",
+      "DefensePercent": "Defensa %",
+      "HealthPercent": "Vida %",
+      "Effectiveness": "Efectividad %",
+      "Resistance": "Resistencia a efectos %",
+      "CriticalChance": "Probabilidad crítica %",
+      "CriticalDamage": "Daño crítico %",
+      "FlatAttack": "Ataque fijo",
+      "FlatDefense": "Defensa fija",
+      "FlatHealth": "Vida fija"
+    },
+    "Value1": {
+      "name": "Valor objetivo de prioridad 1",
+      "help": "Introduce porcentajes como números. Ataque/Defensa/Vida %, efectividad y resistencia: máximo 8; probabilidad crítica: 5; daño crítico: 7. Valores fijos 44/34/201 son referencias, no límites."
+    },
+    "Stat2": {
+      "name": "Estadística de prioridad 2",
+      "help": "Elige cuatro estadísticas distintas. Velocidad siempre busca 5 y tiene prioridad; las demás siguen este orden.",
+      "Speed": "Velocidad",
+      "AttackPercent": "Ataque %",
+      "DefensePercent": "Defensa %",
+      "HealthPercent": "Vida %",
+      "Effectiveness": "Efectividad %",
+      "Resistance": "Resistencia a efectos %",
+      "CriticalChance": "Probabilidad crítica %",
+      "CriticalDamage": "Daño crítico %",
+      "FlatAttack": "Ataque fijo",
+      "FlatDefense": "Defensa fija",
+      "FlatHealth": "Vida fija"
+    },
+    "Value2": {
+      "name": "Valor objetivo de prioridad 2",
+      "help": "Introduce porcentajes como números. Ataque/Defensa/Vida %, efectividad y resistencia: máximo 8; probabilidad crítica: 5; daño crítico: 7. Valores fijos 44/34/201 son referencias, no límites."
+    },
+    "Stat3": {
+      "name": "Estadística de prioridad 3",
+      "help": "Elige cuatro estadísticas distintas. Velocidad siempre busca 5 y tiene prioridad; las demás siguen este orden.",
+      "Speed": "Velocidad",
+      "AttackPercent": "Ataque %",
+      "DefensePercent": "Defensa %",
+      "HealthPercent": "Vida %",
+      "Effectiveness": "Efectividad %",
+      "Resistance": "Resistencia a efectos %",
+      "CriticalChance": "Probabilidad crítica %",
+      "CriticalDamage": "Daño crítico %",
+      "FlatAttack": "Ataque fijo",
+      "FlatDefense": "Defensa fija",
+      "FlatHealth": "Vida fija"
+    },
+    "Value3": {
+      "name": "Valor objetivo de prioridad 3",
+      "help": "Introduce porcentajes como números. Ataque/Defensa/Vida %, efectividad y resistencia: máximo 8; probabilidad crítica: 5; daño crítico: 7. Valores fijos 44/34/201 son referencias, no límites."
+    },
+    "Stat4": {
+      "name": "Estadística de prioridad 4",
+      "help": "Elige cuatro estadísticas distintas. Velocidad siempre busca 5 y tiene prioridad; las demás siguen este orden.",
+      "Speed": "Velocidad",
+      "AttackPercent": "Ataque %",
+      "DefensePercent": "Defensa %",
+      "HealthPercent": "Vida %",
+      "Effectiveness": "Efectividad %",
+      "Resistance": "Resistencia a efectos %",
+      "CriticalChance": "Probabilidad crítica %",
+      "CriticalDamage": "Daño crítico %",
+      "FlatAttack": "Ataque fijo",
+      "FlatDefense": "Defensa fija",
+      "FlatHealth": "Vida fija"
+    },
+    "Value4": {
+      "name": "Valor objetivo de prioridad 4",
+      "help": "Introduce porcentajes como números. Ataque/Defensa/Vida %, efectividad y resistencia: máximo 8; probabilidad crítica: 5; daño crítico: 7. Valores fijos 44/34/201 son referencias, no límites."
+    },
+    "MaxRefresh": {
+      "name": "Máximo de renovaciones",
+      "help": "0 significa sin límite. Solo cuenta renovaciones confirmadas de esta ejecución."
+    },
+    "MaxPoints": {
+      "name": "Presupuesto de puntos",
+      "help": "0 significa sin límite. Usa el coste real de 20/60/150 puntos."
+    },
+    "ReservePoints": {
+      "name": "Puntos reservados",
+      "help": "Mínimo de puntos restantes tras renovar; 0 no reserva puntos."
     }
   },
   "Gacha": {
@@ -716,26 +1099,151 @@
       "help": "Reconoce los nombres de los resultados de invocación y los registra. La precisión actual es baja; los resultados son solo de referencia."
     }
   },
-  "SpecialActivity": {
+  "LimitedActivity": {
     "_info": {
-      "name": "Actividad especial",
-      "help": "Elige las recompensas de la actividad actual que quieres recoger."
-    },
-    "GetDailyReward": {
-      "name": "Recoger recompensas diarias",
-      "help": "Recoge las recompensas diarias de la actividad."
-    },
-    "GetTaskReward": {
-      "name": "Recoger recompensas de tareas",
-      "help": "Recoge las recompensas de tareas de actividad completadas."
+      "name": "Eventos temporales",
+      "help": "Visita el registro de asistencia y recoge las recompensas de los eventos activos, incluidas la búsqueda diaria del detective y las tareas diarias del Camino épico. Se programa de forma independiente de Eventos especiales; Invocación realiza las invocaciones."
     },
     "GetFreeGacha": {
-      "name": "Invocaciones gratis del evento",
-      "help": "Usa todas las invocaciones gratis del evento disponibles."
+      "name": "Recoger las 20 invocaciones gratis diarias",
+      "help": "Recoge las 20 invocaciones gratis diarias del evento actual. La tarea de invocación realiza las invocaciones."
     },
-    "GetEnergyDrink": {
-      "name": "Recoger bebida de energía",
-      "help": "Recoge la bebida de energía de la actividad cuando esté disponible."
+    "GetMeirinReward": {
+      "name": "Recoger recompensas de tareas de Meirin",
+      "help": "Solo para la interfaz en chino simplificado del servidor internacional. Recoge las recompensas de tareas completadas del evento ¡Junto a Meirin! Si no hay recompensas disponibles, vuelve a comprobar tras Arena o Combate; espera al reinicio diario solo cuando todas las tareas estén completadas."
+    },
+    "GetSupportReward": {
+      "name": "Recoger recompensas de boletos de apoyo",
+      "help": "Solo interfaz china del servidor internacional: recoge 500 boletos por 10 combates diarios de Arena y las recompensas semanales disponibles. Revisa solo tras Arena; reinicio diario a las 03:00 UTC. No gasta energía ni boletos."
+    },
+    "GetCompletionRecord": {
+      "name": "Visitar el registro de asistencia",
+      "help": "Abre el registro diario sin reclamar recompensas acumuladas ni comprar días perdidos. Solo interfaz global en chino."
+    },
+    "GetDetectiveSearch": {
+      "name": "Reclamar recompensas del detective",
+      "help": "Reclama los niveles de 180/360/540/720 puntos. Revisa tras combate o arena hasta recibir los cuatro. No gasta recursos."
+    },
+    "GetEpicPathDailyReward": {
+      "name": "Reclamar recompensas diarias de Ruta épica",
+      "help": "Solo misiones diarias. Revisa tras combate o arena hasta recibirlas todas. No opera misiones de temporada ni intercambios."
+    }
+  },
+  "SpecialActivity": {
+    "_info": {
+      "name": "Eventos especiales",
+      "help": "Gestiona contenido temporal con entradas propias, actualmente la tienda de Huche en la pantalla principal. Se programa de forma independiente de Eventos temporales."
+    },
+    "BuyHucheMysticMedals": {
+      "name": "Comprar medallas místicas en la tienda de Huche",
+      "help": "Solo servidor internacional en chino simplificado. Compra únicamente medallas místicas según las existencias y el saldo de piedras celestiales. El primer lote cambia cada 12 horas y no siempre incluye medallas. Compra la oferta de 160 cuando aparezca; si una revisión completa no encuentra medallas, espera al próximo lote. La oferta normal de 200 tiene un cupo fijo de 4 para todo el evento; al agotarse, revisa solo el primer lote rotativo. Revisa a las 11:00 y 23:00 UTC+8. Desactivado por defecto; al activarlo se gastan piedras celestiales."
+    }
+  },
+  "Episode": {
+    "_info": {
+      "name": "Historia principal",
+      "help": "Continúa el capítulo actual, omite diálogos, combate y recoge recompensas con el equipo actual. Se detiene por derrota o energía insuficiente, sin recargar energía. Las capturas verificadas corresponden al episodio 6 en chino simplificado."
+    },
+    "Number": {
+      "name": "Episodio",
+      "help": "0 continúa el episodio actual; otro número cambia mediante la selección de capítulos.",
+      "0": "Episodio actual",
+      "1": "Episode 1",
+      "2": "Episode 2",
+      "3": "Episode 3",
+      "4": "Episode 4",
+      "5": "Episode 5",
+      "6": "Episode 6"
+    },
+    "MaxStages": {
+      "name": "Límite de etapas",
+      "help": "0 continúa hasta detenerse. Un combate o historia cuenta una vez al cerrar las recompensas y volver al mapa."
+    }
+  },
+  "BuyPenguins": {
+    "_info": {
+      "name": "Compra de pingüinos por lotes",
+      "help": "Compra manual de 50 pingüinos por lote. Se detiene si no hay suficiente estigma. Solo para el juego en chino."
+    },
+    "BatchCount": {
+      "name": "Cantidad de lotes",
+      "help": "Compra 50 pingüinos por lote, 1 lote por defecto. Usa el precio de estigma mostrado. Esta herramienta no se ejecuta automáticamente."
+    }
+  },
+  "DimensionalExploration": {
+    "_info": {
+      "name": "Exploración dimensional",
+      "help": "Solo para el cliente internacional en chino. Mantiene la dificultad actual y empieza con Heavy Baggage. Se detiene tras completar el lote."
+    },
+    "RunCount": {
+      "name": "Expediciones por lote",
+      "help": "Cuenta liquidaciones con recompensa. Reanuda los lotes interrumpidos; al pulsar Iniciar después de completar un lote empieza un contador nuevo."
+    },
+    "EventSampling": {
+      "name": "Recopilar eventos",
+      "help": "Guarda capturas antes y después, opciones y cambios de recursos. Prueba rutas desconocidas de bajo coste y aún no visitadas. Se detiene ante costes inciertos o pérdida de la última vida. Guarda en la carpeta de capturas. Desactivado por defecto."
+    },
+    "KnightPriority": {
+      "name": "Caballero prioridad de héroes",
+      "help": "Escribe los nombres chinos del juego por prioridad, separados por >, comas o saltos de línea. Si no hay un héroe preferido asequible, elige uno de coste bajo."
+    },
+    "WarriorPriority": {
+      "name": "Guerrero prioridad de héroes",
+      "help": "Escribe los nombres chinos del juego por prioridad, separados por >, comas o saltos de línea. Si no hay un héroe preferido asequible, elige uno de coste bajo."
+    },
+    "RangerPriority": {
+      "name": "Tirador prioridad de héroes",
+      "help": "Escribe los nombres chinos del juego por prioridad, separados por >, comas o saltos de línea. Si no hay un héroe preferido asequible, elige uno de coste bajo."
+    },
+    "MagePriority": {
+      "name": "Mago prioridad de héroes",
+      "help": "Escribe los nombres chinos del juego por prioridad, separados por >, comas o saltos de línea. Si no hay un héroe preferido asequible, elige uno de coste bajo."
+    },
+    "HealerPriority": {
+      "name": "Tejedor de almas prioridad de héroes",
+      "help": "Escribe los nombres chinos del juego por prioridad, separados por >, comas o saltos de línea. Si no hay un héroe preferido asequible, elige uno de coste bajo."
+    },
+    "ThiefPriority": {
+      "name": "Ladrón prioridad de héroes",
+      "help": "Escribe los nombres chinos del juego por prioridad, separados por >, comas o saltos de línea. Si no hay un héroe preferido asequible, elige uno de coste bajo."
+    }
+  },
+  "DimensionalExplorationRuntime": {
+    "_info": {
+      "name": "Progreso de exploración",
+      "help": ""
+    },
+    "Session": {
+      "name": "Sesión del lote",
+      "help": ""
+    },
+    "EventHistory": {
+      "name": "Historial de eventos",
+      "help": "Conserva las rutas visitadas y recompensas confirmadas de este perfil entre tandas. Usa un perfil distinto por cuenta."
+    }
+  },
+  "ActivityRuntime": {
+    "_info": {
+      "name": "Registro de actividad",
+      "help": "Guarda el estado diario de recogida de cada evento."
+    },
+    "CheckedEvents": {
+      "name": "Registros de recogida por evento",
+      "help": "Registra la fecha de comprobación por evento y servidor."
+    },
+    "FreeGacha20CheckedAt": {
+      "name": "Comprobación diaria de versiones anteriores",
+      "help": "Conserva los registros diarios guardados por versiones anteriores."
+    }
+  },
+  "ResourceRuntime": {
+    "_info": {
+      "name": "Estado de recursos",
+      "help": "Guarda los recursos observados y las condiciones de espera."
+    },
+    "State": {
+      "name": "Registro interno",
+      "help": "Guarda saldos, actualizaciones pendientes y esperas sin modificar directamente el progreso diario."
     }
   },
   "Dashboard": {
@@ -799,6 +1307,22 @@
       "SS": "SS o superior",
       "MaxMinus1": "Máx. actual -1",
       "MaxMinus2": "Máx. actual -2 (mínimo B)"
+    },
+    "Reminder": {
+      "name": "Recordatorio de recompensa mensual",
+      "help": "Activado de forma predeterminada. Recuerda reclamar manualmente antes del reinicio mensual. Requiere la tarea mensual activa, el script en ejecución y las notificaciones globales configuradas. Se detiene al confirmar la recogida; como máximo un envío correcto por día del servidor."
+    },
+    "ReminderLeadDays": {
+      "name": "Días de antelación",
+      "help": "Usa la hora de reinicio del servidor de esta tarea. Comprueba a diario durante el período de aviso para que la programación semanal no lo omita.",
+      "1": "1 días",
+      "3": "3 días",
+      "5": "5 días",
+      "7": "7 días"
+    },
+    "ReminderLastSent": {
+      "name": "Último recordatorio enviado",
+      "help": ""
     }
   },
   "Gui": {
@@ -901,6 +1425,7 @@
     },
     "Text": {
       "InvalidFeedBack": "Formato inválido. Ejemplo: {0}",
+      "SelectUnavailable": "La opción actual no está disponible. Selecciona otra opción.",
       "Clear": "Limpiar",
       "CommunityAuthCredentials": "Credenciales de comunidad",
       "CommunityAuthCredentialsHelp": "Comprueba el estado actual de la CK y abre la ventana de Electron para actualizar las credenciales locales.",

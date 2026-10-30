@@ -169,24 +169,45 @@ class UrgentTasksNavigateMixin:
         logger.attr("UrgentTasksRemaining", current)
         return current
 
-    def _dismiss_urgent_tasks_times_hint(self) -> bool:
-        """Close the daily-times hint only after positively recognizing it."""
-        current, _, total = DigitCounter(
+    def _is_urgent_tasks_times_hint(self) -> bool:
+        """Recognize the light hint panel over the dark prepare controls."""
+        # This fixed area stays light while the hint is open, regardless of
+        # the remaining digit. OCR can read "4/5" as "4" or "4/"; requiring a
+        # complete counter used to mistake those failures for an absent hint
+        # and let subsequent count clicks hit the overlay. Only the detail
+        # page counter supplies daily attempts; this region just blocks input.
+        return self.match_color(
             OCR_URGENT_COMBAT_TIMES_REMAINING,
-            lang=self._ocr_lang(),
-            name="UrgentCombatTimesHint",
-        ).ocr_single_line(self.device.image)
-        if total != self.URGENT_TASKS_DAILY_TOTAL or not 0 <= current <= total:
+            threshold=self.COMBAT_STATE_COLOR_THRESHOLD,
+        )
+
+    def _dismiss_urgent_tasks_times_hint(self) -> bool:
+        """Return True only when a recognized hint was actually clicked."""
+        if not self._is_urgent_tasks_times_hint():
             return False
         if not self.interval_is_reached(
             OCR_URGENT_COMBAT_TIMES_REMAINING,
             interval=1,
         ):
             return False
-        logger.info(f"UrgentTasks: close daily-times hint ({current}/{total})")
+        logger.info("UrgentTasks: close daily-times hint")
         self.device.click(OCR_URGENT_COMBAT_TIMES_REMAINING)
         self.interval_reset(OCR_URGENT_COMBAT_TIMES_REMAINING, interval=1)
         return True
+
+    def _is_urgent_tasks_prepare_ready(self) -> bool:
+        """Confirm prepare controls are visible without the daily-times hint."""
+        return (
+            self._is_urgent_tasks_target_prepare_page()
+            and not self._is_urgent_tasks_times_hint()
+        )
+
+    def _handle_urgent_tasks_prepare_additional(self) -> bool:
+        if self._handle_dungeon_additional():
+            return True
+        if self._is_urgent_tasks_target_prepare_page():
+            return self._dismiss_urgent_tasks_times_hint()
+        return False
 
     def _inspect_urgent_tasks_resource(self, key: str):
         """Read one value through the shared resource-bar implementation."""
@@ -218,17 +239,17 @@ class UrgentTasksNavigateMixin:
             else:
                 self.device.screenshot()
 
+            if timeout.reached():
+                logger.warning("UrgentTasks: stamina OCR timeout")
+                return None
+
             if self._is_urgent_tasks_target_prepare_page():
-                if self._dismiss_urgent_tasks_times_hint():
-                    timeout.reset()
+                if self._is_urgent_tasks_times_hint():
+                    self._dismiss_urgent_tasks_times_hint()
                     continue
                 value = self._inspect_urgent_tasks_resource("stamina")
                 if value is not None:
                     return value.value
-
-            if timeout.reached():
-                logger.warning("UrgentTasks: stamina OCR timeout")
-                return None
 
             if self._handle_dungeon_additional():
                 timeout.reset()
@@ -251,10 +272,14 @@ class UrgentTasksNavigateMixin:
             else:
                 self.device.screenshot()
 
+            if timeout.reached():
+                logger.warning("UrgentTasks: pet state timeout, use foreground combat")
+                return False
+
             if self._is_urgent_tasks_target_prepare_page():
-                if self._dismiss_urgent_tasks_times_hint():
+                if self._is_urgent_tasks_times_hint():
+                    self._dismiss_urgent_tasks_times_hint()
                     stable.clear()
-                    timeout.reset()
                     continue
                 if self.appear(COMBAT_PREPARE_PET_EMPTY):
                     logger.info("UrgentTasks: no pet configured on prepare page")
@@ -266,10 +291,6 @@ class UrgentTasksNavigateMixin:
                     return True
             else:
                 stable.clear()
-
-            if timeout.reached():
-                logger.warning("UrgentTasks: pet state timeout, use foreground combat")
-                return False
 
             if self._handle_dungeon_additional():
                 stable.clear()
@@ -321,8 +342,11 @@ class UrgentTasksNavigateMixin:
                 continue
 
             if self._is_urgent_tasks_target_prepare_page():
-                if self._dismiss_urgent_tasks_times_hint():
-                    timeout.reset()
+                # A click on cooldown is not proof that the hint disappeared.
+                # Stay here until a fresh prepare frame is unobstructed, even
+                # when the last dismissal tap failed or has not settled yet.
+                if self._is_urgent_tasks_times_hint():
+                    self._dismiss_urgent_tasks_times_hint()
                     continue
                 if self._urgent_tasks_remaining_count is not None:
                     logger.info("UrgentTasks: reached target prepare page")
@@ -508,14 +532,20 @@ class UrgentTasksNavigateMixin:
             out: Urgent Tasks detail page with zero remaining attempts
 
         The game-owned remaining counter is re-read after every settled mode.
-        Fast combat is capped to that counter.  A configured pet may hand the
-        remainder to the ordinary server-repeat implementation after the
-        stage has been cleared once; without a pet, foreground combat remains
-        fully automatic through the shared normal-combat loop.
+        Fast combat is capped to that counter. If fast mode is not already on,
+        a gray repeat button requires one foreground clear before trying fast
+        combat, even if the button stays gray afterward. An already enabled
+        fast mode takes precedence because repeat may be gray without a pet.
+        A failed enable before the first foreground clear is rechecked after
+        that clear settles. A later enable failure or exhausted fast count uses
+        foreground battles for the rest of this invocation. Otherwise, a
+        configured pet may hand remaining attempts to ordinary server repeat.
         """
         completed = 0
         first = skip_first_screenshot
         self._urgent_tasks_repeat_started = False
+        normal_clear_completed = False
+        fast_available = True
 
         while 1:
             if not self._navigate_urgent_tasks(skip_first_screenshot=first):
@@ -542,7 +572,26 @@ class UrgentTasksNavigateMixin:
             stamina = self._read_urgent_tasks_stamina(skip_first_screenshot=True)
             stamina_cost = self._combat_stage_stamina_cost()
 
-            if self._combat_should_use_fast() and stamina is not None:
+            # A gray repeat button on first entry may mean this stage lacks a
+            # recorded clear time, even when fast combat has no lock icon. This
+            # also applies when a restarted task still reads 5/5: dismissing the
+            # initial hint in an earlier run does not establish a clear record.
+            # However, a positively recognized ON state proves fast mode is
+            # already enabled. Preserve it even before our first foreground
+            # clear: a missing pet can independently make repeat unavailable.
+            # Merely finding the times hint or no lock icon is not an ON state.
+            # Do not require repeat to become enabled after that battle: without
+            # a pet it can remain gray while fast combat is already usable.
+            needs_normal_clear = (
+                not normal_clear_completed
+                and self._is_repeat_combat_unavailable()
+                and not self._is_fast_combat_on()
+            )
+            force_normal = needs_normal_clear or not fast_available
+            if needs_normal_clear:
+                logger.info("UrgentTasks: repeat unavailable, clear one foreground battle before trying fast combat")
+
+            if not force_normal and self._combat_should_use_fast() and stamina is not None:
                 fast_stamina = stamina
                 if stamina_cost is not None:
                     fast_stamina = min(stamina, remaining * stamina_cost)
@@ -550,6 +599,9 @@ class UrgentTasksNavigateMixin:
                     stamina=fast_stamina,
                     use_max=True,
                     skip_first_screenshot=True,
+                    fallback_on_enable_timeout=True,
+                    prepare_check=self._is_urgent_tasks_prepare_ready,
+                    additional_handler=self._handle_urgent_tasks_prepare_additional,
                 )
                 if fast_prepare == "ready":
                     if not self._run_fast_combat(skip_first_screenshot=True):
@@ -561,11 +613,34 @@ class UrgentTasksNavigateMixin:
                     if remaining <= 0:
                         first = True
                         continue
-                elif fast_prepare not in ("fallback", "no_stamina"):
+                elif fast_prepare == "fallback":
+                    # Eligibility belongs to the next prepare visit, while
+                    # force_normal keeps this attempt in foreground mode. The
+                    # first settled foreground clear can establish the clear
+                    # time required by fast combat, invalidating an earlier
+                    # enable failure. The loop reaches that next visit only
+                    # after _run_normal_combat positively confirms completion.
+                    # Once normal_clear_completed is set, a second fallback
+                    # stays disabled so every battle cannot restart the retry
+                    # window. An ON state with fallback means fast attempts
+                    # were exhausted, not that the toggle needs a clear record;
+                    # retain that decision even before the first normal clear.
+                    fast_available = (
+                        not normal_clear_completed and not self._is_fast_combat_on()
+                    )
+                    force_normal = True
+                    if fast_available:
+                        logger.info(
+                            "UrgentTasks: fast combat not enabled, use one foreground "
+                            "battle and recheck after completion"
+                        )
+                    else:
+                        logger.info("UrgentTasks: fast combat unavailable, use foreground combat for this run")
+                elif fast_prepare != "no_stamina":
                     return False, completed
 
-            has_pet = self._urgent_tasks_prepare_has_pet(
-                skip_first_screenshot=True
+            has_pet = not force_normal and self._urgent_tasks_prepare_has_pet(
+                skip_first_screenshot=True,
             )
             repeat_ready = has_pet and not self._is_repeat_combat_unavailable()
             if repeat_ready and remaining > 1:
@@ -590,4 +665,5 @@ class UrgentTasksNavigateMixin:
             ):
                 return False, completed
             completed += 1
+            normal_clear_completed = True
             first = True

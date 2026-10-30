@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "source": "../../input/episode/MuMu-20261021-202808-776.png",
+  "suite": "episode",
+  "case": "auto_combat_unavailable_20261021",
+  "items": [
+    {
+      "name": "EPISODE_AUTO_COMBAT_UNAVAILABLE",
+      "namespace": "share",
+      "module": "dungeon/episode/battle",
+      "box": [1107, 15, 1147, 50]
+    },
+    {
+      "name": "EPISODE_BATTLE_CONTROLS_CHECK",
+      "namespace": "share",
+      "module": "dungeon/episode/battle",
+      "box": [1232, 20, 1251, 46]
+    }
+  ]
+}

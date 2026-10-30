@@ -25,6 +25,7 @@ from tasks.arena.assets.assets_arena import (
 from tasks.dungeon.assets.assets_dungeon_configs_combat_entry import (
     ALTER_CHECK,
     COMMON_ENTRY,
+    CONBAT_ENTRIES,
     HUNT_CHECK,
     SEASON_ENTRY,
     SEASON_CHECK,
@@ -33,10 +34,7 @@ from tasks.dungeon.assets.assets_dungeon_configs_combat_entry import (
     URGENT_TASKS,
     URGENT_CHECK,
 )
-if server_.lang == "global_cn":
-    from tasks.dungeon.assets.assets_dungeon_repeat_common import REPEAT_COMBAT_MENU
-else:
-    from tasks.dungeon.assets.assets_dungeon_repeat_entry import REPEAT_COMBAT_MENU
+from tasks.dungeon.assets.assets_dungeon_repeat_common import REPEAT_COMBAT_MENU
 from tasks.dungeon.assets.assets_dungeon_configs_episode_entry import (
     EPISODE_CHOOSE,
 )
@@ -95,6 +93,12 @@ from tasks.activity.assets.assets_activity_special_26_6_25 import (
 from tasks.login.assets.assets_login_popup import (
     ACTIVITY_2026SUMMER,
 )
+
+
+# The task and navigation must agree on this animated crest. Real guild-war
+# frames can score around 0.80; using the default 0.85 only while navigating
+# strands the task immediately after it has successfully read the counter.
+KNIGHTS_CREST_SIMILARITY = 0.7
 
 
 class Page:
@@ -189,6 +193,7 @@ class Page:
     def __init__(self, check_button, dynamic_return_button=None, dynamic_return_group=None):
         self.check_button = check_button
         self.links = {}
+        self.links_need_match = set()
         self.link_priority = []
         self.shared_toolbar = False
         self.background_repeat_check = False
@@ -210,8 +215,14 @@ class Page:
     def __str__(self):
         return self.name
 
-    def link(self, button, destination):
+    def link(self, button, destination, *, match_before_click=False):
         self.links[destination] = button
+        # Matching is an edge policy, not a property inferred from asset count.
+        # Fixed-coordinate routes and runtime overlay exits retain their behavior.
+        if match_before_click:
+            self.links_need_match.add(destination)
+        else:
+            self.links_need_match.discard(destination)
 
     def prefer_link(self, *destinations):
         for destination in destinations:
@@ -299,7 +310,21 @@ page_sanctuary.link(HEART_OF_EULERBIS, destination=page_sanctuary_heart)
 # Secret shop
 page_secret_shop = Page(SECRET_SHOP_CHECK)
 page_secret_shop.link(BACK, destination=page_main)
-page_main.link(MAIN_GOTO_SECRET_SHOP, destination=page_secret_shop)
+page_main.link(MAIN_GOTO_SECRET_SHOP, destination=page_secret_shop, match_before_click=True)
+
+# This timed shop is only verified on the overseas Chinese client. Keep its
+# page out of other clients' global page scans and require the live home entry
+# before clicking: the entry disappears when the campaign is closed.
+if server_.lang == "global_cn":
+    from tasks.base.assets.assets_base_page import BACK
+    from tasks.activity.assets.assets_activity_huche_shop_26_9_17 import (
+        HUCHE_SHOP_CHECK,
+        MAIN_GOTO_HUCHE_SHOP,
+    )
+
+    page_huche_shop = Page(HUCHE_SHOP_CHECK)
+    page_huche_shop.link(BACK, destination=page_main)
+    page_main.link(MAIN_GOTO_HUCHE_SHOP, destination=page_huche_shop, match_before_click=True)
 
 # Mail
 # Mail is another toolbar overlay page. BACK should normally return to the
@@ -393,6 +418,10 @@ page_arena_battle_pass.link(BACK, destination=page_arena)
 page_arena.link(BATTLE_PASS_ENTRY, destination=page_arena_battle_pass)
 
 # Combat
+# The common-page check must find the altar after event cards move it.
+# Dungeon entry matching configures its own search ranges independently.
+SPIRIT_ALTAR.load_search(CONBAT_ENTRIES.area)
+
 # Combat season tab
 page_combat_season = Page(SEASON_CHECK)
 page_combat_season.link(BACK, destination=page_main)
@@ -428,6 +457,22 @@ if server_.lang == "global_cn":
     page_urgent_tasks.link(BACK, destination=page_combat_urgent)
     page_combat_urgent.link(URGENT_TASKS, destination=page_urgent_tasks)
 
+# Dimensional exploration (overseas Chinese client)
+if server_.lang == "global_cn":
+    from tasks.dimensional_exploration.assets.assets_dimensional_exploration import (
+        LOBBY_CHECK, TITLE_CHECK, TITLE_ENTER, EXPLORATION_ENTRY,
+    )
+
+    # Match within the card-header strip so new activities can move this entry
+    # horizontally. The matched button offset is also the click destination.
+    page_dimensional_exploration_title = Page(TITLE_CHECK)
+    page_dimensional_exploration_title.link(BACK, destination=page_combat_common)
+    page_combat_common.link(EXPLORATION_ENTRY, destination=page_dimensional_exploration_title,
+                            match_before_click=True)
+    page_dimensional_exploration_lobby = Page(LOBBY_CHECK)
+    page_dimensional_exploration_lobby.link(BACK, destination=page_dimensional_exploration_title)
+    page_dimensional_exploration_title.link(TITLE_ENTER, destination=page_dimensional_exploration_lobby)
+
 # Combat stage selection page (element / grade)
 page_combat_stage = Page((ALTER_CHECK, HUNT_CHECK))
 page_combat_stage.link(BACK, destination=page_combat_common)
@@ -441,6 +486,20 @@ page_episode = Page(EPISODE_CHOOSE)
 page_episode.link(BACK, destination=page_main)
 page_main.link(MAIN_GOTO_EPISODE, destination=page_episode)
 page_menu.link(MENU_GOTO_EPISODE, destination=page_episode)
+
+if server_.lang in ('cn', 'global_cn'):
+    from tasks.dungeon.assets.assets_dungeon_episode_navigation import (
+        EPISODE_SELECTOR_CHECK,
+        EPISODE_SELECTOR_ENTRY,
+    )
+
+    # The blue map control opens this selector. BACK on the selector returns
+    # to the current map; BACK on the map leaves adventure for the main page.
+    # Keep those transitions separate so switching episodes cannot leave the
+    # adventure flow, and match the entry before using its current position.
+    page_episode_selector = Page(EPISODE_SELECTOR_CHECK)
+    page_episode.link(EPISODE_SELECTOR_ENTRY, destination=page_episode_selector, match_before_click=True)
+    page_episode_selector.link(BACK, destination=page_episode)
 
 # Side Story
 page_side_story = Page(SIDE_STORY_CHECK)
@@ -466,7 +525,20 @@ page_menu.link(MENU_GOTO_PETS, destination=page_pets)
 # Special Activity
 page_common_activity = Page(COMMON_ACTIVITY_CHECK)
 page_common_activity.link(BACK, destination=page_main)
-page_main.link(MAIN_GOTO_COMMON_ACTIVITY, destination=page_common_activity)
+page_main.link(MAIN_GOTO_COMMON_ACTIVITY, destination=page_common_activity, match_before_click=True)
+
+# The task dialog has its own positive identity and a local close control.
+# Register its return edge so a resumed daily check can restore the activity
+# container before the batch chooses a sidebar tab. Other languages have no
+# verified dialog assets and must not scan this page.
+if server_.is_oversea_server() and server_.lang == 'global_cn':
+    from tasks.activity.assets.assets_activity_epic_path import (
+        EPIC_PATH_DAILY_TASK_CHECK,
+        EPIC_PATH_TASK_CLOSE,
+    )
+
+    page_epic_path_daily = Page(EPIC_PATH_DAILY_TASK_CHECK)
+    page_epic_path_daily.link(EPIC_PATH_TASK_CLOSE, destination=page_common_activity)
 
 page_special_activity = Page(ACTIVITY_2026SUMMER)
 page_special_activity.link(BACK, destination=page_main)
@@ -498,6 +570,20 @@ page_knights.link(KNIGHTS_ACTIVITY_ENTRY, destination=page_knights_support)
 page_knights_weekly_task = Page(WEEKLY_TASK_CHECK)
 page_knights_weekly_task.link(AD_BUFF_X_CLOSE, destination=page_knights)
 page_knights_support.link(WEEKLY_TASK_ENTRY, destination=page_knights_weekly_task)
+
+# Guild shop captures currently cover the overseas Chinese member-shop layout.
+# Keep unsupported clients out of page scans rather than importing empty assets.
+if server_.is_oversea_server() and server_.lang == 'global_cn':
+    from tasks.knights.assets.assets_knights_shop_entries import SHOP_CHECK, SHOP_ENTRY
+    from tasks.knights.assets.assets_knights_activity_entries import SUPPORT_TAB_ENTRY
+
+    page_knights_shop = Page(SHOP_CHECK)
+    page_knights_shop.link(AD_BUFF_X_CLOSE, destination=page_knights)
+    page_knights_support.link(SHOP_ENTRY, destination=page_knights_shop, match_before_click=True)
+    page_knights_weekly_task.link(SHOP_ENTRY, destination=page_knights_shop, match_before_click=True)
+    page_knights_shop.link(WEEKLY_TASK_ENTRY, destination=page_knights_weekly_task)
+    page_knights_shop.link(SUPPORT_TAB_ENTRY, destination=page_knights_support, match_before_click=True)
+    page_knights_weekly_task.link(SUPPORT_TAB_ENTRY, destination=page_knights_support, match_before_click=True)
 
 page_knights_world_boss = Page(WORLD_BOSS_CHECK)
 page_knights_world_boss.link(BACK, destination=page_knights)
@@ -541,6 +627,8 @@ shared_toolbar_pages = [
 ]
 if server_.lang == "global_cn":
     shared_toolbar_pages.append(page_urgent_tasks)
+if server_.lang in ('cn', 'global_cn'):
+    shared_toolbar_pages.append(page_episode_selector)
 
 link_shared_toolbar(*shared_toolbar_pages)
 

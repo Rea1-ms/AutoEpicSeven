@@ -225,6 +225,8 @@ class NemuIpcImpl:
             os.path.abspath(os.path.join(nemu_folder, './shell/sdk/external_renderer_ipc.dll')),
             # MuMuPlayer12 5.0
             os.path.abspath(os.path.join(nemu_folder, './nx_device/12.0/shell/sdk/external_renderer_ipc.dll')),
+            # MuMuPlayer12 6.0
+            os.path.abspath(os.path.join(nemu_folder, './nx_main/sdk/external_renderer_ipc.dll')),
         ]
         self.lib = None
         for ipc_dll in list_dll:
@@ -561,7 +563,7 @@ class NemuIpc(Platform):
         if str(value).lower() == 'true':
             # https://mumu.163.com/help/20230802/35047_1102450.html
             logger.critical('Please turn off "Keep alive in the background" in the settings or MuMuPlayer')
-            logger.critical('请在MuMu模拟器设置内关闭 "后台挂机时保活运行"')
+            logger.critical('Please disable "Keep running in background" in MuMu emulator settings')
             raise RequestHumanTakeover
         return True
 

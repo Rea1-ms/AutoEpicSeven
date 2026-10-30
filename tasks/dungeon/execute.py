@@ -1,6 +1,7 @@
 from module.base.timer import Timer
 from module.exception import RequestHumanTakeover
 from module.logger import logger
+from tasks.base.resource_scheduling import ResourceCoordinator
 from tasks.dungeon.assets.assets_dungeon_action import (
     AUTO_COMBAT,
     AUTO_COMBAT_ENEMY_SELECT,
@@ -15,16 +16,6 @@ from tasks.dungeon.assets.assets_dungeon_fast_combat import (
     FAST_COMBAT_RESULT_CLOSE,
     FAST_COMBAT_WINDOW,
 )
-from tasks.dungeon.assets.assets_dungeon_repeat_entry import (
-    REPEAT_COMBAT_OFF,
-    REPEAT_COMBAT_ON,
-)
-from tasks.dungeon.assets.assets_dungeon_repeat_result import (
-    REPEAT_COMBAT_CHECK,
-    REPEAT_COMBAT_OVER,
-)
-from tasks.dungeon.assets.assets_dungeon_repeat_status_bar import MINIMIZE
-from tasks.dungeon.assets.assets_dungeon_repeat_window import WINDOW_CHECK
 from tasks.dungeon.assets.assets_dungeon_state import (
     AUTO_COMBAT_EXIST,
     AUTO_COMBAT_SKILL_CLOSED,
@@ -33,6 +24,16 @@ from tasks.dungeon.assets.assets_dungeon_state import (
     COMBAT_RESULT_FAILED,
     ENEMY_NUM_EXIST,
 )
+
+
+def detect_auto_combat_state(appear):
+    """Recognize an actionable battle HUD; missing HUD is not manual mode."""
+    if any(appear(asset) for asset in (
+            AUTO_COMBAT_ENEMY_SELECT, AUTO_COMBAT_SKILL_CLOSED, AUTO_COMBAT_SKILL_OPENED)):
+        return True
+    if appear(ENEMY_NUM_EXIST):
+        return False
+    return None
 
 
 class CombatExecuteMixin:
@@ -51,19 +52,9 @@ class CombatExecuteMixin:
             return True
         return self.match_template_luma(FAST_COMBAT_OFF, similarity=self.COMBAT_CHECK_SIMILARITY)
 
-    def _is_repeat_combat_on(self) -> bool:
-        return self.match_color(REPEAT_COMBAT_ON, threshold=self.COMBAT_STATE_COLOR_THRESHOLD)
-
-    def _is_repeat_result_window(self) -> bool:
-        return self.match_template_luma(WINDOW_CHECK, similarity=self.COMBAT_CHECK_SIMILARITY)
-
-    def _is_repeat_combat_over(self) -> bool:
-        return self.match_template_luma(REPEAT_COMBAT_OVER, similarity=self.COMBAT_CHECK_SIMILARITY)
-
-    def _has_repeat_combat_check(self) -> bool:
-        return self.match_template_luma(REPEAT_COMBAT_CHECK, similarity=self.COMBAT_CHECK_SIMILARITY)
-
     def _is_repeat_combat_running(self) -> bool:
+        if self._is_repeat_combat_running_window():
+            return True
         if self._is_repeat_combat_over() or self._is_repeat_result_window():
             return False
         return self._has_repeat_combat_check()
@@ -88,31 +79,20 @@ class CombatExecuteMixin:
         - `REPEAT_COMBAT_CHECK` means the old session is still running
         - `REPEAT_COMBAT_OVER` means the old session has already finished and
           is waiting for us to open the result
-        - `WINDOW_CHECK` means the result window is already open and still
-          needs cleanup before a new dungeon run may start
+        - `SETTLEMENT_WINDOW_CHECK` identifies the shared detail/result window;
+          `SETTLEMENT_INTERRUPT` distinguishes an active run from its result
 
         Treat all three as "there is already an old background combat state on
         screen", then let the dedicated watch/result logic finish the cleanup.
         """
+        if self._is_repeat_combat_running_window():
+            return "running"
         if self._is_repeat_result_window() or self._is_repeat_combat_over():
             return "result"
         if self._has_background_repeat_combat_check():
             return "running"
         return None
 
-    def _is_background_repeat_combat_running(self) -> bool:
-        """
-        Detect whether a previous dungeon session is still running in background.
-
-        The signal is intentionally conservative:
-        - if the finish prompt is already visible, the background run is no
-          longer considered "running"
-        - if the result window is already visible, the background run is no
-          longer considered "running"
-        - otherwise, the top-right repeat marker means the old session is still
-          alive and should be adopted before launching a new dungeon flow
-        """
-        return self._detect_background_repeat_combat_state() == "running"
 
     def _ensure_fast_combat_state(self, enabled: bool) -> bool:
         if not self._combat_supports_fast_combat():
@@ -142,14 +122,6 @@ class CombatExecuteMixin:
             self.interval_reset(FAST_COMBAT_OFF, interval=self.COMBAT_TOGGLE_INTERVAL_SECONDS)
         return False
 
-    def _ensure_repeat_combat_enabled(self) -> bool:
-        if self._is_repeat_combat_on():
-            return True
-        if self.appear_then_click(REPEAT_COMBAT_OFF, interval=1):
-            logger.info("Combat: enable repeat combat")
-            return False
-        return False
-
     def _detect_auto_combat_state(self) -> bool | None:
         """Return the positively identified auto-combat state.
 
@@ -159,15 +131,7 @@ class CombatExecuteMixin:
         proof that auto combat is disabled.  ``False`` is only returned when
         an enemy-number target is visible during the player's actionable turn.
         """
-        if (
-            self.appear(AUTO_COMBAT_ENEMY_SELECT)
-            or self.appear(AUTO_COMBAT_SKILL_CLOSED)
-            or self.appear(AUTO_COMBAT_SKILL_OPENED)
-        ):
-            return True
-        if self.appear(ENEMY_NUM_EXIST):
-            return False
-        return None
+        return detect_auto_combat_state(self.appear)
 
     def _run_normal_combat(
         self,
@@ -253,10 +217,16 @@ class CombatExecuteMixin:
             if stage == "prepare" and self._is_prepare_page():
                 if not self._ensure_fast_combat_state(enabled=False):
                     continue
-                if self.appear_then_click(
+                if self.appear(
                     COMBAT_START,
                     interval=self.COMBAT_START_INTERVAL_SECONDS,
                 ):
+                    # A visible start control is the first potentially paying
+                    # action. Persist invalidation before dispatch so a dropped
+                    # acknowledgement or a crash cannot revive the pre-battle
+                    # balance. Merely opening this loop must keep it valid.
+                    ResourceCoordinator(self.config).invalidate("stamina", "leif")
+                    self.device.click(COMBAT_START)
                     logger.info("Combat: start normal foreground battle")
                     stage = "battle"
                     start_pending.reset()
@@ -332,7 +302,12 @@ class CombatExecuteMixin:
                     timeout.reset()
                     continue
 
-                if self.appear_then_click(COMBAT_START, interval=self.COMBAT_START_INTERVAL_SECONDS):
+                if self.appear(COMBAT_START, interval=self.COMBAT_START_INTERVAL_SECONDS):
+                    # Keep successful preparation reads until a start click is
+                    # actually issued, including when no affordable run exists.
+                    # Invalidate before the click, never after result handling.
+                    ResourceCoordinator(self.config).invalidate("stamina", "leif")
+                    self.device.click(COMBAT_START)
                     logger.info("Combat: start fast combat")
                     stage = "pending"
                     start_pending.reset()
@@ -375,72 +350,4 @@ class CombatExecuteMixin:
                         return True
                 else:
                     prepare_confirm.clear()
-                continue
-
-    def _run_repeat_combat(self, skip_first_screenshot=True) -> bool:
-        logger.info("Combat: run repeat combat")
-        timeout = Timer(self.COMBAT_RUN_TIMEOUT_SECONDS, count=240).start()
-        stage = "prepare"
-        start_pending = Timer(self.COMBAT_START_PENDING_SECONDS, count=0).clear()
-        main_confirm = Timer(0.4, count=2).clear()
-
-        while 1:
-            if skip_first_screenshot:
-                skip_first_screenshot = False
-            else:
-                self.device.screenshot()
-
-            if timeout.reached():
-                logger.warning("Combat: repeat combat timeout")
-                return False
-
-            self._raise_if_package_full()
-
-            if self._handle_dungeon_additional():
-                timeout.reset()
-                continue
-
-            if stage == "prepare":
-                if not self._ensure_fast_combat_state(enabled=False):
-                    timeout.reset()
-                    continue
-
-                if not self._ensure_repeat_combat_enabled():
-                    timeout.reset()
-                    continue
-
-                if self.appear_then_click(COMBAT_START, interval=self.COMBAT_START_INTERVAL_SECONDS):
-                    logger.info("Combat: start repeat combat")
-                    stage = "pending"
-                    start_pending.reset()
-                    timeout.reset()
-                    continue
-                continue
-
-            if stage == "pending":
-                if self.appear_then_click(MINIMIZE, interval=1):
-                    stage = "background"
-                    logger.info("Combat: minimize repeat combat")
-                    timeout.reset()
-                    continue
-
-                if start_pending.reached() and self._is_prepare_page():
-                    logger.info("Combat: repeat combat start pending timeout, retry")
-                    stage = "prepare"
-                    timeout.reset()
-                    continue
-                continue
-
-            if stage == "background":
-                if self.appear_then_click(MINIMIZE, interval=1):
-                    timeout.reset()
-                    continue
-                if self.is_in_main(interval=0) and self._is_repeat_combat_running():
-                    if not main_confirm.started():
-                        main_confirm.start()
-                    elif main_confirm.reached():
-                        logger.info("Combat: repeat combat running in background")
-                        return True
-                else:
-                    main_confirm.clear()
                 continue

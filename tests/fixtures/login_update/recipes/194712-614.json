@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "../global_cn/MuMu-20261029-194712-614.png",
+  "suite": "login_update_20261029",
+  "case": "update_194712_614",
+  "items": [
+    {
+      "name": "PATCH_CHECKING",
+      "kind": "base",
+      "box": [
+        486,
+        232,
+        795,
+        255
+      ],
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "login/update"
+    }
+  ]
+}

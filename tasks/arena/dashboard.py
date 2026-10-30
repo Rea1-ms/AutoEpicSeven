@@ -1,9 +1,16 @@
+from module.game_info.context import level_cap
 from module.logger import logger
 from module.ocr.ocr import Digit
 from tasks.arena.assets.assets_arena import OCR_BATTLE_PASS_LEVEL
-from tasks.base.resource_bar import RESOURCE_BAR_LAYOUT_ARENA_BATTLE_PASS, ResourceBarMixin
-
-ARENA_BATTLE_PASS_MAX_LEVEL = 38
+from tasks.base.assets.assets_base_resource_bar import OCR_RESOURCE_BAR
+from tasks.base.resource_bar import (
+    RESOURCE_BAR_LAYOUT_ARENA_BATTLE_PASS,
+    RESOURCE_BAR_SPECS,
+    OcrResourceBar,
+    ResourceBarMixin,
+    get_resource_bar_segment_area,
+    parse_resource_bar_text,
+)
 
 
 def estimate_remaining_arena_flags(current: int, total: int, consumed: int) -> tuple[int, int] | None:
@@ -15,6 +22,10 @@ def estimate_remaining_arena_flags(current: int, total: int, consumed: int) -> t
 
 
 class ArenaDigit(Digit):
+    def __init__(self, *args, max_level: int, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.max_level = max_level
+
     def after_process(self, result):
         result = result.replace("O", "0").replace("o", "0")
         result = result.replace("I", "1").replace("l", "1").replace("|", "1")
@@ -25,7 +36,7 @@ class ArenaDigit(Digit):
         normalized = result.strip().lower()
         if normalized == "max":
             logger.attr(name=self.name, text=str(result))
-            return ARENA_BATTLE_PASS_MAX_LEVEL
+            return self.max_level
         return super().format_result(result)
 
 
@@ -34,15 +45,17 @@ class ArenaDashboardMixin(ResourceBarMixin):
     ARENA_RESOURCE_BAR_TIMEOUT_COUNT = 2
 
     def _ocr_arena_rank(self) -> int:
+        maximum = level_cap(self.config, "arena_pass")
         ocr = ArenaDigit(
             OCR_BATTLE_PASS_LEVEL,
             lang=self._ocr_lang(),
             name="ArenaRank",
+            max_level=maximum,
         )
         level = ocr.ocr_single_line(self.device.image)
         logger.attr("ArenaRank", level)
-        if 0 < level <= self.config.stored.ArenaRank.FIXED_TOTAL:
-            self.config.stored.ArenaRank.set(level)
+        if 0 < level <= maximum:
+            self.config.stored.ArenaRank.set(level, maximum)
         return level
 
     def _ocr_arena_resource_bar(self, skip_first_screenshot=True):
@@ -55,15 +68,27 @@ class ArenaDashboardMixin(ResourceBarMixin):
         )
 
     def _ocr_arena_flag_status(self, skip_first_screenshot=True) -> tuple[int, int] | None:
-        parsed = self._ocr_arena_resource_bar(skip_first_screenshot=skip_first_screenshot)
-        if parsed is None:
+        """Read only the live flag field, bounded by its adjacent currency icon."""
+        if not skip_first_screenshot:
+            self.device.screenshot()
+        layout = ("arena_flag", "conquest_point")
+        offsets, _ = self._match_resource_bar_icons(layout)
+        if len(offsets) != len(layout):
             return None
-
-        self.write_resource_bar_status(parsed)
-        value = parsed.get("arena_flag")
+        area = get_resource_bar_segment_area(layout, "arena_flag", icon_offsets=offsets)
+        if area is None:
+            return None
+        text = OcrResourceBar(
+            OCR_RESOURCE_BAR, lang=self._ocr_lang(), name="ArenaFlag",
+        ).ocr_single_line(self.image_crop(area, copy=False), direct_ocr=True)
+        value = parse_resource_bar_text(text, RESOURCE_BAR_SPECS["arena_flag"])
         if value is None:
             return None
 
+        # Manual play invalidates the previous run's estimate. Only publish
+        # this independently anchored field; unrelated currencies may be hidden
+        # or malformed, and their failure must not revive the old flag count.
+        self.write_resource_bar_status({"arena_flag": value})
         logger.attr("ArenaFlagOCR", f"{value.value}/{value.total}")
         return value.value, value.total
 
@@ -93,5 +118,8 @@ class ArenaDashboardMixin(ResourceBarMixin):
             return False
 
         stored.set(value, total)
+        from tasks.base.resource_scheduling import ResourceCoordinator
+
+        ResourceCoordinator(self.config).invalidate("arena_flag")
         logger.attr("ArenaFlagEstimated", f"{value}/{total}")
         return True

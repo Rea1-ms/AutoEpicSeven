@@ -29,7 +29,7 @@ from pywebio.output import (
     toast,
     use_scope,
 )
-from pywebio.pin import pin, pin_on_change
+from pywebio.pin import pin, pin_on_change, pin_update
 from pywebio.session import (
     go_app,
     info,
@@ -58,10 +58,11 @@ from module.webui.fake import (
 )
 from module.webui.fastapi import asgi_app
 from module.webui.lang import _t, t
-from module.webui.patch import patch_executor
+from module.webui.patch import patch_executor, patch_mimetype
 from module.webui.pin import put_input, put_select
 from module.webui.process_manager import ProcessManager
 from module.webui.remote_access import RemoteAccess
+from module.webui.runtime_ui import RuntimeUI, put_system_notification_settings
 from module.webui.setting import State
 from module.webui.task_extension import (
     get_task_start,
@@ -89,6 +90,7 @@ from module.webui.widgets import (
     BinarySwitchButton,
     RichLog,
     T_Output_Kwargs,
+    build_select_options,
     put_icon_buttons,
     put_loading_text,
     put_none,
@@ -96,6 +98,7 @@ from module.webui.widgets import (
 )
 
 patch_executor()
+patch_mimetype()
 task_handler = TaskHandler()
 
 
@@ -316,6 +319,7 @@ class AlasGUI(Frame):
     @use_scope("groups")
     def set_group(self, group, arg_dict, config, task):
         group_name = group[0]
+        select_options = self.alas_config.get_select_options(config)
 
         output_list: List[Output] = []
         for arg, arg_dict in deep_iter(arg_dict, depth=1):
@@ -346,7 +350,12 @@ class AlasGUI(Frame):
             # Default value
             output_kwargs["value"] = value
             # Options
-            output_kwargs["options"] = options = output_kwargs.pop("option", [])
+            options = output_kwargs.pop("option", [])
+            arg_path = f"{task}.{group_name}.{arg_name}"
+            if arg_path in select_options:
+                options = select_options[arg_path]
+                output_kwargs["unavailable_label"] = t("Gui.Text.SelectUnavailable")
+            output_kwargs["options"] = options
             # Options label
             options_label = []
             for opt in options:
@@ -380,6 +389,8 @@ class AlasGUI(Frame):
             put_html('<hr class="hr-group">')
             for output in output_list:
                 output.show()
+            if group_name == 'Error' and 'OnePushConfig' in self.ALAS_ARGS[task].get(group_name, {}):
+                put_system_notification_settings(self, task)
 
         return len(output_list)
 
@@ -561,6 +572,7 @@ class AlasGUI(Frame):
             valid = []
             invalid = []
             config = config_updater.read_file(config_name)
+            previous_options = config_updater.get_select_options(config)
             for k, v in modified.copy().items():
                 valuetype = deep_get(self.ALAS_ARGS, k + ".valuetype")
                 v = parse_pin_value(v, valuetype)
@@ -594,6 +606,7 @@ class AlasGUI(Frame):
             for k in self.alas_config_hidden - new_hidden_args:
                 self.pin_remove_hidden_arg(k, type_=deep_get(self.ALAS_ARGS, f"{k}.type"))
             self.alas_config_hidden = new_hidden_args
+            self._update_select_options(config, config_updater, previous_options, modified)
 
             if modified:
                 toast(
@@ -608,6 +621,23 @@ class AlasGUI(Frame):
                 config_updater.write_file(config_name, config)
         except Exception as e:
             logger.exception(e)
+
+    def _update_select_options(self, config, config_updater, previous_options, modified):
+        """Refresh dependent candidates after the normal configuration save debounce."""
+        for path, options in config_updater.get_select_options(config).items():
+            if options == previous_options.get(path) and path not in modified:
+                continue
+            _, group, argument = path.split(".")
+            value = deep_get(config, path, deep_get(self.ALAS_ARGS, f"{path}.value"))
+            labels = [t(f"{group}.{argument}.{option}") for option in options]
+            # Programmatic pin updates do not emit change events. Pass both
+            # options and value so the visible selection follows the saved
+            # value even when the browser replaces the full candidate list.
+            pin_update(
+                path.replace(".", "_"),
+                options=build_select_options(options, labels, value, t("Gui.Text.SelectUnavailable")),
+                value=value,
+            )
 
     def alas_update_overview_task(self) -> None:
         if not self.visible:
@@ -1312,6 +1342,8 @@ class AlasGUI(Frame):
         self.task_handler.add(self.set_aside_status, 2)
         self.task_handler.add(visibility_state_switch.g(), 15)
         self.task_handler.add(update_switch.g(), 1)
+        self.runtime_ui = RuntimeUI(self)
+        self.runtime_ui.start()
         self.task_handler.start()
 
         # Return to previous page

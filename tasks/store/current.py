@@ -5,10 +5,18 @@ from typing import Literal
 from module.base.button import ButtonWrapper, ClickButton
 from module.base.timer import Timer
 from module.base.utils import save_image
+from module.config import server
 from module.exception import RequestHumanTakeover
 from module.logger import logger
-from tasks.base.page import page_store
+from tasks.base.assets.assets_base_popup import (
+    NETWORK_ERROR_ABNORMAL,
+    NETWORK_ERROR_DISCONNECT,
+    TOUCH_TO_CLOSE,
+)
+from tasks.base.page import page_main, page_store
 from tasks.base.ui import UI
+from tasks.store.friendship_gift import FriendshipGiftMixin
+from tasks.store.assets.assets_store_friendship_gift import FRIENDSHIP_GIFT_ITEM
 from tasks.store.purchase import (
     ItemPurchasePlan,
     PurchaseCounterPreset,
@@ -62,7 +70,7 @@ from tasks.store.assets.assets_store_entries import (
 PurchasePopupLayout = Literal['unknown', 'single', 'multi']
 
 
-class CurrentStore(UI):
+class CurrentStore(FriendshipGiftMixin, UI):
     CONFIRM_SIMILARITY = 0.85
     INHERITANCE_SCROLL_START = (1060, 392)
     INHERITANCE_SCROLL_END = (720, 392)
@@ -93,6 +101,7 @@ class CurrentStore(UI):
                 asset=DAILY_FREE_ITEM,
                 desired_quantity=1 if self.config.StoreDaily_BuyDailyFreeItem else 0,
                 direct_click=True,
+                requires_reward_popup=True,
             ),
             ItemPurchasePlan(
                 name='free_mobility_40',
@@ -128,6 +137,19 @@ class CurrentStore(UI):
                     name='StoreFreeLesserArtifactCharmRemainingTimes',
                     area=self.REMAINING_BUY_TIMES_AREA,
                 ),
+            ),
+            ItemPurchasePlan(
+                name='friendship_gift_selection_chest',
+                asset=FRIENDSHIP_GIFT_ITEM,
+                desired_quantity=(normalize_config_purchase_quantity(
+                    self.config.StoreWeekly_BuyFriendshipGiftSelectionChest, maximum=10)
+                    if server.is_oversea_server(self.config.Emulator_PackageName)
+                    and server.lang == 'global_cn'
+                    else 0),
+                quantity_strategy='target',
+                purchase_limit=10,
+                direct_click=True,
+                single_purchase=True,
             ),
         ]
 
@@ -374,7 +396,9 @@ class CurrentStore(UI):
             COMMON_STORE_CHECK,
             STORE_CHECK,
         ):
-            if self.appear(check_button, interval=0):
+            # Store anchors remain visible behind the reward overlay. Require
+            # their active color before using the background as a return state.
+            if self.match_template_color(check_button, interval=0):
                 return True
         return False
 
@@ -561,7 +585,9 @@ class CurrentStore(UI):
         return 0, (0, 0, 0), 'pending'
 
     def _record_purchase_result(self, item: ItemPurchasePlan, result: PurchaseResult) -> None:
-        if not result.success:
+        # A sequence of single payments can fail after earlier purchases were
+        # verified. Keep those purchases in the summary even when it stops.
+        if not result.success and result.quantity <= 0:
             return
 
         self.purchase_stats[item.name] = self.purchase_stats.get(item.name, 0) + result.quantity
@@ -573,11 +599,22 @@ class CurrentStore(UI):
             logger.info(f'{item.name} counter={counter_to_text(result.counter)}')
 
     def _purchase_item(self, item: ItemPurchasePlan) -> PurchaseResult:
+        from tasks.base.resource_scheduling import ResourceCoordinator
+
+        ResourceCoordinator(self.config).request("Store")
         logger.info(f'Purchase {item.name}')
+        if item.single_purchase:
+            return self._purchase_friendship_gift(item)
         timeout = Timer(12, count=30).start()
         clicked_target = False
         clicked_confirm = False
         clicked_cancel = False
+        reward_seen = False
+        reward_closed = False
+        # This bounds the whole free claim from its first item click. Neither
+        # retries nor network recovery may restart it. A frame-count minimum
+        # would let slow screenshots extend this short flow indefinitely.
+        reward_timeout = Timer(20, count=0)
         layout: PurchasePopupLayout = 'unknown'
         needs_target_resolution = self._needs_remaining_target_resolution(item)
         effective_desired_quantity = item.desired_quantity
@@ -602,10 +639,63 @@ class CurrentStore(UI):
                 self._log_purchase_debug(item.name, item.asset, 'timeout')
                 return PurchaseResult(success=False)
 
-            if self.ui_additional():
-                timeout.reset()
+            if clicked_target and item.requires_reward_popup and reward_timeout.reached():
+                logger.warning(f'{item.name}: reward popup did not settle')
+                return PurchaseResult(success=False)
+
+            if self.appear(NETWORK_ERROR_DISCONNECT) or self.appear(NETWORK_ERROR_ABNORMAL):
+                # A recognized network dialog still blocks reward handling
+                # when its retry button is on cooldown. A False handler result
+                # means no click happened, not that this dialog disappeared.
+                if self.handle_network_error():
+                    timeout.reset()
                 continue
-            if self.handle_network_error():
+
+            # The current free-goods flow claims on the first item click and
+            # opens the reward directly; it no longer displays a purchase
+            # confirmation. Once that click is sent, this branch owns the
+            # remaining flow: wait for the reward, retry only its close, then
+            # wait for an active store. Never click the item or a confirmation
+            # again. A delayed reward or loading frame is not permission to
+            # repeat a claim that may already have reached the server.
+            # A close click is not proof that the overlay disappeared.
+            # Network dialogs above take priority even while their retry is on
+            # cooldown, because they share the same TOUCH_TO_CLOSE artwork.
+            if clicked_target and item.requires_reward_popup:
+                # The reward timer, not the ordinary purchase timer, bounds
+                # this phase. Reset the latter only inside this branch; that
+                # preserves the 20-second total cap while preventing a normal
+                # loading delay from being reported as an unrecognized frame.
+                timeout.reset()
+                if self.appear(TOUCH_TO_CLOSE):
+                    if not reward_seen:
+                        reward_seen = True
+                        logger.info(f'{item.name}: reward popup observed')
+                    if self.handle_touch_to_close(interval=2):
+                        reward_closed = True
+                    continue
+                if reward_seen:
+                    if (
+                        reward_closed
+                        and self._is_on_any_store_page()
+                        and self._detect_purchase_popup_layout() == 'unknown'
+                    ):
+                        logger.info(f'{item.name}: reward closed, returned to store')
+                        return PurchaseResult(
+                            success=True,
+                            quantity=purchase_quantity,
+                            counter=purchase_counter,
+                            quantity_source=quantity_source,
+                        )
+                    continue
+                # Handle unrelated popups while the reward is in flight, but
+                # stay out of the ordinary purchase path. In particular, do
+                # not reinterpret a stale confirmation as a valid claim step.
+                if self.ui_additional():
+                    timeout.reset()
+                continue
+
+            if self.ui_additional():
                 timeout.reset()
                 continue
 
@@ -646,6 +736,8 @@ class CurrentStore(UI):
 
                 if self._click_purchase_target(item):
                     clicked_target = True
+                    if item.requires_reward_popup:
+                        reward_timeout.start()
                     layout = 'unknown'
                     pending_target_resolution = needs_target_resolution
                     effective_desired_quantity = item.desired_quantity
@@ -678,7 +770,8 @@ class CurrentStore(UI):
                         target_retry.reset()
                         timeout.reset()
                         continue
-                timeout.reset()
+                # An unrecognized frame is not progress. Only a real action or
+                # newly observed state above may renew the local timeout.
                 continue
 
             if pending_target_resolution:
@@ -716,15 +809,14 @@ class CurrentStore(UI):
                 if effective_desired_quantity <= 0:
                     # Once the configured period target is already satisfied, do
                     # not touch confirm again. Store purchase popups have an
-                    # explicit "do not buy" button, so after entering this state
-                    # we only send POPUP_CANCEL once and then wait for the
-                    # sub-store page to settle again.
+                    # explicit "do not buy" button. Retry it while the popup
+                    # remains visible; a sent cancel is not a closed dialog.
                     skipping_purchase = True
                     purchase_quantity = 0
                     quantity_source = 'target_reached'
                     quantity_resolved = False
                     pending_quantity_adjustment = False
-                    if not clicked_cancel and self._close_purchase_popup_without_confirm(interval=1):
+                    if self._close_purchase_popup_without_confirm(interval=1):
                         clicked_cancel = True
                         progress = True
                     if progress:
@@ -736,7 +828,7 @@ class CurrentStore(UI):
                     continue
 
             if skipping_purchase:
-                if not clicked_cancel and self._close_purchase_popup_without_confirm(interval=1):
+                if self._close_purchase_popup_without_confirm(interval=1):
                     clicked_cancel = True
                     timeout.reset()
                     continue
@@ -775,7 +867,11 @@ class CurrentStore(UI):
                     timeout.reset()
                     continue
 
-            if quantity_resolved and self._click_purchase_confirm(layout, interval=1):
+            if quantity_resolved and self._click_purchase_confirm(
+                layout, interval=2 if item.requires_reward_popup else 1,
+            ):
+                if not clicked_confirm:
+                    reward_timeout.start()
                 clicked_confirm = True
                 progress = True
 
@@ -785,15 +881,9 @@ class CurrentStore(UI):
 
             current_layout = self._detect_purchase_popup_layout()
             popup_active = current_layout != 'unknown'
-            item_visible = self._has_item(item.asset, self.device.image)
 
-            if clicked_confirm and not popup_active and not item_visible:
-                return PurchaseResult(
-                    success=True,
-                    quantity=purchase_quantity,
-                    counter=purchase_counter,
-                    quantity_source=quantity_source,
-                )
+            # A loading frame can hide both the dialog and the item. Only a
+            # positively recognized store proves the purchase flow returned.
             if clicked_confirm and self._is_on_any_store_page() and not popup_active:
                 return PurchaseResult(
                     success=True,
@@ -829,9 +919,9 @@ class CurrentStore(UI):
         while 1:
             self.device.screenshot()
 
-            if self.ui_additional():
-                continue
             if self.handle_network_error(interval=0.2):
+                continue
+            if self.ui_additional():
                 continue
             if self._detect_purchase_popup_layout() != 'unknown':
                 continue
@@ -861,11 +951,11 @@ class CurrentStore(UI):
                 logger.warning('Store: post-purchase settle timeout')
                 return False
 
-            if self.ui_additional():
+            if self.handle_network_error(interval=0.2):
                 timeout.reset()
                 stable_count = 0
                 continue
-            if self.handle_network_error(interval=0.2):
+            if self.ui_additional():
                 timeout.reset()
                 stable_count = 0
                 continue
@@ -1010,6 +1100,13 @@ class CurrentStore(UI):
         self._enter_free_store(skip_first_screenshot=True)
         self._goto_inheritance_stone_store(skip_first_screenshot=True)
 
+    def _inheritance_store_view_complete(self) -> bool:
+        """Check for sold-out cards while the list is still at its start."""
+        return (
+            INHERITANCE_STONE_STORE_CHECK.match_template_color(self.device.image, threshold=30)
+            and self._has_item(ITEM_IN_CD, self.device.image)
+        )
+
     def _locate_inheritance_item(self, item: ItemPurchasePlan) -> bool:
         logger.info(f'Locate {item.name} in inheritance stone store')
         timeout = Timer(12, count=30).start()
@@ -1053,47 +1150,71 @@ class CurrentStore(UI):
                 timeout.reset()
                 continue
 
-    def _run_store_page_items(self, name: str, enter, items: list[ItemPurchasePlan]) -> None:
+    def _run_store_page_items(self, name: str, enter, items: list[ItemPurchasePlan]) -> bool:
         items = self._enabled_items(items)
         if not items:
             logger.info(f'Skip {name} by config')
-            return
+            return True
 
         self._wait_purchase_cooldown_before_switch()
         enter(skip_first_screenshot=True)
 
         for item in items:
             self.device.screenshot()
-            if not self._item_ready_for_purchase(item):
+            if not item.single_purchase and not self._item_ready_for_purchase(item):
                 logger.info(f'{item.name}: not available in current viewport')
                 continue
             result = self._purchase_item(item)
+            self._record_purchase_result(item, result)
             if result.success:
-                self._record_purchase_result(item, result)
                 self._record_purchase_time()
-                self._wait_store_ready_after_purchase()
+                if not self._wait_store_ready_after_purchase():
+                    return False
+            elif result.quantity_source != 'target_reached':
+                return False
+        return True
 
     def _run_inheritance_store(self):
         items = self._enabled_items(self._build_inheritance_store_items())
         if not items:
             logger.info('Skip inheritance stone store by config')
-            return
+            return True
 
+        # Entering this tab resets the list to its start. Sold-out cards sort
+        # after purchasable cards, so a clock in that initial viewport means
+        # every purchasable item is visible. Keep the tab only in this case,
+        # and do not scroll while processing its remaining items.
+        # Recheck after every purchase, since cards may be reordered. A clock
+        # seen only after _locate_inheritance_item swipes must never enable
+        # this shortcut: that would overlook items left of the viewport.
+        view_complete = False
         for index, item in enumerate(items):
-            self._wait_purchase_cooldown_before_switch()
-            if index == 0:
-                self._goto_inheritance_stone_store(skip_first_screenshot=True)
-            else:
-                self._reset_inheritance_store_view()
+            if not view_complete:
+                self._wait_purchase_cooldown_before_switch()
+                if index == 0:
+                    self._goto_inheritance_stone_store(skip_first_screenshot=True)
+                else:
+                    self._reset_inheritance_store_view()
 
-            if not self._locate_inheritance_item(item):
+            self.device.screenshot()
+            view_complete = self._inheritance_store_view_complete()
+            if view_complete:
+                logger.info('Store: all purchasable inheritance items visible, keep current tab')
+                if not self._item_ready_for_purchase(item):
+                    logger.info(f'{item.name}: not available in current viewport')
+                    continue
+            elif not self._locate_inheritance_item(item):
                 continue
 
             result = self._purchase_item(item)
             if result.success:
                 self._record_purchase_result(item, result)
                 self._record_purchase_time()
-                self._wait_store_ready_after_purchase()
+                if not self._wait_store_ready_after_purchase():
+                    return False
+            elif result.quantity_source != 'target_reached':
+                return False
+        return True
 
     def run(self):
         logger.hr('Store', level=1)
@@ -1106,23 +1227,29 @@ class CurrentStore(UI):
         self.ui_goto(page_store)
         self._load_shared_item_search()
 
-        self._run_store_page_items(
+        if not self._run_store_page_items(
             name='free store',
             enter=self._enter_free_store,
             items=self._build_free_store_items(),
-        )
-        self._run_inheritance_store()
-        self._run_store_page_items(
+        ):
+            self.config.task_delay(success=False)
+            return False
+        if not self._run_inheritance_store():
+            self.config.task_delay(success=False)
+            return False
+        if not self._run_store_page_items(
             name='conquest points store',
             enter=self._enter_conquest_points_store,
             items=self._build_conquest_store_items(),
-        )
+        ):
+            self.config.task_delay(success=False)
+            return False
 
         if self.purchase_stats:
             logger.hr('Store purchase summary', level=2)
             for name, quantity in sorted(self.purchase_stats.items()):
                 logger.attr(name, quantity)
 
-        self.config.task_call('DataUpdate', force_call=False)
+        self.ui_goto(page_main, skip_first_screenshot=True)
         self.config.task_delay(server_update=True)
         return True

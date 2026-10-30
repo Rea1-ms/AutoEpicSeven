@@ -1,10 +1,15 @@
 import type {BinaryLike} from 'node:crypto';
 import type {AlasConfig} from '../../preload/src/alasConfig';
 import {CopyToDirOptions} from '@common/utils/copyFilesToDir';
+import type {RuntimeCapabilities, RuntimeNotification, RuntimeProgress} from '@common/runtime';
 export {};
 
 declare global {
   interface Window {
+    __electron_preload__runtimeSetProgress: (progress: RuntimeProgress) => void;
+    __electron_preload__runtimeClearProgress: () => void;
+    __electron_preload__runtimeNotify: (notification: RuntimeNotification) => Promise<boolean>;
+    __electron_preload__runtimeCapabilities: () => Promise<RuntimeCapabilities>;
     __electron_preload__sha256sum: (data: BinaryLike) => string;
     __electron_preload__versions: string;
     __electron_preload__ipcRendererSend: (channel: string, ...args: any[]) => void;

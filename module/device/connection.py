@@ -19,9 +19,10 @@ from module.config.deep import deep_get
 from module.device.connection_attr import ConnectionAttr
 from module.device.env import IS_LINUX, IS_MACINTOSH, IS_WINDOWS
 from module.device.method.pool import WORKER_POOL
+from module.device.method.remove_warning import remove_shell_warning
 from module.device.method.utils import (PackageNotInstalled, RETRY_TRIES, get_serial_pair, handle_adb_error,
                                         handle_unknown_host_service, possible_reasons, random_port, recv_all,
-                                        remove_shell_warning, retry_sleep)
+                                        retry_sleep)
 from module.exception import EmulatorNotRunningError, RequestHumanTakeover
 from module.logger import logger
 
@@ -132,10 +133,13 @@ class Connection(ConnectionAttr):
         logger.attr('Server', self.config.Emulator_PackageName)
         server_.server = self.config.Emulator_PackageName
         logger.attr('PackageName', self.package)
-        server_.lang = server_.map_assets_lang(
+        # Wrappers may already cache the default language before connection.
+        # Updating only server_.lang leaves their buttons/matched_button on
+        # the old server even though the logged language is now correct.
+        server_.set_lang(server_.map_assets_lang(
             self.config.Emulator_PackageName,
             self.config.Emulator_GameLanguage,
-        )
+        ))
         logger.attr('Lang', self.config.LANG)
 
         self.check_mumu_app_keep_alive()
@@ -345,10 +349,14 @@ class Connection(ConnectionAttr):
         # MuMU Pro is the Mac version of MuMu
         if not IS_MACINTOSH:
             return False
-        if not self.is_mumu_family:
-            return False
-        logger.attr('is_mumu_pro', True)
-        return True
+        if self.is_mumu_family:
+            logger.attr('is_mumu_pro', True)
+            return True
+        if self.serial.startswith('emulator-'):
+            if 'MACPRO' in self.nemud_player_engine.upper():
+                logger.attr('is_mumu_pro', True)
+                return True
+        return False
 
     @cached_property
     @retry
@@ -374,7 +382,7 @@ class Connection(ConnectionAttr):
         return res
 
     def check_mumu_app_keep_alive(self):
-        if not self.is_mumu_family:
+        if not (self.is_mumu_family or self.is_mumu_pro):
             return False
 
         res = self.nemud_app_keep_alive
@@ -386,7 +394,7 @@ class Connection(ConnectionAttr):
             return True
         elif res == 'true':
             # https://mumu.163.com/help/20230802/35047_1102450.html
-            logger.critical('请在MuMu模拟器设置内关闭 "后台挂机时保活运行"')
+            logger.critical('Please disable "Keep running in background" in MuMu emulator settings')
             raise RequestHumanTakeover
         else:
             logger.warning(f'Invalid nemud.app_keep_alive value: {res}')
@@ -409,15 +417,14 @@ class Connection(ConnectionAttr):
                 which has nemud.app_keep_alive and always be a vertical device
                 MuMu PRO on mac has the same feature
         """
+        if self.is_mumu_pro:
+            return True
         if not self.is_mumu_family:
             return False
         if self.is_mumu_over_version_400:
             return True
         if self.nemud_app_keep_alive != '':
             return True
-        if IS_MACINTOSH:
-            if 'MACPRO' in self.nemud_player_engine:
-                return True
         return False
 
     @cached_property
@@ -864,7 +871,7 @@ class Connection(ConnectionAttr):
         logger.attr('customer.network_bridge_opened', value)
         if str(value).lower() == 'true':
             logger.critical('Please turn off "Network Bridging" in the settings of MuMuPlayer')
-            logger.critical('请在MuMU模拟器设置中关闭 网络桥接')
+            logger.critical('Please disable network bridging in MuMu emulator settings')
             raise RequestHumanTakeover
         return True
 
@@ -1037,8 +1044,8 @@ class Connection(ConnectionAttr):
             # ConnectionResetError: [WinError 10054] 远程主机强迫关闭了一个现有的连接。
             logger.error(e)
             if '强迫关闭' in str(e):
-                logger.critical('无法连接至ADB服务，请关闭UU加速器、原神私服、以及一些劣质代理软件。'
-                                '它们会劫持电脑上所有的网络连接，包括Alas与模拟器之间的本地连接。')
+                logger.critical('Unable to connect to the ADB server. Close UU Accelerator, private game servers, and conflicting proxy software. '
+                                'They may intercept local connections between Alas and the emulator.')
         return SelectedGrids(devices)
 
     def detect_device(self):

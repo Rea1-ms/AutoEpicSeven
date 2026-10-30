@@ -1,6 +1,8 @@
 from datetime import datetime, timedelta
 
 from module.base.timer import Timer
+from module.config.server import server_family
+from module.game_info.catalog import load_info
 from module.logger import logger
 from tasks.arena.assets.assets_arena import (
     BATTLE_PASS_CHECK,
@@ -10,8 +12,9 @@ from tasks.arena.assets.assets_arena import (
 )
 
 
-def next_battle_pass_recheck(recorded_at: datetime) -> datetime:
-    """Return the first Thursday 11:00 after the last stored MAX record."""
+def next_battle_pass_recheck(recorded_at: datetime, next_change: datetime | None = None) -> datetime:
+    """Recheck at a known season boundary or the next Thursday 11:00."""
+    recorded_at = recorded_at.astimezone().replace(tzinfo=None)
     days_until_thursday = (3 - recorded_at.weekday()) % 7
     recheck = (recorded_at + timedelta(days=days_until_thursday)).replace(
         hour=11,
@@ -21,6 +24,10 @@ def next_battle_pass_recheck(recorded_at: datetime) -> datetime:
     )
     if recheck <= recorded_at:
         recheck += timedelta(days=7)
+    if next_change is not None:
+        boundary = next_change.astimezone().replace(tzinfo=None)
+        if boundary > recorded_at:
+            recheck = min(recheck, boundary)
     return recheck
 
 
@@ -169,17 +176,22 @@ class ArenaRewardsMixin:
             return False
 
         arena_rank = self.config.stored.ArenaRank
-        if arena_rank.value >= arena_rank.FIXED_TOTAL:
-            recheck = next_battle_pass_recheck(arena_rank.time)
+        info = load_info()
+        family = server_family(self.config.Emulator_PackageName)
+        maximum = info.level_cap("arena_pass", family)
+        if arena_rank.value >= maximum and arena_rank.total == maximum:
+            recheck = next_battle_pass_recheck(
+                arena_rank.time, info.next_change("arena_pass", family, arena_rank.time),
+            )
             if datetime.now() < recheck:
-                # Maintenance is not weekly, but season maintenance always
-                # happens on Thursday. After MAX is confirmed, checking once
-                # after each Thursday 11:00 is enough. If the pass is still
-                # MAX, OCR refreshes the record and moves the next check to
-                # the following Thursday instead of retrying every day.
+                # Facts only invalidate the old observation; they never reset
+                # account progress or prove a reward was claimed. Keep the
+                # weekly recheck when season dates are missing or outdated.
+                # Compare boundaries against the observation, not against now:
+                # a worker resuming after a season change must recheck at once.
                 logger.info(
                     "Arena: battle pass already max level, skip reward check "
-                    f"until Thursday recheck at {recheck}"
+                    f"until season/weekly recheck at {recheck}"
                 )
                 return False
 

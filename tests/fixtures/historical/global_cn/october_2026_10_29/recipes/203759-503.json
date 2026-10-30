@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "source": "../MuMu-20261029-203759-503.png",
+  "suite": "october_events_20261029",
+  "case": "203759-503",
+  "items": [
+    {
+      "namespace": "global_cn",
+      "module": "activity/common",
+      "name": "COMMON_ACTIVITY_CHECK",
+      "box": [
+        69,
+        20,
+        118,
+        46
+      ],
+      "kind": "base"
+    },
+    {
+      "namespace": "global_cn",
+      "module": "activity/epic_path",
+      "name": "EPIC_PATH_CHECK",
+      "box": [
+        289,
+        59,
+        459,
+        99
+      ],
+      "kind": "base"
+    },
+    {
+      "namespace": "global_cn",
+      "module": "activity/epic_path",
+      "name": "EPIC_PATH_TASK_ENTRY",
+      "box": [
+        395,
+        646,
+        443,
+        674
+      ],
+      "kind": "base"
+    }
+  ]
+}
