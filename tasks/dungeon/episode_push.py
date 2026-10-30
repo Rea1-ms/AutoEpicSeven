@@ -286,7 +286,8 @@ class Episode(EpisodeNavigateMixin, CombatEntryMixin, UI):
                 star_condition_timeout.clear()
                 if '攻略' in condition:
                     logger.critical(
-                        'Episode: story team with 攻略 in the last three-star condition. '
+                        'Episode: story team cannot satisfy the strategy-hero requirement '
+                        'in the last three-star condition. '
                         'Please complete this stage manually '
                         'with a team that meets the three-star conditions, then restart this tool.'
                     )

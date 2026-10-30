@@ -258,7 +258,7 @@ class SupportRewardTests(unittest.TestCase):
             scheduling.should_schedule_after_battle(r.task.config, arena=True)
         )
         r.task.config.values[scheduling._checked_path(r.task.config, EVENT_ID)] = (
-            NOW.replace(tzinfo=None)
+            NOW.astimezone().replace(tzinfo=None)
         )
         self.assertFalse(
             scheduling.should_schedule_after_battle(r.task.config, arena=True)
@@ -272,7 +272,10 @@ class SupportRewardTests(unittest.TestCase):
         self.assertEqual(
             event.next_refresh(NOW).isoformat(), "2026-10-20T11:00:00+08:00"
         )
-        config.values[scheduling._checked_path(config, EVENT_ID)] = NOW.replace(
+        # Production markers use host-local naive time. Convert before dropping
+        # the calendar offset, or a UTC runner shifts this receipt eight hours
+        # forward and treats it as a future check at the first boundary.
+        config.values[scheduling._checked_path(config, EVENT_ID)] = NOW.astimezone().replace(
             tzinfo=None
         )
         for at, expected in (

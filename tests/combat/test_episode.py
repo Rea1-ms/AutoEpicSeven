@@ -1033,7 +1033,7 @@ class EpisodePushTests(unittest.TestCase):
                     replay.task._push()
                 self.assertEqual(error.exception.args, ())
                 critical.assert_called_once()
-                self.assertIn('攻略', critical.call_args.args[0])
+                self.assertIn('strategy-hero requirement', critical.call_args.args[0])
                 self.assertIn('manually', critical.call_args.args[0])
                 self.assertIn('three-star', critical.call_args.args[0])
                 self.assertEqual(replay.actions, [])
@@ -1053,7 +1053,7 @@ class EpisodePushTests(unittest.TestCase):
                     self.assertRaises(RequestHumanTakeover):
                 replay.task._push()
             critical.assert_called_once()
-            self.assertIn('攻略', critical.call_args.args[0])
+            self.assertIn('strategy-hero requirement', critical.call_args.args[0])
             self.assertEqual(replay.actions, [(0, 'READY_TO_FIGHT'), (1, 'CHOOSE_TEAM')])
             self.assertEqual(replay.index, 3)
             self.assertEqual(replay.task.completed_stages, 0)
