@@ -14,6 +14,7 @@ class EpisodeReplay(InteractionReplay):
         super().__init__(Episode, frames, clock)
         self.task.completed_stages = 0
         self.task.config.Episode_Number = 0
+        self.task.config.Episode_Mode = 'Main'
         self.task.config.Episode_MaxStages = 1
         self.task._map_ready = self.map_ready
         self.task._map_identity = self.map_identity
@@ -23,6 +24,9 @@ class EpisodeReplay(InteractionReplay):
         self.task._selector_episode = self.selector
         self.task._is_episode_selector = self.selector_ready
         self.task._chapter_entries = self.chapter_entries
+        self.task._side_story_list_ready = self.story_list_ready
+        self.task._side_story_identity = self.story_identity
+        self.task._side_story_cost = self.story_cost
         self.task.is_in_main = lambda **kw: self.frame.get('main', False)
         self.task.match_template_color = self.color
         self.task.match_color = self.fixed_color
@@ -101,6 +105,21 @@ class EpisodeReplay(InteractionReplay):
         if self.frame.get('fixture'):
             return Episode._chapter_entries(self.task)
         return self.frame.get('chapter_entries', [])
+
+    def story_list_ready(self):
+        if self.frame.get('fixture'):
+            return Episode._side_story_list_ready(self.task)
+        return self.frame.get('story_list', False)
+
+    def story_identity(self):
+        if self.frame.get('fixture'):
+            return Episode._side_story_identity(self.task)
+        return self.frame.get('story_identity')
+
+    def story_cost(self):
+        if self.frame.get('fixture'):
+            return Episode._side_story_cost(self.task)
+        return self.frame.get('story_cost')
 
     def route(self, page, **kwargs):
         self.actions.append((self.index, f'route:{page.name}'))

@@ -3025,7 +3025,8 @@
       "used_by": [
         "tests.combat.test_episode.EpisodePushTests.test_captured_exploration_marker_rejects_normal_and_obscured_pages",
         "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages",
-        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_stops_before_any_battle_action"
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_stops_before_any_battle_action",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_wrong_mode_and_unavailable_auto_stop_without_clicks"
       ]
     },
     "20261021-203153-292": {
@@ -3391,6 +3392,1048 @@
       "scene": "fast_combat_exhausted_repeat_locked",
       "used_by": [
         "tests.combat.test_episode.EpisodeFastOnlyTests.test_captured_fast_result_is_not_locked_prepare_and_exhausted_prepare_is"
+      ]
+    },
+    "20261029-210121-471": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-210121-471.png",
+      "sha256": "56cce1d2038c26988724bb2be31b6068e218fc6571ac6f55aa9a9b5b4d82f173",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "story progression 210121-471",
+      "source": "MuMu-20261029-210121-471.png",
+      "source_sha256": "a231af8fec081bfce532c4c21fa9f56be4974c194a069f7be58325c5c5044160",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_captured_lists_identify_current_row_buttons_and_cost",
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes"
+      ]
+    },
+    "20261029-210127-834": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-210127-834.png",
+      "sha256": "89c7c80cb5c083dd65cbe5fded6bcae24b325d66e9c8afdacd29a2ea66c49849",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "story progression 210127-834",
+      "source": "MuMu-20261029-210127-834.png",
+      "source_sha256": "9761099bc6935d2ed99c015baff850310a96a8fc67f5f7e2c72c3c40307aebe6",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_captured_lists_identify_current_row_buttons_and_cost",
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes"
+      ]
+    },
+    "20261029-210138-020": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-210138-020.png",
+      "sha256": "6d4adf311cf1909c9a96bfbe19d4e3d9ef48f318350bfe3a33f0e14e92ca2fd6",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "story progression 210138-020",
+      "source": "MuMu-20261029-210138-020.png",
+      "source_sha256": "dc4db07430eec7d12558e49cf58c806a42e33ea43a9544c8d793e9a3dddd4cec",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes"
+      ]
+    },
+    "20261029-210141-033": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-210141-033.png",
+      "sha256": "b15c269d51f1da8a2acd6490bc3c887413f105ba08ff6b83569b851860c64185",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "story progression 210141-033",
+      "source": "MuMu-20261029-210141-033.png",
+      "source_sha256": "af94c54ceee82dbaa6c5553f6a5e53dd04942e1f0be71a9f2771bd335cc4847d",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes"
+      ]
+    },
+    "20261029-210144-947": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-210144-947.png",
+      "sha256": "54b3d01ad5d44a2250a8456e09cca8de4cd9ad83ea8bbdfff431e73f77240cfb",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "story progression 210144-947",
+      "source": "MuMu-20261029-210144-947.png",
+      "source_sha256": "06ab1a5b6323765df6f6ce4786f7ccff9bd53cd6e7d6689fbcc945bf0748ede5",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes"
+      ]
+    },
+    "20261029-210255-424": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-210255-424.png",
+      "sha256": "a7f2668234a7c6e82956cf199bb0ac9027911872a0b888f92f4830885741ccb2",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "story progression 210255-424",
+      "source": "MuMu-20261029-210255-424.png",
+      "source_sha256": "1c16a5310a5270466f983cb5c3ecfcb6e02407dd918a116c1ca333b6b0182592",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes"
+      ]
+    },
+    "20261029-210300-938": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-210300-938.png",
+      "sha256": "0f47447d7548d1c606d5b6616ac5ca4464eb6cc5c0e29416fcf675843fe27fbd",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "story progression 210300-938",
+      "source": "MuMu-20261029-210300-938.png",
+      "source_sha256": "5d09359edba5d63a52686e908b70ebf74a780ed3e788be41125318de394cba75",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes"
+      ]
+    },
+    "20261029-210303-621": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-210303-621.png",
+      "sha256": "68195611915dcaf8303bff05dccf2307ce9794a2cbbe846d0fd0ca01826493b6",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "story progression 210303-621",
+      "source": "MuMu-20261029-210303-621.png",
+      "source_sha256": "6cdcbfdede61e2bbe51df2952ff8b1bd67b5c328b2ff3a6db50b8a7b94023f51",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes"
+      ]
+    },
+    "20261029-210341-110": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-210341-110.png",
+      "sha256": "f1dfcb1d66f1f0152f441eae55063ad511dba5b95bd22587354a736fb8b78637",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "story progression 210341-110",
+      "source": "MuMu-20261029-210341-110.png",
+      "source_sha256": "be50be7ea466fff2180608c44d7be3df4db94f3ee01fe19bfe912d7fbc5a67a2",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes"
+      ]
+    },
+    "20261029-210344-997": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-210344-997.png",
+      "sha256": "4930237a59202981ab7f8e26c71e89021b783799775a91b8755217798771277b",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "story progression 210344-997",
+      "source": "MuMu-20261029-210344-997.png",
+      "source_sha256": "0a1b88c0ca66763ff07803966d70f7e5c2962eb3f7cb20af3821bab2a600f4bd",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes"
+      ]
+    },
+    "20261029-210348-137": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-210348-137.png",
+      "sha256": "c8d40e0a4fd7941103aec6efa231fe3df65ea29d7bdf6a9d315c67134fe4ee1f",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "story progression 210348-137",
+      "source": "MuMu-20261029-210348-137.png",
+      "source_sha256": "4dbcb459e681967d9ce54b8cb85a38f3a9e1c5645d6875fa3fcbf15fda590b28",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes"
+      ]
+    },
+    "20261029-210350-311": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-210350-311.png",
+      "sha256": "8ae8d911b98c900892a8f4e6473763fc73b0d58c8bcb1999f5e962bda23a0d02",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "story progression 210350-311",
+      "source": "MuMu-20261029-210350-311.png",
+      "source_sha256": "5cc5e7a85b5d47479c00b2f5c16e2760a695d70e12d49426009d2b6a47224ac2",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_captured_lists_identify_current_row_buttons_and_cost",
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes"
+      ]
+    },
+    "20261029-210354-862": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-210354-862.png",
+      "sha256": "607200217ef247a646a15c3ae9e3c61527fcae15bc4a5c59ee0356cd16216c2a",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "story progression 210354-862",
+      "source": "MuMu-20261029-210354-862.png",
+      "source_sha256": "04758d51ac3b9edf84e5a624c634166525cc0b1b8c403fa39df62d78132d6259",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes"
+      ]
+    },
+    "20261029-210400-283": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-210400-283.png",
+      "sha256": "9544a776ffb10b5b544dcdef5e2621c7ce471a98197a23a3553269e11d576698",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "story progression 210400-283",
+      "source": "MuMu-20261029-210400-283.png",
+      "source_sha256": "551853054114a560831bc95ccd2025692ed5f4298212fdc3806f26f8fe705626",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes"
+      ]
+    },
+    "20261029-210401-363": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-210401-363.png",
+      "sha256": "e06f18d63dfa61174f5e67b5e410625402032a47a5dfc175509662726f212b6b",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "story progression 210401-363",
+      "source": "MuMu-20261029-210401-363.png",
+      "source_sha256": "e0dadff632a2455587b76646ce961f302ae3ee9ccb957f6d9fa3dc79e10ce27f",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes"
+      ]
+    },
+    "20261029-210403-270": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-210403-270.png",
+      "sha256": "4cfdfb9f38321820ef55d59ecf336759a0bd1ac7c715ee57cde95d6a1029c29c",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "story progression 210403-270",
+      "source": "MuMu-20261029-210403-270.png",
+      "source_sha256": "943611aca2ca54e60e8382bcf7442bc3b91792860f8e7d4d8a9c53b0328644f7",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_captured_lists_identify_current_row_buttons_and_cost",
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes"
+      ]
+    },
+    "20261029-210410-023": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-210410-023.png",
+      "sha256": "e69eca00551eeed2693358c47ebe3ee5920548aa12746936283fcaca5ad4703c",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "story progression 210410-023",
+      "source": "MuMu-20261029-210410-023.png",
+      "source_sha256": "a10bdb45cc4f57ffb6026cb46b76a497038edafe7a53759ea12a6287d5d719f6",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes"
+      ]
+    },
+    "20261029-210411-778": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-210411-778.png",
+      "sha256": "41081cf11aa2885b6453b69a37da2b8c14d38257d674064264ee02d5d9b43cfe",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "story progression 210411-778",
+      "source": "MuMu-20261029-210411-778.png",
+      "source_sha256": "97497d04b2b67db80a423fbf5e16a2068f6472bf728971af9f0be54291109f06",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes"
+      ]
+    },
+    "20261029-210412-934": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-210412-934.png",
+      "sha256": "0c4d780a673e674d50448af32671f62564ad8b19a883bb15400efb9f8b230133",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "story progression 210412-934",
+      "source": "MuMu-20261029-210412-934.png",
+      "source_sha256": "ccb7ce748151e8f8e470cc7c9cd507bf2330eccb3c667d65ac10bc63a016b3db",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes"
+      ]
+    },
+    "20261029-210414-192": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-210414-192.png",
+      "sha256": "7efdbbfeb59ec43fc9584c5027bfb5a906d7980f68ffa20f617083617c6cf574",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "story progression 210414-192",
+      "source": "MuMu-20261029-210414-192.png",
+      "source_sha256": "fb770987b3f99f05b441b638ee603253a35c280ee6857943f929c5ca8fd60532",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes"
+      ]
+    },
+    "20261029-210421-767": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-210421-767.png",
+      "sha256": "ebcdaae8f5af301ad599511dc084b12bbf39a5d3ff14cf164d283a4eb9617246",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "story progression 210421-767",
+      "source": "MuMu-20261029-210421-767.png",
+      "source_sha256": "c0fcf3ac79cc5e603c2ff7c50531f7600828b229586a7677b8ecf322b718ab90",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes"
+      ]
+    },
+    "20261029-210423-105": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-210423-105.png",
+      "sha256": "64f6581bbae6d6bf35e092ff9a0a567ed1818c92c2d598eecb62617319660ac1",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "story progression 210423-105",
+      "source": "MuMu-20261029-210423-105.png",
+      "source_sha256": "ba557bbff5b077da0c6316be5ba988d3878ec93efa6263b015230c0e69216697",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes"
+      ]
+    },
+    "20261029-210424-139": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-210424-139.png",
+      "sha256": "7efdbbfeb59ec43fc9584c5027bfb5a906d7980f68ffa20f617083617c6cf574",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "story progression 210424-139",
+      "source": "MuMu-20261029-210424-139.png",
+      "source_sha256": "fb770987b3f99f05b441b638ee603253a35c280ee6857943f929c5ca8fd60532",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_captured_manual_elites_and_auto_animations_are_distinct",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes"
+      ]
+    },
+    "20261029-210426-104": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-210426-104.png",
+      "sha256": "4f96b43d016b49fd5de3caf262ba60143afa29fde3a4fd5025b332fdc37e776d",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "story progression 210426-104",
+      "source": "MuMu-20261029-210426-104.png",
+      "source_sha256": "651eed8848c9b0195adfaa7eba98c7893e6385402824ebe4f5744408ed7e4cb2",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_captured_lists_identify_current_row_buttons_and_cost",
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_dimmed_list_and_manual_battle_never_authorize_clicks",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_paid_watch_is_not_repeated_on_old_frames_or_delayed_debit",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_same_returned_list_cannot_replay_a_paid_story",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_paid_watch_waits_through_debit_and_requires_entry_evidence",
+        "tests.combat.test_story_push.StoryIntroTests.test_unrecognized_or_dimmed_frames_never_reveal"
+      ]
+    },
+    "20261029-212346-548": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-212346-548.png",
+      "sha256": "53999782745196b7b3a39cf55d44ea9695765c5ba9033c7bb9833cefbbdd9f6f",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "story progression 212346-548",
+      "source": "MuMu-20261029-212346-548.png",
+      "source_sha256": "9bdf7730e2abb48cfb845bc3aa48811220b24c53c7514fb5927f2c0115b6a3f2",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_paid_watch_is_not_repeated_on_old_frames_or_delayed_debit",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_same_returned_list_cannot_replay_a_paid_story",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_paid_watch_waits_through_debit_and_requires_entry_evidence"
+      ]
+    },
+    "20261029-212443-661": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-212443-661.png",
+      "sha256": "648d48e3a4038fa0773440e6514b0baf597b1ee56d0604c5735d35ccd3b56681",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "story progression 212443-661",
+      "source": "MuMu-20261029-212443-661.png",
+      "source_sha256": "9b52e4ec72054ab979de1899330dc6fc0756c0dda17bfb465006b14a34b0ea45",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_captured_lists_identify_current_row_buttons_and_cost",
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_dimmed_list_and_manual_battle_never_authorize_clicks",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_paid_watch_is_not_repeated_on_old_frames_or_delayed_debit",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_ready_retries_but_new_prepare_starts_without_old_cooldown",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_clear_repeated_frames_count_once_and_never_toggle_auto",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_paid_watch_waits_through_debit_and_requires_entry_evidence",
+        "tests.combat.test_story_push.StoryIntroTests.test_unrecognized_or_dimmed_frames_never_reveal"
+      ]
+    },
+    "20261029-212445-854": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-212445-854.png",
+      "sha256": "57f209cc6144f60294a415034bb7eaf70ef773b5d7ac58a05eb0acb259d3abdc",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "story progression 212445-854",
+      "source": "MuMu-20261029-212445-854.png",
+      "source_sha256": "16fbc62e1cd4a3d11ec439803852aa515e4bf4b8556b17136687512934eea205",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_ready_retries_but_new_prepare_starts_without_old_cooldown",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_clear_repeated_frames_count_once_and_never_toggle_auto",
+        "tests.combat.test_story_push.StoryIntroTests.test_unrecognized_or_dimmed_frames_never_reveal"
+      ]
+    },
+    "20261029-212449-450": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-212449-450.png",
+      "sha256": "83a9b1ba0467faa111b5242e93df90868d802021d5803c8ad251d21920711ced",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "story progression 212449-450",
+      "source": "MuMu-20261029-212449-450.png",
+      "source_sha256": "d44d30de80a9edda354fb3a37225e8699a29477c0ec4f2fa35c3663fc079e63c",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_captured_manual_elites_and_auto_animations_are_distinct",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns"
+      ]
+    },
+    "20261029-212452-590": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-212452-590.png",
+      "sha256": "f7f5ebb13e8434ac64742fcec3045fa33b761d4827aa558162e7bb43a922ed56",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "story progression 212452-590",
+      "source": "MuMu-20261029-212452-590.png",
+      "source_sha256": "a1272e74832bf8faeb792f283b1e6c6699526d2e563255199059a6bd3ac737e2",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns"
+      ]
+    },
+    "20261029-212454-720": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-212454-720.png",
+      "sha256": "79e920b55769fa572c2159c7ff7c74c8e4445e2cc26d7ba63364379031756f29",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "story progression 212454-720",
+      "source": "MuMu-20261029-212454-720.png",
+      "source_sha256": "11c9103e5efd85d8cb7e945ee27bfed8e7a0615994de62a52766ac9d2e079a6f",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns"
+      ]
+    },
+    "20261029-212457-623": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-212457-623.png",
+      "sha256": "87987c67602e9394282be33c38945e77e3c6f02abef4aad007f73b3b05972aad",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "story progression 212457-623",
+      "source": "MuMu-20261029-212457-623.png",
+      "source_sha256": "4ca0c73feebcd9911f727a9a4dcf121d3adaeab720d65a61d35f07867e3d390d",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns"
+      ]
+    },
+    "20261029-212459-418": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-212459-418.png",
+      "sha256": "38c4bee8e9b8cbc618146524371d55f137b1a873b4607b04e63d1bd1a2b5e1dd",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "story progression 212459-418",
+      "source": "MuMu-20261029-212459-418.png",
+      "source_sha256": "4f69e90ebe5df8c17d5c6e58bd63bf5bd6c7e514555cf8b11bf4c8e37c45f4be",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns"
+      ]
+    },
+    "20261029-212500-658": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-212500-658.png",
+      "sha256": "bf055eaa33788b13806a9a75d37b43e3f68c563932e067beda1e757ac664bd96",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "story progression 212500-658",
+      "source": "MuMu-20261029-212500-658.png",
+      "source_sha256": "0017bd9c82f8d9491f2d81b094b6a427eb9f34e02bf44e2a6213e6d0eeda5fbe",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns"
+      ]
+    },
+    "20261029-212502-109": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-212502-109.png",
+      "sha256": "1003935e227006dc2bf81dcd0b5e5a8a759f8912c32ae8db5ffb832f54faaf67",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "story progression 212502-109",
+      "source": "MuMu-20261029-212502-109.png",
+      "source_sha256": "08f492f5272cb4847a5bb956cf76e5e5e069a9b0ae60c98f7aa1d811e2c094d5",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_captured_manual_elites_and_auto_animations_are_distinct",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_main_loop_also_restores_manual_elite_after_story",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_ready_retries_but_new_prepare_starts_without_old_cooldown",
+        "tests.combat.test_story_push.StoryIntroTests.test_unrecognized_or_dimmed_frames_never_reveal",
+        "tests.combat.test_story_push.StoryIntroTests.test_positive_battle_prepare_supporter_and_result_rearm_reveal"
+      ]
+    },
+    "20261029-212604-348": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-212604-348.png",
+      "sha256": "c9b14d235a0744e86cab6ab046cfb5af74ac61c9f1c6b8e6aefa6f5535961311",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "story progression 212604-348",
+      "source": "MuMu-20261029-212604-348.png",
+      "source_sha256": "2ddd5f68e7ea7dd98129e66f53cc96e4b8a886c1ea4caf9773ed342080ab985e",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_captured_manual_elites_and_auto_animations_are_distinct",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_main_loop_also_restores_manual_elite_after_story",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_skip_retry_does_not_delay_confirmation_or_limit_exit"
+      ]
+    },
+    "20261029-212606-278": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-212606-278.png",
+      "sha256": "d4d0378a6854c9fc8fad10a2376dfb8e1f31a83e2869526ba9a40b8a7f4fc198",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "story progression 212606-278",
+      "source": "MuMu-20261029-212606-278.png",
+      "source_sha256": "b5ff2233417b476340733550635fa273976368972f25a5c795c26908b547c99c",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_captured_manual_elites_and_auto_animations_are_distinct",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_main_loop_also_restores_manual_elite_after_story",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_skip_retry_does_not_delay_confirmation_or_limit_exit"
+      ]
+    },
+    "20261029-212607-478": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-212607-478.png",
+      "sha256": "b9fc33bbf3fe8a6de36498336f25e06895452cf4010db3b4198d88ad2ec032bc",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "story progression 212607-478",
+      "source": "MuMu-20261029-212607-478.png",
+      "source_sha256": "e1ae14ff56243fb1b75b71249140a3adfe832b3d792f997adbd71180cf2ab358",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_captured_manual_elites_and_auto_animations_are_distinct",
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_dimmed_list_and_manual_battle_never_authorize_clicks",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_main_loop_also_restores_manual_elite_after_story",
+        "tests.combat.test_story_push.StoryIntroTests.test_unrecognized_or_dimmed_frames_never_reveal"
+      ]
+    },
+    "20261029-212612-942": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-212612-942.png",
+      "sha256": "31db1f1b4bbbbe705c94a97848fd79c5c8df55e3d89ad6acb10c4afe01642660",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "story progression 212612-942",
+      "source": "MuMu-20261029-212612-942.png",
+      "source_sha256": "35969e9e54176c3846afd3b82bbc0cca44802565d253d26628c9d95b6dde69d3",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_captured_manual_elites_and_auto_animations_are_distinct",
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_dimmed_list_and_manual_battle_never_authorize_clicks",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_main_loop_also_restores_manual_elite_after_story",
+        "tests.combat.test_story_push.StoryIntroTests.test_unrecognized_or_dimmed_frames_never_reveal"
+      ]
+    },
+    "20261029-212614-702": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-212614-702.png",
+      "sha256": "38b090aa03f52f423f576af25c3b524e449c55d05ead9e3eb084d274abaabc3f",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "story progression 212614-702",
+      "source": "MuMu-20261029-212614-702.png",
+      "source_sha256": "f701667bd5b1fc554fca90c769cd311765ea6558258a7e68176c126e6db8500b",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_captured_manual_elites_and_auto_animations_are_distinct",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_main_loop_also_restores_manual_elite_after_story"
+      ]
+    },
+    "20261029-212711-918": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-212711-918.png",
+      "sha256": "1dbb42466b590ae3c35ebadaf0ce49bae6263c588f3d46478c5ab7934caa8b96",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "story progression 212711-918",
+      "source": "MuMu-20261029-212711-918.png",
+      "source_sha256": "761f8bf2ee0dfc4d2eaba3ce6ea9cc7a499ac81477d27e1d61e207eadcbc49eb",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns"
+      ]
+    },
+    "20261029-212713-459": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-212713-459.png",
+      "sha256": "a9c5e8afbf42265afb0826f45d747d0a0caa0bd9235f044067858601a3ff3bf2",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "story progression 212713-459",
+      "source": "MuMu-20261029-212713-459.png",
+      "source_sha256": "aeb6c161d18c20230b821ff88557d8cd193c92fb2550fb993fd30a80efb780e1",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns"
+      ]
+    },
+    "20261029-212714-667": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-212714-667.png",
+      "sha256": "992bf728b62f5e30cab146f54d0a5c35792ab4c045f2f486288c491a60b397a8",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "story progression 212714-667",
+      "source": "MuMu-20261029-212714-667.png",
+      "source_sha256": "3eab128d6a491eb845116788970d4e8727c8ea20dcb4ea4aaf8a21e97b4954e2",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_captured_manual_elites_and_auto_animations_are_distinct",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns"
+      ]
+    },
+    "20261029-212717-178": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-212717-178.png",
+      "sha256": "7521be1ae5f6f6c3536463653ae1a59a7df20ae7145d490c4141e801705f7775",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "story progression 212717-178",
+      "source": "MuMu-20261029-212717-178.png",
+      "source_sha256": "3b2bffaeff959c74d234ba85cbdf84b0bbdacf18ffaa7b0d83683038746076c8",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_ready_retries_but_new_prepare_starts_without_old_cooldown",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_clear_repeated_frames_count_once_and_never_toggle_auto",
+        "tests.combat.test_story_push.StoryIntroTests.test_unrecognized_or_dimmed_frames_never_reveal"
+      ]
+    },
+    "20261029-212720-853": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-212720-853.png",
+      "sha256": "3aa7dcffe4c81a58e54a2a17869d25ab786d5f1a778a3bb3180f6042f73e5c66",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "story progression 212720-853",
+      "source": "MuMu-20261029-212720-853.png",
+      "source_sha256": "b7f7a6ffa615388bf552e8459ca028336360946aed643fc760344b8c3ed6e649",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_captured_lists_identify_current_row_buttons_and_cost",
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_ready_retries_but_new_prepare_starts_without_old_cooldown",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_skip_retry_does_not_delay_confirmation_or_limit_exit",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_clear_repeated_frames_count_once_and_never_toggle_auto"
+      ]
+    },
+    "20261029-story-title-asset": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-story-title-asset.png",
+      "sha256": "31c37f03592867de3e355d63a730341705b17afb80a361389b0b8ee6eebed8e1",
+      "server": "global_cn",
+      "capture_type": "prepared_asset",
+      "scene": "User-prepared title asset; black outside retained artwork is masking, not a captured screen state",
+      "source": "codex-clipboard-68f62b8e-74ee-4bd2-b3d6-deff51bdec68.png",
+      "source_sha256": "31c37f03592867de3e355d63a730341705b17afb80a361389b0b8ee6eebed8e1",
+      "privacy_redaction": [],
+      "used_by": [
+        "tests.combat.test_story_push.StoryIntroTests.test_prepared_assets_and_demonstrations_match_without_title_text"
+      ]
+    },
+    "20261029-story-history-asset": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-story-history-asset.png",
+      "sha256": "81d8dd9019aec3dc36d4022ed89b139cb4c1ef083dcfc77a0b3e3e4126bae980",
+      "server": "global_cn",
+      "capture_type": "prepared_asset",
+      "scene": "User-prepared history-icon asset; not a sequential gameplay frame",
+      "source": "codex-clipboard-4f2b3b66-6805-4c8d-80a7-9015cc9b2ab4.png",
+      "source_sha256": "81d8dd9019aec3dc36d4022ed89b139cb4c1ef083dcfc77a0b3e3e4126bae980",
+      "privacy_redaction": [],
+      "used_by": [
+        "tests.combat.test_story_push.StoryIntroTests.test_prepared_assets_and_demonstrations_match_without_title_text"
+      ]
+    },
+    "20261029-story-intro-before": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-story-intro-before.png",
+      "sha256": "d44d30de80a9edda354fb3a37225e8699a29477c0ec4f2fa35c3663fc079e63c",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "Demonstration: closed story curtain, history icon visible, no skip button or title text",
+      "source": "codex-clipboard-c8b65876-c68f-4913-81a7-4d4b56c0508e.png",
+      "source_sha256": "d44d30de80a9edda354fb3a37225e8699a29477c0ec4f2fa35c3663fc079e63c",
+      "privacy_redaction": [],
+      "used_by": [
+        "tests.combat.test_story_push.StoryIntroTests.test_prepared_assets_and_demonstrations_match_without_title_text",
+        "tests.combat.test_story_push.StoryIntroTests.test_blank_reveal_latches_through_repeats_blackout_and_skip",
+        "tests.combat.test_story_push.StoryIntroTests.test_visible_skip_or_confirmation_prevents_later_blank_click",
+        "tests.combat.test_story_push.StoryIntroTests.test_unrecognized_or_dimmed_frames_never_reveal",
+        "tests.combat.test_story_push.StoryIntroTests.test_both_loops_reveal_and_reset_on_returned_map_or_list",
+        "tests.combat.test_story_push.StoryIntroTests.test_positive_battle_prepare_supporter_and_result_rearm_reveal",
+        "tests.combat.test_story_push.StoryIntroTests.test_starting_another_loop_rearms_the_same_task",
+        "tests.combat.test_story_push.StoryIntroTests.test_history_alone_reveals_with_unrelated_backgrounds",
+        "tests.combat.test_story_push.StoryIntroTests.test_missing_history_waits_for_skip_even_with_title_artwork"
+      ]
+    },
+    "20261029-story-intro-skip": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261029-story-intro-skip.png",
+      "sha256": "a1272e74832bf8faeb792f283b1e6c6699526d2e563255199059a6bd3ac737e2",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "Demonstration: skip already visible before title text, after a blank-area tap",
+      "source": "codex-clipboard-eefea743-5a70-46fa-938a-c1f370be5ccb.png",
+      "source_sha256": "a1272e74832bf8faeb792f283b1e6c6699526d2e563255199059a6bd3ac737e2",
+      "privacy_redaction": [],
+      "used_by": [
+        "tests.combat.test_story_push.StoryIntroTests.test_prepared_assets_and_demonstrations_match_without_title_text",
+        "tests.combat.test_story_push.StoryIntroTests.test_blank_reveal_latches_through_repeats_blackout_and_skip",
+        "tests.combat.test_story_push.StoryIntroTests.test_both_loops_reveal_and_reset_on_returned_map_or_list",
+        "tests.combat.test_story_push.StoryIntroTests.test_missing_history_waits_for_skip_even_with_title_artwork"
       ]
     }
   },
