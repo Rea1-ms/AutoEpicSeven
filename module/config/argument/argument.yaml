@@ -420,6 +420,7 @@ LimitedActivity:
   GetEpicPathDailyReward: true
 
 SpecialActivity:
+  GetAlenciaDailyReward: true
   # 花费天空石的购买项默认关闭，避免升级后自动改变用户消费。
   BuyHucheMysticMedals:
     value: false
@@ -427,9 +428,13 @@ SpecialActivity:
     keepvalue: true
 
 Episode:
+  Mode:
+    value: Main
+    option: [ Main, Side ]
   Number:
     value: 0
     option: [ 0, 1, 2, 3, 4, 5, 6 ]
+    display: hide
   MaxStages:
     value: 0
     valuetype: str
@@ -444,6 +449,9 @@ BuyPenguins:
 
 DimensionalExploration:
   RunCount: 1
+  StartStrategy:
+    value: 雇佣契约
+    option: [ 雇佣契约, 痛苦机械装置, 沉重包袱, 基础锻炼铁锤 ]
   EventSampling: false
   KnightPriority:
     value: "起源拉斯 > 亚敏"
@@ -462,6 +470,9 @@ DimensionalExploration:
     type: textarea
   ThiefPriority:
     value: "保健室老师律荷 > 转学生艾庭 > 可丽"
+    type: textarea
+  UpgradePriority:
+    value: ""
     type: textarea
 
 DimensionalExplorationRuntime:

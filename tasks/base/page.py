@@ -326,6 +326,27 @@ if server_.lang == "global_cn":
     page_huche_shop.link(BACK, destination=page_main)
     page_main.link(MAIN_GOTO_HUCHE_SHOP, destination=page_huche_shop, match_before_click=True)
 
+# Alencia handbook
+if server_.is_oversea_server() and server_.lang == 'global_cn':
+    from tasks.activity.assets.assets_activity_alencia_handbook import (
+        ALENCIA_HANDBOOK_CHECK,
+        ALENCIA_HANDBOOK_ENTRY,
+        ALENCIA_HUB_CHECK,
+        ALENCIA_REWARDS_CHECK,
+        ALENCIA_REWARDS_ENTRY,
+        MAIN_GOTO_ALENCIA_HUB,
+    )
+
+    page_alencia_hub = Page(ALENCIA_HUB_CHECK)
+    page_alencia_hub.link(BACK, destination=page_main)
+    page_main.link(MAIN_GOTO_ALENCIA_HUB, destination=page_alencia_hub, match_before_click=True)
+    page_alencia_handbook = Page(ALENCIA_HANDBOOK_CHECK)
+    page_alencia_handbook.link(BACK, destination=page_alencia_hub)
+    page_alencia_hub.link(ALENCIA_HANDBOOK_ENTRY, destination=page_alencia_handbook, match_before_click=True)
+    page_alencia_rewards = Page(ALENCIA_REWARDS_CHECK)
+    page_alencia_rewards.link(BACK, destination=page_alencia_handbook)
+    page_alencia_handbook.link(ALENCIA_REWARDS_ENTRY, destination=page_alencia_rewards, match_before_click=True)
+
 # Mail
 # Mail is another toolbar overlay page. BACK should normally return to the
 # page that opened it, not always page_main. Keep page_main as static fallback

@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "000455-285.png",
+  "suite": "alencia_handbook",
+  "case": "000455-285",
+  "items": [
+    {
+      "name": "MAIN_GOTO_ALENCIA_HUB",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "activity/alencia_handbook",
+      "box": [
+        6,
+        513,
+        106,
+        531
+      ]
+    }
+  ]
+}

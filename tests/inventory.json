@@ -3897,6 +3897,784 @@
           ],
           "status": "已纳入",
           "reason": "2026-09-28 招募顺位与已采集事件规则；事件文字样本见 event_observations.json"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentViewportRegressions.test_scrolled_left_column_keeps_complete_names_and_costs",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261003-112531-836"
+          ],
+          "status": "已纳入",
+          "reason": "横向滚动的左列完整字段与右侧裁切反例；重复帧不确认招募"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentViewportRegressions.test_right_column_with_clipped_costs_is_not_recruited",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261003-112536-124"
+          ],
+          "status": "已纳入",
+          "reason": "横向滚动的左列完整字段与右侧裁切反例；重复帧不确认招募"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentViewportRegressions.test_name_and_cost_fields_must_fit_before_ocr_clamping",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261003-112531-836"
+          ],
+          "status": "已纳入",
+          "reason": "横向滚动的左列完整字段与右侧裁切反例；重复帧不确认招募"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentViewportRegressions.test_visible_left_priority_retries_selection_without_swiping",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261003-112531-836"
+          ],
+          "status": "已纳入",
+          "reason": "横向滚动的左列完整字段与右侧裁切反例；重复帧不确认招募"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentViewportRegressions.test_repeated_boundary_frames_end_missing_priority_search",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261003-112531-836"
+          ],
+          "status": "已纳入",
+          "reason": "两次边界手势仍未找到目标时选择已识别的可负担英雄，不放弃可用招募券"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.StartingAndStarlightRegressions.test_dropdown_source_matches_four_unlocked_cards",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "明确截图结果与模拟边界；其他开局卡片的选中边框仅作几何模拟，不宣称实机验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.StartingAndStarlightRegressions.test_all_four_start_strategies_select_their_visible_card",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081207-157"
+          ],
+          "status": "已纳入",
+          "reason": "明确截图结果与模拟边界；其他开局卡片的选中边框仅作几何模拟，不宣称实机验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.StartingAndStarlightRegressions.test_wrong_selected_card_retries_without_confirming",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081226-118"
+          ],
+          "status": "已纳入",
+          "reason": "明确截图结果与模拟边界；其他开局卡片的选中边框仅作几何模拟，不宣称实机验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.StartingAndStarlightRegressions.test_each_selected_border_uses_its_own_position",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081207-157",
+            "20260922-081226-118"
+          ],
+          "status": "已纳入",
+          "reason": "明确截图结果与模拟边界；其他开局卡片的选中边框仅作几何模拟，不宣称实机验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.StartingAndStarlightRegressions.test_unknown_or_invisible_strategy_never_confirms_another",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081226-118"
+          ],
+          "status": "已纳入",
+          "reason": "明确截图结果与模拟边界；其他开局卡片的选中边框仅作几何模拟，不宣称实机验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.StartingAndStarlightRegressions.test_starlight_reads_right_hand_reward_and_counts_once_across_restart",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-233818-836"
+          ],
+          "status": "已纳入",
+          "reason": "明确截图结果与模拟边界；其他开局卡片的选中边框仅作几何模拟，不宣称实机验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.StartingAndStarlightRegressions.test_unreadable_starlight_waits_without_using_the_score",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-233818-836"
+          ],
+          "status": "已纳入",
+          "reason": "明确截图结果与模拟边界；其他开局卡片的选中边框仅作几何模拟，不宣称实机验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.StartingAndStarlightRegressions.test_zero_starlight_is_a_reading_not_missing_ocr",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-233818-836"
+          ],
+          "status": "已纳入",
+          "reason": "明确截图结果与模拟边界；其他开局卡片的选中边框仅作几何模拟，不宣称实机验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.StartingAndStarlightRegressions.test_empty_settlement_does_not_record_starlight",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260924-091819-235"
+          ],
+          "status": "已纳入",
+          "reason": "明确截图结果与模拟边界；其他开局卡片的选中边框仅作几何模拟，不宣称实机验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.StartingAndStarlightRegressions.test_frozen_costs_work_without_cache_and_leave_unknowns_unknown",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "明确截图结果与模拟边界；其他开局卡片的选中边框仅作几何模拟，不宣称实机验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.StartingAndStarlightRegressions.test_local_costs_override_frozen_costs_and_verified_aliases_are_canonical",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "明确截图结果与模拟边界；其他开局卡片的选中边框仅作几何模拟，不宣称实机验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_healthy_team_upgrades_even_when_healing_is_available",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232305-766"
+          ],
+          "status": "已纳入",
+          "reason": "休整治疗严格按最低30%或平均60%血量，按钮可用性明确模拟，完整血条仍用已登记真实截图验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_lowest_or_average_hp_uses_strict_thresholds",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "休整治疗严格按最低30%或平均60%血量，按钮可用性明确模拟，完整血条仍用已登记真实截图验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_low_hp_chooses_healing_and_boundaries_choose_upgrade",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232305-766"
+          ],
+          "status": "已纳入",
+          "reason": "休整治疗严格按最低30%或平均60%血量，按钮可用性明确模拟，完整血条仍用已登记真实截图验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_life_recovery_and_revive_keep_priority_without_hp_inspection",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232305-766"
+          ],
+          "status": "已纳入",
+          "reason": "恢复生命体征无竞争选项、或复活可用而生命体征恢复禁用时无需额外查看血量"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_healthy_team_leaves_when_upgrade_is_disabled_without_healing",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232305-766"
+          ],
+          "status": "已纳入",
+          "reason": "休整治疗严格按最低30%或平均60%血量，按钮可用性明确模拟，完整血条仍用已登记真实截图验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_healing_option_opens_owned_roster_and_does_not_assume_click_success",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232305-766"
+          ],
+          "status": "已纳入",
+          "reason": "休整治疗严格按最低30%或平均60%血量，按钮可用性明确模拟，完整血条仍用已登记真实截图验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_two_complete_real_roster_frames_return_and_healthy_team_upgrades",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232305-766",
+            "20261001-133151-873"
+          ],
+          "status": "已纳入",
+          "reason": "休整治疗严格按最低30%或平均60%血量，按钮可用性明确模拟，完整血条仍用已登记真实截图验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_incomplete_or_changing_roster_waits_for_two_consistent_frames",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232305-766",
+            "20261001-133151-873"
+          ],
+          "status": "已纳入",
+          "reason": "休整治疗严格按最低30%或平均60%血量，按钮可用性明确模拟，完整血条仍用已登记真实截图验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_failed_entry_and_back_clicks_retry_without_authorizing_healing",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232305-766",
+            "20261001-133151-873"
+          ],
+          "status": "已纳入",
+          "reason": "休整治疗严格按最低30%或平均60%血量，按钮可用性明确模拟，完整血条仍用已登记真实截图验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_unknown_frames_keep_hp_but_positive_room_exit_clears_it",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232305-766"
+          ],
+          "status": "已纳入",
+          "reason": "休整治疗严格按最低30%或平均60%血量，按钮可用性明确模拟，完整血条仍用已登记真实截图验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_selected_action_is_pinned_until_room_done_and_clears_hp",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232305-766"
+          ],
+          "status": "已纳入",
+          "reason": "休整治疗严格按最低30%或平均60%血量，按钮可用性明确模拟，完整血条仍用已登记真实截图验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_real_rest_with_disabled_healing_upgrades_without_opening_roster",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232305-766"
+          ],
+          "status": "已纳入",
+          "reason": "休整治疗严格按最低30%或平均60%血量，按钮可用性明确模拟，完整血条仍用已登记真实截图验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_missing_hero_entry_waits_without_healing_or_upgrade",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232305-766"
+          ],
+          "status": "已纳入",
+          "reason": "休整治疗严格按最低30%或平均60%血量，按钮可用性明确模拟，完整血条仍用已登记真实截图验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_rest_inspection_does_not_reuse_event_hp",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232305-766"
+          ],
+          "status": "已纳入",
+          "reason": "休整治疗严格按最低30%或平均60%血量，按钮可用性明确模拟，完整血条仍用已登记真实截图验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_main_loop_inspects_roster_retries_then_reaches_upgrade",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232305-766",
+            "20260923-232309-289",
+            "20261001-133151-873"
+          ],
+          "status": "已纳入",
+          "reason": "休整治疗严格按最低30%或平均60%血量，按钮可用性明确模拟，完整血条仍用已登记真实截图验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentBudgetRegressions.test_event_ticket_opens_recruitment_instead_of_discarding_reward",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-120256-056"
+          ],
+          "status": "已纳入",
+          "reason": "剩余点数不足以招募任何名单目标时选择其他可负担英雄；实图与明确模拟的详情确认分别验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentBudgetRegressions.test_ranger_rows_exclude_disabled_prices_and_keep_two_point_choices",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-120409-871"
+          ],
+          "status": "已纳入",
+          "reason": "剩余点数不足以招募任何名单目标时选择其他可负担英雄；实图与明确模拟的详情确认分别验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentBudgetRegressions.test_two_points_choose_visible_ranger_outside_unaffordable_list",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-120409-871"
+          ],
+          "status": "已纳入",
+          "reason": "剩余点数不足以招募任何名单目标时选择其他可负担英雄；实图与明确模拟的详情确认分别验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentBudgetRegressions.test_fallback_selection_retries_and_needs_exact_quota_receipt",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-120409-871",
+            "20261004-120450-584",
+            "20261004-120454-897"
+          ],
+          "status": "已纳入",
+          "reason": "剩余点数不足以招募任何名单目标时选择其他可负担英雄；实图与明确模拟的详情确认分别验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentBudgetRegressions.test_newly_read_unaffordable_prices_keep_current_affordable_candidate",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-120409-871"
+          ],
+          "status": "已纳入",
+          "reason": "剩余点数不足以招募任何名单目标时选择其他可负担英雄；实图与明确模拟的详情确认分别验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentBudgetRegressions.test_affordable_priority_still_precedes_fallback",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-120409-871"
+          ],
+          "status": "已纳入",
+          "reason": "剩余点数不足以招募任何名单目标时选择其他可负担英雄；实图与明确模拟的详情确认分别验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentBudgetRegressions.test_recruited_fallback_is_excluded_and_failed_click_cannot_confirm",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-120409-871"
+          ],
+          "status": "已纳入",
+          "reason": "剩余点数不足以招募任何名单目标时选择其他可负担英雄；实图与明确模拟的详情确认分别验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentBudgetRegressions.test_late_expensive_price_returns_to_previously_seen_affordable_hero",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-120409-871"
+          ],
+          "status": "已纳入",
+          "reason": "剩余点数不足以招募任何名单目标时选择其他可负担英雄；实图与明确模拟的详情确认分别验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentBudgetRegressions.test_zero_quota_skips_known_hero_only_event_without_continue_cancel_loop",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-120409-871",
+            "20261004-120256-056",
+            "20260926-202057-530"
+          ],
+          "status": "已纳入",
+          "reason": "剩余点数不足以招募任何名单目标时选择其他可负担英雄；实图与明确模拟的详情确认分别验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentBudgetRegressions.test_story_text_and_skip_without_known_hero_only_branch_cannot_discard",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-120256-056",
+            "20260926-202057-530"
+          ],
+          "status": "已纳入",
+          "reason": "剩余点数不足以招募任何名单目标时选择其他可负担英雄；实图与明确模拟的详情确认分别验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentBudgetRegressions.test_unknown_missing_target_keeps_affordable_fallback_at_search_boundary",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-120409-871"
+          ],
+          "status": "已纳入",
+          "reason": "剩余点数不足以招募任何名单目标时选择其他可负担英雄；实图与明确模拟的详情确认分别验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RecruitmentBudgetRegressions.test_empty_final_view_returns_to_unlisted_fallback_even_with_unknown_target_cost",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-120409-871"
+          ],
+          "status": "已纳入",
+          "reason": "剩余点数不足以招募任何名单目标时选择其他可负担英雄；实图与明确模拟的详情确认分别验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_average_thirty_boundary_preserves_normal_priority",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232305-766"
+          ],
+          "status": "已纳入",
+          "reason": "休整全队平均血量严格低于30%时按复活、治疗、恢复生命体征、升阶；低血与选项可用性明确模拟"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_competing_life_recovery_requires_hp_before_selecting_any_action",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232305-766"
+          ],
+          "status": "已纳入",
+          "reason": "休整全队平均血量严格低于30%时按复活、治疗、恢复生命体征、升阶；低血与选项可用性明确模拟"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_critical_average_heals_before_life_recovery_when_revive_unavailable",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232305-766"
+          ],
+          "status": "已纳入",
+          "reason": "休整全队平均血量严格低于30%时按复活、治疗、恢复生命体征、升阶；低血与选项可用性明确模拟"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_critical_average_revives_before_life_recovery_and_healing",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232305-766"
+          ],
+          "status": "已纳入",
+          "reason": "休整全队平均血量严格低于30%时按复活、治疗、恢复生命体征、升阶；低血与选项可用性明确模拟"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_critical_order_uses_first_available_action",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232305-766"
+          ],
+          "status": "已纳入",
+          "reason": "休整全队平均血量严格低于30%时按复活、治疗、恢复生命体征、升阶；低血与选项可用性明确模拟"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_critical_selection_keeps_pending_revive_until_room_completion",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232305-766"
+          ],
+          "status": "已纳入",
+          "reason": "休整全队平均血量严格低于30%时按复活、治疗、恢复生命体征、升阶；低血与选项可用性明确模拟"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RestHealthRegressions.test_main_loop_reads_critical_roster_retries_then_reaches_revive",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232305-766",
+            "20260923-233115-192",
+            "20261001-133151-873"
+          ],
+          "status": "已纳入",
+          "reason": "休整全队平均血量严格低于30%时按复活、治疗、恢复生命体征、升阶；低血与选项可用性明确模拟"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_exact_name_cache_reuses_pixels_and_moves_click_box",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "新增",
+          "reason": "目录整理、英文日志、默认开局与识别优化回归"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_name_cache_invalidates_on_any_pixel_or_shape_change_and_is_bounded",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "新增",
+          "reason": "目录整理、英文日志、默认开局与识别优化回归"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_failed_and_ambiguous_name_reads_are_not_cached",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "新增",
+          "reason": "目录整理、英文日志、默认开局与识别优化回归"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_cached_real_names_do_not_reuse_missing_rank_or_hp",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-151606-257",
+            "20261004-134045-652"
+          ],
+          "status": "新增",
+          "reason": "目录整理、英文日志、默认开局与识别优化回归"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.RuntimeRegressions.test_program_log_messages_and_takeover_reasons_use_english",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "新增",
+          "reason": "目录整理、英文日志、默认开局与识别优化回归"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.StartingAndStarlightRegressions.test_missing_start_strategy_defaults_to_contract_without_ocr",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081207-157"
+          ],
+          "status": "新增",
+          "reason": "目录整理、英文日志、默认开局与识别优化回归"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.BatchResumeRegressions.test_completed_unfinished_batch_starts_on_first_click_and_retries_lobby",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260924-091808-594",
+            "20260922-081207-157"
+          ],
+          "status": "新增",
+          "reason": "批次达标后未完成标记的启动恢复、目标调整、未达标续跑及跨重启旧结算去重；仅模拟设备与内存配置"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.BatchResumeRegressions.test_completed_reset_clears_old_recruitment_and_keeps_settlement_guard",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260924-091808-594"
+          ],
+          "status": "新增",
+          "reason": "批次达标后未完成标记的启动恢复、目标调整、未达标续跑及跨重启旧结算去重；仅模拟设备与内存配置"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.BatchResumeRegressions.test_unfinished_batch_preserves_partial_progress_and_pending_recruitment",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260924-091808-594"
+          ],
+          "status": "新增",
+          "reason": "批次达标后未完成标记的启动恢复、目标调整、未达标续跑及跨重启旧结算去重；仅模拟设备与内存配置"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.BatchResumeRegressions.test_completed_batch_resets_after_target_changes_or_missing_old_target",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260924-091808-594"
+          ],
+          "status": "新增",
+          "reason": "批次达标后未完成标记的启动恢复、目标调整、未达标续跑及跨重启旧结算去重；仅模拟设备与内存配置"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.BatchResumeRegressions.test_finished_batch_also_retains_old_settlement_deduplication",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260924-091808-594"
+          ],
+          "status": "新增",
+          "reason": "批次达标后未完成标记的启动恢复、目标调整、未达标续跑及跨重启旧结算去重；仅模拟设备与内存配置"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.BatchResumeRegressions.test_restart_while_closing_old_result_never_recounts_it",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260924-091808-594",
+            "20260923-233818-836"
+          ],
+          "status": "新增",
+          "reason": "批次达标后未完成标记的启动恢复、目标调整、未达标续跑及跨重启旧结算去重；仅模拟设备与内存配置"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.BatchResumeRegressions.test_interruption_after_last_settlement_recovers_without_second_start",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260924-091808-594",
+            "20260923-233818-836"
+          ],
+          "status": "新增",
+          "reason": "批次达标后未完成标记的启动恢复、目标调整、未达标续跑及跨重启旧结算去重；仅模拟设备与内存配置"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.BatchResumeRegressions.test_old_result_is_closed_then_new_run_counts_once_in_real_loop",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260924-091808-594",
+            "20260922-081153-551",
+            "20260922-081207-157",
+            "20260923-233811-030",
+            "20260923-233818-836"
+          ],
+          "status": "新增",
+          "reason": "批次达标后未完成标记的启动恢复、目标调整、未达标续跑及跨重启旧结算去重；仅模拟设备与内存配置"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.EventRecruitmentLimitRegressions.test_quota_warning_precedes_dimmed_event_and_other_modals_remain_distinct",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261006-214829-360",
+            "20261006-214929-415",
+            "20261006-214941-942",
+            "20261006-214945-513",
+            "20261006-215003-689",
+            "20260929-230255-086",
+            "20260929-230307-455"
+          ],
+          "status": "新增",
+          "reason": "2026-10-06 招募额度不足弹窗、纯招募奖励跳过、重启与生产间隔重试；终止页明确模拟"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.EventRecruitmentLimitRegressions.test_confirmed_limit_skips_only_after_click_without_recording_a_recruit",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261006-214829-360"
+          ],
+          "status": "新增",
+          "reason": "2026-10-06 招募额度不足弹窗、纯招募奖励跳过、重启与生产间隔重试；终止页明确模拟"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.EventRecruitmentLimitRegressions.test_restart_without_event_receipt_cancels_then_reconstructs_the_choice",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261006-214829-360",
+            "20260929-230255-086"
+          ],
+          "status": "新增",
+          "reason": "2026-10-06 招募额度不足弹窗、纯招募奖励跳过、重启与生产间隔重试；终止页明确模拟"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.EventRecruitmentLimitRegressions.test_other_rewards_cannot_use_the_recruitment_skip_permission",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261006-214829-360",
+            "20261006-214929-415",
+            "20261006-214941-942"
+          ],
+          "status": "新增",
+          "reason": "2026-10-06 招募额度不足弹窗、纯招募奖励跳过、重启与生产间隔重试；终止页明确模拟"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_runtime.EventRecruitmentLimitRegressions.test_main_loop_retries_quota_warning_then_discards_ticket_and_returns_to_map",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261006-214829-360",
+            "20261006-214929-415",
+            "20261006-214941-942",
+            "20261006-214945-513",
+            "20261006-215003-689",
+            "20260922-081153-551"
+          ],
+          "status": "新增",
+          "reason": "2026-10-06 招募额度不足弹窗、纯招募奖励跳过、重启与生产间隔重试；终止页明确模拟"
         }
       ]
     },
@@ -4564,6 +5342,698 @@
           ],
           "status": "已纳入",
           "reason": "古剑选项漏读不能触发次优分支或误记已完成"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.Oct03EventReceipts.test_backpack_loot_increase_does_not_prove_the_named_compass",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261003-112252-000",
+            "20261003-112252-001",
+            "20261003-112252-002"
+          ],
+          "status": "已纳入",
+          "reason": "明确截图结果与模拟边界；其他开局卡片的选中边框仅作几何模拟，不宣称实机验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.Oct03EventReceipts.test_mask_named_card_and_both_narration_pages_are_preserved",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261003-171834-000",
+            "20261003-171834-001",
+            "20261003-171834-002",
+            "20261003-171834-003",
+            "20261003-171834-004"
+          ],
+          "status": "已纳入",
+          "reason": "明确截图结果与模拟边界；其他开局卡片的选中边框仅作几何模拟，不宣称实机验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.Oct03EventReceipts.test_prayer_is_free_experience_and_keeps_fragments",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261003-172757-000",
+            "20261003-172757-001",
+            "20261003-172757-002"
+          ],
+          "status": "已纳入",
+          "reason": "明确截图结果与模拟边界；其他开局卡片的选中边框仅作几何模拟，不宣称实机验证"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_supplied_pages_and_animation_readiness",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-125347-490",
+            "20261004-125352-386",
+            "20261004-125521-108",
+            "20261004-125528-432",
+            "20261004-125532-398"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 巨眼事件；战斗过程复用已有通用战斗截图，选项、领奖及两页叙述使用本次实图"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_real_options_resources_and_attack_click_avoid_magnifier",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-125352-386"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 巨眼事件；战斗过程复用已有通用战斗截图，选项、领奖及两页叙述使用本次实图"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_first_repeat_and_collected_routes_still_attack_without_resource_cost",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-10-04 巨眼事件；战斗过程复用已有通用战斗截图，选项、领奖及两页叙述使用本次实图"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_exact_costs_partial_rows_and_other_events_do_not_authorize_choice",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-233133-331",
+            "20260924-193808-685"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 巨眼事件；战斗过程复用已有通用战斗截图，选项、领奖及两页叙述使用本次实图"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_reward_requires_pending_attack_and_matching_card_across_restart",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-125521-108",
+            "20261004-125528-432",
+            "20261004-125532-398"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 巨眼事件；战斗过程复用已有通用战斗截图，选项、领奖及两页叙述使用本次实图"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_main_loop_retries_attack_and_reward_then_advances_both_narrations",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081153-551",
+            "20260922-081423-319",
+            "20260922-081430-868",
+            "20260922-081440-084",
+            "20260922-081554-067",
+            "20261004-125347-490",
+            "20261004-125352-386",
+            "20261004-125521-108",
+            "20261004-125528-432",
+            "20261004-125532-398"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 巨眼事件；战斗过程复用已有通用战斗截图，选项、领奖及两页叙述使用本次实图"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.CliffCoinEventTests.test_real_stages_and_leave_narration_keep_exact_resources",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-143741-000",
+            "20261004-145456-631",
+            "20261004-145530-255"
+          ],
+          "status": "已纳入",
+          "reason": "悬崖投币30与50碎片阶段均禁用赌博，只走免费离开；实际叙述验证碎片不变，末尾地图与大厅复用既有样本"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.CliffCoinEventTests.test_first_and_repeat_never_gamble_even_with_surplus_or_no_fragments",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "悬崖投币30与50碎片阶段均禁用赌博，只走免费离开；实际叙述验证碎片不变，末尾地图与大厅复用既有样本"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.CliffCoinEventTests.test_unknown_cost_probability_partial_rows_and_other_stories_wait",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "悬崖投币30与50碎片阶段均禁用赌博，只走免费离开；实际叙述验证碎片不变，末尾地图与大厅复用既有样本"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.CliffCoinEventTests.test_live_catalogue_chooses_right_leave_card_without_sampling_or_hp",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-143741-000",
+            "20261004-145456-631"
+          ],
+          "status": "已纳入",
+          "reason": "悬崖投币30与50碎片阶段均禁用赌博，只走免费离开；实际叙述验证碎片不变，末尾地图与大厅复用既有样本"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.CliffCoinEventTests.test_main_loop_retries_leave_preserves_fragments_and_samples_outcome_once",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-145456-631",
+            "20261004-145530-255",
+            "20260922-081554-067",
+            "20260922-081153-551"
+          ],
+          "status": "已纳入",
+          "reason": "悬崖投币30与50碎片阶段均禁用赌博，只走免费离开；实际叙述验证碎片不变，末尾地图与大厅复用既有样本"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.ForkSacrificeEventTests.test_real_pages_distinguish_normal_special_hp_and_one_item_payment",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-161405-470",
+            "20261004-161414-135",
+            "20261004-161432-079",
+            "20261004-161439-143",
+            "20261004-161443-261",
+            "20261004-161448-012",
+            "20261004-161453-293"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 岔路扣血底线、只献祭普通战利品、特殊物品保护、未支付不确认结果及真实间隔回放；返回地图明确复用"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.ForkSacrificeEventTests.test_hp_floor_exact_costs_and_missing_safe_payment",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-10-04 岔路扣血底线、只献祭普通战利品、特殊物品保护、未支付不确认结果及真实间隔回放；返回地图明确复用"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.ForkSacrificeEventTests.test_normal_selection_and_confirm_retry_preserve_unpaid_receipt",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-161432-079",
+            "20261004-161439-143"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 岔路扣血底线、只献祭普通战利品、特殊物品保护、未支付不确认结果及真实间隔回放；返回地图明确复用"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.ForkSacrificeEventTests.test_restart_or_changed_selection_clears_before_confirm_and_requires_event",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-161432-079",
+            "20261004-161439-143"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 岔路扣血底线、只献祭普通战利品、特殊物品保护、未支付不确认结果及真实间隔回放；返回地图明确复用"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.ForkSacrificeEventTests.test_unknown_fields_special_only_and_scan_boundary_never_pay",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-161432-079"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 岔路扣血底线、只献祭普通战利品、特殊物品保护、未支付不确认结果及真实间隔回放；返回地图明确复用"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.ForkSacrificeEventTests.test_sampling_picker_is_not_completion_and_records_both_narrations",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081554-067",
+            "20261004-161405-470",
+            "20261004-161432-079",
+            "20261004-161439-143",
+            "20261004-161443-261",
+            "20261004-161448-012"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 岔路扣血底线、只献祭普通战利品、特殊物品保护、未支付不确认结果及真实间隔回放；返回地图明确复用"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.ForkSacrificeEventTests.test_main_loop_reads_hp_pays_normal_retries_and_reaches_both_results",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081153-551",
+            "20260922-081554-067",
+            "20261004-161405-470",
+            "20261004-161414-135",
+            "20261004-161432-079",
+            "20261004-161439-143",
+            "20261004-161443-261",
+            "20261004-161448-012"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 岔路扣血底线、只献祭普通战利品、特殊物品保护、未支付不确认结果及真实间隔回放；返回地图明确复用"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_priority_hp_floor_and_pending_choice_use_complete_options",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-10-04 石碑全员50%边界、普通随机战利品优先、左路免费碎片、完整选项及血量、两页结果采样和生产间隔回放；地图明确复用"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_native_options_reward_rosters_and_two_narrations",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260927-152340-604",
+            "20260929-230947-942",
+            "20261001-132524-411",
+            "20261004-134120-334",
+            "20261004-175956-091",
+            "20261004-180237-343",
+            "20261004-180244-044",
+            "20261004-180247-666",
+            "20261004-180348-232",
+            "20261004-180354-458"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 石碑全员50%边界、普通随机战利品优先、左路免费碎片、完整选项及血量、两页结果采样和生产间隔回放；地图明确复用"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_live_selection_waits_for_hp_then_uses_loot_or_free_fragments",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-175956-091",
+            "20261004-180237-343",
+            "20261004-180348-232"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 石碑全员50%边界、普通随机战利品优先、左路免费碎片、完整选项及血量、两页结果采样和生产间隔回放；地图明确复用"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_sampling_records_random_reward_and_both_narrations_once",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081554-067",
+            "20261004-175956-091",
+            "20261004-180237-343",
+            "20261004-180244-044",
+            "20261004-180247-666",
+            "20261004-180354-458"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 石碑全员50%边界、普通随机战利品优先、左路免费碎片、完整选项及血量、两页结果采样和生产间隔回放；地图明确复用"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.SteleEventTests.test_main_loop_uses_production_intervals_for_both_hp_routes",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081153-551",
+            "20260922-081554-067",
+            "20261004-175956-091",
+            "20261004-180237-343",
+            "20261004-180244-044",
+            "20261004-180247-666",
+            "20261004-180348-232",
+            "20261004-180354-458"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 石碑全员50%边界、普通随机战利品优先、左路免费碎片、完整选项及血量、两页结果采样和生产间隔回放；地图明确复用"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.PrisonAndOldWomanPolicyTests.test_prison_healing_uses_strict_average_or_minimum_and_counts_zero",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-10-04 牢房平均70%或单人25%的严格阈值、老妇人生命体征大于2的排序与预算；选项及新增血量明确模拟，复用名单与结果页只验证流程，不证明老妇人付款结果"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.PrisonAndOldWomanPolicyTests.test_prison_unknown_hp_does_not_authorize_free_fragment_fallback",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-10-04 牢房平均70%或单人25%的严格阈值、老妇人生命体征大于2的排序与预算；选项及新增血量明确模拟，复用名单与结果页只验证流程，不证明老妇人付款结果"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.PrisonAndOldWomanPolicyTests.test_prison_live_choice_waits_for_complete_stable_hp_and_retries_without_reopening",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-132524-411",
+            "20261001-133151-873"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 牢房平均70%或单人25%的严格阈值、老妇人生命体征大于2的排序与预算；选项及新增血量明确模拟，复用名单与结果页只验证流程，不证明老妇人付款结果"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.PrisonAndOldWomanPolicyTests.test_prison_main_loop_preserves_intervals_and_hp_before_both_free_routes",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081153-551",
+            "20260922-081554-067",
+            "20261001-132524-411",
+            "20261001-133151-873"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 牢房平均70%或单人25%的严格阈值、老妇人生命体征大于2的排序与预算；选项及新增血量明确模拟，复用名单与结果页只验证流程，不证明老妇人付款结果"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.PrisonAndOldWomanPolicyTests.test_woman_life_threshold_fragment_reserve_and_random_hp_floor",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-10-04 牢房平均70%或单人25%的严格阈值、老妇人生命体征大于2的排序与预算；选项及新增血量明确模拟，复用名单与结果页只验证流程，不证明老妇人付款结果"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.PrisonAndOldWomanPolicyTests.test_woman_pending_choice_is_pinned_and_changed_costs_do_not_match",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-10-04 牢房平均70%或单人25%的严格阈值、老妇人生命体征大于2的排序与预算；选项及新增血量明确模拟，复用名单与结果页只验证流程，不证明老妇人付款结果"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.PrisonAndOldWomanPolicyTests.test_woman_life_route_can_click_and_sample_two_results_without_forced_hp",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-213353-845",
+            "20261004-213359-426",
+            "20261004-213403-036",
+            "20261004-213406-273",
+            "20261004-214924-687"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 老妇人生命体征4/4变3/4、随机奖励次元水晶柱、战利品3变4、两页叙述及返回地图均用本次实图；保留选择失败、去重和生产间隔检查，采样返回地图后仅完成一次；主循环仅大厅复用旧图"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.PrisonAndOldWomanPolicyTests.test_woman_real_options_confirm_life_payment_and_random_reward",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "status": "已纳入",
+          "category": "截图识别",
+          "fixtures": [
+            "20261004-213353-845",
+            "20261004-213359-426",
+            "20261004-213403-036",
+            "20261004-213406-273",
+            "20261004-214924-687"
+          ],
+          "reason": "2026-10-04 老妇人生命体征4/4变3/4、随机奖励次元水晶柱、战利品3变4、两页叙述及返回地图均用本次实图；保留选择失败、去重和生产间隔检查，采样返回地图后仅完成一次；主循环仅大厅复用旧图"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.PrisonAndOldWomanPolicyTests.test_woman_main_loop_retries_payment_and_reward_then_advances_both_narrations",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "status": "已纳入",
+          "category": "流程回放",
+          "fixtures": [
+            "20260922-081153-551",
+            "20261004-213353-845",
+            "20261004-213359-426",
+            "20261004-213403-036",
+            "20261004-213406-273",
+            "20261004-214924-687"
+          ],
+          "reason": "2026-10-04 老妇人生命体征4/4变3/4、随机奖励次元水晶柱、战利品3变4、两页叙述及返回地图均用本次实图；保留选择失败、去重和生产间隔检查，采样返回地图后仅完成一次；主循环仅大厅复用旧图"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_ready_introduction_taps_before_reading_option_costs",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-201104-292"
+          ],
+          "status": "新增",
+          "reason": "完整巨眼开场先点击，不依赖继续箭头、选项或资源识别。"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_introduction_never_taps_blank_options_or_result_pages",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-125347-490",
+            "20261004-125352-386",
+            "20261004-125528-432",
+            "20261004-125532-398",
+            "20260923-233133-331"
+          ],
+          "status": "新增",
+          "reason": "两张真实完整开场均可识别；明确模拟空白和未完成文字不点击，真实选项与结果页不误点；模板误判仍由选项阻止点击。"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_introduction_preserves_pending_history_and_sample_across_restart",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-201104-292",
+            "20261004-125352-386"
+          ],
+          "status": "新增",
+          "reason": "开场点击和重复帧不确认待选分支，不采为结果；重启后仍保留待确认历史。"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.GiantEyeEventTests.test_main_loop_retries_introduction_then_selects_attack_and_confirms_reward",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-125347-490",
+            "20261004-201104-292",
+            "20261004-125352-386",
+            "20260922-081423-319",
+            "20260922-081430-868",
+            "20260922-081440-084",
+            "20261004-125521-108",
+            "20261004-125528-432",
+            "20261004-125532-398",
+            "20260922-081554-067",
+            "20260922-081153-551"
+          ],
+          "status": "新增",
+          "reason": "保留生产两秒动作间隔；两张同文不同资源开场、选项、战斗、领奖与两页叙述重复帧后正面退出。"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.Oct07CollectedEventTests.test_all_new_option_pages_match_complete_stages",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261006-225005-148",
+            "sample-20261004-132658-fb9c8b99-before",
+            "sample-20261004-142337-95345fac-before",
+            "sample-20261004-163255-fe35b495-before",
+            "sample-20261004-163946-6284416c-before",
+            "sample-20261004-200837-5d9ab035-before",
+            "sample-20261005-171748-6ab3fed8-before",
+            "sample-20261005-171810-ce73998a-before",
+            "sample-20261006-220702-25919c11-before",
+            "sample-20261006-221008-fff5b37b-before",
+            "sample-20261006-221623-e095a172-before"
+          ],
+          "status": "已纳入",
+          "reason": "新增事件完整选项、代价与结果证据；火光失败后免费撤离、重启恢复和真实动作间隔去重"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.Oct07CollectedEventTests.test_raw_receipts_and_confirmed_outcomes_remain_traceable",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "sample-20261004-114223-25b08ac6-after-01-event",
+            "sample-20261004-114223-25b08ac6-after-02-map",
+            "sample-20261004-114223-25b08ac6-before",
+            "sample-20261004-132658-fb9c8b99-after-01-event",
+            "sample-20261004-132658-fb9c8b99-after-02-map",
+            "sample-20261004-132658-fb9c8b99-before",
+            "sample-20261004-142337-95345fac-after-01-event",
+            "sample-20261004-142337-95345fac-after-02-map",
+            "sample-20261004-142337-95345fac-before",
+            "sample-20261004-163255-fe35b495-after-01-event",
+            "sample-20261004-163255-fe35b495-after-02-map",
+            "sample-20261004-163255-fe35b495-before",
+            "sample-20261004-163946-6284416c-after-01-event",
+            "sample-20261004-163946-6284416c-after-02-map",
+            "sample-20261004-163946-6284416c-before",
+            "sample-20261004-170645-95c2667e-after-01-event",
+            "sample-20261004-170645-95c2667e-after-02-map",
+            "sample-20261004-170645-95c2667e-before",
+            "sample-20261004-174149-ddf76863-after-01-event",
+            "sample-20261004-174149-ddf76863-after-02-map",
+            "sample-20261004-174149-ddf76863-before",
+            "sample-20261004-175315-bfe09e3a-after-01-event",
+            "sample-20261004-175315-bfe09e3a-after-02-map",
+            "sample-20261004-175315-bfe09e3a-before",
+            "sample-20261004-180911-3d6c716f-after-01-event",
+            "sample-20261004-180911-3d6c716f-after-02-map",
+            "sample-20261004-180911-3d6c716f-before",
+            "sample-20261004-181002-d240f890-after-01-resume_rewards",
+            "sample-20261004-181002-d240f890-after-02-reward",
+            "sample-20261004-181002-d240f890-after-03-reward",
+            "sample-20261004-181002-d240f890-after-04-event",
+            "sample-20261004-181002-d240f890-after-05-map",
+            "sample-20261004-181002-d240f890-before",
+            "sample-20261004-195213-651053fc-after-01-event",
+            "sample-20261004-195213-651053fc-after-02-map",
+            "sample-20261004-195213-651053fc-before",
+            "sample-20261004-195956-7d30c8de-after-01-event",
+            "sample-20261004-195956-7d30c8de-after-02-map",
+            "sample-20261004-195956-7d30c8de-before",
+            "sample-20261004-200837-5d9ab035-after-01-event",
+            "sample-20261004-200837-5d9ab035-after-02-map",
+            "sample-20261004-200837-5d9ab035-before",
+            "sample-20261005-171748-6ab3fed8-after-01-event",
+            "sample-20261005-171748-6ab3fed8-after-02-map",
+            "sample-20261005-171748-6ab3fed8-before",
+            "sample-20261005-171810-ce73998a-after-01-resume_rewards",
+            "sample-20261005-171810-ce73998a-after-02-resume_rewards",
+            "sample-20261005-171810-ce73998a-after-03-reward",
+            "sample-20261005-171810-ce73998a-after-04-event",
+            "sample-20261005-171810-ce73998a-after-05-map",
+            "sample-20261005-171810-ce73998a-before",
+            "sample-20261006-220702-25919c11-after-01-event",
+            "sample-20261006-220702-25919c11-after-02-map",
+            "sample-20261006-220702-25919c11-before",
+            "sample-20261006-221008-fff5b37b-after-01-event",
+            "sample-20261006-221008-fff5b37b-after-02-map",
+            "sample-20261006-221008-fff5b37b-before",
+            "sample-20261006-221623-e095a172-after-01-event",
+            "sample-20261006-221623-e095a172-after-02-map",
+            "sample-20261006-221623-e095a172-before"
+          ],
+          "status": "已纳入",
+          "reason": "新增事件完整选项、代价与结果证据；火光失败后免费撤离、重启恢复和真实动作间隔去重"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.Oct07CollectedEventTests.test_preferences_preserve_resources_for_first_repeat_and_restart",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "sample-20261004-114223-25b08ac6-before",
+            "sample-20261004-132658-fb9c8b99-before",
+            "sample-20261004-142337-95345fac-before",
+            "sample-20261004-163255-fe35b495-before",
+            "sample-20261004-163946-6284416c-before",
+            "sample-20261004-170645-95c2667e-before",
+            "sample-20261004-174149-ddf76863-before",
+            "sample-20261004-175315-bfe09e3a-before",
+            "sample-20261004-180911-3d6c716f-before",
+            "sample-20261004-181002-d240f890-before",
+            "sample-20261004-195213-651053fc-before",
+            "sample-20261004-195956-7d30c8de-before",
+            "sample-20261004-200837-5d9ab035-before",
+            "sample-20261005-171748-6ab3fed8-before",
+            "sample-20261005-171810-ce73998a-before",
+            "sample-20261006-220702-25919c11-before",
+            "sample-20261006-221008-fff5b37b-before",
+            "sample-20261006-221623-e095a172-before"
+          ],
+          "status": "已纳入",
+          "reason": "新增事件完整选项、代价与结果证据；火光失败后免费撤离、重启恢复和真实动作间隔去重"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.Oct07CollectedEventTests.test_fire_success_receipt_and_manual_failure_evidence_stay_separate",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261006-225005-148",
+            "20261007-014334-776",
+            "20261007-014348-592",
+            "sample-20261006-220951-e14a5f9a-after-01-reward",
+            "sample-20261006-220951-e14a5f9a-after-02-reward",
+            "sample-20261006-220951-e14a5f9a-before",
+            "sample-20261006-221008-fff5b37b-before",
+            "sample-20261006-224551-d6a022b4-before"
+          ],
+          "status": "已纳入",
+          "reason": "新增事件完整选项、代价与结果证据；火光失败后免费撤离、重启恢复和真实动作间隔去重"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.Oct07CollectedEventTests.test_followup_exact_costs_probabilities_and_partial_options_are_guarded",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261006-225005-148",
+            "sample-20261006-221008-fff5b37b-before"
+          ],
+          "status": "已纳入",
+          "reason": "新增事件完整选项、代价与结果证据；火光失败后免费撤离、重启恢复和真实动作间隔去重"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.Oct07CollectedEventTests.test_fire_followups_choose_right_leave_without_hp_or_unknown_sampling",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261006-225005-148",
+            "sample-20261006-221008-fff5b37b-before"
+          ],
+          "status": "已纳入",
+          "reason": "新增事件完整选项、代价与结果证据；火光失败后免费撤离、重启恢复和真实动作间隔去重"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_events.Oct07CollectedEventTests.test_main_loop_failed_attempt_retries_exit_then_samples_real_return_once",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081153-551",
+            "20261006-225005-148",
+            "20261007-014334-776",
+            "20261007-014348-592",
+            "sample-20261006-224551-d6a022b4-before"
+          ],
+          "status": "已纳入",
+          "reason": "新增事件完整选项、代价与结果证据；火光失败后免费撤离、重启恢复和真实动作间隔去重"
         }
       ]
     },
@@ -23290,6 +24760,1830 @@
           ],
           "status": "已纳入",
           "reason": "史诗奖励标题与灰勾的真实正反例、逐行定位及搜索范围恢复"
+        }
+      ]
+    },
+    {
+      "source": "tests/activity/test_alencia_handbook.py",
+      "business": "艾莲西亚事件手册每日奖励",
+      "status": "新增",
+      "reason": "国际服中文每日200/400行动力领奖",
+      "cases": [
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookRecognitionTests.test_real_pages_are_exclusive_and_popup_rejects_underlying_list",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000455-285",
+            "000500-016",
+            "000510-920",
+            "000516-161",
+            "000524-767",
+            "000527-127",
+            "000533-874",
+            "000540-850",
+            "000545-575",
+            "000555-014"
+          ],
+          "status": "已纳入",
+          "reason": "主页事件手册每日两档、合并领取、重排与调度回归；缺失状态明确模拟"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookRecognitionTests.test_real_ocr_pairs_reordered_daily_with_its_own_counter_and_check",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000455-285",
+            "000500-016",
+            "000510-920",
+            "000516-161",
+            "000524-767",
+            "000527-127",
+            "000533-874",
+            "000540-850",
+            "000545-575",
+            "000555-014"
+          ],
+          "status": "已纳入",
+          "reason": "主页事件手册每日两档、合并领取、重排与调度回归；缺失状态明确模拟"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookRecognitionTests.test_incomplete_fields_and_wrong_counter_never_authorize_claim",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000455-285",
+            "000500-016",
+            "000510-920",
+            "000516-161",
+            "000524-767",
+            "000527-127",
+            "000533-874",
+            "000540-850",
+            "000545-575",
+            "000555-014"
+          ],
+          "status": "已纳入",
+          "reason": "主页事件手册每日两档、合并领取、重排与调度回归；缺失状态明确模拟"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookReplayTests.test_both_available_require_one_click_and_one_popup_for_both_receipts",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000455-285",
+            "000500-016",
+            "000510-920",
+            "000516-161",
+            "000524-767",
+            "000527-127",
+            "000533-874",
+            "000540-850",
+            "000545-575",
+            "000555-014"
+          ],
+          "status": "已纳入",
+          "reason": "主页事件手册每日两档、合并领取、重排与调度回归；缺失状态明确模拟"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookReplayTests.test_real_partial_claim_scans_bottom_and_keeps_battle_recheck",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000455-285",
+            "000500-016",
+            "000510-920",
+            "000516-161",
+            "000524-767",
+            "000527-127",
+            "000533-874",
+            "000540-850",
+            "000545-575",
+            "000555-014"
+          ],
+          "status": "已纳入",
+          "reason": "主页事件手册每日两档、合并领取、重排与调度回归；缺失状态明确模拟"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookReplayTests.test_incomplete_dailies_exit_without_claim_or_completion_record",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000455-285",
+            "000500-016",
+            "000510-920",
+            "000516-161",
+            "000524-767",
+            "000527-127",
+            "000533-874",
+            "000540-850",
+            "000545-575",
+            "000555-014"
+          ],
+          "status": "已纳入",
+          "reason": "主页事件手册每日两档、合并领取、重排与调度回归；缺失状态明确模拟"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookReplayTests.test_already_received_dailies_finish_without_claiming_achievements",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000455-285",
+            "000500-016",
+            "000510-920",
+            "000516-161",
+            "000524-767",
+            "000527-127",
+            "000533-874",
+            "000540-850",
+            "000545-575",
+            "000555-014"
+          ],
+          "status": "已纳入",
+          "reason": "主页事件手册每日两档、合并领取、重排与调度回归；缺失状态明确模拟"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookReplayTests.test_receipts_before_popup_cannot_finish_or_claim_another_tier",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000455-285",
+            "000500-016",
+            "000510-920",
+            "000516-161",
+            "000524-767",
+            "000527-127",
+            "000533-874",
+            "000540-850",
+            "000545-575",
+            "000555-014"
+          ],
+          "status": "已纳入",
+          "reason": "主页事件手册每日两档、合并领取、重排与调度回归；缺失状态明确模拟"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookReplayTests.test_dropped_same_tap_and_popup_close_retry_at_independent_intervals",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000455-285",
+            "000500-016",
+            "000510-920",
+            "000516-161",
+            "000524-767",
+            "000527-127",
+            "000533-874",
+            "000540-850",
+            "000545-575",
+            "000555-014"
+          ],
+          "status": "已纳入",
+          "reason": "主页事件手册每日两档、合并领取、重排与调度回归；缺失状态明确模拟"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookReplayTests.test_missing_popup_times_out_without_record_or_new_claim",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000455-285",
+            "000500-016",
+            "000510-920",
+            "000516-161",
+            "000524-767",
+            "000527-127",
+            "000533-874",
+            "000540-850",
+            "000545-575",
+            "000555-014"
+          ],
+          "status": "已纳入",
+          "reason": "主页事件手册每日两档、合并领取、重排与调度回归；缺失状态明确模拟"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookReplayTests.test_new_400_claim_after_separate_200_receipt_requires_fresh_confirmation",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000455-285",
+            "000500-016",
+            "000510-920",
+            "000516-161",
+            "000524-767",
+            "000527-127",
+            "000533-874",
+            "000540-850",
+            "000545-575",
+            "000555-014"
+          ],
+          "status": "已纳入",
+          "reason": "主页事件手册每日两档、合并领取、重排与调度回归；缺失状态明确模拟"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookReplayTests.test_one_visible_daily_and_chapter_checks_never_prove_daily_completion",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000455-285",
+            "000500-016",
+            "000510-920",
+            "000516-161",
+            "000524-767",
+            "000527-127",
+            "000533-874",
+            "000540-850",
+            "000545-575",
+            "000555-014"
+          ],
+          "status": "已纳入",
+          "reason": "主页事件手册每日两档、合并领取、重排与调度回归；缺失状态明确模拟"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookReplayTests.test_real_home_entry_routes_to_handbook_then_returns_to_home",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000455-285",
+            "000500-016",
+            "000510-920",
+            "000516-161",
+            "000524-767",
+            "000527-127",
+            "000533-874",
+            "000540-850",
+            "000545-575",
+            "000555-014"
+          ],
+          "status": "已纳入",
+          "reason": "主页事件手册每日两档、合并领取、重排与调度回归；缺失状态明确模拟"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookSchedulingTests.test_calendar_boundaries_and_server_language_scope",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000516-161"
+          ],
+          "status": "已纳入",
+          "reason": "主页事件手册每日两档、合并领取、重排与调度回归；缺失状态明确模拟"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookSchedulingTests.test_saved_visibility_uses_event_window_and_preserves_old_choices",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000516-161"
+          ],
+          "status": "已纳入",
+          "reason": "主页事件手册每日两档、合并领取、重排与调度回归；缺失状态明确模拟"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookSchedulingTests.test_battle_rechecks_special_task_until_both_receipts_then_next_reset",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000516-161"
+          ],
+          "status": "已纳入",
+          "reason": "主页事件手册每日两档、合并领取、重排与调度回归；缺失状态明确模拟"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookSchedulingTests.test_disabled_task_and_expired_event_never_wake",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000516-161"
+          ],
+          "status": "已纳入",
+          "reason": "主页事件手册每日两档、合并领取、重排与调度回归；缺失状态明确模拟"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookSchedulingTests.test_entry_dispatches_dedicated_home_flow_and_returns_once",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000516-161"
+          ],
+          "status": "已纳入",
+          "reason": "主页事件手册每日两档、合并领取、重排与调度回归；缺失状态明确模拟"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookSchedulingTests.test_page_import_scan_and_paths_are_isolated_for_three_clients",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000516-161"
+          ],
+          "status": "已纳入",
+          "reason": "主页事件手册每日两档、合并领取、重排与调度回归；缺失状态明确模拟"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookReplayTests.test_either_unfinished_top_daily_returns_without_scanning_other_tier",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000516-161",
+            "000540-850",
+            "000545-575",
+            "000533-874"
+          ],
+          "status": "已纳入",
+          "reason": "按用户顶层任务规则，任一每日计数未完成即返回，不滑动、不记全领；日志字段缺失明确模拟"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookReplayTests.test_logged_80_progress_with_missing_status_returns_without_swiping",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000516-161",
+            "000540-850",
+            "000545-575",
+            "000533-874"
+          ],
+          "status": "已纳入",
+          "reason": "按用户顶层任务规则，任一每日计数未完成即返回，不滑动、不记全领；日志字段缺失明确模拟"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookReplayTests.test_logged_missing_parentheses_and_status_return_on_first_frame",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000516-161",
+            "000540-850",
+            "000545-575"
+          ],
+          "status": "已纳入",
+          "reason": "模拟12:43日志漏右括号和状态，首帧直接返回且不滑动"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookReplayTests.test_chapters_at_top_finish_immediately_without_claim_or_swipe",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000516-161",
+            "000540-850",
+            "000545-575"
+          ],
+          "status": "已纳入",
+          "reason": "按用户排序契约模拟顶部章节，直接记全领且不点章节奖励"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookReplayTests.test_unreadable_top_never_completes_from_lower_chapter_tasks",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000516-161"
+          ],
+          "status": "已纳入",
+          "reason": "明确模拟空识别、首项漏读、未知及低置信度，不借下方章节记完成或滑动"
+        }
+      ]
+    },
+    {
+      "source": "tests/combat/test_story_push.py",
+      "business": "combat",
+      "status": "已迁移",
+      "reason": "主线与支线剧情推进",
+      "cases": [
+        {
+          "id": "tests.combat.test_story_push.StoryPushRecognitionTests.test_captured_lists_identify_current_row_buttons_and_cost",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-210121-471",
+            "20261029-210127-834",
+            "20261029-210350-311",
+            "20261029-210403-270",
+            "20261029-210426-104",
+            "20261029-212443-661",
+            "20261029-212720-853"
+          ],
+          "status": "已迁移",
+          "reason": "主支线独立推进、顺序实图回放、剧情后自动恢复、体力及重复动作边界"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-210121-471",
+            "20261029-210127-834",
+            "20261029-210138-020",
+            "20261029-210141-033",
+            "20261029-210144-947",
+            "20261029-210255-424",
+            "20261029-210300-938",
+            "20261029-210303-621",
+            "20261029-210341-110",
+            "20261029-210344-997",
+            "20261029-210348-137",
+            "20261029-210350-311",
+            "20261029-210354-862",
+            "20261029-210400-283",
+            "20261029-210401-363",
+            "20261029-210403-270",
+            "20261029-210410-023",
+            "20261029-210411-778",
+            "20261029-210412-934",
+            "20261029-210414-192",
+            "20261029-210421-767",
+            "20261029-210423-105",
+            "20261029-210424-139",
+            "20261029-210426-104",
+            "20261029-212346-548",
+            "20261029-212443-661",
+            "20261029-212445-854",
+            "20261029-212449-450",
+            "20261029-212452-590",
+            "20261029-212454-720",
+            "20261029-212457-623",
+            "20261029-212459-418",
+            "20261029-212500-658",
+            "20261029-212502-109",
+            "20261029-212604-348",
+            "20261029-212606-278",
+            "20261029-212607-478",
+            "20261029-212612-942",
+            "20261029-212614-702",
+            "20261029-212711-918",
+            "20261029-212713-459",
+            "20261029-212714-667",
+            "20261029-212717-178",
+            "20261029-212720-853"
+          ],
+          "status": "已迁移",
+          "reason": "主支线独立推进、顺序实图回放、剧情后自动恢复、体力及重复动作边界"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryPushRecognitionTests.test_captured_manual_elites_and_auto_animations_are_distinct",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-210424-139",
+            "20261029-212449-450",
+            "20261029-212502-109",
+            "20261029-212604-348",
+            "20261029-212606-278",
+            "20261029-212607-478",
+            "20261029-212612-942",
+            "20261029-212614-702",
+            "20261029-212714-667"
+          ],
+          "status": "已迁移",
+          "reason": "主支线独立推进、顺序实图回放、剧情后自动恢复、体力及重复动作边界"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryPushRecognitionTests.test_dimmed_list_and_manual_battle_never_authorize_clicks",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-210426-104",
+            "20261029-212443-661",
+            "20261029-212607-478",
+            "20261029-212612-942"
+          ],
+          "status": "已迁移",
+          "reason": "主支线独立推进、顺序实图回放、剧情后自动恢复、体力及重复动作边界"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-210121-471",
+            "20261029-210127-834",
+            "20261029-210138-020",
+            "20261029-210141-033",
+            "20261029-210144-947",
+            "20261029-210255-424",
+            "20261029-210300-938",
+            "20261029-210303-621",
+            "20261029-210341-110",
+            "20261029-210344-997",
+            "20261029-210348-137",
+            "20261029-210350-311",
+            "20261029-210354-862",
+            "20261029-210400-283",
+            "20261029-210401-363",
+            "20261029-210403-270",
+            "20261029-210410-023",
+            "20261029-210411-778",
+            "20261029-210412-934",
+            "20261029-210414-192",
+            "20261029-210421-767",
+            "20261029-210423-105",
+            "20261029-210424-139",
+            "20261029-210426-104"
+          ],
+          "status": "已迁移",
+          "reason": "主支线独立推进、顺序实图回放、剧情后自动恢复、体力及重复动作边界"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-210426-104",
+            "20261029-212346-548",
+            "20261029-212443-661",
+            "20261029-212445-854",
+            "20261029-212449-450",
+            "20261029-212452-590",
+            "20261029-212454-720",
+            "20261029-212457-623",
+            "20261029-212459-418",
+            "20261029-212500-658",
+            "20261029-212502-109",
+            "20261029-212604-348",
+            "20261029-212606-278",
+            "20261029-212607-478",
+            "20261029-212612-942",
+            "20261029-212614-702",
+            "20261029-212711-918",
+            "20261029-212713-459",
+            "20261029-212714-667",
+            "20261029-212717-178",
+            "20261029-212720-853"
+          ],
+          "status": "已迁移",
+          "reason": "主支线独立推进、顺序实图回放、剧情后自动恢复、体力及重复动作边界"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryPushReplayTests.test_main_loop_also_restores_manual_elite_after_story",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-212502-109",
+            "20261029-212604-348",
+            "20261029-212606-278",
+            "20261029-212607-478",
+            "20261029-212612-942",
+            "20261029-212614-702"
+          ],
+          "status": "已迁移",
+          "reason": "主支线独立推进、顺序实图回放、剧情后自动恢复、体力及重复动作边界"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryPushReplayTests.test_paid_watch_is_not_repeated_on_old_frames_or_delayed_debit",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-210426-104",
+            "20261029-212346-548",
+            "20261029-212443-661"
+          ],
+          "status": "已迁移",
+          "reason": "主支线独立推进、顺序实图回放、剧情后自动恢复、体力及重复动作边界"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryPushReplayTests.test_ready_retries_but_new_prepare_starts_without_old_cooldown",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-212443-661",
+            "20261029-212445-854",
+            "20261029-212502-109",
+            "20261029-212717-178",
+            "20261029-212720-853"
+          ],
+          "status": "已迁移",
+          "reason": "主支线独立推进、顺序实图回放、剧情后自动恢复、体力及重复动作边界"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryPushReplayTests.test_skip_retry_does_not_delay_confirmation_or_limit_exit",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-212604-348",
+            "20261029-212606-278",
+            "20261029-212720-853"
+          ],
+          "status": "已迁移",
+          "reason": "主支线独立推进、顺序实图回放、剧情后自动恢复、体力及重复动作边界"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryPushReplayTests.test_same_returned_list_cannot_replay_a_paid_story",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-210426-104",
+            "20261029-212346-548"
+          ],
+          "status": "已迁移",
+          "reason": "主支线独立推进、顺序实图回放、剧情后自动恢复、体力及重复动作边界"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryPushReplayTests.test_clear_repeated_frames_count_once_and_never_toggle_auto",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-212443-661",
+            "20261029-212445-854",
+            "20261029-212717-178",
+            "20261029-212720-853"
+          ],
+          "status": "已迁移",
+          "reason": "主支线独立推进、顺序实图回放、剧情后自动恢复、体力及重复动作边界"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryPushReplayTests.test_empty_balance_and_invalid_cost_stop_without_watch",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已迁移",
+          "reason": "主支线独立推进、顺序实图回放、剧情后自动恢复、体力及重复动作边界"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryPushReplayTests.test_prepare_affordability_has_no_main_star_read",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已迁移",
+          "reason": "主支线独立推进、顺序实图回放、剧情后自动恢复、体力及重复动作边界"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryPushReplayTests.test_wrong_mode_and_unavailable_auto_stop_without_clicks",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261021-202808-776"
+          ],
+          "status": "已迁移",
+          "reason": "主支线独立推进、顺序实图回放、剧情后自动恢复、体力及重复动作边界"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryPushReplayTests.test_run_dispatches_mode_and_ignores_legacy_episode_choice",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已迁移",
+          "reason": "主支线独立推进、顺序实图回放、剧情后自动恢复、体力及重复动作边界"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryPushReplayTests.test_start_on_home_does_not_navigate",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已迁移",
+          "reason": "主支线独立推进、顺序实图回放、剧情后自动恢复、体力及重复动作边界"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryPushReplayTests.test_unsupported_side_language_does_not_capture",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已迁移",
+          "reason": "主支线独立推进、顺序实图回放、剧情后自动恢复、体力及重复动作边界"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryPushReplayTests.test_source_config_exposes_mode_and_hides_legacy_number",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已迁移",
+          "reason": "主支线独立推进、顺序实图回放、剧情后自动恢复、体力及重复动作边界"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryPushReplayTests.test_paid_watch_waits_through_debit_and_requires_entry_evidence",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-210426-104",
+            "20261029-212346-548",
+            "20261029-212443-661"
+          ],
+          "status": "已迁移",
+          "reason": "观看已扣费但未进入剧情时不重复付费、不按扣款后余额提前停止；无入场证据不推进下一项"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryIntroTests.test_prepared_assets_and_demonstrations_match_without_title_text",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-story-title-asset",
+            "20261029-story-history-asset",
+            "20261029-story-intro-before",
+            "20261029-story-intro-skip"
+          ],
+          "status": "已纳入",
+          "reason": "进场空白点击仅一次、已有跳过优先、正面离开后重置；制作素材与演示实图分开登记"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryIntroTests.test_blank_reveal_latches_through_repeats_blackout_and_skip",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-story-intro-before",
+            "20261029-story-intro-skip"
+          ],
+          "status": "已纳入",
+          "reason": "进场空白点击仅一次、已有跳过优先、正面离开后重置；制作素材与演示实图分开登记"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryIntroTests.test_visible_skip_or_confirmation_prevents_later_blank_click",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-story-intro-before"
+          ],
+          "status": "已纳入",
+          "reason": "进场空白点击仅一次、已有跳过优先、正面离开后重置；制作素材与演示实图分开登记"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryIntroTests.test_unrecognized_or_dimmed_frames_never_reveal",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-story-intro-before",
+            "20261029-210426-104",
+            "20261029-212443-661",
+            "20261029-212445-854",
+            "20261029-212502-109",
+            "20261029-212607-478",
+            "20261029-212612-942",
+            "20261029-212717-178"
+          ],
+          "status": "已纳入",
+          "reason": "进场空白点击仅一次、已有跳过优先、正面离开后重置；制作素材与演示实图分开登记"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryIntroTests.test_both_loops_reveal_and_reset_on_returned_map_or_list",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-story-intro-before",
+            "20261029-story-intro-skip"
+          ],
+          "status": "已纳入",
+          "reason": "进场空白点击仅一次、已有跳过优先、正面离开后重置；制作素材与演示实图分开登记"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryIntroTests.test_positive_battle_prepare_supporter_and_result_rearm_reveal",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-story-intro-before",
+            "20261029-212502-109"
+          ],
+          "status": "已纳入",
+          "reason": "进场空白点击仅一次、已有跳过优先、正面离开后重置；制作素材与演示实图分开登记"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryIntroTests.test_starting_another_loop_rearms_the_same_task",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-story-intro-before"
+          ],
+          "status": "已纳入",
+          "reason": "进场空白点击仅一次、已有跳过优先、正面离开后重置；制作素材与演示实图分开登记"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryIntroTests.test_history_alone_reveals_with_unrelated_backgrounds",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-story-intro-before"
+          ],
+          "status": "已纳入",
+          "reason": "保留历史图标、合成不同背景，验证进场点击不依赖活动画面；不计作其他支线实图"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryIntroTests.test_missing_history_waits_for_skip_even_with_title_artwork",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-story-intro-before",
+            "20261029-story-intro-skip"
+          ],
+          "status": "已纳入",
+          "reason": "移除历史图标后保留幕布不授权空白点击；随后出现跳过立即处理"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryPushRecognitionTests.test_identity_reuses_text_but_tracks_chapter_row_and_background",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-210426-104",
+            "20261029-210350-311",
+            "20261029-212443-661"
+          ],
+          "status": "已纳入",
+          "reason": "复用不变章节和选中标题；背景变化不重读，章节与选中行变化重新读取"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryPushRecognitionTests.test_invalid_identity_and_missing_selection_cannot_reuse_old_text",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-210426-104"
+          ],
+          "status": "已纳入",
+          "reason": "无效识别允许重读，当前选中标记缺失时不得借用缓存"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryPushReplayTests.test_list_reads_once_per_visit_without_skipping_current_page_checks",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-210426-104",
+            "20261029-212346-548",
+            "20261029-212443-661"
+          ],
+          "status": "已纳入",
+          "reason": "重复列表和未知帧复用文字，入场后返回重读；页面每帧检查且付费只请求一次"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryPushReplayTests.test_skip_half_second_retry_keeps_confirmation_interval_in_both_loops",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "主支线跳过按半秒重试，确认仍独立按两秒重试；结算和终态立即处理"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryBattleAvailabilityTests.test_disabled_auto_after_story_stops_both_loops_without_battle_actions",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261021-202808-776",
+            "20261101-000305-158",
+            "20261029-212604-348",
+            "20261029-212606-278"
+          ],
+          "status": "已纳入",
+          "reason": "主支线剧情后禁用自动立即请求人工处理，不切换自动、不计数、不调度重启；场景顺序为模拟"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryBattleAvailabilityTests.test_disabled_brightness_rejects_manual_auto_animation_and_other_pages",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-210426-104",
+            "20261029-212443-661",
+            "20261029-212445-854",
+            "20261029-212449-450",
+            "20261029-212502-109",
+            "20261029-212604-348",
+            "20261029-212606-278",
+            "20261029-212607-478",
+            "20261029-212612-942",
+            "20261029-212614-702",
+            "20261029-212714-667",
+            "20261029-212717-178",
+            "20261029-212720-853",
+            "legacy-urgent-tasks-battle-manual-target",
+            "legacy-urgent-tasks-battle-auto-on",
+            "legacy-urgent-tasks-battle-clear",
+            "legacy-urgent-tasks-battle-result",
+            "legacy-urgent-tasks-battle-leave"
+          ],
+          "status": "已纳入",
+          "reason": "亮度比判断排除普通手动、自动开启、技能动画、剧情、备战、列表和结算"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryBattleAvailabilityTests.test_disabled_brightness_tolerates_tint_but_requires_bright_complete_controls",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261021-202808-776",
+            "20261101-000305-158"
+          ],
+          "status": "已纳入",
+          "reason": "两张禁用实图及合成色调、整体遮暗、移除图标反例；需两个图案完整且暂停键正常亮起"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryCompletionTests.test_completed_list_stops_successfully_without_reading_or_replaying",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261101-010130-746"
+          ],
+          "status": "已纳入",
+          "reason": "完成页启动或重复调用直接成功退出，不读标题、体力，不观看、不点击且不补记旧节点"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryCompletionTests.test_final_story_counts_once_before_stopping_at_completed_list",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261101-010130-746",
+            "20261029-212720-853",
+            "20261029-212604-348",
+            "20261029-212606-278"
+          ],
+          "status": "已纳入",
+          "reason": "模拟末段剧情返回后按完成标志计数一次，不重播，节点上限与重复调用均不重复计数"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261101-010130-746",
+            "20261029-210121-471",
+            "20261029-210127-834",
+            "20261029-210138-020",
+            "20261029-210141-033",
+            "20261029-210144-947",
+            "20261029-210255-424",
+            "20261029-210300-938",
+            "20261029-210303-621",
+            "20261029-210341-110",
+            "20261029-210344-997",
+            "20261029-210348-137",
+            "20261029-210350-311",
+            "20261029-210354-862",
+            "20261029-210400-283",
+            "20261029-210401-363",
+            "20261029-210403-270",
+            "20261029-210410-023",
+            "20261029-210411-778",
+            "20261029-210412-934",
+            "20261029-210414-192",
+            "20261029-210421-767",
+            "20261029-210423-105",
+            "20261029-210424-139",
+            "20261029-210426-104",
+            "20261029-212346-548",
+            "20261029-212443-661",
+            "20261029-212445-854",
+            "20261029-212449-450",
+            "20261029-212452-590",
+            "20261029-212454-720",
+            "20261029-212457-623",
+            "20261029-212459-418",
+            "20261029-212500-658",
+            "20261029-212502-109",
+            "20261029-212604-348",
+            "20261029-212606-278",
+            "20261029-212607-478",
+            "20261029-212612-942",
+            "20261029-212614-702",
+            "20261029-212711-918",
+            "20261029-212713-459",
+            "20261029-212714-667",
+            "20261029-212717-178",
+            "20261029-212720-853"
+          ],
+          "status": "已纳入",
+          "reason": "44张既有实图为反例；其他行完成勾不触发，合成移动当前完成图标仍可识别"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryCompletionTests.test_completion_rejects_obscured_page_and_missing_required_markers",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261101-010130-746"
+          ],
+          "status": "已纳入",
+          "reason": "完整结束实图命中，整体遮暗、缺完成勾、缺页标题或仅剩完成勾均不得判结束"
+        }
+      ]
+    },
+    {
+      "source": "tests/dimensional_exploration/test_dimensional_exploration_oct01.py",
+      "business": "次元探查",
+      "status": "已纳入",
+      "reason": "10月1日事件结果、英雄血量与观测站预算回归",
+      "cases": [
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Screenshots.test_new_page_identities_and_roster_precedence",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-132524-411",
+            "20261001-133151-873",
+            "20261001-133603-790",
+            "20261001-133740-628",
+            "20261001-140630-704",
+            "20261001-140638-153",
+            "20261001-140648-336",
+            "20261001-143340-283",
+            "20261001-143349-317"
+          ],
+          "status": "已纳入",
+          "reason": "真实截图与模拟点击；验证重复帧、禁止动作和资源边界"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Screenshots.test_roster_marker_does_not_match_recruitment_upgrade_or_map",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081352-852",
+            "20260923-232309-289",
+            "20260922-081522-090",
+            "20261001-132524-411"
+          ],
+          "status": "已纳入",
+          "reason": "真实截图与模拟点击；验证重复帧、禁止动作和资源边界"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Screenshots.test_roster_reads_all_six_names_and_native_hp_bars",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-133151-873"
+          ],
+          "status": "已纳入",
+          "reason": "真实截图与模拟点击；验证重复帧、禁止动作和资源边界"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Screenshots.test_partial_roster_or_corrupt_bars_cannot_prove_hp",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-133151-873"
+          ],
+          "status": "已纳入",
+          "reason": "真实截图与模拟点击；验证重复帧、禁止动作和资源边界"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Screenshots.test_observatory_followup_exact_costs_and_disabled_final_option",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-140630-704",
+            "20261001-140638-153"
+          ],
+          "status": "已纳入",
+          "reason": "真实截图与模拟点击；验证重复帧、禁止动作和资源边界"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Rules.test_fragment_budget_covers_all_remaining_stages_and_investment",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081528-636",
+            "20261001-140630-704",
+            "20261001-140638-153"
+          ],
+          "status": "已纳入",
+          "reason": "真实截图与模拟点击；验证重复帧、禁止动作和资源边界"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Rules.test_collection_chain_spends_at_most_220_and_preserves_investment",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081528-636",
+            "20261001-140630-704",
+            "20261001-140638-153"
+          ],
+          "status": "已纳入",
+          "reason": "真实截图与模拟点击；验证重复帧、禁止动作和资源边界"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Rules.test_damage_costs_keep_every_possible_target_alive",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "真实截图与模拟点击；验证重复帧、禁止动作和资源边界"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Rules.test_low_hp_uses_existing_free_fallback_without_spending_life",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-233133-331"
+          ],
+          "status": "已纳入",
+          "reason": "真实截图与模拟点击；验证重复帧、禁止动作和资源边界"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_rank_reward_claim_retries_without_continuing",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-143340-283"
+          ],
+          "status": "已纳入",
+          "reason": "真实截图与模拟点击；验证重复帧、禁止动作和资源边界"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_rank_reward_is_captured_and_marks_branch_visited_once",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-143340-283",
+            "20261001-143349-317"
+          ],
+          "status": "已纳入",
+          "reason": "真实截图与模拟点击；验证重复帧、禁止动作和资源边界"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_garden_saves_two_outcome_pages_and_deduplicates_repeated_frames",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-132524-411",
+            "20261001-133151-873",
+            "20261001-133603-790",
+            "20261001-133740-628",
+            "20260922-081554-067"
+          ],
+          "status": "已纳入",
+          "reason": "真实截图与模拟点击；验证重复帧、禁止动作和资源边界"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_event_checks_stable_complete_roster_before_hp_choice",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-132524-411",
+            "20261001-133151-873"
+          ],
+          "status": "已纳入",
+          "reason": "真实截图与模拟点击；验证重复帧、禁止动作和资源边界"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_partial_roster_waits_without_selecting_or_returning",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-132524-411",
+            "20261001-133151-873"
+          ],
+          "status": "已纳入",
+          "reason": "真实截图与模拟点击；验证重复帧、禁止动作和资源边界"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_restart_on_roster_returns_without_recruitment_actions",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-133151-873"
+          ],
+          "status": "已纳入",
+          "reason": "真实截图与模拟点击；验证重复帧、禁止动作和资源边界"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_positive_outcome_clears_hp_but_unknown_frame_keeps_it",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-132524-411",
+            "20261001-133151-873",
+            "20261001-133603-790"
+          ],
+          "status": "已纳入",
+          "reason": "真实截图与模拟点击；验证重复帧、禁止动作和资源边界"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_roster_inspection_does_not_complete_event_sampling",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-133151-873"
+          ],
+          "status": "已纳入",
+          "reason": "真实截图与模拟点击；验证重复帧、禁止动作和资源边界"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_followup_options_complete_prior_sampling_before_next_choice",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-140630-704"
+          ],
+          "status": "已纳入",
+          "reason": "真实截图与模拟点击；验证重复帧、禁止动作和资源边界"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_roster_full_and_empty_bars_keep_zero_distinct_from_missing_pixels",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-133151-873"
+          ],
+          "status": "已纳入",
+          "reason": "真实截图与模拟点击；验证重复帧、禁止动作和资源边界"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.Oct01Flows.test_main_loop_inspects_hp_and_saves_garden_outcomes_with_missed_click_frames",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-132524-411",
+            "20261001-133151-873",
+            "20261001-133603-790",
+            "20261001-133740-628",
+            "20260922-081554-067",
+            "20260922-081153-551"
+          ],
+          "status": "已纳入",
+          "reason": "真实截图与模拟点击；验证重复帧、禁止动作和资源边界"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightHealthRegressions.test_supplied_firelight_and_complete_roster_read_lowest_hp",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-134045-652",
+            "20261004-134120-334"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 火光事件血量底线与文字识别变化回归；选项及名单用实图，结束地图复用旧图，不证明治疗结果"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightHealthRegressions.test_all_and_random_damage_leave_at_least_twenty_five_percent",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-10-04 火光事件血量底线与文字识别变化回归；选项及名单用实图，结束地图复用旧图，不证明治疗结果"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightHealthRegressions.test_firelight_prefers_loot_only_above_the_cost_adjusted_floor",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-134120-334"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 火光事件血量底线与文字识别变化回归；选项及名单用实图，结束地图复用旧图，不证明治疗结果"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightHealthRegressions.test_dice_route_is_disabled_even_when_other_choices_are_unavailable",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-134120-334"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 火光事件血量底线与文字识别变化回归；选项及名单用实图，结束地图复用旧图，不证明治疗结果"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightHealthRegressions.test_known_ocr_variants_keep_roster_result_without_reopening",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-134045-652",
+            "20261004-134120-334"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 火光事件血量底线与文字识别变化回归；选项及名单用实图，结束地图复用旧图，不证明治疗结果"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightHealthRegressions.test_reordered_known_options_keep_confirmed_hp",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-134120-334"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 火光事件血量底线与文字识别变化回归；选项及名单用实图，结束地图复用旧图，不证明治疗结果"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightHealthRegressions.test_new_known_event_requires_new_roster_and_partial_rows_wait",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-132524-411",
+            "20261004-134120-334"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 火光事件血量底线与文字识别变化回归；选项及名单用实图，结束地图复用旧图，不证明治疗结果"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightHealthRegressions.test_sampling_pending_damage_also_obeys_confirmed_hp_floor",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-10-04 火光事件血量底线与文字识别变化回归；选项及名单用实图，结束地图复用旧图，不证明治疗结果"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightHealthRegressions.test_main_loop_reads_roster_once_and_retries_rest_despite_ocr_changes",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081153-551",
+            "20260922-081554-067",
+            "20261004-134045-652",
+            "20261004-134120-334"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 火光事件血量底线与文字识别变化回归；选项及名单用实图，结束地图复用旧图，不证明治疗结果"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightOutcomeRegressions.test_real_rest_result_and_roster_confirm_fifteen_percent_healing",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-134045-652",
+            "20261004-140207-882",
+            "20261004-140210-503",
+            "20261004-140215-765",
+            "20261004-140228-740"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 火光休息结果及网络异常实图；重复帧与恢复后的叙述复用明确模拟，等待按钮、动作间隔和事件记录去重保持断言"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightOutcomeRegressions.test_network_markers_distinguish_countdown_retry_and_clear_pages",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-140207-882",
+            "20261004-140210-503",
+            "20261004-140215-765",
+            "20261004-140222-304",
+            "20261004-140225-272",
+            "20261004-140228-740"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 火光休息结果及网络异常实图；重复帧与恢复后的叙述复用明确模拟，等待按钮、动作间隔和事件记录去重保持断言"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightOutcomeRegressions.test_overlay_waits_then_retries_visible_button_at_production_interval",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-140210-503",
+            "20261004-140222-304",
+            "20261004-140225-272"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 火光休息结果及网络异常实图；重复帧与恢复后的叙述复用明确模拟，等待按钮、动作间隔和事件记录去重保持断言"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightOutcomeRegressions.test_main_loop_freezes_pending_event_until_network_overlay_clears",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081153-551",
+            "20261004-134120-334",
+            "20261004-140210-503",
+            "20261004-140222-304",
+            "20261004-140225-272",
+            "20261004-140228-740"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 火光休息结果及网络异常实图；重复帧与恢复后的叙述复用明确模拟，等待按钮、动作间隔和事件记录去重保持断言"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_oct01.FirelightOutcomeRegressions.test_captured_result_roster_network_and_map_do_not_repeat_rest",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081153-551",
+            "20261004-134120-334",
+            "20261004-140207-882",
+            "20261004-140210-503",
+            "20261004-140215-765",
+            "20261004-140222-304",
+            "20261004-140225-272",
+            "20261004-140228-740"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 火光休息结果及网络异常实图；重复帧与恢复后的叙述复用明确模拟，等待按钮、动作间隔和事件记录去重保持断言"
+        }
+      ]
+    },
+    {
+      "source": "tests/dimensional_exploration/test_dimensional_exploration_ui.py",
+      "business": "次元探查",
+      "status": "已纳入",
+      "reason": "全职业招募名单搜索与末尾候选回归",
+      "cases": [
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.FullClassRecruitmentRegressions.test_first_encountered_member_of_any_class_list_precedes_other_heroes",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081352-852"
+          ],
+          "status": "已纳入",
+          "reason": "模拟名单、滚动及额度；全职业先选先遇到的名单英雄，末尾没有目标再选可负担候选"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.FullClassRecruitmentRegressions.test_one_column_swipe_waits_for_interval_and_stable_next_view",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081352-852"
+          ],
+          "status": "已纳入",
+          "reason": "模拟名单、滚动及额度；全职业先选先遇到的名单英雄，末尾没有目标再选可负担候选"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.FullClassRecruitmentRegressions.test_recruited_and_unaffordable_members_do_not_stop_scanning",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081352-852"
+          ],
+          "status": "已纳入",
+          "reason": "模拟名单、滚动及额度；全职业先选先遇到的名单英雄，末尾没有目标再选可负担候选"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.FullClassRecruitmentRegressions.test_missing_member_selects_affordable_fallback_at_end",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081352-852"
+          ],
+          "status": "已纳入",
+          "reason": "模拟名单、滚动及额度；全职业先选先遇到的名单英雄，末尾没有目标再选可负担候选"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.FullClassRecruitmentRegressions.test_empty_completed_or_unaffordable_preferences_keep_affordable_fallback",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081352-852"
+          ],
+          "status": "已纳入",
+          "reason": "全职业空名单或已招齐仍搜索至边界；已知全部目标买不起时两帧稳定后直接选其他英雄"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.FullClassRecruitmentRegressions.test_unaffordable_final_view_returns_to_remembered_affordable_fallback",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081352-852"
+          ],
+          "status": "已纳入",
+          "reason": "模拟名单、滚动及额度；全职业先选先遇到的名单英雄，末尾没有目标再选可负担候选"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.FullClassRecruitmentRegressions.test_no_affordable_hero_leaves_without_spending_beyond_quota",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081352-852"
+          ],
+          "status": "已纳入",
+          "reason": "模拟名单、滚动及额度；全职业先选先遇到的名单英雄，末尾没有目标再选可负担候选"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.FullClassRecruitmentRegressions.test_missed_selection_retries_same_member_without_confirming_or_swiping",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081352-852"
+          ],
+          "status": "已纳入",
+          "reason": "模拟名单、滚动及额度；全职业先选先遇到的名单英雄，末尾没有目标再选可负担候选"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.FullClassRecruitmentRegressions.test_restart_pending_receipt_keeps_target_even_outside_current_lists",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081352-852"
+          ],
+          "status": "已纳入",
+          "reason": "模拟名单、滚动及额度；全职业先选先遇到的名单英雄，末尾没有目标再选可负担候选"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_parser_preserves_order_and_rejects_invalid_names_ranks_and_duplicates",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-10-04 可配置升阶目标、启动校验、完整名单回查与满阶顺序；5阶及滚动为明确模拟，旧图验证原生阶数1和实际选择确认位置"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_preflight_fails_before_any_screenshot_or_click",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232309-289"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 可配置升阶目标、启动校验、完整名单回查与满阶顺序；5阶及滚动为明确模拟，旧图验证原生阶数1和实际选择确认位置"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_goals_finish_in_order_before_filling_priority_roster_to_five",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-10-04 可配置升阶目标、启动校验、完整名单回查与满阶顺序；5阶及滚动为明确模拟，旧图验证原生阶数1和实际选择确认位置"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_absent_goals_fill_listed_heroes_before_other_heroes_and_skip_maxed",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-10-04 可配置升阶目标、启动校验、完整名单回查与满阶顺序；5阶及滚动为明确模拟，旧图验证原生阶数1和实际选择确认位置"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_real_unselected_and_selected_pickers_read_names_and_rank_fields",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232309-289",
+            "20260923-232312-127",
+            "20260923-233117-847"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 可配置升阶目标、启动校验、完整名单回查与满阶顺序；5阶及滚动为明确模拟，旧图验证原生阶数1和实际选择确认位置"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_unreadable_rank_or_name_cannot_authorize_selection",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232309-289"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 可配置升阶目标、启动校验、完整名单回查与满阶顺序；5阶及滚动为明确模拟，旧图验证原生阶数1和实际选择确认位置"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_target_selection_and_confirmation_retry_without_switching_hero",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232309-289"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 可配置升阶目标、启动校验、完整名单回查与满阶顺序；5阶及滚动为明确模拟，旧图验证原生阶数1和实际选择确认位置"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_restart_selected_wrong_hero_selects_configured_goal_first",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232309-289"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 可配置升阶目标、启动校验、完整名单回查与满阶顺序；5阶及滚动为明确模拟，旧图验证原生阶数1和实际选择确认位置"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_partial_roster_scans_before_fallback_and_returns_to_best_hero",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232309-289"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 可配置升阶目标、启动校验、完整名单回查与满阶顺序；5阶及滚动为明确模拟，旧图验证原生阶数1和实际选择确认位置"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_goal_on_later_page_wins_over_visible_fallback",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232309-289"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 可配置升阶目标、启动校验、完整名单回查与满阶顺序；5阶及滚动为明确模拟，旧图验证原生阶数1和实际选择确认位置"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_incomplete_boundary_and_search_limit_stop_without_fallback",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232309-289"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 可配置升阶目标、启动校验、完整名单回查与满阶顺序；5阶及滚动为明确模拟，旧图验证原生阶数1和实际选择确认位置"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_all_maxed_returns_and_leaves_rest_then_new_room_clears_cache",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232305-766",
+            "20260923-232309-289"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 可配置升阶目标、启动校验、完整名单回查与满阶顺序；5阶及滚动为明确模拟，旧图验证原生阶数1和实际选择确认位置"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_gui_source_exposes_goal_input_and_all_locales_have_useful_help",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-10-04 可配置升阶目标、启动校验、完整名单回查与满阶顺序；5阶及滚动为明确模拟，旧图验证原生阶数1和实际选择确认位置"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_main_loop_retries_rank_goal_selection_then_confirms_and_exits",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081153-551",
+            "20260922-081554-067",
+            "20260923-232309-289",
+            "20260923-232312-127"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 可配置升阶目标、启动校验、完整名单回查与满阶顺序；5阶及滚动为明确模拟，旧图验证原生阶数1和实际选择确认位置"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_clipped_name_field_cannot_count_as_a_complete_hero",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260923-232309-289"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 可配置升阶目标、启动校验、完整名单回查与满阶顺序；5阶及滚动为明确模拟，旧图验证原生阶数1和实际选择确认位置"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_supplied_mixed_rank_roster_reads_first_one_and_origin_two",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-151606-257"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 实图复现首名英雄阶数空读；混合1、2阶识别、缺字段禁点和生产间隔重试；退出页明确模拟"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_missing_rank_pixels_do_not_default_to_one_or_choose_a_hero",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-151606-257"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 实图复现首名英雄阶数空读；混合1、2阶识别、缺字段禁点和生产间隔重试；退出页明确模拟"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.UpgradePriorityRegressions.test_mixed_rank_main_loop_retries_goal_hero_without_scrolling",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261004-151606-257",
+            "20260922-081554-067",
+            "20260922-081153-551"
+          ],
+          "status": "已纳入",
+          "reason": "2026-10-04 实图复现首名英雄阶数空读；混合1、2阶识别、缺字段禁点和生产间隔重试；退出页明确模拟"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.ScreenshotRegressions.test_captured_preview_types_use_templates_without_title_ocr",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081603-149",
+            "20260922-081805-941",
+            "20260922-082932-782",
+            "20260923-233512-883",
+            "20260925-113034-953",
+            "20260925-113935-872",
+            "20260922-081725-462",
+            "20260922-081803-041"
+          ],
+          "status": "新增",
+          "reason": "目录整理、英文日志、默认开局与识别优化回归"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.ScreenshotRegressions.test_missing_wrong_or_ambiguous_preview_cannot_enter",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081413-154",
+            "20260922-081805-941",
+            "20260922-081603-149"
+          ],
+          "status": "新增",
+          "reason": "目录整理、英文日志、默认开局与识别优化回归"
+        },
+        {
+          "id": "tests.dimensional_exploration.test_dimensional_exploration_ui.ScreenshotRegressions.test_shop_preview_ocr_is_only_used_when_no_known_template_matches",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20260922-081413-154",
+            "20260922-081805-941"
+          ],
+          "status": "新增",
+          "reason": "目录整理、英文日志、默认开局与识别优化回归"
         }
       ]
     }

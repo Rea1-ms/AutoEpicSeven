@@ -83,7 +83,8 @@ class MigrationTests(unittest.TestCase):
                 self.assertEqual(result['LimitedActivity']['LimitedActivity'], {
                     'GetFreeGacha': True, 'GetMeirinReward': True, 'GetSupportReward': True, 'GetCompletionRecord': True,
                     'GetDetectiveSearch': True, 'GetEpicPathDailyReward': True})
-                self.assertEqual(result['SpecialActivity']['SpecialActivity'], {'BuyHucheMysticMedals': True})
+                self.assertEqual(result['SpecialActivity']['SpecialActivity'], {
+                    'BuyHucheMysticMedals': True, 'GetAlenciaDailyReward': True})
                 self.assertEqual(result['SpecialActivity']['ActivityRuntime']['CheckedEvents'],
                                  old['SpecialActivity']['ActivityRuntime']['CheckedEvents'])
                 self.assertEqual(ConfigUpdater().config_update(result), result)
@@ -107,6 +108,7 @@ class MigrationTests(unittest.TestCase):
         self.assertFalse(result['LimitedActivity']['Scheduler']['Enable'])
         self.assertFalse(result['SpecialActivity']['Scheduler']['Enable'])
         self.assertFalse(result['SpecialActivity']['SpecialActivity']['BuyHucheMysticMedals'])
+        self.assertTrue(result['SpecialActivity']['SpecialActivity']['GetAlenciaDailyReward'])
 
     def test_menu_callbacks_and_translations_are_ready(self):
         menu = json.loads((WORKTREE / 'module/config/argument/menu.json').read_text(encoding='utf-8'))

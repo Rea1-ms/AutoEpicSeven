@@ -29,6 +29,7 @@ EXPLORATION_MODULES = (
     "tests.dimensional_exploration.test_dimensional_exploration_shop_new",
     "tests.dimensional_exploration.test_dimensional_exploration_ui",
     "tests.dimensional_exploration.test_dimensional_exploration_runtime",
+    "tests.dimensional_exploration.test_dimensional_exploration_oct01",
 )
 RUNNER_MODULES = ("tests.test_offline_runner",)
 ARENA_MODULES = (
@@ -91,6 +92,7 @@ ACTIVITY_MODULES = (
     "tests.activity.test_meirin_reward",
     "tests.activity.test_support_reward",
     "tests.activity.test_october_events",
+    "tests.activity.test_alencia_handbook",
 )
 COMBAT_MODULES = (
     "tests.combat.test_daily_batch",
@@ -100,6 +102,7 @@ COMBAT_MODULES = (
     "tests.combat.test_combat_entry_search",
     "tests.combat.test_repeat_running_detail",
     "tests.combat.test_episode",
+    "tests.combat.test_story_push",
 )
 STORE_MODULES = ("tests.store.test_friendship_gift", "tests.store.test_purchase")
 EQUIPMENT_REROLL_MODULES = (

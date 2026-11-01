@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "../../global_cn/story_push/20261029-story-history-asset.png",
+  "suite": "story_intro",
+  "case": "history-asset",
+  "items": [
+    {
+      "name": "STORY_HISTORY_CHECK",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "share",
+      "module": "dungeon/story_push/common",
+      "box": [
+        1082,
+        21,
+        1118,
+        59
+      ]
+    }
+  ]
+}

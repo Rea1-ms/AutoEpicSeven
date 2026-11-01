@@ -1191,6 +1191,7 @@ class EpisodePushTests(unittest.TestCase):
         frames[-1]['buttons'] = frozenset((EPISODE_AUTO_COMBAT_UNAVAILABLE.name,
                                           EPISODE_BATTLE_CONTROLS_CHECK.name, ENEMY_NUM_EXIST.name,
                                           COMBAT_START.name, 'POPUP_CONFIRM'))
+        frames[-1]['battle_luminance'] = (55, 166)
         with ControlledClock() as clock:
             replay = self.replay(frames, clock)
             with patch.object(replay.task, '_prepare_stamina', side_effect=AssertionError('Unexpected cost read')), \
@@ -1376,8 +1377,12 @@ class EpisodePushTests(unittest.TestCase):
         template = json.loads((ROOT / 'config/template.json').read_text(encoding='utf-8'))
         self.assertIn('Episode', menu['Tool']['tasks'])
         self.assertFalse(arguments['Episode']['Scheduler']['Enable']['value'])
+        self.assertEqual(arguments['Episode']['Episode']['Mode'], {
+            'type': 'select', 'value': 'Main', 'option': ['Main', 'Side'],
+        })
         self.assertEqual(arguments['Episode']['Episode']['Number']['option'], list(range(7)))
-        self.assertEqual(template['Episode']['Episode'], {'Number': 0, 'MaxStages': 0})
+        self.assertEqual(arguments['Episode']['Episode']['Number']['display'], 'hide')
+        self.assertEqual(template['Episode']['Episode'], {'Mode': 'Main', 'Number': 0, 'MaxStages': 0})
         self.assertFalse(template['Episode']['Scheduler']['Enable'])
         for lang in ('zh-CN', 'zh-TW', 'en-US', 'ja-JP', 'es-ES'):
             text = json.loads((ROOT / f'module/config/i18n/{lang}.json').read_text(encoding='utf-8'))

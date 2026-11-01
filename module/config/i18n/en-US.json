@@ -103,8 +103,8 @@
       "help": "Open the steel workshop substat selection screen manually. Obtain speed 5 first, then pursue the remaining priorities. Lock only achieved targets, at most two. Stop at the goals or budget; equipment is not finalized automatically. Simplified Chinese game UI only."
     },
     "Episode": {
-      "name": "Main story",
-      "help": "Continue the current chapter, skip dialogue, fight and collect rewards with the current team. Stop on defeat or insufficient stamina; never refill stamina. Captured verification currently covers Episode 6 in Simplified Chinese."
+      "name": "Story progression",
+      "help": "Open the desired main or side-story list before starting. Use the current team, skip dialogue and restore auto combat. Stop on defeat or insufficient stamina without refilling. Side-story captures currently cover Global Simplified Chinese."
     },
     "SanctuaryMonthly": {
       "name": "Sanctuary Monthly",
@@ -1132,7 +1132,11 @@
   "SpecialActivity": {
     "_info": {
       "name": "Special activities",
-      "help": "Handle timed content with separate entrances, currently the Huche shop on the main screen. Scheduled independently of Limited-time events."
+      "help": "Handle special home entrances, including Alencia handbook daily rewards, on a schedule separate from Limited Activity."
+    },
+    "GetAlenciaDailyReward": {
+      "name": "Claim handbook daily rewards",
+      "help": "Overseas Simplified Chinese only. Enter the event hub from home and claim only the 200/400 stamina dailies. One tap collects both when ready. Recheck after battles until both are received."
     },
     "BuyHucheMysticMedals": {
       "name": "Buy Huche Shop Mystic Medals",
@@ -1141,12 +1145,18 @@
   },
   "Episode": {
     "_info": {
-      "name": "Main story",
-      "help": "Continue the current chapter, skip dialogue, fight and collect rewards with the current team. Stop on defeat or insufficient stamina; never refill stamina. Captured verification currently covers Episode 6 in Simplified Chinese."
+      "name": "Story progression",
+      "help": "Open the desired main or side-story list before starting. Use the current team, skip dialogue and restore auto combat. Stop on defeat or insufficient stamina without refilling. Side-story captures currently cover Global Simplified Chinese."
+    },
+    "Mode": {
+      "name": "Story type",
+      "help": "Match the opened page. Main story checks star requirements; side story follows the next selection made by the game.",
+      "Main": "Main story",
+      "Side": "Side story"
     },
     "Number": {
-      "name": "Episode",
-      "help": "0 continues the current episode; another number switches through the chapter selector.",
+      "name": "Legacy episode",
+      "help": "Hidden; progression starts in the episode opened by the player.",
       "0": "Current episode",
       "1": "Episode 1",
       "2": "Episode 2",
@@ -1157,7 +1167,7 @@
     },
     "MaxStages": {
       "name": "Node limit",
-      "help": "0 continues until blocked. A battle or story counts once after rewards close and the map returns."
+      "help": "0 continues until blocked. A battle or story counts once after completion and return to the map or story list."
     }
   },
   "BuyPenguins": {
@@ -1173,11 +1183,19 @@
   "DimensionalExploration": {
     "_info": {
       "name": "Dimensional Exploration",
-      "help": "Overseas Chinese client only. Keep the current difficulty and start with Heavy Baggage. Finish each run and stop after the configured batch."
+      "help": "Global Chinese client only. Keep the current difficulty and selected starting strategy. Restart after completion or failure and stop at the run count."
     },
     "RunCount": {
       "name": "Runs per batch",
       "help": "Count rewarded settlements. Interrupted batches resume; clicking Start after a finished batch starts a new count."
+    },
+    "StartStrategy": {
+      "name": "Starting strategy",
+      "help": "Choose one of the four verified starting cards. Defaults to Heavy Baggage; confirm only after the chosen card is selected.",
+      "雇佣契约": "雇佣契约",
+      "痛苦机械装置": "痛苦机械装置",
+      "沉重包袱": "沉重包袱",
+      "基础锻炼铁锤": "基础锻炼铁锤"
     },
     "EventSampling": {
       "name": "Collect event samples",
@@ -1206,6 +1224,10 @@
     "ThiefPriority": {
       "name": "Thief hero priority",
       "help": "Enter Chinese in-game names in priority order, separated by >, commas or newlines. If no affordable preferred hero is found, choose a low-cost candidate."
+    },
+    "UpgradePriority": {
+      "name": "Upgrade priority",
+      "help": "Enter one Hero name=Target rank per line, with targets from 1 to 5, e.g. 起源拉斯=3. Names must occur in one of the six recruitment priority lists. Reach each goal in order, then raise listed heroes to rank 5, then other heroes. Leave empty to max the recruitment list first."
     }
   },
   "DimensionalExplorationRuntime": {

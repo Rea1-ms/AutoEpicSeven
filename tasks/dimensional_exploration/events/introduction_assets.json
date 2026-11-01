@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "../../../tests/fixtures/dimensional_exploration/events/MuMu-20261004-201104-292.png",
+  "suite": "dimensional_exploration",
+  "case": "giant_eye_intro",
+  "items": [
+    {
+      "name": "EVENT_INTRO_GIANT_EYE",
+      "namespace": "global_cn",
+      "module": "dimensional_exploration/event_intro",
+      "box": [276, 461, 1010, 506]
+    },
+    {
+      "name": "EVENT_INTRO_GIANT_EYE",
+      "namespace": "global_cn",
+      "module": "dimensional_exploration/event_intro",
+      "box": [600, 678, 680, 708],
+      "kind": "button"
+    }
+  ]
+}

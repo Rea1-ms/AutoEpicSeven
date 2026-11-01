@@ -103,8 +103,8 @@
       "help": "Abre manualmente la selección de subestadísticas de la forja. Busca velocidad 5 primero y luego las prioridades restantes. Bloquea solo objetivos alcanzados, hasta dos. Se detiene por objetivos o presupuesto, sin fabricar el equipo automáticamente. Solo interfaz del juego en chino simplificado."
     },
     "Episode": {
-      "name": "Historia principal",
-      "help": "Continúa el capítulo actual, omite diálogos, combate y recoge recompensas con el equipo actual. Se detiene por derrota o energía insuficiente, sin recargar energía. Las capturas verificadas corresponden al episodio 6 en chino simplificado."
+      "name": "Progreso de historia",
+      "help": "Abre la lista de historia principal o secundaria antes de iniciar. Usa el equipo actual, omite diálogos y restaura el combate automático. Se detiene por derrota o energía insuficiente sin recargarla. Las capturas secundarias cubren Global en chino simplificado."
     },
     "SanctuaryMonthly": {
       "name": "Santuario - Mensual",
@@ -1132,7 +1132,11 @@
   "SpecialActivity": {
     "_info": {
       "name": "Eventos especiales",
-      "help": "Gestiona contenido temporal con entradas propias, actualmente la tienda de Huche en la pantalla principal. Se programa de forma independiente de Eventos temporales."
+      "help": "Gestiona entradas especiales desde el inicio, incluidas las recompensas diarias del manual de Alencia, con una programación independiente."
+    },
+    "GetAlenciaDailyReward": {
+      "name": "Recoger recompensas diarias del manual",
+      "help": "Solo chino simplificado del servidor global. Entra desde el inicio y recoge solo las misiones de 200/400 de energía. Un toque recoge ambas si están listas. Revisa tras los combates hasta recibir las dos."
     },
     "BuyHucheMysticMedals": {
       "name": "Comprar medallas místicas en la tienda de Huche",
@@ -1141,12 +1145,18 @@
   },
   "Episode": {
     "_info": {
-      "name": "Historia principal",
-      "help": "Continúa el capítulo actual, omite diálogos, combate y recoge recompensas con el equipo actual. Se detiene por derrota o energía insuficiente, sin recargar energía. Las capturas verificadas corresponden al episodio 6 en chino simplificado."
+      "name": "Progreso de historia",
+      "help": "Abre la lista de historia principal o secundaria antes de iniciar. Usa el equipo actual, omite diálogos y restaura el combate automático. Se detiene por derrota o energía insuficiente sin recargarla. Las capturas secundarias cubren Global en chino simplificado."
+    },
+    "Mode": {
+      "name": "Tipo de historia",
+      "help": "Selecciona según la página abierta. La principal comprueba requisitos de estrellas; la secundaria continúa con la selección del juego.",
+      "Main": "Historia principal",
+      "Side": "Historia secundaria"
     },
     "Number": {
-      "name": "Episodio",
-      "help": "0 continúa el episodio actual; otro número cambia mediante la selección de capítulos.",
+      "name": "Episodio anterior",
+      "help": "Oculto; continúa desde el episodio abierto por el jugador.",
       "0": "Episodio actual",
       "1": "Episode 1",
       "2": "Episode 2",
@@ -1157,7 +1167,7 @@
     },
     "MaxStages": {
       "name": "Límite de etapas",
-      "help": "0 continúa hasta detenerse. Un combate o historia cuenta una vez al cerrar las recompensas y volver al mapa."
+      "help": "0 continúa hasta detenerse. Un combate o historia cuenta una vez al completarse y volver al mapa o a la lista de historias."
     }
   },
   "BuyPenguins": {
@@ -1173,11 +1183,19 @@
   "DimensionalExploration": {
     "_info": {
       "name": "Exploración dimensional",
-      "help": "Solo para el cliente internacional en chino. Mantiene la dificultad actual y empieza con Heavy Baggage. Se detiene tras completar el lote."
+      "help": "Solo cliente global en chino. Mantiene la dificultad y la estrategia inicial elegida. Reinicia al completar o fallar y se detiene al alcanzar las rondas."
     },
     "RunCount": {
       "name": "Expediciones por lote",
       "help": "Cuenta liquidaciones con recompensa. Reanuda los lotes interrumpidos; al pulsar Iniciar después de completar un lote empieza un contador nuevo."
+    },
+    "StartStrategy": {
+      "name": "Estrategia inicial",
+      "help": "Elige una de las cuatro cartas iniciales verificadas. Por defecto usa 沉重包袱. Confirma solo la carta seleccionada.",
+      "雇佣契约": "雇佣契约",
+      "痛苦机械装置": "痛苦机械装置",
+      "沉重包袱": "沉重包袱",
+      "基础锻炼铁锤": "基础锻炼铁锤"
     },
     "EventSampling": {
       "name": "Recopilar eventos",
@@ -1206,6 +1224,10 @@
     "ThiefPriority": {
       "name": "Ladrón prioridad de héroes",
       "help": "Escribe los nombres chinos del juego por prioridad, separados por >, comas o saltos de línea. Si no hay un héroe preferido asequible, elige uno de coste bajo."
+    },
+    "UpgradePriority": {
+      "name": "Prioridad de ascenso",
+      "help": "Escribe Nombre del héroe=Rango objetivo en cada línea, de 1 a 5; por ejemplo, 起源拉斯=3. Cada nombre debe figurar en una de las seis listas de reclutamiento. Cumple los objetivos en orden, después sube los héroes de las listas al rango 5 y finalmente los demás. Déjalo vacío para completar primero las listas de reclutamiento."
     }
   },
   "DimensionalExplorationRuntime": {

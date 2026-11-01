@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "source": "000524-767.png",
+  "suite": "alencia_handbook",
+  "case": "000524-767",
+  "items": [
+    {
+      "name": "ALENCIA_REWARD_POPUP_CHECK",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "activity/alencia_handbook",
+      "box": [
+        516,
+        162,
+        766,
+        195
+      ]
+    },
+    {
+      "name": "ALENCIA_REWARD_CLOSE",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "activity/alencia_handbook",
+      "box": [
+        601,
+        538,
+        681,
+        585
+      ]
+    }
+  ]
+}

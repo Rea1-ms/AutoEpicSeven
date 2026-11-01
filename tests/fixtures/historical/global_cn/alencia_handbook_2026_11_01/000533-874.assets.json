@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "000533-874.png",
+  "suite": "alencia_handbook",
+  "case": "000533-874",
+  "items": [
+    {
+      "name": "ALENCIA_TASK_RECEIVED",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "activity/alencia_handbook",
+      "box": [
+        1136,
+        399,
+        1167,
+        424
+      ]
+    }
+  ]
+}

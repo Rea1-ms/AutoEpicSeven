@@ -204,9 +204,11 @@ class GeneratedConfig:
     LimitedActivity_GetEpicPathDailyReward = True
 
     # Group `SpecialActivity`
+    SpecialActivity_GetAlenciaDailyReward = True
     SpecialActivity_BuyHucheMysticMedals = False
 
     # Group `Episode`
+    Episode_Mode = 'Main'  # Main, Side
     Episode_Number = 0  # 0, 1, 2, 3, 4, 5, 6
     Episode_MaxStages = 0
 
@@ -215,6 +217,7 @@ class GeneratedConfig:
 
     # Group `DimensionalExploration`
     DimensionalExploration_RunCount = 1
+    DimensionalExploration_StartStrategy = '雇佣契约'  # 雇佣契约, 痛苦机械装置, 沉重包袱, 基础锻炼铁锤
     DimensionalExploration_EventSampling = False
     DimensionalExploration_KnightPriority = '起源拉斯 > 亚敏'
     DimensionalExploration_WarriorPriority = '卡瓦朱'
@@ -222,6 +225,7 @@ class GeneratedConfig:
     DimensionalExploration_MagePriority = '智武 > 研究者卡萝'
     DimensionalExploration_HealerPriority = '罪戾的安洁莉卡 > 拉兹'
     DimensionalExploration_ThiefPriority = '保健室老师律荷 > 转学生艾庭 > 可丽'
+    DimensionalExploration_UpgradePriority = None
 
     # Group `DimensionalExplorationRuntime`
     DimensionalExplorationRuntime_Session = {}

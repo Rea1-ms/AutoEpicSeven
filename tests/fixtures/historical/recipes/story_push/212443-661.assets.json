@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "source": "../../global_cn/story_push/20261029-212443-661.png",
+  "suite": "story_push_20261029",
+  "case": "212443-661",
+  "items": [
+    {
+      "name": "SIDE_STORY_READY",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "dungeon/story_push/side_story",
+      "box": [
+        1118,
+        650,
+        1205,
+        679
+      ]
+    },
+    {
+      "name": "SIDE_STORY_READY",
+      "kind": "button",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "dungeon/story_push/side_story",
+      "box": [
+        969,
+        636,
+        1240,
+        694
+      ]
+    },
+    {
+      "name": "SIDE_STORY_CURRENT",
+      "kind": "base",
+      "frame": 2,
+      "namespace": "share",
+      "module": "dungeon/story_push/side_story",
+      "box": [
+        1184,
+        414,
+        1240,
+        470
+      ]
+    }
+  ]
+}

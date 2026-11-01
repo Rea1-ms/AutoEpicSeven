@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "source": "000500-016.png",
+  "suite": "alencia_handbook",
+  "case": "000500-016",
+  "items": [
+    {
+      "name": "ALENCIA_HUB_CHECK",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "activity/alencia_handbook",
+      "box": [
+        69,
+        20,
+        217,
+        47
+      ]
+    },
+    {
+      "name": "ALENCIA_HANDBOOK_ENTRY",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "activity/alencia_handbook",
+      "box": [
+        585,
+        674,
+        699,
+        700
+      ]
+    }
+  ]
+}

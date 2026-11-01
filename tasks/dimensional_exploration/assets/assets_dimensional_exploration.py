@@ -114,13 +114,29 @@ CHAPTER_SELECT = ButtonWrapper(
 CORE_ICON = ButtonWrapper(
     name='CORE_ICON',
     cn=None,
-    global_cn=Button(
-        file='./assets/global_cn/dimensional_exploration/CORE_ICON.png',
-        area=(828, 18, 852, 47),
-        search=(790, 10, 906, 54),
-        color=(64, 60, 68),
-        button=(828, 18, 852, 47),
-    ),
+    global_cn=[
+        Button(
+            file='./assets/global_cn/dimensional_exploration/CORE_ICON.png',
+            area=(828, 18, 852, 47),
+            search=(790, 10, 906, 54),
+            color=(64, 60, 68),
+            button=(828, 18, 852, 47),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/CORE_ICON.2.png',
+            area=(826, 18, 850, 47),
+            search=(790, 10, 906, 54),
+            color=(77, 109, 136),
+            button=(826, 18, 850, 47),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/CORE_ICON.3.png',
+            area=(826, 18, 850, 47),
+            search=(790, 10, 906, 54),
+            color=(141, 123, 124),
+            button=(826, 18, 850, 47),
+        ),
+    ],
     global_en=None,
 )
 EVENT_CHECK = ButtonWrapper(
@@ -144,6 +160,18 @@ EVENT_DETAIL_AREA = ButtonWrapper(
         search=(55, 534, 140, 622),
         color=(38, 36, 69),
         button=(75, 554, 120, 602),
+    ),
+    global_en=None,
+)
+EVENT_HERO_ENTRY = ButtonWrapper(
+    name='EVENT_HERO_ENTRY',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/EVENT_HERO_ENTRY.png',
+        area=(42, 98, 75, 115),
+        search=(22, 78, 95, 135),
+        color=(71, 71, 71),
+        button=(7, 87, 174, 148),
     ),
     global_en=None,
 )
@@ -174,13 +202,36 @@ EVENT_NEXT = ButtonWrapper(
 EVENT_OPTION = ButtonWrapper(
     name='EVENT_OPTION',
     cn=None,
-    global_cn=Button(
-        file='./assets/global_cn/dimensional_exploration/EVENT_OPTION.png',
-        area=(75, 660, 98, 689),
-        search=(30, 646, 1210, 698),
-        color=(44, 39, 57),
-        button=(75, 660, 98, 689),
-    ),
+    global_cn=[
+        Button(
+            file='./assets/global_cn/dimensional_exploration/EVENT_OPTION.png',
+            area=(75, 660, 98, 689),
+            search=(30, 646, 1210, 698),
+            color=(44, 39, 57),
+            button=(75, 660, 98, 689),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/EVENT_OPTION.2.png',
+            area=(75, 660, 98, 680),
+            search=(30, 646, 1210, 698),
+            color=(55, 48, 69),
+            button=(75, 660, 98, 680),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/EVENT_OPTION.3.png',
+            area=(835, 660, 858, 689),
+            search=(30, 646, 1210, 698),
+            color=(48, 43, 61),
+            button=(835, 660, 858, 689),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/EVENT_OPTION.4.png',
+            area=(645, 554, 680, 582),
+            search=(30, 646, 1210, 698),
+            color=(38, 36, 69),
+            button=(655, 660, 678, 689),
+        ),
+    ],
     global_en=None,
 )
 EVENT_OPTION_CLICK = ButtonWrapper(
@@ -246,13 +297,22 @@ FAILED_CHECK = ButtonWrapper(
 FRAGMENT_ICON = ButtonWrapper(
     name='FRAGMENT_ICON',
     cn=None,
-    global_cn=Button(
-        file='./assets/global_cn/dimensional_exploration/FRAGMENT_ICON.png',
-        area=(893, 21, 917, 46),
-        search=(866, 10, 950, 54),
-        color=(45, 67, 89),
-        button=(893, 21, 917, 46),
-    ),
+    global_cn=[
+        Button(
+            file='./assets/global_cn/dimensional_exploration/FRAGMENT_ICON.png',
+            area=(893, 21, 917, 46),
+            search=(866, 10, 950, 54),
+            color=(45, 67, 89),
+            button=(893, 21, 917, 46),
+        ),
+        Button(
+            file='./assets/global_cn/dimensional_exploration/FRAGMENT_ICON.2.png',
+            area=(893, 21, 917, 46),
+            search=(866, 10, 950, 54),
+            color=(119, 131, 148),
+            button=(893, 21, 917, 46),
+        ),
+    ],
     global_en=None,
 )
 HERO_CONFIRM = ButtonWrapper(
@@ -482,18 +542,6 @@ LOOT_CHECK = ButtonWrapper(
     ),
     global_en=None,
 )
-LOOT_SELECTED = ButtonWrapper(
-    name='LOOT_SELECTED',
-    cn=None,
-    global_cn=Button(
-        file='./assets/global_cn/dimensional_exploration/LOOT_SELECTED.png',
-        area=(839, 99, 848, 223),
-        search=(190, 91, 1090, 232),
-        color=(103, 87, 49),
-        button=(839, 99, 848, 223),
-    ),
-    global_en=None,
-)
 MANUAL_TARGET = ButtonWrapper(
     name='MANUAL_TARGET',
     cn=None,
@@ -710,18 +758,6 @@ OCR_DICE = ButtonWrapper(
     ),
     global_en=None,
 )
-OCR_ENTRY = ButtonWrapper(
-    name='OCR_ENTRY',
-    cn=None,
-    global_cn=Button(
-        file='./assets/global_cn/dimensional_exploration/OCR_ENTRY.png',
-        area=(22, 90, 1248, 609),
-        search=(2, 70, 1268, 629),
-        color=(90, 94, 80),
-        button=(22, 90, 1248, 609),
-    ),
-    global_en=None,
-)
 OCR_EVENT_LOOT = ButtonWrapper(
     name='OCR_EVENT_LOOT',
     cn=None,
@@ -787,10 +823,10 @@ OCR_HEROES = ButtonWrapper(
     cn=None,
     global_cn=Button(
         file='./assets/global_cn/dimensional_exploration/OCR_HEROES.png',
-        area=(345, 80, 1278, 600),
-        search=(325, 60, 1280, 620),
-        color=(65, 64, 70),
-        button=(345, 80, 1278, 600),
+        area=(322, 80, 1280, 600),
+        search=(302, 60, 1280, 620),
+        color=(60, 59, 64),
+        button=(322, 80, 1280, 600),
     ),
     global_en=None,
 )
@@ -882,18 +918,6 @@ OCR_LOOT_EFFECT = ButtonWrapper(
     ],
     global_en=None,
 )
-OCR_OPTIONS = ButtonWrapper(
-    name='OCR_OPTIONS',
-    cn=None,
-    global_cn=Button(
-        file='./assets/global_cn/dimensional_exploration/OCR_OPTIONS.png',
-        area=(74, 546, 1204, 693),
-        search=(54, 526, 1224, 713),
-        color=(48, 44, 71),
-        button=(74, 546, 1204, 693),
-    ),
-    global_en=None,
-)
 OCR_PREVIEW_TITLE = ButtonWrapper(
     name='OCR_PREVIEW_TITLE',
     cn=None,
@@ -915,18 +939,6 @@ OCR_QUOTA = ButtonWrapper(
         search=(1140, 0, 1247, 71),
         color=(57, 62, 82),
         button=(1160, 17, 1227, 51),
-    ),
-    global_en=None,
-)
-OCR_RESOURCES = ButtonWrapper(
-    name='OCR_RESOURCES',
-    cn=None,
-    global_cn=Button(
-        file='./assets/global_cn/dimensional_exploration/OCR_RESOURCES.png',
-        area=(782, 13, 1234, 55),
-        search=(762, 0, 1254, 75),
-        color=(39, 44, 56),
-        button=(782, 13, 1234, 55),
     ),
     global_en=None,
 )
@@ -954,6 +966,54 @@ OCR_RESUME_REWARDS = ButtonWrapper(
     ),
     global_en=None,
 )
+OCR_ROSTER_COUNT = ButtonWrapper(
+    name='OCR_ROSTER_COUNT',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/OCR_ROSTER_COUNT.png',
+        area=(401, 663, 437, 689),
+        search=(381, 643, 457, 709),
+        color=(21, 22, 22),
+        button=(401, 663, 437, 689),
+    ),
+    global_en=None,
+)
+OCR_ROSTER_NAME = ButtonWrapper(
+    name='OCR_ROSTER_NAME',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/OCR_ROSTER_NAME.png',
+        area=(395, 94, 627, 125),
+        search=(375, 74, 647, 145),
+        color=(85, 81, 81),
+        button=(395, 94, 627, 125),
+    ),
+    global_en=None,
+)
+OCR_SACRIFICE_COUNTER = ButtonWrapper(
+    name='OCR_SACRIFICE_COUNTER',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/OCR_SACRIFICE_COUNTER.png',
+        area=(647, 658, 681, 680),
+        search=(627, 638, 701, 700),
+        color=(60, 54, 82),
+        button=(647, 658, 681, 680),
+    ),
+    global_en=None,
+)
+OCR_SACRIFICE_LOOT_COUNT = ButtonWrapper(
+    name='OCR_SACRIFICE_LOOT_COUNT',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/OCR_SACRIFICE_LOOT_COUNT.png',
+        area=(47, 197, 68, 220),
+        search=(27, 177, 88, 240),
+        color=(19, 19, 19),
+        button=(47, 197, 68, 220),
+    ),
+    global_en=None,
+)
 OCR_SELECTED_HERO = ButtonWrapper(
     name='OCR_SELECTED_HERO',
     cn=None,
@@ -966,15 +1026,15 @@ OCR_SELECTED_HERO = ButtonWrapper(
     ),
     global_en=None,
 )
-OCR_SETTLEMENT_SCORE = ButtonWrapper(
-    name='OCR_SETTLEMENT_SCORE',
+OCR_SETTLEMENT_STARLIGHT = ButtonWrapper(
+    name='OCR_SETTLEMENT_STARLIGHT',
     cn=None,
     global_cn=Button(
-        file='./assets/global_cn/dimensional_exploration/OCR_SETTLEMENT_SCORE.png',
-        area=(170, 590, 472, 670),
-        search=(150, 570, 492, 690),
-        color=(107, 94, 134),
-        button=(170, 590, 472, 670),
+        file='./assets/global_cn/dimensional_exploration/OCR_SETTLEMENT_STARLIGHT.png',
+        area=(944, 590, 1072, 670),
+        search=(924, 570, 1092, 690),
+        color=(114, 101, 147),
+        button=(944, 590, 1072, 670),
     ),
     global_en=None,
 )
@@ -1179,6 +1239,18 @@ OCR_SHOP_PRICE = ButtonWrapper(
     ],
     global_en=None,
 )
+OCR_UPGRADE_RANK = ButtonWrapper(
+    name='OCR_UPGRADE_RANK',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/OCR_UPGRADE_RANK.png',
+        area=(381, 134, 397, 156),
+        search=(361, 114, 417, 176),
+        color=(56, 64, 86),
+        button=(381, 134, 397, 156),
+    ),
+    global_en=None,
+)
 PREPARE_CHECK = ButtonWrapper(
     name='PREPARE_CHECK',
     cn=None,
@@ -1189,41 +1261,6 @@ PREPARE_CHECK = ButtonWrapper(
         color=(120, 130, 174),
         button=(112, 135, 253, 163),
     ),
-    global_en=None,
-)
-PREVIEW_CHECK = ButtonWrapper(
-    name='PREVIEW_CHECK',
-    cn=None,
-    global_cn=[
-        Button(
-            file='./assets/global_cn/dimensional_exploration/PREVIEW_CHECK.png',
-            area=(945, 102, 1023, 124),
-            search=(925, 82, 1043, 144),
-            color=(77, 76, 84),
-            button=(945, 102, 1023, 124),
-        ),
-        Button(
-            file='./assets/global_cn/dimensional_exploration/PREVIEW_CHECK.2.png',
-            area=(945, 102, 1023, 124),
-            search=(925, 82, 1043, 144),
-            color=(70, 68, 78),
-            button=(945, 102, 1023, 124),
-        ),
-        Button(
-            file='./assets/global_cn/dimensional_exploration/PREVIEW_CHECK.3.png',
-            area=(945, 102, 1023, 124),
-            search=(925, 82, 1043, 144),
-            color=(59, 57, 68),
-            button=(945, 102, 1023, 124),
-        ),
-        Button(
-            file='./assets/global_cn/dimensional_exploration/PREVIEW_CHECK.4.png',
-            area=(945, 102, 1000, 124),
-            search=(925, 82, 1020, 144),
-            color=(66, 64, 74),
-            button=(945, 102, 1000, 124),
-        ),
-    ],
     global_en=None,
 )
 RECRUITMENT_CHECK = ButtonWrapper(
@@ -1294,6 +1331,18 @@ REST_HERO_CONFIRM = ButtonWrapper(
         search=(1010, 628, 1160, 697),
         color=(99, 84, 146),
         button=(1030, 648, 1140, 677),
+    ),
+    global_en=None,
+)
+REST_HERO_ENTRY = ButtonWrapper(
+    name='REST_HERO_ENTRY',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/REST_HERO_ENTRY.png',
+        area=(397, 637, 437, 659),
+        search=(377, 617, 457, 679),
+        color=(67, 63, 67),
+        button=(325, 637, 433, 680),
     ),
     global_en=None,
 )
@@ -1423,6 +1472,126 @@ ROOM_SUPPLY_CHECK = ButtonWrapper(
         search=(910, 275, 1069, 340),
         color=(87, 83, 107),
         button=(930, 295, 1049, 320),
+    ),
+    global_en=None,
+)
+ROSTER_CHECK = ButtonWrapper(
+    name='ROSTER_CHECK',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/ROSTER_CHECK.png',
+        area=(316, 644, 354, 678),
+        search=(296, 624, 374, 698),
+        color=(46, 46, 47),
+        button=(316, 644, 354, 678),
+    ),
+    global_en=None,
+)
+ROSTER_HP_BAR = ButtonWrapper(
+    name='ROSTER_HP_BAR',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/ROSTER_HP_BAR.png',
+        area=(430, 142, 489, 150),
+        search=(410, 122, 509, 170),
+        color=(109, 158, 37),
+        button=(430, 142, 489, 150),
+    ),
+    global_en=None,
+)
+ROSTER_RANK_ICON = ButtonWrapper(
+    name='ROSTER_RANK_ICON',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/ROSTER_RANK_ICON.png',
+        area=(360, 136, 380, 155),
+        search=(348, 85, 1278, 589),
+        color=(74, 99, 116),
+        button=(360, 136, 380, 155),
+    ),
+    global_en=None,
+)
+ROSTER_TITLE = ButtonWrapper(
+    name='ROSTER_TITLE',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/ROSTER_TITLE.png',
+        area=(66, 19, 175, 48),
+        search=(46, 0, 195, 68),
+        color=(119, 119, 120),
+        button=(66, 19, 175, 48),
+    ),
+    global_en=None,
+)
+SACRIFICE_CHECK = ButtonWrapper(
+    name='SACRIFICE_CHECK',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/SACRIFICE_CHECK.png',
+        area=(820, 489, 974, 513),
+        search=(800, 469, 994, 533),
+        color=(125, 113, 157),
+        button=(820, 489, 974, 513),
+    ),
+    global_en=None,
+)
+SACRIFICE_CONFIRM = ButtonWrapper(
+    name='SACRIFICE_CONFIRM',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/SACRIFICE_CONFIRM.png',
+        area=(589, 655, 690, 684),
+        search=(569, 635, 710, 704),
+        color=(86, 74, 124),
+        button=(495, 638, 784, 699),
+    ),
+    global_en=None,
+)
+SACRIFICE_NORMAL_CORNER = ButtonWrapper(
+    name='SACRIFICE_NORMAL_CORNER',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/SACRIFICE_NORMAL_CORNER.png',
+        area=(662, 151, 680, 170),
+        search=(655, 146, 1145, 480),
+        color=(25, 28, 40),
+        button=(662, 150, 746, 234),
+    ),
+    global_en=None,
+)
+SACRIFICE_REMOVE = ButtonWrapper(
+    name='SACRIFICE_REMOVE',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/SACRIFICE_REMOVE.png',
+        area=(850, 510, 875, 538),
+        search=(830, 490, 895, 558),
+        color=(174, 107, 117),
+        button=(850, 510, 875, 538),
+    ),
+    global_en=None,
+)
+SACRIFICE_SELECTED_MARK = ButtonWrapper(
+    name='SACRIFICE_SELECTED_MARK',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/SACRIFICE_SELECTED_MARK.png',
+        area=(686, 177, 718, 204),
+        search=(655, 146, 1145, 480),
+        color=(47, 63, 24),
+        button=(686, 177, 718, 204),
+    ),
+    global_en=None,
+)
+SACRIFICE_SPECIAL_CORNER = ButtonWrapper(
+    name='SACRIFICE_SPECIAL_CORNER',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/SACRIFICE_SPECIAL_CORNER.png',
+        area=(950, 151, 968, 170),
+        search=(655, 146, 1145, 480),
+        color=(73, 23, 52),
+        button=(950, 150, 1034, 234),
     ),
     global_en=None,
 )
@@ -1561,18 +1730,6 @@ SHOP_OFFER = ButtonWrapper(
     ],
     global_en=None,
 )
-SHOP_SOLD = ButtonWrapper(
-    name='SHOP_SOLD',
-    cn=None,
-    global_cn=Button(
-        file='./assets/global_cn/dimensional_exploration/SHOP_SOLD.png',
-        area=(1015, 544, 1091, 567),
-        search=(393, 280, 1140, 580),
-        color=(89, 77, 103),
-        button=(1015, 544, 1091, 567),
-    ),
-    global_en=None,
-)
 SUPPLY_BAGGAGE = ButtonWrapper(
     name='SUPPLY_BAGGAGE',
     cn=None,
@@ -1609,6 +1766,18 @@ SUPPLY_CONFIRM = ButtonWrapper(
     ),
     global_en=None,
 )
+SUPPLY_CONTRACT = ButtonWrapper(
+    name='SUPPLY_CONTRACT',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/SUPPLY_CONTRACT.png',
+        area=(106, 255, 220, 286),
+        search=(86, 235, 240, 306),
+        color=(81, 87, 107),
+        button=(106, 255, 220, 286),
+    ),
+    global_en=None,
+)
 SUPPLY_DONE_AREA = ButtonWrapper(
     name='SUPPLY_DONE_AREA',
     cn=None,
@@ -1621,6 +1790,18 @@ SUPPLY_DONE_AREA = ButtonWrapper(
     ),
     global_en=None,
 )
+SUPPLY_HAMMER = ButtonWrapper(
+    name='SUPPLY_HAMMER',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/SUPPLY_HAMMER.png',
+        area=(924, 255, 1100, 286),
+        search=(904, 235, 1120, 306),
+        color=(82, 88, 109),
+        button=(924, 255, 1100, 286),
+    ),
+    global_en=None,
+)
 SUPPLY_LOOT = ButtonWrapper(
     name='SUPPLY_LOOT',
     cn=None,
@@ -1630,6 +1811,18 @@ SUPPLY_LOOT = ButtonWrapper(
         search=(912, 379, 1081, 452),
         color=(76, 72, 98),
         button=(932, 399, 1061, 432),
+    ),
+    global_en=None,
+)
+SUPPLY_MACHINE = ButtonWrapper(
+    name='SUPPLY_MACHINE',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/dimensional_exploration/SUPPLY_MACHINE.png',
+        area=(363, 255, 523, 286),
+        search=(343, 235, 543, 306),
+        color=(85, 91, 112),
+        button=(363, 255, 523, 286),
     ),
     global_en=None,
 )
