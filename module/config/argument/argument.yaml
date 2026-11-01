@@ -449,6 +449,9 @@ BuyPenguins:
 
 DimensionalExploration:
   RunCount: 1
+  StartStrategy:
+    value: 雇佣契约
+    option: [ 雇佣契约, 痛苦机械装置, 沉重包袱, 基础锻炼铁锤 ]
   EventSampling: false
   KnightPriority:
     value: "起源拉斯 > 亚敏"
@@ -467,6 +470,9 @@ DimensionalExploration:
     type: textarea
   ThiefPriority:
     value: "保健室老师律荷 > 转学生艾庭 > 可丽"
+    type: textarea
+  UpgradePriority:
+    value: ""
     type: textarea
 
 DimensionalExplorationRuntime:

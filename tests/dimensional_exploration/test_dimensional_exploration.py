@@ -11,10 +11,10 @@ from tasks.dimensional_exploration.policy import (
     EventChoice, Offer, RunProgress, choose_offer,
     node_priority, parse_counter, parse_number,
 )
-from tasks.dimensional_exploration.vision import ExplorationVision
-from tasks.dimensional_exploration.recruitment import same_hero
+from tasks.dimensional_exploration.recognition.vision import ExplorationVision
+from tasks.dimensional_exploration.heroes.recruitment import same_hero
 from tasks.dimensional_exploration.dimensional_exploration import DimensionalExploration
-from tasks.dimensional_exploration.event import decide_event
+from tasks.dimensional_exploration.events.event import decide_event
 
 logger.setLevel('ERROR')
 
@@ -41,7 +41,10 @@ class PolicyTests(unittest.TestCase):
         self.assertIsNone(decide_event(pool, cores=20, fragments=0, life=1, loot=0))
         coin = [EventChoice(0, '消耗50个次元碎片，获得望远镜镜片', True), EventChoice(1, '直接离开')]
         self.assertEqual(decide_event(coin, cores=19, fragments=86, life=3, loot=0).choice.index, 1)
-        self.assertEqual(decide_event(coin, cores=20, fragments=86, life=3, loot=0).choice.index, 0)
+        self.assertEqual(decide_event(coin, cores=20, fragments=86, life=3, loot=0).choice.index, 1)
+        self.assertEqual(decide_event(coin, cores=20, fragments=220, life=3, loot=0).choice.index, 0)
+        self.assertEqual(decide_event(coin, cores=19, fragments=269, life=3, loot=0).choice.index, 1)
+        self.assertEqual(decide_event(coin, cores=19, fragments=270, life=3, loot=0).choice.index, 0)
         self.assertIsNone(decide_event([EventChoice(0, '消耗未知资源，获得战利品')],
                                      cores=20, fragments=999, life=3, loot=9))
 
@@ -207,6 +210,7 @@ if {lang!r} == 'global_cn':
         for suffix, expected in [('20260922-081207-157', 'SUPPLY_BAGGAGE'),
                                  ('20260922-081226-118', 'SUPPLY_CONFIRM')]:
             task, vision, clicks = self.make_task(suffix)
+            task.config.DimensionalExploration_StartStrategy = '沉重包袱'
             self.assertTrue(task.handle_start_supply(vision))
             self.assertEqual(clicks, [expected])
 

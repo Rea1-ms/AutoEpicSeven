@@ -1,0 +1,119 @@
+{
+  "version": 1,
+  "recipes": [
+    {
+      "version": 1,
+      "source": "tests/fixtures/dimensional_exploration/map/MuMu-20260922-081603-149.png",
+      "suite": "dimensional_exploration_preview_oct04",
+      "case": "battle",
+      "items": [
+        {
+          "name": "PREVIEW_BATTLE",
+          "namespace": "global_cn",
+          "module": "dimensional_exploration/navigation",
+          "box": [
+            943,
+            102,
+            1023,
+            125
+          ]
+        }
+      ]
+    },
+    {
+      "version": 1,
+      "source": "tests/fixtures/dimensional_exploration/map/MuMu-20260922-082932-782.png",
+      "suite": "dimensional_exploration_preview_oct04",
+      "case": "boss",
+      "items": [
+        {
+          "name": "PREVIEW_BOSS",
+          "namespace": "global_cn",
+          "module": "dimensional_exploration/navigation",
+          "box": [
+            943,
+            102,
+            1023,
+            125
+          ]
+        }
+      ]
+    },
+    {
+      "version": 1,
+      "source": "tests/fixtures/dimensional_exploration/map/MuMu-20260922-081805-941.png",
+      "suite": "dimensional_exploration_preview_oct04",
+      "case": "elite",
+      "items": [
+        {
+          "name": "PREVIEW_ELITE",
+          "namespace": "global_cn",
+          "module": "dimensional_exploration/navigation",
+          "box": [
+            943,
+            102,
+            1023,
+            125
+          ]
+        }
+      ]
+    },
+    {
+      "version": 1,
+      "source": "tests/fixtures/dimensional_exploration/map/MuMu-20260922-081803-041.png",
+      "suite": "dimensional_exploration_preview_oct04",
+      "case": "event",
+      "items": [
+        {
+          "name": "PREVIEW_EVENT",
+          "namespace": "global_cn",
+          "module": "dimensional_exploration/navigation",
+          "box": [
+            943,
+            102,
+            984,
+            125
+          ]
+        }
+      ]
+    },
+    {
+      "version": 1,
+      "source": "tests/fixtures/dimensional_exploration/map/MuMu-20260925-113935-872.png",
+      "suite": "dimensional_exploration_preview_oct04",
+      "case": "rest",
+      "items": [
+        {
+          "name": "PREVIEW_REST",
+          "namespace": "global_cn",
+          "module": "dimensional_exploration/navigation",
+          "box": [
+            943,
+            102,
+            984,
+            125
+          ]
+        }
+      ]
+    },
+    {
+      "version": 1,
+      "source": "tests/fixtures/dimensional_exploration/map/MuMu-20260922-081725-462.png",
+      "suite": "dimensional_exploration_preview_oct04",
+      "case": "supply",
+      "items": [
+        {
+          "name": "PREVIEW_SUPPLY",
+          "namespace": "global_cn",
+          "module": "dimensional_exploration/navigation",
+          "box": [
+            943,
+            102,
+            984,
+            125
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1183,11 +1183,19 @@
   "DimensionalExploration": {
     "_info": {
       "name": "Dimensional Exploration",
-      "help": "Overseas Chinese client only. Keep the current difficulty and start with Heavy Baggage. Finish each run and stop after the configured batch."
+      "help": "Global Chinese client only. Keep the current difficulty and selected starting strategy. Restart after completion or failure and stop at the run count."
     },
     "RunCount": {
       "name": "Runs per batch",
       "help": "Count rewarded settlements. Interrupted batches resume; clicking Start after a finished batch starts a new count."
+    },
+    "StartStrategy": {
+      "name": "Starting strategy",
+      "help": "Choose one of the four verified starting cards. Defaults to Heavy Baggage; confirm only after the chosen card is selected.",
+      "雇佣契约": "雇佣契约",
+      "痛苦机械装置": "痛苦机械装置",
+      "沉重包袱": "沉重包袱",
+      "基础锻炼铁锤": "基础锻炼铁锤"
     },
     "EventSampling": {
       "name": "Collect event samples",
@@ -1216,6 +1224,10 @@
     "ThiefPriority": {
       "name": "Thief hero priority",
       "help": "Enter Chinese in-game names in priority order, separated by >, commas or newlines. If no affordable preferred hero is found, choose a low-cost candidate."
+    },
+    "UpgradePriority": {
+      "name": "Upgrade priority",
+      "help": "Enter one Hero name=Target rank per line, with targets from 1 to 5, e.g. 起源拉斯=3. Names must occur in one of the six recruitment priority lists. Reach each goal in order, then raise listed heroes to rank 5, then other heroes. Leave empty to max the recruitment list first."
     }
   },
   "DimensionalExplorationRuntime": {

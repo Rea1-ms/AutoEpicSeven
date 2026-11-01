@@ -1522,6 +1522,16 @@
         "type": "input",
         "value": 1
       },
+      "StartStrategy": {
+        "type": "select",
+        "value": "雇佣契约",
+        "option": [
+          "雇佣契约",
+          "痛苦机械装置",
+          "沉重包袱",
+          "基础锻炼铁锤"
+        ]
+      },
       "EventSampling": {
         "type": "checkbox",
         "value": false
@@ -1549,6 +1559,10 @@
       "ThiefPriority": {
         "type": "textarea",
         "value": "保健室老师律荷 > 转学生艾庭 > 可丽"
+      },
+      "UpgradePriority": {
+        "type": "textarea",
+        "value": ""
       }
     },
     "DimensionalExplorationRuntime": {

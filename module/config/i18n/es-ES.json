@@ -1183,11 +1183,19 @@
   "DimensionalExploration": {
     "_info": {
       "name": "Exploración dimensional",
-      "help": "Solo para el cliente internacional en chino. Mantiene la dificultad actual y empieza con Heavy Baggage. Se detiene tras completar el lote."
+      "help": "Solo cliente global en chino. Mantiene la dificultad y la estrategia inicial elegida. Reinicia al completar o fallar y se detiene al alcanzar las rondas."
     },
     "RunCount": {
       "name": "Expediciones por lote",
       "help": "Cuenta liquidaciones con recompensa. Reanuda los lotes interrumpidos; al pulsar Iniciar después de completar un lote empieza un contador nuevo."
+    },
+    "StartStrategy": {
+      "name": "Estrategia inicial",
+      "help": "Elige una de las cuatro cartas iniciales verificadas. Por defecto usa 沉重包袱. Confirma solo la carta seleccionada.",
+      "雇佣契约": "雇佣契约",
+      "痛苦机械装置": "痛苦机械装置",
+      "沉重包袱": "沉重包袱",
+      "基础锻炼铁锤": "基础锻炼铁锤"
     },
     "EventSampling": {
       "name": "Recopilar eventos",
@@ -1216,6 +1224,10 @@
     "ThiefPriority": {
       "name": "Ladrón prioridad de héroes",
       "help": "Escribe los nombres chinos del juego por prioridad, separados por >, comas o saltos de línea. Si no hay un héroe preferido asequible, elige uno de coste bajo."
+    },
+    "UpgradePriority": {
+      "name": "Prioridad de ascenso",
+      "help": "Escribe Nombre del héroe=Rango objetivo en cada línea, de 1 a 5; por ejemplo, 起源拉斯=3. Cada nombre debe figurar en una de las seis listas de reclutamiento. Cumple los objetivos en orden, después sube los héroes de las listas al rango 5 y finalmente los demás. Déjalo vacío para completar primero las listas de reclutamiento."
     }
   },
   "DimensionalExplorationRuntime": {
