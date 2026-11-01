@@ -44,10 +44,12 @@ class StorySkipMixin:
             or self._story_intro_visible()
         )
 
-    def _click(self, button):
-        if self.interval_is_reached(button, interval=self.ACTION_INTERVAL):
+    def _click(self, button, interval=None):
+        if interval is None:
+            interval = self.ACTION_INTERVAL
+        if self.interval_is_reached(button, interval=interval):
             self.device.click(button)
-            self.interval_reset(button, interval=self.ACTION_INTERVAL)
+            self.interval_reset(button, interval=interval)
             return True
         return False
 
@@ -61,7 +63,10 @@ class StorySkipMixin:
             # A visible skip already establishes that no reveal is needed.
             # Keep that observation through subsequent toolbar animation too.
             self._story_intro_clicked = True
-            return self._click(EPISODE_STORY_SKIP)
+            # The opening frame can show skip before it accepts the first tap.
+            # Retry this action sooner; confirmation and other actions retain
+            # their own independent intervals and remain immediately eligible.
+            return self._click(EPISODE_STORY_SKIP, interval=.5)
         if not self._story_intro_clicked and self._story_intro_visible():
             # One tap is enough to request reveal. An ignored request may wait
             # for the game's normal animation; never retry through this latch.

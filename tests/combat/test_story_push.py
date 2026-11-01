@@ -11,17 +11,20 @@ from module.config import server
 server.set_lang('global_cn')
 
 from module.exception import RequestHumanTakeover
+from module.ocr.ocr import Ocr
 from tasks.dungeon.assets.assets_dungeon_action import AUTO_COMBAT, COMBAT_START
 from tasks.dungeon.assets.assets_dungeon_episode_story import EPISODE_STORY_SKIP
 from tasks.dungeon.assets.assets_dungeon_repeat_common import REPEAT_COMBAT_MENU
 from tasks.dungeon.assets.assets_dungeon_story_push_side_story import (
+    OCR_SIDE_STORY_CHAPTER,
+    SIDE_STORY_CURRENT,
     SIDE_STORY_READY,
     SIDE_STORY_WATCH,
 )
 from tasks.dungeon.episode_push import Episode
 from tests.support.episode import EpisodeReplay
 from tests.support.interaction import scene
-from tests.support.offline import ROOT, ControlledClock
+from tests.support.offline import ROOT, ControlledClock, fixture_image
 
 FIRST = ['210121-471', '210127-834', '210138-020', '210141-033', '210144-947', '210255-424', '210300-938', '210303-621', '210341-110', '210344-997', '210348-137', '210350-311', '210354-862', '210400-283', '210401-363', '210403-270', '210410-023', '210411-778', '210412-934', '210414-192', '210421-767', '210423-105', '210424-139', '210426-104']
 SECOND = ['210426-104', '212346-548', '212443-661', '212445-854', '212449-450', '212452-590', '212454-720', '212457-623', '212459-418', '212500-658', '212502-109', '212604-348', '212606-278', '212607-478', '212612-942', '212614-702', '212711-918', '212713-459', '212714-667', '212717-178', '212720-853']
@@ -73,6 +76,43 @@ class StoryPushRecognitionTests(unittest.TestCase):
                 self.assertEqual(replay.task._side_story_list_ready(), stamp in LISTS)
                 self.assertEqual(replay.actions, [])
 
+    def test_identity_reuses_text_but_tracks_chapter_row_and_background(self):
+        with ControlledClock() as clock:
+            replay = EpisodeReplay([captured('210426-104'), captured('212443-661')], clock)
+            with patch.object(Ocr, 'ocr_single_line', autospec=True, side_effect=Ocr.ocr_single_line) as read:
+                self.assertEqual(replay.task._side_story_identity(), ('第2章', '人生就是一场豪赌'))
+                self.assertEqual(read.call_count, 2)
+                # Animate only dim backdrop pixels, including those behind the
+                # translucent text panel. Keep bright glyphs and controls intact.
+                dim = (replay.image < 100).all(axis=2)
+                replay.image[dim] = 90
+                self.assertEqual(replay.task._side_story_identity(), ('第2章', '人生就是一场豪赌'))
+                self.assertEqual(read.call_count, 2)
+                chapter = fixture_image(ROOT / 'tests/fixtures/historical/manifest.json', '20261029-210350-311')
+                left, top, right, bottom = OCR_SIDE_STORY_CHAPTER.area
+                replay.image[top:bottom, left:right] = chapter[top:bottom, left:right]
+                self.assertEqual(replay.task._side_story_identity(), ('第1章', '人生就是一场豪赌'))
+                self.assertEqual(read.call_count, 4)
+                replay.screenshot()
+                self.assertEqual(replay.task._side_story_identity(), ('第2章', '不可避的一战'))
+                self.assertEqual(replay.task._side_story_identity(), ('第2章', '不可避的一战'))
+                self.assertEqual(read.call_count, 6)
+            self.assertEqual(replay.actions, [])
+
+    def test_invalid_identity_and_missing_selection_cannot_reuse_old_text(self):
+        with ControlledClock() as clock:
+            replay = EpisodeReplay([captured('210426-104')], clock)
+            with patch.object(Ocr, 'ocr_single_line', side_effect=['', '', '第2章', '人生就是一场豪赌']) as read:
+                self.assertIsNone(replay.task._side_story_identity())
+                self.assertEqual(replay.task._side_story_identity(), ('第2章', '人生就是一场豪赌'))
+                self.assertEqual(read.call_count, 4)
+                with patch.object(replay.task, 'appear', return_value=False) as marker:
+                    self.assertIsNone(replay.task._side_story_identity())
+                marker.assert_called_once_with(SIDE_STORY_CURRENT)
+                self.assertEqual(replay.task._side_story_identity(), ('第2章', '人生就是一场豪赌'))
+                self.assertEqual(read.call_count, 4)
+            self.assertEqual(replay.actions, [])
+
     def test_captured_manual_elites_and_auto_animations_are_distinct(self):
         for stamp, expected in (('212607-478', False), ('212612-942', False),
                                 ('212502-109', True), ('212614-702', True),
@@ -111,6 +151,26 @@ class StoryPushReplayTests(unittest.TestCase):
             self.assertEqual(replay.clicks('AUTO_COMBAT'), [6])
             self.assertEqual(replay.index, 23)
             self.assertEqual(replay.clicks('POPUP_CONFIRM'), [])
+
+    def test_list_reads_once_per_visit_without_skipping_current_page_checks(self):
+        repeated = captured('210426-104', seconds=.1)
+        frames = [repeated] * 4 + [scene(seconds=.1), repeated,
+                                  captured('212346-548', seconds=.1), captured('212443-661', seconds=.1)]
+        with ControlledClock() as clock:
+            replay = EpisodeReplay(frames, clock)
+            with (
+                patch.object(Ocr, 'ocr_single_line', autospec=True, side_effect=Ocr.ocr_single_line) as read,
+                patch.object(replay.task, '_side_story_list_ready', wraps=replay.task._side_story_list_ready) as ready,
+                patch.object(replay.task, '_side_story_cost', return_value=(20, 37)) as cost,
+            ):
+                self.assertEqual(replay.task._push_side_story(limit=1), 'stage_limit')
+            self.assertEqual(read.call_count, 4)
+            self.assertEqual(ready.call_count, len(frames))
+            self.assertEqual(cost.call_count, 1)
+            self.assertEqual(replay.clicks(SIDE_STORY_WATCH.name), [0])
+            self.assertEqual(replay.clicks(SIDE_STORY_READY.name), [])
+            self.assertEqual(replay.task.completed_stages, 1)
+            self.assertEqual(replay.index, len(frames) - 1)
 
     def test_second_supplied_sequence_restores_auto_after_story_and_returns(self):
         with ControlledClock() as clock:
@@ -186,9 +246,27 @@ class StoryPushReplayTests(unittest.TestCase):
         with ControlledClock() as clock:
             replay = EpisodeReplay(frames, clock)
             self.assertEqual(replay.task._push_side_story(limit=1), 'stage_limit')
-            self.assertEqual(replay.actions, [(0, EPISODE_STORY_SKIP.name), (2, EPISODE_STORY_SKIP.name),
+            self.assertEqual(replay.actions, [(0, EPISODE_STORY_SKIP.name), (1, EPISODE_STORY_SKIP.name),
+                                             (2, EPISODE_STORY_SKIP.name),
                                              (3, 'EPISODE_STORY_SKIP_CONFIRM')])
             self.assertEqual(replay.index, 4)
+
+    def test_skip_half_second_retry_keeps_confirmation_interval_in_both_loops(self):
+        for mode in ('Main', 'Side'):
+            with self.subTest(mode=mode), ControlledClock() as clock:
+                frames = [scene(EPISODE_STORY_SKIP.name, seconds=seconds)
+                          for seconds in (.1, .49, .011, .49, .011)]
+                frames += [scene('EPISODE_STORY_SKIP_CHECK', 'EPISODE_STORY_SKIP_CONFIRM', seconds=seconds)
+                           for seconds in (.01, .5, 1.501)]
+                frames += [scene('COMBAT_RESULT_CLEAR', seconds=.01),
+                           scene(map_ready=True) if mode == 'Main' else story_list('下一段', SIDE_STORY_WATCH.name)]
+                replay = EpisodeReplay(frames, clock)
+                run = replay.task._push if mode == 'Main' else replay.task._push_side_story
+                self.assertEqual(run(limit=1), 'stage_limit')
+                self.assertEqual(replay.clicks(EPISODE_STORY_SKIP.name), [0, 2, 4])
+                self.assertEqual(replay.clicks('EPISODE_STORY_SKIP_CONFIRM'), [5, 7])
+                self.assertEqual(replay.clicks('COMBAT_RESULT_CLEAR'), [8])
+                self.assertEqual(replay.index, len(frames) - 1)
 
     def test_same_returned_list_cannot_replay_a_paid_story(self):
         frames = [captured('210426-104'), captured('212346-548')]
@@ -300,6 +378,153 @@ class StoryPushReplayTests(unittest.TestCase):
             self.assertTrue(text['Episode']['Mode']['Main'])
             self.assertTrue(text['Episode']['Mode']['Side'])
             self.assertTrue(text['Episode']['Mode']['help'])
+
+
+class StoryCompletionTests(unittest.TestCase):
+    def setUp(self):
+        server.set_lang('global_cn')
+
+    def test_completed_list_stops_successfully_without_reading_or_replaying(self):
+        terminal = scene(fixture='20261101-010130-746')
+        with ControlledClock() as clock:
+            replay = EpisodeReplay([terminal, scene(map_ready=True)], clock)
+            with (
+                patch.object(replay.task, '_side_story_identity', side_effect=AssertionError('Finished title')),
+                patch.object(replay.task, '_side_story_cost', side_effect=AssertionError('Finished cost')),
+            ):
+                self.assertEqual(replay.task._push_side_story(), 'story_complete')
+                self.assertEqual(replay.task._push_side_story(), 'story_complete')
+            self.assertEqual(replay.task.completed_stages, 0)
+            self.assertEqual(replay.actions, [])
+            self.assertEqual(replay.index, 0)
+        with ControlledClock() as clock:
+            replay = EpisodeReplay([scene(), terminal], clock)
+            replay.task.config.Episode_Mode = 'Side'
+            self.assertTrue(replay.task.run())
+            self.assertEqual(replay.task.stop_reason, 'story_complete')
+            self.assertEqual(replay.task.completed_stages, 0)
+            self.assertEqual(replay.actions, [])
+            replay.task.config.task_call.assert_not_called()
+
+    def test_final_story_counts_once_before_stopping_at_completed_list(self):
+        # Independently captured list/story/final inputs are arranged to test
+        # completion bookkeeping; this is not a continuous device recording.
+        frames = [captured('212720-853'), captured('212604-348', seconds=.1),
+                  captured('212606-278', seconds=.1), scene(fixture='20261101-010130-746', seconds=.1)]
+        with ControlledClock() as clock:
+            replay = EpisodeReplay(frames, clock)
+            with patch.object(replay.task, '_side_story_identity', wraps=replay.task._side_story_identity) as identity:
+                self.assertEqual(replay.task._push_side_story(limit=1), 'story_complete')
+            self.assertEqual(identity.call_count, 1)
+            self.assertEqual(replay.task.completed_stages, 1)
+            self.assertEqual(replay.index, 3)
+            expected = [(0, SIDE_STORY_WATCH.name), (1, EPISODE_STORY_SKIP.name),
+                        (2, 'EPISODE_STORY_SKIP_CONFIRM')]
+            self.assertEqual(replay.actions, expected)
+            self.assertEqual(replay.task._push_side_story(), 'story_complete')
+            self.assertEqual(replay.task.completed_stages, 1)
+            self.assertEqual(replay.actions, expected)
+
+    def test_completion_requires_checkmark_on_the_current_selected_row(self):
+        for stamp in dict.fromkeys(FIRST + SECOND):
+            with self.subTest(stamp=stamp), ControlledClock() as clock:
+                replay = EpisodeReplay([captured(stamp)], clock)
+                self.assertFalse(replay.task._side_story_complete())
+                self.assertEqual(replay.actions, [])
+        with ControlledClock() as clock:
+            replay = EpisodeReplay([captured('212720-853')], clock)
+            final = fixture_image(ROOT / 'tests/fixtures/historical/manifest.json', '20261101-010130-746')
+            # A completion badge on another row cannot establish that the
+            # current node is complete. The completed selected icon must also
+            # work when moved to another actual selected-row position.
+            replay.image[300:322, 1210:1233] = final[563:585, 1210:1233]
+            self.assertFalse(replay.task._side_story_complete())
+            replay.image[475:531, 1184:1240] = final[537:593, 1184:1240]
+            self.assertTrue(replay.task._side_story_complete())
+            self.assertEqual(replay.actions, [])
+
+    def test_completion_rejects_obscured_page_and_missing_required_markers(self):
+        with ControlledClock() as clock:
+            replay = EpisodeReplay([scene(fixture='20261101-010130-746')], clock)
+            original = replay.image.copy()
+            self.assertTrue(replay.task._side_story_complete())
+            for scale in (.5, .7, .8):
+                replay.image = (original * scale).astype('uint8')
+                self.assertFalse(replay.task._side_story_complete(), scale)
+            for left, top, right, bottom in ((1210, 563, 1233, 585), (70, 20, 169, 46)):
+                replay.image = original.copy()
+                replay.image[top:bottom, left:right] = 0
+                self.assertFalse(replay.task._side_story_complete())
+            replay.image = original.copy()
+            replay.image[537:593, 1184:1240] = 0
+            replay.image[563:585, 1210:1233] = original[563:585, 1210:1233]
+            self.assertFalse(replay.task._side_story_complete())
+            self.assertEqual(replay.actions, [])
+
+
+class StoryBattleAvailabilityTests(unittest.TestCase):
+    def setUp(self):
+        server.set_lang('global_cn')
+
+    def test_disabled_auto_after_story_stops_both_loops_without_battle_actions(self):
+        for stamp in ('20261021-202808-776', '20261101-000305-158'):
+            for mode in ('Main', 'Side'):
+                with self.subTest(stamp=stamp, mode=mode), ControlledClock() as clock:
+                    # Story and battle inputs were independently captured; this
+                    # ordering reproduces the interruption, not a device run.
+                    frames = [captured('212604-348'), captured('212606-278', seconds=.1),
+                              scene(fixture=stamp, seconds=.1)]
+                    replay = EpisodeReplay(frames, clock)
+                    run = replay.task._push if mode == 'Main' else replay.task._push_side_story
+                    with (
+                        patch.object(replay.task, '_story_auto_state', side_effect=AssertionError('Forbidden toggle')),
+                        self.assertRaisesRegex(RequestHumanTakeover, 'automatic combat is unavailable'),
+                    ):
+                        run(limit=1)
+                    self.assertEqual(replay.actions, [(0, EPISODE_STORY_SKIP.name),
+                                                     (1, 'EPISODE_STORY_SKIP_CONFIRM')])
+                    self.assertEqual(replay.index, 2)
+                    self.assertEqual(replay.task.completed_stages, 0)
+                    replay.task.config.task_call.assert_not_called()
+
+    def test_disabled_brightness_rejects_manual_auto_animation_and_other_pages(self):
+        stamps = ['20261029-' + stamp for stamp in (
+            '210426-104', '212443-661', '212445-854', '212449-450', '212502-109',
+            '212604-348', '212606-278', '212607-478', '212612-942', '212614-702',
+            '212714-667', '212717-178', '212720-853',
+        )]
+        stamps += ['legacy-urgent-tasks-battle-' + suffix
+                   for suffix in ('manual-target', 'auto-on', 'clear', 'result', 'leave')]
+        for stamp in stamps:
+            with self.subTest(stamp=stamp), ControlledClock() as clock:
+                replay = EpisodeReplay([scene(fixture=stamp)], clock)
+                self.assertFalse(replay.task._auto_combat_unavailable())
+                self.assertEqual(replay.actions, [])
+
+    def test_disabled_brightness_tolerates_tint_but_requires_bright_complete_controls(self):
+        from tasks.dungeon.assets.assets_dungeon_episode_battle import (
+            EPISODE_AUTO_COMBAT_UNAVAILABLE,
+            EPISODE_BATTLE_CONTROLS_CHECK,
+        )
+
+        for stamp in ('20261021-202808-776', '20261101-000305-158'):
+            with self.subTest(stamp=stamp), ControlledClock() as clock:
+                replay = EpisodeReplay([scene(fixture=stamp)], clock)
+                original = replay.image.copy()
+                self.assertTrue(replay.task._auto_combat_unavailable())
+                # Channel swaps model a changed tint, independently of the
+                # two real disabled-button backgrounds already supplied.
+                replay.image = original[:, :, ::-1].copy()
+                self.assertTrue(replay.task._auto_combat_unavailable())
+                for scale in (.5, .7, .8):
+                    replay.image = (original * scale).astype('uint8')
+                    self.assertFalse(replay.task._auto_combat_unavailable(), scale)
+                for button in (EPISODE_AUTO_COMBAT_UNAVAILABLE, EPISODE_BATTLE_CONTROLS_CHECK):
+                    replay.image = original.copy()
+                    left, top, right, bottom = button.area
+                    replay.image[top:bottom, left:right] = 0
+                    self.assertFalse(replay.task._auto_combat_unavailable(), button.name)
+                self.assertEqual(replay.actions, [])
 
 
 class StoryIntroTests(unittest.TestCase):

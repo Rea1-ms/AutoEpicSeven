@@ -1191,6 +1191,7 @@ class EpisodePushTests(unittest.TestCase):
         frames[-1]['buttons'] = frozenset((EPISODE_AUTO_COMBAT_UNAVAILABLE.name,
                                           EPISODE_BATTLE_CONTROLS_CHECK.name, ENEMY_NUM_EXIST.name,
                                           COMBAT_START.name, 'POPUP_CONFIRM'))
+        frames[-1]['battle_luminance'] = (55, 166)
         with ControlledClock() as clock:
             replay = self.replay(frames, clock)
             with patch.object(replay.task, '_prepare_stamina', side_effect=AssertionError('Unexpected cost read')), \

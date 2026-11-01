@@ -469,7 +469,8 @@
         "tests.captured.test_urgent_tasks.ManualChecks.test_urgent_task_recognition_and_exchange",
         "tests.captured.test_urgent_tasks_hint.HintScreenshotTests.test_unrelated_pages_do_not_report_ready_prepare",
         "tests.combat.test_episode.EpisodePushTests.test_captured_available_manual_battle_still_retries_auto_toggle",
-        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages"
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages",
+        "tests.combat.test_story_push.StoryBattleAvailabilityTests.test_disabled_brightness_rejects_manual_auto_animation_and_other_pages"
       ]
     },
     "legacy-urgent-tasks-battle-result": {
@@ -497,7 +498,8 @@
       "used_by": [
         "tests.captured.test_urgent_tasks.ManualChecks.test_urgent_task_recognition_and_exchange",
         "tests.captured.test_urgent_tasks_hint.HintScreenshotTests.test_unrelated_pages_do_not_report_ready_prepare",
-        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages"
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages",
+        "tests.combat.test_story_push.StoryBattleAvailabilityTests.test_disabled_brightness_rejects_manual_auto_animation_and_other_pages"
       ]
     },
     "legacy-urgent-tasks-normal-prepare-large": {
@@ -801,7 +803,8 @@
       "used_by": [
         "tests.captured.test_urgent_tasks.ManualChecks.test_urgent_task_recognition_and_exchange",
         "tests.combat.test_episode.EpisodePushTests.test_captured_available_manual_battle_still_retries_auto_toggle",
-        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages"
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages",
+        "tests.combat.test_story_push.StoryBattleAvailabilityTests.test_disabled_brightness_rejects_manual_auto_animation_and_other_pages"
       ]
     },
     "legacy-urgent-tasks-battle-clear": {
@@ -822,7 +825,8 @@
       ],
       "used_by": [
         "tests.captured.test_urgent_tasks.ManualChecks.test_urgent_task_recognition_and_exchange",
-        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages"
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages",
+        "tests.combat.test_story_push.StoryBattleAvailabilityTests.test_disabled_brightness_rejects_manual_auto_animation_and_other_pages"
       ]
     },
     "legacy-urgent-tasks-battle-leave": {
@@ -843,7 +847,8 @@
       ],
       "used_by": [
         "tests.captured.test_urgent_tasks.ManualChecks.test_urgent_task_recognition_and_exchange",
-        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages"
+        "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages",
+        "tests.combat.test_story_push.StoryBattleAvailabilityTests.test_disabled_brightness_rejects_manual_auto_animation_and_other_pages"
       ]
     },
     "legacy-navigation-recognition-black": {
@@ -3026,7 +3031,9 @@
         "tests.combat.test_episode.EpisodePushTests.test_captured_exploration_marker_rejects_normal_and_obscured_pages",
         "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_rejects_enabled_and_obscured_pages",
         "tests.combat.test_episode.EpisodePushTests.test_captured_unavailable_auto_combat_stops_before_any_battle_action",
-        "tests.combat.test_story_push.StoryPushReplayTests.test_wrong_mode_and_unavailable_auto_stop_without_clicks"
+        "tests.combat.test_story_push.StoryPushReplayTests.test_wrong_mode_and_unavailable_auto_stop_without_clicks",
+        "tests.combat.test_story_push.StoryBattleAvailabilityTests.test_disabled_auto_after_story_stops_both_loops_without_battle_actions",
+        "tests.combat.test_story_push.StoryBattleAvailabilityTests.test_disabled_brightness_tolerates_tint_but_requires_bright_complete_controls"
       ]
     },
     "20261021-203153-292": {
@@ -3413,7 +3420,8 @@
       "used_by": [
         "tests.combat.test_story_push.StoryPushRecognitionTests.test_captured_lists_identify_current_row_buttons_and_cost",
         "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
-        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes"
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes",
+        "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row"
       ]
     },
     "20261029-210127-834": {
@@ -3435,7 +3443,8 @@
       "used_by": [
         "tests.combat.test_story_push.StoryPushRecognitionTests.test_captured_lists_identify_current_row_buttons_and_cost",
         "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
-        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes"
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes",
+        "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row"
       ]
     },
     "20261029-210138-020": {
@@ -3456,7 +3465,8 @@
       ],
       "used_by": [
         "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
-        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes"
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes",
+        "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row"
       ]
     },
     "20261029-210141-033": {
@@ -3477,7 +3487,8 @@
       ],
       "used_by": [
         "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
-        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes"
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes",
+        "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row"
       ]
     },
     "20261029-210144-947": {
@@ -3498,7 +3509,8 @@
       ],
       "used_by": [
         "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
-        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes"
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes",
+        "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row"
       ]
     },
     "20261029-210255-424": {
@@ -3519,7 +3531,8 @@
       ],
       "used_by": [
         "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
-        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes"
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes",
+        "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row"
       ]
     },
     "20261029-210300-938": {
@@ -3540,7 +3553,8 @@
       ],
       "used_by": [
         "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
-        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes"
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes",
+        "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row"
       ]
     },
     "20261029-210303-621": {
@@ -3561,7 +3575,8 @@
       ],
       "used_by": [
         "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
-        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes"
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes",
+        "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row"
       ]
     },
     "20261029-210341-110": {
@@ -3582,7 +3597,8 @@
       ],
       "used_by": [
         "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
-        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes"
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes",
+        "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row"
       ]
     },
     "20261029-210344-997": {
@@ -3603,7 +3619,8 @@
       ],
       "used_by": [
         "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
-        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes"
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes",
+        "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row"
       ]
     },
     "20261029-210348-137": {
@@ -3624,7 +3641,8 @@
       ],
       "used_by": [
         "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
-        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes"
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes",
+        "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row"
       ]
     },
     "20261029-210350-311": {
@@ -3646,7 +3664,9 @@
       "used_by": [
         "tests.combat.test_story_push.StoryPushRecognitionTests.test_captured_lists_identify_current_row_buttons_and_cost",
         "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
-        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes"
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes",
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_identity_reuses_text_but_tracks_chapter_row_and_background",
+        "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row"
       ]
     },
     "20261029-210354-862": {
@@ -3667,7 +3687,8 @@
       ],
       "used_by": [
         "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
-        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes"
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes",
+        "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row"
       ]
     },
     "20261029-210400-283": {
@@ -3688,7 +3709,8 @@
       ],
       "used_by": [
         "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
-        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes"
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes",
+        "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row"
       ]
     },
     "20261029-210401-363": {
@@ -3709,7 +3731,8 @@
       ],
       "used_by": [
         "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
-        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes"
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes",
+        "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row"
       ]
     },
     "20261029-210403-270": {
@@ -3731,7 +3754,8 @@
       "used_by": [
         "tests.combat.test_story_push.StoryPushRecognitionTests.test_captured_lists_identify_current_row_buttons_and_cost",
         "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
-        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes"
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes",
+        "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row"
       ]
     },
     "20261029-210410-023": {
@@ -3752,7 +3776,8 @@
       ],
       "used_by": [
         "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
-        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes"
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes",
+        "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row"
       ]
     },
     "20261029-210411-778": {
@@ -3773,7 +3798,8 @@
       ],
       "used_by": [
         "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
-        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes"
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes",
+        "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row"
       ]
     },
     "20261029-210412-934": {
@@ -3794,7 +3820,8 @@
       ],
       "used_by": [
         "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
-        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes"
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes",
+        "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row"
       ]
     },
     "20261029-210414-192": {
@@ -3815,7 +3842,8 @@
       ],
       "used_by": [
         "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
-        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes"
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes",
+        "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row"
       ]
     },
     "20261029-210421-767": {
@@ -3836,7 +3864,8 @@
       ],
       "used_by": [
         "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
-        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes"
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes",
+        "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row"
       ]
     },
     "20261029-210423-105": {
@@ -3857,7 +3886,8 @@
       ],
       "used_by": [
         "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
-        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes"
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes",
+        "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row"
       ]
     },
     "20261029-210424-139": {
@@ -3879,7 +3909,8 @@
       "used_by": [
         "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
         "tests.combat.test_story_push.StoryPushRecognitionTests.test_captured_manual_elites_and_auto_animations_are_distinct",
-        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes"
+        "tests.combat.test_story_push.StoryPushReplayTests.test_first_supplied_sequence_advances_three_nodes",
+        "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row"
       ]
     },
     "20261029-210426-104": {
@@ -3907,7 +3938,12 @@
         "tests.combat.test_story_push.StoryPushReplayTests.test_paid_watch_is_not_repeated_on_old_frames_or_delayed_debit",
         "tests.combat.test_story_push.StoryPushReplayTests.test_same_returned_list_cannot_replay_a_paid_story",
         "tests.combat.test_story_push.StoryPushReplayTests.test_paid_watch_waits_through_debit_and_requires_entry_evidence",
-        "tests.combat.test_story_push.StoryIntroTests.test_unrecognized_or_dimmed_frames_never_reveal"
+        "tests.combat.test_story_push.StoryIntroTests.test_unrecognized_or_dimmed_frames_never_reveal",
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_identity_reuses_text_but_tracks_chapter_row_and_background",
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_invalid_identity_and_missing_selection_cannot_reuse_old_text",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_list_reads_once_per_visit_without_skipping_current_page_checks",
+        "tests.combat.test_story_push.StoryBattleAvailabilityTests.test_disabled_brightness_rejects_manual_auto_animation_and_other_pages",
+        "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row"
       ]
     },
     "20261029-212346-548": {
@@ -3931,7 +3967,9 @@
         "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns",
         "tests.combat.test_story_push.StoryPushReplayTests.test_paid_watch_is_not_repeated_on_old_frames_or_delayed_debit",
         "tests.combat.test_story_push.StoryPushReplayTests.test_same_returned_list_cannot_replay_a_paid_story",
-        "tests.combat.test_story_push.StoryPushReplayTests.test_paid_watch_waits_through_debit_and_requires_entry_evidence"
+        "tests.combat.test_story_push.StoryPushReplayTests.test_paid_watch_waits_through_debit_and_requires_entry_evidence",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_list_reads_once_per_visit_without_skipping_current_page_checks",
+        "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row"
       ]
     },
     "20261029-212443-661": {
@@ -3959,7 +3997,11 @@
         "tests.combat.test_story_push.StoryPushReplayTests.test_ready_retries_but_new_prepare_starts_without_old_cooldown",
         "tests.combat.test_story_push.StoryPushReplayTests.test_clear_repeated_frames_count_once_and_never_toggle_auto",
         "tests.combat.test_story_push.StoryPushReplayTests.test_paid_watch_waits_through_debit_and_requires_entry_evidence",
-        "tests.combat.test_story_push.StoryIntroTests.test_unrecognized_or_dimmed_frames_never_reveal"
+        "tests.combat.test_story_push.StoryIntroTests.test_unrecognized_or_dimmed_frames_never_reveal",
+        "tests.combat.test_story_push.StoryPushRecognitionTests.test_identity_reuses_text_but_tracks_chapter_row_and_background",
+        "tests.combat.test_story_push.StoryPushReplayTests.test_list_reads_once_per_visit_without_skipping_current_page_checks",
+        "tests.combat.test_story_push.StoryBattleAvailabilityTests.test_disabled_brightness_rejects_manual_auto_animation_and_other_pages",
+        "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row"
       ]
     },
     "20261029-212445-854": {
@@ -3983,7 +4025,9 @@
         "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns",
         "tests.combat.test_story_push.StoryPushReplayTests.test_ready_retries_but_new_prepare_starts_without_old_cooldown",
         "tests.combat.test_story_push.StoryPushReplayTests.test_clear_repeated_frames_count_once_and_never_toggle_auto",
-        "tests.combat.test_story_push.StoryIntroTests.test_unrecognized_or_dimmed_frames_never_reveal"
+        "tests.combat.test_story_push.StoryIntroTests.test_unrecognized_or_dimmed_frames_never_reveal",
+        "tests.combat.test_story_push.StoryBattleAvailabilityTests.test_disabled_brightness_rejects_manual_auto_animation_and_other_pages",
+        "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row"
       ]
     },
     "20261029-212449-450": {
@@ -4005,7 +4049,9 @@
       "used_by": [
         "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
         "tests.combat.test_story_push.StoryPushRecognitionTests.test_captured_manual_elites_and_auto_animations_are_distinct",
-        "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns"
+        "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns",
+        "tests.combat.test_story_push.StoryBattleAvailabilityTests.test_disabled_brightness_rejects_manual_auto_animation_and_other_pages",
+        "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row"
       ]
     },
     "20261029-212452-590": {
@@ -4026,7 +4072,8 @@
       ],
       "used_by": [
         "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
-        "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns"
+        "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns",
+        "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row"
       ]
     },
     "20261029-212454-720": {
@@ -4047,7 +4094,8 @@
       ],
       "used_by": [
         "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
-        "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns"
+        "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns",
+        "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row"
       ]
     },
     "20261029-212457-623": {
@@ -4068,7 +4116,8 @@
       ],
       "used_by": [
         "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
-        "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns"
+        "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns",
+        "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row"
       ]
     },
     "20261029-212459-418": {
@@ -4089,7 +4138,8 @@
       ],
       "used_by": [
         "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
-        "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns"
+        "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns",
+        "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row"
       ]
     },
     "20261029-212500-658": {
@@ -4110,7 +4160,8 @@
       ],
       "used_by": [
         "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
-        "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns"
+        "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns",
+        "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row"
       ]
     },
     "20261029-212502-109": {
@@ -4136,7 +4187,9 @@
         "tests.combat.test_story_push.StoryPushReplayTests.test_main_loop_also_restores_manual_elite_after_story",
         "tests.combat.test_story_push.StoryPushReplayTests.test_ready_retries_but_new_prepare_starts_without_old_cooldown",
         "tests.combat.test_story_push.StoryIntroTests.test_unrecognized_or_dimmed_frames_never_reveal",
-        "tests.combat.test_story_push.StoryIntroTests.test_positive_battle_prepare_supporter_and_result_rearm_reveal"
+        "tests.combat.test_story_push.StoryIntroTests.test_positive_battle_prepare_supporter_and_result_rearm_reveal",
+        "tests.combat.test_story_push.StoryBattleAvailabilityTests.test_disabled_brightness_rejects_manual_auto_animation_and_other_pages",
+        "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row"
       ]
     },
     "20261029-212604-348": {
@@ -4160,7 +4213,11 @@
         "tests.combat.test_story_push.StoryPushRecognitionTests.test_captured_manual_elites_and_auto_animations_are_distinct",
         "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns",
         "tests.combat.test_story_push.StoryPushReplayTests.test_main_loop_also_restores_manual_elite_after_story",
-        "tests.combat.test_story_push.StoryPushReplayTests.test_skip_retry_does_not_delay_confirmation_or_limit_exit"
+        "tests.combat.test_story_push.StoryPushReplayTests.test_skip_retry_does_not_delay_confirmation_or_limit_exit",
+        "tests.combat.test_story_push.StoryBattleAvailabilityTests.test_disabled_auto_after_story_stops_both_loops_without_battle_actions",
+        "tests.combat.test_story_push.StoryBattleAvailabilityTests.test_disabled_brightness_rejects_manual_auto_animation_and_other_pages",
+        "tests.combat.test_story_push.StoryCompletionTests.test_final_story_counts_once_before_stopping_at_completed_list",
+        "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row"
       ]
     },
     "20261029-212606-278": {
@@ -4184,7 +4241,11 @@
         "tests.combat.test_story_push.StoryPushRecognitionTests.test_captured_manual_elites_and_auto_animations_are_distinct",
         "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns",
         "tests.combat.test_story_push.StoryPushReplayTests.test_main_loop_also_restores_manual_elite_after_story",
-        "tests.combat.test_story_push.StoryPushReplayTests.test_skip_retry_does_not_delay_confirmation_or_limit_exit"
+        "tests.combat.test_story_push.StoryPushReplayTests.test_skip_retry_does_not_delay_confirmation_or_limit_exit",
+        "tests.combat.test_story_push.StoryBattleAvailabilityTests.test_disabled_auto_after_story_stops_both_loops_without_battle_actions",
+        "tests.combat.test_story_push.StoryBattleAvailabilityTests.test_disabled_brightness_rejects_manual_auto_animation_and_other_pages",
+        "tests.combat.test_story_push.StoryCompletionTests.test_final_story_counts_once_before_stopping_at_completed_list",
+        "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row"
       ]
     },
     "20261029-212607-478": {
@@ -4209,7 +4270,9 @@
         "tests.combat.test_story_push.StoryPushRecognitionTests.test_dimmed_list_and_manual_battle_never_authorize_clicks",
         "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns",
         "tests.combat.test_story_push.StoryPushReplayTests.test_main_loop_also_restores_manual_elite_after_story",
-        "tests.combat.test_story_push.StoryIntroTests.test_unrecognized_or_dimmed_frames_never_reveal"
+        "tests.combat.test_story_push.StoryIntroTests.test_unrecognized_or_dimmed_frames_never_reveal",
+        "tests.combat.test_story_push.StoryBattleAvailabilityTests.test_disabled_brightness_rejects_manual_auto_animation_and_other_pages",
+        "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row"
       ]
     },
     "20261029-212612-942": {
@@ -4234,7 +4297,9 @@
         "tests.combat.test_story_push.StoryPushRecognitionTests.test_dimmed_list_and_manual_battle_never_authorize_clicks",
         "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns",
         "tests.combat.test_story_push.StoryPushReplayTests.test_main_loop_also_restores_manual_elite_after_story",
-        "tests.combat.test_story_push.StoryIntroTests.test_unrecognized_or_dimmed_frames_never_reveal"
+        "tests.combat.test_story_push.StoryIntroTests.test_unrecognized_or_dimmed_frames_never_reveal",
+        "tests.combat.test_story_push.StoryBattleAvailabilityTests.test_disabled_brightness_rejects_manual_auto_animation_and_other_pages",
+        "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row"
       ]
     },
     "20261029-212614-702": {
@@ -4257,7 +4322,9 @@
         "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
         "tests.combat.test_story_push.StoryPushRecognitionTests.test_captured_manual_elites_and_auto_animations_are_distinct",
         "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns",
-        "tests.combat.test_story_push.StoryPushReplayTests.test_main_loop_also_restores_manual_elite_after_story"
+        "tests.combat.test_story_push.StoryPushReplayTests.test_main_loop_also_restores_manual_elite_after_story",
+        "tests.combat.test_story_push.StoryBattleAvailabilityTests.test_disabled_brightness_rejects_manual_auto_animation_and_other_pages",
+        "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row"
       ]
     },
     "20261029-212711-918": {
@@ -4278,7 +4345,8 @@
       ],
       "used_by": [
         "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
-        "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns"
+        "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns",
+        "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row"
       ]
     },
     "20261029-212713-459": {
@@ -4299,7 +4367,8 @@
       ],
       "used_by": [
         "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
-        "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns"
+        "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns",
+        "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row"
       ]
     },
     "20261029-212714-667": {
@@ -4321,7 +4390,9 @@
       "used_by": [
         "tests.combat.test_story_push.StoryPushRecognitionTests.test_all_supplied_frames_reject_non_list_states",
         "tests.combat.test_story_push.StoryPushRecognitionTests.test_captured_manual_elites_and_auto_animations_are_distinct",
-        "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns"
+        "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns",
+        "tests.combat.test_story_push.StoryBattleAvailabilityTests.test_disabled_brightness_rejects_manual_auto_animation_and_other_pages",
+        "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row"
       ]
     },
     "20261029-212717-178": {
@@ -4345,7 +4416,9 @@
         "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns",
         "tests.combat.test_story_push.StoryPushReplayTests.test_ready_retries_but_new_prepare_starts_without_old_cooldown",
         "tests.combat.test_story_push.StoryPushReplayTests.test_clear_repeated_frames_count_once_and_never_toggle_auto",
-        "tests.combat.test_story_push.StoryIntroTests.test_unrecognized_or_dimmed_frames_never_reveal"
+        "tests.combat.test_story_push.StoryIntroTests.test_unrecognized_or_dimmed_frames_never_reveal",
+        "tests.combat.test_story_push.StoryBattleAvailabilityTests.test_disabled_brightness_rejects_manual_auto_animation_and_other_pages",
+        "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row"
       ]
     },
     "20261029-212720-853": {
@@ -4370,7 +4443,10 @@
         "tests.combat.test_story_push.StoryPushReplayTests.test_second_supplied_sequence_restores_auto_after_story_and_returns",
         "tests.combat.test_story_push.StoryPushReplayTests.test_ready_retries_but_new_prepare_starts_without_old_cooldown",
         "tests.combat.test_story_push.StoryPushReplayTests.test_skip_retry_does_not_delay_confirmation_or_limit_exit",
-        "tests.combat.test_story_push.StoryPushReplayTests.test_clear_repeated_frames_count_once_and_never_toggle_auto"
+        "tests.combat.test_story_push.StoryPushReplayTests.test_clear_repeated_frames_count_once_and_never_toggle_auto",
+        "tests.combat.test_story_push.StoryBattleAvailabilityTests.test_disabled_brightness_rejects_manual_auto_animation_and_other_pages",
+        "tests.combat.test_story_push.StoryCompletionTests.test_final_story_counts_once_before_stopping_at_completed_list",
+        "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row"
       ]
     },
     "20261029-story-title-asset": {
@@ -4434,6 +4510,50 @@
         "tests.combat.test_story_push.StoryIntroTests.test_blank_reveal_latches_through_repeats_blackout_and_skip",
         "tests.combat.test_story_push.StoryIntroTests.test_both_loops_reveal_and_reset_on_returned_map_or_list",
         "tests.combat.test_story_push.StoryIntroTests.test_missing_history_waits_for_skip_even_with_title_artwork"
+      ]
+    },
+    "20261101-000305-158": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261101-000305-158.png",
+      "sha256": "2bb9f58ee09451204e542d22d1d2fc87992aa83d486708cd591678f8c2439c41",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "Side-story battle with unavailable automatic combat on a warm background",
+      "source": "MuMu-20261101-000305-158.png",
+      "source_sha256": "500deb758fc558d2c660cfad7abfca812732e0c820589472d000a71f46d84338",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_story_push.StoryBattleAvailabilityTests.test_disabled_auto_after_story_stops_both_loops_without_battle_actions",
+        "tests.combat.test_story_push.StoryBattleAvailabilityTests.test_disabled_brightness_tolerates_tint_but_requires_bright_complete_controls"
+      ]
+    },
+    "20261101-010130-746": {
+      "path": "tests/fixtures/historical/global_cn/story_push/20261101-010130-746.png",
+      "sha256": "d2ee0e1914b629236dcc7f163ba5ecef072031544da684f2a874d13e5613f2fd",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "Side-story list with the final selected node marked complete",
+      "source": "MuMu-20261101-010130-746.png",
+      "source_sha256": "b265a91c5cbe14e31b6eb92076715372a8b027a49ef5c509ba9f674b76b62bc7",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.combat.test_story_push.StoryCompletionTests.test_completed_list_stops_successfully_without_reading_or_replaying",
+        "tests.combat.test_story_push.StoryCompletionTests.test_final_story_counts_once_before_stopping_at_completed_list",
+        "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row",
+        "tests.combat.test_story_push.StoryCompletionTests.test_completion_rejects_obscured_page_and_missing_required_markers"
       ]
     }
   },

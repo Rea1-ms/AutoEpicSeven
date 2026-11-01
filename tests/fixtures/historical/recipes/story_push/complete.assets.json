@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "../../global_cn/story_push/20261101-010130-746.png",
+  "suite": "story_end_20261101",
+  "case": "010130-746",
+  "items": [
+    {
+      "name": "SIDE_STORY_COMPLETE_CHECKMARK",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "share",
+      "module": "dungeon/story_push/side_story",
+      "box": [
+        1210,
+        563,
+        1233,
+        585
+      ]
+    }
+  ]
+}

@@ -22921,6 +22921,197 @@
           ],
           "status": "已纳入",
           "reason": "移除历史图标后保留幕布不授权空白点击；随后出现跳过立即处理"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryPushRecognitionTests.test_identity_reuses_text_but_tracks_chapter_row_and_background",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-210426-104",
+            "20261029-210350-311",
+            "20261029-212443-661"
+          ],
+          "status": "已纳入",
+          "reason": "复用不变章节和选中标题；背景变化不重读，章节与选中行变化重新读取"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryPushRecognitionTests.test_invalid_identity_and_missing_selection_cannot_reuse_old_text",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-210426-104"
+          ],
+          "status": "已纳入",
+          "reason": "无效识别允许重读，当前选中标记缺失时不得借用缓存"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryPushReplayTests.test_list_reads_once_per_visit_without_skipping_current_page_checks",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-210426-104",
+            "20261029-212346-548",
+            "20261029-212443-661"
+          ],
+          "status": "已纳入",
+          "reason": "重复列表和未知帧复用文字，入场后返回重读；页面每帧检查且付费只请求一次"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryPushReplayTests.test_skip_half_second_retry_keeps_confirmation_interval_in_both_loops",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "主支线跳过按半秒重试，确认仍独立按两秒重试；结算和终态立即处理"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryBattleAvailabilityTests.test_disabled_auto_after_story_stops_both_loops_without_battle_actions",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261021-202808-776",
+            "20261101-000305-158",
+            "20261029-212604-348",
+            "20261029-212606-278"
+          ],
+          "status": "已纳入",
+          "reason": "主支线剧情后禁用自动立即请求人工处理，不切换自动、不计数、不调度重启；场景顺序为模拟"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryBattleAvailabilityTests.test_disabled_brightness_rejects_manual_auto_animation_and_other_pages",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-210426-104",
+            "20261029-212443-661",
+            "20261029-212445-854",
+            "20261029-212449-450",
+            "20261029-212502-109",
+            "20261029-212604-348",
+            "20261029-212606-278",
+            "20261029-212607-478",
+            "20261029-212612-942",
+            "20261029-212614-702",
+            "20261029-212714-667",
+            "20261029-212717-178",
+            "20261029-212720-853",
+            "legacy-urgent-tasks-battle-manual-target",
+            "legacy-urgent-tasks-battle-auto-on",
+            "legacy-urgent-tasks-battle-clear",
+            "legacy-urgent-tasks-battle-result",
+            "legacy-urgent-tasks-battle-leave"
+          ],
+          "status": "已纳入",
+          "reason": "亮度比判断排除普通手动、自动开启、技能动画、剧情、备战、列表和结算"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryBattleAvailabilityTests.test_disabled_brightness_tolerates_tint_but_requires_bright_complete_controls",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261021-202808-776",
+            "20261101-000305-158"
+          ],
+          "status": "已纳入",
+          "reason": "两张禁用实图及合成色调、整体遮暗、移除图标反例；需两个图案完整且暂停键正常亮起"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryCompletionTests.test_completed_list_stops_successfully_without_reading_or_replaying",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261101-010130-746"
+          ],
+          "status": "已纳入",
+          "reason": "完成页启动或重复调用直接成功退出，不读标题、体力，不观看、不点击且不补记旧节点"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryCompletionTests.test_final_story_counts_once_before_stopping_at_completed_list",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261101-010130-746",
+            "20261029-212720-853",
+            "20261029-212604-348",
+            "20261029-212606-278"
+          ],
+          "status": "已纳入",
+          "reason": "模拟末段剧情返回后按完成标志计数一次，不重播，节点上限与重复调用均不重复计数"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryCompletionTests.test_completion_requires_checkmark_on_the_current_selected_row",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261101-010130-746",
+            "20261029-210121-471",
+            "20261029-210127-834",
+            "20261029-210138-020",
+            "20261029-210141-033",
+            "20261029-210144-947",
+            "20261029-210255-424",
+            "20261029-210300-938",
+            "20261029-210303-621",
+            "20261029-210341-110",
+            "20261029-210344-997",
+            "20261029-210348-137",
+            "20261029-210350-311",
+            "20261029-210354-862",
+            "20261029-210400-283",
+            "20261029-210401-363",
+            "20261029-210403-270",
+            "20261029-210410-023",
+            "20261029-210411-778",
+            "20261029-210412-934",
+            "20261029-210414-192",
+            "20261029-210421-767",
+            "20261029-210423-105",
+            "20261029-210424-139",
+            "20261029-210426-104",
+            "20261029-212346-548",
+            "20261029-212443-661",
+            "20261029-212445-854",
+            "20261029-212449-450",
+            "20261029-212452-590",
+            "20261029-212454-720",
+            "20261029-212457-623",
+            "20261029-212459-418",
+            "20261029-212500-658",
+            "20261029-212502-109",
+            "20261029-212604-348",
+            "20261029-212606-278",
+            "20261029-212607-478",
+            "20261029-212612-942",
+            "20261029-212614-702",
+            "20261029-212711-918",
+            "20261029-212713-459",
+            "20261029-212714-667",
+            "20261029-212717-178",
+            "20261029-212720-853"
+          ],
+          "status": "已纳入",
+          "reason": "44张既有实图为反例；其他行完成勾不触发，合成移动当前完成图标仍可识别"
+        },
+        {
+          "id": "tests.combat.test_story_push.StoryCompletionTests.test_completion_rejects_obscured_page_and_missing_required_markers",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261101-010130-746"
+          ],
+          "status": "已纳入",
+          "reason": "完整结束实图命中，整体遮暗、缺完成勾、缺页标题或仅剩完成勾均不得判结束"
         }
       ]
     }

@@ -5,6 +5,7 @@ from dataclasses import dataclass
 
 from module.base.button import ClickButton
 from module.base.timer import Timer
+from module.base.utils import rgb2luma
 from module.config import server
 from module.exception import RequestHumanTakeover
 from module.logger import logger
@@ -150,16 +151,23 @@ class Episode(SideStoryPushMixin, StorySkipMixin, EpisodeNavigateMixin, CombatEn
         logger.attr('EpisodeLastStarCondition', text)
         return re.sub(r'\s+', '', text)
 
+    def _auto_combat_luminance(self):
+        return tuple(float(rgb2luma(self.image_crop(button, copy=False)).mean())
+                     for button in (EPISODE_AUTO_COMBAT_UNAVAILABLE, EPISODE_BATTLE_CONTROLS_CHECK))
+
     def _auto_combat_unavailable(self):
-        # A gray auto icon beside bright battle controls means automatic
-        # combat is forbidden, not merely switched off. Template correlation
-        # alone ignores that brightness distinction. Check the fixed colors
-        # too, and reject overlays that dim the entire toolbar at settlement.
-        return (
-            self.appear(EPISODE_AUTO_COMBAT_UNAVAILABLE)
-            and self.match_color(EPISODE_AUTO_COMBAT_UNAVAILABLE, threshold=15)
-            and self.match_color(EPISODE_BATTLE_CONTROLS_CHECK, threshold=25)
-        )
+        # Both controls are translucent: background tint changes their RGB
+        # colors without changing whether automatic combat is permitted.
+        # Luminance templates confirm BOTH shapes, then compare fixed regions.
+        # Available manual buttons share the auto shape but remain much brighter
+        # relative to pause (captured ratios .56-.69 versus disabled .31-.35).
+        # A ratio alone also survives full-screen dimming, so require a normally
+        # bright pause control before reporting a battle that needs manual play.
+        if not (self.match_template_luma(EPISODE_AUTO_COMBAT_UNAVAILABLE)
+                and self.match_template_luma(EPISODE_BATTLE_CONTROLS_CHECK)):
+            return False
+        auto_luma, controls_luma = self._auto_combat_luminance()
+        return controls_luma >= 140 and auto_luma <= controls_luma * .45
 
     def run(self):
         """Continue the opened story page using the selected progression mode.

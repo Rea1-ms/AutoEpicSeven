@@ -23,6 +23,16 @@ OCR_SIDE_STORY_COST = ButtonWrapper(
         button=(1008, 646, 1081, 681),
     ),
 )
+SIDE_STORY_COMPLETE_CHECKMARK = ButtonWrapper(
+    name='SIDE_STORY_COMPLETE_CHECKMARK',
+    share=Button(
+        file='./assets/share/dungeon/story_push/side_story/SIDE_STORY_COMPLETE_CHECKMARK.png',
+        area=(1210, 563, 1233, 585),
+        search=(1190, 543, 1253, 605),
+        color=(91, 145, 116),
+        button=(1210, 563, 1233, 585),
+    ),
+)
 SIDE_STORY_CURRENT = ButtonWrapper(
     name='SIDE_STORY_CURRENT',
     share=[

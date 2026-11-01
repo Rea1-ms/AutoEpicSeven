@@ -27,6 +27,7 @@ class EpisodeReplay(InteractionReplay):
         self.task._side_story_list_ready = self.story_list_ready
         self.task._side_story_identity = self.story_identity
         self.task._side_story_cost = self.story_cost
+        self.task._auto_combat_luminance = self.auto_combat_luminance
         self.task.is_in_main = lambda **kw: self.frame.get('main', False)
         self.task.match_template_color = self.color
         self.task.match_color = self.fixed_color
@@ -120,6 +121,13 @@ class EpisodeReplay(InteractionReplay):
         if self.frame.get('fixture'):
             return Episode._side_story_cost(self.task)
         return self.frame.get('story_cost')
+
+    def auto_combat_luminance(self):
+        if self.frame.get('fixture'):
+            return Episode._auto_combat_luminance(self.task)
+        # Synthetic scenes must explicitly supply the observed brightness;
+        # visible template names alone cannot imply that controls are usable.
+        return self.frame.get('battle_luminance', (0, 0))
 
     def route(self, page, **kwargs):
         self.actions.append((self.index, f'route:{page.name}'))

@@ -2,6 +2,8 @@
 
 import re
 
+import numpy as np
+
 from module.base.button import ClickButton
 from module.base.timer import Timer
 from module.exception import RequestHumanTakeover
@@ -21,6 +23,7 @@ from tasks.dungeon.assets.assets_dungeon_state import (
 from tasks.dungeon.assets.assets_dungeon_story_push_side_story import (
     OCR_SIDE_STORY_CHAPTER,
     OCR_SIDE_STORY_COST,
+    SIDE_STORY_COMPLETE_CHECKMARK,
     SIDE_STORY_CURRENT,
     SIDE_STORY_LIST_CHECK,
     SIDE_STORY_READY,
@@ -29,6 +32,18 @@ from tasks.dungeon.assets.assets_dungeon_story_push_side_story import (
 
 
 class SideStoryPushMixin:
+    def _side_story_complete(self):
+        # The final selected node retains a green completion badge. Earlier
+        # completed rows carry the same badge, so its position must belong to
+        # the CURRENT selected icon, located again in this frame. Reassign the
+        # search on every call; never reuse the previous row after scrolling.
+        # The finished list has a different watch-button layout and no cost;
+        # do not require the ordinary actionable-list guard or OCR to exit.
+        if not self.match_template_luma(SIDE_STORY_LIST_CHECK) or not self.appear(SIDE_STORY_CURRENT):
+            return False
+        SIDE_STORY_COMPLETE_CHECKMARK.load_search(SIDE_STORY_CURRENT.button)
+        return self.match_template_color(SIDE_STORY_COMPLETE_CHECKMARK, threshold=25)
+
     def _side_story_list_ready(self):
         # The transparent header follows each story's background. Its color
         # cannot identify an unobscured page; the bright action owns that guard.
@@ -48,11 +63,27 @@ class SideStoryPushMixin:
         center = (top + bottom) // 2
         title_area = ClickButton((960, max(135, center - 25), 1183, min(614, center + 25)),
                                  name='SIDE_STORY_CURRENT_TITLE')
-        chapter = Ocr(OCR_SIDE_STORY_CHAPTER, lang=self._ocr_lang()).ocr_single_line(self.device.image)
-        title = Ocr(title_area, lang=self._ocr_lang()).ocr_single_line(self.device.image)
+        lang = self._ocr_lang()
+        # Recheck the selected marker and the complete chapter/title glyphs on
+        # every usable list frame. Background art, stamina and button animation
+        # do not change node identity and must not cause another OCR request.
+        # In particular, OCR spelling jitter on an unchanged paid-watch node
+        # must not masquerade as selection advancement. Geometry is captured
+        # from this frame above, so scrolling still observes the selected row.
+        view = (lang, *(np.all(self.image_crop(area, copy=False) > 180, axis=2).tobytes()
+                        for area in (OCR_SIDE_STORY_CHAPTER, title_area)))
+        cached = getattr(self, '_side_story_identity_cache', None)
+        if cached is not None and cached[0] == view:
+            return cached[1]
+        chapter = Ocr(OCR_SIDE_STORY_CHAPTER, lang=lang).ocr_single_line(self.device.image)
+        title = Ocr(title_area, lang=lang).ocr_single_line(self.device.image)
         chapter, title = re.sub(r'\s+', '', chapter), re.sub(r'\s+', '', title)
         logger.attr('SideStoryCurrent', (chapter, title))
-        return (chapter, title) if re.fullmatch(r'第\d+章', chapter) and title else None
+        identity = (chapter, title) if re.fullmatch(r'第\d+章', chapter) and title else None
+        # Never cache failed reads: the same pixels may become readable on a
+        # later recognition attempt. The old text cannot authorize changed art.
+        self._side_story_identity_cache = (view, identity) if identity is not None else None
+        return identity
 
     def _side_story_cost(self):
         text = Ocr(OCR_SIDE_STORY_COST, lang=self._ocr_lang()).ocr_single_line(self.device.image)
@@ -65,9 +96,10 @@ class SideStoryPushMixin:
 
         Pages:
             in: an opened story list, or its interrupted story/prepare/battle
-            out: next selected story list at the node limit, or a blocking state
+            out: completed/next selected list at the node limit, or a blocking state
         """
         self._reset_story_intro()
+        self._side_story_identity_cache = None
         timeout = Timer(self.NAVIGATION_TIMEOUT, count=0).start()
         cost_timeout = Timer(12, count=0).clear()
         pending = None
@@ -88,6 +120,17 @@ class SideStoryPushMixin:
                 raise RequestHumanTakeover('Story: battle failed; adjust the team before continuing')
             if self._auto_combat_unavailable():
                 raise RequestHumanTakeover('Story: automatic combat is unavailable; complete the battle manually')
+
+            if self._side_story_complete():
+                self._reset_story_intro()
+                self._side_story_identity_cache = None
+                # The badge is positive completion evidence even though the
+                # final node remains selected. Count only a node whose entry
+                # was observed in this loop; starting on an already completed
+                # list or invoking the loop again must not invent another clear.
+                if entered:
+                    self.completed_stages += 1
+                return 'story_complete'
 
             if self._side_story_list_ready():
                 self._reset_story_intro()
@@ -152,10 +195,14 @@ class SideStoryPushMixin:
                 continue
 
             if self._story_visible():
+                # A positive departure ends this list visit. Unknown frames
+                # and ignored entry clicks alone do not invalidate its text.
+                self._side_story_identity_cache = None
                 entered = True
                 self._handle_story_skip()
                 continue
             if self.appear(COMBAT_RESULT_CONFIRM) or self.appear(COMBAT_RESULT_CLEAR):
+                self._side_story_identity_cache = None
                 self._reset_story_intro()
                 if not result_seen:
                     timeout.reset()
@@ -171,6 +218,7 @@ class SideStoryPushMixin:
                 stamina_values, stamina_matches = None, 0
                 cost_timeout.clear()
             if prepare:
+                self._side_story_identity_cache = None
                 self._reset_story_intro()
                 # Side-story mode intentionally has no main-story star/team
                 # condition OCR. Affordability still belongs to this exact
@@ -194,12 +242,14 @@ class SideStoryPushMixin:
                     self._click(COMBAT_START)
                 continue
             if self._is_episode_supporter_page():
+                self._side_story_identity_cache = None
                 self._reset_story_intro()
                 if self.appear(CHOOSE_TEAM):
                     self._click(CHOOSE_TEAM)
                 continue
             auto = self._story_auto_state()
             if auto is not None:
+                self._side_story_identity_cache = None
                 self._reset_story_intro()
                 entered = True
                 self.device.stuck_record_clear()
