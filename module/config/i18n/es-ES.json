@@ -103,8 +103,8 @@
       "help": "Abre manualmente la selección de subestadísticas de la forja. Busca velocidad 5 primero y luego las prioridades restantes. Bloquea solo objetivos alcanzados, hasta dos. Se detiene por objetivos o presupuesto, sin fabricar el equipo automáticamente. Solo interfaz del juego en chino simplificado."
     },
     "Episode": {
-      "name": "Historia principal",
-      "help": "Continúa el capítulo actual, omite diálogos, combate y recoge recompensas con el equipo actual. Se detiene por derrota o energía insuficiente, sin recargar energía. Las capturas verificadas corresponden al episodio 6 en chino simplificado."
+      "name": "Progreso de historia",
+      "help": "Abre la lista de historia principal o secundaria antes de iniciar. Usa el equipo actual, omite diálogos y restaura el combate automático. Se detiene por derrota o energía insuficiente sin recargarla. Las capturas secundarias cubren Global en chino simplificado."
     },
     "SanctuaryMonthly": {
       "name": "Santuario - Mensual",
@@ -1145,12 +1145,18 @@
   },
   "Episode": {
     "_info": {
-      "name": "Historia principal",
-      "help": "Continúa el capítulo actual, omite diálogos, combate y recoge recompensas con el equipo actual. Se detiene por derrota o energía insuficiente, sin recargar energía. Las capturas verificadas corresponden al episodio 6 en chino simplificado."
+      "name": "Progreso de historia",
+      "help": "Abre la lista de historia principal o secundaria antes de iniciar. Usa el equipo actual, omite diálogos y restaura el combate automático. Se detiene por derrota o energía insuficiente sin recargarla. Las capturas secundarias cubren Global en chino simplificado."
+    },
+    "Mode": {
+      "name": "Tipo de historia",
+      "help": "Selecciona según la página abierta. La principal comprueba requisitos de estrellas; la secundaria continúa con la selección del juego.",
+      "Main": "Historia principal",
+      "Side": "Historia secundaria"
     },
     "Number": {
-      "name": "Episodio",
-      "help": "0 continúa el episodio actual; otro número cambia mediante la selección de capítulos.",
+      "name": "Episodio anterior",
+      "help": "Oculto; continúa desde el episodio abierto por el jugador.",
       "0": "Episodio actual",
       "1": "Episode 1",
       "2": "Episode 2",
@@ -1161,7 +1167,7 @@
     },
     "MaxStages": {
       "name": "Límite de etapas",
-      "help": "0 continúa hasta detenerse. Un combate o historia cuenta una vez al cerrar las recompensas y volver al mapa."
+      "help": "0 continúa hasta detenerse. Un combate o historia cuenta una vez al completarse y volver al mapa o a la lista de historias."
     }
   },
   "BuyPenguins": {

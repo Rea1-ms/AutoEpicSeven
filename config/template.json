@@ -385,6 +385,7 @@
       "ServerUpdate": "02:00"
     },
     "Episode": {
+      "Mode": "Main",
       "Number": 0,
       "MaxStages": 0
     }

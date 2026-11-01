@@ -208,6 +208,7 @@ class GeneratedConfig:
     SpecialActivity_BuyHucheMysticMedals = False
 
     # Group `Episode`
+    Episode_Mode = 'Main'  # Main, Side
     Episode_Number = 0  # 0, 1, 2, 3, 4, 5, 6
     Episode_MaxStages = 0
 

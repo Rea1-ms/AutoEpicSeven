@@ -1,0 +1,99 @@
+{
+  "version": 1,
+  "source": "../../global_cn/story_push/20261029-212720-853.png",
+  "suite": "story_push_20261029",
+  "case": "212720-853",
+  "items": [
+    {
+      "name": "SIDE_STORY_LIST_CHECK",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "dungeon/story_push/side_story",
+      "box": [
+        70,
+        20,
+        169,
+        46
+      ]
+    },
+    {
+      "name": "SIDE_STORY_WATCH",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "dungeon/story_push/side_story",
+      "box": [
+        1140,
+        650,
+        1186,
+        679
+      ]
+    },
+    {
+      "name": "SIDE_STORY_WATCH",
+      "kind": "button",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "dungeon/story_push/side_story",
+      "box": [
+        969,
+        636,
+        1240,
+        694
+      ]
+    },
+    {
+      "name": "SIDE_STORY_CURRENT",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "share",
+      "module": "dungeon/story_push/side_story",
+      "box": [
+        1184,
+        475,
+        1240,
+        531
+      ]
+    },
+    {
+      "name": "SIDE_STORY_CURRENT",
+      "kind": "search",
+      "frame": 1,
+      "namespace": "share",
+      "module": "dungeon/story_push/side_story",
+      "box": [
+        1170,
+        135,
+        1250,
+        614
+      ]
+    },
+    {
+      "name": "OCR_SIDE_STORY_CHAPTER",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "share",
+      "module": "dungeon/story_push/side_story",
+      "box": [
+        1063,
+        103,
+        1156,
+        137
+      ]
+    },
+    {
+      "name": "OCR_SIDE_STORY_COST",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "share",
+      "module": "dungeon/story_push/side_story",
+      "box": [
+        1008,
+        646,
+        1081,
+        681
+      ]
+    }
+  ]
+}

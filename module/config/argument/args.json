@@ -1740,6 +1740,14 @@
       }
     },
     "Episode": {
+      "Mode": {
+        "type": "select",
+        "value": "Main",
+        "option": [
+          "Main",
+          "Side"
+        ]
+      },
       "Number": {
         "type": "select",
         "value": 0,
@@ -1751,7 +1759,8 @@
           4,
           5,
           6
-        ]
+        ],
+        "display": "hide"
       },
       "MaxStages": {
         "type": "input",

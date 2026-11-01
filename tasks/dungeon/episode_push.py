@@ -1,10 +1,11 @@
-"""Manually started main-story progression, independent of material farming."""
+"""Manually started main/side-story progression, independent of material farming."""
 
 import re
 from dataclasses import dataclass
 
 from module.base.button import ClickButton
 from module.base.timer import Timer
+from module.base.utils import rgb2luma
 from module.config import server
 from module.exception import RequestHumanTakeover
 from module.logger import logger
@@ -43,9 +44,7 @@ from tasks.dungeon.assets.assets_dungeon_episode_reward import (
     EPISODE_STORY_COMPLETE,
 )
 from tasks.dungeon.assets.assets_dungeon_episode_story import (
-    EPISODE_STORY_SKIP,
     EPISODE_STORY_SKIP_CHECK,
-    EPISODE_STORY_SKIP_CONFIRM,
 )
 from tasks.dungeon.assets.assets_dungeon_repeat_common import REPEAT_COMBAT_MENU
 from tasks.dungeon.assets.assets_dungeon_state import (
@@ -55,7 +54,8 @@ from tasks.dungeon.assets.assets_dungeon_state import (
 from tasks.dungeon.entry import CombatEntryMixin
 from tasks.dungeon.episode import EpisodeNavigateMixin, OcrEpisodeLabel
 from tasks.dungeon.episode_navigation import EPISODE_ENTRIES
-from tasks.dungeon.execute import detect_auto_combat_state
+from tasks.dungeon.side_story_push import SideStoryPushMixin
+from tasks.dungeon.story_skip import StorySkipMixin
 
 
 @dataclass(frozen=True)
@@ -83,7 +83,7 @@ def parse_story_stamina(text):
     return int(found[1]), int(found[2])
 
 
-class Episode(EpisodeNavigateMixin, CombatEntryMixin, UI):
+class Episode(SideStoryPushMixin, StorySkipMixin, EpisodeNavigateMixin, CombatEntryMixin, UI):
     ACTION_INTERVAL = 2
     NAVIGATION_TIMEOUT = EpisodeNavigateMixin.EPISODE_NAVIGATE_TIMEOUT_SECONDS
     COMBAT_CHECK_SIMILARITY = 0.8
@@ -151,47 +151,54 @@ class Episode(EpisodeNavigateMixin, CombatEntryMixin, UI):
         logger.attr('EpisodeLastStarCondition', text)
         return re.sub(r'\s+', '', text)
 
-    def _auto_combat_unavailable(self):
-        # A gray auto icon beside bright battle controls means automatic
-        # combat is forbidden, not merely switched off. Template correlation
-        # alone ignores that brightness distinction. Check the fixed colors
-        # too, and reject overlays that dim the entire toolbar at settlement.
-        return (
-            self.appear(EPISODE_AUTO_COMBAT_UNAVAILABLE)
-            and self.match_color(EPISODE_AUTO_COMBAT_UNAVAILABLE, threshold=15)
-            and self.match_color(EPISODE_BATTLE_CONTROLS_CHECK, threshold=25)
-        )
+    def _auto_combat_luminance(self):
+        return tuple(float(rgb2luma(self.image_crop(button, copy=False)).mean())
+                     for button in (EPISODE_AUTO_COMBAT_UNAVAILABLE, EPISODE_BATTLE_CONTROLS_CHECK))
 
-    def _click(self, button):
-        if self.interval_is_reached(button, interval=self.ACTION_INTERVAL):
-            self.device.click(button)
-            self.interval_reset(button, interval=self.ACTION_INTERVAL)
-            return True
-        return False
+    def _auto_combat_unavailable(self):
+        # Both controls are translucent: background tint changes their RGB
+        # colors without changing whether automatic combat is permitted.
+        # Luminance templates confirm BOTH shapes, then compare fixed regions.
+        # Available manual buttons share the auto shape but remain much brighter
+        # relative to pause (captured ratios .56-.69 versus disabled .31-.35).
+        # A ratio alone also survives full-screen dimming, so require a normally
+        # bright pause control before reporting a battle that needs manual play.
+        if not (self.match_template_luma(EPISODE_AUTO_COMBAT_UNAVAILABLE)
+                and self.match_template_luma(EPISODE_BATTLE_CONTROLS_CHECK)):
+            return False
+        auto_luma, controls_luma = self._auto_combat_luminance()
+        return controls_luma >= 140 and auto_luma <= controls_luma * .45
 
     def run(self):
-        """Continue unlocked main-story nodes using the currently configured team.
+        """Continue the opened story page using the selected progression mode.
 
         Pages:
-            in: main, episode map, chapter selector, or an interrupted story/battle
-            out: stable episode map, chapter selector, or a state requiring attention
+            in: opened main/side-story list, or its interrupted story/battle
+            out: next story list at the node limit, or a state requiring attention
         """
         if server.lang not in ('cn', 'global_cn'):
             logger.info(f'Episode: unsupported asset language {server.lang}')
             return False
-        number = int(self.config.Episode_Number)
+        mode = self.config.Episode_Mode
         limit = int(self.config.Episode_MaxStages)
-        if number not in (0, *EPISODE_ENTRIES) or limit < 0:
-            raise ValueError('Episode: invalid episode number or stage limit')
+        if mode not in ('Main', 'Side') or limit < 0:
+            raise ValueError('Episode: invalid story mode or stage limit')
+        if mode == 'Side' and server.lang != 'global_cn':
+            logger.info(f'Episode: side-story mode does not support asset language {server.lang}')
+            return False
         logger.attr('EpisodeModule', __file__)
         logger.attr('EpisodeAssetLanguage', server.lang)
         self.device.screenshot()
         self.completed_stages = 0
-        self.stop_reason = self._push(number, limit)
+        if self.is_in_main(interval=0):
+            logger.info('Episode: open the desired story list before starting this tool')
+            self.stop_reason = 'wrong_start_page'
+            return False
+        self.stop_reason = self._push_side_story(limit) if mode == 'Side' else self._push(limit=limit)
         logger.info(f'Episode: stopped ({self.stop_reason}), completed nodes={self.completed_stages}')
         if self.stop_reason == 'navigation_timeout':
             self._save_navigation_diagnostics()
-        return self.stop_reason == 'stage_limit'
+        return self.stop_reason in ('stage_limit', 'story_complete')
 
     def _save_navigation_diagnostics(self):
         # Keep the exact observation that caused the timeout. A fresh capture
@@ -213,6 +220,7 @@ class Episode(EpisodeNavigateMixin, CombatEntryMixin, UI):
             in: main or any supported episode substate; first frame prepared
             out: unlocked-stage map or a positively identified blocking state
         """
+        self._reset_story_intro()
         timeout = Timer(self.NAVIGATION_TIMEOUT, count=0).start()
         star_condition_timeout = Timer(12, count=0).clear()
         stamina_timeout = Timer(12, count=0).clear()
@@ -275,6 +283,8 @@ class Episode(EpisodeNavigateMixin, CombatEntryMixin, UI):
             if not prepare:
                 stamina_values, stamina_matches = None, 0
                 stamina_timeout.clear()
+            if prepare:
+                self._reset_story_intro()
             if prepare and self.appear(EPISODE_STORY_TEAM_CHECK):
                 condition = self._last_star_condition()
                 if not condition:
@@ -303,6 +313,7 @@ class Episode(EpisodeNavigateMixin, CombatEntryMixin, UI):
             # Count once only after a result AND an unobscured map are seen;
             # neither repeated rewards nor an entry click can count a clear.
             if self._map_ready():
+                self._reset_story_intro()
                 chapter_timeout.clear()
                 identity, selected = self._map_identity()
                 if identity is None:
@@ -377,23 +388,26 @@ class Episode(EpisodeNavigateMixin, CombatEntryMixin, UI):
                     return 'unreadable_stages'
 
             if self.appear(EPISODE_STORY_SKIP_CHECK):
-                if self.appear(EPISODE_STORY_SKIP_CONFIRM):
-                    self._click(EPISODE_STORY_SKIP_CONFIRM)
+                self._handle_story_skip()
                 continue
             if self.appear(EPISODE_STORY_COMPLETE):
+                self._reset_story_intro()
                 pending = pending or ('resumed_story',)
                 result_seen = True
                 self._click(EPISODE_STORY_COMPLETE)
                 continue
             if self.appear(EPISODE_CHAPTER_REWARD):
+                self._reset_story_intro()
                 self._click(EPISODE_CHAPTER_REWARD)
                 continue
             if self.appear(COMBAT_RESULT_CONFIRM):
+                self._reset_story_intro()
                 pending = pending or ('resumed_result',)
                 result_seen = True
                 self._click(COMBAT_RESULT_CONFIRM)
                 continue
             if self.appear(COMBAT_RESULT_CLEAR):
+                self._reset_story_intro()
                 # As in normal foreground combat, CLEAR is positive result
                 # evidence. A fast transition or manual dismissal may hide
                 # the next reward frame; requiring that frame would strand a
@@ -403,10 +417,10 @@ class Episode(EpisodeNavigateMixin, CombatEntryMixin, UI):
                 result_seen = True
                 self._click(COMBAT_RESULT_CLEAR)
                 continue
-            if self.appear(EPISODE_STORY_SKIP):
+            if self._story_visible():
                 pending = pending or ('resumed_story',)
                 entered = True
-                self._click(EPISODE_STORY_SKIP)
+                self._handle_story_skip()
                 continue
             # Episode 4 identifies prepare by the repeat-menu icon. Team-power
             # text and the glowing mission label vary between captured frames
@@ -443,12 +457,14 @@ class Episode(EpisodeNavigateMixin, CombatEntryMixin, UI):
                     self._click(COMBAT_START)
                 continue
             if self._is_episode_supporter_page():
+                self._reset_story_intro()
                 entered = True
                 if self.appear(CHOOSE_TEAM):
                     self._click(CHOOSE_TEAM)
                 continue
-            auto = detect_auto_combat_state(self.appear)
+            auto = self._story_auto_state()
             if auto is not None:
+                self._reset_story_intro()
                 entered = True
                 self.device.stuck_record_clear()
                 if auto is False:
@@ -458,6 +474,7 @@ class Episode(EpisodeNavigateMixin, CombatEntryMixin, UI):
 
             selected_episode = self._selector_episode()
             if self._is_episode_selector():
+                self._reset_story_intro()
                 if timeout.reached():
                     return 'navigation_timeout'
                 active_episode = active_episode or selected_episode
@@ -495,6 +512,7 @@ class Episode(EpisodeNavigateMixin, CombatEntryMixin, UI):
                 continue
 
             if self.is_in_main(interval=0):
+                self._reset_story_intro()
                 # The public page route returns to a map which this loop owns.
                 self.ui_goto(page_episode, skip_first_screenshot=True)
                 skip_first_screenshot = True
