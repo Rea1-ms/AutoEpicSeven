@@ -1453,6 +1453,10 @@
       }
     },
     "SpecialActivity": {
+      "GetAlenciaDailyReward": {
+        "type": "checkbox",
+        "value": true
+      },
       "BuyHucheMysticMedals": {
         "type": "checkbox",
         "value": false,

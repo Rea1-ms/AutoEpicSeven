@@ -23292,6 +23292,405 @@
           "reason": "史诗奖励标题与灰勾的真实正反例、逐行定位及搜索范围恢复"
         }
       ]
+    },
+    {
+      "source": "tests/activity/test_alencia_handbook.py",
+      "business": "艾莲西亚事件手册每日奖励",
+      "status": "新增",
+      "reason": "国际服中文每日200/400行动力领奖",
+      "cases": [
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookRecognitionTests.test_real_pages_are_exclusive_and_popup_rejects_underlying_list",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000455-285",
+            "000500-016",
+            "000510-920",
+            "000516-161",
+            "000524-767",
+            "000527-127",
+            "000533-874",
+            "000540-850",
+            "000545-575",
+            "000555-014"
+          ],
+          "status": "已纳入",
+          "reason": "主页事件手册每日两档、合并领取、重排与调度回归；缺失状态明确模拟"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookRecognitionTests.test_real_ocr_pairs_reordered_daily_with_its_own_counter_and_check",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000455-285",
+            "000500-016",
+            "000510-920",
+            "000516-161",
+            "000524-767",
+            "000527-127",
+            "000533-874",
+            "000540-850",
+            "000545-575",
+            "000555-014"
+          ],
+          "status": "已纳入",
+          "reason": "主页事件手册每日两档、合并领取、重排与调度回归；缺失状态明确模拟"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookRecognitionTests.test_incomplete_fields_and_wrong_counter_never_authorize_claim",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000455-285",
+            "000500-016",
+            "000510-920",
+            "000516-161",
+            "000524-767",
+            "000527-127",
+            "000533-874",
+            "000540-850",
+            "000545-575",
+            "000555-014"
+          ],
+          "status": "已纳入",
+          "reason": "主页事件手册每日两档、合并领取、重排与调度回归；缺失状态明确模拟"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookReplayTests.test_both_available_require_one_click_and_one_popup_for_both_receipts",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000455-285",
+            "000500-016",
+            "000510-920",
+            "000516-161",
+            "000524-767",
+            "000527-127",
+            "000533-874",
+            "000540-850",
+            "000545-575",
+            "000555-014"
+          ],
+          "status": "已纳入",
+          "reason": "主页事件手册每日两档、合并领取、重排与调度回归；缺失状态明确模拟"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookReplayTests.test_real_partial_claim_scans_bottom_and_keeps_battle_recheck",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000455-285",
+            "000500-016",
+            "000510-920",
+            "000516-161",
+            "000524-767",
+            "000527-127",
+            "000533-874",
+            "000540-850",
+            "000545-575",
+            "000555-014"
+          ],
+          "status": "已纳入",
+          "reason": "主页事件手册每日两档、合并领取、重排与调度回归；缺失状态明确模拟"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookReplayTests.test_incomplete_dailies_exit_without_claim_or_completion_record",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000455-285",
+            "000500-016",
+            "000510-920",
+            "000516-161",
+            "000524-767",
+            "000527-127",
+            "000533-874",
+            "000540-850",
+            "000545-575",
+            "000555-014"
+          ],
+          "status": "已纳入",
+          "reason": "主页事件手册每日两档、合并领取、重排与调度回归；缺失状态明确模拟"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookReplayTests.test_already_received_dailies_finish_without_claiming_achievements",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000455-285",
+            "000500-016",
+            "000510-920",
+            "000516-161",
+            "000524-767",
+            "000527-127",
+            "000533-874",
+            "000540-850",
+            "000545-575",
+            "000555-014"
+          ],
+          "status": "已纳入",
+          "reason": "主页事件手册每日两档、合并领取、重排与调度回归；缺失状态明确模拟"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookReplayTests.test_receipts_before_popup_cannot_finish_or_claim_another_tier",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000455-285",
+            "000500-016",
+            "000510-920",
+            "000516-161",
+            "000524-767",
+            "000527-127",
+            "000533-874",
+            "000540-850",
+            "000545-575",
+            "000555-014"
+          ],
+          "status": "已纳入",
+          "reason": "主页事件手册每日两档、合并领取、重排与调度回归；缺失状态明确模拟"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookReplayTests.test_dropped_same_tap_and_popup_close_retry_at_independent_intervals",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000455-285",
+            "000500-016",
+            "000510-920",
+            "000516-161",
+            "000524-767",
+            "000527-127",
+            "000533-874",
+            "000540-850",
+            "000545-575",
+            "000555-014"
+          ],
+          "status": "已纳入",
+          "reason": "主页事件手册每日两档、合并领取、重排与调度回归；缺失状态明确模拟"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookReplayTests.test_missing_popup_times_out_without_record_or_new_claim",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000455-285",
+            "000500-016",
+            "000510-920",
+            "000516-161",
+            "000524-767",
+            "000527-127",
+            "000533-874",
+            "000540-850",
+            "000545-575",
+            "000555-014"
+          ],
+          "status": "已纳入",
+          "reason": "主页事件手册每日两档、合并领取、重排与调度回归；缺失状态明确模拟"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookReplayTests.test_new_400_claim_after_separate_200_receipt_requires_fresh_confirmation",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000455-285",
+            "000500-016",
+            "000510-920",
+            "000516-161",
+            "000524-767",
+            "000527-127",
+            "000533-874",
+            "000540-850",
+            "000545-575",
+            "000555-014"
+          ],
+          "status": "已纳入",
+          "reason": "主页事件手册每日两档、合并领取、重排与调度回归；缺失状态明确模拟"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookReplayTests.test_one_visible_daily_and_chapter_checks_never_prove_daily_completion",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000455-285",
+            "000500-016",
+            "000510-920",
+            "000516-161",
+            "000524-767",
+            "000527-127",
+            "000533-874",
+            "000540-850",
+            "000545-575",
+            "000555-014"
+          ],
+          "status": "已纳入",
+          "reason": "主页事件手册每日两档、合并领取、重排与调度回归；缺失状态明确模拟"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookReplayTests.test_real_home_entry_routes_to_handbook_then_returns_to_home",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000455-285",
+            "000500-016",
+            "000510-920",
+            "000516-161",
+            "000524-767",
+            "000527-127",
+            "000533-874",
+            "000540-850",
+            "000545-575",
+            "000555-014"
+          ],
+          "status": "已纳入",
+          "reason": "主页事件手册每日两档、合并领取、重排与调度回归；缺失状态明确模拟"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookSchedulingTests.test_calendar_boundaries_and_server_language_scope",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000516-161"
+          ],
+          "status": "已纳入",
+          "reason": "主页事件手册每日两档、合并领取、重排与调度回归；缺失状态明确模拟"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookSchedulingTests.test_saved_visibility_uses_event_window_and_preserves_old_choices",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000516-161"
+          ],
+          "status": "已纳入",
+          "reason": "主页事件手册每日两档、合并领取、重排与调度回归；缺失状态明确模拟"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookSchedulingTests.test_battle_rechecks_special_task_until_both_receipts_then_next_reset",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000516-161"
+          ],
+          "status": "已纳入",
+          "reason": "主页事件手册每日两档、合并领取、重排与调度回归；缺失状态明确模拟"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookSchedulingTests.test_disabled_task_and_expired_event_never_wake",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000516-161"
+          ],
+          "status": "已纳入",
+          "reason": "主页事件手册每日两档、合并领取、重排与调度回归；缺失状态明确模拟"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookSchedulingTests.test_entry_dispatches_dedicated_home_flow_and_returns_once",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000516-161"
+          ],
+          "status": "已纳入",
+          "reason": "主页事件手册每日两档、合并领取、重排与调度回归；缺失状态明确模拟"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookSchedulingTests.test_page_import_scan_and_paths_are_isolated_for_three_clients",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000516-161"
+          ],
+          "status": "已纳入",
+          "reason": "主页事件手册每日两档、合并领取、重排与调度回归；缺失状态明确模拟"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookReplayTests.test_either_unfinished_top_daily_returns_without_scanning_other_tier",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000516-161",
+            "000540-850",
+            "000545-575",
+            "000533-874"
+          ],
+          "status": "已纳入",
+          "reason": "按用户顶层任务规则，任一每日计数未完成即返回，不滑动、不记全领；日志字段缺失明确模拟"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookReplayTests.test_logged_80_progress_with_missing_status_returns_without_swiping",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000516-161",
+            "000540-850",
+            "000545-575",
+            "000533-874"
+          ],
+          "status": "已纳入",
+          "reason": "按用户顶层任务规则，任一每日计数未完成即返回，不滑动、不记全领；日志字段缺失明确模拟"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookReplayTests.test_logged_missing_parentheses_and_status_return_on_first_frame",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000516-161",
+            "000540-850",
+            "000545-575"
+          ],
+          "status": "已纳入",
+          "reason": "模拟12:43日志漏右括号和状态，首帧直接返回且不滑动"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookReplayTests.test_chapters_at_top_finish_immediately_without_claim_or_swipe",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000516-161",
+            "000540-850",
+            "000545-575"
+          ],
+          "status": "已纳入",
+          "reason": "按用户排序契约模拟顶部章节，直接记全领且不点章节奖励"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookReplayTests.test_unreadable_top_never_completes_from_lower_chapter_tasks",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "000516-161"
+          ],
+          "status": "已纳入",
+          "reason": "明确模拟空识别、首项漏读、未知及低置信度，不借下方章节记完成或滑动"
+        }
+      ]
     }
   ]
 }

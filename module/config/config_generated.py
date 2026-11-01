@@ -204,6 +204,7 @@ class GeneratedConfig:
     LimitedActivity_GetEpicPathDailyReward = True
 
     # Group `SpecialActivity`
+    SpecialActivity_GetAlenciaDailyReward = True
     SpecialActivity_BuyHucheMysticMedals = False
 
     # Group `Episode`

@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "source": "000516-161.png",
+  "suite": "alencia_handbook",
+  "case": "000516-161",
+  "items": [
+    {
+      "name": "ALENCIA_REWARDS_CHECK",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "activity/alencia_handbook",
+      "box": [
+        151,
+        519,
+        274,
+        542
+      ]
+    },
+    {
+      "name": "ALENCIA_TASK_LIST",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "activity/alencia_handbook",
+      "box": [
+        435,
+        80,
+        1255,
+        719
+      ]
+    }
+  ]
+}

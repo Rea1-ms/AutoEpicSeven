@@ -101,7 +101,7 @@ def should_schedule_after_battle(config, *, task="LimitedActivity", arena=False)
         return False
 
     for event in active_activities(config, task=task):
-        if event.mode in ("detective_search", "epic_path"):
+        if event.mode in ("detective_search", "epic_path", "alencia_handbook"):
             # An empty reward queue is not daily completion. The claim flow
             # only writes this event/server record after ALL_TASK_DONE, so
             # later battles can request another check without waking retired
@@ -112,10 +112,11 @@ def should_schedule_after_battle(config, *, task="LimitedActivity", arena=False)
             option = {
                 "detective_search": "GetDetectiveSearch",
                 "epic_path": "GetEpicPathDailyReward",
+                "alencia_handbook": "GetAlenciaDailyReward",
             }[event.mode]
             enabled = config.cross_get(
-                f"LimitedActivity.LimitedActivity.{option}",
-                default=getattr(config, f"LimitedActivity_{option}"),
+                f"{task}.{task}.{option}",
+                default=getattr(config, f"{task}_{option}"),
             )
             if enabled and not is_activity_checked_today(config, event.event_id, task=task):
                 return True

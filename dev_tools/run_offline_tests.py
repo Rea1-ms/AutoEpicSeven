@@ -91,6 +91,7 @@ ACTIVITY_MODULES = (
     "tests.activity.test_meirin_reward",
     "tests.activity.test_support_reward",
     "tests.activity.test_october_events",
+    "tests.activity.test_alencia_handbook",
 )
 COMBAT_MODULES = (
     "tests.combat.test_daily_batch",

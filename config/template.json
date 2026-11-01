@@ -315,6 +315,7 @@
       "ServerUpdate": "02:00"
     },
     "SpecialActivity": {
+      "GetAlenciaDailyReward": true,
       "BuyHucheMysticMedals": false
     },
     "ActivityRuntime": {

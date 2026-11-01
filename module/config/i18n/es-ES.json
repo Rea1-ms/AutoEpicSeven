@@ -1132,7 +1132,11 @@
   "SpecialActivity": {
     "_info": {
       "name": "Eventos especiales",
-      "help": "Gestiona contenido temporal con entradas propias, actualmente la tienda de Huche en la pantalla principal. Se programa de forma independiente de Eventos temporales."
+      "help": "Gestiona entradas especiales desde el inicio, incluidas las recompensas diarias del manual de Alencia, con una programación independiente."
+    },
+    "GetAlenciaDailyReward": {
+      "name": "Recoger recompensas diarias del manual",
+      "help": "Solo chino simplificado del servidor global. Entra desde el inicio y recoge solo las misiones de 200/400 de energía. Un toque recoge ambas si están listas. Revisa tras los combates hasta recibir las dos."
     },
     "BuyHucheMysticMedals": {
       "name": "Comprar medallas místicas en la tienda de Huche",

@@ -400,10 +400,28 @@ class ActivityVisibilityUITests(unittest.TestCase):
         self.gui.pin_remove_hidden_arg.assert_not_called()
 
     def test_archived_special_purchase_never_renders_or_resets_saved_choice(self):
-        self.config['Alas']['Emulator']['PackageName'] = 'CN-Official'
-        self.assertEqual(self.render_options('SpecialActivity'), {})
-        self.assertTrue(self.config['SpecialActivity']['SpecialActivity']['BuyHucheMysticMedals'])
-        self.assertFalse(self.config['SpecialActivity']['Scheduler']['Enable'])
+        self.config['SpecialActivity']['SpecialActivity']['GetAlenciaDailyReward'] = False
+        before = deepcopy(self.config['SpecialActivity'])
+        for package, language, stamp, visible in (
+            ('CN-Official', 'cn', '2026-11-01T00:10:00+08:00', False),
+            ('OVERSEA-Play', 'en', '2026-11-01T00:10:00+08:00', False),
+            ('OVERSEA-Play', 'cn', '2026-10-29T22:26:00+08:00', False),
+            ('OVERSEA-Play', 'cn', '2026-11-01T00:10:00+08:00', True),
+            ('OVERSEA-Play', 'cn', '2026-12-10T11:00:00+08:00', False),
+        ):
+            with self.subTest(package=package, language=language, stamp=stamp), \
+                    patch('tasks.activity.calendar.datetime', wraps=datetime) as clock:
+                clock.now.return_value = datetime.fromisoformat(stamp)
+                self.config['Alas']['Emulator'].update(PackageName=package, GameLanguage=language)
+                rendered = self.render_options('SpecialActivity')
+                # Fixed-hidden archived purchases must stay omitted. Active
+                # daily rewards use the existing dynamic hide/show mechanism.
+                self.assertEqual(set(rendered), {'SpecialActivity_SpecialActivity_GetAlenciaDailyReward'})
+                kwargs, output = rendered['SpecialActivity_SpecialActivity_GetAlenciaDailyReward']
+                self.assertEqual(output.style.called, not visible)
+                self.assertFalse(kwargs['value'])
+                output.show.assert_called_once()
+                self.assertEqual(self.config['SpecialActivity'], before)
 
 
 if __name__ == "__main__":

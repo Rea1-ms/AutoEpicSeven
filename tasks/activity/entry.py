@@ -65,6 +65,18 @@ class SpecialActivityEntry:
                 common_done = True
                 last_activity = activity
                 continue
+            elif event.mode == "alencia_handbook":
+                from tasks.activity.alencia_handbook import AlenciaHandbook
+
+                activity = AlenciaHandbook(
+                    config=self.config, device=self.device, task=self.task,
+                    activity_id=event.event_id,
+                )
+                self.device = activity.device
+                if not activity.run_claim():
+                    return False
+                last_activity = activity
+                continue
             elif event.mode == "huche_shop":
                 # Retained for explicit historical replay only. The production
                 # mode and option registries exclude this retired entrance.

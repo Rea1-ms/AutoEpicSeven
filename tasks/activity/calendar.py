@@ -13,11 +13,11 @@ EVENT_TIMEZONE = INFO_TIMEZONE
 CALENDAR_PATH = INFO_PATH
 DEFAULT_FREE_GACHA_20_ID = "free_gacha_20_2026_08_27"
 SUPPORTED_MODES = ("legacy", "free_gacha_20", "support_reward",
-                   "completion_record", "detective_search", "epic_path")
+                   "completion_record", "detective_search", "epic_path", "alencia_handbook")
 ACTIVITY_TASK_MODES = {
     "LimitedActivity": ("free_gacha_20", "support_reward",
                         "completion_record", "detective_search", "epic_path"),
-    "SpecialActivity": ("legacy",),
+    "SpecialActivity": ("legacy", "alencia_handbook"),
 }
 ACTIVITY_OPTIONS = {
     "LimitedActivity": {
@@ -27,7 +27,7 @@ ACTIVITY_OPTIONS = {
         "detective_search": "LimitedActivity_GetDetectiveSearch",
         "epic_path": "LimitedActivity_GetEpicPathDailyReward",
     },
-    "SpecialActivity": {},
+    "SpecialActivity": {"alencia_handbook": "SpecialActivity_GetAlenciaDailyReward"},
 }
 
 
@@ -84,7 +84,7 @@ def _server_windows(config, *, assets_lang: str | None = None) -> tuple[Activity
         window for window in load_calendar()
         if window.server_family == family
         and (window.mode not in ("support_reward",
-                                "completion_record", "detective_search", "epic_path")
+                                "completion_record", "detective_search", "epic_path", "alencia_handbook")
              or family == server.SERVER_FAMILY_OVERSEA)
     )
 

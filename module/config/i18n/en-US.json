@@ -1132,7 +1132,11 @@
   "SpecialActivity": {
     "_info": {
       "name": "Special activities",
-      "help": "Handle timed content with separate entrances, currently the Huche shop on the main screen. Scheduled independently of Limited-time events."
+      "help": "Handle special home entrances, including Alencia handbook daily rewards, on a schedule separate from Limited Activity."
+    },
+    "GetAlenciaDailyReward": {
+      "name": "Claim handbook daily rewards",
+      "help": "Overseas Simplified Chinese only. Enter the event hub from home and claim only the 200/400 stamina dailies. One tap collects both when ready. Recheck after battles until both are received."
     },
     "BuyHucheMysticMedals": {
       "name": "Buy Huche Shop Mystic Medals",

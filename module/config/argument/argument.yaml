@@ -420,6 +420,7 @@ LimitedActivity:
   GetEpicPathDailyReward: true
 
 SpecialActivity:
+  GetAlenciaDailyReward: true
   # 花费天空石的购买项默认关闭，避免升级后自动改变用户消费。
   BuyHucheMysticMedals:
     value: false

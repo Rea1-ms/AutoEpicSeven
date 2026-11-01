@@ -3709,6 +3709,359 @@
         "tests.activity.test_october_events.OctoberReplayTests.test_epic_real_receipts_before_reward_keep_pending_task",
         "tests.activity.test_october_events.OctoberReplayTests.test_epic_real_rewards_reorder_tasks_and_preserve_arena_recheck"
       ]
+    },
+    "000455-285": {
+      "path": "tests/fixtures/historical/global_cn/alencia_handbook_2026_11_01/000455-285.png",
+      "sha256": "63e2c26bbf03ea5356330e2cb3e3fbf264dd27abd0147c177d166562b93d4797",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "alencia-handbook-000455-285",
+      "source": "MuMu-20261101-000455-285.png",
+      "source_sha256": "6b438f1473c849c99f828ff2a85c47cdbbcc5158bc5a2a8d61c935b73e410067",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          0,
+          0,
+          275,
+          102
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_alencia_handbook.HandbookRecognitionTests.test_real_pages_are_exclusive_and_popup_rejects_underlying_list",
+        "tests.activity.test_alencia_handbook.HandbookRecognitionTests.test_real_ocr_pairs_reordered_daily_with_its_own_counter_and_check",
+        "tests.activity.test_alencia_handbook.HandbookRecognitionTests.test_incomplete_fields_and_wrong_counter_never_authorize_claim",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_both_available_require_one_click_and_one_popup_for_both_receipts",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_real_partial_claim_scans_bottom_and_keeps_battle_recheck",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_incomplete_dailies_exit_without_claim_or_completion_record",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_already_received_dailies_finish_without_claiming_achievements",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_receipts_before_popup_cannot_finish_or_claim_another_tier",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_dropped_same_tap_and_popup_close_retry_at_independent_intervals",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_missing_popup_times_out_without_record_or_new_claim",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_new_400_claim_after_separate_200_receipt_requires_fresh_confirmation",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_one_visible_daily_and_chapter_checks_never_prove_daily_completion",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_real_home_entry_routes_to_handbook_then_returns_to_home"
+      ]
+    },
+    "000500-016": {
+      "path": "tests/fixtures/historical/global_cn/alencia_handbook_2026_11_01/000500-016.png",
+      "sha256": "98c568c0a535ab1af69d7c6031f3a935c49849c3a677337bb193563bef86df0c",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "alencia-handbook-000500-016",
+      "source": "MuMu-20261101-000500-016.png",
+      "source_sha256": "62383576d73c36076283f19959cc8ddf9cb3bf77752aa71653f492f0438b275f",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_alencia_handbook.HandbookRecognitionTests.test_real_pages_are_exclusive_and_popup_rejects_underlying_list",
+        "tests.activity.test_alencia_handbook.HandbookRecognitionTests.test_real_ocr_pairs_reordered_daily_with_its_own_counter_and_check",
+        "tests.activity.test_alencia_handbook.HandbookRecognitionTests.test_incomplete_fields_and_wrong_counter_never_authorize_claim",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_both_available_require_one_click_and_one_popup_for_both_receipts",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_real_partial_claim_scans_bottom_and_keeps_battle_recheck",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_incomplete_dailies_exit_without_claim_or_completion_record",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_already_received_dailies_finish_without_claiming_achievements",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_receipts_before_popup_cannot_finish_or_claim_another_tier",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_dropped_same_tap_and_popup_close_retry_at_independent_intervals",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_missing_popup_times_out_without_record_or_new_claim",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_new_400_claim_after_separate_200_receipt_requires_fresh_confirmation",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_one_visible_daily_and_chapter_checks_never_prove_daily_completion",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_real_home_entry_routes_to_handbook_then_returns_to_home"
+      ]
+    },
+    "000510-920": {
+      "path": "tests/fixtures/historical/global_cn/alencia_handbook_2026_11_01/000510-920.png",
+      "sha256": "9d0979052d9c5e32e5d433a9fea9eed57cd4715a37cf336c3c6aac7e4e8b5da2",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "alencia-handbook-000510-920",
+      "source": "MuMu-20261101-000510-920.png",
+      "source_sha256": "e61a955c60cc4e6b2216f2324d1e21bd7305c3ede95cd5dcd4ccbc39974bb180",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_alencia_handbook.HandbookRecognitionTests.test_real_pages_are_exclusive_and_popup_rejects_underlying_list",
+        "tests.activity.test_alencia_handbook.HandbookRecognitionTests.test_real_ocr_pairs_reordered_daily_with_its_own_counter_and_check",
+        "tests.activity.test_alencia_handbook.HandbookRecognitionTests.test_incomplete_fields_and_wrong_counter_never_authorize_claim",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_both_available_require_one_click_and_one_popup_for_both_receipts",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_real_partial_claim_scans_bottom_and_keeps_battle_recheck",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_incomplete_dailies_exit_without_claim_or_completion_record",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_already_received_dailies_finish_without_claiming_achievements",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_receipts_before_popup_cannot_finish_or_claim_another_tier",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_dropped_same_tap_and_popup_close_retry_at_independent_intervals",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_missing_popup_times_out_without_record_or_new_claim",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_new_400_claim_after_separate_200_receipt_requires_fresh_confirmation",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_one_visible_daily_and_chapter_checks_never_prove_daily_completion",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_real_home_entry_routes_to_handbook_then_returns_to_home"
+      ]
+    },
+    "000516-161": {
+      "path": "tests/fixtures/historical/global_cn/alencia_handbook_2026_11_01/000516-161.png",
+      "sha256": "f1304f0fa143bf7ae0888250febee599008a5b97e2ed8961c3c64820a250ca30",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "alencia-handbook-000516-161",
+      "source": "MuMu-20261101-000516-161.png",
+      "source_sha256": "198f1894f3afde0e56206a53ffe22793e0587959ac11176494fef94116916f5c",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_alencia_handbook.HandbookRecognitionTests.test_real_pages_are_exclusive_and_popup_rejects_underlying_list",
+        "tests.activity.test_alencia_handbook.HandbookRecognitionTests.test_real_ocr_pairs_reordered_daily_with_its_own_counter_and_check",
+        "tests.activity.test_alencia_handbook.HandbookRecognitionTests.test_incomplete_fields_and_wrong_counter_never_authorize_claim",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_both_available_require_one_click_and_one_popup_for_both_receipts",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_real_partial_claim_scans_bottom_and_keeps_battle_recheck",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_incomplete_dailies_exit_without_claim_or_completion_record",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_already_received_dailies_finish_without_claiming_achievements",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_receipts_before_popup_cannot_finish_or_claim_another_tier",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_dropped_same_tap_and_popup_close_retry_at_independent_intervals",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_missing_popup_times_out_without_record_or_new_claim",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_new_400_claim_after_separate_200_receipt_requires_fresh_confirmation",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_one_visible_daily_and_chapter_checks_never_prove_daily_completion",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_real_home_entry_routes_to_handbook_then_returns_to_home",
+        "tests.activity.test_alencia_handbook.HandbookSchedulingTests.test_calendar_boundaries_and_server_language_scope",
+        "tests.activity.test_alencia_handbook.HandbookSchedulingTests.test_saved_visibility_uses_event_window_and_preserves_old_choices",
+        "tests.activity.test_alencia_handbook.HandbookSchedulingTests.test_battle_rechecks_special_task_until_both_receipts_then_next_reset",
+        "tests.activity.test_alencia_handbook.HandbookSchedulingTests.test_disabled_task_and_expired_event_never_wake",
+        "tests.activity.test_alencia_handbook.HandbookSchedulingTests.test_entry_dispatches_dedicated_home_flow_and_returns_once",
+        "tests.activity.test_alencia_handbook.HandbookSchedulingTests.test_page_import_scan_and_paths_are_isolated_for_three_clients",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_either_unfinished_top_daily_returns_without_scanning_other_tier",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_logged_80_progress_with_missing_status_returns_without_swiping",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_logged_missing_parentheses_and_status_return_on_first_frame",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_chapters_at_top_finish_immediately_without_claim_or_swipe",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_unreadable_top_never_completes_from_lower_chapter_tasks"
+      ]
+    },
+    "000524-767": {
+      "path": "tests/fixtures/historical/global_cn/alencia_handbook_2026_11_01/000524-767.png",
+      "sha256": "1febe3173e98937cf41cde40dc4f65bfcd38d4e057eed0848ab0fd7fd9320261",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "alencia-handbook-000524-767",
+      "source": "MuMu-20261101-000524-767.png",
+      "source_sha256": "75ad7d21fae5041caf3bb27180c96f24a329cae9aac2163c3886010dd0d96440",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_alencia_handbook.HandbookRecognitionTests.test_real_pages_are_exclusive_and_popup_rejects_underlying_list",
+        "tests.activity.test_alencia_handbook.HandbookRecognitionTests.test_real_ocr_pairs_reordered_daily_with_its_own_counter_and_check",
+        "tests.activity.test_alencia_handbook.HandbookRecognitionTests.test_incomplete_fields_and_wrong_counter_never_authorize_claim",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_both_available_require_one_click_and_one_popup_for_both_receipts",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_real_partial_claim_scans_bottom_and_keeps_battle_recheck",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_incomplete_dailies_exit_without_claim_or_completion_record",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_already_received_dailies_finish_without_claiming_achievements",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_receipts_before_popup_cannot_finish_or_claim_another_tier",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_dropped_same_tap_and_popup_close_retry_at_independent_intervals",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_missing_popup_times_out_without_record_or_new_claim",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_new_400_claim_after_separate_200_receipt_requires_fresh_confirmation",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_one_visible_daily_and_chapter_checks_never_prove_daily_completion",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_real_home_entry_routes_to_handbook_then_returns_to_home"
+      ]
+    },
+    "000527-127": {
+      "path": "tests/fixtures/historical/global_cn/alencia_handbook_2026_11_01/000527-127.png",
+      "sha256": "db1301dabf899164e7e66ae6a6bd2996fdbc4b0073afeb9e4b2030bcfe88d3cb",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "alencia-handbook-000527-127",
+      "source": "MuMu-20261101-000527-127.png",
+      "source_sha256": "142275e0a91408023bc415403505e7fbe3f9dc16d7d02213fda9ef6525e38203",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_alencia_handbook.HandbookRecognitionTests.test_real_pages_are_exclusive_and_popup_rejects_underlying_list",
+        "tests.activity.test_alencia_handbook.HandbookRecognitionTests.test_real_ocr_pairs_reordered_daily_with_its_own_counter_and_check",
+        "tests.activity.test_alencia_handbook.HandbookRecognitionTests.test_incomplete_fields_and_wrong_counter_never_authorize_claim",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_both_available_require_one_click_and_one_popup_for_both_receipts",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_real_partial_claim_scans_bottom_and_keeps_battle_recheck",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_incomplete_dailies_exit_without_claim_or_completion_record",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_already_received_dailies_finish_without_claiming_achievements",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_receipts_before_popup_cannot_finish_or_claim_another_tier",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_dropped_same_tap_and_popup_close_retry_at_independent_intervals",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_missing_popup_times_out_without_record_or_new_claim",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_new_400_claim_after_separate_200_receipt_requires_fresh_confirmation",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_one_visible_daily_and_chapter_checks_never_prove_daily_completion",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_real_home_entry_routes_to_handbook_then_returns_to_home"
+      ]
+    },
+    "000533-874": {
+      "path": "tests/fixtures/historical/global_cn/alencia_handbook_2026_11_01/000533-874.png",
+      "sha256": "a98d291517fe616f89b9d02d2a5ec8510ebc9d69d685fd92312d812c3705240b",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "alencia-handbook-000533-874",
+      "source": "MuMu-20261101-000533-874.png",
+      "source_sha256": "1505af5b7d879f2af4f960316eb9d0f213ea02956f208fc06a00365deebdb8d8",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_alencia_handbook.HandbookRecognitionTests.test_real_pages_are_exclusive_and_popup_rejects_underlying_list",
+        "tests.activity.test_alencia_handbook.HandbookRecognitionTests.test_real_ocr_pairs_reordered_daily_with_its_own_counter_and_check",
+        "tests.activity.test_alencia_handbook.HandbookRecognitionTests.test_incomplete_fields_and_wrong_counter_never_authorize_claim",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_both_available_require_one_click_and_one_popup_for_both_receipts",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_real_partial_claim_scans_bottom_and_keeps_battle_recheck",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_incomplete_dailies_exit_without_claim_or_completion_record",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_already_received_dailies_finish_without_claiming_achievements",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_receipts_before_popup_cannot_finish_or_claim_another_tier",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_dropped_same_tap_and_popup_close_retry_at_independent_intervals",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_missing_popup_times_out_without_record_or_new_claim",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_new_400_claim_after_separate_200_receipt_requires_fresh_confirmation",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_one_visible_daily_and_chapter_checks_never_prove_daily_completion",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_real_home_entry_routes_to_handbook_then_returns_to_home",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_either_unfinished_top_daily_returns_without_scanning_other_tier",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_logged_80_progress_with_missing_status_returns_without_swiping"
+      ]
+    },
+    "000540-850": {
+      "path": "tests/fixtures/historical/global_cn/alencia_handbook_2026_11_01/000540-850.png",
+      "sha256": "1e37dda6c10e769cac37ba7ea909be3063d0470e21a3657398125411f27f7e97",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "alencia-handbook-000540-850",
+      "source": "MuMu-20261101-000540-850.png",
+      "source_sha256": "2587209f3b89d121b74fd9c48cab7e11ad93bed85442474d3d35a0c95b2035e4",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_alencia_handbook.HandbookRecognitionTests.test_real_pages_are_exclusive_and_popup_rejects_underlying_list",
+        "tests.activity.test_alencia_handbook.HandbookRecognitionTests.test_real_ocr_pairs_reordered_daily_with_its_own_counter_and_check",
+        "tests.activity.test_alencia_handbook.HandbookRecognitionTests.test_incomplete_fields_and_wrong_counter_never_authorize_claim",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_both_available_require_one_click_and_one_popup_for_both_receipts",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_real_partial_claim_scans_bottom_and_keeps_battle_recheck",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_incomplete_dailies_exit_without_claim_or_completion_record",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_already_received_dailies_finish_without_claiming_achievements",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_receipts_before_popup_cannot_finish_or_claim_another_tier",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_dropped_same_tap_and_popup_close_retry_at_independent_intervals",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_missing_popup_times_out_without_record_or_new_claim",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_new_400_claim_after_separate_200_receipt_requires_fresh_confirmation",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_one_visible_daily_and_chapter_checks_never_prove_daily_completion",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_real_home_entry_routes_to_handbook_then_returns_to_home",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_either_unfinished_top_daily_returns_without_scanning_other_tier",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_logged_80_progress_with_missing_status_returns_without_swiping",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_logged_missing_parentheses_and_status_return_on_first_frame",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_chapters_at_top_finish_immediately_without_claim_or_swipe"
+      ]
+    },
+    "000545-575": {
+      "path": "tests/fixtures/historical/global_cn/alencia_handbook_2026_11_01/000545-575.png",
+      "sha256": "d9823af1eb3d636a2b1c89f54058974651b4e2f59ed0b5fba15d1a05d75def30",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "alencia-handbook-000545-575",
+      "source": "MuMu-20261101-000545-575.png",
+      "source_sha256": "2585147119a4db627f5b5ddec951f3fd9a04be1cd1f9de947f7715fced4ac241",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_alencia_handbook.HandbookRecognitionTests.test_real_pages_are_exclusive_and_popup_rejects_underlying_list",
+        "tests.activity.test_alencia_handbook.HandbookRecognitionTests.test_real_ocr_pairs_reordered_daily_with_its_own_counter_and_check",
+        "tests.activity.test_alencia_handbook.HandbookRecognitionTests.test_incomplete_fields_and_wrong_counter_never_authorize_claim",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_both_available_require_one_click_and_one_popup_for_both_receipts",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_real_partial_claim_scans_bottom_and_keeps_battle_recheck",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_incomplete_dailies_exit_without_claim_or_completion_record",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_already_received_dailies_finish_without_claiming_achievements",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_receipts_before_popup_cannot_finish_or_claim_another_tier",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_dropped_same_tap_and_popup_close_retry_at_independent_intervals",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_missing_popup_times_out_without_record_or_new_claim",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_new_400_claim_after_separate_200_receipt_requires_fresh_confirmation",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_one_visible_daily_and_chapter_checks_never_prove_daily_completion",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_real_home_entry_routes_to_handbook_then_returns_to_home",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_either_unfinished_top_daily_returns_without_scanning_other_tier",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_logged_80_progress_with_missing_status_returns_without_swiping",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_logged_missing_parentheses_and_status_return_on_first_frame",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_chapters_at_top_finish_immediately_without_claim_or_swipe"
+      ]
+    },
+    "000555-014": {
+      "path": "tests/fixtures/historical/global_cn/alencia_handbook_2026_11_01/000555-014.png",
+      "sha256": "c35a045639be09a29e6a9ed24c8997e0e87079d8bfe8c7b8d16ccb3aa32e0cdc",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "alencia-handbook-000555-014",
+      "source": "MuMu-20261101-000555-014.png",
+      "source_sha256": "1a3715ad6e47975ad1522139bdb9678e0b3dd43f29bcfd75616acf4a50549c56",
+      "privacy_redaction": [
+        [
+          0,
+          680,
+          180,
+          720
+        ],
+        [
+          0,
+          0,
+          275,
+          102
+        ]
+      ],
+      "used_by": [
+        "tests.activity.test_alencia_handbook.HandbookRecognitionTests.test_real_pages_are_exclusive_and_popup_rejects_underlying_list",
+        "tests.activity.test_alencia_handbook.HandbookRecognitionTests.test_real_ocr_pairs_reordered_daily_with_its_own_counter_and_check",
+        "tests.activity.test_alencia_handbook.HandbookRecognitionTests.test_incomplete_fields_and_wrong_counter_never_authorize_claim",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_both_available_require_one_click_and_one_popup_for_both_receipts",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_real_partial_claim_scans_bottom_and_keeps_battle_recheck",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_incomplete_dailies_exit_without_claim_or_completion_record",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_already_received_dailies_finish_without_claiming_achievements",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_receipts_before_popup_cannot_finish_or_claim_another_tier",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_dropped_same_tap_and_popup_close_retry_at_independent_intervals",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_missing_popup_times_out_without_record_or_new_claim",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_new_400_claim_after_separate_200_receipt_requires_fresh_confirmation",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_one_visible_daily_and_chapter_checks_never_prove_daily_completion",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_real_home_entry_routes_to_handbook_then_returns_to_home"
+      ]
     }
   },
   "aliases": {
