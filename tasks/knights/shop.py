@@ -211,6 +211,24 @@ class KnightsShopMixin:
     def _text(self, area, name):
         return Ocr(ClickButton(area, name=name), lang=resolve_ocr_lang(self.config)).ocr_single_line(self.device.image)
 
+    def _stock(self, area):
+        stock = parse_stock(self._text(area, 'GuildShopStock'))
+        if stock is not None:
+            return stock
+        # Short counters such as 1/1 can lose the last digit when the fixed
+        # field includes too much dark card background. On an invalid read,
+        # locate the bright badge inside this same field and OCR its complete
+        # bounds. Do not narrow by a fixed width: 12/12 needs a wider badge.
+        # Keep valid original reads (notably 5/10 and 4/5) unchanged, and never
+        # fill a missing digit from the item's expected limit or an old frame.
+        image = crop(self.device.image, area)
+        rows, columns = np.where(np.min(image, axis=2) > 210)
+        if not len(rows):
+            return None
+        badge = (area[0] + int(columns.min()), area[1] + int(rows.min()),
+                 area[0] + int(columns.max()) + 1, area[1] + int(rows.max()) + 1)
+        return parse_stock(self._text(badge, 'GuildShopStockBadge'))
+
     def _on_shop(self):
         return self.appear(SHOP_CHECK) and SHOP_SELECTED.match_color(self.device.image, threshold=25)
 
@@ -272,7 +290,7 @@ class KnightsShopMixin:
             # vertical crop reproducibly reads the captured 5/10 as G/10.
             # Fix the pixels rather than guessing G means 5: an unreadable
             # result must still block both new payment and its completion.
-            stock = parse_stock(self._text((x + 112, y + 29, x + 175, y + 54), 'GuildShopStock'))
+            stock = self._stock((x + 112, y + 29, x + 175, y + 54))
             if stock is None:
                 return None
             if stock[1] != item.limit:

@@ -1,6 +1,39 @@
 {
   "version": 1,
   "fixtures": {
+    "20261102-225245-730": {
+      "path": "tests/fixtures/knights/shop/MuMu-20261102-225245-730.png",
+      "sha256": "256572c15771e66d850b7ffbb1703e80dfabddfdfba7365dca62185b7acb5d68",
+      "server": "global_cn",
+      "scene": "mystic_full_single_stock_with_dropped_ocr_denominator",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.knights.test_shop.CapturedShopTests.test_mystic_single_stock_keeps_complete_counter_at_scroll_offset",
+        "tests.knights.test_shop.ShopReplayTests.test_mystic_capture_and_real_balance_start_one_image_selected_purchase",
+        "tests.knights.test_shop.ShopReplayTests.test_missing_mystic_denominator_never_buys_or_records_completion"
+      ],
+      "source": "user-provided MuMu-20261102-225245-730.png",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          1280,
+          25
+        ],
+        [
+          0,
+          665,
+          580,
+          720
+        ],
+        [
+          704,
+          665,
+          1280,
+          720
+        ]
+      ]
+    },
     "20261012-125244-428": {
       "path": "tests/fixtures/knights/shop/MuMu-20261012-125244-428.png",
       "sha256": "70e74583af03e7c9a1a76240d8671698aedcab8dd8a9b6e7c689f111e9ab42e5",

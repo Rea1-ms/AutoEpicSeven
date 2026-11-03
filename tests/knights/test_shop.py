@@ -45,6 +45,7 @@ PAID_CATALYST_CAPTURE = '20261003-184342-562'
 CURRENT_BALANCE_CAPTURE = '20261007-133412-362'
 CURRENT_MYSTIC_CAPTURE = '20261007-134422-578'
 STALLED_MYSTIC_CAPTURE = '20261012-125244-428'
+SINGLE_STOCK_CAPTURE = '20261102-225245-730'
 CATALYST = next(item for item in ITEMS if item.option.endswith('_CatalystChest'))
 
 
@@ -68,6 +69,28 @@ def history_task(**options):
 class CapturedShopTests(unittest.TestCase):
     def setUp(self):
         server.set_lang('global_cn')
+
+    def test_mystic_single_stock_keeps_complete_counter_at_scroll_offset(self):
+        task = captured_task(SINGLE_STOCK_CAPTURE)
+        cards = task._cards(ITEMS[0])
+        self.assertIsNotNone(cards)
+        self.assertEqual(len(cards), 1)
+        self.assertEqual((cards[0].remaining, cards[0].active, cards[0].price), (1, True, 200))
+        self.assertEqual(cards[0].button.button, (910, 601, 1069, 630))
+        for currency, expected in (('armband', 455), ('crest', 635), ('proof', 77507)):
+            item = next(item for item in ITEMS if item.currency == currency)
+            self.assertEqual(task._balance(item), expected, currency)
+        self.assertIsNone(parse_stock('1/'))
+        # These are explicit damaged-input variants, not additional captures.
+        # The badge retry must not invent a denominator or read a blank field.
+        for label, area, fill in (
+                ('missing denominator', (1060, 439, 1068, 464), 245),
+                ('missing badge', (1020, 439, 1083, 464), 0)):
+            with self.subTest(label=label):
+                task = captured_task(SINGLE_STOCK_CAPTURE)
+                x1, y1, x2, y2 = area
+                task.device.image[y1:y2, x1:x2] = fill
+                self.assertIsNone(task._cards(ITEMS[0]))
 
     def test_catalyst_five_stock_after_payment_is_read_without_letter_guessing(self):
         task = captured_task(PAID_CATALYST_CAPTURE)
@@ -1331,7 +1354,8 @@ class ShopReplayTests(unittest.TestCase):
         frames = ([shop_frame(1, price=200)] * 2 + [popup_frame(1, 1, multi=False)] * 4
                   + [shop_frame(0, active=False)] * 4)
         captures = ((CURRENT_MYSTIC_CAPTURE, (591, 601, 750, 630)),
-                    (STALLED_MYSTIC_CAPTURE, (851, 601, 1010, 630)))
+                    (STALLED_MYSTIC_CAPTURE, (851, 601, 1010, 630)),
+                    (SINGLE_STOCK_CAPTURE, (910, 601, 1069, 630)))
         for fixture, price_button in captures:
             with self.subTest(fixture=fixture), ControlledClock() as clock:
                 task = replay_task(frames, clock)
@@ -1347,6 +1371,31 @@ class ShopReplayTests(unittest.TestCase):
                 self.assertEqual([a[1] for a in task.device.actions],
                                  ['MYSTIC_MEDALS_result0', 'BUY_CONFIRM_SINGLE'])
                 self.assertEqual(task.device.actions[0][2], price_button)
+                self.assertEqual(task.config.KnightsShopRuntime_Purchases[ITEMS[0].option]['purchased'], 1)
+
+    def test_missing_mystic_denominator_never_buys_or_records_completion(self):
+        # The card pixels and balance are captured. Removing the last digit,
+        # selection dialogs, repetition and post-payment timing are simulated.
+        for before_purchase in (True, False):
+            with self.subTest(before_purchase=before_purchase), ControlledClock() as clock:
+                initial = ([] if before_purchase else [shop_frame(1, price=200)] * 2
+                           + [popup_frame(1, 1, multi=False)] * 4)
+                task = replay_task(initial + [shop_frame(1, price=200)] * 110, clock)
+                original = fixture_image(MANIFEST, SINGLE_STOCK_CAPTURE)
+                damaged = original.copy()
+                damaged[439:464, 1060:1068] = 245
+
+                def cards(item, task=task, initial=initial, original=original, damaged=damaged):
+                    task.device.image = original if task.device.index < len(initial) else damaged
+                    return KnightsShop._cards(task, item)
+
+                task._cards = cards
+                del task._balance
+                with self.assertRaises(RequestHumanTakeover):
+                    task._execute_shop([(ITEMS[0], 1)])
+                self.assertEqual([a[1] for a in task.device.actions],
+                                 [] if before_purchase else ['MYSTIC_MEDALS_result0', 'BUY_CONFIRM_SINGLE'])
+                self.assertFalse(hasattr(task.config, 'KnightsShopRuntime_Purchases'))
 
     def test_unsupported_server_never_navigates_or_builds_a_device(self):
         task = KnightsShop.__new__(KnightsShop)

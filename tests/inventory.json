@@ -7347,6 +7347,17 @@
       "reason": "每周、每月购买数量及价格区域识别",
       "cases": [
         {
+          "id": "tests.knights.test_shop.CapturedShopTests.test_mystic_single_stock_keeps_complete_counter_at_scroll_offset",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261102-225245-730"
+          ],
+          "status": "已纳入",
+          "reason": "真实截图验证1/1库存、同卡价格按钮与当前余额；缺失分母不能猜测库存。"
+        },
+        {
           "id": "tests.knights.test_shop.CapturedShopTests.test_catalyst_five_stock_after_payment_is_read_without_letter_guessing",
           "category": "截图识别",
           "requires_device": false,
@@ -8302,7 +8313,8 @@
           "has_automatic_assertion": true,
           "fixtures": [
             "20261007-134422-578",
-            "20261012-125244-428"
+            "20261012-125244-428",
+            "20261102-225245-730"
           ],
           "status": "已纳入",
           "reason": "当前截图验证神秘奖牌图像、库存、价格、余额和点击位置；后续弹窗和库存仍为明确模拟帧，不连接设备或读取账号配置"
@@ -8396,6 +8408,17 @@
           ],
           "status": "已纳入",
           "reason": "骑士团商店离线回归；回放使用明确模拟帧，不连接设备或读取账号配置"
+        },
+        {
+          "id": "tests.knights.test_shop.ShopReplayTests.test_missing_mystic_denominator_never_buys_or_records_completion",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261102-225245-730"
+          ],
+          "status": "已纳入",
+          "reason": "真实卡片明确遮去分母，购买前禁止付款和滑动，确认后禁止重复付款或记录完成；弹窗与帧时序明确模拟。"
         }
       ]
     },
