@@ -30,13 +30,22 @@ EPIC_PATH_DAILY_TASK_CHECK = ButtonWrapper(
 EPIC_PATH_REWARD_POPUP_CHECK = ButtonWrapper(
     name='EPIC_PATH_REWARD_POPUP_CHECK',
     cn=None,
-    global_cn=Button(
-        file='./assets/global_cn/activity/epic_path/EPIC_PATH_REWARD_POPUP_CHECK.png',
-        area=(577, 152, 705, 183),
-        search=(557, 132, 725, 203),
-        color=(133, 150, 168),
-        button=(577, 152, 705, 183),
-    ),
+    global_cn=[
+        Button(
+            file='./assets/global_cn/activity/epic_path/EPIC_PATH_REWARD_POPUP_CHECK.png',
+            area=(577, 152, 705, 183),
+            search=(557, 132, 725, 203),
+            color=(133, 150, 168),
+            button=(577, 152, 705, 183),
+        ),
+        Button(
+            file='./assets/global_cn/activity/epic_path/EPIC_PATH_REWARD_POPUP_CHECK.2.png',
+            area=(577, 152, 705, 183),
+            search=(557, 132, 725, 203),
+            color=(132, 135, 138),
+            button=(577, 152, 705, 183),
+        ),
+    ],
     global_en=None,
 )
 EPIC_PATH_TASK_CLOSE = ButtonWrapper(

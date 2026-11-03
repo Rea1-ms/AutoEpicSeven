@@ -24,6 +24,17 @@ from tasks.activity.legacy.e7wc_battle_gate_2026_09_12.e7wc_battle_gate import E
 from tasks.activity.legacy.koharu_raffle_2026_09_17.koharu_raffle import KoharuRaffle
 from tasks.activity.detective_search import DetectiveSearch
 from tasks.activity.support_reward import SupportReward
+from tests.support.activity_replay import (
+    ATTENDANCE,
+    AVAILABLE,
+    DAILY,
+    HOME,
+    HOME_AFTER,
+    POPUP,
+    RECEIVED,
+    ActivityReplayCase,
+    capture,
+)
 from tests.support.history_e7wc_battle_gate import HISTORICAL_ACTIVITIES
 
 MODES = ('free_gacha_20', 'detective_search', 'support_reward')
@@ -190,3 +201,21 @@ class BatchTests(unittest.TestCase):
         self.assertEqual(run.actions, [('legacy', None)])
         self.assertIs(run.entry.device.page, page_main)
         run.next_check.assert_called_once()
+
+
+class CapturedBatchTests(ActivityReplayCase):
+    def test_shared_batch_processes_three_real_selected_pages_and_keeps_dialogs_closed(self):
+        r = self.replay(CommonActivityBatch, [capture(AVAILABLE), capture(POPUP), capture(RECEIVED),
+                        capture(HOME), capture(DAILY), capture(HOME_AFTER), capture(ATTENDANCE)])
+        pending = {}
+        for mode in ("completion_record", "detective_search", "epic_path"):
+            keyword, marker, worker_type = CommonActivityBatch.ACTIVITIES[mode]
+            worker = object.__new__(worker_type)
+            worker.device, worker.config, worker.interval_timer = r, r.task.config, {}
+            worker.activity_id = mode
+            pending[mode] = (keyword, marker, worker)
+        self.assertTrue(r.task._run_pending(pending))
+        self.assertFalse(pending)
+        self.assertEqual(r.actions, [(0, "DETECTIVE_CLAIM_180"), (1, "TOUCH_TO_CLOSE"),
+                                    (3, "EPIC_PATH_TASK_ENTRY"), (4, "EPIC_PATH_TASK_CLOSE")])
+        self.assertEqual(len(r.task.config.values), 2)
