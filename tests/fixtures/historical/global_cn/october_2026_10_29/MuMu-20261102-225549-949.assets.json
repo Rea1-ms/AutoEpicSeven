@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "source": "MuMu-20261102-225549-949.png",
+  "suite": "epic_path_reward_20261102",
+  "case": "neutral_reward",
+  "items": [
+    {
+      "name": "EPIC_PATH_REWARD_POPUP_CHECK",
+      "namespace": "global_cn",
+      "module": "activity/epic_path",
+      "box": [
+        577,
+        152,
+        705,
+        183
+      ],
+      "frame": 2
+    }
+  ]
+}

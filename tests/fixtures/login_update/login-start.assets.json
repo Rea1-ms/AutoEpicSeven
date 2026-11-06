@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "global_cn/login-start-default-20261105.png",
+  "suite": "login_start",
+  "case": "default_20261105",
+  "items": [
+    {
+      "name": "OCR_LOGIN_START",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "global_cn",
+      "module": "login",
+      "box": [
+        574,
+        580,
+        706,
+        612
+      ]
+    }
+  ]
+}

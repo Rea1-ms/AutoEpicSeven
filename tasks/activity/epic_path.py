@@ -97,6 +97,7 @@ class EpicPath(ActivityNavigationMixin, UI):
         ocr = Ocr(EPIC_PATH_TASK_LIST, lang=lang, name="EpicPathDailyTasks")
         timeout = Timer(self.CLAIM_FLOW_TIMEOUT_SECONDS).start()
         pending_task = None
+        reward_seen = False
         result = None
         while 1:
             if skip_first_screenshot:
@@ -113,9 +114,28 @@ class EpicPath(ActivityNavigationMixin, UI):
             if timeout.reached():
                 logger.warning("LimitedActivity: epic daily reward timeout")
                 return False
+            if self.match_template_color(EPIC_PATH_REWARD_POPUP_CHECK):
+                # A reward can overlay the daily label and the task close
+                # button. Handle it exclusively, including while its close
+                # retry is on cooldown; neither dimmed control is navigation.
+                # A close click is only a request. Keep this task latched until
+                # a fresh usable daily page also shows its own receipt below.
+                if pending_task is not None:
+                    reward_seen = True
+                self.handle_touch_to_close()
+                continue
             if self.match_template_color(EPIC_PATH_DAILY_TASK_CHECK):
                 rows = self._daily_rows(ocr.detect_and_ocr(self.device.image))
                 if rows is not None and result is None:
+                    if pending_task is not None and reward_seen:
+                        # Old claimable rows can persist after reward dismissal.
+                        # The popup proves a reward, not an updated list. Do not
+                        # repeat that claim or switch tasks until this identity's
+                        # received mark arrives; unrelated rows cannot release it.
+                        if rows[pending_task][0] != "received":
+                            continue
+                        pending_task = None
+                        reward_seen = False
                     if pending_task is None and all(state != "pending" for state, _ in rows.values()):
                         result = all(state == "received" for state, _ in rows.values())
                     else:
@@ -138,17 +158,18 @@ class EpicPath(ActivityNavigationMixin, UI):
             if (result is None and self.match_template_color(EPIC_PATH_CHECK)
                     and self.appear_then_click(EPIC_PATH_TASK_ENTRY, interval=2)):
                 continue
-            if (result is None and not self.match_template_color(EPIC_PATH_DAILY_TASK_CHECK)
+            if (result is None and pending_task is None
+                    and not self.match_template_color(EPIC_PATH_DAILY_TASK_CHECK)
                     and self.match_template_luma(EPIC_PATH_TASK_CLOSE)
+                    and self.match_color(EPIC_PATH_TASK_CLOSE)
                     and self.match_template_luma(EPIC_PATH_DAILY_TASK_CHECK, interval=2)):
                 # A previous manual visit may have left the season tab open.
+                # Its fixed close control must have its normal usable color:
+                # luma alone (or the broad template-color tolerance) also
+                # accepts this dark control under a reward/loading overlay.
                 # Only the daily label is a navigation target; never process
                 # season rows using the four-task daily completion contract.
                 self.device.click(EPIC_PATH_DAILY_TASK_CHECK)
                 continue
             if self.handle_network_error():
                 continue
-            # Confirm this event's fully visible reward title before clearing
-            # the pending identity; network dismissal is not a reward receipt.
-            if self.match_template_color(EPIC_PATH_REWARD_POPUP_CHECK) and self.handle_touch_to_close():
-                pending_task = None

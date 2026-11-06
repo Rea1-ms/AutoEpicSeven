@@ -80,11 +80,11 @@
     },
     "LimitedActivity": {
       "name": "Eventos temporales",
-      "help": "Visita el registro de asistencia y recoge las recompensas de los eventos activos, incluidas la búsqueda diaria del detective y las tareas diarias del Camino épico. Se programa de forma independiente de Eventos especiales; Invocación realiza las invocaciones."
+      "help": "Registra la asistencia y recoge las recompensas desde la entrada de eventos. Se programa de forma independiente de Eventos especiales. Se actualiza cuando se puede."
     },
     "SpecialActivity": {
       "name": "Eventos especiales",
-      "help": "Gestiona contenido temporal con entradas propias, actualmente la tienda de Huche en la pantalla principal. Se programa de forma independiente de Eventos temporales."
+      "help": "Gestiona eventos con entradas propias, como las de la pantalla principal. Se programa de forma independiente de Eventos temporales. Se actualiza cuando se puede."
     },
     "BuyPenguins": {
       "name": "Compra de pingüinos por lotes",
@@ -1102,7 +1102,7 @@
   "LimitedActivity": {
     "_info": {
       "name": "Eventos temporales",
-      "help": "Visita el registro de asistencia y recoge las recompensas de los eventos activos, incluidas la búsqueda diaria del detective y las tareas diarias del Camino épico. Se programa de forma independiente de Eventos especiales; Invocación realiza las invocaciones."
+      "help": "Registra la asistencia y recoge las recompensas desde la entrada de eventos. Se programa de forma independiente de Eventos especiales. Se actualiza cuando se puede."
     },
     "GetFreeGacha": {
       "name": "Recoger las 20 invocaciones gratis diarias",
@@ -1132,7 +1132,7 @@
   "SpecialActivity": {
     "_info": {
       "name": "Eventos especiales",
-      "help": "Gestiona entradas especiales desde el inicio, incluidas las recompensas diarias del manual de Alencia, con una programación independiente."
+      "help": "Gestiona eventos con entradas propias, como las de la pantalla principal. Se programa de forma independiente de Eventos temporales. Se actualiza cuando se puede."
     },
     "GetAlenciaDailyReward": {
       "name": "Recoger recompensas diarias del manual",

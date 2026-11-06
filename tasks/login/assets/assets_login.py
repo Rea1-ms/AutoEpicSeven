@@ -145,6 +145,18 @@ LOGIN_LOADING = ButtonWrapper(
     ],
     global_en=None,
 )
+OCR_LOGIN_START = ButtonWrapper(
+    name='OCR_LOGIN_START',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/login/OCR_LOGIN_START.png',
+        area=(574, 580, 706, 612),
+        search=(554, 560, 726, 632),
+        color=(133, 188, 218),
+        button=(574, 580, 706, 612),
+    ),
+    global_en=None,
+)
 PATCH_APPLY = ButtonWrapper(
     name='PATCH_APPLY',
     cn=[

@@ -6,7 +6,7 @@ import numpy as np
 
 from module.base.base import ModuleBase
 from tests.support.interaction import InteractionReplay, scene
-from tests.support.offline import ROOT, fixture_image, record_action
+from tests.support.offline import ROOT, fixture_image, record_action, record_frame
 
 MANIFEST = ROOT / 'tests/fixtures/login_update/manifest.json'
 NORMALIZATIONS = {
@@ -36,6 +36,22 @@ class LoginUpdateReplay(InteractionReplay):
         )
         if self.frame.get('portrait'):
             self.image = np.rot90(self.image).copy()
+        # Explicit mutations model animation/occlusion; they are not captures.
+        if 'brightness' in self.frame:
+            self.image = (self.image * self.frame['brightness']).astype(np.uint8)
+        if self.frame.get('hide_start_text'):
+            self.image[580:612, 574:706] = 0
+        if self.frame.get('overlay'):
+            # Paste real popup anchors onto a title frame to isolate priority
+            # even when background start text remains bright and readable.
+            for button in self.frame['overlay']:
+                for asset in button.buttons:
+                    left, top, right, bottom = asset.area
+                    self.image[top:bottom, left:right] = asset.image
+        if any(key in self.frame for key in ('brightness', 'hide_start_text', 'overlay')):
+            record_frame(f'login-explicit-mutation:{self.index}:brightness={self.frame.get("brightness")}'
+                         f':hide_start_text={self.frame.get("hide_start_text", False)}'
+                         f':overlay={[button.name for button in self.frame.get("overlay", ())]}')
 
     def appear(self, button, interval=0, **kwargs):
         if self.frame.get('fixture'):

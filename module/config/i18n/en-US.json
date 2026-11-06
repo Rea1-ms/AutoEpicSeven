@@ -80,11 +80,11 @@
     },
     "LimitedActivity": {
       "name": "Limited-time events",
-      "help": "Visit attendance and claim current event rewards through the event entrance, including Attendance Record, Daily Detective Search and Epic Path daily tasks. Scheduled independently of Special activities; the Summon task performs summons."
+      "help": "Check in and claim rewards through the event entrance. Scheduled independently of Special activities. Updated as time permits."
     },
     "SpecialActivity": {
       "name": "Special activities",
-      "help": "Handle timed content with separate entrances, currently the Huche shop on the main screen. Scheduled independently of Limited-time events."
+      "help": "Handle events with separate entrances, such as the home screen. Scheduled independently of Limited-time events. Updated as time permits."
     },
     "BuyPenguins": {
       "name": "Buy penguins in batches",
@@ -1102,7 +1102,7 @@
   "LimitedActivity": {
     "_info": {
       "name": "Limited-time events",
-      "help": "Visit attendance and claim current event rewards through the event entrance, including Attendance Record, Daily Detective Search and Epic Path daily tasks. Scheduled independently of Special activities; the Summon task performs summons."
+      "help": "Check in and claim rewards through the event entrance. Scheduled independently of Special activities. Updated as time permits."
     },
     "GetFreeGacha": {
       "name": "Claim Daily 20 Free Summons",
@@ -1132,7 +1132,7 @@
   "SpecialActivity": {
     "_info": {
       "name": "Special activities",
-      "help": "Handle special home entrances, including Alencia handbook daily rewards, on a schedule separate from Limited Activity."
+      "help": "Handle events with separate entrances, such as the home screen. Scheduled independently of Limited-time events. Updated as time permits."
     },
     "GetAlenciaDailyReward": {
       "name": "Claim handbook daily rewards",

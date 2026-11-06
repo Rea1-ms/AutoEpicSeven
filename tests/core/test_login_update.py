@@ -1,4 +1,4 @@
-"""International Chinese update screens and Google Play update replay."""
+"""Login readiness, recovery, and client/patch update regressions."""
 
 import unittest
 from unittest.mock import Mock, patch
@@ -7,8 +7,24 @@ from module.config import server
 
 server.set_lang('global_cn')
 
-from tasks.base.assets.assets_base_popup import TOUCH_TO_CLOSE
-from tasks.login.assets.assets_login import GAME_UPGRADE_AVAILABLE, PATCH_APPLY
+from module.config.config import TaskEnd
+from module.exception import GameNotRunningError, RequestHumanTakeover
+from module.ocr.ocr import OcrWhiteLetterOnComplexBackground
+from tasks.base.assets.assets_base_popup import (
+    NETWORK_ERROR_ABNORMAL,
+    NETWORK_ERROR_DISCONNECT,
+    TOUCH_TO_CLOSE,
+)
+from tasks.base.ui import UI
+from tasks.login.assets.assets_login import (
+    GAME_UPGRADE_AVAILABLE,
+    LOGGED_OUT,
+    LOGIN_CONFIRM,
+    LOGIN_ERROR,
+    OCR_LOGIN_START,
+    PATCH_APPLY,
+)
+from tasks.login.assets.assets_login_maintenance import ANNOUNCEMENT_CLOSE
 from tasks.login.assets.assets_login_update import (
     CLIENT_DOWNLOADING,
     CLIENT_INSTALL_CONFIRM,
@@ -31,6 +47,7 @@ CAPTURES = ('194637-390', '194638-366', '194640-422', '194642-189', '194645-647'
             '194905-434', '194911-593', '194922-656')
 CN_CAPTURES = ('220435-623', '220437-897', '220443-735', '220447-999', '220451-467',
                '221739-381', '221833-219', '221842-942', '222010-024', '222013-948', '222031-002')
+START_CAPTURES = ('login-start-default-20261105', 'login-start-event-20261105')
 
 
 class UpdateCaptureTests(unittest.TestCase):
@@ -191,7 +208,7 @@ class LoginUpdateFlowTests(unittest.TestCase):
         frames += [capture('194905-434')] * 8
         frames += [capture('194911-593'), capture('194922-656', seconds=1)]
         frames += [capture('194922-656', seconds=1)] * 130
-        frames += [scene('LOGIN_CONFIRM')]
+        frames += [scene(fixture=START_CAPTURES[0])]
         frames += [scene(page='main')] * 6
         replay = self.login(frames)
         with patch('tasks.activity.entry.SpecialActivityEntry') as reward_type:
@@ -382,3 +399,219 @@ class CnUpdateTests(unittest.TestCase):
                 self.assertFalse(replay.task.handle_game_update())
                 self.assertEqual(replay.actions, [])
                 self.assertEqual(replay.index, 0)
+
+
+class LoginStartTests(unittest.TestCase):
+    def setUp(self):
+        server.set_lang('global_cn')
+        self.addCleanup(server.set_lang, 'global_cn')
+        self.clock = ControlledClock()
+        self.clock.__enter__()
+        self.addCleanup(self.clock.__exit__, None, None, None)
+
+    def test_both_backgrounds_are_ready_without_clicking(self):
+        for name in START_CAPTURES:
+            with self.subTest(frame=name):
+                replay = LoginUpdateReplay(Login, [scene(fixture=name)], self.clock)
+                self.assertTrue(replay.task.is_in_login_confirm())
+                self.assertTrue(replay.task._is_login_progress_state())
+                self.assertEqual(replay.actions, [])
+                self.assertEqual(replay.index, 0)
+
+    def test_hidden_and_dimmed_text_does_not_fall_back_to_transparent_icon(self):
+        for name in START_CAPTURES:
+            for change in ({'hide_start_text': True}, {'brightness': .6}, {'brightness': .3}):
+                with self.subTest(frame=name, change=change):
+                    replay = LoginUpdateReplay(Login, [scene(fixture=name, **change)], self.clock)
+                    if name == START_CAPTURES[1] and change.get('hide_start_text'):
+                        self.assertTrue(LOGIN_CONFIRM.match_template_luma(replay.image))
+                    self.assertFalse(replay.task.is_in_login_confirm())
+                    self.assertEqual(replay.actions, [])
+
+    def test_update_and_store_captures_are_not_ready_to_enter(self):
+        for name in CAPTURES:
+            with self.subTest(frame=name):
+                replay = LoginUpdateReplay(Login, [capture(name)], self.clock)
+                self.assertFalse(replay.task.is_in_login_confirm())
+                self.assertEqual(replay.actions, [])
+
+    def test_full_start_phrase_and_normalized_model_language_are_required(self):
+        for lang in ('cn', 'auto', '', 'global_cn'):
+            replay = LoginUpdateReplay(Login, [scene(fixture=START_CAPTURES[0])], self.clock)
+            replay.task.config.Emulator_GameLanguage = lang
+            with patch('tasks.base.ui.OcrWhiteLetterOnComplexBackground') as ocr:
+                for text, expected in (('轻触画面开始', True), ('轻触', False), ('画面开始', False),
+                                       ('轻触画面关闭', False), ('', False)):
+                    ocr.return_value.ocr_single_line.return_value = text
+                    self.assertEqual(replay.task.is_in_login_confirm(), expected, (lang, text))
+                self.assertEqual(ocr.call_args.kwargs['lang'], 'cn')
+                self.assertEqual(replay.actions, [])
+
+    def test_read_only_detection_bypasses_action_cooldown(self):
+        replay = LoginUpdateReplay(Login, [scene(fixture=START_CAPTURES[0])], self.clock)
+        self.assertTrue(replay.task.is_in_login_confirm(interval=2))
+        self.assertFalse(replay.task.is_in_login_confirm(interval=2))
+        self.assertTrue(replay.task.is_in_login_confirm(interval=0))
+        self.clock.advance(2.5)
+        self.assertTrue(replay.task.is_in_login_confirm(interval=2))
+        self.assertEqual(replay.actions, [])
+
+    def test_known_popups_block_readable_background_even_during_cooldown(self):
+        for popup in (ANNOUNCEMENT_CLOSE, NETWORK_ERROR_DISCONNECT, NETWORK_ERROR_ABNORMAL, TOUCH_TO_CLOSE):
+            with self.subTest(popup=popup.name):
+                replay = LoginUpdateReplay(Login, [scene(fixture=START_CAPTURES[0], overlay=(popup,))], self.clock)
+                ocr = OcrWhiteLetterOnComplexBackground(OCR_LOGIN_START, lang='cn')
+                self.assertEqual(ocr.ocr_single_line(replay.image), '轻触画面开始')
+                self.assertTrue(replay.task.appear(popup))
+                replay.task.interval_reset(popup, interval=5)
+                self.assertFalse(replay.task.is_in_login_confirm())
+                self.assertFalse(replay.task._is_login_progress_state())
+                self.assertEqual(replay.actions, [])
+
+    def test_normal_task_recovery_hands_both_titles_to_login(self):
+        for name in START_CAPTURES:
+            replay = LoginUpdateReplay(UI, [scene(fixture=name)], self.clock)
+            replay.task._ui_handoff_to_login = Mock(return_value=True)
+            replay.task.interval_reset(LOGIN_CONFIRM, interval=2)
+            self.assertTrue(replay.task.handle_ui_recovery())
+            replay.task._ui_handoff_to_login.assert_called_once_with('login startup state')
+            self.assertEqual(replay.actions, [])
+
+    def test_normal_task_does_not_handoff_hidden_or_obstructed_title(self):
+        for change in ({'hide_start_text': True}, {'brightness': .3}, {'overlay': (ANNOUNCEMENT_CLOSE,)}):
+            replay = LoginUpdateReplay(UI, [scene(fixture=START_CAPTURES[0], **change)], self.clock)
+            replay.task._ui_handoff_to_login = Mock()
+            self.assertFalse(replay.task.handle_ui_recovery())
+            replay.task._ui_handoff_to_login.assert_not_called()
+            self.assertEqual(replay.actions, [])
+
+    def test_other_asset_languages_keep_template_recognition(self):
+        for lang, package in (('cn', 'CN-Official'), ('global_en', 'OVERSEA-Play')):
+            server.set_lang(lang)
+            replay = LoginUpdateReplay(Login, [scene('LOGIN_CONFIRM')], self.clock)
+            replay.task.config.Emulator_PackageName = package
+            with patch('tasks.base.ui.OcrWhiteLetterOnComplexBackground') as ocr, \
+                    patch.object(LOGIN_CONFIRM, 'match_template_luma', return_value=True):
+                self.assertTrue(replay.task.is_in_login_confirm())
+                ocr.assert_not_called()
+            self.assertEqual(replay.actions, [])
+
+
+class LoginStartFlowTests(unittest.TestCase):
+    def setUp(self):
+        server.set_lang('global_cn')
+        self.addCleanup(server.set_lang, 'global_cn')
+        self.clock = ControlledClock()
+        self.clock.__enter__()
+        self.addCleanup(self.clock.__exit__, None, None, None)
+        reward = patch('tasks.activity.entry.SpecialActivityEntry')
+        self.reward_type = reward.start()
+        self.addCleanup(reward.stop)
+        self.reward_type.return_value.run_login_daily_reward.return_value = True
+
+    def login(self, frames, **kwargs):
+        replay = LoginUpdateReplay(Login, [scene(), *frames], self.clock, **kwargs)
+        replay.task.is_in_main = lambda **kwargs: replay.frame['page'] == 'main'
+        return replay
+
+    def test_missed_start_click_retries_safely_then_waits_for_confirmed_main(self):
+        for name in START_CAPTURES:
+            with self.subTest(frame=name):
+                replay = self.login([scene(fixture=name, seconds=6)]
+                                    + [scene(fixture=name)] * 6 + [scene(page='main')] * 6)
+                LOGIN_CONFIRM.load_offset((18, -12))
+                self.assertTrue(replay.task._handle_app_login())
+                self.assertEqual(replay.actions, [(1, 'LOGIN_CONFIRM'), (6, 'LOGIN_CONFIRM')])
+                self.assertEqual([area for _, _, area in replay.click_areas], [(465, 94, 815, 294)] * 2)
+                replay.assert_retried(self, 'LOGIN_CONFIRM', 2)
+                self.assertEqual(replay.frame['page'], 'main')
+                self.assertGreaterEqual(replay.index, 12)
+                self.assertEqual(replay.lifecycle, [])
+                self.assertEqual(replay.sleeps, [])
+
+    def test_absent_text_waits_and_first_ready_frame_enters_immediately(self):
+        replay = self.login([scene(fixture=START_CAPTURES[1], hide_start_text=True, seconds=6)]
+                            + [scene(fixture=START_CAPTURES[1], hide_start_text=True)] * 4
+                            + [scene(fixture=START_CAPTURES[1])] + [scene(page='main')] * 6)
+        self.assertTrue(replay.task._handle_app_login())
+        self.assertEqual(replay.actions, [(6, 'LOGIN_CONFIRM')])
+        self.assertEqual(replay.frame['page'], 'main')
+
+    def test_network_popup_retries_without_start_clicks_underneath(self):
+        frame = scene(fixture=START_CAPTURES[0], overlay=(NETWORK_ERROR_DISCONNECT, TOUCH_TO_CLOSE))
+        replay = self.login([dict(frame, seconds=6)] + [frame] * 11
+                            + [scene(fixture=START_CAPTURES[0])] + [scene(page='main')] * 6)
+        self.assertTrue(replay.task._handle_app_login())
+        self.assertEqual(replay.actions, [(1, 'TOUCH_TO_CLOSE'), (12, 'TOUCH_TO_CLOSE'), (13, 'LOGIN_CONFIRM')])
+        replay.assert_retried(self, 'TOUCH_TO_CLOSE', 5)
+        self.assertEqual(replay.lifecycle, [])
+        self.assertEqual(replay.frame['page'], 'main')
+
+    def test_announcement_flow_waits_through_close_cooldown_before_title(self):
+        frame = scene(fixture=START_CAPTURES[0], overlay=(ANNOUNCEMENT_CLOSE,))
+        replay = self.login([dict(frame, seconds=6)] + [frame] * 3
+                            + [scene(fixture=START_CAPTURES[0])] * 2 + [scene(page='main')] * 6)
+        self.assertTrue(replay.task._handle_app_login())
+        self.assertEqual(replay.actions, [(1, 'ANNOUNCEMENT_CLOSE'), (4, 'ANNOUNCEMENT_CLOSE'), (6, 'LOGIN_CONFIRM')])
+        replay.assert_retried(self, 'ANNOUNCEMENT_CLOSE', 1)
+        self.assertEqual(replay.lifecycle, [])
+        self.assertEqual(replay.frame['page'], 'main')
+
+    def test_cn_agreement_clicks_retry_but_only_checked_state_enters(self):
+        server.set_lang('cn')
+        replay = self.login([scene('LOGIN_AGREEMENT_UNCHECKED', seconds=6)]
+                            + [scene('LOGIN_AGREEMENT_UNCHECKED')] * 6
+                            + [scene('LOGIN_CONFIRM')] + [scene(page='main')] * 6)
+        replay.task.config.Emulator_PackageName = 'CN-Official'
+        self.assertTrue(replay.task._handle_app_login())
+        self.assertEqual(replay.actions, [(1, 'LOGIN_AGREEMENT_UNCHECKED'), (6, 'LOGIN_AGREEMENT_UNCHECKED'),
+                                          (8, 'LOGIN_CONFIRM')])
+        replay.assert_retried(self, 'LOGIN_AGREEMENT_UNCHECKED', 2)
+        self.assertEqual(replay.click_areas[-1][2], (465, 94, 815, 294))
+        self.assertEqual(replay.lifecycle, [])
+
+    def test_logged_out_stops_without_clicking_readable_start_text(self):
+        replay = self.login([scene(fixture=START_CAPTURES[0], overlay=(LOGGED_OUT,), seconds=6)])
+        with self.assertRaises(RequestHumanTakeover):
+            replay.task._handle_app_login()
+        self.assertEqual(replay.actions, [])
+        self.assertEqual(replay.lifecycle, [])
+        self.reward_type.assert_not_called()
+
+    def test_second_login_error_stops_after_one_restart(self):
+        replay = self.login([scene(fixture=START_CAPTURES[0], overlay=(LOGIN_ERROR,), seconds=6)] * 2)
+        with self.assertRaisesRegex(GameNotRunningError, 'Login error'):
+            replay.task._handle_app_login()
+        self.assertEqual(replay.actions, [])
+        self.assertEqual(replay.lifecycle, [(1, 'app_stop'), (1, 'app_start'), (2, 'app_stop')])
+        self.reward_type.assert_not_called()
+
+    def test_unknown_login_screen_keeps_bounded_timeout(self):
+        replay = self.login([scene(seconds=1)] * 122, guards=False)
+        with self.assertRaisesRegex(GameNotRunningError, 'Login timeout'):
+            replay.task._handle_app_login()
+        self.assertEqual(replay.index, 121)
+        self.assertEqual(replay.actions, [])
+        self.assertEqual(replay.lifecycle, [])
+        self.reward_type.assert_not_called()
+
+    def test_network_flood_delays_tasks_and_stops_after_twelve_retries(self):
+        replay = self.login([scene('NETWORK_ERROR_DISCONNECT', seconds=6)] * 12, guards=False)
+        replay.task._ocr_maintenance_minutes = Mock(return_value=10)
+        replay.task._delay_tasks_during_maintenance = Mock()
+        with self.assertRaisesRegex(TaskEnd, 'waiting 30 minutes'):
+            replay.task._handle_app_login()
+        self.assertEqual(replay.clicks('TOUCH_TO_CLOSE'), list(range(1, 13)))
+        self.assertEqual(len(replay.actions), 12)
+        self.assertEqual(replay.lifecycle, [(12, 'app_stop')])
+        replay.task._delay_tasks_during_maintenance.assert_called_once_with(30)
+        self.reward_type.assert_not_called()
+
+    def test_public_login_restores_device_timing_after_failure(self):
+        replay = self.login([])
+        replay.task._handle_app_login = Mock(side_effect=GameNotRunningError('test failure'))
+        with self.assertRaisesRegex(GameNotRunningError, 'test failure'):
+            replay.task.handle_app_login()
+        self.assertEqual(replay.intervals, [(0.5,), ()])
+        self.assertEqual(replay.stuck_timer.limit, 60)
+        self.assertEqual(replay.actions, [])
