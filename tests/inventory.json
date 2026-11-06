@@ -24002,9 +24002,9 @@
     },
     {
       "source": "tests/core/test_login_update.py",
-      "business": "国服与国际服登录更新",
+      "business": "登录就绪、恢复与客户端更新",
       "status": "新增",
-      "reason": "2026年10月29日更新界面及应用商店更新回归",
+      "reason": "保留国服与国际服更新回归，新增国际服中文启动文字、弹窗门控与登录异常边界",
       "cases": [
         {
           "id": "tests.core.test_login_update.UpdateCaptureTests.test_version_notice_matches_new_dialog",
@@ -24230,7 +24230,8 @@
             "20261029-194725-016",
             "20261029-194905-434",
             "20261029-194911-593",
-            "20261029-194922-656"
+            "20261029-194922-656",
+            "login-start-default-20261105"
           ],
           "status": "已纳入",
           "reason": "验证当前截图、动作间隔、禁止动作及正面终态；最终主页和超时序列明确模拟"
@@ -24460,6 +24461,221 @@
           ],
           "status": "已迁移",
           "reason": "2026年10月29日国服更新界面、大版本更新与竖屏安装回归"
+        },
+        {
+          "id": "tests.core.test_login_update.LoginStartTests.test_both_backgrounds_are_ready_without_clicking",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "login-start-default-20261105",
+            "login-start-event-20261105"
+          ],
+          "status": "已纳入",
+          "reason": "真实标题图与更新反例；遮暗、隐藏文字、弹窗锚点叠加、重复帧、主页和国服协议状态明确模拟；保留生产计时与点击保护"
+        },
+        {
+          "id": "tests.core.test_login_update.LoginStartTests.test_hidden_and_dimmed_text_does_not_fall_back_to_transparent_icon",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "login-start-default-20261105",
+            "login-start-event-20261105"
+          ],
+          "status": "已纳入",
+          "reason": "真实标题图与更新反例；遮暗、隐藏文字、弹窗锚点叠加、重复帧、主页和国服协议状态明确模拟；保留生产计时与点击保护"
+        },
+        {
+          "id": "tests.core.test_login_update.LoginStartTests.test_update_and_store_captures_are_not_ready_to_enter",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261029-194637-390",
+            "20261029-194638-366",
+            "20261029-194640-422",
+            "20261029-194642-189",
+            "20261029-194645-647",
+            "20261029-194651-922",
+            "20261029-194703-928",
+            "20261029-194709-969",
+            "20261029-194712-614",
+            "20261029-194725-016",
+            "20261029-194905-434",
+            "20261029-194911-593",
+            "20261029-194922-656"
+          ],
+          "status": "已纳入",
+          "reason": "真实标题图与更新反例；遮暗、隐藏文字、弹窗锚点叠加、重复帧、主页和国服协议状态明确模拟；保留生产计时与点击保护"
+        },
+        {
+          "id": "tests.core.test_login_update.LoginStartTests.test_full_start_phrase_and_normalized_model_language_are_required",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "login-start-default-20261105"
+          ],
+          "status": "已纳入",
+          "reason": "真实标题图与更新反例；遮暗、隐藏文字、弹窗锚点叠加、重复帧、主页和国服协议状态明确模拟；保留生产计时与点击保护"
+        },
+        {
+          "id": "tests.core.test_login_update.LoginStartTests.test_read_only_detection_bypasses_action_cooldown",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "login-start-default-20261105"
+          ],
+          "status": "已纳入",
+          "reason": "真实标题图与更新反例；遮暗、隐藏文字、弹窗锚点叠加、重复帧、主页和国服协议状态明确模拟；保留生产计时与点击保护"
+        },
+        {
+          "id": "tests.core.test_login_update.LoginStartTests.test_known_popups_block_readable_background_even_during_cooldown",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "login-start-default-20261105"
+          ],
+          "status": "已纳入",
+          "reason": "真实标题图与更新反例；遮暗、隐藏文字、弹窗锚点叠加、重复帧、主页和国服协议状态明确模拟；保留生产计时与点击保护"
+        },
+        {
+          "id": "tests.core.test_login_update.LoginStartTests.test_normal_task_recovery_hands_both_titles_to_login",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "login-start-default-20261105",
+            "login-start-event-20261105"
+          ],
+          "status": "已纳入",
+          "reason": "真实标题图与更新反例；遮暗、隐藏文字、弹窗锚点叠加、重复帧、主页和国服协议状态明确模拟；保留生产计时与点击保护"
+        },
+        {
+          "id": "tests.core.test_login_update.LoginStartTests.test_normal_task_does_not_handoff_hidden_or_obstructed_title",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "login-start-default-20261105"
+          ],
+          "status": "已纳入",
+          "reason": "真实标题图与更新反例；遮暗、隐藏文字、弹窗锚点叠加、重复帧、主页和国服协议状态明确模拟；保留生产计时与点击保护"
+        },
+        {
+          "id": "tests.core.test_login_update.LoginStartTests.test_other_asset_languages_keep_template_recognition",
+          "category": "资源基础",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "真实标题图与更新反例；遮暗、隐藏文字、弹窗锚点叠加、重复帧、主页和国服协议状态明确模拟；保留生产计时与点击保护"
+        },
+        {
+          "id": "tests.core.test_login_update.LoginStartFlowTests.test_missed_start_click_retries_safely_then_waits_for_confirmed_main",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "login-start-default-20261105",
+            "login-start-event-20261105"
+          ],
+          "status": "已纳入",
+          "reason": "真实标题图与更新反例；遮暗、隐藏文字、弹窗锚点叠加、重复帧、主页和国服协议状态明确模拟；保留生产计时与点击保护"
+        },
+        {
+          "id": "tests.core.test_login_update.LoginStartFlowTests.test_absent_text_waits_and_first_ready_frame_enters_immediately",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "login-start-event-20261105"
+          ],
+          "status": "已纳入",
+          "reason": "真实标题图与更新反例；遮暗、隐藏文字、弹窗锚点叠加、重复帧、主页和国服协议状态明确模拟；保留生产计时与点击保护"
+        },
+        {
+          "id": "tests.core.test_login_update.LoginStartFlowTests.test_network_popup_retries_without_start_clicks_underneath",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "login-start-default-20261105"
+          ],
+          "status": "已纳入",
+          "reason": "真实标题图与更新反例；遮暗、隐藏文字、弹窗锚点叠加、重复帧、主页和国服协议状态明确模拟；保留生产计时与点击保护"
+        },
+        {
+          "id": "tests.core.test_login_update.LoginStartFlowTests.test_announcement_flow_waits_through_close_cooldown_before_title",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "login-start-default-20261105"
+          ],
+          "status": "已纳入",
+          "reason": "真实标题图与更新反例；遮暗、隐藏文字、弹窗锚点叠加、重复帧、主页和国服协议状态明确模拟；保留生产计时与点击保护"
+        },
+        {
+          "id": "tests.core.test_login_update.LoginStartFlowTests.test_cn_agreement_clicks_retry_but_only_checked_state_enters",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "真实标题图与更新反例；遮暗、隐藏文字、弹窗锚点叠加、重复帧、主页和国服协议状态明确模拟；保留生产计时与点击保护"
+        },
+        {
+          "id": "tests.core.test_login_update.LoginStartFlowTests.test_logged_out_stops_without_clicking_readable_start_text",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "login-start-default-20261105"
+          ],
+          "status": "已纳入",
+          "reason": "真实标题图与更新反例；遮暗、隐藏文字、弹窗锚点叠加、重复帧、主页和国服协议状态明确模拟；保留生产计时与点击保护"
+        },
+        {
+          "id": "tests.core.test_login_update.LoginStartFlowTests.test_second_login_error_stops_after_one_restart",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "login-start-default-20261105"
+          ],
+          "status": "已纳入",
+          "reason": "真实标题图与更新反例；遮暗、隐藏文字、弹窗锚点叠加、重复帧、主页和国服协议状态明确模拟；保留生产计时与点击保护"
+        },
+        {
+          "id": "tests.core.test_login_update.LoginStartFlowTests.test_unknown_login_screen_keeps_bounded_timeout",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "真实标题图与更新反例；遮暗、隐藏文字、弹窗锚点叠加、重复帧、主页和国服协议状态明确模拟；保留生产计时与点击保护"
+        },
+        {
+          "id": "tests.core.test_login_update.LoginStartFlowTests.test_network_flood_delays_tasks_and_stops_after_twelve_retries",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "真实标题图与更新反例；遮暗、隐藏文字、弹窗锚点叠加、重复帧、主页和国服协议状态明确模拟；保留生产计时与点击保护"
+        },
+        {
+          "id": "tests.core.test_login_update.LoginStartFlowTests.test_public_login_restores_device_timing_after_failure",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "真实标题图与更新反例；遮暗、隐藏文字、弹窗锚点叠加、重复帧、主页和国服协议状态明确模拟；保留生产计时与点击保护"
         }
       ]
     },

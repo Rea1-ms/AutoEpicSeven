@@ -4,11 +4,15 @@ from module.base.decorator import run_once
 from module.base.timer import Timer
 from module.exception import GameNotRunningError, GamePageUnknownError
 from module.logger import logger
-from module.ocr.ocr import Ocr
+from module.ocr.language import resolve_ocr_lang
+from module.ocr.ocr import Ocr, OcrWhiteLetterOnComplexBackground
 from tasks.base.assets.assets_base_page import MENU_PETS_GIFT
 from tasks.base.assets.assets_base_main_page import POPUP_OVERLAY, WHITE_STAR
 from tasks.base.assets.assets_base_popup import (
     NEW_CHARACTER_VIDEO_PASS,
+    NETWORK_ERROR_ABNORMAL,
+    NETWORK_ERROR_DISCONNECT,
+    TOUCH_TO_CLOSE,
 )
 from tasks.base.main_page import MainPage
 from tasks.base.page import (
@@ -28,10 +32,12 @@ from tasks.login.assets.assets_login import (
     LOGIN_ANNOUNCEMENT_CLOSE,
     LOGIN_CONFIRM,
     LOGIN_LOADING,
+    OCR_LOGIN_START,
     PATCH_APPLY,
     PATCH_PERCENT_SIGN,
     VERIFYING,
 )
+from tasks.login.assets.assets_login_maintenance import ANNOUNCEMENT_CLOSE
 from tasks.login.assets.assets_login_popup import (
     CHECK_IN_CONFIRM,
     NEW_CHARACTER_CONFIRM,
@@ -567,13 +573,40 @@ class UI(ResourceBarMixin, MainPage):
 
         return appear
 
-    def is_in_login_confirm(self, interval=0):
+    def is_in_login_confirm(self, interval=0, *, use_luma=True):
+        """Observe readiness; only a nonzero interval reserves an enter retry.
+
+        Keep existing template modes for other clients: recovery used luma,
+        while Login used RGB. Both paths share the global Chinese text check.
+        """
         self.device.stuck_record_add(LOGIN_CONFIRM)
 
         if interval and not self.interval_is_reached(LOGIN_CONFIRM, interval=interval):
             return False
 
-        appear = LOGIN_CONFIRM.match_template_luma(self.device.image)
+        if server_.is_oversea_server(self.config.Emulator_PackageName) and server_.lang == 'global_cn':
+            # OCR can still read the title through a dim overlay. Popup presence
+            # is checked without action intervals: a close request in cooldown
+            # must not grant permission to click the background title.
+            if any(self.appear(button, interval=0) for button in (
+                ANNOUNCEMENT_CLOSE, NETWORK_ERROR_DISCONNECT, NETWORK_ERROR_ABNORMAL, TOUCH_TO_CLOSE,
+            )):
+                return False
+            # Require visible white strokes as well as the complete phrase.
+            # Faded/blinking text waits for its bright frame; OCR confidence
+            # alone does not distinguish dim popup backgrounds from readiness.
+            if not self.image_color_count(OCR_LOGIN_START, color=(255, 255, 255), threshold=30, count=50):
+                return False
+            appear = OcrWhiteLetterOnComplexBackground(
+                OCR_LOGIN_START, lang=resolve_ocr_lang(self.config), name='LoginStart',
+            ).ocr_single_line(self.device.image) == '轻触画面开始'
+            if appear:
+                # The old transparent icon no longer locates this action. Do not
+                # inherit its last match offset when clicking the safe title area.
+                LOGIN_CONFIRM.clear_offset()
+        else:
+            matcher = self.match_template_luma if use_luma else self.appear
+            appear = matcher(LOGIN_CONFIRM, interval=0)
 
         if appear and interval:
             self.interval_reset(LOGIN_CONFIRM, interval=interval)

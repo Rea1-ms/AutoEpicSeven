@@ -110,7 +110,7 @@ class Login(UI):
             self.is_in_main(interval=0)
             or self.appear(LOGGED_OUT, interval=0)
             or self.appear(LOGIN_ERROR, interval=0)
-            or self.appear(LOGIN_CONFIRM, interval=0)
+            or self.is_in_login_confirm(interval=0, use_luma=False)
             or (
                 server_.is_cn_server(self.config.Emulator_PackageName)
                 and self.appear(LOGIN_AGREEMENT_UNCHECKED, interval=0)
@@ -401,7 +401,8 @@ class Login(UI):
 
             # CN LOGIN_CONFIRM recognizes the green check, but its BUTTON asset
             # still targets empty space: clicking the check would revoke consent.
-            if self.appear_then_click(LOGIN_CONFIRM, interval=2):
+            if self.is_in_login_confirm(interval=2, use_luma=False):
+                self.device.click(LOGIN_CONFIRM)
                 logger.info('Clicking to enter game')
                 login_success = True
                 network_error_count = 0
