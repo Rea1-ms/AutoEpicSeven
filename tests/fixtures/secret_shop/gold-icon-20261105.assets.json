@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "source": "global_cn/secret-shop-bookmark-20261105.png",
+  "suite": "secret_shop",
+  "case": "gold-icon-20261105",
+  "items": [
+    {
+      "name": "SECRET_SHOP_GOLD_ICON",
+      "kind": "base",
+      "frame": 2,
+      "namespace": "share",
+      "module": "secret_shop",
+      "box": [719, 19, 744, 48]
+    }
+  ]
+}

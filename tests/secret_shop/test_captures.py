@@ -26,6 +26,7 @@ FIXTURE_CASES = {
         '20261002-151345-195', '20261002-151351-715', '20261002-151441-164',
         '20261002-151456-902', '20261002-151504-141',
         '20261002-201411-848', '20261002-221022-016', '20261003-125942-495',
+        'secret-shop-bookmark-20261105',
     ],
     'test_available_and_sold_targets_in_both_scroll_positions': [
         '20261001-174909-267', '20261002-151247-016', '20261002-151254-745',
@@ -35,6 +36,7 @@ FIXTURE_CASES = {
         '20261002-151441-164', '20261002-151456-902', '20261002-151504-141',
         '20261002-201411-848', '20261002-221022-016',
         '20261003-125942-495', '20261003-125720-050',
+        'secret-shop-bookmark-20261105',
     ],
     'test_covenant_and_mystic_debits_match_the_displayed_price': [
         '20261002-151247-016', '20261002-151257-334',
@@ -79,6 +81,11 @@ FIXTURE_CASES = {
         '20261002-151259-623', '20261002-151302-626',
         '20261003-125720-050', '20261002-151308-133',
     ],
+    'test_current_gold_icon_reads_complete_balance': ['secret-shop-bookmark-20261105'],
+    'test_current_resource_bar_opens_both_purchase_types': [
+        'secret-shop-bookmark-20261105', '20261002-151314-999',
+    ],
+    'test_current_resource_bar_missing_anchors_never_authorize_purchase': ['secret-shop-bookmark-20261105'],
 }
 
 
@@ -112,6 +119,77 @@ class CapturedShopTests(unittest.TestCase):
                                      ('20261002-221022-016', (196389222, 1249))):
             with self.subTest(fixture=fixture_id):
                 self.assertEqual(pixel_task(fixture_id)._read_shop_balance(), expected)
+
+    def test_current_gold_icon_reads_complete_balance(self):
+        shop = pixel_task('secret-shop-bookmark-20261105')
+        self.assertTrue(shop._shop_is_ready())
+        self.assertEqual(shop._read_shop_balance(), (255611586, 762))
+        self.assertEqual([(kind, button.area) for kind, button in shop._find_target_buy_buttons()],
+                         [('covenant', (1172, 151, 1212, 171))])
+
+    def test_current_resource_bar_opens_both_purchase_types(self):
+        # The new capture contains covenant bookmarks only. For mystic, put
+        # its resource band on a reviewed older mystic capture; this is an
+        # explicit synthetic combination, not a second current shop capture.
+        current = capture('secret-shop-bookmark-20261105')
+        for fixture_id, kind in (('secret-shop-bookmark-20261105', 'covenant'),
+                                 ('20261002-151314-999', 'mystic')):
+            with self.subTest(kind=kind), ControlledClock() as clock:
+                device = CapturedReplayDevice([fixture_id] * 4, clock)
+                screenshot = device.screenshot
+
+                def observe(device=device, screenshot=screenshot):
+                    screenshot()
+                    device.image[:60] = current[:60]
+
+                device.image[:60] = current[:60]
+                shop = SecretShop(Config(), device)
+
+                class PurchaseBoundary(Exception):
+                    pass
+
+                click = device.click
+
+                def request(button, click=click, boundary=PurchaseBoundary):
+                    self.assertEqual(button.button, (1172, 151, 1212, 171))
+                    click(button)
+                    raise boundary
+
+                with patch.object(device, 'screenshot', side_effect=observe), \
+                        patch.object(device, 'click', side_effect=request), self.assertRaises(PurchaseBoundary):
+                    shop._run_transactions(skip_first_screenshot=True)
+                self.assertEqual(len(device.actions), 1)
+                self.assertEqual(device.actions[0][0], 1)
+                self.assertEqual(shop._payment.kind, kind)
+                self.assertEqual(shop._payment.before, (255611586, None))
+                self.assertFalse(shop._payment.submitted)
+                self.assertEqual((shop.covenant_bought, shop.mystic_bought, shop.refresh_count), (0, 0, 0))
+
+    def test_current_resource_bar_missing_anchors_never_authorize_purchase(self):
+        # First recognize an intact frame so an old template offset exists.
+        # Removing either live boundary must still block opening a purchase.
+        for area in ((715, 12, 750, 52), (881, 12, 916, 52)):
+            with self.subTest(missing_area=area), ControlledClock() as clock:
+                device = CapturedReplayDevice(['secret-shop-bookmark-20261105'] * 123, clock)
+                shop = SecretShop(Config(), device)
+                self.assertEqual(shop._read_shop_balance(), (255611586, 762))
+                screenshot = device.screenshot
+
+                def obscure(device=device, area=area):
+                    x1, y1, x2, y2 = area
+                    device.image[y1:y2, x1:x2] = 0
+
+                def observe(screenshot=screenshot, obscure=obscure):
+                    screenshot()
+                    obscure()
+
+                obscure()
+                with patch.object(device, 'screenshot', side_effect=observe):
+                    self.assertFalse(shop._run_transactions(skip_first_screenshot=True))
+                self.assertEqual(device.actions, [])
+                self.assertIsNone(shop._payment)
+                self.assertEqual(shop.config.delays, [{'minute': 10}])
+                self.assertEqual((shop.covenant_bought, shop.mystic_bought, shop.refresh_count), (0, 0, 0))
 
     def test_captured_reached_goal_top_still_requests_bottom_scan(self):
         # This capture shows only the sold top row; no bottom capture from this

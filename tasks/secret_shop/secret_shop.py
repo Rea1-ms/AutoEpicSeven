@@ -396,8 +396,14 @@ class SecretShop(ResourceBarMixin, PopupHandler):
 
     def _currency_image(self, key):
         icons = {'gold': SECRET_SHOP_GOLD_ICON, 'skystone': SKYSTONE_ICON}
-        offsets, _ = self._match_resource_bar_icons(RESOURCE_BAR_LAYOUT_SECRET_SHOP, icons=icons)
+        offsets, matches = self._match_resource_bar_icons(RESOURCE_BAR_LAYOUT_SECRET_SHOP, icons=icons)
         if len(offsets) != 2:
+            # Log the missing live boundary separately from item detection.
+            # This interval throttles diagnostics only; every frame must still
+            # recheck anchors, and stale/default offsets must never grant a buy.
+            if self.interval_is_reached('secret_shop_currency_anchors', interval=5):
+                self.interval_reset('secret_shop_currency_anchors', interval=5)
+                logger.info(f'Secret shop {key} balance waits for resource icons: {matches}')
             return None
         area = get_resource_bar_segment_area(
             RESOURCE_BAR_LAYOUT_SECRET_SHOP, key, offsets, icons, {'gold': -3},

@@ -316,7 +316,8 @@
         "tests.secret_shop.test_captures.CapturedShopTests.test_currency_image_cache_ignores_background_and_detects_last_digit_change",
         "tests.secret_shop.test_captures.CapturedShopTests.test_available_and_sold_targets_in_both_scroll_positions",
         "tests.secret_shop.test_captures.CapturedShopTests.test_covenant_and_mystic_debits_match_the_displayed_price",
-        "tests.secret_shop.test_captures.CapturedShopTests.test_captured_mystic_purchase_and_sold_filter"
+        "tests.secret_shop.test_captures.CapturedShopTests.test_captured_mystic_purchase_and_sold_filter",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_current_resource_bar_opens_both_purchase_types"
       ]
     },
     "20261002-151318-854": {
@@ -872,6 +873,42 @@
         "tests.secret_shop.test_captures.CapturedShopTests.test_network_error_popup_is_abnormal_and_blocks_the_shop",
         "tests.secret_shop.test_captures.CapturedShopTests.test_captured_refresh_network_error_keeps_one_pending_payment",
         "tests.secret_shop.test_captures.CapturedShopTests.test_available_and_sold_targets_in_both_scroll_positions"
+      ]
+    },
+    "secret-shop-bookmark-20261105": {
+      "path": "tests/fixtures/secret_shop/global_cn/secret-shop-bookmark-20261105.png",
+      "sha256": "b45e8822f33b6c23430f6cd78618a951b441e981473b7efe304e7ec00b6b0959",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "covenant_top_before",
+      "source": "e7-secshop-bookmark.png",
+      "source_sha256": "ce1f725065d78bc6cb363b5790992fd2f301310ce7d0f69e26214a4ed2f2b400",
+      "privacy_redaction": [
+        [
+          920,
+          60,
+          1280,
+          92
+        ],
+        [
+          0,
+          704,
+          220,
+          720
+        ]
+      ],
+      "expected_balance": [
+        255611586,
+        762
+      ],
+      "received_date": "2026-11-05",
+      "used_by": [
+        "tests.secret_shop.test_captures.CapturedShopTests.test_page_and_confirmation_states",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_visible_resource_balances",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_available_and_sold_targets_in_both_scroll_positions",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_current_gold_icon_reads_complete_balance",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_current_resource_bar_opens_both_purchase_types",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_current_resource_bar_missing_anchors_never_authorize_purchase"
       ]
     }
   }
