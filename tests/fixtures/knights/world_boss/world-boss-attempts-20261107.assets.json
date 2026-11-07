@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "world-boss-attempts-20261107.png",
+  "suite": "world_boss_20261107",
+  "case": "world-boss-attempts-20261107",
+  "items": [
+    {
+      "name": "OCR_WORLD_BOSS_ATTEMPTS",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "share",
+      "module": "knights/world_boss/entry_resources",
+      "box": [
+        1052,
+        650,
+        1100,
+        680
+      ]
+    }
+  ]
+}

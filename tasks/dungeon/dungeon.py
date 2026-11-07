@@ -599,7 +599,7 @@ class Combat(
             success = prepare_resources is not None
             if prepare_resources is not None:
                 stamina = prepare_resources.get("stamina")
-                current_stamina = stamina.value if stamina is not None else None
+                current_stamina = self._combat_available_stamina(stamina.value if stamina is not None else None)
 
         if (
             success
@@ -717,7 +717,7 @@ class Combat(
                         success = prepare_resources is not None
                         if prepare_resources is not None:
                             stamina = prepare_resources.get("stamina")
-                            current_stamina = stamina.value if stamina is not None else None
+                            current_stamina = self._combat_available_stamina(stamina.value if stamina is not None else None)
 
             if success and repeat_combat_planned:
                 if server_repeat_available:

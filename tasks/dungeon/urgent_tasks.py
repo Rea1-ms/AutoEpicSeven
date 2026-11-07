@@ -7,9 +7,9 @@ from module.logger import logger
 from module.ocr.ocr import DigitCounter
 from tasks.base.assets.assets_base_page import BACK, MAIN_GOTO_COMBAT
 from tasks.base.resource_bar import (
-    RESOURCE_KIND_INT,
     RESOURCE_BAR_ICONS,
     RESOURCE_BAR_SPECS,
+    RESOURCE_KIND_INT,
     ResourceBarSpec,
 )
 from tasks.dungeon.assets.assets_dungeon_action import URGENT_TASKS_REWARD_EXCHANGE
@@ -31,7 +31,7 @@ from tasks.dungeon.assets.assets_dungeon_configs_urgent_tasks import (
 )
 from tasks.dungeon.assets.assets_dungeon_fast_combat import FAST_COMBAT_RESULT_CLOSE
 from tasks.dungeon.assets.assets_dungeon_state import COMBAT_PREPARE_PET_EMPTY
-
+from tasks.knights.world_boss_resources import world_boss_stamina_reserve
 
 URGENT_TASKS_DETAIL_RESOURCE_LAYOUT = ("currency", "stamina", "skystone")
 URGENT_TASKS_PREPARE_RESOURCE_LAYOUT = (
@@ -570,6 +570,14 @@ class UrgentTasksNavigateMixin:
                 return False, completed
 
             stamina = self._read_urgent_tasks_stamina(skip_first_screenshot=True)
+            reserve = world_boss_stamina_reserve(self.config)
+            if reserve and stamina is None:
+                # Without a current owned amount, neither foreground nor
+                # server repeat can prove that the protected balance survives.
+                logger.warning("UrgentTasks: stamina unknown, retain world boss reserve and retry later")
+                return False, completed
+            if stamina is not None:
+                stamina = max(0, stamina - reserve)
             stamina_cost = self._combat_stage_stamina_cost()
 
             # A gray repeat button on first entry may mean this stage lacks a
@@ -645,7 +653,7 @@ class UrgentTasksNavigateMixin:
             repeat_ready = has_pet and not self._is_repeat_combat_unavailable()
             if repeat_ready and remaining > 1:
                 target_leif_count = self._server_repeat_target_leif_count(stamina)
-                if self._prepare_repeat_combat(
+                if target_leif_count > 0 and self._prepare_repeat_combat(
                     leif_count=target_leif_count,
                     skip_first_screenshot=True,
                 ) and self._run_repeat_combat(skip_first_screenshot=True):

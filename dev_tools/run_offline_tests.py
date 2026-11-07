@@ -40,6 +40,7 @@ ARENA_MODULES = (
     "tests.arena.test_captures",
 )
 KNIGHTS_MODULES = (
+    "tests.knights.test_world_boss",
     "tests.knights.test_shop",
     "tests.knights.test_weekly_task",
     "tests.knights.test_donate",

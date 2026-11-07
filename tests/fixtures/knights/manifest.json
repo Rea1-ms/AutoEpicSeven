@@ -1045,6 +1045,41 @@
           645
         ]
       ]
+    },
+    "world-boss-attempts-20261107": {
+      "path": "tests/fixtures/knights/world_boss/world-boss-attempts-20261107.png",
+      "sha256": "36c1125badc81ee0c929a8a265e4715c4d8b2e81a3fb7469b1045f63def84685",
+      "server": "global_cn",
+      "scene": "world-boss-attempts-20261107",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.knights.test_world_boss.WorldBossCaptureTests.test_real_entry_reads_two_attempts_and_six_stamina",
+        "tests.knights.test_world_boss.WorldBossCaptureTests.test_missing_denominator_is_unknown_after_a_valid_read",
+        "tests.knights.test_world_boss.WorldBossCaptureTests.test_stamina_popup_has_specific_cancel_and_rejects_entry"
+      ],
+      "source": "user-provided e7-knight-boss-times.png",
+      "source_sha256": "fafbce39c48c53391959a5afa1d9b193f6aed9a7da0c7650164b1c52c128ba58",
+      "privacy_redaction": [
+        [
+          0,
+          185,
+          430,
+          415
+        ]
+      ]
+    },
+    "world-boss-no-stamina-20261107": {
+      "path": "tests/fixtures/knights/world_boss/world-boss-no-stamina-20261107.png",
+      "sha256": "60f38911209bf2cdb30feca12512d35c7a053fbc5751e548516922d1b3006e3b",
+      "server": "global_cn",
+      "scene": "world-boss-no-stamina-20261107",
+      "capture_type": "emulator_screenshot",
+      "used_by": [
+        "tests.knights.test_world_boss.WorldBossCaptureTests.test_stamina_popup_has_specific_cancel_and_rejects_entry"
+      ],
+      "source": "user-provided e7-stamina-stuck.png",
+      "source_sha256": "6ad3274e6b4262e6fb812758ec7cfce3bb56e7f803959af7bac5ba7fbd84b2d4",
+      "privacy_redaction": []
     }
   }
 }

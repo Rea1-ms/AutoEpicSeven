@@ -6,11 +6,16 @@ from module.logger import logger
 from module.ocr.ocr import Ocr
 from tasks.base.assets.assets_base_page import BACK
 from tasks.base.page import page_knights
+from tasks.base.resource_scheduling import ResourceCoordinator
 from tasks.knights.assets.assets_knights_main_page import (
     KNIGHTS_CHECK,
     WORLD_BOSS_CHECK,
     WORLD_BOSS_LOCKED,
     WORLD_BOSS_OPENING,
+)
+from tasks.knights.assets.assets_knights_world_boss_entry_resources import (
+    WORLD_BOSS_NO_STAMINA,
+    WORLD_BOSS_STAMINA_CANCEL,
 )
 from tasks.knights.assets.assets_knights_world_boss_flow import (
     AUTO_CONFIG,
@@ -32,6 +37,11 @@ from tasks.knights.assets.assets_knights_world_boss_weekly_rewards import (
     WEEKLY_CONTRIBUTION_TIER_2_LOCKED,
     WEEKLY_CONTRIBUTION_TIER_2_RECEIVED,
 )
+from tasks.knights.world_boss_resources import (
+    WORLD_BOSS_STAMINA_COST,
+    WorldBossResourcesMixin,
+    record_world_boss_attempts,
+)
 
 
 class OcrWeeklyContribution(Ocr):
@@ -42,7 +52,7 @@ class OcrWeeklyContribution(Ocr):
         return result
 
 
-class KnightsWorldBossMixin:
+class KnightsWorldBossMixin(WorldBossResourcesMixin):
     CHOOSE_TEAM_LUMA_SIMILARITY = 0.8
     CHOOSE_TEAM_COLOR_THRESHOLD = 30
     WORLD_BOSS_HOME_LUMA_SIMILARITY = 0.8
@@ -146,41 +156,11 @@ class KnightsWorldBossMixin:
         return False
 
     def _world_boss_no_stamina_todo(self) -> bool:
-        """
-        Handle no-stamina popup during world boss battle start.
-
-        Flow:
-            1) close popup via POPUP_CANCEL
-            2) click BACK once to leave team panel
-            3) return no_stamina status and let caller navigate out
-        """
-        if self.handle_popup_cancel(interval=1):
+        """Cancel only the positively identified stamina purchase dialog."""
+        if self.appear(WORLD_BOSS_NO_STAMINA) and self.appear_then_click(WORLD_BOSS_STAMINA_CANCEL, interval=1):
             logger.info("World boss no stamina popup closed")
             self._world_boss_no_stamina_pending_back = True
-            return False
-
-        if not getattr(self, "_world_boss_no_stamina_pending_back", False):
-            return False
-
-        if self._is_world_boss_home(interval=0):
-            logger.info("World boss no stamina handled at home page")
-            self._world_boss_no_stamina_pending_back = False
             return True
-
-        if any(
-            [
-                self.appear(RANK),
-                self.appear(FORM_A_TEAM),
-                self.appear(AUTO_CONFIG),
-                self.appear(BATTLE_START),
-                self.appear(EMPTY_TEAM),
-            ]
-        ):
-            logger.info("World boss no stamina: leave team panel")
-            self.device.click(BACK)
-            self._world_boss_no_stamina_pending_back = False
-            return True
-
         return False
 
     def _enter_world_boss(self, skip_first_screenshot=True) -> str:
@@ -234,18 +214,19 @@ class KnightsWorldBossMixin:
                 completed / exhausted / no_stamina / failed
         """
         timeout = Timer(120, count=300).start()
-        exhausted_confirm = Timer(1, count=2).start()
-        choose_team_exhausted_confirm = Timer(1, count=2).start()
         settlement_progress = False
         stage = self.WORLD_BOSS_STAGE_ENTRY
-        choose_team_retry = Timer(self.WORLD_BOSS_CHOOSE_TEAM_RETRY_SECONDS, count=0).start()
+        choose_team_retry = Timer(self.WORLD_BOSS_CHOOSE_TEAM_RETRY_SECONDS, count=0)
         choose_team_pending_timer = Timer(self.WORLD_BOSS_CHOOSE_TEAM_PENDING_SECONDS, count=0).start()
         choose_team_pending = False
         form_retry = Timer(self.WORLD_BOSS_FORM_RETRY_SECONDS, count=0).start()
-        auto_config_retry = Timer(self.WORLD_BOSS_AUTO_CONFIG_RETRY_SECONDS, count=0).start()
+        auto_config_retry = Timer(self.WORLD_BOSS_AUTO_CONFIG_RETRY_SECONDS, count=0)
         auto_config_clicked = False
         rank_selected = False
         self._world_boss_no_stamina_pending_back = False
+        resources_ready = False
+        resource_timeout = Timer(8, count=20).start()
+        start_pending = False
 
         while 1:
             if skip_first_screenshot:
@@ -257,18 +238,57 @@ class KnightsWorldBossMixin:
                 logger.warning("World boss round timeout")
                 return "failed"
 
-            if stage == self.WORLD_BOSS_STAGE_ENTRY and not choose_team_pending:
-                if self._is_choose_team_exhausted():
-                    if exhausted_confirm.reached():
-                        logger.info("World boss chances exhausted")
-                        return "exhausted"
-                else:
-                    exhausted_confirm.reset()
-            else:
-                exhausted_confirm.reset()
+            if self.appear(WORLD_BOSS_NO_STAMINA):
+                self._world_boss_no_stamina_todo()
+                # A click cooldown never makes the dimmed preparation screen
+                # actionable. Retry cancellation, never the consuming start.
+                continue
 
-            if self._world_boss_no_stamina_todo():
-                return "no_stamina"
+            home = self._is_world_boss_home(interval=0) and self.appear(CHOOSE_TEAM)
+            if settlement_progress and home:
+                return 'completed'
+            if self._world_boss_no_stamina_pending_back:
+                if home:
+                    self._defer_world_boss(self._read_world_boss_stamina())
+                    return 'no_stamina'
+                if ((self.appear(AUTO_CONFIG) or self.appear(BATTLE_START) or self.appear(FORM_A_TEAM))
+                        and self.interval_is_reached('WorldBossResourceBack', interval=1)):
+                    self.device.click(BACK)
+                    self.interval_reset('WorldBossResourceBack', interval=1)
+                continue
+
+            if not resources_ready:
+                if home:
+                    remaining = self._read_world_boss_attempts()
+                    if remaining == 0:
+                        return 'exhausted'
+                    stamina = self._read_world_boss_stamina() if remaining is not None else None
+                    if remaining is not None and stamina is not None:
+                        if stamina.value < WORLD_BOSS_STAMINA_COST:
+                            self._defer_world_boss(stamina)
+                            return 'no_stamina'
+                        resources_ready = True
+                    elif resource_timeout.reached():
+                        self._defer_world_boss()
+                        return 'resource_unknown'
+                    else:
+                        continue
+                elif self.appear(AUTO_CONFIG) or self.appear(BATTLE_START) or self.appear(FORM_A_TEAM):
+                    # Resuming inside team setup has no current attempt
+                    # evidence. Return to the counter before authorizing entry.
+                    if self.interval_is_reached('WorldBossResourceBack', interval=1):
+                        self.device.click(BACK)
+                        self.interval_reset('WorldBossResourceBack', interval=1)
+                    continue
+                else:
+                    if self._handle_world_boss_touch_to_close(interval=0.6):
+                        continue
+                    if self.handle_network_error():
+                        continue
+                    if resource_timeout.reached():
+                        self._defer_world_boss()
+                        return 'resource_unknown'
+                    continue
 
             if self.handle_network_error():
                 timeout.reset()
@@ -283,12 +303,8 @@ class KnightsWorldBossMixin:
                     timeout.reset()
                     continue
 
-                if self._is_choose_team_exhausted():
-                    if choose_team_exhausted_confirm.reached():
-                        logger.info("World boss chances exhausted (CHOOSE_TEAM gray)")
-                        return "exhausted"
-                else:
-                    choose_team_exhausted_confirm.reset()
+                # A gray button alone does not prove that attempts are zero.
+                # Only the complete current-day counter authorizes exhaustion.
 
                 if choose_team_pending:
                     if choose_team_pending_timer.reached():
@@ -296,7 +312,7 @@ class KnightsWorldBossMixin:
                     else:
                         continue
 
-                if self._is_choose_team_ready(interval=1):
+                if resources_ready and not start_pending and self._is_choose_team_ready(interval=1):
                     if choose_team_retry.reached():
                         logger.info("World boss: CHOOSE_TEAM -> rank panel")
                         self.device.click(CHOOSE_TEAM)
@@ -311,13 +327,6 @@ class KnightsWorldBossMixin:
                     return "completed"
 
             if stage == self.WORLD_BOSS_STAGE_SELECT:
-                if self._is_choose_team_exhausted():
-                    if choose_team_exhausted_confirm.reached():
-                        logger.info("World boss chances exhausted (CHOOSE_TEAM gray)")
-                        return "exhausted"
-                else:
-                    choose_team_exhausted_confirm.reset()
-
                 if (not rank_selected) and self.appear_then_click(RANK, interval=1):
                     rank_selected = True
                     timeout.reset()
@@ -358,7 +367,16 @@ class KnightsWorldBossMixin:
                     if self.appear(EMPTY_TEAM):
                         continue
 
-                if self.appear_then_click(BATTLE_START, interval=1):
+                if not start_pending and self.appear(BATTLE_START):
+                    stamina = self._read_world_boss_stamina()
+                    if stamina is None or stamina.value < WORLD_BOSS_STAMINA_COST:
+                        self._world_boss_no_stamina_pending_back = True
+                        continue
+                    ResourceCoordinator(self.config).request('Knights', keys=('stamina',))
+                    # The launch spends stamina. A repeated preparation frame
+                    # is not permission to submit another payment request.
+                    self.device.click(BATTLE_START)
+                    start_pending = True
                     stage = self.WORLD_BOSS_STAGE_ENTRY
                     choose_team_pending = False
                     rank_selected = False
@@ -546,9 +564,13 @@ class KnightsWorldBossMixin:
     def run_world_boss(self, skip_first_screenshot=True) -> bool:
         logger.hr("Knights WorldBoss", level=2)
         self._world_boss_completed_rounds = 0
+        self._world_boss_remaining_attempts = None
+        self._world_boss_retry_target = None
+        ResourceCoordinator(self.config).begin('Knights')
 
         enter_status = self._enter_world_boss(skip_first_screenshot=skip_first_screenshot)
         if enter_status == "locked":
+            record_world_boss_attempts(self.config, 0)
             return True
         if enter_status != "entered":
             return False
@@ -569,7 +591,7 @@ class KnightsWorldBossMixin:
                 logger.info(f"World boss done: exhausted, rounds={rounds}")
                 return True
 
-            if status == "no_stamina":
+            if status in ("no_stamina", "resource_unknown"):
                 logger.info("World boss done: no stamina")
                 self._claim_weekly_contribution_rewards(skip_first_screenshot=True)
                 self._back_to_knights_from_world_boss(skip_first_screenshot=True)

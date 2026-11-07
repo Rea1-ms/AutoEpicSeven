@@ -7,7 +7,11 @@ from module.exception import RequestHumanTakeover
 from module.logger import logger
 from module.ocr.ocr import Digit, DigitCounter, Duration
 from tasks.base.assets.assets_base_page import BACK
-from tasks.base.assets.assets_base_popup import AD_BUFF_X_CLOSE, POPUP_CONFIRM, TOUCH_TO_CLOSE
+from tasks.base.assets.assets_base_popup import (
+    AD_BUFF_X_CLOSE,
+    POPUP_CONFIRM,
+    TOUCH_TO_CLOSE,
+)
 from tasks.base.page import Page
 from tasks.base.resource_bar import (
     RESOURCE_KIND_INT,
@@ -74,7 +78,7 @@ from tasks.dungeon.assets.assets_dungeon_repeat_settlement import (
 )
 from tasks.dungeon.burnout import SERVER_REPEAT_LEIF_STAMINA
 from tasks.dungeon.repeat_progress import read_repeat_combat_progress
-
+from tasks.knights.world_boss_resources import world_boss_stamina_reserve
 
 SERVER_REPEAT_RESOURCE_SPECS = {
     "stamina": ResourceBarSpec(key="stamina", kind=RESOURCE_KIND_INT),
@@ -197,6 +201,9 @@ class CombatRepeatMixin:
     def _server_repeat_target_leif_count(self, stamina: int | None) -> int:
         if self._combat_burnout_enabled() and self._repeat_leif_step() == 1 and stamina is not None:
             return calculate_server_repeat_leif_count(stamina)
+        if (self._repeat_leif_step() == 1 and self._repeat_prioritize_stamina()
+                and world_boss_stamina_reserve(self.config) and stamina is not None):
+            return min(self._repeat_combat_leif_count(), calculate_server_repeat_leif_count(stamina))
         return self._repeat_combat_leif_count()
 
     def _server_repeat_stamina_budget(

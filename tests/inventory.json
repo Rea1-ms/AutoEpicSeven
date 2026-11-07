@@ -23629,6 +23629,24 @@
           "fixtures": [],
           "status": "已纳入",
           "reason": "资源门槛保留完整托管单位，固定次数用尽不重开"
+        },
+        {
+          "id": "tests.combat.test_daily_batch.CombatDailyBatchTests.test_outer_daily_batch_receives_stamina_after_world_boss_reserve",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "世界首领体力预留、每日刷图批次与不足补打回归"
+        },
+        {
+          "id": "tests.combat.test_daily_batch.CombatDailyBatchTests.test_protected_repeat_uses_wholly_owned_or_wholly_leaf_batches",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "世界首领体力预留、每日刷图批次与不足补打回归"
         }
       ]
     },
@@ -26948,6 +26966,210 @@
           ],
           "status": "新增",
           "reason": "目录整理、英文日志、默认开局与识别优化回归"
+        }
+      ]
+    },
+    {
+      "source": "tests/knights/test_world_boss.py",
+      "business": "世界首领战",
+      "status": "正式",
+      "reason": "实际次数与资源约束",
+      "cases": [
+        {
+          "id": "tests.knights.test_world_boss.WorldBossCaptureTests.test_real_entry_reads_two_attempts_and_six_stamina",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "world-boss-attempts-20261107"
+          ],
+          "status": "已纳入",
+          "reason": "世界首领剩余次数、体力预留、取消购买与不足延期回归"
+        },
+        {
+          "id": "tests.knights.test_world_boss.WorldBossCaptureTests.test_missing_denominator_is_unknown_after_a_valid_read",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "world-boss-attempts-20261107"
+          ],
+          "status": "已纳入",
+          "reason": "世界首领剩余次数、体力预留、取消购买与不足延期回归"
+        },
+        {
+          "id": "tests.knights.test_world_boss.WorldBossCaptureTests.test_stamina_popup_has_specific_cancel_and_rejects_entry",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "world-boss-attempts-20261107",
+            "world-boss-no-stamina-20261107"
+          ],
+          "status": "已纳入",
+          "reason": "世界首领剩余次数、体力预留、取消购买与不足延期回归"
+        },
+        {
+          "id": "tests.knights.test_world_boss.WorldBossResourceTests.test_complete_counter_required_with_zero_distinct_from_unknown",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "世界首领剩余次数、体力预留、取消购买与不足延期回归"
+        },
+        {
+          "id": "tests.knights.test_world_boss.WorldBossResourceTests.test_reserve_defaults_to_forty_then_uses_observed_remainder",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "世界首领剩余次数、体力预留、取消购买与不足延期回归"
+        },
+        {
+          "id": "tests.knights.test_world_boss.WorldBossResourceTests.test_disabled_world_boss_or_task_has_no_reserve",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "世界首领剩余次数、体力预留、取消购买与不足延期回归"
+        },
+        {
+          "id": "tests.knights.test_world_boss.WorldBossResourceTests.test_server_observations_are_not_shared",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "世界首领剩余次数、体力预留、取消购买与不足延期回归"
+        },
+        {
+          "id": "tests.knights.test_world_boss.WorldBossResourceTests.test_combat_spends_only_the_unreserved_amount_and_keeps_priority",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "世界首领剩余次数、体力预留、取消购买与不足延期回归"
+        },
+        {
+          "id": "tests.knights.test_world_boss.WorldBossResourceTests.test_only_next_entry_is_required_for_retry_not_two_entries",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "世界首领剩余次数、体力预留、取消购买与不足延期回归"
+        },
+        {
+          "id": "tests.knights.test_world_boss.WorldBossResourceTests.test_combat_wait_includes_reserve_and_releases_on_observed_zero",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "世界首领剩余次数、体力预留、取消购买与不足延期回归"
+        },
+        {
+          "id": "tests.knights.test_world_boss.WorldBossResourceTests.test_wait_invalidated_when_world_boss_setting_changes",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "世界首领剩余次数、体力预留、取消购买与不足延期回归"
+        },
+        {
+          "id": "tests.knights.test_world_boss.WorldBossReplayTests.test_zero_attempts_exit_without_any_click",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "世界首领剩余次数、体力预留、取消购买与不足延期回归"
+        },
+        {
+          "id": "tests.knights.test_world_boss.WorldBossReplayTests.test_insufficient_stamina_defers_without_starting_or_buying",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "世界首领剩余次数、体力预留、取消购买与不足延期回归"
+        },
+        {
+          "id": "tests.knights.test_world_boss.WorldBossReplayTests.test_unknown_attempts_wait_and_never_enter_or_finish",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "世界首领剩余次数、体力预留、取消购买与不足延期回归"
+        },
+        {
+          "id": "tests.knights.test_world_boss.WorldBossReplayTests.test_popup_cancel_retries_and_back_is_confirmed_before_exit",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "世界首领剩余次数、体力预留、取消购买与不足延期回归"
+        },
+        {
+          "id": "tests.knights.test_world_boss.WorldBossReplayTests.test_sufficient_single_entry_starts_once_despite_repeated_frame",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "世界首领剩余次数、体力预留、取消购买与不足延期回归"
+        },
+        {
+          "id": "tests.knights.test_world_boss.WorldBossReplayTests.test_reentry_reads_manual_remaining_instead_of_local_rounds",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "世界首领剩余次数、体力预留、取消购买与不足延期回归"
+        },
+        {
+          "id": "tests.knights.test_world_boss.WorldBossReplayTests.test_resuming_team_panel_returns_to_counter_before_entry",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "世界首领剩余次数、体力预留、取消购买与不足延期回归"
+        },
+        {
+          "id": "tests.knights.test_world_boss.WorldBossReplayTests.test_completed_round_rereads_remaining_and_defers_the_second_entry",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "世界首领体力预留、每日刷图批次与不足补打回归"
+        },
+        {
+          "id": "tests.knights.test_world_boss.WorldBossReplayTests.test_insufficient_boss_keeps_other_knights_tasks_and_earliest_retry",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "世界首领体力预留、每日刷图批次与不足补打回归"
+        },
+        {
+          "id": "tests.knights.test_world_boss.WorldBossResourceTests.test_unknown_urgent_stamina_never_spends_the_reserved_balance",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "紧急任务体力未知时保护世界首领预留额度，禁止启动任何战斗"
         }
       ]
     }
