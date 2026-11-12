@@ -4891,6 +4891,33 @@
       "reason": "当前工作树新增正式回归",
       "cases": [
         {
+          "id": "tests.upstream.test_deploy.GitInitializationTests.test_file_mode_is_normalized_after_init_and_before_fetch",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-11-12 上游通用同步；合成文字、像素和模拟配置，不访问设备、账号或实际仓库"
+        },
+        {
+          "id": "tests.upstream.test_deploy.GitInitializationTests.test_cached_config_does_not_hide_current_mode_or_removed_proxy",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-11-12 上游通用同步；合成文字、像素和模拟配置，不访问设备、账号或实际仓库"
+        },
+        {
+          "id": "tests.upstream.test_deploy.GitInitializationTests.test_repaired_initialization_also_normalizes_file_mode",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-11-12 上游通用同步；合成文字、像素和模拟配置，不访问设备、账号或实际仓库"
+        },
+        {
           "id": "tests.upstream.test_deploy.AdbReplacementTests.test_locked_binary_does_not_prevent_next_replacement",
           "category": "规则测试",
           "requires_device": false,
@@ -4979,6 +5006,15 @@
       "status": "已纳入",
       "reason": "当前工作树新增正式回归",
       "cases": [
+        {
+          "id": "tests.upstream.test_device.EmulatorTests.test_mumu_screenshot_preserves_rgb_channels_and_flips_rows",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-11-12 上游通用同步；合成文字、像素和模拟配置，不访问设备、账号或实际仓库"
+        },
         {
           "id": "tests.upstream.test_device.BenchmarkTests.test_both_candidate_lists_respect_android_boundaries",
           "category": "规则测试",
@@ -5106,6 +5142,78 @@
       "status": "已纳入",
       "reason": "当前工作树新增正式回归",
       "cases": [
+        {
+          "id": "tests.upstream.test_vision.OcrCorrectionTests.test_unconfigured_parser_preserves_text_and_uid_redaction",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-11-12 上游通用同步；合成文字、像素和模拟配置，不访问设备、账号或实际仓库"
+        },
+        {
+          "id": "tests.upstream.test_vision.OcrCorrectionTests.test_regex_replacements_run_in_order_with_backreferences",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-11-12 上游通用同步；合成文字、像素和模拟配置，不访问设备、账号或实际仓库"
+        },
+        {
+          "id": "tests.upstream.test_vision.OcrCorrectionTests.test_replacement_and_match_rules_are_isolated_by_language",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-11-12 上游通用同步；合成文字、像素和模拟配置，不访问设备、账号或实际仓库"
+        },
+        {
+          "id": "tests.upstream.test_vision.OcrCorrectionTests.test_fullmatch_uses_current_language_after_replacement",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-11-12 上游通用同步；合成文字、像素和模拟配置，不访问设备、账号或实际仓库"
+        },
+        {
+          "id": "tests.upstream.test_vision.OcrCorrectionTests.test_first_matching_rule_wins_and_subclasses_keep_their_rules",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-11-12 上游通用同步；合成文字、像素和模拟配置，不访问设备、账号或实际仓库"
+        },
+        {
+          "id": "tests.upstream.test_vision.OcrCorrectionTests.test_single_and_batch_entry_points_apply_corrections",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-11-12 上游通用同步；合成文字、像素和模拟配置，不访问设备、账号或实际仓库"
+        },
+        {
+          "id": "tests.upstream.test_vision.OcrCorrectionTests.test_detected_keywords_keep_coordinates_and_filter_unknown_text",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-11-12 上游通用同步；合成文字、像素和模拟配置，不访问设备、账号或实际仓库"
+        },
+        {
+          "id": "tests.upstream.test_vision.OcrCorrectionTests.test_star_is_ignored_only_when_punctuation_is_ignored",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-11-12 上游通用同步；合成文字、像素和模拟配置，不访问设备、账号或实际仓库"
+        },
         {
           "id": "tests.upstream.test_vision.ColorTests.test_small_and_large_color_paths_match_integer_reference",
           "category": "规则测试",

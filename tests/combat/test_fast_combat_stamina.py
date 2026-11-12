@@ -202,7 +202,8 @@ class ManualChecks(unittest.TestCase):
         self.assertEqual(repeat_budget(remaining_stamina, mode="Burnout"), (0, (0, 40)))
 
     def test_stamina_thousands_separator_is_normalized(self):
-        self.assertTrue(CombatPrepareDigit.__new__(CombatPrepareDigit).after_process("17,940") == "17940", 'stamina thousands separator is normalized')
+        parser = CombatPrepareDigit(SimpleNamespace(name="offline_stamina"), lang="cn")
+        self.assertEqual(parser.after_process("17,940"), "17940", 'stamina thousands separator is normalized')
 
     def test_saint_3_7_skips_fast_combat(self):
         self.assertTrue(Combat._combat_supports_fast_combat(FastSupportProbe("Saint37")) is False, 'saint 3-7 skips fast combat')

@@ -1,6 +1,51 @@
 # 上游改动检查与待办
 
-更新日期：2026-09-28。首批 6 项已提交为 `a4f7917a`。本轮剩余 16 项已完成代码适配、配置生成和离线验证；通用清单累计 22 项已适配，另 1 项旧运行环境补丁不适用。
+更新日期：2026-11-12。本轮新增 4 项通用适配，累计 26 项通用增量已适配，另 1 项旧运行环境补丁不适用。下面先记录本轮范围，9 月的检查记录保留在后面。
+
+## 2026-11-12 检查范围与结果
+
+从 `b8e192c392ddaddf292c5f3583fcd90b8dc765e5`（上次截止点，不含）到 `60753014e15ba8088c332906e99b33b1405cba68`（本次截止点，包含），按祖先关系检查全部 23 个新增提交。远程主分支与本地参考检出一致；远程开发分支 `e61571ff`（开发版本）已合入当前主分支。4 个合并提交的合并差异为空，没有额外修正。
+
+| 分类 | 数量 | 结果 |
+| --- | --- | --- |
+| 通用增量 | 4 | 文字纠错基类、星号处理、更新器文件权限设置、共享截图转换名称均已适配。 |
+| 星铁专用 | 15 | 角色、关卡、登录广告、任务联动和资源更新，仅适用于星铁。 |
+| 合并提交 | 4 | 没有额外改动，功能按来源提交记录。 |
+| 合计 | 23 | 本轮来源逐项列于下表。 |
+
+本轮不需要新增配置或素材。文字纠错的两类规则按识别语言隔离；规则为空时保持已有处理。更新器在初始化或修复仓库后重读配置，避免旧缓存影响文件权限和代理判断。共享截图的改动只明确转换名称，像素结果不变。沿用本地 10 月 3 日已确认的端口边界：连接层到偏移 64，模拟器发现层到偏移 32。
+
+| 序号 | 提交日期 | 上游来源 | 分类／状态 | 核对结论 |
+| --- | --- | --- | --- | --- |
+| 138 | 2026-09-29 | [6b1ffc3e](https://github.com/LmeSzinc/StarRailCopilot/commit/6b1ffc3e7a8f77ada88fbe2165e36c6a7a7fae1d) | 星铁专用／不合入 | 4.6 角色、光锥、关卡、位面、遗器及事件关键词。 |
+| 139 | 2026-09-29 | [b00d681e](https://github.com/LmeSzinc/StarRailCopilot/commit/b00d681e527f2b9a3bc030854ffab7a91b90f936) | 星铁专用／不合入 | 角色版本、生成选项和多语言显示文字。 |
+| 140 | 2026-09-29 | [d18c0993](https://github.com/LmeSzinc/StarRailCopilot/commit/d18c09931311f77e1040b5e00f86b609dcad77cf) | 星铁专用／不合入 | 4.6 角色头像及替换外观。 |
+| 141 | 2026-09-29 | [f61b023a](https://github.com/LmeSzinc/StarRailCopilot/commit/f61b023a1474782314336c18cbd41cf5e44a9b9a) | 星铁专用／不合入 | 星铁模拟宇宙入口排除背包、跃迁页的相似按钮。 |
+| 142 | 2026-09-29 | [cadc70d4](https://github.com/LmeSzinc/StarRailCopilot/commit/cadc70d4850cf05973d7ae7c6615170c0b173ca3) | 合并／无额外改动 | 已按来源提交登记。 |
+| 143 | 2026-10-05 | [16d2e67a](https://github.com/LmeSzinc/StarRailCopilot/commit/16d2e67aafc7e096ed55437b4c66489b35c46212) | 星铁专用／不合入 | 星铁战斗教程、列车战令进度及其配置存储。 |
+| 144 | 2026-10-05 | [cbd3b500](https://github.com/LmeSzinc/StarRailCopilot/commit/cbd3b500c5167fddf37d57c8019114a4b8fc9208) | 通24／已适配 | 共享截图使用明确的四通道转三通道颜色转换名称，合成像素验证通道和翻转结果。 |
+| 145 | 2026-10-05 | [dd3fb5c5](https://github.com/LmeSzinc/StarRailCopilot/commit/dd3fb5c5d2d2297bc086dca0d3ab8d5b0442e605) | 星铁专用／不合入 | 补充角色外观模板引用。 |
+| 146 | 2026-10-05 | [60e31e0d](https://github.com/LmeSzinc/StarRailCopilot/commit/60e31e0db08eb5e13b9f4767d32af01c0afa0010) | 星铁专用／不合入 | 星铁领取周奖励时，将丢弃燃料券计入领取结果。 |
+| 147 | 2026-10-05 | [0ef95f97](https://github.com/LmeSzinc/StarRailCopilot/commit/0ef95f979de96121abc3713ec2fa57bd6e746042) | 星铁专用／不合入 | 星铁周奖励返回流程处理燃料券丢弃弹窗。 |
+| 148 | 2026-10-05 | [e2c7f089](https://github.com/LmeSzinc/StarRailCopilot/commit/e2c7f0894fdea737805becbe02809ff01f47068e) | 合并／无额外改动 | 已按来源提交登记。 |
+| 149 | 2026-10-28 | [6e9dd21e](https://github.com/LmeSzinc/StarRailCopilot/commit/6e9dd21eea45b60c3a277be500dcf1655b8f9b1b) | 通25／已适配 | 初始化仓库后重读配置，按需关闭文件执行权限位比较；覆盖已有设置、旧缓存和初始化修复路径。 |
+| 150 | 2026-10-28 | [b2fc7b2f](https://github.com/LmeSzinc/StarRailCopilot/commit/b2fc7b2fb97dfafefa2035f6c862dfb94d2caefe) | 星铁专用／不合入 | 星铁饰品提取完成后联动差分宇宙或货币战争的每日任务。 |
+| 151 | 2026-10-28 | [7682fc9f](https://github.com/LmeSzinc/StarRailCopilot/commit/7682fc9f317dd8368b6982c2cf54520e49c05f85) | 通26／已适配 | 提取文字识别基类的替换和关键词完整匹配；不导入星铁纠错词表及业务重构。 |
+| 152 | 2026-10-28 | [4af2ddf4](https://github.com/LmeSzinc/StarRailCopilot/commit/4af2ddf43b7d5389f2479c83e59e3e5cc6e23088) | 星铁专用／不合入 | 星铁模拟宇宙每周刷新横幅及领奖弹窗处理。 |
+| 153 | 2026-10-29 | [25045e42](https://github.com/LmeSzinc/StarRailCopilot/commit/25045e4281887230fd2c2ade8cb4034b8ca11c59) | 合并／无额外改动 | 已按来源提交登记。 |
+| 154 | 2026-10-31 | [f144d976](https://github.com/LmeSzinc/StarRailCopilot/commit/f144d97641fc78cee5452c011e89709c8dedd1b6) | 星铁专用／不合入 | 星铁 4.7 兑换码。 |
+| 155 | 2026-11-12 | [f0b185be](https://github.com/LmeSzinc/StarRailCopilot/commit/f0b185be750e16c1e58f60027a4e0ca15d38615f) | 通27／通用部分已适配 | 仅同步关键词归一化去除实心星号；其余 4.7 角色、关卡、遗器和材料关键词不导入。 |
+| 156 | 2026-11-12 | [b78d3f51](https://github.com/LmeSzinc/StarRailCopilot/commit/b78d3f512a71a52d677b30cc9a6c689aec562fc6) | 星铁专用／不合入 | 4.7 角色、存储字段、任务默认值和生成配置。 |
+| 157 | 2026-11-12 | [644f8a15](https://github.com/LmeSzinc/StarRailCopilot/commit/644f8a154ba3a43abdd3d7be60ac338dde8d0774) | 星铁专用／不合入 | 新角色头像及助战外观映射。 |
+| 158 | 2026-11-12 | [c901402c](https://github.com/LmeSzinc/StarRailCopilot/commit/c901402c81a70905bd439ced5c31aa0cdc11b1ea) | 星铁专用／不合入 | 星铁养成计算器入口搜索区域。 |
+| 159 | 2026-11-12 | [e61571ff](https://github.com/LmeSzinc/StarRailCopilot/commit/e61571ffe61a7e6f13666b0b424e90c391b8d76d) | 星铁专用／不合入 | 星铁 4.7 登录广告。 |
+| 160 | 2026-11-12 | [60753014](https://github.com/LmeSzinc/StarRailCopilot/commit/60753014e15ba8088c332906e99b33b1405cba68) | 合并／无额外改动 | 已按来源提交登记；本次检查截止点。 |
+
+本轮新增 12 项回归，均已登记分类并由统一入口列出；上游集 66 项通过且零跳过。完整默认集 2105 项通过、1 项旧测试初始化错误，补齐正常构造和语言后，所属 79 项完整复验通过；测试修正后没有重跑默认全集。报告、标识对应与校验结果见 TESTING_PLAN.md（验收计划）的本轮记录。尚未进行模拟器或安装器实机验收，也未运行云端工作流。测试缓存保留在忽略目录，由用户按需清理。
+
+## 2026-09-28 历史检查记录
+
+以下记录保留当时范围与验收结果。首批 6 项已提交为 `a4f7917a`（首批适配）；当轮其余 16 项已完成代码适配、配置生成和离线验证，累计 22 项已适配，另 1 项旧运行环境补丁不适用。
 
 ## 检查范围
 

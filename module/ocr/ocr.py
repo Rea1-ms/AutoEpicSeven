@@ -1,5 +1,7 @@
+import re
 import time
 from datetime import timedelta
+from typing import ClassVar
 
 import numpy as np
 from pponnxcr.predict_system import BoxedResult
@@ -70,6 +72,11 @@ class Ocr:
     merge_thres_x = 0
     merge_thres_y = 0
 
+    # Apply language-specific substitutions in order before matching keywords.
+    OCR_REPLACE: ClassVar[dict[str, list[tuple[str, str]]]] = {}
+    # Match the entire corrected text and return the keyword's localized text.
+    OCR_MATCH: ClassVar[dict[str, list[tuple[Keyword, str]]]] = {}
+
     def __init__(self, button: ButtonWrapper, lang=None, name=None):
         """
         Args:
@@ -89,6 +96,23 @@ class Ocr:
     @cached_property
     def model(self) -> TextSystem:
         return OCR_MODEL.get_by_lang(self.lang)
+
+    @cached_property
+    def ocr_replace(self) -> list[tuple[str, str]]:
+        return self.OCR_REPLACE.get(self.lang) or []
+
+    @cached_property
+    def ocr_match(self):
+        """Compile the current language's full-text keyword correction rules."""
+        rules = self.OCR_MATCH.get(self.lang)
+        if not rules:
+            return None
+        pattern = re.compile('|'.join(
+            f'(?P<{keyword.name}>{pattern})'
+            for keyword, pattern in rules
+        ))
+        keywords = {keyword.name: keyword for keyword, _ in rules}
+        return pattern, keywords
 
     def pre_process(self, image):
         """
@@ -110,7 +134,19 @@ class Ocr:
         """
         if result.startswith('UID'):
             result = 'UID'
-        return result
+        for pattern, replacement in self.ocr_replace:
+            result = re.sub(pattern, replacement, result)
+        ocr_match = self.ocr_match
+        if ocr_match is None:
+            return result
+        pattern, keywords = ocr_match
+        matched = pattern.fullmatch(result)
+        if matched is None:
+            return result
+        keyword = keywords[matched.lastgroup]
+        output = getattr(keyword, self.lang)
+        logger.attr(name=f'{self.name} after_process', text=f'{result} -> {output}')
+        return output
 
     def format_result(self, result):
         """
