@@ -153,6 +153,10 @@ class ShopReplay(SecretShop):
         matched = self.device.image.page == {
             'BUY_CONFIRM': 'buy', 'REFRESH_CONFIRM': 'refresh', 'REFRESH': 'shop',
             'NETWORK_ERROR_DISCONNECT': 'disconnect',
+            # Synthetic payment frames abstract row geometry and control
+            # settling through Frame.stable. Expose the modeled anchors too;
+            # retained positions and failed swipes use unmocked pixel replays.
+            'BUY_TOP_STABLE': 'shop', 'BUY_BOTTOM_STABLE': 'shop',
         }.get(button.name, 'not-a-page')
         if matched and interval:
             self.interval_reset(button, interval=interval)

@@ -18664,7 +18664,8 @@
             "20261002-221022-016",
             "20261003-125942-495",
             "20261003-125720-050",
-            "secret-shop-bookmark-20261105"
+            "secret-shop-bookmark-20261105",
+            "secret-shop-bottom-entry-20261107"
           ],
           "status": "已纳入",
           "reason": "含实际网络异常截图；回放明确重复静态画面，不作为连续实录"
@@ -18692,7 +18693,8 @@
             "20261002-201411-848",
             "20261002-221022-016",
             "20261003-125942-495",
-            "secret-shop-bookmark-20261105"
+            "secret-shop-bookmark-20261105",
+            "secret-shop-bottom-entry-20261107"
           ],
           "status": "已纳入",
           "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
@@ -18815,7 +18817,8 @@
             "20261002-221022-016",
             "20261003-125942-495",
             "20261003-125720-050",
-            "secret-shop-bookmark-20261105"
+            "secret-shop-bookmark-20261105",
+            "secret-shop-bottom-entry-20261107"
           ],
           "status": "已纳入",
           "reason": "含实际网络异常截图；回放明确重复静态画面，不作为连续实录"
@@ -18977,6 +18980,97 @@
           ],
           "status": "已纳入",
           "reason": "新金币图标与完整余额；两类商品购买入口及缺少锚点禁止动作，神秘奖牌新资源栏为明确模拟"
+        },
+        {
+          "id": "tests.secret_shop.test_captures.ScrollRecoveryTests.test_retained_bottom_entry_scans_both_sections_before_goal_exit",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "secret-shop-bottom-entry-20261107",
+            "20261003-125942-495"
+          ],
+          "status": "已纳入",
+          "migrated_to": null,
+          "reason": "秘密商店保留滚动位置、滑动重试及完整扫描回归"
+        },
+        {
+          "id": "tests.secret_shop.test_captures.ScrollRecoveryTests.test_recovered_top_buys_before_scanning_bottom",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "secret-shop-bottom-entry-20261107",
+            "20261002-151247-016",
+            "20261002-151251-082",
+            "20261002-151257-334"
+          ],
+          "status": "已纳入",
+          "migrated_to": null,
+          "reason": "秘密商店保留滚动位置、滑动重试及完整扫描回归"
+        },
+        {
+          "id": "tests.secret_shop.test_captures.ScrollRecoveryTests.test_top_entry_keeps_original_scan_order",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261003-125942-495",
+            "secret-shop-bottom-entry-20261107"
+          ],
+          "status": "已纳入",
+          "migrated_to": null,
+          "reason": "秘密商店保留滚动位置、滑动重试及完整扫描回归"
+        },
+        {
+          "id": "tests.secret_shop.test_captures.ScrollRecoveryTests.test_missed_bottom_swipe_retries_before_exit",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261003-125942-495",
+            "secret-shop-bottom-entry-20261107"
+          ],
+          "status": "已纳入",
+          "migrated_to": null,
+          "reason": "秘密商店保留滚动位置、滑动重试及完整扫描回归"
+        },
+        {
+          "id": "tests.secret_shop.test_captures.ScrollRecoveryTests.test_top_recovery_retries_without_extending_timeout",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "secret-shop-bottom-entry-20261107"
+          ],
+          "status": "已纳入",
+          "migrated_to": null,
+          "reason": "秘密商店保留滚动位置、滑动重试及完整扫描回归"
+        },
+        {
+          "id": "tests.secret_shop.test_captures.ScrollRecoveryTests.test_unknown_page_never_authorizes_scroll",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-174909-267"
+          ],
+          "status": "已纳入",
+          "migrated_to": null,
+          "reason": "秘密商店保留滚动位置、滑动重试及完整扫描回归"
+        },
+        {
+          "id": "tests.secret_shop.test_captures.ScrollRecoveryTests.test_recovery_preserves_confirmed_purchase",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "secret-shop-bottom-entry-20261107",
+            "20261002-151247-016"
+          ],
+          "status": "已纳入",
+          "migrated_to": null,
+          "reason": "秘密商店保留滚动位置、滑动重试及完整扫描回归"
         }
       ]
     },

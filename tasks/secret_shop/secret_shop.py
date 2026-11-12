@@ -118,6 +118,9 @@ class SecretShop(ResourceBarMixin, PopupHandler):
         self.target_covenant = max(0, int(getattr(config, 'SecretShop_TargetCovenant', 10)))
         self.target_mystic = max(0, int(getattr(config, 'SecretShop_TargetMystic', 10)))
         # 状态
+        # This selects the section to scan, not the observed scroll position.
+        # Entry may retain the previous bottom position, and a swipe may fail.
+        # Only the matching stable anchor permits scanning that section.
         self._scrolled = False
         self._stable_count = 0
         self._payment: ShopPayment | None = None
@@ -255,6 +258,30 @@ class SecretShop(ResourceBarMixin, PopupHandler):
     def _reset_stable(self):
         """重置稳定计数器，用于滚动/刷新/购买后"""
         self._stable_count = 0
+
+    def handle_scan_scroll(self) -> bool:
+        """Recover the expected list position on an already usable shop page."""
+        stable_asset = BUY_BOTTOM_STABLE if self._scrolled else BUY_TOP_STABLE
+        if self.appear(stable_asset):
+            # A visible anchor still needs the existing consecutive-frame
+            # check. Do not move it again while that check is in progress.
+            return False
+        interval_key = 'secret_shop_scroll_bottom' if self._scrolled else 'secret_shop_scroll_top'
+        if not self.interval_is_reached(interval_key, interval=2):
+            return False
+        start = (self.SCROLL_AREA[0], self.SCROLL_AREA[1])
+        end = (self.SCROLL_AREA[2], self.SCROLL_AREA[3])
+        if not self._scrolled:
+            start, end = end, start
+        self.interval_reset(interval_key, interval=2)
+        self.device.swipe(start, end, duration=(0.4, 0.6))
+        self._reset_stable()
+        self._reset_balance_evidence()
+        # Retrying a position must not renew the observation deadline or clear
+        # confirmed purchases. Never use this recovery during a pending debit:
+        # its original section and payment evidence must remain authoritative.
+        logger.info(f'Secret shop scroll recovery: scrolled={self._scrolled}')
+        return True
 
     def _match_target_item(self, asset, item_type: str, image) -> ClickButton | None:
         """
@@ -647,8 +674,11 @@ class SecretShop(ResourceBarMixin, PopupHandler):
                 return True
             if self.appear(BUY_CONFIRM) or self.appear(REFRESH_CONFIRM):
                 self._stop_uncertain_payment('dialog without a known pre-payment balance')
-            if not self._shop_is_ready() or not self._is_shop_stable():
+            shop_ready = self._shop_is_ready()
+            if not shop_ready or not self._is_shop_stable():
                 self._reset_balance_evidence()
+                if shop_ready and self.handle_scan_scroll():
+                    continue
                 if self.handle_network_error():
                     continue
                 continue
@@ -684,6 +714,7 @@ class SecretShop(ResourceBarMixin, PopupHandler):
 
             if not self._scrolled:
                 self._goods_before_refresh = self._capture_goods()
+                self.interval_reset('secret_shop_scroll_bottom', interval=2)
                 self.device.swipe(
                     (self.SCROLL_AREA[0], self.SCROLL_AREA[1]),
                     (self.SCROLL_AREA[2], self.SCROLL_AREA[3]),
