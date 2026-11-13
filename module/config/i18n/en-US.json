@@ -1127,6 +1127,10 @@
     "GetEpicPathDailyReward": {
       "name": "Claim Epic Path daily rewards",
       "help": "Claim daily tasks only. Recheck after combat or arena until received. Leave season tasks and reward exchanges untouched. Global Chinese UI only."
+    },
+    "GetCarrotReward": {
+      "name": "Claim daily carrot rewards",
+      "help": "Global Chinese only: claim earned 200/400/600/800 tiers in Collect Carrots Together. Recheck after combat or arena until all four tiers are received. Do not farm points or claim the cake-page server rewards."
     }
   },
   "SpecialActivity": {

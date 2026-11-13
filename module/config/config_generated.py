@@ -202,6 +202,7 @@ class GeneratedConfig:
     LimitedActivity_GetCompletionRecord = True
     LimitedActivity_GetDetectiveSearch = True
     LimitedActivity_GetEpicPathDailyReward = True
+    LimitedActivity_GetCarrotReward = True
 
     # Group `SpecialActivity`
     SpecialActivity_GetAlenciaDailyReward = True

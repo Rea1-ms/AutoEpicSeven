@@ -94,6 +94,7 @@ ACTIVITY_MODULES = (
     "tests.activity.test_support_reward",
     "tests.activity.test_completion_record",
     "tests.activity.test_detective_search",
+    "tests.activity.test_carrot_reward",
     "tests.activity.test_epic_path",
     "tests.activity.test_activity_navigation",
     "tests.activity.test_alencia_handbook",

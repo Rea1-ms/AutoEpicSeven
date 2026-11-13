@@ -418,6 +418,7 @@ LimitedActivity:
   GetCompletionRecord: true
   GetDetectiveSearch: true
   GetEpicPathDailyReward: true
+  GetCarrotReward: true
 
 SpecialActivity:
   GetAlenciaDailyReward: true

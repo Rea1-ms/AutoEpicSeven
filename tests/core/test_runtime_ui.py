@@ -303,6 +303,7 @@ class ActivityVisibilityUITests(unittest.TestCase):
 
         clock = self.start_patch('tasks.activity.calendar.datetime', wraps=datetime)
         clock.now.return_value = datetime.fromisoformat('2026-10-29T22:26:00+08:00')
+        self.activity_clock = clock
         self.gui_type = AlasGUI
         self.gui = AlasGUI.__new__(AlasGUI)
         self.updater = ConfigUpdater()
@@ -312,7 +313,8 @@ class ActivityVisibilityUITests(unittest.TestCase):
             'Alas': {'Emulator': {'PackageName': 'OVERSEA-Play', 'GameLanguage': 'cn'}},
             'LimitedActivity': {'Scheduler': {'Enable': False}, 'LimitedActivity': {
                 'GetFreeGacha': False, 'GetSupportReward': True, 'GetCompletionRecord': False,
-                'GetDetectiveSearch': True, 'GetEpicPathDailyReward': False}},
+                'GetDetectiveSearch': True, 'GetEpicPathDailyReward': False,
+                'GetCarrotReward': False}},
             'SpecialActivity': {'Scheduler': {'Enable': False},
                                 'SpecialActivity': {'BuyHucheMysticMedals': True}},
         }
@@ -357,11 +359,16 @@ class ActivityVisibilityUITests(unittest.TestCase):
 
     def test_shared_settings_renderer_hides_inactive_options_and_preserves_saved_values(self):
         before = deepcopy(self.config)
-        for package, visible in (
-            ('OVERSEA-Play', {'GetSupportReward', 'GetCompletionRecord',
-                              'GetDetectiveSearch', 'GetEpicPathDailyReward'}),
-            ('CN-Official', {'GetFreeGacha'}),
+        for stamp, package, visible in (
+            ('2026-10-29T22:26:00+08:00', 'OVERSEA-Play',
+             {'GetSupportReward', 'GetCompletionRecord', 'GetDetectiveSearch', 'GetEpicPathDailyReward'}),
+            ('2026-10-29T22:26:00+08:00', 'CN-Official', {'GetFreeGacha'}),
+            ('2026-11-12T20:20:00+08:00', 'OVERSEA-Play',
+             {'GetSupportReward', 'GetCompletionRecord', 'GetDetectiveSearch',
+              'GetEpicPathDailyReward', 'GetCarrotReward'}),
+            ('2026-11-12T20:20:00+08:00', 'CN-Official', {'GetFreeGacha'}),
         ):
+            self.activity_clock.now.return_value = datetime.fromisoformat(stamp)
             self.config['Alas']['Emulator']['PackageName'] = package
             rendered = self.render_options('LimitedActivity')
             self.assertNotIn('LimitedActivity_LimitedActivity_GetMeirinReward', rendered)
@@ -390,8 +397,11 @@ class ActivityVisibilityUITests(unittest.TestCase):
             self.errors.assert_not_called()
             self.assertEqual(self.config['LimitedActivity'], before['LimitedActivity'])
             self.assertEqual(self.config['SpecialActivity'], before['SpecialActivity'])
-        self.assertEqual(len([path for path in self.gui.alas_config_hidden
-                              if path.startswith('LimitedActivity.')]), 1)
+        self.assertEqual({path for path in self.gui.alas_config_hidden
+                          if path.startswith('LimitedActivity.')}, {
+            'LimitedActivity.LimitedActivity.GetFreeGacha',
+            'LimitedActivity.LimitedActivity.GetCarrotReward',
+        })
         self.gui.pin_set_hidden_arg.reset_mock()
         self.gui.pin_remove_hidden_arg.reset_mock()
         self.gui._save_config({'LimitedActivity.Scheduler.Enable': True}, 'synthetic', self.updater)

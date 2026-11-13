@@ -27374,6 +27374,254 @@
           "reason": "紧急任务体力未知时保护世界首领预留额度，禁止启动任何战斗"
         }
       ]
+    },
+    {
+      "source": "tests/activity/test_carrot_reward.py",
+      "business": "胡萝卜每日奖励",
+      "status": "已迁移",
+      "reason": "本工作树新增正式活动回归，不修改历史迁移基线",
+      "cases": [
+        {
+          "id": "tests.activity.test_carrot_reward.CarrotRewardTests.test_real_pages_and_four_independent_tier_states",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "e7-activity-1112-1",
+            "e7-activity-1112-2",
+            "e7-activity-1112-3",
+            "e7-activity-1112-4",
+            "e7-activity-1112-5"
+          ],
+          "status": "已纳入",
+          "reason": "2026年11月12日胡萝卜每日奖励的真实截图、生产间隔回放与分服调度回归"
+        },
+        {
+          "id": "tests.activity.test_carrot_reward.CarrotRewardTests.test_real_ocr_reads_complete_points_and_sidebar_name",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "e7-activity-1112-3"
+          ],
+          "status": "已纳入",
+          "reason": "2026年11月12日胡萝卜每日奖励的真实截图、生产间隔回放与分服调度回归"
+        },
+        {
+          "id": "tests.activity.test_carrot_reward.CarrotRewardTests.test_claim_once_popup_and_all_four_receipts",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "e7-activity-1112-3",
+            "e7-activity-1112-4",
+            "e7-activity-1112-5"
+          ],
+          "status": "已纳入",
+          "reason": "2026年11月12日胡萝卜每日奖励的真实截图、生产间隔回放与分服调度回归"
+        },
+        {
+          "id": "tests.activity.test_carrot_reward.CarrotRewardTests.test_already_received_finishes_without_clicks",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "e7-activity-1112-5"
+          ],
+          "status": "已纳入",
+          "reason": "2026年11月12日胡萝卜每日奖励的真实截图、生产间隔回放与分服调度回归"
+        },
+        {
+          "id": "tests.activity.test_carrot_reward.CarrotRewardTests.test_receipts_before_popup_do_not_complete_pending_claim",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "e7-activity-1112-3",
+            "e7-activity-1112-4",
+            "e7-activity-1112-5"
+          ],
+          "status": "已纳入",
+          "reason": "2026年11月12日胡萝卜每日奖励的真实截图、生产间隔回放与分服调度回归"
+        },
+        {
+          "id": "tests.activity.test_carrot_reward.CarrotRewardTests.test_dropped_claim_and_close_retry_only_their_own_action",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "e7-activity-1112-3",
+            "e7-activity-1112-4",
+            "e7-activity-1112-5"
+          ],
+          "status": "已纳入",
+          "reason": "2026年11月12日胡萝卜每日奖励的真实截图、生产间隔回放与分服调度回归"
+        },
+        {
+          "id": "tests.activity.test_carrot_reward.CarrotRewardTests.test_partial_receipts_keep_tier_identity",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "e7-activity-1112-3",
+            "e7-activity-1112-4",
+            "e7-activity-1112-5"
+          ],
+          "status": "已纳入",
+          "reason": "2026年11月12日胡萝卜每日奖励的真实截图、生产间隔回放与分服调度回归"
+        },
+        {
+          "id": "tests.activity.test_carrot_reward.CarrotRewardTests.test_zero_and_unfinished_points_keep_battle_recheck",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "e7-activity-1112-3"
+          ],
+          "status": "已纳入",
+          "reason": "2026年11月12日胡萝卜每日奖励的真实截图、生产间隔回放与分服调度回归"
+        },
+        {
+          "id": "tests.activity.test_carrot_reward.CarrotRewardTests.test_unknown_points_and_eligible_missing_controls_never_finish",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "e7-activity-1112-3"
+          ],
+          "status": "已纳入",
+          "reason": "2026年11月12日胡萝卜每日奖励的真实截图、生产间隔回放与分服调度回归"
+        },
+        {
+          "id": "tests.activity.test_carrot_reward.CarrotRewardTests.test_missing_reward_popup_cannot_complete_or_extend_deadline",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "e7-activity-1112-3",
+            "e7-activity-1112-5"
+          ],
+          "status": "已纳入",
+          "reason": "2026年11月12日胡萝卜每日奖励的真实截图、生产间隔回放与分服调度回归"
+        },
+        {
+          "id": "tests.activity.test_carrot_reward.CarrotRewardTests.test_recovery_from_existing_reward_popup",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "e7-activity-1112-4",
+            "e7-activity-1112-5"
+          ],
+          "status": "已纳入",
+          "reason": "2026年11月12日胡萝卜每日奖励的真实截图、生产间隔回放与分服调度回归"
+        },
+        {
+          "id": "tests.activity.test_carrot_reward.CarrotRewardTests.test_cake_and_comparison_rules_are_never_claimed",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "e7-activity-1112-1",
+            "e7-activity-1112-2"
+          ],
+          "status": "已纳入",
+          "reason": "2026年11月12日胡萝卜每日奖励的真实截图、生产间隔回放与分服调度回归"
+        },
+        {
+          "id": "tests.activity.test_carrot_reward.CarrotRewardTests.test_network_popup_does_not_acknowledge_reward",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "e7-activity-1112-3",
+            "e7-activity-1112-4",
+            "e7-activity-1112-5"
+          ],
+          "status": "已纳入",
+          "reason": "2026年11月12日胡萝卜每日奖励的真实截图、生产间隔回放与分服调度回归"
+        },
+        {
+          "id": "tests.activity.test_carrot_reward.CarrotRewardTests.test_independent_navigation_confirms_carrot_target",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "e7-activity-1112-5"
+          ],
+          "status": "已纳入",
+          "reason": "2026年11月12日胡萝卜每日奖励的真实截图、生产间隔回放与分服调度回归"
+        },
+        {
+          "id": "tests.activity.test_carrot_reward.CarrotRewardTests.test_calendar_boundaries_server_support_and_batch_registration",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "e7-activity-1112-5"
+          ],
+          "status": "已纳入",
+          "reason": "2026年11月12日胡萝卜每日奖励的真实截图、生产间隔回放与分服调度回归"
+        },
+        {
+          "id": "tests.activity.test_carrot_reward.CarrotRewardTests.test_visibility_uses_saved_profile_and_preserves_choices",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026年11月12日胡萝卜每日奖励的真实截图、生产间隔回放与分服调度回归"
+        },
+        {
+          "id": "tests.activity.test_carrot_reward.CarrotRewardTests.test_battle_recheck_stops_after_receipt_resets_daily_and_respects_switch",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "e7-activity-1112-5"
+          ],
+          "status": "已纳入",
+          "reason": "2026年11月12日胡萝卜每日奖励的真实截图、生产间隔回放与分服调度回归"
+        },
+        {
+          "id": "tests.activity.test_carrot_reward.CarrotRewardTests.test_slow_repeated_claim_frames_still_respect_original_deadline",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "e7-activity-1112-3"
+          ],
+          "status": "已纳入",
+          "reason": "慢帧导致每轮都可重试时仍必须在原始期限内停止，禁止重试续期"
+        },
+        {
+          "id": "tests.activity.test_carrot_reward.CarrotRewardTests.test_real_sidebar_selection_then_claim_never_repeats_tab",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "e7-activity-1112-1",
+            "e7-activity-1112-3",
+            "e7-activity-1112-4",
+            "e7-activity-1112-5"
+          ],
+          "status": "已纳入",
+          "reason": "真实侧栏选择与公共批次调用，验证固定页面标记范围和实际领奖动作"
+        },
+        {
+          "id": "tests.activity.test_carrot_reward.CarrotRewardTests.test_real_common_batch_dispatches_claim_and_preserves_page_search",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "e7-activity-1112-3",
+            "e7-activity-1112-4",
+            "e7-activity-1112-5"
+          ],
+          "status": "已纳入",
+          "reason": "真实侧栏选择与公共批次调用，验证固定页面标记范围和实际领奖动作"
+        }
+      ]
     }
   ]
 }

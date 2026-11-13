@@ -1127,6 +1127,10 @@
     "GetEpicPathDailyReward": {
       "name": "Reclamar recompensas diarias de Ruta épica",
       "help": "Solo misiones diarias. Revisa tras combate o arena hasta recibirlas todas. No opera misiones de temporada ni intercambios."
+    },
+    "GetCarrotReward": {
+      "name": "Recoger recompensas diarias de zanahorias",
+      "help": "Solo chino global: recoge los niveles alcanzados de 200/400/600/800. Revisa tras combate o arena hasta recibir los cuatro niveles. No acumula puntos ni recoge las recompensas globales de la tarta."
     }
   },
   "SpecialActivity": {

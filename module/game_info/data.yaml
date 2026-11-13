@@ -17,6 +17,29 @@ defaults:
 cn_delay_days: {}
 
 events:
+  - id: carrot_reward_2026_11_12
+    kind: carrot_reward
+    name: 一起收集胡萝卜
+    source: '用户2026-11-12提供国际服中文截图；文件时间约20:14，剩余13天14小时45分，按分钟精度推算11月26日11点结束，秒数未独立确认。起点使用首次确认本页开放的20:14，不代表正式开始时刻。每日200/400/600/800四档，880胡萝卜时点击一档可一次领取四档；实际弹窗关闭并确认四个已领标记后才记录当天完成。规则对照图说明消耗1行动力得1个、世界竞技场1次120个、竞技场1次70个、1光谱核心160个，购买货币的行动力消耗除外；不主动积点。每日记录沿用限时活动的服务器刷新设置。国服日期与页面未确认。'
+    oversea_start: '2026-11-12T20:14:00+08:00'
+    oversea_end: '2026-11-26T11:00:00+08:00'
+    values:
+      stamina_points: 1
+      world_arena_points: 120
+      arena_points: 70
+      spectrum_core_points: 160
+      reward_tiers: '200,400,600,800'
+
+  - id: anniversary_party_2026_11_12
+    kind: anniversary_party
+    name: 3000日庆祝派对
+    source: '用户2026-11-12提供国际服中文蛋糕页截图；文件时间约20:11，剩余13天14小时48分，按分钟精度推算11月26日11点结束。起点仅为首次确认开放时间，正式开始时刻未知。页面显示个人收集贡献880、至少收集800个胡萝卜方可领取活动奖励；七个全服累计档位当前未达成，暂无可领奖励或已领截图，只登记资料，不提供自动领取。国服日期与页面未确认。'
+    oversea_start: '2026-11-12T20:11:00+08:00'
+    oversea_end: '2026-11-26T11:00:00+08:00'
+    values:
+      minimum_contribution: 800
+      contribution_tiers: '210M,420M,630M,900M,1.17B,1.47B,1.8B'
+
   - id: alencia_handbook_2026_11_01
     kind: alencia_handbook
     name: 名助手艾莲西亚的事件手册

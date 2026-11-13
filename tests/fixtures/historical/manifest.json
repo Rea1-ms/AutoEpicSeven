@@ -5271,6 +5271,112 @@
         "tests.activity.test_epic_path.EpicPathReplayTests.test_epic_delayed_popup_and_receipt_never_replay_tab_or_claim"
       ],
       "event_id": "epic_path_2026_10_29"
+    },
+    "e7-activity-1112-1": {
+      "path": "tests/fixtures/historical/global_cn/carrot_reward_2026_11_12/e7-activity-1112-1.png",
+      "sha256": "ce17bdd6b1bf40360a3d9b1a915e59b0fe995172e8ea3304d587c81f29a5e2e8",
+      "source_sha256": "ce17bdd6b1bf40360a3d9b1a915e59b0fe995172e8ea3304d587c81f29a5e2e8",
+      "server": "global_cn",
+      "scene": "anniversary-cake-no-reward",
+      "event_id": "anniversary_party_2026_11_12",
+      "source": "user-provided e7-activity-1112-1.png",
+      "capture_type": "emulator_screenshot",
+      "privacy_redaction": [],
+      "used_by": [
+        "tests.activity.test_carrot_reward.CarrotRewardTests.test_real_pages_and_four_independent_tier_states",
+        "tests.activity.test_carrot_reward.CarrotRewardTests.test_cake_and_comparison_rules_are_never_claimed",
+        "tests.activity.test_carrot_reward.CarrotRewardTests.test_real_sidebar_selection_then_claim_never_repeats_tab"
+      ]
+    },
+    "e7-activity-1112-2": {
+      "path": "tests/fixtures/historical/global_cn/carrot_reward_2026_11_12/e7-activity-1112-2.png",
+      "sha256": "0b4ec2e520b9e1fc2a83a87daeb1c64a0b2ef89d67a3d35f94eb5da112cf7025",
+      "source_sha256": "0b4ec2e520b9e1fc2a83a87daeb1c64a0b2ef89d67a3d35f94eb5da112cf7025",
+      "server": "global_cn",
+      "scene": "comparison-rules-overlay",
+      "event_id": "carrot_reward_2026_11_12",
+      "source": "user-provided e7-activity-1112-2.png",
+      "capture_type": "emulator_screenshot",
+      "privacy_redaction": [],
+      "used_by": [
+        "tests.activity.test_carrot_reward.CarrotRewardTests.test_real_pages_and_four_independent_tier_states",
+        "tests.activity.test_carrot_reward.CarrotRewardTests.test_cake_and_comparison_rules_are_never_claimed"
+      ]
+    },
+    "e7-activity-1112-3": {
+      "path": "tests/fixtures/historical/global_cn/carrot_reward_2026_11_12/e7-activity-1112-3.png",
+      "sha256": "d6ef32b27de2d3b02ca345a3926d34445166b5fdd227977658d2b63c460afdc1",
+      "source_sha256": "d6ef32b27de2d3b02ca345a3926d34445166b5fdd227977658d2b63c460afdc1",
+      "server": "global_cn",
+      "scene": "four-tiers-available",
+      "event_id": "carrot_reward_2026_11_12",
+      "source": "user-provided e7-activity-1112-3.png",
+      "capture_type": "emulator_screenshot",
+      "privacy_redaction": [],
+      "used_by": [
+        "tests.activity.test_carrot_reward.CarrotRewardTests.test_real_pages_and_four_independent_tier_states",
+        "tests.activity.test_carrot_reward.CarrotRewardTests.test_real_ocr_reads_complete_points_and_sidebar_name",
+        "tests.activity.test_carrot_reward.CarrotRewardTests.test_claim_once_popup_and_all_four_receipts",
+        "tests.activity.test_carrot_reward.CarrotRewardTests.test_receipts_before_popup_do_not_complete_pending_claim",
+        "tests.activity.test_carrot_reward.CarrotRewardTests.test_dropped_claim_and_close_retry_only_their_own_action",
+        "tests.activity.test_carrot_reward.CarrotRewardTests.test_partial_receipts_keep_tier_identity",
+        "tests.activity.test_carrot_reward.CarrotRewardTests.test_zero_and_unfinished_points_keep_battle_recheck",
+        "tests.activity.test_carrot_reward.CarrotRewardTests.test_unknown_points_and_eligible_missing_controls_never_finish",
+        "tests.activity.test_carrot_reward.CarrotRewardTests.test_missing_reward_popup_cannot_complete_or_extend_deadline",
+        "tests.activity.test_carrot_reward.CarrotRewardTests.test_network_popup_does_not_acknowledge_reward",
+        "tests.activity.test_carrot_reward.CarrotRewardTests.test_slow_repeated_claim_frames_still_respect_original_deadline",
+        "tests.activity.test_carrot_reward.CarrotRewardTests.test_real_sidebar_selection_then_claim_never_repeats_tab",
+        "tests.activity.test_carrot_reward.CarrotRewardTests.test_real_common_batch_dispatches_claim_and_preserves_page_search"
+      ]
+    },
+    "e7-activity-1112-4": {
+      "path": "tests/fixtures/historical/global_cn/carrot_reward_2026_11_12/e7-activity-1112-4.png",
+      "sha256": "db9f1f1b2ba5e33671c9bad4488654c33116c2b98b8fdba7b6c9d1e6927688a7",
+      "source_sha256": "db9f1f1b2ba5e33671c9bad4488654c33116c2b98b8fdba7b6c9d1e6927688a7",
+      "server": "global_cn",
+      "scene": "actual-reward-popup",
+      "event_id": "carrot_reward_2026_11_12",
+      "source": "user-provided e7-activity-1112-4.png",
+      "capture_type": "emulator_screenshot",
+      "privacy_redaction": [],
+      "used_by": [
+        "tests.activity.test_carrot_reward.CarrotRewardTests.test_real_pages_and_four_independent_tier_states",
+        "tests.activity.test_carrot_reward.CarrotRewardTests.test_claim_once_popup_and_all_four_receipts",
+        "tests.activity.test_carrot_reward.CarrotRewardTests.test_receipts_before_popup_do_not_complete_pending_claim",
+        "tests.activity.test_carrot_reward.CarrotRewardTests.test_dropped_claim_and_close_retry_only_their_own_action",
+        "tests.activity.test_carrot_reward.CarrotRewardTests.test_partial_receipts_keep_tier_identity",
+        "tests.activity.test_carrot_reward.CarrotRewardTests.test_recovery_from_existing_reward_popup",
+        "tests.activity.test_carrot_reward.CarrotRewardTests.test_network_popup_does_not_acknowledge_reward",
+        "tests.activity.test_carrot_reward.CarrotRewardTests.test_real_sidebar_selection_then_claim_never_repeats_tab",
+        "tests.activity.test_carrot_reward.CarrotRewardTests.test_real_common_batch_dispatches_claim_and_preserves_page_search"
+      ]
+    },
+    "e7-activity-1112-5": {
+      "path": "tests/fixtures/historical/global_cn/carrot_reward_2026_11_12/e7-activity-1112-5.png",
+      "sha256": "6f76a034a883e3d826cd91780c0d68ee7d7141371dd2ed67eefa98ed67b97ba8",
+      "source_sha256": "6f76a034a883e3d826cd91780c0d68ee7d7141371dd2ed67eefa98ed67b97ba8",
+      "server": "global_cn",
+      "scene": "four-tiers-received",
+      "event_id": "carrot_reward_2026_11_12",
+      "source": "user-provided e7-activity-1112-5.png",
+      "capture_type": "emulator_screenshot",
+      "privacy_redaction": [],
+      "used_by": [
+        "tests.activity.test_carrot_reward.CarrotRewardTests.test_real_pages_and_four_independent_tier_states",
+        "tests.activity.test_carrot_reward.CarrotRewardTests.test_claim_once_popup_and_all_four_receipts",
+        "tests.activity.test_carrot_reward.CarrotRewardTests.test_already_received_finishes_without_clicks",
+        "tests.activity.test_carrot_reward.CarrotRewardTests.test_receipts_before_popup_do_not_complete_pending_claim",
+        "tests.activity.test_carrot_reward.CarrotRewardTests.test_dropped_claim_and_close_retry_only_their_own_action",
+        "tests.activity.test_carrot_reward.CarrotRewardTests.test_partial_receipts_keep_tier_identity",
+        "tests.activity.test_carrot_reward.CarrotRewardTests.test_missing_reward_popup_cannot_complete_or_extend_deadline",
+        "tests.activity.test_carrot_reward.CarrotRewardTests.test_recovery_from_existing_reward_popup",
+        "tests.activity.test_carrot_reward.CarrotRewardTests.test_network_popup_does_not_acknowledge_reward",
+        "tests.activity.test_carrot_reward.CarrotRewardTests.test_independent_navigation_confirms_carrot_target",
+        "tests.activity.test_carrot_reward.CarrotRewardTests.test_calendar_boundaries_server_support_and_batch_registration",
+        "tests.activity.test_carrot_reward.CarrotRewardTests.test_battle_recheck_stops_after_receipt_resets_daily_and_respects_switch",
+        "tests.activity.test_carrot_reward.CarrotRewardTests.test_real_sidebar_selection_then_claim_never_repeats_tab",
+        "tests.activity.test_carrot_reward.CarrotRewardTests.test_real_common_batch_dispatches_claim_and_preserves_page_search"
+      ]
     }
   },
   "aliases": {

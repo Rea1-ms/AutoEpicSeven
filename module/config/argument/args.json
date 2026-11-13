@@ -1423,6 +1423,10 @@
       "GetEpicPathDailyReward": {
         "type": "checkbox",
         "value": true
+      },
+      "GetCarrotReward": {
+        "type": "checkbox",
+        "value": true
       }
     }
   },
