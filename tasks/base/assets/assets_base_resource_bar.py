@@ -45,13 +45,22 @@ OCR_RESOURCE_BAR = ButtonWrapper(
 )
 SKYSTONE_ICON = ButtonWrapper(
     name='SKYSTONE_ICON',
-    share=Button(
-        file='./assets/share/base/resource_bar/SKYSTONE_ICON.png',
-        area=(806, 13, 833, 50),
-        search=(786, 0, 853, 70),
-        color=(63, 94, 116),
-        button=(806, 13, 833, 50),
-    ),
+    share=[
+        Button(
+            file='./assets/share/base/resource_bar/SKYSTONE_ICON.png',
+            area=(806, 13, 833, 50),
+            search=(786, 0, 853, 70),
+            color=(63, 94, 116),
+            button=(806, 13, 833, 50),
+        ),
+        Button(
+            file='./assets/share/base/resource_bar/SKYSTONE_ICON.2.png',
+            area=(815, 13, 842, 50),
+            search=(795, 0, 862, 70),
+            color=(115, 126, 135),
+            button=(815, 13, 842, 50),
+        ),
+    ],
 )
 STAMINA_ICON = ButtonWrapper(
     name='STAMINA_ICON',

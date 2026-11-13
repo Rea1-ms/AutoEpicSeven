@@ -18773,7 +18773,8 @@
             "20261003-125942-495",
             "20261003-125720-050",
             "secret-shop-bookmark-20261105",
-            "secret-shop-bottom-entry-20261107"
+            "secret-shop-bottom-entry-20261107",
+            "secret-shop-bookmark-20261112"
           ],
           "status": "已纳入",
           "reason": "含实际网络异常截图；回放明确重复静态画面，不作为连续实录"
@@ -18802,7 +18803,8 @@
             "20261002-221022-016",
             "20261003-125942-495",
             "secret-shop-bookmark-20261105",
-            "secret-shop-bottom-entry-20261107"
+            "secret-shop-bottom-entry-20261107",
+            "secret-shop-bookmark-20261112"
           ],
           "status": "已纳入",
           "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
@@ -18926,7 +18928,8 @@
             "20261003-125942-495",
             "20261003-125720-050",
             "secret-shop-bookmark-20261105",
-            "secret-shop-bottom-entry-20261107"
+            "secret-shop-bottom-entry-20261107",
+            "secret-shop-bookmark-20261112"
           ],
           "status": "已纳入",
           "reason": "含实际网络异常截图；回放明确重复静态画面，不作为连续实录"
@@ -19067,13 +19070,25 @@
           "reason": "新金币图标与完整余额；两类商品购买入口及缺少锚点禁止动作，神秘奖牌新资源栏为明确模拟"
         },
         {
+          "id": "tests.secret_shop.test_captures.CapturedShopTests.test_current_skystone_icon_reads_complete_balance",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "secret-shop-bookmark-20261112"
+          ],
+          "status": "已纳入",
+          "reason": "2026-11-12 天空石图标外观回归，核对完整余额与同排书签入口"
+        },
+        {
           "id": "tests.secret_shop.test_captures.CapturedShopTests.test_current_resource_bar_opens_both_purchase_types",
           "category": "流程回放",
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [
             "secret-shop-bookmark-20261105",
-            "20261002-151314-999"
+            "20261002-151314-999",
+            "secret-shop-bookmark-20261112"
           ],
           "status": "已纳入",
           "reason": "新金币图标与完整余额；两类商品购买入口及缺少锚点禁止动作，神秘奖牌新资源栏为明确模拟"
@@ -19084,7 +19099,8 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [
-            "secret-shop-bookmark-20261105"
+            "secret-shop-bookmark-20261105",
+            "secret-shop-bookmark-20261112"
           ],
           "status": "已纳入",
           "reason": "新金币图标与完整余额；两类商品购买入口及缺少锚点禁止动作，神秘奖牌新资源栏为明确模拟"

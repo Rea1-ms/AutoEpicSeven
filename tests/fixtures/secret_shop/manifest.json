@@ -957,6 +957,42 @@
         "tests.secret_shop.test_captures.ScrollRecoveryTests.test_top_recovery_retries_without_extending_timeout",
         "tests.secret_shop.test_captures.ScrollRecoveryTests.test_recovery_preserves_confirmed_purchase"
       ]
+    },
+    "secret-shop-bookmark-20261112": {
+      "path": "tests/fixtures/secret_shop/global_cn/secret-shop-bookmark-20261112.png",
+      "sha256": "46f5370dc59abf23ec8e6627ae54c4c605635fd4d0b296382cdf5b6982c8b016",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "covenant_top_before",
+      "source": "e7-sec-stuck-1.png",
+      "source_sha256": "b76d712b71e4268957415f8027a00329bdb1d6e7b36a9e0c857b7a940e4e8f0d",
+      "privacy_redaction": [
+        [
+          920,
+          60,
+          1280,
+          92
+        ],
+        [
+          0,
+          704,
+          220,
+          720
+        ]
+      ],
+      "expected_balance": [
+        285411424,
+        1366
+      ],
+      "received_date": "2026-11-12",
+      "used_by": [
+        "tests.secret_shop.test_captures.CapturedShopTests.test_page_and_confirmation_states",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_visible_resource_balances",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_available_and_sold_targets_in_both_scroll_positions",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_current_skystone_icon_reads_complete_balance",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_current_resource_bar_opens_both_purchase_types",
+        "tests.secret_shop.test_captures.CapturedShopTests.test_current_resource_bar_missing_anchors_never_authorize_purchase"
+      ]
     }
   }
 }
