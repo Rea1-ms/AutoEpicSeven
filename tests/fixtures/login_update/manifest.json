@@ -620,7 +620,9 @@
         "tests.core.test_login_update.LoginStartFlowTests.test_announcement_flow_waits_through_close_cooldown_before_title",
         "tests.core.test_login_update.LoginStartFlowTests.test_logged_out_stops_without_clicking_readable_start_text",
         "tests.core.test_login_update.LoginStartFlowTests.test_second_login_error_stops_after_one_restart",
-        "tests.core.test_login_update.LoginUpdateFlowTests.test_long_patch_scan_and_download_wait_then_enter_main"
+        "tests.core.test_login_update.LoginUpdateFlowTests.test_long_patch_scan_and_download_wait_then_enter_main",
+        "tests.core.test_login_update.LoginStartTests.test_recovery_checks_first_title_frame_after_unrelated_screen",
+        "tests.core.test_login_update.LoginStartTests.test_start_glyph_filter_ignores_background_and_keeps_phrase_validation"
       ],
       "source": "user-provided shot-e7.png; supplied 2026-11-05; capture time unknown",
       "source_sha256": "38c70314aa057cc975db74b94472ee2f97401a7f607997916049dc798aec2356",
@@ -644,7 +646,9 @@
         "tests.core.test_login_update.LoginStartTests.test_hidden_and_dimmed_text_does_not_fall_back_to_transparent_icon",
         "tests.core.test_login_update.LoginStartTests.test_normal_task_recovery_hands_both_titles_to_login",
         "tests.core.test_login_update.LoginStartFlowTests.test_missed_start_click_retries_safely_then_waits_for_confirmed_main",
-        "tests.core.test_login_update.LoginStartFlowTests.test_absent_text_waits_and_first_ready_frame_enters_immediately"
+        "tests.core.test_login_update.LoginStartFlowTests.test_absent_text_waits_and_first_ready_frame_enters_immediately",
+        "tests.core.test_login_update.LoginStartTests.test_recovery_checks_first_title_frame_after_unrelated_screen",
+        "tests.core.test_login_update.LoginStartTests.test_start_glyph_filter_ignores_background_and_keeps_phrase_validation"
       ],
       "source": "user-provided shot-e7-launch-ano.png; supplied 2026-11-05; capture time unknown",
       "source_sha256": "69e2e0ef54d8317b8a11f5cde21d6b7635bdc3305f7ed0b15f39527448ba3aaf",

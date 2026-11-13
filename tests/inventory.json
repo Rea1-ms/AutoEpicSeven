@@ -24896,6 +24896,56 @@
           "fixtures": [],
           "status": "已纳入",
           "reason": "真实标题图与更新反例；遮暗、隐藏文字、弹窗锚点叠加、重复帧、主页和国服协议状态明确模拟；保留生产计时与点击保护"
+        },
+        {
+          "id": "tests.core.test_login_update.LoginStartTests.test_arena_captures_skip_start_ocr",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261015-165556-841",
+            "20261015-165601-001",
+            "20261015-165606-908",
+            "20261015-165612-396",
+            "20261015-165612-968",
+            "20261015-165613-439",
+            "20261015-165615-527",
+            "20261015-165616-798",
+            "20261015-165618-643",
+            "20261015-165622-212",
+            "20261019-201526-416",
+            "20261019-201529-443",
+            "20261019-201532-705",
+            "20261019-201534-380",
+            "20261019-201536-225",
+            "20261021-001015-030"
+          ],
+          "status": "已纳入",
+          "reason": "竞技场实图不调用启动识字；下一帧标题立即恢复；背景替换为明确模拟，完整文字与遮挡判断保持不变"
+        },
+        {
+          "id": "tests.core.test_login_update.LoginStartTests.test_recovery_checks_first_title_frame_after_unrelated_screen",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "login-start-default-20261105",
+            "login-start-event-20261105"
+          ],
+          "status": "已纳入",
+          "reason": "竞技场实图不调用启动识字；下一帧标题立即恢复；背景替换为明确模拟，完整文字与遮挡判断保持不变"
+        },
+        {
+          "id": "tests.core.test_login_update.LoginStartTests.test_start_glyph_filter_ignores_background_and_keeps_phrase_validation",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "login-start-default-20261105",
+            "login-start-event-20261105"
+          ],
+          "status": "已纳入",
+          "reason": "竞技场实图不调用启动识字；下一帧标题立即恢复；背景替换为明确模拟，完整文字与遮挡判断保持不变"
         }
       ]
     },

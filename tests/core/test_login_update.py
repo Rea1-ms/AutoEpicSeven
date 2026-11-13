@@ -1,5 +1,6 @@
 """Login readiness, recovery, and client/patch update regressions."""
 
+import json
 import unittest
 from unittest.mock import Mock, patch
 
@@ -7,6 +8,7 @@ from module.config import server
 
 server.set_lang('global_cn')
 
+from module.base.utils import extract_white_letters
 from module.config.config import TaskEnd
 from module.exception import GameNotRunningError, RequestHumanTakeover
 from module.ocr.ocr import OcrWhiteLetterOnComplexBackground
@@ -434,6 +436,53 @@ class LoginStartTests(unittest.TestCase):
                 replay = LoginUpdateReplay(Login, [capture(name)], self.clock)
                 self.assertFalse(replay.task.is_in_login_confirm())
                 self.assertEqual(replay.actions, [])
+
+    def test_arena_captures_skip_start_ocr(self):
+        arena_manifest = MANIFEST.parents[1] / 'arena/manifest.json'
+        fixtures = json.loads(arena_manifest.read_text(encoding='utf-8'))['fixtures']
+        for name in fixtures:
+            with self.subTest(frame=name):
+                replay = LoginUpdateReplay(UI, [scene(fixture=START_CAPTURES[0])], self.clock)
+                replay.image = fixture_image(arena_manifest, name)
+                replay.task._ui_handoff_to_login = Mock()
+                with patch('tasks.base.ui.OcrWhiteLetterOnComplexBackground') as ocr:
+                    ocr.return_value.ocr_single_line.return_value = ''
+                    self.assertFalse(replay.task.handle_ui_recovery())
+                    ocr.assert_not_called()
+                replay.task._ui_handoff_to_login.assert_not_called()
+                self.assertEqual(replay.actions, [])
+
+    def test_recovery_checks_first_title_frame_after_unrelated_screen(self):
+        replay = LoginUpdateReplay(UI, [scene(), scene(fixture=START_CAPTURES[0]),
+                                       scene(), scene(fixture=START_CAPTURES[1])], self.clock)
+        replay.task._ui_handoff_to_login = Mock(return_value=True)
+        with patch('tasks.base.ui.OcrWhiteLetterOnComplexBackground',
+                   wraps=OcrWhiteLetterOnComplexBackground) as ocr:
+            for index, expected in enumerate((False, True, False, True)):
+                if index:
+                    replay.screenshot()
+                self.assertEqual(replay.task.handle_ui_recovery(), expected)
+            self.assertEqual(ocr.call_count, 2)
+        self.assertEqual(replay.task._ui_handoff_to_login.call_count, 2)
+        self.assertEqual(replay.actions, [])
+
+    def test_start_glyph_filter_ignores_background_and_keeps_phrase_validation(self):
+        for name in START_CAPTURES:
+            for background in ((0, 0, 0), (40, 90, 140)):
+                with self.subTest(frame=name, background=background):
+                    replay = LoginUpdateReplay(UI, [scene(fixture=name)], self.clock)
+                    left, top, right, bottom = OCR_LOGIN_START.area
+                    region = replay.image[top:bottom, left:right]
+                    # Explicitly replace the backdrop, keeping bright glyph
+                    # pixels. This models a different splash illustration.
+                    region[extract_white_letters(region, threshold=255) >= 30] = background
+                    with patch('tasks.base.ui.OcrWhiteLetterOnComplexBackground') as ocr:
+                        ocr.return_value.ocr_single_line.return_value = '轻触画面开始'
+                        self.assertTrue(replay.task.is_in_login_confirm())
+                        ocr.return_value.ocr_single_line.return_value = '轻触画面关闭'
+                        self.assertFalse(replay.task.is_in_login_confirm())
+                        self.assertEqual(ocr.call_count, 2)
+                    self.assertEqual(replay.actions, [])
 
     def test_full_start_phrase_and_normalized_model_language_are_required(self):
         for lang in ('cn', 'auto', '', 'global_cn'):
