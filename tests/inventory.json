@@ -16728,6 +16728,116 @@
           "original_source": "test/test_asset_crop.py"
         },
         {
+          "id": "tests.captured.test_asset_crop.AssetCropTest.test_live_click_uses_image_coordinates_once_on_release",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "截图预览操控回归；只使用合成画面和模拟设备",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.captured.test_asset_crop.AssetCropTest.test_live_drag_preserves_endpoints_and_duration_without_click",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "截图预览操控回归；只使用合成画面和模拟设备",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.captured.test_asset_crop.AssetCropTest.test_frozen_selection_blocks_device_controls_and_resume",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "截图预览操控回归；只使用合成画面和模拟设备",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.captured.test_asset_crop.AssetCropTest.test_toolbar_capture_saves_original_pixels_without_device_click",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "截图预览操控回归；只使用合成画面和模拟设备",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.captured.test_asset_crop.AssetCropTest.test_blank_viewport_and_toolbar_release_never_tap_device",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "截图预览操控回归；只使用合成画面和模拟设备",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.captured.test_asset_crop.AssetCropTest.test_preview_f3_captures_frozen_frame_and_window_close_exits",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "截图预览操控回归；只使用合成画面和模拟设备",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.captured.test_asset_crop.AssetCropTest.test_saved_frame_keeps_source_without_uid_masking",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "截图预览操控回归；只使用合成画面和模拟设备",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.captured.test_asset_crop.AssetCropTest.test_preview_adapter_uses_device_stack_and_saves_displayed_frame",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "截图预览操控回归；只使用合成画面和模拟设备",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.captured.test_asset_crop.AssetCropTest.test_gui_entry_reuses_crop_window_without_global_hotkey_dependency",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "截图预览操控回归；只使用合成画面和模拟设备",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.captured.test_asset_crop.AssetCropTest.test_high_dpi_display_scale_preserves_source_coordinates",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "高分屏预览坐标映射回归；只使用合成画面和模拟设备",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.captured.test_asset_crop.AssetCropTest.test_high_dpi_toolbar_uses_scaled_hitboxes",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "高分屏工具栏命中区域回归；只使用合成画面和模拟设备",
+          "input_kind": "mock_or_rule"
+        },
+        {
           "id": "tests.captured.test_asset_crop.AssetArchiveTest.test_preview_records_hash_without_moving_or_creating_archive",
           "category": "资源基础检查",
           "requires_device": false,

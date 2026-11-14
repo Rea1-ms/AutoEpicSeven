@@ -1,29 +1,33 @@
 # ruff: noqa: E402
 from module.config import server as _test_server
+
 _test_server.set_lang("global_cn")
 from tests.support.history_fixtures import fixture_path
 
 """Offline checks for the asset capture and crop developer tool."""
 
-import io
 import hashlib
+import io
 import json
+import sys
 import unittest
 from contextlib import redirect_stdout
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 from uuid import uuid4
 
 import cv2
 import numpy as np
-
+from PIL import Image
 
 WORKTREE = Path(__file__).resolve().parents[2]
 ORIGINAL_REPO = Path(__import__("subprocess").check_output(["git","rev-parse","--git-common-dir"],text=True).strip()).resolve().parent
 SCREENSHOT = fixture_path('urgent_tasks/superior-detail.png')
 
-from dev_tools.assets import button_extract  # noqa: E402
-from dev_tools.assets import asset_archive  # noqa: E402
+from dev_tools.assets import (
+    asset_archive,  # noqa: E402
+    button_extract,  # noqa: E402
+)
 from dev_tools.assets.asset_crop import (  # noqa: E402
     AssetCropError,
     CropItem,
@@ -37,6 +41,7 @@ from dev_tools.assets.asset_crop import (  # noqa: E402
     write_output_plan,
 )
 from dev_tools.assets.asset_crop_ui import InteractiveCropper  # noqa: E402
+from dev_tools.capture import screenshot
 
 
 class AssetCropTest(unittest.TestCase):
@@ -83,7 +88,7 @@ class AssetCropTest(unittest.TestCase):
         )
         self.assertTrue(plan.test_image.is_relative_to(ORIGINAL_REPO / "test" / "screenshots"))
         self.assertTrue(plan.assets[0][1].is_relative_to(WORKTREE / "assets"))
-        self.assertEqual(np.count_nonzero(plan.image[680:720, 0:180]), 0)
+        self.assertTrue(np.array_equal(plan.image, self.image))
         self.assertEqual(resolve_original_repo(WORKTREE), ORIGINAL_REPO)
 
     def test_existing_asset_requires_explicit_replace(self):
@@ -115,7 +120,8 @@ class AssetCropTest(unittest.TestCase):
             patch("cv2.setMouseCallback"),
             patch("cv2.imshow"),
             patch("cv2.destroyWindow") as destroy,
-            patch("cv2.waitKey", side_effect=[ord("z"), 27]),
+            patch("cv2.getWindowProperty", return_value=1),
+            patch("cv2.waitKeyEx", side_effect=[ord("z"), 27]),
         ):
             self.assertIsNone(editor.run())
         self.assertEqual(editor.boxes, [])
@@ -136,7 +142,8 @@ class AssetCropTest(unittest.TestCase):
             patch("cv2.setMouseCallback"),
             patch("cv2.imshow"),
             patch("cv2.destroyWindow"),
-            patch("cv2.waitKey", side_effect=wait_key),
+            patch("cv2.getWindowProperty", return_value=1),
+            patch("cv2.waitKeyEx", side_effect=wait_key),
         ):
             result = live.run()
         self.assertIsNotNone(result)
@@ -148,6 +155,148 @@ class AssetCropTest(unittest.TestCase):
         editor._mouse(cv2.EVENT_LBUTTONDOWN, 440, 260, 0, None)
         editor._mouse(cv2.EVENT_LBUTTONUP, 640, 360, 0, None)
         self.assertEqual(editor.boxes, [(540, 310, 640, 360)])
+
+    def test_live_click_uses_image_coordinates_once_on_release(self):
+        click = Mock()
+        editor = InteractiveCropper(frame_getter=lambda: self.image, on_click=click)
+        editor.frame = self.image.copy()
+        editor._zoom_at((640, 360), 2)
+        editor._mouse(cv2.EVENT_LBUTTONDOWN, 440, 260, 0, None)
+        editor._mouse(cv2.EVENT_MOUSEMOVE, 441, 261, 0, None)
+        click.assert_not_called()
+        editor._mouse(cv2.EVENT_LBUTTONUP, 440, 260, 0, None)
+        editor._mouse(cv2.EVENT_LBUTTONUP, 440, 260, 0, None)
+        click.assert_called_once_with(540, 310)
+        self.assertEqual(editor.boxes, [])
+
+    def test_live_drag_preserves_endpoints_and_duration_without_click(self):
+        click, swipe = Mock(), Mock()
+        editor = InteractiveCropper(frame_getter=lambda: self.image, on_click=click, on_swipe=swipe)
+        editor.frame = self.image.copy()
+        with patch('dev_tools.assets.asset_crop_ui.time.monotonic', side_effect=[10, 10.4]):
+            editor._mouse(cv2.EVENT_LBUTTONDOWN, 400, 300, 0, None)
+            editor._mouse(cv2.EVENT_LBUTTONUP, 500, 400, 0, None)
+        click.assert_not_called()
+        self.assertEqual(swipe.call_args.args[:2], ((400, 300), (500, 400)))
+        self.assertAlmostEqual(swipe.call_args.args[2], 0.4)
+        self.assertEqual(editor.boxes, [])
+
+    def test_frozen_selection_blocks_device_controls_and_resume(self):
+        click, swipe, back = Mock(), Mock(), Mock()
+        editor = InteractiveCropper(frame_getter=lambda: self.image, on_click=click,
+                                    on_swipe=swipe, on_back=back)
+        editor.frame = self.image.copy()
+        editor._action('freeze')
+        editor._mouse(cv2.EVENT_LBUTTONDOWN, 400, 300, 0, None)
+        editor._mouse(cv2.EVENT_LBUTTONUP, 500, 400, 0, None)
+        editor._action('back')
+        editor._action('freeze')
+        self.assertTrue(editor.frozen)
+        self.assertEqual(editor.boxes, [(400, 300, 500, 400)])
+        click.assert_not_called()
+        swipe.assert_not_called()
+        back.assert_not_called()
+        editor.boxes.clear()
+        editor._action('freeze')
+        editor._action('back')
+        self.assertFalse(editor.frozen)
+        back.assert_called_once_with()
+
+    def test_toolbar_capture_saves_original_pixels_without_device_click(self):
+        capture, click = Mock(return_value='frame.png'), Mock()
+        editor = InteractiveCropper(frame_getter=lambda: self.image, on_capture=capture, on_click=click)
+        editor.frame = self.image.copy()
+        editor._zoom_at((640, 360), 2)
+        editor.boxes.append((10, 20, 30, 40))
+        editor._mouse(cv2.EVENT_LBUTTONDOWN, 40, 740, 0, None)
+        editor._mouse(cv2.EVENT_LBUTTONUP, 40, 740, 0, None)
+        click.assert_not_called()
+        capture.assert_called_once()
+        self.assertTrue(np.array_equal(capture.call_args.args[0], self.image))
+        self.assertIsNot(capture.call_args.args[0], editor.frame)
+        self.assertEqual(editor._render().shape, (808, 1280, 3))
+
+    def test_blank_viewport_and_toolbar_release_never_tap_device(self):
+        click, capture = Mock(), Mock(return_value='frame.png')
+        editor = InteractiveCropper(frame_getter=lambda: self.image, on_click=click, on_capture=capture)
+        editor.frame = self.image.copy()
+        editor.zoom = 0.5
+        for start, end in (((900, 300), (900, 300)), ((300, 200), (900, 300)),
+                           ((300, 200), (40, 740)), ((40, 740), (300, 200))):
+            editor._mouse(cv2.EVENT_LBUTTONDOWN, *start, 0, None)
+            editor._mouse(cv2.EVENT_LBUTTONUP, *end, 0, None)
+        click.assert_not_called()
+        capture.assert_not_called()
+
+    def test_preview_f3_captures_frozen_frame_and_window_close_exits(self):
+        capture = Mock(return_value='frame.png')
+        getter = Mock(return_value=self.image)
+        editor = InteractiveCropper(frame_getter=getter, on_capture=capture)
+        with (
+            patch('cv2.namedWindow'), patch('cv2.resizeWindow'), patch('cv2.setMouseCallback'),
+            patch('cv2.imshow'), patch('cv2.destroyWindow'),
+            patch('cv2.getWindowProperty', side_effect=[1, 1, 0]),
+            patch('cv2.waitKeyEx', side_effect=[32, 0x720000, -1]),
+        ):
+            self.assertIsNone(editor.run())
+        getter.assert_called_once_with()
+        capture.assert_called_once()
+        self.assertTrue(np.array_equal(capture.call_args.args[0], self.image))
+
+    def test_saved_frame_keeps_source_without_uid_masking(self):
+        output = WORKTREE / '.cache' / 'capture-preview-tests' / uuid4().hex
+        source = self.image.copy()
+        with redirect_stdout(io.StringIO()):
+            path = screenshot.save_frame(self.image, str(output))
+        saved = np.asarray(Image.open(path))
+        self.assertEqual(saved.shape, source.shape)
+        self.assertTrue(np.array_equal(saved, source))
+        self.assertTrue(np.array_equal(self.image, source))
+
+    def test_preview_adapter_uses_device_stack_and_saves_displayed_frame(self):
+        device = Mock()
+        device.screenshot.return_value = self.image
+        editor = screenshot.create_preview(device)
+        editor.on_click(400, 300)
+        self.assertEqual(device.click.call_args.args[0].button, (400, 300, 401, 301))
+        self.assertFalse(device.click.call_args.kwargs['control_check'])
+        editor.on_swipe((400, 300), (500, 400), 0.4)
+        device.swipe.assert_called_once_with((400, 300), (500, 400), duration=0.4)
+        editor.on_back()
+        device.adb_shell.assert_called_once_with(['input', 'keyevent', '4'])
+        with patch.object(screenshot, 'save_frame', return_value='frame.png') as save:
+            editor.on_capture(self.image)
+        save.assert_called_once()
+        device.screenshot.assert_not_called()
+        frame = editor.frame_getter()
+        self.assertTrue(np.array_equal(frame, self.image))
+
+    def test_high_dpi_display_scale_preserves_source_coordinates(self):
+        click = Mock()
+        editor = InteractiveCropper(frame_getter=lambda: self.image, on_click=click, display_scale=0.75)
+        editor.frame = self.image.copy()
+        editor._mouse(cv2.EVENT_LBUTTONDOWN, round(400 * 0.75), round(300 * 0.75), 0, None)
+        editor._mouse(cv2.EVENT_LBUTTONUP, round(400 * 0.75), round(300 * 0.75), 0, None)
+        click.assert_called_once_with(400, 300)
+        self.assertEqual(editor._render().shape, (round(808 * 0.75), round(1280 * 0.75), 3))
+
+    def test_high_dpi_toolbar_uses_scaled_hitboxes(self):
+        capture = Mock(return_value='frame.png')
+        editor = InteractiveCropper(frame_getter=lambda: self.image, on_capture=capture, display_scale=0.75)
+        editor.frame = self.image.copy()
+        x = round(40 * 0.75)
+        y = round((720 + 20) * 0.75)
+        editor._mouse(cv2.EVENT_LBUTTONDOWN, x, y, 0, None)
+        editor._mouse(cv2.EVENT_LBUTTONUP, x, y, 0, None)
+        capture.assert_called_once()
+
+    def test_gui_entry_reuses_crop_window_without_global_hotkey_dependency(self):
+        with (
+            patch.dict(sys.modules, {'pynput': None}),
+            patch('dev_tools.assets.asset_crop.main', return_value=130) as crop_main,
+        ):
+            self.assertEqual(screenshot.main(['--serial', '127.0.0.1:5555']), 0)
+        crop_main.assert_called_once_with(['live', '--serial', '127.0.0.1:5555'])
 
     def test_filtered_extract_does_not_clean_sibling_wrappers(self):
         row = button_extract.DataAssets(
