@@ -123,7 +123,7 @@ cn_delay_days（国服顺延天数）仅保留旧资料解析兼容，正式资�
 
 小春已于2026年10月8日11点结束，10月15日归档至 tasks/activity/legacy/koharu_raffle_2026_09_17（小春活动归档）。原实现、配置和五种语言文案保留，当前任务已移除该玩法；归档实现不依赖梅铃流程，单独追加日期不会恢复执行。
 
-激战门扉和小春的正式历史用例继续验证归档实现。正式截图保存在当前工作树 tests/fixtures/historical/global_cn（国际服中文历史样本）下对应活动目录，用例在 tests/activity（活动流程测试）和 tests/captured（截图识别测试）中，通过 dev_tools.run_offline_tests（统一离线入口）运行。补素材时仍使用 dev_tools.asset_crop（切图工具），再按模块生成识别文件；旧手动采样与配方保留。侧栏识别统一使用 COMMON_ACTIVITY_LIST（活动列表区域），无需为每个活动另存搜索区域。
+激战门扉和小春的正式历史用例继续验证归档实现。正式截图保存在当前工作树 tests/fixtures/historical/global_cn（国际服中文历史样本）下对应活动目录，用例在 tests/activity（活动流程测试）和 tests/captured（截图识别测试）中，通过 dev_tools.testing.run_offline_tests（统一离线入口）运行。补素材时仍使用 dev_tools.assets.asset_crop（切图工具），再按模块生成识别文件；旧手动采样与配方保留。侧栏识别统一使用 COMMON_ACTIVITY_LIST（活动列表区域），无需为每个活动另存搜索区域。
 
 ### 2026年10月梅铃活动（国际服实现已归档）
 
@@ -206,6 +206,6 @@ tasks/activity/calendar.md（活动时间图）是展示快照，注明生成时
 
 ## 验证范围
 
-正式离线测试放在当前工作树 tests（测试目录）中：tests/game_info（资料及读取方测试）、tests/activity（活动流程、分服与配置升级回归）和 tests/captured（历史截图识别）。梅铃用例为 tests/activity/test_meirin_reward.py（梅铃识别与领取测试），小春和激战门扉继续验证归档实现。样本与用例关系登记在分类清单和样本清单中，先用 dev_tools.run_offline_tests --list（统一入口列出用例）核对，再运行对应测试集；实际通过范围以 TESTING_PLAN.md（验收计划）与当次报告为准。
+正式离线测试放在当前工作树 tests（测试目录）中：tests/game_info（资料及读取方测试）、tests/activity（活动流程、分服与配置升级回归）和 tests/captured（历史截图识别）。梅铃用例为 tests/activity/test_meirin_reward.py（梅铃识别与领取测试），小春和激战门扉继续验证归档实现。样本与用例关系登记在分类清单和样本清单中，先用 dev_tools.testing.run_offline_tests --list（统一入口列出用例）核对，再运行对应测试集；实际通过范围以 TESTING_PLAN.md（验收计划）与当次报告为准。
 
 资料回归覆盖共用日期、分服覆盖、旧顺延兼容、过渡期日期、边界切换、上限变化、资料替换、错误格式与原活动领取记录。复查账号记录时，资料变化只会影响后续识别与复查条件，不会把当前等级猜测为0。旧 test（历史手动目录）继续保留，不作为正式离线入口。

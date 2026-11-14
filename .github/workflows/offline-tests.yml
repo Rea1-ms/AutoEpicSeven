@@ -6,10 +6,9 @@ name: Offline regression tests
     paths:
       - '.github/workflows/offline-tests.yml'
       - 'assets/**'
-      - 'dev_tools/build_exploration_fixtures.py'
-      - 'dev_tools/build_test_inventory.py'
-      - 'dev_tools/check_offline_negative.py'
-      - 'dev_tools/run_offline_tests.py'
+      - 'dev_tools/assets/**'
+      - 'dev_tools/capture/**'
+      - 'dev_tools/testing/**'
       - 'module/**'
       - 'tasks/**'
       - 'tests/**'
@@ -19,10 +18,9 @@ name: Offline regression tests
     paths:
       - '.github/workflows/offline-tests.yml'
       - 'assets/**'
-      - 'dev_tools/build_exploration_fixtures.py'
-      - 'dev_tools/build_test_inventory.py'
-      - 'dev_tools/check_offline_negative.py'
-      - 'dev_tools/run_offline_tests.py'
+      - 'dev_tools/assets/**'
+      - 'dev_tools/capture/**'
+      - 'dev_tools/testing/**'
       - 'module/**'
       - 'tasks/**'
       - 'tests/**'
@@ -49,9 +47,9 @@ jobs:
           python -m pip install --no-deps -r requirements-test-pinned.txt
           python -m pip check
       - name: Verify controlled failure and device isolation
-        run: python -B -m dev_tools.check_offline_negative
+        run: python -B -m dev_tools.testing.check_offline_negative
       - name: Run offline suite with coverage
-        run: python -B -m dev_tools.run_offline_tests --suite all --coverage --timeout-seconds 300
+        run: python -B -m dev_tools.testing.run_offline_tests --suite all --coverage --timeout-seconds 300
       - name: Publish result summary
         if: always()
         run: |

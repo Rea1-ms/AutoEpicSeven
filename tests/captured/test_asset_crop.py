@@ -22,9 +22,9 @@ WORKTREE = Path(__file__).resolve().parents[2]
 ORIGINAL_REPO = Path(__import__("subprocess").check_output(["git","rev-parse","--git-common-dir"],text=True).strip()).resolve().parent
 SCREENSHOT = fixture_path('urgent_tasks/superior-detail.png')
 
-from dev_tools import button_extract  # noqa: E402
-from dev_tools import asset_archive  # noqa: E402
-from dev_tools.asset_crop import (  # noqa: E402
+from dev_tools.assets import button_extract  # noqa: E402
+from dev_tools.assets import asset_archive  # noqa: E402
+from dev_tools.assets.asset_crop import (  # noqa: E402
     AssetCropError,
     CropItem,
     CropRecipe,
@@ -36,7 +36,7 @@ from dev_tools.asset_crop import (  # noqa: E402
     resolve_original_repo,
     write_output_plan,
 )
-from dev_tools.asset_crop_ui import InteractiveCropper  # noqa: E402
+from dev_tools.assets.asset_crop_ui import InteractiveCropper  # noqa: E402
 
 
 class AssetCropTest(unittest.TestCase):

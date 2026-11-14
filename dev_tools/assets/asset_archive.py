@@ -8,7 +8,7 @@ from pathlib import Path
 from uuid import uuid4
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 ARCHIVE = Path('.cache/unused-assets')
 
 

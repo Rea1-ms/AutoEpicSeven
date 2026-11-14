@@ -13,7 +13,7 @@ import numpy as np
 from tqdm import tqdm
 
 if __package__ in (None, ''):
-    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from module.base.code_generator import CodeGenerator  # noqa: E402
 from module.base.utils import (  # noqa: E402
@@ -352,7 +352,7 @@ def generate_code(modules: t.Optional[t.Iterable[str]] = None):
         gen.Import("""
         from module.base.button import Button, ButtonWrapper
         """)
-        gen.CommentAutoGenerage('dev_tools.button_extract')
+        gen.CommentAutoGenerage('dev_tools.assets.button_extract')
         for assets, assets_data in module_data.items():
             has_share = SHARE_SERVER in assets_data
             with gen.Object(key=assets, object_class='ButtonWrapper'):

@@ -11,15 +11,14 @@ from dataclasses import dataclass
 from pathlib import Path
 
 if __package__ in (None, ""):
-    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 import numpy as np  # noqa: E402
 
-from dev_tools.asset_crop_ui import Box, InteractiveCropper  # noqa: E402
-from dev_tools.capture_utils import handle_sensitive_info  # noqa: E402
+from dev_tools.assets.asset_crop_ui import Box, InteractiveCropper  # noqa: E402
+from dev_tools.capture.capture_utils import handle_sensitive_info  # noqa: E402
 from module.base.utils import load_image, save_image  # noqa: E402
 from module.config.server import VALID_LANG  # noqa: E402
-
 
 ASSET_RESOLUTION = (1280, 720)
 ASSET_KINDS = {
@@ -257,7 +256,7 @@ def validate_image(image: np.ndarray) -> None:
 
 
 def resolve_original_repo(worktree: Path | None = None) -> Path:
-    worktree = (worktree or Path(__file__).resolve().parents[1]).resolve()
+    worktree = (worktree or Path(__file__).resolve().parents[2]).resolve()
     try:
         process = subprocess.run(
             ["git", "rev-parse", "--git-common-dir"],
@@ -321,7 +320,7 @@ def create_output_plan(
 ) -> OutputPlan:
     validate_image(image)
     validate_recipe(recipe)
-    worktree = (worktree or Path(__file__).resolve().parents[1]).resolve()
+    worktree = (worktree or Path(__file__).resolve().parents[2]).resolve()
     original_repo = (original_repo or resolve_original_repo(worktree)).resolve()
     _validate_dependencies(recipe.items, worktree)
 
@@ -389,7 +388,7 @@ def write_output_plan(
 
     generated = []
     if extract and plan.modules:
-        from dev_tools.button_extract import generate_code
+        from dev_tools.assets.button_extract import generate_code
 
         try:
             generated = generate_code(modules=plan.modules)
@@ -511,14 +510,14 @@ def _finish_interactive(args, image: np.ndarray, boxes: list[Box], source: Path 
 
 
 def command_live(args) -> int:
-    from dev_tools.screenshot import create_device, take_screenshot
+    from dev_tools.capture.screenshot import create_device, create_preview
 
     device = create_device(args.serial or args.config)
     if args.namespace is None:
         import module.config.server as server
 
         args.namespace = server.lang
-    editor = InteractiveCropper(frame_getter=lambda: take_screenshot(device))
+    editor = create_preview(device)
     selected = editor.run()
     if selected is None:
         _print_canceled(args)
@@ -541,7 +540,7 @@ def command_open(args) -> int:
 
 
 def command_capture(args) -> int:
-    from dev_tools.screenshot import create_device, take_screenshot
+    from dev_tools.capture.screenshot import create_device, take_screenshot
 
     suite = _required(args.suite, "Test suite")
     case = _required(args.case, "Test case")

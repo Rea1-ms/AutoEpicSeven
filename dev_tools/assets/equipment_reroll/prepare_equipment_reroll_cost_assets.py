@@ -4,11 +4,11 @@ import argparse
 import json
 from pathlib import Path
 
-from dev_tools.asset_crop import CropItem, CropRecipe, create_output_plan, write_output_plan
+from dev_tools.assets.asset_crop import CropItem, CropRecipe, create_output_plan, write_output_plan
 from module.base.utils import load_image
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[3]
 
 
 def main():
@@ -32,7 +32,7 @@ def main():
     if args.write:
         for plan in plans:
             write_output_plan(plan)
-        from dev_tools.button_extract import generate_code
+        from dev_tools.assets.button_extract import generate_code
 
         print(json.dumps({"generated": generate_code(modules=["equipment_reroll"])}, ensure_ascii=False))
 

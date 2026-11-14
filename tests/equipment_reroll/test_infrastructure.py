@@ -5,7 +5,7 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
 
-from dev_tools.run_offline_tests import run as run_offline_suite
+from dev_tools.testing.run_offline_tests import run as run_offline_suite
 from module.exception import RequestHumanTakeover
 from tests.support.equipment_reroll import ReplayClock, ReplayDevice
 from tests.support.equipment_reroll import load_sample
@@ -196,14 +196,14 @@ class InfrastructureTests(unittest.TestCase):
             load_sample("initial")
 
     def test_missing_numeric_model_fails_before_running_tests(self):
-        from dev_tools.run_offline_tests import run
+        from dev_tools.testing.run_offline_tests import run
         from module.ocr.models import OCR_MODEL
 
         args = SimpleNamespace(suite="equipment_reroll", list=False, out=None,
                                case="tests.equipment_reroll.test_rules.RuleTests.test_no_lock_before_speed_five")
         with patch.object(OCR_MODEL, "get_by_lang", side_effect=[object(), FileNotFoundError("英文数值模型缺失")]) as get_model, patch(
             "unittest.TextTestRunner.run", side_effect=AssertionError("模型缺失时不能开始测试")
-        ), patch("dev_tools.run_offline_tests.equipment_reroll_fixtures") as fixtures:
+        ), patch("dev_tools.testing.run_offline_tests.equipment_reroll_fixtures") as fixtures:
             self.assertEqual(run(args), 2)
         fixtures.assert_not_called()
         self.assertEqual([call.args[0] for call in get_model.call_args_list], ["cn", "en"])

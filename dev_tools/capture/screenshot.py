@@ -4,11 +4,11 @@ from datetime import datetime
 from pathlib import Path
 
 if __package__ in (None, ""):
-    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from PIL import Image  # noqa: E402
 
-from dev_tools.capture_utils import handle_sensitive_info  # noqa: E402
+from dev_tools.capture.capture_utils import handle_sensitive_info  # noqa: E402
 from module.config.config import AzurLaneConfig  # noqa: E402
 from module.config.utils import alas_instance  # noqa: E402
 from module.device.pkg_resources import get_distribution  # noqa: E402
@@ -24,7 +24,7 @@ from module.logger import logger  # noqa: E402
 A tool to take screenshots on device
 
 Usage:
-    python -m dev_tools.screenshot
+    python -m dev_tools.capture.screenshot
 """
 
 

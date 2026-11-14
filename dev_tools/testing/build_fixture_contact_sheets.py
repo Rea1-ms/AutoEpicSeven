@@ -7,7 +7,7 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageOps
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 SOURCE = ROOT / "tests" / "fixtures" / "dimensional_exploration"
 OUTPUT = ROOT / "screenshots" / "fixture_review"
 

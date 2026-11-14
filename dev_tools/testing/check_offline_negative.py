@@ -5,7 +5,7 @@ from types import SimpleNamespace
 from unittest.mock import patch
 from uuid import uuid4
 
-from dev_tools import run_offline_tests as runner
+from dev_tools.testing import run_offline_tests as runner
 from tests.dimensional_exploration.test_dimensional_exploration import PolicyTests
 from tests.dimensional_exploration.test_dimensional_exploration_shop_new import ShopNewRegressions
 from tests.sanctuary.test_monthly_deposit import DepositScreenshotTests

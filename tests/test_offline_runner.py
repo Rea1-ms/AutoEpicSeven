@@ -9,9 +9,9 @@ import unittest
 from types import SimpleNamespace
 from unittest.mock import patch
 
-from dev_tools import run_offline_tests as runner
+from dev_tools.testing import run_offline_tests as runner
 from dev_tools import build_exploration_fixtures as fixture_importer
-from dev_tools import build_fixture_contact_sheets as contact_sheets
+from dev_tools.testing import build_fixture_contact_sheets as contact_sheets
 from dev_tools import build_test_inventory as inventory_builder
 from tests.support.exploration import ReplayDevice, artifact_path
 from tests.support import offline
@@ -68,7 +68,7 @@ ids = {
     'tests.activity.test_huche_shop.ScheduleTests.test_record_never_skips_next_half_day_or_another_server',
 }
 with patch.object(datetime_module, 'datetime', SchedulerDatetime):
-    from dev_tools.run_offline_tests import tests_for
+    from dev_tools.testing.run_offline_tests import tests_for
     cases = [case for case in tests_for('all') if case.id() in ids]
     assert len(cases) == len(ids), 'Timezone regression cases were not collected'
     import module.game_info.catalog as catalog
@@ -101,7 +101,7 @@ sys.modules.pop('winreg', None)
 sys.meta_path.insert(0, MissingRegistry())
 from module.device import env
 env.IS_WINDOWS = False
-from dev_tools.run_offline_tests import tests_for
+from dev_tools.testing.run_offline_tests import tests_for
 cases = tests_for('all')
 assert 'winreg' not in sys.modules, 'Registry stub leaked beyond test imports'
 from tests.support.windows import windows_registry_imports

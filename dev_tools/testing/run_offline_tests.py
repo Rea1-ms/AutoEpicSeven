@@ -21,7 +21,7 @@ from unittest.mock import patch
 from PIL import Image
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 EXPLORATION_MODULES = (
     "tests.dimensional_exploration.test_dimensional_exploration",
     "tests.dimensional_exploration.test_dimensional_exploration_events",
@@ -554,7 +554,7 @@ def main():
     if args.timeout_seconds is not None and args.timeout_seconds < 1:
         parser.error("--timeout-seconds must be positive")
     if args.timeout_seconds and not args.child and not args.list:
-        command = [sys.executable, "-B", "-m", "dev_tools.run_offline_tests", "--suite", args.suite, "--child"]
+        command = [sys.executable, "-B", "-m", "dev_tools.testing.run_offline_tests", "--suite", args.suite, "--child"]
         if args.case:
             command.extend(("--case", args.case))
         if args.coverage:
