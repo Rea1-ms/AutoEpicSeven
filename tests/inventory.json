@@ -3440,8 +3440,8 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "已纳入",
-          "reason": "分场景图片引用、导入保留和预览清单契约"
+          "status": "未纳入",
+          "reason": "一次性迁移脚本及专属测试已归档到忽略缓存，不属于日常离线测试；原测试源码保留在归档备份中"
         },
         {
           "id": "tests.test_offline_runner.FixtureMaintenanceTests.test_import_preserves_registered_but_unreferenced_images",
@@ -3449,8 +3449,8 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "已纳入",
-          "reason": "分场景图片引用、导入保留和预览清单契约"
+          "status": "未纳入",
+          "reason": "一次性迁移脚本及专属测试已归档到忽略缓存，不属于日常离线测试；原测试源码保留在归档备份中"
         },
         {
           "id": "tests.test_offline_runner.FixtureMaintenanceTests.test_import_adds_new_images_to_selected_category",
@@ -3458,8 +3458,8 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "已纳入",
-          "reason": "分场景图片引用、导入保留和预览清单契约"
+          "status": "未纳入",
+          "reason": "一次性迁移脚本及专属测试已归档到忽略缓存，不属于日常离线测试；原测试源码保留在归档备份中"
         },
         {
           "id": "tests.test_offline_runner.FixtureMaintenanceTests.test_import_rejects_changed_registered_source",
@@ -3467,8 +3467,8 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "已纳入",
-          "reason": "分场景图片引用、导入保留和预览清单契约"
+          "status": "未纳入",
+          "reason": "一次性迁移脚本及专属测试已归档到忽略缓存，不属于日常离线测试；原测试源码保留在归档备份中"
         },
         {
           "id": "tests.test_offline_runner.FixtureMaintenanceTests.test_import_rejects_paths_outside_fixture_directory",
@@ -3476,8 +3476,8 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "已纳入",
-          "reason": "分场景图片引用、导入保留和预览清单契约"
+          "status": "未纳入",
+          "reason": "一次性迁移脚本及专属测试已归档到忽略缓存，不属于日常离线测试；原测试源码保留在归档备份中"
         },
         {
           "id": "tests.test_offline_runner.FixtureMaintenanceTests.test_contact_sheets_follow_manifest_and_allow_any_count",
@@ -3629,8 +3629,8 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "新增",
-          "reason": ""
+          "status": "未纳入",
+          "reason": "一次性迁移脚本及专属测试已归档到忽略缓存，不属于日常离线测试；原测试源码保留在归档备份中"
         }
       ],
       "file_category": null

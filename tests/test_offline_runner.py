@@ -1,5 +1,6 @@
 """Small contract checks for preflight and deterministic replay."""
 
+import hashlib
 import json
 import contextlib
 import io
@@ -10,23 +11,13 @@ from types import SimpleNamespace
 from unittest.mock import patch
 
 from dev_tools.testing import run_offline_tests as runner
-from dev_tools import build_exploration_fixtures as fixture_importer
 from dev_tools.testing import build_fixture_contact_sheets as contact_sheets
-from dev_tools import build_test_inventory as inventory_builder
 from tests.support.exploration import ReplayDevice, artifact_path
 from tests.support import offline
 from tests.support import history_fixtures
 
 
 class RunnerContractTests(unittest.TestCase):
-    def test_inventory_builder_refuses_existing_output(self):
-        destination = runner.ROOT / "tests/inventory.json"
-        original = destination.read_bytes()
-        for kwargs in ({}, {"destination": destination}):
-            with self.subTest(explicit_output=bool(kwargs)), self.assertRaises(FileExistsError):
-                inventory_builder.build(runner.ROOT / "test", **kwargs)
-        self.assertEqual(destination.read_bytes(), original)
-
     def test_inventory_has_one_record_per_registered_case(self):
         inventory = json.loads((runner.ROOT / 'tests/inventory.json').read_text(encoding='utf-8'))
         sources = [item['source'] for item in inventory['files']]
@@ -293,9 +284,7 @@ class FixtureMaintenanceTests(unittest.TestCase):
     def setUp(self):
         self.root = artifact_path("fixture-maintenance")
         self.fixtures = self.root / "tests" / "fixtures" / "dimensional_exploration"
-        self.source = self.root / "source"
         self.fixtures.mkdir(parents=True)
-        self.source.mkdir()
         self.suffix = "20260101-000000-001"
 
     def register(self, suffix, category="shop", content=b"registered screenshot"):
@@ -304,7 +293,7 @@ class FixtureMaintenanceTests(unittest.TestCase):
         path.write_bytes(content)
         return {
             "path": path.relative_to(self.root).as_posix(),
-            "sha256": fixture_importer.file_hash(path),
+            "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
             "server": "global_cn",
             "scene": "buy",
             "used_by": ["reviewed.case"],
@@ -313,57 +302,6 @@ class FixtureMaintenanceTests(unittest.TestCase):
     def save_manifest(self, fixtures):
         path = self.fixtures / "manifest.json"
         path.write_text(json.dumps({"version": 1, "fixtures": fixtures}), encoding="utf-8")
-
-    def import_fixtures(self, references, category="unclassified"):
-        with (patch.object(fixture_importer, "ROOT", self.root),
-              patch.object(fixture_importer, "FIXTURES", self.fixtures),
-              patch.object(fixture_importer, "references", return_value=references)):
-            fixture_importer.run(self.source, category)
-        return json.loads((self.fixtures / "manifest.json").read_text(encoding="utf-8"))["fixtures"]
-
-    def test_import_keeps_registered_paths_and_metadata(self):
-        item = self.register(self.suffix)
-        item["note"] = "人工核对后的付款画面"
-        self.save_manifest({self.suffix: item})
-        (self.source / f"MuMu-{self.suffix}.png").write_bytes(b"registered screenshot")
-        result = self.import_fixtures({self.suffix: {"new.case"}}, "events")
-        self.assertEqual(result[self.suffix], {**item, "used_by": ["new.case", "reviewed.case"]})
-        self.assertFalse((self.fixtures / f"MuMu-{self.suffix}.png").exists())
-        self.assertFalse((self.fixtures / "events").exists())
-
-    def test_import_preserves_registered_but_unreferenced_images(self):
-        other = "20260101-000000-002"
-        existing = {self.suffix: self.register(self.suffix), other: self.register(other, "entry")}
-        self.save_manifest(existing)
-        (self.source / f"MuMu-{self.suffix}.png").write_bytes(b"registered screenshot")
-        result = self.import_fixtures({self.suffix: {"reviewed.case"}})
-        self.assertEqual(result, existing)
-
-    def test_import_adds_new_images_to_selected_category(self):
-        (self.source / f"MuMu-{self.suffix}.png").write_bytes(b"new screenshot")
-        result = self.import_fixtures({self.suffix: {"new.case"}}, "events")
-        self.assertEqual(result[self.suffix]["scene"], "events")
-        self.assertEqual(result[self.suffix]["path"],
-                         f"tests/fixtures/dimensional_exploration/events/MuMu-{self.suffix}.png")
-        self.assertEqual((self.root / result[self.suffix]["path"]).read_bytes(), b"new screenshot")
-        self.assertFalse((self.fixtures / f"MuMu-{self.suffix}.png").exists())
-
-    def test_import_rejects_changed_registered_source(self):
-        item = self.register(self.suffix)
-        self.save_manifest({self.suffix: item})
-        (self.source / f"MuMu-{self.suffix}.png").write_bytes(b"changed screenshot")
-        with self.assertRaisesRegex(ValueError, "Registered fixture differs"):
-            self.import_fixtures({self.suffix: {"reviewed.case"}})
-        self.assertEqual((self.root / item["path"]).read_bytes(), b"registered screenshot")
-        self.assertEqual(json.loads((self.fixtures / "manifest.json").read_text(encoding="utf-8"))["fixtures"],
-                         {self.suffix: item})
-
-    def test_import_rejects_paths_outside_fixture_directory(self):
-        item = self.register(self.suffix)
-        item["path"] = f"source/MuMu-{self.suffix}.png"
-        self.save_manifest({self.suffix: item})
-        with self.assertRaisesRegex(ValueError, "Invalid fixture path"):
-            self.import_fixtures({self.suffix: {"reviewed.case"}})
 
     def test_contact_sheets_follow_manifest_and_allow_any_count(self):
         other = "20260101-000000-002"
