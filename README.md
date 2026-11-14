@@ -34,11 +34,15 @@ EpicSeven auto script | 第七史诗脚本，基于第二代 Alas 框架，由 [
 
 ## 安装
 
+源码运行需要先安装 uv（依赖管理工具），在项目根目录执行 `uv sync --locked --no-dev`（按锁文件安装运行依赖），会自动准备 Python 3.10（解释器）和虚拟环境。
+
 [设备支持文档](https://github.com/LmeSzinc/AzurLaneAutoScript/wiki/Emulator_cn)，支持 Windows / Mac / Linux 以及各种骚方式运行。
 
 > **为什么使用模拟器？** 如果你用桌面端来运行脚本的话，游戏窗口必须保持在前台，我猜你也不想运行脚本的时候不能动鼠标键盘像个傻宝一样坐在那吧，所以用模拟器。
 
 ## 开发
+
+在项目根目录执行 `uv sync --locked`（按锁文件安装运行和开发依赖），包含截图热键、测试覆盖率、代码检查和类型检查工具。常用入口见[开发工具说明](dev_tools/README.md)。
 
 - 建议阅读源码和历史提交。
 - 欢迎提交 PR，挑选你感兴趣的部分进行开发即可。
