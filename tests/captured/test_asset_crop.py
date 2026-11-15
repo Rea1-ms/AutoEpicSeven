@@ -321,7 +321,12 @@ class AssetCropTest(unittest.TestCase):
                         '--case', 'fps', '--dry-run', '--json', *options,
                     ])
                     self.assertEqual(result, 130 if command == 'live' else 0)
-                    create_device.assert_called_once_with('5555', frame_rate=expected)
+                    create_device.assert_called_once_with(
+                        '5555',
+                        frame_rate=expected,
+                        screenshot_method=None,
+                        control_method=None,
+                    )
 
     def test_invalid_frame_rate_rejected_before_device_creation(self):
         entries = (
@@ -353,8 +358,16 @@ class AssetCropTest(unittest.TestCase):
                 redirect_stdout(io.StringIO()),
             ):
                 device = screenshot.create_device(name, frame_rate=rate)
-                config = name if configs else config_type.return_value
-                device_type.assert_called_once_with(config, scrcpy_frame_rate=rate)
+                config = config_type.return_value
+                if configs:
+                    config_type.assert_called_once_with(name, task=None)
+                else:
+                    config_type.assert_called_once_with('template')
+                device_type.assert_called_once_with(
+                    config,
+                    scrcpy_frame_rate=rate,
+                    screenshot_method_explicit=not bool(configs),
+                )
                 if not configs:
                     config.override.assert_called_once_with(
                         Emulator_Serial='127.0.0.1:5555', Emulator_PackageName='auto',
@@ -380,6 +393,81 @@ class AssetCropTest(unittest.TestCase):
                 ))
         self.assertEqual(ScrcpyOptions.command_v120()[8], '10')
         self.assertIn('max_fps=10', ScrcpyOptions.command_v125())
+
+    def test_capture_method_options_are_normalized_and_applied_before_device_init(self):
+        with (
+            patch.object(screenshot, 'alas_instance', return_value=[]),
+            patch.object(screenshot, 'AzurLaneConfig') as config_type,
+            patch.object(screenshot, 'Device') as device_type,
+            redirect_stdout(io.StringIO()),
+        ):
+            screenshot.create_device(
+                '5555',
+                screenshot_method='adbnc',
+                control_method='maatouch',
+            )
+        config = config_type.return_value
+        config_type.assert_called_once_with('template')
+        config.override.assert_any_call(
+            Emulator_Serial='127.0.0.1:5555',
+            Emulator_PackageName='auto',
+            Emulator_ScreenshotMethod='ADB_nc',
+        )
+        config.override.assert_any_call(Emulator_ControlMethod='MaaTouch')
+        device_type.assert_called_once_with(
+            config,
+            scrcpy_frame_rate=30,
+            screenshot_method_explicit=True,
+        )
+
+        config_type.reset_mock()
+        device_type.reset_mock()
+        with (
+            patch.object(screenshot, 'alas_instance', return_value=['demo']),
+            patch.object(screenshot, 'AzurLaneConfig') as config_type,
+            patch.object(screenshot, 'Device') as device_type,
+            redirect_stdout(io.StringIO()),
+        ):
+            screenshot.create_device(
+                'demo',
+                screenshot_method='uiautomator',
+                control_method='minitouch',
+            )
+        config = config_type.return_value
+        config_type.assert_called_once_with('demo', task=None)
+        config.override.assert_any_call(Emulator_ScreenshotMethod='uiautomator2')
+        config.override.assert_any_call(Emulator_ControlMethod='minitouch')
+        device_type.assert_called_once_with(
+            config,
+            scrcpy_frame_rate=30,
+            screenshot_method_explicit=True,
+        )
+
+    def test_gui_entry_forwards_method_options(self):
+        with patch.object(asset_crop, 'main', return_value=130) as crop_main:
+            self.assertEqual(
+                screenshot.main([
+                    '--serial', '127.0.0.1:5555',
+                    '--screenshot-method', 'adbnc',
+                    '--control-method', 'minitouch',
+                ]),
+                0,
+            )
+        crop_main.assert_called_once_with([
+            'live', '--serial', '127.0.0.1:5555', '--fps', '30',
+            '--screenshot-method', 'ADB_nc', '--control-method', 'minitouch',
+        ])
+
+    def test_explicit_screenshot_method_skips_auto_emulator_override(self):
+        from module.device.screenshot import Screenshot
+
+        device = object.__new__(Screenshot)
+        device._screenshot_method_explicit = True
+        with (
+            patch.object(device, 'nemu_ipc_available', return_value=True),
+            patch.object(device, 'ldopengl_available', return_value=True),
+        ):
+            self.assertEqual(device.screenshot_method_override, '')
 
     def test_filtered_extract_does_not_clean_sibling_wrappers(self):
         row = button_extract.DataAssets(

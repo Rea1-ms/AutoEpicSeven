@@ -16878,6 +16878,36 @@
           "input_kind": "mock_or_rule"
         },
         {
+          "id": "tests.captured.test_asset_crop.AssetCropTest.test_capture_method_options_are_normalized_and_applied_before_device_init",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "截图和操控方式在设备初始化前覆盖到模板及已有配置",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.captured.test_asset_crop.AssetCropTest.test_gui_entry_forwards_method_options",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "截图入口把规范化的截图和操控方式传给现有预览窗口",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.captured.test_asset_crop.AssetCropTest.test_explicit_screenshot_method_skips_auto_emulator_override",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "显式截图方式不会被 MuMu 或 LDPlayer 自动探测覆盖",
+          "input_kind": "mock_or_rule"
+        },
+        {
           "id": "tests.captured.test_asset_crop.AssetArchiveTest.test_preview_records_hash_without_moving_or_creating_archive",
           "category": "资源基础检查",
           "requires_device": false,
