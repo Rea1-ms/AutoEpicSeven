@@ -106,6 +106,10 @@
       "name": "Story progression",
       "help": "Open the desired main or side-story list before starting. Use the current team, skip dialogue and restore auto combat. Stop on defeat or insufficient stamina without refilling. Side-story captures currently cover Global Simplified Chinese."
     },
+    "AutomatonTower": {
+      "name": "Automaton Tower",
+      "help": "Enter the season page and clear the monthly Automaton Tower with auto combat. The first enhancement device is selected. Overseas Simplified Chinese only."
+    },
     "SanctuaryMonthly": {
       "name": "Sanctuary Monthly",
       "help": "Sanctuary monthly module with independent scheduler."

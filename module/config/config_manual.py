@@ -10,10 +10,10 @@ class ManualConfig:
 
     # Keep task order here for both normal runs and daily mission reviews.
     # Daily budgets decide how much a task does, never reorder the due queue.
-    # Manual tools use their own entry points and do not belong in this table.
+    # Manual-only tools use their own entry points; scheduled tools remain here.
     SCHEDULER_PRIORITY = """
     Restart > MissionReward > Gacha > SanctuaryDaily > Mail > Store > PetsGift
-    > DataUpdate > Arena > Combat > SanctuaryMonthly > Knights
+    > DataUpdate > Arena > Combat > SanctuaryMonthly > AutomatonTower > Knights
     > SecretShop > Pets > CommunityAio
     > LimitedActivity > SpecialActivity
     """

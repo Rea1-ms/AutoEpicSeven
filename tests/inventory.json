@@ -27798,6 +27798,234 @@
           "reason": "真实侧栏选择与公共批次调用，验证固定页面标记范围和实际领奖动作"
         }
       ]
+    },
+    {
+      "source": "tests/automaton_tower/test_automaton_tower.py",
+      "business": "欧多马顿塔",
+      "status": "正式",
+      "reason": "2026年11月15日国际服简体中文塔活动截图识别和服务器分流回归",
+      "cases": [
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_real_screenshots_cover_activity_states",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-15_00-20-10-741272",
+            "2026-11-15_00-20-15-516532",
+            "2026-11-15_00-20-19-772479",
+            "2026-11-15_00-20-23-753144",
+            "2026-11-15_00-20-31-060817",
+            "2026-11-15_00-20-34-671936",
+            "2026-11-15_00-21-33-720501",
+            "2026-11-15_00-21-36-380571",
+            "2026-11-15_00-21-39-738751",
+            "2026-11-15_00-21-44-601809",
+            "2026-11-15_00-21-53-337939",
+            "2026-11-15_15-19-29-075489",
+            "2026-11-15_15-22-23-137734",
+            "2026-11-15_15-22-26-688830",
+            "2026-11-15_15-22-31-914685",
+            "2026-11-15_15-22-35-147595"
+          ],
+          "status": "已纳入",
+          "reason": "覆盖入口、楼层、准备、自动战斗、强化装置、结算和下一层画面。"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_device_confirmation_requires_bright_green_button",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-15_00-21-33-720501",
+            "2026-11-15_00-21-36-380571"
+          ],
+          "status": "已纳入",
+          "reason": "确认按钮必须同时满足模板命中和亮绿色状态。"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_page_registration_is_limited_to_overseas_simplified_chinese",
+          "category": "资源基础",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "独立进程核对国服、国际服简体中文和英文的页面注册。"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_battle_replay_starts_once_and_keeps_existing_auto_mode",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-15_14-43-29-271926",
+            "2026-11-15_14-43-39-909021",
+            "2026-11-15_00-21-39-738751"
+          ],
+          "status": "已纳入",
+          "reason": "准备页、已有自动战斗状态和结算页的连续帧回放，只点击一次开战。"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_task_is_in_tool_menu_with_independent_scheduler",
+          "category": "资源基础",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "工具类菜单与独立调度器配置保持一致。"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_resume_screenshots_identify_pending_device",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-15_14-42-58-668558",
+            "2026-11-15_14-43-02-635705",
+            "2026-11-15_14-43-06-134378",
+            "2026-11-15_14-43-11-056885",
+            "2026-11-15_14-43-15-991275",
+            "2026-11-15_14-43-21-857733",
+            "2026-11-15_14-43-24-984899",
+            "2026-11-15_14-43-29-271926",
+            "2026-11-15_14-43-32-175894",
+            "2026-11-15_14-43-39-909021"
+          ],
+          "status": "已纳入",
+          "reason": "恢复截图中的主页、入口、未选与已选增益、楼层和准备页正反例。"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_resume_from_combat_selects_device_before_starting_floor",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-15_14-43-02-635705",
+            "2026-11-15_14-43-06-134378",
+            "2026-11-15_14-43-11-056885",
+            "2026-11-15_14-43-15-991275",
+            "2026-11-15_14-43-21-857733",
+            "2026-11-15_14-43-24-984899",
+            "2026-11-15_14-43-29-271926",
+            "2026-11-15_14-43-32-175894",
+            "2026-11-15_14-43-39-909021",
+            "2026-11-15_00-21-39-738751"
+          ],
+          "status": "已纳入",
+          "reason": "战斗菜单重新入塔、选择遗留增益、确认、选择队伍并开战；早前结算截图显式拼接作为退出证据。"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_resume_retries_dropped_selection_and_confirmation",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-15_14-43-11-056885",
+            "2026-11-15_14-43-15-991275",
+            "2026-11-15_14-43-21-857733",
+            "2026-11-15_14-43-24-984899",
+            "2026-11-15_14-43-29-271926"
+          ],
+          "status": "已纳入",
+          "reason": "选择与确认漏点分别限频重试，新动作本帧执行，未知帧不点击。"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_resume_keeps_existing_selection",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-15_14-43-21-857733",
+            "2026-11-15_14-43-24-984899",
+            "2026-11-15_14-43-29-271926"
+          ],
+          "status": "已纳入",
+          "reason": "恢复已选增益直接确认，不重选，并在后续楼层本帧选择队伍。"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_device_unknown_frames_do_not_confirm_completion",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-15_14-43-15-991275",
+            "2026-11-15_14-43-21-857733",
+            "2026-11-15_14-43-24-984899"
+          ],
+          "status": "已纳入",
+          "reason": "增益确认后未知帧不能证明完成，等待真实楼层证据。"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_device_retries_do_not_extend_deadline",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-15_14-43-15-991275",
+            "2026-11-15_14-43-21-857733"
+          ],
+          "status": "已纳入",
+          "reason": "选卡与确认重复帧分别在原期限内失败，重试不延长期限。"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_battle_device_selection_returns_on_visible_clear",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-15_15-19-29-075489",
+            "2026-11-15_00-21-36-380571",
+            "2026-11-15_00-21-39-738751"
+          ],
+          "status": "已纳入",
+          "reason": "普通战后选增益与恢复共用逻辑，在结算首帧立即交回父循环。"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_battle_replay_enables_dungeon_auto_combat_and_resets_stuck_guard",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-15_14-43-29-271926",
+            "2026-11-15_15-22-23-137734",
+            "2026-11-15_14-43-39-909021",
+            "2026-11-15_15-22-35-147595",
+            "2026-11-15_00-21-39-738751"
+          ],
+          "status": "已纳入",
+          "reason": "战斗内关闭自动战斗时按间隔点击，自动战斗 HUD 出现后停止，并清除长战斗卡死计时。"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_battle_replay_toggles_speed_only_from_positive_one_x_state",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-15_14-43-29-271926",
+            "2026-11-15_15-22-31-914685",
+            "2026-11-15_14-43-39-909021",
+            "2026-11-15_15-22-35-147595",
+            "2026-11-15_00-21-39-738751"
+          ],
+          "status": "已纳入",
+          "reason": "只有明确识别为 1 倍速时切换，2 倍速和结算过渡帧不误点。"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_battle_replay_survives_long_hud_then_resolves_pending_device",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-15_14-43-29-271926",
+            "2026-11-15_14-43-39-909021",
+            "2026-11-15_15-19-29-075489",
+            "2026-11-15_00-21-36-380571",
+            "2026-11-15_00-21-39-738751"
+          ],
+          "status": "已纳入",
+          "reason": "超过 60 秒的真实战斗 HUD 后接入遗留增益弹窗，验证选卡、确认和结算恢复。"
+        }
+      ]
     }
   ]
 }

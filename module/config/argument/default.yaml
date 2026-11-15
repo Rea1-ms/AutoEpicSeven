@@ -43,6 +43,9 @@ LimitedActivity:
 SpecialActivity:
   Scheduler:
     Enable: false
+AutomatonTower:
+  Scheduler:
+    Enable: false
 EquipmentReroll:
   Scheduler:
     Enable: false
