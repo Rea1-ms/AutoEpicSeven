@@ -3884,7 +3884,8 @@
         "tests.activity.test_alencia_handbook.HandbookReplayTests.test_logged_80_progress_with_missing_status_returns_without_swiping",
         "tests.activity.test_alencia_handbook.HandbookReplayTests.test_logged_missing_parentheses_and_status_return_on_first_frame",
         "tests.activity.test_alencia_handbook.HandbookReplayTests.test_chapters_at_top_finish_immediately_without_claim_or_swipe",
-        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_unreadable_top_never_completes_from_lower_chapter_tasks"
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_unreadable_top_never_completes_from_lower_chapter_tasks",
+        "tests.activity.test_alencia_handbook.HandbookRecognitionTests.test_real_18_of_18_progress_and_incomplete_page_remain_distinct"
       ]
     },
     "000524-767": {
@@ -4018,7 +4019,8 @@
         "tests.activity.test_alencia_handbook.HandbookReplayTests.test_either_unfinished_top_daily_returns_without_scanning_other_tier",
         "tests.activity.test_alencia_handbook.HandbookReplayTests.test_logged_80_progress_with_missing_status_returns_without_swiping",
         "tests.activity.test_alencia_handbook.HandbookReplayTests.test_logged_missing_parentheses_and_status_return_on_first_frame",
-        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_chapters_at_top_finish_immediately_without_claim_or_swipe"
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_chapters_at_top_finish_immediately_without_claim_or_swipe",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_18_of_18_marks_event_complete_and_stops_future_checks"
       ]
     },
     "000545-575": {
@@ -4054,7 +4056,8 @@
         "tests.activity.test_alencia_handbook.HandbookReplayTests.test_either_unfinished_top_daily_returns_without_scanning_other_tier",
         "tests.activity.test_alencia_handbook.HandbookReplayTests.test_logged_80_progress_with_missing_status_returns_without_swiping",
         "tests.activity.test_alencia_handbook.HandbookReplayTests.test_logged_missing_parentheses_and_status_return_on_first_frame",
-        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_chapters_at_top_finish_immediately_without_claim_or_swipe"
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_chapters_at_top_finish_immediately_without_claim_or_swipe",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_18_of_18_marks_event_complete_and_stops_future_checks"
       ]
     },
     "000555-014": {
@@ -5376,6 +5379,20 @@
         "tests.activity.test_carrot_reward.CarrotRewardTests.test_battle_recheck_stops_after_receipt_resets_daily_and_respects_switch",
         "tests.activity.test_carrot_reward.CarrotRewardTests.test_real_sidebar_selection_then_claim_never_repeats_tab",
         "tests.activity.test_carrot_reward.CarrotRewardTests.test_real_common_batch_dispatches_claim_and_preserves_page_search"
+      ]
+    },
+    "alencia-handbook-20261115-completed": {
+      "path": "tests/fixtures/historical/global_cn/alencia_handbook_2026_11_01/alencia-handbook-20261115-completed.png",
+      "sha256": "43bfac42461dcbc83676e9089f70ffa2dc4c57cab831fcd7c61d06ec1eabc0a3",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "alencia-handbook-completed-18-of-18",
+      "source": "2026-11-15_18-29-37-603993.png",
+      "source_sha256": "43bfac42461dcbc83676e9089f70ffa2dc4c57cab831fcd7c61d06ec1eabc0a3",
+      "privacy_redaction": [],
+      "used_by": [
+        "tests.activity.test_alencia_handbook.HandbookRecognitionTests.test_real_18_of_18_progress_and_incomplete_page_remain_distinct",
+        "tests.activity.test_alencia_handbook.HandbookReplayTests.test_18_of_18_marks_event_complete_and_stops_future_checks"
       ]
     }
   },

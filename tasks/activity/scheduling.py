@@ -3,8 +3,12 @@ from datetime import datetime
 from module.config.utils import get_server_last_update
 from module.game_info.catalog import aware_time
 from module.logger import logger
-from tasks.activity.calendar import ACTIVITY_TASK_MODES, DEFAULT_FREE_GACHA_20_ID, active_activities, next_activity_start
-
+from tasks.activity.calendar import (
+    ACTIVITY_TASK_MODES,
+    DEFAULT_FREE_GACHA_20_ID,
+    active_activities,
+    next_activity_start,
+)
 
 FREE_GACHA_20_CHECKED_AT = "SpecialActivity.ActivityRuntime.FreeGacha20CheckedAt"
 
@@ -12,10 +16,18 @@ FREE_GACHA_20_CHECKED_AT = "SpecialActivity.ActivityRuntime.FreeGacha20CheckedAt
 def delay_next_activity_check(config, *, task="SpecialActivity") -> None:
     starts_at = next_activity_start(config, task=task)
     targets = [starts_at] if starts_at is not None else []
+    has_uncompleted_active = False
     now = aware_time()
     for event in active_activities(config, now, task=task):
+        if is_activity_completed(config, event.event_id):
+            # A completed handbook must not fall back to the daily server
+            # update. Keep one wake-up at the event boundary so the calendar
+            # can retire this event without repeated daily checks.
+            targets.append(event.end)
+            continue
         if event.mode == "huche_shop" and not config.SpecialActivity_BuyHucheMysticMedals:
             continue
+        has_uncompleted_active = True
         refresh = event.next_refresh(now)
         if refresh is not None:
             targets.append(refresh)
@@ -26,7 +38,10 @@ def delay_next_activity_check(config, *, task="SpecialActivity") -> None:
     # datetimes. Wake at the earliest reset, campaign launch or stock refresh,
     # so an 11:00 opening/refresh is not postponed until tomorrow.
     target = min(targets).astimezone().replace(tzinfo=None)
-    config.task_delay(server_update=True, target=target, task=task)
+    if has_uncompleted_active:
+        config.task_delay(server_update=True, target=target, task=task)
+    else:
+        config.task_delay(target=target, task=task)
 
 
 def _free_gacha_20_checked_at(config, event_id: str) -> datetime | None:
@@ -55,8 +70,32 @@ def _checked_path(config, event_id: str) -> str:
     return f"SpecialActivity.ActivityRuntime.CheckedEvents.{event_id}.{family}"
 
 
+def _completed_path(config, event_id: str) -> str:
+    from module.config.server import server_family
+
+    family = server_family(config.Emulator_PackageName)
+    # CheckedEvents is a keepvalue dictionary. Unknown ActivityRuntime
+    # fields are removed on config reload, so keep the lifetime marker
+    # beside this event's daily receipts without changing their timestamps.
+    return f"SpecialActivity.ActivityRuntime.CheckedEvents.{event_id}.Completed.{family}"
+
+
+def is_activity_completed(config, event_id: str) -> bool:
+    """Return whether an event-wide completion was confirmed on this server."""
+    value = config.cross_get(_completed_path(config, event_id), default=None)
+    return value is not None and value is not False
+
+
+def mark_activity_completed(config, event_id: str) -> None:
+    completed_at = datetime.now().replace(microsecond=0)
+    config.cross_set(_completed_path(config, event_id), completed_at)
+    logger.info(f"SpecialActivity: {event_id} completed at {completed_at}")
+
+
 def is_activity_checked_today(config, event_id: str, *, task="LimitedActivity") -> bool:
     """Return whether this campaign's reward was checked this server day."""
+    if is_activity_completed(config, event_id):
+        return True
     checked_at = _free_gacha_20_checked_at(config, event_id)
     if checked_at is None:
         return False
@@ -70,6 +109,8 @@ def is_activity_checked_today(config, event_id: str, *, task="LimitedActivity") 
 
 def is_activity_checked_in_window(config, event, now=None) -> bool:
     """Keep twice-daily shop checks separate from server-day rewards."""
+    if is_activity_completed(config, event.event_id):
+        return True
     if not event.refresh_hours:
         task = next(task for task, modes in ACTIVITY_TASK_MODES.items() if event.mode in modes)
         return is_activity_checked_today(config, event.event_id, task=task)

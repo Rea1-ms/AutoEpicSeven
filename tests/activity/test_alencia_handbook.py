@@ -1,5 +1,6 @@
 """Handbook daily claims, combined receipt, home routes and task-owned rechecks."""
 
+import json
 import subprocess
 import sys
 import unittest
@@ -14,6 +15,7 @@ from tests.support.offline import ROOT, ControlledClock, fixture_image
 server.set_lang("global_cn")
 
 from module.config.config_updater import ConfigUpdater
+from module.config.deep import deep_get, deep_set
 from module.ocr.ocr import Ocr
 from tasks.activity import calendar, scheduling
 from tasks.activity.alencia_handbook import AlenciaHandbook
@@ -44,6 +46,7 @@ from tests.support.alencia_handbook import (
 
 NOW = datetime.fromisoformat("2026-11-01T00:10:00+08:00")
 EVENT_ID = "alencia_handbook_2026_11_01"
+COMPLETED = "alencia-handbook-20261115-completed"
 
 
 class HandbookRecognitionTests(unittest.TestCase):
@@ -71,6 +74,14 @@ class HandbookRecognitionTests(unittest.TestCase):
             worker.device = Mock(image=image)
             rows = worker._daily_rows(Ocr(ALENCIA_TASK_LIST, lang="cn").detect_and_ocr(image))
             self.assertEqual({tier: row[0] for tier, row in rows.items()}, expected)
+
+    def test_real_18_of_18_progress_and_incomplete_page_remain_distinct(self):
+        reader = Ocr(AlenciaHandbook.REWARDS_PROGRESS, lang="cn")
+        for name, expected in ((COMPLETED, "18/18"), (READY, "2/18")):
+            with self.subTest(name=name):
+                image = fixture_image(MANIFEST, name)
+                self.assertTrue(ALENCIA_REWARDS_CHECK.match_template_color(image))
+                self.assertEqual(reader.ocr_single_line(image).strip(), expected)
 
     def test_incomplete_fields_and_wrong_counter_never_authorize_claim(self):
         worker = object.__new__(AlenciaHandbook)
@@ -103,6 +114,7 @@ class HandbookReplayTests(unittest.TestCase):
         self.device = replay
         reader = self.stack.enter_context(patch("tasks.activity.alencia_handbook.Ocr"))
         reader.return_value.detect_and_ocr.side_effect = replay.ocr_results
+        replay.ocr_reader = reader.return_value
         return replay
 
     def test_both_available_require_one_click_and_one_popup_for_both_receipts(self):
@@ -173,7 +185,51 @@ class HandbookReplayTests(unittest.TestCase):
         self.assertTrue(r.task.run_claim(navigate=False))
         self.assertEqual(r.actions, [(0, "ALENCIA_REWARDS_BACK"), (1, "ALENCIA_HANDBOOK_BACK")])
         self.assertTrue(r.values)
+        self.assertFalse(scheduling.is_activity_completed(r.task.config, EVENT_ID))
         r.task.config.task_delay.assert_not_called()
+
+    def test_18_of_18_marks_event_complete_and_stops_future_checks(self):
+        r = self.replay([capture(COMPLETED), capture(BOOK_AFTER), capture(HUB_AFTER)])
+        r.ocr_reader.ocr_single_line.side_effect = Ocr(
+            AlenciaHandbook.REWARDS_PROGRESS, lang="cn",
+        ).ocr_single_line
+        self.assertTrue(r.task.run_claim(navigate=False))
+        self.assertEqual(r.actions, [(0, "ALENCIA_REWARDS_BACK"), (1, "ALENCIA_HANDBOOK_BACK")])
+        r.ocr_reader.detect_and_ocr.assert_not_called()
+        self.assertIn(
+            scheduling._completed_path(r.task.config, EVENT_ID),
+            r.values,
+        )
+        self.assertTrue(scheduling.is_activity_completed(r.task.config, EVENT_ID))
+        data = {}
+        for key, value in r.values.items():
+            deep_set(data, keys=key, value=value)
+        for _ in range(2):
+            data = ConfigUpdater().config_update(json.loads(json.dumps(data, default=str)))
+            r.task.config.cross_get = lambda key, default=None, saved=data: deep_get(saved, keys=key, default=default)
+            self.assertTrue(scheduling.is_activity_completed(r.task.config, EVENT_ID))
+        self.assertFalse(scheduling.is_activity_completed(r.task.config, "alencia_handbook_next"))
+        with patch.object(scheduling, "get_server_last_update", return_value=datetime(2026, 11, 16)):
+            self.assertTrue(scheduling.is_activity_checked_today(r.task.config, EVENT_ID))
+        r.task.config.Emulator_PackageName = "CN-Official"
+        self.assertFalse(scheduling.is_activity_completed(r.task.config, EVENT_ID))
+        r.task.config.Emulator_PackageName = "com.stove.epic7.google"
+
+        event = next(e for e in calendar.active_activities(
+            r.task.config,
+            NOW,
+            task="SpecialActivity",
+        ) if e.mode == "alencia_handbook")
+        self.assertTrue(scheduling.is_activity_checked_in_window(r.task.config, event))
+        self.assertFalse(scheduling.should_schedule_after_battle(
+            r.task.config,
+            task="SpecialActivity",
+        ))
+        scheduling.delay_next_activity_check(r.task.config, task="SpecialActivity")
+        r.task.config.task_delay.assert_called_with(
+            target=event.end.astimezone().replace(tzinfo=None),
+            task="SpecialActivity",
+        )
 
     def test_unreadable_top_never_completes_from_lower_chapter_tasks(self):
         for kind in ("empty", "missing", "unknown", "low_score"):

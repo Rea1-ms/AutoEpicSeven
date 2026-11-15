@@ -25980,6 +25980,19 @@
           "reason": "按用户排序契约模拟顶部章节，直接记全领且不点章节奖励"
         },
         {
+          "id": "tests.activity.test_alencia_handbook.HandbookReplayTests.test_18_of_18_marks_event_complete_and_stops_future_checks",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "alencia-handbook-20261115-completed",
+            "000540-850",
+            "000545-575"
+          ],
+          "status": "已纳入",
+          "reason": "真实18/18截图立即返回，完成记录经配置整理和重载保留，次日及战斗后不再调度且分服隔离"
+        },
+        {
           "id": "tests.activity.test_alencia_handbook.HandbookReplayTests.test_unreadable_top_never_completes_from_lower_chapter_tasks",
           "category": "流程回放",
           "requires_device": false,
@@ -25989,6 +26002,18 @@
           ],
           "status": "已纳入",
           "reason": "明确模拟空识别、首项漏读、未知及低置信度，不借下方章节记完成或滑动"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookRecognitionTests.test_real_18_of_18_progress_and_incomplete_page_remain_distinct",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "alencia-handbook-20261115-completed",
+            "000516-161"
+          ],
+          "status": "已纳入",
+          "reason": "真实截图识别整本18/18，并与未完成进度区分"
         }
       ]
     },
