@@ -9,7 +9,11 @@ if __package__ in (None, ""):
 
 from PIL import Image  # noqa: E402
 
-from dev_tools.capture.capture_utils import handle_sensitive_info  # noqa: E402
+from dev_tools.capture.capture_utils import (  # noqa: E402
+    DEFAULT_FRAME_RATE,
+    handle_sensitive_info,
+    parse_frame_rate,
+)
 from module.config.config import AzurLaneConfig  # noqa: E402
 from module.config.utils import alas_instance  # noqa: E402
 from module.device.pkg_resources import get_distribution  # noqa: E402
@@ -60,21 +64,22 @@ def normalize_device_name(name):
     return name
 
 
-def create_device(name='aes'):
+def create_device(name='aes', frame_rate=DEFAULT_FRAME_RATE):
     """Create a Device through the project's configured capture stack."""
+    frame_rate = parse_frame_rate(frame_rate)
     name = normalize_device_name(name)
     if name in alas_instance():
         print(f'{name} is an existing config file')
-        device = Device(name)
+        device = Device(name, scrcpy_frame_rate=frame_rate)
     else:
         print(f'{name} is a device serial')
         config = AzurLaneConfig('template')
         config.override(
             Emulator_Serial=name,
             Emulator_PackageName='auto',
-            Emulator_ScreenshotMethod='auto',
+            Emulator_ScreenshotMethod='scrcpy',
         )
-        device = Device(config)
+        device = Device(config, scrcpy_frame_rate=frame_rate)
 
     device.disable_stuck_detection()
     device.screenshot_interval_set(0.)
@@ -127,12 +132,15 @@ def main(argv=None):
     target = parser.add_mutually_exclusive_group()
     target.add_argument('--config', default='aes', help='使用已有项目配置，默认 aes')
     target.add_argument('--serial', help='设备地址或端口号')
+    parser.add_argument('--fps', type=parse_frame_rate, default=DEFAULT_FRAME_RATE,
+                        help='视频帧率上限，正整数，默认 30')
     parser.add_argument('--console', action='store_true', help='使用原有终端与全局热键模式')
     args = parser.parse_args(argv)
     if not args.console:
         from dev_tools.assets.asset_crop import main as crop_main
 
         target_args = ['--serial', args.serial] if args.serial else ['--config', args.config]
+        target_args += ['--fps', str(args.fps)]
         result = crop_main(['live', *target_args])
         return 0 if result == 130 else result
 
@@ -145,7 +153,7 @@ def main(argv=None):
             '输入aes配置文件名称，或者模拟器serial，或者模拟器端口号: (默认输入 "aes"):\n'
             '例如："aes", "127.0.0.1:16384", "7555"\n'
         )
-    device = create_device(name)
+    device = create_device(name, frame_rate=args.fps)
     output = './screenshots/dev_screenshots'
     os.makedirs(output, exist_ok=True)
     print('')

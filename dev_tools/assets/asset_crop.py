@@ -16,7 +16,11 @@ if __package__ in (None, ""):
 import numpy as np  # noqa: E402
 
 from dev_tools.assets.asset_crop_ui import Box, InteractiveCropper  # noqa: E402
-from dev_tools.capture.capture_utils import handle_sensitive_info  # noqa: E402
+from dev_tools.capture.capture_utils import (  # noqa: E402
+    DEFAULT_FRAME_RATE,
+    handle_sensitive_info,
+    parse_frame_rate,
+)
 from module.base.utils import load_image, save_image  # noqa: E402
 from module.config.server import VALID_LANG  # noqa: E402
 
@@ -512,7 +516,7 @@ def _finish_interactive(args, image: np.ndarray, boxes: list[Box], source: Path 
 def command_live(args) -> int:
     from dev_tools.capture.screenshot import create_device, create_preview
 
-    device = create_device(args.serial or args.config)
+    device = create_device(args.serial or args.config, frame_rate=args.fps)
     if args.namespace is None:
         import module.config.server as server
 
@@ -544,7 +548,7 @@ def command_capture(args) -> int:
 
     suite = _required(args.suite, "Test suite")
     case = _required(args.case, "Test case")
-    device = create_device(args.serial or args.config)
+    device = create_device(args.serial or args.config, frame_rate=args.fps)
     image = take_screenshot(device)
     recipe = CropRecipe(source=f"{case}.png", suite=suite, case=case, items=())
     plan = create_output_plan(image, recipe)
@@ -626,6 +630,8 @@ def _add_device_arguments(parser: argparse.ArgumentParser) -> None:
     device = parser.add_mutually_exclusive_group()
     device.add_argument("--config", default="aes", help="AES config name")
     device.add_argument("--serial", help="emulator serial or port")
+    parser.add_argument("--fps", type=parse_frame_rate, default=DEFAULT_FRAME_RATE,
+                        help="video frame rate limit, positive integer; default 30")
 
 
 def build_parser() -> argparse.ArgumentParser:
