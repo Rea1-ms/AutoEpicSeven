@@ -11,7 +11,7 @@ import io
 import json
 import sys
 import unittest
-from contextlib import redirect_stdout
+from contextlib import redirect_stderr, redirect_stdout
 from pathlib import Path
 from unittest.mock import Mock, patch
 from uuid import uuid4
@@ -26,6 +26,7 @@ SCREENSHOT = fixture_path('urgent_tasks/superior-detail.png')
 
 from dev_tools.assets import (
     asset_archive,  # noqa: E402
+    asset_crop,  # noqa: E402
     button_extract,  # noqa: E402
 )
 from dev_tools.assets.asset_crop import (  # noqa: E402
@@ -296,7 +297,89 @@ class AssetCropTest(unittest.TestCase):
             patch('dev_tools.assets.asset_crop.main', return_value=130) as crop_main,
         ):
             self.assertEqual(screenshot.main(['--serial', '127.0.0.1:5555']), 0)
-        crop_main.assert_called_once_with(['live', '--serial', '127.0.0.1:5555'])
+        crop_main.assert_called_once_with(['live', '--serial', '127.0.0.1:5555', '--fps', '30'])
+
+    def test_capture_frame_rate_defaults_and_custom_values_reach_device(self):
+        with patch.object(asset_crop, 'main', return_value=130) as crop_main:
+            self.assertEqual(screenshot.main(['--config', 'demo', '--fps', '60']), 0)
+        crop_main.assert_called_once_with(['live', '--config', 'demo', '--fps', '60'])
+
+        for command in ('live', 'capture'):
+            for options, expected in (([], 30), (['--fps', '60'], 60)):
+                with (
+                    self.subTest(command=command, fps=expected),
+                    patch.object(screenshot, 'create_device') as create_device,
+                    patch.object(screenshot, 'create_preview') as create_preview,
+                    patch.object(screenshot, 'take_screenshot', return_value=self.image),
+                    patch.object(asset_crop, 'create_output_plan') as plan,
+                    redirect_stdout(io.StringIO()),
+                ):
+                    create_preview.return_value.run.return_value = None
+                    plan.return_value.result.return_value = {'dry_run': True}
+                    result = asset_crop.main([
+                        command, '--serial', '5555', '--suite', 'probe',
+                        '--case', 'fps', '--dry-run', '--json', *options,
+                    ])
+                    self.assertEqual(result, 130 if command == 'live' else 0)
+                    create_device.assert_called_once_with('5555', frame_rate=expected)
+
+    def test_invalid_frame_rate_rejected_before_device_creation(self):
+        entries = (
+            (screenshot.main, []),
+            (asset_crop.main, ['live']),
+            (asset_crop.main, ['capture']),
+        )
+        for entry, prefix in entries:
+            for value in ('0', '-1', '1.5', 'invalid'):
+                with (
+                    self.subTest(entry=prefix, value=value),
+                    patch.object(screenshot, 'create_device') as create_device,
+                    redirect_stderr(io.StringIO()),
+                    self.assertRaises(SystemExit) as error,
+                ):
+                    entry([*prefix, '--fps', value])
+                self.assertEqual(error.exception.code, 2)
+                create_device.assert_not_called()
+
+    def test_capture_device_sets_frame_rate_before_initialization(self):
+        from module.device.method.scrcpy.options import ScrcpyOptions
+
+        for name, configs, rate in (('demo', ['demo'], 30), ('5555', [], 60)):
+            with (
+                self.subTest(name=name),
+                patch.object(screenshot, 'alas_instance', return_value=configs),
+                patch.object(screenshot, 'AzurLaneConfig') as config_type,
+                patch.object(screenshot, 'Device') as device_type,
+                redirect_stdout(io.StringIO()),
+            ):
+                device = screenshot.create_device(name, frame_rate=rate)
+                config = name if configs else config_type.return_value
+                device_type.assert_called_once_with(config, scrcpy_frame_rate=rate)
+                if not configs:
+                    config.override.assert_called_once_with(
+                        Emulator_Serial='127.0.0.1:5555', Emulator_PackageName='auto',
+                        Emulator_ScreenshotMethod='scrcpy',
+                    )
+                device.disable_stuck_detection.assert_called_once_with()
+                device.screenshot_interval_set.assert_called_once_with(0.)
+                self.assertEqual(ScrcpyOptions.frame_rate, 10)
+
+    def test_scrcpy_frame_rate_override_preserves_automation_default(self):
+        from module.device.method.scrcpy.options import ScrcpyOptions
+
+        for rate in (30, 60):
+            with self.subTest(rate=rate):
+                old_command = ScrcpyOptions.command_v120(frame_rate=rate)
+                new_command = ScrcpyOptions.command_v125(frame_rate=rate)
+                self.assertEqual(old_command[8], str(rate))
+                self.assertIn(f'key_capture_rate={rate}', old_command[17])
+                self.assertIn(f'max_fps={rate}', new_command)
+                self.assertTrue(any(
+                    arg.startswith('codec_options=') and f'key_capture_rate={rate}' in arg
+                    for arg in new_command
+                ))
+        self.assertEqual(ScrcpyOptions.command_v120()[8], '10')
+        self.assertIn('max_fps=10', ScrcpyOptions.command_v125())
 
     def test_filtered_extract_does_not_clean_sibling_wrappers(self):
         row = button_extract.DataAssets(

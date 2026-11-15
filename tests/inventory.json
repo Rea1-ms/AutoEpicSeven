@@ -16838,6 +16838,46 @@
           "input_kind": "mock_or_rule"
         },
         {
+          "id": "tests.captured.test_asset_crop.AssetCropTest.test_capture_frame_rate_defaults_and_custom_values_reach_device",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "截图与切图入口传递默认和自定义视频帧率",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.captured.test_asset_crop.AssetCropTest.test_invalid_frame_rate_rejected_before_device_creation",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "非法帧率在连接设备前被拒绝",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.captured.test_asset_crop.AssetCropTest.test_capture_device_sets_frame_rate_before_initialization",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "截图设备构造传递实例帧率，直接设备入口使用视频取帧",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.captured.test_asset_crop.AssetCropTest.test_scrcpy_frame_rate_override_preserves_automation_default",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "视频服务参数使用指定帧率，自动任务默认值保持不变",
+          "input_kind": "mock_or_rule"
+        },
+        {
           "id": "tests.captured.test_asset_crop.AssetArchiveTest.test_preview_records_hash_without_moving_or_creating_archive",
           "category": "资源基础检查",
           "requires_device": false,
