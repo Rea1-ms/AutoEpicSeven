@@ -26,8 +26,10 @@ from tasks.automaton_tower.assets.assets_automaton_tower import (
     AUTOMATON_TOWER_PREPARE_CHECK,
     AUTOMATON_TOWER_SPEED_1X,
     AUTOMATON_TOWER_SPEED_2X,
+    OCR_FLOOR_LIST,
+    OCR_FLOOR_PREPARE,
 )
-from tasks.automaton_tower.automaton_tower import AutomatonTower
+from tasks.automaton_tower.automaton_tower import AutomatonTower, AutomatonTowerFloorOcr
 from tasks.dungeon.assets.assets_dungeon_action import (
     AUTO_COMBAT,
     AUTO_COMBAT_ENEMY_SELECT,
@@ -106,6 +108,7 @@ class AutomatonTowerCaptureTests(unittest.TestCase):
             self.assertEqual(replay.index, 2)
             self.assertTrue(replay.task._enter_floor())
             self.assertEqual(replay.index, 6)
+            self.assertEqual(replay.task.current_floor, 4)
             self.assertEqual(replay.task._run_battle(), "clear")
             self.assertEqual(replay.index, 9)
             self.assertEqual(replay.actions, [
@@ -224,6 +227,9 @@ class AutomatonTowerCaptureTests(unittest.TestCase):
                 AUTO_COMBAT_ENEMY_SELECT,
                 AUTO_COMBAT_SKILL_OPENED,
             ),
+            "2026-11-15_17-13-16-352244": (
+                AUTOMATON_TOWER_CHOOSE_TEAM,
+            ),
         }
         for fixture_id, buttons in expected.items():
             with self.subTest(fixture_id=fixture_id):
@@ -240,6 +246,15 @@ class AutomatonTowerCaptureTests(unittest.TestCase):
                        AUTOMATON_TOWER_SPEED_1X, AUTOMATON_TOWER_SPEED_2X):
             self.assertFalse(button.match_template(transition), button.name)
 
+        # The floor label is dynamic and becomes two digits on this page, so
+        # the old single-digit label template is not a reliable page identity.
+        # The fixed choose-team control remains a positive floor-list marker.
+        double_digit = fixture_image(MANIFEST, "2026-11-15_17-13-16-352244")
+        self.assertFalse(AUTOMATON_TOWER_FLOOR_CHECK.match_template(double_digit))
+        task = object.__new__(AutomatonTower)
+        task.appear = lambda button, interval=0: button.match_template(double_digit)
+        self.assertTrue(task._is_floor_page())
+
     def test_device_confirmation_requires_bright_green_button(self):
         pending = fixture_image(MANIFEST, "2026-11-15_00-21-33-720501")
         selected = fixture_image(MANIFEST, "2026-11-15_00-21-36-380571")
@@ -247,6 +262,22 @@ class AutomatonTowerCaptureTests(unittest.TestCase):
         self.assertFalse(AUTOMATON_TOWER_DEVICE_CONFIRM.match_color(pending, threshold=30))
         self.assertTrue(AUTOMATON_TOWER_DEVICE_CONFIRM.match_template(selected))
         self.assertTrue(AUTOMATON_TOWER_DEVICE_CONFIRM.match_color(selected, threshold=30))
+
+    def test_floor_ocr_reads_list_and_prepare_labels(self):
+        cases = (
+            ("2026-11-15_00-20-19-772479", OCR_FLOOR_LIST, 1),
+            ("2026-11-15_14-43-24-984899", OCR_FLOOR_LIST, 4),
+            ("2026-11-15_00-20-23-753144", OCR_FLOOR_PREPARE, 1),
+            ("2026-11-15_14-43-32-175894", OCR_FLOOR_PREPARE, 4),
+            ("2026-11-15_17-13-16-352244", OCR_FLOOR_LIST, 10),
+        )
+        for fixture_id, button, expected in cases:
+            with self.subTest(fixture_id=fixture_id):
+                image = fixture_image(MANIFEST, fixture_id)
+                self.assertEqual(
+                    AutomatonTowerFloorOcr(button, lang="cn", name="TowerFloor").ocr_single_line(image),
+                    expected,
+                )
 
     def test_battle_replay_starts_once_and_keeps_existing_auto_mode(self):
         with ControlledClock() as clock:

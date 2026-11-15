@@ -28024,6 +28024,21 @@
           ],
           "status": "已纳入",
           "reason": "超过 60 秒的真实战斗 HUD 后接入遗留增益弹窗，验证选卡、确认和结算恢复。"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_floor_ocr_reads_list_and_prepare_labels",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-15_00-20-19-772479",
+            "2026-11-15_14-43-24-984899",
+            "2026-11-15_00-20-23-753144",
+            "2026-11-15_14-43-32-175894",
+            "2026-11-15_17-13-16-352244"
+          ],
+          "status": "已纳入",
+          "reason": "读取楼层列表和备战页的第 N 层指引，日志使用实际楼层编号。"
         }
       ]
     }

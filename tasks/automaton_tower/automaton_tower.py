@@ -8,11 +8,14 @@ result or send the scheduler through the wrong route.
 
 from __future__ import annotations
 
+import cv2
+
 from module.base.button import ClickButton
 from module.base.timer import Timer
 from module.config import server
 from module.config.utils import get_server_next_month_update
 from module.logger import logger
+from module.ocr.ocr import Digit
 from tasks.automaton_tower.assets.assets_automaton_tower import (
     AUTOMATON_TOWER_BATTLE_START,
     AUTOMATON_TOWER_CHECK,
@@ -26,6 +29,8 @@ from tasks.automaton_tower.assets.assets_automaton_tower import (
     AUTOMATON_TOWER_PREPARE_CHECK,
     AUTOMATON_TOWER_SPEED_1X,
     AUTOMATON_TOWER_SPEED_2X,
+    OCR_FLOOR_LIST,
+    OCR_FLOOR_PREPARE,
 )
 from tasks.base.assets.assets_base_page import BACK
 from tasks.base.page import (
@@ -35,6 +40,20 @@ from tasks.base.ui import UI
 from tasks.dungeon.assets.assets_dungeon_action import AUTO_COMBAT, COMBAT_RESULT_LEAVE
 from tasks.dungeon.assets.assets_dungeon_state import AUTO_COMBAT_EXIST, COMBAT_RESULT_CLEAR
 from tasks.dungeon.execute import detect_auto_combat_state
+
+
+class AutomatonTowerFloorOcr(Digit):
+    """Read the white ``第N层`` label from tower navigation pages."""
+
+    def pre_process(self, image):
+        image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
+        image = cv2.threshold(image, 80, 255, cv2.THRESH_BINARY)[1]
+        image = cv2.resize(
+            image,
+            (image.shape[1] * 3, image.shape[0] * 3),
+            interpolation=cv2.INTER_NEAREST,
+        )
+        return cv2.cvtColor(image, cv2.COLOR_GRAY2RGB)
 
 
 class AutomatonTower(UI):
@@ -68,7 +87,15 @@ class AutomatonTower(UI):
         return self.appear(AUTOMATON_TOWER_CHECK, interval=0)
 
     def _is_floor_page(self) -> bool:
-        return self.appear(AUTOMATON_TOWER_FLOOR_CHECK, interval=0)
+        # The floor label is dynamic (for example, ``第 10 层``), so its
+        # template is not a reliable page identity once the number grows to
+        # two digits.  The choose-team control is fixed to the floor-list
+        # page and is absent from the preparation page, which makes it a
+        # stable positive fallback for every unlocked floor.
+        return (
+            self.appear(AUTOMATON_TOWER_FLOOR_CHECK, interval=0)
+            or self.appear(AUTOMATON_TOWER_CHOOSE_TEAM, interval=0)
+        )
 
     def _is_prepare_page(self) -> bool:
         return self.appear(AUTOMATON_TOWER_PREPARE_CHECK, interval=0)
@@ -82,6 +109,21 @@ class AutomatonTower(UI):
             self.appear(AUTOMATON_TOWER_DEVICE_DIALOG, interval=0)
             or self.appear(AUTOMATON_TOWER_DEVICE_CONFIRM, interval=0)
         )
+
+    def _read_floor(self, button, page_name: str) -> int | None:
+        floor = AutomatonTowerFloorOcr(
+            button,
+            lang=self._ocr_lang(),
+            name=f"AutomatonTowerFloor.{page_name}",
+        ).ocr_single_line(self.device.image)
+        if floor > 0:
+            self.current_floor = floor
+            logger.attr("AutomatonTowerFloor", floor)
+            return floor
+
+        self.current_floor = None
+        logger.warning(f"Automaton Tower: {page_name} floor OCR unavailable")
+        return None
 
     def _enter_tower(self) -> bool:
         """Enter the tower landing page from the combat season page.
@@ -102,6 +144,11 @@ class AutomatonTower(UI):
             out: tower preparation page
         """
         timeout = Timer(self.FLOOR_TIMEOUT_SECONDS, count=90).start()
+        # A floor list can stay visible while the choose-team request is
+        # retried.  Read it once per visible list and retry only when OCR
+        # failed; a device dialog resets the gate because its return frame is
+        # the next authoritative floor-list observation.
+        floor_page_ocr = False
         while 1:
             if skip_first_screenshot:
                 skip_first_screenshot = False
@@ -110,6 +157,7 @@ class AutomatonTower(UI):
 
             device_dialog = self._is_device_dialog()
             if not device_dialog and self._is_prepare_page():
+                self._read_floor(OCR_FLOOR_PREPARE, "prepare")
                 return True
 
             if timeout.reached():
@@ -123,11 +171,15 @@ class AutomatonTower(UI):
             if device_dialog:
                 if not self._select_first_device():
                     return False
+                floor_page_ocr = False
                 skip_first_screenshot = True
                 continue
 
-            if self._is_floor_page() and self.appear_then_click(AUTOMATON_TOWER_CHOOSE_TEAM, interval=1):
-                continue
+            if self._is_floor_page():
+                if not floor_page_ocr:
+                    floor_page_ocr = self._read_floor(OCR_FLOOR_LIST, "floor_list") is not None
+                if self.appear_then_click(AUTOMATON_TOWER_CHOOSE_TEAM, interval=1):
+                    continue
 
             if self._is_tower_page() and self.appear_then_click(AUTOMATON_TOWER_ENTER, interval=1):
                 continue
@@ -290,10 +342,15 @@ class AutomatonTower(UI):
             ``"failed"`` when the page never reaches either state.
         """
         timeout = Timer(self.FLOOR_TIMEOUT_SECONDS, count=90).start()
+        # The result page may return to a floor list before opening the next
+        # preparation page.  Avoid logging the same OCR value on every retry,
+        # while still allowing a failed read to be retried on the next frame.
+        floor_page_ocr = False
         while 1:
             self.device.screenshot()
 
             if self._is_prepare_page():
+                self._read_floor(OCR_FLOOR_PREPARE, "prepare")
                 return "next"
 
             if self.appear_then_click(AUTOMATON_TOWER_NEXT_FLOOR, interval=1):
@@ -304,6 +361,8 @@ class AutomatonTower(UI):
             # opened.  Reuse the same positive floor identity and choose-team
             # action instead of clicking a stale result coordinate.
             if self._is_floor_page():
+                if not floor_page_ocr:
+                    floor_page_ocr = self._read_floor(OCR_FLOOR_LIST, "floor_list") is not None
                 if self.appear_then_click(AUTOMATON_TOWER_CHOOSE_TEAM, interval=1):
                     timeout.reset()
                     continue
@@ -345,11 +404,12 @@ class AutomatonTower(UI):
             return False
 
         self._ensure_app_running()
+        self.current_floor = None
         success = False
         try:
             if self._enter_tower() and self._enter_floor():
-                floor = 1
                 while True:
+                    floor = self.current_floor if self.current_floor is not None else "unknown"
                     logger.info(f"Automaton Tower: run floor {floor}")
                     result = self._run_battle()
                     if result != "clear":
@@ -360,7 +420,6 @@ class AutomatonTower(UI):
                     if next_floor == "finished":
                         success = True
                         break
-                    floor += 1
         finally:
             # Never leave a battle/result screen as the scheduler's next start
             # point.  The helper only clicks BACK after a positive main-page

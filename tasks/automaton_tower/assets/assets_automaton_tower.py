@@ -159,3 +159,27 @@ AUTOMATON_TOWER_SPEED_2X = ButtonWrapper(
     ),
     global_en=None,
 )
+OCR_FLOOR_LIST = ButtonWrapper(
+    name='OCR_FLOOR_LIST',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/automaton_tower/OCR_FLOOR_LIST.png',
+        area=(755, 365, 840, 400),
+        search=(735, 345, 860, 420),
+        color=(72, 57, 45),
+        button=(755, 365, 840, 400),
+    ),
+    global_en=None,
+)
+OCR_FLOOR_PREPARE = ButtonWrapper(
+    name='OCR_FLOOR_PREPARE',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/automaton_tower/OCR_FLOOR_PREPARE.png',
+        area=(925, 115, 1020, 155),
+        search=(905, 95, 1040, 175),
+        color=(62, 61, 65),
+        button=(925, 115, 1020, 155),
+    ),
+    global_en=None,
+)

@@ -37,7 +37,8 @@
       "source_sha256": "09223ea122223fd062ddcd6115d25ceef0d4728f5723812021499fc7f8395e6e",
       "privacy_redaction": [],
       "used_by": [
-        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_real_screenshots_cover_activity_states"
+        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_real_screenshots_cover_activity_states",
+        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_floor_ocr_reads_list_and_prepare_labels"
       ]
     },
     "2026-11-15_00-20-23-753144": {
@@ -50,7 +51,8 @@
       "source_sha256": "01253bc923584e1d33433818ccb4986b60fc29142c95a468501cfa317481a8ae",
       "privacy_redaction": [],
       "used_by": [
-        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_real_screenshots_cover_activity_states"
+        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_real_screenshots_cover_activity_states",
+        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_floor_ocr_reads_list_and_prepare_labels"
       ]
     },
     "2026-11-15_00-20-31-060817": {
@@ -269,7 +271,8 @@
         "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_resume_from_combat_selects_device_before_starting_floor",
         "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_resume_retries_dropped_selection_and_confirmation",
         "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_resume_keeps_existing_selection",
-        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_device_unknown_frames_do_not_confirm_completion"
+        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_device_unknown_frames_do_not_confirm_completion",
+        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_floor_ocr_reads_list_and_prepare_labels"
       ]
     },
     "2026-11-15_14-43-29-271926": {
@@ -303,7 +306,8 @@
       "privacy_redaction": [],
       "used_by": [
         "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_resume_screenshots_identify_pending_device",
-        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_resume_from_combat_selects_device_before_starting_floor"
+        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_resume_from_combat_selects_device_before_starting_floor",
+        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_floor_ocr_reads_list_and_prepare_labels"
       ]
     },
     "2026-11-15_14-43-39-909021": {
@@ -393,6 +397,20 @@
         "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_real_screenshots_cover_activity_states",
         "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_battle_replay_enables_dungeon_auto_combat_and_resets_stuck_guard",
         "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_battle_replay_toggles_speed_only_from_positive_one_x_state"
+      ]
+    },
+    "2026-11-15_17-13-16-352244": {
+      "path": "tests/fixtures/automaton_tower/global_cn/2026-11-15_17-13-16-352244.png",
+      "sha256": "b69b0cbfbc85d080d892a84f8734e1a9d4c97bc364200f713cfeaa79353b56dc",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "floor_list_10",
+      "source": "2026-11-15_17-13-16-352244.png",
+      "source_sha256": "b69b0cbfbc85d080d892a84f8734e1a9d4c97bc364200f713cfeaa79353b56dc",
+      "privacy_redaction": [],
+      "used_by": [
+        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_real_screenshots_cover_activity_states",
+        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_floor_ocr_reads_list_and_prepare_labels"
       ]
     }
   }
