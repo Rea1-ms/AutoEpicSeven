@@ -13,6 +13,8 @@ from dev_tools.capture.capture_utils import (  # noqa: E402
     DEFAULT_FRAME_RATE,
     handle_sensitive_info,
     parse_frame_rate,
+    parse_control_method,
+    parse_screenshot_method,
 )
 from module.config.config import AzurLaneConfig  # noqa: E402
 from module.config.utils import alas_instance  # noqa: E402
@@ -64,22 +66,46 @@ def normalize_device_name(name):
     return name
 
 
-def create_device(name='aes', frame_rate=DEFAULT_FRAME_RATE):
+def create_device(
+    name='aes',
+    frame_rate=DEFAULT_FRAME_RATE,
+    screenshot_method=None,
+    control_method=None,
+):
     """Create a Device through the project's configured capture stack."""
     frame_rate = parse_frame_rate(frame_rate)
+    if screenshot_method is not None:
+        screenshot_method = parse_screenshot_method(screenshot_method)
+    if control_method is not None:
+        control_method = parse_control_method(control_method)
     name = normalize_device_name(name)
     if name in alas_instance():
         print(f'{name} is an existing config file')
-        device = Device(name, scrcpy_frame_rate=frame_rate)
+        config = AzurLaneConfig(name, task=None)
+        if screenshot_method is not None:
+            config.override(Emulator_ScreenshotMethod=screenshot_method)
+        if control_method is not None:
+            config.override(Emulator_ControlMethod=control_method)
+        device = Device(
+            config,
+            scrcpy_frame_rate=frame_rate,
+            screenshot_method_explicit=screenshot_method is not None,
+        )
     else:
         print(f'{name} is a device serial')
         config = AzurLaneConfig('template')
         config.override(
             Emulator_Serial=name,
             Emulator_PackageName='auto',
-            Emulator_ScreenshotMethod='scrcpy',
+            Emulator_ScreenshotMethod=screenshot_method or 'scrcpy',
         )
-        device = Device(config, scrcpy_frame_rate=frame_rate)
+        if control_method is not None:
+            config.override(Emulator_ControlMethod=control_method)
+        device = Device(
+            config,
+            scrcpy_frame_rate=frame_rate,
+            screenshot_method_explicit=True,
+        )
 
     device.disable_stuck_detection()
     device.screenshot_interval_set(0.)
@@ -134,6 +160,10 @@ def main(argv=None):
     target.add_argument('--serial', help='设备地址或端口号')
     parser.add_argument('--fps', type=parse_frame_rate, default=DEFAULT_FRAME_RATE,
                         help='视频帧率上限，正整数，默认 30')
+    parser.add_argument('--screenshot-method', type=parse_screenshot_method,
+                        help='截图方式，如 scrcpy、adbnc、uiautomator、nemu')
+    parser.add_argument('--control-method', type=parse_control_method,
+                        help='操控方式，如 maatouch、minitouch、uiautomator、adb')
     parser.add_argument('--console', action='store_true', help='使用原有终端与全局热键模式')
     args = parser.parse_args(argv)
     if not args.console:
@@ -141,6 +171,10 @@ def main(argv=None):
 
         target_args = ['--serial', args.serial] if args.serial else ['--config', args.config]
         target_args += ['--fps', str(args.fps)]
+        if args.screenshot_method is not None:
+            target_args += ['--screenshot-method', args.screenshot_method]
+        if args.control_method is not None:
+            target_args += ['--control-method', args.control_method]
         result = crop_main(['live', *target_args])
         return 0 if result == 130 else result
 
@@ -153,7 +187,12 @@ def main(argv=None):
             '输入aes配置文件名称，或者模拟器serial，或者模拟器端口号: (默认输入 "aes"):\n'
             '例如："aes", "127.0.0.1:16384", "7555"\n'
         )
-    device = create_device(name, frame_rate=args.fps)
+    device = create_device(
+        name,
+        frame_rate=args.fps,
+        screenshot_method=args.screenshot_method,
+        control_method=args.control_method,
+    )
     output = './screenshots/dev_screenshots'
     os.makedirs(output, exist_ok=True)
     print('')

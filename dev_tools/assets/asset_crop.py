@@ -19,7 +19,9 @@ from dev_tools.assets.asset_crop_ui import Box, InteractiveCropper  # noqa: E402
 from dev_tools.capture.capture_utils import (  # noqa: E402
     DEFAULT_FRAME_RATE,
     handle_sensitive_info,
+    parse_control_method,
     parse_frame_rate,
+    parse_screenshot_method,
 )
 from module.base.utils import load_image, save_image  # noqa: E402
 from module.config.server import VALID_LANG  # noqa: E402
@@ -516,7 +518,12 @@ def _finish_interactive(args, image: np.ndarray, boxes: list[Box], source: Path 
 def command_live(args) -> int:
     from dev_tools.capture.screenshot import create_device, create_preview
 
-    device = create_device(args.serial or args.config, frame_rate=args.fps)
+    device = create_device(
+        args.serial or args.config,
+        frame_rate=args.fps,
+        screenshot_method=args.screenshot_method,
+        control_method=args.control_method,
+    )
     if args.namespace is None:
         import module.config.server as server
 
@@ -548,7 +555,12 @@ def command_capture(args) -> int:
 
     suite = _required(args.suite, "Test suite")
     case = _required(args.case, "Test case")
-    device = create_device(args.serial or args.config, frame_rate=args.fps)
+    device = create_device(
+        args.serial or args.config,
+        frame_rate=args.fps,
+        screenshot_method=args.screenshot_method,
+        control_method=args.control_method,
+    )
     image = take_screenshot(device)
     recipe = CropRecipe(source=f"{case}.png", suite=suite, case=case, items=())
     plan = create_output_plan(image, recipe)
@@ -632,6 +644,10 @@ def _add_device_arguments(parser: argparse.ArgumentParser) -> None:
     device.add_argument("--serial", help="emulator serial or port")
     parser.add_argument("--fps", type=parse_frame_rate, default=DEFAULT_FRAME_RATE,
                         help="video frame rate limit, positive integer; default 30")
+    parser.add_argument("--screenshot-method", type=parse_screenshot_method,
+                        help="screenshot method, e.g. scrcpy, adbnc, uiautomator, nemu")
+    parser.add_argument("--control-method", type=parse_control_method,
+                        help="control method, e.g. maatouch, minitouch, uiautomator, adb")
 
 
 def build_parser() -> argparse.ArgumentParser:
