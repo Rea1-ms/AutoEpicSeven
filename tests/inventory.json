@@ -9791,6 +9791,36 @@
           "fixtures": [],
           "status": "已纳入",
           "reason": "活动批处理、点击重试、分服页面与调度隔离"
+        },
+        {
+          "id": "tests.activity.test_reward_scheduling.ActivityConfigReloadTests.test_completed_handbook_stays_waiting_after_delay_and_reloads",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "真实配置延后、序列化重载及待运行队列回归；不读取账号或连接设备",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.activity.test_reward_scheduling.ActivityConfigReloadTests.test_future_activity_launch_survives_reload_for_both_tasks",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "两类活动的跨日开始时间在配置重载后继续等待",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.activity.test_reward_scheduling.ActivityConfigReloadTests.test_daily_and_monthly_stale_timestamp_limits_are_preserved",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "普通任务与圣域月度任务原有异常时间限制保持不变",
+          "input_kind": "mock_or_rule"
         }
       ]
     },

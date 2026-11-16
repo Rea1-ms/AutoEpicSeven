@@ -286,7 +286,12 @@ class AzurLaneConfig(ConfigUpdater, ManualConfig, GeneratedConfig, ConfigWatcher
 
     def config_override(self):
         now = datetime.now().replace(microsecond=0)
-        limited = set()
+        # Activity tasks may sleep until a future campaign opens or a completed
+        # event ends. These calendar-owned targets legitimately exceed one day.
+        # Exempt them on every reload: resetting the target to now otherwise
+        # requeues a completed event immediately after task_delay saves it,
+        # causing an endless run/skip/save cycle with no device interaction.
+        limited = {'LimitedActivity', 'SpecialActivity'}
         package = deep_get(
             self.data,
             keys='Alas.Emulator.PackageName',

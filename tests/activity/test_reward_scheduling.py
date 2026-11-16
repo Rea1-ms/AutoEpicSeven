@@ -3,10 +3,12 @@ from module.config import server as _test_server
 
 _test_server.set_lang("global_cn")
 
+import json
 import subprocess
 import sys
 import unittest
-from datetime import datetime
+from contextlib import contextmanager
+from datetime import datetime, timedelta
 from types import SimpleNamespace
 from unittest.mock import MagicMock, patch
 
@@ -20,6 +22,100 @@ from tasks.activity.legacy.summer_2026_06_25.scheduling import (
 )
 from tasks.mission_reward.scheduling import should_schedule_mission_reward
 from tests.support.offline import ROOT
+
+
+class ActivityConfigReloadTests(unittest.TestCase):
+    @contextmanager
+    def memory_config(self):
+        from module.config.config import AzurLaneConfig
+        from module.config.config_updater import ConfigUpdater
+
+        now = datetime.now().replace(microsecond=0)
+        data = {
+            "Alas": {"Emulator": {"PackageName": "OVERSEA-Play", "GameLanguage": "cn"}},
+            "SecretShop": {"Scheduler": {
+                "Enable": True, "Command": "SecretShop", "NextRun": now - timedelta(minutes=1),
+            }},
+        }
+        for task in calendar.ACTIVITY_TASK_MODES:
+            data[task] = {"Scheduler": {
+                "Enable": True, "Command": task, "NextRun": now - timedelta(minutes=1),
+            }}
+        saved = [json.dumps(data, default=str)]
+        config = AzurLaneConfig("template-activity-reload-offline")
+
+        def read_config(*args, **kwargs):
+            return ConfigUpdater().config_update(json.loads(saved[0]))
+
+        def write_config(name, data):
+            saved[0] = json.dumps(data, default=str)
+
+        # Replace only account I/O. Real delay/update/load/override/binding and
+        # queue partitioning must run together: checking task_delay's arguments
+        # alone cannot catch a future target being reset during config reload.
+        with patch.object(config, "read_file", side_effect=read_config), \
+                patch.object(config, "write_file", side_effect=write_config), \
+                patch.object(AzurLaneConfig, "is_hoarding_task", False):
+            config.load()
+            config.bind("SpecialActivity")
+            config.auto_update = True
+            yield config
+
+    def test_completed_handbook_stays_waiting_after_delay_and_reloads(self):
+        with self.memory_config() as config:
+            now = datetime.now(calendar.EVENT_TIMEZONE).replace(microsecond=0)
+            event = calendar.ActivityWindow(
+                "completed_handbook", "Completed handbook", "alencia_handbook", "OVERSEA",
+                now - timedelta(days=1), now + timedelta(days=24),
+            )
+            scheduling.mark_activity_completed(config, event.event_id)
+            target = event.end.astimezone().replace(tzinfo=None)
+            with patch.object(scheduling, "active_activities", return_value=(event,)), \
+                    patch.object(scheduling, "next_activity_start", return_value=None):
+                scheduling.delay_next_activity_check(config)
+            for _ in range(3):
+                config.load()
+                self.assertEqual(config.cross_get("SpecialActivity.Scheduler.NextRun"), target)
+                self.assertTrue(scheduling.is_activity_completed(config, event.event_id))
+                config.get_next_task()
+                self.assertNotIn("SpecialActivity", [task.command for task in config.pending_task])
+                self.assertIn("SecretShop", [task.command for task in config.pending_task])
+                self.assertIn("SpecialActivity", [task.command for task in config.waiting_task])
+
+    def test_future_activity_launch_survives_reload_for_both_tasks(self):
+        with self.memory_config() as config:
+            target = datetime.now(calendar.EVENT_TIMEZONE).replace(microsecond=0) + timedelta(days=10)
+            for task in calendar.ACTIVITY_TASK_MODES:
+                with self.subTest(task=task), \
+                        patch.object(scheduling, "active_activities", return_value=()), \
+                        patch.object(scheduling, "next_activity_start", return_value=target):
+                    scheduling.delay_next_activity_check(config, task=task)
+                    config.load()
+                    self.assertEqual(
+                        config.cross_get(f"{task}.Scheduler.NextRun"),
+                        target.astimezone().replace(tzinfo=None),
+                    )
+                    config.get_next_task()
+                    self.assertNotIn(task, [item.command for item in config.pending_task])
+                    self.assertIn(task, [item.command for item in config.waiting_task])
+
+    def test_daily_and_monthly_stale_timestamp_limits_are_preserved(self):
+        from module.config.deep import deep_set
+
+        with self.memory_config() as config:
+            now = datetime.now().replace(microsecond=0)
+            for task, valid_days, stale_days in (("SecretShop", 0.5, 2), ("SanctuaryMonthly", 35, 41)):
+                with self.subTest(task=task):
+                    valid = now + timedelta(days=valid_days)
+                    deep_set(config.data, f"{task}.Scheduler.NextRun", valid)
+                    config.config_override()
+                    self.assertEqual(config.cross_get(f"{task}.Scheduler.NextRun"), valid)
+                    deep_set(config.data, f"{task}.Scheduler.NextRun", now + timedelta(days=stale_days))
+                    config.config_override()
+                    self.assertLessEqual(
+                        config.cross_get(f"{task}.Scheduler.NextRun"),
+                        datetime.now(),
+                    )
 
 
 class RewardSchedulingTest(unittest.TestCase):
