@@ -25021,6 +25021,51 @@
           "reason": "真实标题图与更新反例；遮暗、隐藏文字、弹窗锚点叠加、重复帧、主页和国服协议状态明确模拟；保留生产计时与点击保护"
         },
         {
+          "id": "tests.core.test_login_update.LoginStartFlowTests.test_recovery_enters_on_first_ready_frame",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "login-start-default-20261105",
+            "login-start-event-20261105"
+          ],
+          "status": "已纳入",
+          "reason": "真实标题图首个恢复帧即可进入，不附加启动等待；主页和采样时钟明确模拟"
+        },
+        {
+          "id": "tests.core.test_login_update.LoginStartFlowTests.test_recovery_handles_first_popup_before_entering",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "login-start-default-20261105"
+          ],
+          "status": "已纳入",
+          "reason": "真实标题图叠加弹窗锚点，恢复首帧处理断线或公告，再识别进入；保留生产点击间隔"
+        },
+        {
+          "id": "tests.core.test_login_update.LoginStartFlowTests.test_app_start_and_restart_wait_before_first_detection",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "login-start-default-20261105"
+          ],
+          "status": "已纳入",
+          "reason": "启动与重启入口均等待完整五秒后识别和点击；使用真实标题图、模拟进程动作与时钟"
+        },
+        {
+          "id": "tests.core.test_login_update.LoginStartFlowTests.test_recovery_restart_waits_for_launch_animation",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "login-start-default-20261105"
+          ],
+          "status": "已纳入",
+          "reason": "恢复中因登录错误或公告处理超时实际重启后，重新等待完整五秒；异常状态和主页明确模拟"
+        },
+        {
           "id": "tests.core.test_login_update.LoginStartFlowTests.test_missed_start_click_retries_safely_then_waits_for_confirmed_main",
           "category": "流程回放",
           "requires_device": false,

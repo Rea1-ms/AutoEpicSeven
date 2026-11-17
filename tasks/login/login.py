@@ -11,7 +11,7 @@ Epic Seven 登录模块
     - 处理登录后弹窗直到到达主界面
 
 流程:
-    启动游戏 → 等待5秒 → 单循环轮询:
+    启动游戏 → 等待5秒；恢复登录直接进入单循环轮询:
       终止条件: is_in_main() = True（主界面 + 无遮罩）
       - LOGGED_OUT → 掉登录了直接报错
       - LOGIN_ERROR → 重启一次，再出现则报错
@@ -199,7 +199,7 @@ class Login(UI):
 
         return False
 
-    def _handle_app_login(self):
+    def _handle_app_login(self, *, wait_startup=False):
         """
         处理游戏启动到进入主界面的完整过程
 
@@ -209,8 +209,11 @@ class Login(UI):
         3. 处理登录后弹窗（签到、新角色、buff、礼包等）
         4. 检测到主界面且无遮罩后退出
 
+        Args:
+            wait_startup: 是否刚启动游戏，需要等待5秒启动动画。
+
         Pages:
-            in: 游戏启动中
+            in: 游戏启动中或恢复登录
             out: 游戏主界面（无弹窗）
 
         Raises:
@@ -221,7 +224,14 @@ class Login(UI):
 
         # 计时器
         orientation_timer = Timer(5)
-        startup_timer = Timer(5).start()  # 启动后等待5秒再开始检测
+        # Only a newly started process needs the unskippable launch animation.
+        # Recovery already has a login screen or popup and must inspect its first
+        # fresh frame immediately. Leave this timer unstarted for recovery, but
+        # keep resetting it after both internal app_start() branches below:
+        # those really restart the process and must restore the five-second gate.
+        startup_timer = Timer(5)
+        if wait_startup:
+            startup_timer.start()
         app_timer = Timer(5).start()  # 检查游戏是否存活
         timeout = Timer(120, count=120).start()  # 总超时
         main_confirm = Timer(1.5, count=4).start()  # 主界面稳定确认，防止突然闪现的正常一帧
@@ -262,7 +272,7 @@ class Login(UI):
                 logger.error('Login timeout')
                 raise GameNotRunningError('Login timeout')
 
-            # 等待5秒后再开始检测
+            # 仅在实际启动或重启游戏后等待5秒动画，再开始检测
             if not startup_timer.reached():
                 continue
 
@@ -557,15 +567,18 @@ class Login(UI):
             logger.info(f'Maintenance delay: rescheduled {len(tasks)} tasks starting at {limit}')
             self.config.update()
 
-    def handle_app_login(self):
+    def handle_app_login(self, *, wait_startup=False):
         """
-        登录入口（带截图间隔调整）
+        登录入口（带截图间隔调整），恢复登录默认立即检查。
+
+        Args:
+            wait_startup: 仅在刚启动或重启游戏进程后传入 True。
         """
         logger.info('handle_app_login')
         self.device.screenshot_interval_set(0.5)
         self.device.stuck_timer = Timer(300, count=300).start()
         try:
-            self._handle_app_login()
+            self._handle_app_login(wait_startup=wait_startup)
         finally:
             self.device.screenshot_interval_set()
             self.device.stuck_timer = Timer(60, count=60).start()
@@ -579,11 +592,11 @@ class Login(UI):
         """启动游戏"""
         logger.hr('App start')
         self.device.app_start()
-        self.handle_app_login()
+        self.handle_app_login(wait_startup=True)
 
     def app_restart(self):
         """重启游戏"""
         logger.hr('App restart')
         self.device.app_stop()
         self.device.app_start()
-        self.handle_app_login()
+        self.handle_app_login(wait_startup=True)

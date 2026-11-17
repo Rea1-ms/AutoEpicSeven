@@ -563,6 +563,86 @@ class LoginStartFlowTests(unittest.TestCase):
         replay.task.is_in_main = lambda **kwargs: replay.frame['page'] == 'main'
         return replay
 
+    def test_recovery_enters_on_first_ready_frame(self):
+        for name in START_CAPTURES:
+            with self.subTest(frame=name):
+                replay = self.login([scene(fixture=name)] + [scene(page='main')] * 6)
+                replay.task.handle_app_login()
+                self.assertEqual(replay.actions, [(1, 'LOGIN_CONFIRM')])
+                self.assertEqual(replay.lifecycle, [])
+                self.assertEqual(replay.frame['page'], 'main')
+                self.assertEqual(replay.intervals, [(0.5,), ()])
+
+    def test_recovery_handles_first_popup_before_entering(self):
+        for popup, action, enter_index in (
+            (NETWORK_ERROR_DISCONNECT, 'TOUCH_TO_CLOSE', 2),
+            (ANNOUNCEMENT_CLOSE, 'ANNOUNCEMENT_CLOSE', 3),
+        ):
+            with self.subTest(popup=popup.name):
+                replay = self.login([
+                    scene(fixture=START_CAPTURES[0], overlay=(popup,)),
+                    scene(fixture=START_CAPTURES[0]),
+                    scene(fixture=START_CAPTURES[0]),
+                    *[scene(page='main')] * 6,
+                ])
+                replay.task.handle_app_login()
+                self.assertEqual(replay.actions, [(1, action), (enter_index, 'LOGIN_CONFIRM')])
+                self.assertEqual(replay.lifecycle, [])
+                self.assertEqual(replay.frame['page'], 'main')
+
+    def test_app_start_and_restart_wait_before_first_detection(self):
+        for entry, lifecycle in (
+            ('app_start', [(0, 'app_start')]),
+            ('app_restart', [(0, 'app_stop'), (0, 'app_start')]),
+        ):
+            with self.subTest(entry=entry):
+                replay = self.login([scene(fixture=START_CAPTURES[0])] * 11
+                                    + [scene(page='main')] * 6)
+                observations = []
+
+                def is_in_main(*, replay=replay, observations=observations, **kwargs):
+                    observations.append(replay.index)
+                    return replay.frame['page'] == 'main'
+
+                replay.task.is_in_main = is_in_main
+                getattr(replay.task, entry)()
+                # Half-second frames include the exact five-second boundary;
+                # even a readable title must not bypass the startup animation.
+                self.assertEqual(observations[0], 11)
+                self.assertEqual(replay.actions, [(11, 'LOGIN_CONFIRM')])
+                self.assertEqual(replay.lifecycle, lifecycle)
+                self.assertEqual(replay.frame['page'], 'main')
+                self.assertEqual(replay.intervals, [(0.5,), ()])
+
+    def test_recovery_restart_waits_for_launch_animation(self):
+        for popup, unknown_frames, restart_index in (
+            (LOGIN_ERROR, 0, 1),
+            (ANNOUNCEMENT_CLOSE, 37, 38),
+        ):
+            with self.subTest(popup=popup.name):
+                replay = self.login([
+                    scene(fixture=START_CAPTURES[0], overlay=(popup,)),
+                    *[scene()] * unknown_frames,
+                    *[scene(fixture=START_CAPTURES[0])] * 11,
+                    *[scene(page='main')] * 6,
+                ])
+                observations = []
+
+                def is_in_main(*, replay=replay, observations=observations, **kwargs):
+                    observations.append(replay.index)
+                    return replay.frame['page'] == 'main'
+
+                replay.task.is_in_main = is_in_main
+                replay.task.handle_app_login()
+                expected_actions = ([(1, 'ANNOUNCEMENT_CLOSE')]
+                                    if popup is ANNOUNCEMENT_CLOSE else [])
+                expected_actions.append((restart_index + 11, 'LOGIN_CONFIRM'))
+                self.assertEqual(replay.actions, expected_actions)
+                self.assertEqual(replay.lifecycle, [(restart_index, 'app_stop'), (restart_index, 'app_start')])
+                self.assertEqual(next(index for index in observations if index > restart_index),
+                                 restart_index + 11)
+                self.assertEqual(replay.frame['page'], 'main')
+
     def test_missed_start_click_retries_safely_then_waits_for_confirmed_main(self):
         for name in START_CAPTURES:
             with self.subTest(frame=name):
