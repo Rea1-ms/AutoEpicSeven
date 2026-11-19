@@ -28007,6 +28007,32 @@
           "reason": "用真实第14层遮挡画面及拼接状态回放，确认先选装置并确认，遮挡解除后才点击下一层。"
         },
         {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_final_floor_settlement_confirms_conquest",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "Scrcpy-20261119-002339-641",
+            "Scrcpy-20261119-002347-457",
+            "Scrcpy-20261119-002351-615"
+          ],
+          "status": "已纳入",
+          "reason": "末层实图依次确认征服按钮、专用弹窗和征服后的入口；重复帧限频，弹窗出现后不重按征服。"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_run_resumes_or_preserves_final_settlement",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "Scrcpy-20261119-002339-641",
+            "Scrcpy-20261119-002347-457",
+            "Scrcpy-20261119-002351-615"
+          ],
+          "status": "已纳入",
+          "reason": "从征服弹窗恢复或在已征服页面结束；超时保留现场，不返回或再次进入。"
+        },
+        {
           "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_battle_replay_enables_dungeon_auto_combat_and_resets_stuck_guard",
           "category": "流程回放",
           "requires_device": false,

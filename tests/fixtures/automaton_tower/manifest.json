@@ -1,6 +1,48 @@
 {
   "version": 1,
   "fixtures": {
+    "Scrcpy-20261119-002339-641": {
+      "path": "tests/fixtures/automaton_tower/global_cn/Scrcpy-20261119-002339-641.png",
+      "sha256": "5cba8cdaa4ccd95aa125629406a3647ca33dbf8624b04f0d995ad357b60b6991",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "tower_final_floor_clear_with_conquer_button",
+      "source": "Scrcpy-20261119-002339-641.png",
+      "source_sha256": "091822ed7b0c5d2f4a28560df2f5f0b22a33bf3a6df92e13eb640f3b9909f52e",
+      "privacy_redaction": [],
+      "used_by": [
+        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_final_floor_settlement_confirms_conquest",
+        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_run_resumes_or_preserves_final_settlement"
+      ]
+    },
+    "Scrcpy-20261119-002347-457": {
+      "path": "tests/fixtures/automaton_tower/global_cn/Scrcpy-20261119-002347-457.png",
+      "sha256": "7f406255efca271c804ad1921517beeba3ea3beeb724d8d480cc989112d68ff1",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "tower_conquest_notice",
+      "source": "Scrcpy-20261119-002347-457.png",
+      "source_sha256": "02ed27e949c015b65b1b08313158463ebb495c761bb6edfd02a98fabc0b987ff",
+      "privacy_redaction": [],
+      "used_by": [
+        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_final_floor_settlement_confirms_conquest",
+        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_run_resumes_or_preserves_final_settlement"
+      ]
+    },
+    "Scrcpy-20261119-002351-615": {
+      "path": "tests/fixtures/automaton_tower/global_cn/Scrcpy-20261119-002351-615.png",
+      "sha256": "35861511ef883c79efc303fcde58996ef7bcb2d0c6bbbd98ad3bd19fd60f286d",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "tower_conquered_landing",
+      "source": "Scrcpy-20261119-002351-615.png",
+      "source_sha256": "51b78ce1a8ce312f27974a1f62702b87efb6da17e032138e4d4fb5d584b072ec",
+      "privacy_redaction": [],
+      "used_by": [
+        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_final_floor_settlement_confirms_conquest",
+        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_run_resumes_or_preserves_final_settlement"
+      ]
+    },
     "Scrcpy-20261118-214443-322": {
       "path": "tests/fixtures/automaton_tower/global_cn/Scrcpy-20261118-214443-322.png",
       "sha256": "d351feb3ff76d923d9aa44902abce534be581b01155a623bc5e0bf9c8d48edac",

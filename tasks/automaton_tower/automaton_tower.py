@@ -34,6 +34,11 @@ from tasks.automaton_tower.assets.assets_automaton_tower import (
     OCR_FLOOR_LIST,
     OCR_FLOOR_PREPARE,
 )
+from tasks.automaton_tower.assets.assets_automaton_tower_settlement import (
+    TOWER_CONQUER,
+    TOWER_CONQUERED,
+    TOWER_CONQUEST_NOTICE,
+)
 from tasks.automaton_tower.entry import AutomatonTowerEntry
 from tasks.automaton_tower.policy import ProfileError
 from tasks.automaton_tower.profile_store import ProfileStore, StaminaSettings
@@ -236,6 +241,7 @@ class AutomatonTower(AutomatonTowerEntry):
         if (
             self._is_stamina_dialog() or self._is_entry_overlay() or self._is_tower_page() or self._is_floor_page()
             or self._is_prepare_page() or self._is_device_dialog()
+            or self._settlement_state() is not None
         ):
             return True
         # Entering a started season may restore the floor list or its pending
@@ -255,6 +261,7 @@ class AutomatonTower(AutomatonTowerEntry):
             if (
                 self._is_stamina_dialog() or self._is_entry_overlay() or self._is_tower_page() or self._is_floor_page()
                 or self._is_prepare_page() or self._is_device_dialog()
+                or self._settlement_state() is not None
             ):
                 return True
 
@@ -548,12 +555,48 @@ class AutomatonTower(AutomatonTowerEntry):
             if self.ui_additional() or self.handle_network_error():
                 timeout.reset()
 
+    def _settlement_state(self) -> str | None:
+        if server.lang != "global_cn":
+            return None
+        if self.match_template_color(TOWER_CONQUEST_NOTICE, threshold=30):
+            return "notice"
+        if self.match_template_color(TOWER_CONQUER, threshold=30):
+            return "conquer"
+        if (
+            self.match_template_color(TOWER_CONQUERED, threshold=30)
+            and self.appear(AUTOMATON_TOWER_CHECK, interval=0)
+            and not self._is_entry_overlay()
+        ):
+            return "complete"
+        return None
+
+    def _finish_tower(self, state: str) -> None:
+        """Confirm the last-floor reward and the conquered tower landing."""
+        deadline = Timer(self.FLOOR_TIMEOUT_SECONDS).start()
+        conquer_retry = Timer(2)
+        notice_retry = Timer(2)
+        notice_seen = False
+        while True:
+            if state == "complete":
+                logger.info("Automaton Tower: conquest confirmed")
+                return
+            if deadline.reached():
+                raise RequestHumanTakeover("Automaton Tower: final settlement not confirmed")
+            if state == "notice":
+                notice_seen = True
+                if notice_retry.reached_and_reset():
+                    self.device.click(TOWER_CONQUEST_NOTICE)
+            elif state == "conquer" and not notice_seen and conquer_retry.reached_and_reset():
+                self.device.click(TOWER_CONQUER)
+            self.device.screenshot()
+            state = self._settlement_state()
+
     def _next_floor(self) -> str:
         """Advance from a clear result and report the positively observed outcome.
 
         Returns:
             ``"next"`` when a new preparation page is visible,
-            ``"finished"`` when the result page remains at its final state,
+            ``"finished"`` when the tower confirms conquest,
             ``"failed"`` when the page never reaches either state.
         """
         timeout = Timer(self.FLOOR_TIMEOUT_SECONDS, count=90).start()
@@ -567,6 +610,11 @@ class AutomatonTower(AutomatonTowerEntry):
                 skip_first_screenshot = False
             else:
                 self.device.screenshot()
+
+            settlement = self._settlement_state()
+            if settlement is not None:
+                self._finish_tower(settlement)
+                return "finished"
 
             if self._is_entry_overlay():
                 if timeout.reached():
@@ -603,13 +651,6 @@ class AutomatonTower(AutomatonTowerEntry):
                     continue
 
             if timeout.reached():
-                # The result page exposes BACK for both an ordinary delayed
-                # transition and the final floor.  Treat it as final only
-                # after the full bounded wait, so a slow network cannot turn
-                # a late NEXT_FLOOR button into a false success.
-                if self.appear(BACK, interval=0):
-                    logger.info("Automaton Tower: final floor reached")
-                    return "finished"
                 logger.warning("Automaton Tower: next floor timeout")
                 return "failed"
 
@@ -692,7 +733,11 @@ class AutomatonTower(AutomatonTowerEntry):
         stamina_stop = False
         try:
             entered = self._enter_tower()
-            if entered and self._enter_floor():
+            settlement = self._settlement_state() if entered else None
+            if settlement is not None:
+                self._finish_tower(settlement)
+                success = True
+            elif entered and self._enter_floor():
                 while True:
                     floor = self.current_floor if self.current_floor is not None else "unknown"
                     logger.info(f"Automaton Tower: run floor {floor}")

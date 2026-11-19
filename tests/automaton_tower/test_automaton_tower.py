@@ -59,6 +59,9 @@ from tests.support.automaton_tower import (
 from tests.support.offline import ROOT, ControlledClock, fixture_image
 
 MANIFEST = ROOT / "tests" / "fixtures" / "automaton_tower" / "manifest.json"
+LAST_FLOOR_CLEAR = "Scrcpy-20261119-002339-641"
+CONQUEST_NOTICE = "Scrcpy-20261119-002347-457"
+CONQUERED_LANDING = "Scrcpy-20261119-002351-615"
 
 
 class AutomatonTowerCaptureTests(unittest.TestCase):
@@ -224,6 +227,53 @@ class AutomatonTowerCaptureTests(unittest.TestCase):
                 (3, "AUTOMATON_TOWER_DEVICE_CONFIRM"),
                 (4, "AUTOMATON_TOWER_NEXT_FLOOR"),
             ])
+
+    def test_final_floor_settlement_confirms_conquest(self):
+        with ControlledClock() as clock:
+            replay = TowerReplay([
+                capture(LAST_FLOOR_CLEAR), capture(LAST_FLOOR_CLEAR, 0.1),
+                capture(LAST_FLOOR_CLEAR, 0.1), capture(LAST_FLOOR_CLEAR, 2.1),
+                capture(CONQUEST_NOTICE, 0.1), capture(CONQUEST_NOTICE, 0.1),
+                capture(LAST_FLOOR_CLEAR, 0.1), capture(CONQUEST_NOTICE, 2.1),
+                capture(None, 0.1), capture(CONQUERED_LANDING, 0.1),
+            ], clock)
+            self.assertEqual(replay.task._run_battle(), "clear")
+            self.assertEqual(replay.task._next_floor(), "finished")
+            self.assertEqual(replay.index, 9)
+            self.assertEqual(replay.actions, [
+                (1, "TOWER_CONQUER"), (3, "TOWER_CONQUER"),
+                (4, "TOWER_CONQUEST_NOTICE"), (7, "TOWER_CONQUEST_NOTICE"),
+            ])
+
+    def test_run_resumes_or_preserves_final_settlement(self):
+        cases = (
+            ("notice", [capture(CONQUEST_NOTICE), capture(CONQUERED_LANDING)], True),
+            ("conquered", [capture(CONQUERED_LANDING)], True),
+            ("timeout", [capture(CONQUEST_NOTICE), capture(LAST_FLOOR_CLEAR, 45.1)], False),
+        )
+        for name, frames, completed in cases:
+            with self.subTest(name=name), ControlledClock() as clock:
+                replay = TowerReplay(frames, clock)
+                task = replay.task
+                task.config.config_name = "offline"
+                with (
+                    patch("tasks.automaton_tower.automaton_tower.ProfileStore") as store,
+                    patch.object(task, "_enter_floor", side_effect=AssertionError("Already at final settlement")),
+                    patch.object(task, "_return_to_main", return_value=True) as leave,
+                    patch.object(task, "handle_popup_confirm", side_effect=AssertionError("Use the specific close")),
+                ):
+                    store.return_value.active.return_value = None
+                    store.return_value.debug_enabled.return_value = False
+                    if completed:
+                        self.assertTrue(task.run())
+                        leave.assert_called_once_with()
+                    else:
+                        with self.assertRaisesRegex(RequestHumanTakeover, "final settlement"):
+                            task.run()
+                        leave.assert_not_called()
+                self.assertEqual(replay.index, len(frames) - 1)
+                self.assertEqual(replay.actions, [] if name == "conquered" else [(0, "TOWER_CONQUEST_NOTICE")])
+                task.config.task_delay.assert_not_called()
 
     def test_real_screenshots_cover_activity_states(self):
         expected = {
