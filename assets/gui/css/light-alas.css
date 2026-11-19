@@ -115,7 +115,7 @@ pre.rich-traceback-code {
     border: 1px solid lightgrey;
 }
 
-#pywebio-scope-daemon-overview [id^="pywebio-scope-group_"] {
+#pywebio-scope-daemon-overview :not(#pywebio-scope-automaton-tower-settings) > [id^="pywebio-scope-group_"] {
     border: 0;
 }
 

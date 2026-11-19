@@ -9,6 +9,7 @@ from pywebio.output import (
     popup,
     put_buttons,
     put_file,
+    put_html,
     put_scope,
     put_text,
     put_warning,
@@ -16,24 +17,52 @@ from pywebio.output import (
     use_scope,
 )
 from pywebio.pin import pin, pin_on_change, put_textarea
+from pywebio.session import run_js
 
 from module.webui.pin import put_checkbox, put_input, put_select
 from tasks.automaton_tower.policy import MAX_PROFILE_BYTES, ProfileError
 from tasks.automaton_tower.profile_store import ProfileStore, StaminaSettings
 
-SCOPE = "group_automaton_tower_profile"
+SCOPE = "automaton-tower-settings"
 SELECT = "automaton_tower_profile_choice"
 EDITOR = "automaton_tower_profile_editor"
 DEBUG = "automaton_tower_debug_capture"
 REFILL = "automaton_tower_stamina_refill"
 RESERVE = "automaton_tower_stamina_reserve"
-RESERVE_SCOPE = "group_automaton_tower_stamina_reserve"
+RESERVE_SCOPE = "automaton-tower-stamina-reserve"
 LEGACY = "legacy"
 
 
 def render_automaton_tower_panel(gui):
     put_scope(SCOPE, scope="groups")
     render_profile_controls(gui)
+
+
+def _put_setting(kind, name, title, control, help_text, *, scope=None):
+    put_scope(
+        f"arg_container-{kind}-{name}",
+        [
+            put_scope(f"{name}-description", [
+                put_text(title).style("--arg-title--"),
+                put_text(help_text).style("--arg-help--"),
+            ]),
+            control,
+        ],
+        scope=scope,
+    )
+
+
+def _put_toggle(name, title, enabled, help_text):
+    _put_setting(
+        "checkbox", name, title,
+        put_checkbox(
+            name, options=[{"label": "", "value": "enabled"}],
+            value=["enabled"] if enabled else [],
+        ).style("text-align: center"),
+        help_text,
+    )
+    run_js('document.getElementsByName(name)[0]?.setAttribute("aria-label", title)',
+           name=name, title=title)
 
 
 def render_profile_controls(gui):
@@ -79,9 +108,14 @@ def render_profile_controls(gui):
         clear(RESERVE_SCOPE)
         if not settings.enabled:
             return
-        put_input(
-            RESERVE, type="number", label="至少保留的叶子数量", value=settings.reserve_leaves,
-            min=0, step=1, help_text="仅保存非负整数；留空或填写无效时保留上次设置。",
+        title = "至少保留的叶子数量"
+        _put_setting(
+            "input", RESERVE, title,
+            put_input(
+                RESERVE, type="number", value=settings.reserve_leaves,
+                min=0, step=1, **{"aria-label": title},
+            ).style("--input--"),
+            "仅接受非负整数；留空或无效时保留上次设置。",
             scope=RESERVE_SCOPE,
         )
         pin_on_change(RESERVE, save_reserve, clear=True, serial_mode=True)
@@ -149,71 +183,76 @@ def render_profile_controls(gui):
             put_buttons(["保存并使用", "取消"], onclick=[save_copy, close_popup])
 
     with use_scope(SCOPE, clear=True):
-        put_text("装置选择方案")
-        put_text(
-            "方案按账号分别选择，启动时读取；不改变游戏配队。未启用方案时沿用原第一张策略。"
-        )
-        put_text(
-            f"当前资料库收录{len(store.catalog.by_id)}种装置，遇到未登记名称会保存截图并停止，便于补充资料。"
-        )
-        profiles = store.list_profiles()
-        active = None
-        try:
-            active = store.active_id(account)
-            if active is not None:
-                store.load(active)
-        except (ProfileError, OSError) as exc:
-            put_warning(str(exc))
-        options = [{"label": "原第一张策略", "value": LEGACY}]
-        for profile in profiles:
-            label = ("内置示例：" if profile.builtin else "用户方案：") + profile.name
-            if profile.error:
-                put_warning(profile.error)
-                label = "格式错误：" + profile.name
-            options.append(
-                {
-                    "label": label + " · " + profile.id.split(":", 1)[1][:6],
-                    "value": profile.id,
-                }
+        with use_scope("group_automaton_tower_profile"):
+            put_text("装置方案")
+            put_text("按账号保存，下次启动时使用，不改变游戏配队。")
+            put_html('<hr class="hr-group">')
+            profiles = store.list_profiles()
+            active = None
+            try:
+                active = store.active_id(account)
+                if active is not None:
+                    store.load(active)
+            except (ProfileError, OSError) as exc:
+                put_warning(str(exc))
+            options = [{"label": "原第一张策略", "value": LEGACY}]
+            for profile in profiles:
+                label = ("内置示例：" if profile.builtin else "用户方案：") + profile.name
+                if profile.error:
+                    put_warning(profile.error)
+                    label = "格式错误：" + profile.name
+                if not profile.builtin:
+                    label += " · " + profile.id.split(":", 1)[1][:6]
+                options.append({"label": label, "value": profile.id})
+            if active is not None and active not in {option["value"] for option in options}:
+                options.append({"label": "当前方案无法读取", "value": active})
+            _put_setting(
+                "select", SELECT, "选择方案",
+                put_select(
+                    SELECT, options=options, value=active or LEGACY, **{"aria-label": "选择方案"},
+                ).style("--input--"),
+                "选好后点「使用所选方案」；未启用时选第一张。",
             )
-        if active is not None and active not in {option["value"] for option in options}:
-            options.append({"label": "当前方案无法读取", "value": active})
-        put_select(SELECT, options=options, value=active or LEGACY)
-        put_buttons(
-            ["使用所选方案", "导入方案", "导出所选", "复制并编辑"],
-            onclick=[activate, import_file, export_file, edit_copy],
-        )
-        enabled = False
-        try:
-            enabled = store.debug_enabled(account)
-        except (ProfileError, OSError) as exc:
-            put_warning(str(exc))
-        put_checkbox(
-            DEBUG,
-            options=[{"label": "记录装置调试截图", "value": "enabled"}],
-            value=["enabled"] if enabled else [],
-        )
-        pin_on_change(DEBUG, save_debug, clear=True, serial_mode=True)
-        put_text(
-            "勾选后自动保存，下次启动生效。每轮保存三选一和确认前的完整画面，附楼层、选择方式和结果。"
-            "原第一张策略也能采集未知装置；启用方案时仍按方案规则判断。"
-        )
-        put_text(
-            "截图保存在 screenshots/automaton_tower_debug（调试截图目录），启动日志显示本次路径。"
-        )
-        stamina = StaminaSettings()
-        try:
-            stamina = store.stamina(account)
-        except (ProfileError, OSError) as exc:
-            put_warning(str(exc))
-        put_text("月塔行动力（按账号保存）")
-        put_text("自动补充仅支持国际服简中，默认关闭。仅用叶子，每片补充 80 点，不会改用钻石。")
-        put_text("修改后自动保存，下次启动生效。")
-        put_checkbox(
-            REFILL,
-            options=[{"label": "行动力不足时用叶子补充", "value": "enabled"}],
-            value=["enabled"] if stamina.enabled else [],
-        )
-        put_scope(RESERVE_SCOPE)
-        render_reserve(stamina)
-        pin_on_change(REFILL, save_refill, clear=True, serial_mode=True)
+            put_buttons(
+                [
+                    {"label": "使用所选方案", "value": "activate", "color": "on"},
+                    {"label": "导入方案", "value": "import", "color": "off"},
+                    {"label": "导出所选", "value": "export", "color": "off"},
+                    {"label": "复制并编辑", "value": "edit", "color": "off"},
+                ],
+                onclick=[activate, import_file, export_file, edit_copy], small=True,
+            ).style("margin-top: .375rem")
+
+        with use_scope("group_automaton_tower_stamina"):
+            put_text("行动力设置")
+            put_text("仅支持国际服简中。按账号自动保存，下次启动生效。")
+            put_html('<hr class="hr-group">')
+            stamina = StaminaSettings()
+            try:
+                stamina = store.stamina(account)
+            except (ProfileError, OSError) as exc:
+                put_warning(str(exc))
+            _put_toggle(
+                REFILL, "行动力不足时用叶子补充", stamina.enabled,
+                "每片补充 80 点，不会使用钻石。",
+            )
+            put_scope(RESERVE_SCOPE)
+            render_reserve(stamina)
+            pin_on_change(REFILL, save_refill, clear=True, serial_mode=True)
+
+        with use_scope("group_automaton_tower_debug"):
+            put_text("调试设置")
+            put_text(
+                f"资料库收录 {len(store.catalog.by_id)} 种装置。启用方案后，遇到未登记的装置会保存截图并停止。"
+            )
+            put_html('<hr class="hr-group">')
+            enabled = False
+            try:
+                enabled = store.debug_enabled(account)
+            except (ProfileError, OSError) as exc:
+                put_warning(str(exc))
+            _put_toggle(
+                DEBUG, "记录装置调试截图", enabled,
+                "自动保存，下次启动生效。记录每轮三选一、确认前画面和选择结果；截图路径见启动日志。",
+            )
+            pin_on_change(DEBUG, save_debug, clear=True, serial_mode=True)

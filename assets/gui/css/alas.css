@@ -525,6 +525,24 @@ pre.rich-traceback-code {
     padding: 0.3125rem;
 }
 
+#pywebio-scope-automaton-tower-settings {
+    display: grid;
+    gap: .5rem;
+}
+
+#pywebio-scope-automaton-tower-settings > [id^="pywebio-scope-group_"] {
+    margin: 0;
+    padding: .625rem 1rem;
+    min-width: 0;
+    line-height: 1.3;
+}
+
+#pywebio-scope-daemon-overview #pywebio-scope-groups:has(> #pywebio-scope-automaton-tower-settings) {
+    background: none;
+    border: 0;
+    padding: 0;
+}
+
 #pywebio-scope-schedulers {
     display: grid;
 }

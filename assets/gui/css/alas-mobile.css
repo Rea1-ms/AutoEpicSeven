@@ -50,6 +50,10 @@
     grid-template-rows: auto auto auto 1fr;
 }
 
+#pywebio-scope-daemon-overview:has(> #pywebio-scope-groups > #pywebio-scope-automaton-tower-settings) {
+    grid-template-rows: auto max-content auto minmax(14rem, 1fr);
+}
+
 #pywebio-scope-schedulers {
     grid-auto-flow: row;
 }
