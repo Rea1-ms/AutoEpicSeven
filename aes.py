@@ -53,6 +53,10 @@ class AutoEpicSeven(AzurLaneAutoScript):
         from tasks.sanctuary.sanctuary import Sanctuary
         Sanctuary(config=self.config, device=self.device, task="SanctuaryMonthly").run_monthly_task()
 
+    def automaton_tower(self):
+        from tasks.automaton_tower.automaton_tower import AutomatonTower
+        AutomatonTower(config=self.config, device=self.device, task="AutomatonTower").run()
+
     def buy_penguins(self):
         from tasks.sanctuary.buy_penguins import BuyPenguins
         BuyPenguins(config=self.config, device=self.device, task="BuyPenguins").run()

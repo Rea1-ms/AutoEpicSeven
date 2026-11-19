@@ -17,4 +17,7 @@ def get_tool_runner(func):
     if func == 'DimensionalExploration':
         from tasks.dimensional_exploration.tool import run_tool
         return run_tool
+    if func == 'AutomatonTower':
+        from tasks.automaton_tower.tool import run_tool
+        return run_tool
     return None

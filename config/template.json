@@ -393,6 +393,14 @@
       "MaxStages": 0
     }
   },
+  "AutomatonTower": {
+    "Scheduler": {
+      "Enable": false,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "AutomatonTower",
+      "ServerUpdate": "02:00"
+    }
+  },
   "SanctuaryMonthly": {
     "Scheduler": {
       "Enable": false,

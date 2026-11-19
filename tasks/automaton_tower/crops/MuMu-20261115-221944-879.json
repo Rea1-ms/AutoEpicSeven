@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "source": "../../../tests/fixtures/automaton_tower/cn/MuMu-20261115-221944-879.png",
+  "suite": "automaton_tower_cn",
+  "case": "mumu-20261115-221944-879",
+  "items": [
+    {
+      "name": "TOWER_SEASON_INFO",
+      "namespace": "cn",
+      "module": "automaton_tower/entry",
+      "box": [
+        505,
+        105,
+        780,
+        212
+      ],
+      "kind": "base",
+      "frame": 1
+    },
+    {
+      "name": "TOWER_SEASON_INFO",
+      "namespace": "cn",
+      "module": "automaton_tower/entry",
+      "box": [
+        595,
+        685,
+        685,
+        708
+      ],
+      "kind": "button",
+      "frame": 1
+    }
+  ]
+}

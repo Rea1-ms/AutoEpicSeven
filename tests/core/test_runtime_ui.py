@@ -114,14 +114,18 @@ class RuntimeUITests(unittest.TestCase):
 
     def test_system_settings_never_overwrite_remote_config_or_select_a_provider(self):
         self.gui._save_config = Mock()
-        with patch('module.webui.runtime_ui.put_text') as text, \
-                patch('module.webui.runtime_ui.put_html'), \
+        self.gui.runtime_ui = Mock()
+        with patch('module.webui.runtime_ui.put_scope') as scope, \
+                patch('module.webui.runtime_ui.put_html') as mount, \
                 patch('module.webui.runtime_ui.put_button') as button:
             put_system_notification_settings(self.gui, 'Alas')
         self.gui._save_config.assert_not_called()
-        self.assertIn('同时启用', text.call_args.args[0])
-        self.assertEqual(button.call_count, 1)
+        scope.assert_called_once_with('system-notification-controls', [mount.return_value, button.return_value])
+        self.assertIn('data-aes-notification-control', mount.call_args.args[0])
+        button.assert_called_once()
         self.assertEqual(button.call_args.args[0], '发送测试通知')
+        button.call_args.kwargs['onclick']()
+        self.gui.runtime_ui.send_test_notification.assert_called_once_with()
 
 
 class MaterialSelectUITests(unittest.TestCase):

@@ -212,9 +212,9 @@ class AzurLaneConfig(ConfigUpdater, ManualConfig, GeneratedConfig, ConfigWatcher
         now = datetime.now()
         if AzurLaneConfig.is_hoarding_task:
             now -= self.hoarding
-        for func in self.data.values():
-            func = Function(func)
-            if not func.enable:
+        for name, data in self.data.items():
+            func = Function(data)
+            if not func.enable or name in self.MANUAL_ONLY_TOOLS or func.command in self.MANUAL_ONLY_TOOLS:
                 continue
             if not isinstance(func.next_run, datetime):
                 error.append(func)
@@ -460,6 +460,9 @@ class AzurLaneConfig(ConfigUpdater, ManualConfig, GeneratedConfig, ConfigWatcher
         Returns:
             bool: If called.
         """
+        if task in self.MANUAL_ONLY_TOOLS:
+            logger.info(f"Task call: {task} (skipped because it is a manual tool)")
+            return False
         if deep_get(self.data, keys=f"{task}.Scheduler.NextRun", default=None) is None:
             raise ScriptError(f"Task to call: `{task}` does not exist in user config")
 
@@ -521,7 +524,9 @@ class AzurLaneConfig(ConfigUpdater, ManualConfig, GeneratedConfig, ConfigWatcher
             self.task_stop(message=message)
 
     def is_task_enabled(self, task):
-        return bool(self.cross_get(keys=[task, 'Scheduler', 'Enable'], default=False))
+        return task not in self.MANUAL_ONLY_TOOLS and bool(
+            self.cross_get(keys=[task, 'Scheduler', 'Enable'], default=False)
+        )
 
     @property
     def DEVICE_SCREENSHOT_METHOD(self):

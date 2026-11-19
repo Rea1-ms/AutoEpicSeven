@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "source": "../../../tests/fixtures/automaton_tower/global_cn/Scrcpy-20261119-002351-615.png",
+  "suite": "automaton_tower_settlement",
+  "case": "scrcpy-20261119-002351-615",
+  "items": [
+    {
+      "name": "TOWER_CONQUERED",
+      "namespace": "global_cn",
+      "module": "automaton_tower/settlement",
+      "box": [1092, 188, 1194, 234],
+      "kind": "base",
+      "frame": 1
+    }
+  ]
+}

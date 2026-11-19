@@ -41,6 +41,7 @@ from pywebio.session import (
 
 import module.webui.lang as lang
 from module.config.config import AzurLaneConfig, Function
+from module.config.config_manual import ManualConfig
 from module.config.deep import deep_get, deep_iter, deep_set
 from module.config.utils import (
     alas_instance,
@@ -111,6 +112,8 @@ class AlasGUI(Frame):
     def initial(self) -> None:
         self.ALAS_MENU = read_file(filepath_args("menu", self.alas_mod))
         self.ALAS_ARGS = read_file(filepath_args("args", self.alas_mod))
+        for task in ManualConfig.MANUAL_ONLY_TOOLS:
+            self.ALAS_ARGS.get(task, {}).pop("Scheduler", None)
         self.ALAS_STORED = read_file(filepath_args("stored", self.alas_mod))
         self._init_alas_config_watcher()
 
@@ -321,7 +324,7 @@ class AlasGUI(Frame):
         group_name = group[0]
         select_options = self.alas_config.get_select_options(config)
 
-        output_list: List[Output] = []
+        output_list: list[tuple[str, Output]] = []
         for arg, arg_dict in deep_iter(arg_dict, depth=1):
             output_kwargs: T_Output_Kwargs = arg_dict.copy()
 
@@ -376,7 +379,7 @@ class AlasGUI(Frame):
                 # Add hidden-arg
                 if f"{task}.{group_name}.{arg_name}" in self.alas_config_hidden:
                     o.style("display:none")
-                output_list.append(o)
+                output_list.append((arg_name, o))
 
         if not output_list:
             return 0
@@ -387,10 +390,10 @@ class AlasGUI(Frame):
             if group_help != "":
                 put_text(group_help)
             put_html('<hr class="hr-group">')
-            for output in output_list:
+            for arg_name, output in output_list:
                 output.show()
-            if group_name == 'Error' and 'OnePushConfig' in self.ALAS_ARGS[task].get(group_name, {}):
-                put_system_notification_settings(self, task)
+                if group_name == 'Error' and arg_name == 'SystemNotification':
+                    put_system_notification_settings(self, task)
 
         return len(output_list)
 
@@ -750,7 +753,8 @@ class AlasGUI(Frame):
         log.console.width = log.get_width()
 
         with use_scope("scheduler-bar"):
-            put_text(t("Gui.Overview.Scheduler")).style(
+            title = f"Task.{task}.name" if task in ManualConfig.MANUAL_ONLY_TOOLS else "Gui.Overview.Scheduler"
+            put_text(t(title)).style(
                 "font-size: 1.25rem; margin: auto .5rem auto;"
             )
             put_scope("scheduler_btn")

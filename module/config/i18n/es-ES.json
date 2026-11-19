@@ -106,6 +106,10 @@
       "name": "Progreso de historia",
       "help": "Abre la lista de historia principal o secundaria antes de iniciar. Usa el equipo actual, omite diálogos y restaura el combate automático. Se detiene por derrota o energía insuficiente sin recargarla. Las capturas secundarias cubren Global en chino simplificado."
     },
+    "AutomatonTower": {
+      "name": "Torre automática",
+      "help": "Entra desde la pestaña de temporada y completa la torre mensual con combate automático. Se elige el primer dispositivo de mejora. Solo chino simplificado internacional."
+    },
     "SanctuaryMonthly": {
       "name": "Santuario - Mensual",
       "help": "Módulo mensual de santuario con planificador independiente."

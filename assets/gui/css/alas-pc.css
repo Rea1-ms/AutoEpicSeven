@@ -50,6 +50,10 @@
     overflow-y: auto;
 }
 
+#pywebio-scope-daemon-overview #pywebio-scope-groups:has(> #pywebio-scope-automaton-tower-settings) {
+    max-height: 55vh;
+}
+
 #pywebio-scope-_daemon_upper {
     display: grid;
     grid-auto-flow: column;

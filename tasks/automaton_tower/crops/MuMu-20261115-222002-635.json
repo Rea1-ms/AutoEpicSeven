@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "source": "../../../tests/fixtures/automaton_tower/cn/MuMu-20261115-222002-635.png",
+  "suite": "automaton_tower_cn",
+  "case": "mumu-20261115-222002-635",
+  "items": [
+    {
+      "name": "TOWER_STAGE_CONFIRM",
+      "namespace": "cn",
+      "module": "automaton_tower/entry",
+      "box": [
+        475,
+        315,
+        805,
+        400
+      ],
+      "kind": "base",
+      "frame": 1
+    },
+    {
+      "name": "TOWER_STAGE_CONFIRM",
+      "namespace": "cn",
+      "module": "automaton_tower/entry",
+      "box": [
+        660,
+        475,
+        835,
+        515
+      ],
+      "kind": "button",
+      "frame": 1
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "source": "../../../tests/fixtures/automaton_tower/cn/MuMu-20261115-222014-084.png",
+  "suite": "automaton_tower_cn",
+  "case": "mumu-20261115-222014-084",
+  "items": [
+    {
+      "name": "AUTOMATON_TOWER_PREPARE_CHECK",
+      "namespace": "cn",
+      "module": "automaton_tower",
+      "box": [
+        65,
+        10,
+        200,
+        52
+      ],
+      "kind": "base",
+      "frame": 1
+    },
+    {
+      "name": "AUTOMATON_TOWER_BATTLE_START",
+      "namespace": "cn",
+      "module": "automaton_tower",
+      "box": [
+        1110,
+        646,
+        1210,
+        681
+      ],
+      "kind": "base",
+      "frame": 1
+    },
+    {
+      "name": "AUTOMATON_TOWER_BATTLE_START",
+      "namespace": "cn",
+      "module": "automaton_tower",
+      "box": [
+        930,
+        630,
+        1255,
+        695
+      ],
+      "kind": "button",
+      "frame": 1
+    },
+    {
+      "name": "OCR_FLOOR_PREPARE",
+      "namespace": "cn",
+      "module": "automaton_tower",
+      "box": [
+        925,
+        115,
+        1020,
+        155
+      ],
+      "kind": "base",
+      "frame": 1
+    }
+  ]
+}
