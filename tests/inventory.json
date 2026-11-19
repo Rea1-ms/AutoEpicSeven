@@ -14145,6 +14145,148 @@
       ]
     },
     {
+      "source": "tests/activity/test_huche_shop_2026_11_19.py",
+      "business": "2026年11月19日流浪商店",
+      "status": "已纳入",
+      "cases": [
+        {
+          "id": "tests.activity.test_huche_shop_2026_11_19.FlowTests.test_same_price_stock_is_tracked_per_offer",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "同价两档独立确认库存；购买轮换档后以短拖动向后查找常驻档"
+        },
+        {
+          "id": "tests.activity.test_huche_shop_2026_11_19.FlowTests.test_current_scan_reverses_only_to_recover_missing_overlap",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "本期模拟回放验证从顶部正向拖动，缺少重叠行才反向回找；保留真实动作间隔"
+        },
+        {
+          "id": "tests.activity.test_huche_shop_2026_11_19.FlowTests.test_empty_rotating_batch_still_buys_and_records_disappearing_regular_offer",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "确认轮换区无奖牌后购买常驻档，只确认一次付款；商品消失后扫完整表再记整期状态"
+        },
+        {
+          "id": "tests.activity.test_huche_shop_2026_11_19.FlowTests.test_full_scan_records_a_regular_offer_already_absent_on_entry",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "现场已买完时从已验证的常驻区起点扫至末尾，确认商品不存在"
+        },
+        {
+          "id": "tests.activity.test_huche_shop_2026_11_19.FlowTests.test_incomplete_or_unreadable_scan_never_records_absence",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "拖动未推进、前后画面无重叠或商品仍不可读时不保存缺货记录"
+        },
+        {
+          "id": "tests.activity.test_huche_shop_2026_11_19.FlowTests.test_saved_regular_quota_stops_at_boundary_or_rotating_sellout",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "下一批已有整期常驻售罄记录时，确认轮换售罄或边界就停止"
+        },
+        {
+          "id": "tests.activity.test_huche_shop_2026_11_19.ScheduleTests.test_dates_and_exact_refresh_boundaries",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "验证当期活动时间、11点和23点轮换及活动结束边界"
+        },
+        {
+          "id": "tests.activity.test_huche_shop_2026_11_19.ScheduleTests.test_entry_dispatches_shop_and_skips_disabled_option",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "验证当期仅派发国际服简中流程，开关关闭不派发"
+        },
+        {
+          "id": "tests.activity.test_huche_shop_2026_11_19.ScheduleTests.test_config_defaults_off_and_keeps_explicit_preference",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "验证开关默认值、显隐和当期文案"
+        },
+        {
+          "id": "tests.activity.test_huche_shop_2026_11_19.ScheduleTests.test_page_registration_and_routes_per_server",
+          "category": "资源基础",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "验证分服路由、当期入口素材及归档隔离"
+        }
+      ]
+    },
+    {
+      "source": "tests/captured/test_huche_shop_2026_11_19.py",
+      "business": "2026年11月19日流浪商店",
+      "status": "已纳入",
+      "cases": [
+        {
+          "id": "tests.captured.test_huche_shop_2026_11_19.CurrentScreenshotTests.test_entry_and_same_price_offers_in_current_captures",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "huche-20261119-lobby",
+            "huche-20261119-rotating",
+            "huche-20261119-regular",
+            "huche-20261119-partial"
+          ],
+          "status": "已纳入",
+          "capture_server": "global_cn",
+          "reason": "新版入口与同价两档使用已脱敏的国际服简中截图",
+          "input_kind": "registered_capture"
+        },
+        {
+          "id": "tests.captured.test_huche_shop_2026_11_19.CurrentScreenshotTests.test_reordered_rotating_sellout_requires_the_label",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": ["huche-20261119-rotating-sold-out"],
+          "status": "已纳入",
+          "capture_server": "global_cn",
+          "reason": "实图验证移到常驻商品后方的轮换奖牌确实售罄，只有零库存不确认",
+          "input_kind": "registered_capture"
+        },
+        {
+          "id": "tests.captured.test_huche_shop_2026_11_19.CurrentScreenshotTests.test_regular_list_overlap_is_verified_in_both_directions",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": ["huche-20261119-regular", "huche-20261119-partial"],
+          "status": "已纳入",
+          "capture_server": "global_cn",
+          "reason": "使用实图验证同一商品列表前后位移、静止和常驻候选",
+          "input_kind": "registered_capture"
+        }
+      ]
+    },
+    {
       "source": "tests/activity/test_huche_shop.py",
       "business": "activity",
       "status": "已纳入",

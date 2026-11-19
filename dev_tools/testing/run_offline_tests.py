@@ -104,6 +104,8 @@ ACTIVITY_MODULES = (
     "tests.activity.test_epic_path",
     "tests.activity.test_activity_navigation",
     "tests.activity.test_alencia_handbook",
+    "tests.activity.test_huche_shop_2026_11_19",
+    "tests.captured.test_huche_shop_2026_11_19",
 )
 COMBAT_MODULES = (
     "tests.combat.test_daily_batch",

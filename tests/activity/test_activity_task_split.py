@@ -181,10 +181,14 @@ class ActivityVisibilityTests(unittest.TestCase):
             self.assertEqual(self.visible(at), set())
         self.data.pop('Alas')
         self.assertEqual(self.visible(at), set())
-        for task, name in (('LimitedActivity', 'GetMeirinReward'),
-                           ('SpecialActivity', 'BuyHucheMysticMedals')):
-            self.assertEqual(self.updater.args[task][task][name]['display'], 'hide')
-            self.assertTrue(self.updater.args[task][task][name]['keepvalue'])
+        with patch.object(calendar, 'datetime', wraps=datetime) as clock:
+            clock.now.return_value = datetime.fromisoformat(at)
+            hidden = self.updater.get_hidden_args(self.data)
+        meirin = self.updater.args['LimitedActivity']['LimitedActivity']['GetMeirinReward']
+        self.assertEqual(meirin['display'], 'hide')
+        self.assertTrue(meirin['keepvalue'])
+        self.assertIn('SpecialActivity.SpecialActivity.BuyHucheMysticMedals', hidden)
+        self.assertTrue(self.updater.args['SpecialActivity']['SpecialActivity']['BuyHucheMysticMedals']['keepvalue'])
 
 
 class SchedulingTests(unittest.TestCase):
@@ -197,17 +201,17 @@ class SchedulingTests(unittest.TestCase):
         # Replay the original two-task contract with explicit historical input.
         # These patches never register the retired shop in production.
         from module.game_info.catalog import load_info
-        from tests.support.history_huche_shop import WINDOW
         from tasks.activity.legacy.huche_shop_2026_09_17 import huche_shop
+        from tests.support.history_huche_shop import WINDOW
 
         info = load_info()
         for context in (
             patch.object(calendar, 'load_calendar', return_value=(*calendar.load_calendar(), WINDOW)),
-            patch.object(calendar, 'SUPPORTED_MODES', (*calendar.SUPPORTED_MODES, 'huche_shop')),
             patch.dict(calendar.ACTIVITY_TASK_MODES, {'SpecialActivity': ('legacy', 'huche_shop')}),
             patch.object(SpecialActivityEntry, 'ACTIVITY_MODES', ('legacy', 'huche_shop')),
             patch.object(SpecialActivityEntry, 'COMMON_ACTIVITY_OPTIONS',
                          {'huche_shop': 'SpecialActivity_BuyHucheMysticMedals'}),
+            patch('tasks.activity.huche_shop.HucheShop', HucheShop),
             patch.object(huche_shop, 'load_info', return_value=SimpleNamespace(
                 values=lambda kind, family: info.values(kind, family, NOW))),
         ):

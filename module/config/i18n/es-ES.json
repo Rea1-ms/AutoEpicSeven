@@ -1147,8 +1147,8 @@
       "help": "Solo chino simplificado del servidor global. Entra desde el inicio y recoge solo las misiones de 200/400 de energía. Un toque recoge ambas si están listas. Revisa tras los combates hasta recibir las dos."
     },
     "BuyHucheMysticMedals": {
-      "name": "Comprar medallas místicas en la tienda de Huche",
-      "help": "Solo servidor internacional en chino simplificado. Compra únicamente medallas místicas según las existencias y el saldo de piedras celestiales. El primer lote cambia cada 12 horas y no siempre incluye medallas. Compra la oferta de 160 cuando aparezca; si una revisión completa no encuentra medallas, espera al próximo lote. La oferta normal de 200 tiene un cupo fijo de 4 para todo el evento; al agotarse, revisa solo el primer lote rotativo. Revisa a las 11:00 y 23:00 UTC+8. Desactivado por defecto; al activarlo se gastan piedras celestiales."
+      "name": "Comprar medallas místicas en la tienda ambulante",
+      "help": "Solo servidor internacional en chino simplificado. Compra únicamente medallas místicas. Ambas ofertas dan 50 medallas por 160 piedras celestiales. La oferta rotativa con el icono de reloj admite 2 compras y puede no aparecer. La oferta marcada como especial desaparece tras 4 compras. Una vez revisada toda la lista y confirmada su ausencia, solo se revisa la oferta rotativa durante el resto del evento. Revisa a las 11:00 y 23:00, hora de Pekín (UTC+8). Desactivado por defecto; al activarlo se gastan piedras celestiales."
     }
   },
   "Episode": {

@@ -12,12 +12,14 @@ from module.game_info.timeline import render_timeline as render_game_timeline
 EVENT_TIMEZONE = INFO_TIMEZONE
 CALENDAR_PATH = INFO_PATH
 DEFAULT_FREE_GACHA_20_ID = "free_gacha_20_2026_08_27"
+CURRENT_HUCHE_SHOP_ID = "huche_shop_2026_11_19"
 SUPPORTED_MODES = ("legacy", "free_gacha_20", "support_reward",
-                   "completion_record", "detective_search", "epic_path", "alencia_handbook", "carrot_reward")
+                   "completion_record", "detective_search", "epic_path", "alencia_handbook", "carrot_reward",
+                   "huche_shop")
 ACTIVITY_TASK_MODES = {
     "LimitedActivity": ("free_gacha_20", "support_reward",
                         "completion_record", "detective_search", "epic_path", "carrot_reward"),
-    "SpecialActivity": ("legacy", "alencia_handbook"),
+    "SpecialActivity": ("legacy", "alencia_handbook", "huche_shop"),
 }
 ACTIVITY_OPTIONS = {
     "LimitedActivity": {
@@ -28,7 +30,10 @@ ACTIVITY_OPTIONS = {
         "epic_path": "LimitedActivity_GetEpicPathDailyReward",
         "carrot_reward": "LimitedActivity_GetCarrotReward",
     },
-    "SpecialActivity": {"alencia_handbook": "SpecialActivity_GetAlenciaDailyReward"},
+    "SpecialActivity": {
+        "alencia_handbook": "SpecialActivity_GetAlenciaDailyReward",
+        "huche_shop": "SpecialActivity_BuyHucheMysticMedals",
+    },
 }
 
 
@@ -46,20 +51,23 @@ class ActivityWindow:
     def contains(self, now: datetime) -> bool:
         return self.start <= now < self.end
 
-    def refresh_start(self, now: datetime) -> datetime:
-        """Anchor each refresh to this server's opening time, not a last run."""
+    def _refresh_cycle_start(self, now: datetime) -> datetime:
         if not self.refresh_hours:
             return self.start
         interval = timedelta(hours=self.refresh_hours)
         anchor = self.start if self.refresh_hour is None else self.start.replace(
             hour=self.refresh_hour, minute=0, second=0, microsecond=0,
         )
-        return anchor + max(0, (now - anchor) // interval) * interval
+        return anchor + (now - anchor) // interval * interval
+
+    def refresh_start(self, now: datetime) -> datetime:
+        """The opening batch can begin partway through the regular refresh cycle."""
+        return max(self.start, self._refresh_cycle_start(now))
 
     def next_refresh(self, now: datetime) -> datetime | None:
         if not self.refresh_hours or not self.contains(now):
             return None
-        target = self.refresh_start(now) + timedelta(hours=self.refresh_hours)
+        target = self._refresh_cycle_start(now) + timedelta(hours=self.refresh_hours)
         return target if target < self.end else None
 
 
@@ -68,7 +76,9 @@ def load_calendar(path: Path = CALENDAR_PATH) -> tuple[ActivityWindow, ...]:
     # adapter owns the supported-flow list; adding facts never executes code.
     return tuple(ActivityWindow(p.event_id, p.name, p.kind, p.server_family, p.start, p.end,
                                 p.values.get("refresh_hours", 0), p.values.get("refresh_hour"))
-                 for p in load_info(path).periods if p.kind in SUPPORTED_MODES)
+                 for p in load_info(path).periods if p.kind in SUPPORTED_MODES
+                 and (p.kind != "huche_shop" or p.event_id == CURRENT_HUCHE_SHOP_ID
+                      and p.server_family == server.SERVER_FAMILY_OVERSEA))
 
 
 def _server_windows(config, *, assets_lang: str | None = None) -> tuple[ActivityWindow, ...]:

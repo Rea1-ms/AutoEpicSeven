@@ -317,7 +317,7 @@ page_main.link(MAIN_GOTO_SECRET_SHOP, destination=page_secret_shop, match_before
 # before clicking: the entry disappears when the campaign is closed.
 if server_.lang == "global_cn":
     from tasks.base.assets.assets_base_page import BACK
-    from tasks.activity.assets.assets_activity_huche_shop_26_9_17 import (
+    from tasks.activity.assets.assets_activity_huche_shop import (
         HUCHE_SHOP_CHECK,
         MAIN_GOTO_HUCHE_SHOP,
     )

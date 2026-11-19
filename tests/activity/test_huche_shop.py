@@ -16,7 +16,7 @@ WORKTREE = Path(__file__).resolve().parents[2]
 PROJECT_ROOT = WORKTREE
 import module.config.server as server
 from module.game_info.catalog import parse_info
-from tasks.activity import scheduling
+from tasks.activity import calendar, scheduling
 from tasks.activity.entry import SpecialActivityEntry
 from tasks.activity.legacy.huche_shop_2026_09_17.huche_shop import MysticOffer
 
@@ -165,10 +165,14 @@ class ScheduleTests(unittest.TestCase):
                 parse_info(json.dumps(data))
 
     def test_entry_dispatches_shop_and_skips_disabled_option(self):
-        """An injected historical window cannot enable the retired shop."""
-        with patch("tasks.activity.entry.active_activities",return_value=(WINDOW,)), patch(
+        """The production calendar cannot enable the retired shop."""
+        self.assertNotIn(EVENT_ID, {event.event_id for event in calendar.active_activities(self.config, NOW)})
+        with patch.object(calendar, "datetime", wraps=datetime) as clock, patch(
             "tasks.activity.legacy.huche_shop_2026_09_17.huche_shop.HucheShop"
-        ) as task, patch("tasks.activity.entry.delay_next_activity_check"):
+        ) as task, patch("tasks.activity.huche_shop.HucheShop") as current, patch(
+            "tasks.activity.entry.delay_next_activity_check"
+        ):
+            clock.now.return_value = NOW
             task.return_value.run.return_value=True
             self.assertTrue(SpecialActivityEntry(self.config).run())
             task.assert_not_called()
@@ -177,6 +181,7 @@ class ScheduleTests(unittest.TestCase):
             self.config.SpecialActivity_BuyHucheMysticMedals=False
             self.assertTrue(SpecialActivityEntry(self.config).run())
             task.assert_not_called()
+            current.assert_not_called()
 
     def test_config_defaults_off_and_keeps_explicit_preference(self):
         from module.config.config_updater import ConfigUpdater
@@ -188,8 +193,10 @@ class ScheduleTests(unittest.TestCase):
             entry=json.loads(path.read_text(encoding='utf-8'))['SpecialActivity']['BuyHucheMysticMedals']
             self.assertTrue(entry['name'])
             self.assertTrue(entry['help'])
-        args = json.loads(Path('module/config/argument/args.json').read_text(encoding='utf-8'))
-        self.assertEqual(args['SpecialActivity']['SpecialActivity']['BuyHucheMysticMedals']['display'], 'hide')
+        profile = {'Alas': {'Emulator': {'PackageName': 'OVERSEA-Play', 'GameLanguage': 'cn'}}}
+        with patch.object(calendar, 'datetime', wraps=datetime) as clock:
+            clock.now.return_value = NOW
+            self.assertIn('SpecialActivity.SpecialActivity.BuyHucheMysticMedals', updater.get_hidden_args(profile))
 
     def test_page_registration_and_routes_per_server(self):
         code="""

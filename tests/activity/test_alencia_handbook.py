@@ -214,6 +214,7 @@ class HandbookReplayTests(unittest.TestCase):
         r.task.config.Emulator_PackageName = "CN-Official"
         self.assertFalse(scheduling.is_activity_completed(r.task.config, EVENT_ID))
         r.task.config.Emulator_PackageName = "com.stove.epic7.google"
+        r.task.config.SpecialActivity_BuyHucheMysticMedals = False
 
         event = next(e for e in calendar.active_activities(
             r.task.config,

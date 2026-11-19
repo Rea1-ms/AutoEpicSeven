@@ -1147,8 +1147,8 @@
       "help": "Overseas Simplified Chinese only. Enter the event hub from home and claim only the 200/400 stamina dailies. One tap collects both when ready. Recheck after battles until both are received."
     },
     "BuyHucheMysticMedals": {
-      "name": "Buy Huche Shop Mystic Medals",
-      "help": "Overseas Simplified Chinese only. Buy only Mystic Medals within stock and skystone balance limits. The leading stock rotates every 12 hours; medals are not guaranteed. Buy the 160-skystone offer when present, otherwise wait for the next batch after a complete scan. The 200-skystone offer has a fixed quota of 4 for the entire event; once sold out, inspect only the leading rotating batch. Recheck at 11:00 and 23:00 UTC+8. Disabled by default; enabling spends skystones."
+      "name": "Buy Wandering Shop Mystic Medals",
+      "help": "Overseas Simplified Chinese only. Buys only Mystic Medals. Both offers cost 160 Skystones for 50 medals. The rotating offer with a clock icon is limited to 2 purchases and may not appear. The Special Item offer disappears after 4 purchases. Once a full scan confirms it is absent, only the rotating offer is checked for the rest of the event. Rechecks at 11:00 and 23:00 Beijing time (UTC+8). Disabled by default; enabling spends Skystones."
     }
   },
   "Episode": {

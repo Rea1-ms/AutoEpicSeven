@@ -373,6 +373,101 @@
         "tests.captured.test_huche_discount_batch.ScreenshotTests.test_unreadable_non_target_name_still_blocks_absence"
       ]
     },
+    "huche-20261119-lobby": {
+      "path": "tests/fixtures/historical/global_cn/huche_shop/huche-20261119-lobby.png",
+      "sha256": "e398c757e70434b5f4b295e6774e2f0c19330b2bb2fdac8579f90903555afec9",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "huche_shop_2026_11_19/lobby",
+      "used_by": ["tests.captured.test_huche_shop_2026_11_19.CurrentScreenshotTests.test_entry_and_same_price_offers_in_current_captures"],
+      "source": "Scrcpy-20261119-183238-892.png",
+      "source_sha256": "d9df7b0c41c7530e22d877fffe384bd5d41ee6c669655e731104810b9e9f4521",
+      "privacy_redaction": [
+        [
+          0,
+          0,
+          285,
+          112
+        ],
+        [
+          660,
+          0,
+          970,
+          62
+        ]
+      ]
+    },
+    "huche-20261119-rotating": {
+      "path": "tests/fixtures/historical/global_cn/huche_shop/huche-20261119-rotating.png",
+      "sha256": "1e9368fba9fcde0a758a19df0ad909c3ac1eb487ba70340e913d21e79028b2f5",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "huche_shop_2026_11_19/rotating",
+      "used_by": ["tests.captured.test_huche_shop_2026_11_19.CurrentScreenshotTests.test_entry_and_same_price_offers_in_current_captures"],
+      "source": "Scrcpy-20261119-183244-597.png",
+      "source_sha256": "6eefe8f3f92b163659a6104a7427a78e75120ac2bc3ee81b12dafe278e6d2a47",
+      "privacy_redaction": [
+        [
+          695,
+          0,
+          972,
+          63
+        ]
+      ]
+    },
+    "huche-20261119-regular": {
+      "path": "tests/fixtures/historical/global_cn/huche_shop/huche-20261119-regular.png",
+      "sha256": "fe143db2441c1138d21da1ab3feef66679f233b1a0cbc60c2c03098c164b4e9a",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "huche_shop_2026_11_19/regular",
+      "used_by": [
+        "tests.captured.test_huche_shop_2026_11_19.CurrentScreenshotTests.test_entry_and_same_price_offers_in_current_captures",
+        "tests.captured.test_huche_shop_2026_11_19.CurrentScreenshotTests.test_regular_list_overlap_is_verified_in_both_directions"
+      ],
+      "source": "Scrcpy-20261119-183258-935.png",
+      "source_sha256": "1100ba91585e54b306fc2305ed414793102af13b3c53197d805546724a08dd81",
+      "privacy_redaction": [
+        [
+          695,
+          0,
+          972,
+          63
+        ]
+      ]
+    },
+    "huche-20261119-partial": {
+      "path": "tests/fixtures/historical/global_cn/huche_shop/huche-20261119-partial.png",
+      "sha256": "3a778f69c570f2cf8a01dc096542702fc8dd4e1ef37e8d0a87f35881ed6d6c6e",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "huche_shop_2026_11_19/partial",
+      "used_by": [
+        "tests.captured.test_huche_shop_2026_11_19.CurrentScreenshotTests.test_entry_and_same_price_offers_in_current_captures",
+        "tests.captured.test_huche_shop_2026_11_19.CurrentScreenshotTests.test_regular_list_overlap_is_verified_in_both_directions"
+      ],
+      "source": "Scrcpy-20261119-183310-183.png",
+      "source_sha256": "74b72d2157f41e354e9effd6c2ad180c95b7f3c871f18fd1bb47d6a13382281c",
+      "privacy_redaction": [
+        [
+          695,
+          0,
+          972,
+          63
+        ]
+      ]
+    },
+    "huche-20261119-rotating-sold-out": {
+      "path": "tests/fixtures/historical/global_cn/huche_shop/huche-20261119-rotating-sold-out.png",
+      "sha256": "034fd5f034b83ba19a9e4ba8cb1d825de8778c99529efde49b19914bc9bde794",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "huche_shop_2026_11_19/reordered_rotating_sellout",
+      "used_by": ["tests.captured.test_huche_shop_2026_11_19.CurrentScreenshotTests.test_reordered_rotating_sellout_requires_the_label"],
+      "source": "Scrcpy-20261119-220437-097.png",
+      "source_sha256": "d1785898c25b663cfbfa230469ed0fa2b9f05353e6fa7091a7c8d2e956f54c4b",
+      "privacy_redaction": [[695, 0, 972, 63]]
+    },
     "legacy-huche-shop-main": {
       "path": "tests/fixtures/historical/global_cn/huche_shop/legacy-huche-shop-main.png",
       "sha256": "d90888838b41aed20cefe1cde6a0ccf1b2d3059a467b9ed074aa92c96444c81f",
