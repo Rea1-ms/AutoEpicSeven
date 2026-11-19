@@ -488,7 +488,7 @@ class AlasGUI(Frame):
             label_on=t("Gui.Button.Stop"),
             label_off=t("Gui.Button.Start"),
             onclick_on=lambda: self.alas.stop(),
-            onclick_off=lambda: self.alas.start(None, updater.event),
+            onclick_off=self._start_alas,
             get_state=lambda: self.alas.alive,
             color_on="off",
             color_off="on",
@@ -759,7 +759,7 @@ class AlasGUI(Frame):
             label_on=t("Gui.Button.Stop"),
             label_off=t("Gui.Button.Start"),
             onclick_on=get_task_stop(self, task, lambda: self.alas.stop()),
-            onclick_off=get_task_start(self, task, lambda: self.alas.start(task)),
+            onclick_off=partial(self._start_alas, task),
             get_state=lambda: self.alas.alive,
             color_on="off",
             color_off="on",
@@ -1118,6 +1118,21 @@ class AlasGUI(Frame):
             del self.alas
         self.state_switch.switch()
 
+    def _start_alas(self, task: str | None = None) -> None:
+        if self.alas_name not in alas_instance(include_default=False):
+            self.show()
+            toast(
+                "配置文件不存在，请重新选择或新增配置。"
+                if lang.LANG.startswith("zh")
+                else "Configuration file not found. Select or add a configuration.",
+                color="warning",
+            )
+            return
+        if task is None:
+            self.alas.start(None, updater.event)
+        else:
+            get_task_start(self, task, lambda: self.alas.start(task))()
+
     def ui_alas(self, config_name: str) -> None:
         if config_name == self.alas_name:
             self.expand_menu()
@@ -1347,7 +1362,7 @@ class AlasGUI(Frame):
         self.task_handler.start()
 
         # Return to previous page
-        if aside not in ["Home", None]:
+        if aside != "Home" and aside in alas_instance(include_default=False):
             self.ui_alas(aside)
 
 

@@ -22694,6 +22694,56 @@
           "status": "已纳入",
           "reason": "真实界面渲染与保存入口使用模拟浏览器，验证分服显隐和旧值保留，不读取账号配置",
           "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.core.test_runtime_ui.ConfigSelectionUITests.test_first_visit_ignores_config_saved_by_another_worktree",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "首次打开时不恢复其他工作树留下的配置名",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.core.test_runtime_ui.ConfigSelectionUITests.test_first_visit_restores_existing_config",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "上次选中的配置存在时仍正常恢复",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.core.test_runtime_ui.ConfigSelectionUITests.test_first_visit_does_not_restore_default_without_config_file",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留默认配置入口，但不把同名目录或占位入口当成配置文件",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.core.test_runtime_ui.ConfigSelectionUITests.test_start_rejects_config_removed_after_selection",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "配置选中后被移除时，拦截调度与工具启动并提示重新选择",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.core.test_runtime_ui.ConfigSelectionUITests.test_start_with_existing_config_keeps_scheduler_and_tool_actions",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "配置存在时保留调度与工具的原有启动行为",
+          "input_kind": "mock_or_rule"
         }
       ]
     },

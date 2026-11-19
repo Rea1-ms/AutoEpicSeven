@@ -1,5 +1,6 @@
 """Session delivery regressions using mocked browser and runtime event boundaries."""
 
+import os
 import unittest
 from contextlib import nullcontext
 from copy import deepcopy
@@ -432,6 +433,87 @@ class ActivityVisibilityUITests(unittest.TestCase):
                 self.assertFalse(kwargs['value'])
                 output.show.assert_called_once()
                 self.assertEqual(self.config['SpecialActivity'], before)
+
+
+class ConfigSelectionUITests(unittest.TestCase):
+    def setUp(self):
+        with (patch('module.webui.patch.patch_executor'),
+              patch('module.webui.patch.patch_mimetype')):
+            from module.webui import app
+
+        self.app = app
+        self.gui = app.AlasGUI.__new__(app.AlasGUI)
+        self.gui.is_mobile = False
+        self.gui.show = Mock()
+        self.gui.ui_alas = Mock()
+        self.gui._init_alas_config_watcher = Mock()
+        self.gui.task_handler = Mock()
+        self.gui.alas = Mock()
+
+        self.files = {'aes.json', 'template.json'}
+        self.directories = set()
+        config_os = self.start_patch(patch('module.config.utils.os', wraps=os))
+        config_os.listdir.side_effect = lambda _: sorted(self.files | self.directories)
+        config_os.path.isfile.side_effect = lambda path: os.path.basename(path) in self.files
+
+    def start_patch(self, patcher):
+        self.addCleanup(patcher.stop)
+        return patcher.start()
+
+    def open_page(self, saved_config):
+        for name in ('set_env', 'add_css', 'run_js', 'threading', 'register_thread', 'Switch', 'RuntimeUI'):
+            self.start_patch(patch.object(self.app, name))
+        self.start_patch(patch.object(self.app, 'get_localstorage', return_value=saved_config))
+        self.gui.run()
+
+    def test_first_visit_ignores_config_saved_by_another_worktree(self):
+        self.open_page('global_cn')
+
+        self.gui.show.assert_called_once_with()
+        self.gui.ui_alas.assert_not_called()
+
+    def test_first_visit_restores_existing_config(self):
+        self.open_page('aes')
+
+        self.gui.ui_alas.assert_called_once_with('aes')
+
+    def test_first_visit_does_not_restore_default_without_config_file(self):
+        self.files.remove('aes.json')
+        self.directories.add('aes.json')
+
+        self.assertEqual(self.app.alas_instance(), ['aes'])
+        self.open_page('aes')
+
+        self.gui.show.assert_called_once_with()
+        self.gui.ui_alas.assert_not_called()
+
+    def test_start_rejects_config_removed_after_selection(self):
+        self.gui.alas_name = 'aes'
+        self.files.remove('aes.json')
+        with (patch.object(self.app, 'toast') as toast,
+              patch.object(self.app, 'get_task_start') as tool_start):
+            self.gui._start_alas()
+            self.gui._start_alas('CommunityAuth')
+
+        self.gui.alas.start.assert_not_called()
+        tool_start.assert_not_called()
+        self.assertEqual(self.gui.show.call_count, 2)
+        self.assertEqual(toast.call_count, 2)
+        self.assertEqual(toast.call_args.kwargs['color'], 'warning')
+
+    def test_start_with_existing_config_keeps_scheduler_and_tool_actions(self):
+        self.gui.alas_name = 'aes'
+        with (patch.object(self.app, 'toast') as toast,
+              patch.object(self.app, 'get_task_start', side_effect=lambda _, task, start: start) as tool_start):
+            self.gui._start_alas()
+            self.gui.alas.start.assert_called_once_with(None, self.app.updater.event)
+            self.gui.alas.start.reset_mock()
+            self.gui._start_alas('CommunityAuth')
+
+        self.gui.alas.start.assert_called_once_with('CommunityAuth')
+        self.assertEqual(tool_start.call_args.args[:2], (self.gui, 'CommunityAuth'))
+        self.gui.show.assert_not_called()
+        toast.assert_not_called()
 
 
 if __name__ == "__main__":
