@@ -13,7 +13,6 @@ import cv2
 from module.base.button import ClickButton
 from module.base.timer import Timer
 from module.config import server
-from module.config.utils import get_server_next_month_update
 from module.logger import logger
 from module.ocr.ocr import Digit
 from tasks.automaton_tower.assets.assets_automaton_tower import (
@@ -69,12 +68,6 @@ class AutomatonTower(UI):
             return False
         logger.info(f"Automaton Tower: unsupported language={server.lang}, skip")
         return True
-
-    def _next_month_target(self):
-        # Keep the task importable before the configuration generator has been
-        # run on a fresh checkout.
-        trigger = getattr(self.config, "Scheduler_ServerUpdate", "02:00")
-        return get_server_next_month_update(trigger)
 
     def _ensure_app_running(self) -> None:
         if self.device.app_is_running():
@@ -398,9 +391,8 @@ class AutomatonTower(UI):
                 timeout.reset()
 
     def run(self) -> bool:
-        """Run all unlocked tower floors, then schedule the next monthly check."""
+        """Run all unlocked tower floors in this manual session."""
         if self._unsupported():
-            self.config.task_delay(target=self._next_month_target())
             return False
 
         self._ensure_app_running()
@@ -421,16 +413,10 @@ class AutomatonTower(UI):
                         success = True
                         break
         finally:
-            # Never leave a battle/result screen as the scheduler's next start
-            # point.  The helper only clicks BACK after a positive main-page
-            # check or a known tower-local control is visible.
             returned_to_main = self.is_in_main(interval=0)
             if not returned_to_main:
                 returned_to_main = self._return_to_main()
-            if success and returned_to_main:
-                self.config.task_delay(target=self._next_month_target())
-            else:
-                self.config.task_delay(success=False)
+            if not returned_to_main:
                 success = False
 
         return success

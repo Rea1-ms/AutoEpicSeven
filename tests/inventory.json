@@ -27866,13 +27866,13 @@
           "reason": "准备页、已有自动战斗状态和结算页的连续帧回放，只点击一次开战。"
         },
         {
-          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_task_is_in_tool_menu_with_independent_scheduler",
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_manual_tools_keep_entry_without_scheduler_settings",
           "category": "资源基础",
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
           "status": "已纳入",
-          "reason": "工具类菜单与独立调度器配置保持一致。"
+          "reason": "手动工具保留入口和业务选项，不显示调度设置；自动任务仍显示调度设置。"
         },
         {
           "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_resume_screenshots_identify_pending_device",

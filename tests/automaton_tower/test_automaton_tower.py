@@ -1,9 +1,9 @@
 """Screenshot recognition and server registration for Automaton Tower."""
 
-import json
 import subprocess
 import sys
 import unittest
+from unittest.mock import patch
 
 import yaml
 
@@ -11,7 +11,6 @@ from module.config import server
 
 server.set_lang("global_cn")
 
-from module.config.config_manual import ManualConfig
 from tasks.arena.assets.assets_arena import AUTO_FIGHT_EXIST
 from tasks.automaton_tower.assets.assets_automaton_tower import (
     AUTOMATON_TOWER_BATTLE_START,
@@ -363,19 +362,33 @@ class AutomatonTowerCaptureTests(unittest.TestCase):
             ])
             self.assertEqual(replay.index, 64)
 
-    def test_task_is_in_tool_menu_with_independent_scheduler(self):
+    def test_manual_tools_keep_entry_without_scheduler_settings(self):
+        from types import SimpleNamespace
+
+        from module.webui.submodule.utils import get_tool_runner
+        from tasks.automaton_tower.tool import run_tool
+
+        with (patch('module.webui.config.DeployConfig.read'),
+              patch('module.webui.patch.patch_executor'),
+              patch('module.webui.patch.patch_mimetype')):
+            from module.webui.app import AlasGUI
+
         task_data = yaml.safe_load(
             (ROOT / "module" / "config" / "argument" / "task.yaml").read_text(encoding="utf-8")
         )
-        menu_data = json.loads(
-            (ROOT / "module" / "config" / "argument" / "menu.json").read_text(encoding="utf-8")
-        )
-        self.assertEqual(task_data["Tool"]["tasks"]["AutomatonTower"], ["Scheduler"])
+        gui = SimpleNamespace(alas_mod='alas', _init_alas_config_watcher=lambda: None)
+        AlasGUI.initial(gui)
+        self.assertIn("AutomatonTower", task_data["Tool"]["tasks"])
         self.assertNotIn("AutomatonTower", task_data["Monthly"]["tasks"])
-        self.assertIn("AutomatonTower", menu_data["Tool"]["tasks"])
-        self.assertNotIn("AutomatonTower", menu_data["Monthly"]["tasks"])
-        priority = [item.strip() for item in ManualConfig.SCHEDULER_PRIORITY.split(">")]
-        self.assertIn("AutomatonTower", priority)
+        for task in ('AutomatonTower', 'BuyPenguins', 'CommunityAuth', 'DimensionalExploration',
+                     'Episode', 'EquipmentReroll'):
+            with self.subTest(task=task):
+                self.assertIn(task, gui.ALAS_MENU['Tool']['tasks'])
+                self.assertNotIn('Scheduler', gui.ALAS_ARGS[task])
+        self.assertIn('BuyPenguins', gui.ALAS_ARGS['BuyPenguins'])
+        self.assertIn('Enable', gui.ALAS_ARGS['Arena']['Scheduler'])
+        self.assertIn('NextRun', gui.ALAS_ARGS['SanctuaryMonthly']['Scheduler'])
+        self.assertIs(get_tool_runner("AutomatonTower"), run_tool)
 
     def test_page_registration_is_limited_to_overseas_simplified_chinese(self):
         code = """

@@ -8,12 +8,17 @@ class ManualConfig:
     def LANG(self):
         return server.lang
 
+    MANUAL_ONLY_TOOLS = frozenset({
+        'AutomatonTower', 'BuyPenguins', 'CommunityAuth', 'DimensionalExploration',
+        'Episode', 'EquipmentReroll',
+    })
+
     # Keep task order here for both normal runs and daily mission reviews.
     # Daily budgets decide how much a task does, never reorder the due queue.
     # Manual-only tools use their own entry points; scheduled tools remain here.
     SCHEDULER_PRIORITY = """
     Restart > MissionReward > Gacha > SanctuaryDaily > Mail > Store > PetsGift
-    > DataUpdate > Arena > Combat > SanctuaryMonthly > AutomatonTower > Knights
+    > DataUpdate > Arena > Combat > SanctuaryMonthly > Knights
     > SecretShop > Pets > CommunityAio
     > LimitedActivity > SpecialActivity
     """

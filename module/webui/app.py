@@ -41,6 +41,7 @@ from pywebio.session import (
 
 import module.webui.lang as lang
 from module.config.config import AzurLaneConfig, Function
+from module.config.config_manual import ManualConfig
 from module.config.deep import deep_get, deep_iter, deep_set
 from module.config.utils import (
     alas_instance,
@@ -111,6 +112,8 @@ class AlasGUI(Frame):
     def initial(self) -> None:
         self.ALAS_MENU = read_file(filepath_args("menu", self.alas_mod))
         self.ALAS_ARGS = read_file(filepath_args("args", self.alas_mod))
+        for task in ManualConfig.MANUAL_ONLY_TOOLS:
+            self.ALAS_ARGS.get(task, {}).pop("Scheduler", None)
         self.ALAS_STORED = read_file(filepath_args("stored", self.alas_mod))
         self._init_alas_config_watcher()
 
@@ -750,7 +753,8 @@ class AlasGUI(Frame):
         log.console.width = log.get_width()
 
         with use_scope("scheduler-bar"):
-            put_text(t("Gui.Overview.Scheduler")).style(
+            title = f"Task.{task}.name" if task in ManualConfig.MANUAL_ONLY_TOOLS else "Gui.Overview.Scheduler"
+            put_text(t(title)).style(
                 "font-size: 1.25rem; margin: auto .5rem auto;"
             )
             put_scope("scheduler_btn")
