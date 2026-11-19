@@ -547,6 +547,31 @@ pre.rich-traceback-code {
     display: grid;
 }
 
+#pywebio-scope-group_Error > [id$="_SystemNotification"],
+#pywebio-scope-group_Error [id^="pywebio-scope-"][id$="_OnePushConfig"] {
+    border-top: 1px solid rgba(127, 127, 127, .25);
+    margin-top: .75rem;
+    padding-top: .625rem;
+}
+
+#pywebio-scope-system-notification-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .375rem .5rem;
+    padding: .25rem;
+}
+
+#pywebio-scope-system-notification-controls [data-aes-notification-control] {
+    display: contents;
+}
+
+#pywebio-scope-system-notification-controls [data-aes-notification-status] {
+    flex: 1 1 18rem;
+    font-size: .8rem;
+    opacity: .8;
+}
+
 .bs-title-option,
 .form-check-input[id*="ch_S"] {
     display: none;

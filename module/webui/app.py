@@ -324,7 +324,7 @@ class AlasGUI(Frame):
         group_name = group[0]
         select_options = self.alas_config.get_select_options(config)
 
-        output_list: List[Output] = []
+        output_list: list[tuple[str, Output]] = []
         for arg, arg_dict in deep_iter(arg_dict, depth=1):
             output_kwargs: T_Output_Kwargs = arg_dict.copy()
 
@@ -379,7 +379,7 @@ class AlasGUI(Frame):
                 # Add hidden-arg
                 if f"{task}.{group_name}.{arg_name}" in self.alas_config_hidden:
                     o.style("display:none")
-                output_list.append(o)
+                output_list.append((arg_name, o))
 
         if not output_list:
             return 0
@@ -390,10 +390,10 @@ class AlasGUI(Frame):
             if group_help != "":
                 put_text(group_help)
             put_html('<hr class="hr-group">')
-            for output in output_list:
+            for arg_name, output in output_list:
                 output.show()
-            if group_name == 'Error' and 'OnePushConfig' in self.ALAS_ARGS[task].get(group_name, {}):
-                put_system_notification_settings(self, task)
+                if group_name == 'Error' and arg_name == 'SystemNotification':
+                    put_system_notification_settings(self, task)
 
         return len(output_list)
 
