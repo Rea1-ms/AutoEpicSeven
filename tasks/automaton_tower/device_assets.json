@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "source": "../../tests/fixtures/automaton_tower/global_cn/2026-11-15_18-05-42-922214.png",
+  "suite": "automaton_tower_devices",
+  "case": "device_selection",
+  "items": [
+    {"name": "OCR_DEVICE_NAME_LEFT", "namespace": "global_cn", "module": "automaton_tower/device", "box": [122, 229, 415, 283]},
+    {"name": "OCR_DEVICE_NAME_MIDDLE", "namespace": "global_cn", "module": "automaton_tower/device", "box": [492, 229, 785, 283]},
+    {"name": "OCR_DEVICE_NAME_RIGHT", "namespace": "global_cn", "module": "automaton_tower/device", "box": [862, 229, 1155, 283]},
+    {"name": "OCR_DEVICE_LEVEL_LEFT", "namespace": "global_cn", "module": "automaton_tower/device", "box": [226, 47, 314, 77]},
+    {"name": "OCR_DEVICE_LEVEL_MIDDLE", "namespace": "global_cn", "module": "automaton_tower/device", "box": [596, 47, 684, 77]},
+    {"name": "OCR_DEVICE_LEVEL_RIGHT", "namespace": "global_cn", "module": "automaton_tower/device", "box": [966, 47, 1054, 77]},
+    {"name": "DEVICE_MIDDLE_SELECTED", "namespace": "global_cn", "module": "automaton_tower/device", "box": [625, 74, 650, 87]},
+    {"name": "DEVICE_MIDDLE_SELECTED", "kind": "button", "namespace": "global_cn", "module": "automaton_tower/device", "box": [600, 110, 680, 180]}
+  ]
+}

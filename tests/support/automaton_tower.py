@@ -18,6 +18,7 @@ HOME, COMBAT, SEASON, TOWER, PENDING, SELECTED, FLOOR, PREPARE, PREPARE_REPEAT, 
 CLEAR = "2026-11-15_00-21-39-738751"
 BATTLE_PENDING = "2026-11-15_15-19-29-075489"
 BATTLE_SELECTED = "2026-11-15_00-21-36-380571"
+POST_CLEAR_OFFER = "2026-11-18_21-17-55-551"
 
 
 def capture(fixture=None, seconds=0.5):
@@ -36,6 +37,9 @@ class TowerReplay(InteractionReplay):
         for name in ("appear", "match_template_color", "match_template_luma"):
             setattr(self.task, name, getattr(ModuleBase, name).__get__(self.task))
         self.task.ui_page_appear = AutomatonTower.ui_page_appear.__get__(self.task)
+        # Keep tower-specific modal handling in offline navigation. Generic
+        # startup/network dialogs remain outside this replay's scope.
+        self.task.ui_additional = self.task._handle_tower_entry
         self.task.handle_ui_recovery = lambda: False
         self.task.handle_network_error = lambda: False
         self.task.handle_popup_confirm = lambda **kwargs: False

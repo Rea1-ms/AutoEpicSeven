@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "source": "../../tests/fixtures/automaton_tower/global_cn/2026-11-15_18-05-46-907553.png",
+  "suite": "automaton_tower_devices",
+  "case": "device_selected_left",
+  "items": [
+    {"name": "DEVICE_LEFT_SELECTED", "namespace": "global_cn", "module": "automaton_tower/device", "box": [255, 74, 280, 87]},
+    {"name": "DEVICE_LEFT_SELECTED", "kind": "button", "namespace": "global_cn", "module": "automaton_tower/device", "box": [230, 110, 310, 180]}
+  ]
+}

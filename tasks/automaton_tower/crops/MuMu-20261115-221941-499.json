@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "source": "../../../tests/fixtures/automaton_tower/cn/MuMu-20261115-221941-499.png",
+  "suite": "automaton_tower_cn",
+  "case": "mumu-20261115-221941-499",
+  "items": [
+    {
+      "name": "AUTOMATON_TOWER_ENTRY",
+      "namespace": "cn",
+      "module": "automaton_tower",
+      "box": [
+        690,
+        190,
+        835,
+        230
+      ],
+      "kind": "base",
+      "frame": 1
+    },
+    {
+      "name": "AUTOMATON_TOWER_ENTRY",
+      "namespace": "cn",
+      "module": "automaton_tower",
+      "box": [
+        640,
+        176,
+        924,
+        680
+      ],
+      "kind": "button",
+      "frame": 1
+    }
+  ]
+}

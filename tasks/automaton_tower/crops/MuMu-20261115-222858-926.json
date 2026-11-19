@@ -1,0 +1,73 @@
+{
+  "version": 1,
+  "source": "../../../tests/fixtures/automaton_tower/cn/MuMu-20261115-222858-926.png",
+  "suite": "automaton_tower_cn",
+  "case": "mumu-20261115-222858-926",
+  "items": [
+    {
+      "name": "AUTOMATON_TOWER_DEVICE_CONFIRM",
+      "namespace": "cn",
+      "module": "automaton_tower",
+      "box": [
+        690,
+        635,
+        830,
+        670
+      ],
+      "kind": "base",
+      "frame": 1
+    },
+    {
+      "name": "AUTOMATON_TOWER_DEVICE_CONFIRM",
+      "namespace": "cn",
+      "module": "automaton_tower",
+      "box": [
+        650,
+        625,
+        865,
+        675
+      ],
+      "kind": "button",
+      "frame": 1
+    },
+    {
+      "name": "AUTOMATON_TOWER_DEVICE_DIALOG",
+      "namespace": "cn",
+      "module": "automaton_tower",
+      "box": [
+        595,
+        47,
+        685,
+        77
+      ],
+      "kind": "base",
+      "frame": 1
+    },
+    {
+      "name": "DEVICE_MIDDLE_SELECTED",
+      "namespace": "cn",
+      "module": "automaton_tower/device",
+      "box": [
+        625,
+        74,
+        650,
+        87
+      ],
+      "kind": "base",
+      "frame": 1
+    },
+    {
+      "name": "DEVICE_MIDDLE_SELECTED",
+      "namespace": "cn",
+      "module": "automaton_tower/device",
+      "box": [
+        600,
+        110,
+        680,
+        180
+      ],
+      "kind": "button",
+      "frame": 1
+    }
+  ]
+}

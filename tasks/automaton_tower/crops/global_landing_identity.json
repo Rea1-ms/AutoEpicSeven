@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "source": "../../../tests/fixtures/automaton_tower/global_cn/2026-11-15_00-20-15-516532.png",
+  "suite": "automaton_tower_cn",
+  "case": "global_landing_identity",
+  "items": [
+    {
+      "name": "AUTOMATON_TOWER_LANDING_CHECK",
+      "namespace": "global_cn",
+      "module": "automaton_tower",
+      "box": [
+        1060,
+        285,
+        1245,
+        315
+      ]
+    }
+  ]
+}

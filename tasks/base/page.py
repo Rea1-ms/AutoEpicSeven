@@ -467,20 +467,19 @@ page_combat_common.link(SEASON_ENTRY, destination=page_combat_season)
 page_combat_urgent.link(COMMON_ENTRY, destination=page_combat_common)
 page_combat_urgent.link(SEASON_ENTRY, destination=page_combat_season)
 
-# Automaton Tower (monthly tower, overseas Chinese client).  The landing page,
+# Automaton Tower (monthly tower, CN and overseas Chinese clients). The landing page,
 # floor list and team preparation page have different identities; keeping them
 # separate prevents a delayed floor transition from being read as a new entry.
-if server_.lang == "global_cn":
+if server_.lang in ("cn", "global_cn"):
     from tasks.automaton_tower.assets.assets_automaton_tower import (
-        AUTOMATON_TOWER_CHECK,
         AUTOMATON_TOWER_CHOOSE_TEAM,
         AUTOMATON_TOWER_ENTER,
         AUTOMATON_TOWER_ENTRY,
-        AUTOMATON_TOWER_FLOOR_CHECK,
+        AUTOMATON_TOWER_LANDING_CHECK,
         AUTOMATON_TOWER_PREPARE_CHECK,
     )
 
-    page_automaton_tower = Page(AUTOMATON_TOWER_CHECK)
+    page_automaton_tower = Page(AUTOMATON_TOWER_LANDING_CHECK)
     page_automaton_tower.link(BACK, destination=page_combat_season)
     page_combat_season.link(
         AUTOMATON_TOWER_ENTRY,
@@ -488,7 +487,7 @@ if server_.lang == "global_cn":
         match_before_click=True,
     )
 
-    page_automaton_tower_floor = Page(AUTOMATON_TOWER_FLOOR_CHECK)
+    page_automaton_tower_floor = Page(AUTOMATON_TOWER_CHOOSE_TEAM)
     page_automaton_tower_floor.link(BACK, destination=page_automaton_tower)
     page_automaton_tower.link(AUTOMATON_TOWER_ENTER, destination=page_automaton_tower_floor)
 

@@ -5,7 +5,13 @@ from module.base.button import Button, ButtonWrapper
 
 AUTOMATON_TOWER_BATTLE_START = ButtonWrapper(
     name='AUTOMATON_TOWER_BATTLE_START',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/automaton_tower/AUTOMATON_TOWER_BATTLE_START.png',
+        area=(1110, 646, 1210, 681),
+        search=(1090, 626, 1230, 701),
+        color=(71, 94, 73),
+        button=(930, 630, 1255, 695),
+    ),
     global_cn=Button(
         file='./assets/global_cn/automaton_tower/AUTOMATON_TOWER_BATTLE_START.png',
         area=(1110, 646, 1210, 681),
@@ -17,7 +23,13 @@ AUTOMATON_TOWER_BATTLE_START = ButtonWrapper(
 )
 AUTOMATON_TOWER_CHECK = ButtonWrapper(
     name='AUTOMATON_TOWER_CHECK',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/automaton_tower/AUTOMATON_TOWER_CHECK.png',
+        area=(35, 146, 250, 185),
+        search=(15, 126, 270, 205),
+        color=(108, 108, 108),
+        button=(35, 146, 250, 185),
+    ),
     global_cn=Button(
         file='./assets/global_cn/automaton_tower/AUTOMATON_TOWER_CHECK.png',
         area=(35, 146, 250, 185),
@@ -29,7 +41,13 @@ AUTOMATON_TOWER_CHECK = ButtonWrapper(
 )
 AUTOMATON_TOWER_CHOOSE_TEAM = ButtonWrapper(
     name='AUTOMATON_TOWER_CHOOSE_TEAM',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/automaton_tower/AUTOMATON_TOWER_CHOOSE_TEAM.png',
+        area=(1055, 640, 1240, 685),
+        search=(1035, 620, 1260, 705),
+        color=(50, 83, 49),
+        button=(1015, 630, 1245, 685),
+    ),
     global_cn=Button(
         file='./assets/global_cn/automaton_tower/AUTOMATON_TOWER_CHOOSE_TEAM.png',
         area=(1055, 630, 1245, 690),
@@ -41,7 +59,13 @@ AUTOMATON_TOWER_CHOOSE_TEAM = ButtonWrapper(
 )
 AUTOMATON_TOWER_CLEAR = ButtonWrapper(
     name='AUTOMATON_TOWER_CLEAR',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/automaton_tower/AUTOMATON_TOWER_CLEAR.png',
+        area=(520, 240, 770, 320),
+        search=(500, 220, 790, 340),
+        color=(167, 111, 60),
+        button=(520, 240, 770, 320),
+    ),
     global_cn=Button(
         file='./assets/global_cn/automaton_tower/AUTOMATON_TOWER_CLEAR.png',
         area=(520, 240, 770, 320),
@@ -53,7 +77,13 @@ AUTOMATON_TOWER_CLEAR = ButtonWrapper(
 )
 AUTOMATON_TOWER_DEVICE_CONFIRM = ButtonWrapper(
     name='AUTOMATON_TOWER_DEVICE_CONFIRM',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/automaton_tower/AUTOMATON_TOWER_DEVICE_CONFIRM.png',
+        area=(690, 635, 830, 670),
+        search=(670, 615, 850, 690),
+        color=(68, 97, 69),
+        button=(650, 625, 865, 675),
+    ),
     global_cn=Button(
         file='./assets/global_cn/automaton_tower/AUTOMATON_TOWER_DEVICE_CONFIRM.png',
         area=(690, 645, 830, 675),
@@ -65,7 +95,13 @@ AUTOMATON_TOWER_DEVICE_CONFIRM = ButtonWrapper(
 )
 AUTOMATON_TOWER_DEVICE_DIALOG = ButtonWrapper(
     name='AUTOMATON_TOWER_DEVICE_DIALOG',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/automaton_tower/AUTOMATON_TOWER_DEVICE_DIALOG.png',
+        area=(595, 47, 685, 77),
+        search=(575, 27, 705, 97),
+        color=(72, 58, 45),
+        button=(595, 47, 685, 77),
+    ),
     global_cn=Button(
         file='./assets/global_cn/automaton_tower/AUTOMATON_TOWER_DEVICE_DIALOG.png',
         area=(948, 45, 1085, 78),
@@ -77,7 +113,13 @@ AUTOMATON_TOWER_DEVICE_DIALOG = ButtonWrapper(
 )
 AUTOMATON_TOWER_ENTER = ButtonWrapper(
     name='AUTOMATON_TOWER_ENTER',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/automaton_tower/AUTOMATON_TOWER_ENTER.png',
+        area=(1110, 635, 1230, 685),
+        search=(1090, 615, 1250, 705),
+        color=(37, 69, 37),
+        button=(1085, 630, 1245, 685),
+    ),
     global_cn=Button(
         file='./assets/global_cn/automaton_tower/AUTOMATON_TOWER_ENTER.png',
         area=(1090, 90, 1250, 150),
@@ -89,7 +131,13 @@ AUTOMATON_TOWER_ENTER = ButtonWrapper(
 )
 AUTOMATON_TOWER_ENTRY = ButtonWrapper(
     name='AUTOMATON_TOWER_ENTRY',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/automaton_tower/AUTOMATON_TOWER_ENTRY.png',
+        area=(690, 190, 835, 230),
+        search=(670, 170, 855, 250),
+        color=(53, 50, 50),
+        button=(640, 176, 924, 680),
+    ),
     global_cn=Button(
         file='./assets/global_cn/automaton_tower/AUTOMATON_TOWER_ENTRY.png',
         area=(690, 190, 835, 230),
@@ -101,7 +149,13 @@ AUTOMATON_TOWER_ENTRY = ButtonWrapper(
 )
 AUTOMATON_TOWER_FLOOR_CHECK = ButtonWrapper(
     name='AUTOMATON_TOWER_FLOOR_CHECK',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/automaton_tower/AUTOMATON_TOWER_FLOOR_CHECK.png',
+        area=(760, 365, 840, 400),
+        search=(740, 345, 860, 420),
+        color=(50, 60, 70),
+        button=(760, 365, 840, 400),
+    ),
     global_cn=Button(
         file='./assets/global_cn/automaton_tower/AUTOMATON_TOWER_FLOOR_CHECK.png',
         area=(760, 360, 860, 410),
@@ -111,9 +165,33 @@ AUTOMATON_TOWER_FLOOR_CHECK = ButtonWrapper(
     ),
     global_en=None,
 )
+AUTOMATON_TOWER_LANDING_CHECK = ButtonWrapper(
+    name='AUTOMATON_TOWER_LANDING_CHECK',
+    cn=Button(
+        file='./assets/cn/automaton_tower/AUTOMATON_TOWER_LANDING_CHECK.png',
+        area=(940, 88, 1030, 114),
+        search=(920, 68, 1050, 134),
+        color=(71, 71, 70),
+        button=(940, 88, 1030, 114),
+    ),
+    global_cn=Button(
+        file='./assets/global_cn/automaton_tower/AUTOMATON_TOWER_LANDING_CHECK.png',
+        area=(1066, 289, 1218, 310),
+        search=(1046, 269, 1238, 330),
+        color=(49, 47, 47),
+        button=(1066, 289, 1218, 310),
+    ),
+    global_en=None,
+)
 AUTOMATON_TOWER_NEXT_FLOOR = ButtonWrapper(
     name='AUTOMATON_TOWER_NEXT_FLOOR',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/automaton_tower/AUTOMATON_TOWER_NEXT_FLOOR.png',
+        area=(1135, 640, 1220, 680),
+        search=(1115, 620, 1240, 700),
+        color=(52, 81, 55),
+        button=(1100, 635, 1250, 685),
+    ),
     global_cn=Button(
         file='./assets/global_cn/automaton_tower/AUTOMATON_TOWER_NEXT_FLOOR.png',
         area=(1080, 645, 1220, 680),
@@ -125,7 +203,13 @@ AUTOMATON_TOWER_NEXT_FLOOR = ButtonWrapper(
 )
 AUTOMATON_TOWER_PREPARE_CHECK = ButtonWrapper(
     name='AUTOMATON_TOWER_PREPARE_CHECK',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/automaton_tower/AUTOMATON_TOWER_PREPARE_CHECK.png',
+        area=(65, 10, 200, 52),
+        search=(45, 0, 220, 72),
+        color=(63, 66, 70),
+        button=(65, 10, 200, 52),
+    ),
     global_cn=Button(
         file='./assets/global_cn/automaton_tower/AUTOMATON_TOWER_PREPARE_CHECK.png',
         area=(65, 10, 200, 52),
@@ -137,7 +221,13 @@ AUTOMATON_TOWER_PREPARE_CHECK = ButtonWrapper(
 )
 AUTOMATON_TOWER_SPEED_1X = ButtonWrapper(
     name='AUTOMATON_TOWER_SPEED_1X',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/automaton_tower/AUTOMATON_TOWER_SPEED_1X.png',
+        area=(1046, 8, 1088, 54),
+        search=(1015, 0, 1115, 75),
+        color=(56, 54, 61),
+        button=(1035, 8, 1095, 60),
+    ),
     global_cn=Button(
         file='./assets/global_cn/automaton_tower/AUTOMATON_TOWER_SPEED_1X.png',
         area=(1046, 8, 1088, 54),
@@ -149,7 +239,13 @@ AUTOMATON_TOWER_SPEED_1X = ButtonWrapper(
 )
 AUTOMATON_TOWER_SPEED_2X = ButtonWrapper(
     name='AUTOMATON_TOWER_SPEED_2X',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/automaton_tower/AUTOMATON_TOWER_SPEED_2X.png',
+        area=(1046, 8, 1088, 54),
+        search=(1015, 0, 1115, 75),
+        color=(77, 76, 85),
+        button=(1035, 8, 1095, 60),
+    ),
     global_cn=Button(
         file='./assets/global_cn/automaton_tower/AUTOMATON_TOWER_SPEED_2X.png',
         area=(1046, 8, 1088, 54),
@@ -161,7 +257,13 @@ AUTOMATON_TOWER_SPEED_2X = ButtonWrapper(
 )
 OCR_FLOOR_LIST = ButtonWrapper(
     name='OCR_FLOOR_LIST',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/automaton_tower/OCR_FLOOR_LIST.png',
+        area=(755, 365, 840, 400),
+        search=(735, 345, 860, 420),
+        color=(48, 58, 69),
+        button=(755, 365, 840, 400),
+    ),
     global_cn=Button(
         file='./assets/global_cn/automaton_tower/OCR_FLOOR_LIST.png',
         area=(755, 365, 840, 400),
@@ -173,7 +275,13 @@ OCR_FLOOR_LIST = ButtonWrapper(
 )
 OCR_FLOOR_PREPARE = ButtonWrapper(
     name='OCR_FLOOR_PREPARE',
-    cn=None,
+    cn=Button(
+        file='./assets/cn/automaton_tower/OCR_FLOOR_PREPARE.png',
+        area=(925, 115, 1020, 155),
+        search=(905, 95, 1040, 175),
+        color=(63, 60, 66),
+        button=(925, 115, 1020, 155),
+    ),
     global_cn=Button(
         file='./assets/global_cn/automaton_tower/OCR_FLOOR_PREPARE.png',
         area=(925, 115, 1020, 155),

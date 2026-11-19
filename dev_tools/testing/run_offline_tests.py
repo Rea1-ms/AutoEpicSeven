@@ -39,7 +39,12 @@ ARENA_MODULES = (
     "tests.arena.test_rules",
     "tests.arena.test_captures",
 )
-AUTOMATON_TOWER_MODULES = ("tests.automaton_tower.test_automaton_tower",)
+AUTOMATON_TOWER_MODULES = (
+    "tests.automaton_tower.test_automaton_tower",
+    "tests.automaton_tower.test_device_profiles",
+    "tests.automaton_tower.test_device_selection",
+    "tests.automaton_tower.test_stamina",
+)
 KNIGHTS_MODULES = (
     "tests.knights.test_world_boss",
     "tests.knights.test_shop",

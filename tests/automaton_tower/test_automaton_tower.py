@@ -2,12 +2,14 @@
 
 import subprocess
 import sys
+import textwrap
 import unittest
 from unittest.mock import patch
 
 import yaml
 
 from module.config import server
+from module.exception import RequestHumanTakeover
 
 server.set_lang("global_cn")
 
@@ -28,6 +30,7 @@ from tasks.automaton_tower.assets.assets_automaton_tower import (
     OCR_FLOOR_LIST,
     OCR_FLOOR_PREPARE,
 )
+from tasks.automaton_tower.assets.assets_automaton_tower_entry import TOWER_SEASON_INFO
 from tasks.automaton_tower.automaton_tower import AutomatonTower, AutomatonTowerFloorOcr
 from tasks.dungeon.assets.assets_dungeon_action import (
     AUTO_COMBAT,
@@ -45,6 +48,7 @@ from tests.support.automaton_tower import (
     CLEAR,
     FLOOR,
     PENDING,
+    POST_CLEAR_OFFER,
     PREPARE,
     RESUME_CAPTURES,
     SELECTED,
@@ -60,6 +64,29 @@ MANIFEST = ROOT / "tests" / "fixtures" / "automaton_tower" / "manifest.json"
 class AutomatonTowerCaptureTests(unittest.TestCase):
     def setUp(self):
         server.set_lang("global_cn")
+
+    def test_run_captures_missing_first_frame_and_reuses_existing_frame(self):
+        for preloaded in (False, True):
+            with self.subTest(preloaded=preloaded), ControlledClock() as clock:
+                frames = [capture(TOWER)] if preloaded else [capture(), capture(TOWER)]
+                replay = TowerReplay(frames, clock)
+                task = replay.task
+                task.config.config_name = "offline"
+                if not preloaded:
+                    del replay.image
+
+                with (
+                    patch("tasks.automaton_tower.profile_store.ProfileStore.active", return_value=None),
+                    patch("tasks.automaton_tower.profile_store.ProfileStore.debug_enabled", return_value=False),
+                    patch.object(task, "_enter_floor", return_value=False) as enter_floor,
+                    patch.object(task, "_return_to_main", return_value=True),
+                ):
+                    self.assertFalse(task.run())
+
+                enter_floor.assert_called_once_with()
+                task.config.task_delay.assert_not_called()
+                self.assertEqual(replay.index, len(frames) - 1)
+                self.assertEqual(replay.actions, [])
 
     def test_resume_screenshots_identify_pending_device(self):
         from tasks.base.assets.assets_base_main_page import WHITE_STAR
@@ -179,6 +206,23 @@ class AutomatonTowerCaptureTests(unittest.TestCase):
             self.assertEqual(replay.index, 3)
             self.assertEqual(replay.actions, [
                 (0, "AUTOMATON_TOWER_FIRST_DEVICE"), (1, "AUTOMATON_TOWER_DEVICE_CONFIRM"),
+            ])
+
+    def test_next_floor_handles_device_overlay_before_background_button(self):
+        with ControlledClock() as clock:
+            # The pending frame is the real blocked floor 14 result. The
+            # selected, uncovered and preparation frames are from earlier runs.
+            replay = TowerReplay([
+                capture(CLEAR), capture(POST_CLEAR_OFFER), capture(POST_CLEAR_OFFER, 0.3),
+                capture(BATTLE_SELECTED, 0.1), capture(CLEAR, 0.1), capture(PREPARE, 0.1),
+            ], clock)
+            self.assertEqual(replay.task._next_floor(), "next")
+            self.assertEqual(replay.index, 5)
+            self.assertEqual(replay.task.current_floor, 4)
+            self.assertEqual(replay.actions, [
+                (1, "AUTOMATON_TOWER_FIRST_DEVICE"),
+                (3, "AUTOMATON_TOWER_DEVICE_CONFIRM"),
+                (4, "AUTOMATON_TOWER_NEXT_FLOOR"),
             ])
 
     def test_real_screenshots_cover_activity_states(self):
@@ -390,6 +434,34 @@ class AutomatonTowerCaptureTests(unittest.TestCase):
         self.assertIn('NextRun', gui.ALAS_ARGS['SanctuaryMonthly']['Scheduler'])
         self.assertIs(get_tool_runner("AutomatonTower"), run_tool)
 
+    def test_season_popup_blocks_navigation_until_close_is_observed(self):
+        from tasks.base.page import page_automaton_tower
+
+        with ControlledClock() as clock:
+            replay = TowerReplay([
+                capture("e7-tower-popup"), capture("e7-tower-popup", 0.1),
+                capture("e7-tower-popup", 2.1), capture(None, 0.1), capture(TOWER, 0.1),
+            ], clock)
+            self.assertFalse(replay.task._is_tower_page())
+            self.assertFalse(replay.task._is_floor_page())
+            self.assertFalse(replay.task.ui_page_appear(page_automaton_tower))
+            replay.task.ui_goto(page_automaton_tower)
+            self.assertEqual(replay.index, 4)
+            self.assertEqual(replay.actions, [(0, "TOWER_SEASON_INFO"), (2, "TOWER_SEASON_INFO")])
+            replay.assert_retried(self, "TOWER_SEASON_INFO", 2)
+            for _, _, area in replay.click_areas:
+                self.assertTrue(580 <= area[0] < area[2] <= 710)
+                self.assertTrue(680 <= area[1] < area[3] <= 720)
+
+    def test_season_popup_has_positive_identity_and_real_negative_scenes(self):
+        self.assertTrue(TOWER_SEASON_INFO.match_template(fixture_image(MANIFEST, "e7-tower-popup")))
+        for fixture in (TOWER, FLOOR, PREPARE, PENDING, CLEAR):
+            with self.subTest(fixture=fixture), ControlledClock() as clock:
+                replay = TowerReplay([capture(fixture)], clock)
+                self.assertFalse(replay.task._is_entry_overlay())
+                self.assertFalse(replay.task._handle_tower_entry())
+                self.assertEqual(replay.actions, [])
+
     def test_page_registration_is_limited_to_overseas_simplified_chinese(self):
         code = """
 import module.config.server as server
@@ -398,16 +470,22 @@ server.set_lang({lang!r})
 from tasks.base import page
 
 registered = 'page_automaton_tower' in page.Page.all_pages
-assert registered == ({package!r} == 'OVERSEA-Play' and {lang!r} == 'global_cn')
+assert registered == ({lang!r} in ('cn', 'global_cn'))
+from tasks.automaton_tower.automaton_tower import AutomatonTower
+task = object.__new__(AutomatonTower)
+assert task._unsupported() == (not registered)
 if registered:
     assert page.page_combat_season.links[page.page_automaton_tower].name == 'AUTOMATON_TOWER_ENTRY'
     assert page.page_automaton_tower.links[page.page_automaton_tower_floor].name == 'AUTOMATON_TOWER_ENTER'
     assert page.page_automaton_tower_floor.links[page.page_automaton_tower_prepare].name == 'AUTOMATON_TOWER_CHOOSE_TEAM'
     page.Page.init_connection(page.page_automaton_tower_prepare)
     assert page.page_combat_season.parent == page.page_automaton_tower
+    assert page.page_automaton_tower.check_button.name == 'AUTOMATON_TOWER_LANDING_CHECK'
+    assert page.page_automaton_tower_floor.check_button.name == 'AUTOMATON_TOWER_CHOOSE_TEAM'
+    assert all(marker.buttons for marker in page.Page.iter_check_buttons() if hasattr(marker, 'buttons'))
 else:
     assert all(
-        getattr(marker, 'name', '') != 'AUTOMATON_TOWER_CHECK'
+        not getattr(marker, 'name', '').startswith('AUTOMATON_TOWER_')
         for check in page.Page.iter_check_buttons()
         for marker in (check if isinstance(check, tuple) else (check,))
     )
@@ -429,3 +507,211 @@ page.Page.clear_connection()
                     check=False,
                 )
                 self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+
+class AutomatonTowerCnTests(unittest.TestCase):
+    """Initialize CN before imports so page registration stays process-local."""
+
+    def run_cn(self, code):
+        prefix = """
+import unittest
+import module.config.server as server
+server.server = 'CN-Official'
+server.set_lang('cn')
+from tests.support.automaton_tower import MANIFEST, TowerReplay, capture
+from tests.support.offline import ROOT, ControlledClock, fixture_image
+from tasks.automaton_tower.automaton_tower import AutomatonTower, AutomatonTowerFloorOcr
+from tasks.automaton_tower.assets.assets_automaton_tower import (
+    AUTOMATON_TOWER_ENTER, AUTOMATON_TOWER_SPEED_1X, AUTOMATON_TOWER_SPEED_2X,
+    OCR_FLOOR_LIST, OCR_FLOOR_PREPARE,
+)
+from tasks.base.page import page_automaton_tower
+case = unittest.TestCase()
+def cn(suffix, seconds=0.5):
+    return capture('20261115-' + suffix, seconds)
+"""
+        result = subprocess.run(
+            [sys.executable, "-B", "-X", "utf8", "-c", textwrap.dedent(prefix) + textwrap.dedent(code)],
+            cwd=ROOT, capture_output=True, text=True, encoding="utf-8", timeout=90, check=False,
+        )
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+    def test_cn_navigation_closes_season_modal_before_arrival(self):
+        self.run_cn("""
+with ControlledClock() as clock:
+    replay = TowerReplay([
+        cn('221941-499'), cn('221944-879'), cn('221944-879', 0.1),
+        cn('221944-879', 2.1), capture(None, 0.1), cn('221946-748', 0.1),
+    ], clock)
+    replay.task.config.Emulator_PackageName = 'com.zlongame.cn.epicseven'
+    replay.task.ui_goto(page_automaton_tower)
+    case.assertEqual(replay.index, 5)
+    case.assertEqual(replay.actions, [(0, 'AUTOMATON_TOWER_ENTRY'), (1, 'TOWER_SEASON_INFO'), (3, 'TOWER_SEASON_INFO')])
+    replay.assert_retried(case, 'TOWER_SEASON_INFO', 2)
+with ControlledClock() as clock:
+    # An already started season can restore its floor list directly. The
+    # production entry must accept it without navigating BACK to difficulty.
+    replay = TowerReplay([cn('221941-499'), cn('222909-462'), cn('222903-191')], clock)
+    case.assertTrue(replay.task._enter_tower())
+    case.assertEqual(replay.index, 1)
+    case.assertTrue(replay.task._enter_floor())
+    case.assertEqual(replay.task.current_floor, 2)
+    case.assertEqual(replay.actions, [(0, 'AUTOMATON_TOWER_ENTRY'), (1, 'AUTOMATON_TOWER_CHOOSE_TEAM')])
+""")
+
+    def test_cn_stage_entry_retries_confirm_and_preserves_current_difficulty(self):
+        self.run_cn("""
+with ControlledClock() as clock:
+    replay = TowerReplay([
+        cn('221946-748'), cn('222002-635', 0.1), cn('222002-635', 0.1),
+        cn('222002-635', 2.1), capture(None, 0.1), cn('222005-252', 0.1), cn('222014-084', 0.1),
+    ], clock)
+    case.assertTrue(replay.task._enter_floor())
+    case.assertEqual(replay.task.current_floor, 1)
+    case.assertEqual(replay.actions, [
+        (0, 'AUTOMATON_TOWER_ENTER'), (1, 'TOWER_STAGE_CONFIRM'),
+        (3, 'TOWER_STAGE_CONFIRM'), (5, 'AUTOMATON_TOWER_CHOOSE_TEAM'),
+    ])
+    replay.assert_retried(case, 'TOWER_STAGE_CONFIRM', 2)
+    for index, name, area in replay.click_areas:
+        if name == 'TOWER_STAGE_CONFIRM':
+            case.assertTrue(649 <= area[0] < area[2] <= 848)
+            case.assertTrue(465 <= area[1] < area[3] <= 526)
+for suffix in ('221946-748', '221950-315', '221952-911', '222000-640'):
+    image = fixture_image(MANIFEST, '20261115-' + suffix)
+    case.assertTrue(AUTOMATON_TOWER_ENTER.match_template_color(image, threshold=30))
+for suffix in ('221954-929', '221956-184'):
+    image = fixture_image(MANIFEST, '20261115-' + suffix)
+    case.assertFalse(AUTOMATON_TOWER_ENTER.match_template_color(image, threshold=30))
+""")
+
+    def test_cn_pending_modal_never_uses_generic_confirm_or_background_controls(self):
+        self.run_cn("""
+from tasks.automaton_tower.entry import AutomatonTowerEntry
+for suffix in ('221944-879', '222002-635'):
+    with ControlledClock() as clock:
+        replay = TowerReplay([cn(suffix), cn(suffix, 0.1)], clock)
+        task = replay.task
+        case.assertTrue(task._is_entry_overlay())
+        case.assertFalse(task._is_tower_page())
+        case.assertFalse(task._is_floor_page())
+        case.assertFalse(task.ui_page_appear(page_automaton_tower))
+        case.assertTrue(task._handle_tower_entry())
+        replay.screenshot()
+        case.assertFalse(task._handle_tower_entry())
+        # Bind production methods: TowerReplay stubs unrelated generic popups.
+        case.assertFalse(AutomatonTowerEntry.handle_popup_confirm(task))
+        case.assertFalse(AutomatonTowerEntry.handle_popup_cancel(task))
+        case.assertEqual(len(replay.actions), 1)
+""")
+
+    def test_cn_captures_reject_unrelated_popups_and_read_actual_floors(self):
+        self.run_cn("""
+for suffix in ('221936-261', '221939-032', '221940-408', '221941-499', '222007-993', '222009-804'):
+    with ControlledClock() as clock:
+        replay = TowerReplay([cn(suffix)], clock)
+        case.assertFalse(replay.task._is_entry_overlay())
+        case.assertFalse(replay.task._handle_tower_entry())
+        case.assertEqual(replay.actions, [])
+for suffix, button, expected in (
+    ('222005-252', OCR_FLOOR_LIST, 1), ('222011-239', OCR_FLOOR_LIST, 1),
+    ('222909-462', OCR_FLOOR_LIST, 2), ('222014-084', OCR_FLOOR_PREPARE, 1),
+    ('222903-191', OCR_FLOOR_PREPARE, 2),
+):
+    image = fixture_image(MANIFEST, '20261115-' + suffix)
+    case.assertEqual(AutomatonTowerFloorOcr(button, lang='cn', name='CnTowerFloor').ocr_single_line(image), expected)
+""")
+
+    def test_cn_battle_recovers_speed_and_auto_then_selects_and_advances(self):
+        self.run_cn("""
+from tasks.dungeon.execute import detect_auto_combat_state
+with ControlledClock() as clock:
+    replay = TowerReplay([
+        cn('222014-084'), cn('222029-545'), cn('222029-545', 0.1),
+        cn('222023-418', 0.1), cn('222031-986', 2.2), capture(None, 0.1),
+        cn('222856-893', 0.1), cn('222858-926', 0.1), cn('222900-237', 0.1),
+        cn('222900-237', 0.1), cn('222903-191', 0.1),
+    ], clock)
+    case.assertEqual(replay.task._run_battle(), 'clear')
+    case.assertEqual(replay.index, 8)
+    case.assertEqual(replay.task._next_floor(), 'next')
+    case.assertEqual(replay.task.current_floor, 2)
+    case.assertEqual(replay.actions, [
+        (0, 'AUTOMATON_TOWER_BATTLE_START'), (1, 'AUTOMATON_TOWER_SPEED_1X'),
+        (2, 'AUTO_COMBAT'), (4, 'AUTO_COMBAT'), (6, 'AUTOMATON_TOWER_FIRST_DEVICE'),
+        (7, 'AUTOMATON_TOWER_DEVICE_CONFIRM'), (9, 'AUTOMATON_TOWER_NEXT_FLOOR'),
+    ])
+for suffix, speed, auto in (
+    ('222020-688', AUTOMATON_TOWER_SPEED_2X, None),
+    ('222023-418', AUTOMATON_TOWER_SPEED_1X, True),
+    ('222029-545', AUTOMATON_TOWER_SPEED_1X, False),
+    ('222031-986', AUTOMATON_TOWER_SPEED_2X, False),
+    ('222033-491', AUTOMATON_TOWER_SPEED_2X, False),
+):
+    with ControlledClock() as clock:
+        replay = TowerReplay([cn(suffix)], clock)
+        case.assertTrue(speed.match_template_color(replay.image, threshold=30))
+        case.assertIs(detect_auto_combat_state(replay.task.appear), auto)
+""")
+
+    def test_cn_profile_reads_complete_offer_and_requires_selected_target(self):
+        self.run_cn("""
+import yaml
+from tasks.automaton_tower.device_selection import DeviceReader, selection_button
+from tasks.automaton_tower.device_record import DeviceRecord
+from tasks.automaton_tower.policy import parse_profile
+from uuid import uuid4
+root = ROOT / '.cache/automaton_tower_tests' / uuid4().hex
+reader = DeviceReader('cn')
+for suffix, selected in (('222856-893', None), ('222858-926', 1)):
+    image = fixture_image(MANIFEST, '20261115-' + suffix)
+    candidates = reader.read(image)
+    case.assertEqual([item.device.id for item in candidates], ['back_critical_damage', 'front_counter', 'multiple_target'])
+    case.assertEqual((candidates[1].level, candidates[1].max_level), (1, 3))
+    case.assertEqual(reader.selected_slot(image), selected)
+for slot in range(3):
+    area = selection_button(slot).button
+    case.assertTrue(100 + slot * 370 <= area[0] < area[2] <= 435 + slot * 370)
+with ControlledClock() as clock:
+    replay = TowerReplay([
+        cn('222856-893'), cn('222856-893', 0.1), cn('222856-893', 2.1),
+        cn('222858-926', 0.1), cn('222858-926', 0.1), cn('222858-926', 2.1),
+        capture(None, 0.1), cn('222900-237', 0.1),
+    ], clock)
+    replay.task.device_policy = parse_profile(yaml.safe_dump({
+        '版本': 1, '方案名': '国服回放', '队伍': {'主输出位置': '前排'},
+        '装置优先顺序': ['前排产生反抗1级装置'],
+    }, allow_unicode=True))
+    replay.task.device_record = DeviceRecord('offline-cn', 'cn', '国服回放', root=root)
+    case.assertTrue(replay.task._select_first_device())
+    case.assertEqual(replay.actions, [(0, 'DEVICE_MIDDLE_SELECTED'), (2, 'DEVICE_MIDDLE_SELECTED'), (3, 'AUTOMATON_TOWER_DEVICE_CONFIRM'), (5, 'AUTOMATON_TOWER_DEVICE_CONFIRM')])
+    case.assertEqual(replay.index, 7)
+""")
+
+    def test_cn_debug_saves_full_offer_and_preconfirm_without_extra_ocr(self):
+        self.run_cn("""
+import json
+import numpy as np
+from PIL import Image
+from uuid import uuid4
+from tasks.automaton_tower.device_debug import DeviceDebug
+root = ROOT / '.cache/automaton_tower_tests' / uuid4().hex
+with ControlledClock() as clock:
+    replay = TowerReplay([
+        cn('222858-926'), cn('222858-926', 0.1), cn('222858-926', 2.1), cn('222900-237', 0.1),
+    ], clock)
+    replay.task.device_debug = DeviceDebug('offline-cn', 'cn', root=root)
+    replay.task.current_floor = 1
+    case.assertTrue(replay.task._select_first_device())
+    folder = replay.task.device_debug.path / '001'
+    record = json.loads((folder / 'record.json').read_text(encoding='utf-8'))
+    case.assertEqual(record['server'], 'cn')
+    case.assertEqual(record['floor'], 1)
+    case.assertEqual(record['confirmation_requests'], 2)
+    case.assertEqual(record['status'], 'confirmed')
+    expected = fixture_image(MANIFEST, '20261115-222858-926')
+    for filename in record['images'].values():
+        case.assertTrue(np.array_equal(np.array(Image.open(folder / filename).convert('RGB')), expected))
+    case.assertEqual(len(record['images']), 2)
+    case.assertEqual(replay.actions, [(0, 'AUTOMATON_TOWER_DEVICE_CONFIRM'), (2, 'AUTOMATON_TOWER_DEVICE_CONFIRM')])
+""")

@@ -13,6 +13,8 @@ dev_tools/debug_tools
 .idea
 /screenshots
 /data/dimensional_exploration/
+/data/automaton_tower/
+/config/automaton_tower/
 /campaign/test/
 /toolkit
 *.lock
