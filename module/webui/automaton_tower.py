@@ -13,13 +13,13 @@ from pywebio.output import (
     put_scope,
     put_text,
     put_warning,
-    toast,
     use_scope,
 )
 from pywebio.pin import pin, pin_on_change, put_textarea
 from pywebio.session import run_js
 
 from module.webui.pin import put_checkbox, put_input, put_select
+from module.webui.utils import toast
 from tasks.automaton_tower.policy import MAX_PROFILE_BYTES, ProfileError
 from tasks.automaton_tower.profile_store import ProfileStore, StaminaSettings
 
@@ -82,7 +82,7 @@ def render_profile_controls(gui):
         except (ProfileError, OSError) as exc:
             report_error(exc)
             return
-        toast("调试设置已保存。", duration=1, position="right", color="success")
+        toast("调试设置已保存。", duration=1, color="success")
 
     def save_stamina(**changes) -> StaminaSettings | None:
         try:
@@ -92,7 +92,7 @@ def render_profile_controls(gui):
             report_error(exc)
             return None
         if "enabled" in changes:
-            toast("行动力设置已保存。", duration=1, position="right", color="success")
+            toast("行动力设置已保存。", duration=1, color="success")
         return settings
 
     def save_refill(value):

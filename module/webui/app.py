@@ -4,6 +4,7 @@ import threading
 import time
 from datetime import datetime
 from functools import partial
+from pathlib import Path
 from typing import Dict, List, Optional
 
 from pywebio import config as webconfig
@@ -26,7 +27,6 @@ from pywebio.output import (
     put_table,
     put_text,
     put_warning,
-    toast,
     use_scope,
 )
 from pywebio.pin import pin, pin_on_change, pin_update
@@ -86,6 +86,7 @@ from module.webui.utils import (
     raise_exception,
     re_fullmatch,
     to_pin_value,
+    toast,
 )
 from module.webui.widgets import (
     BinarySwitchButton,
@@ -615,7 +616,6 @@ class AlasGUI(Frame):
                 toast(
                     t("Gui.Toast.ConfigSaved"),
                     duration=1,
-                    position="right",
                     color="success",
                 )
                 logger.info(
@@ -1267,7 +1267,6 @@ class AlasGUI(Frame):
             toast(
                 _t("Gui.Toast.DisableTranslateMode"),
                 duration=0,
-                position="right",
                 onclick=_disable,
             )
 
@@ -1348,7 +1347,6 @@ class AlasGUI(Frame):
                 1: lambda: toast(
                     t("Gui.Toast.ClickToUpdate"),
                     duration=0,
-                    position="right",
                     color="success",
                     onclick=goto_update,
                 )
@@ -1457,6 +1455,7 @@ def app():
     from deploy.Windows.atomic import atomic_failure_cleanup
     atomic_failure_cleanup('./config')
 
+    @webconfig(css_style=Path(filepath_css("toast")).read_text(encoding="utf-8"))
     def index():
         if key is not None and not login(key):
             logger.warning(f"{info.user_ip} login failed.")

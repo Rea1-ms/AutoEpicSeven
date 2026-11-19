@@ -91,7 +91,7 @@ class PenguinRuleTests(unittest.TestCase):
                   patch('module.webui.app.filepath_config', return_value=profile),
                   patch('module.webui.app.pin', pins),
                   patch('module.webui.app.t', side_effect=lambda key: deep_get(translations, key)),
-                  patch('module.webui.app.toast') as toast,
+                  patch('pywebio.output.send_msg') as toast,
                   patch('module.webui.app.logger.exception') as error):
                 # Reload through the production updater, as changing pages and
                 # launching the tool do. A displayed input alone is not saved.
@@ -100,8 +100,10 @@ class PenguinRuleTests(unittest.TestCase):
                     AlasGUI._save_config(gui, {key: raw}, 'synthetic', updater)
                     error.assert_not_called()
                     toast.assert_called_once_with(
-                        deep_get(translations, 'Gui.Toast.ConfigSaved'),
-                        duration=1, position='right', color='success',
+                        cmd='toast', spec={
+                            'content': deep_get(translations, 'Gui.Toast.ConfigSaved'),
+                            'duration': 1000, 'position': 'right', 'color': '#2e7d32', 'callback_id': None,
+                        },
                     )
                     reloaded = updater.read_file('synthetic')
                     self.assertEqual(deep_get(reloaded, key), expected)

@@ -12,7 +12,6 @@ from pywebio.output import (
     put_scope,
     put_text,
     put_warning,
-    toast,
     use_scope,
 )
 from pywebio.session import run_js
@@ -20,6 +19,7 @@ from pywebio.session import run_js
 from module.config.deep import deep_get
 from module.config.server import is_cn_server
 from module.webui.lang import t
+from module.webui.utils import toast
 
 
 COMMUNITY_AIO_TASK = "CommunityAio"
@@ -202,7 +202,6 @@ def open_community_login_window(config_name: str = "") -> None:
         "已尝试拉起登录窗口。登录完成后可查看工具日志或刷新凭证状态。",
         color="info",
         duration=3,
-        position="right",
     )
 
 
@@ -218,7 +217,6 @@ def close_community_login_window() -> None:
         "已尝试关闭登录窗口。",
         color="info",
         duration=3,
-        position="right",
     )
 
 

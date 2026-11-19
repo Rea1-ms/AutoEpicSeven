@@ -1,0 +1,12 @@
+/* Keep built-in PyWebIO messages and narrow viewports right-aligned. */
+body > .toastify {
+    left: auto;
+    right: 15px;
+    margin-inline: 0;
+}
+
+@media (max-width: 360px) {
+    body > .toastify {
+        max-width: calc(100% - 30px);
+    }
+}

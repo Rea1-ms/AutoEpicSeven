@@ -4,13 +4,14 @@ from pathlib import Path
 from uuid import uuid4
 
 from pywebio.exceptions import SessionClosedException, SessionNotFoundException
-from pywebio.output import put_button, put_html, put_scope, toast
+from pywebio.output import put_button, put_html, put_scope
 from pywebio.session import defer_call, eval_js, run_js
 
 from module.logger import logger
 from module.runtime_events import runtime_events
 from module.webui import lang
 from module.webui.setting import State
+from module.webui.utils import toast
 
 
 def runtime_text(zh, en):
