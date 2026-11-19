@@ -35,6 +35,9 @@ vk_swiftshader_icd.json
 # AutoEpicSeven
 raw_assets/
 docs/
+!/docs/
+/docs/*
+!/docs/dependencies.md
 conversation-*
 .claude/
 dev_tools/goc
