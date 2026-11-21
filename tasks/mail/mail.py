@@ -32,6 +32,7 @@ from tasks.mail.assets.assets_mail import (
     OCR_REMAINING_MAIL,
     OCR_REMAINING_TIME,
     POPUP_WINDOW,
+    PREVIEW_LINK_CLOSE,
     RECEIVE,
     RECEIVE_CONFIRM,
     RECEIVE_CONFIRM_LINK,
@@ -480,10 +481,6 @@ class Mail(UI):
         )
         self.config.task_delay(target=target)
 
-    def _android_back(self) -> None:
-        logger.info("Mail: send Android back keyevent")
-        self.device.adb_shell(["input", "keyevent", "4"])
-
     def _handle_mail_reward_flow(
         self,
         before_state: MailRemainingState,
@@ -494,9 +491,8 @@ class Mail(UI):
         timeout = Timer(self.RECEIVE_FLOW_TIMEOUT_SECONDS, count=120).start()
         done_confirm = Timer(self.RECEIVE_DONE_CONFIRM_SECONDS, count=4).start()
         popup_idle = Timer(self.RECEIVE_POPUP_IDLE_SECONDS, count=18).start()
-        pending_android_back = False
-        android_back_timer = Timer(1.2, count=3)
-        goto_link_done = False
+        preview_requested = False
+        preview_close_requested = False
 
         while 1:
             if skip_first_screenshot:
@@ -508,13 +504,12 @@ class Mail(UI):
                 logger.warning("Mail: receive reward flow timeout")
                 return False
 
-            if pending_android_back and android_back_timer.reached():
-                self._android_back()
-                pending_android_back = False
-                goto_link_done = True
-                timeout.reset()
-                done_confirm.reset()
-                popup_idle.reset()
+            if preview_requested and self.appear(PREVIEW_LINK_CLOSE):
+                if self.interval_is_reached(PREVIEW_LINK_CLOSE, interval=self.CLICK_INTERVAL_SECONDS):
+                    logger.info("Mail: close preview link")
+                    self.device.click(PREVIEW_LINK_CLOSE)
+                    self.interval_reset(PREVIEW_LINK_CLOSE, interval=self.CLICK_INTERVAL_SECONDS)
+                    preview_close_requested = True
                 continue
 
             normal_confirm_open = self.appear(RECEIVE_CONFIRM, interval=0)
@@ -522,11 +517,16 @@ class Mail(UI):
             if self._button_available(RECEIVE_CONFIRM_LINK):
                 link_confirm_open = self.appear(RECEIVE_CONFIRM_LINK, interval=0)
 
+            if preview_requested and not link_confirm_open:
+                # Loading frames have no close button. Keep waiting for the
+                # browser or the mail popup without clicking through them.
+                continue
+
             popup_open = normal_confirm_open or link_confirm_open or self._mail_popup_open()
             if not popup_open:
                 popup_idle.reset()
 
-            if link_confirm_open and not goto_link_done:
+            if link_confirm_open and not preview_close_requested:
                 if self._skip_goto_link_recognition() or not self._mail_has_link_asset():
                     logger.warning(
                         f"Mail: preview popup requires GOTO_LINK, but asset is unavailable for {server.lang}"
@@ -535,14 +535,19 @@ class Mail(UI):
 
                 if self.appear_then_click(GOTO_LINK, interval=self.CLICK_INTERVAL_SECONDS):
                     logger.info("Mail: open preview link before receive confirm")
-                    pending_android_back = True
-                    android_back_timer.reset()
-                    timeout.reset()
+                    if not preview_requested:
+                        timeout.reset()
+                    preview_requested = True
                     done_confirm.reset()
                     popup_idle.reset()
                     continue
 
-            if link_confirm_open and goto_link_done:
+            if link_confirm_open and preview_close_requested:
+                # The template also matches the disabled button before the
+                # preview opens. Confirm the enabled state before claiming.
+                if not self.match_color(RECEIVE_CONFIRM_LINK, threshold=30):
+                    continue
+                preview_requested = False
                 if self.interval_is_reached(RECEIVE_CONFIRM_LINK, interval=self.CLICK_INTERVAL_SECONDS):
                     logger.info("Mail: confirm link receive popup")
                     self.device.click(RECEIVE_CONFIRM_LINK)

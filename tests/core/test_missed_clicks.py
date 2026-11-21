@@ -217,6 +217,26 @@ class MailMissedClickTests(MissedClickTests):
         r.assert_retried(self, 'RECEIVE_CONFIRM', 1)
         self.assertEqual(r.clicks('RECEIVE'), [0])
 
+    def test_mail_preview_closes_with_visible_cross_before_claiming(self):
+        locked_popup = scene('GOTO_LINK', 'RECEIVE_CONFIRM_LINK', seconds=0.2)
+        enabled_popup = dict(locked_popup, confirm_enabled=True)
+        close_visible = scene('PREVIEW_LINK_CLOSE', seconds=0.6)
+        r = self.mail([scene('RECEIVE', page='page_mail'), locked_popup, locked_popup]
+                      + [scene()] * 5 + [close_visible] * 3
+                      + [locked_popup, enabled_popup] + [scene(page='page_mail', count=1)] * 8)
+        r.task._button_available = Mail._button_available
+        r.task.match_color = lambda button, **kwargs: (
+            r.appear(button) and r.frame.get('confirm_enabled', False)
+        )
+        r.adb_shell = Mock(side_effect=AssertionError('Mail preview must use the on-screen close button'))
+
+        self.assertTrue(self.claim(r))
+        self.assertEqual(r.actions, [
+            (0, 'RECEIVE'), (1, 'GOTO_LINK'), (8, 'PREVIEW_LINK_CLOSE'),
+            (10, 'PREVIEW_LINK_CLOSE'), (12, 'RECEIVE_CONFIRM_LINK'),
+        ])
+        r.adb_shell.assert_not_called()
+
     def test_receive_never_takes_effect_reaches_restart(self):
         r = self.mail([scene('RECEIVE', page='page_mail')] * 180)
         self.assert_restarts(lambda: self.claim(r))

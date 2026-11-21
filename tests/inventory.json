@@ -19665,6 +19665,15 @@
           "reason": "重复观察与假点击回归；使用受控时间和模拟画面，点击不改变输入"
         },
         {
+          "id": "tests.core.test_missed_clicks.MailMissedClickTests.test_mail_preview_closes_with_visible_cross_before_claiming",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "等待预览网页叉号出现，关闭未生效时按间隔重试，领取按钮亮起后再确认"
+        },
+        {
           "id": "tests.core.test_missed_clicks.MailMissedClickTests.test_receive_never_takes_effect_reaches_restart",
           "category": "流程回放",
           "requires_device": false,
