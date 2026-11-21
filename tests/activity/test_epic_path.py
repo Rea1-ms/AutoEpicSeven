@@ -192,7 +192,7 @@ class EpicPathReplayTests(ActivityReplayCase):
                         + [capture(EPIC_REWARD), capture(DAILY, epic_receipts=(0, 1, 2, 3)), capture(HOME_AFTER)])
         with patch("tasks.activity.epic_path.Ocr") as ocr:
             ocr.return_value.detect_and_ocr.side_effect = lambda image: daily_ocr(
-                "pending" if r.index == 1 else "received")
+                "pending" if r.index == 1 else "received", control_score=0.85)
             self.assertTrue(r.task.run_claim(navigate=False))
         self.assertEqual(r.clicks("EPIC_CLAIM_arena_3"), [1])
         self.assertEqual(r.clicks("TOUCH_TO_CLOSE"), [6])
@@ -229,7 +229,7 @@ class EpicPathReplayTests(ActivityReplayCase):
         self.assertTrue(r.task.config.values)
 
 
-def daily_ocr(state):
+def daily_ocr(state, *, control_score=1):
     """Synthetic full-completion counters; real captures cover stamina only."""
     rows = []
     for index, (family, total) in enumerate((("arena", 3), ("arena", 5), ("stamina", 100), ("stamina", 200))):
@@ -238,5 +238,5 @@ def daily_ocr(state):
         rows.append(SimpleNamespace(ocr_text=f"{label}({total}/{total})", box=(206, top + 30, 780, top + 60), score=1))
         if state == "unknown" or state == "pending" and index == 0:
             text = "???" if state == "unknown" else "领取"
-            rows.append(SimpleNamespace(ocr_text=text, box=(964, top + 30, 1020, top + 60), score=1))
+            rows.append(SimpleNamespace(ocr_text=text, box=(964, top + 30, 1020, top + 60), score=control_score))
     return rows

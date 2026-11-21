@@ -59,7 +59,7 @@ class EpicPath(ActivityNavigationMixin, UI):
             identity = (family, total)
             if identity not in self.DAILY_TASKS or identity in rows:
                 return None
-            controls = [row for row in matches if row.box[0] > 900 and row.score >= 0.9]
+            controls = [row for row in matches if row.box[0] > 900 and row.score >= 0.85]
             texts = ["".join(row.ocr_text.split()) for row in controls]
             control_area = (904, top + 16, 1080, bottom - 15)
             if any(text in ("领取", "领取奖励") for text in texts) and current >= total:
