@@ -1,4 +1,3 @@
-# ruff: noqa: E402
 """Step-aware Leif budgets and screenshot replay for Dimensional Hunt."""
 
 import unittest
@@ -8,6 +7,7 @@ from unittest.mock import patch
 import numpy as np
 
 from module.config import server
+from module.exception import RequestHumanTakeover
 
 server.set_lang("global_cn")
 
@@ -17,7 +17,6 @@ from tests.support.hunt import HuntReplay, hunt_image
 from tests.support.interaction import InteractionReplay, scene
 from tests.support.offline import ControlledClock
 from tests.support.resources import ResourceConfig
-
 
 MINIMUM = "20261004-224702-554"
 INCREASED = "20261004-224705-176"
@@ -137,6 +136,22 @@ class RepeatLeifTests(unittest.TestCase):
         replay = self.replay([hunt_image(MINIMUM)], Combat_HuntBoss="Wyvern")
         self.assertFalse(replay.task._ensure_repeat_leif_count(4))
         self.assertEqual([(a[1], a[3]) for a in replay.actions], [("REPEAT_COMBAT_TIMES_PLUS", 2)])
+
+    def test_repeat_start_stops_on_equipment_inventory_full(self):
+        ready = hunt_image("gear-start-available")
+        blocked = hunt_image("equipment-inventory-full")
+        for ready_frames in (0, 3):
+            with self.subTest(ready_frames=ready_frames):
+                replay = HuntReplay(Combat, [ready] * ready_frames + [blocked], self.clock)
+                replay.task.config = ResourceConfig()
+                replay.task.handle_ui_recovery = lambda: False
+
+                with self.assertRaises(RequestHumanTakeover):
+                    replay.task._run_repeat_combat()
+
+                self.assertEqual(replay.index, ready_frames)
+                expected = [(0, "REPEAT_START")] if ready_frames else []
+                self.assertEqual([(frame, name) for frame, name, _ in replay.actions], expected)
 
 
 class RepeatPreparationTests(unittest.TestCase):

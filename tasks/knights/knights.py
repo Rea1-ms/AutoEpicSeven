@@ -173,8 +173,12 @@ class Knights(
             self.ui_goto(page_knights, skip_first_screenshot=True)
 
         reminder_target = self._get_team_battle_next_delay_target()
+        world_boss_target = getattr(self, '_world_boss_retry_target', None)
+        if world_boss_target is not None:
+            reminder_target = min(reminder_target, world_boss_target) if reminder_target else world_boss_target
         if reminder_target is not None:
             self.config.task_delay(server_update=True, target=reminder_target)
         else:
             self.config.task_delay(server_update=True)
+        self._schedule_world_boss_wait()
         return success

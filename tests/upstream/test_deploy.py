@@ -11,6 +11,7 @@ from unittest.mock import Mock, PropertyMock, call, patch
 import requests
 
 from deploy.git_over_cdn.client import GitOverCdnClient
+from deploy.Windows.git import GitConfigParser, GitManager
 from module.webui.patch import patch_mimetype
 
 
@@ -56,6 +57,59 @@ class AdbReplacementTests(unittest.TestCase):
             manager.adb_replace()
         self.assertEqual(move.call_args_list, [call('one.exe', 'one.exe.bak'), call('two.exe', 'two.exe.bak')])
         self.assertEqual(copy.call_args_list[-1], call('replacement.exe', 'two.exe'))
+
+
+class GitInitializationTests(unittest.TestCase):
+    def initialize(self, current, stale=None, first_init_succeeds=True):
+        manager = object.__new__(GitManager)
+        manager.git = 'git'
+        manager.git_config = GitConfigParser()
+        manager.git_config.read_dict(stale or {})
+        manager.execute = Mock(side_effect=lambda *_args, **_kwargs: True)
+        if not first_init_succeeds:
+            manager.execute.side_effect = [False] + [True] * 20
+        manager.remove = Mock()
+        # No real repository/config is read or changed. The parser intentionally
+        # starts cached, and read_dict merges like ConfigParser.read does: stale
+        # sections survive unless production clears the cache after git init.
+        with patch.object(manager.git_config, 'read',
+                          side_effect=lambda _path: manager.git_config.read_dict(current)) as read, \
+                patch('deploy.Windows.git.os.path.exists', return_value=False):
+            manager.git_repository_init(repo='https://upstream.invalid/repo')
+        return manager, read
+
+    def test_file_mode_is_normalized_after_init_and_before_fetch(self):
+        for mode in (None, 'true', 'false'):
+            with self.subTest(mode=mode):
+                config = {} if mode is None else {'core': {'filemode': mode}}
+                manager, read = self.initialize(config)
+                read.assert_called_once_with('./.git/config')
+                commands = [entry.args[0] for entry in manager.execute.call_args_list]
+                normalize = '"git" config --local core.fileMode false'
+                self.assertEqual(commands.count(normalize), int(mode != 'false'))
+                if mode != 'false':
+                    self.assertLess(commands.index('"git" init'), commands.index(normalize))
+                    self.assertLess(commands.index(normalize), commands.index('"git" fetch origin master'))
+                manager.remove.assert_not_called()
+
+    def test_cached_config_does_not_hide_current_mode_or_removed_proxy(self):
+        manager, read = self.initialize(
+            {'core': {'filemode': 'true'}},
+            stale={'core': {'filemode': 'false'}, 'http': {'proxy': 'obsolete.invalid'}},
+        )
+        read.assert_called_once_with('./.git/config')
+        commands = [entry.args[0] for entry in manager.execute.call_args_list]
+        self.assertIn('"git" config --local core.fileMode false', commands)
+        self.assertNotIn('"git" config --local --unset http.proxy', commands)
+        self.assertFalse(manager.git_config.has_section('http'))
+
+    def test_repaired_initialization_also_normalizes_file_mode(self):
+        manager, read = self.initialize({'core': {'filemode': 'true'}}, first_init_succeeds=False)
+        read.assert_called_once_with('./.git/config')
+        commands = [entry.args[0] for entry in manager.execute.call_args_list]
+        self.assertEqual(commands[:3], ['"git" init', '"git" init',
+                                       '"git" config --local core.fileMode false'])
+        self.assertEqual(manager.remove.call_count, 4)
 
 
 class DownloadTests(unittest.TestCase):

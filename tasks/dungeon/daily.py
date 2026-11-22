@@ -3,6 +3,7 @@
 from module.logger import logger
 from tasks.activity.scheduling import schedule_activity_after_battle
 from tasks.base.resource_scheduling import ResourceCoordinator
+from tasks.knights.world_boss_resources import world_boss_stamina_reserve
 from tasks.mission_reward.planning import DailyBudget
 from tasks.mission_reward.scheduling import should_schedule_mission_reward
 
@@ -98,12 +99,21 @@ class DailyCombatMixin:
             min(50, leif + (stamina // 80 if self._repeat_prioritize_stamina() else 0))
             if original else stamina // 80
         )
+        protected = world_boss_stamina_reserve(self.config) > 0
+        if protected and original and self._repeat_prioritize_stamina():
+            # The game may take a partial owned-stamina unit before leaves.
+            # With a protected balance, choose a wholly affordable owned batch
+            # or a wholly leaf-funded batch; do not mix them and spend reserve.
+            affordable = min(50, max(leif, stamina // 80))
         decision = budget.choose("repeat", affordable, stamina_per_unit=80)
         choices.append(decision.reason)
         if decision.reason == "run":
+            prioritize_stamina = True if decision.extra else None
+            if protected and not decision.extra and self._repeat_prioritize_stamina():
+                prioritize_stamina = decision.count <= stamina // 80
             prepared = self._prepare_repeat_combat(
                 leif_count=decision.count,
-                prioritize_stamina=True if decision.extra else None,
+                prioritize_stamina=prioritize_stamina,
                 skip_first_screenshot=True,
             )
             if not prepared:

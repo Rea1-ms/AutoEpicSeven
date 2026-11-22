@@ -13,9 +13,12 @@ dev_tools/debug_tools
 .idea
 /screenshots
 /data/dimensional_exploration/
+/data/automaton_tower/
+/config/automaton_tower/
 /campaign/test/
 /toolkit
 *.lock
+!/uv.lock
 config/reloadflag
 config/reloadalas
 test.py
@@ -32,6 +35,9 @@ vk_swiftshader_icd.json
 # AutoEpicSeven
 raw_assets/
 docs/
+!/docs/
+/docs/*
+!/docs/dependencies.md
 conversation-*
 .claude/
 dev_tools/goc

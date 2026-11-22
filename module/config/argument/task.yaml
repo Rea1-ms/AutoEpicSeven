@@ -98,6 +98,8 @@ Tool:
     Episode:
       - Scheduler
       - Episode
+    AutomatonTower:
+      - Scheduler
 
 # ==================== Monthly ====================
 

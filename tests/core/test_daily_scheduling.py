@@ -261,9 +261,19 @@ class SchedulerPriorityTest(unittest.TestCase):
             "DataUpdate", "Arena", "Combat", "SanctuaryMonthly", "Knights", "SecretShop",
             "Pets", "CommunityAio", "LimitedActivity", "SpecialActivity",
         ]
-        # Even stale enabled entries must not put manual tools in the queue.
-        config = self.config("BuyPenguins", *reversed(expected), "EquipmentReroll")
-        self.assertEqual(self.order(config), expected)
+        tools = ('AutomatonTower', 'BuyPenguins', 'CommunityAuth', 'DimensionalExploration',
+                 'Episode', 'EquipmentReroll')
+        config = self.config(*reversed(expected), *tools)
+        for next_run in (datetime(2000, 1, 1), datetime.now() + timedelta(days=1), 'invalid'):
+            with self.subTest(next_run=next_run):
+                for tool in tools:
+                    deep_set(config.data, f'{tool}.Scheduler.NextRun', next_run)
+                self.assertEqual(self.order(config), expected)
+                self.assertEqual(config.waiting_task, [])
+        for tool in tools:
+            self.assertFalse(config.is_task_enabled(tool))
+            self.assertFalse(config.task_call(tool))
+        self.assertEqual(config.modified, {})
 
     def test_editing_original_table_changes_order_without_daily_override(self):
         config = self.config("Restart", "MissionReward", "Gacha", "SanctuaryDaily", "Arena", "Combat", "Mail")

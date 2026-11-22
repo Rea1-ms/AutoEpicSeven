@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "source": "e7-activity-1112-3.png",
+  "suite": "carrot_reward_2026_11_12",
+  "case": "carrot-3",
+  "items": [
+    {
+      "name": "CARROT_REWARD_CHECK",
+      "namespace": "global_cn",
+      "module": "activity/carrot_reward",
+      "box": [
+        646,
+        145,
+        958,
+        195
+      ]
+    },
+    {
+      "name": "CARROT_REWARD_PENDING",
+      "namespace": "global_cn",
+      "module": "activity/carrot_reward",
+      "box": [
+        369,
+        571,
+        423,
+        598
+      ]
+    },
+    {
+      "name": "OCR_CARROT_POINTS",
+      "namespace": "global_cn",
+      "module": "activity/carrot_reward",
+      "box": [
+        824,
+        242,
+        998,
+        270
+      ]
+    }
+  ]
+}

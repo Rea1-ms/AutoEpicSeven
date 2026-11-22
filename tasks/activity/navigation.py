@@ -2,6 +2,7 @@ from module.base.timer import Timer
 from module.config import server
 from module.logger import logger
 from module.ocr.ocr import Ocr, OcrResultButton
+from tasks.activity.assets.assets_activity_carrot_reward import CARROT_REWARD_CHECK
 from tasks.activity.assets.assets_activity_common import COMMON_ACTIVITY_LIST
 from tasks.activity.assets.assets_activity_completion_record import (
     COMPLETION_RECORD_CHECK,
@@ -46,6 +47,7 @@ class ActivityNavigationMixin:
                 and selected_button in (
                     FREE_20_GACHA_SELECTED, SUPPORT_GATE_CHECK,
                     COMPLETION_RECORD_CHECK, DETECTIVE_SEARCH_CHECK, EPIC_PATH_CHECK,
+                    CARROT_REWARD_CHECK,
                 )
             ):
                 selected_button.load_search(COMMON_ACTIVITY_LIST.area)

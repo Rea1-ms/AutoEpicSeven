@@ -106,8 +106,7 @@ class CombatEntryMixin:
     def _raise_if_package_full(self) -> None:
         if self.appear(PACKAGE_FULL, interval=0):
             logger.critical(
-                "Combat: package full detected after COMBAT_START. "
-                "Please clear inventory before starting combat again."
+                "Combat: inventory is full. Clear space before starting combat again."
             )
             raise RequestHumanTakeover
 

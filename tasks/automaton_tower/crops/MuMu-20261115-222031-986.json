@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "source": "../../../tests/fixtures/automaton_tower/cn/MuMu-20261115-222031-986.png",
+  "suite": "automaton_tower_cn",
+  "case": "mumu-20261115-222031-986",
+  "items": [
+    {
+      "name": "AUTOMATON_TOWER_SPEED_2X",
+      "namespace": "cn",
+      "module": "automaton_tower",
+      "box": [
+        1046,
+        8,
+        1088,
+        54
+      ],
+      "kind": "base",
+      "frame": 1
+    },
+    {
+      "name": "AUTOMATON_TOWER_SPEED_2X",
+      "namespace": "cn",
+      "module": "automaton_tower",
+      "box": [
+        1015,
+        0,
+        1115,
+        75
+      ],
+      "kind": "search",
+      "frame": 1
+    },
+    {
+      "name": "AUTOMATON_TOWER_SPEED_2X",
+      "namespace": "cn",
+      "module": "automaton_tower",
+      "box": [
+        1035,
+        8,
+        1095,
+        60
+      ],
+      "kind": "button",
+      "frame": 1
+    }
+  ]
+}

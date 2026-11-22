@@ -525,8 +525,51 @@ pre.rich-traceback-code {
     padding: 0.3125rem;
 }
 
+#pywebio-scope-automaton-tower-settings {
+    display: grid;
+    gap: .5rem;
+}
+
+#pywebio-scope-automaton-tower-settings > [id^="pywebio-scope-group_"] {
+    margin: 0;
+    padding: .625rem 1rem;
+    min-width: 0;
+    line-height: 1.3;
+}
+
+#pywebio-scope-daemon-overview #pywebio-scope-groups:has(> #pywebio-scope-automaton-tower-settings) {
+    background: none;
+    border: 0;
+    padding: 0;
+}
+
 #pywebio-scope-schedulers {
     display: grid;
+}
+
+#pywebio-scope-group_Error > [id$="_SystemNotification"],
+#pywebio-scope-group_Error [id^="pywebio-scope-"][id$="_OnePushConfig"] {
+    border-top: 1px solid rgba(127, 127, 127, .25);
+    margin-top: .75rem;
+    padding-top: .625rem;
+}
+
+#pywebio-scope-system-notification-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .375rem .5rem;
+    padding: .25rem;
+}
+
+#pywebio-scope-system-notification-controls [data-aes-notification-control] {
+    display: contents;
+}
+
+#pywebio-scope-system-notification-controls [data-aes-notification-status] {
+    flex: 1 1 18rem;
+    font-size: .8rem;
+    opacity: .8;
 }
 
 .bs-title-option,

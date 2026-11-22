@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "source": "e7-activity-1112-5.png",
+  "suite": "carrot_reward_2026_11_12",
+  "case": "carrot-5",
+  "items": [
+    {
+      "name": "CARROT_REWARD_RECEIVED",
+      "namespace": "global_cn",
+      "module": "activity/carrot_reward",
+      "box": [
+        377,
+        571,
+        420,
+        599
+      ]
+    }
+  ]
+}

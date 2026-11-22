@@ -10,7 +10,8 @@ from typing import Callable, Generator, List
 
 import pywebio
 from pywebio.input import PASSWORD, input
-from pywebio.output import PopupSize, popup, put_html, toast
+from pywebio.output import PopupSize, popup, put_html
+from pywebio.output import toast as webio_toast
 from pywebio.session import eval_js, info as session_info, register_thread, run_js
 from rich.console import Console
 from rich.terminal_theme import TerminalTheme
@@ -435,6 +436,11 @@ def to_pin_value(val):
         return []
     else:
         return val
+
+
+def toast(content: str, duration: float = 2, *, color: str = "info", onclick: Callable[[], None] | None = None) -> None:
+    """Display temporary feedback at the right edge of the page."""
+    webio_toast(content, duration=duration, position="right", color=color, onclick=onclick)
 
 
 def login(password):

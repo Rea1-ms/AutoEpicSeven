@@ -1,5 +1,6 @@
 """Session delivery regressions using mocked browser and runtime event boundaries."""
 
+import os
 import unittest
 from contextlib import nullcontext
 from copy import deepcopy
@@ -27,7 +28,9 @@ class RuntimeUITests(unittest.TestCase):
         self.events.poll_notifications.return_value = [{"id": "1", "title": "Test", "content": "Body"}]
         self.evaluate = self.start_patch("eval_js", return_value="browser")
         self.run_script = self.start_patch("run_js")
-        self.toast = self.start_patch("toast")
+        output = patch("pywebio.output.send_msg")
+        self.addCleanup(output.stop)
+        self.toast = output.start()
 
     def start_patch(self, name, **kwargs):
         patcher = patch(f"module.webui.runtime_ui.{name}", **kwargs)
@@ -88,21 +91,28 @@ class RuntimeUITests(unittest.TestCase):
         self.evaluate.assert_called_once()
         self.events.register_client.assert_called_once_with(self.ui.client_id, kind="browser")
         self.events.notify.assert_called_once()
-        self.assertIn("已排队", self.toast.call_args.args[0])
-        self.assertNotIn("已显示", self.toast.call_args.args[0])
+        message = self.toast.call_args.kwargs
+        self.assertEqual(message["cmd"], "toast")
+        self.assertEqual(message["spec"]["position"], "right")
+        self.assertIn("已排队", message["spec"]["content"])
+        self.assertNotIn("已显示", message["spec"]["content"])
 
     def test_test_notification_without_permission_does_not_queue_or_request_permission(self):
         self.evaluate.return_value = None
         self.assertFalse(self.ui.send_test_notification())
         self.events.register_client.assert_not_called()
         self.events.notify.assert_not_called()
-        self.assertIn("尚未启用", self.toast.call_args.args[0])
+        spec = self.toast.call_args.kwargs["spec"]
+        self.assertEqual(spec["position"], "right")
+        self.assertIn("尚未启用", spec["content"])
 
     def test_test_notification_queue_failure_does_not_claim_success(self):
         self.events.notify.return_value = False
         self.assertFalse(self.ui.send_test_notification())
-        self.assertEqual(self.toast.call_args.kwargs["color"], "warning")
-        self.assertNotIn("已排队", self.toast.call_args.args[0])
+        spec = self.toast.call_args.kwargs["spec"]
+        self.assertEqual(spec["position"], "right")
+        self.assertEqual(spec["color"], "warning")
+        self.assertNotIn("已排队", spec["content"])
 
     def test_missing_progress_clears_previous_runtime_display(self):
         self.events.get_progress.return_value = None
@@ -113,14 +123,18 @@ class RuntimeUITests(unittest.TestCase):
 
     def test_system_settings_never_overwrite_remote_config_or_select_a_provider(self):
         self.gui._save_config = Mock()
-        with patch('module.webui.runtime_ui.put_text') as text, \
-                patch('module.webui.runtime_ui.put_html'), \
+        self.gui.runtime_ui = Mock()
+        with patch('module.webui.runtime_ui.put_scope') as scope, \
+                patch('module.webui.runtime_ui.put_html') as mount, \
                 patch('module.webui.runtime_ui.put_button') as button:
             put_system_notification_settings(self.gui, 'Alas')
         self.gui._save_config.assert_not_called()
-        self.assertIn('同时启用', text.call_args.args[0])
-        self.assertEqual(button.call_count, 1)
+        scope.assert_called_once_with('system-notification-controls', [mount.return_value, button.return_value])
+        self.assertIn('data-aes-notification-control', mount.call_args.args[0])
+        button.assert_called_once()
         self.assertEqual(button.call_args.args[0], '发送测试通知')
+        button.call_args.kwargs['onclick']()
+        self.gui.runtime_ui.send_test_notification.assert_called_once_with()
 
 
 class MaterialSelectUITests(unittest.TestCase):
@@ -303,6 +317,7 @@ class ActivityVisibilityUITests(unittest.TestCase):
 
         clock = self.start_patch('tasks.activity.calendar.datetime', wraps=datetime)
         clock.now.return_value = datetime.fromisoformat('2026-10-29T22:26:00+08:00')
+        self.activity_clock = clock
         self.gui_type = AlasGUI
         self.gui = AlasGUI.__new__(AlasGUI)
         self.updater = ConfigUpdater()
@@ -312,7 +327,8 @@ class ActivityVisibilityUITests(unittest.TestCase):
             'Alas': {'Emulator': {'PackageName': 'OVERSEA-Play', 'GameLanguage': 'cn'}},
             'LimitedActivity': {'Scheduler': {'Enable': False}, 'LimitedActivity': {
                 'GetFreeGacha': False, 'GetSupportReward': True, 'GetCompletionRecord': False,
-                'GetDetectiveSearch': True, 'GetEpicPathDailyReward': False}},
+                'GetDetectiveSearch': True, 'GetEpicPathDailyReward': False,
+                'GetCarrotReward': False}},
             'SpecialActivity': {'Scheduler': {'Enable': False},
                                 'SpecialActivity': {'BuyHucheMysticMedals': True}},
         }
@@ -357,11 +373,16 @@ class ActivityVisibilityUITests(unittest.TestCase):
 
     def test_shared_settings_renderer_hides_inactive_options_and_preserves_saved_values(self):
         before = deepcopy(self.config)
-        for package, visible in (
-            ('OVERSEA-Play', {'GetSupportReward', 'GetCompletionRecord',
-                              'GetDetectiveSearch', 'GetEpicPathDailyReward'}),
-            ('CN-Official', {'GetFreeGacha'}),
+        for stamp, package, visible in (
+            ('2026-10-29T22:26:00+08:00', 'OVERSEA-Play',
+             {'GetSupportReward', 'GetCompletionRecord', 'GetDetectiveSearch', 'GetEpicPathDailyReward'}),
+            ('2026-10-29T22:26:00+08:00', 'CN-Official', {'GetFreeGacha'}),
+            ('2026-11-12T20:20:00+08:00', 'OVERSEA-Play',
+             {'GetSupportReward', 'GetCompletionRecord', 'GetDetectiveSearch',
+              'GetEpicPathDailyReward', 'GetCarrotReward'}),
+            ('2026-11-12T20:20:00+08:00', 'CN-Official', {'GetFreeGacha'}),
         ):
+            self.activity_clock.now.return_value = datetime.fromisoformat(stamp)
             self.config['Alas']['Emulator']['PackageName'] = package
             rendered = self.render_options('LimitedActivity')
             self.assertNotIn('LimitedActivity_LimitedActivity_GetMeirinReward', rendered)
@@ -390,8 +411,11 @@ class ActivityVisibilityUITests(unittest.TestCase):
             self.errors.assert_not_called()
             self.assertEqual(self.config['LimitedActivity'], before['LimitedActivity'])
             self.assertEqual(self.config['SpecialActivity'], before['SpecialActivity'])
-        self.assertEqual(len([path for path in self.gui.alas_config_hidden
-                              if path.startswith('LimitedActivity.')]), 1)
+        self.assertEqual({path for path in self.gui.alas_config_hidden
+                          if path.startswith('LimitedActivity.')}, {
+            'LimitedActivity.LimitedActivity.GetFreeGacha',
+            'LimitedActivity.LimitedActivity.GetCarrotReward',
+        })
         self.gui.pin_set_hidden_arg.reset_mock()
         self.gui.pin_remove_hidden_arg.reset_mock()
         self.gui._save_config({'LimitedActivity.Scheduler.Enable': True}, 'synthetic', self.updater)
@@ -422,6 +446,87 @@ class ActivityVisibilityUITests(unittest.TestCase):
                 self.assertFalse(kwargs['value'])
                 output.show.assert_called_once()
                 self.assertEqual(self.config['SpecialActivity'], before)
+
+
+class ConfigSelectionUITests(unittest.TestCase):
+    def setUp(self):
+        with (patch('module.webui.patch.patch_executor'),
+              patch('module.webui.patch.patch_mimetype')):
+            from module.webui import app
+
+        self.app = app
+        self.gui = app.AlasGUI.__new__(app.AlasGUI)
+        self.gui.is_mobile = False
+        self.gui.show = Mock()
+        self.gui.ui_alas = Mock()
+        self.gui._init_alas_config_watcher = Mock()
+        self.gui.task_handler = Mock()
+        self.gui.alas = Mock()
+
+        self.files = {'aes.json', 'template.json'}
+        self.directories = set()
+        config_os = self.start_patch(patch('module.config.utils.os', wraps=os))
+        config_os.listdir.side_effect = lambda _: sorted(self.files | self.directories)
+        config_os.path.isfile.side_effect = lambda path: os.path.basename(path) in self.files
+
+    def start_patch(self, patcher):
+        self.addCleanup(patcher.stop)
+        return patcher.start()
+
+    def open_page(self, saved_config):
+        for name in ('set_env', 'add_css', 'run_js', 'threading', 'register_thread', 'Switch', 'RuntimeUI'):
+            self.start_patch(patch.object(self.app, name))
+        self.start_patch(patch.object(self.app, 'get_localstorage', return_value=saved_config))
+        self.gui.run()
+
+    def test_first_visit_ignores_config_saved_by_another_worktree(self):
+        self.open_page('global_cn')
+
+        self.gui.show.assert_called_once_with()
+        self.gui.ui_alas.assert_not_called()
+
+    def test_first_visit_restores_existing_config(self):
+        self.open_page('aes')
+
+        self.gui.ui_alas.assert_called_once_with('aes')
+
+    def test_first_visit_does_not_restore_default_without_config_file(self):
+        self.files.remove('aes.json')
+        self.directories.add('aes.json')
+
+        self.assertEqual(self.app.alas_instance(), ['aes'])
+        self.open_page('aes')
+
+        self.gui.show.assert_called_once_with()
+        self.gui.ui_alas.assert_not_called()
+
+    def test_start_rejects_config_removed_after_selection(self):
+        self.gui.alas_name = 'aes'
+        self.files.remove('aes.json')
+        with (patch.object(self.app, 'toast') as toast,
+              patch.object(self.app, 'get_task_start') as tool_start):
+            self.gui._start_alas()
+            self.gui._start_alas('CommunityAuth')
+
+        self.gui.alas.start.assert_not_called()
+        tool_start.assert_not_called()
+        self.assertEqual(self.gui.show.call_count, 2)
+        self.assertEqual(toast.call_count, 2)
+        self.assertEqual(toast.call_args.kwargs['color'], 'warning')
+
+    def test_start_with_existing_config_keeps_scheduler_and_tool_actions(self):
+        self.gui.alas_name = 'aes'
+        with (patch.object(self.app, 'toast') as toast,
+              patch.object(self.app, 'get_task_start', side_effect=lambda _, task, start: start) as tool_start):
+            self.gui._start_alas()
+            self.gui.alas.start.assert_called_once_with(None, self.app.updater.event)
+            self.gui.alas.start.reset_mock()
+            self.gui._start_alas('CommunityAuth')
+
+        self.gui.alas.start.assert_called_once_with('CommunityAuth')
+        self.assertEqual(tool_start.call_args.args[:2], (self.gui, 'CommunityAuth'))
+        self.gui.show.assert_not_called()
+        toast.assert_not_called()
 
 
 if __name__ == "__main__":

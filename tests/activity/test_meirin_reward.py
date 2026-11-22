@@ -286,7 +286,7 @@ from tasks.activity.limited_activity import LimitedActivityEntry
 from tasks.activity.entry import SpecialActivityEntry
 from tasks.activity.common_activity import CommonActivityBatch
 from tasks.activity.calendar import SUPPORTED_MODES
-for kind in ('meirin_reward', 'huche_shop'):
+for kind in ('meirin_reward',):
     assert kind not in SUPPORTED_MODES
     for entry in (LimitedActivityEntry, SpecialActivityEntry):
         assert kind not in entry.ACTIVITY_MODES
@@ -295,6 +295,8 @@ for kind in ('meirin_reward', 'huche_shop'):
     assert f'tasks.activity.{kind}' not in sys.modules
     assert not any(name.startswith(f'tasks.activity.legacy.{kind}') for name in sys.modules)
 assert 'tasks.activity.assets.assets_activity_special_26_10_15' not in sys.modules
+assert 'tasks.activity.huche_shop' not in sys.modules
+assert not any(name.startswith('tasks.activity.legacy.huche_shop') for name in sys.modules)
 """
         for lang in ('cn', 'global_cn', 'global_en'):
             with self.subTest(lang=lang):

@@ -15,7 +15,7 @@ from tasks.activity.assets.assets_activity_alencia_handbook import (
     ALENCIA_TASK_LIST,
     ALENCIA_TASK_RECEIVED,
 )
-from tasks.activity.scheduling import mark_activity_checked
+from tasks.activity.scheduling import mark_activity_checked, mark_activity_completed
 from tasks.base.assets.assets_base_page import BACK
 from tasks.base.ui import UI
 
@@ -25,6 +25,13 @@ class AlenciaHandbook(UI):
 
     DAILY_TIERS = frozenset((200, 400))
     CLAIM_FLOW_TIMEOUT_SECONDS = 90
+    # The left reward panel is outside ALENCIA_TASK_LIST. Its 18/18 counter
+    # is a stable, positive end-state for the whole handbook, while the
+    # daily rows above it reset with the server day.
+    REWARDS_PROGRESS = ClickButton(
+        (150, 540, 280, 580),
+        name="ALENCIA_REWARDS_PROGRESS",
+    )
 
     def __init__(self, config, device=None, task=None,
                  activity_id="alencia_handbook_2026_11_01"):
@@ -119,10 +126,12 @@ class AlenciaHandbook(UI):
         if lang == "auto":
             lang = "cn"
         ocr = Ocr(ALENCIA_TASK_LIST, lang=lang, name="AlenciaDailyTasks")
+        progress_ocr = Ocr(self.REWARDS_PROGRESS, lang=lang, name="AlenciaRewardsProgress")
         timeout = Timer(self.CLAIM_FLOW_TIMEOUT_SECONDS).start()
         pending_tier = None
         popup_seen = False
         result = None
+        activity_completed = False
 
         while 1:
             if skip_first_screenshot:
@@ -133,6 +142,8 @@ class AlenciaHandbook(UI):
             if result is not None and self.match_template_color(ALENCIA_HUB_CHECK):
                 if result:
                     mark_activity_checked(self.config, self.activity_id)
+                    if activity_completed:
+                        mark_activity_completed(self.config, self.activity_id)
                 else:
                     logger.info("SpecialActivity: handbook dailies unfinished, recheck after battle")
                 return True
@@ -157,6 +168,16 @@ class AlenciaHandbook(UI):
                         self.interval_reset(button, interval=2)
                         continue
                 else:
+                    progress = progress_ocr.ocr_single_line(self.device.image)
+                    if isinstance(progress, str) and re.fullmatch(
+                            r"18\s*/\s*18", progress.strip()):
+                        activity_completed = True
+                        result = True
+                        logger.info("SpecialActivity: handbook 18/18 confirms event completion")
+                        button = ClickButton(BACK.button, name="ALENCIA_REWARDS_BACK")
+                        self.device.click(button)
+                        self.interval_reset(button, interval=2)
+                        continue
                     results = ocr.detect_and_ocr(self.device.image)
                     rows = self._daily_rows(results)
                     candidates = [tier for tier, (state, _) in rows.items() if state == "pending"]

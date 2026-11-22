@@ -1,7 +1,7 @@
 from module.base.button import Button, ButtonWrapper
 
 # This file was auto-generated, do not modify it manually. To generate:
-# ``` python -m dev_tools.button_extract ```
+# ``` python -m dev_tools.assets.button_extract ```
 
 GOTO_LINK = ButtonWrapper(
     name='GOTO_LINK',
@@ -44,6 +44,18 @@ POPUP_WINDOW = ButtonWrapper(
         color=(32, 55, 89),
         button=(614, 266, 670, 290),
     ),
+)
+PREVIEW_LINK_CLOSE = ButtonWrapper(
+    name='PREVIEW_LINK_CLOSE',
+    cn=None,
+    global_cn=Button(
+        file='./assets/global_cn/mail/PREVIEW_LINK_CLOSE.png',
+        area=(1222, 679, 1242, 699),
+        search=(1202, 659, 1262, 719),
+        color=(125, 125, 125),
+        button=(1222, 679, 1242, 699),
+    ),
+    global_en=None,
 )
 RECEIVE = ButtonWrapper(
     name='RECEIVE',

@@ -80,6 +80,49 @@ class CombatDailyBatchTests(DailyPlanningCase, unittest.TestCase):
         self.assertTrue(budget.awaiting_review)
         self.config.task_call.assert_any_call("MissionReward", force_call=False)
 
+    def test_outer_daily_batch_receives_stamina_after_world_boss_reserve(self):
+        self.set("Knights.Scheduler.Enable", True)
+        self.set("Knights.Knights.WorldBoss", True)
+        task = self.task()
+        task._prepare_background_repeat_check_context = Mock()
+        task._adopt_existing_background_repeat_combat = Mock()
+        task._urgent_tasks_enabled = lambda: False
+        task._is_in_dungeon_context = lambda: True
+        task._dungeon_navigate = Mock(return_value=True)
+        task._update_prepare_resource_snapshot = Mock(return_value={
+            "stamina": SimpleNamespace(value=60),
+        })
+        task._run_daily_combat_batch = Mock(return_value=True)
+        self.assertTrue(task.run())
+        task._run_daily_combat_batch.assert_called_once_with(
+            task._daily_combat_budget, 20, leif=0,
+        )
+
+    def test_protected_repeat_uses_wholly_owned_or_wholly_leaf_batches(self):
+        self.snapshot(points=100)
+        self.set("Knights.Scheduler.Enable", True)
+        self.set("Knights.Knights.WorldBoss", True)
+        self.config.Combat_FastCombat = False
+        self.config.Combat_RepeatCombatPrioritizeStamina = True
+        # Amounts supplied to this method already exclude the 40-point reserve.
+        # A batch of two must never mix 80 owned points and one leaf: the game
+        # could debit the protected remainder before drawing on that leaf.
+        for available, leaves, count, owned in ((0, 1, 1, False), (20, 1, 1, False),
+                                                (80, 1, 1, True), (80, 2, 2, False),
+                                                (160, 1, 2, True)):
+            with self.subTest(available=available, leaves=leaves):
+                self.set("MissionReward.MissionReward.DailyBudget", {})
+                self.set("Combat.CombatRuntime.Session", {})
+                task = self.task(fast=0, repeat=3)
+                self.assertTrue(task._run_daily_combat_batch(
+                    task._daily_combat_budget, available, leif=leaves,
+                ))
+                task._prepare_repeat_combat.assert_called_once_with(
+                    leif_count=count, prioritize_stamina=owned,
+                    skip_first_screenshot=True,
+                )
+                self.assertTrue(self.config.Combat_RepeatCombatPrioritizeStamina)
+
     def test_claimed_goal_resumes_both_original_allowances(self):
         task = self.task()
         budget = task._daily_combat_budget

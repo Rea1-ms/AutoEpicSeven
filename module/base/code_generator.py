@@ -119,7 +119,7 @@ class CodeGenerator:
     def CommentAutoGenerage(self, file):
         """
         Args:
-            file: dev_tools.button_extract
+            file: dev_tools.assets.button_extract
         """
         # Only leave one blank line at above
         if len(self.lines) >= 2:

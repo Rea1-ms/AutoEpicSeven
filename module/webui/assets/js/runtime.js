@@ -94,12 +94,11 @@
             if (!status) {
                 status = doc.createElement('div');
                 status.setAttribute('data-aes-notification-status', '');
-                status.style.cssText = 'font-size:.85rem;margin:.5rem 0;opacity:.8';
                 container.appendChild(status);
                 if (!desktop) {
                     const button = doc.createElement('button');
                     button.setAttribute('type', 'button');
-                    button.className = 'btn btn-secondary';
+                    button.className = 'btn btn-secondary btn-sm';
                     button.setAttribute('data-aes-notification-enable', '');
                     button.textContent = text('启用系统通知', 'Enable system notifications');
                     button.addEventListener('click', enableNotifications);

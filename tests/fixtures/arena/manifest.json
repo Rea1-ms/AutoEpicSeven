@@ -15,7 +15,8 @@
         "tests.arena.test_captures.CapturedArenaTests.test_fast_prepare_controls_are_separate_from_list_and_result",
         "tests.arena.test_captures.CapturedArenaTests.test_shifted_fast_result_confirm_matches_and_clicks_current_position",
         "tests.arena.test_captures.CapturedArenaTests.test_arena_home_rejects_fast_animation_and_accepts_return_highlight",
-        "tests.arena.test_npc_combat.NpcCombatReplayTests.test_captured_fast_round_survives_start_timeout_and_repeated_result"
+        "tests.arena.test_npc_combat.NpcCombatReplayTests.test_captured_fast_round_survives_start_timeout_and_repeated_result",
+        "tests.core.test_login_update.LoginStartTests.test_arena_captures_skip_start_ocr"
       ]
     },
     "20261015-165601-001": {
@@ -33,7 +34,8 @@
         "tests.arena.test_captures.CapturedArenaTests.test_fast_prepare_controls_are_separate_from_list_and_result",
         "tests.arena.test_captures.CapturedArenaTests.test_shifted_fast_result_confirm_matches_and_clicks_current_position",
         "tests.arena.test_captures.CapturedArenaTests.test_arena_home_rejects_fast_animation_and_accepts_return_highlight",
-        "tests.arena.test_npc_combat.NpcCombatReplayTests.test_captured_fast_round_survives_start_timeout_and_repeated_result"
+        "tests.arena.test_npc_combat.NpcCombatReplayTests.test_captured_fast_round_survives_start_timeout_and_repeated_result",
+        "tests.core.test_login_update.LoginStartTests.test_arena_captures_skip_start_ocr"
       ]
     },
     "20261015-165606-908": {
@@ -59,7 +61,8 @@
         "tests.arena.test_captures.CapturedArenaTests.test_shifted_fast_result_confirm_matches_and_clicks_current_position",
         "tests.arena.test_captures.CapturedArenaTests.test_arena_home_rejects_fast_animation_and_accepts_return_highlight",
         "tests.arena.test_captures.CapturedArenaTests.test_fast_battle_counter_reads_remaining_before_start",
-        "tests.arena.test_npc_combat.NpcCombatReplayTests.test_captured_fast_round_survives_start_timeout_and_repeated_result"
+        "tests.arena.test_npc_combat.NpcCombatReplayTests.test_captured_fast_round_survives_start_timeout_and_repeated_result",
+        "tests.core.test_login_update.LoginStartTests.test_arena_captures_skip_start_ocr"
       ],
       "expected_fast_times": [
         9,
@@ -89,7 +92,8 @@
         "tests.arena.test_captures.CapturedArenaTests.test_shifted_fast_result_confirm_matches_and_clicks_current_position",
         "tests.arena.test_captures.CapturedArenaTests.test_arena_home_rejects_fast_animation_and_accepts_return_highlight",
         "tests.arena.test_captures.CapturedArenaTests.test_fast_battle_counter_reads_remaining_before_start",
-        "tests.arena.test_npc_combat.NpcCombatReplayTests.test_captured_fast_round_survives_start_timeout_and_repeated_result"
+        "tests.arena.test_npc_combat.NpcCombatReplayTests.test_captured_fast_round_survives_start_timeout_and_repeated_result",
+        "tests.core.test_login_update.LoginStartTests.test_arena_captures_skip_start_ocr"
       ],
       "expected_fast_times": [
         9,
@@ -112,7 +116,8 @@
         "tests.arena.test_captures.CapturedArenaTests.test_fast_prepare_controls_are_separate_from_list_and_result",
         "tests.arena.test_captures.CapturedArenaTests.test_shifted_fast_result_confirm_matches_and_clicks_current_position",
         "tests.arena.test_captures.CapturedArenaTests.test_arena_home_rejects_fast_animation_and_accepts_return_highlight",
-        "tests.arena.test_npc_combat.NpcCombatReplayTests.test_captured_fast_round_survives_start_timeout_and_repeated_result"
+        "tests.arena.test_npc_combat.NpcCombatReplayTests.test_captured_fast_round_survives_start_timeout_and_repeated_result",
+        "tests.core.test_login_update.LoginStartTests.test_arena_captures_skip_start_ocr"
       ]
     },
     "20261015-165613-439": {
@@ -130,7 +135,8 @@
         "tests.arena.test_captures.CapturedArenaTests.test_fast_prepare_controls_are_separate_from_list_and_result",
         "tests.arena.test_captures.CapturedArenaTests.test_shifted_fast_result_confirm_matches_and_clicks_current_position",
         "tests.arena.test_captures.CapturedArenaTests.test_arena_home_rejects_fast_animation_and_accepts_return_highlight",
-        "tests.arena.test_npc_combat.NpcCombatReplayTests.test_captured_fast_round_survives_start_timeout_and_repeated_result"
+        "tests.arena.test_npc_combat.NpcCombatReplayTests.test_captured_fast_round_survives_start_timeout_and_repeated_result",
+        "tests.core.test_login_update.LoginStartTests.test_arena_captures_skip_start_ocr"
       ]
     },
     "20261015-165615-527": {
@@ -160,7 +166,8 @@
         "tests.arena.test_captures.CapturedArenaTests.test_fast_prepare_controls_are_separate_from_list_and_result",
         "tests.arena.test_captures.CapturedArenaTests.test_shifted_fast_result_confirm_matches_and_clicks_current_position",
         "tests.arena.test_captures.CapturedArenaTests.test_arena_home_rejects_fast_animation_and_accepts_return_highlight",
-        "tests.arena.test_npc_combat.NpcCombatReplayTests.test_captured_fast_round_survives_start_timeout_and_repeated_result"
+        "tests.arena.test_npc_combat.NpcCombatReplayTests.test_captured_fast_round_survives_start_timeout_and_repeated_result",
+        "tests.core.test_login_update.LoginStartTests.test_arena_captures_skip_start_ocr"
       ]
     },
     "20261015-165616-798": {
@@ -190,7 +197,8 @@
         "tests.arena.test_captures.CapturedArenaTests.test_fast_prepare_controls_are_separate_from_list_and_result",
         "tests.arena.test_captures.CapturedArenaTests.test_shifted_fast_result_confirm_matches_and_clicks_current_position",
         "tests.arena.test_captures.CapturedArenaTests.test_arena_home_rejects_fast_animation_and_accepts_return_highlight",
-        "tests.arena.test_npc_combat.NpcCombatReplayTests.test_captured_fast_round_survives_start_timeout_and_repeated_result"
+        "tests.arena.test_npc_combat.NpcCombatReplayTests.test_captured_fast_round_survives_start_timeout_and_repeated_result",
+        "tests.core.test_login_update.LoginStartTests.test_arena_captures_skip_start_ocr"
       ]
     },
     "20261015-165618-643": {
@@ -207,7 +215,8 @@
         "tests.arena.test_captures.CapturedArenaTests.test_fast_prepare_controls_are_separate_from_list_and_result",
         "tests.arena.test_captures.CapturedArenaTests.test_shifted_fast_result_confirm_matches_and_clicks_current_position",
         "tests.arena.test_captures.CapturedArenaTests.test_arena_home_rejects_fast_animation_and_accepts_return_highlight",
-        "tests.arena.test_npc_combat.NpcCombatReplayTests.test_captured_fast_round_survives_start_timeout_and_repeated_result"
+        "tests.arena.test_npc_combat.NpcCombatReplayTests.test_captured_fast_round_survives_start_timeout_and_repeated_result",
+        "tests.core.test_login_update.LoginStartTests.test_arena_captures_skip_start_ocr"
       ]
     },
     "20261015-165622-212": {
@@ -224,7 +233,8 @@
         "tests.arena.test_captures.CapturedArenaTests.test_fast_prepare_controls_are_separate_from_list_and_result",
         "tests.arena.test_captures.CapturedArenaTests.test_shifted_fast_result_confirm_matches_and_clicks_current_position",
         "tests.arena.test_captures.CapturedArenaTests.test_arena_home_rejects_fast_animation_and_accepts_return_highlight",
-        "tests.arena.test_captures.CapturedWeeklyRewardTests.test_captured_reward_switch_claims_only_after_configured_selection"
+        "tests.arena.test_captures.CapturedWeeklyRewardTests.test_captured_reward_switch_claims_only_after_configured_selection",
+        "tests.core.test_login_update.LoginStartTests.test_arena_captures_skip_start_ocr"
       ]
     },
     "20261019-201526-416": {
@@ -256,7 +266,8 @@
         "tests.arena.test_captures.CapturedArenaTests.test_arena_home_rejects_fast_animation_and_accepts_return_highlight",
         "tests.arena.test_captures.CapturedWeeklyRewardTests.test_reward_captures_distinguish_selection_and_claim_availability",
         "tests.core.test_resource_bar_partial.CapturedPartialResourceBarTests.test_real_main_without_flag_reads_stamina_and_skystone",
-        "tests.core.test_resource_bar_partial.CapturedPartialResourceBarTests.test_real_main_missing_right_anchor_does_not_guess_stamina_boundary"
+        "tests.core.test_resource_bar_partial.CapturedPartialResourceBarTests.test_real_main_missing_right_anchor_does_not_guess_stamina_boundary",
+        "tests.core.test_login_update.LoginStartTests.test_arena_captures_skip_start_ocr"
       ]
     },
     "20261019-201529-443": {
@@ -281,7 +292,8 @@
         "tests.arena.test_captures.CapturedArenaTests.test_shifted_fast_result_confirm_matches_and_clicks_current_position",
         "tests.arena.test_captures.CapturedArenaTests.test_arena_home_rejects_fast_animation_and_accepts_return_highlight",
         "tests.arena.test_captures.CapturedWeeklyRewardTests.test_reward_captures_distinguish_selection_and_claim_availability",
-        "tests.arena.test_captures.CapturedWeeklyRewardTests.test_captured_reward_switch_claims_only_after_configured_selection"
+        "tests.arena.test_captures.CapturedWeeklyRewardTests.test_captured_reward_switch_claims_only_after_configured_selection",
+        "tests.core.test_login_update.LoginStartTests.test_arena_captures_skip_start_ocr"
       ]
     },
     "20261019-201532-705": {
@@ -306,7 +318,8 @@
         "tests.arena.test_captures.CapturedArenaTests.test_shifted_fast_result_confirm_matches_and_clicks_current_position",
         "tests.arena.test_captures.CapturedArenaTests.test_arena_home_rejects_fast_animation_and_accepts_return_highlight",
         "tests.arena.test_captures.CapturedWeeklyRewardTests.test_reward_captures_distinguish_selection_and_claim_availability",
-        "tests.arena.test_captures.CapturedWeeklyRewardTests.test_captured_reward_switch_claims_only_after_configured_selection"
+        "tests.arena.test_captures.CapturedWeeklyRewardTests.test_captured_reward_switch_claims_only_after_configured_selection",
+        "tests.core.test_login_update.LoginStartTests.test_arena_captures_skip_start_ocr"
       ]
     },
     "20261019-201534-380": {
@@ -332,7 +345,8 @@
         "tests.arena.test_captures.CapturedArenaTests.test_arena_home_rejects_fast_animation_and_accepts_return_highlight",
         "tests.arena.test_captures.CapturedWeeklyRewardTests.test_reward_captures_distinguish_selection_and_claim_availability",
         "tests.arena.test_captures.CapturedWeeklyRewardTests.test_captured_reward_switch_claims_only_after_configured_selection",
-        "tests.arena.test_captures.CapturedWeeklyRewardTests.test_mystic_selection_uses_only_outer_right_border"
+        "tests.arena.test_captures.CapturedWeeklyRewardTests.test_mystic_selection_uses_only_outer_right_border",
+        "tests.core.test_login_update.LoginStartTests.test_arena_captures_skip_start_ocr"
       ]
     },
     "20261019-201536-225": {
@@ -358,7 +372,8 @@
         "tests.arena.test_captures.CapturedArenaTests.test_arena_home_rejects_fast_animation_and_accepts_return_highlight",
         "tests.arena.test_captures.CapturedWeeklyRewardTests.test_reward_captures_distinguish_selection_and_claim_availability",
         "tests.arena.test_captures.CapturedWeeklyRewardTests.test_captured_reward_switch_claims_only_after_configured_selection",
-        "tests.arena.test_captures.CapturedWeeklyRewardTests.test_mystic_selection_uses_only_outer_right_border"
+        "tests.arena.test_captures.CapturedWeeklyRewardTests.test_mystic_selection_uses_only_outer_right_border",
+        "tests.core.test_login_update.LoginStartTests.test_arena_captures_skip_start_ocr"
       ]
     },
     "20261021-001015-030": {
@@ -396,7 +411,8 @@
         "tests.arena.test_captures.CapturedArenaTests.test_arena_home_rejects_fast_animation_and_accepts_return_highlight",
         "tests.arena.test_npc_combat.NpcCombatReplayTests.test_captured_zero_flags_override_stale_positive_at_task_start",
         "tests.arena.test_npc_combat.NpcCombatReplayTests.test_first_preparation_zero_flags_never_start_battle",
-        "tests.arena.test_captures.CapturedArenaTests.test_flag_counter_is_independent_and_rejects_missing_flag_field"
+        "tests.arena.test_captures.CapturedArenaTests.test_flag_counter_is_independent_and_rejects_missing_flag_field",
+        "tests.core.test_login_update.LoginStartTests.test_arena_captures_skip_start_ocr"
       ]
     }
   }

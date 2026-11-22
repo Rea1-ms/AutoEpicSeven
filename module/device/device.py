@@ -70,7 +70,10 @@ class Device(Screenshot, Control, AppControl):
     click_record = collections.deque(maxlen=30)
     stuck_timer = Timer(60, count=60).start()
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, scrcpy_frame_rate=None, screenshot_method_explicit=False, **kwargs):
+        # Set the override before initialization can benchmark screenshots.
+        self._scrcpy_frame_rate = scrcpy_frame_rate
+        self._screenshot_method_explicit = screenshot_method_explicit
         for trial in range(4):
             try:
                 super().__init__(*args, **kwargs)

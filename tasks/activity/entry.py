@@ -78,9 +78,7 @@ class SpecialActivityEntry:
                 last_activity = activity
                 continue
             elif event.mode == "huche_shop":
-                # Retained for explicit historical replay only. The production
-                # mode and option registries exclude this retired entrance.
-                from tasks.activity.legacy.huche_shop_2026_09_17.huche_shop import HucheShop
+                from tasks.activity.huche_shop import HucheShop
 
                 activity = HucheShop(
                     config=self.config,

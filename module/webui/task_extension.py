@@ -1,7 +1,9 @@
 from __future__ import annotations
 
-from typing import Any, Callable
+from collections.abc import Callable
+from typing import Any
 
+from module.webui.automaton_tower import render_automaton_tower_panel
 from module.webui.community_auth import (
     COMMUNITY_AIO_TASK,
     COMMUNITY_AUTH_TASK,
@@ -10,7 +12,6 @@ from module.webui.community_auth import (
     start_community_auth_tool,
     stop_community_auth_tool,
 )
-
 
 TaskVisibility = Callable[[Any], bool]
 TaskRenderer = Callable[[Any], None]
@@ -24,6 +25,7 @@ TASK_VISIBILITY_FILTERS: dict[str, TaskVisibility] = {
 }
 
 TASK_DETAIL_RENDERERS: dict[str, TaskRenderer] = {
+    "AutomatonTower": render_automaton_tower_panel,
     COMMUNITY_AUTH_TASK: render_community_auth_task_panel,
 }
 

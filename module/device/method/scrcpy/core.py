@@ -69,7 +69,10 @@ class ScrcpyCore(Connection):
             socket.timeout:
         """
         logger.hr('Scrcpy server start')
-        commands = ScrcpyOptions.command_v120(jar_path=self.config.SCRCPY_FILEPATH_REMOTE)
+        commands = ScrcpyOptions.command_v120(
+            jar_path=self.config.SCRCPY_FILEPATH_REMOTE,
+            frame_rate=getattr(self, '_scrcpy_frame_rate', None),
+        )
         self._scrcpy_server_stream: AdbConnection = self.adb.shell(
             commands,
             stream=True,

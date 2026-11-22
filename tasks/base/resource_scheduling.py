@@ -81,7 +81,7 @@ class ResourceCoordinator:
             self.config.cross_set(RESOURCE_STATE_PATH, root)
 
     def _signature(self, task):
-        groups = ("Arena",) if task == "Arena" else ("Combat", "UrgentTasks")
+        groups = {"Arena": ("Arena",), "Knights": ("Knights",)}.get(task, ("Combat", "UrgentTasks"))
         return json.dumps({name: config_value(self.config, f"{task}.{name}", {})
                            for name in groups}, sort_keys=True, default=str)
 
@@ -216,6 +216,12 @@ class ResourceCoordinator:
                 continue
             value = parsed[key]
             need = wait["need"]
+            if task == 'Combat' and key == 'stamina':
+                from tasks.knights.world_boss_resources import (
+                    world_boss_stamina_reserve,
+                )
+
+                need += world_boss_stamina_reserve(self.config)
             if value.value >= need:
                 target = now
             elif (bucket["observations"][key].get("capacity", value.total) >= need

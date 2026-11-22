@@ -62,6 +62,12 @@ class GitManager(DeployConfig):
             self.remove('./.git/HEAD')
             self.remove('./.git/ORIG_HEAD')
             self.execute(f'"{self.git}" init')
+        # Initialization can rewrite the repository config. Discard cached
+        # sections so removed proxy/file-mode settings cannot affect this run.
+        self.git_config.clear()
+        self.git_config.read('./.git/config')
+        if not self.git_config.check('core', 'filemode', value='false'):
+            self.execute(f'"{self.git}" config --local core.fileMode false')
         Progress.GitInit()
 
         logger.hr('Set Git Proxy', 1)

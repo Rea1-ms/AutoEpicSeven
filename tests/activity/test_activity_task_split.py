@@ -82,7 +82,7 @@ class MigrationTests(unittest.TestCase):
                     self.assertEqual(result[task]['Scheduler']['Command'], task)
                 self.assertEqual(result['LimitedActivity']['LimitedActivity'], {
                     'GetFreeGacha': True, 'GetMeirinReward': True, 'GetSupportReward': True, 'GetCompletionRecord': True,
-                    'GetDetectiveSearch': True, 'GetEpicPathDailyReward': True})
+                    'GetDetectiveSearch': True, 'GetEpicPathDailyReward': True, 'GetCarrotReward': True})
                 self.assertEqual(result['SpecialActivity']['SpecialActivity'], {
                     'BuyHucheMysticMedals': True, 'GetAlenciaDailyReward': True})
                 self.assertEqual(result['SpecialActivity']['ActivityRuntime']['CheckedEvents'],
@@ -101,7 +101,7 @@ class MigrationTests(unittest.TestCase):
         # ServerUpdate is hidden and follows the existing schema/server override.
         self.assertEqual(result['Scheduler']['ServerUpdate'], '02:00')
         self.assertEqual(result['LimitedActivity'], {'GetFreeGacha': False, 'GetMeirinReward': False, 'GetSupportReward': True, 'GetCompletionRecord': True,
-                    'GetDetectiveSearch': True, 'GetEpicPathDailyReward': True})
+                    'GetDetectiveSearch': True, 'GetEpicPathDailyReward': True, 'GetCarrotReward': True})
 
     def test_fresh_profile_does_not_enable_tasks_or_spending(self):
         result = ConfigUpdater().config_update({})
@@ -181,10 +181,14 @@ class ActivityVisibilityTests(unittest.TestCase):
             self.assertEqual(self.visible(at), set())
         self.data.pop('Alas')
         self.assertEqual(self.visible(at), set())
-        for task, name in (('LimitedActivity', 'GetMeirinReward'),
-                           ('SpecialActivity', 'BuyHucheMysticMedals')):
-            self.assertEqual(self.updater.args[task][task][name]['display'], 'hide')
-            self.assertTrue(self.updater.args[task][task][name]['keepvalue'])
+        with patch.object(calendar, 'datetime', wraps=datetime) as clock:
+            clock.now.return_value = datetime.fromisoformat(at)
+            hidden = self.updater.get_hidden_args(self.data)
+        meirin = self.updater.args['LimitedActivity']['LimitedActivity']['GetMeirinReward']
+        self.assertEqual(meirin['display'], 'hide')
+        self.assertTrue(meirin['keepvalue'])
+        self.assertIn('SpecialActivity.SpecialActivity.BuyHucheMysticMedals', hidden)
+        self.assertTrue(self.updater.args['SpecialActivity']['SpecialActivity']['BuyHucheMysticMedals']['keepvalue'])
 
 
 class SchedulingTests(unittest.TestCase):
@@ -197,17 +201,17 @@ class SchedulingTests(unittest.TestCase):
         # Replay the original two-task contract with explicit historical input.
         # These patches never register the retired shop in production.
         from module.game_info.catalog import load_info
-        from tests.support.history_huche_shop import WINDOW
         from tasks.activity.legacy.huche_shop_2026_09_17 import huche_shop
+        from tests.support.history_huche_shop import WINDOW
 
         info = load_info()
         for context in (
             patch.object(calendar, 'load_calendar', return_value=(*calendar.load_calendar(), WINDOW)),
-            patch.object(calendar, 'SUPPORTED_MODES', (*calendar.SUPPORTED_MODES, 'huche_shop')),
             patch.dict(calendar.ACTIVITY_TASK_MODES, {'SpecialActivity': ('legacy', 'huche_shop')}),
             patch.object(SpecialActivityEntry, 'ACTIVITY_MODES', ('legacy', 'huche_shop')),
             patch.object(SpecialActivityEntry, 'COMMON_ACTIVITY_OPTIONS',
                          {'huche_shop': 'SpecialActivity_BuyHucheMysticMedals'}),
+            patch('tasks.activity.huche_shop.HucheShop', HucheShop),
             patch.object(huche_shop, 'load_info', return_value=SimpleNamespace(
                 values=lambda kind, family: info.values(kind, family, NOW))),
         ):

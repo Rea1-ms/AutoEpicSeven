@@ -3440,8 +3440,8 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "已纳入",
-          "reason": "分场景图片引用、导入保留和预览清单契约"
+          "status": "未纳入",
+          "reason": "一次性迁移脚本及专属测试已归档到忽略缓存，不属于日常离线测试；原测试源码保留在归档备份中"
         },
         {
           "id": "tests.test_offline_runner.FixtureMaintenanceTests.test_import_preserves_registered_but_unreferenced_images",
@@ -3449,8 +3449,8 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "已纳入",
-          "reason": "分场景图片引用、导入保留和预览清单契约"
+          "status": "未纳入",
+          "reason": "一次性迁移脚本及专属测试已归档到忽略缓存，不属于日常离线测试；原测试源码保留在归档备份中"
         },
         {
           "id": "tests.test_offline_runner.FixtureMaintenanceTests.test_import_adds_new_images_to_selected_category",
@@ -3458,8 +3458,8 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "已纳入",
-          "reason": "分场景图片引用、导入保留和预览清单契约"
+          "status": "未纳入",
+          "reason": "一次性迁移脚本及专属测试已归档到忽略缓存，不属于日常离线测试；原测试源码保留在归档备份中"
         },
         {
           "id": "tests.test_offline_runner.FixtureMaintenanceTests.test_import_rejects_changed_registered_source",
@@ -3467,8 +3467,8 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "已纳入",
-          "reason": "分场景图片引用、导入保留和预览清单契约"
+          "status": "未纳入",
+          "reason": "一次性迁移脚本及专属测试已归档到忽略缓存，不属于日常离线测试；原测试源码保留在归档备份中"
         },
         {
           "id": "tests.test_offline_runner.FixtureMaintenanceTests.test_import_rejects_paths_outside_fixture_directory",
@@ -3476,8 +3476,8 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "已纳入",
-          "reason": "分场景图片引用、导入保留和预览清单契约"
+          "status": "未纳入",
+          "reason": "一次性迁移脚本及专属测试已归档到忽略缓存，不属于日常离线测试；原测试源码保留在归档备份中"
         },
         {
           "id": "tests.test_offline_runner.FixtureMaintenanceTests.test_contact_sheets_follow_manifest_and_allow_any_count",
@@ -3629,8 +3629,8 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
-          "status": "新增",
-          "reason": ""
+          "status": "未纳入",
+          "reason": "一次性迁移脚本及专属测试已归档到忽略缓存，不属于日常离线测试；原测试源码保留在归档备份中"
         }
       ],
       "file_category": null
@@ -4891,6 +4891,33 @@
       "reason": "当前工作树新增正式回归",
       "cases": [
         {
+          "id": "tests.upstream.test_deploy.GitInitializationTests.test_file_mode_is_normalized_after_init_and_before_fetch",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-11-12 上游通用同步；合成文字、像素和模拟配置，不访问设备、账号或实际仓库"
+        },
+        {
+          "id": "tests.upstream.test_deploy.GitInitializationTests.test_cached_config_does_not_hide_current_mode_or_removed_proxy",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-11-12 上游通用同步；合成文字、像素和模拟配置，不访问设备、账号或实际仓库"
+        },
+        {
+          "id": "tests.upstream.test_deploy.GitInitializationTests.test_repaired_initialization_also_normalizes_file_mode",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-11-12 上游通用同步；合成文字、像素和模拟配置，不访问设备、账号或实际仓库"
+        },
+        {
           "id": "tests.upstream.test_deploy.AdbReplacementTests.test_locked_binary_does_not_prevent_next_replacement",
           "category": "规则测试",
           "requires_device": false,
@@ -4979,6 +5006,15 @@
       "status": "已纳入",
       "reason": "当前工作树新增正式回归",
       "cases": [
+        {
+          "id": "tests.upstream.test_device.EmulatorTests.test_mumu_screenshot_preserves_rgb_channels_and_flips_rows",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-11-12 上游通用同步；合成文字、像素和模拟配置，不访问设备、账号或实际仓库"
+        },
         {
           "id": "tests.upstream.test_device.BenchmarkTests.test_both_candidate_lists_respect_android_boundaries",
           "category": "规则测试",
@@ -5106,6 +5142,78 @@
       "status": "已纳入",
       "reason": "当前工作树新增正式回归",
       "cases": [
+        {
+          "id": "tests.upstream.test_vision.OcrCorrectionTests.test_unconfigured_parser_preserves_text_and_uid_redaction",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-11-12 上游通用同步；合成文字、像素和模拟配置，不访问设备、账号或实际仓库"
+        },
+        {
+          "id": "tests.upstream.test_vision.OcrCorrectionTests.test_regex_replacements_run_in_order_with_backreferences",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-11-12 上游通用同步；合成文字、像素和模拟配置，不访问设备、账号或实际仓库"
+        },
+        {
+          "id": "tests.upstream.test_vision.OcrCorrectionTests.test_replacement_and_match_rules_are_isolated_by_language",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-11-12 上游通用同步；合成文字、像素和模拟配置，不访问设备、账号或实际仓库"
+        },
+        {
+          "id": "tests.upstream.test_vision.OcrCorrectionTests.test_fullmatch_uses_current_language_after_replacement",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-11-12 上游通用同步；合成文字、像素和模拟配置，不访问设备、账号或实际仓库"
+        },
+        {
+          "id": "tests.upstream.test_vision.OcrCorrectionTests.test_first_matching_rule_wins_and_subclasses_keep_their_rules",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-11-12 上游通用同步；合成文字、像素和模拟配置，不访问设备、账号或实际仓库"
+        },
+        {
+          "id": "tests.upstream.test_vision.OcrCorrectionTests.test_single_and_batch_entry_points_apply_corrections",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-11-12 上游通用同步；合成文字、像素和模拟配置，不访问设备、账号或实际仓库"
+        },
+        {
+          "id": "tests.upstream.test_vision.OcrCorrectionTests.test_detected_keywords_keep_coordinates_and_filter_unknown_text",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-11-12 上游通用同步；合成文字、像素和模拟配置，不访问设备、账号或实际仓库"
+        },
+        {
+          "id": "tests.upstream.test_vision.OcrCorrectionTests.test_star_is_ignored_only_when_punctuation_is_ignored",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026-11-12 上游通用同步；合成文字、像素和模拟配置，不访问设备、账号或实际仓库"
+        },
         {
           "id": "tests.upstream.test_vision.ColorTests.test_small_and_large_color_paths_match_integer_reference",
           "category": "规则测试",
@@ -9683,6 +9791,36 @@
           "fixtures": [],
           "status": "已纳入",
           "reason": "活动批处理、点击重试、分服页面与调度隔离"
+        },
+        {
+          "id": "tests.activity.test_reward_scheduling.ActivityConfigReloadTests.test_completed_handbook_stays_waiting_after_delay_and_reloads",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "真实配置延后、序列化重载及待运行队列回归；不读取账号或连接设备",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.activity.test_reward_scheduling.ActivityConfigReloadTests.test_future_activity_launch_survives_reload_for_both_tasks",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "两类活动的跨日开始时间在配置重载后继续等待",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.activity.test_reward_scheduling.ActivityConfigReloadTests.test_daily_and_monthly_stale_timestamp_limits_are_preserved",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "普通任务与圣域月度任务原有异常时间限制保持不变",
+          "input_kind": "mock_or_rule"
         }
       ]
     },
@@ -14007,6 +14145,148 @@
       ]
     },
     {
+      "source": "tests/activity/test_huche_shop_2026_11_19.py",
+      "business": "2026年11月19日流浪商店",
+      "status": "已纳入",
+      "cases": [
+        {
+          "id": "tests.activity.test_huche_shop_2026_11_19.FlowTests.test_same_price_stock_is_tracked_per_offer",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "同价两档独立确认库存；购买轮换档后以短拖动向后查找常驻档"
+        },
+        {
+          "id": "tests.activity.test_huche_shop_2026_11_19.FlowTests.test_current_scan_reverses_only_to_recover_missing_overlap",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "本期模拟回放验证从顶部正向拖动，缺少重叠行才反向回找；保留真实动作间隔"
+        },
+        {
+          "id": "tests.activity.test_huche_shop_2026_11_19.FlowTests.test_empty_rotating_batch_still_buys_and_records_disappearing_regular_offer",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "确认轮换区无奖牌后购买常驻档，只确认一次付款；商品消失后扫完整表再记整期状态"
+        },
+        {
+          "id": "tests.activity.test_huche_shop_2026_11_19.FlowTests.test_full_scan_records_a_regular_offer_already_absent_on_entry",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "现场已买完时从已验证的常驻区起点扫至末尾，确认商品不存在"
+        },
+        {
+          "id": "tests.activity.test_huche_shop_2026_11_19.FlowTests.test_incomplete_or_unreadable_scan_never_records_absence",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "拖动未推进、前后画面无重叠或商品仍不可读时不保存缺货记录"
+        },
+        {
+          "id": "tests.activity.test_huche_shop_2026_11_19.FlowTests.test_saved_regular_quota_stops_at_boundary_or_rotating_sellout",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "下一批已有整期常驻售罄记录时，确认轮换售罄或边界就停止"
+        },
+        {
+          "id": "tests.activity.test_huche_shop_2026_11_19.ScheduleTests.test_dates_and_exact_refresh_boundaries",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "验证当期活动时间、11点和23点轮换及活动结束边界"
+        },
+        {
+          "id": "tests.activity.test_huche_shop_2026_11_19.ScheduleTests.test_entry_dispatches_shop_and_skips_disabled_option",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "验证当期仅派发国际服简中流程，开关关闭不派发"
+        },
+        {
+          "id": "tests.activity.test_huche_shop_2026_11_19.ScheduleTests.test_config_defaults_off_and_keeps_explicit_preference",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "验证开关默认值、显隐和当期文案"
+        },
+        {
+          "id": "tests.activity.test_huche_shop_2026_11_19.ScheduleTests.test_page_registration_and_routes_per_server",
+          "category": "资源基础",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "验证分服路由、当期入口素材及归档隔离"
+        }
+      ]
+    },
+    {
+      "source": "tests/captured/test_huche_shop_2026_11_19.py",
+      "business": "2026年11月19日流浪商店",
+      "status": "已纳入",
+      "cases": [
+        {
+          "id": "tests.captured.test_huche_shop_2026_11_19.CurrentScreenshotTests.test_entry_and_same_price_offers_in_current_captures",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "huche-20261119-lobby",
+            "huche-20261119-rotating",
+            "huche-20261119-regular",
+            "huche-20261119-partial"
+          ],
+          "status": "已纳入",
+          "capture_server": "global_cn",
+          "reason": "新版入口与同价两档使用已脱敏的国际服简中截图",
+          "input_kind": "registered_capture"
+        },
+        {
+          "id": "tests.captured.test_huche_shop_2026_11_19.CurrentScreenshotTests.test_reordered_rotating_sellout_requires_the_label",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": ["huche-20261119-rotating-sold-out"],
+          "status": "已纳入",
+          "capture_server": "global_cn",
+          "reason": "实图验证移到常驻商品后方的轮换奖牌确实售罄，只有零库存不确认",
+          "input_kind": "registered_capture"
+        },
+        {
+          "id": "tests.captured.test_huche_shop_2026_11_19.CurrentScreenshotTests.test_regular_list_overlap_is_verified_in_both_directions",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": ["huche-20261119-regular", "huche-20261119-partial"],
+          "status": "已纳入",
+          "capture_server": "global_cn",
+          "reason": "使用实图验证同一商品列表前后位移、静止和常驻候选",
+          "input_kind": "registered_capture"
+        }
+      ]
+    },
+    {
       "source": "tests/activity/test_huche_shop.py",
       "business": "activity",
       "status": "已纳入",
@@ -16620,6 +16900,186 @@
           "original_source": "test/test_asset_crop.py"
         },
         {
+          "id": "tests.captured.test_asset_crop.AssetCropTest.test_live_click_uses_image_coordinates_once_on_release",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "截图预览操控回归；只使用合成画面和模拟设备",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.captured.test_asset_crop.AssetCropTest.test_live_drag_preserves_endpoints_and_duration_without_click",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "截图预览操控回归；只使用合成画面和模拟设备",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.captured.test_asset_crop.AssetCropTest.test_frozen_selection_blocks_device_controls_and_resume",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "截图预览操控回归；只使用合成画面和模拟设备",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.captured.test_asset_crop.AssetCropTest.test_toolbar_capture_saves_original_pixels_without_device_click",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "截图预览操控回归；只使用合成画面和模拟设备",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.captured.test_asset_crop.AssetCropTest.test_blank_viewport_and_toolbar_release_never_tap_device",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "截图预览操控回归；只使用合成画面和模拟设备",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.captured.test_asset_crop.AssetCropTest.test_preview_f3_captures_frozen_frame_and_window_close_exits",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "截图预览操控回归；只使用合成画面和模拟设备",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.captured.test_asset_crop.AssetCropTest.test_saved_frame_keeps_source_without_uid_masking",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "截图预览操控回归；只使用合成画面和模拟设备",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.captured.test_asset_crop.AssetCropTest.test_preview_adapter_uses_device_stack_and_saves_displayed_frame",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "截图预览操控回归；只使用合成画面和模拟设备",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.captured.test_asset_crop.AssetCropTest.test_gui_entry_reuses_crop_window_without_global_hotkey_dependency",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "截图预览操控回归；只使用合成画面和模拟设备",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.captured.test_asset_crop.AssetCropTest.test_high_dpi_display_scale_preserves_source_coordinates",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "高分屏预览坐标映射回归；只使用合成画面和模拟设备",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.captured.test_asset_crop.AssetCropTest.test_high_dpi_toolbar_uses_scaled_hitboxes",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "高分屏工具栏命中区域回归；只使用合成画面和模拟设备",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.captured.test_asset_crop.AssetCropTest.test_capture_frame_rate_defaults_and_custom_values_reach_device",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "截图与切图入口传递默认和自定义视频帧率",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.captured.test_asset_crop.AssetCropTest.test_invalid_frame_rate_rejected_before_device_creation",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "非法帧率在连接设备前被拒绝",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.captured.test_asset_crop.AssetCropTest.test_capture_device_sets_frame_rate_before_initialization",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "截图设备构造传递实例帧率，直接设备入口使用视频取帧",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.captured.test_asset_crop.AssetCropTest.test_scrcpy_frame_rate_override_preserves_automation_default",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "视频服务参数使用指定帧率，自动任务默认值保持不变",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.captured.test_asset_crop.AssetCropTest.test_capture_method_options_are_normalized_and_applied_before_device_init",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "截图和操控方式在设备初始化前覆盖到模板及已有配置",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.captured.test_asset_crop.AssetCropTest.test_gui_entry_forwards_method_options",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "截图入口把规范化的截图和操控方式传给现有预览窗口",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.captured.test_asset_crop.AssetCropTest.test_explicit_screenshot_method_skips_auto_emulator_override",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "显式截图方式不会被 MuMu 或 LDPlayer 自动探测覆盖",
+          "input_kind": "mock_or_rule"
+        },
+        {
           "id": "tests.captured.test_asset_crop.AssetArchiveTest.test_preview_records_hash_without_moving_or_creating_archive",
           "category": "资源基础检查",
           "requires_device": false,
@@ -18664,7 +19124,9 @@
             "20261002-221022-016",
             "20261003-125942-495",
             "20261003-125720-050",
-            "secret-shop-bookmark-20261105"
+            "secret-shop-bookmark-20261105",
+            "secret-shop-bottom-entry-20261107",
+            "secret-shop-bookmark-20261112"
           ],
           "status": "已纳入",
           "reason": "含实际网络异常截图；回放明确重复静态画面，不作为连续实录"
@@ -18692,7 +19154,9 @@
             "20261002-201411-848",
             "20261002-221022-016",
             "20261003-125942-495",
-            "secret-shop-bookmark-20261105"
+            "secret-shop-bookmark-20261105",
+            "secret-shop-bottom-entry-20261107",
+            "secret-shop-bookmark-20261112"
           ],
           "status": "已纳入",
           "reason": "秘密商店购买、刷新与不确定付款回归；网络异常为模拟输入"
@@ -18815,7 +19279,9 @@
             "20261002-221022-016",
             "20261003-125942-495",
             "20261003-125720-050",
-            "secret-shop-bookmark-20261105"
+            "secret-shop-bookmark-20261105",
+            "secret-shop-bottom-entry-20261107",
+            "secret-shop-bookmark-20261112"
           ],
           "status": "已纳入",
           "reason": "含实际网络异常截图；回放明确重复静态画面，不作为连续实录"
@@ -18956,13 +19422,25 @@
           "reason": "新金币图标与完整余额；两类商品购买入口及缺少锚点禁止动作，神秘奖牌新资源栏为明确模拟"
         },
         {
+          "id": "tests.secret_shop.test_captures.CapturedShopTests.test_current_skystone_icon_reads_complete_balance",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "secret-shop-bookmark-20261112"
+          ],
+          "status": "已纳入",
+          "reason": "2026-11-12 天空石图标外观回归，核对完整余额与同排书签入口"
+        },
+        {
           "id": "tests.secret_shop.test_captures.CapturedShopTests.test_current_resource_bar_opens_both_purchase_types",
           "category": "流程回放",
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [
             "secret-shop-bookmark-20261105",
-            "20261002-151314-999"
+            "20261002-151314-999",
+            "secret-shop-bookmark-20261112"
           ],
           "status": "已纳入",
           "reason": "新金币图标与完整余额；两类商品购买入口及缺少锚点禁止动作，神秘奖牌新资源栏为明确模拟"
@@ -18973,10 +19451,102 @@
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [
-            "secret-shop-bookmark-20261105"
+            "secret-shop-bookmark-20261105",
+            "secret-shop-bookmark-20261112"
           ],
           "status": "已纳入",
           "reason": "新金币图标与完整余额；两类商品购买入口及缺少锚点禁止动作，神秘奖牌新资源栏为明确模拟"
+        },
+        {
+          "id": "tests.secret_shop.test_captures.ScrollRecoveryTests.test_retained_bottom_entry_scans_both_sections_before_goal_exit",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "secret-shop-bottom-entry-20261107",
+            "20261003-125942-495"
+          ],
+          "status": "已纳入",
+          "migrated_to": null,
+          "reason": "秘密商店保留滚动位置、滑动重试及完整扫描回归"
+        },
+        {
+          "id": "tests.secret_shop.test_captures.ScrollRecoveryTests.test_recovered_top_buys_before_scanning_bottom",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "secret-shop-bottom-entry-20261107",
+            "20261002-151247-016",
+            "20261002-151251-082",
+            "20261002-151257-334"
+          ],
+          "status": "已纳入",
+          "migrated_to": null,
+          "reason": "秘密商店保留滚动位置、滑动重试及完整扫描回归"
+        },
+        {
+          "id": "tests.secret_shop.test_captures.ScrollRecoveryTests.test_top_entry_keeps_original_scan_order",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261003-125942-495",
+            "secret-shop-bottom-entry-20261107"
+          ],
+          "status": "已纳入",
+          "migrated_to": null,
+          "reason": "秘密商店保留滚动位置、滑动重试及完整扫描回归"
+        },
+        {
+          "id": "tests.secret_shop.test_captures.ScrollRecoveryTests.test_missed_bottom_swipe_retries_before_exit",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261003-125942-495",
+            "secret-shop-bottom-entry-20261107"
+          ],
+          "status": "已纳入",
+          "migrated_to": null,
+          "reason": "秘密商店保留滚动位置、滑动重试及完整扫描回归"
+        },
+        {
+          "id": "tests.secret_shop.test_captures.ScrollRecoveryTests.test_top_recovery_retries_without_extending_timeout",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "secret-shop-bottom-entry-20261107"
+          ],
+          "status": "已纳入",
+          "migrated_to": null,
+          "reason": "秘密商店保留滚动位置、滑动重试及完整扫描回归"
+        },
+        {
+          "id": "tests.secret_shop.test_captures.ScrollRecoveryTests.test_unknown_page_never_authorizes_scroll",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261001-174909-267"
+          ],
+          "status": "已纳入",
+          "migrated_to": null,
+          "reason": "秘密商店保留滚动位置、滑动重试及完整扫描回归"
+        },
+        {
+          "id": "tests.secret_shop.test_captures.ScrollRecoveryTests.test_recovery_preserves_confirmed_purchase",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "secret-shop-bottom-entry-20261107",
+            "20261002-151247-016"
+          ],
+          "status": "已纳入",
+          "migrated_to": null,
+          "reason": "秘密商店保留滚动位置、滑动重试及完整扫描回归"
         }
       ]
     },
@@ -19093,6 +19663,15 @@
           "fixtures": [],
           "status": "已纳入",
           "reason": "重复观察与假点击回归；使用受控时间和模拟画面，点击不改变输入"
+        },
+        {
+          "id": "tests.core.test_missed_clicks.MailMissedClickTests.test_mail_preview_closes_with_visible_cross_before_claiming",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "等待预览网页叉号出现，关闭未生效时按间隔重试，领取按钮亮起后再确认"
         },
         {
           "id": "tests.core.test_missed_clicks.MailMissedClickTests.test_receive_never_takes_effect_reaches_restart",
@@ -19872,6 +20451,18 @@
           ],
           "status": "已纳入",
           "reason": "异界两片递增、奇数取整、真实计数和点击确认回归"
+        },
+        {
+          "id": "tests.combat.test_repeat_leif_count.RepeatLeifTests.test_repeat_start_stops_on_equipment_inventory_full",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/global_cn/repeat_combat/gear-start-available.png",
+            "tests/fixtures/historical/global_cn/repeat_combat/equipment-inventory-full.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文实图回放验证装备背包已满时，首帧停止启动并要求人工处理，不点击遮罩后的开始按钮"
         }
       ]
     },
@@ -22266,6 +22857,56 @@
           "status": "已纳入",
           "reason": "真实界面渲染与保存入口使用模拟浏览器，验证分服显隐和旧值保留，不读取账号配置",
           "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.core.test_runtime_ui.ConfigSelectionUITests.test_first_visit_ignores_config_saved_by_another_worktree",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "首次打开时不恢复其他工作树留下的配置名",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.core.test_runtime_ui.ConfigSelectionUITests.test_first_visit_restores_existing_config",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "上次选中的配置存在时仍正常恢复",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.core.test_runtime_ui.ConfigSelectionUITests.test_first_visit_does_not_restore_default_without_config_file",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "保留默认配置入口，但不把同名目录或占位入口当成配置文件",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.core.test_runtime_ui.ConfigSelectionUITests.test_start_rejects_config_removed_after_selection",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "配置选中后被移除时，拦截调度与工具启动并提示重新选择",
+          "input_kind": "mock_or_rule"
+        },
+        {
+          "id": "tests.core.test_runtime_ui.ConfigSelectionUITests.test_start_with_existing_config_keeps_scheduler_and_tool_actions",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "配置存在时保留调度与工具的原有启动行为",
+          "input_kind": "mock_or_rule"
         }
       ]
     },
@@ -23629,6 +24270,24 @@
           "fixtures": [],
           "status": "已纳入",
           "reason": "资源门槛保留完整托管单位，固定次数用尽不重开"
+        },
+        {
+          "id": "tests.combat.test_daily_batch.CombatDailyBatchTests.test_outer_daily_batch_receives_stamina_after_world_boss_reserve",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "世界首领体力预留、每日刷图批次与不足补打回归"
+        },
+        {
+          "id": "tests.combat.test_daily_batch.CombatDailyBatchTests.test_protected_repeat_uses_wholly_owned_or_wholly_leaf_batches",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "世界首领体力预留、每日刷图批次与不足补打回归"
         }
       ]
     },
@@ -24575,6 +25234,51 @@
           "reason": "真实标题图与更新反例；遮暗、隐藏文字、弹窗锚点叠加、重复帧、主页和国服协议状态明确模拟；保留生产计时与点击保护"
         },
         {
+          "id": "tests.core.test_login_update.LoginStartFlowTests.test_recovery_enters_on_first_ready_frame",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "login-start-default-20261105",
+            "login-start-event-20261105"
+          ],
+          "status": "已纳入",
+          "reason": "真实标题图首个恢复帧即可进入，不附加启动等待；主页和采样时钟明确模拟"
+        },
+        {
+          "id": "tests.core.test_login_update.LoginStartFlowTests.test_recovery_handles_first_popup_before_entering",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "login-start-default-20261105"
+          ],
+          "status": "已纳入",
+          "reason": "真实标题图叠加弹窗锚点，恢复首帧处理断线或公告，再识别进入；保留生产点击间隔"
+        },
+        {
+          "id": "tests.core.test_login_update.LoginStartFlowTests.test_app_start_and_restart_wait_before_first_detection",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "login-start-default-20261105"
+          ],
+          "status": "已纳入",
+          "reason": "启动与重启入口均等待完整五秒后识别和点击；使用真实标题图、模拟进程动作与时钟"
+        },
+        {
+          "id": "tests.core.test_login_update.LoginStartFlowTests.test_recovery_restart_waits_for_launch_animation",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "login-start-default-20261105"
+          ],
+          "status": "已纳入",
+          "reason": "恢复中因登录错误或公告处理超时实际重启后，重新等待完整五秒；异常状态和主页明确模拟"
+        },
+        {
           "id": "tests.core.test_login_update.LoginStartFlowTests.test_missed_start_click_retries_safely_then_waits_for_confirmed_main",
           "category": "流程回放",
           "requires_device": false,
@@ -24676,6 +25380,56 @@
           "fixtures": [],
           "status": "已纳入",
           "reason": "真实标题图与更新反例；遮暗、隐藏文字、弹窗锚点叠加、重复帧、主页和国服协议状态明确模拟；保留生产计时与点击保护"
+        },
+        {
+          "id": "tests.core.test_login_update.LoginStartTests.test_arena_captures_skip_start_ocr",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261015-165556-841",
+            "20261015-165601-001",
+            "20261015-165606-908",
+            "20261015-165612-396",
+            "20261015-165612-968",
+            "20261015-165613-439",
+            "20261015-165615-527",
+            "20261015-165616-798",
+            "20261015-165618-643",
+            "20261015-165622-212",
+            "20261019-201526-416",
+            "20261019-201529-443",
+            "20261019-201532-705",
+            "20261019-201534-380",
+            "20261019-201536-225",
+            "20261021-001015-030"
+          ],
+          "status": "已纳入",
+          "reason": "竞技场实图不调用启动识字；下一帧标题立即恢复；背景替换为明确模拟，完整文字与遮挡判断保持不变"
+        },
+        {
+          "id": "tests.core.test_login_update.LoginStartTests.test_recovery_checks_first_title_frame_after_unrelated_screen",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "login-start-default-20261105",
+            "login-start-event-20261105"
+          ],
+          "status": "已纳入",
+          "reason": "竞技场实图不调用启动识字；下一帧标题立即恢复；背景替换为明确模拟，完整文字与遮挡判断保持不变"
+        },
+        {
+          "id": "tests.core.test_login_update.LoginStartTests.test_start_glyph_filter_ignores_background_and_keeps_phrase_validation",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "login-start-default-20261105",
+            "login-start-event-20261105"
+          ],
+          "status": "已纳入",
+          "reason": "竞技场实图不调用启动识字；下一帧标题立即恢复；背景替换为明确模拟，完整文字与遮挡判断保持不变"
         }
       ]
     },
@@ -25514,6 +26268,19 @@
           "reason": "按用户排序契约模拟顶部章节，直接记全领且不点章节奖励"
         },
         {
+          "id": "tests.activity.test_alencia_handbook.HandbookReplayTests.test_18_of_18_marks_event_complete_and_stops_future_checks",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "alencia-handbook-20261115-completed",
+            "000540-850",
+            "000545-575"
+          ],
+          "status": "已纳入",
+          "reason": "真实18/18截图立即返回，完成记录经配置整理和重载保留，次日及战斗后不再调度且分服隔离"
+        },
+        {
           "id": "tests.activity.test_alencia_handbook.HandbookReplayTests.test_unreadable_top_never_completes_from_lower_chapter_tasks",
           "category": "流程回放",
           "requires_device": false,
@@ -25523,6 +26290,18 @@
           ],
           "status": "已纳入",
           "reason": "明确模拟空识别、首项漏读、未知及低置信度，不借下方章节记完成或滑动"
+        },
+        {
+          "id": "tests.activity.test_alencia_handbook.HandbookRecognitionTests.test_real_18_of_18_progress_and_incomplete_page_remain_distinct",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "alencia-handbook-20261115-completed",
+            "000516-161"
+          ],
+          "status": "已纳入",
+          "reason": "真实截图识别整本18/18，并与未完成进度区分"
         }
       ]
     },
@@ -26948,6 +27727,1357 @@
           ],
           "status": "新增",
           "reason": "目录整理、英文日志、默认开局与识别优化回归"
+        }
+      ]
+    },
+    {
+      "source": "tests/knights/test_world_boss.py",
+      "business": "世界首领战",
+      "status": "正式",
+      "reason": "实际次数与资源约束",
+      "cases": [
+        {
+          "id": "tests.knights.test_world_boss.WorldBossCaptureTests.test_real_entry_reads_two_attempts_and_six_stamina",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "world-boss-attempts-20261107"
+          ],
+          "status": "已纳入",
+          "reason": "世界首领剩余次数、体力预留、取消购买与不足延期回归"
+        },
+        {
+          "id": "tests.knights.test_world_boss.WorldBossCaptureTests.test_missing_denominator_is_unknown_after_a_valid_read",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "world-boss-attempts-20261107"
+          ],
+          "status": "已纳入",
+          "reason": "世界首领剩余次数、体力预留、取消购买与不足延期回归"
+        },
+        {
+          "id": "tests.knights.test_world_boss.WorldBossCaptureTests.test_stamina_popup_has_specific_cancel_and_rejects_entry",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "world-boss-attempts-20261107",
+            "world-boss-no-stamina-20261107"
+          ],
+          "status": "已纳入",
+          "reason": "世界首领剩余次数、体力预留、取消购买与不足延期回归"
+        },
+        {
+          "id": "tests.knights.test_world_boss.WorldBossResourceTests.test_complete_counter_required_with_zero_distinct_from_unknown",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "世界首领剩余次数、体力预留、取消购买与不足延期回归"
+        },
+        {
+          "id": "tests.knights.test_world_boss.WorldBossResourceTests.test_reserve_defaults_to_forty_then_uses_observed_remainder",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "世界首领剩余次数、体力预留、取消购买与不足延期回归"
+        },
+        {
+          "id": "tests.knights.test_world_boss.WorldBossResourceTests.test_disabled_world_boss_or_task_has_no_reserve",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "世界首领剩余次数、体力预留、取消购买与不足延期回归"
+        },
+        {
+          "id": "tests.knights.test_world_boss.WorldBossResourceTests.test_server_observations_are_not_shared",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "世界首领剩余次数、体力预留、取消购买与不足延期回归"
+        },
+        {
+          "id": "tests.knights.test_world_boss.WorldBossResourceTests.test_combat_spends_only_the_unreserved_amount_and_keeps_priority",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "世界首领剩余次数、体力预留、取消购买与不足延期回归"
+        },
+        {
+          "id": "tests.knights.test_world_boss.WorldBossResourceTests.test_only_next_entry_is_required_for_retry_not_two_entries",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "世界首领剩余次数、体力预留、取消购买与不足延期回归"
+        },
+        {
+          "id": "tests.knights.test_world_boss.WorldBossResourceTests.test_combat_wait_includes_reserve_and_releases_on_observed_zero",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "世界首领剩余次数、体力预留、取消购买与不足延期回归"
+        },
+        {
+          "id": "tests.knights.test_world_boss.WorldBossResourceTests.test_wait_invalidated_when_world_boss_setting_changes",
+          "category": "规则测试",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "世界首领剩余次数、体力预留、取消购买与不足延期回归"
+        },
+        {
+          "id": "tests.knights.test_world_boss.WorldBossReplayTests.test_zero_attempts_exit_without_any_click",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "世界首领剩余次数、体力预留、取消购买与不足延期回归"
+        },
+        {
+          "id": "tests.knights.test_world_boss.WorldBossReplayTests.test_insufficient_stamina_defers_without_starting_or_buying",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "世界首领剩余次数、体力预留、取消购买与不足延期回归"
+        },
+        {
+          "id": "tests.knights.test_world_boss.WorldBossReplayTests.test_unknown_attempts_wait_and_never_enter_or_finish",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "世界首领剩余次数、体力预留、取消购买与不足延期回归"
+        },
+        {
+          "id": "tests.knights.test_world_boss.WorldBossReplayTests.test_popup_cancel_retries_and_back_is_confirmed_before_exit",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "世界首领剩余次数、体力预留、取消购买与不足延期回归"
+        },
+        {
+          "id": "tests.knights.test_world_boss.WorldBossReplayTests.test_sufficient_single_entry_starts_once_despite_repeated_frame",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "世界首领剩余次数、体力预留、取消购买与不足延期回归"
+        },
+        {
+          "id": "tests.knights.test_world_boss.WorldBossReplayTests.test_reentry_reads_manual_remaining_instead_of_local_rounds",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "世界首领剩余次数、体力预留、取消购买与不足延期回归"
+        },
+        {
+          "id": "tests.knights.test_world_boss.WorldBossReplayTests.test_resuming_team_panel_returns_to_counter_before_entry",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "世界首领剩余次数、体力预留、取消购买与不足延期回归"
+        },
+        {
+          "id": "tests.knights.test_world_boss.WorldBossReplayTests.test_completed_round_rereads_remaining_and_defers_the_second_entry",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "世界首领体力预留、每日刷图批次与不足补打回归"
+        },
+        {
+          "id": "tests.knights.test_world_boss.WorldBossReplayTests.test_insufficient_boss_keeps_other_knights_tasks_and_earliest_retry",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "世界首领体力预留、每日刷图批次与不足补打回归"
+        },
+        {
+          "id": "tests.knights.test_world_boss.WorldBossResourceTests.test_unknown_urgent_stamina_never_spends_the_reserved_balance",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "紧急任务体力未知时保护世界首领预留额度，禁止启动任何战斗"
+        }
+      ]
+    },
+    {
+      "source": "tests/activity/test_carrot_reward.py",
+      "business": "胡萝卜每日奖励",
+      "status": "已迁移",
+      "reason": "本工作树新增正式活动回归，不修改历史迁移基线",
+      "cases": [
+        {
+          "id": "tests.activity.test_carrot_reward.CarrotRewardTests.test_real_pages_and_four_independent_tier_states",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "e7-activity-1112-1",
+            "e7-activity-1112-2",
+            "e7-activity-1112-3",
+            "e7-activity-1112-4",
+            "e7-activity-1112-5"
+          ],
+          "status": "已纳入",
+          "reason": "2026年11月12日胡萝卜每日奖励的真实截图、生产间隔回放与分服调度回归"
+        },
+        {
+          "id": "tests.activity.test_carrot_reward.CarrotRewardTests.test_real_ocr_reads_complete_points_and_sidebar_name",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "e7-activity-1112-3"
+          ],
+          "status": "已纳入",
+          "reason": "2026年11月12日胡萝卜每日奖励的真实截图、生产间隔回放与分服调度回归"
+        },
+        {
+          "id": "tests.activity.test_carrot_reward.CarrotRewardTests.test_claim_once_popup_and_all_four_receipts",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "e7-activity-1112-3",
+            "e7-activity-1112-4",
+            "e7-activity-1112-5"
+          ],
+          "status": "已纳入",
+          "reason": "2026年11月12日胡萝卜每日奖励的真实截图、生产间隔回放与分服调度回归"
+        },
+        {
+          "id": "tests.activity.test_carrot_reward.CarrotRewardTests.test_already_received_finishes_without_clicks",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "e7-activity-1112-5"
+          ],
+          "status": "已纳入",
+          "reason": "2026年11月12日胡萝卜每日奖励的真实截图、生产间隔回放与分服调度回归"
+        },
+        {
+          "id": "tests.activity.test_carrot_reward.CarrotRewardTests.test_receipts_before_popup_do_not_complete_pending_claim",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "e7-activity-1112-3",
+            "e7-activity-1112-4",
+            "e7-activity-1112-5"
+          ],
+          "status": "已纳入",
+          "reason": "2026年11月12日胡萝卜每日奖励的真实截图、生产间隔回放与分服调度回归"
+        },
+        {
+          "id": "tests.activity.test_carrot_reward.CarrotRewardTests.test_dropped_claim_and_close_retry_only_their_own_action",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "e7-activity-1112-3",
+            "e7-activity-1112-4",
+            "e7-activity-1112-5"
+          ],
+          "status": "已纳入",
+          "reason": "2026年11月12日胡萝卜每日奖励的真实截图、生产间隔回放与分服调度回归"
+        },
+        {
+          "id": "tests.activity.test_carrot_reward.CarrotRewardTests.test_partial_receipts_keep_tier_identity",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "e7-activity-1112-3",
+            "e7-activity-1112-4",
+            "e7-activity-1112-5"
+          ],
+          "status": "已纳入",
+          "reason": "2026年11月12日胡萝卜每日奖励的真实截图、生产间隔回放与分服调度回归"
+        },
+        {
+          "id": "tests.activity.test_carrot_reward.CarrotRewardTests.test_zero_and_unfinished_points_keep_battle_recheck",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "e7-activity-1112-3"
+          ],
+          "status": "已纳入",
+          "reason": "2026年11月12日胡萝卜每日奖励的真实截图、生产间隔回放与分服调度回归"
+        },
+        {
+          "id": "tests.activity.test_carrot_reward.CarrotRewardTests.test_unknown_points_and_eligible_missing_controls_never_finish",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "e7-activity-1112-3"
+          ],
+          "status": "已纳入",
+          "reason": "2026年11月12日胡萝卜每日奖励的真实截图、生产间隔回放与分服调度回归"
+        },
+        {
+          "id": "tests.activity.test_carrot_reward.CarrotRewardTests.test_missing_reward_popup_cannot_complete_or_extend_deadline",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "e7-activity-1112-3",
+            "e7-activity-1112-5"
+          ],
+          "status": "已纳入",
+          "reason": "2026年11月12日胡萝卜每日奖励的真实截图、生产间隔回放与分服调度回归"
+        },
+        {
+          "id": "tests.activity.test_carrot_reward.CarrotRewardTests.test_recovery_from_existing_reward_popup",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "e7-activity-1112-4",
+            "e7-activity-1112-5"
+          ],
+          "status": "已纳入",
+          "reason": "2026年11月12日胡萝卜每日奖励的真实截图、生产间隔回放与分服调度回归"
+        },
+        {
+          "id": "tests.activity.test_carrot_reward.CarrotRewardTests.test_cake_and_comparison_rules_are_never_claimed",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "e7-activity-1112-1",
+            "e7-activity-1112-2"
+          ],
+          "status": "已纳入",
+          "reason": "2026年11月12日胡萝卜每日奖励的真实截图、生产间隔回放与分服调度回归"
+        },
+        {
+          "id": "tests.activity.test_carrot_reward.CarrotRewardTests.test_network_popup_does_not_acknowledge_reward",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "e7-activity-1112-3",
+            "e7-activity-1112-4",
+            "e7-activity-1112-5"
+          ],
+          "status": "已纳入",
+          "reason": "2026年11月12日胡萝卜每日奖励的真实截图、生产间隔回放与分服调度回归"
+        },
+        {
+          "id": "tests.activity.test_carrot_reward.CarrotRewardTests.test_independent_navigation_confirms_carrot_target",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "e7-activity-1112-5"
+          ],
+          "status": "已纳入",
+          "reason": "2026年11月12日胡萝卜每日奖励的真实截图、生产间隔回放与分服调度回归"
+        },
+        {
+          "id": "tests.activity.test_carrot_reward.CarrotRewardTests.test_calendar_boundaries_server_support_and_batch_registration",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "e7-activity-1112-5"
+          ],
+          "status": "已纳入",
+          "reason": "2026年11月12日胡萝卜每日奖励的真实截图、生产间隔回放与分服调度回归"
+        },
+        {
+          "id": "tests.activity.test_carrot_reward.CarrotRewardTests.test_visibility_uses_saved_profile_and_preserves_choices",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "2026年11月12日胡萝卜每日奖励的真实截图、生产间隔回放与分服调度回归"
+        },
+        {
+          "id": "tests.activity.test_carrot_reward.CarrotRewardTests.test_battle_recheck_stops_after_receipt_resets_daily_and_respects_switch",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "e7-activity-1112-5"
+          ],
+          "status": "已纳入",
+          "reason": "2026年11月12日胡萝卜每日奖励的真实截图、生产间隔回放与分服调度回归"
+        },
+        {
+          "id": "tests.activity.test_carrot_reward.CarrotRewardTests.test_slow_repeated_claim_frames_still_respect_original_deadline",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "e7-activity-1112-3"
+          ],
+          "status": "已纳入",
+          "reason": "慢帧导致每轮都可重试时仍必须在原始期限内停止，禁止重试续期"
+        },
+        {
+          "id": "tests.activity.test_carrot_reward.CarrotRewardTests.test_real_sidebar_selection_then_claim_never_repeats_tab",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "e7-activity-1112-1",
+            "e7-activity-1112-3",
+            "e7-activity-1112-4",
+            "e7-activity-1112-5"
+          ],
+          "status": "已纳入",
+          "reason": "真实侧栏选择与公共批次调用，验证固定页面标记范围和实际领奖动作"
+        },
+        {
+          "id": "tests.activity.test_carrot_reward.CarrotRewardTests.test_real_common_batch_dispatches_claim_and_preserves_page_search",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "e7-activity-1112-3",
+            "e7-activity-1112-4",
+            "e7-activity-1112-5"
+          ],
+          "status": "已纳入",
+          "reason": "真实侧栏选择与公共批次调用，验证固定页面标记范围和实际领奖动作"
+        }
+      ]
+    },
+    {
+      "source": "tests/automaton_tower/test_automaton_tower.py",
+      "business": "欧多马顿塔",
+      "status": "正式",
+      "reason": "月塔两服截图、入场弹窗、独立工具调度与战斗回归；国服新增用例待执行",
+      "cases": [
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_real_screenshots_cover_activity_states",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-15_00-20-10-741272",
+            "2026-11-15_00-20-15-516532",
+            "2026-11-15_00-20-19-772479",
+            "2026-11-15_00-20-23-753144",
+            "2026-11-15_00-20-31-060817",
+            "2026-11-15_00-20-34-671936",
+            "2026-11-15_00-21-33-720501",
+            "2026-11-15_00-21-36-380571",
+            "2026-11-15_00-21-39-738751",
+            "2026-11-15_00-21-44-601809",
+            "2026-11-15_00-21-53-337939",
+            "2026-11-15_15-19-29-075489",
+            "2026-11-15_15-22-23-137734",
+            "2026-11-15_15-22-26-688830",
+            "2026-11-15_15-22-31-914685",
+            "2026-11-15_15-22-35-147595",
+            "2026-11-15_17-13-16-352244"
+          ],
+          "status": "已纳入",
+          "reason": "覆盖入口、楼层、准备、自动战斗、强化装置、结算和下一层画面。"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_device_confirmation_requires_bright_green_button",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-15_00-21-33-720501",
+            "2026-11-15_00-21-36-380571"
+          ],
+          "status": "已纳入",
+          "reason": "确认按钮必须同时满足模板命中和亮绿色状态。"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_page_registration_is_limited_to_overseas_simplified_chinese",
+          "category": "资源基础",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "独立进程核对国服、国际服简体中文和英文的页面注册。"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_battle_replay_starts_once_and_keeps_existing_auto_mode",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-15_14-43-29-271926",
+            "2026-11-15_14-43-39-909021",
+            "2026-11-15_00-21-39-738751"
+          ],
+          "status": "已纳入",
+          "reason": "准备页、已有自动战斗状态和结算页的连续帧回放，只点击一次开战。"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_manual_tools_keep_entry_without_scheduler_settings",
+          "category": "资源基础",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "手动工具保留入口和业务选项，不显示调度设置；自动任务仍显示调度设置。"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_resume_screenshots_identify_pending_device",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-15_14-42-58-668558",
+            "2026-11-15_14-43-02-635705",
+            "2026-11-15_14-43-06-134378",
+            "2026-11-15_14-43-11-056885",
+            "2026-11-15_14-43-15-991275",
+            "2026-11-15_14-43-21-857733",
+            "2026-11-15_14-43-24-984899",
+            "2026-11-15_14-43-29-271926",
+            "2026-11-15_14-43-32-175894",
+            "2026-11-15_14-43-39-909021"
+          ],
+          "status": "已纳入",
+          "reason": "恢复截图中的主页、入口、未选与已选增益、楼层和准备页正反例。"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_run_captures_missing_first_frame_and_reuses_existing_frame",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-15_14-43-11-056885"
+          ],
+          "status": "已纳入",
+          "reason": "直接启动时先截图再识别塔首页；已有首帧时复用，不重复截图或点击。"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_resume_from_combat_selects_device_before_starting_floor",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-15_14-43-02-635705",
+            "2026-11-15_14-43-06-134378",
+            "2026-11-15_14-43-11-056885",
+            "2026-11-15_14-43-15-991275",
+            "2026-11-15_14-43-21-857733",
+            "2026-11-15_14-43-24-984899",
+            "2026-11-15_14-43-29-271926",
+            "2026-11-15_14-43-32-175894",
+            "2026-11-15_14-43-39-909021",
+            "2026-11-15_00-21-39-738751"
+          ],
+          "status": "已纳入",
+          "reason": "战斗菜单重新入塔、选择遗留增益、确认、选择队伍并开战；早前结算截图显式拼接作为退出证据。"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_resume_retries_dropped_selection_and_confirmation",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-15_14-43-11-056885",
+            "2026-11-15_14-43-15-991275",
+            "2026-11-15_14-43-21-857733",
+            "2026-11-15_14-43-24-984899",
+            "2026-11-15_14-43-29-271926"
+          ],
+          "status": "已纳入",
+          "reason": "选择与确认漏点分别限频重试，新动作本帧执行，未知帧不点击。"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_resume_keeps_existing_selection",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-15_14-43-21-857733",
+            "2026-11-15_14-43-24-984899",
+            "2026-11-15_14-43-29-271926"
+          ],
+          "status": "已纳入",
+          "reason": "恢复已选增益直接确认，不重选，并在后续楼层本帧选择队伍。"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_device_unknown_frames_do_not_confirm_completion",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-15_14-43-15-991275",
+            "2026-11-15_14-43-21-857733",
+            "2026-11-15_14-43-24-984899"
+          ],
+          "status": "已纳入",
+          "reason": "增益确认后未知帧不能证明完成，等待真实楼层证据。"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_device_retries_do_not_extend_deadline",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-15_14-43-15-991275",
+            "2026-11-15_14-43-21-857733"
+          ],
+          "status": "已纳入",
+          "reason": "选卡与确认重复帧分别在原期限内失败，重试不延长期限。"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_battle_device_selection_returns_on_visible_clear",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-15_15-19-29-075489",
+            "2026-11-15_00-21-36-380571",
+            "2026-11-15_00-21-39-738751"
+          ],
+          "status": "已纳入",
+          "reason": "普通战后选增益与恢复共用逻辑，在结算首帧立即交回父循环。"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_next_floor_handles_device_overlay_before_background_button",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-18_21-17-55-551",
+            "2026-11-15_00-21-36-380571",
+            "2026-11-15_00-21-39-738751",
+            "2026-11-15_14-43-29-271926"
+          ],
+          "status": "已纳入",
+          "reason": "用真实第14层遮挡画面及拼接状态回放，确认先选装置并确认，遮挡解除后才点击下一层。"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_final_floor_settlement_confirms_conquest",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "Scrcpy-20261119-002339-641",
+            "Scrcpy-20261119-002347-457",
+            "Scrcpy-20261119-002351-615"
+          ],
+          "status": "已纳入",
+          "reason": "末层实图依次确认征服按钮、专用弹窗和征服后的入口；重复帧限频，弹窗出现后不重按征服。"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_run_resumes_or_preserves_final_settlement",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "Scrcpy-20261119-002339-641",
+            "Scrcpy-20261119-002347-457",
+            "Scrcpy-20261119-002351-615"
+          ],
+          "status": "已纳入",
+          "reason": "从征服弹窗恢复或在已征服页面结束；超时保留现场，不返回或再次进入。"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_battle_replay_enables_dungeon_auto_combat_and_resets_stuck_guard",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-15_14-43-29-271926",
+            "2026-11-15_15-22-23-137734",
+            "2026-11-15_14-43-39-909021",
+            "2026-11-15_15-22-35-147595",
+            "2026-11-15_00-21-39-738751"
+          ],
+          "status": "已纳入",
+          "reason": "战斗内关闭自动战斗时按间隔点击，自动战斗 HUD 出现后停止，并清除长战斗卡死计时。"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_battle_replay_toggles_speed_only_from_positive_one_x_state",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-15_14-43-29-271926",
+            "2026-11-15_15-22-31-914685",
+            "2026-11-15_14-43-39-909021",
+            "2026-11-15_15-22-35-147595",
+            "2026-11-15_00-21-39-738751"
+          ],
+          "status": "已纳入",
+          "reason": "只有明确识别为 1 倍速时切换，2 倍速和结算过渡帧不误点。"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_battle_replay_survives_long_hud_then_resolves_pending_device",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-15_14-43-29-271926",
+            "2026-11-15_14-43-39-909021",
+            "2026-11-15_15-19-29-075489",
+            "2026-11-15_00-21-36-380571",
+            "2026-11-15_00-21-39-738751"
+          ],
+          "status": "已纳入",
+          "reason": "超过 60 秒的真实战斗 HUD 后接入遗留增益弹窗，验证选卡、确认和结算恢复。"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_floor_ocr_reads_list_and_prepare_labels",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-15_00-20-19-772479",
+            "2026-11-15_14-43-24-984899",
+            "2026-11-15_00-20-23-753144",
+            "2026-11-15_14-43-32-175894",
+            "2026-11-15_17-13-16-352244"
+          ],
+          "status": "已纳入",
+          "reason": "读取楼层列表和备战页的第 N 层指引，日志使用实际楼层编号。"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_season_popup_blocks_navigation_until_close_is_observed",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "e7-tower-popup",
+            "2026-11-15_14-43-11-056885"
+          ],
+          "status": "已纳入",
+          "reason": "国服月塔与两服赛季弹窗回归，按用户要求暂未执行"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_season_popup_has_positive_identity_and_real_negative_scenes",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "e7-tower-popup",
+            "2026-11-15_14-43-11-056885",
+            "2026-11-15_14-43-24-984899",
+            "2026-11-15_14-43-29-271926",
+            "2026-11-15_14-43-15-991275",
+            "2026-11-15_00-21-39-738751"
+          ],
+          "status": "已纳入",
+          "reason": "国服月塔与两服赛季弹窗回归，按用户要求暂未执行"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCnTests.test_cn_navigation_closes_season_modal_before_arrival",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261115-221941-499",
+            "20261115-221944-879",
+            "20261115-221946-748",
+            "20261115-222909-462",
+            "20261115-222903-191"
+          ],
+          "status": "已纳入",
+          "reason": "国服月塔与两服赛季弹窗回归，按用户要求暂未执行"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCnTests.test_cn_stage_entry_retries_confirm_and_preserves_current_difficulty",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261115-221946-748",
+            "20261115-222002-635",
+            "20261115-222005-252",
+            "20261115-222014-084",
+            "20261115-221950-315",
+            "20261115-221952-911",
+            "20261115-222000-640",
+            "20261115-221954-929",
+            "20261115-221956-184"
+          ],
+          "status": "已纳入",
+          "reason": "国服月塔与两服赛季弹窗回归，按用户要求暂未执行"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCnTests.test_cn_pending_modal_never_uses_generic_confirm_or_background_controls",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261115-221944-879",
+            "20261115-222002-635"
+          ],
+          "status": "已纳入",
+          "reason": "国服月塔与两服赛季弹窗回归，按用户要求暂未执行"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCnTests.test_cn_captures_reject_unrelated_popups_and_read_actual_floors",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261115-221936-261",
+            "20261115-221939-032",
+            "20261115-221940-408",
+            "20261115-221941-499",
+            "20261115-222007-993",
+            "20261115-222009-804",
+            "20261115-222005-252",
+            "20261115-222011-239",
+            "20261115-222909-462",
+            "20261115-222014-084",
+            "20261115-222903-191"
+          ],
+          "status": "已纳入",
+          "reason": "国服月塔与两服赛季弹窗回归，按用户要求暂未执行"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCnTests.test_cn_battle_recovers_speed_and_auto_then_selects_and_advances",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261115-222014-084",
+            "20261115-222029-545",
+            "20261115-222023-418",
+            "20261115-222031-986",
+            "20261115-222856-893",
+            "20261115-222858-926",
+            "20261115-222900-237",
+            "20261115-222903-191",
+            "20261115-222020-688",
+            "20261115-222033-491"
+          ],
+          "status": "已纳入",
+          "reason": "国服月塔与两服赛季弹窗回归，按用户要求暂未执行"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCnTests.test_cn_profile_reads_complete_offer_and_requires_selected_target",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261115-222856-893",
+            "20261115-222858-926",
+            "20261115-222900-237"
+          ],
+          "status": "已纳入",
+          "reason": "国服月塔与两服赛季弹窗回归，按用户要求暂未执行"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCnTests.test_cn_debug_saves_full_offer_and_preconfirm_without_extra_ocr",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "20261115-222858-926",
+            "20261115-222900-237"
+          ],
+          "status": "已纳入",
+          "reason": "国服月塔与两服赛季弹窗回归，按用户要求暂未执行"
+        }
+      ]
+    },
+    {
+      "source": "tests/automaton_tower/test_stamina.py",
+      "business": "月塔行动力",
+      "status": "已整理",
+      "reason": "验证分层体力读取与仅叶子补充、退出及调度保护。",
+      "cases": [
+        {
+          "id": "tests.automaton_tower.test_stamina.TowerStaminaTests.test_prepare_reads_balance_and_cost_separately",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "Scrcpy-20261118-214443-322",
+            "Scrcpy-20261118-214539-811",
+            "2026-11-15_14-43-29-271926",
+            "20261115-222014-084"
+          ],
+          "status": "已纳入",
+          "reason": "体力栏与每层开战费用独立读取，验证两处余额一致。"
+        },
+        {
+          "id": "tests.automaton_tower.test_stamina.TowerStaminaTests.test_reselects_leaf_then_buys_once_and_restarts_on_verified_balance",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "Scrcpy-20261118-214443-322",
+            "Scrcpy-20261118-214446-585",
+            "Scrcpy-20261118-214532-584",
+            "Scrcpy-20261118-214538-002",
+            "Scrcpy-20261118-214539-811",
+            "Scrcpy-20261118-214542-792",
+            "Scrcpy-20261118-214546-109"
+          ],
+          "status": "已纳入",
+          "reason": "先切回叶子，限频重试选档，仅一次购买，等余额更新后重新开战。"
+        },
+        {
+          "id": "tests.automaton_tower.test_stamina.TowerStaminaTests.test_opt_out_and_leaf_reserve_stop_without_spending",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "Scrcpy-20261118-214443-322",
+            "Scrcpy-20261118-214446-585"
+          ],
+          "status": "已纳入",
+          "reason": "自动补充关闭时不开战；保留量或零叶子阻止购买。"
+        },
+        {
+          "id": "tests.automaton_tower.test_stamina.TowerStaminaTests.test_unreadable_balance_or_ambiguous_glow_never_authorizes_purchase",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "Scrcpy-20261118-214443-322",
+            "Scrcpy-20261118-214446-585",
+            "Scrcpy-20261118-214532-584"
+          ],
+          "status": "已纳入",
+          "reason": "读取左右选中实图，验证边缘冲突、边缘缺失和读数失败保护。"
+        },
+        {
+          "id": "tests.automaton_tower.test_stamina.TowerStaminaTests.test_dropped_purchase_never_retries_or_switches_to_skystone",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "Scrcpy-20261118-214443-322",
+            "Scrcpy-20261118-214446-585",
+            "Scrcpy-20261118-214532-584",
+            "Scrcpy-20261118-214542-792"
+          ],
+          "status": "已纳入",
+          "reason": "购买超过等待时间不重试，不切换货币。"
+        },
+        {
+          "id": "tests.automaton_tower.test_stamina.TowerStaminaTests.test_stamina_stop_cancels_without_scheduling_retry",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "Scrcpy-20261118-214443-322",
+            "Scrcpy-20261118-214446-585"
+          ],
+          "status": "已纳入",
+          "reason": "验证不开战直接退出，或关闭弹窗后结束；取消可限频重试，不导航回主界面。"
+        },
+        {
+          "id": "tests.automaton_tower.test_stamina.TowerStaminaTests.test_unsolicited_dialog_and_unsupported_server_never_purchase",
+          "category": "状态回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "Scrcpy-20261118-214446-585"
+          ],
+          "status": "已纳入",
+          "reason": "不购买非本次开战触发的弹窗，国服不自动补充。"
+        },
+        {
+          "id": "tests.automaton_tower.test_stamina.TowerStaminaTests.test_settings_are_opt_in_account_specific_and_reject_invalid_reserves",
+          "category": "配置契约",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "按账号独立保存，并拒绝非整数和负数。"
+        }
+      ]
+    },
+    {
+      "source": "tests/automaton_tower/test_device_profiles.py",
+      "business": "月塔装置方案",
+      "status": "已整理",
+      "reason": "配置、选卡及结果证据分别验证",
+      "cases": [
+        {
+          "id": "tests.automaton_tower.test_device_profiles.TowerProfileTests.test_priority_beats_card_position_and_same_rule_uses_leftmost",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "月塔独立方案、完整候选与选中确认回归"
+        },
+        {
+          "id": "tests.automaton_tower.test_device_profiles.TowerProfileTests.test_conditions_use_declared_main_and_do_not_infer_other_members",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "月塔独立方案、完整候选与选中确认回归"
+        },
+        {
+          "id": "tests.automaton_tower.test_device_profiles.TowerProfileTests.test_missing_condition_blocks_only_when_it_could_change_choice",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "月塔独立方案、完整候选与选中确认回归"
+        },
+        {
+          "id": "tests.automaton_tower.test_device_profiles.TowerProfileTests.test_complete_team_excludes_absent_profession_and_requires_same_hero",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "月塔独立方案、完整候选与选中确认回归"
+        },
+        {
+          "id": "tests.automaton_tower.test_device_profiles.TowerProfileTests.test_deny_list_survives_fallback_and_all_denied_stops",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "月塔独立方案、完整候选与选中确认回归"
+        },
+        {
+          "id": "tests.automaton_tower.test_device_profiles.TowerProfileTests.test_partial_team_does_not_turn_unknown_applicability_into_absence",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "月塔独立方案、完整候选与选中确认回归"
+        },
+        {
+          "id": "tests.automaton_tower.test_device_profiles.TowerProfileTests.test_invalid_profiles_reject_unknown_keys_names_and_ambiguous_team",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "月塔独立方案、完整候选与选中确认回归"
+        },
+        {
+          "id": "tests.automaton_tower.test_device_profiles.TowerProfileTests.test_full_name_matching_keeps_attributes_and_level_digits",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "月塔独立方案、完整候选与选中确认回归"
+        },
+        {
+          "id": "tests.automaton_tower.test_device_profiles.TowerProfileTests.test_profile_import_export_and_accounts_are_separate_without_overwrite",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "月塔独立方案、完整候选与选中确认回归"
+        },
+        {
+          "id": "tests.automaton_tower.test_device_profiles.TowerProfileTests.test_invalid_active_profile_never_silently_becomes_legacy_mode",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "月塔独立方案、完整候选与选中确认回归"
+        },
+        {
+          "id": "tests.automaton_tower.test_device_profiles.TowerProfileTests.test_journal_requires_confirmation_and_never_claims_complete_inventory",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "月塔独立方案、完整候选与选中确认回归"
+        },
+        {
+          "id": "tests.automaton_tower.test_device_profiles.TowerProfileTests.test_builtin_profile_is_valid_and_export_has_no_runtime_observations",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "月塔独立方案、完整候选与选中确认回归"
+        },
+        {
+          "id": "tests.automaton_tower.test_device_profiles.TowerProfileTests.test_debug_setting_is_opt_in_per_account_and_independent_of_profiles",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "月塔调试开关、原图采集、重试去重与失败隔离"
+        }
+      ]
+    },
+    {
+      "source": "tests/automaton_tower/test_device_selection.py",
+      "business": "月塔装置方案",
+      "status": "已整理",
+      "reason": "配置、选卡及结果证据分别验证",
+      "cases": [
+        {
+          "id": "tests.automaton_tower.test_device_selection.TowerDeviceRecognitionTests.test_post_clear_offer_reads_all_names_and_max_level",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-18_21-17-55-551"
+          ],
+          "status": "已纳入",
+          "reason": "识别第14层结算的三个共用装置及左卡满级标记。"
+        },
+        {
+          "id": "tests.automaton_tower.test_device_selection.TowerDeviceRecognitionTests.test_real_offers_read_multiline_attribute_and_profession_names",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-15_18-05-42-922214",
+            "2026-11-15_18-05-46-907553",
+            "2026-11-15_18-05-52-680786",
+            "2026-11-15_18-10-02-444204",
+            "2026-11-15_18-11-36-127159",
+            "2026-11-15_18-18-38-564782",
+            "2026-11-15_18-18-48-486917"
+          ],
+          "status": "已纳入",
+          "reason": "月塔独立方案、完整候选与选中确认回归"
+        },
+        {
+          "id": "tests.automaton_tower.test_device_selection.TowerDeviceRecognitionTests.test_selected_slot_is_unique_and_not_inferred_from_green_confirm",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-15_18-05-42-922214",
+            "2026-11-15_18-05-46-907553",
+            "2026-11-15_18-05-52-680786",
+            "2026-11-15_18-10-02-444204",
+            "2026-11-15_18-11-36-127159",
+            "2026-11-15_18-18-38-564782",
+            "2026-11-15_18-18-48-486917",
+            "2026-11-15_14-43-24-984899"
+          ],
+          "status": "已纳入",
+          "reason": "月塔独立方案、完整候选与选中确认回归"
+        },
+        {
+          "id": "tests.automaton_tower.test_device_selection.TowerDeviceRecognitionTests.test_truncated_name_and_mismatched_level_cannot_authorize_choice",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-15_18-05-42-922214"
+          ],
+          "status": "已纳入",
+          "reason": "月塔独立方案、完整候选与选中确认回归"
+        },
+        {
+          "id": "tests.automaton_tower.test_device_selection.TowerDeviceReplayTests.test_reselects_target_before_confirm_and_retries_only_due_actions",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-15_18-05-42-922214",
+            "2026-11-15_18-05-46-907553",
+            "2026-11-15_14-43-24-984899"
+          ],
+          "status": "已纳入",
+          "reason": "月塔独立方案、完整候选与选中确认回归"
+        },
+        {
+          "id": "tests.automaton_tower.test_device_selection.TowerDeviceReplayTests.test_can_select_middle_or_right_from_another_existing_selection",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-15_18-05-42-922214",
+            "2026-11-15_18-05-46-907553",
+            "2026-11-15_18-05-52-680786",
+            "2026-11-15_14-43-29-271926"
+          ],
+          "status": "已纳入",
+          "reason": "月塔独立方案、完整候选与选中确认回归"
+        },
+        {
+          "id": "tests.automaton_tower.test_device_selection.TowerDeviceReplayTests.test_existing_target_confirms_without_reselecting_and_waits_for_result",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-15_18-05-46-907553",
+            "2026-11-15_14-43-24-984899"
+          ],
+          "status": "已纳入",
+          "reason": "月塔独立方案、完整候选与选中确认回归"
+        },
+        {
+          "id": "tests.automaton_tower.test_device_selection.TowerDeviceReplayTests.test_pending_offer_timeout_preserves_unconfirmed_record_and_screenshot",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-15_18-10-02-444204"
+          ],
+          "status": "已纳入",
+          "reason": "月塔独立方案、完整候选与选中确认回归"
+        },
+        {
+          "id": "tests.automaton_tower.test_device_selection.TowerDeviceReplayTests.test_incomplete_reads_retry_then_stop_without_selecting_or_confirming",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-15_18-05-42-922214"
+          ],
+          "status": "已纳入",
+          "reason": "月塔独立方案、完整候选与选中确认回归"
+        },
+        {
+          "id": "tests.automaton_tower.test_device_selection.TowerDeviceReplayTests.test_next_complete_offer_confirms_previous_round_without_guessing_second_result",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-15_18-05-46-907553",
+            "2026-11-15_18-10-02-444204"
+          ],
+          "status": "已纳入",
+          "reason": "月塔独立方案、完整候选与选中确认回归"
+        },
+        {
+          "id": "tests.automaton_tower.test_device_selection.TowerDeviceReplayTests.test_human_takeover_keeps_current_screen_instead_of_navigating_back",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-15_18-05-46-907553"
+          ],
+          "status": "已纳入",
+          "reason": "月塔独立方案、完整候选与选中确认回归"
+        },
+        {
+          "id": "tests.automaton_tower.test_device_selection.TowerProfileUiTests.test_task_detail_extension_registers_only_tower_profile_panel",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "月塔独立方案、完整候选与选中确认回归"
+        },
+        {
+          "id": "tests.automaton_tower.test_device_selection.TowerProfileUiTests.test_profile_controls_import_export_and_edit_without_overwriting",
+          "category": "规则",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [],
+          "status": "已纳入",
+          "reason": "方案的导入、导出和另存；普通设置自动保存，叶子保留量随补充开关显隐，保留旧值并按账号隔离。"
+        },
+        {
+          "id": "tests.automaton_tower.test_device_selection.TowerDeviceReplayTests.test_debug_profile_records_choice_and_preconfirm_frame",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-15_18-05-42-922214",
+            "2026-11-15_18-05-46-907553",
+            "2026-11-15_14-43-24-984899"
+          ],
+          "status": "已纳入",
+          "reason": "月塔调试开关、原图采集、重试去重与失败隔离"
+        },
+        {
+          "id": "tests.automaton_tower.test_device_selection.TowerDeviceReplayTests.test_debug_unknown_offer_is_saved_before_recognition_stops",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-15_18-05-42-922214"
+          ],
+          "status": "已纳入",
+          "reason": "月塔调试开关、原图采集、重试去重与失败隔离"
+        },
+        {
+          "id": "tests.automaton_tower.test_device_selection.TowerDeviceReplayTests.test_debug_next_complete_offer_uses_a_separate_capture_directory",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-15_18-05-46-907553",
+            "2026-11-15_18-10-02-444204"
+          ],
+          "status": "已纳入",
+          "reason": "月塔调试开关、原图采集、重试去重与失败隔离"
+        },
+        {
+          "id": "tests.automaton_tower.test_device_selection.TowerLegacyDebugTests.test_legacy_capture_does_not_require_ocr_and_deduplicates_retries",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-15_14-43-15-991275",
+            "2026-11-15_14-43-21-857733",
+            "2026-11-15_14-43-24-984899"
+          ],
+          "status": "已纳入",
+          "reason": "月塔调试开关、原图采集、重试去重与失败隔离"
+        },
+        {
+          "id": "tests.automaton_tower.test_device_selection.TowerLegacyDebugTests.test_debug_write_failure_keeps_legacy_actions_and_disables_only_capture",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-15_14-43-15-991275",
+            "2026-11-15_14-43-21-857733",
+            "2026-11-15_14-43-24-984899"
+          ],
+          "status": "已纳入",
+          "reason": "月塔调试开关、原图采集、重试去重与失败隔离"
         }
       ]
     }

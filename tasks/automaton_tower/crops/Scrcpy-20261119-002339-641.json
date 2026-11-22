@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "source": "../../../tests/fixtures/automaton_tower/global_cn/Scrcpy-20261119-002339-641.png",
+  "suite": "automaton_tower_settlement",
+  "case": "scrcpy-20261119-002339-641",
+  "items": [
+    {
+      "name": "TOWER_CONQUER",
+      "namespace": "global_cn",
+      "module": "automaton_tower/settlement",
+      "box": [1090, 641, 1154, 679],
+      "kind": "base",
+      "frame": 1
+    },
+    {
+      "name": "TOWER_CONQUER",
+      "namespace": "global_cn",
+      "module": "automaton_tower/settlement",
+      "box": [1004, 639, 1236, 684],
+      "kind": "button",
+      "frame": 1
+    }
+  ]
+}

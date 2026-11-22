@@ -12,10 +12,12 @@ WORKTREE = Path(__file__).resolve().parents[2]
 PROJECT_ROOT = WORKTREE
 from tasks.dungeon.urgent_tasks import UrgentTasksNavigateMixin
 from tests.support.history_september_runtime_fixes import Prepare
+from tests.support.resources import ResourceConfig
 
 
 class Daily(UrgentTasksNavigateMixin):
     def __init__(self, remaining=5, gray=True, fast_status='ready', pet=True, normal_success=True):
+        self.config = ResourceConfig()
         self.remaining = remaining
         self.gray = gray
         self.fast_status = fast_status

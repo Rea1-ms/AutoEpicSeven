@@ -1423,6 +1423,10 @@
       "GetEpicPathDailyReward": {
         "type": "checkbox",
         "value": true
+      },
+      "GetCarrotReward": {
+        "type": "checkbox",
+        "value": true
       }
     }
   },
@@ -1460,7 +1464,6 @@
       "BuyHucheMysticMedals": {
         "type": "checkbox",
         "value": false,
-        "display": "hide",
         "keepvalue": true
       }
     },
@@ -1781,6 +1784,33 @@
         "value": 0,
         "valuetype": "str",
         "validate": "^[0-9]+$"
+      }
+    }
+  },
+  "AutomatonTower": {
+    "Scheduler": {
+      "Enable": {
+        "type": "checkbox",
+        "value": false,
+        "option": [
+          true,
+          false
+        ]
+      },
+      "NextRun": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime"
+      },
+      "Command": {
+        "type": "input",
+        "value": "AutomatonTower",
+        "display": "hide"
+      },
+      "ServerUpdate": {
+        "type": "input",
+        "value": "02:00",
+        "display": "hide"
       }
     }
   },

@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "source": "../../../tests/fixtures/automaton_tower/cn/MuMu-20261115-221946-748.png",
+  "suite": "automaton_tower_cn",
+  "case": "mumu-20261115-221946-748",
+  "items": [
+    {
+      "name": "AUTOMATON_TOWER_CHECK",
+      "namespace": "cn",
+      "module": "automaton_tower",
+      "box": [
+        35,
+        146,
+        250,
+        185
+      ],
+      "kind": "base",
+      "frame": 1
+    },
+    {
+      "name": "AUTOMATON_TOWER_LANDING_CHECK",
+      "namespace": "cn",
+      "module": "automaton_tower",
+      "box": [
+        940,
+        88,
+        1030,
+        114
+      ],
+      "kind": "base",
+      "frame": 1
+    },
+    {
+      "name": "AUTOMATON_TOWER_ENTER",
+      "namespace": "cn",
+      "module": "automaton_tower",
+      "box": [
+        1110,
+        635,
+        1230,
+        685
+      ],
+      "kind": "base",
+      "frame": 1
+    },
+    {
+      "name": "AUTOMATON_TOWER_ENTER",
+      "namespace": "cn",
+      "module": "automaton_tower",
+      "box": [
+        1085,
+        630,
+        1245,
+        685
+      ],
+      "kind": "button",
+      "frame": 1
+    }
+  ]
+}

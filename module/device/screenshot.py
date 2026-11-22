@@ -46,6 +46,8 @@ class Screenshot(Adb, WSA, DroidCast, AScreenCap, Scrcpy, NemuIpc, LDOpenGL):
 
     @cached_property
     def screenshot_method_override(self) -> str:
+        if getattr(self, '_screenshot_method_explicit', False):
+            return ''
         # SRC only, use nemu_ipc if available
         available = self.nemu_ipc_available()
         logger.attr('nemu_ipc_available', available)

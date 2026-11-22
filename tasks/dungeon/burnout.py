@@ -9,6 +9,7 @@ from tasks.base.resource_scheduling import (
     local_now,
 )
 from tasks.dungeon.episode_materials import EPISODE_STAMINA_COST
+from tasks.knights.world_boss_resources import world_boss_stamina_reserve
 
 SERVER_REPEAT_LEIF_STAMINA = 80
 
@@ -53,6 +54,16 @@ class CombatBurnoutMixin:
     """
 
     COMBAT_BURNOUT_RECHECK_MINUTES = 1
+
+    def _combat_stamina_reserve(self):
+        return world_boss_stamina_reserve(self.config)
+
+    def _combat_available_stamina(self, stamina):
+        if stamina is None:
+            return None
+        reserved = self._combat_stamina_reserve()
+        logger.attr('WorldBossReservedStamina', reserved)
+        return max(0, stamina - reserved)
 
     def _combat_burnout_enabled(self) -> bool:
         if self._combat_is_farm_task():
@@ -144,13 +155,16 @@ class CombatBurnoutMixin:
         if not self._combat_burnout_enabled():
             return False
 
-        need = self._combat_burnout_batch_need()
-        if need is None:
+        base_need = self._combat_burnout_batch_need()
+        if base_need is None:
             logger.info(
                 "Combat burnout: current target consumes leaves instead of stamina, "
                 "fallback to daily scheduling"
             )
             return False
+
+        reserve = self._combat_stamina_reserve()
+        need = base_need + reserve
 
         self._combat_burnout_refresh_status()
         coordinator = ResourceCoordinator(self.config)
@@ -167,7 +181,7 @@ class CombatBurnoutMixin:
             logger.warning("Combat burnout: stamina or recovery cap unknown, request refresh and retry later")
             coordinator.request("Combat", keys=("stamina",))
             self.config.task_delay(minute=RESOURCE_REFRESH_RETRY_MINUTES)
-            coordinator.wait("Combat", "stamina", need)
+            coordinator.wait("Combat", "stamina", base_need)
             return True
 
         value = observed["value"]
@@ -181,12 +195,12 @@ class CombatBurnoutMixin:
             self.config.task_delay(minute=self.COMBAT_BURNOUT_RECHECK_MINUTES)
             return True
 
-        if self._uses_server_repeat_combat() and need > capacity:
+        if (self._uses_server_repeat_combat() or reserve) and need > capacity:
             # A low-level natural cap cannot form a server-repeat unit. Keep
             # the real 80-point gate for external gifts instead of waking on
             # a full but still unaffordable bar over and over.
             self.config.task_delay(server_update=True)
-            coordinator.wait("Combat", "stamina", need)
+            coordinator.wait("Combat", "stamina", base_need)
             return True
 
         # Natural regeneration can never exceed the cap, so a batch larger
@@ -202,5 +216,5 @@ class CombatBurnoutMixin:
 
         logger.info(f"Combat burnout: stamina {value} -> {need}, wait until {target}")
         self.config.task_delay(target=target)
-        coordinator.wait("Combat", "stamina", need)
+        coordinator.wait("Combat", "stamina", base_need)
         return True

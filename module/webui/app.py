@@ -4,6 +4,7 @@ import threading
 import time
 from datetime import datetime
 from functools import partial
+from pathlib import Path
 from typing import Dict, List, Optional
 
 from pywebio import config as webconfig
@@ -26,7 +27,6 @@ from pywebio.output import (
     put_table,
     put_text,
     put_warning,
-    toast,
     use_scope,
 )
 from pywebio.pin import pin, pin_on_change, pin_update
@@ -41,6 +41,7 @@ from pywebio.session import (
 
 import module.webui.lang as lang
 from module.config.config import AzurLaneConfig, Function
+from module.config.config_manual import ManualConfig
 from module.config.deep import deep_get, deep_iter, deep_set
 from module.config.utils import (
     alas_instance,
@@ -85,6 +86,7 @@ from module.webui.utils import (
     raise_exception,
     re_fullmatch,
     to_pin_value,
+    toast,
 )
 from module.webui.widgets import (
     BinarySwitchButton,
@@ -111,6 +113,8 @@ class AlasGUI(Frame):
     def initial(self) -> None:
         self.ALAS_MENU = read_file(filepath_args("menu", self.alas_mod))
         self.ALAS_ARGS = read_file(filepath_args("args", self.alas_mod))
+        for task in ManualConfig.MANUAL_ONLY_TOOLS:
+            self.ALAS_ARGS.get(task, {}).pop("Scheduler", None)
         self.ALAS_STORED = read_file(filepath_args("stored", self.alas_mod))
         self._init_alas_config_watcher()
 
@@ -321,7 +325,7 @@ class AlasGUI(Frame):
         group_name = group[0]
         select_options = self.alas_config.get_select_options(config)
 
-        output_list: List[Output] = []
+        output_list: list[tuple[str, Output]] = []
         for arg, arg_dict in deep_iter(arg_dict, depth=1):
             output_kwargs: T_Output_Kwargs = arg_dict.copy()
 
@@ -376,7 +380,7 @@ class AlasGUI(Frame):
                 # Add hidden-arg
                 if f"{task}.{group_name}.{arg_name}" in self.alas_config_hidden:
                     o.style("display:none")
-                output_list.append(o)
+                output_list.append((arg_name, o))
 
         if not output_list:
             return 0
@@ -387,10 +391,10 @@ class AlasGUI(Frame):
             if group_help != "":
                 put_text(group_help)
             put_html('<hr class="hr-group">')
-            for output in output_list:
+            for arg_name, output in output_list:
                 output.show()
-            if group_name == 'Error' and 'OnePushConfig' in self.ALAS_ARGS[task].get(group_name, {}):
-                put_system_notification_settings(self, task)
+                if group_name == 'Error' and arg_name == 'SystemNotification':
+                    put_system_notification_settings(self, task)
 
         return len(output_list)
 
@@ -488,7 +492,7 @@ class AlasGUI(Frame):
             label_on=t("Gui.Button.Stop"),
             label_off=t("Gui.Button.Start"),
             onclick_on=lambda: self.alas.stop(),
-            onclick_off=lambda: self.alas.start(None, updater.event),
+            onclick_off=self._start_alas,
             get_state=lambda: self.alas.alive,
             color_on="off",
             color_off="on",
@@ -612,7 +616,6 @@ class AlasGUI(Frame):
                 toast(
                     t("Gui.Toast.ConfigSaved"),
                     duration=1,
-                    position="right",
                     color="success",
                 )
                 logger.info(
@@ -750,7 +753,8 @@ class AlasGUI(Frame):
         log.console.width = log.get_width()
 
         with use_scope("scheduler-bar"):
-            put_text(t("Gui.Overview.Scheduler")).style(
+            title = f"Task.{task}.name" if task in ManualConfig.MANUAL_ONLY_TOOLS else "Gui.Overview.Scheduler"
+            put_text(t(title)).style(
                 "font-size: 1.25rem; margin: auto .5rem auto;"
             )
             put_scope("scheduler_btn")
@@ -759,7 +763,7 @@ class AlasGUI(Frame):
             label_on=t("Gui.Button.Stop"),
             label_off=t("Gui.Button.Start"),
             onclick_on=get_task_stop(self, task, lambda: self.alas.stop()),
-            onclick_off=get_task_start(self, task, lambda: self.alas.start(task)),
+            onclick_off=partial(self._start_alas, task),
             get_state=lambda: self.alas.alive,
             color_on="off",
             color_off="on",
@@ -1118,6 +1122,21 @@ class AlasGUI(Frame):
             del self.alas
         self.state_switch.switch()
 
+    def _start_alas(self, task: str | None = None) -> None:
+        if self.alas_name not in alas_instance(include_default=False):
+            self.show()
+            toast(
+                "配置文件不存在，请重新选择或新增配置。"
+                if lang.LANG.startswith("zh")
+                else "Configuration file not found. Select or add a configuration.",
+                color="warning",
+            )
+            return
+        if task is None:
+            self.alas.start(None, updater.event)
+        else:
+            get_task_start(self, task, lambda: self.alas.start(task))()
+
     def ui_alas(self, config_name: str) -> None:
         if config_name == self.alas_name:
             self.expand_menu()
@@ -1248,7 +1267,6 @@ class AlasGUI(Frame):
             toast(
                 _t("Gui.Toast.DisableTranslateMode"),
                 duration=0,
-                position="right",
                 onclick=_disable,
             )
 
@@ -1329,7 +1347,6 @@ class AlasGUI(Frame):
                 1: lambda: toast(
                     t("Gui.Toast.ClickToUpdate"),
                     duration=0,
-                    position="right",
                     color="success",
                     onclick=goto_update,
                 )
@@ -1347,7 +1364,7 @@ class AlasGUI(Frame):
         self.task_handler.start()
 
         # Return to previous page
-        if aside not in ["Home", None]:
+        if aside != "Home" and aside in alas_instance(include_default=False):
             self.ui_alas(aside)
 
 
@@ -1438,6 +1455,7 @@ def app():
     from deploy.Windows.atomic import atomic_failure_cleanup
     atomic_failure_cleanup('./config')
 
+    @webconfig(css_style=Path(filepath_css("toast")).read_text(encoding="utf-8"))
     def index():
         if key is not None and not login(key):
             logger.warning(f"{info.user_ip} login failed.")

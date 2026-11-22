@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "source": "world-boss-no-stamina-20261107.png",
+  "suite": "world_boss_20261107",
+  "case": "world-boss-no-stamina-20261107",
+  "items": [
+    {
+      "name": "WORLD_BOSS_NO_STAMINA",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "share",
+      "module": "knights/world_boss/entry_resources",
+      "box": [
+        556,
+        141,
+        725,
+        178
+      ]
+    },
+    {
+      "name": "WORLD_BOSS_STAMINA_CANCEL",
+      "kind": "base",
+      "frame": 1,
+      "namespace": "share",
+      "module": "knights/world_boss/entry_resources",
+      "box": [
+        502,
+        533,
+        561,
+        566
+      ]
+    }
+  ]
+}

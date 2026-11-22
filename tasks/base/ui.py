@@ -1,7 +1,10 @@
+import cv2
+
 import module.config.server as server_
 from module.base.button import ButtonWrapper
 from module.base.decorator import run_once
 from module.base.timer import Timer
+from module.base.utils import crop, extract_white_letters
 from module.exception import GameNotRunningError, GamePageUnknownError
 from module.logger import logger
 from module.ocr.language import resolve_ocr_lang
@@ -585,17 +588,32 @@ class UI(ResourceBarMixin, MainPage):
             return False
 
         if server_.is_oversea_server(self.config.Emulator_PackageName) and server_.lang == 'global_cn':
+            # Require visible white strokes as well as the complete phrase.
+            # Faded/blinking text waits for its bright frame; OCR confidence
+            # alone does not distinguish dim popup backgrounds from readiness.
+            if not self.image_color_count(OCR_LOGIN_START, color=(255, 255, 255), threshold=30, count=50):
+                return False
+            # Recovery visits this check on ordinary task frames too. A white
+            # pixel count alone admits unrelated arena labels, causing OCR and
+            # its logs on every frame. Compare only the bright glyphs against
+            # the existing text asset so changing splash artwork is discarded.
+            # This is a current-frame candidate filter, never a readiness cache
+            # or polling interval: a newly visible title must proceed at once.
+            # OCR still validates the full phrase, and popup checks below still
+            # decide whether the background title is safe to interact with.
+            observed = crop(self.device.image, OCR_LOGIN_START.area, copy=False)
+            template = OCR_LOGIN_START.matched_button.image
+            observed = cv2.inRange(extract_white_letters(observed, threshold=255), 0, 29)
+            template = cv2.inRange(extract_white_letters(template, threshold=255), 0, 29)
+            similarity = cv2.minMaxLoc(cv2.matchTemplate(observed, template, cv2.TM_CCOEFF_NORMED))[1]
+            if similarity <= 0.85:
+                return False
             # OCR can still read the title through a dim overlay. Popup presence
             # is checked without action intervals: a close request in cooldown
             # must not grant permission to click the background title.
             if any(self.appear(button, interval=0) for button in (
                 ANNOUNCEMENT_CLOSE, NETWORK_ERROR_DISCONNECT, NETWORK_ERROR_ABNORMAL, TOUCH_TO_CLOSE,
             )):
-                return False
-            # Require visible white strokes as well as the complete phrase.
-            # Faded/blinking text waits for its bright frame; OCR confidence
-            # alone does not distinguish dim popup backgrounds from readiness.
-            if not self.image_color_count(OCR_LOGIN_START, color=(255, 255, 255), threshold=30, count=50):
                 return False
             appear = OcrWhiteLetterOnComplexBackground(
                 OCR_LOGIN_START, lang=resolve_ocr_lang(self.config), name='LoginStart',

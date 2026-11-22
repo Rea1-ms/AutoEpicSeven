@@ -304,7 +304,8 @@
       "GetSupportReward": true,
       "GetCompletionRecord": true,
       "GetDetectiveSearch": true,
-      "GetEpicPathDailyReward": true
+      "GetEpicPathDailyReward": true,
+      "GetCarrotReward": true
     }
   },
   "SpecialActivity": {
@@ -390,6 +391,14 @@
       "Mode": "Main",
       "Number": 0,
       "MaxStages": 0
+    }
+  },
+  "AutomatonTower": {
+    "Scheduler": {
+      "Enable": false,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "AutomatonTower",
+      "ServerUpdate": "02:00"
     }
   },
   "SanctuaryMonthly": {

@@ -317,7 +317,7 @@ page_main.link(MAIN_GOTO_SECRET_SHOP, destination=page_secret_shop, match_before
 # before clicking: the entry disappears when the campaign is closed.
 if server_.lang == "global_cn":
     from tasks.base.assets.assets_base_page import BACK
-    from tasks.activity.assets.assets_activity_huche_shop_26_9_17 import (
+    from tasks.activity.assets.assets_activity_huche_shop import (
         HUCHE_SHOP_CHECK,
         MAIN_GOTO_HUCHE_SHOP,
     )
@@ -466,6 +466,43 @@ page_combat_season.link(COMMON_ENTRY, destination=page_combat_common)
 page_combat_common.link(SEASON_ENTRY, destination=page_combat_season)
 page_combat_urgent.link(COMMON_ENTRY, destination=page_combat_common)
 page_combat_urgent.link(SEASON_ENTRY, destination=page_combat_season)
+
+# Automaton Tower (monthly tower, CN and overseas Chinese clients). The landing page,
+# floor list and team preparation page have different identities; keeping them
+# separate prevents a delayed floor transition from being read as a new entry.
+if server_.lang in ("cn", "global_cn"):
+    from tasks.automaton_tower.assets.assets_automaton_tower import (
+        AUTOMATON_TOWER_CHOOSE_TEAM,
+        AUTOMATON_TOWER_ENTER,
+        AUTOMATON_TOWER_ENTRY,
+        AUTOMATON_TOWER_LANDING_CHECK,
+        AUTOMATON_TOWER_PREPARE_CHECK,
+    )
+
+    page_automaton_tower = Page(AUTOMATON_TOWER_LANDING_CHECK)
+    page_automaton_tower.link(BACK, destination=page_combat_season)
+    page_combat_season.link(
+        AUTOMATON_TOWER_ENTRY,
+        destination=page_automaton_tower,
+        match_before_click=True,
+    )
+
+    page_automaton_tower_floor = Page(AUTOMATON_TOWER_CHOOSE_TEAM)
+    page_automaton_tower_floor.link(BACK, destination=page_automaton_tower)
+    page_automaton_tower.link(AUTOMATON_TOWER_ENTER, destination=page_automaton_tower_floor)
+
+    page_automaton_tower_prepare = Page(AUTOMATON_TOWER_PREPARE_CHECK)
+    page_automaton_tower_prepare.link(BACK, destination=page_automaton_tower_floor)
+    page_automaton_tower_floor.link(
+        AUTOMATON_TOWER_CHOOSE_TEAM,
+        destination=page_automaton_tower_prepare,
+    )
+else:
+    # Keep the task module importable for unsupported servers.  No page is
+    # registered in ``Page.all_pages`` on those clients.
+    page_automaton_tower = None
+    page_automaton_tower_floor = None
+    page_automaton_tower_prepare = None
 page_menu.link(MENU_GOTO_COMBAT, destination=page_combat)
 page_menu.link(MENU_GOTO_COMBAT, destination=page_combat_season)
 page_menu.link(MENU_GOTO_COMBAT, destination=page_combat_common)

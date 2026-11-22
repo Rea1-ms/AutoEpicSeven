@@ -4,13 +4,14 @@ from pathlib import Path
 from uuid import uuid4
 
 from pywebio.exceptions import SessionClosedException, SessionNotFoundException
-from pywebio.output import put_button, put_html, put_text, toast
+from pywebio.output import put_button, put_html, put_scope
 from pywebio.session import defer_call, eval_js, run_js
 
 from module.logger import logger
 from module.runtime_events import runtime_events
 from module.webui import lang
 from module.webui.setting import State
+from module.webui.utils import toast
 
 
 def runtime_text(zh, en):
@@ -19,14 +20,11 @@ def runtime_text(zh, en):
 
 def put_system_notification_settings(gui, task):
     """Reuse the existing config save path; never request permission server-side."""
-    put_text(runtime_text(
-        "系统通知可与远程推送同时启用。桌面版可直接通知；浏览器需在下方授权，并保持网页打开。",
-        "System notifications can be enabled alongside remote delivery. Desktop notifications work directly; "
-        "enable browser notifications below and keep this page open.",
-    )).style("font-size: .85rem; opacity: .8")
-    put_html('<div data-aes-notification-control></div>')
-    put_button(runtime_text('发送测试通知', 'Send test notification'),
-               onclick=lambda: gui.runtime_ui.send_test_notification(), color='secondary')
+    put_scope('system-notification-controls', [
+        put_html('<div data-aes-notification-control></div>'),
+        put_button(runtime_text('发送测试通知', 'Send test notification'),
+                   onclick=lambda: gui.runtime_ui.send_test_notification(), color='secondary', small=True),
+    ])
 
 
 class RuntimeUI:

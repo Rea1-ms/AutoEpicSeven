@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "source": "../../../tests/fixtures/automaton_tower/cn/MuMu-20261115-222856-893.png",
+  "suite": "automaton_tower_cn",
+  "case": "mumu-20261115-222856-893",
+  "items": [
+    {
+      "name": "OCR_DEVICE_NAME_LEFT",
+      "namespace": "cn",
+      "module": "automaton_tower/device",
+      "box": [
+        122,
+        229,
+        415,
+        283
+      ],
+      "kind": "base",
+      "frame": 1
+    },
+    {
+      "name": "OCR_DEVICE_LEVEL_LEFT",
+      "namespace": "cn",
+      "module": "automaton_tower/device",
+      "box": [
+        226,
+        47,
+        314,
+        77
+      ],
+      "kind": "base",
+      "frame": 1
+    },
+    {
+      "name": "OCR_DEVICE_NAME_MIDDLE",
+      "namespace": "cn",
+      "module": "automaton_tower/device",
+      "box": [
+        492,
+        229,
+        785,
+        283
+      ],
+      "kind": "base",
+      "frame": 1
+    },
+    {
+      "name": "OCR_DEVICE_LEVEL_MIDDLE",
+      "namespace": "cn",
+      "module": "automaton_tower/device",
+      "box": [
+        596,
+        47,
+        684,
+        77
+      ],
+      "kind": "base",
+      "frame": 1
+    },
+    {
+      "name": "OCR_DEVICE_NAME_RIGHT",
+      "namespace": "cn",
+      "module": "automaton_tower/device",
+      "box": [
+        862,
+        229,
+        1155,
+        283
+      ],
+      "kind": "base",
+      "frame": 1
+    },
+    {
+      "name": "OCR_DEVICE_LEVEL_RIGHT",
+      "namespace": "cn",
+      "module": "automaton_tower/device",
+      "box": [
+        966,
+        47,
+        1054,
+        77
+      ],
+      "kind": "base",
+      "frame": 1
+    }
+  ]
+}

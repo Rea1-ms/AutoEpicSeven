@@ -29,3 +29,12 @@ dependencies = [
     "uvicorn[standard]==0.17.6",
     "wrapt>=1.14.0",
 ]
+
+[dependency-groups]
+dev = [
+    "coverage==7.10.7",
+    "pynput>=1.8.2",
+    "ruff>=0.17.5",
+    "setuptools==79.0.1",
+    "ty>=0.0.104",
+]

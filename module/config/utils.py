@@ -149,7 +149,7 @@ def alas_template():
     return out
 
 
-def alas_instance():
+def alas_instance(*, include_default=True):
     """
     Returns:
         list[str]: Name of all Alas instances, except `template`.
@@ -159,12 +159,13 @@ def alas_instance():
         name, extension = os.path.splitext(file)
         config_name, mod_name = os.path.splitext(name)
         mod_name = mod_name[1:]
-        if name != 'template' and extension == '.json' and mod_name == '':
+        if (name != 'template' and extension == '.json' and mod_name == ''
+                and os.path.isfile(filepath_config(name))):
             out.append(name)
 
     # out.extend(mod_instance())
 
-    if not len(out):
+    if not out and include_default:
         out = ['aes']
 
     return out

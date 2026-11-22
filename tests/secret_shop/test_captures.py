@@ -6,7 +6,9 @@ from module.config import server
 
 server.set_lang('global_cn')
 
-from tasks.secret_shop.assets.assets_secret_shop import BUY_CONFIRM, REFRESH_CONFIRM  # noqa: E402
+from tasks.secret_shop.assets.assets_secret_shop import (  # noqa: E402
+    BUY_BOTTOM_STABLE, BUY_CONFIRM, BUY_TOP_STABLE, REFRESH_CONFIRM,
+)
 from tasks.base.assets.assets_base_popup import NETWORK_ERROR_ABNORMAL, NETWORK_ERROR_DISCONNECT  # noqa: E402
 from tasks.secret_shop.payment import ShopPayment  # noqa: E402
 from tasks.secret_shop.recognition import ShopGoods, same_currency_image  # noqa: E402
@@ -27,6 +29,8 @@ FIXTURE_CASES = {
         '20261002-151456-902', '20261002-151504-141',
         '20261002-201411-848', '20261002-221022-016', '20261003-125942-495',
         'secret-shop-bookmark-20261105',
+        'secret-shop-bottom-entry-20261107',
+        'secret-shop-bookmark-20261112',
     ],
     'test_available_and_sold_targets_in_both_scroll_positions': [
         '20261001-174909-267', '20261002-151247-016', '20261002-151254-745',
@@ -37,6 +41,8 @@ FIXTURE_CASES = {
         '20261002-201411-848', '20261002-221022-016',
         '20261003-125942-495', '20261003-125720-050',
         'secret-shop-bookmark-20261105',
+        'secret-shop-bottom-entry-20261107',
+        'secret-shop-bookmark-20261112',
     ],
     'test_covenant_and_mystic_debits_match_the_displayed_price': [
         '20261002-151247-016', '20261002-151257-334',
@@ -82,11 +88,134 @@ FIXTURE_CASES = {
         '20261003-125720-050', '20261002-151308-133',
     ],
     'test_current_gold_icon_reads_complete_balance': ['secret-shop-bookmark-20261105'],
+    'test_current_skystone_icon_reads_complete_balance': ['secret-shop-bookmark-20261112'],
     'test_current_resource_bar_opens_both_purchase_types': [
-        'secret-shop-bookmark-20261105', '20261002-151314-999',
+        'secret-shop-bookmark-20261105', '20261002-151314-999', 'secret-shop-bookmark-20261112',
     ],
-    'test_current_resource_bar_missing_anchors_never_authorize_purchase': ['secret-shop-bookmark-20261105'],
+    'test_current_resource_bar_missing_anchors_never_authorize_purchase': [
+        'secret-shop-bookmark-20261105', 'secret-shop-bookmark-20261112',
+    ],
 }
+
+
+SCROLL_FIXTURE_CASES = {
+    'test_retained_bottom_entry_scans_both_sections_before_goal_exit': [
+        'secret-shop-bottom-entry-20261107', '20261003-125942-495',
+    ],
+    'test_recovered_top_buys_before_scanning_bottom': [
+        'secret-shop-bottom-entry-20261107', '20261002-151247-016',
+        '20261002-151251-082', '20261002-151257-334',
+    ],
+    'test_top_entry_keeps_original_scan_order': [
+        '20261003-125942-495', 'secret-shop-bottom-entry-20261107',
+    ],
+    'test_missed_bottom_swipe_retries_before_exit': [
+        '20261003-125942-495', 'secret-shop-bottom-entry-20261107',
+    ],
+    'test_top_recovery_retries_without_extending_timeout': ['secret-shop-bottom-entry-20261107'],
+    'test_unknown_page_never_authorizes_scroll': ['20261001-174909-267'],
+    'test_recovery_preserves_confirmed_purchase': [
+        'secret-shop-bottom-entry-20261107', '20261002-151247-016',
+    ],
+}
+
+
+class ScrollRecoveryTests(unittest.TestCase):
+    """Stitched captures prove recognition and actions, not a continuous session."""
+
+    def run_scroll_replay(self, frames, purchased=False, **config):
+        with ControlledClock() as clock, patch('tasks.secret_shop.secret_shop.UI.ui_goto'):
+            device = CapturedReplayDevice(frames, clock)
+            shop = SecretShop(Config(**config), device)
+            if purchased:
+                shop.covenant_bought = 1
+                shop._covenant_purchased_this_round = True
+                shop._save_progress()
+            with patch.object(device, 'swipe', wraps=device.swipe) as swipe, \
+                    patch.object(shop, '_read_shop_currency', wraps=shop._read_shop_currency) as read, \
+                    patch.object(shop, '_delay_to_auto_refresh'):
+                result = shop.run(skip_first_screenshot=True)
+        self.assertIsNone(shop._payment)
+        self.assertEqual(shop.refresh_count, 0)
+        self.assertNotIn('REFRESH', [name for _, name in device.actions])
+        return shop, result, [call.args[:2] for call in swipe.call_args_list], read.call_count
+
+    def test_retained_bottom_entry_scans_both_sections_before_goal_exit(self):
+        bottom = 'secret-shop-bottom-entry-20261107'
+        sample = pixel_task(bottom)
+        self.assertTrue(sample._shop_is_ready())
+        self.assertTrue(sample.appear(BUY_BOTTOM_STABLE))
+        self.assertFalse(sample.appear(BUY_TOP_STABLE))
+        frames = [bottom] * 4 + ['20261003-125942-495'] * 2 + [bottom] * 2
+        shop, result, swipes, reads = self.run_scroll_replay(
+            frames, purchased=True, SecretShop_OnlyFree=False,
+            SecretShop_CompletionMode='PurchaseCount', SecretShop_TargetCovenant=1,
+            SecretShop_BuyMysticMedal=False,
+        )
+        self.assertTrue(result)
+        self.assertEqual(shop.device.index, 7)
+        self.assertEqual(shop.device.actions, [(0, 'swipe'), (3, 'swipe'), (5, 'swipe')])
+        self.assertEqual(swipes, [((960, 300), (960, 550))] * 2 + [((960, 550), (960, 300))])
+        self.assertEqual((shop.covenant_bought, reads), (1, 0))
+        self.assertTrue(shop._scrolled)
+
+    def test_recovered_top_buys_before_scanning_bottom(self):
+        bottom = 'secret-shop-bottom-entry-20261107'
+        frames = [bottom] * 4 + ['20261002-151247-016'] * 3
+        frames += ['20261002-151251-082'] * 2 + ['20261002-151257-334'] * 5 + [bottom] * 3
+        shop, result, swipes, reads = self.run_scroll_replay(frames)
+        self.assertTrue(result)
+        names = [name for _, name in shop.device.actions]
+        self.assertEqual(names[:2], ['swipe', 'swipe'])
+        self.assertEqual(names[2:4], ['BUY_TOP_result3', 'BUY_CONFIRM'])
+        self.assertEqual(names[4:], ['swipe'])
+        self.assertEqual((shop.covenant_bought, shop.mystic_bought), (1, 0))
+        self.assertEqual(shop.config.stored.Gold.value, 196344384)
+        self.assertTrue(shop._covenant_purchased_this_round)
+        self.assertEqual(reads, 2)
+        self.assertEqual(swipes, [((960, 300), (960, 550))] * 2 + [((960, 550), (960, 300))])
+
+    def test_top_entry_keeps_original_scan_order(self):
+        frames = ['20261003-125942-495'] * 2 + ['secret-shop-bottom-entry-20261107'] * 2
+        shop, result, swipes, reads = self.run_scroll_replay(frames)
+        self.assertTrue(result)
+        self.assertEqual(shop.device.actions, [(1, 'swipe')])
+        self.assertEqual(swipes, [((960, 550), (960, 300))])
+        self.assertEqual((shop.device.index, reads), (3, 0))
+
+    def test_missed_bottom_swipe_retries_before_exit(self):
+        frames = ['20261003-125942-495'] * 8 + ['secret-shop-bottom-entry-20261107'] * 2
+        shop, result, swipes, reads = self.run_scroll_replay(frames)
+        self.assertTrue(result)
+        self.assertEqual(shop.device.actions, [(1, 'swipe'), (4, 'swipe'), (7, 'swipe')])
+        self.assertEqual(swipes, [((960, 550), (960, 300))] * 3)
+        self.assertEqual((shop.device.index, reads), (9, 0))
+
+    def test_top_recovery_retries_without_extending_timeout(self):
+        shop, result, swipes, reads = self.run_scroll_replay(['secret-shop-bottom-entry-20261107'] * 123)
+        self.assertFalse(result)
+        self.assertEqual(shop.config.delays, [{'minute': 10}])
+        self.assertEqual(shop.device.index, 120)
+        self.assertEqual(shop.device.actions, [(index, 'swipe') for index in range(0, 120, 3)])
+        self.assertEqual(swipes, [((960, 300), (960, 550))] * 40)
+        self.assertEqual(reads, 0)
+
+    def test_unknown_page_never_authorizes_scroll(self):
+        shop, result, swipes, reads = self.run_scroll_replay(['20261001-174909-267'] * 123)
+        self.assertFalse(result)
+        self.assertEqual(shop.config.delays, [{'minute': 10}])
+        self.assertEqual((shop.device.actions, swipes, reads), ([], [], 0))
+
+    def test_recovery_preserves_confirmed_purchase(self):
+        bottom = 'secret-shop-bottom-entry-20261107'
+        frames = [bottom] * 2 + ['20261002-151247-016'] * 2 + [bottom] * 2
+        shop, result, swipes, reads = self.run_scroll_replay(frames, purchased=True)
+        self.assertTrue(result)
+        self.assertEqual(shop.covenant_bought, 1)
+        self.assertTrue(shop._covenant_purchased_this_round)
+        self.assertEqual(shop.device.actions, [(0, 'swipe'), (3, 'swipe')])
+        self.assertEqual(swipes, [((960, 300), (960, 550)), ((960, 550), (960, 300))])
+        self.assertEqual(reads, 0)
 
 
 class CapturedShopTests(unittest.TestCase):
@@ -127,18 +256,31 @@ class CapturedShopTests(unittest.TestCase):
         self.assertEqual([(kind, button.area) for kind, button in shop._find_target_buy_buttons()],
                          [('covenant', (1172, 151, 1212, 171))])
 
+    def test_current_skystone_icon_reads_complete_balance(self):
+        shop = pixel_task('secret-shop-bookmark-20261112')
+        self.assertTrue(shop._shop_is_ready())
+        self.assertEqual(shop._read_shop_balance(), (285411424, 1366))
+        self.assertEqual([(kind, button.area) for kind, button in shop._find_target_buy_buttons()],
+                         [('covenant', (1172, 586, 1212, 606))])
+
     def test_current_resource_bar_opens_both_purchase_types(self):
         # The new capture contains covenant bookmarks only. For mystic, put
         # its resource band on a reviewed older mystic capture; this is an
         # explicit synthetic combination, not a second current shop capture.
-        current = capture('secret-shop-bookmark-20261105')
-        for fixture_id, kind in (('secret-shop-bookmark-20261105', 'covenant'),
-                                 ('20261002-151314-999', 'mystic')):
-            with self.subTest(kind=kind), ControlledClock() as clock:
+        scenarios = (
+            ('secret-shop-bookmark-20261105', 'secret-shop-bookmark-20261105', 'covenant', (1172, 151, 1212, 171)),
+            ('secret-shop-bookmark-20261105', '20261002-151314-999', 'mystic', (1172, 151, 1212, 171)),
+            ('secret-shop-bookmark-20261112', 'secret-shop-bookmark-20261112', 'covenant', (1172, 586, 1212, 606)),
+            ('secret-shop-bookmark-20261112', '20261002-151314-999', 'mystic', (1172, 151, 1212, 171)),
+        )
+        for resource_id, fixture_id, kind, area in scenarios:
+            with self.subTest(resource=resource_id, kind=kind), ControlledClock() as clock:
+                current = capture(resource_id)
+                gold = captures()[resource_id]['expected_balance'][0]
                 device = CapturedReplayDevice([fixture_id] * 4, clock)
                 screenshot = device.screenshot
 
-                def observe(device=device, screenshot=screenshot):
+                def observe(device=device, screenshot=screenshot, current=current):
                     screenshot()
                     device.image[:60] = current[:60]
 
@@ -150,8 +292,8 @@ class CapturedShopTests(unittest.TestCase):
 
                 click = device.click
 
-                def request(button, click=click, boundary=PurchaseBoundary):
-                    self.assertEqual(button.button, (1172, 151, 1212, 171))
+                def request(button, click=click, boundary=PurchaseBoundary, area=area):
+                    self.assertEqual(button.button, area)
                     click(button)
                     raise boundary
 
@@ -161,18 +303,24 @@ class CapturedShopTests(unittest.TestCase):
                 self.assertEqual(len(device.actions), 1)
                 self.assertEqual(device.actions[0][0], 1)
                 self.assertEqual(shop._payment.kind, kind)
-                self.assertEqual(shop._payment.before, (255611586, None))
+                self.assertEqual(shop._payment.before, (gold, None))
                 self.assertFalse(shop._payment.submitted)
                 self.assertEqual((shop.covenant_bought, shop.mystic_bought, shop.refresh_count), (0, 0, 0))
 
     def test_current_resource_bar_missing_anchors_never_authorize_purchase(self):
         # First recognize an intact frame so an old template offset exists.
         # Removing either live boundary must still block opening a purchase.
-        for area in ((715, 12, 750, 52), (881, 12, 916, 52)):
-            with self.subTest(missing_area=area), ControlledClock() as clock:
-                device = CapturedReplayDevice(['secret-shop-bookmark-20261105'] * 123, clock)
+        scenarios = (
+            ('secret-shop-bookmark-20261105', (715, 12, 750, 52)),
+            ('secret-shop-bookmark-20261105', (881, 12, 916, 52)),
+            ('secret-shop-bookmark-20261112', (643, 12, 678, 52)),
+            ('secret-shop-bookmark-20261112', (811, 12, 846, 52)),
+        )
+        for fixture_id, area in scenarios:
+            with self.subTest(fixture=fixture_id, missing_area=area), ControlledClock() as clock:
+                device = CapturedReplayDevice([fixture_id] * 123, clock)
                 shop = SecretShop(Config(), device)
-                self.assertEqual(shop._read_shop_balance(), (255611586, 762))
+                self.assertEqual(shop._read_shop_balance(), tuple(captures()[fixture_id]['expected_balance']))
                 screenshot = device.screenshot
 
                 def obscure(device=device, area=area):

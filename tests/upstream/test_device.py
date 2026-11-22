@@ -16,6 +16,7 @@ from module.device.connection import Connection
 from module.device.device import Device
 from module.device.method.adb import Adb
 from module.device.method.ldopengl import LDOpenGL
+from module.device.method.nemu_ipc import NemuIpc
 from module.device.method.remove_warning import (
     remove_screenshot_warning,
     remove_shell_warning,
@@ -209,6 +210,13 @@ class WarningTests(unittest.TestCase):
 
 
 class EmulatorTests(unittest.TestCase):
+    def test_mumu_screenshot_preserves_rgb_channels_and_flips_rows(self):
+        rgba = np.array([[[250, 20, 7, 0], [4, 50, 210, 255]],
+                         [[30, 160, 9, 128], [90, 11, 230, 64]]], dtype=np.uint8)
+        device = object.__new__(NemuIpc)
+        device.nemu_ipc = SimpleNamespace(screenshot=Mock(return_value=rgba))
+        np.testing.assert_array_equal(device.screenshot_nemu_ipc(), rgba[::-1, :, :3])
+
     def test_mac_emulator_serial_requires_engine_and_platform(self):
         for mac, family, serial, engine, expected in (
                 (True, False, 'emulator-5554', 'MacPro', True),

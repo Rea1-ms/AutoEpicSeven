@@ -7,7 +7,7 @@ class ScrcpyOptions:
     frame_rate = 10
 
     @classmethod
-    def codec_options(cls) -> str:
+    def codec_options(cls, frame_rate: int | None = None) -> str:
         """
         Custom codec options passing through scrcpy.
         https://developer.android.com/reference/android/media/MediaFormat
@@ -15,6 +15,7 @@ class ScrcpyOptions:
         Returns:
             key_profile=1,key_level=4096,...
         """
+        frame_rate = cls.frame_rate if frame_rate is None else frame_rate
         options = dict(
             # H.264 profile and level
             # https://developer.android.com/reference/android/media/MediaCodecInfo.CodecProfileLevel
@@ -33,14 +34,14 @@ class ScrcpyOptions:
             # COLOR_Format24bitBGR888
             key_color_format=12,
             # The same as output frame rate to lower CPU consumption
-            key_capture_rate=cls.frame_rate,
+            key_capture_rate=frame_rate,
             # 20Mbps, the maximum output bitrate of scrcpy
             key_bit_rate=20000000,
         )
         return ','.join([f'{k}={v}' for k, v in options.items()])
 
     @classmethod
-    def arguments(cls) -> t.List[str]:
+    def arguments(cls, frame_rate: int | None = None) -> t.List[str]:
         """
         https://github.com/Genymobile/scrcpy/blob/master/server/src/main/java/com/genymobile/scrcpy/Server.java
         https://github.com/Genymobile/scrcpy/blob/master/server/src/main/java/com/genymobile/scrcpy/Options.java
@@ -48,6 +49,7 @@ class ScrcpyOptions:
         Returns:
             ['log_level=info', 'max_size=1280', ...]
         """
+        frame_rate = cls.frame_rate if frame_rate is None else frame_rate
         options = [
             'log_level=info',
             'max_size=1280',
@@ -55,7 +57,7 @@ class ScrcpyOptions:
             # If a higher value is set, scrcpy fallback to 8Mbps default.
             'bit_rate=20000000',
             # Screenshot time cost <= 300ms is enough for human speed.
-            f'max_fps={cls.frame_rate}',
+            f'max_fps={frame_rate}',
             # No orientation lock
             f'lock_video_orientation={const.LOCK_SCREEN_ORIENTATION_UNLOCKED}',
             # Always true
@@ -78,7 +80,7 @@ class ScrcpyOptions:
             # Empty value, let scrcpy to decide
             # 'encoder_name=',
             # Codec options
-            f'codec_options={cls.codec_options()}',
+            f'codec_options={cls.codec_options(frame_rate)}',
             # Useless, always false
             'power_off_on_close=false',
             'clipboard_autosync=false',
@@ -87,7 +89,11 @@ class ScrcpyOptions:
         return options
 
     @classmethod
-    def command_v125(cls, jar_path='/data/local/tmp/scrcpy-server.jar') -> t.List[str]:
+    def command_v125(
+        cls,
+        jar_path='/data/local/tmp/scrcpy-server.jar',
+        frame_rate: int | None = None,
+    ) -> t.List[str]:
         """
         Generate the commands to run scrcpy.
         """
@@ -98,11 +104,16 @@ class ScrcpyOptions:
             'com.genymobile.scrcpy.Server',
             '1.25',
         ]
-        commands += cls.arguments()
+        commands += cls.arguments(frame_rate)
         return commands
 
     @classmethod
-    def command_v120(cls, jar_path='/data/local/tmp/scrcpy-server.jar') -> t.List[str]:
+    def command_v120(
+        cls,
+        jar_path='/data/local/tmp/scrcpy-server.jar',
+        frame_rate: int | None = None,
+    ) -> t.List[str]:
+        frame_rate = cls.frame_rate if frame_rate is None else frame_rate
         commands = [
             f"CLASSPATH={jar_path}",
             "app_process",
@@ -112,7 +123,7 @@ class ScrcpyOptions:
             "info",  # Log level: info, verbose...
             f"1280",  # Max screen width (long side)
             f"20000000",  # Bitrate of video
-            f"{cls.frame_rate}",  # Max frame per second
+            f"{frame_rate}",  # Max frame per second
             f"{const.LOCK_SCREEN_ORIENTATION_UNLOCKED}",  # Lock screen orientation: LOCK_SCREEN_ORIENTATION
             "true",  # Tunnel forward
             "-",  # Crop screen
@@ -121,7 +132,7 @@ class ScrcpyOptions:
             "0",  # Display id
             "false",  # Show touches
             "false",  # Stay awake
-            cls.codec_options(),  # Codec (video encoding) options
+            cls.codec_options(frame_rate),  # Codec (video encoding) options
             "-",  # Encoder name
             "false",  # Power off screen after server closed
         ]
