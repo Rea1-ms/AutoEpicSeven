@@ -1,6 +1,32 @@
 {
   "version": 1,
   "fixtures": {
+    "gear-start-available": {
+      "path": "tests/fixtures/historical/global_cn/repeat_combat/gear-start-available.png",
+      "sha256": "e13642c0b6b83b6f064b0e46b3523b953664be0be807435f81522d65f87a4092",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "gear-start-available",
+      "source": "2026-11-22_09-35-59-280974.png",
+      "source_sha256": "5595a5800762ab9c16c548d09ffcd331b72a345b709852f28e0124fa46d9f2f2",
+      "privacy_redaction": [[0, 680, 180, 720]],
+      "used_by": [
+        "tests.combat.test_repeat_leif_count.RepeatLeifTests.test_repeat_start_stops_on_equipment_inventory_full"
+      ]
+    },
+    "equipment-inventory-full": {
+      "path": "tests/fixtures/historical/global_cn/repeat_combat/equipment-inventory-full.png",
+      "sha256": "f9d7de34ea799d88a7f00f2a7a1d8d8fcd1e0640db28af321e80f980e069966f",
+      "server": "global_cn",
+      "capture_type": "emulator_screenshot",
+      "scene": "equipment-inventory-full",
+      "source": "Scrcpy-20261122-124622-449.png",
+      "source_sha256": "1804362f30eac737804c7e5643986faf8d0e3b0f9e08c8e7710535aadf33c4b8",
+      "privacy_redaction": [[0, 680, 180, 720]],
+      "used_by": [
+        "tests.combat.test_repeat_leif_count.RepeatLeifTests.test_repeat_start_stops_on_equipment_inventory_full"
+      ]
+    },
     "gift-shelf-10": {
       "path": "tests/fixtures/historical/global_cn/friendship_gift/gift-shelf-10.png",
       "sha256": "3b45e8a0d52ddfff45ffe1e0278dbe43f651c0983f1504d25bcd6b01ffbedf35",

@@ -20451,6 +20451,18 @@
           ],
           "status": "已纳入",
           "reason": "异界两片递增、奇数取整、真实计数和点击确认回归"
+        },
+        {
+          "id": "tests.combat.test_repeat_leif_count.RepeatLeifTests.test_repeat_start_stops_on_equipment_inventory_full",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "tests/fixtures/historical/global_cn/repeat_combat/gear-start-available.png",
+            "tests/fixtures/historical/global_cn/repeat_combat/equipment-inventory-full.png"
+          ],
+          "status": "已纳入",
+          "reason": "国际服中文实图回放验证装备背包已满时，首帧停止启动并要求人工处理，不点击遮罩后的开始按钮"
         }
       ]
     },

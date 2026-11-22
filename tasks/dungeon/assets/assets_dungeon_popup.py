@@ -1,7 +1,7 @@
 from module.base.button import Button, ButtonWrapper
 
 # This file was auto-generated, do not modify it manually. To generate:
-# ``` python -m dev_tools.button_extract ```
+# ``` python -m dev_tools.assets.button_extract ```
 
 LEIF_NOT_SELECTED = ButtonWrapper(
     name='LEIF_NOT_SELECTED',
@@ -32,12 +32,21 @@ PACKAGE_FULL = ButtonWrapper(
         color=(169, 176, 187),
         button=(619, 487, 657, 506),
     ),
-    global_cn=Button(
-        file='./assets/global_cn/dungeon/popup/PACKAGE_FULL.png',
-        area=(618, 487, 657, 506),
-        search=(598, 467, 677, 526),
-        color=(166, 173, 185),
-        button=(618, 487, 657, 506),
-    ),
+    global_cn=[
+        Button(
+            file='./assets/global_cn/dungeon/popup/PACKAGE_FULL.png',
+            area=(618, 487, 657, 506),
+            search=(598, 467, 677, 526),
+            color=(166, 173, 185),
+            button=(618, 487, 657, 506),
+        ),
+        Button(
+            file='./assets/global_cn/dungeon/popup/PACKAGE_FULL.2.png',
+            area=(574, 300, 706, 323),
+            search=(554, 280, 726, 343),
+            color=(63, 69, 75),
+            button=(574, 300, 706, 323),
+        ),
+    ],
     global_en=None,
 )
