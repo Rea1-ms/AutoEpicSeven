@@ -8,27 +8,22 @@ result or start the next floor from the wrong page.
 
 from __future__ import annotations
 
-import cv2
-
 from module.base.button import ClickButton
 from module.base.timer import Timer
 from module.config import server
 from module.exception import RequestHumanTakeover
 from module.logger import logger
-from module.ocr.ocr import Digit
 from tasks.automaton_tower.assets.assets_automaton_tower import (
     AUTOMATON_TOWER_BATTLE_START,
     AUTOMATON_TOWER_CHECK,
     AUTOMATON_TOWER_CHOOSE_TEAM,
     AUTOMATON_TOWER_CLEAR,
     AUTOMATON_TOWER_DEVICE_CONFIRM,
-    AUTOMATON_TOWER_DEVICE_DIALOG,
     AUTOMATON_TOWER_ENTER,
     AUTOMATON_TOWER_ENTRY,
     AUTOMATON_TOWER_FLOOR_CHECK,
     AUTOMATON_TOWER_LANDING_CHECK,
     AUTOMATON_TOWER_NEXT_FLOOR,
-    AUTOMATON_TOWER_PREPARE_CHECK,
     AUTOMATON_TOWER_SPEED_1X,
     AUTOMATON_TOWER_SPEED_2X,
     OCR_FLOOR_LIST,
@@ -39,7 +34,7 @@ from tasks.automaton_tower.assets.assets_automaton_tower_settlement import (
     TOWER_CONQUERED,
     TOWER_CONQUEST_NOTICE,
 )
-from tasks.automaton_tower.entry import AutomatonTowerEntry
+from tasks.automaton_tower.entry import AutomatonTowerEntry, AutomatonTowerFloorOcr
 from tasks.automaton_tower.policy import ProfileError
 from tasks.automaton_tower.profile_store import ProfileStore, StaminaSettings
 from tasks.automaton_tower.stamina import (
@@ -72,20 +67,6 @@ from tasks.knights.assets.assets_knights_world_boss_entry_resources import (
 from tasks.knights.assets.assets_knights_world_boss_entry_resources import (
     WORLD_BOSS_STAMINA_CANCEL as STAMINA_CANCEL,
 )
-
-
-class AutomatonTowerFloorOcr(Digit):
-    """Read the white ``第N层`` label from tower navigation pages."""
-
-    def pre_process(self, image):
-        image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
-        image = cv2.threshold(image, 80, 255, cv2.THRESH_BINARY)[1]
-        image = cv2.resize(
-            image,
-            (image.shape[1] * 3, image.shape[0] * 3),
-            interpolation=cv2.INTER_NEAREST,
-        )
-        return cv2.cvtColor(image, cv2.COLOR_GRAY2RGB)
 
 
 class AutomatonTower(AutomatonTowerEntry):
@@ -129,9 +110,6 @@ class AutomatonTower(AutomatonTowerEntry):
             self.appear(AUTOMATON_TOWER_FLOOR_CHECK, interval=0)
             or self.appear(AUTOMATON_TOWER_CHOOSE_TEAM, interval=0)
         )
-
-    def _is_prepare_page(self) -> bool:
-        return not self._is_entry_overlay() and self.appear(AUTOMATON_TOWER_PREPARE_CHECK, interval=0)
 
     def _is_stamina_dialog(self) -> bool:
         return self.match_template_color(STAMINA_DIALOG, threshold=30)
@@ -204,16 +182,6 @@ class AutomatonTower(AutomatonTowerEntry):
 
         logger.warning("Automaton Tower: leaf refill could not be verified; no further purchase")
         return False
-
-    def _is_device_dialog(self) -> bool:
-        # The level label changes between device rounds (for example Lv.1/2
-        # and Lv.2/2).  The confirmation control is popup-specific, so keep it
-        # as a fallback identity instead of missing a later round because the
-        # label text changed.
-        return not self._is_entry_overlay() and (
-            self.appear(AUTOMATON_TOWER_DEVICE_DIALOG, interval=0)
-            or self.appear(AUTOMATON_TOWER_DEVICE_CONFIRM, interval=0)
-        )
 
     def _read_floor(self, button, page_name: str) -> int | None:
         floor = AutomatonTowerFloorOcr(

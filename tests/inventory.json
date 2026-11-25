@@ -28228,13 +28228,52 @@
           "reason": "确认按钮必须同时满足模板命中和亮绿色状态。"
         },
         {
-          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_page_registration_is_limited_to_overseas_simplified_chinese",
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_combat_recovers_tower_after_inventory_back",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-15_14-43-29-271926",
+            "2026-11-15_14-43-24-984899",
+            "2026-11-15_14-43-11-056885",
+            "2026-11-15_14-43-06-134378",
+            "2026-11-15_14-42-58-668558"
+          ],
+          "status": "已纳入",
+          "reason": "背包返回月塔备战时由月塔识别并逐页返回，退至赛季页后继续公共导航。"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_tower_exit_ignores_ordinary_combat_prepare",
+          "category": "截图识别",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "legacy-urgent-tasks-normal-prepare"
+          ],
+          "status": "已纳入",
+          "reason": "普通备战页同时命中两个通用控件，但没有月塔楼层标签，退出逻辑不开启。"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_tower_exit_preserves_unidentified_frame_and_device_selection",
+          "category": "流程回放",
+          "requires_device": false,
+          "has_automatic_assertion": true,
+          "fixtures": [
+            "2026-11-15_14-43-29-271926",
+            "2026-11-15_14-43-15-991275",
+            "2026-11-15_14-43-06-134378"
+          ],
+          "status": "已纳入",
+          "reason": "未知转场超时与未选装置时保留现场，普通赛季页不进入月塔退出流程。"
+        },
+        {
+          "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_tower_pages_are_absent_from_shared_navigation",
           "category": "资源基础",
           "requires_device": false,
           "has_automatic_assertion": true,
           "fixtures": [],
           "status": "已纳入",
-          "reason": "独立进程核对国服、国际服简体中文和英文的页面注册。"
+          "reason": "独立进程核对三种客户端都不注册月塔页和入塔路由，公共赛季页仍可返回主页。"
         },
         {
           "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_battle_replay_starts_once_and_keeps_existing_auto_mode",
@@ -28482,10 +28521,11 @@
           "has_automatic_assertion": true,
           "fixtures": [
             "e7-tower-popup",
-            "2026-11-15_14-43-11-056885"
+            "2026-11-15_14-43-11-056885",
+            "2026-11-15_14-43-06-134378"
           ],
           "status": "已纳入",
-          "reason": "国服月塔与两服赛季弹窗回归，按用户要求暂未执行"
+          "reason": "赛季说明关闭后才允许返回，漏点重试并确认赛季页。"
         },
         {
           "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_season_popup_has_positive_identity_and_real_negative_scenes",
@@ -28513,10 +28553,13 @@
             "20261115-221944-879",
             "20261115-221946-748",
             "20261115-222909-462",
-            "20261115-222903-191"
+            "20261115-222903-191",
+            "20261115-222002-635",
+            "20261115-222011-239",
+            "20261115-222014-084"
           ],
           "status": "已纳入",
-          "reason": "国服月塔与两服赛季弹窗回归，按用户要求暂未执行"
+          "reason": "国服通过月塔任务自己的入口和楼层循环处理赛季说明、首次确认和恢复现有楼层。"
         },
         {
           "id": "tests.automaton_tower.test_automaton_tower.AutomatonTowerCnTests.test_cn_stage_entry_retries_confirm_and_preserves_current_difficulty",

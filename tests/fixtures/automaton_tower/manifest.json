@@ -340,7 +340,8 @@
         }
       ],
       "used_by": [
-        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_resume_screenshots_identify_pending_device"
+        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_resume_screenshots_identify_pending_device",
+        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_combat_recovers_tower_after_inventory_back"
       ]
     },
     "2026-11-15_14-43-02-635705": {
@@ -368,7 +369,10 @@
       "privacy_redaction": [],
       "used_by": [
         "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_resume_screenshots_identify_pending_device",
-        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_resume_from_combat_selects_device_before_starting_floor"
+        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_resume_from_combat_selects_device_before_starting_floor",
+        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_combat_recovers_tower_after_inventory_back",
+        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_tower_exit_preserves_unidentified_frame_and_device_selection",
+        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_season_popup_blocks_navigation_until_close_is_observed"
       ]
     },
     "2026-11-15_14-43-11-056885": {
@@ -386,7 +390,8 @@
         "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_resume_from_combat_selects_device_before_starting_floor",
         "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_resume_retries_dropped_selection_and_confirmation",
         "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_season_popup_blocks_navigation_until_close_is_observed",
-        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_season_popup_has_positive_identity_and_real_negative_scenes"
+        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_season_popup_has_positive_identity_and_real_negative_scenes",
+        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_combat_recovers_tower_after_inventory_back"
       ]
     },
     "2026-11-15_14-43-15-991275": {
@@ -406,7 +411,8 @@
         "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_device_retries_do_not_extend_deadline",
         "tests.automaton_tower.test_device_selection.TowerLegacyDebugTests.test_legacy_capture_does_not_require_ocr_and_deduplicates_retries",
         "tests.automaton_tower.test_device_selection.TowerLegacyDebugTests.test_debug_write_failure_keeps_legacy_actions_and_disables_only_capture",
-        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_season_popup_has_positive_identity_and_real_negative_scenes"
+        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_season_popup_has_positive_identity_and_real_negative_scenes",
+        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_tower_exit_preserves_unidentified_frame_and_device_selection"
       ]
     },
     "2026-11-15_14-43-21-857733": {
@@ -451,7 +457,8 @@
         "tests.automaton_tower.test_device_selection.TowerDeviceReplayTests.test_debug_profile_records_choice_and_preconfirm_frame",
         "tests.automaton_tower.test_device_selection.TowerLegacyDebugTests.test_legacy_capture_does_not_require_ocr_and_deduplicates_retries",
         "tests.automaton_tower.test_device_selection.TowerLegacyDebugTests.test_debug_write_failure_keeps_legacy_actions_and_disables_only_capture",
-        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_season_popup_has_positive_identity_and_real_negative_scenes"
+        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_season_popup_has_positive_identity_and_real_negative_scenes",
+        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_combat_recovers_tower_after_inventory_back"
       ]
     },
     "2026-11-15_14-43-29-271926": {
@@ -475,7 +482,9 @@
         "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_battle_replay_survives_long_hud_then_resolves_pending_device",
         "tests.automaton_tower.test_device_selection.TowerDeviceReplayTests.test_can_select_middle_or_right_from_another_existing_selection",
         "tests.automaton_tower.test_stamina.TowerStaminaTests.test_prepare_reads_balance_and_cost_separately",
-        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_season_popup_has_positive_identity_and_real_negative_scenes"
+        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_season_popup_has_positive_identity_and_real_negative_scenes",
+        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_combat_recovers_tower_after_inventory_back",
+        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_tower_exit_preserves_unidentified_frame_and_device_selection"
       ]
     },
     "2026-11-15_14-43-32-175894": {
@@ -1028,7 +1037,8 @@
       ],
       "used_by": [
         "tests.automaton_tower.test_automaton_tower.AutomatonTowerCnTests.test_cn_stage_entry_retries_confirm_and_preserves_current_difficulty",
-        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCnTests.test_cn_pending_modal_never_uses_generic_confirm_or_background_controls"
+        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCnTests.test_cn_pending_modal_never_uses_generic_confirm_or_background_controls",
+        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCnTests.test_cn_navigation_closes_season_modal_before_arrival"
       ]
     },
     "20261115-222005-252": {
@@ -1109,7 +1119,8 @@
         ]
       ],
       "used_by": [
-        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCnTests.test_cn_captures_reject_unrelated_popups_and_read_actual_floors"
+        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCnTests.test_cn_captures_reject_unrelated_popups_and_read_actual_floors",
+        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCnTests.test_cn_navigation_closes_season_modal_before_arrival"
       ]
     },
     "20261115-222014-084": {
@@ -1132,7 +1143,8 @@
         "tests.automaton_tower.test_automaton_tower.AutomatonTowerCnTests.test_cn_stage_entry_retries_confirm_and_preserves_current_difficulty",
         "tests.automaton_tower.test_automaton_tower.AutomatonTowerCnTests.test_cn_captures_reject_unrelated_popups_and_read_actual_floors",
         "tests.automaton_tower.test_stamina.TowerStaminaTests.test_prepare_reads_balance_and_cost_separately",
-        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCnTests.test_cn_battle_recovers_speed_and_auto_then_selects_and_advances"
+        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCnTests.test_cn_battle_recovers_speed_and_auto_then_selects_and_advances",
+        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCnTests.test_cn_navigation_closes_season_modal_before_arrival"
       ]
     },
     "20261115-222020-688": {

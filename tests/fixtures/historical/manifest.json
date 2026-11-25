@@ -662,7 +662,8 @@
       ],
       "used_by": [
         "tests.captured.test_urgent_tasks.ManualChecks.test_urgent_task_recognition_and_exchange",
-        "tests.captured.test_urgent_tasks_hint.HintScreenshotTests.test_all_supplied_hint_screenshots_are_detected_without_ocr"
+        "tests.captured.test_urgent_tasks_hint.HintScreenshotTests.test_all_supplied_hint_screenshots_are_detected_without_ocr",
+        "tests.automaton_tower.test_automaton_tower.AutomatonTowerCaptureTests.test_tower_exit_ignores_ordinary_combat_prepare"
       ]
     },
     "legacy-urgent-tasks-prepare-times-hint": {

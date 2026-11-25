@@ -259,6 +259,11 @@ class Combat(
     def _is_background_repeat_check_page(self, page) -> bool:
         return bool(getattr(page, "background_repeat_check", False))
 
+    def _tower_exit_recovery(self):
+        from tasks.automaton_tower.entry import AutomatonTowerEntry
+
+        return AutomatonTowerEntry(self.config, device=self.device).leave_tower
+
     def _prepare_background_repeat_check_context(self) -> None:
         """
         Normalize to a safe page before checking for an old background run.
@@ -301,7 +306,10 @@ class Combat(
         if self._uses_server_repeat_combat() and self._is_repeat_result_window():
             return
 
-        current = self.ui_get_current_page(skip_first_screenshot=True)
+        # The inventory's BACK can restore a tower screen after this scan.
+        # Keep the same opt-in recovery through the entire route to main.
+        recover = self._tower_exit_recovery()
+        current = self.ui_get_current_page(skip_first_screenshot=True, recover=recover)
         if self._is_supporter_page():
             # The side-story choose-team page is already deep inside the local
             # dungeon flow. It does not expose the stable top-right background
@@ -311,7 +319,7 @@ class Combat(
             logger.info(
                 "Combat: goto main before checking background repeat combat from supporter page"
             )
-            self.ui_goto_main()
+            self.ui_goto_main(recover=recover)
             self.device.screenshot()
             return
 
@@ -323,7 +331,7 @@ class Combat(
         logger.info(
             "Combat: current page is unsafe for background repeat precheck, goto main"
         )
-        self.ui_goto_main()
+        self.ui_goto_main(recover=recover)
         self.device.screenshot()
 
     def _dungeon_navigate(self, skip_first_screenshot=True) -> bool:
@@ -411,7 +419,7 @@ class Combat(
                 and not self.is_in_main(interval=0)
             ):
                 # Return to main so the session can keep running in background.
-                self.ui_goto_main()
+                self.ui_goto_main(recover=self._tower_exit_recovery())
 
             status = self._watch_repeat_combat(skip_first_screenshot=True)
             if status == "finished":

@@ -47,10 +47,12 @@ from tests.support.automaton_tower import (
     BATTLE_SELECTED,
     CLEAR,
     FLOOR,
+    HOME,
     PENDING,
     POST_CLEAR_OFFER,
     PREPARE,
     RESUME_CAPTURES,
+    SEASON,
     SELECTED,
     TOWER,
     TowerReplay,
@@ -485,23 +487,75 @@ class AutomatonTowerCaptureTests(unittest.TestCase):
         self.assertIs(get_tool_runner("AutomatonTower"), run_tool)
 
     def test_season_popup_blocks_navigation_until_close_is_observed(self):
-        from tasks.base.page import page_automaton_tower
-
         with ControlledClock() as clock:
             replay = TowerReplay([
                 capture("e7-tower-popup"), capture("e7-tower-popup", 0.1),
                 capture("e7-tower-popup", 2.1), capture(None, 0.1), capture(TOWER, 0.1),
+                capture(SEASON, 0.1),
             ], clock)
             self.assertFalse(replay.task._is_tower_page())
             self.assertFalse(replay.task._is_floor_page())
-            self.assertFalse(replay.task.ui_page_appear(page_automaton_tower))
-            replay.task.ui_goto(page_automaton_tower)
-            self.assertEqual(replay.index, 4)
-            self.assertEqual(replay.actions, [(0, "TOWER_SEASON_INFO"), (2, "TOWER_SEASON_INFO")])
+            self.assertTrue(replay.task.leave_tower())
+            self.assertEqual(replay.index, 5)
+            self.assertEqual(replay.actions, [(0, "TOWER_SEASON_INFO"), (2, "TOWER_SEASON_INFO"), (4, "BACK")])
             replay.assert_retried(self, "TOWER_SEASON_INFO", 2)
-            for _, _, area in replay.click_areas:
+            for _, _, area in replay.click_areas[:2]:
                 self.assertTrue(580 <= area[0] < area[2] <= 710)
                 self.assertTrue(680 <= area[1] < area[3] <= 720)
+
+    def test_combat_recovers_tower_after_inventory_back(self):
+        from tasks.base.page import page_inventory
+        from tasks.dungeon.dungeon import Combat
+
+        with ControlledClock() as clock:
+            replay = TowerReplay([
+                capture(None), capture(PREPARE), capture(PREPARE, 0.1), capture(PREPARE, 2.1),
+                capture(FLOOR, 0.1), capture(TOWER, 0.1), capture(SEASON, 0.1),
+                capture(HOME, 0.1), capture(HOME, 0.1),
+            ], clock)
+            task = Combat(replay.task.config, device=replay)
+            # The inventory is simulated and the home capture is redacted.
+            # The tower and season frames use the production recognizers.
+            task.ui_page_appear = lambda page, **kwargs: (
+                replay.index == 0 and page == page_inventory
+            ) or Combat.ui_page_appear(task, page, **kwargs)
+            task.is_in_main = lambda interval=0: replay.frame["fixture"] == HOME
+            task.handle_ui_recovery = lambda: False
+            task.ui_additional = lambda: False
+            task.ui_page_confirm = lambda page: False
+            task.acquire_lang_checked = lambda: False
+            task.sync_pending_resources = lambda: False
+            task._uses_server_repeat_combat = lambda: False
+            task._prepare_background_repeat_check_context()
+
+            self.assertEqual(replay.index, 8)
+            self.assertEqual(replay.actions, [(index, "BACK") for index in (0, 1, 3, 4, 5, 6)])
+
+    def test_tower_exit_ignores_ordinary_combat_prepare(self):
+        historical = ROOT / "tests/fixtures/historical/manifest.json"
+        with ControlledClock() as clock:
+            replay = TowerReplay([capture(None)], clock)
+            replay.image = fixture_image(historical, "legacy-urgent-tasks-normal-prepare")
+            self.assertTrue(replay.task._is_prepare_page())
+            self.assertTrue(replay.task.appear(AUTOMATON_TOWER_BATTLE_START))
+            self.assertFalse(replay.task.leave_tower())
+            self.assertEqual(replay.actions, [])
+
+    def test_tower_exit_preserves_unidentified_frame_and_device_selection(self):
+        with ControlledClock() as clock:
+            replay = TowerReplay([capture(PREPARE), capture(None, 15.1)], clock)
+            with self.assertRaisesRegex(RequestHumanTakeover, "safe exit"):
+                replay.task.leave_tower()
+            self.assertEqual(replay.actions, [(0, "BACK")])
+        with ControlledClock() as clock:
+            replay = TowerReplay([capture(PENDING)], clock)
+            with self.assertRaisesRegex(RequestHumanTakeover, "device selection"):
+                replay.task.leave_tower()
+            self.assertEqual(replay.actions, [])
+        with ControlledClock() as clock:
+            replay = TowerReplay([capture(SEASON)], clock)
+            self.assertFalse(replay.task.leave_tower())
+            self.assertEqual(replay.actions, [])
 
     def test_season_popup_has_positive_identity_and_real_negative_scenes(self):
         self.assertTrue(TOWER_SEASON_INFO.match_template(fixture_image(MANIFEST, "e7-tower-popup")))
@@ -512,33 +566,24 @@ class AutomatonTowerCaptureTests(unittest.TestCase):
                 self.assertFalse(replay.task._handle_tower_entry())
                 self.assertEqual(replay.actions, [])
 
-    def test_page_registration_is_limited_to_overseas_simplified_chinese(self):
+    def test_tower_pages_are_absent_from_shared_navigation(self):
         code = """
 import module.config.server as server
 server.server = {package!r}
 server.set_lang({lang!r})
 from tasks.base import page
 
-registered = 'page_automaton_tower' in page.Page.all_pages
-assert registered == ({lang!r} in ('cn', 'global_cn'))
 from tasks.automaton_tower.automaton_tower import AutomatonTower
 task = object.__new__(AutomatonTower)
-assert task._unsupported() == (not registered)
-if registered:
-    assert page.page_combat_season.links[page.page_automaton_tower].name == 'AUTOMATON_TOWER_ENTRY'
-    assert page.page_automaton_tower.links[page.page_automaton_tower_floor].name == 'AUTOMATON_TOWER_ENTER'
-    assert page.page_automaton_tower_floor.links[page.page_automaton_tower_prepare].name == 'AUTOMATON_TOWER_CHOOSE_TEAM'
-    page.Page.init_connection(page.page_automaton_tower_prepare)
-    assert page.page_combat_season.parent == page.page_automaton_tower
-    assert page.page_automaton_tower.check_button.name == 'AUTOMATON_TOWER_LANDING_CHECK'
-    assert page.page_automaton_tower_floor.check_button.name == 'AUTOMATON_TOWER_CHOOSE_TEAM'
-    assert all(marker.buttons for marker in page.Page.iter_check_buttons() if hasattr(marker, 'buttons'))
-else:
-    assert all(
-        not getattr(marker, 'name', '').startswith('AUTOMATON_TOWER_')
-        for check in page.Page.iter_check_buttons()
-        for marker in (check if isinstance(check, tuple) else (check,))
-    )
+assert task._unsupported() == ({lang!r} not in ('cn', 'global_cn'))
+assert all('automaton_tower' not in node.name for node in page.Page.iter_pages())
+assert all(
+    not button.name.startswith('AUTOMATON_TOWER_')
+    for node in page.Page.iter_pages()
+    for button in node.links.values()
+)
+page.Page.init_connection(page.page_main)
+assert page.page_combat_season.parent is page.page_main
 page.Page.clear_connection()
 """
         for package, lang in (
@@ -575,7 +620,8 @@ from tasks.automaton_tower.assets.assets_automaton_tower import (
     AUTOMATON_TOWER_ENTER, AUTOMATON_TOWER_SPEED_1X, AUTOMATON_TOWER_SPEED_2X,
     OCR_FLOOR_LIST, OCR_FLOOR_PREPARE,
 )
-from tasks.base.page import page_automaton_tower
+from module.exception import RequestHumanTakeover
+from tasks.base.page import page_combat_season
 case = unittest.TestCase()
 def cn(suffix, seconds=0.5):
     return capture('20261115-' + suffix, seconds)
@@ -592,11 +638,17 @@ with ControlledClock() as clock:
     replay = TowerReplay([
         cn('221941-499'), cn('221944-879'), cn('221944-879', 0.1),
         cn('221944-879', 2.1), capture(None, 0.1), cn('221946-748', 0.1),
+        cn('222002-635'), cn('222011-239'), cn('222014-084'),
     ], clock)
     replay.task.config.Emulator_PackageName = 'com.zlongame.cn.epicseven'
-    replay.task.ui_goto(page_automaton_tower)
-    case.assertEqual(replay.index, 5)
-    case.assertEqual(replay.actions, [(0, 'AUTOMATON_TOWER_ENTRY'), (1, 'TOWER_SEASON_INFO'), (3, 'TOWER_SEASON_INFO')])
+    case.assertTrue(replay.task._enter_tower())
+    case.assertEqual(replay.index, 1)
+    case.assertTrue(replay.task._enter_floor())
+    case.assertEqual(replay.index, 8)
+    case.assertEqual(replay.actions, [
+        (0, 'AUTOMATON_TOWER_ENTRY'), (1, 'TOWER_SEASON_INFO'), (3, 'TOWER_SEASON_INFO'),
+        (5, 'AUTOMATON_TOWER_ENTER'), (6, 'TOWER_STAGE_CONFIRM'), (7, 'AUTOMATON_TOWER_CHOOSE_TEAM'),
+    ])
     replay.assert_retried(case, 'TOWER_SEASON_INFO', 2)
 with ControlledClock() as clock:
     # An already started season can restore its floor list directly. The
@@ -607,6 +659,13 @@ with ControlledClock() as clock:
     case.assertTrue(replay.task._enter_floor())
     case.assertEqual(replay.task.current_floor, 2)
     case.assertEqual(replay.actions, [(0, 'AUTOMATON_TOWER_ENTRY'), (1, 'AUTOMATON_TOWER_CHOOSE_TEAM')])
+with ControlledClock() as clock:
+    replay = TowerReplay([
+        cn('222014-084'), cn('222011-239', 0.1), cn('221946-748', 0.1), cn('221941-499', 0.1),
+    ], clock)
+    case.assertTrue(replay.task.leave_tower())
+    case.assertEqual(replay.index, 3)
+    case.assertEqual(replay.actions, [(0, 'BACK'), (1, 'BACK'), (2, 'BACK')])
 """)
 
     def test_cn_stage_entry_retries_confirm_and_preserves_current_difficulty(self):
@@ -645,7 +704,11 @@ for suffix in ('221944-879', '222002-635'):
         case.assertTrue(task._is_entry_overlay())
         case.assertFalse(task._is_tower_page())
         case.assertFalse(task._is_floor_page())
-        case.assertFalse(task.ui_page_appear(page_automaton_tower))
+        case.assertFalse(task.ui_page_appear(page_combat_season))
+        if suffix == '222002-635':
+            with case.assertRaisesRegex(RequestHumanTakeover, 'stage confirmation'):
+                task.leave_tower()
+            case.assertEqual(replay.actions, [])
         case.assertTrue(task._handle_tower_entry())
         replay.screenshot()
         case.assertFalse(task._handle_tower_entry())

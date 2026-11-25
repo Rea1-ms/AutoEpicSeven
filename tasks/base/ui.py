@@ -237,10 +237,12 @@ class UI(ResourceBarMixin, MainPage):
             ) or self.appear(KNIGHTS_NOT_ENOUGH_PEOPLE, interval=interval)
         return self._ui_process_appear(page.check_button, interval=interval)
 
-    def ui_get_current_page(self, skip_first_screenshot=True):
+    def ui_get_current_page(self, skip_first_screenshot=True, *, recover=None):
         """
         Args:
             skip_first_screenshot:
+            recover: Optional callback that can leave a task-specific screen
+                before the current screenshot is scanned for shared pages.
 
         Returns:
             Page:
@@ -286,6 +288,9 @@ class UI(ResourceBarMixin, MainPage):
             if timeout.reached():
                 break
 
+            if recover is not None:
+                recover()
+
             # Known pages
             for page in Page.iter_pages():
                 if page.check_button is None:
@@ -323,11 +328,13 @@ class UI(ResourceBarMixin, MainPage):
         logger.critical("Please switch to a supported page before starting AES")
         raise GamePageUnknownError
 
-    def ui_goto(self, destination, skip_first_screenshot=True):
+    def ui_goto(self, destination, skip_first_screenshot=True, *, recover=None):
         """
         Args:
             destination (Page):
             skip_first_screenshot:
+            recover: Optional callback returning True after leaving a
+                task-specific screen on a freshly identified shared page.
         """
         # Create connection
         Page.init_connection(destination, extra_links=self._ui_build_dynamic_links())
@@ -349,6 +356,18 @@ class UI(ResourceBarMixin, MainPage):
 
             if self.handle_ui_recovery():
                 continue
+
+            if recover is not None:
+                try:
+                    recovered = recover()
+                except Exception:
+                    Page.clear_connection()
+                    raise
+                if recovered:
+                    # The callback has already confirmed the new page. A
+                    # pending transition from before the handoff is now stale.
+                    pending_source = pending_target = None
+                    entry_wait_route = None
 
             # Destination page
             if self.ui_page_appear(destination):
@@ -426,31 +445,32 @@ class UI(ResourceBarMixin, MainPage):
         # Reset connection
         Page.clear_connection()
 
-    def ui_ensure(self, destination, acquire_lang_checked=True, skip_first_screenshot=True):
+    def ui_ensure(self, destination, acquire_lang_checked=True, skip_first_screenshot=True, *, recover=None):
         """
         Args:
             destination (Page):
             acquire_lang_checked:
             skip_first_screenshot:
+            recover: Optional task-specific recovery for scanning and routing.
 
         Returns:
             bool: If UI switched.
         """
         logger.hr("UI ensure")
-        self.ui_get_current_page(skip_first_screenshot=skip_first_screenshot)
+        self.ui_get_current_page(skip_first_screenshot=skip_first_screenshot, recover=recover)
 
         self.ui_leave_special()
 
         if acquire_lang_checked:
             if self.acquire_lang_checked():
-                self.ui_get_current_page(skip_first_screenshot=skip_first_screenshot)
+                self.ui_get_current_page(skip_first_screenshot=skip_first_screenshot, recover=recover)
 
         if self.ui_current == destination:
             logger.info("Already at %s" % destination)
             return False
         else:
             logger.info("Goto %s" % destination)
-            self.ui_goto(destination, skip_first_screenshot=True)
+            self.ui_goto(destination, skip_first_screenshot=True, recover=recover)
             return True
 
     def ui_ensure_index(
@@ -631,8 +651,8 @@ class UI(ResourceBarMixin, MainPage):
 
         return appear
 
-    def ui_goto_main(self):
-        return self.ui_ensure(destination=page_main)
+    def ui_goto_main(self, *, recover=None):
+        return self.ui_ensure(destination=page_main, recover=recover)
 
     def ui_additional(self) -> bool:
         """
