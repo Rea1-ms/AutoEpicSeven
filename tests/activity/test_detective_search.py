@@ -12,7 +12,8 @@ from module.ocr.ocr import Ocr
 from tasks.activity.assets.assets_activity_detective_search import (
     OCR_DETECTIVE_POINTS,
 )
-from tasks.activity.detective_search import DetectiveSearch
+from tasks.activity.legacy.detective_search_2026_10_29 import detective_search
+from tasks.activity.legacy.detective_search_2026_10_29.detective_search import DetectiveSearch
 from tests.support.activity_replay import (
     AVAILABLE,
     HOME,
@@ -71,7 +72,7 @@ class DetectiveSearchReplayTests(ActivityReplayCase):
 
     def test_detective_zero_points_keeps_battle_recheck_without_clicking(self):
         r = self.replay(DetectiveSearch, [capture(AVAILABLE, locked=True)])
-        with patch("tasks.activity.detective_search.Ocr") as ocr:
+        with patch.object(detective_search, "Ocr") as ocr:
             ocr.return_value.ocr_single_line.return_value = "0/720"
             self.assertTrue(r.task.run_claim(navigate=False))
         self.assertFalse(r.actions)
@@ -79,7 +80,7 @@ class DetectiveSearchReplayTests(ActivityReplayCase):
 
     def test_detective_unknown_points_time_out_without_completion(self):
         r = self.replay(DetectiveSearch, [capture(AVAILABLE, locked=True, seconds=1)] * 48)
-        with patch("tasks.activity.detective_search.Ocr") as ocr:
+        with patch.object(detective_search, "Ocr") as ocr:
             ocr.return_value.ocr_single_line.return_value = "unreadable"
             self.assertFalse(r.task.run_claim(navigate=False))
         self.assertFalse(r.actions)

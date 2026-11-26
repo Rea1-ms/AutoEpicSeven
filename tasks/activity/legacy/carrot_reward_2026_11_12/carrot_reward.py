@@ -20,6 +20,7 @@ from tasks.base.ui import UI
 class CarrotReward(ActivityNavigationMixin, UI):
     """Claim earned carrot tiers without collecting or spending resources."""
 
+    FULL_PAGE_MARKERS = (CARROT_REWARD_CHECK,)
     CLAIM_FLOW_TIMEOUT_SECONDS = 45
     TIERS = (200, 400, 600, 800)
     REWARD_AREAS = (

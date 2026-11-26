@@ -5,7 +5,6 @@ from types import SimpleNamespace
 from unittest.mock import patch
 
 from module.config import server
-from tasks.activity import calendar
 from tests.support.history_fixtures import MANIFEST
 from tests.support.offline import fixture_image
 
@@ -24,13 +23,14 @@ class CurrentScreenshotTests(unittest.TestCase):
             HUCHE_MYSTIC_BUY,
             OCR_HUCHE_STOCK,
         )
-        from tasks.activity.huche_shop import HucheShop as CurrentShop
+        from tasks.activity.legacy.huche_shop_2026_11_19.huche_shop import (
+            HucheShop,
+            archived_window,
+        )
 
-        shop = object.__new__(CurrentShop)
+        shop = object.__new__(HucheShop)
         shop.config = SimpleNamespace()
-        window = next(window for window in calendar.load_calendar()
-                      if window.event_id == calendar.CURRENT_HUCHE_SHOP_ID)
-        shop._configure_offers(window)
+        shop._configure_offers(archived_window())
         shop.device = SimpleNamespace(image=None, stuck_record_add=lambda button: None)
         for scene, expected in (
             ("lobby", []), ("rotating", [(160, 2, 2)]),
@@ -56,13 +56,14 @@ class CurrentScreenshotTests(unittest.TestCase):
         from tasks.activity.assets.assets_activity_huche_shop_26_9_17 import (
             HUCHE_ITEM_SOLD_OUT,
         )
-        from tasks.activity.huche_shop import HucheShop
+        from tasks.activity.legacy.huche_shop_2026_11_19.huche_shop import (
+            HucheShop,
+            archived_window,
+        )
 
         shop = object.__new__(HucheShop)
         shop.config = SimpleNamespace()
-        window = next(window for window in calendar.load_calendar()
-                      if window.event_id == calendar.CURRENT_HUCHE_SHOP_ID)
-        shop._configure_offers(window)
+        shop._configure_offers(archived_window())
         shop.device = SimpleNamespace(
             image=fixture_image(MANIFEST, "huche-20261119-rotating-sold-out"),
             stuck_record_add=lambda button: None,
@@ -78,7 +79,10 @@ class CurrentScreenshotTests(unittest.TestCase):
                              [((160, 2), 0, False)])
 
     def test_regular_list_overlap_is_verified_in_both_directions(self):
-        from tasks.activity.huche_shop import HucheShop, RegularQuotaScan
+        from tasks.activity.legacy.huche_shop_2026_11_19.huche_shop import (
+            HucheShop,
+            RegularQuotaScan,
+        )
 
         shop = object.__new__(HucheShop)
         shop.device = SimpleNamespace(

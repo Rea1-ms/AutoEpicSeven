@@ -15,6 +15,7 @@ import module.config.server as server
 from module.base.button import ButtonWrapper
 from tasks.activity.assets.assets_activity_common import COMMON_ACTIVITY_CHECK
 from tasks.activity.common_activity import CommonActivityBatch
+from tasks.activity.legacy.free_gacha_20_2026_08_27.free_gacha_20 import FreeGacha20
 from tasks.base.page import page_common_activity
 from tests.support.history_e7wc_battle_gate import HISTORICAL_ACTIVITIES
 
@@ -53,6 +54,7 @@ class RealScreenshotBatchTests(unittest.TestCase):
             with self.subTest(event=expected):
                 batch = object.__new__(CommonActivityBatch)
                 batch.ACTIVITIES = HISTORICAL_ACTIVITIES
+                batch.FULL_PAGE_MARKERS = FreeGacha20.FULL_PAGE_MARKERS
                 batch.config = SimpleNamespace(Emulator_GameLanguage='auto')
                 batch.interval_timer = {}
                 batch.device = SimpleNamespace(image=load_image(str(path)), stuck_record_add=lambda button: None)

@@ -15,6 +15,7 @@ from tasks.base.ui import UI
 class FreeGacha20(ActivityNavigationMixin, UI):
     """Claim the CN or overseas event reward containing 20 free summons."""
 
+    FULL_PAGE_MARKERS = (FREE_20_GACHA_SELECTED,)
     CLAIM_FLOW_TIMEOUT_SECONDS = 30
 
     def __init__(self, config, device=None, task=None, activity_id=DEFAULT_FREE_GACHA_20_ID):

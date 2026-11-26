@@ -9,6 +9,7 @@ relevant part of the list, never a missing item match alone.
 import re
 from dataclasses import dataclass
 from itertools import pairwise
+from pathlib import Path
 
 import cv2
 
@@ -38,7 +39,7 @@ from tasks.activity.assets.assets_activity_huche_shop_26_9_17 import (
     OCR_HUCHE_REFRESH_NAME,
     OCR_HUCHE_STOCK,
 )
-from tasks.activity.calendar import CURRENT_HUCHE_SHOP_ID, active_activities
+from tasks.activity.calendar import ActivityWindow
 from tasks.activity.scheduling import (
     is_activity_checked_in_window,
     is_activity_checked_since,
@@ -62,6 +63,13 @@ from tasks.store.purchase import (
     plan_purchase_selection,
     resolve_ocr_lang,
 )
+
+EVENT_ID = "huche_shop_2026_11_19"
+ARCHIVE_CALENDAR = Path(__file__).with_name("calendar.yaml")
+
+
+def archived_window() -> ActivityWindow:
+    return ActivityWindow.from_period(load_info(ARCHIVE_CALENDAR).periods[0])
 
 
 @dataclass(frozen=True)
@@ -253,7 +261,7 @@ class HucheShop(UI):
     BATCH_RECOVERY_LIMIT = 3
     LIST_DRAG_STEP = 145
 
-    def __init__(self, config, device=None, task=None, activity_id=CURRENT_HUCHE_SHOP_ID):
+    def __init__(self, config, device=None, task=None, activity_id=EVENT_ID):
         super().__init__(config=config, device=device, task=task)
         self.activity_id = activity_id
 
@@ -722,8 +730,9 @@ class HucheShop(UI):
         if not self.config.SpecialActivity_BuyHucheMysticMedals:
             self.config.task_delay(server_update=True)
             return True
-        window = next((event for event in active_activities(self.config) if event.event_id == self.activity_id), None)
-        if window is None or is_activity_checked_in_window(self.config, window):
+        window = archived_window()
+        if (self.activity_id != window.event_id or not window.contains(aware_time())
+                or is_activity_checked_in_window(self.config, window)):
             self.config.task_delay(server_update=True)
             return True
         self._configure_offers(window)
@@ -740,7 +749,7 @@ class HucheShop(UI):
         return success
 
     def _configure_offers(self, window):
-        values = load_info().values("huche_shop", window.server_family, window.start)
+        values = load_info(ARCHIVE_CALENDAR).values("huche_shop", window.server_family, window.start)
         self.regular_offer_key = (values["mystic_regular_price"], values["mystic_regular_stock"])
         self.rotating_offer_key = (values["mystic_price"], values["mystic_stock"])
         self.offer_keys = {self.rotating_offer_key, self.regular_offer_key}

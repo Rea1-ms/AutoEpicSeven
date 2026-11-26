@@ -1,22 +1,14 @@
 from module.base.timer import Timer
 from module.logger import logger
 from module.ocr.ocr import Ocr, OcrResultButton
-from tasks.activity.assets.assets_activity_carrot_reward import CARROT_REWARD_CHECK
 from tasks.activity.assets.assets_activity_common import COMMON_ACTIVITY_LIST
 from tasks.activity.assets.assets_activity_completion_record import (
     COMPLETION_RECORD_CHECK,
 )
-from tasks.activity.assets.assets_activity_detective_search import (
-    DETECTIVE_SEARCH_CHECK,
-)
 from tasks.activity.assets.assets_activity_epic_path import EPIC_PATH_CHECK
-from tasks.activity.assets.assets_activity_special_26_8_27 import FREE_20_GACHA_SELECTED
 from tasks.activity.assets.assets_activity_special_26_10_19 import SUPPORT_GATE_CHECK
-from tasks.activity.carrot_reward import CarrotReward
 from tasks.activity.completion_record import CompletionRecord
-from tasks.activity.detective_search import DetectiveSearch
 from tasks.activity.epic_path import EpicPath
-from tasks.activity.free_gacha_20 import FreeGacha20
 from tasks.activity.navigation import ActivityNavigationMixin
 from tasks.activity.support_reward import SupportReward
 from tasks.base.page import page_common_activity
@@ -27,12 +19,9 @@ class CommonActivityBatch(ActivityNavigationMixin, UI):
     """Handle visible pending events before moving the shared sidebar."""
 
     ACTIVITIES = {
-        "free_gacha_20": ("INFINITY", FREE_20_GACHA_SELECTED, FreeGacha20),
         "support_reward": ("应援任务", SUPPORT_GATE_CHECK, SupportReward),
         "completion_record": ("完成记录", COMPLETION_RECORD_CHECK, CompletionRecord),
-        "detective_search": ("名侦探的每日搜查", DETECTIVE_SEARCH_CHECK, DetectiveSearch),
         "epic_path": ("史诗之路", EPIC_PATH_CHECK, EpicPath),
-        "carrot_reward": ("一起收集胡萝卜", CARROT_REWARD_CHECK, CarrotReward),
     }
 
     def run(self, activities) -> bool:

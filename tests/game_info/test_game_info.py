@@ -265,7 +265,7 @@ class CatalogTests(unittest.TestCase):
         self.assertEqual(SERVER_UPDATE['OVERSEA-Play'], '02:00')
         config = SimpleNamespace(Emulator_PackageName='com.zlongame.cn.epicseven')
         with patch.object(calendar.server, 'lang', 'cn'):
-            self.assertEqual([p.mode for p in calendar.active_activities(config, at)], ['free_gacha_20'])
+            self.assertEqual(calendar.active_activities(config, at), ())
         current, history = render_timeline(info, at).split('<details>', 1)
         for kind in ('completion_record', 'detective_search', 'epic_path'):
             self.assertIn(f'CN_{kind}_2026_10_29', current)

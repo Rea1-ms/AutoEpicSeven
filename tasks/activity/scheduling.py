@@ -25,8 +25,6 @@ def delay_next_activity_check(config, *, task="SpecialActivity") -> None:
             # can retire this event without repeated daily checks.
             targets.append(event.end)
             continue
-        if event.mode == "huche_shop" and not config.SpecialActivity_BuyHucheMysticMedals:
-            continue
         has_uncompleted_active = True
         refresh = event.next_refresh(now)
         if refresh is not None:
@@ -142,7 +140,7 @@ def should_schedule_after_battle(config, *, task="LimitedActivity", arena=False)
         return False
 
     for event in active_activities(config, task=task):
-        if event.mode in ("detective_search", "epic_path", "alencia_handbook", "carrot_reward"):
+        if event.mode in ("epic_path", "alencia_handbook"):
             # An empty reward queue is not daily completion. The claim flow
             # only writes this event/server record after ALL_TASK_DONE, so
             # later battles can request another check without waking retired
@@ -151,10 +149,8 @@ def should_schedule_after_battle(config, *, task="LimitedActivity", arena=False)
             # owning task's saved switch instead of a generated default left
             # on the currently bound config object.
             option = {
-                "detective_search": "GetDetectiveSearch",
                 "epic_path": "GetEpicPathDailyReward",
                 "alencia_handbook": "GetAlenciaDailyReward",
-                "carrot_reward": "GetCarrotReward",
             }[event.mode]
             enabled = config.cross_get(
                 f"{task}.{task}.{option}",

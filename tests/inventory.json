@@ -11896,7 +11896,7 @@
           "original_source": "test/test_cn_september_update.py"
         },
         {
-          "id": "tests.activity.test_cn_september_update.CalendarTests.test_dispatch_cn_free_reward",
+          "id": "tests.activity.test_cn_september_update.CalendarTests.test_archived_cn_free_reward_is_not_dispatched_in_its_original_window",
           "original_id": "test.test_cn_september_update.CalendarTests.test_dispatch_cn_free_reward",
           "category": "规则测试",
           "requires_device": false,
@@ -14213,7 +14213,7 @@
           "reason": "验证当期活动时间、11点和23点轮换及活动结束边界"
         },
         {
-          "id": "tests.activity.test_huche_shop_2026_11_19.ScheduleTests.test_entry_dispatches_shop_and_skips_disabled_option",
+          "id": "tests.activity.test_huche_shop_2026_11_19.ScheduleTests.test_archived_shop_never_dispatches_and_retains_historical_purchase_guards",
           "category": "流程回放",
           "requires_device": false,
           "has_automatic_assertion": true,
@@ -14438,7 +14438,7 @@
           "original_source": "test/test_huche_shop.py"
         },
         {
-          "id": "tests.activity.test_huche_shop.ScheduleTests.test_next_run_includes_refresh_only_when_enabled",
+          "id": "tests.activity.test_huche_shop.ScheduleTests.test_next_run_excludes_archived_refresh_even_when_enabled",
           "original_id": "test.test_huche_shop.ScheduleTests.test_next_run_includes_refresh_only_when_enabled",
           "category": "规则测试",
           "requires_device": false,
@@ -14462,7 +14462,7 @@
           "original_source": "test/test_huche_shop.py"
         },
         {
-          "id": "tests.activity.test_huche_shop.ScheduleTests.test_entry_dispatches_shop_and_skips_disabled_option",
+          "id": "tests.activity.test_huche_shop.ScheduleTests.test_entry_never_dispatches_archived_shop",
           "original_id": "test.test_huche_shop.ScheduleTests.test_entry_dispatches_shop_and_skips_disabled_option",
           "category": "规则测试",
           "requires_device": false,
@@ -22849,7 +22849,7 @@
           "input_kind": "mock_or_rule"
         },
         {
-          "id": "tests.core.test_runtime_ui.ActivityVisibilityUITests.test_archived_special_purchase_never_renders_or_resets_saved_choice",
+          "id": "tests.core.test_runtime_ui.ActivityVisibilityUITests.test_archived_special_purchase_stays_hidden_and_preserves_saved_choice",
           "category": "流程回放",
           "requires_device": false,
           "has_automatic_assertion": true,
@@ -28132,7 +28132,7 @@
           "reason": "2026年11月12日胡萝卜每日奖励的真实截图、生产间隔回放与分服调度回归"
         },
         {
-          "id": "tests.activity.test_carrot_reward.CarrotRewardTests.test_battle_recheck_stops_after_receipt_resets_daily_and_respects_switch",
+          "id": "tests.activity.test_carrot_reward.CarrotRewardTests.test_archived_claim_preserves_daily_receipt_without_battle_recheck",
           "category": "规则",
           "requires_device": false,
           "has_automatic_assertion": true,

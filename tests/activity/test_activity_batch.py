@@ -19,10 +19,12 @@ from tasks.base.ui import UI
 from tasks.activity.limited_activity import LimitedActivityEntry
 from tasks.activity.entry import SpecialActivityEntry
 from tasks.activity.common_activity import CommonActivityBatch
-from tasks.activity.free_gacha_20 import FreeGacha20
+from tasks.activity.completion_record import CompletionRecord
+from tasks.activity.epic_path import EpicPath
+from tasks.activity.legacy.detective_search_2026_10_29.detective_search import DetectiveSearch
 from tasks.activity.legacy.e7wc_battle_gate_2026_09_12.e7wc_battle_gate import E7wcBattleGate
+from tasks.activity.legacy.free_gacha_20_2026_08_27.free_gacha_20 import FreeGacha20
 from tasks.activity.legacy.koharu_raffle_2026_09_17.koharu_raffle import KoharuRaffle
-from tasks.activity.detective_search import DetectiveSearch
 from tasks.activity.support_reward import SupportReward
 from tests.support.activity_replay import (
     ATTENDANCE,
@@ -37,8 +39,8 @@ from tests.support.activity_replay import (
 )
 from tests.support.history_e7wc_battle_gate import HISTORICAL_ACTIVITIES
 
-MODES = ('free_gacha_20', 'detective_search', 'support_reward')
-CLASSES = (FreeGacha20, E7wcBattleGate, KoharuRaffle, DetectiveSearch, SupportReward)
+MODES = ('completion_record', 'epic_path', 'support_reward')
+CLASSES = (FreeGacha20, E7wcBattleGate, KoharuRaffle, CompletionRecord, EpicPath, SupportReward)
 HISTORICAL_OPTIONS = {
     'free_gacha_20': 'LimitedActivity_GetFreeGacha',
     'e7wc_battle_gate': 'LimitedActivity_GetE7wcBattleGateReward',
@@ -52,7 +54,8 @@ class Config:
     LimitedActivity_GetFreeGacha = True
     LimitedActivity_GetE7wcBattleGateReward = True
     LimitedActivity_GetKoharuRaffleReward = True
-    LimitedActivity_GetDetectiveSearch = True
+    LimitedActivity_GetCompletionRecord = True
+    LimitedActivity_GetEpicPathDailyReward = True
     LimitedActivity_GetSupportReward = True
 
     def __init__(self):
@@ -177,7 +180,7 @@ class BatchTests(unittest.TestCase):
     def test_skipped_tail_does_not_lose_final_return(self):
         modes = ('free_gacha_20', 'e7wc_battle_gate', 'koharu_raffle')
         run = self.run_batch(modes=modes, checked=(modes[1],), disabled=(modes[2],))
-        self.assertEqual([value for action, value in run.actions if action == 'claim'], [MODES[0]])
+        self.assertEqual([value for action, value in run.actions if action == 'claim'], [modes[0]])
         self.assertEqual(run.routes, [(page_main, page_common_activity), (page_common_activity, page_main)])
 
     def test_middle_failure_stops_remaining_claims_and_keeps_retry(self):
@@ -208,13 +211,18 @@ class CapturedBatchTests(ActivityReplayCase):
         r = self.replay(CommonActivityBatch, [capture(AVAILABLE), capture(POPUP), capture(RECEIVED),
                         capture(HOME), capture(DAILY), capture(HOME_AFTER), capture(ATTENDANCE)])
         pending = {}
+        activities = {
+            **CommonActivityBatch.ACTIVITIES,
+            "detective_search": ("名侦探的每日搜查", DetectiveSearch.FULL_PAGE_MARKERS[0], DetectiveSearch),
+        }
         for mode in ("completion_record", "detective_search", "epic_path"):
-            keyword, marker, worker_type = CommonActivityBatch.ACTIVITIES[mode]
+            keyword, marker, worker_type = activities[mode]
             worker = object.__new__(worker_type)
             worker.device, worker.config, worker.interval_timer = r, r.task.config, {}
             worker.activity_id = mode
             pending[mode] = (keyword, marker, worker)
-        self.assertTrue(r.task._run_pending(pending))
+        with patch.object(r.task, "FULL_PAGE_MARKERS", (*r.task.FULL_PAGE_MARKERS, *DetectiveSearch.FULL_PAGE_MARKERS)):
+            self.assertTrue(r.task._run_pending(pending))
         self.assertFalse(pending)
         self.assertEqual(r.actions, [(0, "DETECTIVE_CLAIM_180"), (1, "TOUCH_TO_CLOSE"),
                                     (3, "EPIC_PATH_TASK_ENTRY"), (4, "EPIC_PATH_TASK_CLOSE")])

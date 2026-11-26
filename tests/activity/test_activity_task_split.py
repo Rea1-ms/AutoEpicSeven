@@ -21,13 +21,14 @@ from module.config.config import AzurLaneConfig
 from module.config.config_updater import ConfigUpdater
 from module.config.deep import deep_set
 from tasks.activity import calendar, scheduling
+from tasks.activity.alencia_handbook import AlenciaHandbook
 from tasks.activity.common_activity import CommonActivityBatch
 from tasks.activity.entry import SpecialActivityEntry
-from tasks.activity.legacy.huche_shop_2026_09_17.huche_shop import HucheShop
 from tasks.activity.limited_activity import LimitedActivityEntry
 from tasks.base.ui import UI
 
 NOW = datetime(2026, 9, 23, 12, tzinfo=calendar.EVENT_TIMEZONE)
+SPLIT_NOW = datetime(2026, 11, 26, 15, 30, tzinfo=calendar.EVENT_TIMEZONE)
 
 
 def old_config(enabled=True):
@@ -125,8 +126,8 @@ class MigrationTests(unittest.TestCase):
 
 
 class ActivityVisibilityTests(unittest.TestCase):
-    OPTIONS = {'GetFreeGacha', 'GetSupportReward', 'GetCompletionRecord',
-               'GetDetectiveSearch', 'GetEpicPathDailyReward'}
+    ACTIVE_OPTIONS = frozenset({'GetSupportReward', 'GetCompletionRecord', 'GetEpicPathDailyReward'})
+    OPTIONS = ACTIVE_OPTIONS | frozenset({'GetFreeGacha', 'GetDetectiveSearch'})
 
     def setUp(self):
         self.updater = ConfigUpdater()
@@ -147,31 +148,30 @@ class ActivityVisibilityTests(unittest.TestCase):
         for package in ('OVERSEA-Play', 'com.stove.epic7.google'):
             with self.subTest(package=package), patch.object(server, 'lang', 'cn'):
                 self.data['Alas']['Emulator'].update(PackageName=package, GameLanguage='cn')
-                self.assertEqual(self.visible(at), self.OPTIONS - {'GetFreeGacha'})
+                self.assertEqual(self.visible(at), self.ACTIVE_OPTIONS)
         for package in ('CN-Official', 'com.zlongame.cn.epicseven'):
             with self.subTest(package=package), patch.object(server, 'lang', 'global_cn'):
                 self.data['Alas']['Emulator']['PackageName'] = package
-                self.assertEqual(self.visible(at), {'GetFreeGacha'})
+                self.assertEqual(self.visible(at), set())
         self.data['Alas']['Emulator'].update(PackageName='OVERSEA-Play', GameLanguage='en')
         self.assertEqual(self.visible(at), set())
         self.data['Alas']['Emulator']['GameLanguage'] = 'auto'
-        self.assertEqual(self.visible(at), self.OPTIONS - {'GetFreeGacha'})
+        self.assertEqual(self.visible(at), self.ACTIVE_OPTIONS)
 
     def test_open_and_end_boundaries_refresh_options_without_erasing_choices(self):
         before = deepcopy(self.data)
         self.assertEqual(self.visible('2026-10-29T20:36:59+08:00'), {'GetSupportReward'})
-        self.assertEqual(self.visible('2026-10-29T20:37:00+08:00'), {
-            'GetSupportReward', 'GetCompletionRecord', 'GetEpicPathDailyReward'})
-        self.assertEqual(self.visible('2026-10-29T20:39:00+08:00'), self.OPTIONS - {'GetFreeGacha'})
-        self.assertEqual(self.visible('2026-11-19T10:59:59+08:00'), self.OPTIONS - {'GetFreeGacha'})
-        self.assertEqual(self.visible('2026-11-19T11:00:00+08:00'), {
-            'GetSupportReward', 'GetCompletionRecord', 'GetEpicPathDailyReward'})
+        for at in ('2026-10-29T20:37:00+08:00', '2026-10-29T20:39:00+08:00',
+                   '2026-11-19T10:59:59+08:00', '2026-11-19T11:00:00+08:00'):
+            with self.subTest(at=at):
+                self.assertEqual(self.visible(at), self.ACTIVE_OPTIONS)
         self.assertEqual(self.visible('2026-12-18T02:00:00+08:00'), set())
         self.assertEqual(self.data, before)
         self.data['Alas']['Emulator']['PackageName'] = 'CN-Official'
-        self.assertEqual(self.visible('2026-11-19T10:59:59+08:00'), {'GetFreeGacha'})
+        self.assertEqual(self.visible('2026-11-19T10:59:59+08:00'), set())
         self.assertEqual(self.visible('2026-11-19T11:00:00+08:00'), set())
         self.assertFalse(self.data['LimitedActivity']['LimitedActivity']['GetFreeGacha'])
+        self.assertTrue(self.data['LimitedActivity']['LimitedActivity']['GetDetectiveSearch'])
         self.assertTrue(self.data['SpecialActivity']['SpecialActivity']['BuyHucheMysticMedals'])
 
     def test_unknown_server_and_unverified_archived_flows_never_show_options(self):
@@ -196,66 +196,51 @@ class SchedulingTests(unittest.TestCase):
         server.set_lang('global_cn')
         self.config = MemoryConfig(ConfigUpdater().config_update(old_config()))
         clock = patch.object(calendar, 'datetime', wraps=datetime)
-        clock.start().now.return_value = NOW
+        clock.start().now.return_value = SPLIT_NOW
         self.addCleanup(clock.stop)
-        # Replay the original two-task contract with explicit historical input.
-        # These patches never register the retired shop in production.
-        from module.game_info.catalog import load_info
-        from tasks.activity.legacy.huche_shop_2026_09_17 import huche_shop
-        from tests.support.history_huche_shop import WINDOW
-
-        info = load_info()
-        for context in (
-            patch.object(calendar, 'load_calendar', return_value=(*calendar.load_calendar(), WINDOW)),
-            patch.dict(calendar.ACTIVITY_TASK_MODES, {'SpecialActivity': ('legacy', 'huche_shop')}),
-            patch.object(SpecialActivityEntry, 'ACTIVITY_MODES', ('legacy', 'huche_shop')),
-            patch.object(SpecialActivityEntry, 'COMMON_ACTIVITY_OPTIONS',
-                         {'huche_shop': 'SpecialActivity_BuyHucheMysticMedals'}),
-            patch('tasks.activity.huche_shop.HucheShop', HucheShop),
-            patch.object(huche_shop, 'load_info', return_value=SimpleNamespace(
-                values=lambda kind, family: info.values(kind, family, NOW))),
-        ):
-            context.start()
-            self.addCleanup(context.stop)
-        self.events = calendar.active_activities(self.config, NOW)
+        self.events = calendar.active_activities(self.config, SPLIT_NOW)
 
     def test_each_task_only_sees_its_entrances(self):
-        limited = calendar.active_activities(self.config, NOW, task='LimitedActivity')
-        special = calendar.active_activities(self.config, NOW, task='SpecialActivity')
-        self.assertEqual({e.mode for e in limited}, {'free_gacha_20'})
-        self.assertEqual({e.mode for e in special}, {'huche_shop'})
+        limited = calendar.active_activities(self.config, SPLIT_NOW, task='LimitedActivity')
+        special = calendar.active_activities(self.config, SPLIT_NOW, task='SpecialActivity')
+        self.assertEqual({e.mode for e in limited}, {
+            'support_reward', 'completion_record', 'epic_path',
+        })
+        self.assertEqual({e.mode for e in special}, {'alencia_handbook'})
         self.assertEqual(set(limited) | set(special), set(self.events))
 
     def test_opening_and_refresh_are_scoped_to_own_task(self):
-        launch = NOW + timedelta(hours=2)
-        future = calendar.ActivityWindow('next_common', 'Next', 'free_gacha_20', 'OVERSEA', launch,
+        launch = SPLIT_NOW + timedelta(hours=2)
+        future = calendar.ActivityWindow('next_common', 'Next', 'epic_path', 'OVERSEA', launch,
                                          launch + timedelta(days=1))
         with patch.object(calendar, 'load_calendar', return_value=(*self.events, future)), patch.object(
-                scheduling, 'aware_time', return_value=NOW), patch.object(self.config, 'task_delay') as delay:
+                scheduling, 'aware_time', return_value=SPLIT_NOW), patch.object(self.config, 'task_delay') as delay:
             scheduling.delay_next_activity_check(self.config, task='LimitedActivity')
             # Calendar dates are +08:00; scheduler targets use the host's local
             # naive time, which is UTC on CI and +08:00 on the Windows host.
             delay.assert_called_with(server_update=True, target=launch.astimezone().replace(tzinfo=None), task='LimitedActivity')
             self.config.init_task('SpecialActivity')
             scheduling.delay_next_activity_check(self.config, task='SpecialActivity')
-            delay.assert_called_with(server_update=True,
-                                     target=NOW.replace(hour=23).astimezone().replace(tzinfo=None), task='SpecialActivity')
+            delay.assert_called_with(server_update=True, task='SpecialActivity')
 
     def test_receipt_uses_limited_daily_reset_and_fixed_stock_is_preserved(self):
+        from tests.support.history_huche_shop import WINDOW
+
         deep_set(self.config.data, 'LimitedActivity.Scheduler.ServerUpdate', '02:00')
         deep_set(self.config.data, 'SpecialActivity.Scheduler.ServerUpdate', '11:00')
         def reset(value):
-            return datetime(2026, 9, 23, 2 if value == '02:00' else 11)
-        event = next(e for e in self.events if e.mode == 'free_gacha_20')
+            return datetime(2026, 11, 26, 2 if value == '02:00' else 11)
+        event = next(e for e in self.events if e.mode == 'epic_path')
+        deep_set(self.config.data, scheduling._checked_path(self.config, event.event_id), '2026-11-26 03:00:00')
         with patch.object(scheduling, 'get_server_last_update', side_effect=reset) as last:
             self.assertTrue(scheduling.is_activity_checked_in_window(self.config, event))
             last.assert_called_once_with('02:00')
-        shop = next(e for e in self.events if e.mode == 'huche_shop')
+        with patch.object(scheduling, 'get_server_last_update', return_value=datetime(2026, 9, 23, 2)):
+            self.assertTrue(scheduling.is_activity_checked_today(self.config, calendar.DEFAULT_FREE_GACHA_20_ID))
         self.assertTrue(scheduling.is_activity_checked_since(self.config,
-            shop.event_id + '_regular_mystic', shop.start, now=NOW))
+            WINDOW.event_id + '_regular_mystic', WINDOW.start, now=NOW))
 
     def test_after_battle_only_wakes_enabled_unfinished_limited_task(self):
-        deep_set(self.config.data, 'LimitedActivity.LimitedActivity.GetEpicPathDailyReward', False)
         self.config.init_task('Combat')
         # Keep the original task split/stock dates above as historical facts.
         # Battle wakeups must use the current campaign instead of reactivating
@@ -268,11 +253,11 @@ class SchedulingTests(unittest.TestCase):
             scheduling.schedule_activity_after_battle(self.config)
             call.assert_called_once_with('LimitedActivity', force_call=False)
             call.reset_mock()
-            deep_set(self.config.data, 'LimitedActivity.LimitedActivity.GetDetectiveSearch', False)
-            self.assertTrue(self.config.LimitedActivity_GetDetectiveSearch)
+            deep_set(self.config.data, 'LimitedActivity.LimitedActivity.GetEpicPathDailyReward', False)
+            self.assertTrue(self.config.LimitedActivity_GetEpicPathDailyReward)
             scheduling.schedule_activity_after_battle(self.config)
             call.assert_not_called()
-            deep_set(self.config.data, 'LimitedActivity.LimitedActivity.GetDetectiveSearch', True)
+            deep_set(self.config.data, 'LimitedActivity.LimitedActivity.GetEpicPathDailyReward', True)
             deep_set(self.config.data, 'LimitedActivity.Scheduler.Enable', False)
             scheduling.schedule_activity_after_battle(self.config)
             call.assert_not_called()
@@ -298,21 +283,24 @@ class SchedulingTests(unittest.TestCase):
                 before = config.data[other]['Scheduler']['NextRun']
                 config.init_task(failing_task)
                 device = SimpleNamespace(app_is_running=lambda: True)
-                target = CommonActivityBatch if failing_task == 'LimitedActivity' else HucheShop
+                target = CommonActivityBatch if failing_task == 'LimitedActivity' else AlenciaHandbook
                 entry = LimitedActivityEntry if failing_task == 'LimitedActivity' else SpecialActivityEntry
-                method = '_run_pending' if failing_task == 'LimitedActivity' else 'run_purchase'
+                method = '_run_pending' if failing_task == 'LimitedActivity' else 'run_claim'
                 with patch.object(target, method, return_value=False), patch.object(UI, 'ui_goto'), patch(
-                        'tasks.activity.entry.is_activity_checked_in_window', return_value=False), patch(
-                        'tasks.activity.legacy.huche_shop_2026_09_17.huche_shop.is_activity_checked_in_window', return_value=False):
+                        'tasks.activity.entry.is_activity_checked_in_window', return_value=False):
+                    if failing_task == 'SpecialActivity':
+                        # The real handbook owns its read/claim retry deadline.
+                        config.task_delay(success=False)
                     self.assertFalse(entry(config, device=device).run())
                 self.assertEqual(config.data[other]['Scheduler']['NextRun'], before)
                 self.assertGreater(config.data[failing_task]['Scheduler']['NextRun'], datetime.now())
                 config.get_next_task()
                 self.assertEqual([task.command for task in config.pending_task], [other])
                 config.init_task(other)
-                success_target = HucheShop if other == 'SpecialActivity' else CommonActivityBatch
+                success_target = AlenciaHandbook if other == 'SpecialActivity' else CommonActivityBatch
+                success_method = 'run_claim' if other == 'SpecialActivity' else 'run'
                 success_entry = SpecialActivityEntry if other == 'SpecialActivity' else LimitedActivityEntry
-                with patch.object(success_target, 'run', return_value=True) as run, patch.object(UI, 'ui_goto'), patch(
+                with patch.object(success_target, success_method, return_value=True) as run, patch.object(UI, 'ui_goto'), patch(
                         'tasks.activity.entry.is_activity_checked_in_window', return_value=False):
                     self.assertTrue(success_entry(config, device=device).run())
                     run.assert_called_once()

@@ -15,7 +15,7 @@ WORKTREE = Path(__file__).resolve().parents[2]
 
 import module.config.server as server
 from tasks.activity.assets.assets_activity_special_26_8_27 import FREE_20_GACHA_SELECTED
-from tasks.activity.free_gacha_20 import FreeGacha20
+from tasks.activity.legacy.free_gacha_20_2026_08_27.free_gacha_20 import FreeGacha20
 from tests.support.offline import ControlledClock, fixture_image, record_action
 
 FIXTURES = input_root('')

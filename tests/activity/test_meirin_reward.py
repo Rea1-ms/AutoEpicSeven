@@ -265,9 +265,11 @@ class SchedulingTests(ReplayCase):
 
         start = NOW + timedelta(days=60)
         info = load_info()
-        for kind in ('meirin_reward', 'huche_shop'):
-            period = replace(info.current(kind, 'OVERSEA', NOW), start=start, end=start + timedelta(days=7))
-            with self.subTest(kind=kind), patch.object(calendar, 'load_info',
+        for original in info.periods:
+            if original.kind not in ('meirin_reward', 'huche_shop', 'carrot_reward'):
+                continue
+            period = replace(original, start=start, end=start + timedelta(days=7))
+            with self.subTest(event_id=period.event_id), patch.object(calendar, 'load_info',
                                                        return_value=SimpleNamespace(periods=(period,))):
                 self.assertEqual(calendar.load_calendar(), ())
                 self.assertEqual(calendar.active_activities(self.config, start), ())
@@ -286,7 +288,7 @@ from tasks.activity.limited_activity import LimitedActivityEntry
 from tasks.activity.entry import SpecialActivityEntry
 from tasks.activity.common_activity import CommonActivityBatch
 from tasks.activity.calendar import SUPPORTED_MODES
-for kind in ('meirin_reward',):
+for kind in ('meirin_reward', 'huche_shop', 'carrot_reward'):
     assert kind not in SUPPORTED_MODES
     for entry in (LimitedActivityEntry, SpecialActivityEntry):
         assert kind not in entry.ACTIVITY_MODES
@@ -295,8 +297,7 @@ for kind in ('meirin_reward',):
     assert f'tasks.activity.{kind}' not in sys.modules
     assert not any(name.startswith(f'tasks.activity.legacy.{kind}') for name in sys.modules)
 assert 'tasks.activity.assets.assets_activity_special_26_10_15' not in sys.modules
-assert 'tasks.activity.huche_shop' not in sys.modules
-assert not any(name.startswith('tasks.activity.legacy.huche_shop') for name in sys.modules)
+assert 'tasks.activity.assets.assets_activity_carrot_reward' not in sys.modules
 """
         for lang in ('cn', 'global_cn', 'global_en'):
             with self.subTest(lang=lang):

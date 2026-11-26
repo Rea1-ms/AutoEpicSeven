@@ -19,8 +19,8 @@ from tasks.activity.assets.assets_activity_epic_path import (
     EPIC_PATH_CHECK,
 )
 from tasks.activity.completion_record import CompletionRecord
-from tasks.activity.detective_search import DetectiveSearch
 from tasks.activity.epic_path import EpicPath
+from tasks.activity.legacy.detective_search_2026_10_29.detective_search import DetectiveSearch
 from tests.support.activity_replay import (
     ATTENDANCE,
     AVAILABLE,

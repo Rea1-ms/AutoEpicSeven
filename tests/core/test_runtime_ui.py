@@ -375,12 +375,13 @@ class ActivityVisibilityUITests(unittest.TestCase):
         before = deepcopy(self.config)
         for stamp, package, visible in (
             ('2026-10-29T22:26:00+08:00', 'OVERSEA-Play',
-             {'GetSupportReward', 'GetCompletionRecord', 'GetDetectiveSearch', 'GetEpicPathDailyReward'}),
-            ('2026-10-29T22:26:00+08:00', 'CN-Official', {'GetFreeGacha'}),
+             {'GetSupportReward', 'GetCompletionRecord', 'GetEpicPathDailyReward'}),
+            ('2026-10-29T22:26:00+08:00', 'CN-Official', set()),
             ('2026-11-12T20:20:00+08:00', 'OVERSEA-Play',
-             {'GetSupportReward', 'GetCompletionRecord', 'GetDetectiveSearch',
-              'GetEpicPathDailyReward', 'GetCarrotReward'}),
-            ('2026-11-12T20:20:00+08:00', 'CN-Official', {'GetFreeGacha'}),
+             {'GetSupportReward', 'GetCompletionRecord', 'GetEpicPathDailyReward'}),
+            ('2026-11-12T20:20:00+08:00', 'CN-Official', set()),
+            ('2026-11-26T16:00:00+08:00', 'OVERSEA-Play',
+             {'GetSupportReward', 'GetCompletionRecord', 'GetEpicPathDailyReward'}),
         ):
             self.activity_clock.now.return_value = datetime.fromisoformat(stamp)
             self.config['Alas']['Emulator']['PackageName'] = package
@@ -400,9 +401,9 @@ class ActivityVisibilityUITests(unittest.TestCase):
         self.errors.assert_not_called()
         hidden = {call.args[0] for call in self.gui.pin_set_hidden_arg.call_args_list}
         shown = {call.args[0] for call in self.gui.pin_remove_hidden_arg.call_args_list}
-        self.assertEqual(shown, {'LimitedActivity.LimitedActivity.GetFreeGacha'})
+        self.assertEqual(shown, set())
         self.assertEqual(hidden, {f'LimitedActivity.LimitedActivity.{name}' for name in (
-            'GetSupportReward', 'GetCompletionRecord', 'GetDetectiveSearch', 'GetEpicPathDailyReward')})
+            'GetSupportReward', 'GetCompletionRecord', 'GetEpicPathDailyReward')})
         for package, language in (('OVERSEA-Play', 'cn'), ('OVERSEA-Play', 'en'), ('OVERSEA-Play', 'auto')):
             self.gui.pin_set_hidden_arg.reset_mock()
             self.gui.pin_remove_hidden_arg.reset_mock()
@@ -414,6 +415,7 @@ class ActivityVisibilityUITests(unittest.TestCase):
         self.assertEqual({path for path in self.gui.alas_config_hidden
                           if path.startswith('LimitedActivity.')}, {
             'LimitedActivity.LimitedActivity.GetFreeGacha',
+            'LimitedActivity.LimitedActivity.GetDetectiveSearch',
             'LimitedActivity.LimitedActivity.GetCarrotReward',
         })
         self.gui.pin_set_hidden_arg.reset_mock()
@@ -423,7 +425,7 @@ class ActivityVisibilityUITests(unittest.TestCase):
         self.gui.pin_set_hidden_arg.assert_not_called()
         self.gui.pin_remove_hidden_arg.assert_not_called()
 
-    def test_archived_special_purchase_never_renders_or_resets_saved_choice(self):
+    def test_archived_special_purchase_stays_hidden_and_preserves_saved_choice(self):
         self.config['SpecialActivity']['SpecialActivity']['GetAlenciaDailyReward'] = False
         before = deepcopy(self.config['SpecialActivity'])
         for package, language, stamp, visible in (
@@ -431,6 +433,7 @@ class ActivityVisibilityUITests(unittest.TestCase):
             ('OVERSEA-Play', 'en', '2026-11-01T00:10:00+08:00', False),
             ('OVERSEA-Play', 'cn', '2026-10-29T22:26:00+08:00', False),
             ('OVERSEA-Play', 'cn', '2026-11-01T00:10:00+08:00', True),
+            ('OVERSEA-Play', 'cn', '2026-11-19T03:00:00+08:00', True),
             ('OVERSEA-Play', 'cn', '2026-12-10T11:00:00+08:00', False),
         ):
             with self.subTest(package=package, language=language, stamp=stamp), \
@@ -438,9 +441,10 @@ class ActivityVisibilityUITests(unittest.TestCase):
                 clock.now.return_value = datetime.fromisoformat(stamp)
                 self.config['Alas']['Emulator'].update(PackageName=package, GameLanguage=language)
                 rendered = self.render_options('SpecialActivity')
-                # Fixed-hidden archived purchases must stay omitted. Active
-                # daily rewards use the existing dynamic hide/show mechanism.
-                self.assertEqual(set(rendered), {'SpecialActivity_SpecialActivity_GetAlenciaDailyReward'})
+                purchase, hidden = rendered['SpecialActivity_SpecialActivity_BuyHucheMysticMedals']
+                self.assertTrue(hidden.style.called)
+                self.assertTrue(purchase['value'])
+                hidden.show.assert_called_once()
                 kwargs, output = rendered['SpecialActivity_SpecialActivity_GetAlenciaDailyReward']
                 self.assertEqual(output.style.called, not visible)
                 self.assertFalse(kwargs['value'])

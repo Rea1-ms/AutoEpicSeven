@@ -182,8 +182,13 @@ class SidebarTests(unittest.TestCase):
 class LogTests(unittest.TestCase):
     def test_application_log_literals_are_english(self):
         violations = []
-        for name in subprocess.check_output(['git','ls-files','*.py'],text=True).splitlines():
-            if not name.startswith(('tasks/','module/')):
+        # Include moved files at their working-tree paths before they are staged.
+        paths = subprocess.check_output(
+            ['git', 'ls-files', '--cached', '--others', '--exclude-standard', '-z', '--', '*.py'],
+            encoding='utf-8',
+        )
+        for name in paths.split('\0'):
+            if not name.startswith(('tasks/', 'module/')) or not Path(name).is_file():
                 continue
             tree = ast.parse(Path(name).read_text(encoding='utf-8'))
             for node in ast.walk(tree):

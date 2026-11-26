@@ -162,37 +162,35 @@ class LimitedActivitySchedulingTests(unittest.TestCase):
         server.set_lang("global_cn")
         from tests.support.meirin_reward import Config
         self.config = Config()
-        self.config.LimitedActivity_GetDetectiveSearch = True
         self.config.LimitedActivity_GetEpicPathDailyReward = True
-        self.now = datetime.fromisoformat("2026-10-29T21:00:00+08:00")
+        self.now = datetime.fromisoformat("2026-11-26T16:00:00+08:00")
 
     def test_new_events_are_international_only_and_have_end_boundaries(self):
         events = calendar.active_activities(self.config, self.now, task="LimitedActivity")
-        self.assertEqual({e.mode for e in events}, {"support_reward", "completion_record", "detective_search", "epic_path"})
+        self.assertEqual({e.mode for e in events}, {"support_reward", "completion_record", "epic_path"})
         for event in events:
             self.assertFalse(event.contains(event.end))
         self.config.Emulator_PackageName = "com.zlongame.cn.epicseven"
         server.set_lang("cn")
-        self.assertFalse(any(e.mode in ("completion_record", "detective_search", "epic_path")
+        self.assertFalse(any(e.mode in ("completion_record", "epic_path")
                              for e in calendar.active_activities(self.config, self.now)))
 
     def test_battle_and_arena_wake_each_unfinished_event_and_stop_after_receipt(self):
         events = calendar.active_activities(self.config, self.now, task="LimitedActivity")
-        for mode, option in (("detective_search", "GetDetectiveSearch"), ("epic_path", "GetEpicPathDailyReward")):
-            event = next(e for e in events if e.mode == mode)
-            with patch.object(scheduling, "active_activities", side_effect=lambda config, *, task, event=event: (event,) if task == "LimitedActivity" else ()):
-                for arena in (False, True):
-                    scheduling.schedule_activity_after_battle(self.config, arena=arena)
-                self.assertEqual(self.config.calls, [("LimitedActivity", {"force_call": False})] * 2)
-                self.config.calls.clear()
-                self.config.values[f"LimitedActivity.LimitedActivity.{option}"] = False
+        event = next(e for e in events if e.mode == "epic_path")
+        with patch.object(scheduling, "active_activities", side_effect=lambda config, *, task, event=event: (event,) if task == "LimitedActivity" else ()):
+            for arena in (False, True):
+                scheduling.schedule_activity_after_battle(self.config, arena=arena)
+            self.assertEqual(self.config.calls, [("LimitedActivity", {"force_call": False})] * 2)
+            self.config.calls.clear()
+            self.config.values["LimitedActivity.LimitedActivity.GetEpicPathDailyReward"] = False
+            self.assertFalse(scheduling.should_schedule_after_battle(self.config))
+            self.config.values["LimitedActivity.LimitedActivity.GetEpicPathDailyReward"] = True
+            self.config.values[scheduling._checked_path(self.config, event.event_id)] = datetime(2026, 11, 26, 16)
+            with patch.object(scheduling, "get_server_last_update", return_value=datetime(2026, 11, 26, 2)):
                 self.assertFalse(scheduling.should_schedule_after_battle(self.config))
-                self.config.values[f"LimitedActivity.LimitedActivity.{option}"] = True
-                self.config.values[scheduling._checked_path(self.config, event.event_id)] = datetime(2026, 10, 29, 21)
-                with patch.object(scheduling, "get_server_last_update", return_value=datetime(2026, 10, 29, 2)):
-                    self.assertFalse(scheduling.should_schedule_after_battle(self.config))
-                with patch.object(scheduling, "get_server_last_update", return_value=datetime(2026, 10, 30, 2)):
-                    self.assertTrue(scheduling.should_schedule_after_battle(self.config))
+            with patch.object(scheduling, "get_server_last_update", return_value=datetime(2026, 11, 27, 2)):
+                self.assertTrue(scheduling.should_schedule_after_battle(self.config))
 
     def test_attendance_does_not_wake_after_battle_and_flags_are_registered(self):
         event = next(e for e in calendar.active_activities(self.config, self.now) if e.mode == "completion_record")

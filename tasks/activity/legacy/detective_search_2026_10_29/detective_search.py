@@ -27,6 +27,8 @@ class DetectiveSearch(ActivityNavigationMixin, UI):
         (796, 559, 972, 610), (1040, 600, 1218, 652),
     )
 
+    FULL_PAGE_MARKERS = (DETECTIVE_SEARCH_CHECK,)
+
     def __init__(self, config, device=None, task=None, activity_id="detective_search_2026_10_29"):
         super().__init__(config=config, device=device, task=task)
         self.activity_id = activity_id

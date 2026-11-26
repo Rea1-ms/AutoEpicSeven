@@ -1,0 +1,16 @@
+schema_version: 1
+events:
+  - id: huche_shop_2026_11_19
+    kind: huche_shop
+    name: 流浪商店
+    source: '国际服简中截图 Scrcpy-20261119-183244-597.png 显示 11月19日03:00 至 11月26日02:59 开放，18:32 时剩 4 小时 27 分钟刷新，结合每 12 小时轮换得出北京时间 11 点、23 点刷新。带小钟的神秘奖牌每份50枚、160天空石、限购2份；Scrcpy-20261119-183258-935.png 确认特别商品为同价同数量、整期限购4份。'
+    oversea_start: '2026-11-19T03:00:00+08:00'
+    oversea_end: '2026-11-26T03:00:00+08:00'
+    values:
+      refresh_hours: 12
+      refresh_hour: 11
+      mystic_price: 160
+      mystic_quantity: 50
+      mystic_stock: 2
+      mystic_regular_price: 160
+      mystic_regular_stock: 4

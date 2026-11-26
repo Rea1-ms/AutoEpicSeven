@@ -140,12 +140,12 @@ class CalendarTests(unittest.TestCase):
         self.assertNotIn(EVENT_ID, ids(gate.start - timedelta(seconds=1)))
         self.assertNotIn(EVENT_ID, ids(gate.start))
         self.assertNotIn(EVENT_ID, ids(gate.end))
-        self.assertEqual(ids(NOW), {calendar.DEFAULT_FREE_GACHA_20_ID})
+        self.assertEqual(ids(NOW), set())
         self.assertNotIn("koharu_raffle_2026_09_17", ids(NOW))
         server.set_lang("cn")
         self.config.Emulator_PackageName = "com.zlongame.cn.epicseven"
-        self.assertEqual(ids(NOW), {calendar.DEFAULT_FREE_GACHA_20_ID})
-        self.assertEqual(ids(NOW + timedelta(days=21)), {calendar.DEFAULT_FREE_GACHA_20_ID})
+        self.assertEqual(ids(NOW), set())
+        self.assertEqual(ids(NOW + timedelta(days=21)), set())
 
     def test_future_cn_dates_do_not_bypass_missing_assets(self):
         cn = calendar.ActivityWindow(EVENT_ID, "Gate", "e7wc_battle_gate", "CN", NOW, NOW + timedelta(days=1))
@@ -171,12 +171,11 @@ class CalendarTests(unittest.TestCase):
         scheduling.mark_free_gacha_20_checked(self.config)
         with patch("tasks.activity.entry.active_activities", return_value=activities), patch(
             "tasks.activity.entry.CommonActivityBatch"
-        ) as task, patch("tasks.activity.free_gacha_20.FreeGacha20") as free:
+        ) as task:
             task.ACTIVITIES = {'e7wc_battle_gate': None}
             task.return_value.run.return_value = True
             self.assertTrue(LimitedActivityEntry(self.config).run())
             task.assert_not_called()
-            free.assert_not_called()
             scheduling.mark_activity_checked(self.config, EVENT_ID)
             task.reset_mock()
             self.assertTrue(LimitedActivityEntry(self.config).run())
@@ -209,9 +208,10 @@ class CalendarTests(unittest.TestCase):
 
         info = load_info()
         start = NOW + timedelta(days=30)
-        period = replace(info.current("e7wc_battle_gate", "OVERSEA", NOW),
-                         start=start, end=start + timedelta(days=7))
-        with patch.object(calendar, "load_info", return_value=SimpleNamespace(periods=(period,))):
+        periods = tuple(replace(period, start=start, end=start + timedelta(days=7))
+                        for period in info.periods
+                        if period.kind in ("e7wc_battle_gate", "free_gacha_20", "detective_search"))
+        with patch.object(calendar, "load_info", return_value=SimpleNamespace(periods=periods)):
             self.assertEqual(calendar.load_calendar(), ())
             self.assertEqual(calendar.active_activities(self.config, start), ())
             self.assertIsNone(calendar.next_activity_start(self.config, NOW))
@@ -230,6 +230,13 @@ assert 'e7wc_battle_gate' not in LimitedActivityEntry.COMMON_ACTIVITY_OPTIONS
 assert 'e7wc_battle_gate' not in CommonActivityBatch.ACTIVITIES
 assert not any('e7wc_battle_gate' in name for name in sys.modules)
 assert 'tasks.activity.assets.assets_activity_special_26_9_12' not in sys.modules
+for kind in ('free_gacha_20', 'detective_search'):
+    assert kind not in SUPPORTED_MODES
+    assert kind not in LimitedActivityEntry.ACTIVITY_MODES
+    assert kind not in LimitedActivityEntry.COMMON_ACTIVITY_OPTIONS
+    assert kind not in CommonActivityBatch.ACTIVITIES
+    assert not any(kind in name for name in sys.modules)
+assert 'tasks.activity.assets.assets_activity_special_26_8_27' not in sys.modules
 """
         for lang in ("cn", "global_cn", "global_en"):
             with self.subTest(lang=lang):

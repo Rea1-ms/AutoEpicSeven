@@ -17,12 +17,17 @@ WORKTREE = Path(__file__).resolve().parents[2]
 PROJECT_ROOT = WORKTREE
 
 import module.config.server as server
+from module.game_info.catalog import load_info
 from tasks.activity import calendar, scheduling
+from tasks.activity.legacy.free_gacha_20_2026_08_27 import free_gacha_20
 from tasks.activity.limited_activity import LimitedActivityEntry
 from tasks.activity.entry import SpecialActivityEntry
 
 
 from tests.support.history_cn_september_update import Config, Claim
+
+ARCHIVE_CALENDAR = WORKTREE / "tasks/activity/legacy/free_gacha_20_2026_08_27/calendar.yaml"
+
 
 class CalendarTests(unittest.TestCase):
     def setUp(self):
@@ -43,7 +48,7 @@ class CalendarTests(unittest.TestCase):
 
     def load(self, data):
         with patch.object(Path, "read_text", return_value=json.dumps(data)):
-            return calendar.load_calendar()
+            return tuple(calendar.ActivityWindow.from_period(period) for period in load_info().periods)
 
     def test_default_offset_and_override(self):
         first, cn = self.load(self.make_calendar())
@@ -53,7 +58,8 @@ class CalendarTests(unittest.TestCase):
         self.assertEqual(cn.end.hour, 11)
 
     def test_current_cn_deadline(self):
-        cn = next(w for w in calendar.load_calendar() if w.server_family == "CN")
+        cn = next(calendar.ActivityWindow.from_period(period) for period in load_info(ARCHIVE_CALENDAR).periods
+                  if period.server_family == "CN")
         self.assertEqual(cn.end.isoformat(), "2026-11-19T11:00:00+08:00")
         self.assertTrue(cn.contains(cn.start))
         self.assertFalse(cn.contains(cn.start - timedelta(microseconds=1)))
@@ -66,7 +72,8 @@ class CalendarTests(unittest.TestCase):
             oversea_end="2026-12-01T02:00:00+08:00"))
         windows = self.load(data)
         boundary = windows[1].end
-        with patch.object(calendar, "load_calendar", return_value=windows):
+        with patch.object(calendar, "load_calendar", return_value=windows), \
+                patch.object(calendar, "SUPPORTED_MODES", ("free_gacha_20",)):
             self.assertEqual([w.event_id for w in calendar.active_activities(self.config, boundary)], ["second"])
             self.assertEqual([w.event_id for w in calendar.active_activities(
                 self.config, boundary - timedelta(microseconds=1))], ["first"])
@@ -96,12 +103,10 @@ class CalendarTests(unittest.TestCase):
         self.assertTrue(SpecialActivityEntry(self.config).run_login_daily_reward())
         self.assertEqual(self.config.calls, [])
 
-    def test_dispatch_cn_free_reward(self):
+    def test_archived_cn_free_reward_is_not_dispatched_in_its_original_window(self):
         with patch("tasks.activity.entry.CommonActivityBatch") as task:
-            task.ACTIVITIES = {'free_gacha_20': None}
-            task.return_value.run.return_value = True
             self.assertTrue(LimitedActivityEntry(self.config).run())
-            self.assertEqual(task.return_value.run.call_args.args[0][0].event_id, calendar.DEFAULT_FREE_GACHA_20_ID)
+            task.assert_not_called()
 
     def test_daily_record_campaign_and_server_isolation(self):
         scheduling.mark_free_gacha_20_checked(self.config, "first")
@@ -120,8 +125,14 @@ class CalendarTests(unittest.TestCase):
         self.assertFalse(scheduling.is_activity_checked_today(self.config, "second"))
 
     def test_checked_campaign_is_not_dispatched_again(self):
-        scheduling.mark_free_gacha_20_checked(self.config)
-        with patch("tasks.activity.entry.CommonActivityBatch") as task:
+        server.set_lang("global_cn")
+        self.config.Emulator_PackageName = "com.stove.epic7.google"
+        self.config.LimitedActivity_GetEpicPathDailyReward = True
+        at = datetime.fromisoformat("2026-10-29T21:00:00+08:00")
+        event = next(e for e in calendar.active_activities(self.config, at) if e.mode == "epic_path")
+        scheduling.mark_activity_checked(self.config, event.event_id)
+        with patch("tasks.activity.entry.active_activities", return_value=(event,)), \
+                patch("tasks.activity.entry.CommonActivityBatch") as task:
             self.assertTrue(LimitedActivityEntry(self.config).run())
             task.assert_not_called()
 
@@ -141,7 +152,7 @@ class CalendarTests(unittest.TestCase):
 
     def test_missing_target_page_does_not_mark_success(self):
         claim = Claim(["other"])
-        with patch("tasks.activity.free_gacha_20.Timer") as timer:
+        with patch.object(free_gacha_20, "Timer") as timer:
             timer.return_value.start.return_value.reached.return_value = True
             self.assertFalse(claim.run_claim())
         self.assertEqual(claim.config.values, {})
@@ -149,15 +160,18 @@ class CalendarTests(unittest.TestCase):
 
     def test_future_campaign_wakes_at_launch_time(self):
         launch = datetime(2026, 9, 18, 11, tzinfo=calendar.EVENT_TIMEZONE)
-        with patch.object(scheduling, "next_activity_start", return_value=launch):
+        with patch.object(scheduling, "next_activity_start", return_value=launch), \
+                patch.object(scheduling, "active_activities", return_value=()):
             scheduling.delay_next_activity_check(self.config, task="LimitedActivity")
-        self.assertEqual(self.config.delays, [dict(server_update=True, task="LimitedActivity",
-            target=launch.astimezone().replace(tzinfo=None))])
+        self.assertEqual(self.config.delays, [{
+            "task": "LimitedActivity", "target": launch.astimezone().replace(tzinfo=None),
+        }])
 
     def test_future_start_uses_cn_delay(self):
         windows = self.load(self.make_calendar())
         before = windows[1].start - timedelta(seconds=1)
-        with patch.object(calendar, "load_calendar", return_value=windows):
+        with patch.object(calendar, "load_calendar", return_value=windows), \
+                patch.object(calendar, "SUPPORTED_MODES", ("free_gacha_20",)):
             self.assertEqual(calendar.next_activity_start(self.config, before), windows[1].start)
             self.assertIsNone(calendar.next_activity_start(self.config, windows[1].start))
 

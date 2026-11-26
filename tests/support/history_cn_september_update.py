@@ -13,7 +13,7 @@ from unittest.mock import patch
 WORKTREE = Path(__file__).resolve().parents[2]
 PROJECT_ROOT = WORKTREE
 
-from tasks.activity.free_gacha_20 import FreeGacha20
+from tasks.activity.legacy.free_gacha_20_2026_08_27.free_gacha_20 import FreeGacha20
 
 
 class Config:

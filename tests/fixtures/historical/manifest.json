@@ -5498,7 +5498,7 @@
         "tests.activity.test_carrot_reward.CarrotRewardTests.test_network_popup_does_not_acknowledge_reward",
         "tests.activity.test_carrot_reward.CarrotRewardTests.test_independent_navigation_confirms_carrot_target",
         "tests.activity.test_carrot_reward.CarrotRewardTests.test_calendar_boundaries_server_support_and_batch_registration",
-        "tests.activity.test_carrot_reward.CarrotRewardTests.test_battle_recheck_stops_after_receipt_resets_daily_and_respects_switch",
+        "tests.activity.test_carrot_reward.CarrotRewardTests.test_archived_claim_preserves_daily_receipt_without_battle_recheck",
         "tests.activity.test_carrot_reward.CarrotRewardTests.test_real_sidebar_selection_then_claim_never_repeats_tab",
         "tests.activity.test_carrot_reward.CarrotRewardTests.test_real_common_batch_dispatches_claim_and_preserves_page_search"
       ]

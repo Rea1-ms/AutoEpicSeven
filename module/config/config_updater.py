@@ -616,6 +616,12 @@ class ConfigUpdater:
         import module.config.server as server
         from tasks.activity.calendar import ACTIVITY_OPTIONS, active_activities
 
+        # Keep retired choices in the config schema for existing profiles.
+        yield 'LimitedActivity.LimitedActivity.GetFreeGacha'
+        yield 'LimitedActivity.LimitedActivity.GetDetectiveSearch'
+        yield 'LimitedActivity.LimitedActivity.GetCarrotReward'
+        yield 'SpecialActivity.SpecialActivity.BuyHucheMysticMedals'
+
         # Use the selected profile, never the worker's process-wide language:
         # one GUI process may render CN and overseas profiles concurrently.
         # Unknown/auto packages stay unresolved here; only the worker may detect

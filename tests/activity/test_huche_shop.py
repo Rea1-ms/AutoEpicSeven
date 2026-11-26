@@ -144,18 +144,16 @@ class ScheduleTests(unittest.TestCase):
         self.config.Emulator_PackageName="com.zlongame.cn.epicseven"
         self.assertFalse(scheduling.is_activity_checked_in_window(self.config,WINDOW,NOW))
 
-    def test_next_run_includes_refresh_only_when_enabled(self):
+    def test_next_run_excludes_archived_refresh_even_when_enabled(self):
+        target = NOW.replace(hour=23, minute=0, second=0)
+        self.assertEqual(WINDOW.next_refresh(NOW), target)
         for enabled in (True,False):
             self.config.SpecialActivity_BuyHucheMysticMedals=enabled
             self.config.delays=[]
-            with patch.object(scheduling,"aware_time",return_value=NOW), patch.object(
-                scheduling,"active_activities",return_value=(WINDOW,)
-            ), patch.object(scheduling,"next_activity_start",return_value=None):
+            with patch.object(scheduling, "aware_time", return_value=NOW), \
+                    patch.object(scheduling, "next_activity_start", return_value=None):
                 scheduling.delay_next_activity_check(self.config)
-            expected={"server_update":True,"task":"SpecialActivity"}
-            if enabled:
-                expected["target"]=NOW.replace(hour=23,minute=0,second=0).astimezone().replace(tzinfo=None)
-            self.assertEqual(self.config.delays,[expected])
+            self.assertEqual(self.config.delays,[{"server_update":True,"task":"SpecialActivity"}])
 
     def test_bad_refresh_hours_rejected(self):
         for value in (0,-1,True,"12"):
@@ -164,12 +162,12 @@ class ScheduleTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 parse_info(json.dumps(data))
 
-    def test_entry_dispatches_shop_and_skips_disabled_option(self):
+    def test_entry_never_dispatches_archived_shop(self):
         """The production calendar cannot enable the retired shop."""
         self.assertNotIn(EVENT_ID, {event.event_id for event in calendar.active_activities(self.config, NOW)})
         with patch.object(calendar, "datetime", wraps=datetime) as clock, patch(
             "tasks.activity.legacy.huche_shop_2026_09_17.huche_shop.HucheShop"
-        ) as task, patch("tasks.activity.huche_shop.HucheShop") as current, patch(
+        ) as task, patch(
             "tasks.activity.entry.delay_next_activity_check"
         ):
             clock.now.return_value = NOW
@@ -181,7 +179,6 @@ class ScheduleTests(unittest.TestCase):
             self.config.SpecialActivity_BuyHucheMysticMedals=False
             self.assertTrue(SpecialActivityEntry(self.config).run())
             task.assert_not_called()
-            current.assert_not_called()
 
     def test_config_defaults_off_and_keeps_explicit_preference(self):
         from module.config.config_updater import ConfigUpdater

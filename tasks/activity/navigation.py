@@ -2,16 +2,11 @@ from module.base.timer import Timer
 from module.config import server
 from module.logger import logger
 from module.ocr.ocr import Ocr, OcrResultButton
-from tasks.activity.assets.assets_activity_carrot_reward import CARROT_REWARD_CHECK
 from tasks.activity.assets.assets_activity_common import COMMON_ACTIVITY_LIST
 from tasks.activity.assets.assets_activity_completion_record import (
     COMPLETION_RECORD_CHECK,
 )
-from tasks.activity.assets.assets_activity_detective_search import (
-    DETECTIVE_SEARCH_CHECK,
-)
 from tasks.activity.assets.assets_activity_epic_path import EPIC_PATH_CHECK
-from tasks.activity.assets.assets_activity_special_26_8_27 import FREE_20_GACHA_SELECTED
 from tasks.activity.assets.assets_activity_special_26_10_19 import SUPPORT_GATE_CHECK
 from tasks.base.page import page_common_activity
 
@@ -20,6 +15,7 @@ class ActivityNavigationMixin:
     ACTIVITY_NAVIGATION_TIMEOUT_SECONDS = 60
     ACTIVITY_SCROLL_UP_LIMIT = 4
     ACTIVITY_SCROLL_DOWN_LIMIT = 8
+    FULL_PAGE_MARKERS = (SUPPORT_GATE_CHECK, COMPLETION_RECORD_CHECK, EPIC_PATH_CHECK)
 
     @staticmethod
     def _activity_text(text: str) -> str:
@@ -35,21 +31,13 @@ class ActivityNavigationMixin:
         )
 
     def _activity_selected(self, selected_button) -> bool:
-        # Overseas free summons and support tasks use fixed page content, even
-        # when their sidebar tabs are offscreen. Keep those page search bounds;
-        # other events and CN still confirm the selected sidebar tab.
+        # Global CN flows with fixed page markers keep their search bounds
+        # even when the sidebar tab is offscreen. CN uses the sidebar tab.
         # Restore every frame's bounds and offsets: wrappers are shared objects.
         buttons = tuple(selected_button.iter_buttons())
         searches = tuple(button.search for button in buttons)
         try:
-            if not (
-                server.lang == "global_cn"
-                and selected_button in (
-                    FREE_20_GACHA_SELECTED, SUPPORT_GATE_CHECK,
-                    COMPLETION_RECORD_CHECK, DETECTIVE_SEARCH_CHECK, EPIC_PATH_CHECK,
-                    CARROT_REWARD_CHECK,
-                )
-            ):
+            if server.lang != "global_cn" or selected_button not in self.FULL_PAGE_MARKERS:
                 selected_button.load_search(COMMON_ACTIVITY_LIST.area)
             return self.match_template_color(selected_button)
         finally:

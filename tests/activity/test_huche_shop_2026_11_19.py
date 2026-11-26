@@ -8,7 +8,7 @@ from dataclasses import replace
 from datetime import datetime, timedelta
 from pathlib import Path
 from types import SimpleNamespace
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 import numpy as np
 
@@ -34,8 +34,9 @@ class Config:
 
 
 def current_shop_window():
-    return next(window for window in calendar.load_calendar()
-                if window.event_id == calendar.CURRENT_HUCHE_SHOP_ID)
+    from tasks.activity.legacy.huche_shop_2026_11_19.huche_shop import archived_window
+
+    return archived_window()
 
 
 def stock_viewports():
@@ -51,7 +52,7 @@ class FlowTests(unittest.TestCase):
 
     def replay_current_shop(self, offers_by_frame, *, views=None, stock_views=None,
                             regular_done_at=None, at=None, success=True, unverified_regular=False, clipped_regular=False):
-        from tasks.activity.huche_shop import HucheShop
+        from tasks.activity.legacy.huche_shop_2026_11_19.huche_shop import HucheShop
         from tasks.store.assets.assets_store_actions import BUY_CONFIRM_MULTI
 
         window = current_shop_window()
@@ -102,13 +103,15 @@ class FlowTests(unittest.TestCase):
             popup_selection=lambda offer, balance: (SimpleNamespace(action="none"), BUY_CONFIRM_MULTI),
             appear_then_click=click, handle_network_error=lambda: False,
             handle_touch_to_close=lambda **kwargs: False,
-        ), patch("tasks.activity.huche_shop.aware_time", return_value=at or window.start):
+        ), patch("tasks.activity.legacy.huche_shop_2026_11_19.huche_shop.aware_time", return_value=at or window.start):
             self.assertEqual(shop.run_purchase(window), success)
         self.assertEqual(frame, len(offers_by_frame) - 1)
         return actions, shop.config
 
     def test_same_price_stock_is_tracked_per_offer(self):
-        from tasks.activity.huche_shop import MysticOffer as CurrentOffer
+        from tasks.activity.legacy.huche_shop_2026_11_19.huche_shop import (
+            MysticOffer as CurrentOffer,
+        )
 
         window = current_shop_window()
         rotating = CurrentOffer((634, 285, 733, 314), 160, 2, 2, False)
@@ -129,7 +132,10 @@ class FlowTests(unittest.TestCase):
         })
 
     def test_current_scan_reverses_only_to_recover_missing_overlap(self):
-        from tasks.activity.huche_shop import DiscountItem, DiscountView
+        from tasks.activity.legacy.huche_shop_2026_11_19.huche_shop import (
+            DiscountItem,
+            DiscountView,
+        )
 
         def view(*names, boundary=None):
             return DiscountView(tuple(DiscountItem(85 + 145 * index, name, False)
@@ -151,7 +157,10 @@ class FlowTests(unittest.TestCase):
                          window.start)
 
     def test_empty_rotating_batch_still_buys_and_records_disappearing_regular_offer(self):
-        from tasks.activity.huche_shop import DiscountView, MysticOffer
+        from tasks.activity.legacy.huche_shop_2026_11_19.huche_shop import (
+            DiscountView,
+            MysticOffer,
+        )
 
         window = current_shop_window()
         boundary = DiscountView((), (634, 156, 713, 179))
@@ -174,7 +183,7 @@ class FlowTests(unittest.TestCase):
         })
 
     def test_full_scan_records_a_regular_offer_already_absent_on_entry(self):
-        from tasks.activity.huche_shop import DiscountView
+        from tasks.activity.legacy.huche_shop_2026_11_19.huche_shop import DiscountView
 
         window = current_shop_window()
         boundary = DiscountView((), (634, 156, 713, 179))
@@ -188,7 +197,7 @@ class FlowTests(unittest.TestCase):
         })
 
     def test_incomplete_or_unreadable_scan_never_records_absence(self):
-        from tasks.activity.huche_shop import DiscountView
+        from tasks.activity.legacy.huche_shop_2026_11_19.huche_shop import DiscountView
 
         boundary = DiscountView((), (634, 156, 713, 179))
         top, bottom, _ = stock_viewports()
@@ -208,7 +217,10 @@ class FlowTests(unittest.TestCase):
                 self.assertEqual(config.values, {})
 
     def test_saved_regular_quota_stops_at_boundary_or_rotating_sellout(self):
-        from tasks.activity.huche_shop import DiscountView, MysticOffer
+        from tasks.activity.legacy.huche_shop_2026_11_19.huche_shop import (
+            DiscountView,
+            MysticOffer,
+        )
 
         window = current_shop_window()
         at = window.next_refresh(window.start)
@@ -228,6 +240,9 @@ class FlowTests(unittest.TestCase):
 
 class ScheduleTests(unittest.TestCase):
     def setUp(self):
+        language = patch.object(server, "lang", "global_cn")
+        language.start()
+        self.addCleanup(language.stop)
         from tasks.activity.entry import SpecialActivityEntry
 
         self.entry = SpecialActivityEntry
@@ -246,29 +261,39 @@ class ScheduleTests(unittest.TestCase):
         self.assertEqual(current.refresh_start(evening), evening)
         self.assertIsNone(current.next_refresh(current.end - timedelta(seconds=1)))
 
-    def test_entry_dispatches_shop_and_skips_disabled_option(self):
+    def test_archived_shop_never_dispatches_and_retains_historical_purchase_guards(self):
+        from tasks.activity.legacy.huche_shop_2026_11_19 import huche_shop
+
         window = current_shop_window()
-        for package, lang, expected in (
-            ("OVERSEA-Play", "global_cn", (window,)),
-            ("OVERSEA-Play", "global_en", ()),
-            ("CN-Official", "cn", ()),
+        for package, lang in (
+            ("OVERSEA-Play", "global_cn"),
+            ("OVERSEA-Play", "global_en"),
+            ("CN-Official", "cn"),
         ):
             self.config.Emulator_PackageName = package
             events = calendar.active_activities(self.config, window.start, assets_lang=lang)
-            self.assertEqual(tuple(event for event in events if event.mode == "huche_shop"), expected)
+            self.assertFalse(any(event.mode == "huche_shop" for event in events))
         self.config.Emulator_PackageName = "OVERSEA-Play"
-        with patch("tasks.activity.entry.active_activities", return_value=(window,)), patch(
-            "tasks.activity.huche_shop.HucheShop"
+        with patch("tasks.activity.entry.active_activities", return_value=(window,)), patch.object(
+            huche_shop, "HucheShop"
         ) as task, patch("tasks.activity.entry.delay_next_activity_check"):
-            task.return_value.run.return_value = True
-            self.assertTrue(self.entry(self.config).run())
-            self.assertEqual(task.call_args.kwargs["activity_id"], window.event_id)
-            task.return_value.run.assert_called_once()
-            task.return_value.ui_goto.assert_called_once()
-            task.reset_mock()
-            self.config.SpecialActivity_BuyHucheMysticMedals=False
             self.assertTrue(self.entry(self.config).run())
             task.assert_not_called()
+        self.config.task_delay = Mock()
+        shop = huche_shop.HucheShop(self.config, device=SimpleNamespace(app_is_running=lambda: True))
+        with patch.object(huche_shop, "aware_time", return_value=window.start) as now, patch.object(
+            shop, "run_purchase", return_value=True
+        ) as purchase, patch.object(shop, "ui_goto") as navigate:
+            self.assertTrue(shop.run())
+            purchase.assert_called_once_with(window)
+            navigate.assert_called_once()
+            self.config.SpecialActivity_BuyHucheMysticMedals = False
+            self.assertTrue(shop.run())
+            self.config.SpecialActivity_BuyHucheMysticMedals = True
+            now.return_value = window.end
+            self.assertTrue(shop.run())
+            self.assertEqual(purchase.call_count, 1)
+            self.assertEqual(navigate.call_count, 1)
 
     def test_config_defaults_off_and_keeps_explicit_preference(self):
         from module.config.config_updater import ConfigUpdater
@@ -291,7 +316,7 @@ class ScheduleTests(unittest.TestCase):
         window = current_shop_window()
         with patch.object(calendar, 'datetime', wraps=datetime) as clock:
             clock.now.return_value = window.start
-            self.assertNotIn(key, updater.get_hidden_args(profile))
+            self.assertIn(key, updater.get_hidden_args(profile))
             clock.now.return_value = window.end
             self.assertIn(key, updater.get_hidden_args(profile))
 
@@ -302,7 +327,7 @@ import module.config.server as server
 server.set_lang(sys.argv[1])
 server.server='CN-Official' if sys.argv[1]=='cn' else 'OVERSEA-Play'
 from tasks.base import page
-from tasks.activity.huche_shop import HucheShop
+from tasks.activity.legacy.huche_shop_2026_11_19.huche_shop import HucheShop
 from tasks.activity.assets.assets_activity_huche_shop import HUCHE_SHOP_CHECK, MAIN_GOTO_HUCHE_SHOP
 assert 'tasks.activity.legacy.huche_shop_2026_09_17.huche_shop' not in sys.modules
 assert hasattr(page,'page_huche_shop') == (sys.argv[1]=='global_cn')

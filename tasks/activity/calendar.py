@@ -12,27 +12,19 @@ from module.game_info.timeline import render_timeline as render_game_timeline
 EVENT_TIMEZONE = INFO_TIMEZONE
 CALENDAR_PATH = INFO_PATH
 DEFAULT_FREE_GACHA_20_ID = "free_gacha_20_2026_08_27"
-CURRENT_HUCHE_SHOP_ID = "huche_shop_2026_11_19"
-SUPPORTED_MODES = ("legacy", "free_gacha_20", "support_reward",
-                   "completion_record", "detective_search", "epic_path", "alencia_handbook", "carrot_reward",
-                   "huche_shop")
+SUPPORTED_MODES = ("legacy", "support_reward", "completion_record", "epic_path", "alencia_handbook")
 ACTIVITY_TASK_MODES = {
-    "LimitedActivity": ("free_gacha_20", "support_reward",
-                        "completion_record", "detective_search", "epic_path", "carrot_reward"),
-    "SpecialActivity": ("legacy", "alencia_handbook", "huche_shop"),
+    "LimitedActivity": ("support_reward", "completion_record", "epic_path"),
+    "SpecialActivity": ("legacy", "alencia_handbook"),
 }
 ACTIVITY_OPTIONS = {
     "LimitedActivity": {
-        "free_gacha_20": "LimitedActivity_GetFreeGacha",
         "support_reward": "LimitedActivity_GetSupportReward",
         "completion_record": "LimitedActivity_GetCompletionRecord",
-        "detective_search": "LimitedActivity_GetDetectiveSearch",
         "epic_path": "LimitedActivity_GetEpicPathDailyReward",
-        "carrot_reward": "LimitedActivity_GetCarrotReward",
     },
     "SpecialActivity": {
         "alencia_handbook": "SpecialActivity_GetAlenciaDailyReward",
-        "huche_shop": "SpecialActivity_BuyHucheMysticMedals",
     },
 }
 
@@ -47,6 +39,11 @@ class ActivityWindow:
     end: datetime
     refresh_hours: int = 0
     refresh_hour: int | None = None
+
+    @classmethod
+    def from_period(cls, period):
+        return cls(period.event_id, period.name, period.kind, period.server_family, period.start, period.end,
+                   period.values.get("refresh_hours", 0), period.values.get("refresh_hour"))
 
     def contains(self, now: datetime) -> bool:
         return self.start <= now < self.end
@@ -74,11 +71,8 @@ class ActivityWindow:
 def load_calendar(path: Path = CALENDAR_PATH) -> tuple[ActivityWindow, ...]:
     # Catalog categories may exist before automation supports them. Only this
     # adapter owns the supported-flow list; adding facts never executes code.
-    return tuple(ActivityWindow(p.event_id, p.name, p.kind, p.server_family, p.start, p.end,
-                                p.values.get("refresh_hours", 0), p.values.get("refresh_hour"))
-                 for p in load_info(path).periods if p.kind in SUPPORTED_MODES
-                 and (p.kind != "huche_shop" or p.event_id == CURRENT_HUCHE_SHOP_ID
-                      and p.server_family == server.SERVER_FAMILY_OVERSEA))
+    return tuple(ActivityWindow.from_period(period) for period in load_info(path).periods
+                 if period.kind in SUPPORTED_MODES)
 
 
 def _server_windows(config, *, assets_lang: str | None = None) -> tuple[ActivityWindow, ...]:
@@ -95,7 +89,7 @@ def _server_windows(config, *, assets_lang: str | None = None) -> tuple[Activity
         window for window in load_calendar()
         if window.server_family == family
         and (window.mode not in ("support_reward",
-                                "completion_record", "detective_search", "epic_path", "alencia_handbook", "carrot_reward")
+                                "completion_record", "epic_path", "alencia_handbook")
              or family == server.SERVER_FAMILY_OVERSEA)
     )
 

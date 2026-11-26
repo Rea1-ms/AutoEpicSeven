@@ -50,7 +50,6 @@ class SpecialActivityEntry:
         last_activity = None
         common_done = False
         for event in runnable:
-            option = self.COMMON_ACTIVITY_OPTIONS.get(event.mode)
             if event.mode in CommonActivityBatch.ACTIVITIES:
                 if common_done:
                     continue
@@ -77,15 +76,6 @@ class SpecialActivityEntry:
                     return False
                 last_activity = activity
                 continue
-            elif event.mode == "huche_shop":
-                from tasks.activity.huche_shop import HucheShop
-
-                activity = HucheShop(
-                    config=self.config,
-                    device=self.device,
-                    task=self.task,
-                    activity_id=event.event_id,
-                )
             else:
                 from tasks.activity.legacy.summer_2026_06_25.special_activity import SpecialActivity
 
@@ -94,17 +84,11 @@ class SpecialActivityEntry:
                     device=self.device,
                     task=self.task,
                 )
-            # Every tab uses the same device and its latest screenshot, even
-            # when the entry was constructed without a device. A skipped tab
-            # must not create a client or take ownership of final navigation.
             self.device = activity.device
             if not activity.run():
                 return False
-            # Modern flows leave a verified page for the next activity. The
-            # legacy flow owns its separate page and already returns to main.
-            # Keep failure handling in the failing flow; never overwrite its
-            # retry schedule or hide its unresolved popup by continuing.
-            last_activity = activity if option is not None else None
+            # The historical summer flow returns to main itself.
+            last_activity = None
 
         if last_activity is not None:
             logger.info(f"{self.SCHEDULER_TASK}: all activity rewards checked, return to main")

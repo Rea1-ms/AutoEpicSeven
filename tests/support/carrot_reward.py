@@ -1,6 +1,6 @@
 """Carrot captures with explicitly composed missing intermediate states."""
 
-from tasks.activity.carrot_reward import CarrotReward
+from tasks.activity.legacy.carrot_reward_2026_11_12.carrot_reward import CarrotReward
 from tests.support.activity_replay import MANIFEST, ActivityReplay
 from tests.support.offline import fixture_image, record_frame
 

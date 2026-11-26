@@ -1,6 +1,7 @@
 """Carrot reward recognition, production-clock replays and event integration."""
 
 from datetime import datetime, timedelta
+from pathlib import Path
 from unittest.mock import Mock, patch
 
 from module.config import server
@@ -8,6 +9,7 @@ from module.config import server
 server.set_lang("global_cn")
 
 from module.config.config_updater import ConfigUpdater
+from module.game_info.catalog import load_info
 from module.ocr.ocr import Ocr
 from tasks.activity import calendar, scheduling
 from tasks.activity.assets.assets_activity_carrot_reward import (
@@ -16,7 +18,7 @@ from tasks.activity.assets.assets_activity_carrot_reward import (
     OCR_CARROT_POINTS,
 )
 from tasks.activity.assets.assets_activity_common import COMMON_ACTIVITY_LIST
-from tasks.activity.carrot_reward import CarrotReward
+from tasks.activity.legacy.carrot_reward_2026_11_12.carrot_reward import CarrotReward
 from tasks.activity.common_activity import CommonActivityBatch
 from tests.support.activity_replay import ActivityReplayCase, capture
 from tests.support.carrot_reward import (
@@ -31,6 +33,7 @@ from tests.support.carrot_reward import (
 from tests.support.interaction import scene
 
 NOW = datetime.fromisoformat("2026-11-12T20:20:00+08:00")
+ARCHIVE_CALENDAR = Path("tasks/activity/legacy/carrot_reward_2026_11_12/calendar.yaml")
 
 
 class CarrotRewardTests(ActivityReplayCase):
@@ -95,7 +98,7 @@ class CarrotRewardTests(ActivityReplayCase):
     def test_zero_and_unfinished_points_keep_battle_recheck(self):
         for text, receipts in (("0", ()), ("199", ()), ("399", (0,)), ("799", (0, 1, 2))):
             r = self.replay_carrot([capture(AVAILABLE, carrot_locked=True, carrot_receipts=receipts)])
-            with patch("tasks.activity.carrot_reward.Ocr") as ocr:
+            with patch("tasks.activity.legacy.carrot_reward_2026_11_12.carrot_reward.Ocr") as ocr:
                 ocr.return_value.ocr_single_line.return_value = text
                 self.assertTrue(r.task.run_claim(navigate=False))
                 self.assertEqual(ocr.call_args.kwargs["lang"], "cn")
@@ -105,7 +108,7 @@ class CarrotRewardTests(ActivityReplayCase):
     def test_unknown_points_and_eligible_missing_controls_never_finish(self):
         for text in ("", "unreadable", "880", "-1", "880/800", "200"):
             r = self.replay_carrot([capture(AVAILABLE, carrot_locked=True, seconds=1)] * 48)
-            with patch("tasks.activity.carrot_reward.Ocr") as ocr:
+            with patch("tasks.activity.legacy.carrot_reward_2026_11_12.carrot_reward.Ocr") as ocr:
                 ocr.return_value.ocr_single_line.return_value = text
                 self.assertFalse(r.task.run_claim(navigate=False))
             self.assertFalse(r.actions)
@@ -171,7 +174,9 @@ class CarrotRewardTests(ActivityReplayCase):
         worker.activity_id = EVENT_ID
         pending = {EVENT_ID: ("一起收集胡萝卜", CARROT_REWARD_CHECK, worker)}
         searches = tuple(button.search for button in CARROT_REWARD_CHECK.iter_buttons())
-        with patch("tasks.activity.common_activity.Ocr") as ocr:
+        with patch.object(r.task, "FULL_PAGE_MARKERS", CarrotReward.FULL_PAGE_MARKERS), patch(
+            "tasks.activity.common_activity.Ocr"
+        ) as ocr:
             ocr.return_value.detect_and_ocr.side_effect = AssertionError("Selected page must skip sidebar OCR")
             self.assertTrue(r.task._run_pending(pending))
         self.assertFalse(pending)
@@ -181,16 +186,16 @@ class CarrotRewardTests(ActivityReplayCase):
 
     def test_calendar_boundaries_server_support_and_batch_registration(self):
         r = self.replay_carrot([capture(RECEIVED)])
-        event = next(e for e in calendar.active_activities(r.task.config, NOW, task="LimitedActivity")
-                     if e.event_id == EVENT_ID)
+        event = calendar.ActivityWindow.from_period(load_info(ARCHIVE_CALENDAR).periods[0])
+        self.assertEqual(event.event_id, EVENT_ID)
         self.assertFalse(event.contains(event.start - timedelta(seconds=1)))
         self.assertTrue(event.contains(event.start))
         self.assertTrue(event.contains(event.end - timedelta(seconds=1)))
         self.assertFalse(event.contains(event.end))
         self.assertEqual(event.end.isoformat(), "2026-11-26T11:00:00+08:00")
-        self.assertEqual(CommonActivityBatch.ACTIVITIES["carrot_reward"],
-                         ("一起收集胡萝卜", CARROT_REWARD_CHECK, CarrotReward))
-        for package, lang in (("CN-Official", "cn"), ("OVERSEA-Play", "global_en")):
+        self.assertNotIn("carrot_reward", CommonActivityBatch.ACTIVITIES)
+        for package, lang in (("CN-Official", "cn"), ("OVERSEA-Play", "global_en"),
+                              ("OVERSEA-Play", "global_cn")):
             r.task.config.Emulator_PackageName = package
             self.assertNotIn(EVENT_ID, {e.event_id for e in calendar.active_activities(
                 r.task.config, NOW, assets_lang=lang)})
@@ -203,7 +208,7 @@ class CarrotRewardTests(ActivityReplayCase):
         with patch.object(calendar, "datetime", wraps=datetime) as clock:
             clock.now.return_value = NOW
             with patch.object(server, "lang", "cn"):
-                self.assertNotIn(key, updater.get_hidden_args(data))
+                self.assertIn(key, updater.get_hidden_args(data))
             for package, lang in (("CN-Official", "cn"), ("OVERSEA-Play", "en"), ("auto", "cn")):
                 data["Alas"]["Emulator"].update(PackageName=package, GameLanguage=lang)
                 self.assertIn(key, updater.get_hidden_args(data))
@@ -211,22 +216,20 @@ class CarrotRewardTests(ActivityReplayCase):
             clock.now.return_value = datetime.fromisoformat("2026-11-26T11:00:00+08:00")
             self.assertIn(key, updater.get_hidden_args(data))
         self.assertFalse(data["LimitedActivity"]["LimitedActivity"]["GetCarrotReward"])
+        self.assertFalse(updater.config_update(data)["LimitedActivity"]["LimitedActivity"]["GetCarrotReward"])
 
-    def test_battle_recheck_stops_after_receipt_resets_daily_and_respects_switch(self):
+    def test_archived_claim_preserves_daily_receipt_without_battle_recheck(self):
         r = self.replay_carrot([capture(RECEIVED)])
         config = r.task.config
-        event = next(e for e in calendar.active_activities(config, NOW) if e.event_id == EVENT_ID)
-        with patch.object(scheduling, "active_activities", return_value=(event,)), patch.object(
-            scheduling, "get_server_last_update", return_value=datetime(2026, 11, 12, 2)
+        with patch.object(
+            scheduling, "get_server_last_update", return_value=datetime.now() - timedelta(days=1)
         ) as reset:
-            for arena in (False, True):
-                self.assertTrue(scheduling.should_schedule_after_battle(config, arena=arena))
+            self.assertFalse(scheduling.is_activity_checked_today(config, EVENT_ID))
             self.assertTrue(r.task.run_claim(navigate=False))
-            self.assertFalse(scheduling.should_schedule_after_battle(config))
+            self.assertTrue(scheduling.is_activity_checked_today(config, EVENT_ID))
             reset.return_value = datetime.now().replace(microsecond=0) + timedelta(days=1)
-            self.assertTrue(scheduling.should_schedule_after_battle(config))
-            config.values["LimitedActivity.LimitedActivity.GetCarrotReward"] = False
-            self.assertFalse(scheduling.should_schedule_after_battle(config))
-            config.enabled = False
-            config.values["LimitedActivity.LimitedActivity.GetCarrotReward"] = True
-            self.assertFalse(scheduling.should_schedule_after_battle(config))
+            self.assertFalse(scheduling.is_activity_checked_today(config, EVENT_ID))
+        window = calendar.ActivityWindow.from_period(load_info(ARCHIVE_CALENDAR).periods[0])
+        with patch.object(scheduling, "active_activities", return_value=(window,)):
+            for arena in (False, True):
+                self.assertFalse(scheduling.should_schedule_after_battle(config, arena=arena))
